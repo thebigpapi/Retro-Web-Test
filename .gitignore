@@ -45,6 +45,10 @@
 # Composer PHAR
 /composer.phar
 
+# Motherboard assets
+/public/motherboard
+/pulbic/media
+
 # Backup entities generated with doctrine:generate:entities command
 **/Entity/*~
 
