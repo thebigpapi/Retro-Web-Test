@@ -1,0 +1,60 @@
+/* 
+	admin.css - stylesheet for administration stuffs
+*/
+
+/* 																			=== index.html.twig (administration) === 				 */
+
+input.admin-button {padding-top:220px;width:280px;height:260px;font-size:18px;}
+div.butn div button { width:120px; height:40px; font-size:20px;}
+
+
+/* 																			=== add.html.twig === 	 								 */
+
+div.add-side { width:49%;float:left; }
+div.addform{ background-color:#f6f6f6; box-shadow:inset -1px -1px #0a0a0a,inset 1px 1px #dfdfdf,inset -2px -2px grey,inset 2px 2px #fff;
+padding:3px; font-size:18px; width:95%; }
+
+div.clrs{ height:10px; }
+div.editasset0 div { width:100%;}
+div.editasset0 div label{ width: 20%; float:left;}
+div.editasset0 div select { width:80%;}
+div.editasset0 div input { width:78%;}
+
+div.notes-field div { padding-bottom: 6px; padding-right: 4px; margin:auto; }
+div.notes-field label { display:none; }
+div.notes-field div textarea { width:100%; height:100px; }
+
+/* 																			=== manage_resources.html.twig === 						 */
+
+div.manage-buttons { float:left; }
+div.general-manage div { width: 770px; float:left; }
+div.general-manage div label { float:left; width: 150px; }
+div.general-manage div select { height: 25px; width: 600px; float:left; }
+div.cpu-manage div { width: 700px; float:left; }
+div.cpu-manage div label { float:left; width: 160px; }
+div.cpu-manage div select { height: 25px; width: 300px; float:left; }
+div.ram-manage div { width: 500px; float:left; }
+div.ram-manage div label { float:left; width: 160px; }
+div.ram-manage div select { height: 25px; width: 300px; float:left; }
+div.lang div { width: 700px; float:left; }
+div.lang div label {  float:left; width: 160px; }
+div.lang div select { height: 25px; width: 300px; float:left;}
+div.editasset { width:50%;margin:auto;}
+div.editasset form div div {height:35px;}
+div.editasset form div div label {width:180px;}
+div.editasset form div div input {width:400px;}
+
+@media only screen and (min-device-width: 501px) and (max-width: 899px) {
+	div.general-manage div, div.cpu-manage div, div.ram-manage div, div.lang div { width: 80%;}
+	div.general-manage div label, div.cpu-manage div label, div.ram-manage div label, div.lang div label { width: 30%;}
+	div.general-manage div select, div.cpu-manage div select, div.ram-manage div select, div.lang div select { width: 68%; }
+	div.add-side { width:100%;float:none; }
+	
+}
+@media only screen and (max-device-width: 500px) {
+	div.general-manage div, div.cpu-manage div, div.ram-manage div, div.lang div { width: 80%;height:auto;}
+	div.general-manage div label, div.cpu-manage div label, div.ram-manage div label, div.lang div label { width: 34%;}
+	div.general-manage div select, div.cpu-manage div select, div.ram-manage div select, div.lang div select { width: 65%;height:30px;font-size:18px; }
+	div.manage-buttons div button { width:auto; height:30px; font-size:20px;}
+	div.add-side { width:100%;float:none; }
+}

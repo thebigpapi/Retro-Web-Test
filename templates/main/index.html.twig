@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ultimate Hardware 2019{% endblock %}
+
+{% block body %}
+	<div class="title">
+		<b>Where do you want to go today?</b>
+	</div><br>
+		<form action="./" class="index-buttons" method="get">
+			<div class="main">
+				<input type="submit" class="button1" name="motherboard" value="Search for a motherboard">
+				<input type="submit" class="button2" name="expansion" value="Find expansion cards" disabled="disabled">
+			</div>
+		</form>{% if is_granted('ROLE_ADMIN') %}
+
+	<p><b>Recently added or updated boards:</b></p>
+	<div class="results">
+		<ul>
+        {% for motherboard in latestMotherboards %}
+			<li><a href="./motherboard/show/{{ motherboard.getId() }}">{{ motherboard.getManufacturerShortNameIfExist() }}&nbsp;{{ motherboard.name }}</a></li>		
+		{% endfor %}	
+		</ul>
+	</div>{% endif %}
+{% endblock %}

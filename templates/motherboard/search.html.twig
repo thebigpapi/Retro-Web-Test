@@ -1,0 +1,112 @@
+{% extends 'base.html.twig' %}
+
+{% form_theme form _self %}
+
+{% block checkbox_widget %}
+        {% set type = type|default('checkbox') %}
+        <input type="{{ type }}" {{ block('widget_attributes') }} {% if value is not empty %}value="{{ value }}" {% endif %}>
+{% endblock %}
+
+{% block hidden_widget %}
+        {% set type = type|default('hidden') %}
+        <input type="{{ type }}" {{ block('widget_attributes') }} {% if value is not empty %}value="{{ value }}" {% endif %}>
+{% endblock %}
+
+{% block title %}Search for a motherboard{% endblock %}
+
+{% block body %}
+	<div class="title">
+		<b>Search for a motherboard</b>
+	</div>
+	
+	<form name="search_motherboard" method="post" action="./search">
+        <table>
+            <tr style="line-height: 200%;">
+                <th>{{ form_label(form.manufacturer) }}</th>
+                <td class="table-width" rowspan="13"></td>
+                <td>
+                    <div class="sform">{{ form_widget(form.manufacturer) }}</div>
+                </td>
+            </tr>
+            <tr style="line-height: 200%;">
+                <th>{{ form_label(form.name) }}</th>
+                <td>
+                    <div class="sform">{{ form_widget(form.name)|replace({' />': ' size="50">'})|raw }}</div> 
+                </td>
+            </tr>
+            <tr style="line-height: 200%;">
+                <th>{{ form_label(form.formFactor) }}</th>
+				<td>
+                    <div class="sform">{{ form_widget(form.formFactor) }}</div>
+                </td>
+            </tr>
+            <tr style="line-height: 200%;">
+                <th>{{ form_label(form.chipset) }}</th>
+				<td>
+                    <div class="sform">{{ form_widget(form.chipset) }}</div>
+                </td>
+            </tr>
+            <tr style="line-height: 100%;">
+                <th>{{ form_label(form.processorPlatformType) }}</th>
+				<td>
+                    <div class="sform">{{ form_widget(form.processorPlatformType) }}</div>
+                </td>
+            </tr>
+			<tr style="height:10px;"><td></td><td></td></tr>
+            <tr>
+                <th>Expansion slots</th>
+                <td>
+                    {% for slot in slots %}
+                        <span class="field1">
+							<input type="text" size="2" name="slot{{slot.id}}">
+							<span>x {{ slot.name }}</span>
+                        </span>
+                    {% endfor %}
+                </td>
+            </tr>
+			<tr style="height:10px;"><td></td><td></td></tr>
+			<tr>
+                <th>I/O ports</th>
+                <td>
+                    {% for port in ports %}
+                        <span class="field1">
+							<input type="text" size="2" name="port{{port.id}}">
+							<span>x {{ port.name }}</span>
+						</span>
+                    {% endfor %}
+                </td>
+            </tr>
+			<tr style="height:10px;"><td></td><td></td></tr>
+            <tr>
+                <th>Ram type</th>
+                 <td>
+                    {% for child in form.dramType|keys %}
+                        <span class="field2" >
+						{{ form_widget(attribute(form.dramType,child)) }}
+						{{ form_label(attribute(form.dramType,child)) }}
+						</span>
+                    {% endfor %}
+                </td> 
+            </tr>
+			<tr style="height:10px;"><td></td><td></td></tr>
+            <tr>
+                <th>Motherboard bios</th>
+                <td>
+				<div style="width:100%;">
+				
+					{% for child in form.motherboardBios|keys %}
+                        <span class="field2">
+						{{ form_widget(attribute(form.motherboardBios,child)) }}
+						{{ form_label(attribute(form.motherboardBios,child)) }}
+						</span>
+                    {% endfor %}
+					</div>
+                </td>
+            </tr>
+        </table>
+		<div class="butn">
+            {{ form_row(form.search)|replace({'<div><button': '<input', '>Search</button></div>': ' value="Search">'})|raw }}{{ form_rest(form) }}
+        </div>
+   </form><br>
+
+{% endblock %}

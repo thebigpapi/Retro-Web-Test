@@ -1,0 +1,72 @@
+{# templates/base.html.twig #}
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html dir="ltr" lang="en">
+    <head>
+		<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>{% block title %}Test Application{% endblock %}</title>
+		{% if isRobot(app.request.headers.get('User-Agent')) %}
+			<meta property="og:type" content="website">
+			<meta property="og:url" content="http://www.win3x.org/">
+			{% block opengraph %}
+				<meta property="og:title" content="Ultimate Hardware 2019" >
+				<meta property="og:description" content="The ultimate retro motherboard database" >
+				<meta property="og:image" content="/uh19/assets/images/logo.gif" >
+			{% endblock %}
+		{% endif %}
+	
+		<link rel="stylesheet" media="all" type="text/css" href="/uh19/assets/main.css">
+		{% if css_for_admin is defined %}<link rel="stylesheet" media="all" type="text/css" href="/uh19/assets/admin.css">{% endif %}
+		<link rel="stylesheet" media="only screen" type="text/css" href="/uh19/assets/modern.css">
+	
+		<!--[if lt IE 9]>
+			<link rel="stylesheet" type="text/css" href="/uh19/assets/iexplore.css">
+		<![endif]-->
+    </head>
+    <body class="content">
+		<div class="top-bar">
+			<table{% if is_granted('ROLE_USER') %} style="display:inline;"{% endif %}>
+            <tr>
+				<td style="width: 20px;"></td>
+                <td class="sitename">
+                    <a href="/uh19/" style="text-decoration: none;">
+						<b>
+							<span>Ultimate Hardware </span>
+							<span class="number">2019 [BETA]</span>
+						</b>
+					</a>
+                </td>
+				<td>
+					<div class="top-height"><a href="/win3board" class="fakebutton"><span>Forum</span></a></div>
+				</td>
+				<td>
+					<div class="top-height"><a href="/uh19/credits" class="fakebutton"><span>About</span></a></div>
+				</td>
+			</tr>
+			</table>
+		{% if is_granted('ROLE_USER') %}
+			<table style="display:inline;">
+			<tr>
+				<td>
+					<div class="top-height"><span>Logged in as: {{ app.user.username }}</span></div>
+				</td>
+				<td>
+					<div class="top-height"><a href="/uh19/logout" class="fakebutton"><span>Logout</span></a></div>
+				</td>
+				{% if is_granted('ROLE_ADMIN') %}
+					<td>
+						<div class="top-height"><a href="/uh19/admin" class="fakebutton"><span>Administration</span></a></div>
+					</td>
+				{% endif %}
+			</tr>
+			</table>
+		{% endif %}
+		</div>
+	
+		<div class="main">
+			<div class="page">
+				{% block body %}{% endblock %}
+			</div>
+		</div>
+    </body>
+</html>
