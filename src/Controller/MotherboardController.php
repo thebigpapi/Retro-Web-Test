@@ -25,6 +25,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use App\Service\FileUploader;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Exception;
 
 class MotherboardController extends AbstractController
@@ -175,13 +176,14 @@ class MotherboardController extends AbstractController
     * @Route("/motherboard/search", name="motherboard_search")
     * @param Request $request
     */
-    public function search(Request $request)
+    public function search(Request $request, TranslatorInterface $translator)
     {
+        $notIdentifiedMessage = $translator->trans("Not identified");
         $moboManufacturers = $this->getDoctrine()
             ->getRepository(Manufacturer::class)
             ->findAllMotherboardManufacturer();
         $unidentifiedMan = new Manufacturer();
-        $unidentifiedMan->setName("Not identified");
+        $unidentifiedMan->setName($notIdentifiedMessage);
         array_unshift ($moboManufacturers, $unidentifiedMan);
 
         $chipsets = $this->getDoctrine()
@@ -198,7 +200,7 @@ class MotherboardController extends AbstractController
         );
         
         $unidentifiedChip = new Chipset();
-        $unidentifiedChip->setName("Not identified");
+        $unidentifiedChip->setName($notIdentifiedMessage);
         array_unshift ($chipsets, $unidentifiedChip);
 
         $slots = $this->getDoctrine()
@@ -214,7 +216,7 @@ class MotherboardController extends AbstractController
             ->getRepository(FormFactor::class)
             ->findAll();
         $unidentifiedFormFactor = new FormFactor();
-        $unidentifiedFormFactor->setName("Not identified");
+        $unidentifiedFormFactor->setName($notIdentifiedMessage);
         array_unshift ($formFactors, $unidentifiedFormFactor);
 
         $procPlatformTypes = $this->getDoctrine()

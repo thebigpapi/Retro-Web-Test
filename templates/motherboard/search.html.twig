@@ -12,11 +12,11 @@
         <input type="{{ type }}" {{ block('widget_attributes') }} {% if value is not empty %}value="{{ value }}" {% endif %}>
 {% endblock %}
 
-{% block title %}Search for a motherboard{% endblock %}
+{% block title %}{% trans %}Search for a motherboard{% endtrans %}{% endblock %}
 
 {% block body %}
 	<div class="title">
-		<b>Search for a motherboard</b>
+		<b>{% trans %}Search for a motherboard{% endtrans %}</b>
 	</div>
 	
 	<form name="search_motherboard" method="post" action="./search">
@@ -54,7 +54,7 @@
             </tr>
 			<tr style="height:10px;"><td></td><td></td></tr>
             <tr>
-                <th>Expansion slots</th>
+                <th>{% trans %}Expansion slots{% endtrans %}</th>
                 <td>
                     {% for slot in slots %}
                         <span class="field1">
@@ -66,7 +66,7 @@
             </tr>
 			<tr style="height:10px;"><td></td><td></td></tr>
 			<tr>
-                <th>I/O ports</th>
+                <th>{% trans %}I/O ports{% endtrans %}</th>
                 <td>
                     {% for port in ports %}
                         <span class="field1">
@@ -78,7 +78,7 @@
             </tr>
 			<tr style="height:10px;"><td></td><td></td></tr>
             <tr>
-                <th>Ram type</th>
+                <th>{% trans %}Ram type{% endtrans %}</th>
                  <td>
                     {% for child in form.dramType|keys %}
                         <span class="field2" >
@@ -90,7 +90,7 @@
             </tr>
 			<tr style="height:10px;"><td></td><td></td></tr>
             <tr>
-                <th>Motherboard bios</th>
+                <th>{% trans %}Motherboard bios{% endtrans %}</th>
                 <td>
 				<div style="width:100%;">
 				
