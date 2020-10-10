@@ -7,19 +7,19 @@
 	<img src="./assets/images/login.gif" alt="">
 	<div style="width:300px;">
 	{% if app.user %}
-		You are logged in as {{ app.user.username }}, <a href="{{ path('app_logout') }}">Logout</a>
+	{% trans %}You are logged in as{% endtrans %} {{ app.user.username }}, <a href="{{ path('app_logout') }}">{% trans %}Logout{% endtrans %}</a>
 	{% else %}
 		<form action="" method="post"><div>
 		{% if error %}
 			<div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
 		{% endif %}
-		<h1>Please login</h1>
-		<label for="inputUsername">Username</label> <input type="text" value="{{ last_username }}" name="username" id="inputUsername"><br>
-		<label for="inputPassword">Password</label> <input type="password" name="password" id="inputPassword"><input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}"><br>
+		<h1>{% trans %}Please login{% endtrans %}</h1>
+		<label for="inputUsername">{% trans %}Username{% endtrans %}</label> <input type="text" value="{{ last_username }}" name="username" id="inputUsername"><br>
+		<label for="inputPassword">{% trans %}Password{% endtrans %}</label> <input type="password" name="password" id="inputPassword"><input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}"><br>
 
-		<label><input type="checkbox" name="_remember_me"> Remember me</label><br>
+		<label><input type="checkbox" name="_remember_me"> {% trans %}Remember me{% endtrans %}</label><br>
 
-		<button style="margin-top:10px;" type="submit">Login</button>
+		<button style="margin-top:10px;" type="submit">{% trans %}Login{% endtrans %}</button>
 		</div></form>
 	{% endif %}
 </div></div></div></div>

@@ -1,15 +1,15 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Search results{% endblock %}
+{% block title %}{% trans %}Search results{% endtrans %}{% endblock %}
 
 {% block body %}
 	<div class="title">
-		<b>Search results</b>
+		<b>{% trans %}Search results{% endtrans %}</b>
 	</div>
 
-	<p><b style="color: #FF0040;background: #FFFF00;">Can't you find a motherboard? Click <a href="{% if is_granted('ROLE_ADMIN') %}../add{% else %}/win3board/posting.php?mode=post&amp;f=95&amp;language=en{% endif %}">here</a> to add it.</b></p>
+	<p><b style="color: #FF0040;background: #FFFF00;">{% trans %}Can't you find a motherboard? Click{% endtrans %} <a href="{% if is_granted('ROLE_ADMIN') %}../add{% else %}/win3board/posting.php?mode=post&amp;f=95&amp;language=en{% endif %}">{% trans %}here{% endtrans %}</a> {% trans %}to add it.{% endtrans %}</b></p>
 	<p style="text-align:center;padding-top:10px;">
-		<i>{% if motherboards|length > 0 %}Search found {{motherboards|length}} match{% if motherboards|length > 1 %}es{% endif %}{% else %}No item was found{% endif %}.</i>
+		<i>{{ 'motherboard.num'|trans({'count':motherboards|length}) }}</i>
 	</p>
 	
 	<div class="results">

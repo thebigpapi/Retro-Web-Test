@@ -40,7 +40,7 @@
 					<div class="top-height"><a href="/win3board" class="fakebutton"><span>Forum</span></a></div>
 				</td>
 				<td>
-					<div class="top-height"><a href="/uh19/credits" class="fakebutton"><span>About</span></a></div>
+					<div class="top-height"><a href="/uh19/credits" class="fakebutton"><span>{% trans %}About{% endtrans %}</span></a></div>
 				</td>
 			</tr>
 			</table>
@@ -48,10 +48,10 @@
 			<table style="display:inline;">
 			<tr>
 				<td>
-					<div class="top-height"><span>Logged in as: {{ app.user.username }}</span></div>
+					<div class="top-height"><span>{% trans %}Logged in as:{% endtrans %} {{ app.user.username }}</span></div>
 				</td>
 				<td>
-					<div class="top-height"><a href="/uh19/logout" class="fakebutton"><span>Logout</span></a></div>
+					<div class="top-height"><a href="/uh19/logout" class="fakebutton"><span>{% trans %}Logout{% endtrans %}</span></a></div>
 				</td>
 				{% if is_granted('ROLE_ADMIN') %}
 					<td>

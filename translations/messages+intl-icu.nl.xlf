@@ -1,0 +1,298 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="fr" target-language="nl" datatype="plaintext" original="file.ext">
+    <header>
+      <tool tool-id="symfony" tool-name="Symfony"/>
+    </header>
+    <body>
+      <trans-unit id="GvOExXf" resname="Manufacturer">
+        <source>Manufacturer</source>
+        <target>Fabrikant</target>
+      </trans-unit>
+      <trans-unit id="3NHVIj9" resname="Name">
+        <source>Name</source>
+        <target>Naam</target>
+      </trans-unit>
+      <trans-unit id="EoJwcm9" resname="Form factor">
+        <source>Form factor</source>
+        <target>Formaat</target>
+      </trans-unit>
+      <trans-unit id="_Hs9U_o" resname="Processor platform type">
+        <source>Processor platform type</source>
+        <target>Processor Platform</target>
+      </trans-unit>
+      <trans-unit id="snS7dgk" resname="Expansion slots">
+        <source>Expansion slots</source>
+        <target>Uitbreidingsloten</target>
+      </trans-unit>
+      <trans-unit id="7N5tLMC" resname="I/O ports">
+        <source>I/O ports</source>
+        <target>In- en uitgangen</target>
+      </trans-unit>
+      <trans-unit id="n.50DoY" resname="Ram type">
+        <source>Ram type</source>
+        <target>Type geheugen</target>
+      </trans-unit>
+      <trans-unit id="TI9YT3N" resname="Motherboard bios">
+        <source>Motherboard bios</source>
+        <target>Moederbord BIOS</target>
+      </trans-unit>
+      <trans-unit id="ScJmuqq" resname="Search">
+        <source>Search</source>
+        <target>Zoeken</target>
+      </trans-unit>
+      <trans-unit id="ImOhtmq" resname="Select a manufacturer ...">
+        <source>Select a manufacturer ...</source>
+        <target>Kies een fabrikant ...</target>
+      </trans-unit>
+      <trans-unit id="9yjkiyQ" resname="Select a form factor ...">
+        <source>Select a form factor ...</source>
+        <target>Kies een formaat ...</target>
+      </trans-unit>
+      <trans-unit id="VBFeZTF" resname="Select a chipset ...">
+        <source>Select a chipset ...</source>
+        <target>Kies een chipset ...</target>
+      </trans-unit>
+      <trans-unit id="0JC8BUG" resname="Select a processor platform ...">
+        <source>Select a processor platform ...</source>
+        <target>Kies een processor platform ...</target>
+      </trans-unit>
+      <trans-unit id="KhL3bK4" resname="Not identified">
+        <source>Not identified</source>
+        <target>Onbekend</target>
+      </trans-unit>
+      <trans-unit id="owrbS70" resname="Search for a motherboard">
+        <source>Search for a motherboard</source>
+        <target>Zoek naar een moederbord</target>
+      </trans-unit>
+      <trans-unit id="I73mL5g" resname="Where do you want to go today?">
+        <source>Where do you want to go today?</source>
+        <target>Waar wil je naartoe vandaag?</target>
+      </trans-unit>
+      <trans-unit id="6xS7ueh" resname="&quot;Search for a motherboard&quot;">
+        <source>"Search for a motherboard"</source>
+        <target>"Zoek naar een moederbord"</target>
+      </trans-unit>
+      <trans-unit id="tiZqtl." resname="&quot;Find expansion cards&quot;">
+        <source>"Find expansion cards"</source>
+        <target>"Zoek naar een uitbreidingskaart"</target>
+      </trans-unit>
+      <trans-unit id="71OpIF7" resname="Recently added or updated boards:">
+        <source>Recently added or updated boards:</source>
+        <target>Recent toegevoegde/bijgewerkte moederborden:</target>
+      </trans-unit>
+      <trans-unit id="Tvyg0Qx" resname="About">
+        <source>About</source>
+        <target>Over...</target>
+      </trans-unit>
+      <trans-unit id="r.8oJuE" resname="Logged in as:">
+        <source>Logged in as:</source>
+        <target>Aangemeld als:</target>
+      </trans-unit>
+      <trans-unit id="0FJ_Sz1" resname="Logout">
+        <source>Logout</source>
+        <target>Afmelden</target>
+      </trans-unit>
+      <trans-unit id="acVpEs4" resname="You are logged in as">
+        <source>You are logged in as</source>
+        <target>Je bent aangemeld als</target>
+      </trans-unit>
+      <trans-unit id="47ienTP" resname="Username">
+        <source>Username</source>
+        <target>Gebruikersnaam</target>
+      </trans-unit>
+      <trans-unit id="588_9PF" resname="Password">
+        <source>Password</source>
+        <target>Wachtwoord</target>
+      </trans-unit>
+      <trans-unit id="_TJnqhH" resname="Remember me">
+        <source>Remember me</source>
+        <target>Herinner mij</target>
+      </trans-unit>
+      <trans-unit id="nWMiwfT" resname="Login">
+        <source>Login</source>
+        <target>Aanmelden</target>
+      </trans-unit>
+      <trans-unit id="Sm_IPf9" resname="Please login">
+        <source>Please login</source>
+        <target>Aanmelden a.u.b.</target>
+      </trans-unit>
+      <trans-unit id="KmskrSh" resname="Credits">
+        <source>Credits</source>
+        <target>Credits</target>
+      </trans-unit>
+      <trans-unit id="MzVNHiz" resname="About Ultimate Hardware 2019">
+        <source>About Ultimate Hardware 2019</source>
+        <target>Over Ultimate Hardware 2019</target>
+      </trans-unit>
+      <trans-unit id="yqUGzeC" resname="This project wouldn't exist without:">
+        <source>This project wouldn't exist without:</source>
+        <target>Dit projekt zou niet hebben bestaan zonder:</target>
+      </trans-unit>
+      <trans-unit id="gXz1Ufp" resname="project initiator">
+        <source>project initiator</source>
+        <target>Projekt ontwerper</target>
+      </trans-unit>
+      <trans-unit id="g0BzzAX" resname="UI development">
+        <source>UI development</source>
+        <target>UI Ontwikkelaar</target>
+      </trans-unit>
+      <trans-unit id="gCkfp92" resname="owner of win3x.org">
+        <source>owner of win3x.org</source>
+        <target>Eigenaar van de win3x.org website</target>
+      </trans-unit>
+      <trans-unit id="UDr_FaU" resname="owner of elhvb.com">
+        <source>owner of elhvb.com</source>
+        <target>Eigenaar van de elhvb.com website</target>
+      </trans-unit>
+      <trans-unit id="jYJZQja" resname="owner and creator of the chipset encyclopedia">
+        <source>owner and creator of the chipset encyclopedia</source>
+        <target>Eigenaar en maker van de chipset encyclopedie</target>
+      </trans-unit>
+      <trans-unit id="3g073u2" resname="as well as the contributors who add new content everyday!">
+        <source>as well as the contributors who add new content everyday!</source>
+        <target>alsmede de mensen die iedere bijdragen aan de inhoud!</target>
+      </trans-unit>
+      <trans-unit id="XG0l1nK" resname="Image by">
+        <source>Image by</source>
+        <target>Afbeelding van</target>
+      </trans-unit>
+      <trans-unit id="L_TB6f." resname="Would you like to improve this page? Click">
+        <source>Would you like to improve this page? Click</source>
+        <target>Wil je de site nog beter maken? Clicken</target>
+      </trans-unit>
+      <trans-unit id=".OyRUJd" resname="here">
+        <source>here</source>
+        <target>hier</target>
+      </trans-unit>
+      <trans-unit id="Z1JmPHv" resname="Form factor:">
+        <source>Form factor:</source>
+        <target>Formaat:</target>
+      </trans-unit>
+      <trans-unit id="t2TNwOq" resname="Unknown">
+        <source>Unknown</source>
+        <target>Onbekend</target>
+      </trans-unit>
+      <trans-unit id="I0m_uoh" resname="Chipset:">
+        <source>Chipset:</source>
+        <target>Chipset:</target>
+      </trans-unit>
+      <trans-unit id="O_VL2PE" resname="Processor platform:">
+        <source>Processor platform:</source>
+        <target>Processor platform:</target>
+      </trans-unit>
+      <trans-unit id="vhHptqG" resname="Maximum supported RAM:">
+        <source>Maximum supported RAM:</source>
+        <target>Maximale hoeveelheid RAM geheugen:</target>
+      </trans-unit>
+      <trans-unit id="lr3zG.4" resname="Cache:">
+        <source>Cache:</source>
+        <target>Cache:</target>
+      </trans-unit>
+      <trans-unit id="Q8cFfro" resname="Supported RAM types:">
+        <source>Supported RAM types:</source>
+        <target>Ondersteunde geheugentypen:</target>
+      </trans-unit>
+      <trans-unit id="CHspSoe" resname="BIOS images:">
+        <source>BIOS images:</source>
+        <target>BIOS bestanden:</target>
+      </trans-unit>
+      <trans-unit id="5OvXTAJ" resname="Manuf.">
+        <source>Manuf.</source>
+        <target>Fabr.</target>
+      </trans-unit>
+      <trans-unit id="W5.Xe2x" resname="POST String">
+        <source>POST String</source>
+        <target>POST regel</target>
+      </trans-unit>
+      <trans-unit id="2NosSd8" resname="Note">
+        <source>Note</source>
+        <target>Opmerking</target>
+      </trans-unit>
+      <trans-unit id="6bJjogu" resname="BIOS Ver.">
+        <source>BIOS Ver.</source>
+        <target>BIOS Ver.</target>
+      </trans-unit>
+      <trans-unit id="2HifZCc" resname="Core Ver.">
+        <source>Core Ver.</source>
+        <target>Core Ver.</target>
+      </trans-unit>
+      <trans-unit id="2LEkHDU" resname="Manuals:">
+        <source>Manuals:</source>
+        <target>Handleidingen:</target>
+      </trans-unit>
+      <trans-unit id="g2gPsP_" resname="I/O ports:">
+        <source>I/O ports:</source>
+        <target>In- en uitgangen:</target>
+      </trans-unit>
+      <trans-unit id="atbwjk6" resname="Expansion slots:">
+        <source>Expansion slots:</source>
+        <target>Uitbreidingssloten:</target>
+      </trans-unit>
+      <trans-unit id="zDVMp55" resname="Known issues:">
+        <source>Known issues:</source>
+        <target>Bekende problemen:</target>
+      </trans-unit>
+      <trans-unit id="xSL5du_" resname="Video Chipset:">
+        <source>Video Chipset:</source>
+        <target>Videochip:</target>
+      </trans-unit>
+      <trans-unit id="HLWQ_ew" resname="Max VRAM:">
+        <source>Max VRAM:</source>
+        <target>Max VRAM:</target>
+      </trans-unit>
+      <trans-unit id="NkJG.cs" resname="Audio Chipset:">
+        <source>Audio Chipset:</source>
+        <target>Audiochip:</target>
+      </trans-unit>
+      <trans-unit id="1cd.DA9" resname="Supported processors:">
+        <source>Supported processors:</source>
+        <target>Ondersteunde processoren:</target>
+      </trans-unit>
+      <trans-unit id="9fElsIC" resname="Supported math coprocessors:">
+        <source>Supported math coprocessors:</source>
+        <target>Ondersteunde reken co-processoren:</target>
+      </trans-unit>
+      <trans-unit id=".LFUJqa" resname="Supported frequencies:">
+        <source>Supported frequencies:</source>
+        <target>Ondersteunde frequenties:</target>
+      </trans-unit>
+      <trans-unit id="2k9_pY2" resname="Notes:">
+        <source>Notes:</source>
+        <target>Opmerkingen:</target>
+      </trans-unit>
+      <trans-unit id="HQn2_iM" resname="MB">
+        <source>MB</source>
+        <target>MB</target>
+      </trans-unit>
+      <trans-unit id="tAQ7C4K" resname="GB">
+        <source>GB</source>
+        <target>GB</target>
+      </trans-unit>
+      <trans-unit id="WSgaayk" resname="KB">
+        <source>KB</source>
+        <target>KB</target>
+      </trans-unit>
+      <trans-unit id="9kNshmp" resname="Dimensions:">
+        <source>Dimensions:</source>
+        <target>Afmetingen:</target>
+      </trans-unit>
+      <trans-unit id="A7rmw_g" resname="motherboard.num">
+        <source>motherboard.num</source>
+        <target>{count, plural, =0 {geen moederbord gevonden} one {één moederbord gevonden} other {# moederborden gevonden}}</target>
+      </trans-unit>
+      <trans-unit id="6XiwDeR" resname="Search results">
+        <source>Search results</source>
+        <target>Zoekresultaat</target>
+      </trans-unit>
+      <trans-unit id="bLwa24." resname="Can't you find a motherboard? Click">
+        <source>Can't you find a motherboard? Click</source>
+        <target>Kan je een moederbord niet vinden? Klik dan hier</target>
+      </trans-unit>
+      <trans-unit id="au_we0Y" resname="to add it.">
+        <source>to add it.</source>
+        <target>om het toe te voegen.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

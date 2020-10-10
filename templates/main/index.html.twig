@@ -4,16 +4,16 @@
 
 {% block body %}
 	<div class="title">
-		<b>Where do you want to go today?</b>
+		<b>{% trans %}Where do you want to go today?{% endtrans %}</b>
 	</div><br>
 		<form action="./" class="index-buttons" method="get">
 			<div class="main">
-				<input type="submit" class="button1" name="motherboard" value="Search for a motherboard">
-				<input type="submit" class="button2" name="expansion" value="Find expansion cards" disabled="disabled">
+				<input type="submit" class="button1" name="motherboard" value={% trans %}"Search for a motherboard"{% endtrans %}>
+				<input type="submit" class="button2" name="expansion" value={% trans %}"Find expansion cards"{% endtrans %} disabled="disabled">
 			</div>
 		</form>{% if is_granted('ROLE_ADMIN') %}
 
-	<p><b>Recently added or updated boards:</b></p>
+	<p><b>{% trans %}Recently added or updated boards:{% endtrans %}</b></p>
 	<div class="results">
 		<ul>
         {% for motherboard in latestMotherboards %}
