@@ -41,15 +41,19 @@ class MainController extends AbstractController
     }
 
     /**
-     * @Route("/change_locale/{locale}", name="change_locale")
+     * @Route("/change_locale/"), methods={"GET"})
+     * @param Request $request
      */
-    public function changeLocale($locale, Request $request)
+    public function changeLocale(Request $request)
     {
-        // Storing the locale in the session
-        $request->getSession()->set('_locale', $locale);
+		$locale = $request->get('lang');
+		if($locale != null) {
+			// Storing the locale in the session
+			$request->getSession()->set('_locale', $locale);
 
-        // Going back to the previous page
-        return $this->redirect($request->headers->get('referer'));
+			// Going back to the previous page
+			return $this->redirect($request->headers->get('referer'));           
+        }
     }
 
 

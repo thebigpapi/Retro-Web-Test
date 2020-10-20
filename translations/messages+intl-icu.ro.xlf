@@ -73,8 +73,8 @@
         <source>"Search for a motherboard"</source>
         <target>"Caută o placă de bază"</target>
       </trans-unit>
-      <trans-unit id="tiZqtl." resname="&quot;Find expansion cards&quot;">
-        <source>"Find expansion cards"</source>
+      <trans-unit id="tiZqtl." resname="&quot;Find an expansion card&quot;">
+        <source>"Find an expansion card"</source>
         <target>"Găsește plăci de extensie"</target>
       </trans-unit>
       <trans-unit id="71OpIF7" resname="Recently added or updated boards:">

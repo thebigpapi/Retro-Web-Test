@@ -22,18 +22,18 @@ a.fakebutton:hover { border-color: #979797 #E3E3E3 #E3E3E3 #979797; text-decorat
 
 div.main, th { text-align: center;}
 div.page { text-align: left; margin: auto; width:98%;}
-div.title { text-align: center; font-size:24px; padding: 15px 0;}
+div.title { text-align: center; font-size:24px; margin: 10px 0;}
 
 /* index.html.twig */
 
-form.index-buttons input { font-family: Arial, sans-serif;padding-top:145px;width:16em;min-width:240px;font-size:15px;font-weight:bold;}
+form.index-buttons input { font-family: Arial, sans-serif;padding-top:145px;width:20em;min-width:240px;font-size:12px;font-weight:bold;}
 form.index-buttons input.button1 { background: #ebebeb url(./images/motherboard_low.jpg) center no-repeat;}
 form.index-buttons input.button2 { background: #ebebeb url(./images/card_disabled_low.jpg) center no-repeat;}
 
 /* search.html.twig */
 
 div.sform { height: 1.6em; width: 90%; padding-bottom: 6px;}
-div.sform select { height: 100%; width: 100%; }
+div.sform select { height: 100%; width: 100%;}
 div.sform input { height: 20px; width: 100%; /* **/ height: 90%; width: 99%; /** */}
 
 td.table-width { width: 0; }

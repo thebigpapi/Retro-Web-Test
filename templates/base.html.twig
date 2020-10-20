@@ -14,11 +14,11 @@
 				<meta property="og:image" content="/uh19/assets/images/logo.gif" >
 			{% endblock %}
 		{% endif %}
-	
+
 		<link rel="stylesheet" media="all" type="text/css" href="/uh19/assets/main.css">
 		{% if css_for_admin is defined %}<link rel="stylesheet" media="all" type="text/css" href="/uh19/assets/admin.css">{% endif %}
 		<link rel="stylesheet" media="only screen" type="text/css" href="/uh19/assets/modern.css">
-	
+
 		<!--[if lt IE 9]>
 			<link rel="stylesheet" type="text/css" href="/uh19/assets/iexplore.css">
 		<![endif]-->
@@ -39,6 +39,7 @@
 				<td>
 					<div class="top-height"><a href="/win3board" class="fakebutton"><span>Forum</span></a></div>
 				</td>
+				<td style="width: 10px;"></td>
 				<td>
 					<div class="top-height"><a href="/uh19/credits" class="fakebutton"><span>{% trans %}About{% endtrans %}</span></a></div>
 				</td>
@@ -48,12 +49,13 @@
 			<table style="display:inline;">
 			<tr>
 				<td>
-					<div class="top-height"><span>{% trans %}Logged in as:{% endtrans %} {{ app.user.username }}</span></div>
+					<div class="top-height"><span>{% trans %}Logged in as:{% endtrans %} {{ app.user.username }}&nbsp;</span></div>
 				</td>
 				<td>
 					<div class="top-height"><a href="/uh19/logout" class="fakebutton"><span>{% trans %}Logout{% endtrans %}</span></a></div>
 				</td>
 				{% if is_granted('ROLE_ADMIN') %}
+					<td style="width: 10px;"></td>
 					<td>
 						<div class="top-height"><a href="/uh19/admin" class="fakebutton"><span>Administration</span></a></div>
 					</td>
@@ -61,15 +63,16 @@
 			</tr>
 			</table>
 		{% endif %}
-			{% for locale in locales %}
-				{% if locale != app.request.locale %}
-					<a href="{{ path('change_locale', {'locale': locale}) }}">{{ locale }}</a>
-				{% endif %}
-			{% endfor %}
 		</div>
-	
+
 		<div class="main">
 			<div class="page">
+				<form action="/uh19/change_locale/" method="get" style="margin: 10px; text-align: right;"><div>
+					<select name="lang">
+						{% for locale in locales %}<option value="{{ locale }}"{% if locale == app.request.locale %} selected="selected"{% endif %}>{{ locale }}</option>{% endfor %}
+					</select>
+					<input type="submit" value="Go">
+				</div></form>
 				{% block body %}{% endblock %}
 			</div>
 		</div>
