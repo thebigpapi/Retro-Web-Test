@@ -131,29 +131,6 @@ class MotherboardController extends AbstractController
     }
 
     /**
-    * @Route("/motherboard/guest_add/{id}", name="motherboard_guest_addw")
-    */
-    public function guest_add($id = null)
-    {
-        if($id) {
-            $motherboard = $this->getDoctrine()
-                ->getRepository(Motherboard::class)
-                ->find($id);
-
-            if (!$motherboard) {
-                return $this->render('motherboard/guest_add.html.twig', array());
-            }     
-
-            return $this->render('motherboard/guest_add.html.twig', [
-                'motherboard' => $motherboard,
-            ]); 
-        }
-        else {
-            return $this->render('motherboard/guest_add.html.twig', array());
-        }
-    }
-
-    /**
     * @Route("/motherboard/delete/{id}", name="motherboard_delete")
     */
     public function delete($id)

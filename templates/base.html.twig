@@ -4,7 +4,7 @@
 	<head>{% set root = path('app_homepage') %}
 		<meta http-equiv="content-type" content="text/html; charset=UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<title>{% block title %}Test Application{% endblock %}</title>
+		<title>{% block title %}Ultimate Hardware 2019{% endblock %}</title>
 		{% if isRobot(app.request.headers.get('User-Agent')) %}
 			<meta property="og:type" content="website">
 			<meta property="og:url" content="http://www.win3x.org/">
@@ -25,20 +25,15 @@
 	</head>
 	<body class="content">
 		<form action="{{ path('change_page') }}" method="get"><div class="top-bar">
-			<a href="{{ root }}" style="text-decoration: none;">
-				<b>
-					Ultimate Hardware
-					<small>2019 BETA</small>
-				</b>
-			</a>
-			<span class="form"><select name="goto">
+			<a href="{{ root }}" style="text-decoration: none"><b>Ultimate Hardware <small>2019 BETA</small></b></a>
+			<span class="form"><select class="goto" name="goto">
 				<option value="">{% trans %}Go to...{% endtrans %}</option>
-				{% if is_granted('ROLE_ADMIN') %}<option selected="selected" value="admin">{% trans %}Admin{% endtrans %}</option>{% endif %}
-				{% if is_granted('ROLE_USER') %}<option value="logout">{% trans %}Logout{% endtrans %}</option>{% endif %}
-				<option value="credits">{% trans %}About{% endtrans %}</option>
-				<option value="board">{% trans %}Board{% endtrans %}</option>
+				{% if is_granted('ROLE_ADMIN') %}<option selected="selected" value="{{ root }}admin">{% trans %}Admin{% endtrans %}</option>{% endif %}
+				{% if is_granted('ROLE_USER') %}<option value="{{ root }}logout">{% trans %}Logout{% endtrans %}</option>{% endif %}
+				<option value="{{ root }}credits">{% trans %}About{% endtrans %}</option>
+				<option value="/win3board">{% trans %}Board{% endtrans %}</option>
 			</select>
-			<select name="lang">
+			<select class="lang" name="lang">
 				{% for locale in locales %}<option{% if locale == 'user.lang'|trans %} selected="selected"{% endif %} value="{{ locale }}">{{ 'name.lang'|trans(locale=locale) }}</option>{% endfor %}
 			</select>
 			<input type="submit" value=" OK "></span>

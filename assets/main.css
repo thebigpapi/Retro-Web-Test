@@ -12,14 +12,17 @@ form {margin:0; padding:0;}
 a:link, a:visited { text-decoration: none;}
 a:hover { text-decoration: underline;}
 
-div.top-bar {background:#343943;font-size:16px;padding:7px 18px;}
+div.top-bar { background:#343943;font-size:16px;padding:7px 18px;}
 div.top-bar a:link, div.top-bar a:visited { color: #FFFFFF;}
+div.top-bar small { color: #FF0000; font-size: 12px;}
 div.top-bar select, div.top-bar input { font-size: 12px;}
-div.top-bar small {color: #FF0000; font-size: 12px;}
+div.top-bar select.goto { width: 10.75em;}
+div.top-bar select.lang { width: 8.33em;}
 
 div.main, th { text-align: center;}
 div.page { text-align: left; margin: auto; width:98%;}
-div.title { text-align: center; font-size:24px; padding: 15px 0;}
+h2.title { text-align: center; font-size:24px; margin: 15px 0;}
+b.contrib { background: #FFFF00; color: #FF0040;}
 
 /* index.html.twig */
 
