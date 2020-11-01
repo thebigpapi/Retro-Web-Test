@@ -13,8 +13,8 @@ class MainController extends AbstractController
      * @Route("/", name="app_homepage"), methods={"GET"})
      * @param Request $request
      */
-    public function index(Request $request)        
-    {   
+    public function index(Request $request)
+    {
         if($request->get('motherboard') != null) {
             return $this->redirect('./motherboard/search/');
         }
@@ -27,13 +27,12 @@ class MainController extends AbstractController
 		'latestMotherboards' => $latestMotherboards,
             ]);
         }
-        
     }
 
     /**
      * @Route("/credits", name="app_credits")
      */
-    public function credits()        
+    public function credits()
     {        
         return $this->render('main/credits.html.twig', [
             'controller_name' => 'MainController',
@@ -41,20 +40,24 @@ class MainController extends AbstractController
     }
 
     /**
-     * @Route("/change_locale/"), methods={"GET"})
+     * @Route("/change_page/", name="change_page"), methods={"GET"})
      * @param Request $request
      */
-    public function changeLocale(Request $request)
-    {
-		$locale = $request->get('lang');
-		if($locale != null) {
-			// Storing the locale in the session
+	public function changePage(Request $request)
+	{
+		if($locale = $request->get('lang')) {
 			$request->getSession()->set('_locale', $locale);
+		}
 
-			// Going back to the previous page
-			return $this->redirect($request->headers->get('referer'));           
-        }
-    }
+		if($url = $request->get('goto')) {
+			return $this->redirect('../' . $url);
+		}
 
+		if($referer = $request->headers->get('referer'))
+		{
+			return $this->redirect($referer);
+		}
 
+		return $this->redirect('../');
+	}
 }

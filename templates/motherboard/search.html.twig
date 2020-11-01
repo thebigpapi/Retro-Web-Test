@@ -105,7 +105,7 @@
             </tr>
         </table>
 		<div class="butn">
-            {{ form_row(form.search)|replace({'<div><button': '<input', '>Search</button></div>': ' value="Search">'})|raw }}{{ form_rest(form) }}
+            {{ form_row(form.search)|replace({'<div><button': '<input', '</button></div>': '">', '>': ' value="'})|raw }}{{ form_rest(form) }}
         </div>
    </form><br>
 

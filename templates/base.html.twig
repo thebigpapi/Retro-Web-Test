@@ -1,7 +1,7 @@
 {# templates/base.html.twig #}
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html dir="ltr" lang="en">
-    <head>
+<html dir="{{ 'dir.lang'|trans }}" lang="{{ 'user.lang'|trans }}">
+	<head>{% set root = path('app_homepage') %}
 		<meta http-equiv="content-type" content="text/html; charset=UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<title>{% block title %}Test Application{% endblock %}</title>
@@ -11,70 +11,42 @@
 			{% block opengraph %}
 				<meta property="og:title" content="Ultimate Hardware 2019" >
 				<meta property="og:description" content="The ultimate retro motherboard database" >
-				<meta property="og:image" content="/uh19/assets/images/logo.gif" >
+				<meta property="og:image" content="{{ root }}assets/images/logo.gif" >
 			{% endblock %}
 		{% endif %}
 
-		<link rel="stylesheet" media="all" type="text/css" href="/uh19/assets/main.css">
-		{% if css_for_admin is defined %}<link rel="stylesheet" media="all" type="text/css" href="/uh19/assets/admin.css">{% endif %}
-		<link rel="stylesheet" media="only screen" type="text/css" href="/uh19/assets/modern.css">
+		<link rel="stylesheet" media="all" type="text/css" href="{{ root }}assets/main.css">
+		{% if css_for_admin is defined %}<link rel="stylesheet" media="all" type="text/css" href="{{ root }}assets/admin.css">{% endif %}
+		<link rel="stylesheet" media="only screen" type="text/css" href="{{ root }}assets/modern.css">
 
 		<!--[if lt IE 9]>
-			<link rel="stylesheet" type="text/css" href="/uh19/assets/iexplore.css">
+			<link rel="stylesheet" type="text/css" href="{{ root }}assets/iexplore.css">
 		<![endif]-->
-    </head>
-    <body class="content">
-		<div class="top-bar">
-			<table{% if is_granted('ROLE_USER') %} style="display:inline;"{% endif %}>
-            <tr>
-				<td style="width: 20px;"></td>
-                <td class="sitename">
-                    <a href="/uh19/" style="text-decoration: none;">
-						<b>
-							<span>Ultimate Hardware </span>
-							<span class="number">2019 [BETA]</span>
-						</b>
-					</a>
-                </td>
-				<td>
-					<div class="top-height"><a href="/win3board" class="fakebutton"><span>Forum</span></a></div>
-				</td>
-				<td style="width: 10px;"></td>
-				<td>
-					<div class="top-height"><a href="/uh19/credits" class="fakebutton"><span>{% trans %}About{% endtrans %}</span></a></div>
-				</td>
-			</tr>
-			</table>
-		{% if is_granted('ROLE_USER') %}
-			<table style="display:inline;">
-			<tr>
-				<td>
-					<div class="top-height"><span>{% trans %}Logged in as:{% endtrans %} {{ app.user.username }}&nbsp;</span></div>
-				</td>
-				<td>
-					<div class="top-height"><a href="/uh19/logout" class="fakebutton"><span>{% trans %}Logout{% endtrans %}</span></a></div>
-				</td>
-				{% if is_granted('ROLE_ADMIN') %}
-					<td style="width: 10px;"></td>
-					<td>
-						<div class="top-height"><a href="/uh19/admin" class="fakebutton"><span>Administration</span></a></div>
-					</td>
-				{% endif %}
-			</tr>
-			</table>
-		{% endif %}
-		</div>
-
+	</head>
+	<body class="content">
+		<form action="{{ path('change_page') }}" method="get"><div class="top-bar">
+			<a href="{{ root }}" style="text-decoration: none;">
+				<b>
+					Ultimate Hardware
+					<small>2019 BETA</small>
+				</b>
+			</a>
+			<span class="form"><select name="goto">
+				<option value="">{% trans %}Go to...{% endtrans %}</option>
+				{% if is_granted('ROLE_ADMIN') %}<option selected="selected" value="admin">{% trans %}Admin{% endtrans %}</option>{% endif %}
+				{% if is_granted('ROLE_USER') %}<option value="logout">{% trans %}Logout{% endtrans %}</option>{% endif %}
+				<option value="credits">{% trans %}About{% endtrans %}</option>
+				<option value="board">{% trans %}Board{% endtrans %}</option>
+			</select>
+			<select name="lang">
+				{% for locale in locales %}<option{% if locale == 'user.lang'|trans %} selected="selected"{% endif %} value="{{ locale }}">{{ 'name.lang'|trans(locale=locale) }}</option>{% endfor %}
+			</select>
+			<input type="submit" value=" OK "></span>
+		</div></form>
 		<div class="main">
 			<div class="page">
-				<form action="/uh19/change_locale/" method="get" style="margin: 10px; text-align: right;"><div>
-					<select name="lang">
-						{% for locale in locales %}<option value="{{ locale }}"{% if locale == app.request.locale %} selected="selected"{% endif %}>{{ locale }}</option>{% endfor %}
-					</select>
-					<input type="submit" value="Go">
-				</div></form>
 				{% block body %}{% endblock %}
 			</div>
 		</div>
-    </body>
+	</body>
 </html>

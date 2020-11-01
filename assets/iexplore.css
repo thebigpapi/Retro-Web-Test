@@ -1,11 +1,6 @@
 /* 
-	iexplore.css - extra stylesheet for Internet Explorer (from 5 to 8)
+	iexplore.css - extra stylesheet for Internet Explorer only
 */
-
-/*	height for fakebutton needs to be set in IE5.0. Otherwise, there isn't border. As a result, the padding of top-height has to be changed	*/
-
-div.top-height{ padding: 3px 0 1px; padding/**/: 5px 0; }
-a.fakebutton { height:27px; height/**/: auto; }
 
 /*	set min-width at zero for IE8, to prevent too large buttons. That doesn't affect IE7 and older	*/
 
