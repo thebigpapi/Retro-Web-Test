@@ -19,35 +19,40 @@ class LocaleSubscriber implements EventSubscriberInterface
         $this->defaultLocale = $defaultLocale;
         $this->params = $params;
     }
+    
+    private function getPreferedLocale(array $clientLangs)
+    {
+        $serverLangs = $this->params->get('app.locales');
+            
+        if (($max = count($clientLangs)) > 0)
+        {
+            for ($i = 0; $i < $max; $i++)
+                if (in_array(substr($clientLangs[$i], 0, 2), $serverLangs))
+                    return $clientLangs[$i];
+        }
+        return $this->defaultLocale;
+    }
 
     public function onKernelRequest(RequestEvent $event)
     {
         $request = $event->getRequest();
         if (!$request->hasPreviousSession()) {
-            $clientLangs = $request->getLanguages();
-            $serverLangs = $this->params->get('app.locales');
-            
-            if (($max = count($clientLangs)) > 0)
-            {
-                for ($i = 0; $i < $max; $i++)
-                {
-                    if (in_array(substr($clientLangs[$i], 0, 2), $serverLangs))
-                    {
-                        $request->setLocale($clientLangs[$i]);
-                        return;
-                    }
-                }
-            }
+            $request->setLocale($this->getPreferedLocale($request->getLanguages()));
             return;
         }
 
         // Checking if the locale is given through URL parameter
         if ($locale = $request->query->get('_locale')) {
+            //dd($locale);
             $request->setLocale($locale);
         } else {
+            // Get client's favorite supported language
+            $locale = $this->getPreferedLocale($request->getLanguages());
+            
             // Or use the one given through the session
-            $request->setLocale($request->getSession()->get('_locale', $this->defaultLocale));
+            $request->setLocale($request->getSession()->get('_locale', $locale));
         }
+        //dd($request->query->get('_locale'));
     }
 
     public static function getSubscribedEvents()
