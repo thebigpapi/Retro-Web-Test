@@ -44,36 +44,16 @@ class ImageCacheSubscriber implements EventSubscriber
             return;
         }
         $this->cacheManager->remove($this->uploaderHelper->asset($entity, 'imageFile'));
-        /*if (!$args->getEntity() instanceof Motherboard) {
-            return;
-        }
-        //dump("Preremove");
-        foreach($args->getEntity()->getImages() as $key => $image) {
-            //($image);
-            $this->cacheManager->remove($this->uploaderHelper->asset($image, 'imageFile'));
-        }*/
     }
 
     public function preUpdate(LifecycleEventArgs  $args)
     {
-        
         $entity = $args->getObject();
         if (!$entity instanceof MotherboardImage){
             return;
         }
-        //dump($entity);
         if ($entity->getImageFile() instanceof UploadedFile) {
-            $this->cacheManager->remove($args->getEntityChangeSet()['file_name'][0]);
+            $this->cacheManager->remove($this->uploaderHelper->asset($entity, 'imageFile'));
         }
-        /*if (!$args->getEntity() instanceof Motherboard) {
-            return;
-        }
-        ///dump("Preupdate");
-        foreach($args->getEntity()->getImages() as $key => $image) {
-            //dump($image->getImageFile());
-            if($image->getImageFile() instanceof UploadedFile) {
-                $this->cacheManager->remove($this->uploaderHelper->asset($image, 'imageFile'));
-            }
-        }*/
     }
 }
