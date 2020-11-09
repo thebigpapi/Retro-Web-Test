@@ -10,6 +10,7 @@ use Vich\UploaderBundle\Templating\Helper\UploaderHelper;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use App\Entity\Motherboard;
 use App\Entity\MotherboardImage;
+use Doctrine\ORM\Event\PreUpdateEventArgs;
 
 class ImageCacheSubscriber implements EventSubscriber
 {
@@ -37,23 +38,31 @@ class ImageCacheSubscriber implements EventSubscriber
         ];
     }
 
-    public function preRemove(LifecycleEventArgs  $args)
+    public function preRemove(LifecycleEventArgs $args)
     {
         $entity = $args->getObject();
         if (!$entity instanceof MotherboardImage){
             return;
         }
+        //dd($entity);
+        //dd($this->uploaderHelper->asset($entity, 'imageFile'));
         $this->cacheManager->remove($this->uploaderHelper->asset($entity, 'imageFile'));
     }
 
-    public function preUpdate(LifecycleEventArgs  $args)
+    public function preUpdate(PreUpdateEventArgs $args)
     {
         $entity = $args->getObject();
         if (!$entity instanceof MotherboardImage){
             return;
         }
+        
         if ($entity->getImageFile() instanceof UploadedFile) {
-            $this->cacheManager->remove($this->uploaderHelper->asset($entity, 'imageFile'));
+            //Restoring entity as it used to be
+            $prevEntity = clone $entity;
+
+            $prevEntity->setFileName($args->getEntityChangeSet()["file_name"][0]);
+            $prevEntity->setImageFile(null);
+            $this->cacheManager->remove($this->uploaderHelper->asset($prevEntity, 'imageFile'));
         }
     }
 }
