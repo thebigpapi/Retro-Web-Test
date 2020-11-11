@@ -95,7 +95,7 @@
       </trans-unit>
       <trans-unit id="71OpIF7" resname="Recently added or updated boards:">
         <source>Recently added or updated boards:</source>
-        <target>Plăci de bază modificate recent :</target>
+        <target>Plăci de bază modificate recent:</target>
       </trans-unit>
       <trans-unit id="dY6eHRC" resname="Go to...">
         <source>Go to...</source>
@@ -151,7 +151,7 @@
       </trans-unit>
       <trans-unit id="yqUGzeC" resname="This project wouldn't exist without:">
         <source>This project wouldn't exist without:</source>
-        <target>Acest proiect n-ar fi existat fără :</target>
+        <target>Acest proiect n-ar fi existat fără:</target>
       </trans-unit>
       <trans-unit id="gXz1Ufp" resname="project initiator">
         <source>project initiator</source>
@@ -243,7 +243,7 @@
       </trans-unit>
       <trans-unit id="2LEkHDU" resname="Manuals:">
         <source>Manuals:</source>
-        <target>Manuale :</target>
+        <target>Manuale:</target>
       </trans-unit>
       <trans-unit id="g2gPsP_" resname="I/O ports:">
         <source>I/O ports:</source>

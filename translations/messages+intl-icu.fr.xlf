@@ -95,7 +95,7 @@
       </trans-unit>
       <trans-unit id="71OpIF7" resname="Recently added or updated boards:">
         <source>Recently added or updated boards:</source>
-        <target>Cartes mères récemment ajoutées ou mises à jour :</target>
+        <target>Cartes mères récemment ajoutées ou mises à jour:</target>
       </trans-unit>
       <trans-unit id="dY6eHRC" resname="Go to...">
         <source>Go to...</source>
@@ -151,7 +151,7 @@
       </trans-unit>
       <trans-unit id="yqUGzeC" resname="This project wouldn't exist without:">
         <source>This project wouldn't exist without:</source>
-        <target>Ce projet n'existerait pas sans :</target>
+        <target>Ce projet n'existerait pas sans:</target>
       </trans-unit>
       <trans-unit id="gXz1Ufp" resname="project initiator">
         <source>project initiator</source>
@@ -191,7 +191,7 @@
       </trans-unit>
       <trans-unit id="Z1JmPHv" resname="Form factor:">
         <source>Form factor:</source>
-        <target>Format :</target>
+        <target>Format:</target>
       </trans-unit>
       <trans-unit id="t2TNwOq" resname="Unknown">
         <source>Unknown</source>
@@ -199,23 +199,23 @@
       </trans-unit>
       <trans-unit id="I0m_uoh" resname="Chipset:">
         <source>Chipset:</source>
-        <target>Chipset :</target>
+        <target>Chipset:</target>
       </trans-unit>
       <trans-unit id="O_VL2PE" resname="Processor platform:">
         <source>Processor platform:</source>
-        <target>Plateforme du processeur :</target>
+        <target>Plateforme du processeur:</target>
       </trans-unit>
       <trans-unit id="vhHptqG" resname="Maximum supported RAM:">
         <source>Maximum supported RAM:</source>
-        <target>Quantité de mémoire max :</target>
+        <target>Quantité de mémoire max:</target>
       </trans-unit>
       <trans-unit id="lr3zG.4" resname="Cache:">
         <source>Cache:</source>
-        <target>Cache :</target>
+        <target>Cache:</target>
       </trans-unit>
       <trans-unit id="Q8cFfro" resname="Supported RAM types:">
         <source>Supported RAM types:</source>
-        <target>Types de mémoire supportés :</target>
+        <target>Types de mémoire supportés:</target>
       </trans-unit>
       <trans-unit id="CHspSoe" resname="BIOS images:">
         <source>BIOS images:</source>
@@ -243,7 +243,7 @@
       </trans-unit>
       <trans-unit id="2LEkHDU" resname="Manuals:">
         <source>Manuals:</source>
-        <target>Manuels :</target>
+        <target>Manuels:</target>
       </trans-unit>
       <trans-unit id="g2gPsP_" resname="I/O ports:">
         <source>I/O ports:</source>
@@ -251,11 +251,11 @@
       </trans-unit>
       <trans-unit id="atbwjk6" resname="Expansion slots:">
         <source>Expansion slots:</source>
-        <target>Connecteurs d'extension :</target>
+        <target>Connecteurs d'extension:</target>
       </trans-unit>
       <trans-unit id="zDVMp55" resname="Known issues:">
         <source>Known issues:</source>
-        <target>Problèmes communs :</target>
+        <target>Problèmes communs:</target>
       </trans-unit>
       <trans-unit id="xSL5du_" resname="Video Chipset:">
         <source>Video Chipset:</source>
@@ -263,7 +263,7 @@
       </trans-unit>
       <trans-unit id="HLWQ_ew" resname="Max VRAM:">
         <source>Max VRAM:</source>
-        <target>Mémoire vidéo max :</target>
+        <target>Mémoire vidéo max:</target>
       </trans-unit>
       <trans-unit id="NkJG.cs" resname="Audio Chipset:">
         <source>Audio Chipset:</source>
@@ -275,15 +275,15 @@
       </trans-unit>
       <trans-unit id="9fElsIC" resname="Supported math coprocessors:">
         <source>Supported math coprocessors:</source>
-        <target>Coprocesseurs arithmétiques supportés :</target>
+        <target>Coprocesseurs arithmétiques supportés:</target>
       </trans-unit>
       <trans-unit id=".LFUJqa" resname="Supported frequencies:">
         <source>Supported frequencies:</source>
-        <target>Fréquences supportées :</target>
+        <target>Fréquences supportées:</target>
       </trans-unit>
       <trans-unit id="2k9_pY2" resname="Notes:">
         <source>Notes:</source>
-        <target>Notes :</target>
+        <target>Notes:</target>
       </trans-unit>
       <trans-unit id="HQn2_iM" resname="MB">
         <source>MB</source>
@@ -299,7 +299,7 @@
       </trans-unit>
       <trans-unit id="9kNshmp" resname="Dimensions:">
         <source>Dimensions:</source>
-        <target>Dimensions :</target>
+        <target>Dimensions:</target>
       </trans-unit>
       <trans-unit id="6XiwDeR" resname="Search results">
         <source>Search results</source>
