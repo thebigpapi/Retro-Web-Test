@@ -53,11 +53,6 @@ class MainController extends AbstractController
 			return $this->redirect($url);
 		}
 
-		if($referer = $request->headers->get('referer'))
-		{
-			return $this->redirect($referer);
-		}
-
 		return $this->redirect('../');
 	}
 }

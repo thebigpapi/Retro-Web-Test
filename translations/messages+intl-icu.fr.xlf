@@ -235,11 +235,11 @@
       </trans-unit>
       <trans-unit id="6bJjogu" resname="BIOS Ver.">
         <source>BIOS Ver.</source>
-        <target>Vers. BIOS</target>
+        <target>Ver. BIOS</target>
       </trans-unit>
       <trans-unit id="2HifZCc" resname="Core Ver.">
         <source>Core Ver.</source>
-        <target>Vers. Coeur</target>
+        <target>Ver. Coeur</target>
       </trans-unit>
       <trans-unit id="2LEkHDU" resname="Manuals:">
         <source>Manuals:</source>

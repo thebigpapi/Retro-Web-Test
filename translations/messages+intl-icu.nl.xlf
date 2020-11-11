@@ -39,7 +39,7 @@
       </trans-unit>
       <trans-unit id="snS7dgk" resname="Expansion slots">
         <source>Expansion slots</source>
-        <target>Uitbreidingsloten</target>
+        <target>Uitbreiding slots</target>
       </trans-unit>
       <trans-unit id="7N5tLMC" resname="I/O ports">
         <source>I/O ports</source>
@@ -251,7 +251,7 @@
       </trans-unit>
       <trans-unit id="atbwjk6" resname="Expansion slots:">
         <source>Expansion slots:</source>
-        <target>Uitbreidingssloten:</target>
+        <target>Uitbreiding slots:</target>
       </trans-unit>
       <trans-unit id="zDVMp55" resname="Known issues:">
         <source>Known issues:</source>

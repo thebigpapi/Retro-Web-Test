@@ -1,7 +1,7 @@
 {# templates/base.html.twig #}
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html dir="{{ 'dir.lang'|trans }}" lang="{{ 'user.lang'|trans }}">
-	<head>{% set root = path('app_homepage') %}
+	<head>{% set root = constant('app.path') %}
 		<meta http-equiv="content-type" content="text/html; charset=UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<title>{% block title %}Ultimate Hardware 2019{% endblock %}</title>
@@ -11,26 +11,24 @@
 			{% block opengraph %}
 				<meta property="og:title" content="Ultimate Hardware 2019" >
 				<meta property="og:description" content="The ultimate retro motherboard database" >
-				<meta property="og:image" content="{{ root }}assets/images/logo.gif" >
+				<meta property="og:image" content="{{ root }}/assets/images/logo.gif" >
 			{% endblock %}
 		{% endif %}
-
-		<link rel="stylesheet" media="all" type="text/css" href="{{ root }}assets/main.css">
-		{% if css_for_admin is defined %}<link rel="stylesheet" media="all" type="text/css" href="{{ root }}assets/admin.css">{% endif %}
-		<link rel="stylesheet" media="only screen" type="text/css" href="{{ root }}assets/modern.css">
-
+		<link rel="stylesheet" media="all" type="text/css" href="{{ root }}/assets/main.css">
+		{% if css_for_admin is defined %}<link rel="stylesheet" media="all" type="text/css" href="{{ root }}/assets/admin.css">{% endif %}
+		<link rel="stylesheet" media="only screen" type="text/css" href="{{ root }}/assets/modern.css">
 		<!--[if lt IE 9]>
-			<link rel="stylesheet" type="text/css" href="{{ root }}assets/iexplore.css">
+			<link rel="stylesheet" type="text/css" href="{{ root }}/assets/iexplore.css">
 		<![endif]-->
 	</head>
 	<body class="content">
 		<form action="{{ path('change_page') }}" method="get"><div class="top-bar">
-			<a href="{{ root }}" style="text-decoration: none"><b>Ultimate Hardware <small>2019 BETA</small></b></a>
+			<a href="{{ root }}/" style="text-decoration: none;"><b>Ultimate Hardware <small>2019 BETA</small></b></a>
 			<span class="form"><select class="goto" name="goto">
-				<option value="">{% trans %}Go to...{% endtrans %}</option>
-				{% if is_granted('ROLE_ADMIN') %}<option selected="selected" value="{{ root }}admin">{% trans %}Admin{% endtrans %}</option>{% endif %}
-				{% if is_granted('ROLE_USER') %}<option value="{{ root }}logout">{% trans %}Logout{% endtrans %}</option>{% endif %}
-				<option value="{{ root }}credits">{% trans %}About{% endtrans %}</option>
+				<option value="{{ app.request.requesturi }}">{% trans %}Go to...{% endtrans %}</option>
+				{% if is_granted('ROLE_ADMIN') %}<option selected="selected" value="{{ root }}/admin">{% trans %}Admin{% endtrans %}</option>{% endif %}
+				{% if is_granted('ROLE_USER') %}<option value="{{ root }}/logout">{% trans %}Logout{% endtrans %}</option>{% endif %}
+				<option value="{{ root }}/credits">{% trans %}About{% endtrans %}</option>
 				<option value="/win3board">{% trans %}Board{% endtrans %}</option>
 			</select>
 			<select class="lang" name="lang">

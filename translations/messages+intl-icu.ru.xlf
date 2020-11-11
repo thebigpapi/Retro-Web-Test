@@ -23,7 +23,7 @@
       </trans-unit>
       <trans-unit id="GvOExXf" resname="Manufacturer">
         <source>Manufacturer</source>
-        <target>Производитель</target>
+        <target>Предприятие</target>
       </trans-unit>
       <trans-unit id="3NHVIj9" resname="Name">
         <source>Name</source>
@@ -59,7 +59,7 @@
       </trans-unit>
       <trans-unit id="ImOhtmq" resname="Select a manufacturer ...">
         <source>Select a manufacturer ...</source>
-        <target>Выбрать производителя ...</target>
+        <target>Выбрать Предприятие ...</target>
       </trans-unit>
       <trans-unit id="9yjkiyQ" resname="Select a form factor ...">
         <source>Select a form factor ...</source>
@@ -223,7 +223,7 @@
       </trans-unit>
       <trans-unit id="5OvXTAJ" resname="Manuf.">
         <source>Manuf.</source>
-        <target>Произв.</target>
+        <target>Произ</target>
       </trans-unit>
       <trans-unit id="W5.Xe2x" resname="POST String">
         <source>POST String</source>
@@ -231,15 +231,15 @@
       </trans-unit>
       <trans-unit id="2NosSd8" resname="Note">
         <source>Note</source>
-        <target>Пометки</target>
+        <target>Нота</target>
       </trans-unit>
       <trans-unit id="6bJjogu" resname="BIOS Ver.">
         <source>BIOS Ver.</source>
-        <target>Версия BIOS</target>
+        <target>Вер. BIOS</target>
       </trans-unit>
       <trans-unit id="2HifZCc" resname="Core Ver.">
         <source>Core Ver.</source>
-        <target>Весия ядра</target>
+        <target>Вер. ядра</target>
       </trans-unit>
       <trans-unit id="2LEkHDU" resname="Manuals:">
         <source>Manuals:</source>
@@ -283,7 +283,7 @@
       </trans-unit>
       <trans-unit id="2k9_pY2" resname="Notes:">
         <source>Notes:</source>
-        <target>Пометки:</target>
+        <target>ноты:</target>
       </trans-unit>
       <trans-unit id="HQn2_iM" resname="MB">
         <source>MB</source>
