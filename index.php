@@ -5,8 +5,10 @@ use Symfony\Component\ErrorHandler\Debug;
 use Symfony\Component\HttpFoundation\Request;
 
 require './config/bootstrap.php';
+
 $dir = dirname($_SERVER['SCRIPT_NAME']);
 define('app.path', (in_array($dir, array('/','\\'))) ? '' : $dir);
+define('web.path', $_SERVER['DOCUMENT_ROOT']);
 
 if ($_SERVER['APP_DEBUG']) {
     umask(0000);
