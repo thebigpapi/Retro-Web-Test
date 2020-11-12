@@ -1,13 +1,11 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Ultimate Hardware 2019{% endblock %}
-
 {% block body %}
 	<h2 class="title">{% trans %}Where do you want to go today?{% endtrans %}</h2>
-	<form action="./" class="index-buttons" method="get" style="padding-top: 18px">
+	<form action="./" class="index-buttons" method="get">
 		<div class="main">
-			<input type="submit" class="button1" name="motherboard" value={% trans %}"Search for a motherboard"{% endtrans %}>
-			<input type="submit" class="button2" name="expansion" value={% trans %}"Find an expansion card"{% endtrans %} disabled="disabled">
+			<input type="submit" class="button1" name="motherboard" value="{% trans %}Search for a motherboard{% endtrans %}">
+			<input type="submit" class="button2" name="expansion" value="{% trans %}Find an expansion card{% endtrans %}" disabled="disabled">
 		</div>
 	</form>{% if is_granted('ROLE_ADMIN') %}
 
@@ -16,7 +14,7 @@
 		<ul>
         {% for motherboard in latestMotherboards %}
 			<li><a href="./motherboard/show/{{ motherboard.getId() }}">{{ motherboard.getManufacturerShortNameIfExist() }}&nbsp;{{ motherboard.name }}</a></li>		
-		{% endfor %}	
+		{% endfor %}
 		</ul>
 	</div>{% endif %}
 {% endblock %}

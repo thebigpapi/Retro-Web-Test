@@ -4,13 +4,12 @@
 
 /* base.html.twig */
 
-body {margin:0; padding:0; font-family: "Trebuchet MS", Arial, sans-serif;}
-
+body, form {margin:0; padding:0;}
+body, button, div.main input, select {font-family: Arial, sans-serif;}
 p, ul {margin-top: 14px; margin-bottom: 14px;}
-form {margin:0; padding:0;}
 
-a:link, a:visited { text-decoration: none;}
-a:hover { text-decoration: underline;}
+a:link, a:visited {text-decoration: none;}
+a:hover {text-decoration: underline;}
 
 div.top-bar { background:#343943;font-size:16px;padding:7px 18px;}
 div.top-bar a:link, div.top-bar a:visited { color: #FFFFFF;}
@@ -26,7 +25,8 @@ b.contrib { background: #FFFF00; color: #FF0040;}
 
 /* index.html.twig */
 
-form.index-buttons input { font-family: Arial, sans-serif;padding-top:145px;width:20em;min-width:240px;font-size:12px;font-weight:bold;}
+form.index-buttons { padding-top: 18px;}
+form.index-buttons input { padding-top:145px;width:20em;min-width:240px;font-size:12px;font-weight:bold;}
 form.index-buttons input.button1 { background: #ebebeb url(./images/motherboard_low.jpg) center no-repeat;}
 form.index-buttons input.button2 { background: #ebebeb url(./images/card_disabled_low.jpg) center no-repeat;}
 
@@ -43,7 +43,7 @@ span.field1 input {height: 20px; width: 20px; float:left;  font-size:12px; /* **
 span.field2 {width: 12em;font-size:16px; margin-bottom:4px; /* **/ float:left; /** */}
 
 div.butn { text-align: center; margin-top:20px;}
-div.butn input { width:6em; height:2em; font-size:20px;}
+div.butn input { width:7.5em; height:2em; font-size:20px;}
 
 /* result.html.twig */
 

@@ -85,13 +85,9 @@
         <source>Where do you want to go today?</source>
         <target>Waar wil je naartoe vandaag?</target>
       </trans-unit>
-      <trans-unit id="6xS7ueh" resname="&quot;Search for a motherboard&quot;">
-        <source>"Search for a motherboard"</source>
-        <target>"Zoek naar een moederbord"</target>
-      </trans-unit>
-      <trans-unit id="tiZqtl." resname="&quot;Find an expansion card&quot;">
-        <source>"Find an expansion card"</source>
-        <target>"Zoek naar een uitbreidingskaart"</target>
+      <trans-unit id="tiZqtl." resname="Find an expansion card">
+        <source>Find an expansion card</source>
+        <target>Zoek naar een uitbreidingskaart</target>
       </trans-unit>
       <trans-unit id="71OpIF7" resname="Recently added or updated boards:">
         <source>Recently added or updated boards:</source>
