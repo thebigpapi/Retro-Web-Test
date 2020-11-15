@@ -179,7 +179,7 @@
       </trans-unit>
       <trans-unit id="L_TB6f." resname="Would you like to improve this page? Click">
         <source>Would you like to improve this page? Click</source>
-        <target>¿Te gustaría mejorar esta página? Click Aquí</target>
+        <target>¿Te gustaría mejorar esta página? Click</target>
       </trans-unit>
       <trans-unit id=".OyRUJd" resname="here">
         <source>here</source>
@@ -303,7 +303,7 @@
       </trans-unit>
       <trans-unit id="bLwa24." resname="Can't you find a motherboard? Click">
         <source>Can't you find a motherboard? Click</source>
-        <target>¿No encuentras tu placa base? Click aquí</target>
+        <target>¿No encuentras tu placa base? Click</target>
       </trans-unit>
       <trans-unit id="au_we0Y" resname="to add it.">
         <source>to add it.</source>

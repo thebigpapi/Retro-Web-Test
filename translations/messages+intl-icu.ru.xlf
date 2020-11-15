@@ -179,7 +179,7 @@
       </trans-unit>
       <trans-unit id="L_TB6f." resname="Would you like to improve this page? Click">
         <source>Would you like to improve this page? Click</source>
-        <target>Вы хотите улучшить эту страницу?</target>
+        <target>Вы хотите улучшить эту страницу? Нажмите</target>
       </trans-unit>
       <trans-unit id=".OyRUJd" resname="here">
         <source>here</source>
@@ -303,7 +303,7 @@
       </trans-unit>
       <trans-unit id="bLwa24." resname="Can't you find a motherboard? Click">
         <source>Can't you find a motherboard? Click</source>
-        <target>Не можете найти материнскую плату? Нажмите сюда</target>
+        <target>Не можете найти материнскую плату? Нажмите</target>
       </trans-unit>
       <trans-unit id="au_we0Y" resname="to add it.">
         <source>to add it.</source>
