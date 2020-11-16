@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{% trans %}Index{% endtrans %}{% endblock %}
+
+{% block body %}
+    <h2 class="title">{% trans %}Index{% endtrans %}</h2>
+    {% if motherboards is not empty %}
+        <ul>
+            {% for motherboard in motherboards %}
+                <li><a href='../show/{{motherboard.id}}'>{{ motherboard.getManufacturerShortNameIfExist()}} {{motherboard.name}}</a></li>
+            {% endfor %}
+            {{ knp_pagination_render(motherboards) }}
+        </ul>
+    {% else %}
+        <ul>
+        {% for letter in ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z']%}
+            <li><a href="./index/{{letter}}">{{letter}}</a></li>
+        {% endfor %}
+        </ul>
+    {% endif %}
+{% endblock %}
