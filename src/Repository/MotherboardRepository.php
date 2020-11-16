@@ -23,6 +23,21 @@ class MotherboardRepository extends ServiceEntityRepository
         parent::__construct($registry, Motherboard::class);
     }
 
+    public function findAllAlphabetic(string $letter): array
+    {
+        $entityManager = $this->getEntityManager();
+
+        $query = $entityManager->createQuery(
+            'SELECT mobo
+            FROM App\Entity\Motherboard mobo, App\Entity\Manufacturer man 
+            WHERE mobo.manufacturer=man AND COALESCE(man.shortName, man.name) ilike :letter
+            ORDER BY man.name ASC, mobo.name ASC'
+        )->setParameter('letter', "$letter%");
+
+        
+        return $query->getResult();
+    }
+
     private function separateArraysFromValues($source, &$arrays, &$values)
     {
         foreach($source as $key => $val) {
@@ -269,7 +284,7 @@ class MotherboardRepository extends ServiceEntityRepository
             }
         }
         
-        //LIMITE À MYSQL
+        //LIMITE ï¿½ MYSQL
         $limitSQL = "";
         if ($limit != NULL) {
             $limitSQL = " LIMIT ";
