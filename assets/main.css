@@ -58,6 +58,9 @@ span.show-image a img { width: 100%; border:0;}
 div.show-data { width:74%;float:left;padding-left:3px;font-size: 14px;}
 div.show-data table, div.notes {font-size: 14px;}
 span.string-bios {font-size:12px;}
+div.newdiv1{ background-color:#cae4fa; border-radius: 6px; display: inline-block;padding: 2px 2px 2px }
+div.newdiv2{ background-color:#d0faca; border-radius: 6px; display: inline-block;padding: 2px 2px 2px }
+div.newdiv3{ background-color:#fae9ca; border-radius: 6px; display: inline-block;padding: 2px 2px 2px }
 
 td.main-table { width:170px;}
 td.exp-table {vertical-align: top;width:140px;}

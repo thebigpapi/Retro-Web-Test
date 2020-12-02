@@ -31,6 +31,7 @@
 
 	/* result.html.twig */
 	div.results ul li{ font-size:20px;}
+	td.io-table {width:240px;}
 }
 
 @media (min-width: 1400px) {
@@ -46,6 +47,8 @@
 	div.show-data { width:67%;padding-left:20px; }
 	td.main-table { width:200px; }
 	td.cpu-table { width:160px;}
+	td.io-table {width:240px;}
+
 }
 
 @media (min-width: 1620px) {
@@ -56,7 +59,7 @@
 	div.show-images { max-height:750px;}
 	div.show-data { width:68%; font-size: 18px;}
 	div.show-data table, div.notes { font-size:16px;}
-	td.exp-table {width:180px;}
-	td.io-table {width:200px;}
+	td.exp-table {width:270px;}
+	td.io-table {width:220px;}
 	td.cpu-table { width:180px;}
 }
