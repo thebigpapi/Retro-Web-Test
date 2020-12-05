@@ -1,4 +1,4 @@
-# Cache, session files and logs
+# Cache, session files and log
 /var/cache/*
 /var/log/*
 /var/sessions/*
@@ -11,7 +11,6 @@
 /bin/*
 !bin/console
 !bin/symfony_requirements
-/vendor/
 
 # Assets and user uploads
 /public/*
