@@ -5,15 +5,21 @@
 !var/cache/.gitkeep
 !var/log/.gitkeep
 !var/sessions/.gitkeep
-/var/
 
 # Managed by Composer
 /bin/*
 !bin/console
 !bin/symfony_requirements
 
-# Assets and user uploads
-/public/*
+# Thumbnails and user uploads
+/public/media/cache/*
+/public/motherboard/bios/*
+/public/motherboard/image/*
+/public/motherboard/manual/*
+!public/media/cache/.gitkeep
+!public/motherboard/bios/.gitkeep
+!public/motherboard/image/.gitkeep
+!public/motherboard/manual/.gitkeep
 
 # Composer PHAR
 /composer.phar
