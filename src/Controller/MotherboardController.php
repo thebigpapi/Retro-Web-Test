@@ -488,9 +488,13 @@ class MotherboardController extends AbstractController
      */
     public function index(Request $request, PaginatorInterface $paginator, string $letter = '')
     {
-        $data =  $this->getDoctrine()
+        $data = $this->getDoctrine()
         ->getRepository(Motherboard::class)
         ->findAllAlphabetic($letter);
+
+        if ($data == array()) {
+            return $this->redirectToRoute('motherboard_search');
+        }
 
         usort($data, function ($a, $b)
             {
@@ -511,5 +515,4 @@ class MotherboardController extends AbstractController
             'motherboards' => $motherboards,
         ]);
     }
-
 }

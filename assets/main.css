@@ -49,6 +49,7 @@ div.butn input { width:7.5em; height:2em; font-size:20px;}
 /* result.html.twig */
 
 div.results ul li{ line-height:140%;}
+div.pagination span.current { font-weight:bold;}
 
 /* show.html.twig */
 

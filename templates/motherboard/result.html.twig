@@ -4,7 +4,6 @@
 
 {% block body %}
 	<h2 class="title">{% trans %}Search results{% endtrans %}</h2>
-
 	<p><b class="contrib">{% trans %}Can't you find a motherboard? Click{% endtrans %} <a href="{% if is_granted('ROLE_ADMIN') %}../add{% else %}/win3board/posting.php?mode=post&amp;f=95&amp;language=en{% endif %}">{% trans %}here{% endtrans %}</a> {% trans %}to add it.{% endtrans %}</b></p>
 	<p style="text-align:center;padding-top:10px;">
 		<i>{{ 'motherboard.num'|trans({'count':motherboard_count}) }}</i>
@@ -18,8 +17,8 @@
 						{{ motherboard.getProcessorPlatformType().getName() }}	
 					{% endif %#}		
 			{% endfor %}
-			{{ knp_pagination_render(motherboards) }}
 			</ul>
+		{{ knp_pagination_render(motherboards) }}
 		</div>
 	{% endif %}
 {% endblock %}

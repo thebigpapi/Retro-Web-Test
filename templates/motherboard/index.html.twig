@@ -3,19 +3,18 @@
 {% block title %}{% trans %}Index{% endtrans %}{% endblock %}
 
 {% block body %}
-    <h2 class="title">{% trans %}Index{% endtrans %}</h2>
-    {% if motherboards is not empty %}
-        <ul>
-            {% for motherboard in motherboards %}
-                <li><a href='../show/{{motherboard.id}}'>{{ motherboard.getManufacturerShortNameIfExist()}} {{motherboard.name}}</a></li>
-            {% endfor %}
-            {{ knp_pagination_render(motherboards) }}
-        </ul>
-    {% else %}
-        <ul>
-        {% for letter in ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z']%}
-            <li><a href="./index/{{letter}}">{{letter}}</a></li>
-        {% endfor %}
-        </ul>
-    {% endif %}
+	<h2 class="title">{% trans %}Index{% endtrans %}</h2>
+	<p><b class="contrib">{% trans %}Can't you find a motherboard? Click{% endtrans %} <a href="{% if is_granted('ROLE_ADMIN') %}../add{% else %}/win3board/posting.php?mode=post&amp;f=95&amp;language=en{% endif %}">{% trans %}here{% endtrans %}</a> {% trans %}to add it.{% endtrans %}</b></p>
+	{% if motherboards is not empty %}
+		<ul>
+			{% for motherboard in motherboards %}
+				<li><a href='../show/{{motherboard.id}}'>{{ motherboard.getManufacturerShortNameIfExist()}} {{motherboard.name}}</a></li>
+			{% endfor %}
+		</ul>
+	{{ knp_pagination_render(motherboards) }}
+	{% else %}
+		<p style="text-align:center;padding-top:10px;">
+			<i>{{ 'motherboard.num'|trans({'count':0}) }}</i>
+		</p>
+	{% endif %}
 {% endblock %}
