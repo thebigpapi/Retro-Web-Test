@@ -23,7 +23,7 @@
       </trans-unit>
       <trans-unit id="Ha9FyWp" resname="List motherboards whose the manufacturer starting with:">
         <source>List motherboards whose the manufacturer starting with:</source>
-        <target>Oplijst moederborden waarvan de fabrikant begint met:</target>
+        <target>Toon moederborden waarvan de fabrikantnaam begint met:</target>
       </trans-unit>
       <trans-unit id="GvOExXf" resname="Manufacturer">
         <source>Manufacturer</source>

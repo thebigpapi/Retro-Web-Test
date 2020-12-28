@@ -23,7 +23,7 @@
       </trans-unit>
       <trans-unit id="Ha9FyWp" resname="List motherboards whose the manufacturer starting with:">
         <source>List motherboards whose the manufacturer starting with:</source>
-        <target>Fac o listă plăci de bază al cărui un producător începe cu:</target>
+        <target>Afișează toate plăcile de bază al căror nume producător începe cu:</target>
       </trans-unit>
       <trans-unit id="GvOExXf" resname="Manufacturer">
         <source>Manufacturer</source>
