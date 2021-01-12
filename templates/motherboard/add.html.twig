@@ -15,10 +15,11 @@
 			</span>
 		</div>
         {{ form_errors(form.images) }}
+	  
         <div id="images-fields-list" data-widget-tags="{{ '<div class="image-table"></div>'|e }}" data-widget-counter="{{ form.images|length }}"
             data-prototype="
 				<div>Type: {{ form_widget(form.images.vars.prototype.motherboardImageType)|e }}</div>
-				<div>Creditor: {{ form_widget(form.images.vars.prototype.creditor)|e }}</div>
+				<div>Creditor: {{ form_widget(form.images.vars.prototype.creditor, {'attr': {'style': 'width:40%'}})|e }}</div>
 				<div>License: {{ form_widget(form.images.vars.prototype.license)|e }}</div>
 				{{ form_widget(form.images.vars.prototype.description, {'attr': {'style': 'display:none'}})|e }}
 				<div>File to upload: {{ form_widget(form.images.vars.prototype.imageFile)|e }}</div>
@@ -27,7 +28,7 @@
             {% for image in form.images %}
 			<div class="image-table">
                 <div>Type: {{ form_widget(image.motherboardImageType)}}</div>
-				<div>Creditor: {{ form_widget(image.creditor)}}</div>
+				<div>Creditor: {{ form_widget(image.creditor, {'attr': {'style': 'width:40%'}}) }}</div>
 				<div>License: {{ form_widget(image.license)}}</div>
 				{{ form_widget(image.description, {'attr': {'style': 'display:none'}}) }}
 				<div>File to upload: {{ form_widget(image.imageFile)}}</div>
@@ -44,8 +45,8 @@
 	<table class="add-title">
 		<tr>
 		{% if form.manufacturer is not null %}
-			<td style="height:37px;">{{ form_widget(form.manufacturer) }}</td>
-			<td style="height:30px">{{ form_widget(form.name) }}</td>
+			<td class="ttl1">{{ form_widget(form.manufacturer) }}</td>
+			<td class="ttl2">{{ form_widget(form.name) }}</td>
 		{% else %}
 			Add a new motherboard
 		{% endif %}
@@ -60,7 +61,7 @@
 		</tr>
 		<tr>
 			<td>Chipset : </td>
-			<td>{{ form_widget(form.chipset) }}</td>
+			<td>{{ form_widget(form.chipset, {'attr': {'style': 'width:80%'}} ) }}</td>
 		</tr>
 		<tr>
 			<td>Dimensions : </td>
@@ -130,13 +131,13 @@
 		<table class="append_table"
 		 id="motherboardBios-fields-list" data-widget-tags="{{ '<tr></tr>'|e }}" data-widget-counter="{{ form.motherboardBios|length }}"
                 data-prototype="
-					<td>{{ form_widget(form.motherboardBios.vars.prototype.manufacturer, {'attr': {'style': 'width:80px'}} )|e }}</td>
-					<td>{{ form_widget(form.motherboardBios.vars.prototype.postString)|e }}</td>
-					<td>{{ form_widget(form.motherboardBios.vars.prototype.note, {'attr': {'style': 'width:120px'}} )|e }}</td>
-					<td>{{ form_widget(form.motherboardBios.vars.prototype.boardVersion, {'attr': {'style': 'width:40px'}} )|e }}</td>
-					<td>{{ form_widget(form.motherboardBios.vars.prototype.coreVersion, {'attr': {'style': 'width:40px'}} )|e }}</td>
-					<td>{{ form_widget(form.motherboardBios.vars.prototype.romFile, {'attr': {'style': 'width:190px'}} )|e }}</td>
-					<td>{{ form_widget(form.motherboardBios.vars.prototype.file_name, {'attr': {'style': 'width:100px'}} )|e }}</td> ">
+					<td class=ba0>{{ form_widget(form.motherboardBios.vars.prototype.manufacturer, {'attr': {'style': 'width:100%'}} )|e }}</td>
+					<td class=ba1>{{ form_widget(form.motherboardBios.vars.prototype.postString, {'attr': {'style': 'width:100%'}} )|e }}</td>
+					<td class=ba1>{{ form_widget(form.motherboardBios.vars.prototype.note, {'attr': {'style': 'width:100%'}} )|e }}</td>
+					<td class=ba2>{{ form_widget(form.motherboardBios.vars.prototype.boardVersion, {'attr': {'style': 'width:100%'}} )|e }}</td>
+					<td class=ba2>{{ form_widget(form.motherboardBios.vars.prototype.coreVersion, {'attr': {'style': 'width:100%'}} )|e }}</td>
+					<td class=ba3>{{ form_widget(form.motherboardBios.vars.prototype.romFile, {'attr': {'style': 'width:100%'}} )|e }}</td>
+					<td class=ba4>{{ form_widget(form.motherboardBios.vars.prototype.file_name, {'attr': {'style': 'width:100%'}} )|e }}</td> ">
 			<tr>
 				<th><b>Manuf.</b></th>
 				<th><b>POST String</b></th>
@@ -148,13 +149,13 @@
 			</tr>
 			{% for bios in form.motherboardBios %}
 				<tr>
-					<td>{{ form_widget(bios.manufacturer, {'attr': {'style': 'width:80px'}} ) }}</td>
-					<td>{{ form_widget(bios.postString) }}</td>
-					<td>{{ form_widget(bios.note, {'attr': {'style': 'width:120px'}} ) }}</td>
-					<td>{{ form_widget(bios.boardVersion, {'attr': {'style': 'width:40px'}} ) }}</td>
-					<td>{{ form_widget(bios.coreVersion, {'attr': {'style': 'width:40px'}} ) }}</td>
-					<td>{{ form_widget(bios.romFile, {'attr': {'style': 'width:190px'}} ) }}</td>
-					<td>{{ form_widget(bios.file_name, {'attr': {'style': 'width:100px'}} ) }}</td>
+					<td class="ba0">{{ form_widget(bios.manufacturer, {'attr': {'style': 'width:100%'}} ) }}</td>
+					<td class="ba1">{{ form_widget(bios.postString, {'attr': {'style': 'width:100%'}} ) }}</td>
+					<td class="ba1">{{ form_widget(bios.note, {'attr': {'style': 'width:100%'}} ) }}</td>
+					<td class="ba2">{{ form_widget(bios.boardVersion, {'attr': {'style': 'width:100%'}} ) }}</td>
+					<td class="ba2">{{ form_widget(bios.coreVersion, {'attr': {'style': 'width:100%'}} ) }}</td>
+					<td class="ba3">{{ form_widget(bios.romFile, {'attr': {'style': 'width:100%'}} ) }}</td>
+					<td class="ba4">{{ form_widget(bios.file_name, {'attr': {'style': 'width:100%'}} ) }}</td>
 					<td class="bis-image"><button type="button" class="delbutton">Del</button></td>
 					{{ form_errors(bios) }}
 				</tr>
@@ -171,10 +172,10 @@
         {{ form_errors(form.manuals) }}
         <table id="manuals-fields-list" data-widget-tags="{{ '<tr></tr>'|e }}" data-widget-counter="{{ form.manuals|length }}"
             data-prototype="
-				<td>{{ form_widget(form.manuals.vars.prototype.link_name)|e }}</td>
-				<td>{{ form_widget(form.manuals.vars.prototype.language)|e }}</td>
-				<td>{{ form_widget(form.manuals.vars.prototype.manualFile, {'attr': {'style': 'width:190px'}} )|e }}</td>
-				<td>{{ form_widget(form.manuals.vars.prototype.file_name, {'attr': {'style': 'width:130px'}} )|e }}</td> ">
+				<td class=bm0>{{ form_widget(form.manuals.vars.prototype.link_name, {'attr': {'style': 'width:100%'}} )|e }}</td>
+				<td class=bm1>{{ form_widget(form.manuals.vars.prototype.language, {'attr': {'style': 'width:100%'}} )|e }}</td>
+				<td class=bm2>{{ form_widget(form.manuals.vars.prototype.manualFile, {'attr': {'style': 'width:100%'}} )|e }}</td>
+				<td class=bm3>{{ form_widget(form.manuals.vars.prototype.file_name, {'attr': {'style': 'width:100%'}} )|e }}</td> ">
 			<tr>
 				<th><b>Title</b></th>
 				<th><b>Language</b></th>
@@ -183,10 +184,10 @@
 			</tr>
 			{% for manual in form.manuals %}
 				<tr>
-					<td>{{ form_widget(manual.link_name) }}</td>
-					<td>{{ form_widget(manual.language) }}</td>
-					<td>{{ form_widget(manual.manualFile, {'attr': {'style': 'width:190px'}} ) }}</td>
-					<td>{{ form_widget(manual.file_name, {'attr': {'style': 'width:130px'}} ) }}</td>
+					<td class="bm0">{{ form_widget(manual.link_name, {'attr': {'style': 'width:100%'}} ) }}</td>
+					<td class="bm1">{{ form_widget(manual.language, {'attr': {'style': 'width:100%'}} ) }}</td>
+					<td class="bm2">{{ form_widget(manual.manualFile, {'attr': {'style': 'width:100%'}} ) }}</td>
+					<td class="bm3">{{ form_widget(manual.file_name, {'attr': {'style': 'width:100%'}} ) }}</td>
 					<td class="bis-image"><button type="button" class="delbutton">Del</button></td>
 					{{ form_errors(manual) }}
 				</tr>
@@ -216,11 +217,11 @@
 				<table id="motherboardIoPorts-fields-list" data-widget-tags="{{ '<tr></tr>'|e }}" data-widget-counter="{{ form.motherboardIoPorts|length }}"
                     data-prototype="
 						<td>{{ form_widget(form.motherboardIoPorts.vars.prototype.count, {'attr': {'style': 'width:15px'}} )|e }}</td>
-						<td>x {{ form_widget(form.motherboardIoPorts.vars.prototype.io_port)|e }}</td>">
+						<td class=expi>x {{ form_widget(form.motherboardIoPorts.vars.prototype.io_port, {'attr': {'style': 'width:85%'}} )|e }}</td>">
 					{% for port in form.motherboardIoPorts %}
 						<tr>
 							<td>{{ form_widget(port.count, {'attr': {'style': 'width:15px'}} ) }}</td>
-							<td>x {{ form_widget(port.io_port) }}</td>
+							<td class="expi">x {{ form_widget(port.io_port, {'attr': {'style': 'width:85%'}} ) }}</td>
 							<td class="bis-image"><button type="button" class="delbutton">Del</button></td>
 							{{ form_errors(port) }}
 						</tr>
@@ -232,11 +233,11 @@
 				<table id="motherboardExpansionSlots-fields-list" data-widget-tags="{{ '<tr></tr>'|e }}" data-widget-counter="{{ form.motherboardExpansionSlots|length }}"
                     data-prototype="
 						<td>{{ form_widget(form.motherboardExpansionSlots.vars.prototype.count, {'attr': {'style': 'width:15px'}} )|e }}</td>
-						<td>x {{ form_widget(form.motherboardExpansionSlots.vars.prototype.expansion_slot, {'attr': {'style': 'width:130px'}} )|e }}</td> ">
+						<td class=expi>x {{ form_widget(form.motherboardExpansionSlots.vars.prototype.expansion_slot, {'attr': {'style': 'width:85%'}} )|e }}</td> ">
 					{% for slot in form.motherboardExpansionSlots %}
 						<tr>
 							<td>{{ form_widget(slot.count, {'attr': {'style': 'width:15px'}} ) }}</td>
-							<td>x {{ form_widget(slot.expansion_slot, {'attr': {'style': 'width:130px'}} ) }}</td>
+							<td class="expi">x {{ form_widget(slot.expansion_slot, {'attr': {'style': 'width:85%'}} ) }}</td>
 							<td class="bis-image"><button type="button" class="delbutton">Del</button></td>
 							{{ form_errors(slot) }}
 						</tr>
@@ -247,10 +248,10 @@
 			<td class="exp-table">
                 <table id="knownIssues-fields-list" data-widget-tags="{{ '<tr></tr>'|e }}" data-widget-counter="{{ form.knownIssues|length }}"
                     data-prototype="
-						<td>{{ form_widget(form.knownIssues.vars.prototype, {'attr': {'style': 'width:220px'}} )|e }}</td>">
+						<td class=knwi>{{ form_widget(form.knownIssues.vars.prototype, {'attr': {'style': 'width:100%'}} )|e }}</td>">
 					{% for issue in form.knownIssues %}
 						<tr>
-							<td>{{ form_widget(issue, {'attr': {'style': 'width:220px'}} ) }}</td>
+							<td class="knwi">{{ form_widget(issue, {'attr': {'style': 'width:100%'}} ) }}</td>
 							<td class="bis-image"><button type="button" class="delbutton">Del</button></td>
 							{{ form_errors(issue) }}
 						</tr>
@@ -294,10 +295,10 @@
 			<td>
 				{{ form_errors(form.motherboardProcessor) }}
 				<table id="motherboardProcessor-fields-list" data-widget-tags="{{ '<tr></tr>'|e }}" data-widget-counter="{{ form.motherboardProcessor|length }}"
-                    data-prototype="<td>{{ form_widget(form.motherboardProcessor.vars.prototype, {'attr': {'style': 'width:240px'}} )|e  }}</td>">
+                    data-prototype="<td class=cpui>{{ form_widget(form.motherboardProcessor.vars.prototype, {'attr': {'style': 'width:100%'}} )|e  }}</td>">
 					{% for processor in form.motherboardProcessor %}
                     <tr>
-                        <td>{{ form_widget(processor, {'attr': {'style': 'width:240px'}} ) }}</td>
+                        <td class="cpui">{{ form_widget(processor, {'attr': {'style': 'width:100%'}} ) }}</td>
                         <td class="bis-image"><button type="button" class="delbutton">Del</button></td>
 						{{ form_errors(processor) }}
                     </tr>
@@ -307,12 +308,12 @@
 			<td class="exp-table">
 				 {{ form_errors(form.cpuSpeed) }}
                 <table id="cpuSpeed-fields-list"
-                    data-prototype="<td>{{ form_widget(form.cpuSpeed.vars.prototype)|e }}</td>"
+                    data-prototype="<td class=fsbi>{{ form_widget(form.cpuSpeed.vars.prototype, {'attr': {'style': 'width:100%'}} )|e  }}</td>"
                     data-widget-tags="{{ '<tr></tr>'|e }}"
                     data-widget-counter="{{ form.cpuSpeed|length }}">
                 {% for speed in form.cpuSpeed %}
                     <tr>
-                        <td>{{ form_widget(speed) }}</td>
+                        <td class="fsbi">{{ form_widget(speed, {'attr': {'style': 'width:100%'}} ) }}</td>
                         <td class="bis-image"><button type="button" class="delbutton">Del</button></td>
 						{{ form_errors(speed) }}
                     </tr>
@@ -322,12 +323,12 @@
 			<td class="exp-table">
                 {{ form_errors(form.coprocessors) }}
                 <table id="coprocessors-fields-list"
-                    data-prototype="<td>{{ form_widget(form.coprocessors.vars.prototype)|e }}</td>"
+                    data-prototype="<td class=fpui>{{ form_widget(form.coprocessors.vars.prototype, {'attr': {'style': 'width:100%'}} )|e  }}</td>"
                     data-widget-tags="{{ '<tr></tr>'|e }}"
                     data-widget-counter="{{ form.coprocessors|length }}">
                 {% for coprocessor in form.coprocessors %}
                     <tr>
-                        <td>{{ form_widget(coprocessor) }}</td>
+                        <td class="fpui">{{ form_widget(coprocessor, {'attr': {'style': 'width:100%'}} ) }}</td>
                         <td class="bis-image"><button type="button" class="delbutton">Del</button></td>
 						{{ form_errors(coprocessor) }}
                     </tr>

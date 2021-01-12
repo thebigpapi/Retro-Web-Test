@@ -1,23 +1,22 @@
-/* 
-	admin.css - stylesheet for administration stuff
-*/
+/* admin.css - stylesheet for the administration pages */
 
-/* 																			=== index.html.twig (administration) === 				 */
+/* === index.html.twig (administration) === */
 
 input.admin-button {padding-top:220px;width:280px;height:260px;font-size:18px;}
 div.butn div button { width:120px; height:40px; font-size:20px;}
 
 
-/* 																			=== add.html.twig === 	 								 */
+/* === add.html.twig ===  */
 
 table.add-title { padding-top:20px; }
-table.add-title tr td select{ height:40px;font-size:24px }
-table.add-title tr td input{ height:35px;font-size:24px  }
+td.ttl1{ height:37px;width:400px}
+td.ttl2{ height:30px;width:300px}
+td.ttl1 select, td.ttl2 input{ width:100%;height:100%;font-size:20px }
+
 div.addform{ background-color:#dedede; box-shadow:inset -1px -1px #0a0a0a,inset 1px 1px #dfdfdf,inset -2px -2px grey,inset 2px 2px #fff;
 padding:3px; font-size:18px; width:95%; }
 div.bios-image { margin-top:16px;display:table-cell }
-.tinymce1 {font-size:12px;}
-.tinymce2 {width:50px;}
+
 div.show-images{padding-top:90px;}
 div.title div select{height:100%}
 div.ram-type div label {padding-right:15px;}
@@ -28,15 +27,34 @@ div.editasset0 div label{ width: 20%; float:left;}
 div.editasset0 div select { width:80%;}
 div.editasset0 div input { width:78%;}
 
+/*bios images*/
+.ba0 {width:80px}
+.ba1 {width:120px;padding:0px 5px 0px}
+.ba2 {width:40px;padding:0px 5px 0px}
+.ba3 {width:190px;padding:0px 5px 0px}
+.ba4 {width:100px;padding:0px 5px 0px}
+
+/*manuals*/
+.bm0 {width:120px}
+.bm1 {width:80px;padding:0px 5px 0px}
+.bm2 {width:190px;padding:0px 5px 0px}
+.bm3 {width:100px;padding:0px 5px 0px}
+
 td.exp-table {width:270px;}
 td.io-table {width:220px;}
 td.cpu-table { width:180px;}
+td.iop {width:130px}
+td.expi {width:130px}
+td.knwi {width:220px}
+td.cpui {width:240px}
+td.fsbi {width:100px}
+td.fpui {width:100px}
 
 div.notes-field div { padding-bottom: 6px; padding-right: 4px; margin:auto; }
 div.notes-field label { display:none; }
 div.notes-field div textarea { width:100%; height:100px; }
 
-/* 																			=== manage_resources.html.twig === 						 */
+/* === manage_resources.html.twig === */
 
 div.manage-buttons { float:left; }
 div.general-manage div { width: 770px; float:left; }
@@ -55,6 +73,14 @@ div.editasset { width:50%;margin:auto;}
 div.editasset form div div {height:35px;}
 div.editasset form div div label {width:180px;}
 div.editasset form div div input {width:400px;}
+
+@media (max-width: 1199px) {
+	
+	td.ttl1 {width:60%}
+	td.ttl2 {width:200px}
+	td.ba1 {width:15%}
+	td.bm0 {width:15%}
+}
 
 @media only screen and (min-device-width: 501px) and (max-width: 899px) {
 	div.general-manage div, div.cpu-manage div, div.ram-manage div, div.lang div { width: 80%;}
