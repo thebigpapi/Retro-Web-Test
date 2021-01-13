@@ -7,38 +7,38 @@
 {{ form_start(form, {'method': 'POST'}) }}
 
 <div class="show-images">
-    <div class="addform">
 		<div class="bar">
 			<span style="padding-left:10px;">
 				<b> {{ form_label(form.images) }}</b>
-				<button type="button" class="add-another-collection-widget" data-list-selector="#images-fields-list">Add</button>
+				<button type="button" class="add-another-image" data-list-selector="#images-fields-list">Add</button>
 			</span>
 		</div>
-        {{ form_errors(form.images) }}
-	  
-        <div id="images-fields-list" data-widget-tags="{{ '<div class="image-table"></div>'|e }}" data-widget-counter="{{ form.images|length }}"
+        <div id="images-fields-list" data-widget-counter="{{ form.images|length }}"
             data-prototype="
-				<div>Type: {{ form_widget(form.images.vars.prototype.motherboardImageType)|e }}</div>
-				<div>Creditor: {{ form_widget(form.images.vars.prototype.creditor, {'attr': {'style': 'width:40%'}})|e }}</div>
-				<div>License: {{ form_widget(form.images.vars.prototype.license)|e }}</div>
-				{{ form_widget(form.images.vars.prototype.description, {'attr': {'style': 'display:none'}})|e }}
-				<div>File to upload: {{ form_widget(form.images.vars.prototype.imageFile)|e }}</div>
-				<div>Uploaded file: {{ form_widget(form.images.vars.prototype.file_name)|e }}</div>
+				<div class=imgp>{{ form_widget(form.images.vars.prototype.imageFile, {'attr': {'style': 'width:100%'}})|e }}</div>
+				<div class=imgp><span>Type: </span>{{ form_widget(form.images.vars.prototype.motherboardImageType)|e }}</div>
+				<div class=imgp><span>Creditor: </span>{{ form_widget(form.images.vars.prototype.creditor)|e }}</div>
+				<div class=imgp><span>License: </span>{{ form_widget(form.images.vars.prototype.license)|e }}</div>
+				<div class=imgp>{{ form_widget(form.images.vars.prototype.description, {'attr': {'style': 'display:none'}})|e }}</div>
+				<div class=imgp>Uploaded file: 
+					<button type=button class=delbutton-img onclick=this.parentElement.parentElement.remove();>Delete this entry</button></div>
+				<div class=imgp>{{ form_widget(form.images.vars.prototype.file_name, {'attr': {'style': 'width:90%'}})|e }}</div>
 				">
             {% for image in form.images %}
-			<div class="image-table">
-                <div>Type: {{ form_widget(image.motherboardImageType)}}</div>
-				<div>Creditor: {{ form_widget(image.creditor, {'attr': {'style': 'width:40%'}}) }}</div>
-				<div>License: {{ form_widget(image.license)}}</div>
-				{{ form_widget(image.description, {'attr': {'style': 'display:none'}}) }}
-				<div>File to upload: {{ form_widget(image.imageFile)}}</div>
-				<div>Uploaded file: {{ form_widget(image.file_name)}}</div>
-				<button type="button" class="delbutton">Del</button>
+			<div class="addform" >
+				<div class="imgp">{{ form_widget(image.imageFile, {'attr': {'style': 'width:100%'}}) }}</div>
+                <div class="imgp"><span>Type: </span>{{ form_widget(image.motherboardImageType)}}</div>
+				<div class="imgp"><span>Creditor: </span>{{ form_widget(image.creditor)}}</div>
+				<div class="imgp"><span>License: </span>{{ form_widget(image.license)}}</div>
+				<div class="imgp">{{ form_widget(image.description, {'attr': {'style': 'display:none'}}) }}</div>
+				<div class="imgp">Uploaded file: 
+					<button type="button" class="delbutton-img">Delete this entry</button>
+				</div>
+				<div class="imgp">{{ form_widget(image.file_name, {'attr': {'style': 'width:90%'}}) }}</div>
 			</div>
             {% endfor %}
+			{{ form_errors(form.images) }}
         </div>
-        
-    </div>
 </div>
 
 <div class="show-data">
@@ -156,7 +156,7 @@
 					<td class="ba2">{{ form_widget(bios.coreVersion, {'attr': {'style': 'width:100%'}} ) }}</td>
 					<td class="ba3">{{ form_widget(bios.romFile, {'attr': {'style': 'width:100%'}} ) }}</td>
 					<td class="ba4">{{ form_widget(bios.file_name, {'attr': {'style': 'width:100%'}} ) }}</td>
-					<td class="bis-image"><button type="button" class="delbutton">Del</button></td>
+					<td><button type="button" class="delbutton-img">Del</button></td>
 					{{ form_errors(bios) }}
 				</tr>
 			{% endfor %}
@@ -188,7 +188,7 @@
 					<td class="bm1">{{ form_widget(manual.language, {'attr': {'style': 'width:100%'}} ) }}</td>
 					<td class="bm2">{{ form_widget(manual.manualFile, {'attr': {'style': 'width:100%'}} ) }}</td>
 					<td class="bm3">{{ form_widget(manual.file_name, {'attr': {'style': 'width:100%'}} ) }}</td>
-					<td class="bis-image"><button type="button" class="delbutton">Del</button></td>
+					<td><button type="button" class="delbutton-img">Del</button></td>
 					{{ form_errors(manual) }}
 				</tr>
 			{% endfor %}
@@ -222,7 +222,7 @@
 						<tr>
 							<td>{{ form_widget(port.count, {'attr': {'style': 'width:15px'}} ) }}</td>
 							<td class="expi">x {{ form_widget(port.io_port, {'attr': {'style': 'width:85%'}} ) }}</td>
-							<td class="bis-image"><button type="button" class="delbutton">Del</button></td>
+							<td><button type="button" class="delbutton-img">Del</button></td>
 							{{ form_errors(port) }}
 						</tr>
 					{% endfor %}
@@ -238,7 +238,7 @@
 						<tr>
 							<td>{{ form_widget(slot.count, {'attr': {'style': 'width:15px'}} ) }}</td>
 							<td class="expi">x {{ form_widget(slot.expansion_slot, {'attr': {'style': 'width:85%'}} ) }}</td>
-							<td class="bis-image"><button type="button" class="delbutton">Del</button></td>
+							<td><button type="button" class="delbutton-img">Del</button></td>
 							{{ form_errors(slot) }}
 						</tr>
 					{% endfor %}
@@ -252,7 +252,7 @@
 					{% for issue in form.knownIssues %}
 						<tr>
 							<td class="knwi">{{ form_widget(issue, {'attr': {'style': 'width:100%'}} ) }}</td>
-							<td class="bis-image"><button type="button" class="delbutton">Del</button></td>
+							<td><button type="button" class="delbutton-img">Del</button></td>
 							{{ form_errors(issue) }}
 						</tr>
 					{% endfor %}
@@ -299,7 +299,7 @@
 					{% for processor in form.motherboardProcessor %}
                     <tr>
                         <td class="cpui">{{ form_widget(processor, {'attr': {'style': 'width:100%'}} ) }}</td>
-                        <td class="bis-image"><button type="button" class="delbutton">Del</button></td>
+                        <td><button type="button" class="delbutton-img">Del</button></td>
 						{{ form_errors(processor) }}
                     </tr>
 					{% endfor %}
@@ -314,7 +314,7 @@
                 {% for speed in form.cpuSpeed %}
                     <tr>
                         <td class="fsbi">{{ form_widget(speed, {'attr': {'style': 'width:100%'}} ) }}</td>
-                        <td class="bis-image"><button type="button" class="delbutton">Del</button></td>
+                        <td><button type="button" class="delbutton-img">Del</button></td>
 						{{ form_errors(speed) }}
                     </tr>
                 {% endfor %}
@@ -329,7 +329,7 @@
                 {% for coprocessor in form.coprocessors %}
                     <tr>
                         <td class="fpui">{{ form_widget(coprocessor, {'attr': {'style': 'width:100%'}} ) }}</td>
-                        <td class="bis-image"><button type="button" class="delbutton">Del</button></td>
+                        <td><button type="button" class="delbutton-img">Del</button></td>
 						{{ form_errors(coprocessor) }}
                     </tr>
                 {% endfor %}

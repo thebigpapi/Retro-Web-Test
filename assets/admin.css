@@ -12,9 +12,12 @@ table.add-title { padding-top:20px; }
 td.ttl1{ height:37px;width:400px}
 td.ttl2{ height:30px;width:300px}
 td.ttl1 select, td.ttl2 input{ width:100%;height:100%;font-size:20px }
+div.imgp{width:95%;padding-left:5%;max-width:250px;font-size:16px;padding-top:1px}
+div.imgp span{width:65px;display: inline-block;}
+div.imgp select{width:60%}
 
-div.addform{ background-color:#dedede; box-shadow:inset -1px -1px #0a0a0a,inset 1px 1px #dfdfdf,inset -2px -2px grey,inset 2px 2px #fff;
-padding:3px; font-size:18px; width:95%; }
+div.addform{box-shadow:inset -1px -1px #0a0a0a,inset 1px 1px #dfdfdf,inset -2px -2px grey,inset 2px 2px #fff;
+			background-color:#dedede;padding:3px; font-size:18px; width:95%;margin-top: 10px}
 div.bios-image { margin-top:16px;display:table-cell }
 
 div.show-images{padding-top:90px;}
