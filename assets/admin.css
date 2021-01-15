@@ -30,28 +30,18 @@ div.editasset0 div label{ width: 20%; float:left;}
 div.editasset0 div select { width:80%;}
 div.editasset0 div input { width:78%;}
 
-/*bios images*/
-.ba0 {width:80px}
-.ba1 {width:120px;padding:0px 5px 0px}
-.ba2 {width:40px;padding:0px 5px 0px}
-.ba3 {width:190px;padding:0px 5px 0px}
-.ba4 {width:100px;padding:0px 5px 0px}
-
-/*manuals*/
-.bm0 {width:120px}
-.bm1 {width:80px;padding:0px 5px 0px}
-.bm2 {width:190px;padding:0px 5px 0px}
-.bm3 {width:100px;padding:0px 5px 0px}
+/*bios images/manuals*/
+.ba0, .ba1, .ba2, .ba3, .ba4, .ba5{display:inline-block;margin:0px 2px 0px;text-align: center}
+.ba0 {width:9%;} 
+.ba1 {width:16%}
+.ba2 {width:10%}
+.ba3 {width:5%}
+.ba4 {width:20%}
+.ba5 {width:16%}
 
 td.exp-table {width:270px;}
 td.io-table {width:220px;}
 td.cpu-table { width:180px;}
-td.iop {width:130px}
-td.expi {width:130px}
-td.knwi {width:220px}
-td.cpui {width:240px}
-td.fsbi {width:100px}
-td.fpui {width:100px}
 
 div.notes-field div { padding-bottom: 6px; padding-right: 4px; margin:auto; }
 div.notes-field label { display:none; }
@@ -81,8 +71,6 @@ div.editasset form div div input {width:400px;}
 	
 	td.ttl1 {width:60%}
 	td.ttl2 {width:200px}
-	td.ba1 {width:15%}
-	td.bm0 {width:15%}
 }
 
 @media only screen and (min-device-width: 501px) and (max-width: 899px) {
