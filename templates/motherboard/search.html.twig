@@ -17,6 +17,13 @@
 {% block body %}
 	<h2 class="title">{% trans %}Search for a motherboard{% endtrans %}</h2>
 
+	<p style="text-align:center;">{% trans %}List motherboards whose the manufacturer starting with:{% endtrans %}<br>
+		{% for letter in ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z']%}
+		<a href="./index/{{letter}}">{{letter}}</a>&nbsp;|
+		{% endfor %}
+		<a href="./result/?manufacturerId=NULL">?</a>
+	</p>
+
 	<form name="search_motherboard" method="post" action="./search">
         <table>
             <tr style="line-height: 200%;">
