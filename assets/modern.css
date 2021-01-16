@@ -2,6 +2,26 @@
 	modern.css - extra stylesheet for browsers supporting media queries
 */
 
+/*input, button {padding:0;margin:0}*/
+
+input, button, select {
+  box-sizing: border-box;
+  height: 26px;
+  line-height: 18px;
+  border-color: #d9d9d9;
+  border-width: thin;
+  border-radius: 2px;
+}
+
+button, select {
+  padding: 2px 8px 2px;
+}
+input {
+  padding: 2px 2px 2px;
+}
+
+input.num {width:20px}
+
 @media (max-device-width: 600px) {
 	div.top-bar {font-size:12px; padding: 1px 18px 0;}
 	div.top-bar span.form {display: inline-block;}

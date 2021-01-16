@@ -227,11 +227,11 @@
 			<td class="io-table">
 				<div id="motherboardIoPorts-fields-list" data-widget-counter="{{ form.motherboardIoPorts|length }}"
                     data-prototype="<div>
-						{{ form_widget(form.motherboardIoPorts.vars.prototype.count, {'attr': {'style': 'width:15px'}} )|e }} x 
+						{{ form_widget(form.motherboardIoPorts.vars.prototype.count, {'attr': {'class': 'num'}} )|e }} x 
 						{{ form_widget(form.motherboardIoPorts.vars.prototype.io_port, {'attr': {'style': 'width:50%'}} )|e }}
 						<button type=button onclick=this.parentNode.parentNode.removeChild(this.parentNode);>Del</button></div>">
 					{% for port in form.motherboardIoPorts %}
-							<div>{{ form_widget(port.count, {'attr': {'style': 'width:15px'}} ) }}
+							<div>{{ form_widget(port.count, {'attr': {'class': 'num'}} ) }}
 							x {{ form_widget(port.io_port, {'attr': {'style': 'width:50%'}} ) }}
 							<button type="button" onclick="this.parentNode.parentNode.removeChild(this.parentNode);">Del</button></div>
 							{{ form_errors(port) }}
@@ -242,11 +242,11 @@
 			<td class="io-table">
 				<div id="motherboardExpansionSlots-fields-list" data-widget-counter="{{ form.motherboardExpansionSlots|length }}"
                     data-prototype="<div>
-					{{ form_widget(form.motherboardExpansionSlots.vars.prototype.count, {'attr': {'style': 'width:15px;display:inline'}} )|e }} x 
+					{{ form_widget(form.motherboardExpansionSlots.vars.prototype.count, {'attr': {'class': 'num'}} )|e }} x 
 					{{ form_widget(form.motherboardExpansionSlots.vars.prototype.expansion_slot, {'attr': {'style': 'width:50%;display:inline'}} )|e  }}
 					<button type=button onclick=this.parentNode.parentNode.removeChild(this.parentNode);>Del</button></div>">
 					{% for slot in form.motherboardExpansionSlots %}
-						<div>{{ form_widget(slot.count, {'attr': {'style': 'width:15px'}} ) }}
+						<div>{{ form_widget(slot.count, {'attr': {'class': 'num'}} ) }}
 						x {{ form_widget(slot.expansion_slot, {'attr': {'style': 'width:50%'}} ) }}
 						<button type="button" onclick="this.parentNode.parentNode.removeChild(this.parentNode);">Del</button></div>
 						{{ form_errors(slot) }}

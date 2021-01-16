@@ -6,7 +6,6 @@ body, form {margin:0; padding:0;}
 body, button, div.main input, select {font-family: Arial, sans-serif;}
 p, ul {margin-top: 14px; margin-bottom: 14px;}
 
-
 a:link, a:visited {text-decoration: none;}
 a:hover {text-decoration: underline;}
 
@@ -62,7 +61,7 @@ div.newdiv1, div.newdiv2, div.newdiv3{padding:6px;margin-top: 1px;display: inlin
 div.newdiv1{ background-color:#cae4fa }
 div.newdiv2{ background-color:#d0faca }
 div.newdiv3{ background-color:#fae9ca }
-
+input.num {width:15px}
 td.main-table { width:170px;}
 td.exp-table {vertical-align: top;width:140px;}
 td.io-table {vertical-align: top;width:175px;}
