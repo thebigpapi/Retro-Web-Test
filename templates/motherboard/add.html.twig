@@ -137,11 +137,11 @@
 			<button type="button" onclick="expand('motherboardBios-fields-list')">Add</button>
 		</div>
 		<div style="width:100%;clear:left;">
-				<div class="ba0" style="background-color:yellow"><b>Manuf.</b></div>
-				<div class="ba1" style="background-color:blue"><b>POST String</b></div>
-				<div class="ba2" style="background-color:red"><b>Note</b></div>
-				<div class="ba3" style="background-color:cyan"><b>BIOS Ver.</b></div>
-				<div class="ba3" style="background-color:magenta"><b>Core Ver.</b></div>
+				<div class="ba0"><b>Manuf.</b></div>
+				<div class="ba1"><b>POST String</b></div>
+				<div class="ba2"><b>Note</b></div>
+				<div class="ba3"><b>BIOS Ver.</b></div>
+				<div class="ba3"><b>Core Ver.</b></div>
 				<div class="ba4"><b>File to upload</b></div>
 				<div class="ba5"><b>Uploaded file</b></div>
 		</div>
@@ -156,7 +156,6 @@
 			<div class=ba5>{{ form_widget(form.motherboardBios.vars.prototype.file_name, {'attr': {'style': 'width:100%'}} )|e }}</div>
 			<div class=ba3><button type=button onclick=this.parentNode.parentNode.parentNode.removeChild(this.parentNode.parentNode);>Del</button></div>
 		">
-			
 			{% for bios in form.motherboardBios %}
 			<div style="width:100%">
 				<div class="ba0">{{ form_widget(bios.manufacturer, {'attr': {'style': 'width:100%'}} ) }}</div>

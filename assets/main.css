@@ -1,6 +1,4 @@
-/* 
-	main.css - loaded by all browsers
-*/
+/* main.css - loaded by all browsers */
 
 /* base.html.twig */
 
@@ -56,12 +54,14 @@ div.show-images { width:25%;overflow: auto;float:left;height:500px; /* **/ heigh
 span.show-image { width:100%;font-size:12px;display:block;}
 span.creditor { width:auto;display:block; text-align: center; word-wrap: break-word;}
 span.show-image a img { width: 100%; border:0;}
-div.show-data { width:74%;float:left;padding-left:3px;font-size: 14px;}
+div.show-data { width:74%;float:left;padding-left:3px;font-size: 14px;overflow-x:auto}
 div.show-data table, div.notes {font-size: 14px;}
 span.string-bios {font-size:12px;}
-div.newdiv1{ background-color:#cae4fa; border-radius: 6px; display: inline-block;padding: 2px 2px 2px }
-div.newdiv2{ background-color:#d0faca; border-radius: 6px; display: inline-block;padding: 2px 2px 2px }
-div.newdiv3{ background-color:#fae9ca; border-radius: 6px; display: inline-block;padding: 2px 2px 2px }
+div.newdiv1, div.newdiv2, div.newdiv3{padding:6px;margin-top: 1px;display: inline-block;*display: inline;*vertical-align: middle;
+	box-shadow:inset -1px -1px #0a0a0a,inset 1px 1px #dfdfdf,inset -2px -2px grey,inset 2px 2px #fff;}
+div.newdiv1{ background-color:#cae4fa }
+div.newdiv2{ background-color:#d0faca }
+div.newdiv3{ background-color:#fae9ca }
 
 td.main-table { width:170px;}
 td.exp-table {vertical-align: top;width:140px;}
