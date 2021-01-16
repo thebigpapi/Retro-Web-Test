@@ -26,6 +26,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use App\Service\FileUploader;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Exception;
 
 class MotherboardController extends AbstractController
@@ -35,7 +36,7 @@ class MotherboardController extends AbstractController
      * @Route("/motherboard/result/", name="mobosearch", methods={"GET"})
      * @param Request $request
      */
-    public function searchResult(Request $request)
+    public function searchResult(Request $request, PaginatorInterface $paginator)
     {
         $criterias = array();
         $name = htmlentities($request->get('name'));
@@ -94,18 +95,23 @@ class MotherboardController extends AbstractController
         }
 
         try {
-            $motherboards = $this->getDoctrine()
+            $data = $this->getDoctrine()
             ->getRepository(Motherboard::class)
             ->findByWithJoin($criterias, array('man1_name'=>'ASC', 'mot0_name'=>'ASC'));
         }
         catch(Exception $e) {
             return $this->redirectToRoute('motherboard_search');
         }
-        
+        $motherboards = $paginator->paginate(
+            $data,
+            $request->query->getInt('page', 1),
+            $this->getParameter('app.pagination.max')
+        );
 
         return $this->render('motherboard/result.html.twig', [
             'controller_name' => 'MotherboardController',
             'motherboards' => $motherboards,
+            'motherboard_count' => count($data),
         ]);
     }
     
@@ -476,4 +482,37 @@ class MotherboardController extends AbstractController
 
     }
 
+    /**
+     * @Route("/motherboard/index/{letter}", name="moboindex", requirements={"letter"="\w"}), methods={"GET"})
+     * @param Request $request
+     */
+    public function index(Request $request, PaginatorInterface $paginator, string $letter = '')
+    {
+        $data = $this->getDoctrine()
+        ->getRepository(Motherboard::class)
+        ->findAllAlphabetic($letter);
+
+        if ($data == array()) {
+            return $this->redirectToRoute('motherboard_search');
+        }
+
+        usort($data, function ($a, $b)
+            {
+                if ($a->getManufacturerShortNameIfExist() == $b->getManufacturerShortNameIfExist()) {
+                    return 0;
+                }
+                return ($a->getManufacturerShortNameIfExist() < $b->getManufacturerShortNameIfExist()) ? -1 : 1;
+            }
+        );
+
+        $motherboards = $paginator->paginate(
+            $data,
+            $request->query->getInt('page', 1),
+            $this->getParameter('app.pagination.max')
+        );
+
+        return $this->render('motherboard/index.html.twig', [
+            'motherboards' => $motherboards,
+        ]);
+    }
 }
