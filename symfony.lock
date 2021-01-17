@@ -1,6 +1,15 @@
 {
+    "knplabs/knp-components": {
+        "version": "v2.5.1"
+    },
+    "knplabs/knp-paginator-bundle": {
+        "version": "v5.4.2"
+    },
     "php": {
         "version": "7.4"
+    },
+    "symfony/deprecation-contracts": {
+        "version": "v2.2.0"
     },
     "symfony/polyfill-intl-messageformatter": {
         "version": "v1.18.1"

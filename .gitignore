@@ -18,6 +18,10 @@
 
 # Composer PHAR
 /composer.phar
+/composer.json
+/composer.lock
+/config/*
+/symfony.lock
 
 # Backup entities generated with doctrine:generate:entities command
 **/Entity/*~

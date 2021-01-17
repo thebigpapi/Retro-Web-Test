@@ -7,6 +7,8 @@ parameters:
     app.locales: [de, en, es, fr, nl, ro, ru]
     app.path: !php/const app.path
     web.path: !php/const web.path
+    
+    app.pagination.max: 100
 
 services:
     # default configuration for services in *this* file

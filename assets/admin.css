@@ -78,8 +78,8 @@ div.editasset form div div input {width:400px;}
 	div.general-manage div select, div.cpu-manage div select, div.ram-manage div select, div.lang div select { width: 68%; }
 }
 @media only screen and (max-device-width: 500px) {
-	div.general-manage div, div.cpu-manage div, div.ram-manage div, div.lang div { width: 80%;height:auto;}
-	div.general-manage div label, div.cpu-manage div label, div.ram-manage div label, div.lang div label { width: 34%;}
-	div.general-manage div select, div.cpu-manage div select, div.ram-manage div select, div.lang div select { width: 65%;height:30px;font-size:18px; }
-	div.manage-buttons div button { width:auto; height:30px; font-size:20px;}
+	div.general-manage div, div.cpu-manage div, div.ram-manage div, div.lang div { width: 75%;height:auto;}
+	div.general-manage div label, div.cpu-manage div label, div.ram-manage div label, div.lang div label { width: 32%}
+	div.general-manage div select, div.cpu-manage div select, div.ram-manage div select, div.lang div select { width: 68%;height:30px;font-size:18px;float:left }
+	div.manage-buttons div button {height:25px; font-size:18px;}
 }

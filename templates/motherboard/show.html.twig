@@ -56,15 +56,19 @@
 			<a href="{{ vich_uploader_asset(image, 'imageFile')}}">
 				<img src="{{ vich_uploader_asset(image, 'imageFile') | imagine_filter('motherboard_show_thumb') }}" alt="" title="">
 			</a>
-			{% if image.creditor %}
+			{% if image.creditor or image.description %}
 				<span class="creditor">
 					{% if image.creditor.website %}
-					<a href="{{ image.creditor.website }}">{% trans %}Image by{% endtrans %} {{ image.creditor.name }}</a>
+						<a href="{{ image.creditor.website }}">{% trans %}Image by{% endtrans %} {{ image.creditor.name }}</a>
 					{% else %}
 						{% trans %}Image by{% endtrans %} {{ image.creditor.name }}
 					{% endif %}
+					{% if image.description %}
+						({{ image.description }})
+					{% endif %}
 				</span>
 			{% endif %}
+			
         </span>
         {% endfor %}
 		</div>

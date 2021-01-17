@@ -5,13 +5,15 @@
 {% block body %}
 <div class="main"><div class="page">
 	<h2 class="title">Manage resources</h2>
-	<div style="height:3em;width:100%;">
-		<h3>Motherboards</h3>
-		<hr>
+	<div style="height:35px;width:100%;">
+		<span><b>Motherboards</b></span>
+		<form action="../motherboard/add" method="post" enctype="multipart/form-data" style="display:inline">
+			<input type="submit" name="board" value="Add a new board">
+		</form>
+		
 	</div>
-
-	<div style="height:13em;">
-	<a href="../motherboard/add">Add a new motherboard</a>
+	<hr>
+	<div style="height:12em;">
 	{{ form_start(chipsetForm, {'method': 'POST', 'action': './manage_resources'}) }}
 	
         <div class="general-manage">{{ form_row(chipsetForm.chipsets) }}</div>
