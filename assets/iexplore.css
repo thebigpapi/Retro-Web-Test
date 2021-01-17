@@ -7,7 +7,7 @@ form.index-buttons input { min-width: 0; }
 /*	set height at auto for IE8 and below, to prevent too big input. IE5.5 and lower use a different box-model, thus width is also adjusted	*/
 
 div.sform input { height: auto; width: 100%; width: 99%\9; }
-span.field1 input { height: 20px; width: 20px; height: 15px\9; width: 15px\9; }
+span.field1 input { height: 21px; width: 21px; height: 15px\9; width: 15px\9; }
 
 /*	max-height is not supported by IE6 and older. Please note height isn't interpreted as min-height due to the overflow:auto in legacy.css	*/
 /*	IE6 and IE7 add a horizontal scrollbar if there is a vertical one. A hidden padding-right is used to fix it */

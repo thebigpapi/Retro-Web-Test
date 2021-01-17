@@ -21,6 +21,10 @@
         <source>motherboard.num</source>
         <target>{count, plural, =0 {geen moederbord gevonden} one {één moederbord gevonden} other {# moederborden gevonden}}</target>
       </trans-unit>
+      <trans-unit id="Ha9FyWp" resname="List motherboards whose the manufacturer starting with:">
+        <source>List motherboards whose the manufacturer starting with:</source>
+        <target>Toon moederborden waarvan de fabrikantnaam begint met:</target>
+      </trans-unit>
       <trans-unit id="GvOExXf" resname="Manufacturer">
         <source>Manufacturer</source>
         <target>Fabrikant</target>
