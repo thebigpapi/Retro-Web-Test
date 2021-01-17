@@ -1,6 +1,31 @@
-/* 
-	modern.css - extra stylesheet for browsers supporting media queries
-*/
+/* modern.css - extra stylesheet for browsers supporting media queries */
+
+/* == cross compatibility between linux and windows == */
+/* global tags */
+input[type=text], input[type=submit],  button, select {
+  box-sizing: border-box;
+  height: 26px;
+  line-height: 18px;
+  border-color: #d9d9d9;
+  border-width: thin;
+  border-radius: 2px;
+}
+
+button{
+  padding: 2px 8px 2px;
+}
+input[type=text], select  {
+  padding: 2px 2px 2px;
+}
+
+/* specific tags */
+input.button1, input.button2, input.admin-button {height:auto;border-width:2px}
+input.num {width:20px}
+span.field1 input {
+    height: 25px;
+    width: 25px;
+    font-size: 14px;
+}
 
 @media (max-device-width: 600px) {
 	div.top-bar {font-size:12px; padding: 1px 18px 0;}
@@ -13,7 +38,16 @@
 	span.show-image, span.string-bios { font-size:8px;}
 	div.show-data { width:100%;padding:0;font-size:13px;}
 	div.show-data table, div.notes { font-size:13px;}
-	td.cpu-table { width:85px;}
+	td.cpu-table {width:85px}
+	
+	/* add.html.twig */
+	div.show-images{padding-top:5px;}
+	.ba0 {width:16%;margin:0px} 
+	.ba1 {width:24%;margin:0px}
+	.ba2 {width:16%;margin:0px}
+	.ba3 {width:7%;margin:0px}
+	.ba4 {width:16%;margin:0px}
+	.ba5{display:none;}
 }
 
 @media (min-width: 1200px) {
@@ -26,11 +60,12 @@
 
 	/* search.html.twig */
 	div.sform { height: 1.2em; width:80%; }
-	div.sform input { height: 1.5em; width: 100%;}
+	div.sform input { height: 26px; width: 100%;}
 	td.table-width { width:20px;}
 
 	/* result.html.twig */
 	div.results ul li{ font-size:20px;}
+	td.io-table {width:240px;}
 }
 
 @media (min-width: 1400px) {
@@ -46,6 +81,8 @@
 	div.show-data { width:67%;padding-left:20px; }
 	td.main-table { width:200px; }
 	td.cpu-table { width:160px;}
+	td.io-table {width:240px;}
+
 }
 
 @media (min-width: 1620px) {
@@ -56,7 +93,7 @@
 	div.show-images { max-height:750px;}
 	div.show-data { width:68%; font-size: 18px;}
 	div.show-data table, div.notes { font-size:16px;}
-	td.exp-table {width:180px;}
-	td.io-table {width:200px;}
+	td.exp-table {width:270px;}
+	td.io-table {width:220px;}
 	td.cpu-table { width:180px;}
 }

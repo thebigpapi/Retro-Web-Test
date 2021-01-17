@@ -56,15 +56,19 @@
 			<a href="{{ vich_uploader_asset(image, 'imageFile')}}">
 				<img src="{{ vich_uploader_asset(image, 'imageFile') | imagine_filter('motherboard_show_thumb') }}" alt="" title="">
 			</a>
-			{% if image.creditor %}
+			{% if image.creditor or image.description %}
 				<span class="creditor">
 					{% if image.creditor.website %}
-					<a href="{{ image.creditor.website }}">{% trans %}Image by{% endtrans %} {{ image.creditor.name }}</a>
+						<a href="{{ image.creditor.website }}">{% trans %}Image by{% endtrans %} {{ image.creditor.name }}</a>
 					{% else %}
 						{% trans %}Image by{% endtrans %} {{ image.creditor.name }}
 					{% endif %}
+					{% if image.description %}
+						({{ image.description }})
+					{% endif %}
 				</span>
 			{% endif %}
+			
         </span>
         {% endfor %}
 		</div>
@@ -128,10 +132,14 @@
         {% if motherboard.getProcessorPlatformType() is not null %}
             <tr><td>{% trans %}Processor platform:{% endtrans %}</td><td>{{ motherboard.getProcessorPlatformType().getName() }}</td></tr>
         {% endif %}
+		{% if motherboard.getMaxCpu() is not null %}
+            <tr><td>{% trans %}CPU sockets:{% endtrans %}</td><td>{{ motherboard.getMaxCpu()}}</td></tr>
+        {% endif %}
 		{% if motherboard.getMotherboardMaxRams() is not empty %}
             <tr><td>{% trans %}Maximum supported RAM:{% endtrans %}</td><td>
                 {% for maxRam in motherboard.getMotherboardMaxRams()|sort((a, b) => a.getMaxRam().getValue() <=> b.getMaxRam().getValue()) %}
                     {% if maxRam.getMaxRam() is not null %}
+					<div class="newdiv1"> 
 						{% if maxRam.getMaxRam().getValue() > 1024 %}
 							{{ maxRam.getMaxRam().getValue() / 1024 }} {% trans %}MB{% endtrans %}
 						{% elseif maxRam.getMaxRam().getValue() > 1024 * 1024 %}
@@ -139,6 +147,8 @@
 						{% else %}
 							{{ maxRam.getMaxRam().getValue() }} {% trans %}KB{% endtrans %}
 						{% endif %}
+						({{ maxRam.getNote()}})
+					</div>
                     {% endif %}
                 {% endfor %}
             </td></tr>
@@ -146,14 +156,14 @@
 		{% if motherboard.getCacheSize() is not empty %}
             <tr><td>{% trans %}Cache:{% endtrans %}</td><td>
             {% for cache in motherboard.getCacheSize()|sort((a, b) => a.value <=> b.value) %}
-                [&nbsp;{{ cache.getValueWithUnit() }}&nbsp;]
+                <div class="newdiv2"> {{ cache.getValueWithUnit() }}</div>
             {% endfor %}
             </td></tr>
         {% endif %}
         {% if motherboard.getDramType() is not empty %}
             <tr><td>{% trans %}Supported RAM types:{% endtrans %}</td><td>
             {% for dram in motherboard.getDramType() %}
-                [&nbsp;{{ dram.getName() }}&nbsp;]
+                <div class="newdiv3">{{ dram.getName() }}</div>
             {% endfor %}
             </td></tr>
         {% endif %}
@@ -274,7 +284,7 @@
 				<td class="cpu-table">{% trans %}Supported processors:{% endtrans %}</td>
 				<td>
 					{% for processor in motherboard.getMotherboardProcessor()|sort %}
-						[&nbsp;{{ processor.getManufacturer().getShortNameIfExist() }}&nbsp;{{ processor.getName() }}&nbsp;]
+						<div class="newdiv1">{{ processor.getManufacturer().getShortNameIfExist() }}&nbsp;{{ processor.getName() }}</div>
 					{% endfor %}
 				</td>
 			</tr>
@@ -282,7 +292,7 @@
         {% if motherboard.getCoprocessors() is not empty %}
             <tr><td>{% trans %}Supported math coprocessors:{% endtrans %}</td><td>
                 {% for copro in motherboard.getCoprocessors()|sort %}
-                    [&nbsp;{{ copro.getManufacturer().getShortNameIfExist() }}&nbsp;{{ copro.getName() }}&nbsp;]
+                    <div class="newdiv2">{{ copro.getManufacturer().getShortNameIfExist() }}&nbsp;{{ copro.getName() }}</div>
                 {% endfor %}
 				</td>
 			</tr>
@@ -292,7 +302,7 @@
 				<td>{% trans %}Supported frequencies:{% endtrans %}</td>
 				<td>
 					{% for frequency in motherboard.getCpuSpeed()|sort((a, b) => a.value <=> b.value) %}
-						{{ frequency.getValueWithUnit() }}
+						<div class="newdiv3">{{ frequency.getValueWithUnit() }}</div>
 					{% endfor %}
 				</td>
 			</tr>
