@@ -4,12 +4,13 @@
 
 {% block body %}
 
-{{ form_start(form, {'method': 'POST'}) }}
+<!--{{ form_start(form, {'method': 'POST'}) }}-->
+<form name="add_motherboard" method="post" enctype="multipart/form-data">
 
 <div class="show-images">
 		<div class="bar">
 			<span style="padding-left:10px;">
-				<b> {{ form_label(form.images) }}</b>
+				<b>Images</b>
 				<button type="button" onclick="expand('images-fields-list')">Add</button>
 			</span>
 		</div>
@@ -73,7 +74,7 @@
 		</tr>
 		<tr>
 			<td>CPU sockets: </td>
-			<td>{{ form_widget(form.maxCpu, {'attr': {'style': 'width:20px'}} ) }}</td>
+			<td>{{ form_widget(form.maxCpu, {'attr': {'style': 'width:25px'}} ) }}</td>
 		</tr>
 	</table>
 	<table style="background-color:#e6e6e6;border-radius: 6px; padding: 3px 3px 3px">
@@ -85,10 +86,6 @@
 			<td>
 				<b>Cache :</b>
 				<button type="button" onclick="expand('cacheSize-fields-list')">Add</button>
-			</td>
-			<td style="width:220px;">
-				<b>[reserved]</b>
-				
 			</td>	  
 		</tr>
 		<tr>
@@ -119,9 +116,6 @@
 					{% endfor %}
 				</div>
 				{{ form_errors(form.cacheSize) }}
-			</td>
-			<td class="io-table">
-                
 			</td>
 		</tr>
 	</table>	
@@ -178,7 +172,7 @@
 			<b>Manuals:</b>
 			<button type="button" onclick="expand('manuals-fields-list')">Add</button>
 		</div>
-		<div style="width:100%;clear:left;">
+		<div style="width:100%">
 			<div class="ba1" ><b>Title</b></div>
 			<div class="ba2" ><b>Language</b></div>
 			<div class="ba4"><b>File to upload</b></div>
@@ -344,9 +338,8 @@
 		{{ form_row(form.note) }}
 	</div>
 </div>
-<p><i>Missing attributes:</i></p>
 
-{{ form_end(form) }}
+</form>
 <script type="text/javascript" src="{% if app.request.attributes.get('_route') == "motherboard_edit" %}../{% endif %}../assets/add-collection-widget.js"></script>
 
 {% endblock %}
