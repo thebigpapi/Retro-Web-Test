@@ -63,7 +63,7 @@
 		<div class="append_table" id="motherboardAliases-fields-list" data-widget-counter="{{ form.motherboardAliases|length }}"
         data-prototype="
 			<div class=ba0>{{ form_widget(form.motherboardAliases.vars.prototype.manufacturer, {'attr': {'style': 'width:100%'}} )|e }}</div>
-			<div class=ba1>{{ form_widget(form.motherboardAliases.vars.prototype.name, {'attr': {'style': 'width:100%'}} )|e }}</div>
+			<div class=ba1>{{ form_widget(form.motherboardAliases.vars.prototype.nameisRobot, {'attr': {'style': 'width:100%'}} )|e }}</div>
 			<div class=ba3><button type=button onclick=this.parentNode.parentNode.parentNode.removeChild(this.parentNode.parentNode);>Del</button></div>
 		">
 			{% for alias in form.motherboardAliases %}
