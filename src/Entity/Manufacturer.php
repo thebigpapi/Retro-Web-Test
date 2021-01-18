@@ -58,6 +58,11 @@ class Manufacturer
      */
     private $chipsetParts;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\MotherboardAlias", mappedBy="manufacturer")
+     */
+    private $motherboardAliases;
+
     public function __construct()
     {
         $this->motherboards = new ArrayCollection();
@@ -66,6 +71,7 @@ class Manufacturer
         $this->videoChipsets = new ArrayCollection();
         $this->audioChipsets = new ArrayCollection();
         $this->chipsetParts = new ArrayCollection();
+        $this->motherboardAliases = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -285,6 +291,37 @@ class Manufacturer
             // set the owning side to null (unless already changed)
             if ($chipsetPart->getManufacturer() === $this) {
                 $chipsetPart->setManufacturer(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|MotherboardAlias[]
+     */
+    public function getMotherboardAliases(): Collection
+    {
+        return $this->motherboardAliases;
+    }
+
+    public function addMotherboardAlias(MotherboardAlias $motherboardAlias): self
+    {
+        if (!$this->motherboardAliases->contains($motherboardAlias)) {
+            $this->motherboardAliases[] = $motherboardAlias;
+            $motherboardAlias->setManufacturer($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMotherboardAlias(MotherboardAlias $motherboardAlias): self
+    {
+        if ($this->motherboardAliases->contains($motherboardAlias)) {
+            $this->motherboardAliases->removeElement($motherboardAlias);
+            // set the owning side to null (unless already changed)
+            if ($motherboardAlias->getManufacturer() === $this) {
+                $motherboardAlias->setManufacturer(null);
             }
         }
 

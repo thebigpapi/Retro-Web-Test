@@ -26,6 +26,7 @@ use App\Form\Type\ProcessorType;
 use App\Form\Type\CoprocessorType;
 use App\Form\Type\ProcessorSpeedType;
 use App\Form\Type\MotherboardExpansionSlotType;
+use App\Form\Type\MotherboardAliasType;
 use App\Form\Type\MotherboardIoPortType;
 use App\Form\Type\MotherboardMaxRamType;
 use App\Form\Type\CacheSizeType;
@@ -44,6 +45,11 @@ class AddMotherboard extends AbstractType
             ->add('name', TextType::class)
             ->add('dimensions', TextType::class, [
                 'required' => false,
+            ])
+            ->add('motherboardAliases', CollectionType::class, [
+                'entry_type' => MotherboardAliasType::class,
+                'allow_add' => true,
+                'allow_delete' => true,
             ])
             ->add('manufacturer', EntityType::class, [
                 'class' => Manufacturer::class,

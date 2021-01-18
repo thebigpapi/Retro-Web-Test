@@ -12,7 +12,16 @@
 		<div class="results">
 			<ul>
 			{% for motherboard in motherboards %}
-				<li><a class="result-link" href="../show/{{ motherboard.getId() }}">{{ motherboard.getManufacturerShortNameIfExist() }}&nbsp;{{ motherboard.name }}</a></li>
+				<li>
+					<a class="result-link" href="../show/{{ motherboard.getId() }}">{{ motherboard.getManufacturerShortNameIfExist() }}&nbsp;{{ motherboard.name }}</a>
+					{% if motherboard.getMotherboardAliases() is not empty %}
+						<ul>
+						{% for alias in motherboard.getMotherboardAliases() %}
+						<li>{{ alias.getManufacturer().getShortNameIfExist() }}&nbsp;{{ alias.name }}</li>
+						{% endfor %}
+						</ul>
+					{% endif %}
+				</li>
 					{#% if motherboard.getProcessorPlatformType() is not null %}
 						{{ motherboard.getProcessorPlatformType().getName() }}	
 					{% endif %#}		

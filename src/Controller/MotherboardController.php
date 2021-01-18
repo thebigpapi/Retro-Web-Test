@@ -427,6 +427,9 @@ class MotherboardController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $mobo = $form->getData();
             $mobo->updateLastEdited();
+            foreach ($form['motherboardAliases']->getData() as $key => $val) {
+                $val->setMotherboard($mobo);
+            }
             foreach ($form['motherboardIoPorts']->getData() as $key => $val) {
                 $val->setMotherboard($mobo);
             }

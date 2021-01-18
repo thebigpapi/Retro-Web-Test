@@ -138,6 +138,11 @@ class Motherboard
      */
     private $maxCpu;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\MotherboardAlias", mappedBy="motherboard", orphanRemoval=true, cascade={"persist"})
+     */
+    private $motherboardAliases;
+
 
     public function __construct()
     {
@@ -158,6 +163,7 @@ class Motherboard
         $this->images = new ArrayCollection();
         $this->knownIssues = new ArrayCollection();
         $this->lastEdited = new \DateTime('now');
+        $this->motherboardAliases = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -677,6 +683,37 @@ class Motherboard
     public function setMaxCpu(?int $maxCpu): self
     {
         $this->maxCpu = $maxCpu;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|MotherboardAlias[]
+     */
+    public function getMotherboardAliases(): Collection
+    {
+        return $this->motherboardAliases;
+    }
+
+    public function addMotherboardAlias(MotherboardAlias $motherboardAlias): self
+    {
+        if (!$this->motherboardAliases->contains($motherboardAlias)) {
+            $this->motherboardAliases[] = $motherboardAlias;
+            $motherboardAlias->setMotherboard($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMotherboardAlias(MotherboardAlias $motherboardAlias): self
+    {
+        if ($this->motherboardAliases->contains($motherboardAlias)) {
+            $this->motherboardAliases->removeElement($motherboardAlias);
+            // set the owning side to null (unless already changed)
+            if ($motherboardAlias->getMotherboard() === $this) {
+                $motherboardAlias->setMotherboard(null);
+            }
+        }
 
         return $this;
     }

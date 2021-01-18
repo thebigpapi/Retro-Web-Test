@@ -48,6 +48,23 @@
            {{ motherboard.getName() }}
 	</h2>
 
+	{% if motherboard.getMotherboardAliases() is not null %} 
+		<table>
+		{% for alias in motherboard.getMotherboardAliases() %}
+			<tr>
+			<td>
+			{% if alias.getManufacturer() is not null %} 
+			({{ alias.getManufacturer().getShortNameIfExist() }} 
+			{% else %}
+			(Unknown
+			{% endif %}
+           	{{ alias.getName() }})
+			</td>
+			</tr>
+		{% endfor %}
+		</table>
+	{% endif %}
+
 	<div class="show-images">
     {% if motherboard.getImages() is not empty %}
 		<div class="ie-fix">
