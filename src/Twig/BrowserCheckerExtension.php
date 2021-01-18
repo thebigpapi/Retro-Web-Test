@@ -12,8 +12,6 @@ class BrowserCheckerExtension extends AbstractExtension
     public function __construct(ParameterBagInterface $params)
     {
         $this->params = $params;
-        //$this->container = new ContainerBuilder();
-        //$this->container->compile();
     }
 
     public function getFunctions()
