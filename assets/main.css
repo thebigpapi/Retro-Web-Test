@@ -19,7 +19,7 @@ div.top-bar select.lang { width: 8.33em;}
 div.main, th { text-align: center;}
 div.page { text-align: left; margin: auto; width:98%;}
 h2.title { text-align: center; font-size:24px; margin: 15px 0;}
-b.contrib { background: #FFFF00; color: #FF0040;}
+b.contrib { background: #FFFF00; color: #000000;}
 b.contrib a:link, a:visited { color: #0000FF;}
 
 /* index.html.twig */
@@ -47,6 +47,10 @@ div.butn input { width:7.5em; height:2em; font-size:20px;}
 /* result.html.twig */
 
 div.results ul li{ line-height:140%;}
+ul.results-alias{ list-style-type: none;margin:0}
+ul.results-alias li{height:20px}
+ul.results-alias li span{font-size:0.8em}
+
 div.pagination span.current { font-weight:bold;}
 
 /* show.html.twig */
@@ -60,7 +64,7 @@ div.show-data table, div.notes {font-size: 14px;}
 span.string-bios {font-size:12px;}
 
 div.newdiv1, div.newdiv2, div.newdiv3{padding:6px;margin-top: 1px;display: inline-block;*display: inline;*vertical-align: middle;
-	box-shadow:inset -1px -1px #0a0a0a,inset 1px 1px #dfdfdf,inset -2px -2px grey,inset 2px 2px #fff;}
+	box-shadow:inset -1px -1px #0a0a0a,inset 1px 1px #dfdfdf,inset -2px -2px grey,inset 2px 2px #fff;color:#000000}
 div.newdiv1{ background-color:#cae4fa }
 div.newdiv2{ background-color:#d0faca }
 div.newdiv3{ background-color:#fae9ca }

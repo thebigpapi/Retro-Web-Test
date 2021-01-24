@@ -7,7 +7,7 @@
 
 <form name="add_motherboard" method="post" enctype="multipart/form-data">
 
-<div class="show-images">
+<div class="show-images" style="max-height:none">
 		<div class="bar">
 			<span style="padding-left:10px;">
 				<b>Images</b>
@@ -45,25 +45,27 @@
 <div class="show-data">
 	<table class="add-title">
 		<tr>
-		{% if form.manufacturer is not null %}
+			<td class="ttl1"><b>Manufacturer</b></td>
+			<td class="ttl2"><b>Name</b></td>
+			<td></td>
+		</tr>
+		<tr>
 			<td class="ttl1">{{ form_widget(form.manufacturer) }}</td>
 			<td class="ttl2">{{ form_widget(form.name) }}</td>
-		{% else %}
-			Add a new motherboard
-		{% endif %}
+			<td class="ttl3">{{ form_row(form.save) }}</td>
 		</tr>
 	</table>
-	<div style="padding-top:10px">{{ form_row(form.save) }}</div>
+	<div class="clrs"></div>
 
-	<div class="motherboard-aliases" style="background-color:#e6e6e6;border-radius: 6px; padding: 3px 3px 3px">
+	<div class="motherboard-aliases" style="background-color:#e6e6e6;color:#000000;border-radius: 6px; padding: 3px 3px 3px">
 		<div>
-			<b>Motherboard aliases:</b>
+			<b>Alternative name:</b>
 			<button type="button" onclick="expand('motherboardAliases-fields-list')">Add</button>
 		</div>
 		<div class="append_table" id="motherboardAliases-fields-list" data-widget-counter="{{ form.motherboardAliases|length }}"
         data-prototype="
 			<div class=ba0>{{ form_widget(form.motherboardAliases.vars.prototype.manufacturer, {'attr': {'style': 'width:100%'}} )|e }}</div>
-			<div class=ba1>{{ form_widget(form.motherboardAliases.vars.prototype.nameisRobot, {'attr': {'style': 'width:100%'}} )|e }}</div>
+			<div class=ba1>{{ form_widget(form.motherboardAliases.vars.prototype.name, {'attr': {'style': 'width:100%'}} )|e }}</div>
 			<div class=ba3><button type=button onclick=this.parentNode.parentNode.parentNode.removeChild(this.parentNode.parentNode);>Del</button></div>
 		">
 			{% for alias in form.motherboardAliases %}
@@ -100,7 +102,7 @@
 			<td>{{ form_widget(form.maxCpu, {'attr': {'style': 'width:25px'}} ) }}</td>
 		</tr>
 	</table>
-	<table style="background-color:#e6e6e6;border-radius: 6px; padding: 3px 3px 3px">
+	<table style="background-color:#e6e6e6;color:#000000;border-radius: 6px; padding: 3px 3px 3px">
 		<tr style="text-align:center">
 			<td>
 				<b>Max system RAM : </b>
@@ -225,7 +227,7 @@
 	</div>
 	<div class="clrs"></div>
 	
-	<table style="background-color:#e6e6e6;border-radius: 6px; padding: 3px 3px 3px">
+	<table style="background-color:#e6e6e6;color:#000000;border-radius: 6px; padding: 3px 3px 3px">
 		<tr style="text-align:center">
 			<td>
 				<b>I/O ports : </b>
@@ -300,7 +302,7 @@
 			<td>{{ form_widget(form.audioChipset) }}</td>
 		</tr>
 	</table>
-	<table style="background-color:#e6e6e6;border-radius: 6px; padding: 3px 3px 3px">
+	<table style="background-color:#e6e6e6;color:#000000;border-radius: 6px; padding: 3px 3px 3px">
 		<tr style="text-align:center">
 			<td style="width:280px">
 				<b>CPU:</b>

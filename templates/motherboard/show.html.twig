@@ -48,23 +48,6 @@
            {{ motherboard.getName() }}
 	</h2>
 
-	{% if motherboard.getMotherboardAliases() is not null %} 
-		<table>
-		{% for alias in motherboard.getMotherboardAliases() %}
-			<tr>
-			<td>
-			{% if alias.getManufacturer() is not null %} 
-			({{ alias.getManufacturer().getShortNameIfExist() }} 
-			{% else %}
-			(Unknown
-			{% endif %}
-           	{{ alias.getName() }})
-			</td>
-			</tr>
-		{% endfor %}
-		</table>
-	{% endif %}
-
 	<div class="show-images">
     {% if motherboard.getImages() is not empty %}
 		<div class="ie-fix">
@@ -95,6 +78,19 @@
 	</div>
 
 <div class="show-data">
+	{% if motherboard.getMotherboardAliases() is not null %} 
+		<div>
+		<span>Also known as:</span> 
+		{% for alias in motherboard.getMotherboardAliases() %}
+			{% if alias.getManufacturer() is not null %} 
+				<span>{{ alias.getManufacturer().getShortNameIfExist() }}
+			{% else %}
+				<span>Unknown
+			{% endif %}
+           	{{ alias.getName() }}, </span> 
+		{% endfor %}
+		</div>
+	{% endif %}
 	<p>
 		<b class="contrib">{% trans %}Would you like to improve this page? Click{% endtrans %} <a href="{% if is_granted('ROLE_ADMIN') %}../edit/{{ motherboard.getId() }}{% else %}/win3board/posting.php?mode=post&amp;f=96&amp;language=en{% endif %}">{% trans %}here{% endtrans %}</a>.</b>
 	</p>
@@ -278,16 +274,20 @@
 	</table>
 
 	<table>
-        {% if motherboard.getVideoChipset() is not null %}
+        {% if motherboard.getVideoChipset() is not null or motherboard.getMaxVideoRam() is not null %}
             <tr>
 				<td>{% trans %}Video Chipset:{% endtrans %}</td>
-				<td>{{ motherboard.getVideoChipset().getNameWithManufacturer() }}</td>
-			</tr>
-        {% endif %}
-        {% if  motherboard.getMaxVideoRam() is not null %}
-            <tr>
-				<td>{% trans %}Max VRAM:{% endtrans %}</td>
-				<td>{{  motherboard.getMaxVideoRam().getValueWithUnit() }}</td>
+				<td>
+				{% if motherboard.getVideoChipset() is not null %}
+					{{ motherboard.getVideoChipset().getNameWithManufacturer() }}
+				{% else %}
+					Unknown
+				{% endif %}
+				
+				{% if  motherboard.getMaxVideoRam() is not null %}
+					({{  motherboard.getMaxVideoRam().getValueWithUnit() }} max VRAM)
+				{% endif %}
+				</td>
 			</tr>
         {% endif %}
         {% if motherboard.getAudioChipset() is not null %}
