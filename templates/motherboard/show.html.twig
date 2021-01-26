@@ -54,21 +54,17 @@
         {% for image in motherboard.getImages()|sort((a, b) => a.motherboardImageType <=> b.motherboardImageType) %}
         <span class="show-image">
 			<a href="{{ vich_uploader_asset(image, 'imageFile')}}">
-				<img src="{{ vich_uploader_asset(image, 'imageFile') | imagine_filter('motherboard_show_thumb') }}" alt="" title="">
+				<img src="{{ vich_uploader_asset(image, 'imageFile') | imagine_filter('motherboard_show_thumb') }}" alt="" title="{% if image.description %}{{ image.description }}{% endif %}">
 			</a>
-			{% if image.creditor or image.description %}
+			{% if image.creditor %}
 				<span class="creditor">
 					{% if image.creditor.website %}
 						<a href="{{ image.creditor.website }}">{% trans %}Image by{% endtrans %} {{ image.creditor.name }}</a>
 					{% else %}
 						{% trans %}Image by{% endtrans %} {{ image.creditor.name }}
 					{% endif %}
-					{% if image.description %}
-						({{ image.description }})
-					{% endif %}
 				</span>
 			{% endif %}
-			
         </span>
         {% endfor %}
 		</div>
@@ -95,10 +91,6 @@
 		<b class="contrib">{% trans %}Would you like to improve this page? Click{% endtrans %} <a href="{% if is_granted('ROLE_ADMIN') %}../edit/{{ motherboard.getId() }}{% else %}/win3board/posting.php?mode=post&amp;f=96&amp;language=en{% endif %}">{% trans %}here{% endtrans %}</a>.</b>
 	</p>
 	{% if is_granted('ROLE_ADMIN') %}
-		<!--<form action="../edit/{{ motherboard.getId() }}" style="display: inline"><div style="display: inline">
-			<input type="submit" value="Edit" style="margin-right:5px;">
-		</div></form>-->
-
 		<input onclick="delEntry()" type="button" value="Delete">
 
 		<div id="delDIV" style="display:none">
@@ -152,7 +144,7 @@
             <tr><td>{% trans %}Maximum supported RAM:{% endtrans %}</td><td>
                 {% for maxRam in motherboard.getMotherboardMaxRams()|sort((a, b) => a.getMaxRam().getValue() <=> b.getMaxRam().getValue()) %}
                     {% if maxRam.getMaxRam() is not null %}
-					<div class="newdiv1"> 
+					<div class="newdiv1">
 						{% if maxRam.getMaxRam().getValue() > 1024 %}
 							{{ maxRam.getMaxRam().getValue() / 1024 }} {% trans %}MB{% endtrans %}
 						{% elseif maxRam.getMaxRam().getValue() > 1024 * 1024 %}
