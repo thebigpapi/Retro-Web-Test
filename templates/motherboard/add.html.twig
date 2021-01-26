@@ -1,373 +1,346 @@
 {% extends 'admin/header.html.twig' %}
 
-{% block title %}Add motherboard{% endblock %}
+{% block title %}Add/Edit motherboard{% endblock %}
 
 {% block body %}
-<h2 class="title">Add a new motherboard</h2>
-{{ form_start(form, {'method': 'POST'}) }}
-<div class="butn" style="padding-top:10px;padding-bottom:10px;">{{ form_row(form.save) }}</div>
 
-<div class="add-side">
-		<div class="addform">
-			<div class="bar">
-				<span style="padding-left:10px;">
-					<b>General characteristics</b>
-				</span>
-			</div>
-			<table>
-				<tr>
-					<td><div class="editasset0">{{ form_row(form.manufacturer) }}</div></td>
-				</tr>
-				<tr>
-					<td><div class="editasset0">{{ form_row(form.name) }}</div></td>
-				</tr>
-				<tr>
-					<td><div class="editasset0">{{ form_row(form.formFactor) }}</div></td>
-				</tr>
-				<tr>
-					<td><div class="editasset0">{{ form_row(form.dimensions) }}</div></td>
-				</tr>
-				<tr>
-					<td><div class="editasset0">{{ form_row(form.chipset) }}</div></td>
-				</tr>
-				<tr>
-					<td><div class="editasset0">{{ form_row(form.videoChipset) }}</div></td>
-				</tr>
-				<tr>
-					<td><div class="editasset0">{{ form_row(form.maxVideoRam) }}</div></td>
-				</tr>
-				<tr>
-					<td><div class="editasset0">{{ form_row(form.audioChipset) }}</div></td>
-				</tr>
-			</table>
+
+<form name="add_motherboard" method="post" enctype="multipart/form-data">
+
+<div class="show-images">
+		<div class="bar">
+			<span style="padding-left:10px;">
+				<b>Images</b>
+				<button type="button" onclick="expand('images-fields-list')">Add</button>
+			</span>
 		</div>
-			<div class="clrs"></div>
-			
-			<div class="addform">
-				<div class="bar">
-					<span style="padding-left:10px;">
-						<b>{{ form_label(form.motherboardExpansionSlots) }}</b>
-					</span>
-				</div> 
-                {{ form_errors(form.motherboardExpansionSlots) }}
-				<div>
-                <ul id="motherboardExpansionSlots-fields-list"
-                    data-prototype="{{ form_widget(form.motherboardExpansionSlots.vars.prototype)|e }}"
-                    data-widget-tags="{{ '<li></li>'|e }}"
-                    data-widget-counter="{{ form.motherboardExpansionSlots|length }}">
-                {% for slot in form.motherboardExpansionSlots %}
-                    <li>
-                        {{ form_errors(slot) }}
-                        {{ form_widget(slot) }}
-                        <button type="button" class="delbutton">Delete</button>
-                    </li>
-                {% endfor %}
-                </ul></div>
-                <button type="button"
-                    class="add-another-collection-widget"
-                    data-list-selector="#motherboardExpansionSlots-fields-list">
-                        Add Expansion slot
-                </button>
-			</div>
-			<div class="clrs"></div>
-			
-			<div class="addform">
-				<div class="bar">
-					<span style="padding-left:10px;">
-						<b>{{ form_label(form.motherboardIoPorts) }}</b>
-					</span>
+        <div id="images-fields-list" data-widget-counter="{{ form.images|length }}"
+            data-prototype="<div class=addform>
+				<div class=imgp>{{ form_widget(form.images.vars.prototype.imageFile, {'attr': {'style': 'width:100%'}})|e }}</div>
+				<div class=imgp><span>Type: </span>{{ form_widget(form.images.vars.prototype.motherboardImageType)|e }}</div>
+				<div class=imgp><span>Creditor: </span>{{ form_widget(form.images.vars.prototype.creditor)|e }}</div>
+				<div class=imgp><span>License: </span>{{ form_widget(form.images.vars.prototype.license)|e }}</div>
+				<div class=imgp><span>Notes: </span>{{ form_widget(form.images.vars.prototype.description)|e }}</div>
+				<div class=imgp>Uploaded file: 
+					<button type=button onclick=this.parentNode.parentNode.parentNode.removeChild(this.parentNode.parentNode);>Delete this entry</button></div>
+				<div class=imgp>{{ form_widget(form.images.vars.prototype.file_name, {'attr': {'style': 'width:90%'}})|e }}</div></div>
+				">
+            {% for image in form.images %}
+			<div class="addform" >
+				<div class="imgp">{{ form_widget(image.imageFile, {'attr': {'style': 'width:100%'}}) }}</div>
+                <div class="imgp"><span>Type: </span>{{ form_widget(image.motherboardImageType)}}</div>
+				<div class="imgp"><span>Creditor: </span>{{ form_widget(image.creditor)}}</div>
+				<div class="imgp"><span>License: </span>{{ form_widget(image.license)}}</div>
+				<div class="imgp"><span>Notes: </span>{{ form_widget(image.description)}}</div>
+				<div class="imgp">Uploaded file: 
+					<button type="button" onclick="this.parentNode.parentNode.parentNode.removeChild(this.parentNode.parentNode);">Delete this entry</button>
 				</div>
-                {{ form_label(form.motherboardIoPorts) }}
-                {{ form_errors(form.motherboardIoPorts) }}
-				<div>
-                <ul id="motherboardIoPorts-fields-list"
-                    data-prototype="{{ form_widget(form.motherboardIoPorts.vars.prototype)|e }}"
-                    data-widget-tags="{{ '<li></li>'|e }}"
-                    data-widget-counter="{{ form.motherboardIoPorts|length }}">
-                {% for port in form.motherboardIoPorts %}
-                    <li>
-                        {{ form_errors(port) }}
-                        {{ form_widget(port) }}
-                        <button type="button" class="delbutton">Delete</button>
-                    </li>
-                {% endfor %}
-                </ul></div>
-                <button type="button"
-                    class="add-another-collection-widget"
-                    data-list-selector="#motherboardIoPorts-fields-list">
-                        Add I/O port
-                </button>
+				<div class="imgp">{{ form_widget(image.file_name, {'attr': {'style': 'width:90%'}}) }}</div>
 			</div>
-			<div class="clrs"></div>
-			
-			<div class="addform">
-			<div class="bar">
-					<span style="padding-left:10px;">
-						<b> {{ form_label(form.knownIssues) }}</b>
-					</span>
-			</div>
-                {{ form_label(form.knownIssues) }}
-                {{ form_errors(form.knownIssues) }}
-                <ul id="knownIssues-fields-list"
-                    data-prototype="{{ form_widget(form.knownIssues.vars.prototype)|e }}"
-                    data-widget-tags="{{ '<li></li>'|e }}"
-                    data-widget-counter="{{ form.knownIssues|length }}">
-                {% for issue in form.knownIssues %}
-                    <li>
-                        {{ form_errors(issue) }}
-                        {{ form_widget(issue) }}
-                        <button type="button" class="delbutton">Delete</button>
-                    </li>
-                {% endfor %}
-                </ul>
-                <button type="button"
-                    class="add-another-collection-widget"
-                    data-list-selector="#knownIssues-fields-list">
-                        Add Known Issue
-                </button>
-			</div>
-			<div class="clrs"></div>
-			
-			<div class="addform">
-			<div class="bar">
-					<span style="padding-left:10px;">
-						<b> {{ form_label(form.images) }}</b>
-					</span>
-			</div>
-                {{ form_label(form.images) }}
-                {{ form_errors(form.images) }}
-                <ul id="images-fields-list"
-                    data-prototype="{{ form_widget(form.images.vars.prototype)|e }}"
-                    data-widget-tags="{{ '<li></li>'|e }}"
-                    data-widget-counter="{{ form.images|length }}">
-                {% for image in form.images %}
-                    <li>
-                        {{ form_errors(image) }}
-                        {{ form_widget(image) }}
-                        <button type="button" class="delbutton">Delete</button>
-                    </li>
-                {% endfor %}
-                </ul>
-                <button type="button"
-                    class="add-another-collection-widget"
-                    data-list-selector="#images-fields-list">
-                        Add Image
-                </button>
-            </div>
-			<div class="clrs"></div>
-			
-			<div class="addform">
-			<div class="bar">
-					<span style="padding-left:10px;">
-						<b> {{ form_label(form.manuals) }}</b>
-					</span>
-			</div>
-                
-                {{ form_errors(form.manuals) }}
-                <ul id="manuals-fields-list"
-                    data-prototype="{{ form_widget(form.manuals.vars.prototype)|e }}"
-                    data-widget-tags="{{ '<li></li>'|e }}"
-                    data-widget-counter="{{ form.manuals|length }}">
-                {% for manual in form.manuals %}
-                    <li>
-                        {{ form_errors(manual) }}
-						
-							{{ form_widget(manual) }}
-						
-                        <button type="button" class="delbutton">Delete</button>
-                    </li>
-                {% endfor %}
-                </ul>
-                <button type="button"
-                    class="add-another-collection-widget"
-                    data-list-selector="#manuals-fields-list">
-                        Add Manual
-                </button>
-            </div>
-			<div class="clrs"></div>
-			
-			<div class="addform">
-			<div class="bar">
-					<span style="padding-left:10px;">
-						<b> {{ form_label(form.motherboardBios) }}</b>
-					</span>
-			</div>
-                {{ form_label(form.motherboardBios) }}
-                {{ form_errors(form.motherboardBios) }}
-                <ul id="motherboardBios-fields-list"
-                    data-prototype="{{ form_widget(form.motherboardBios.vars.prototype)|e }}"
-                    data-widget-tags="{{ '<li></li>'|e }}"
-                    data-widget-counter="{{ form.motherboardBios|length }}">
-                {% for bios in form.motherboardBios %}
-                    <li>
-                        {{ form_errors(bios) }}
-                        {{ form_widget(bios) }}
-                        <button type="button" class="delbutton">Delete</button>
-                    </li>
-                {% endfor %}
-                </ul>
-                <button type="button"
-                    class="add-another-collection-widget"
-                    data-list-selector="#motherboardBios-fields-list">
-                        Add BIOS
-                </button>
-            </div>
+            {% endfor %}
+			{{ form_errors(form.images) }}
+        </div>
 </div>
-<div class="add-side">
-		<div class="addform">
-				<div class="bar">
-					<span style="padding-left:10px;">
-						<b>Memory Support</b>
-					</span>
-				</div>
-			<table>
-				<tr>
-					<td><div class="ram-type">{{ form_row(form.dramType) }}<div></td>
-				</tr>
-				<tr>
-					<td>
-						{{ form_label(form.motherboardMaxRams) }}
-						{{ form_errors(form.motherboardMaxRams) }}
-						<ul id="motherboardMaxRams-fields-list"
-							data-prototype="{{ form_widget(form.motherboardMaxRams.vars.prototype)|e }}"
-							data-widget-tags="{{ '<li></li>'|e }}"
-							data-widget-counter="{{ form.motherboardMaxRams|length }}">
-						{% for maxRam in form.motherboardMaxRams %}
-							<li>
-								{{ form_errors(maxRam) }}
-								{{ form_widget(maxRam) }}
-								<button type="button" class="delbutton">Delete</button>
-							</li>
-						{% endfor %}
-						</ul>
-						<button type="button"
-							class="add-another-collection-widget"
-							data-list-selector="#motherboardMaxRams-fields-list">
-								Add maxRam
-						</button>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						{{ form_label(form.cacheSize) }}
-						{{ form_errors(form.cacheSize) }}
-						<ul id="cacheSize-fields-list"
-							data-prototype="{{ form_widget(form.cacheSize.vars.prototype)|e }}"
-							data-widget-tags="{{ '<li></li>'|e }}"
-							data-widget-counter="{{ form.cacheSize|length }}">
-						{% for size in form.cacheSize %}
-							<li>
-								{{ form_errors(size) }}
-								{{ form_widget(size) }}
-								<button type="button" class="delbutton">Delete</button>
-							</li>
-						{% endfor %}
-						</ul>
-						<button type="button"
-							class="add-another-collection-widget"
-							data-list-selector="#cacheSize-fields-list">
-								Add cache size
-						</button>
-					</td>
-				</tr>
-			</table>
-		</div>
-		<div class="clrs"></div>
-		<div class="addform">
-			<div class="bar">
-					<span style="padding-left:10px;">
-						<b>CPU support</b>
-					</span>
-			</div>
-			<div class="proc-type">
-                {{ form_row(form.processorPlatformType) }}
-			</div>
-				<div>
-                {{ form_label(form.motherboardProcessor) }}
-                {{ form_errors(form.motherboardProcessor) }}
-                <ul id="motherboardProcessor-fields-list"
-                    data-prototype="{{ form_widget(form.motherboardProcessor.vars.prototype)|e }}"
-                    data-widget-tags="{{ '<li></li>'|e }}"
-                    data-widget-counter="{{ form.motherboardProcessor|length }}">
-                {% for processor in form.motherboardProcessor %}
-                    <li>
-                        {{ form_errors(processor) }}
-                        {{ form_widget(processor) }}
-                        <button type="button" class="delbutton">Delete</button>
-                    </li>
-                {% endfor %}
-                </ul>
-                <button type="button"
-                    class="add-another-collection-widget"
-                    data-list-selector="#motherboardProcessor-fields-list">
-                        Add Processor
-                </button>
-				</div>
-				<div>
-                {{ form_label(form.coprocessors) }}
-                {{ form_errors(form.coprocessors) }}
-                <ul id="coprocessors-fields-list"
-                    data-prototype="{{ form_widget(form.coprocessors.vars.prototype)|e }}"
-                    data-widget-tags="{{ '<li></li>'|e }}"
-                    data-widget-counter="{{ form.coprocessors|length }}">
-                {% for coprocessor in form.coprocessors %}
-                    <li>
-                        {{ form_errors(coprocessor) }}
-                        {{ form_widget(coprocessor) }}
-                        <button type="button" class="delbutton">Delete</button>
-                    </li>
-                {% endfor %}
-                </ul>
-                <button type="button"
-                    class="add-another-collection-widget"
-                    data-list-selector="#coprocessors-fields-list">
-                        Add Coprocessor
-                </button>
-				</div>
-				<div>
-                {{ form_label(form.cpuSpeed) }}
-                {{ form_errors(form.cpuSpeed) }}
-                <ul id="cpuSpeed-fields-list"
-                    data-prototype="{{ form_widget(form.cpuSpeed.vars.prototype)|e }}"
-                    data-widget-tags="{{ '<li></li>'|e }}"
-                    data-widget-counter="{{ form.cpuSpeed|length }}">
-                {% for speed in form.cpuSpeed %}
-                    <li>
-                        {{ form_errors(speed) }}
-                        {{ form_widget(speed) }}
-                        <button type="button" class="delbutton">Delete</button>
-                    </li>
-                {% endfor %}
-                </ul>
-                <button type="button"
-                    class="add-another-collection-widget"
-                    data-list-selector="#cpuSpeed-fields-list">
-                        Add CPU Speed
-                </button>
-				</div>
-		</div>
-		<div class="clrs"></div>
-		<div class="addform">
-			<div class="bar">
-					<span style="padding-left:10px;">
-						<b>Notes</b>
-					</span>
-			</div>
-			<div class="notes-field">
-				{{ form_row(form.note) }}
-			</div>
-		</div>
-</div>	
-{{ form_end(form) }}
+
+<div class="show-data">
+	<table class="add-title">
+		<tr>
+		{% if form.manufacturer is not null %}
+			<td class="ttl1">{{ form_widget(form.manufacturer) }}</td>
+			<td class="ttl2">{{ form_widget(form.name) }}</td>
+		{% else %}
+			Add a new motherboard
+		{% endif %}
+		</tr>
+	</table>
+	<div style="padding-top:10px">{{ form_row(form.save) }}</div>
 	
-<script>
-    var buttons = document.getElementsByTagName("BUTTON");
-    for(i = 0;i < buttons.length-1; i++)
-    {
-        if(buttons[i].className==="delbutton")
-            buttons[i].addEventListener('click', function () { this.parentElement.remove(); });
-    }
-</script>
-<script src="{% if app.request.attributes.get('_route') == "motherboard_edit" %}../{% endif %}../assets/add-collection-widget.js"></script>
+	<table>
+		<tr>
+			<td class="main-table">Form factor :</td>
+			<td>{{ form_widget(form.formFactor) }}</td>
+		</tr>
+		<tr>
+			<td>Chipset : </td>
+			<td>{{ form_widget(form.chipset, {'attr': {'style': 'width:80%'}} ) }}</td>
+		</tr>
+		<tr>
+			<td>Dimensions : </td>
+			<td>{{ form_widget(form.dimensions) }}</td>
+		</tr>
+		<tr>
+			<td>CPU platform : </td>
+			<td>{{ form_widget(form.processorPlatformType) }}</td>
+		</tr>
+		<tr>
+			<td>CPU sockets: </td>
+			<td>{{ form_widget(form.maxCpu, {'attr': {'style': 'width:25px'}} ) }}</td>
+		</tr>
+	</table>
+	<table style="background-color:#e6e6e6;border-radius: 6px; padding: 3px 3px 3px">
+		<tr style="text-align:center">
+			<td>
+				<b>Max system RAM : </b>
+				<button type="button" onclick="expand('motherboardMaxRams-fields-list')">Add</button>
+			</td>	  
+			<td>
+				<b>Cache :</b>
+				<button type="button" onclick="expand('cacheSize-fields-list')">Add</button>
+			</td>	  
+		</tr>
+		<tr>
+			<td class="exp-table">
+				<div id="motherboardMaxRams-fields-list" data-widget-counter="{{ form.motherboardMaxRams|length }}"
+					data-prototype=" <div>{{ form_widget(form.motherboardMaxRams.vars.prototype.max_ram)|e }}
+						{{ form_widget(form.motherboardMaxRams.vars.prototype.note, {'attr': {'style': 'width:30%'}} )|e }}
+						<button type=button onclick=this.parentNode.parentNode.removeChild(this.parentNode);>Del</button></div>">
+					{% for maxRam in form.motherboardMaxRams %}
+						<div>{{ form_widget(maxRam.max_ram) }}
+						{{ form_widget(maxRam.note, {'attr': {'style': 'width:30%'}} ) }}
+						<button type="button" onclick="this.parentNode.parentNode.removeChild(this.parentNode);">Del</button>
+						{{ form_errors(maxRam) }}
+						</div>
+					{% endfor %}
+				</div>
+				{{ form_errors(form.motherboardMaxRams) }}
+			</td>
+			<td class="io-table">
+				<div id="cacheSize-fields-list" data-widget-counter="{{ form.cacheSize|length }}"
+					data-prototype="<div>{{ form_widget(form.cacheSize.vars.prototype)|e }}
+						<button type=button onclick=this.parentNode.parentNode.removeChild(this.parentNode);>Del</button></div>">
+					{% for size in form.cacheSize %}
+						<div>{{ form_widget(size) }}
+						<button type="button" onclick="this.parentNode.parentNode.removeChild(this.parentNode);">Del</button>
+						{{ form_errors(size) }}
+					</div>
+					{% endfor %}
+				</div>
+				{{ form_errors(form.cacheSize) }}
+			</td>
+		</tr>
+	</table>	
+	<table>
+		<tr>
+			<td>Supported RAM types : </td>
+			<td><div class="ram-type">{{ form_widget(form.dramType) }}</div></td>
+		</tr>
+	</table>
+	<div class="bios-image" style="background-color:#e6e6e6;border-radius: 6px; padding: 3px 3px 3px">
+		<div>
+			<b>BIOS images:</b>
+			<button type="button" onclick="expand('motherboardBios-fields-list')">Add</button>
+		</div>
+		<div style="width:100%;clear:left;">
+				<div class="ba0"><b>Manuf.</b></div>
+				<div class="ba1"><b>POST String</b></div>
+				<div class="ba2"><b>Note</b></div>
+				<div class="ba3"><b>BIOS Ver.</b></div>
+				<div class="ba3"><b>Core Ver.</b></div>
+				<div class="ba4"><b>File to upload</b></div>
+				<div class="ba5"><b>Uploaded file</b></div>
+		</div>
+		<div class="append_table" id="motherboardBios-fields-list" data-widget-counter="{{ form.motherboardBios|length }}"
+        data-prototype="
+			<div class=ba0>{{ form_widget(form.motherboardBios.vars.prototype.manufacturer, {'attr': {'style': 'width:100%'}} )|e }}</div>
+			<div class=ba1>{{ form_widget(form.motherboardBios.vars.prototype.postString, {'attr': {'style': 'width:100%'}} )|e }}</div>
+			<div class=ba2>{{ form_widget(form.motherboardBios.vars.prototype.note, {'attr': {'style': 'width:100%'}} )|e }}</div>
+			<div class=ba3>{{ form_widget(form.motherboardBios.vars.prototype.boardVersion, {'attr': {'style': 'width:100%'}} )|e }}</div>
+			<div class=ba3>{{ form_widget(form.motherboardBios.vars.prototype.coreVersion, {'attr': {'style': 'width:100%'}} )|e }}</div>
+			<div class=ba4>{{ form_widget(form.motherboardBios.vars.prototype.romFile, {'attr': {'style': 'width:100%'}} )|e }}</div>
+			<div class=ba5>{{ form_widget(form.motherboardBios.vars.prototype.file_name, {'attr': {'style': 'width:100%'}} )|e }}</div>
+			<div class=ba3><button type=button onclick=this.parentNode.parentNode.parentNode.removeChild(this.parentNode.parentNode);>Del</button></div>
+		">
+			{% for bios in form.motherboardBios %}
+			<div style="width:100%">
+				<div class="ba0">{{ form_widget(bios.manufacturer, {'attr': {'style': 'width:100%'}} ) }}</div>
+				<div class="ba1">{{ form_widget(bios.postString, {'attr': {'style': 'width:100%'}} ) }}</div>
+				<div class="ba2">{{ form_widget(bios.note, {'attr': {'style': 'width:100%'}} ) }}</div>
+				<div class="ba3">{{ form_widget(bios.boardVersion, {'attr': {'style': 'width:100%'}} ) }}</div>
+				<div class="ba3">{{ form_widget(bios.coreVersion, {'attr': {'style': 'width:100%'}} ) }}</div>
+				<div class="ba4">{{ form_widget(bios.romFile, {'attr': {'style': 'width:100%'}} ) }}</div>
+				<div class="ba5">{{ form_widget(bios.file_name, {'attr': {'style': 'width:100%'}} ) }}</div>
+				<div class="ba3"><button type="button" onclick="this.parentNode.parentNode.parentNode.removeChild(this.parentNode.parentNode);">Del</button></div>
+				{{ form_errors(bios) }}
+			</div>
+			{% endfor %}
+		</div>
+	</div>
+	<div class="clrs"></div>
+	
+	<div>
+		<div>
+			<b>Manuals:</b>
+			<button type="button" onclick="expand('manuals-fields-list')">Add</button>
+		</div>
+		<div style="width:100%">
+			<div class="ba1" ><b>Title</b></div>
+			<div class="ba2" ><b>Language</b></div>
+			<div class="ba4"><b>File to upload</b></div>
+			<div class="ba5"><b>Uploaded file</b></div>
+		</div>
+        
+        <div id="manuals-fields-list" data-widget-counter="{{ form.manuals|length }}"
+            data-prototype="
+				<div class=ba1>{{ form_widget(form.manuals.vars.prototype.link_name, {'attr': {'style': 'width:100%'}} )|e }}</div>
+				<div class=ba2>{{ form_widget(form.manuals.vars.prototype.language, {'attr': {'style': 'width:100%'}} )|e }}</div>
+				<div class=ba4>{{ form_widget(form.manuals.vars.prototype.manualFile, {'attr': {'style': 'width:100%'}} )|e }}</div>
+				<div class=ba5>{{ form_widget(form.manuals.vars.prototype.file_name, {'attr': {'style': 'width:100%'}} )|e }}</div>
+				<div class=ba3><button type=button onclick=this.parentNode.parentNode.parentNode.removeChild(this.parentNode.parentNode);>Del</button></div>">
+			{% for manual in form.manuals %}
+				<div style="width:100%">
+					<div class="ba1">{{ form_widget(manual.link_name, {'attr': {'style': 'width:100%'}} ) }}</div>
+					<div class="ba2">{{ form_widget(manual.language, {'attr': {'style': 'width:100%'}} ) }}</div>
+					<div class="ba4">{{ form_widget(manual.manualFile, {'attr': {'style': 'width:100%'}} ) }}</div>
+					<div class="ba5">{{ form_widget(manual.file_name, {'attr': {'style': 'width:100%'}} ) }}</div>
+					<div class="ba3"><button type="button" onclick="this.parentNode.parentNode.parentNode.removeChild(this.parentNode.parentNode);">Del</button></div>
+					{{ form_errors(manual) }}
+				</div>
+			{% endfor %}
+			{{ form_errors(form.manuals) }}
+        </div>
+		{{ form_errors(form.manuals) }}
+	</div>
+	<div class="clrs"></div>
+	
+	<table style="background-color:#e6e6e6;border-radius: 6px; padding: 3px 3px 3px">
+		<tr style="text-align:center">
+			<td>
+				<b>I/O ports : </b>
+				<button type="button" onclick="expand('motherboardIoPorts-fields-list')">Add</button>
+			</td>	  
+			<td>
+				<b>Expansion slots :</b>
+				<button type="button" onclick="expand('motherboardExpansionSlots-fields-list')">Add</button>
+			</td>
+			<td style="width:220px;">
+				<b>Known issues:</b>
+				<button type="button" onclick="expand('knownIssues-fields-list')">Add</button>
+			</td>	  
+		</tr>
+		<tr>
+			<td class="io-table">
+				<div id="motherboardIoPorts-fields-list" data-widget-counter="{{ form.motherboardIoPorts|length }}"
+                    data-prototype="<div>
+						{{ form_widget(form.motherboardIoPorts.vars.prototype.count, {'attr': {'class': 'num'}} )|e }} x 
+						{{ form_widget(form.motherboardIoPorts.vars.prototype.io_port, {'attr': {'style': 'width:50%'}} )|e }}
+						<button type=button onclick=this.parentNode.parentNode.removeChild(this.parentNode);>Del</button></div>">
+					{% for port in form.motherboardIoPorts %}
+							<div>{{ form_widget(port.count, {'attr': {'class': 'num'}} ) }}
+							x {{ form_widget(port.io_port, {'attr': {'style': 'width:50%'}} ) }}
+							<button type="button" onclick="this.parentNode.parentNode.removeChild(this.parentNode);">Del</button></div>
+							{{ form_errors(port) }}
+					{% endfor %}
+                </div>
+				{{ form_errors(form.motherboardIoPorts) }}
+			</td>
+			<td class="io-table">
+				<div id="motherboardExpansionSlots-fields-list" data-widget-counter="{{ form.motherboardExpansionSlots|length }}"
+                    data-prototype="<div>
+					{{ form_widget(form.motherboardExpansionSlots.vars.prototype.count, {'attr': {'class': 'num'}} )|e }} x 
+					{{ form_widget(form.motherboardExpansionSlots.vars.prototype.expansion_slot, {'attr': {'style': 'width:50%;display:inline'}} )|e  }}
+					<button type=button onclick=this.parentNode.parentNode.removeChild(this.parentNode);>Del</button></div>">
+					{% for slot in form.motherboardExpansionSlots %}
+						<div>{{ form_widget(slot.count, {'attr': {'class': 'num'}} ) }}
+						x {{ form_widget(slot.expansion_slot, {'attr': {'style': 'width:50%'}} ) }}
+						<button type="button" onclick="this.parentNode.parentNode.removeChild(this.parentNode);">Del</button></div>
+						{{ form_errors(slot) }}
+					{% endfor %}
+                </div>
+				{{ form_errors(form.motherboardExpansionSlots) }}
+			</td>
+			<td class="exp-table">
+                <div id="knownIssues-fields-list" data-widget-counter="{{ form.knownIssues|length }}"
+                    data-prototype="<div>{{ form_widget(form.knownIssues.vars.prototype, {'attr': {'style': 'width:70%'}} )|e  }}
+						<button type=button onclick=this.parentNode.parentNode.removeChild(this.parentNode);>Del</button></div>">
+					{% for issue in form.knownIssues %}
+							<div>{{ form_widget(issue, {'attr': {'style': 'width:70%'}} ) }}
+							<button type="button" onclick="this.parentNode.parentNode.removeChild(this.parentNode);">Del</button></div>
+							{{ form_errors(issue) }}
+					{% endfor %}
+                </div>
+				{{ form_errors(form.knownIssues) }}
+			</td>
+		</tr>
+	</table>
+	<div class="clrs"></div>
+	<table>
+		<tr>
+			<td>Video Chipset : </td>
+			<td>{{ form_widget(form.videoChipset) }}</td>
+		</tr>
+		<tr>
+			<td>Max video RAM :</td>
+			<td>{{ form_widget(form.maxVideoRam) }}</td>
+		</tr>
+		<tr>
+			<td>Audio Chipset : </td>
+			<td>{{ form_widget(form.audioChipset) }}</td>
+		</tr>
+	</table>
+	<table style="background-color:#e6e6e6;border-radius: 6px; padding: 3px 3px 3px">
+		<tr style="text-align:center">
+			<td style="width:280px">
+				<b>CPU:</b>
+				<button type="button" onclick="expand('motherboardProcessor-fields-list')">Add</button>
+			</td>
+			<td>
+				<b>FSB speed:</b>
+				<button type="button" onclick="expand('cpuSpeed-fields-list')">Add</button>
+			</td>
+			<td>
+				<b>NPU:</b>
+				<button type="button" onclick="expand('coprocessors-fields-list')">Add</button>
+			</td>	  
+		</tr>
+		<tr>
+			<td>
+				{{ form_errors(form.motherboardProcessor) }}
+				<div style="width:100%" id="motherboardProcessor-fields-list" data-widget-counter="{{ form.motherboardProcessor|length }}"
+                    data-prototype="<div>{{ form_widget(form.motherboardProcessor.vars.prototype, {'attr': {'style': 'width:70%'}} )|e  }}
+					<button type=button onclick=this.parentNode.parentNode.removeChild(this.parentNode);>Del</button></div>">
+					{% for processor in form.motherboardProcessor %}
+                        <div>{{ form_widget(processor, {'attr': {'style': 'width:70%'}} ) }}
+                        <button type="button" onclick="this.parentNode.parentNode.removeChild(this.parentNode);">Del</button></div>
+						{{ form_errors(processor) }}
+					{% endfor %}
+                </div>
+			</td>
+			<td class="exp-table">
+				 {{ form_errors(form.cpuSpeed) }}
+                <div style="width:100%" id="cpuSpeed-fields-list" data-widget-counter="{{ form.cpuSpeed|length }}"
+                    data-prototype="<div>{{ form_widget(form.cpuSpeed.vars.prototype, {'attr': {'style': 'width:70%'}} )|e  }}
+					<button type=button onclick=this.parentNode.parentNode.removeChild(this.parentNode);>Del</button></div>">
+                {% for speed in form.cpuSpeed %}
+                        <div>{{ form_widget(speed, {'attr': {'style': 'width:70%'}} ) }}
+                        <button type="button" onclick="this.parentNode.parentNode.removeChild(this.parentNode);">Del</button></div>
+						{{ form_errors(speed) }}
+                {% endfor %}
+                </div>
+			</td>
+			<td class="exp-table">
+                {{ form_errors(form.coprocessors) }}
+                <div style="width:100%" id="coprocessors-fields-list" data-widget-counter="{{ form.coprocessors|length }}"
+                    data-prototype="<div>{{ form_widget(form.coprocessors.vars.prototype, {'attr': {'style': 'width:70%'}} )|e  }}
+					<button type=button onclick=this.parentNode.parentNode.removeChild(this.parentNode);>Del</button></div>">
+                {% for coprocessor in form.coprocessors %}
+                        <div>{{ form_widget(coprocessor, {'attr': {'style': 'width:70%'}} ) }}
+                        <button type="button" onclick="this.parentNode.parentNode.removeChild(this.parentNode);">Del</button></div>
+						{{ form_errors(coprocessor) }}
+                {% endfor %}
+                </div>
+			</td>
+		</tr>
+	</table>
+	<span style="padding-left:10px;">
+			<b>Notes</b>
+	</span>
+	<div class="notes-field">
+		{{ form_row(form.note) }}
+	</div>
+</div>
+<!-- {{ form_rest(form)|replace({'<input': ' --><input'})|raw }}
+</form>
+
+<script type="text/javascript" src="{% if app.request.attributes.get('_route') == "motherboard_edit" %}../{% endif %}../assets/add-collection-widget.js"></script>
 
 {% endblock %}

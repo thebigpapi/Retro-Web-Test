@@ -1,6 +1,4 @@
-/* 
-	main.css - loaded by all browsers
-*/
+/* main.css - loaded by all browsers */
 
 /* base.html.twig */
 
@@ -22,7 +20,7 @@ div.main, th { text-align: center;}
 div.page { text-align: left; margin: auto; width:98%;}
 h2.title { text-align: center; font-size:24px; margin: 15px 0;}
 b.contrib { background: #FFFF00; color: #FF0040;}
-b.contrib a:link, a:visited { color: #0000FF;}
+b.contrib a:link, b.contrib a:visited { color: #0000FF;}
 
 /* index.html.twig */
 
@@ -57,7 +55,7 @@ div.show-images { width:25%;overflow: auto;float:left;height:500px; /* **/ heigh
 span.show-image { width:100%;font-size:12px;display:block;}
 span.creditor { width:auto;display:block; text-align: center; word-wrap: break-word;}
 span.show-image a img { width: 100%; border:0;}
-div.show-data { width:74%;float:left;padding-left:3px;font-size: 14px;}
+div.show-data { width:74%;float:left;padding-left:3px;font-size: 14px;overflow-x:auto;}
 div.show-data table, div.notes {font-size: 14px;}
 span.string-bios {font-size:12px;}
 
