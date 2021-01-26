@@ -41,6 +41,7 @@ div.bios-image { margin-top:16px;display:table-cell;color:#000000 }
 
 td.exp-table {width:270px;}
 td.io-table {width:220px;}
+input.num {width:15px;}
 
 div.notes-field div { padding-bottom: 6px; padding-right: 4px; margin:auto }
 div.notes-field label { display:none }
