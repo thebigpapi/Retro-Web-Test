@@ -1,60 +1,86 @@
-/* 
-	admin.css - stylesheet for administration stuffs
-*/
+/* admin.css - stylesheet for the administration pages */
 
-/* 																			=== index.html.twig (administration) === 				 */
+/* === index.html.twig (administration) === */
 
 input.admin-button {padding-top:220px;width:280px;height:260px;font-size:18px;}
 div.butn div button { width:120px; height:40px; font-size:20px;}
 
 
-/* 																			=== add.html.twig === 	 								 */
+/* === add.html.twig ===  */
 
-div.add-side { width:49%;float:left; }
-div.addform{ background-color:#f6f6f6; box-shadow:inset -1px -1px #0a0a0a,inset 1px 1px #dfdfdf,inset -2px -2px grey,inset 2px 2px #fff;
-padding:3px; font-size:18px; width:95%; }
+/*title*/
+table.add-title { padding-top:20px; }
+td.ttl1{ height:30px;width:400px}
+td.ttl2{ height:30px;width:300px}
+td.ttl1 select, td.ttl2 input{ width:100%;height:100%;font-size:20px }
 
+/*image section*/
+div.show-images{padding-top:90px;}
+div.imgp{width:95%;padding-left:5%;max-width:250px;font-size:16px;padding-top:1px}
+div.imgp span{width:65px;display: inline-block;}
+div.imgp select{width:60%}
+div.addform{box-shadow:inset -1px -1px #0a0a0a,inset 1px 1px #dfdfdf,inset -2px -2px grey,inset 2px 2px #fff;
+			background-color:#dedede;padding:3px; font-size:18px; width:95%;margin-top: 10px}
+			
+/*ram type*/			
+div.ram-type div label {padding-right:15px;}
+.image-table {background-color:white;width:90%;margin:auto;border-radius: 6px; margin: 10px 10px 10px}
 div.clrs{ height:10px; }
-div.editasset0 div { width:100%;}
-div.editasset0 div label{ width: 20%; float:left;}
-div.editasset0 div select { width:80%;}
-div.editasset0 div input { width:78%;}
 
-div.notes-field div { padding-bottom: 6px; padding-right: 4px; margin:auto; }
-div.notes-field label { display:none; }
-div.notes-field div textarea { width:100%; height:100px; }
+/*bios images/manuals*/
+div.bios-image { margin-top:16px;display:table-cell }
+.ba0, .ba1, .ba2, .ba3, .ba4, .ba5{display: inline-block;*display: inline;
+*vertical-align: middle;zoom: 1;margin:0px 2px 0px;text-align: center}
+.ba0 {width:9%;} 
+.ba1 {width:16%}
+.ba2 {width:10%}
+.ba3 {width:5%}
+.ba4 {width:20%}
+.ba5 {width:16%}
 
-/* 																			=== manage_resources.html.twig === 						 */
+td.exp-table {width:270px;}
+td.io-table {width:220px;}
+input.num {width:15px;}
+
+div.notes-field div { padding-bottom: 6px; padding-right: 4px; margin:auto }
+div.notes-field label { display:none }
+div.notes-field div textarea { width:95%; height:100px }
+
+/* === manage_resources.html.twig === */
 
 div.manage-buttons { float:left; }
-div.general-manage div { width: 770px; float:left; }
-div.general-manage div label { float:left; width: 150px; }
-div.general-manage div select { height: 25px; width: 600px; float:left; }
-div.cpu-manage div { width: 700px; float:left; }
-div.cpu-manage div label { float:left; width: 160px; }
-div.cpu-manage div select { height: 25px; width: 300px; float:left; }
-div.ram-manage div { width: 500px; float:left; }
-div.ram-manage div label { float:left; width: 160px; }
-div.ram-manage div select { height: 25px; width: 300px; float:left; }
-div.lang div { width: 700px; float:left; }
-div.lang div label {  float:left; width: 160px; }
-div.lang div select { height: 25px; width: 300px; float:left;}
+div.general-manage div { width: 80%; float:left; }
+div.general-manage div label { float:left; width: 20%; }
+div.general-manage div select { height: 25px; width: 80%; float:left; }
+div.cpu-manage div { width: 55%; float:left; }
+div.cpu-manage div label { float:left; width: 150px }
+div.cpu-manage div select { height: 25px; width: 60%; float:left; }
+div.ram-manage div { width: 55%; float:left; }
+div.ram-manage div label { float:left; width: 150px; }
+div.ram-manage div select { height: 25px; width: 60%; float:left; }
+div.lang div { width: 51%; float:left; }
+div.lang div label {  float:left; width: 120px; }
+div.lang div select { height: 25px; width: 60%; float:left;}
+
+/* === add_xxxxxx.html.twig === */
 div.editasset { width:50%;margin:auto;}
 div.editasset form div div {height:35px;}
 div.editasset form div div label {width:180px;}
 div.editasset form div div input {width:400px;}
 
+@media (max-width: 1199px) {
+	
+	td.ttl1 {width:60%}
+	td.ttl2 {width:200px}
+}
 @media only screen and (min-device-width: 501px) and (max-width: 899px) {
 	div.general-manage div, div.cpu-manage div, div.ram-manage div, div.lang div { width: 80%;}
 	div.general-manage div label, div.cpu-manage div label, div.ram-manage div label, div.lang div label { width: 30%;}
 	div.general-manage div select, div.cpu-manage div select, div.ram-manage div select, div.lang div select { width: 68%; }
-	div.add-side { width:100%;float:none; }
-	
 }
 @media only screen and (max-device-width: 500px) {
-	div.general-manage div, div.cpu-manage div, div.ram-manage div, div.lang div { width: 80%;height:auto;}
-	div.general-manage div label, div.cpu-manage div label, div.ram-manage div label, div.lang div label { width: 34%;}
-	div.general-manage div select, div.cpu-manage div select, div.ram-manage div select, div.lang div select { width: 65%;height:30px;font-size:18px; }
-	div.manage-buttons div button { width:auto; height:30px; font-size:20px;}
-	div.add-side { width:100%;float:none; }
+	div.general-manage div, div.cpu-manage div, div.ram-manage div, div.lang div { width: 75%;height:auto;}
+	div.general-manage div label, div.cpu-manage div label, div.ram-manage div label, div.lang div label { width: 32%}
+	div.general-manage div select, div.cpu-manage div select, div.ram-manage div select, div.lang div select { width: 68%;height:30px;font-size:18px;float:left }
+	div.manage-buttons div button {height:25px; font-size:18px;}
 }

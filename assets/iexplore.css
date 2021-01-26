@@ -1,6 +1,4 @@
-/* 
-	iexplore.css - extra stylesheet for Internet Explorer only
-*/
+/* iexplore.css - extra stylesheet for Internet Explorer only */
 
 /*	set min-width at zero for IE8, to prevent too large buttons. That doesn't affect IE7 and older	*/
 
@@ -11,7 +9,7 @@ form.index-buttons input { min-width: 0; }
 div.sform input { height: auto; width: 100%; width: 99%\9; }
 span.field1 input { height: 21px; width: 21px; height: 15px\9; width: 15px\9; }
 
-/*	max-height is not supported by IE6 and older. Please note height isn't interpreted as min-height due to the overflow:auto in legacy.css	*/
+/*	max-height is not supported by IE6 and older. Please note height isn't interpreted as min-height due to the overflow:auto in main.css	*/
 /*	IE6 and IE7 add a horizontal scrollbar if there is a vertical one. A hidden padding-right is used to fix it */
 
 div.show-images { _height:500px; *overfl\ow-x: hidden; }
