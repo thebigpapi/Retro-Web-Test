@@ -90,28 +90,6 @@
 	<p>
 		<b class="contrib">{% trans %}Would you like to improve this page? Click{% endtrans %} <a href="{% if is_granted('ROLE_ADMIN') %}../edit/{{ motherboard.getId() }}{% else %}/win3board/posting.php?mode=post&amp;f=96&amp;language=en{% endif %}">{% trans %}here{% endtrans %}</a>.</b>
 	</p>
-	{% if is_granted('ROLE_ADMIN') %}
-		<input onclick="delEntry()" type="button" value="Delete">
-
-		<div id="delDIV" style="display:none">
-			<b class="contrib">ARE YOU SURE THAT YOU WANT TO DELETE THIS ITEM?</b>
-			<input onclick="delEntry()" type="submit" value="NO">
-			<form action="../delete/{{ motherboard.getId() }}" style="display: inline"><div style="display: inline">
-				<input type="submit" value="YES">
-			</div></form>
-		</div>
-
-		<script type="text/javascript">
-			function delEntry() {
-				var x = document.getElementById("delDIV");
-				if (x.style.display === "none") {
-					x.style.display = "block";
-				} else {
-					x.style.display = "none";
-				}
-			}
-		</script>
-	{% endif %}
 	<table>
         <tr><td class="main-table">{% trans %}Form factor:{% endtrans %}</td><td>
             {% if motherboard.getFormFactor() is not null %} 
@@ -144,7 +122,7 @@
             <tr><td>{% trans %}Maximum supported RAM:{% endtrans %}</td><td>
                 {% for maxRam in motherboard.getMotherboardMaxRams()|sort((a, b) => a.getMaxRam().getValue() <=> b.getMaxRam().getValue()) %}
                     {% if maxRam.getMaxRam() is not null %}
-					<div class="newdiv1">
+					<span class="newdiv" style="background-color:#cae4fa;">
 						{% if maxRam.getMaxRam().getValue() > 1024 %}
 							{{ maxRam.getMaxRam().getValue() / 1024 }} {% trans %}MB{% endtrans %}
 						{% elseif maxRam.getMaxRam().getValue() > 1024 * 1024 %}
@@ -152,8 +130,7 @@
 						{% else %}
 							{{ maxRam.getMaxRam().getValue() }} {% trans %}KB{% endtrans %}
 						{% endif %}
-						({{ maxRam.getNote()}})
-					</div>
+						{% if maxRam.getNote() is not null %}({{ maxRam.getNote()}}){% endif %}</span>
                     {% endif %}
                 {% endfor %}
             </td></tr>
@@ -161,14 +138,14 @@
 		{% if motherboard.getCacheSize() is not empty %}
             <tr><td>{% trans %}Cache:{% endtrans %}</td><td>
             {% for cache in motherboard.getCacheSize()|sort((a, b) => a.value <=> b.value) %}
-                <div class="newdiv2"> {{ cache.getValueWithUnit() }}</div>
+                <span class="newdiv" style="background-color:#d0faca;">{{ cache.getValueWithUnit() }}</span>
             {% endfor %}
             </td></tr>
         {% endif %}
         {% if motherboard.getDramType() is not empty %}
             <tr><td>{% trans %}Supported RAM types:{% endtrans %}</td><td>
             {% for dram in motherboard.getDramType() %}
-                <div class="newdiv3">{{ dram.getName() }}</div>
+                <span class="newdiv" style="background-color:#fae9ca;">{{ dram.getName() }}</span>
             {% endfor %}
             </td></tr>
         {% endif %}
@@ -293,7 +270,8 @@
 				<td class="cpu-table">{% trans %}Supported processors:{% endtrans %}</td>
 				<td>
 					{% for processor in motherboard.getMotherboardProcessor()|sort %}
-						<div class="newdiv1">{{ processor.getManufacturer().getShortNameIfExist() }}&nbsp;{{ processor.getName() }}</div>
+						<span class="newdiv" style="background-color:#cae4fa;">
+						{{ processor.getManufacturer().getShortNameIfExist() }}&nbsp;{{ processor.getName() }}</span>
 					{% endfor %}
 				</td>
 			</tr>
@@ -301,7 +279,8 @@
         {% if motherboard.getCoprocessors() is not empty %}
             <tr><td>{% trans %}Supported math coprocessors:{% endtrans %}</td><td>
                 {% for copro in motherboard.getCoprocessors()|sort %}
-                    <div class="newdiv2">{{ copro.getManufacturer().getShortNameIfExist() }}&nbsp;{{ copro.getName() }}</div>
+                    <span class="newdiv" style="background-color:#d0faca;">
+					{{ copro.getManufacturer().getShortNameIfExist() }}&nbsp;{{ copro.getName() }}</span>
                 {% endfor %}
 				</td>
 			</tr>
@@ -311,7 +290,8 @@
 				<td>{% trans %}Supported frequencies:{% endtrans %}</td>
 				<td>
 					{% for frequency in motherboard.getCpuSpeed()|sort((a, b) => a.value <=> b.value) %}
-						<div class="newdiv3">{{ frequency.getValueWithUnit() }}</div>
+						<span class="newdiv" style="background-color:#fae9ca;">
+						{{ frequency.getValueWithUnit() }}</span>
 					{% endfor %}
 				</td>
 			</tr>
@@ -329,8 +309,27 @@
 			</div>
 		</div>
 	{% endif %}
+	{% if is_granted('ROLE_ADMIN') %}
+		<a href="javascript:;" style="color:#c40000;display:inline" onclick="delEntry()">Delete</a>
 
+		<div id="delDIV" style="display:none">
+			<b class="contrib">ARE YOU SURE THAT YOU WANT TO DELETE THIS ITEM?</b>
+			<input onclick="delEntry()" type="submit" value="NO">
+			<form action="../delete/{{ motherboard.getId() }}" style="display: inline"><div style="display: inline">
+				<input type="submit" value="YES">
+			</div></form>
+		</div>
+
+		<script type="text/javascript">
+			function delEntry() {
+				var x = document.getElementById("delDIV");
+				if (x.style.display === "none") {
+					x.style.display = "inline";
+				} else {
+					x.style.display = "none";
+				}
+			}
+		</script>
+	{% endif %}
 </div>
-
-
 {% endblock %}

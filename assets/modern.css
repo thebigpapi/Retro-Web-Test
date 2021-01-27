@@ -2,7 +2,7 @@
 
 /* == cross compatibility between linux and windows == */
 /* global tags */
-input[type=text], input[type=submit],  button, select {
+input[type=text], input[type=submit], input[type=password],  button, select {
   box-sizing: border-box;
   height: 26px;
   line-height: 18px;
@@ -30,14 +30,16 @@ span.field1 input {
 @media (max-device-width: 600px) {
 	div.top-bar {font-size:12px; padding: 1px 18px 0;}
 	div.top-bar span.form {display: inline-block;}
-	h2.title { font-size: 16px; margin: 10px 0;}
-	div.page { font-size:14px;}
+	h2.title {font-size: 16px; margin: 10px 0;}
+	div.page {font-size:14px;}
+	div.top-bar select.goto {width: 7em;}
+	div.top-bar select.lang {width: 7em;}
 
 	/* show.html.twig */
-	div.show-images { width:100%; max-height:400px;}
-	span.show-image, span.string-bios { font-size:8px;}
-	div.show-data { width:100%;padding:0;font-size:13px;}
-	div.show-data table, div.notes { font-size:13px;}
+	div.show-images {width:100%; max-height:400px;}
+	span.show-image, span.string-bios {font-size:8px;}
+	div.show-data {width:100%;padding:0;font-size:13px;}
+	div.show-data table, div.notes {font-size:13px;}
 	td.cpu-table {width:85px;}
 
 	/* add.html.twig */
@@ -51,7 +53,7 @@ span.field1 input {
 }
 
 @media (min-width: 1200px) {
-	div.page { width:90%;font-size:22px;}
+	div.page {width:90%;font-size:22px;}
 
 	/* index.html.twig */
 	form.index-buttons input {padding-top:300px;min-width:360px;font-size:18px;}
@@ -59,38 +61,38 @@ span.field1 input {
 	form.index-buttons input.button2 {background-image: url(./images/card_disabled_med.png);}
 
 	/* search.html.twig */
-	div.sform { height: 1.2em; width:80%; }
-	div.sform input { height: 26px; width: 100%;}
-	td.table-width { width:20px;}
+	div.sform {height: 1.2em; width:80%;}
+	div.sform input {height: 26px; width: 100%;}
+	td.table-width {width:20px;}
 
 	/* result.html.twig */
-	div.results ul li{ font-size:20px;}
+	div.results ul li{font-size:20px;}
 	td.io-table {width:240px;}
 }
 
 @media (min-width: 1400px) {
-	div.top-bar { font-size:20px;padding:10px 18px;}
-	h2.title { margin: 20px 0;}
+	div.top-bar {font-size:20px;padding:10px 18px;}
+	h2.title {margin: 20px 0;}
 
 	/* search.html.twig */
-	span.field1 { font-size:16px;}
-	td.table-width { width:60px;}
+	span.field1 {font-size:16px;}
+	td.table-width {width:60px;}
 
 	/* show.html.twig */
-	div.show-images { width:30%; max-height:600px;}
-	div.show-data { width:67%;padding-left:20px;}
-	td.main-table { width:200px;}
-	td.cpu-table { width:160px;}
+	div.show-images {width:30%; max-height:600px;}
+	div.show-data {width:67%;padding-left:20px;}
+	td.main-table {width:200px;}
+	td.cpu-table {width:160px;}
 }
 
 @media (min-width: 1620px) {
-	div.page { width:80%;}
-	h2.title { margin: 40px 0;}
+	div.page {width:80%;}
+	h2.title {margin: 40px 0;}
 
 	/* show.html.twig */
-	div.show-images { max-height:750px;}
-	div.show-data { width:68%; font-size: 18px;}
+	div.show-images {max-height:750px;}
+	div.show-data {width:68%; font-size: 18px;}
 	div.show-data table, div.notes { font-size:16px;}
-	td.exp-table { width:250px;}
-	td.cpu-table { width:180px;}
+	td.exp-table {width:250px;}
+	td.cpu-table {width:180px;}
 }
