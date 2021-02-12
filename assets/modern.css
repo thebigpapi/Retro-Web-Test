@@ -2,38 +2,27 @@
 
 /* == cross compatibility between linux and windows == */
 /* global tags */
-input[type=text], input[type=submit], input[type=password],  button, select {
-  box-sizing: border-box;
-  height: 26px;
-  line-height: 18px;
-  border-color: #d9d9d9;
+input[type=text], input[type=submit], input[type=password], button, select {
+  height: 22px;
+  border-color:#d9d9d9;
   border-width: thin;
-  border-radius: 2px;
-}
-
-button{
-  padding: 2px 8px 2px;
-}
-input[type=text], select  {
-  padding: 2px 2px 2px;
+  border-radius: 0;
 }
 
 /* specific tags */
 input.button1, input.button2, input.admin-button {height:auto;border-width:2px;}
 input.num {width:20px;}
-span.field1 input {
-    height: 25px;
-    width: 25px;
-    font-size: 14px;
-}
+span.field1 input {font-size: 14px;}
 
 @media (max-device-width: 600px) {
-	div.top-bar {font-size:12px; padding: 1px 18px 0;}
-	div.top-bar span.form {display: inline-block;}
+	div.top-bar {font-size:12px; padding:0 0 0 5px;}
+	div.top-bar div.table-mobile {display: table; border-spacing: 2px;}
+	div.top-bar a, div.top-bar span.form {display: table-cell; vertical-align: middle; padding: 1px;}
+	div.top-bar span.form { width: 220px;}
+	div.top-bar select.goto {width: 38%;}
+	div.top-bar select.lang {width: 40%;}
 	h2.title {font-size: 16px; margin: 10px 0;}
 	div.page {font-size:14px;}
-	div.top-bar select.goto {width: 7em;}
-	div.top-bar select.lang {width: 7em;}
 
 	/* show.html.twig */
 	div.show-images {width:100%; max-height:400px;}
@@ -44,11 +33,11 @@ span.field1 input {
 
 	/* add.html.twig */
 	div.show-images{padding-top:5px;}
-	.ba0 {width:16%;margin:0px;}
-	.ba1 {width:24%;margin:0px;}
-	.ba2 {width:16%;margin:0px;}
-	.ba3 {width:7%;margin:0px;}
-	.ba4 {width:16%;margin:0px;}
+	.ba0 {width:16%;margin:0;}
+	.ba1 {width:24%;margin:0;}
+	.ba2 {width:16%;margin:0;}
+	.ba3 {width:7%;margin:0;}
+	.ba4 {width:16%;margin:0;}
 	.ba5 {display:none;}
 }
 

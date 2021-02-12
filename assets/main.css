@@ -63,8 +63,8 @@ div.show-data {width:74%;float:left;padding-left:3px;font-size: 14px;overflow-x:
 div.show-data table, div.notes {font-size: 14px;}
 span.string-bios {font-size:12px;}
 
-span.newdiv{padding:6px;margin-top: 1px;display: inline-block;color:#000000;
-box-shadow:inset -1px -1px #0a0a0a,inset 1px 1px #dfdfdf,inset -2px -2px grey,inset 2px 2px #fff;}
+span.newdiv {padding:5px;margin-top: 1px;display: inline-block;color:#000000;
+border-style: solid;border-width: 1px;border-color: #ababab;}
 
 td.main-table {width:170px;}
 td.exp-table {vertical-align: top;width:140px;}
