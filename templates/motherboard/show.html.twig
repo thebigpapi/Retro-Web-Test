@@ -46,6 +46,19 @@
            Unknown
         {% endif %}
            {{ motherboard.getName() }}
+	{% if motherboard.getMotherboardAliases() is not empty %} 
+		<br><small class="alias">
+		Also known as: 
+		{% for alias in motherboard.getMotherboardAliases() %}
+			{% if alias.getManufacturer() is not null %} 
+				{{ alias.getManufacturer().getShortNameIfExist() }}
+			{% else %}
+				Unknown
+			{% endif %}
+           	{{ alias.getName() }},
+		{% endfor %}
+		</small>
+	{% endif %}
 	</h2>
 
 	<div class="show-images">
@@ -74,19 +87,6 @@
 	</div>
 
 <div class="show-data">
-	{% if motherboard.getMotherboardAliases() is not null %} 
-		<div>
-		<span>Also known as:</span> 
-		{% for alias in motherboard.getMotherboardAliases() %}
-			{% if alias.getManufacturer() is not null %} 
-				<span>{{ alias.getManufacturer().getShortNameIfExist() }}
-			{% else %}
-				<span>Unknown
-			{% endif %}
-           	{{ alias.getName() }}, </span> 
-		{% endfor %}
-		</div>
-	{% endif %}
 	<p>
 		<b class="contrib">{% trans %}Would you like to improve this page? Click{% endtrans %} <a href="{% if is_granted('ROLE_ADMIN') %}../edit/{{ motherboard.getId() }}{% else %}/win3board/posting.php?mode=post&amp;f=96&amp;language=en{% endif %}">{% trans %}here{% endtrans %}</a>.</b>
 	</p>
@@ -124,13 +124,13 @@
                     {% if maxRam.getMaxRam() is not null %}
 					<span class="newdiv" style="background-color:#cae4fa;">
 						{% if maxRam.getMaxRam().getValue() > 1024 %}
-							{{ maxRam.getMaxRam().getValue() / 1024 }} {% trans %}MB{% endtrans %}
-						{% elseif maxRam.getMaxRam().getValue() > 1024 * 1024 %}
-							{{ maxRam.getMaxRam().getValue() / (1024 * 1024) }} {% trans %}GB{% endtrans %}
-						{% else %}
-							{{ maxRam.getMaxRam().getValue() }} {% trans %}KB{% endtrans %}
-						{% endif %}
-						{% if maxRam.getNote() is not null %}({{ maxRam.getNote()}}){% endif %}</span>
+							{{ maxRam.getMaxRam().getValue() / 1024 }} {% trans %}MB{% endtrans %}<!--
+						-->{% elseif maxRam.getMaxRam().getValue() > 1024 * 1024 %}
+							{{ maxRam.getMaxRam().getValue() / (1024 * 1024) }} {% trans %}GB{% endtrans %}<!--
+						-->{% else %}
+							{{ maxRam.getMaxRam().getValue() }} {% trans %}KB{% endtrans %}<!--
+						-->{% endif %}<!--
+						-->{% if maxRam.getNote() is not null %} ({{ maxRam.getNote()}}){% endif %}</span>
                     {% endif %}
                 {% endfor %}
             </td></tr>
@@ -140,11 +140,11 @@
             {% for cache in motherboard.getCacheSize()|sort((a, b) => a.value <=> b.value) %}
                 <span class="newdiv" style="background-color:#d0faca;">
 					{% if cache.getValue() > 1023 %}
-						{{ cache.getValue() / 1024 }} {% trans %}MB{% endtrans %}
-					{% else %}
-						{{ cache.getValue() }} {% trans %}KB{% endtrans %}
-					{% endif %}
-				</span>
+						{{ cache.getValue() / 1024 }} {% trans %}MB{% endtrans %}<!--
+					-->{% else %}
+						{{ cache.getValue() }} {% trans %}KB{% endtrans %}<!--
+					-->{% endif %}<!--
+				--></span>
             {% endfor %}
             </td></tr>
         {% endif %}
@@ -316,7 +316,7 @@
 		</div>
 	{% endif %}
 	{% if is_granted('ROLE_ADMIN') %}
-		<a href="javascript:;" style="color:#c40000;display:inline" onclick="delEntry()">Delete</a>
+		<a href="javascript:;" style="color:#c40000" onclick="delEntry()">Delete</a>
 
 		<div id="delDIV" style="display:none">
 			<b class="contrib">ARE YOU SURE THAT YOU WANT TO DELETE THIS ITEM?</b>

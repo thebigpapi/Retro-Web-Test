@@ -55,6 +55,7 @@ div.pagination span.current {font-weight:bold;}
 
 /* show.html.twig */
 
+h2.title small.alias {font-size:18px;}
 div.show-images {width:25%;overflow: auto;float:left;height:500px; /* **/ height:auto; max-height:500px; /** */}
 span.show-image {width:100%;font-size:12px;display:block;}
 span.creditor {width:auto;display:block; text-align: center; word-wrap: break-word;}
