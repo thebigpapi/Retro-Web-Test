@@ -17,7 +17,13 @@
 					{% if motherboard.getMotherboardAliases() is not empty %}
 						<ul class="results-alias">
 						{% for alias in motherboard.getMotherboardAliases() %}
-							<li><span>{{ alias.getManufacturer().getShortNameIfExist() }}&nbsp;{{ alias.name }}</span></li>
+							<li><span>
+							{% if alias.getManufacturer() is not null %}
+								{{ alias.getManufacturer().getShortNameIfExist() }}
+							{% else %}
+								Unknown
+							{% endif %}
+							&nbsp;{{ alias.name }}</span></li>
 						{% endfor %}
 						</ul>
 					{% endif %}
