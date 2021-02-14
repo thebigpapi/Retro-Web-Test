@@ -46,21 +46,20 @@
            Unknown
         {% endif %}
            {{ motherboard.getName() }}
-	{% if motherboard.getMotherboardAliases() is not empty %} 
-		<br><small class="alias">
-		Also known as: 
+	</h2>
+	{% if motherboard.getMotherboardAliases() is not empty %}
+		<p class="string-alias"><b>
+		{% trans %}Also known as:{% endtrans %} 
 		{% for alias in motherboard.getMotherboardAliases() %}
 			{% if alias.getManufacturer() is not null %} 
 				{{ alias.getManufacturer().getShortNameIfExist() }}
 			{% else %}
 				Unknown
 			{% endif %}
-           	{{ alias.getName() }},
+           	{{ alias.getName() }}{% if not loop.last %},{% endif %}
 		{% endfor %}
-		</small>
+		</b></p>
 	{% endif %}
-	</h2>
-
 	<div class="show-images">
     {% if motherboard.getImages() is not empty %}
 		<div class="ie-fix">
@@ -273,7 +272,7 @@
         {% endif %}
 		{% if motherboard.getMotherboardProcessor() is not null %}
             <tr>
-				<td class="cpu-table">{% trans %}Supported processors:{% endtrans %}</td>
+				<td class="cpu-table">{% trans %}Supported CPUs:{% endtrans %}</td>
 				<td>
 					{% for processor in motherboard.getMotherboardProcessor()|sort %}
 						<span class="newdiv" style="background-color:#cae4fa;">
@@ -283,7 +282,7 @@
 			</tr>
         {% endif %}
         {% if motherboard.getCoprocessors() is not empty %}
-            <tr><td>{% trans %}Supported math coprocessors:{% endtrans %}</td><td>
+            <tr><td>{% trans %}Supported FPUs:{% endtrans %}</td><td>
                 {% for copro in motherboard.getCoprocessors()|sort %}
                     <span class="newdiv" style="background-color:#d0faca;">
 					{{ copro.getManufacturer().getShortNameIfExist() }}&nbsp;{{ copro.getName() }}</span>
@@ -293,7 +292,7 @@
         {% endif %}
         {% if motherboard.getCpuSpeed() is not empty %}
             <tr>
-				<td>{% trans %}Supported frequencies:{% endtrans %}</td>
+				<td>{% trans %}Supported FSB speeds:{% endtrans %}</td>
 				<td>
 					{% for frequency in motherboard.getCpuSpeed()|sort((a, b) => a.value <=> b.value) %}
 						<span class="newdiv" style="background-color:#fae9ca;">

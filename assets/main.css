@@ -46,22 +46,23 @@ div.butn input {width:7.5em; height:2em; font-size:20px;}
 
 /* result.html.twig */
 
-div.results ul li{line-height:140%;}
-ul.results-alias{list-style-type: none;margin:0;}
-ul.results-alias li{height:20px;}
-ul.results-alias li span{font-size:0.8em;}
+div.results ul {margin: 0;padding-left: 40px;}
+div.results ul li{line-height:140%;font-size: 16px;}
+ul.results-alias {list-style-type: none;}
+div.results ul.results-alias li {line-height:120%;}
+div.results ul li ul.results-alias li span{font-size:0.8em;}
 
 div.pagination span.current {font-weight:bold;}
 
 /* show.html.twig */
 
-h2.title small.alias {font-size:18px;}
 div.show-images {width:25%;overflow: auto;float:left;height:500px; /* **/ height:auto; max-height:500px; /** */}
 span.show-image {width:100%;font-size:12px;display:block;}
 span.creditor {width:auto;display:block; text-align: center; word-wrap: break-word;}
 span.show-image a img {width: 100%; border:0;}
 div.show-data {width:74%;float:left;padding-left:3px;font-size: 14px;overflow-x:auto;}
 div.show-data table, div.notes {font-size: 14px;}
+p.string-alias{text-align:center;font-size: 18px;}
 span.string-bios {font-size:12px;}
 
 span.newdiv {padding:5px;margin-top: 1px;display: inline-block;color:#000000;

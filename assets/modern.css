@@ -29,6 +29,7 @@ span.field1 input {font-size: 14px;}
 	span.show-image, span.string-bios {font-size:8px;}
 	div.show-data {width:100%;padding:0;font-size:13px;}
 	div.show-data table, div.notes {font-size:13px;}
+	p.string-alias {margin:10px 0;}
 	td.cpu-table {width:85px;}
 
 	/* add.html.twig */
@@ -70,6 +71,7 @@ span.field1 input {font-size: 14px;}
 	/* show.html.twig */
 	div.show-images {width:30%; max-height:600px;}
 	div.show-data {width:67%;padding-left:20px;}
+	p.string-alias {margin-top: -5px;}
 	td.main-table {width:200px;}
 	td.cpu-table {width:160px;}
 }
@@ -82,6 +84,7 @@ span.field1 input {font-size: 14px;}
 	div.show-images {max-height:750px;}
 	div.show-data {width:68%; font-size: 18px;}
 	div.show-data table, div.notes { font-size:16px;}
+	p.string-alias {margin-top:-25px;}
 	td.exp-table {width:250px;}
 	td.cpu-table {width:180px;}
 }

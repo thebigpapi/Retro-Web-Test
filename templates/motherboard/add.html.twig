@@ -5,7 +5,7 @@
 {% block body %}
 
 
-<form name="add_motherboard" method="post" enctype="multipart/form-data">
+<form name="add_motherboard" method="post" enctype="multipart/form-data" onsubmit="return check_E()">
 
 <div class="show-images" style="max-height:none">
 		<div class="bar">
@@ -15,7 +15,7 @@
 			</span>
 		</div>
         <div id="images-fields-list" data-widget-counter="{{ form.images|length }}"
-            data-prototype="<div class=addform>
+            data-prototype="
 				<div class=imgp>{{ form_widget(form.images.vars.prototype.imageFile, {'attr': {'style': 'width:100%'}})|e }}</div>
 				<div class=imgp><span>Type: </span>{{ form_widget(form.images.vars.prototype.motherboardImageType)|e }}</div>
 				<div class=imgp><span>Creditor: </span>{{ form_widget(form.images.vars.prototype.creditor)|e }}</div>
@@ -23,7 +23,7 @@
 				<div class=imgp><span>Notes: </span>{{ form_widget(form.images.vars.prototype.description)|e }}</div>
 				<div class=imgp>Uploaded file: 
 					<button type=button onclick=this.parentNode.parentNode.parentNode.removeChild(this.parentNode.parentNode);>Delete this entry</button></div>
-				<div class=imgp>{{ form_widget(form.images.vars.prototype.file_name, {'attr': {'style': 'width:90%'}})|e }}</div></div>
+				<div class=imgp>{{ form_widget(form.images.vars.prototype.file_name, {'attr': {'style': 'width:90%'}})|e }}</div>
 				">
             {% for image in form.images %}
 			<div class="addform" >
