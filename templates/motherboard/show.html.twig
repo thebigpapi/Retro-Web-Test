@@ -46,21 +46,20 @@
            Unknown
         {% endif %}
            {{ motherboard.getName() }}
-	{% if motherboard.getMotherboardAliases() is not empty %} 
-		<br><small class="alias">
-		Also known as: 
+	</h2>
+	{% if motherboard.getMotherboardAliases() is not empty %}
+		<p class="string-alias"><b>
+		{% trans %}Also known as:{% endtrans %}
 		{% for alias in motherboard.getMotherboardAliases() %}
 			{% if alias.getManufacturer() is not null %} 
 				{{ alias.getManufacturer().getShortNameIfExist() }}
 			{% else %}
 				Unknown
 			{% endif %}
-           	{{ alias.getName() }},
+           	{{ alias.getName() }}{% if not loop.last %},{% endif %}
 		{% endfor %}
-		</small>
+		</b></p>
 	{% endif %}
-	</h2>
-
 	<div class="show-images">
     {% if motherboard.getImages() is not empty %}
 		<div class="ie-fix">

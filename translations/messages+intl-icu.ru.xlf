@@ -177,6 +177,10 @@
         <source>as well as the contributors who add new content everyday!</source>
         <target>а так же участники, которые ежедневно добавляют новый метриал!</target>
       </trans-unit>
+      <trans-unit id="qO9j8oM" resname="Also known as:">
+        <source>Also known as:</source>
+        <target>Другие имена:</target>
+      </trans-unit>
       <trans-unit id="XG0l1nK" resname="Image by">
         <source>Image by</source>
         <target>Картинка от</target>
