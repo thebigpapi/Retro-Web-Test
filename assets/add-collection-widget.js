@@ -14,17 +14,30 @@ function expand(id) {
 	var newElem = document.createElement('div');
 	if(id == 'images-fields-list')
 		newElem.setAttribute("class", "addform");
-	if(id != 'images-fields-list')
+	if(id == 'motherboardBios-fields-list' || id == 'manuals-fields-list')
 		newElem.setAttribute("style", "width:100%"); 
 	newElem.innerHTML = newWidget;
 	list.appendChild(newElem);	
 }
-// function used to check for null file uploads
+// function used to check <select> duplicate options
+function check_sel(id){
+	var item = document.getElementById(id).children;
+	var tp = 0;
+	if(id == 'motherboardIoPorts-fields-list' || id == 'motherboardExpansionSlots-fields-list')tp = 1;
+	var array1 = [];
+	for (var i = 0; i < item.length; i++) {
+		for(var j = 0; j < item[i].children[tp].options.length; j++){
+			if(!array1[j])array1[j] = 0;
+			if(item[i].children[tp].options[j].selected)array1[j] += 1;
+			if(array1[j] > 1)return true;
+		}
+	}
+	return false;
+}
+// function used to check for null file uploads or duplicate 
 function check_E(){
-	var manuals = document.getElementById('manuals-fields-list');
-	var photos = document.getElementById('images-fields-list');
-	var manual = manuals.children;
-	var photo = photos.children;
+	var manual = document.getElementById('manuals-fields-list').children;
+	var photo = document.getElementById('images-fields-list').children;
 	for (var i = 0; i < manual.length; i++) {
 		if(manual[i].children[2].children[0].files[0] == null){
 			if (manual[i].children[3].children[0].value == ''){
@@ -41,5 +54,29 @@ function check_E(){
 			}
 		}
 	}
+	if (check_sel('motherboardMaxRams-fields-list')){
+		alert("Max system RAM has duplicate entries!");
+		return false;}
+	if (check_sel('cacheSize-fields-list')){
+		alert("Cache has duplicate entries!");
+		return false;}	 
+	if (check_sel('motherboardIoPorts-fields-list')){
+		alert("I/O ports has duplicate entries!");
+		return false;}
+	if (check_sel('motherboardExpansionSlots-fields-list')){
+		alert("Expansion slots has duplicate entries!");
+		return false;}
+	if (check_sel('knownIssues-fields-list')){
+		alert("Known issues has duplicate entries!");
+		return false;}
+	if (check_sel('motherboardProcessor-fields-list')){
+		alert("CPU has duplicate entries!");
+		return false;}
+	if (check_sel('cpuSpeed-fields-list')){
+		alert("FSB speed has duplicate entries!");
+		return false;}
+	if (check_sel('coprocessors-fields-list')){
+		alert("NPU has duplicate entries!");
+		return false;}
 	return true;
 }
