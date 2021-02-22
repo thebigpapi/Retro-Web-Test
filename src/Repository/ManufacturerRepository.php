@@ -34,7 +34,7 @@ class ManufacturerRepository extends ServiceEntityRepository
         $rsm->addEntityResult('App\Entity\Manufacturer', 'man');
         $rsm->addFieldResult('man', 'id', 'id');
         $rsm->addFieldResult('man', 'name', 'name');
-        $rsm->addFieldResult('man', 'shortName', 'shortName');
+        $rsm->addFieldResult('man', 'short_name', 'shortName');
 
         $query = $entityManager->createNativeQuery('SELECT DISTINCT manufacturer.id, manufacturer.name, manufacturer.short_name  
         FROM motherboard_alias alias FULL OUTER JOIN motherboard mobo ON mobo.manufacturer_id=alias.manufacturer_id, manufacturer 
