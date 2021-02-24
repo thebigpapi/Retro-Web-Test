@@ -160,9 +160,6 @@ class MotherboardRepository extends ServiceEntityRepository
             unset($values[$key]);
             return $key . "_id is NULL";
         }
-        elseif ($key === "name") {
-            return $key . " ILIKE :$key";
-        }
         else return $key ."_id =:$key";
     }
 
@@ -245,7 +242,83 @@ class MotherboardRepository extends ServiceEntityRepository
         $posFrom = 0;
         $posWhere = 0;
 
+        // Gathering name and manufacturer which are handled differently compared to other values
+        if (isset($values['name'])) {
+            $name = $values['name'];
+            unset($values['name']);
+        }
+        if (isset($values['manufacturer'])) {
+            $manufacturer = $values['manufacturer'];
+            unset($values['manufacturer']);
+        }
+
         $where = $this->valuesToWhere($values, $posWhere);
+
+        // Treating name and manufacturer differently to other values (to search into actual motherboard name and alias)
+        if (isset($name) && $name != null) {
+            if ($posWhere != 0) {
+                if(isset($manufacturer)) {
+                    if($manufacturer == null) {
+                        //WORKS
+                        $where = "$where AND ((mot0.name ILIKE :name AND mot0.manufacturer_id IS NULL) OR mot0.id IN (SELECT motherboard_id FROM motherboard_alias AS ma WHERE ma.name ILIKE :name AND ma.manufacturer_id IS NULL)) ";
+                        $posWhere ++;
+                    }
+                    else {
+                        //WORKS
+                        $where = "$where AND ((mot0.name ILIKE :name AND mot0.manufacturer_id = :manufacturer) OR mot0.id IN (SELECT motherboard_id FROM motherboard_alias AS ma WHERE ma.name ILIKE :name AND ma.manufacturer_id = :manufacturer)) ";
+                        $posWhere ++;
+                    }
+                }
+                else {
+                    //WORKS
+                    $where = "$where AND (mot0.name ILIKE :name OR mot0.id IN (SELECT motherboard_id FROM motherboard_alias AS ma WHERE ma.name ILIKE :name)) ";
+                    $posWhere ++;
+                }
+            }
+            else {
+                if(isset($manufacturer)) {
+                    if($manufacturer == null) {
+                        //WORKS
+                        $where = "((mot0.name ILIKE :name AND mot0.manufacturer_id IS NULL) OR mot0.id IN (SELECT motherboard_id FROM motherboard_alias AS ma WHERE ma.name ILIKE :name AND ma.manufacturer_id IS NULL)) ";
+                        $posWhere ++;
+                    }
+                    else {
+                        //WORKS
+                        $where = "((mot0.name ILIKE :name AND mot0.manufacturer_id = :manufacturer) OR mot0.id IN (SELECT motherboard_id FROM motherboard_alias AS ma WHERE ma.name ILIKE :name AND ma.manufacturer_id = :manufacturer)) ";
+                        $posWhere ++;
+                    }
+                }
+                else {
+                    //WORKS 
+                    $where = "((mot0.name ILIKE :name) OR mot0.id IN (SELECT motherboard_id FROM motherboard_alias AS ma WHERE ma.name ILIKE :name)) ";
+                    $posWhere ++;
+                }
+            }
+        }
+        else if (isset($manufacturer)) {
+            if($manufacturer == null) {
+                if ($posWhere != 0) {
+                    $where = "$where AND ( mot0.manufacturer_id IS NULL OR mot0.id IN (SELECT motherboard_id FROM motherboard_alias AS ma WHERE ma.manufacturer_id IS NULL)) ";
+                    $posWhere ++;
+                }
+                else {
+                    //WORKS
+                    $where = "( mot0.manufacturer_id IS NULL OR mot0.id IN (SELECT motherboard_id FROM motherboard_alias AS ma WHERE ma.manufacturer_id IS NULL)) ";
+                    $posWhere ++;
+                }
+            }
+            else {
+                if ($posWhere != 0) {
+                    $where = "$where AND ( mot0.manufacturer_id = :manufacturer OR mot0.id IN (SELECT motherboard_id FROM motherboard_alias AS ma WHERE ma.manufacturer_id = :manufacturer)) ";
+                    $posWhere ++;
+                }
+                else {
+                    $where = "( mot0.manufacturer_id = :manufacturer OR mot0.id IN (SELECT motherboard_id FROM motherboard_alias AS ma WHERE ma.manufacturer_id = :manufacturer)) ";
+                    $posWhere ++;
+                }
+            }
+        }
+
         $from = "FROM ";
 
 
@@ -361,18 +434,32 @@ class MotherboardRepository extends ServiceEntityRepository
 
     public function findByWithJoin(array $criteria, array $orderBy = null, $limit = null, $offset = null)
     {
+        //throw new Exception("test");
         $arrays = array();
         $values = array();
         $this->separateArraysFromValues($criteria, $arrays, $values);
+        
+        // Saving name and manufacturer for later use
+        if(isset($values['name']) && $values['name'] != null)
+            $name = $values['name'];
+        if(isset($values['manufacturer']) && $values['manufacturer'] != null)
+            $manufacturer = $values['manufacturer'];
 
         $slotVals = array();
         $ioVals = array();
         
         $sql = $this->prepareSQL($values, $arrays, $slotVals, $ioVals, $orderBy, $limit, $offset);
+        
         $rsm = $this->initResultSetMapping();
 
         $em = $this->getEntityManager();
         $query = $em->createNativeQuery($sql, $rsm);
+
+        // Putting name and manufacturer back
+        if(isset($name))
+            $values['name'] = $name;
+        if(isset($manufacturer))
+            $values['manufacturer'] = $manufacturer;
 
         $this->putDataInQuery($query, $values, $arrays, $slotVals, $ioVals);
 

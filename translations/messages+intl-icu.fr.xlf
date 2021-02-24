@@ -177,6 +177,10 @@
         <source>as well as the contributors who add new content everyday!</source>
         <target>ainsi que les contrubuteurs qui apportent du contenu tous les jours !</target>
       </trans-unit>
+	  <trans-unit id="qO9j8oM" resname="Also known as:">
+        <source>Also known as:</source>
+        <target>Autres noms:</target>
+      </trans-unit>
       <trans-unit id="XG0l1nK" resname="Image by">
         <source>Image by</source>
         <target>Image par</target>
@@ -269,16 +273,16 @@
         <source>Audio Chipset:</source>
         <target>Chipset Audio:</target>
       </trans-unit>
-      <trans-unit id="1cd.DA9" resname="Supported processors:">
-        <source>Supported processors:</source>
+      <trans-unit id="1cd.DA9" resname="Supported CPUs:">
+        <source>Supported CPUs:</source>
         <target>Processeurs supportés:</target>
       </trans-unit>
-      <trans-unit id="9fElsIC" resname="Supported math coprocessors:">
-        <source>Supported math coprocessors:</source>
+      <trans-unit id="9fElsIC" resname="Supported FPUs:">
+        <source>Supported FPUs:</source>
         <target>Coprocesseurs arithmétiques supportés:</target>
       </trans-unit>
-      <trans-unit id=".LFUJqa" resname="Supported frequencies:">
-        <source>Supported frequencies:</source>
+      <trans-unit id=".LFUJqa" resname="Supported FSB speeds:">
+        <source>Supported FSB speeds:</source>
         <target>Fréquences supportées:</target>
       </trans-unit>
       <trans-unit id="2k9_pY2" resname="Notes:">

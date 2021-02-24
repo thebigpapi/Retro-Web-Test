@@ -9,57 +9,66 @@ p, ul {margin-top: 14px; margin-bottom: 14px;}
 a:link, a:visited {text-decoration: none;}
 a:hover {text-decoration: underline;}
 
-div.top-bar { background:#343943;font-size:16px;padding:7px 18px;}
-div.top-bar a:link, div.top-bar a:visited { color: #FFFFFF;}
-div.top-bar small { color: #FF0000; font-size: 12px;}
+div.top-bar {background:#343943;font-size:16px;padding:7px 18px;}
+div.top-bar a:link, div.top-bar a:visited {color: #FFFFFF;}
+div.top-bar small {color: #FF0000; font-size: 12px;}
 div.top-bar select, div.top-bar input { font-size: 12px;}
-div.top-bar select.goto { width: 10.75em;}
-div.top-bar select.lang { width: 8.33em;}
+div.top-bar select.goto {width: 9em;}
+div.top-bar select.lang {width: 8.33em;}
 
-div.main, th { text-align: center;}
-div.page { text-align: left; margin: auto; width:98%;}
-h2.title { text-align: center; font-size:24px; margin: 15px 0;}
-b.contrib { background: #FFFF00; color: #FF0040;}
+div.main, th {text-align: center;}
+div.page {text-align: left; margin: auto; width:98%;}
+h2.title {text-align: center; font-size:24px; margin: 15px 0;}
+b.contrib {background: #FFFF00; color: #000000;}
 b.contrib a:link, b.contrib a:visited { color: #0000FF;}
 
 /* index.html.twig */
 
-form.index-buttons { padding-top: 18px;}
-form.index-buttons input { padding-top:145px;width:20em;min-width:240px;font-size:12px;font-weight:bold;}
-form.index-buttons input.button1 { background: #ebebeb url(./images/motherboard_low.jpg) center no-repeat;}
-form.index-buttons input.button2 { background: #ebebeb url(./images/card_disabled_low.jpg) center no-repeat;}
+form.index-buttons {padding-top: 18px;}
+form.index-buttons input {padding-top:145px;width:20em;min-width:240px;font-size:12px;font-weight:bold;}
+form.index-buttons input.button1 {background: #ebebeb url(./images/motherboard_low.jpg) center no-repeat;}
+form.index-buttons input.button2 {background: #ebebeb url(./images/card_disabled_low.jpg) center no-repeat;}
 
 /* search.html.twig */
 
-div.sform { height: 1.6em; width: 90%; padding-bottom: 6px;}
-div.sform select { height: 100%; width: 100%; }
-div.sform input { height: auto; width: 100%; /* **/ height: 90%; width: 99%; /** */}
+div.sform {height: 1.6em; width: 90%; padding-bottom: 6px;}
+div.sform select {height: 100%; width: 100%; }
+div.sform input {height: auto; width: 100%; /* **/ height: 90%; width: 99%; /** */}
 
-td.table-width { width: 0; }
-span.field1 { height: 1.75em; width: 15em; font-size:14px; margin-bottom:4px; /* **/ float:left; /** */}
+td.table-width {width: 0;}
+span.field1 {height: 1.75em; width: 15em; font-size:14px; margin-bottom:4px; /* **/ float:left; /** */}
 span.field1 span {float:left; margin-left:0.4em;}
 span.field1 input {height: 21px; width: 21px; float:left;  font-size:12px; /* **/ height: 1.25em; width: 1.25em; /** */}
 span.field2 {width: 12em;font-size:16px; margin-bottom:4px; /* **/ float:left; /** */}
 
-div.butn { text-align: center; margin-top:20px;}
-div.butn input { width:7.5em; height:2em; font-size:20px;}
+div.butn {text-align: center; margin-top:20px;}
+div.butn input {width:7.5em; height:2em; font-size:20px;}
 
 /* result.html.twig */
 
-div.results ul li{ line-height:140%;}
-div.pagination span.current { font-weight:bold;}
+div.results ul {margin: 0;padding-left: 40px;}
+div.results ul li{line-height:140%;font-size: 16px;}
+ul.results-alias {list-style-type: none;}
+div.results ul.results-alias li {line-height:120%;}
+div.results ul li ul.results-alias li span{font-size:0.8em;}
+
+div.pagination span.current {font-weight:bold;}
 
 /* show.html.twig */
 
-div.show-images { width:25%;overflow: auto;float:left;height:500px; /* **/ height:auto; max-height:500px; /** */}
-span.show-image { width:100%;font-size:12px;display:block;}
-span.creditor { width:auto;display:block; text-align: center; word-wrap: break-word;}
-span.show-image a img { width: 100%; border:0;}
-div.show-data { width:74%;float:left;padding-left:3px;font-size: 14px;overflow-x:auto;}
+div.show-images {width:25%;overflow: auto;float:left;height:500px; /* **/ height:auto; max-height:500px; /** */}
+span.show-image {width:100%;font-size:12px;display:block;}
+span.creditor {width:auto;display:block; text-align: center; word-wrap: break-word;}
+span.show-image a img {width: 100%; border:0;}
+div.show-data {width:74%;float:left;padding-left:3px;font-size: 14px;overflow-x:auto;}
 div.show-data table, div.notes {font-size: 14px;}
+p.string-alias{text-align:center;font-size: 14px;}
 span.string-bios {font-size:12px;}
 
-td.main-table { width:170px;}
+span.newdiv {padding:5px;margin-top: 1px;display: inline-block;color:#000000;
+border-style: solid;border-width: 1px;border-color: #ababab;}
+
+td.main-table {width:170px;}
 td.exp-table {vertical-align: top;width:140px;}
 td.io-table {vertical-align: top;width:175px;}
-td.cpu-table { width:160px;}
+td.cpu-table {width:160px;}

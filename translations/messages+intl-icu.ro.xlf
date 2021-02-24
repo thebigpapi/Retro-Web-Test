@@ -177,6 +177,10 @@
         <source>as well as the contributors who add new content everyday!</source>
         <target>contributorii care adaugă conținut nou zilnic !</target>
       </trans-unit>
+	  <trans-unit id="qO9j8oM" resname="Also known as:">
+        <source>Also known as:</source>
+        <target>Alte denumiri:</target>
+      </trans-unit>
       <trans-unit id="XG0l1nK" resname="Image by">
         <source>Image by</source>
         <target>Imagine:</target>
@@ -269,17 +273,17 @@
         <source>Audio Chipset:</source>
         <target>Chipset Audio:</target>
       </trans-unit>
-      <trans-unit id="1cd.DA9" resname="Supported processors:">
-        <source>Supported processors:</source>
+      <trans-unit id="1cd.DA9" resname="Supported CPUs:">
+        <source>Supported CPUs:</source>
         <target>CPU-uri suportate:</target>
       </trans-unit>
-      <trans-unit id="9fElsIC" resname="Supported math coprocessors:">
-        <source>Supported math coprocessors:</source>
-        <target>Coprocesoare suportate:</target>
+      <trans-unit id="9fElsIC" resname="Supported FPUs:">
+        <source>Supported FPUs:</source>
+        <target>FPU-uri suportate:</target>
       </trans-unit>
-      <trans-unit id=".LFUJqa" resname="Supported frequencies:">
-        <source>Supported frequencies:</source>
-        <target>Frecvențe suportate:</target>
+      <trans-unit id=".LFUJqa" resname="Supported FSB speeds:">
+        <source>Supported FSB speeds:</source>
+        <target>Frecvențe FSB suportate:</target>
       </trans-unit>
       <trans-unit id="2k9_pY2" resname="Notes:">
         <source>Notes:</source>

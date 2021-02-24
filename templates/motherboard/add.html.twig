@@ -5,9 +5,9 @@
 {% block body %}
 
 
-<form name="add_motherboard" method="post" enctype="multipart/form-data">
+<form name="add_motherboard" method="post" enctype="multipart/form-data" onsubmit="return check_E()">
 
-<div class="show-images">
+<div class="show-images" style="max-height:none">
 		<div class="bar">
 			<span style="padding-left:10px;">
 				<b>Images</b>
@@ -15,7 +15,7 @@
 			</span>
 		</div>
         <div id="images-fields-list" data-widget-counter="{{ form.images|length }}"
-            data-prototype="<div class=addform>
+            data-prototype="
 				<div class=imgp>{{ form_widget(form.images.vars.prototype.imageFile, {'attr': {'style': 'width:100%'}})|e }}</div>
 				<div class=imgp><span>Type: </span>{{ form_widget(form.images.vars.prototype.motherboardImageType)|e }}</div>
 				<div class=imgp><span>Creditor: </span>{{ form_widget(form.images.vars.prototype.creditor)|e }}</div>
@@ -23,7 +23,7 @@
 				<div class=imgp><span>Notes: </span>{{ form_widget(form.images.vars.prototype.description)|e }}</div>
 				<div class=imgp>Uploaded file: 
 					<button type=button onclick=this.parentNode.parentNode.parentNode.removeChild(this.parentNode.parentNode);>Delete this entry</button></div>
-				<div class=imgp>{{ form_widget(form.images.vars.prototype.file_name, {'attr': {'style': 'width:90%'}})|e }}</div></div>
+				<div class=imgp>{{ form_widget(form.images.vars.prototype.file_name, {'attr': {'style': 'width:90%'}})|e }}</div>
 				">
             {% for image in form.images %}
 			<div class="addform" >
@@ -45,15 +45,40 @@
 <div class="show-data">
 	<table class="add-title">
 		<tr>
-		{% if form.manufacturer is not null %}
+			<td class="ttl1"><b>Manufacturer</b></td>
+			<td class="ttl2"><b>Name</b></td>
+			<td></td>
+		</tr>
+		<tr>
 			<td class="ttl1">{{ form_widget(form.manufacturer) }}</td>
 			<td class="ttl2">{{ form_widget(form.name) }}</td>
-		{% else %}
-			Add a new motherboard
-		{% endif %}
+			<td class="ttl3">{{ form_row(form.save) }}</td>
 		</tr>
 	</table>
-	<div style="padding-top:10px">{{ form_row(form.save) }}</div>
+	<div class="clrs"></div>
+
+	<div class="motherboard-aliases" style="background-color:#e6e6e6;color:#000000;border-radius: 6px; padding: 3px 3px 3px">
+		<div>
+			<b>Alternative name:</b>
+			<button type="button" onclick="expand('motherboardAliases-fields-list')">Add</button>
+		</div>
+		<div class="append_table" id="motherboardAliases-fields-list" data-widget-counter="{{ form.motherboardAliases|length }}"
+        data-prototype="
+			<div class=ba0>{{ form_widget(form.motherboardAliases.vars.prototype.manufacturer, {'attr': {'style': 'width:100%'}} )|e }}</div>
+			<div class=ba1>{{ form_widget(form.motherboardAliases.vars.prototype.name, {'attr': {'style': 'width:100%'}} )|e }}</div>
+			<div class=ba3><button type=button onclick=this.parentNode.parentNode.parentNode.removeChild(this.parentNode.parentNode);>Del</button></div>
+		">
+			{% for alias in form.motherboardAliases %}
+			<div>
+				<div class="ba0">{{ form_widget(alias.manufacturer, {'attr': {'style': 'width:100%'}} ) }}</div>
+				<div class="ba1">{{ form_widget(alias.name, {'attr': {'style': 'width:100%'}} ) }}</div>
+				<div class="ba3"><button type="button" onclick="this.parentNode.parentNode.parentNode.removeChild(this.parentNode.parentNode);">Del</button></div>
+				{{ form_errors(alias) }}
+			</div>
+			{% endfor %}
+		</div>
+	</div>
+
 	
 	<table>
 		<tr>
@@ -77,7 +102,7 @@
 			<td>{{ form_widget(form.maxCpu, {'attr': {'style': 'width:25px'}} ) }}</td>
 		</tr>
 	</table>
-	<table style="background-color:#e6e6e6;border-radius: 6px; padding: 3px 3px 3px">
+	<table style="background-color:#e6e6e6;color:#000000;border-radius: 6px; padding: 3px 3px 3px">
 		<tr style="text-align:center">
 			<td>
 				<b>Max system RAM : </b>
@@ -91,9 +116,9 @@
 		<tr>
 			<td class="exp-table">
 				<div id="motherboardMaxRams-fields-list" data-widget-counter="{{ form.motherboardMaxRams|length }}"
-					data-prototype=" <div>{{ form_widget(form.motherboardMaxRams.vars.prototype.max_ram)|e }}
+					data-prototype="{{ form_widget(form.motherboardMaxRams.vars.prototype.max_ram)|e }}
 						{{ form_widget(form.motherboardMaxRams.vars.prototype.note, {'attr': {'style': 'width:30%'}} )|e }}
-						<button type=button onclick=this.parentNode.parentNode.removeChild(this.parentNode);>Del</button></div>">
+						<button type=button onclick=this.parentNode.parentNode.removeChild(this.parentNode);>Del</button>">
 					{% for maxRam in form.motherboardMaxRams %}
 						<div>{{ form_widget(maxRam.max_ram) }}
 						{{ form_widget(maxRam.note, {'attr': {'style': 'width:30%'}} ) }}
@@ -106,8 +131,8 @@
 			</td>
 			<td class="io-table">
 				<div id="cacheSize-fields-list" data-widget-counter="{{ form.cacheSize|length }}"
-					data-prototype="<div>{{ form_widget(form.cacheSize.vars.prototype)|e }}
-						<button type=button onclick=this.parentNode.parentNode.removeChild(this.parentNode);>Del</button></div>">
+					data-prototype="{{ form_widget(form.cacheSize.vars.prototype)|e }}
+						<button type=button onclick=this.parentNode.parentNode.removeChild(this.parentNode);>Del</button>">
 					{% for size in form.cacheSize %}
 						<div>{{ form_widget(size) }}
 						<button type="button" onclick="this.parentNode.parentNode.removeChild(this.parentNode);">Del</button>
@@ -202,7 +227,7 @@
 	</div>
 	<div class="clrs"></div>
 	
-	<table style="background-color:#e6e6e6;border-radius: 6px; padding: 3px 3px 3px">
+	<table style="background-color:#e6e6e6;color:#000000;border-radius: 6px; padding: 3px 3px 3px">
 		<tr style="text-align:center">
 			<td>
 				<b>I/O ports : </b>
@@ -220,10 +245,10 @@
 		<tr>
 			<td class="io-table">
 				<div id="motherboardIoPorts-fields-list" data-widget-counter="{{ form.motherboardIoPorts|length }}"
-                    data-prototype="<div>
+                    data-prototype="
 						{{ form_widget(form.motherboardIoPorts.vars.prototype.count, {'attr': {'class': 'num'}} )|e }} x 
 						{{ form_widget(form.motherboardIoPorts.vars.prototype.io_port, {'attr': {'style': 'width:50%'}} )|e }}
-						<button type=button onclick=this.parentNode.parentNode.removeChild(this.parentNode);>Del</button></div>">
+						<button type=button onclick=this.parentNode.parentNode.removeChild(this.parentNode);>Del</button>">
 					{% for port in form.motherboardIoPorts %}
 							<div>{{ form_widget(port.count, {'attr': {'class': 'num'}} ) }}
 							x {{ form_widget(port.io_port, {'attr': {'style': 'width:50%'}} ) }}
@@ -235,10 +260,10 @@
 			</td>
 			<td class="io-table">
 				<div id="motherboardExpansionSlots-fields-list" data-widget-counter="{{ form.motherboardExpansionSlots|length }}"
-                    data-prototype="<div>
+                    data-prototype="
 					{{ form_widget(form.motherboardExpansionSlots.vars.prototype.count, {'attr': {'class': 'num'}} )|e }} x 
 					{{ form_widget(form.motherboardExpansionSlots.vars.prototype.expansion_slot, {'attr': {'style': 'width:50%;display:inline'}} )|e  }}
-					<button type=button onclick=this.parentNode.parentNode.removeChild(this.parentNode);>Del</button></div>">
+					<button type=button onclick=this.parentNode.parentNode.removeChild(this.parentNode);>Del</button>">
 					{% for slot in form.motherboardExpansionSlots %}
 						<div>{{ form_widget(slot.count, {'attr': {'class': 'num'}} ) }}
 						x {{ form_widget(slot.expansion_slot, {'attr': {'style': 'width:50%'}} ) }}
@@ -250,8 +275,8 @@
 			</td>
 			<td class="exp-table">
                 <div id="knownIssues-fields-list" data-widget-counter="{{ form.knownIssues|length }}"
-                    data-prototype="<div>{{ form_widget(form.knownIssues.vars.prototype, {'attr': {'style': 'width:70%'}} )|e  }}
-						<button type=button onclick=this.parentNode.parentNode.removeChild(this.parentNode);>Del</button></div>">
+                    data-prototype="{{ form_widget(form.knownIssues.vars.prototype, {'attr': {'style': 'width:70%'}} )|e  }}
+						<button type=button onclick=this.parentNode.parentNode.removeChild(this.parentNode);>Del</button>">
 					{% for issue in form.knownIssues %}
 							<div>{{ form_widget(issue, {'attr': {'style': 'width:70%'}} ) }}
 							<button type="button" onclick="this.parentNode.parentNode.removeChild(this.parentNode);">Del</button></div>
@@ -277,7 +302,7 @@
 			<td>{{ form_widget(form.audioChipset) }}</td>
 		</tr>
 	</table>
-	<table style="background-color:#e6e6e6;border-radius: 6px; padding: 3px 3px 3px">
+	<table style="background-color:#e6e6e6;color:#000000;border-radius: 6px; padding: 3px 3px 3px">
 		<tr style="text-align:center">
 			<td style="width:280px">
 				<b>CPU:</b>
@@ -296,8 +321,8 @@
 			<td>
 				{{ form_errors(form.motherboardProcessor) }}
 				<div style="width:100%" id="motherboardProcessor-fields-list" data-widget-counter="{{ form.motherboardProcessor|length }}"
-                    data-prototype="<div>{{ form_widget(form.motherboardProcessor.vars.prototype, {'attr': {'style': 'width:70%'}} )|e  }}
-					<button type=button onclick=this.parentNode.parentNode.removeChild(this.parentNode);>Del</button></div>">
+                    data-prototype="{{ form_widget(form.motherboardProcessor.vars.prototype, {'attr': {'style': 'width:70%'}} )|e  }}
+					<button type=button onclick=this.parentNode.parentNode.removeChild(this.parentNode);>Del</button>">
 					{% for processor in form.motherboardProcessor %}
                         <div>{{ form_widget(processor, {'attr': {'style': 'width:70%'}} ) }}
                         <button type="button" onclick="this.parentNode.parentNode.removeChild(this.parentNode);">Del</button></div>
@@ -308,8 +333,8 @@
 			<td class="exp-table">
 				 {{ form_errors(form.cpuSpeed) }}
                 <div style="width:100%" id="cpuSpeed-fields-list" data-widget-counter="{{ form.cpuSpeed|length }}"
-                    data-prototype="<div>{{ form_widget(form.cpuSpeed.vars.prototype, {'attr': {'style': 'width:70%'}} )|e  }}
-					<button type=button onclick=this.parentNode.parentNode.removeChild(this.parentNode);>Del</button></div>">
+                    data-prototype="{{ form_widget(form.cpuSpeed.vars.prototype, {'attr': {'style': 'width:70%'}} )|e  }}
+					<button type=button onclick=this.parentNode.parentNode.removeChild(this.parentNode);>Del</button>">
                 {% for speed in form.cpuSpeed %}
                         <div>{{ form_widget(speed, {'attr': {'style': 'width:70%'}} ) }}
                         <button type="button" onclick="this.parentNode.parentNode.removeChild(this.parentNode);">Del</button></div>
@@ -320,8 +345,8 @@
 			<td class="exp-table">
                 {{ form_errors(form.coprocessors) }}
                 <div style="width:100%" id="coprocessors-fields-list" data-widget-counter="{{ form.coprocessors|length }}"
-                    data-prototype="<div>{{ form_widget(form.coprocessors.vars.prototype, {'attr': {'style': 'width:70%'}} )|e  }}
-					<button type=button onclick=this.parentNode.parentNode.removeChild(this.parentNode);>Del</button></div>">
+                    data-prototype="{{ form_widget(form.coprocessors.vars.prototype, {'attr': {'style': 'width:70%'}} )|e  }}
+					<button type=button onclick=this.parentNode.parentNode.removeChild(this.parentNode);>Del</button>">
                 {% for coprocessor in form.coprocessors %}
                         <div>{{ form_widget(coprocessor, {'attr': {'style': 'width:70%'}} ) }}
                         <button type="button" onclick="this.parentNode.parentNode.removeChild(this.parentNode);">Del</button></div>

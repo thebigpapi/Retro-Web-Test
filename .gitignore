@@ -24,6 +24,9 @@
 # Composer PHAR
 /composer.phar
 
+# Favicon
+favicon.ico
+
 # Backup entities generated with doctrine:generate:entities command
 **/Entity/*~
 
