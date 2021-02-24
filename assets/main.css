@@ -62,7 +62,7 @@ span.creditor {width:auto;display:block; text-align: center; word-wrap: break-wo
 span.show-image a img {width: 100%; border:0;}
 div.show-data {width:74%;float:left;padding-left:3px;font-size: 14px;overflow-x:auto;}
 div.show-data table, div.notes {font-size: 14px;}
-p.string-alias{text-align:center;font-size: 18px;}
+p.string-alias{text-align:center;font-size: 14px;}
 span.string-bios {font-size:12px;}
 
 span.newdiv {padding:5px;margin-top: 1px;display: inline-block;color:#000000;
