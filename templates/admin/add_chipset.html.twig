@@ -4,62 +4,51 @@
 
 {% block body %}
 <div style="height:6em;"></div>
+
+{{ form_start(form, {'method': 'POST'}) }}
 <div class="editasset">
-	<h2><b>Edit: Chipsets</b></h2>
-    {{ form_start(form, {'method': 'POST'}) }}
-    <div>
-    {{ form_label(form.manufacturer) }}
-    {{form_widget(form.manufacturer)}}
-    </div>
-    <div>
-    {{ form_label(form.name) }}
-    {{form_widget(form.name)}}
-    </div>
-    <div>
-    {{ form_label(form.part_no) }}
-    {{form_widget(form.part_no)}}
-    </div>
-    <div>
-    {{ form_label(form.release_date) }}
-    {{form_widget(form.release_date)}}
-    </div>
-    <div>
-    {{ form_label(form.encyclopedia_link) }}
-    {{form_widget(form.encyclopedia_link)}}
-    </div>
-    <div>
-                {{ form_label(form.chipsetParts) }}
-                {{ form_errors(form.chipsetParts) }}
-                <ul id="chipsetParts-fields-list"
-                    data-prototype="{{ form_widget(form.chipsetParts.vars.prototype)|e }}"
-                    data-widget-tags="{{ '<li></li>'|e }}"
-                    data-widget-counter="{{ form.chipsetParts|length }}">
-                {% for chipsetChipsetPart in form.chipsetParts %}
-                    <li>
-                        {{ form_errors(chipsetChipsetPart) }}
-                        {{ form_widget(chipsetChipsetPart) }}
-                        <button type="button" class="delbutton">Delete</button>
-                    </li>
-                {% endfor %}
-                </ul>
-                <button type="button"
-                    class="add-another-collection-widget"
-                    data-list-selector="#chipsetParts-fields-list">
-                        Add Chipset part
-                </button>
-    </div>
-    {{form_widget(form.save)}}
-{{ form_end(form) }}
-
-
-<script>
-    var buttons = document.getElementsByTagName("BUTTON");
-    for(i = 0;i < buttons.length-1; i++)
-    {
-        if(buttons[i].className==="delbutton")
-            buttons[i].addEventListener('click', function () { this.parentElement.remove(); });
-    }
-</script>
+	<b>Edit: Chipsets</b> {{form_widget(form.save)}}
+	<table class="editasset">
+		
+		<tr>
+			<td>{{form_label(form.manufacturer)}}</td>
+			<td>{{form_widget(form.manufacturer)}}</td>
+		</tr>
+		<tr>
+			<td>{{form_label(form.name)}}</td>
+			<td>{{form_widget(form.name)}}</td>
+		</tr>
+		<tr>
+			<td>Part number</td>
+			<td>{{form_widget(form.part_no)}}</td>
+		</tr>
+		<tr>
+			<td>{{form_label(form.release_date)}}</td>
+			<td>{{form_widget(form.release_date)}}</td>
+		</tr>
+		<tr>
+			<td>{{form_label(form.encyclopedia_link)}}</td>
+			<td>{{form_widget(form.encyclopedia_link)}}</td>
+		</tr>
+	</table>
+	<div>
+		<p>Chipset parts:</p> 
+		<button type="button" onclick="expand('chipsetParts-fields-list')">Add chipset part</button>
+		
+        {{ form_errors(form.chipsetParts) }}
+        <div id="chipsetParts-fields-list" data-widget-counter="{{ form.chipsetParts|length }}"
+            data-prototype="{{ form_widget(form.chipsetParts.vars.prototype)|e }}
+			<button type=button onclick=this.parentNode.parentNode.removeChild(this.parentNode);>Del</button>">
+            {% for chipsetChipsetPart in form.chipsetParts %}
+            <div>
+                {{ form_errors(chipsetChipsetPart) }}
+                {{ form_widget(chipsetChipsetPart) }}
+                <button type="button" onclick="this.parentNode.parentNode.removeChild(this.parentNode);">Del</button>
+            </div>
+            {% endfor %}
+        </div>
+	</div>  
+<!-- {{ form_rest(form)|replace({'<input': ' --><input'})|raw }}
 <script src="{% if app.request.attributes.get('_route') == "chipset_edit" %}../{% endif %}../assets/add-collection-widget.js"></script>
 
 {% endblock %}

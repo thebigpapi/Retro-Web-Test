@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Manufacturer;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ORM\Query\ResultSetMapping;
 
 /**
  * @method Manufacturer|null find($id, $lockMode = null, $lockVersion = null)
@@ -27,15 +28,22 @@ class ManufacturerRepository extends ServiceEntityRepository
     {
         $entityManager = $this->getEntityManager();
 
-        $query = $entityManager->createQuery(
-            'SELECT DISTINCT man
-            FROM App\Entity\Motherboard mobo, App\Entity\Manufacturer man 
-            WHERE mobo.manufacturer=man
-            ORDER BY man.name ASC'
-        );
-
+        $rsm = new ResultSetMapping();
         
-        return $query->getResult();
+
+        $rsm->addEntityResult('App\Entity\Manufacturer', 'man');
+        $rsm->addFieldResult('man', 'id', 'id');
+        $rsm->addFieldResult('man', 'name', 'name');
+        $rsm->addFieldResult('man', 'short_name', 'shortName');
+
+        $query = $entityManager->createNativeQuery('SELECT DISTINCT manufacturer.id, manufacturer.name, manufacturer.short_name  
+        FROM motherboard_alias alias FULL OUTER JOIN motherboard mobo ON mobo.manufacturer_id=alias.manufacturer_id, manufacturer 
+        WHERE manufacturer.id=coalesce(alias.manufacturer_id,mobo.manufacturer_id) 
+        ORDER BY manufacturer.name;', $rsm
+        );
+        
+        return $query->setCacheable(true)
+        ->getResult();
     }
 
     /**

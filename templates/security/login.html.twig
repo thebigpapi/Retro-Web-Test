@@ -3,23 +3,45 @@
 {% block title %}Login{% endblock %}
 
 {% block body %}
-<div class="main"><div class="page"><div style="margin-left:40%; margin-top:40px;">
-	<p><img src="./assets/images/login.gif" alt=""></p>
-	{% if app.user %}
-	{% trans %}You are logged in as{% endtrans %} {{ app.user.username }}, <a href="{{ path('app_logout') }}">{% trans %}Logout{% endtrans %}</a>
-	{% else %}
-		<form action="" method="post"><div>
-		{% if error %}
-			<div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+<div class="main"><div class="page">
+	<table style="margin:auto;padding-top:50px;"><tr>
+		<td>
+			<img src="./assets/images/login.gif" alt="login">
+		</td>
+		<td>
+		{% if app.user %}
+			{% trans %}You are logged in as{% endtrans %} {{ app.user.username }}, 
+			<a href="{{ path('app_logout') }}">{% trans %}Logout{% endtrans %}</a>
+		{% else %}
+		<form action="" method="post">
+			<table>
+				<tr>
+					<td colspan="2"><h2>{% trans %}Please login{% endtrans %}</h2></td>
+				</tr>
+				<tr>
+					<td><label for="inputUsername">{% trans %}Username{% endtrans %}</label></td>
+					<td><input type="text" value="{{ last_username }}" name="username" id="inputUsername"></td>
+				</tr>
+				<tr>
+					<td><label for="inputPassword">{% trans %}Password{% endtrans %}</label></td>
+					<td><input type="password" name="password" id="inputPassword">
+					<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}"></td>
+				</tr>
+				<tr>
+					<td><button style="margin-top:10px;" type="submit">{% trans %}Login{% endtrans %}</button></td>
+					<td><label><input type="checkbox" name="_remember_me"> {% trans %}Remember me{% endtrans %}</label></td>
+				</tr>
+			</table>
+		</form>
 		{% endif %}
-		<h2>{% trans %}Please login{% endtrans %}</h2>
-		<label for="inputUsername">{% trans %}Username{% endtrans %}</label> <input type="text" value="{{ last_username }}" name="username" id="inputUsername"><br>
-		<label for="inputPassword">{% trans %}Password{% endtrans %}</label> <input type="password" name="password" id="inputPassword"><input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}"><br>
-
-		<label><input type="checkbox" name="_remember_me"> {% trans %}Remember me{% endtrans %}</label><br>
-
-		<button style="margin-top:10px;" type="submit">{% trans %}Login{% endtrans %}</button>
-		</div></form>
+		</td>
+	</tr>
+	{% if error %}
+	<tr>
+		<td></td>
+		<td colspan="2" style="font-size:16px">{{ error.messageKey|trans(error.messageData, 'security') }}</td>
+	</tr>
 	{% endif %}
-</div></div></div>
+	</table>
+</div></div>
 {% endblock %}

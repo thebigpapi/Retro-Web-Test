@@ -3,10 +3,17 @@
 namespace App\Twig;
 
 use Twig\Extension\AbstractExtension;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Twig\TwigFunction;
 
 class BrowserCheckerExtension extends AbstractExtension
 {
+
+    public function __construct(ParameterBagInterface $params)
+    {
+        $this->params = $params;
+    }
+
     public function getFunctions()
     {
         return [
@@ -22,6 +29,17 @@ class BrowserCheckerExtension extends AbstractExtension
 
     public function isRobot($ua)
     {
-        return preg_match("/Discordbot|Twitterbot/", $ua);
+        $robots = $this->params->get("user_agent.crawlers");
+        
+        $match = "/";
+        foreach ($robots as $key => $robot)
+        {
+            if (array_key_first($robots) == $key)
+                $match = $match . $robot;
+            else
+                $match = $match . "|" . $robot;
+        }
+        $match = $match . "/";
+        return preg_match($match, $ua);
     }
 }

@@ -22,7 +22,7 @@
 		<![endif]-->
 	</head>
 	<body class="content">
-		<form action="{{ path('change_page') }}" method="get"><div class="top-bar">
+		<form action="{{ path('change_page') }}" method="get"><div class="top-bar"><div class="table-mobile">
 			<a href="{{ root }}/" style="text-decoration: none;"><b>Ultimate Hardware <small>2019 BETA</small></b></a>
 			<span class="form"><select class="goto" name="goto">
 				<option value="{{ app.request.requesturi }}">{% trans %}Go to...{% endtrans %}</option>
@@ -35,7 +35,7 @@
 				{% for locale in locales %}<option{% if locale == 'user.lang'|trans %} selected="selected"{% endif %} value="{{ locale }}">{{ 'name.lang'|trans(locale=locale) }}</option>{% endfor %}
 			</select>
 			<input type="submit" value=" OK "></span>
-		</div></form>
+		</div></div></form>
 		<div class="main">
 			<div class="page">
 				{% block body %}{% endblock %}
