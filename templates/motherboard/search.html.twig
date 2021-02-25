@@ -46,6 +46,12 @@
                 </td>
             </tr>
             <tr style="line-height: 200%;">
+                <th>{{ form_label(form.chipsetManufacturer) }}</th>
+				<td>
+                    <div class="sform">{{ form_widget(form.chipsetManufacturer) }}</div>
+                </td>
+            </tr>
+            <tr style="line-height: 200%; display:none">
                 <th>{{ form_label(form.chipset) }}</th>
 				<td>
                     <div class="sform">{{ form_widget(form.chipset) }}</div>

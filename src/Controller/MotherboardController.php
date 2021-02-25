@@ -169,16 +169,23 @@ class MotherboardController extends AbstractController
         $unidentifiedMan->setName($notIdentifiedMessage);
         array_unshift ($moboManufacturers, $unidentifiedMan);
 
+        $chipsetManufacturers = $this->getDoctrine()
+        ->getRepository(Manufacturer::class)
+        ->findAllChipsetManufacturer();
+        $unidentifiedMan = new Manufacturer();
+        $unidentifiedMan->setName($notIdentifiedMessage);
+        array_unshift ($chipsetManufacturers, $unidentifiedMan);
+
         $chipsets = $this->getDoctrine()
             ->getRepository(Chipset::class)
             ->findAllMotherboardChipset();
 
         usort($chipsets, function ($a, $b)
             {
-                if ($a->getMainChipWithManufacturer() == $b->getMainChipWithManufacturer()) {
+                if ($a->getFullReference() == $b->getFullReference()) {
                     return 0;
                 }
-                return ($a->getMainChipWithManufacturer() < $b->getMainChipWithManufacturer()) ? -1 : 1;
+                return ($a->getFullReference() < $b->getFullReference()) ? -1 : 1;
             }
         );
         
@@ -226,6 +233,7 @@ class MotherboardController extends AbstractController
         //dd(array($slotsForm));
         $form = $this->createForm(SearchMotherboard::class, array('motherboardExpansionSlots'=>$slotsForm,'motherboardIoPorts'=>$portsForm), [
             'moboManufacturers' => $moboManufacturers,
+            'chipsetManufacturers' => $chipsetManufacturers,
             'chipsets' => $chipsets,
             'formFactors' => $formFactors,
             'procPlatformTypes' => $procPlatformTypes,

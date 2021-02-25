@@ -47,6 +47,16 @@ class SearchMotherboard extends AbstractType
                 'label'    => ' ',
                 'required' => false,
             ])*/
+            ->add('chipsetManufacturer', ChoiceType::class, [
+                //'class' => Chipset::class,
+
+                'choice_label' => 'getShortNameIfExist',
+                'multiple' => false,
+                'expanded' => false,
+                'required' => false,
+                'choices' => $options['chipsetManufacturers'],
+		        'placeholder' => 'Select a chipset manufacturer ...',
+            ])
             ->add('chipset', ChoiceType::class, [
                 //'class' => Chipset::class,
                 
@@ -129,6 +139,7 @@ class SearchMotherboard extends AbstractType
     {
         $resolver->setDefaults([
             'moboManufacturers' => array(),
+            'chipsetManufacturers' => array(),
             'chipsets' => array(),
             'bios' => array(),
             'formFactors' => array(),
