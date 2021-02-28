@@ -157,13 +157,15 @@ class SearchMotherboard extends AbstractType
             /*if($chipsetManufacturer)
             {*/
                 usort($chipsets, function ($a, $b)
-                {
-                    if ($a->getFullReference() == $b->getFullReference()) {
-                        return 0;
+                    {
+                        if ($a->getFullReference() == $b->getFullReference()) {
+                            return 0;
+                        }
+                        if($a->getFullReference()==" Unidentified ") return -1;
+                        return ($a->getFullReference() < $b->getFullReference()) ? -1 : 1;
                     }
-                    return ($a->getFullReference() < $b->getFullReference()) ? -1 : 1;
-                }
-            );
+                );
+                //if($chipsetManufacturer) dd($chipsets[94]->getFullReference()==" Unidentified ");
                 $form->add('chipset', ChoiceType::class, [
                     //'class' => Chipset::class,
                     

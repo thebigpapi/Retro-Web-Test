@@ -57,6 +57,10 @@ class MotherboardController extends AbstractController
         $processorPlatformTypeId = htmlentities($request->query->get('processorPlatformTypeId'));
         if ($processorPlatformTypeId && intval($processorPlatformTypeId)) $criterias['processor_platform_type'] = "$processorPlatformTypeId";
         elseif($processorPlatformTypeId === "NULL") $criterias['processor_platform_type'] = NULL;
+
+        $chipsetManufacturerId = htmlentities($request->query->get('chipsetManufacturerId'));
+        if ($chipsetManufacturerId && intval($chipsetManufacturerId) && !array_key_exists('chipset', $criterias)) $criterias['chipsetManufacturer'] = "$chipsetManufacturerId";
+        elseif($chipsetManufacturerId === "NULL" && !array_key_exists('chipset', $criterias)) $criterias['chipsetManufacturer'] = NULL;
         
         //[{"id":1, "count":2}] 
         $expansionSlotsIds = $request->query->get('expansionSlotsIds');
@@ -90,16 +94,19 @@ class MotherboardController extends AbstractController
             $criterias['dram'] = $dramTypeArray;
         }
 
+        
         if ($criterias == array()) {
             return $this->redirectToRoute('motherboard_search');
         }
-
+        
+        //dd($criterias);
         try {
             $data = $this->getDoctrine()
             ->getRepository(Motherboard::class)
             ->findByWithJoin($criterias, array('man1_name'=>'ASC', 'mot0_name'=>'ASC'));
         }
         catch(Exception $e) {
+            dd($e);
             return $this->redirectToRoute('motherboard_search');
         }
         $motherboards = $paginator->paginate(
@@ -389,9 +396,16 @@ class MotherboardController extends AbstractController
             if (count($bioses) > 0)
                 $parameters['biosIds'] = json_encode($bioses);
 
-            //return new Response();
-            //return $this->redirect('/motherboard/show/' . $mobo->getId());
-            //dd("salut");
+            if ($form['chipsetManufacturer']->getData() && !$form['chipset']->getData()) {
+
+                if($form['chipsetManufacturer']->getData()->getId() == 0) {
+                    $parameters['chipsetManufacturerId']  = "NULL";
+                }
+                else {
+                    $parameters['chipsetManufacturerId'] = $form['chipsetManufacturer']->getData()->getId();
+                }
+            }
+            
             return $this->redirect($this->generateUrl('mobosearch', $parameters));
         }
         return $this->render('motherboard/search.html.twig', [
