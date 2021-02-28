@@ -230,7 +230,6 @@ class MotherboardController extends AbstractController
             $ioPort = array("io_port"=>$portForm,"count"=>0);
             array_push($portsForm, $ioPort);
         }
-        $hideChipsets = true;
         //dd($chipsets);
         //dd(array($slotsForm));
         $form = $this->createForm(SearchMotherboard::class, array('motherboardExpansionSlots'=>$slotsForm,'motherboardIoPorts'=>$portsForm), [
@@ -250,7 +249,6 @@ class MotherboardController extends AbstractController
                     'form' => $form->createView(),
                     'slots' => $slots,
                     'ports' => $ports,
-                    'hideChipsets' => $hideChipsets,
                 ]);
             }
             $parameters = array();
@@ -400,7 +398,6 @@ class MotherboardController extends AbstractController
             'form' => $form->createView(),
             'slots' => $slots,
             'ports' => $ports,
-            'hideChipsets' => $hideChipsets,
         ]);
     }
 

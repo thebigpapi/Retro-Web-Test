@@ -132,7 +132,7 @@ class SearchMotherboard extends AbstractType
         ;
 
         $formModifier = function (FormInterface $form, Manufacturer $chipsetManufacturer = null) {
-            $chipsetCollection = null === $chipsetManufacturer ? [] : $chipsetManufacturer->getChipsets();
+            $chipsets = null === $chipsetManufacturer ? [] : $chipsetManufacturer->getChipsets()->toArray();
 
             /*$formOptions = [
                 'class' => Chipset::class,
@@ -154,9 +154,8 @@ class SearchMotherboard extends AbstractType
             /*if($chipsets)
                 dd($chipsets);*/
             
-            if($chipsetManufacturer)
-            {
-                $chipsets = $chipsetCollection->toArray();
+            /*if($chipsetManufacturer)
+            {*/
                 usort($chipsets, function ($a, $b)
                 {
                     if ($a->getFullReference() == $b->getFullReference()) {
@@ -175,7 +174,7 @@ class SearchMotherboard extends AbstractType
                     'choices' => $chipsets,
                     'placeholder' => '*',
                 ]);
-            }
+            //}
             /*if($chipsetManufacturer)
                 dd($form->getData());*/
         };

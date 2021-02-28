@@ -56,16 +56,12 @@
                     </div>
                 </td>
             </tr>
-            <!-- {% if hideChipsets %} display:none {% endif %} -->
-            
-            {% if form.chipset is defined %}
-                <tr style="line-height: 200%;  ">
-                    <th>{{ form_label(form.chipset) }}</th>
-                    <td>
-                        <div class="sform">{{ form_widget(form.chipset) }}</div>
-                    </td>
-                </tr>
-            {% endif %}
+            <tr style="line-height: 200%;  ">
+                <th>{{ form_label(form.chipset) }}</th>
+                <td>
+                    <div class="sform">{{ form_widget(form.chipset) }}</div>
+                </td>
+            </tr>
             <tr style="line-height: 100%;">
                 <th>{{ form_label(form.processorPlatformType) }}</th>
 				<td>
@@ -128,6 +124,31 @@
             {{ form_row(form.search)|replace({'<div><button': '<input', '</button></div>': '">', '>': ' value="'})|raw }}{{ form_rest(form) }}
         </div>
    </form><br>
-
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+var $chipsetManufacturer = $('#search_motherboard_chipsetManufacturer');
+// When sport gets selected ...
+$chipsetManufacturer.change(function() {
+  // ... retrieve the corresponding form.
+  var $form = $(this).closest('form');
+  // Simulate form data, but only include the selected sport value.
+  var data = {};
+  data[$chipsetManufacturer.attr('name')] = $chipsetManufacturer.val();
+  // Submit data via AJAX to the form's action path.
+  $.ajax({
+    url : $form.attr('action'),
+    type: $form.attr('method'),
+    data : data,
+    success: function(html) {
+      // Replace current position field ...
+      $('#search_motherboard_chipset').replaceWith(
+        // ... with the returned one from the AJAX response.
+        $(html).find('#search_motherboard_chipset')
+      );
+      // Position field now displays the appropriate positions.
+    }
+  });
+});
+</script>
 {% endblock %}
 
