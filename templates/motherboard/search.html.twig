@@ -50,13 +50,22 @@
 				<td>
                     <div class="sform">{{ form_widget(form.chipsetManufacturer) }}</div>
                 </td>
-            </tr>
-            <tr style="line-height: 200%; display:none">
-                <th>{{ form_label(form.chipset) }}</th>
-				<td>
-                    <div class="sform">{{ form_widget(form.chipset) }}</div>
+                <td>
+                    <div class="butn">
+                        {{ form_row(form.searchChipsetManufacturer)|replace({'<div><button': '<input', '</button></div>': '">', '>': ' value="'})|raw }}
+                    </div>
                 </td>
             </tr>
+            <!-- {% if hideChipsets %} display:none {% endif %} -->
+            
+            {% if form.chipset is defined %}
+                <tr style="line-height: 200%;  ">
+                    <th>{{ form_label(form.chipset) }}</th>
+                    <td>
+                        <div class="sform">{{ form_widget(form.chipset) }}</div>
+                    </td>
+                </tr>
+            {% endif %}
             <tr style="line-height: 100%;">
                 <th>{{ form_label(form.processorPlatformType) }}</th>
 				<td>
@@ -121,3 +130,4 @@
    </form><br>
 
 {% endblock %}
+

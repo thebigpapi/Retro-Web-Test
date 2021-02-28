@@ -39,27 +39,27 @@ class MotherboardController extends AbstractController
     public function searchResult(Request $request, PaginatorInterface $paginator)
     {
         $criterias = array();
-        $name = htmlentities($request->get('name'));
+        $name = htmlentities($request->query->get('name'));
         if ($name) $criterias['name'] = "$name";
 
-        $manufacturerId = htmlentities($request->get('manufacturerId'));
+        $manufacturerId = htmlentities($request->query->get('manufacturerId'));
         if ($manufacturerId && intval($manufacturerId)) $criterias['manufacturer'] = "$manufacturerId";
         elseif($manufacturerId === "NULL") $criterias['manufacturer'] = NULL;
 
-        $formFactorId = htmlentities($request->get('formFactorId'));
+        $formFactorId = htmlentities($request->query->get('formFactorId'));
         if ($formFactorId && intval($formFactorId)) $criterias['form_factor'] = "$formFactorId";
         elseif($formFactorId === "NULL") $criterias['form_factor'] = NULL;
 
-        $chipsetId = htmlentities($request->get('chipsetId'));
+        $chipsetId = htmlentities($request->query->get('chipsetId'));
         if ($chipsetId && intval($chipsetId)) $criterias['chipset'] = "$chipsetId";
         elseif($chipsetId === "NULL") $criterias['chipset'] = NULL;
 
-        $processorPlatformTypeId = htmlentities($request->get('processorPlatformTypeId'));
+        $processorPlatformTypeId = htmlentities($request->query->get('processorPlatformTypeId'));
         if ($processorPlatformTypeId && intval($processorPlatformTypeId)) $criterias['processor_platform_type'] = "$processorPlatformTypeId";
         elseif($processorPlatformTypeId === "NULL") $criterias['processor_platform_type'] = NULL;
         
         //[{"id":1, "count":2}] 
-        $expansionSlotsIds = $request->get('expansionSlotsIds');
+        $expansionSlotsIds = $request->query->get('expansionSlotsIds');
         $expansionSlotsArray = NULL;
         if ($expansionSlotsIds) {
             $expansionSlotsArray = json_decode($expansionSlotsIds);
@@ -67,7 +67,7 @@ class MotherboardController extends AbstractController
         }
 
         //[{"id":1, "count":2}] 
-        $ioPortsIds = $request->get('ioPortsIds');
+        $ioPortsIds = $request->query->get('ioPortsIds');
         $ioPortsArray = NULL;
         if ($ioPortsIds) {
             $ioPortsArray = json_decode($ioPortsIds);
@@ -75,7 +75,7 @@ class MotherboardController extends AbstractController
         }
 
         //[1, 2] 
-        $biosIds = $request->get('biosIds');
+        $biosIds = $request->query->get('biosIds');
         $biosArray = NULL;
         if ($biosIds) {
             $biosArray = json_decode($biosIds);
@@ -83,7 +83,7 @@ class MotherboardController extends AbstractController
         }
 
         //[1, 2] 
-        $dramTypeIds = $request->get('dramTypeIds');
+        $dramTypeIds = $request->query->get('dramTypeIds');
         $dramTypeArray = NULL;
         if ($dramTypeIds) {
             $dramTypeArray = json_decode($dramTypeIds);
@@ -230,6 +230,8 @@ class MotherboardController extends AbstractController
             $ioPort = array("io_port"=>$portForm,"count"=>0);
             array_push($portsForm, $ioPort);
         }
+        $hideChipsets = true;
+        //dd($chipsets);
         //dd(array($slotsForm));
         $form = $this->createForm(SearchMotherboard::class, array('motherboardExpansionSlots'=>$slotsForm,'motherboardIoPorts'=>$portsForm), [
             'moboManufacturers' => $moboManufacturers,
@@ -242,6 +244,15 @@ class MotherboardController extends AbstractController
         //dd($form);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+            
+            if($form->get('searchChipsetManufacturer')->isClicked()){
+                return $this->render('motherboard/search.html.twig', [
+                    'form' => $form->createView(),
+                    'slots' => $slots,
+                    'ports' => $ports,
+                    'hideChipsets' => $hideChipsets,
+                ]);
+            }
             $parameters = array();
             //dd($form->getData());
             if ($form['manufacturer']->getData()) {
@@ -382,12 +393,14 @@ class MotherboardController extends AbstractController
 
             //return new Response();
             //return $this->redirect('/motherboard/show/' . $mobo->getId());
-            return $this->redirectToRoute('mobosearch', $parameters);
+            //dd("salut");
+            return $this->redirect($this->generateUrl('mobosearch', $parameters));
         }
         return $this->render('motherboard/search.html.twig', [
             'form' => $form->createView(),
             'slots' => $slots,
             'ports' => $ports,
+            'hideChipsets' => $hideChipsets,
         ]);
     }
 

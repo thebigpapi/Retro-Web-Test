@@ -18,8 +18,13 @@ use App\Entity\ProcessorPlatformType;
 use App\Entity\MaxRam;
 use App\Form\Type\SearchMotherboardExpansionSlotType;
 use App\Form\Type\SearchMotherboardIoPortType;
+use App\Repository\ChipsetRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormInterface;
+
 
 class SearchMotherboard extends AbstractType
 {
@@ -57,16 +62,7 @@ class SearchMotherboard extends AbstractType
                 'choices' => $options['chipsetManufacturers'],
 		        'placeholder' => 'Select a chipset manufacturer ...',
             ])
-            ->add('chipset', ChoiceType::class, [
-                //'class' => Chipset::class,
-                
-                'choice_label' => 'getMainChipWithManufacturer',
-                'multiple' => false,
-                'expanded' => false,
-                'required' => false,
-                'choices' => $options['chipsets'],
-		        'placeholder' => 'Select a chipset ...',
-            ])
+            
             /*->add('searchProcessorPlatformType', CheckboxType::class, [
                 'label'    => ' ',
                 'required' => false,
@@ -132,7 +128,124 @@ class SearchMotherboard extends AbstractType
                 'choices' => $options['bios'],
             ])
             ->add('search', SubmitType::class)
+            ->add('searchChipsetManufacturer', SubmitType::class, ['label' => 'Search Chipset Manufacturer'])
         ;
+
+        $formModifier = function (FormInterface $form, Manufacturer $chipsetManufacturer = null) {
+            $chipsetCollection = null === $chipsetManufacturer ? [] : $chipsetManufacturer->getChipsets();
+
+            /*$formOptions = [
+                'class' => Chipset::class,
+                'choice_label' => 'getMainChipWithManufacturer',
+                'query_builder' => function (ChipsetRepository $chipsetRepository) use ($manufacturer) {
+                    return $chipsetRepository->findByManufacturer($manufacturer);
+                    // call a method on your repository that returns the query builder
+                    // return $userRepository->createFriendsQueryBuilder($user);
+                },
+            ];*/
+
+            
+
+
+            /*if($chipsetManufacturer)
+                $formOptions = array(new Chipset());
+            else
+                $formOptions = array();**/
+            /*if($chipsets)
+                dd($chipsets);*/
+            
+            if($chipsetManufacturer)
+            {
+                $chipsets = $chipsetCollection->toArray();
+                usort($chipsets, function ($a, $b)
+                {
+                    if ($a->getFullReference() == $b->getFullReference()) {
+                        return 0;
+                    }
+                    return ($a->getFullReference() < $b->getFullReference()) ? -1 : 1;
+                }
+            );
+                $form->add('chipset', ChoiceType::class, [
+                    //'class' => Chipset::class,
+                    
+                    'choice_label' => 'getFullReference',
+                    'multiple' => false,
+                    'expanded' => false,
+                    'required' => false,
+                    'choices' => $chipsets,
+                    'placeholder' => '*',
+                ]);
+            }
+            /*if($chipsetManufacturer)
+                dd($form->getData());*/
+        };
+            
+
+        $builder->addEventListener(
+            FormEvents::PRE_SET_DATA,
+            function (FormEvent $event) use ($formModifier) {
+                // this would be your entity, i.e. SportMeetup
+                $data = $event->getData();
+                //dd($data);
+
+                $formModifier($event->getForm(), null);
+            }
+        );
+
+        /*$builder->addEventListener(
+            FormEvents::POST_SET_DATA,
+            function (FormEvent $event) {
+                $form = $event->getForm();
+
+                // this would be your entity, i.e. SportMeetup
+                $data = $event->getData();
+
+                dd($form);
+            }
+        );*/
+
+        $builder->get('chipsetManufacturer')->addEventListener(
+            FormEvents::POST_SUBMIT,
+            function (FormEvent $event) use ($formModifier) {
+                // It's important here to fetch $event->getForm()->getData(), as
+                // $event->getData() will get you the client data (that is, the ID)
+                $chipsetManufacturer = $event->getForm()->getData();
+
+                // since we've added the listener to the child, we'll have to pass on
+                // the parent to the callback functions!
+                $formModifier($event->getForm()->getParent(), $chipsetManufacturer);
+            }
+        );
+
+        /*$builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
+            $test = $event->getData();
+            $form = $event->getForm();
+
+            if ($form->get('searchChipsetManufacturer')->isClicked())
+            {
+                $formOptions = [
+                    'class' => Chipset::class,
+                    'choice_label' => 'getMainChipWithManufacturer',
+                    'query_builder' => function (ChipsetRepository $userRepository) {
+                        return $userRepository->findAllMotherboardChipset();
+                        // call a method on your repository that returns the query builder
+                        // return $userRepository->createFriendsQueryBuilder($user);
+                    },
+                ];
+
+                $form->add('chipset', ChoiceType::class, [
+                    //'class' => Chipset::class,
+                    
+                    'choice_label' => 'getMainChipWithManufacturer',
+                    'multiple' => false,
+                    'expanded' => false,
+                    'required' => false,
+                    'choices' => $formOptions,
+                    'placeholder' => '*',
+                ]);
+            }
+                //dd($test);
+        });*/
     }
 
     public function configureOptions(OptionsResolver $resolver)
