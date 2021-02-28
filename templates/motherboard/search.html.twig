@@ -23,7 +23,7 @@
 		{% endfor %}
 		<a href="./result/?manufacturerId=NULL">?</a>
 	</p>
-
+    <div id="hiddenDiv" style="display: none;"></div>
 	<form name="search_motherboard" method="post" action="./search">
         <table>
             <tr style="line-height: 200%;">
@@ -59,7 +59,7 @@
             <tr style="line-height: 200%;  ">
                 <th>{{ form_label(form.chipset) }}</th>
                 <td>
-                    <div class="sform">{{ form_widget(form.chipset) }}</div>
+                    <div id="chipset_div" class="sform">{{ form_widget(form.chipset) }}</div>
                 </td>
             </tr>
             <tr style="line-height: 100%;">
@@ -124,31 +124,84 @@
             {{ form_row(form.search)|replace({'<div><button': '<input', '</button></div>': '">', '>': ' value="'})|raw }}{{ form_rest(form) }}
         </div>
    </form><br>
-   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script>
-var $chipsetManufacturer = $('#search_motherboard_chipsetManufacturer');
-// When sport gets selected ...
-$chipsetManufacturer.change(function() {
-  // ... retrieve the corresponding form.
-  var $form = $(this).closest('form');
-  // Simulate form data, but only include the selected sport value.
-  var data = {};
-  data[$chipsetManufacturer.attr('name')] = $chipsetManufacturer.val();
-  // Submit data via AJAX to the form's action path.
-  $.ajax({
-    url : $form.attr('action'),
-    type: $form.attr('method'),
-    data : data,
-    success: function(html) {
-      // Replace current position field ...
-      $('#search_motherboard_chipset').replaceWith(
-        // ... with the returned one from the AJAX response.
-        $(html).find('#search_motherboard_chipset')
-      );
-      // Position field now displays the appropriate positions.
+   
+<script type="text/javascript">
+function setChipset() {
+        var chipManuf = document.getElementById("search_motherboard_chipsetManufacturer");
+        var form = document.getElementsByName("search_motherboard")[0];
+        var data = {};
+        data[chipManuf.name] = chipManuf.value;
+        xhttp.onreadystatechange = function() {
+            //alert(xhttp.status + " " + xhttp.readyState + " " + xhttp.responseText);
+            if (xhttp.readyState == 4 && xhttp.status == 200) {
+                //console.log(this.responseText);
+                //alert(this.responseText);
+                /*if(window.DOMParser){
+                    var parser = new DOMParser();
+                    var doc = parser.parseFromString(xhttp.responseText, "text/html");
+                }
+                else if(window.ActiveXObject){
+                    var parser = new ActiveXObject("Microsoft.XMLDOM");
+                    parser.async = false;
+                    // is there another way to do this load? 
+                    var doc = parser.loadXML(xhttp.responseText);
+                    
+                    alert(parser.parseError.reason);
+                }
+                alert(doc);
+                document.getElementById('search_motherboard_chipset').innerHTML = doc.getElementById('search_motherboard_chipset').innerHTML;*/
+
+                //var parser = document.createElement( 'div' );
+                var currentForm = document.getElementById('chipset_div');
+                var parser = document.getElementById('hiddenDiv');
+                //console.log();
+                parser.innerHTML = xhttp.responseText;
+                //console.log();
+                var doc = document.getElementById('chipset_div');//parser.childNodes[15].childNodes[1].childNodes[5][5];
+                //console.log(doc);
+                //doc.id="vieux";
+                //var newdiv = document.createElement("div");
+                //newdiv.innerHTML = doc.innerHTML;
+                //alert(currentForm.innerHTML);
+                currentForm.innerHTML =  doc.innerHTML;
+
+                parser.innerHTML="";
+                alert(currentForm.innerHTML);
+                /*alert('<OPTION value="">' +newdiv.innerHTML);
+                alert('<OPTION value="">' +newdiv.innerHTML);*/
+                //var doc = parser.children[1].children[1].children[0].children[2].children[0].children[0].children[4].children[1].children[0].children[0];
+                
+            }
+        };
+        var chipsetManufacturer = chipManuf.value;
+        //var params = new FormData();
+        var params = "search_motherboard[chipsetManufacturer]="+chipsetManufacturer;
+        //params.set('search_motherboard[chipsetManufacturer]',chipsetManufacturer);
+        //console.log(params);
+        xhttp.open('POST', form.action, true);
+        xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xhttp.send(params);
     }
-  });
-});
+    if (window.XMLHttpRequest)
+        var xhttp = new XMLHttpRequest();
+    else if (window.ActiveXObject)
+        var xhttp = new ActiveXObject("Microsoft.XMLHTTP");
+    if (xhttp) { 
+        var chipBtn = document.getElementById('search_motherboard_searchChipsetManufacturer');
+        chipBtn.setAttribute("style", "display:none");
+    }
+    var chip = document.getElementById('search_motherboard_chipsetManufacturer');
+    function addEvent(evnt, elem, func){
+        if(elem.addEventListener)
+            elem.addEventListener(evnt,func,false);
+        else if(elem.attachEvent) {
+            elem.attachEvent("on"+evnt,func);
+        }
+        else elem["on"+evnt] = func;
+    }
+    //addEvent("change", chip, "setChipset()");
+    //chip.setAttribute("onchange", "setChipset()");
+    chip.onchange= function() {setChipset();};
 </script>
 {% endblock %}
 
