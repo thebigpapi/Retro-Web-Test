@@ -129,10 +129,14 @@
 function setChipset() {
         var chipManuf = document.getElementById("search_motherboard_chipsetManufacturer");
         var form = document.getElementsByName("search_motherboard")[0];
-        var data = {};
-        data[chipManuf.name] = chipManuf.value;
+        if (window.XMLHttpRequest)
+            var xhttp = new XMLHttpRequest();
+        else if (window.ActiveXObject)
+            var xhttp = new ActiveXObject("Microsoft.XMLHTTP");
+        //var data = {};
+        //data[chipManuf.name] = chipManuf.value;
         xhttp.onreadystatechange = function() {
-            //alert(xhttp.status + " " + xhttp.readyState + " " + xhttp.responseText);
+            //alert(xhttp.status + " " + xhttp.readyState );
             if (xhttp.readyState == 4 && xhttp.status == 200) {
                 //console.log(this.responseText);
                 //alert(this.responseText);
@@ -166,7 +170,7 @@ function setChipset() {
                 currentForm.innerHTML =  doc.innerHTML;
 
                 parser.innerHTML="";
-                alert(currentForm.innerHTML);
+                //alert(currentForm.innerHTML);
                 /*alert('<OPTION value="">' +newdiv.innerHTML);
                 alert('<OPTION value="">' +newdiv.innerHTML);*/
                 //var doc = parser.children[1].children[1].children[0].children[2].children[0].children[0].children[4].children[1].children[0].children[0];
@@ -187,8 +191,8 @@ function setChipset() {
     else if (window.ActiveXObject)
         var xhttp = new ActiveXObject("Microsoft.XMLHTTP");
     if (xhttp) { 
-        var chipBtn = document.getElementById('search_motherboard_searchChipsetManufacturer');
-        chipBtn.setAttribute("style", "display:none");
+        document.getElementById('search_motherboard_searchChipsetManufacturer').outerHTML="";
+        //chipBtn.setAttribute("style", "display:none");
     }
     var chip = document.getElementById('search_motherboard_chipsetManufacturer');
     function addEvent(evnt, elem, func){
