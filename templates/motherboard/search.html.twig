@@ -146,8 +146,9 @@ function setChipset() {
                 var parser = document.getElementById('hiddenDiv');
 				var lb1 = document.getElementById('setchip1');
 				var lb2 = document.getElementById('setchip2');
-				lb1.setAttribute("style", "display:none;");
-				lb2.setAttribute("style", "width:70%;");
+				lb1.style.display="none";
+				lb2.style.display="";
+				lb2.style.width="70%";
                 parser.innerHTML = xhttp.responseText;
                 var doc = document.getElementById('chipset_div');
                 currentForm.innerHTML =  doc.innerHTML;
@@ -181,8 +182,8 @@ function setChipset() {
     }
     chip.onchange= function() {
 		setChipset();
-		lb1.setAttribute("style", "display:auto;");
-		lb2.setAttribute("style", "width:50%;");
+		lb1.style.display="initial";
+		lb2.style.display="none";
 	};
 </script>
 {% endblock %}
