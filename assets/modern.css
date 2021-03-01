@@ -52,8 +52,9 @@ span.field1 input {font-size: 14px;}
 
 	/* search.html.twig */
 	div.sform {height: 1.2em; width:80%;}
+	table.sform1 {width: 80%;}
 	div.sform input {height: 26px; width: 100%;}
-	td.table-width {width:20px;}
+	td.table-width {width:180px;}
 
 	/* result.html.twig */
 	div.results ul li{font-size:20px;}
@@ -66,7 +67,7 @@ span.field1 input {font-size: 14px;}
 
 	/* search.html.twig */
 	span.field1 {font-size:16px;}
-	td.table-width {width:60px;}
+	td.table-width {width:200px;}
 
 	/* show.html.twig */
 	div.show-images {width:30%; max-height:600px;}

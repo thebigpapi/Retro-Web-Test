@@ -17,7 +17,7 @@
 {% block body %}
 	<h2 class="title">{% trans %}Search for a motherboard{% endtrans %}</h2>
 
-	<p style="text-align:center;">{% trans %}List motherboards whose the manufacturer starting with:{% endtrans %}<br>
+	<p style="text-align:center;">{% trans %}List boards whose manufacturer name starts with:{% endtrans %}<br>
 		{% for letter in ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z']%}
 		<a href="./index/{{letter}}">{{letter}}</a>&nbsp;|
 		{% endfor %}
@@ -27,50 +27,57 @@
 	<form name="search_motherboard" method="post" action="./search">
         <table>
             <tr style="line-height: 200%;">
-                <th>{{ form_label(form.manufacturer) }}</th>
-                <td class="table-width" rowspan="13"></td>
+                <td class="table-width"><b>{% trans %}Manufacturer{% endtrans %}</b></td>
                 <td>
                     <div class="sform">{{ form_widget(form.manufacturer) }}</div>
                 </td>
             </tr>
             <tr style="line-height: 200%;">
-                <th>{{ form_label(form.name) }}</th>
+                <td class="table-width"><b>{% trans %}Name{% endtrans %}</b></td>
                 <td>
                     <div class="sform">{{ form_widget(form.name)|replace({' />': ' size="50">'})|raw }}</div> 
                 </td>
             </tr>
             <tr style="line-height: 200%;">
-                <th>{{ form_label(form.formFactor) }}</th>
+                <td class="table-width"><b>{% trans %}Form factor{% endtrans %}</b></td>
 				<td>
                     <div class="sform">{{ form_widget(form.formFactor) }}</div>
                 </td>
             </tr>
-            <tr style="line-height: 200%;">
-                <th>{{ form_label(form.chipsetManufacturer) }}</th>
-				<td>
-                    <div class="sform">{{ form_widget(form.chipsetManufacturer) }}</div>
-                </td>
-                <td>
-                    <div class="butn">
-                        {{ form_row(form.searchChipsetManufacturer)|replace({'<div><button': '<input', '</button></div>': '">', '>': ' value="'})|raw }}
-                    </div>
-                </td>
-            </tr>
-            <tr style="line-height: 200%;  ">
-                <th>{{ form_label(form.chipset) }}</th>
-                <td>
-                    <div id="chipset_div" class="sform">{{ form_widget(form.chipset) }}</div>
-                </td>
-            </tr>
+			<tr style="height:10px;"><td></td><td></td></tr>
             <tr style="line-height: 100%;">
-                <th>{{ form_label(form.processorPlatformType) }}</th>
+                <td class="table-width"><b>{% trans %}Chipset manuf. and name{% endtrans %}</b></td>
+				<td>
+					<table class="sform1"><tr>
+						<td style="width:30%;">
+							<div class="sform" style="width:100%;">
+								{{ form_widget(form.chipsetManufacturer) }}
+							</div>
+						</td>
+						<td id="setchip2" style="width:50%;">
+							<div id="chipset_div" class="sform" style="width:100%;">
+								{{ form_widget(form.chipset) }}
+							</div>
+						</td>
+						<td>
+							<label id="setchip1" style="display:none;">Please wait ...</label>
+							<div>
+								{{ form_row(form.searchChipsetManufacturer)|replace({'<div><button': '<input', '</button></div>': '">', '>': ' value="'})|raw }}
+							</div>
+						</td>
+					</tr></table>
+                </td>
+            </tr>
+			<tr style="height:10px;"><td></td><td></td></tr>
+            <tr style="line-height: 100%;">
+                <td class="table-width"><b>{% trans %}CPU platform type{% endtrans %}</b></td>
 				<td>
                     <div class="sform">{{ form_widget(form.processorPlatformType) }}</div>
                 </td>
             </tr>
 			<tr style="height:10px;"><td></td><td></td></tr>
             <tr>
-                <th>{% trans %}Expansion slots{% endtrans %}</th>
+                <td class="table-width"><b>{% trans %}Expansion slots{% endtrans %}</b></td>
                 <td>
                     {% for slot in slots %}
                         <span class="field1">
@@ -82,7 +89,7 @@
             </tr>
 			<tr style="height:10px;"><td></td><td></td></tr>
 			<tr>
-                <th>{% trans %}I/O ports{% endtrans %}</th>
+                <td class="table-width"><b>{% trans %}I/O ports{% endtrans %}</b></td>
                 <td>
                     {% for port in ports %}
                         <span class="field1">
@@ -94,7 +101,7 @@
             </tr>
 			<tr style="height:10px;"><td></td><td></td></tr>
             <tr>
-                <th>{% trans %}Ram type{% endtrans %}</th>
+                <td class="table-width"><b>{% trans %}Ram type{% endtrans %}</b></td>
                  <td>
                     {% for child in form.dramType|keys %}
                         <span class="field2" >
@@ -106,7 +113,7 @@
             </tr>
 			<tr style="height:10px;"><td></td><td></td></tr>
             <tr>
-                <th>{% trans %}Motherboard bios{% endtrans %}</th>
+                <td class="table-width"><b>{% trans %}Motherboard bios{% endtrans %}</b></td>
                 <td>
 				<div style="width:100%;">
 				
@@ -133,66 +140,35 @@ function setChipset() {
             var xhttp = new XMLHttpRequest();
         else if (window.ActiveXObject)
             var xhttp = new ActiveXObject("Microsoft.XMLHTTP");
-        //var data = {};
-        //data[chipManuf.name] = chipManuf.value;
-        xhttp.onreadystatechange = function() {
-            //alert(xhttp.status + " " + xhttp.readyState );
+        xhttp.onreadystatechange = function() {  
             if (xhttp.readyState == 4 && xhttp.status == 200) {
-                //console.log(this.responseText);
-                //alert(this.responseText);
-                /*if(window.DOMParser){
-                    var parser = new DOMParser();
-                    var doc = parser.parseFromString(xhttp.responseText, "text/html");
-                }
-                else if(window.ActiveXObject){
-                    var parser = new ActiveXObject("Microsoft.XMLDOM");
-                    parser.async = false;
-                    // is there another way to do this load? 
-                    var doc = parser.loadXML(xhttp.responseText);
-                    
-                    alert(parser.parseError.reason);
-                }
-                alert(doc);
-                document.getElementById('search_motherboard_chipset').innerHTML = doc.getElementById('search_motherboard_chipset').innerHTML;*/
-
-                //var parser = document.createElement( 'div' );
                 var currentForm = document.getElementById('chipset_div');
                 var parser = document.getElementById('hiddenDiv');
-                //console.log();
+				var lb1 = document.getElementById('setchip1');
+				var lb2 = document.getElementById('setchip2');
+				lb1.setAttribute("style", "display:none;");
+				lb2.setAttribute("style", "width:70%;");
                 parser.innerHTML = xhttp.responseText;
-                //console.log();
-                var doc = document.getElementById('chipset_div');//parser.childNodes[15].childNodes[1].childNodes[5][5];
-                //console.log(doc);
-                //doc.id="vieux";
-                //var newdiv = document.createElement("div");
-                //newdiv.innerHTML = doc.innerHTML;
-                //alert(currentForm.innerHTML);
+                var doc = document.getElementById('chipset_div');
                 currentForm.innerHTML =  doc.innerHTML;
-
                 parser.innerHTML="";
-                //alert(currentForm.innerHTML);
-                /*alert('<OPTION value="">' +newdiv.innerHTML);
-                alert('<OPTION value="">' +newdiv.innerHTML);*/
-                //var doc = parser.children[1].children[1].children[0].children[2].children[0].children[0].children[4].children[1].children[0].children[0];
-                
             }
         };
         var chipsetManufacturer = chipManuf.value;
-        //var params = new FormData();
         var params = "search_motherboard[chipsetManufacturer]="+chipsetManufacturer;
-        //params.set('search_motherboard[chipsetManufacturer]',chipsetManufacturer);
-        //console.log(params);
         xhttp.open('POST', form.action, true);
         xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
         xhttp.send(params);
     }
+	var lb1 = document.getElementById('setchip1');
+	var lb2 = document.getElementById('setchip2');
     if (window.XMLHttpRequest)
         var xhttp = new XMLHttpRequest();
     else if (window.ActiveXObject)
         var xhttp = new ActiveXObject("Microsoft.XMLHTTP");
     if (xhttp) { 
         document.getElementById('search_motherboard_searchChipsetManufacturer').outerHTML="";
-        //chipBtn.setAttribute("style", "display:none");
+		lb2.setAttribute("style", "width:70%;");
     }
     var chip = document.getElementById('search_motherboard_chipsetManufacturer');
     function addEvent(evnt, elem, func){
@@ -203,9 +179,11 @@ function setChipset() {
         }
         else elem["on"+evnt] = func;
     }
-    //addEvent("change", chip, "setChipset()");
-    //chip.setAttribute("onchange", "setChipset()");
-    chip.onchange= function() {setChipset();};
+    chip.onchange= function() {
+		setChipset();
+		lb1.setAttribute("style", "display:auto;");
+		lb2.setAttribute("style", "width:50%;");
+	};
 </script>
 {% endblock %}
 
