@@ -25,7 +25,7 @@
 	</p>
     <div id="hiddenDiv" style="display: none;"></div>
 	<form name="search_motherboard" method="post" action="./search">
-        <table>
+        <table style="width:100%;">
             <tr style="line-height: 200%;">
                 <td class="table-width"><b>{% trans %}Manufacturer{% endtrans %}</b></td>
                 <td>
@@ -76,115 +76,59 @@
                 </td>
             </tr>
 			<tr style="height:10px;"><td></td><td></td></tr>
-            <tr>
-                <td class="table-width"><b>{% trans %}Expansion slots{% endtrans %}</b></td>
-                <td>
-                    {% for slot in slots %}
-                        <span class="field1">
-							<input type="text" size="2" name="slot{{slot.id}}">
-							<span>x {{ slot.name }}</span>
-                        </span>
-                    {% endfor %}
-                </td>
-            </tr>
-			<tr style="height:10px;"><td></td><td></td></tr>
-			<tr>
-                <td class="table-width"><b>{% trans %}I/O ports{% endtrans %}</b></td>
-                <td>
-                    {% for port in ports %}
-                        <span class="field1">
-							<input type="text" size="2" name="port{{port.id}}">
-							<span>x {{ port.name }}</span>
-						</span>
-                    {% endfor %}
-                </td>
-            </tr>
-			<tr style="height:10px;"><td></td><td></td></tr>
-            <tr>
-                <td class="table-width"><b>{% trans %}Ram type{% endtrans %}</b></td>
-                 <td>
-                    {% for child in form.dramType|keys %}
-                        <span class="field2" >
-						{{ form_widget(attribute(form.dramType,child)) }}
-						{{ form_label(attribute(form.dramType,child)) }}
-						</span>
-                    {% endfor %}
-                </td> 
-            </tr>
-			<tr style="height:10px;"><td></td><td></td></tr>
-            <tr>
-                <td class="table-width"><b>{% trans %}Motherboard bios{% endtrans %}</b></td>
-                <td>
-				<div style="width:100%;">
-				
-					{% for child in form.motherboardBios|keys %}
-                        <span class="field2">
-						{{ form_widget(attribute(form.motherboardBios,child)) }}
-						{{ form_label(attribute(form.motherboardBios,child)) }}
-						</span>
-                    {% endfor %}
-					</div>
-                </td>
-            </tr>
         </table>
+		<table>
+			<tr class="exp-width1">
+				<td colspan="2"><b>{% trans %}Expansion slots{% endtrans %}</b></td>
+			</tr>
+			<tr>
+				<td class="exp-width2"><b>{% trans %}Expansion slots{% endtrans %}</b></td>
+				<td>
+					{% for slot in slots %}
+					<span class="field1">
+						<input type="text" size="2" name="slot{{slot.id}}">
+						<span>x {{ slot.name }}</span>
+					</span>
+				{% endfor %}
+				</td>
+			</tr>
+			<tr style="height:10px;"><td></td><td></td></tr>
+			<tr class="exp-width1">
+				<td colspan="2"><b>{% trans %}I/O ports{% endtrans %}</b></td>
+			</tr>
+			<tr>
+				<td class="exp-width2"><b>{% trans %}I/O ports{% endtrans %}</b></td>
+				<td>
+				{% for port in ports %}
+                    <span class="field1">
+						<input type="text" size="2" name="port{{port.id}}">
+						<span>x {{ port.name }}</span>
+					</span>
+                {% endfor %}
+				</td>
+			</tr>
+			<tr style="height:10px;"><td></td><td></td></tr>
+			<tr class="exp-width1">
+				<td colspan="2"><b>{% trans %}Ram type{% endtrans %}</b></td>
+			</tr>
+			<tr>
+				<td class="exp-width2"><b>{% trans %}Ram type{% endtrans %}</b></td>
+				<td>
+				{% for child in form.dramType|keys %}
+                    <span class="field2" >
+					{{ form_widget(attribute(form.dramType,child)) }}
+					{{ form_label(attribute(form.dramType,child)) }}
+					</span>
+                {% endfor %}
+				</td>
+			</tr>
+		</table>
 		<div class="butn">
-            {{ form_row(form.search)|replace({'<div><button': '<input', '</button></div>': '">', '>': ' value="'})|raw }}{{ form_rest(form) }}
+            {{ form_row(form.search)|replace({'<div><button': '<input', '</button></div>': '">', '>': ' value="'})|raw }}
+			<!-- {{ form_rest(form)|replace({'<input type="hidden"': ' --><input type="hidden"'})|raw }}
         </div>
-   </form><br>
+	</form><br>
    
-<script type="text/javascript">
-function setChipset() {
-        var chipManuf = document.getElementById("search_motherboard_chipsetManufacturer");
-        var form = document.getElementsByName("search_motherboard")[0];
-        if (window.XMLHttpRequest)
-            var xhttp = new XMLHttpRequest();
-        else if (window.ActiveXObject)
-            var xhttp = new ActiveXObject("Microsoft.XMLHTTP");
-        xhttp.onreadystatechange = function() {  
-            if (xhttp.readyState == 4 && xhttp.status == 200) {
-                var currentForm = document.getElementById('chipset_div');
-                var parser = document.getElementById('hiddenDiv');
-				var lb1 = document.getElementById('setchip1');
-				var lb2 = document.getElementById('setchip2');
-				lb1.style.display="none";
-				lb2.style.display="";
-				lb2.style.width="70%";
-                parser.innerHTML = xhttp.responseText;
-                var doc = document.getElementById('chipset_div');
-                currentForm.innerHTML =  doc.innerHTML;
-                parser.innerHTML="";
-            }
-        };
-        var chipsetManufacturer = chipManuf.value;
-        var params = "search_motherboard[chipsetManufacturer]="+chipsetManufacturer;
-        xhttp.open('POST', form.action, true);
-        xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        xhttp.send(params);
-    }
-	var lb1 = document.getElementById('setchip1');
-	var lb2 = document.getElementById('setchip2');
-    if (window.XMLHttpRequest)
-        var xhttp = new XMLHttpRequest();
-    else if (window.ActiveXObject)
-        var xhttp = new ActiveXObject("Microsoft.XMLHTTP");
-    if (xhttp) { 
-        document.getElementById('search_motherboard_searchChipsetManufacturer').outerHTML="";
-		lb2.setAttribute("style", "width:70%;");
-    }
-    var chip = document.getElementById('search_motherboard_chipsetManufacturer');
-    function addEvent(evnt, elem, func){
-        if(elem.addEventListener)
-            elem.addEventListener(evnt,func,false);
-        else if(elem.attachEvent) {
-            elem.attachEvent("on"+evnt,func);
-        }
-        else elem["on"+evnt] = func;
-    }
-    chip.onchange= function() {
-		setChipset();
-		lb1.style.display="initial";
-		lb2.style.display="none";
-	};
-</script>
+<script type="text/javascript" src="../assets/search.js"></script>
 {% endblock %}
 
