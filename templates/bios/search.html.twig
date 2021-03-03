@@ -1,0 +1,132 @@
+{% extends 'base.html.twig' %}
+
+{% form_theme form _self %}
+
+{% block checkbox_widget %}
+        {% set type = type|default('checkbox') %}
+        <input type="{{ type }}" {{ block('widget_attributes') }} {% if value is not empty %}value="{{ value }}" {% endif %}>
+{% endblock %}
+
+{% block hidden_widget %}
+        {% set type = type|default('hidden') %}
+        <input type="{{ type }}" {{ block('widget_attributes') }} {% if value is not empty %}value="{{ value }}" {% endif %}>
+{% endblock %}
+
+{% block title %}{% trans %}Search for a bios{% endtrans %}{% endblock %}
+
+{% block body %}
+	<h2 class="title">{% trans %}Search for a bios{% endtrans %}</h2>
+
+    <div id="hiddenDiv" style="display: none;"></div>
+	<form name="search" method="post" action="./search">
+        <table>
+            <tr style="line-height: 200%;">
+                <td class="table-width"><b>{% trans %}Manufacturer{% endtrans %}</b></td>
+                <td>
+                    <div class="sform">{{ form_widget(form.manufacturer) }}</div>
+                </td>
+            </tr>
+            <tr style="line-height: 200%;">
+                <td class="table-width"><b>{% trans %}POST string{% endtrans %}</b></td>
+                <td>
+                    <div class="sform">{{ form_widget(form.post_string)|replace({' />': ' size="50">'})|raw }}</div> 
+                </td>
+            </tr>
+            <tr style="line-height: 200%;">
+                <td class="table-width"><b>{% trans %}Core version{% endtrans %}</b></td>
+				<td>
+                    <div class="sform">{{ form_widget(form.core_version) }}</div>
+                </td>
+            </tr>
+			<tr style="height:10px;"><td></td><td></td></tr>
+            <tr style="line-height: 100%;">
+                <td class="table-width"><b>{% trans %}Chipset manuf. and name{% endtrans %}</b></td>
+				<td>
+					<table class="sform1"><tr>
+						<td style="width:30%;">
+							<div class="sform" style="width:100%;">
+								{{ form_widget(form.chipsetManufacturer) }}
+							</div>
+						</td>
+						<td id="setchip2" style="width:50%;">
+							<div id="chipset_div" class="sform" style="width:100%;">
+								{{ form_widget(form.chipset) }}
+							</div>
+						</td>
+						<td>
+							<label id="setchip1" style="display:none;">Please wait ...</label>
+							<div>
+								{{ form_row(form.searchChipsetManufacturer)|replace({'<div><button': '<input', '</button></div>': '">', '>': ' value="'})|raw }}
+							</div>
+						</td>
+					</tr></table>
+                </td>
+            </tr>
+            <tr style="line-height: 100%;">
+                <td class="table-width"><b>{{ form_label(form.file_present) }}</b></td>
+                <td>
+                    <div class="sform">{{ form_widget(form.file_present) }}</div>
+                </td>
+            </tr>
+        </table>
+		<div class="butn">
+            {{ form_row(form.search)|replace({'<div><button': '<input', '</button></div>': '">', '>': ' value="'})|raw }}{{ form_rest(form) }}
+        </div>
+   </form><br>
+   
+<script type="text/javascript">
+function setChipset() {
+        var chipManuf = document.getElementById("search_chipsetManufacturer");
+        var form = document.getElementsByName("search")[0];
+        if (window.XMLHttpRequest)
+            var xhttp = new XMLHttpRequest();
+        else if (window.ActiveXObject)
+            var xhttp = new ActiveXObject("Microsoft.XMLHTTP");
+        xhttp.onreadystatechange = function() {  
+            if (xhttp.readyState == 4 && xhttp.status == 200) {
+                var currentForm = document.getElementById('chipset_div');
+                var parser = document.getElementById('hiddenDiv');
+				var lb1 = document.getElementById('setchip1');
+				var lb2 = document.getElementById('setchip2');
+				lb1.style.display="none";
+				lb2.style.display="";
+				lb2.style.width="70%";
+                parser.innerHTML = xhttp.responseText;
+                var doc = document.getElementById('chipset_div');
+                currentForm.innerHTML =  doc.innerHTML;
+                parser.innerHTML="";
+            }
+        };
+        var chipsetManufacturer = chipManuf.value;
+        var params = "search[chipsetManufacturer]="+chipsetManufacturer;
+        xhttp.open('POST', form.action, true);
+        xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xhttp.send(params);
+    }
+	var lb1 = document.getElementById('setchip1');
+	var lb2 = document.getElementById('setchip2');
+    if (window.XMLHttpRequest)
+        var xhttp = new XMLHttpRequest();
+    else if (window.ActiveXObject)
+        var xhttp = new ActiveXObject("Microsoft.XMLHTTP");
+    if (xhttp) { 
+        document.getElementById('search_searchChipsetManufacturer').outerHTML="";
+		lb2.setAttribute("style", "width:70%;");
+    }
+    var chip = document.getElementById('search_chipsetManufacturer');
+    function addEvent(evnt, elem, func){
+        if(elem.addEventListener)
+            elem.addEventListener(evnt,func,false);
+        else if(elem.attachEvent) {
+            elem.attachEvent("on"+evnt,func);
+        }
+        else elem["on"+evnt] = func;
+    }
+    chip.onchange= function() {
+		setChipset();
+		lb1.style.display="initial";
+		lb2.style.display="none";
+	};
+</script>
+{% endblock %}
+
