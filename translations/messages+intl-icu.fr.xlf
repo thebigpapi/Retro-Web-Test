@@ -21,8 +21,8 @@
         <source>motherboard.num</source>
         <target>{count, plural, =0 {Aucune carte mère trouvée} one {1 carte mère trouvée} other {# cartes mères trouvées}}</target>
       </trans-unit>
-      <trans-unit id="Ha9FyWp" resname="List motherboards whose the manufacturer starting with:">
-        <source>List motherboards whose the manufacturer starting with:</source>
+      <trans-unit id="Ha9FyWp" resname="List boards whose manufacturer name starts with:">
+        <source>List boards whose manufacturer name starts with:</source>
         <target>Lister les cartes mères dont le fabricant commence par:</target>
       </trans-unit>
       <trans-unit id="GvOExXf" resname="Manufacturer">
@@ -37,8 +37,8 @@
         <source>Form factor</source>
         <target>Format</target>
       </trans-unit>
-      <trans-unit id="_Hs9U_o" resname="Processor platform type">
-        <source>Processor platform type</source>
+      <trans-unit id="_Hs9U_o" resname="CPU platform type">
+        <source>CPU platform type</source>
         <target>Plateforme de processeur</target>
       </trans-unit>
       <trans-unit id="snS7dgk" resname="Expansion slots">

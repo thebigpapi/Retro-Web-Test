@@ -12,7 +12,7 @@ input[type=text], input[type=submit], input[type=password], button, select {
 /* specific tags */
 input.button1, input.button2, input.admin-button {height:auto;border-width:2px;}
 input.num {width:20px;}
-span.field1 input {font-size: 14px;}
+span.field1 {font-size: 12px;}
 
 @media (max-device-width: 600px) {
 	div.top-bar {font-size:12px; padding:0 0 0 5px;}
@@ -23,6 +23,8 @@ span.field1 input {font-size: 14px;}
 	div.top-bar select.lang {width: 40%;}
 	h2.title {font-size: 16px; margin: 10px 0;}
 	div.page {font-size:14px;}
+	td.exp-width2 {display:none;}
+	tr.exp-width1 {display:table;margin-left: 2%;}
 
 	/* show.html.twig */
 	div.show-images {width:100%; max-height:400px;}
@@ -52,8 +54,9 @@ span.field1 input {font-size: 14px;}
 
 	/* search.html.twig */
 	div.sform {height: 1.2em; width:80%;}
+	table.sform1 {width: 80%;}
 	div.sform input {height: 26px; width: 100%;}
-	td.table-width {width:20px;}
+	td.table-width, td.exp-width2 {width:180px;}
 
 	/* result.html.twig */
 	div.results ul li{font-size:20px;}
@@ -65,8 +68,8 @@ span.field1 input {font-size: 14px;}
 	h2.title {margin: 20px 0;}
 
 	/* search.html.twig */
-	span.field1 {font-size:16px;}
-	td.table-width {width:60px;}
+	span.field1 {font-size:14px;}
+	td.table-width, td.exp-width2  {width:200px;}
 
 	/* show.html.twig */
 	div.show-images {width:30%; max-height:600px;}

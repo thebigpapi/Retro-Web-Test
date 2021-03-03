@@ -119,6 +119,41 @@ class Chipset
         return "$fullName $chipset";
     }
 
+    public function getFullReference(): ?string
+    {
+        $fullName = "";
+        if ($this->part_no) {
+            $fullName = $fullName . " $this->part_no";
+            if ($this->name) {
+                $fullName = $fullName . " ($this->name)";
+            }
+        }
+        else {
+            if ($this->name) {
+                $fullName = $fullName . " $this->name";
+            }
+            else {
+                $fullName = $fullName . " Unidentified";
+            }
+        }
+        $chipset = "";
+        foreach($this->chipsetParts as $key => $part) {
+            if ($key === array_key_last($this->chipsetParts->getValues())) {
+                $chipset = $chipset . $part->getShortName();
+            }
+            else {
+                $chipset = $chipset . $part->getShortName() . ", ";
+            }
+
+        }
+        if ($chipset) {
+            $chipset = "[$chipset]";
+        }
+
+
+        return "$fullName $chipset";
+    }
+
     /**
      * @return Collection|Motherboard[]
      */

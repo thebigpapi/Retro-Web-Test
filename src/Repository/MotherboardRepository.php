@@ -239,6 +239,7 @@ class MotherboardRepository extends ServiceEntityRepository
 
     private function prepareSQL(array $values, array $arrays, &$slotVals, &$ioVals, array $orderBy = null, $limit = null, $offset = null)
     {
+        //dd("test");
         $posFrom = 0;
         $posWhere = 0;
 
@@ -250,6 +251,10 @@ class MotherboardRepository extends ServiceEntityRepository
         if (isset($values['manufacturer'])) {
             $manufacturer = $values['manufacturer'];
             unset($values['manufacturer']);
+        }
+        if(array_key_exists('chipsetManufacturer',$values)) {
+            $chipsetManufacturer = $values['chipsetManufacturer'];
+            unset($values['chipsetManufacturer']);
         }
 
         $where = $this->valuesToWhere($values, $posWhere);
@@ -359,7 +364,7 @@ class MotherboardRepository extends ServiceEntityRepository
         }
         
         //LIMITE � MYSQL
-        $limitSQL = "";
+        /*$limitSQL = "";
         if ($limit != NULL) {
             $limitSQL = " LIMIT ";
             if ($offset != NULL) {
@@ -370,6 +375,17 @@ class MotherboardRepository extends ServiceEntityRepository
         }
         elseif ($offset != NULL) {
             $limitSQL = "$offset,0"; //BUG
+        }*/
+
+        if(isset($chipsetManufacturer))
+        {
+            if ($posWhere!=0)
+            {
+                $where = "$where AND chp.manufacturer_id=:chipsetManufacturer";
+            }
+            else {
+                $where = "WHERE chp.manufacturer_id=:chipsetManufacturer ";
+            }
         }
 
         $sql = "
@@ -385,20 +401,27 @@ class MotherboardRepository extends ServiceEntityRepository
             JOIN processor_platform_type pp ON mot0.processor_platform_type_id = pp.id
             $where
 
-            UNION
-
-            SELECT mot0.*, mot0.name as mot0_name, 
-            man1.id as man1_id, man1.name as man1_name, man1.short_name as man1_short_name,
-            NULL, NULL, NULL, NULL,
-            NULL,
-            pp.id as ppt_id, pp.name as ppt_name 
-            $from 
-            LEFT JOIN manufacturer man1 ON mot0.manufacturer_id = man1.id 
-            JOIN processor_platform_type pp ON mot0.processor_platform_type_id = pp.id
-            $whereNoChipset 
-            $orderBySQL
-            $limitSQL
         ";
+
+        $noChipset = " SELECT mot0.*, mot0.name as mot0_name, 
+        man1.id as man1_id, man1.name as man1_name, man1.short_name as man1_short_name,
+        NULL, NULL, NULL, NULL,
+        NULL,
+        pp.id as ppt_id, pp.name as ppt_name 
+        $from 
+        LEFT JOIN manufacturer man1 ON mot0.manufacturer_id = man1.id 
+        JOIN processor_platform_type pp ON mot0.processor_platform_type_id = pp.id
+        $whereNoChipset 
+        ";
+        ;
+        if (array_key_exists('chipsetManufacturer', get_defined_vars())) // Chipset manufacturer searched
+            if($chipsetManufacturer == null) // Motherboards with no chipset
+                $sql = "$noChipset $orderBySQL"; 
+            else // Motherboards with a chipset
+                $sql = "$sql $orderBySQL";            
+        else // Motherboards with and without a chipset
+            $sql = "$sql UNION $noChipset $orderBySQL"; 
+
         return $sql;
     }
 
