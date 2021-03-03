@@ -183,23 +183,6 @@ class MotherboardController extends AbstractController
         $unidentifiedMan->setName($notIdentifiedMessage);
         array_unshift ($chipsetManufacturers, $unidentifiedMan);
 
-        $chipsets = $this->getDoctrine()
-            ->getRepository(Chipset::class)
-            ->findAllMotherboardChipset();
-
-        usort($chipsets, function ($a, $b)
-            {
-                if ($a->getFullReference() == $b->getFullReference()) {
-                    return 0;
-                }
-                return ($a->getFullReference() < $b->getFullReference()) ? -1 : 1;
-            }
-        );
-        
-        $unidentifiedChip = new Chipset();
-        $unidentifiedChip->setName($notIdentifiedMessage);
-        array_unshift ($chipsets, $unidentifiedChip);
-
         $slots = $this->getDoctrine()
             ->getRepository(ExpansionSlot::class)
             ->findAll();
@@ -242,7 +225,6 @@ class MotherboardController extends AbstractController
         $form = $this->createForm(SearchMotherboard::class, array('motherboardExpansionSlots'=>$slotsForm,'motherboardIoPorts'=>$portsForm), [
             'moboManufacturers' => $moboManufacturers,
             'chipsetManufacturers' => $chipsetManufacturers,
-            'chipsets' => $chipsets,
             'formFactors' => $formFactors,
             'procPlatformTypes' => $procPlatformTypes,
             'bios' => $biosManufacturers,

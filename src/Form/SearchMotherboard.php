@@ -254,7 +254,6 @@ class SearchMotherboard extends AbstractType
         $resolver->setDefaults([
             'moboManufacturers' => array(),
             'chipsetManufacturers' => array(),
-            'chipsets' => array(),
             'bios' => array(),
             'formFactors' => array(),
             'procPlatformTypes' => array(),
