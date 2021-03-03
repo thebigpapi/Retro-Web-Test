@@ -202,9 +202,6 @@ class MotherboardController extends AbstractController
         $procPlatformTypes = $this->getDoctrine()
             ->getRepository(ProcessorPlatformType::class)
             ->findBy(array(), array('name'=>'ASC'));
-        /*$unidentifiedProcessorPlatformType = new ProcessorPlatformType();
-        $unidentifiedProcessorPlatformType->setName("Not identified");
-        array_unshift ($procPlatformTypes, $unidentifiedProcessorPlatformType);*/
 
         $biosManufacturers = $this->getDoctrine()
             ->getRepository(Manufacturer::class)
@@ -220,8 +217,7 @@ class MotherboardController extends AbstractController
             $ioPort = array("io_port"=>$portForm,"count"=>0);
             array_push($portsForm, $ioPort);
         }
-        //dd($chipsets);
-        //dd(array($slotsForm));
+        
         $form = $this->createForm(SearchMotherboard::class, array('motherboardExpansionSlots'=>$slotsForm,'motherboardIoPorts'=>$portsForm), [
             'moboManufacturers' => $moboManufacturers,
             'chipsetManufacturers' => $chipsetManufacturers,
@@ -229,7 +225,7 @@ class MotherboardController extends AbstractController
             'procPlatformTypes' => $procPlatformTypes,
             'bios' => $biosManufacturers,
             ]);
-        //dd($form);
+
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             
@@ -240,7 +236,18 @@ class MotherboardController extends AbstractController
                     'ports' => $ports,
                 ]);
             }
-            $parameters = array();
+            
+            return $this->redirect($this->generateUrl('mobosearch', $this->searchFormToParam($request, $form, $slots, $ports)));
+        }
+        return $this->render('motherboard/search.html.twig', [
+            'form' => $form->createView(),
+            'slots' => $slots,
+            'ports' => $ports,
+        ]);
+    }
+
+    private function searchFormToParam(Request $request, $form, $slots, $ports) : array {
+        $parameters = array();
             //dd($form->getData());
             if ($form['manufacturer']->getData()) {
                 if($form['manufacturer']->getData()->getId() == 0){
@@ -387,14 +394,8 @@ class MotherboardController extends AbstractController
                     $parameters['chipsetManufacturerId'] = $form['chipsetManufacturer']->getData()->getId();
                 }
             }
-            
-            return $this->redirect($this->generateUrl('mobosearch', $parameters));
-        }
-        return $this->render('motherboard/search.html.twig', [
-            'form' => $form->createView(),
-            'slots' => $slots,
-            'ports' => $ports,
-        ]);
+
+            return $parameters;
     }
 
     private function renderAddForm(Request $request, Motherboard $mobo) {
