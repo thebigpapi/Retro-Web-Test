@@ -85,11 +85,13 @@
 				<td class="exp-width2"><b>{% trans %}Expansion slots{% endtrans %}</b></td>
 				<td>
 					{% for slot in slots %}
-					<span class="field1">
-						<input type="text" size="2" name="slot{{slot.id}}">
-						<span>x {{ slot.name }}</span>
-					</span>
-				{% endfor %}
+						{% if slot.hiddenSearch == false %}
+						<span class="field1">
+							<input type="text" size="2" name="slot{{slot.id}}">
+							<span>x {{ slot.name }}</span>
+						</span>
+						{% endif %}
+					{% endfor %}
 				</td>
 			</tr>
 			<tr style="height:10px;"><td></td><td></td></tr>

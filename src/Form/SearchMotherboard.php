@@ -197,10 +197,10 @@ class SearchMotherboard extends AbstractType
             FormEvents::POST_SET_DATA,
             function (FormEvent $event) {
                 $form = $event->getForm();
-
+				
                 // this would be your entity, i.e. SportMeetup
                 $data = $event->getData();
-
+				
                 dd($form);
             }
         );*/
@@ -221,7 +221,7 @@ class SearchMotherboard extends AbstractType
         /*$builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
             $test = $event->getData();
             $form = $event->getForm();
-
+			
             if ($form->get('searchChipsetManufacturer')->isClicked())
             {
                 $formOptions = [
@@ -233,7 +233,7 @@ class SearchMotherboard extends AbstractType
                         // return $userRepository->createFriendsQueryBuilder($user);
                     },
                 ];
-
+				
                 $form->add('chipset', ChoiceType::class, [
                     //'class' => Chipset::class,
                     
