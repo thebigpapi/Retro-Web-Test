@@ -21,6 +21,7 @@ use App\Entity\VideoChipset;
 use App\Entity\AudioChipset;
 use App\Entity\User;
 use App\Entity\Creditor;
+use App\Entity\InstructionSet;
 use App\Form\ManageProcessor;
 use App\Form\EditProcessor;
 use App\Form\ManageChipset;
@@ -655,20 +656,29 @@ class AdminController extends AbstractController
         $processorManufacturers = $this->getDoctrine()
         ->getRepository(Manufacturer::class)
         ->findBy(array(), array('name' => 'ASC', 'shortName' => 'ASC'));
+
+        $instructionSets = $this->getDoctrine()
+        ->getRepository(InstructionSet::class)
+        ->findBy(array(), array('name' => 'ASC'));
         
         $form = $this->createForm(EditProcessor::class, $processor, [
             'processorManufacturers' => $processorManufacturers,
+            'instructionSets' => $instructionSets,
         ]);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $processor = $form->getData();
             
+            foreach ($form['instructionSets']->getData() as $key => $val) {
+                $val->addProcessingUnit($processor);
+            }
+
             $entityManager->persist($processor);
             $entityManager->flush();
 
             return $this->redirectToRoute('admin_manage_resources', array());
         }
-        return $this->render('admin/add_coprocessor.html.twig', [
+        return $this->render('admin/add_processor.html.twig', [
             'form' => $form->createView(),
         ]);
     }

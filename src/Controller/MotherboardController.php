@@ -218,7 +218,7 @@ class MotherboardController extends AbstractController
             array_push($portsForm, $ioPort);
         }
         
-        $form = $this->createForm(SearchMotherboard::class, array('motherboardExpansionSlots'=>$slotsForm,'motherboardIoPorts'=>$portsForm), [
+        $form = $this->createForm(SearchMotherboard::class, array(), [
             'moboManufacturers' => $moboManufacturers,
             'chipsetManufacturers' => $chipsetManufacturers,
             'formFactors' => $formFactors,

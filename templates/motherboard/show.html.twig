@@ -276,7 +276,7 @@
 				<td>
 					{% for processor in motherboard.getMotherboardProcessor()|sort %}
 						<span class="newdiv" style="background-color:#cae4fa;">
-						{{ processor.getManufacturer().getShortNameIfExist() }}&nbsp;{{ processor.getName() }}</span>
+						{{ processor.getManufacturer().getShortNameIfExist() }}&nbsp;{{ processor.getPartNumber() }}&nbsp;{{ processor.getSpeed().getValueWithUnit() }}</span>
 					{% endfor %}
 				</td>
 			</tr>

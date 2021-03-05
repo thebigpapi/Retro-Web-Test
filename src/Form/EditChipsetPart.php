@@ -27,7 +27,7 @@ class EditChipsetPart extends AbstractType
             ->add('name', TextType::class, [
                 'required' => false,
             ])
-            ->add('chip_no', TextType::class, [
+            ->add('partNumber', TextType::class, [
                 'required' => false,
             ])
             ->add('save', SubmitType::class)

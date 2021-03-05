@@ -1,0 +1,113 @@
+<?php
+
+namespace App\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+
+/**
+ * @ORM\Entity(repositoryClass="App\Repository\ProcessingUnitRepository")
+ * @ORM\InheritanceType("JOINED")
+ */
+abstract class ProcessingUnit extends Chip
+{
+    /**
+     * @ORM\Id()
+     * @ORM\GeneratedValue()
+     * @ORM\Column(type="integer")
+     */
+    protected $id;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\CpuSpeed", inversedBy="processingUnits")
+     */
+    protected $speed;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\ProcessorPlatformType", inversedBy="processingUnits")
+     */
+    protected $platform;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\InstructionSet", mappedBy="processingUnits")
+     */
+    protected $instructionSets;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\CpuSpeed", inversedBy="processingUnitsFsb")
+     */
+    protected $fsb;
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function getSpeed(): ?CpuSpeed
+    {
+        return $this->speed;
+    }
+
+    public function setSpeed(?CpuSpeed $speed): self
+    {
+        $this->speed = $speed;
+
+        return $this;
+    }
+
+    public function getPlatform(): ?ProcessorPlatformType
+    {
+        return $this->platform;
+    }
+
+    public function setPlatform(?ProcessorPlatformType $platform): self
+    {
+        $this->platform = $platform;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|InstructionSet[]
+     */
+    public function getInstructionSets(): Collection
+    {
+        return $this->instructionSets;
+    }
+
+    public function addInstructionSet(InstructionSet $instructionSet): self
+    {
+        if (!$this->instructionSets->contains($instructionSet)) {
+            $this->instructionSets[] = $instructionSet;
+            $instructionSet->addProcessingUnit($this);
+        }
+
+        return $this;
+    }
+
+    public function removeInstructionSet(InstructionSet $instructionSet): self
+    {
+        if ($this->instructionSets->contains($instructionSet)) {
+            $this->instructionSets->removeElement($instructionSet);
+            // set the owning side to null (unless already changed)
+            if ($instructionSet->getProcessingUnits() === $this) {
+                $instructionSet->removeProcessingUnit($this);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getFsb(): ?CpuSpeed
+    {
+        return $this->fsb;
+    }
+
+    public function setFsb(?CpuSpeed $fsb): self
+    {
+        $this->fsb = $fsb;
+
+        return $this;
+    }
+}

@@ -38,11 +38,17 @@ class ProcessorPlatformType
      */
     private $coprocessors;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\ProcessingUnit", mappedBy="platform")
+     */
+    private $processingUnits;
+
     public function __construct()
     {
         $this->processors = new ArrayCollection();
         $this->motherboards = new ArrayCollection();
         $this->coprocessors = new ArrayCollection();
+        $this->processingUnits = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -149,6 +155,37 @@ class ProcessorPlatformType
             // set the owning side to null (unless already changed)
             if ($coprocessor->getProcessorPlatformType() === $this) {
                 $coprocessor->setProcessorPlatformType(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ProcessingUnit[]
+     */
+    public function getProcessingUnits(): Collection
+    {
+        return $this->processingUnits;
+    }
+
+    public function addProcessingUnit(ProcessingUnit $processingUnit): self
+    {
+        if (!$this->processingUnits->contains($processingUnit)) {
+            $this->processingUnits[] = $processingUnit;
+            $processingUnit->setPlatform($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProcessingUnit(ProcessingUnit $processingUnit): self
+    {
+        if ($this->processingUnits->contains($processingUnit)) {
+            $this->processingUnits->removeElement($processingUnit);
+            // set the owning side to null (unless already changed)
+            if ($processingUnit->getPlatform() === $this) {
+                $processingUnit->setPlatform(null);
             }
         }
 

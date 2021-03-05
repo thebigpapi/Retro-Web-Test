@@ -5,87 +5,28 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Process\Process;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ProcessorRepository")
  */
-class Processor
+class Processor extends ProcessingUnit
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
-    private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\ManyToOne(targetEntity="App\Entity\CacheSize", inversedBy="getProcessorsL1")
      */
-    private $name;
+    private $L1;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Manufacturer", inversedBy="processors")
-     * @ORM\OrderBy({"name" = "ASC", "shortName" = "ASC"})
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\ManyToOne(targetEntity="App\Entity\CacheSize", inversedBy="getProcessorsL2")
      */
-    private $manufacturer;
+    private $L2;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\ProcessorPlatformType", inversedBy="processors")
+     * @ORM\ManyToOne(targetEntity="App\Entity\CacheSize", inversedBy="getProcessorsL3")
      */
-    private $processorPlatformType;
-
-    /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Motherboard", mappedBy="motherboardProcessor")
-     */
-    private $motherboards;
-
-    public function __construct()
-    {
-        $this->motherboardProcessors = new ArrayCollection();
-        $this->motherboards = new ArrayCollection();
-    }
-
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
-
-    public function getName(): ?string
-    {
-        return $this->name;
-    }
-
-    public function setName(string $name): self
-    {
-        $this->name = $name;
-
-        return $this;
-    }
-
-    public function getManufacturer(): ?Manufacturer
-    {
-        return $this->manufacturer;
-    }
-
-    public function setManufacturer(?Manufacturer $manufacturer): self
-    {
-        $this->manufacturer = $manufacturer;
-
-        return $this;
-    }
-
-    public function getProcessorPlatformType(): ?ProcessorPlatformType
-    {
-        return $this->processorPlatformType;
-    }
-
-    public function setProcessorPlatformType(?ProcessorPlatformType $processorPlatformType): self
-    {
-        $this->processorPlatformType = $processorPlatformType;
-
-        return $this;
-    }
+    private $L3;
 
     /**
      * @return Collection|Motherboard[]
@@ -116,7 +57,43 @@ class Processor
     }
 
     public function getNameWithPlatform() {
-        $this->getProcessorPlatformType() ? $pType = $this->getProcessorPlatformType()->getName() : $pType = "Unidentified";
-        return $this->getManufacturer()->getShortNameIfExist() . " " . $this->name . " (" . $pType . ")";
+        $this->getPlatform() ? $pType = $this->getPlatform()->getName() : $pType = "Unidentified";
+        return $this->getManufacturer()->getShortNameIfExist() . " " . $this->name . ' ' . $this->speed->getValueWithUnit() . ' [' . $this->chip_no . ']' . " (" . $pType . ")";
+    }
+
+    public function getL1(): ?CacheSize
+    {
+        return $this->L1;
+    }
+
+    public function setL1(?CacheSize $L1): self
+    {
+        $this->L1 = $L1;
+
+        return $this;
+    }
+
+    public function getL2(): ?CacheSize
+    {
+        return $this->L2;
+    }
+
+    public function setL2(?CacheSize $L2): self
+    {
+        $this->L2 = $L2;
+
+        return $this;
+    }
+
+    public function getL3(): ?CacheSize
+    {
+        return $this->L3;
+    }
+
+    public function setL3(?CacheSize $L3): self
+    {
+        $this->L3 = $L3;
+
+        return $this;
     }
 }
