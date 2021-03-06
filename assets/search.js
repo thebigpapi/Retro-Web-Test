@@ -34,7 +34,7 @@ else if (window.ActiveXObject)
     var xhttp = new ActiveXObject("Microsoft.XMLHTTP");
 if (xhttp) { 
     document.getElementById('search_motherboard_searchChipsetManufacturer').outerHTML="";
-	lb2.setAttribute("style", "width:70%;");
+	lb2.style.width="70%";
 }
 var chip = document.getElementById('search_motherboard_chipsetManufacturer');
 function addEvent(evnt, elem, func){
@@ -47,6 +47,6 @@ function addEvent(evnt, elem, func){
 }
 chip.onchange= function() {
 	setChipset();
-	lb1.style.display="initial";
+	lb1.style.display="";
 	lb2.style.display="none";
 };

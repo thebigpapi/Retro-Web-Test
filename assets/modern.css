@@ -13,6 +13,7 @@ input[type=text], input[type=submit], input[type=password], button, select {
 input.button1, input.button2, input.admin-button {height:auto;border-width:2px;}
 input.num {width:20px;}
 span.field1 {font-size: 12px;}
+select.sform{height:2.2em;}
 
 @media (max-device-width: 600px) {
 	div.top-bar {font-size:12px; padding:0 0 0 5px;}
@@ -53,10 +54,7 @@ span.field1 {font-size: 12px;}
 	form.index-buttons input.button2 {background-image: url(./images/card_disabled_med.png);}
 
 	/* search.html.twig */
-	div.sform {height: 1.2em; width:80%;}
-	table.sform1 {width: 80%;}
-	div.sform input {height: 26px; width: 100%;}
-	td.table-width, td.exp-width2 {width:180px;}
+	td.table-width, td.exp-width2 {width:210px;}
 
 	/* result.html.twig */
 	div.results ul li{font-size:20px;}
@@ -69,7 +67,7 @@ span.field1 {font-size: 12px;}
 
 	/* search.html.twig */
 	span.field1 {font-size:14px;}
-	td.table-width, td.exp-width2  {width:200px;}
+	td.table-width, td.exp-width2  {width:220px;}
 
 	/* show.html.twig */
 	div.show-images {width:30%; max-height:600px;}

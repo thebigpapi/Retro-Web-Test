@@ -31,10 +31,10 @@ form.index-buttons input.button2 {background: #ebebeb url(./images/card_disabled
 
 /* search.html.twig */
 
-div.sform {height: 1.6em; width: 90%; padding-bottom: 6px;}
-table.sform1 {width: 90%;}
+select.sform, input.sform { width: 90%; vertical-align:middle;}
+table.sform1 {width: 91%; margin-left:-3px;}
 div.sform select {height: 100%; width: 100%; }
-div.sform input {height: auto; width: 100%; /* **/ height: 90%; width: 99%; /** */}
+div.sform input {height: auto; width: 90%; /* **/ height: 90%; width: 99%; /** */}
 
 td.table-width, td.exp-width2 {width: 120px;text-align:center;}
 tr.exp-width1 {display:none;}
