@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -25,12 +27,28 @@ abstract class Chip
     /**
      * @ORM\Column(type="string", length=255)
      */
-    protected $chip_no;
+    protected $partNumber;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Manufacturer", inversedBy="chips")
      */
     protected $manufacturer;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\ChipAlias", mappedBy="chip", orphanRemoval=true, cascade={"persist"})
+     */
+    private $chipAliases;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\ChipImage", mappedBy="chip", orphanRemoval=true, cascade={"persist"})
+     */
+    private $images;
+
+    public function __construct()
+    {
+        $this->chipAliases = new ArrayCollection();
+        $this->images = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -51,12 +69,12 @@ abstract class Chip
 
     public function getPartNumber(): ?string
     {
-        return $this->chip_no;
+        return $this->partNumber;
     }
 
-    public function setPartNumber(string $part_number): self
+    public function setPartNumber(string $partNumber): self
     {
-        $this->chip_no = $part_number;
+        $this->partNumber = $partNumber;
 
         return $this;
     }
@@ -69,6 +87,68 @@ abstract class Chip
     public function setManufacturer(?Manufacturer $manufacturer): self
     {
         $this->manufacturer = $manufacturer;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ChipAlias[]
+     */
+    public function getChipAliases(): Collection
+    {
+        return $this->chipAliases;
+    }
+
+    public function addChipAlias(ChipAlias $chipAlias): self
+    {
+        if (!$this->chipAliases->contains($chipAlias)) {
+            $this->chipAliases[] = $chipAlias;
+            $chipAlias->setChip($this);
+        }
+
+        return $this;
+    }
+
+    public function removeChipAlias(ChipAlias $chipAlias): self
+    {
+        if ($this->chipAliases->contains($chipAlias)) {
+            $this->chipAliases->removeElement($chipAlias);
+            // set the owning side to null (unless already changed)
+            if ($chipAlias->getChip() === $this) {
+                $chipAlias->setChip(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ChipImage[]
+     */
+    public function getImages(): Collection
+    {
+        return $this->images;
+    }
+
+    public function addImage(ChipImage $image): self
+    {
+        if (!$this->images->contains($image)) {
+            $this->images[] = $image;
+            $image->setChip($this);
+        }
+
+        return $this;
+    }
+
+    public function removeImage(ChipImage $image): self
+    {
+        if ($this->images->contains($image)) {
+            $this->images->removeElement($image);
+            // set the owning side to null (unless already changed)
+            if ($image->getChip() === $this) {
+                $image->setChip(null);
+            }
+        }
 
         return $this;
     }

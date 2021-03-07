@@ -75,7 +75,7 @@ class AddMotherboard extends AbstractType
                 'expanded' => false,
                 'choices' => $options['procPlatformTypes'],
             ])
-            ->add('motherboardProcessor', CollectionType::class, [
+            ->add('processors', CollectionType::class, [
                 'entry_type' => ProcessorType::class,
                 'allow_add' => true,
                 'allow_delete' => true,

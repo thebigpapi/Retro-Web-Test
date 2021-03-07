@@ -66,7 +66,7 @@ class Motherboard
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Processor", inversedBy="motherboards")
      */
-    private $motherboardProcessor;
+    private $processors;
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\CpuSpeed", inversedBy="motherboards")
@@ -146,7 +146,6 @@ class Motherboard
 
     public function __construct()
     {
-        $this->motherboardProcessors = new ArrayCollection();
         $this->motherboardMaxRams = new ArrayCollection();
         $this->motherboardCpuSpeeds = new ArrayCollection();
         $this->motherboardBios = new ArrayCollection();
@@ -159,6 +158,7 @@ class Motherboard
         $this->cacheSize = new ArrayCollection();
         $this->dramType = new ArrayCollection();
         $this->manuals = new ArrayCollection();
+        $this->processors = new ArrayCollection();
         $this->coprocessors = new ArrayCollection();
         $this->images = new ArrayCollection();
         $this->knownIssues = new ArrayCollection();
@@ -402,9 +402,27 @@ class Motherboard
     /**
      * @return Collection|Processor[]
      */
-    public function getMotherboardProcessor(): Collection
+    public function getProcessors(): Collection
     {
-        return $this->motherboardProcessor;
+        return $this->processors;
+    }
+
+    public function addProcessor(Processor $processor): self
+    {
+        if (!$this->processors->contains($processor)) {
+            $this->processors[] = $processor;
+        }
+
+        return $this;
+    }
+
+    public function removeProcessor(Processor $processor): self
+    {
+        if ($this->processors->contains($processor)) {
+            $this->processors->removeElement($processor);
+        }
+
+        return $this;
     }
 
     /**

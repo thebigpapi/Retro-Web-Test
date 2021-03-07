@@ -564,17 +564,20 @@ class AdminController extends AbstractController
 
     private function renderChipsetPartForm(Request $request, $chipsetPart) {
         $entityManager = $this->getDoctrine()->getManager();
-        $chipsetPartManufacturers = $this->getDoctrine()
-        ->getRepository(Manufacturer::class)
-        ->findBy(array(), array('name' => 'ASC', 'shortName' => 'ASC'));
 
-        $form = $this->createForm(EditChipsetPart::class, $chipsetPart, [
-            'chipsetPartManufacturers' => $chipsetPartManufacturers,
-        ]);
+        $form = $this->createForm(EditChipsetPart::class, $chipsetPart);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $chipsetPart = $form->getData();
+
+            foreach ($form['chip']['chipAliases']->getData() as $key => $val) {
+                $val->setChip($chipsetPart);
+            }
+            foreach ($form['chip']['images']->getData() as $key => $val) {
+                $val->setChip($chipsetPart);
+            }
+            
             
             $entityManager->persist($chipsetPart);
             $entityManager->flush();
@@ -609,16 +612,20 @@ class AdminController extends AbstractController
 
     private function renderCoprocessorForm(Request $request, $coprocessor) {
         $entityManager = $this->getDoctrine()->getManager();
-        $coprocessorManufacturers = $this->getDoctrine()
-        ->getRepository(Manufacturer::class)
-        ->findBy(array(), array('name' => 'ASC', 'shortName' => 'ASC'));
         
-        $form = $this->createForm(EditCoprocessor::class, $coprocessor, [
-            'coprocessorManufacturers' => $coprocessorManufacturers,
-        ]);
+        $form = $this->createForm(EditCoprocessor::class, $coprocessor);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $coprocessor = $form->getData();
+            foreach ($form['processingUnit']['instructionSets']->getData() as $key => $val) {
+                $val->addProcessingUnit($coprocessor);
+            }
+            foreach ($form['processingUnit']['chip']['chipAliases']->getData() as $key => $val) {
+                $val->setChip($coprocessor);
+            }
+            foreach ($form['processingUnit']['chip']['images']->getData() as $key => $val) {
+                $val->setChip($coprocessor);
+            }
             
             $entityManager->persist($coprocessor);
             $entityManager->flush();
@@ -653,24 +660,19 @@ class AdminController extends AbstractController
 
     private function renderProcessorForm(Request $request, $processor) {
         $entityManager = $this->getDoctrine()->getManager();
-        $processorManufacturers = $this->getDoctrine()
-        ->getRepository(Manufacturer::class)
-        ->findBy(array(), array('name' => 'ASC', 'shortName' => 'ASC'));
-
-        $instructionSets = $this->getDoctrine()
-        ->getRepository(InstructionSet::class)
-        ->findBy(array(), array('name' => 'ASC'));
         
-        $form = $this->createForm(EditProcessor::class, $processor, [
-            'processorManufacturers' => $processorManufacturers,
-            'instructionSets' => $instructionSets,
-        ]);
+        $form = $this->createForm(EditProcessor::class, $processor);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $processor = $form->getData();
-            
-            foreach ($form['instructionSets']->getData() as $key => $val) {
+            foreach ($form['processingUnit']['instructionSets']->getData() as $key => $val) {
                 $val->addProcessingUnit($processor);
+            }
+            foreach ($form['processingUnit']['chip']['chipAliases']->getData() as $key => $val) {
+                $val->setChip($processor);
+            }
+            foreach ($form['processingUnit']['chip']['images']->getData() as $key => $val) {
+                $val->setChip($processor);
             }
 
             $entityManager->persist($processor);

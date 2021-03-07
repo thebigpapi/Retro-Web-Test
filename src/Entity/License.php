@@ -28,9 +28,15 @@ class License
      */
     private $motherboardImages;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\ChipImage", mappedBy="license")
+     */
+    private $chipImages;
+
     public function __construct()
     {
         $this->motherboardImages = new ArrayCollection();
+        $this->chipImages = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -75,6 +81,37 @@ class License
             // set the owning side to null (unless already changed)
             if ($motherboardImage->getLicense() === $this) {
                 $motherboardImage->setLicense(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ChipImage[]
+     */
+    public function getChipImages(): Collection
+    {
+        return $this->chipImages;
+    }
+
+    public function addChipImage(ChipImage $chipImage): self
+    {
+        if (!$this->chipImages->contains($chipImage)) {
+            $this->chipImages[] = $chipImage;
+            $chipImage->setLicense($this);
+        }
+
+        return $this;
+    }
+
+    public function removeChipImage(ChipImage $chipImage): self
+    {
+        if ($this->chipImages->contains($chipImage)) {
+            $this->chipImages->removeElement($chipImage);
+            // set the owning side to null (unless already changed)
+            if ($chipImage->getLicense() === $this) {
+                $chipImage->setLicense(null);
             }
         }
 

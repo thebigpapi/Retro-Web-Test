@@ -209,7 +209,7 @@ class Chipset
     {
         if (!$this->chipsetParts->contains($chipsetPart)) {
             $this->chipsetParts[] = $chipsetPart;
-            $chipsetPart->setChipset($this);
+            $chipsetPart->addChipset($this);
         }
 
         return $this;
@@ -220,8 +220,8 @@ class Chipset
         if ($this->chipsetParts->contains($chipsetPart)) {
             $this->chipsetParts->removeElement($chipsetPart);
             // set the owning side to null (unless already changed)
-            if ($chipsetPart->getChipset() === $this) {
-                $chipsetPart->setChipset(null);
+            if ($chipsetPart->getChipsets()->contains($this)) {
+                $chipsetPart->removeChipset($this);
             }
         }
 

@@ -23,30 +23,30 @@ class ChipsetPart extends Chip
     }
 
     /**
-     * @return Collection|ChipsetPart[]
+     * @return Collection|Chipset[]
      */
-    public function getChipsetParts(): Collection
+    public function getChipsets(): Collection
     {
-        return $this->chipsetParts;
+        return $this->chipsets;
     }
 
-    public function addChipsetPart(ChipsetPart $chipsetPart): self
+    public function addChipset(Chipset $chipset): self
     {
-        if (!$this->chipsetParts->contains($chipsetPart)) {
-            $this->chipsetParts[] = $chipsetPart;
-            $chipsetPart->setChipsetPart($this);
+        if (!$this->chipsets->contains($chipset)) {
+            $this->chipsets[] = $chipset;
+            $chipset->addChipsetPart($this);
         }
 
         return $this;
     }
 
-    public function removeChipsetPart(ChipsetPart $chipsetPart): self
+    public function removeChipset(Chipset $chipset): self
     {
-        if ($this->chipsetParts->contains($chipsetPart)) {
-            $this->chipsetParts->removeElement($chipsetPart);
+        if ($this->chipsets->contains($chipset)) {
+            $this->chipsets->removeElement($chipset);
             // set the owning side to null (unless already changed)
-            if ($chipsetPart->getChipsetPart() === $this) {
-                $chipsetPart->setChipsetPart(null);
+            if ($chipset->getChipsetParts()->contains($this)) {
+                $chipset->removeChipsetPart($this);
             }
         }
 
@@ -61,10 +61,10 @@ class ChipsetPart extends Chip
     public function getShortName(): ?string
     {
         if ($this->name) {
-            return "$this->name ($this->chip_no)"; 
+            return "$this->name ($this->partNumber)"; 
         }
         else {
-            return "$this->chip_no"; 
+            return "$this->partNumber"; 
         }
     }
 }

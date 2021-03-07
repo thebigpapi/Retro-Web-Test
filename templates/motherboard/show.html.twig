@@ -270,11 +270,11 @@
 				<td>{{ motherboard.getAudioChipset().getNameWithManufacturer() }}</td>
 			</tr>
         {% endif %}
-		{% if motherboard.getMotherboardProcessor() is not null %}
+		{% if motherboard.getProcessors() is not null %}
             <tr>
 				<td class="cpu-table">{% trans %}Supported CPUs:{% endtrans %}</td>
 				<td>
-					{% for processor in motherboard.getMotherboardProcessor()|sort %}
+					{% for processor in motherboard.processors|sort((a, b) => a.getPartNumber() <=> b.getPartNumber()) %}
 						<span class="newdiv" style="background-color:#cae4fa;">
 						{{ processor.getManufacturer().getShortNameIfExist() }}&nbsp;{{ processor.getPartNumber() }}&nbsp;{{ processor.getSpeed().getValueWithUnit() }}</span>
 					{% endfor %}
@@ -283,9 +283,9 @@
         {% endif %}
         {% if motherboard.getCoprocessors() is not empty %}
             <tr><td>{% trans %}Supported FPUs:{% endtrans %}</td><td>
-                {% for copro in motherboard.getCoprocessors()|sort %}
+                {% for copro in motherboard.getCoprocessors()|sort((a, b) => a.getPartNumber() <=> b.getPartNumber()) %}
                     <span class="newdiv" style="background-color:#d0faca;">
-					{{ copro.getManufacturer().getShortNameIfExist() }}&nbsp;{{ copro.getName() }}</span>
+					{{ copro.getManufacturer().getShortNameIfExist() }}&nbsp;{{ copro.getPartNumber() }}&nbsp;{{ copro.getSpeed().getValueWithUnit() }}</span>
                 {% endfor %}
 				</td>
 			</tr>
