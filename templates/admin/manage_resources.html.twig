@@ -99,6 +99,13 @@
 		<div class="manage-buttons">{{ form_row(coprocessorForm.add) }}</div>
 
     {{ form_end(coprocessorForm) }}
+	{{ form_start(instructionSetForm, {'method': 'POST', 'action': './manage_resources'}) }}
+	
+		<div class="cpu-manage">{{ form_row(instructionSetForm.instructionSets) }}</div>
+		<div class="manage-buttons">{{ form_row(instructionSetForm.edit) }}</div>
+		<div class="manage-buttons">{{ form_row(instructionSetForm.add) }}</div>
+
+    {{ form_end(instructionSetForm) }}
 	{{ form_start(cpuSpeedForm, {'method': 'POST', 'action': './manage_resources'}) }}
 
         <div class="cpu-manage">{{ form_row(cpuSpeedForm.cpuSpeeds) }}</div>

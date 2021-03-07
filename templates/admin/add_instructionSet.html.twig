@@ -1,6 +1,6 @@
 {% extends 'admin/header.html.twig' %}
 
-{% block title %}Manage processor platform types{% endblock %}
+{% block title %}Manage instruction set{% endblock %}
 
 {% block body %}
 <div style="height:6em;"></div>
@@ -15,8 +15,8 @@
 		</tr>
 	</table>
 	<div>
-		<p>Compatible with platforms:</p> 
-		<button type="button" onclick="expand('compatibleWith-fields-list')">Add processor plaftorm type</button>
+		<p>Compatible with instruction sets:</p> 
+		<button type="button" onclick="expand('compatibleWith-fields-list')">Add instruction set</button>
 		
         {{ form_errors(form.compatibleWith) }}
         <div id="compatibleWith-fields-list" data-widget-counter="{{ form.compatibleWith|length }}"
@@ -32,6 +32,6 @@
         </div>
 	</div>  
 <!-- {{ form_rest(form)|replace({'<input': ' --><input'})|raw }}
-<script src="{% if app.request.attributes.get('_route') == "processorPlatformType_edit" %}../{% endif %}../assets/add-collection-widget.js"></script>
+<script src="{% if app.request.attributes.get('_route') == "instructionSet_edit" %}../{% endif %}../assets/add-collection-widget.js"></script>
 
 {% endblock %}

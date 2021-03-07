@@ -22,6 +22,8 @@ use App\Entity\AudioChipset;
 use App\Entity\User;
 use App\Entity\Creditor;
 use App\Entity\InstructionSet;
+use App\Form\ManageInstructionSet;
+use App\Form\EditInstructionSet;
 use App\Form\ManageProcessor;
 use App\Form\EditProcessor;
 use App\Form\ManageChipset;
@@ -358,6 +360,14 @@ class AdminController extends AbstractController
             if($formFactorForm->get('add')->isClicked()) return $this->redirect('./formFactor_add');
         }
 
+        $instructionSetForm = $this->createForm(ManageInstructionSet::class, NULL);
+
+        $instructionSetForm->handleRequest($request);
+        if ($instructionSetForm->isSubmitted() && $instructionSetForm->isValid()) {
+            if($instructionSetForm->get('edit')->isClicked()) return $this->redirect('./instructionSet_edit/' . $instructionSetForm->getData()['instructionSets']->getId());
+            if($instructionSetForm->get('add')->isClicked()) return $this->redirect('./instructionSet_add');
+        }
+
         $ioPortForm = $this->createForm(ManageIoPort::class, NULL);
 
         $ioPortForm->handleRequest($request);
@@ -467,6 +477,7 @@ class AdminController extends AbstractController
             'dramTypeForm' => $dramTypeForm->createView(),
             'expansionSlotForm' => $expansionSlotForm->createView(),
             'formFactorForm' => $formFactorForm->createView(),
+            'instructionSetForm' => $instructionSetForm->createView(),
             'ioPortForm' => $ioPortForm->createView(),
             'knownIssueForm' => $knownIssueForm->createView(),
             'languageForm' => $languageForm->createView(),
@@ -810,6 +821,27 @@ class AdminController extends AbstractController
                                         ->getRepository(FormFactor::class)
                                         ->find($id)
                                     , EditFormFactor::class, 'admin/add_formFactor.html.twig');
+    }
+
+    /**
+     * @Route("/admin/instructionSet_add", name="instructionSet_add")
+     * @param Request $request
+     */
+    public function instructionSetAdd(Request $request)        
+    {
+        return $this->renderEntityForm($request, new InstructionSet(), EditInstructionSet::class, 'admin/add_instructionSet.html.twig');
+    }
+
+    /**
+     * @Route("/admin/instructionSet_edit/{id}", name="instructionSet_edit", requirements={"id"="\d+"})
+     * @param Request $request
+     */
+    public function instructionSetEdit(Request $request, int $id)        
+    {
+        return $this->renderEntityForm($request,$this->getDoctrine()
+                                        ->getRepository(InstructionSet::class)
+                                        ->find($id)
+                                    , EditInstructionSet::class, 'admin/add_instructionSet.html.twig');
     }
 
     /**

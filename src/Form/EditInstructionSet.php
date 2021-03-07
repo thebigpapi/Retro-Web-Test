@@ -8,24 +8,21 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use App\Entity\ProcessorPlatformType;
-use App\Form\Type\ProcessorPlatformTypeForm;
-use App\Entity\Manufacturer;
+use App\Entity\InstructionSet;
+use App\Form\Type\InstructionSetType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 
-class EditProcessorPlatformType extends AbstractType
+class EditInstructionSet extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name', TextType::class, [
-                'required' => false,
-            ])
+            ->add('name', TextType::class)
             ->add('compatibleWith', CollectionType::class, [
-                'entry_type' => ProcessorPlatformTypeForm::class,
+                'entry_type' => InstructionSetType::class,
                 'allow_add' => true,
                 'allow_delete' => true,
-            ])
+                ])
             ->add('save', SubmitType::class)
             ;
     }
@@ -33,7 +30,7 @@ class EditProcessorPlatformType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => ProcessorPlatformType::class,
+            'data_class' => InstructionSet::class,
         ]);
     }
 }

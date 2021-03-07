@@ -43,12 +43,24 @@ class ProcessorPlatformType
      */
     private $processingUnits;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\ProcessorPlatformType", inversedBy="ChildProcessorPlatformType")
+     */
+    private $compatibleWith;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\ProcessorPlatformType", mappedBy="compatibleWith")
+     */
+    private $ChildProcessorPlatformType;
+
     public function __construct()
     {
         $this->processors = new ArrayCollection();
         $this->motherboards = new ArrayCollection();
         $this->coprocessors = new ArrayCollection();
         $this->processingUnits = new ArrayCollection();
+        $this->compatibleWith = new ArrayCollection();
+        $this->ChildProcessorPlatformType = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -187,6 +199,73 @@ class ProcessorPlatformType
             if ($processingUnit->getPlatform() === $this) {
                 $processingUnit->setPlatform(null);
             }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ProcessingUnit[]
+     */
+    public function getCompatibleProcessingUnits(): Collection
+    {
+        $processingUnits = $this->getProcessingUnits();
+        foreach($this->getCompatibleWith() as $compatible)
+        {
+            $processingUnits = new ArrayCollection(array_merge($processingUnits->toArray(), $compatible->getProcessingUnits()->toArray()));
+        }
+        return $processingUnits;
+    }
+
+    /**
+     * @return Collection|self[]
+     */
+    public function getCompatibleWith(): Collection
+    {
+        return $this->compatibleWith;
+    }
+
+    public function addCompatibleWith(self $compatibleWith): self
+    {
+        if (!$this->compatibleWith->contains($compatibleWith)) {
+            $this->compatibleWith[] = $compatibleWith;
+        }
+
+        return $this;
+    }
+
+    public function removeCompatibleWith(self $compatibleWith): self
+    {
+        if ($this->compatibleWith->contains($compatibleWith)) {
+            $this->compatibleWith->removeElement($compatibleWith);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|self[]
+     */
+    public function getChildProcessorPlatformType(): Collection
+    {
+        return $this->ChildProcessorPlatformType;
+    }
+
+    public function addChildProcessorPlatformType(self $childProcessorPlatformType): self
+    {
+        if (!$this->ChildProcessorPlatformType->contains($childProcessorPlatformType)) {
+            $this->ChildProcessorPlatformType[] = $childProcessorPlatformType;
+            $childProcessorPlatformType->addCompatibleWith($this);
+        }
+
+        return $this;
+    }
+
+    public function removeChildProcessorPlatformType(self $childProcessorPlatformType): self
+    {
+        if ($this->ChildProcessorPlatformType->contains($childProcessorPlatformType)) {
+            $this->ChildProcessorPlatformType->removeElement($childProcessorPlatformType);
+            $childProcessorPlatformType->removeCompatibleWith($this);
         }
 
         return $this;
