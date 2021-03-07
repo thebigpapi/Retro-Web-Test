@@ -2,7 +2,7 @@
 
 /* base.html.twig */
 
-body, form {margin:0; padding:0;}
+body, form {margin:0; padding:0;background-color:#F9F9F9;}
 body, button, div.main input, select {font-family: Arial, sans-serif;}
 p, ul {margin-top: 14px; margin-bottom: 14px;}
 
@@ -58,6 +58,15 @@ div.pagination span.current {font-weight:bold;}
 
 /* show.html.twig */
 
+table.stbl {
+  border: 1px solid #e0e0e0;
+  border-collapse: collapse;
+  background-color:#FFFFFF;
+  margin-bottom:10px;
+  width:100%;
+}
+table.stbl tr{height:2em;}
+table.stbl td{padding: 5px;}
 div.show-images {width:25%;overflow: auto;float:left;height:500px; /* **/ height:auto; max-height:500px; /** */}
 span.show-image {width:100%;font-size:12px;display:block;}
 span.creditor {width:auto;display:block; text-align: center; word-wrap: break-word;}

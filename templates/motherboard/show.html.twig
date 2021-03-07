@@ -89,7 +89,7 @@
 	<p>
 		<b class="contrib">{% trans %}Would you like to improve this page? Click{% endtrans %} <a href="{% if is_granted('ROLE_ADMIN') %}../edit/{{ motherboard.getId() }}{% else %}/win3board/posting.php?mode=post&amp;f=96&amp;language=en{% endif %}">{% trans %}here{% endtrans %}</a>.</b>
 	</p>
-	<table>
+	<table class="stbl">
         <tr><td class="main-table">{% trans %}Form factor:{% endtrans %}</td><td>
             {% if motherboard.getFormFactor() is not null %} 
                 {{ motherboard.getFormFactor().getName() }} 
@@ -157,9 +157,10 @@
 	</table>
 
 	{% if motherboard.getMotherboardBios() is not empty %}
-        <div style="margin-top:16px"><div><b>{% trans %}BIOS images:{% endtrans %}</b></div>
-        <table>
-            <tr>
+    <div>
+		<b>{% trans %}BIOS images:{% endtrans %}</b>
+        <table class="stbl">
+            <tr style="background-color:#e0e0e0;">
                 <th>{% trans %}Manuf.{% endtrans %}</th>
                 <th>{% trans %}POST String{% endtrans %}</th>
                 <th>{% trans %}Note{% endtrans %}</th>
@@ -167,7 +168,7 @@
                 <th>{% trans %}Core Ver.{% endtrans %}</th>
             </tr>
             {% for bios in motherboard.getMotherboardBios()|sort((a, b) => b.boardVersion <=> a.boardVersion)|sort((a, b) => a.manufacturer <=> b.manufacturer) %}
-            <tr style="text-align:center">
+            <tr style="text-align:center;border: 1px solid #e0e0e0;">
                 <td>{{ bios.getManufacturer().getShortNameIfExist() }}</td>
                 <td><span class="string-bios">{{ bios.getPostString() }}</span></td>
                 <td><span>{{ bios.getNote() }}</span></td>
@@ -187,11 +188,12 @@
 				<td>{{ bios.getCoreVersion() }}</td>
             </tr>
             {% endfor %}
-        </table></div>
+        </table>
+	</div>
     {% endif %}
 
 	{% if motherboard.getManuals() is not empty %}
-	<table>
+	<table class="stbl">
             <tr>
                 <td>{% trans %}Manuals:{% endtrans %}</td>
                 <td>
@@ -205,8 +207,8 @@
 	</table>
     {% endif %}
 
-	<table>
-		<tr style="text-align:center">
+	<table class="stbl">
+		<tr style="text-align:center;background-color:#e0e0e0;">
 			{% if motherboard.getMotherboardIoPorts() is not empty %}
 				<td><b>{% trans %}I/O ports:{% endtrans %}</b></td>	  
 			{% endif %}
@@ -220,7 +222,7 @@
 		<tr>
 		{% if motherboard.getMotherboardIoPorts() is not empty %}
 			<td class="io-table">
-				<ul>
+				<ul style="list-style-type: none;">
 				{% for port in motherboard.getMotherboardIoPorts()|sort %}
 					<li><b>{{ port.getCount() }}x  </b>{{ port.getIoPort().getName() }}</li>
 				{% endfor %}
@@ -229,7 +231,7 @@
         {% endif %}
         {% if motherboard.getMotherboardExpansionSlots() is not empty %}
 			<td class="exp-table">
-				<ul>
+				<ul  style="list-style-type: none;">
 				{% for slot in motherboard.getMotherboardExpansionSlots()|sort %}
 					<li><b>{{ slot.getCount() }}x  </b>{{ slot.getExpansionSlot().getName() }}</li>
 				{% endfor %}
@@ -238,7 +240,7 @@
         {% endif %}
 		{% if motherboard.getKnownIssues() is not empty %} 
 			<td class="exp-table">
-				<ul>
+				<ul  style="list-style-type: none;">
 				{% for issue in motherboard.getKnownIssues() %}
 					<li>{{ issue.getName() }}</li>
 				{% endfor %}
