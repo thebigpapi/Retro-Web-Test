@@ -118,7 +118,7 @@ class SearchMotherboard extends AbstractType
                 'choices' => $options['formFactors'],
 		        'placeholder' => 'Select a form factor ...',
             ])
-            ->add('motherboardBios', EntityType::class, [
+            /*->add('motherboardBios', EntityType::class, [
                 'class' => Manufacturer::class,
 
                 'choice_label' => 'shortNameIfExist',
@@ -126,7 +126,7 @@ class SearchMotherboard extends AbstractType
                 'expanded' => true,
                 'required' => false,
                 'choices' => $options['bios'],
-            ])
+            ])*/
             ->add('search', SubmitType::class)
             ->add('searchChipsetManufacturer', SubmitType::class, ['label' => 'List chipsets'])
         ;

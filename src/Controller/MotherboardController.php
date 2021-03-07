@@ -378,12 +378,12 @@ class MotherboardController extends AbstractController
             if (count($dramTypes) > 0)
                 $parameters['dramTypeIds'] = json_encode($dramTypes);
 
-            $bioses = array();
+            /*$bioses = array();
             foreach($form['motherboardBios']->getData() as $key => $bios) {
                 array_push($bioses, $bios->getId()); 
             }
             if (count($bioses) > 0)
-                $parameters['biosIds'] = json_encode($bioses);
+                $parameters['biosIds'] = json_encode($bioses);*/
 
             if ($form['chipsetManufacturer']->getData() && !$form['chipset']->getData()) {
 

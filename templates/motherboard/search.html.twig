@@ -115,7 +115,7 @@
 		</table>
 		<div class="butn">
             {{ form_row(form.search)|replace({'<div><button': '<input', '</button></div>': '">', '>': ' value="'})|raw }}
-			<!-- {{ form_rest(form)|replace({'<input type="hidden"': ' --><input type="hidden"'})|raw }}
+			{{ form_rest(form)}}
         </div>
 	</form><br>
    
