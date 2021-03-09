@@ -14,7 +14,7 @@ class CoprocessorType extends AbstractType
         $resolver->setDefaults([
             'class' => Coprocessor::class,
                 
-            'choice_label' => 'getNameWithManufacturer',
+            'choice_label' => 'getNameWithSpecs',
             'multiple' => false,
             'expanded' => false,
         ]);

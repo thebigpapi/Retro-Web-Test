@@ -57,10 +57,11 @@ class Processor extends ProcessingUnit
      */
     private $voltage;
 
-    /*public function __construct()
+    public function __construct()
     {
+        parent::__construct();
         $this->motherboards = new ArrayCollection();
-    }*/
+    }
 
     /**
      * @return Collection|Motherboard[]
@@ -93,6 +94,42 @@ class Processor extends ProcessingUnit
     public function getNameWithPlatform() {
         $this->getPlatform() ? $pType = $this->getPlatform()->getName() : $pType = "Unidentified";
         return $this->getManufacturer()->getShortNameIfExist() . " " . $this->name . ' ' . $this->speed->getValueWithUnit() . ' [' . $this->partNumber . ']' . " (" . $pType . ")";
+    }
+
+    public function getNameWithSpecs() {
+        $cache = '';
+        if($this->L1) {
+            $cache = "[L1: " .$this->L1->getValueWithUnit();
+            if($this->L1CacheMethod) {
+                $cache = "$cache " .$this->L1CacheMethod->getName();
+            }
+            if($this->L2) {
+                $cache = "$cache, L2: " . $this->L2->getValueWithUnit();
+                if($this->L2CacheRatio) {
+                    $cache = "$cache ". $this->L2CacheRatio->getName();
+                }
+                if($this->L3) {
+                    $cache = "$cache, L3: " . $this->L3->getValueWithUnit();
+                    if($this->L3CacheRatio) {
+                        $cache = "$cache ". $this->L3CacheRatio->getName();
+                        
+                    }
+                }
+            }
+            $cache = "$cache]";
+        }
+
+        $core = $this->getCore() ? "($this->core)" : '';
+
+        $speed = $speed = $this->speed->getValueWithUnit() . ($this->fsb != $this->speed ? '/'.$this->fsb->getValueWithUnit():'');
+
+        $voltage = $this->getVoltage().'V';
+
+        $partno = "[$this->partNumber]";
+        
+        $pType = '(' . ($this->getPlatform() ? $this->getPlatform()->getName() : "Unidentified") . ')';
+        
+        return implode(" ", array($this->getManufacturer()->getShortNameIfExist(),$this->name, $core, $speed, $voltage, $cache, $partno, $pType ));
     }
 
     public function getL1(): ?CacheSize

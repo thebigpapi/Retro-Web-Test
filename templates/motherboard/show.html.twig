@@ -276,7 +276,7 @@
 				<td>
 					{% for processor in motherboard.processors|sort((a, b) => a.getPartNumber() <=> b.getPartNumber()) %}
 						<span class="newdiv" style="background-color:#cae4fa;">
-						{{ processor.getManufacturer().getShortNameIfExist() }}&nbsp;{{ processor.getPartNumber() }}&nbsp;{{ processor.getSpeed().getValueWithUnit() }}</span>
+						{{ processor.getNameWithSpecs() }}</span>
 					{% endfor %}
 				</td>
 			</tr>
@@ -285,7 +285,7 @@
             <tr><td>{% trans %}Supported FPUs:{% endtrans %}</td><td>
                 {% for copro in motherboard.getCoprocessors()|sort((a, b) => a.getPartNumber() <=> b.getPartNumber()) %}
                     <span class="newdiv" style="background-color:#d0faca;">
-					{{ copro.getManufacturer().getShortNameIfExist() }}&nbsp;{{ copro.getPartNumber() }}&nbsp;{{ copro.getSpeed().getValueWithUnit() }}</span>
+					{{ copro.getNameWithSpecs() }}</span>
                 {% endfor %}
 				</td>
 			</tr>

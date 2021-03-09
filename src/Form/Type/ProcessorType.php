@@ -16,7 +16,7 @@ class ProcessorType extends AbstractType
         $resolver->setDefaults([
             'class' => Processor::class,
                 
-            'choice_label' => 'getNameWithPlatform',
+            'choice_label' => 'getNameWithSpecs',
             'multiple' => false,
             'expanded' => false,
         ]);

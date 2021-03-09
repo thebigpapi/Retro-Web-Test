@@ -19,7 +19,7 @@ class ManageProcessor extends AbstractType
         $builder
         ->add('processors', EntityType::class, [
             'class' => Processor::class,
-            'choice_label' => 'getNameWithPlatform',
+            'choice_label' => 'getNameWithSpecs',
             'multiple' => false,
             'expanded' => false,
             'choices' => $options['processors'],

@@ -24,19 +24,9 @@ class ProcessorPlatformType
     private $name;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Processor", mappedBy="processorPlatformType")
-     */
-    private $processors;
-
-    /**
      * @ORM\OneToMany(targetEntity="App\Entity\Motherboard", mappedBy="processorPlatformType")
      */
     private $motherboards;
-
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Coprocessor", mappedBy="processor_platform_type")
-     */
-    private $coprocessors;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\ProcessingUnit", mappedBy="platform")
@@ -81,37 +71,6 @@ class ProcessorPlatformType
     }
 
     /**
-     * @return Collection|Processor[]
-     */
-    public function getProcessors(): Collection
-    {
-        return $this->processors;
-    }
-
-    public function addProcessor(Processor $processor): self
-    {
-        if (!$this->processors->contains($processor)) {
-            $this->processors[] = $processor;
-            $processor->setProcessorPlatformType($this);
-        }
-
-        return $this;
-    }
-
-    public function removeProcessor(Processor $processor): self
-    {
-        if ($this->processors->contains($processor)) {
-            $this->processors->removeElement($processor);
-            // set the owning side to null (unless already changed)
-            if ($processor->getProcessorPlatformType() === $this) {
-                $processor->setProcessorPlatformType(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
      * @return Collection|Motherboards[]
      */
     public function getMotherboards(): Collection
@@ -136,37 +95,6 @@ class ProcessorPlatformType
             // set the owning side to null (unless already changed)
             if ($motherboard->getProcessorPlatformType() === $this) {
                 $motherboard->setProcessorPlatformType(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Coprocessor[]
-     */
-    public function getCoprocessors(): Collection
-    {
-        return $this->coprocessors;
-    }
-
-    public function addCoprocessor(Coprocessor $coprocessor): self
-    {
-        if (!$this->coprocessors->contains($coprocessor)) {
-            $this->coprocessors[] = $coprocessor;
-            $coprocessor->setProcessorPlatformType($this);
-        }
-
-        return $this;
-    }
-
-    public function removeCoprocessor(Coprocessor $coprocessor): self
-    {
-        if ($this->coprocessors->contains($coprocessor)) {
-            $this->coprocessors->removeElement($coprocessor);
-            // set the owning side to null (unless already changed)
-            if ($coprocessor->getProcessorPlatformType() === $this) {
-                $coprocessor->setProcessorPlatformType(null);
             }
         }
 

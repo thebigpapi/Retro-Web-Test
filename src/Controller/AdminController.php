@@ -290,6 +290,34 @@ class AdminController extends AbstractController
             ->getRepository(Processor::class)
             ->findAllOrderByManufacturer();
 
+        usort($processors, function ($a, $b)
+            {
+                //dd($a->getName());
+                //if($a->getName() == "") return -1;
+                /*if ($a->getFullReference() == $b->getFullReference()) {
+                    return 0;
+                }*/
+                if($a->getManufacturer() == $b->getManufacturer())
+                {
+                    if($a->getName() == $b->getName())
+                    {
+                        if($a->getSpeed() == $b->getSpeed())
+                        {
+                            if($a->getL2() && $b->getL2())
+                                return ($a->getL2()->getValue() < $b->getL2()->getValue()) ? -1 : 1;
+                            else
+                                return 0;
+                        }
+                        return ($a->getSpeed()->getValue() < $b->getSpeed()->getValue() ) ? -1 : 1;
+                    }
+                    else
+                        return ($a->getName() < $b->getName()) ? -1 : 1;
+                }
+                else
+                    return ($a->getManufacturer() < $b->getManufacturer()) ? -1 : 1;
+            }
+        );
+
         $processorForm = $this->createForm(ManageProcessor::class, NULL, [
             'processors' => $processors,
         ]);

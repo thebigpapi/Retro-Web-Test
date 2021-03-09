@@ -39,6 +39,12 @@ abstract class ProcessingUnit extends Chip
      */
     protected $fsb;
 
+    public function __construct()
+    {
+        parent::__construct();
+        $this->instructionSets = new ArrayCollection();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -109,5 +115,15 @@ abstract class ProcessingUnit extends Chip
         $this->fsb = $fsb;
 
         return $this;
+    }
+
+    public function getNameWithSpecs() {
+        $speed = $speed = $this->speed->getValueWithUnit() . ($this->fsb != $this->speed ? '/'.$this->fsb->getValueWithUnit():'');
+
+        $partno = "[$this->partNumber]";
+        
+        $pType = '(' . ($this->getPlatform() ? $this->getPlatform()->getName() : "Unidentified") . ')';
+
+        return implode(" ", array($this->getManufacturer()->getShortNameIfExist(),$this->name, $speed, $partno, $pType ));
     }
 }

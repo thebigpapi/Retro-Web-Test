@@ -20,6 +20,7 @@ class Coprocessor extends ProcessingUnit
 
     public function __construct()
     {
+        parent::__construct();
         $this->motherboards = new ArrayCollection();
     }
 
