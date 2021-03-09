@@ -2,7 +2,7 @@
 
 /* == cross compatibility between linux and windows == */
 /* global tags */
-input[type=text], input[type=submit], input[type=password], button, select {
+input[type=text], input[type=submit], input[type=reset], input[type=password], button, select {
   height: 22px;
   border-color:#d9d9d9;
   border-width: thin;
@@ -22,11 +22,19 @@ select.sform{height:2.2em;}
 	div.top-bar span.form { width: 220px;}
 	div.top-bar select.goto {width: 38%;}
 	div.top-bar select.lang {width: 40%;}
+	
+	/* search.html.twig */
 	h2.title {font-size: 16px; margin: 10px 0;}
+	div.butn input {font-size:18px;}
 	div.page {font-size:14px;}
-	td.exp-width2 {display:none;}
-	tr.exp-width1 {display:table;margin-left: 2%;}
-
+	td.table-width {display:none;}
+	tr.title-width {display:table;margin-left: 2%;}
+	.sform, div.sform2{margin-left:5%;}
+	div.sform2 input[type=checkbox] {width:20px;height:20px;}
+	span.field1 {width: 13em;}
+	span.field2 {width: 10em;}
+	table.sform1{margin-left:3%;}
+	
 	/* show.html.twig */
 	div.show-images {width:100%; max-height:400px;}
 	span.show-image, span.string-bios {font-size:8px;}
@@ -54,7 +62,8 @@ select.sform{height:2.2em;}
 	form.index-buttons input.button2 {background-image: url(./images/card_disabled_med.png);}
 
 	/* search.html.twig */
-	td.table-width, td.exp-width2 {width:210px;}
+	td.table-width {width:210px;}
+	div.butn input {font-size:18px;}
 
 	/* result.html.twig */
 	div.results ul li{font-size:20px;}
@@ -67,7 +76,7 @@ select.sform{height:2.2em;}
 
 	/* search.html.twig */
 	span.field1 {font-size:14px;}
-	td.table-width, td.exp-width2  {width:220px;}
+	td.table-width {width:220px;}
 
 	/* show.html.twig */
 	div.show-images {width:30%; max-height:600px;}

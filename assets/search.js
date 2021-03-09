@@ -1,4 +1,4 @@
-function setChipset() {
+function setChipset(ok) {
     var chipManuf = document.getElementById("search_motherboard_chipsetManufacturer");
     var form = document.getElementsByName("search_motherboard")[0];
     if (window.XMLHttpRequest)
@@ -20,7 +20,8 @@ function setChipset() {
             parser.innerHTML="";
         }
     };
-    var chipsetManufacturer = chipManuf.value;
+	var chipsetManufacturer = chipManuf.value;
+	if(ok)var chipsetManufacturer = "";
     var params = "search_motherboard[chipsetManufacturer]="+chipsetManufacturer;
     xhttp.open('POST', form.action, true);
     xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
@@ -37,6 +38,7 @@ if (xhttp) {
 	lb2.style.width="70%";
 }
 var chip = document.getElementById('search_motherboard_chipsetManufacturer');
+var rst = document.getElementById('rst-btn');
 function addEvent(evnt, elem, func){
     if(elem.addEventListener)
         elem.addEventListener(evnt,func,false);
@@ -45,8 +47,13 @@ function addEvent(evnt, elem, func){
     }
     else elem["on"+evnt] = func;
 }
+rst.onclick= function() {
+	setChipset(1);
+	lb1.style.display="";
+	lb2.style.display="none";
+};
 chip.onchange= function() {
-	setChipset();
+	setChipset(0);
 	lb1.style.display="";
 	lb2.style.display="none";
 };

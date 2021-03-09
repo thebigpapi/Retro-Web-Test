@@ -16,28 +16,47 @@
 
 {% block body %}
 	<h2 class="title">{% trans %}Search for a motherboard{% endtrans %}</h2>
-
-	<p style="text-align:center;">{% trans %}List boards whose manufacturer name starts with:{% endtrans %}<br>
+	<p style="text-align:center;">
+		{% trans %}List boards whose manufacturer name starts with:{% endtrans %}<br>
 		{% for letter in ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z']%}
-		<a href="./index/{{letter}}">{{letter}}</a>&nbsp;|
+			<a href="./index/{{letter}}">{{letter}}</a>&nbsp;|
 		{% endfor %}
 		<a href="./result/?manufacturerId=NULL">?</a>
 	</p>
-    <div id="hiddenDiv" style="display: none;"></div>
+	<div id="hiddenDiv" style="display: none;"></div>
 	<form name="search_motherboard" method="post" action="./search">
+		<div class="butn">
+			<input id="rst-btn" type="reset" value="Reset fields">
+			{{ form_row(form.search)|replace({'<div><button': '<input', '</button></div>': '">', '>': ' value="'})|raw }}
+		</div>
         <table style="width:100%;">
+			<tr class="title-width">
+				<td colspan="2"><b>{% trans %}Name{% endtrans %}</b></td>
+			</tr>
             <tr style="line-height: 200%;">
+				<td class="table-width"><b>{% trans %}Name{% endtrans %}</b></td>
+                <td>{{ form_widget(form.name, {'attr': {'class': 'sform'}})|replace({' />': ' size="50">'})|raw }}</td>
+            </tr>
+			
+			<tr class="title-width">
+				<td colspan="2"><b>{% trans %}Manufacturer{% endtrans %}</b></td>
+			</tr>
+			<tr style="line-height: 200%;">
                 <td class="table-width"><b>{% trans %}Manufacturer{% endtrans %}</b></td>
                 <td>{{ form_widget(form.manufacturer, {'attr': {'class': 'sform'}}) }}</td>
             </tr>
-            <tr style="line-height: 200%;">
-                <td class="table-width"><b>{% trans %}Name{% endtrans %}</b></td>
-                <td>{{ form_widget(form.name, {'attr': {'class': 'sform'}})|replace({' />': ' size="50">'})|raw }}</td>
-            </tr>
+			
+			<tr class="title-width">
+				<td colspan="2"><b>{% trans %}Form factor{% endtrans %}</b></td>
+			</tr>
             <tr style="line-height: 200%;">
                 <td class="table-width"><b>{% trans %}Form factor{% endtrans %}</b></td>
 				<td>{{ form_widget(form.formFactor, {'attr': {'class': 'sform'}}) }}</td>
             </tr>
+			
+			<tr class="title-width">
+				<td colspan="2"><b>{% trans %}Chipset manuf. and name{% endtrans %}</b></td>
+			</tr>
             <tr style="line-height: 100%;">
                 <td class="table-width"><b>{% trans %}Chipset manuf. and name{% endtrans %}</b></td>
 				<td>
@@ -59,6 +78,10 @@
 					</tr></table>
                 </td>
             </tr>
+			
+			<tr class="title-width">
+				<td colspan="2"><b>{% trans %}CPU platform type{% endtrans %}</b></td>
+			</tr>
             <tr style="line-height:100%;">
                 <td class="table-width"><b>{% trans %}CPU platform type{% endtrans %}</b></td>
 				<td>{{ form_widget(form.processorPlatformType, {'attr': {'class': 'sform'}}) }}</td>
@@ -66,12 +89,12 @@
         </table>
 		<div style="height:15px"></div>
 		<table>
-			<tr class="exp-width1">
+			<tr class="title-width">
 				<td colspan="2"><b>{% trans %}Expansion slots{% endtrans %}</b></td>
 			</tr>
 			<tr>
-				<td class="exp-width2"><b>{% trans %}Expansion slots{% endtrans %}</b></td>
-				<td>
+				<td class="table-width"><b>{% trans %}Expansion slots{% endtrans %}</b></td>
+				<td><div class="sform2">
 					{% for slot in slots %}
 						{% if slot.hiddenSearch == false %}
 						<span class="field1">
@@ -80,43 +103,40 @@
 						</span>
 						{% endif %}
 					{% endfor %}
-				</td>
+				</div></td>
 			</tr>
 			<tr style="height:10px;"><td></td><td></td></tr>
-			<tr class="exp-width1">
+			<tr class="title-width">
 				<td colspan="2"><b>{% trans %}I/O ports{% endtrans %}</b></td>
 			</tr>
 			<tr>
-				<td class="exp-width2"><b>{% trans %}I/O ports{% endtrans %}</b></td>
-				<td>
+				<td class="table-width"><b>{% trans %}I/O ports{% endtrans %}</b></td>
+				<td><div class="sform2">
 				{% for port in ports %}
                     <span class="field1">
 						<input type="text" size="2" name="port{{port.id}}">
 						<span>x {{ port.name }}</span>
 					</span>
                 {% endfor %}
-				</td>
+				</div></td>
 			</tr>
 			<tr style="height:10px;"><td></td><td></td></tr>
-			<tr class="exp-width1">
-				<td colspan="2"><b>{% trans %}Ram type{% endtrans %}</b></td>
+			<tr class="title-width">
+				<td colspan="2"><b>{% trans %}RAM type{% endtrans %}</b></td>
 			</tr>
 			<tr>
-				<td class="exp-width2"><b>{% trans %}Ram type{% endtrans %}</b></td>
-				<td>
+				<td class="table-width"><b>{% trans %}RAM type{% endtrans %}</b></td>
+				<td><div class="sform2">
 				{% for child in form.dramType|keys %}
                     <span class="field2" >
 					{{ form_widget(attribute(form.dramType,child)) }}
 					{{ form_label(attribute(form.dramType,child)) }}
 					</span>
                 {% endfor %}
-				</td>
+				</div></td>
 			</tr>
 		</table>
-		<div class="butn">
-            {{ form_row(form.search)|replace({'<div><button': '<input', '</button></div>': '">', '>': ' value="'})|raw }}
-			{{ form_rest(form)}}
-        </div>
+		{{ form_rest(form)}}
 	</form><br>
    
 <script type="text/javascript" src="../assets/search.js"></script>

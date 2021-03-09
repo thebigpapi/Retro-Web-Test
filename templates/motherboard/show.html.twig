@@ -174,7 +174,7 @@
                 <td><span>{{ bios.getNote() }}</span></td>
                 <td>{% if bios.getFileName() is not null %}
 						<a href="{{ vich_uploader_asset(bios, 'romFile') }}">
-							<img src="/assets/images/dw.ico" width="16" height="16" alt="">
+							<img src="../../assets/images/dw.gif" alt="" width="16" height="16" style="vertical-align: middle;">
 						{% if bios.getBoardVersion() is not null %} 
 							{{ bios.getBoardVersion() }}
 						{% else %}
@@ -195,7 +195,7 @@
 	{% if motherboard.getManuals() is not empty %}
 	<table class="stbl">
             <tr>
-                <td>{% trans %}Manuals:{% endtrans %}</td>
+                <td>{% trans %}Manuals:{% endtrans %}<img src="../../assets/images/dw.gif" alt="" width="16" height="16" style="vertical-align: middle;"></td>
                 <td>
                     <ul>
                         {% for manual in motherboard.getManuals()|sort((a, b) => a.getLinkName <=> b.getLinkName) %}
