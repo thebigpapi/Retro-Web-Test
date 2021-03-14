@@ -26,9 +26,10 @@ b.contrib a:link, b.contrib a:visited { color: #0000FF;}
 /* index.html.twig */
 
 form.index-buttons {padding-top: 18px;}
-form.index-buttons input {padding-top:145px;width:20em;min-width:240px;font-size:12px;font-weight:bold;}
+form.index-buttons input {padding-top:145px;width:15em;font-size:12px;font-weight:bold;}
 form.index-buttons input.button1 {background: #ebebeb url(./images/motherboard_low.jpg) center no-repeat;}
-form.index-buttons input.button2 {background: #ebebeb url(./images/card_disabled_low.jpg) center no-repeat;}
+form.index-buttons input.button2 {background: #ebebeb url(./images/card_low.jpg) center no-repeat;}
+form.index-buttons input.button3 {background: #ebebeb url(./images/awchip_low.jpg) center no-repeat;}
 
 /* search.html.twig */
 
@@ -38,7 +39,7 @@ table.sform1 {width: 91%; margin-left:-3px;}
 div.sform select {height: 100%; width: 100%; }
 div.sform input {height: auto; width: 90%; /* **/ height: 90%; width: 99%; /** */}
 
-td.table-width {width: 120px;text-align:center;}
+td.table-width, td.bios-width {width: 120px;text-align:center;}
 tr.title-width {display:none;}
 span.field1 {height: 1.75em; width: 15em; font-size:14px; margin-bottom:4px; /* **/ float:left; /** */}
 span.field1 span {float:left; margin-left:0.4em;}
@@ -84,3 +85,15 @@ td.main-table {width:170px;}
 td.exp-table {vertical-align: top;width:140px;}
 td.io-table {vertical-align: top;width:175px;}
 td.cpu-table {width:160px;}
+
+/* infoadv.html.twig */
+
+table.stbl-adv {
+	font-size:14px;
+	font-weight: normal;
+	border: 1px solid #e0e0e0;
+	border-collapse: collapse;
+	background-color:#FFFFFF;
+	margin-bottom:10px;
+	width:100%;
+}

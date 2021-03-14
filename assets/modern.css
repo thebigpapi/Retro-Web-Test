@@ -10,7 +10,7 @@ input[type=text], input[type=submit], input[type=reset], input[type=password], b
 }
 
 /* specific tags */
-input.button1, input.button2, input.admin-button {height:auto;border-width:2px;}
+input.button1, input.button2, input.button3, input.admin-button {height:auto;border-width:2px;}
 input.num {width:20px;}
 span.field1 {font-size: 12px;}
 select.sform{height:2.2em;}
@@ -57,12 +57,13 @@ select.sform{height:2.2em;}
 	div.page {width:90%;font-size:22px;}
 
 	/* index.html.twig */
-	form.index-buttons input {padding-top:300px;min-width:360px;font-size:18px;}
+	form.index-buttons input {padding-top:260px;width:16em;font-size:18px;}
 	form.index-buttons input.button1 {background-image: url(./images/motherboard_med.png);}
-	form.index-buttons input.button2 {background-image: url(./images/card_disabled_med.png);}
+	form.index-buttons input.button2 {background-image: url(./images/card_med.png);}
+	form.index-buttons input.button3 {background-image: url(./images/awchip_med.png);}
 
 	/* search.html.twig */
-	td.table-width {width:210px;}
+	td.table-width, td.bios-width {width:210px;}
 	div.butn input {font-size:18px;}
 
 	/* result.html.twig */

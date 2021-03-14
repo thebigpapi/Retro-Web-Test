@@ -1,0 +1,952 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{% trans %}Advanced BIOS Info{% endtrans %}{% endblock %}
+
+{% block body %}
+<h2 class="title">{% trans %}Where can I find the POST string?{% endtrans %}</h2>
+<p id="award-chip"><b>1.Award BIOS chipset IDs<b></p>
+<table class="stbl-adv">
+	<tr style="text-align:center;background-color:#e0e0e0;">
+		<th>Intel chipsets</th>
+		<th>VIA/OPTi/UMC chipsets</th>
+	</tr>
+	<tr>
+		<td><ul>
+			<li>2A496: Intel 420TX chipset (Saturn I)</li>
+			<li>2B496: Intel 420TX chipset (Saturn I EISA)</li>
+			<li>2A498: Intel 420ZX chipset (Saturn II)</li>
+			<li>2A499: Intel 420EX chipset (Aries)</li>
+			<li>2A597: Intel 430LX chipset (Mercury)</li>
+			<li>2B597: Intel 430LX chipset (Mercury EISA)</li>
+			<li>2A59A: Intel 430NX chipset (Neptune)</li>
+			<li>2B59A: Intel 430NX chipset (Neptune EISA)</li>
+			<li>2A59B: Intel 430LX chipset (Mercury)</li>
+			<li>2A59C: Intel 430FX chipset (Triton I)</li>
+			<li>2A59F: Intel 430HX chipset (Triton II)</li>
+			<li>2B59F: Intel 430HX chipset (Triton II EISA)</li>
+			<li>2A59G: Intel 430VX chipset (Triton VX)</li>
+			<li>2A59H: Intel 430VX chipset (Triton VX w/illegal BIOS)</li>
+			<li>2A59I: Intel 430TX chipset (Triton TX)</li>
+			<li>2A69H: Intel 440FX chipset (Natoma)</li>
+			<li>2A69J: Intel 440LX chipset (Balboa)</li>
+			<li style="list-style-type:none;margin-left:3.5em;">Intel 440EX chipset</li>
+			<li>2A69K: Intel 440BX chipset (Seattle)</li>
+			<li style="list-style-type:none;margin-left:3.5em;">Intel 440GX chipset</li>
+			<li style="list-style-type:none;margin-left:3.5em;">Intel 440ZX chipset</li>
+			<li>3A69K: Intel 440BX/440ZX chipset</li>
+			<li>6A69N: Intel 440MX chipset</li>
+			<li>2B69D: Intel 450GX chipset (Orion EISA)</li>
+			<li>6A69L: Intel 820 chipset family (Camino)</li>
+			<li>6A69M: Intel 810 chipset family (Whitney)</li>
+			<li>6A69P: Intel 840 chipset family (Camino)</li>
+			<li>6A69R: Intel 815 chipset family (Solano)</li>
+			<li>6A69S: Intel 850 chipset (Tehama)</li>
+			<li>6A69T: Intel 845G(L) chipset (Brookdale)</li>
+			<li>6A69V: Intel 845(E) chipset (Brookdale)</li>
+			<li>6A79A: Intel 865 chipset family (Springdale)</li>
+			<li>6A79Y: Intel 865P chipset (Springdale-P)</li>
+			<li>6A79Z: Intel 865PE chipset (Springdale-PE)</li>
+			<li>6A79W: Intel 865GV chipset (Springdale-GV)</li>
+			<li>6A79(A/X): Intel 848P chipset family (Breeds Hill)</li>
+			<li>6A79B: Intel 875P chipset (Canterwood)</li>
+			<li style="list-style-type:none;margin-left:3.5em;">Intel E7210 chipset ()</li>
+			<li>6A79C: Intel E7230 chipset (Mukilteo)</li>
+			<li>6A79(D/U/V): Intel 915 chipset family (Grantsdale)</li>
+			<li>6A79E: Intel E7221 chipset (Copper River)</li>
+			<li>6A79F: Intel 925 chipset family (Alderwood)</li>
+			<li>6A79I: Intel 955X chipset (Lakeport-X)</li>
+			<li>6A79(I/R): Intel 975X chipset family (Glenwood)</li>
+			<li>6A79G: Intel 915GM chipset family (Alviso, Pentium M)</li>
+			<li>6A79(H/T): Intel 945 chipset family (Lakeport)</li>
+			<li>6A79K: Intel 945GM chipset family (Crestline, mobile)</li>
+			<li>6A79N: Intel 965 chipset family (Crestline, mobile)</li>
+			<li>6A79O: Intel G33 chipset (Bearlake)</li>
+			<li style="list-style-type:none;margin-left:3.5em;">Intel P35 chipset (Bearlake)</li>
+			<li style="list-style-type:none;margin-left:3.5em;">Intel Q35 chipset (Bearlake)</li>
+			<li style="list-style-type:none;margin-left:3.5em;">Intel X38 chipset (Bearlake)</li>
+			<li>6A79P: Intel G41 chipset (Eaglelake)</li>
+			<li style="list-style-type:none;margin-left:3.5em;">Intel P45 chipset (Eaglelake)</li>
+			<li style="list-style-type:none;margin-left:3.5em;">Intel X48 chipset (Bearlake)</li>
+			<li>6A89H: Intel Atom 2xx + 945GC</li>
+			<li>6A99O: Intel G31 chipset (Bearlake)</li>
+			<li style="list-style-type:none;margin-left:3.5em;">Intel P31 chipset (Bearlake)</li>
+			<li>7A69P: Intel P43 chipset (Eaglelake)</li>
+			<li style="list-style-type:none;margin-left:3.5em;">Intel Q45 chipset (Eaglelake)</li>
+			<li>7A89H: Intel Atom 3xx + 945GC</li>
+			<li>7A89P: Intel G43 chipset (Eaglelake)</li>
+			<li style="list-style-type:none;margin-left:3.5em;">Intel G45 chipset (Eaglelake)</li>
+			<li>7A89Q: Intel X58 chipset (Tylersburg)</li>
+			<li>7A89R: Intel P55 chipset (Ibex Peak)</li>
+			<li>7A89S: Intel Atom D4xx/D5xx + NM10</li>
+			<li>7A89T: Intel H55/H57/Q57 chipset (Ibex Peak)</li>
+			<li>7A89U: Intel B65/H67 chipset (Cougar Point)</li>
+			<li>7A89V: Intel P67 chipset (Cougar Point)</li>
+			<li>7A89W: Intel Z68 chipset (Cougar Point)</li>
+			<li>7A89X: Intel H61 chipset ()</li>
+			<li>8A79R: Intel SCH US15W</li>
+			<li>8A79S: Intel GM45 chipset (Cantiga, mobile)</li>
+			<li>8A79T: Intel X58 chipset (Tylersburg)</li>
+			<li>8A79W: Intel Q45 chipset (Eaglelake)</li>
+			<li>8A79Y: Intel 945GSE chipset (Calistoga, mobile)</li>
+			<li>8A89B: Intel Atom 4xx/5xx + ICH8 (Pine View)</li>
+			<li>8A89R: Intel Atom D2xxx (Cedar View)</li>
+			<li>9A69V: Intel i845PE (some EPoX boards)</li>
+		</ul></td>
+		<td><ul>
+			<li style="list-style-type:none;"><b>VIA chipsets</b></li>
+			<li>214L2: VIA VT82C486 (GMC chipset)</li>
+			<li>214L6: VIA VT82C486/495/496</li>
+			<li>2A4L4: VIA VT82C486/496G/530MV</li>
+			<li>2A4L6: VIA VT82C496G/406/530MV</li>
+			<li>2C4L2: VIA VT82C486A</li>
+			<li>2C4L6: VIA VT82C496G</li>
+			<li>2C4L8: VIA VT82C425MV</li>
+			<li>2A5C7: VIA VT82C570M</li>
+			<li>2A5L5: VIA ???</li>
+			<li>2A5L7: VIA VT82C570M</li>
+			<li>2A5L9: VIA VT82C570M</li>
+			<li>2A5LA: VIA VT82C580VP</li>
+			<li>2A5LC: VIA VT82C590</li>
+			<li>2A5LD: VIA VT82C580VPX</li>
+			<li>2A5LE: VIA VT82C597/AT/598MVP</li>
+			<li>2A5LH: VIA MVP4</li>
+			<li>2A6LF: VIA VT82C691</li>
+			<li>2A6LG: VIA VT82C692BX/693</li>
+			<li>2A6LI: VIA MVP4 601</li>
+			<li>2A6LJ: VIA VT82C694X</li>
+			<li>2A6LK: VIA KX133</li>
+			<li>3A6LF: VIA VT82C691</li>
+			<li>6A5LE: VIA MVP3</li>
+			<li>6A5LH: VIA MVP4</li>
+			<li>6A6LG: VIA 693A/694A</li>
+			<li>6A6LI: VIA PLE133(T)</li>
+			<li>6A6LJ: VIA Apollo Pro 133A/T</li>
+			<li>6A6LK: VIA KX133</li>
+			<li>6A6LL: VIA PM133</li>
+			<li>6A6LM: VIA KT133(E)</li>
+			<li>6A6LN: VIA KLE133/KM133</li>
+			<li>6A6LO: VIA PLE133</li>
+			<li>6A6LP: VIA Apollo Pro 133T</li>
+			<li>6A6LS: VIA KT133A</li>
+			<li>6A6LU: VIA KT266</li>
+			<li>6A6LV: VIA KT266(A)/KT333/KM266</li>
+			<li>6A6LW: VIA P4M266/P4X266</li>
+			<li>6A6LY: VIA KT400(A)/KT600/KM400(A)</li>
+			<li>6A7L0: VIA K8T800</li>
+			<li>6A7L1: VIA K8M800</li>
+			<li>6A7L2: VIA PT800/PT880/P4X533/PM880/P4M800</li>
+			<li>6A7L3: VIA KT880</li>
+			<li>6A7L4: VIA PT880 Pro</li>
+			<li>6A7L5: VIA K8T890</li>
+			<li>6A7L6: VIA P4M800/CN700</li>
+			<li>6A7L7: VIA K8T890 + VT8237R</li>
+			<li>6A7L8: VIA PT890</li>
+			<li>6A7L9: VIA CX700</li>
+			<li>8A8LD: VIA VX900</li>
+			<li>IA6LJ: VIA 694X</li>
+			<li>JA6LM: VIA KT133 (Matsonic)</li>
+			<li>TA6LK: VIA KT133 (Chaintech)</li>
+			<li style="list-style-type:none;"><b>OPTi chipsets</b></li>
+			<li>214UE: OPTi 495SLC</li>
+			<li>215UM: OPTi 82C546/597</li>
+			<li>2A4UK: OPTi 802G</li>
+			<li>2C4UK: OPTi 802G</li>
+			<li>2A5UI: OPTi 82C596/597 or 596/546</li>
+			<li>2A5UL: OPTi 82C571/572</li>
+			<li>2A5UM: OPTi 82C546/547</li>
+			<li>2A5UN: OPTi Viper or Viper-M</li>
+			<li>2A5UP: OPTi Viper Max</li>
+			<li>2A5UQ: OPTi Firebridge II</li>
+			<li style="list-style-type:none;"><b>UMC chipsets</b></li>
+			<li>214X2: UMC 491</li>
+			<li>2C4X2: UMC 491</li>
+			<li>2A4X5: UMC 8886/8881</li>
+			<li>2A5X7: UMC 82C890</li>
+			<li>2A5X8: UMC UM8886F</li>
+			<li>2A5XA: UMC 890C</li>
+			<li>2A5XC: UMC ??? ite-8330g</li>
+			<li>2C4X6: UMC 8498F</li>
+			
+		</ul></td>
+	</tr>
+	<tr style="text-align:center;background-color:#e0e0e0;">
+		<th>SiS chipsets</th>
+		<th>ALi/Cyrix chipsets</th>
+	</tr>
+	<tr>
+		<td><ul>
+			<li>154I5: SiS 85C431/420/411/406/405</li>
+			<li>2C4I7: SiS 461</li>
+			<li>214I8: SiS 85C471</li>
+			<li>214I8: SiS 85C471</li>
+			<li>2C4I8: SiS 85C471</li>
+			<li>2C4I9: SiS 85C471</li>
+			<li>2A4IB: SiS 85C496</li>
+			<li>2A5IA: SiS 85C501</li>
+			<li>2A5IC: SiS 5501</li>
+			<li>2A5ID: SiS 5511</li>
+			<li>2A5IE: SiS 5101</li>
+			<li>2A5IF: SiS 5596</li>
+			<li>2A5IH: SiS 5571</li>
+			<li>2A5II: SiS 5582</li>
+			<li>2A5IJ: SiS 5120 (mobile)</li>
+			<li>2A5IK: SiS 5591</li>
+			<li>2A5IM: SiS 530</li>
+			<li>2A5IO: SiS 530</li>
+			<li>2A6IL: SiS 5600</li>
+			<li>2A6IN: SiS 620</li>
+			<li>2A6IR: SiS 630</li>
+			<li>6A6IR: SiS 630</li>
+			<li>6A6IS: SiS 730</li>
+			<li>6A6IT: SiS 635</li>
+			<li>6A6IU: SiS 733</li>
+			<li>6A6IX: SiS 650</li>
+			<li>6A6IY: SiS 740</li>
+			<li>IL6IX: SiS 645 + 961 (Chaintech)</li>
+			<li>6A7I0: SiS 648/648FX</li>
+			<li>6A7I1: SiS 748</li>
+			<li>6A7I3: SiS 755</li>
+			<li>6A7I4: SiS 661FX</li>
+			<li>6A7I5: SiS 655FX</li>
+			<li>6A7I7: SiS 755/760</li>
+			<li>6A7I8: SiS 741</li>
+			<li>6A7IA: SiS 651</li>
+			<li>6A7IB: SiS 649</li>
+			<li>6A7IC: SiS 756</li>
+			<li>6A7ID: SiS 761GX</li>
+			<li>6A7IE: SiS 662</li>
+			<li>6A7IY: SiS 740</li>
+			
+		</ul></td>
+		<td><ul>
+			<li style="list-style-type:none;"><b>ALi chipsets</b></li>
+			<li>214K6: ALi M1419</li>
+			<li>219K3: ALi M1217</li>
+			<li>2A4KA: ALi ???</li>
+			<li>2A4KC: ALi M1439/45/31</li>
+			<li>2A4KD: ALi M1487/89</li>
+			<li>2A5KB: ALi M1449/61/51</li>
+			<li>2A5KE: ALi M1511</li>
+			<li>2A5KF: ALi M1521/23</li>
+			<li>2A5KI: ALi M1531/43</li>
+			<li>2A5KK: ALi Aladdin V</li>
+			<li>2A5KE: ALi M1511</li>
+			<li>2A6KL: ALi M1621</li>
+			<li>2A6KO: ALi M1631</li>
+			<li>2A9KG: ALi M6117</li>
+			<li>2A9KH: ALi M6117C</li>
+			<li>2A4K9: ALi M1429G</li>
+			<li>2C4KC: ALi M1439/45/31</li>
+			<li>6A5KK: ALi ???</li>
+			<li>6A5KP: ALi ??? + ATI ArtX A7</li>
+			<li>6A6KQ: ALi M1631</li>
+			<li>6A6KT: ALi M1647</li>
+			<li>6A6KU: ALi M1651</li>
+			<li>6A6KX: ALi M1671</li>
+			<li>6A7K0: AMD 8131 + ALi M1563</li>
+			<li>6A7K1: ALi M1683</li>
+			<li>6A7K2: ALi M1683</li>
+			<li>6A7K4: ULi M1689</li>
+			<li>6A7K8: ULi M1687</li>
+			<li style="list-style-type:none;"><b>Cyrix chipsets</b></li>
+			<li>2A431: Cyrix CX5510</li>
+			<li>2A432: Cyrix CX5520</li>
+			<li>2A433: Cyrix CX5520</li>
+			<li>2A434: Cyrix CX5530</li>
+			<li>6A434: Cyrix CX5530?</li>
+			<li>6A437: Cyrix ???</li>
+			<li>6A439: Cyrix CS5535</li>
+			<li>6A43A: Cyrix CS5536</li>
+		</ul></td>
+	</tr>
+	<tr style="text-align:center;background-color:#e0e0e0;">
+		<th>nVidia/ATI(AMD) chipsets</th>
+		<th>Other chipsets</th>
+	</tr>
+	<tr>
+		<td><ul>
+			<li style="list-style-type:none;"><b>nVidia chipsets</b></li>
+			<li>6A61A: nVidia nForce</li>
+			<li>6A61B: nVidia nForce 2</li>
+			<li>6A61C: nVidia nForce 3</li>
+			<li>6A61E: nVidia nForce 4 SLI</li>
+			<li>6A61F: nVidia nForce 4</li>
+			<li>6A61H: nVidia nForce 590 SLI</li>
+			<li>6A61I: nVidia nForce 650i/680i (SLI)</li>
+			<li>6A61J: nVidia nForce 550/570 SLI/4 MCP</li>
+			<li>6A61K: nVidia nForce 430/630a/520LE</li>
+			<li>6A61L: nVidia nForce 560</li>
+			<li>6A61M: nVidia nForce C15G</li>
+			<li>6A61N: nVidia nForce 610i/630i</li>
+			<li>6A61O: nVidia nForce 8100/8200/720D/750a SLI</li>
+			<li>7A61Q: nVidia MCP7A (GF9400)</li>
+			<li>8A61O: nVidia MCP78S</li>
+			<li style="list-style-type:none;"><b>ATI/AMD chipsets</b></li>
+			<li>6A660: ATI Radeon IGP320</li>
+			<li>6A661: ATI Radeon IGP320 + VT82C686</li>
+			<li>6A662: ATI Radeon IGP340</li>
+			<li>6A664: ATI Radeon 9100 Pro IGP</li>
+			<li>6A665: ATI Radeon RS400</li>
+			<li>6A666: ATI Radeon RS480/RX480</li>
+			<li>6A7K6: ATI Radeon RS480</li>
+			<li>6A667: ATI Radeon RD600</li>
+			<li>6A668: ATI Radeon RD580</li>
+			<li>6A7K9: ATI Radeon RD580</li>
+			<li>6A669: AMD 690G/740G</li>
+			<li>6A66A: AMD 780G/790FX</li>
+			<li>2C4S0: AMD Elan 470</li>
+			<li>6A6S2: AMD 751</li>
+			<li>6A6S3: AMD 751-686A</li>
+			<li>6A6S6: AMD 760</li>
+			<li>6A6S7: AMD 762</li>
+			<li>7A66A: AMD 760G/770/790X</li>
+			<li>7A66B: AMD 785G/880G/890GX</li>
+			<li>7A66C: AMD 870</li>
+			<li>7A66D: AMD 890FX</li>
+			<li>7A66E: AMD A45 FCH/A50M</li>
+			<li>7A66F: AMD 990FX</li>
+			<li>7A66H: AMD A75</li>			
+		</ul></td>
+		<td><ul>
+			<li>213V1: SARC RC4018</li>
+			<li>219V0: SARC RC2016</li>
+			<li>2C9V0: SARC RC2016</li>
+			<li>21480: HiNT SC9204</li>
+			<li>214D1: HiNT SC9204</li>
+			<li>214D1: HiNT SC8006</li>
+			<li>2A4H2: CONTAQ 82C596</li>
+			<li>2A4H4: CONTAQ 82C596</li>
+			<li>2A4J6: Winbond W83C491</li>
+			<li>2C4J6: Winbond W83C491</li>
+			<li>2A4O3: EFAR EC802GL/EC100G</li>
+			<li>2C4O3: EFAR EC802GL/EC100G</li>
+			<li>2A5G7: VLSI VL82C594</li>
+			<li>2A5GB: VLSI VL82C541</li>
+			<li>2A5R5: Forex FRX58C613</li>
+			<li>2A5R6: Forex FRX58C613A</li>
+			<li>2A5T6: Acc Micro 2278</li>
+			<li>2A5T8: Acc Micro 2051</li>
+			<li>2C4T7: Acc Micro 2048</li>
+			<li>2C460: UNIchip U4800-VLX</li>
+			<li>214W3: VD 88C898</li>
+			<li>21917: ALD</li>
+			<li>2C917: ALD</li>
+			<li>2A4Z0: IMS8848/8849</li>
+			<li>2C470: HYF82481</li>
+			<li>2C4Y1: Samsung KS82C884</li>
+			<li>6A450: ST86</li>
+			<li>6A451: ST86</li>
+			<li>6A522: Transmeta Crusoe + VT82C686</li>
+			<li>6A524: Transmeta TM5800 + VT8231</li>
+			<li>6A526: Transmeta TM8000 + ULi1563</li>
+			<li>6A601: ServerWorks ServerSet III LE</li>
+			<li>6A602: ServerWorks LC-T</li>
+			<li>6A604: ServerWorks GCLE CSB5</li>
+		</ul></td>
+	</tr>
+</table>
+<p id="award-manuf"><b>2.Award BIOS manufacturer IDs (work in progress)<b></p>
+<table class="stbl-adv">
+	<tr style="text-align:center;background-color:#e0e0e0;">
+		<th>0-C</th>
+		<th>D-G</th>
+		<th>H-SL</th>
+		<th>SM-Z</th>
+	</tr>
+	<tr>
+		<td><ul>
+			<li>00:unknown</li>
+			<li>99:unknown</li>
+			<li>A0:ASUS</li>
+			<li>A1:Abit</li>
+			<li>A2:Atrend</li>
+			<li>A3:Aquarius Systems</li>
+			<li>A5:AXIOM</li>
+			<li>A7:Arima Twn?</li>
+			<li>A8:Adcom</li>
+			<li>AA:Axis Taiwan</li>
+			<li>AB:AOpen</li>
+			<li>AC:Artdex/AAEON</li>
+			<li>AD:Amaquest</li>
+			<li>AE:APLUS</li>
+			<li>AH:Assem</li>
+			<li>AI:Artis</li>
+			<li>AK:AAEON/Advantech</li>
+			<li>AL:AIC</li>
+			<li>AM:Achme/Mirage</li>
+			<li>AN:ADI</li>
+			<li>AO:Ally</li>
+			<li>AP:Arbor</li>
+			<li>AQ:Altos</li>
+			<li>AT:ASK Tech</li>
+			<li>AV:Acrosser</li>
+			<li>AW:AOpen/Acer</li>
+			<li>AX:Achitec</li>
+			<li>AY:Angel(SYNC)</li>
+			<li>AZ:Arstoria</li>
+			<li>B0:Biostar</li>
+			<li>B1:BEK-Tronic</li>
+			<li>B2:Boser</li>
+			<li>B3:BCM</li>
+			<li>B5:Bethel</li>
+			<li>B6:Beyond</li>
+			<li>BB:Britek</li>
+			<li>BF:Bharat Electronics (BEL)</li>
+			<li>BG:Aewin</li>
+			<li>BI:Arcom</li>
+			<li>BK:Magic-Pro/Albatron</li>
+			<li>BQ:Azylex Tech</li>
+			<li>BZ:BAFO Tech</li>
+			<li>C0:Matsonic</li>
+			<li>C1:Clevo</li>
+			<li>C2:Chicony</li>
+			<li>C3:Chaintech</li>
+			<li>C4:CMC</li>
+	        <li>C5:Chaplet</li>
+			<li>C6:Calcomp</li>
+			<li>C7:Canta</li>
+			<li>C8:Cloud</li>
+	        <li>C9:Computrend</li>
+			<li>CE:Crete Systems</li>
+	        <li>CF:Flagpoint</li>
+			<li>CH:CBR</li>
+			<li>CI:CTX</li>
+			<li>CL:Contec</li>
+			<li>CS:Cardex/Gainward</li>
+			<li>CV:California Graphics</li>
+			<li>CZ:CP Tech/Powercolor</li>
+			</ul></td>
+		<td><ul>
+	        <li>D0:Dataexpert</li>
+	        <li>D1:DTK</li>
+	        <li>D2:Digital</li>
+	        <li>D3:Digicom</li>
+	        <li>D4:DFI</li>
+			<li>D5:DD&TT Enterprise</li>
+			<li>D7:Daewoo</li>
+			<li>D8:Dynasty/Nature Worldwide Tech</li>
+			<li>DB:Densitron</li>
+			<li>DC:Dongwha</li>
+			<li>DD:Ding Ying</li>
+			<li>DE:Dual Tech</li>
+			<li>DF:Daesun</li>
+			<li>DI:Domex (DTC)</li>
+			<li>DJ:Darter</li>
+			<li>DL:Delta electronics/Delta Systems</li>
+			<li>DN:DAIC Microsystems</li>
+			<li>DP:ETA</li>
+		
+			<li>E0:Evalue Tech</li>
+			<li>E1:ECS</li>
+			<li>E2:ETC</li>
+	        <li>E3:EFA</li>
+	        <li>E4:ESPCo</li>
+	        <li>E6:Elonex</li>
+	        <li>E7:Expen Tech</li>
+			<li>E9:Express</li>
+			<li>EC:ENPC</li>
+			<li>EI:Evate T&C</li>
+			<li>EJ:EVOC</li>
+			<li>EM:LiPPERT Automationstechnik</li>
+			<li>EO:Evalue Tech</li>
+			<li>EV:EVGA</li>
+			<li>F0:FIC (FICA)</li>
+			<li>F1:Flytech Group</li>
+	        <li>F2:Free Tech</li>
+	        <li>F3:Full Yes</li>
+	        <li>F4:???</li>
+	        <li>F5:Fugutech</li>
+			<li>F8:Formosa Industrial</li>
+	        <li>F9:Fordlian/Redfox/Acorp/Polaris</li>
+	        <li>FA:???</li>
+			<li>FB:Fukunaga</li>
+	        <li>FC:???</li>
+	        <li>FD:DataExpert/Atima/GCT/Fungus???</li>
+			<li>FF:Fantas</li>
+			<li>FG:Fastfame Tech</li>
+	        <li>FH:Amptron/Friend Tech???</li>
+			<li>FI:Foxen</li>
+			<li>FK:Foxconn</li>
+			<li>FL:Foxconn</li>
+	        <li>FN:Amptron???</li>
+	        <li>G0:Gigabyte/Magic-Pro</li>
+			<li>G2:GTK</li>
+	        <li>G3:Gemlight</li>
+			<li>G5:GVC</li>
+			<li>G6:Grandtek</li>
+	        <li>G9:Global Circuit Technology</li>
+			<li>GA:Glantec</li>
+			<li>GB:Great Wall</li>
+			<li>GC:Gisol</li>
+			<li>GE:Globe Legate</li>
+			<li>GF:Gold Rain</li>
+			<li>GG:GBM</li>
+			</ul></td>
+		<td><ul>
+	        <li>H0:PCChips/Amptron</li>
+	        <li>H2:Shuttle</li>
+			<li>H3:Hedonic</li>
+	        <li>H4:???</li>
+			<li>H5:HMC</li>
+			<li>H6:Hyundai</li>
+			<li>H7:Hyosung</li>
+			<li>H8:Howatek</li>
+			<li>H9:Hyosan</li>
+			<li>HA:Hong Lin</li>
+			<li>HB:Huawei</li>
+			<li>HE:Heisei/Seavo</li>
+			<li>HH:HighTech Information System</li>
+			<li>HJ:HCC/Sono Computer</li>
+			
+			<li>I1:Innovance</li>
+			<li>I2:Iston(FIC)</li>
+	        <li>I3:IWill</li>
+	        <li>I4:Inventa (Twn)</li>
+	        <li>I5:Informtech</li>
+	        <li>I6:IOI</li>
+	        <li>J1:Jetway (Jetboard, Acorp)</li>
+	        <li>J2:Jamicon (Twn)</li>
+	        <li>J3:J-Bond</li>
+	        <li>J4:Jetta</li>
+	        <li>J6:Joss-Tech</li>
+	        <li>K0:Kapok</li>
+	        <li>K1:Kamei</li>
+	        <li>L1:Lucky Star</li>
+		
+			<li>M0:Matra</li>
+	        <li>M2:Mycomp (TMC) and Megastar</li>
+	        <li>M3:Mitac</li>
+	        <li>M4:MSI</li>
+	        <li>M8:Mustek</li>
+	        <li>M9:MLE</li>
+	        <li>N5:NEC</li>
+	        <li>O0:Octek</li>
+	        <li>P0:???</li>
+	        <li>P1:PCChips</li>
+	        <li>P4:Asus</li>
+	        <li>P6:???</li>
+	        <li>P8:Azza</li>
+	        <li>P9:Powertech</li>
+	        <li>PA:Epox</li>
+	        <li>PC:Pine</li>
+	        <li>PF:??? (President)</li>
+	        <li>PL:???</li>
+	        <li>Q0:Quanta (Twn)</li>
+	        <li>Q1:QDI</li>
+	        <li>R0:Mtech (Rise)</li>
+	        <li>R2:Rectron</li>
+	        <li>RB:???</li>
+	        <li>S2:Soyo</li>
+	        <li>S5:Shuttle (Holco)</li>
+	        <li>S9:Spring Circle</li>
+	        <li>SA:Seanix</li>
+	        <li>SC:Sukjung (Auhua Electronics Co. Ltd.)</li>
+	        <li>SE:SMT (Sundance Multiprocessor Technology Ltd??)</li>
+	        <li>SL:???</li>
+		</ul></td>
+		<td><ul>
+			<li>SM:San-Li and Hope Vision</li>
+	        <li>SN:Soltek</li>
+	        <li>SP:???</li>
+	        <li>T0:Twinhead</li>
+	        <li>T1:Taemung or Fentech</li>
+	        <li>T4:Taken</li>
+	        <li>T5:Tyan</li>
+	        <li>T6:Trigen</li>
+	        <li>TB:Totem ?</li>
+	        <li>TG:Tekram</li>
+	        <li>TJ:Totem</li>
+	        <li>U2:AIR (UHC)</li>
+	        <li>U4:???</li>
+	        <li>U6:Unitron</li>
+	        <li>V3:Vtech (PCPartner)</li>
+	        <li>V5:Vision Top Technology</li>
+	        <li>V6:Vobis</li>
+	        <li>V7:YKM (distribution by Dayton Micron)</li>
+	        <li>W0:Wintec (Edom)</li>
+	        <li>WS:???</li>
+	        <li>Z1:Zida (Tomato boards)</li>
+		</ul></td>
+	</tr>
+</table>
+<p id="ami-manuf"><b>3.AMI BIOS manufacturer IDs (work in progress)<b></p>
+<table class="stbl-adv">
+	<tr style="text-align:center;background-color:#e0e0e0;">
+		<th>0394-1299</th>
+		<th>1301-1847</th>
+		<th>1850-8078</th>
+	</tr>
+	<tr>
+		<td><ul>	
+			<li>0394:Suk Jung Korea</li>
+			<li>1101:Sunlogix Inc.</li>
+			<li>1102:Soyo Technology Co., Ltd.</li>
+			<li>1103:Tidalpower Technology Inc.</li>
+			<li>1105:Autocomputer Co., Ltd.</li>
+			<li>1106:Dynasty Computer Inc.</li>
+			<li>1107:Dataexpert Corp.</li>
+			<li>1108:Chaplet Systems Inc.</li>
+			<li>1109:Fair Friend Enterprise Co., Ltd.</li>
+			<li>1111:Pao-Ku International Co., Ltd.(FCC ID: IDX)</li>
+			<li>1112:Aquarius Systems  USA Inc.(FCC ID: JW5)</li>
+			<li>1113:Micro Leader Enterprises Corp.</li>
+			<li>1114:Iwill Corp.</li>
+			<li>1115:Senor Science Co., Ltd.</li>
+			<li>1116:Chicony Electronics Co., Ltd.</li>
+			<li>1117:A-Trend Technology Co., Ltd.</li>
+			<li>1120:Unicorn Computer Corp.</li>
+			<li>1121:First International Computer Inc.</li>
+			<li>1122:Notestar (IC-book)/Microstar Computer Corp (AMI)</li>
+			<li>1123:Magtron Technology Co., Ltd.</li>
+			<li>1124:Tekram Technology Co., Ltd.</li>
+			<li>1126:Chuntex Elelectronics, Co., Ltd.</li>
+			<li>1127:unknown:Some boards from AXIOM Technology</li>
+			<li>1128:Chaintech Computer Co., Ltd.</li>
+			<li>1130:Pai Jung Electronic Industrial. Co., Ltd.(FCC ID: I5L)</li>
+			<li>1131:Elitegroup Computer Co., Ltd.</li>
+			<li>1132:Dkine Enterprise Co., Ltd.</li>
+			<li>1133:Seritech Enterprise Co., Ltd.(FCC ID: IYD)</li>
+			<li>1135:Acer Inc.</li>
+			<li>1136:Sun's Electronics Co., Ltd.(FCC ID: GRK)</li>
+			<li>1138:Win-Win Electronic Co., Ltd.(FCC ID: JQM)</li>
+			<li>1139:Rectron</li>
+			<li>1140:Angine Ltd. ,see Protech Systems(1354)</li>
+			<li>1141:Nuseed Technology Inc.</li>
+			<li>1142:Firich Enterprises Co., Ltd.</li>
+			<li>1143:CReTE Systems Inc.</li>
+			<li>1144:Vista Technology Co., Ltd.</li>
+			<li>1146:Taste Corp.</li>
+			<li>1147:Integrated Technology Express Inc.</li>
+			<li>1150:Achitec Corp. Ltd.</li>
+			<li>1151:Accos Enterprise Co., Ltd.</li>
+			<li>1152:Top Thunder Technology Co., Ltd.(FCC ID: I65)</li>
+			<li>1154:San Li Technology Ltd.</li>
+			<li>1156:Technical House Inc.</li>
+			<li>1158:Hi-Com Industrial Co., Ltd.</li>
+			<li>1159:Twinhead International Corp.</li>
+			<li>1161:Monterey International Corp.(FCC ID: FKD)</li>
+			<li>1163:Softek Systems Co., Ltd.</li>
+			<li>1164:unknown</li>
+			<li>1165:Mercury Computer Corp.</li>
+			<li>1168:RioWorks Solutions Inc.</li>
+			<li>1169:Micro-Star International Co., Ltd.</li>
+			<li>1170:Taiwan Igel Co., Ltd.</li>
+			<li>1171:Shining Yuan Enterprise</li>
+			<li>1172:Giantec Technology Corp.</li>
+			<li>1175:Applied Component Technology Corp.</li>
+			<li>1176:Sigma Computer Corp.</li>
+			<li>1177:HighTech Information System</li>
+			<li>1178:Clevo Co.</li>
+			<li>1180:Padalin International Development Corp.</li>
+			<li>1181:Leo Systems Inc. (FIC)</li>
+			<li>1182:Alpha-Top Corp.</li>
+			<li>1183:Mirle Automation Corp.</li>
+			<li>1184:Delta Electronics Inc.</li>
+			<li>1185:unknown</li>
+			<li>1188:Quanta Computer Inc.</li>
+			<li>1190:Chips and Technologies</li>
+			<li>1192:Interlogic Industries</li>
+			<li>1192:ICP Electronics Inc.</li>
+			<li>1193:SerComm Corp.</li>
+			<li>1195:GNS Technologies Inc.</li>
+			<li>1196:Universal Scientific Industrial Co.</li>
+			<li>1197:Golden Way Electronic Corp.</li>
+			<li>1198:Trigem Company</li>
+			<li>1199:GigaByte Co., Ltd.</li>
+			<li>1201:New Tech International Co., Ltd.</li>
+			<li>1203:Sunrex Technology Corp.</li>
+			<li>1204:Bestek Computer Co., Ltd.(FCC ID: JZ9)</li>
+			<li>1209:Puretek Industrial Co., Ltd.</li>
+			<li>1210:Rise Computer Inc.</li>
+			<li>1211:DFI Diamond Flower Electronic Co., Ltd.</li>
+			<li>1214:Rever Computer Inc.</li>
+			<li>1218:Elite Computer Co., Ltd.</li>
+			<li>1221:Darter Technology Inc.</li>
+			<li>1222:Domex Technology Corp.</li>
+			<li>1223:Biostar Microtech Corp.</li>
+			<li>1225:Yung Lin Technology Corp.</li>
+			<li>1229:Dataworld International Corp.</li>
+			<li>1234:Leadman Electronics Inc.</li>
+			<li>1235:Formosa Industrial Computer Inc.</li>
+			<li>1238:Win Tech Technology Co., Ltd.</li>
+			<li>1240:Free Computer Technology Inc.</li>
+			<li>1241:Mustek Corp.</li>
+			<li>1242:Amptek Technology Co., Ltd.</li>
+			<li>1244:Flytech Group International</li>
+			<li>1246:Cosmotech Computer Corp.(FCC ID: KF6)</li>
+			<li>1247:ABIT Computer Corp.</li>
+			<li>1248:Muse Technology Co., Ltd.</li>
+			<li>1251:Portwell Infotech</li>
+			<li>1252:Sono Computer Co., Ltd.</li>
+			<li>1256:Lucky Star Technology Co., Ltd.</li>
+			<li>1258:Four Star International Trading Co.(FCC ID: GKS)</li>
+			<li>1259:GVC Corp.</li>
+			<li>1260:DT Research Inc.</li>
+			<li>1262:Arima Computer Corp.</li>
+			<li>1266:Modula Tech Co., Ltd.</li>
+			<li>1270:Portwell Inc.</li>
+			<li>1271:Tidal Technologies Inc.</li>
+			<li>1272:Ultima Electronics Corp.</li>
+			<li>1273:UFO Systems Inc.(FCC ID: FNF)</li>
+			<li>1274:Full Yes Industrial Corp.</li>
+			<li>1275:Jackson Dai Industrial Co., Ltd.</li>
+			<li>1276:Jet Way Information Co., Ltd.</li>
+			<li>1277:Tarng Bow Co.Ltd.(Bow Electronics Co.Ltd.)(FCC ID: IJN)</li>
+			<li>1281:EFA Corp.</li>
+			<li>1283:Advance Creative Computer Corp. (DTK)</li>
+			<li>1284:Lung Hwa Electronics Co., Ltd.(FCC ID: DXL)</li>
+			<li>1286:Askey Computer Corp.</li>
+			<li>1291:Taiwan MyComp Co., Ltd.</li>
+			<li>1292:Asustek Computer Inc.</li>
+			<li>1297:DD&amp;TT Enterprise Inc.(FCC ID: H85)</li>
+			<li>1298:Trigem Company</li>
+			<li>1299:Trigem Company</li>
+		</ul></td>
+		<td><ul>
+			<li>1301:Taken Corp.</li>
+			<li>1304:Dual Technology Corp.</li>
+			<li>1306:Sky Computer</li>
+			<li>1309:Protronic Enterprises Corp.</li>
+			<li>1317:New Comm Technology Co., Ltd.</li>
+			<li>1318:Unitron Inc.</li>
+			<li>1323:Inventec Corp.</li>
+			<li>1343:Holco Enterprise Co., Ltd.</li>
+			<li>1346:Snobol Industrial Corp.</li>
+			<li>1351:Singdak Electronic Co., Ltd.</li>
+			<li>1353:J. Bond Computer Systems Corp.</li>
+			<li>1354:Protech Systems Co., Ltd.</li>
+			<li>1355:Arrgo Systems Inc.</li>
+			<li>1357:New Portwell</li>
+			<li>1367:CoxsWain Technology Co. Ltd.</li>
+			<li>1371:ADI Corp.</li>
+			<li>1373:Silicon Integrated Systems Corp.</li>
+			<li>1374:unknown</li>
+			<li>1379:Win Technologies Co., Ltd.</li>
+			<li>1391:Aten International Co., Ltd.</li>
+			<li>1392:ACC Taiwan Inc.</li>
+			<li>1393:Plato Technology Co., Ltd.</li>
+			<li>1395:Spring</li>
+			<li>1396:Tatung Science and Technology Inc.</li>
+			<li>1398:Spring Circle Computer Inc.(FCC ID: F98)</li>
+			<li>1400:Key Win Electronics</li>
+			<li>1404:Alptech Logic Products Inc.</li>
+			<li>1421:Well Join Industry Co., Ltd.</li>
+			<li>1422:Labway Computer Co., Ltd.(FCC ID: JV7)</li>
+			<li>1425:Lindata Corp.</li>
+			<li>1437:Hsing Tech Enterprise Co., Ltd.</li>
+			<li>1440:Great Electronics Corp.(FCC ID: A7P)</li>
+			<li>1450:Win-Lan Co.</li>
+			<li>1451:Ecel Systems Corp.</li>
+			<li>1452:United Hitech Corp. (AIR)</li>
+			<li>1453:Kai Mei Electronic Corp.</li>
+			<li>1454:unknown</li>
+			<li>1461:Hedonic Computer Co., Ltd.</li>
+			<li>1462:Arche Technologies Inc.(FCC ID: GVW)</li>
+			<li>1464:unknown</li>
+			<li>1470:Flexus Computer Technology Inc.</li>
+			<li>1471:C.P. Technology Co. Ltd.</li>
+			<li>1472:Datacom Technology Co., Ltd.(FCC ID: JX8)</li>
+			<li>1473:PCChips</li>
+			<li>1484:Mitac International Corp.</li>
+			<li>1490:Great Tek Corp.</li>
+			<li>1491:President Technology Inc.(Wang Labs)(FCC ID: HZ4)</li>
+			<li>1493:Artdex Computer Corp.(FCC ID: I7G)</li>
+			<li>1494:Proteam Computer Corp.</li>
+			<li>1500:Foxen Co., Ltd.:It was Netcon Co.,Ltd.</li>
+			<li>1503:UpRight Technology Co., Ltd.(FCC ID: LNE)</li>
+			<li>1507:Tangent Computer</li>
+			<li>1514:Wuu Lin Electronics Co., Ltd.</li>
+			<li>1519:Epox Computer Co., Ltd.</li>
+			<li>1526:Eagle Computer Technology Co., Ltd.</a>
+			<li>1531:Force System Inc.(FCC ID: GZE)</li>
+			<li>1540:BCM Advanced Research</li>
+			<li>1546:Golden Horse Computer Co., Ltd.</li>
+			<li>1549:CT Continental Corp.(FCC ID: HCY)</li>
+			<li>1564:Random Technology Inc.(FCC ID: JGD)</li>
+			<li>1576:Jetta Computer Co., Ltd.</li>
+			<li>1585:Gleem Industries Co., Ltd.</li>
+			<li>1588:Boser Technology Co., Ltd.</li>
+			<li>1593:Advantech Co., Ltd.</li>
+			<li>1594:Trigon</li>
+			<li>1598:unknown</li>
+			<li>1608:Consolidated Marketing Corp. :CMC PowerPort</li>
+			<li>1612:Datavan International Corp.</li>
+			<li>1617:Honotron Corp.(FCC ID: HEI)</li>
+			<li>1618:Union Genius Computer Co., Ltd.</li>
+			<li>1621:New Paradise Enterprise Co., Ltd.(FCC ID: III)</li>
+			<li>1622:R.P.T. Intergroups International Ltd.</li>
+			<li>1628:Digital Equipment International Ltd.</li>
+			<li>1630:Iston Computer Corp.</li>
+			<li>1647:Lantic Inc.</li>
+			<li>1652:Advanced Semiconductor Engineering, Inc.</li>
+			<li>1655:Kingston Technology Inc.</li>
+			<li>1656:Storage System Inc.</li>
+			<li>1658:Macrotek International Corp.</li>
+			<li>1666:Cast Technology Inc. JMA</li>
+			<li>1671:Cordial Far East Corp.</li>
+			<li>1672:Lapro Corp.(FCC ID: IFI)</li>
+			<li>1675:Advanced Scientific Corp.</li>
+			<li>1685:High Ability Computer Co., Ltd.(FCC ID: ILZ)</li>
+			<li>1691:Gain Technology Co., Ltd.(FCC ID: ITB)</li>
+			<li>1696:unknown</li>
+			<li>1700:DSG Technology Inc.</li> 
+			<li>1707:Chaining Computer and Communication Co.(FCC ID: IMG)</li>
+			<li>1708:E-San Electronic Co., Ltd.</li>
+			<li>1719:Taiwan Turbo Technology Co., Ltd.(FCC ID: LGC)</li>
+			<li>1720:Fantas Technology Co., Ltd.(FCC ID: JMM)</li>
+			<li>1723:NTK Computer Inc.</li>
+			<li>1727:Tripod Technology Corp.</li>
+			<li>1737:Ay Ruey International Co., Ltd.</li>
+			<li>1739:Jetpro Infotech Co., Ltd.</li>
+			<li>1743:Mitac Inc.</li>
+			<li>1759:BEK-Tronic Technology</li>
+			<li>1762:Ansoon Technology Co.</li>
+			<li>1770:AOpen</li>
+			<li>1771:Toyen Computer Co., Ltd.</li>
+			<li>1774:ACER Sertek Inc.</li>
+			<li>1776:Joss Technology Ltd.</li>
+			<li>1780:Acrosser Technology Co., Ltd.</li>
+			<li>1783:EFAR Microsystems, Inc.</li>
+			<li>1788:Systex Corp.</li>
+			<li>1792:U-Board Computerize Co., Ltd.</li>
+			<li>1794:CMT-Taiwan, Inc.</li>
+			<li>1796:J&amp;J Technology Co., Ltd.</li>
+			<li>1800:Syzygia Computer Corp.</li>
+			<li>1801:Palit Microsystems Inc.</li>
+			<li>1805:unknown</li>
+			<li>1806:Interplanetary Information Co., Ltd.</li>
+			<li>1807:Expert Electronics Corp.</li>
+			<li>1810:Elechands International Co., Ltd.</li>
+			<li>1815:Powertech Electronic Co., Ltd.</li>
+			<li>1820:OVIS Enterprises Co., Ltd.:AMI mistake, must be OUR Enterprises Co., Ltd.</li>
+			<li>1823:Inlog Micro Systems Co., Ltd.</li>
+			<li>1826:TerComputer Technologies Corp.</li>
+			<li>1827:Anpro Inc.</li>
+			<li>1828:AXIOM Technology Co., Ltd.</li>
+			<li>1840:New Union H.K. Ltd.</li>
+			<li>1845:PC Direct Technology Co., Ltd.</li>
+			<li>1845:Proware Technology Corp.</li>
+			<li>1846:Garnet International Corp.</li>
+			<li>1847:Brain Power Co., Ltd.</li>
+		</ul></td>
+		<td><ul>
+			<li>1850:HTR Asia Pacific Inc.</li>
+			<li>1853:Veridata Electronics Inc.</li>
+			<li>1856:Smart D&amp;M Technology Co., Ltd.</li>
+			<li>1867:Lutron Electronic Enterprise Co. Ltd.</li>
+			<li>1868:Soyo Technology Co., Ltd. (H.K Office)</li>
+			<li>1879:Aeontech International Co., Ltd.</li>
+			<li>1881:Manufacturing Technology Resources Inc.(FCC ID: KY5)</li>
+			<li>1888:Seal International Corp.</li>
+			<li>1889:Rock Technology Ltd.</li>
+
+			<li>1906:Freedom Data Technology Co., Ltd.</li>
+			<li>1914:BCOM Electronics Inc.</li>
+			<li>1917:Source Of Computer Co., Ltd.(Sourcecom Corp. ?)</li>
+			<li>1918:Lanner Electronics Inc.</li>
+			<li>1920:Ipex ITG International Ltd.</li>
+			<li>1924:Join Inc.</li>
+			<li>1926:Kou Sheng Computer Co., Ltd.</li>
+			<li>1927:Seahill Technology Co., Ltd. (IC-book),Spring Hill Int Ltd (AMI)</li>
+			<li>1928:Nexcom International Co., Ltd.</li>
+			<li>1929:CAM Enterprise Inc.</li>
+			<li>1931:AAEON Technology Inc.</li>
+			<li>1932:Kuei Hao Industrial Co., Ltd.</li>
+			<li>1933:ASMT Corp.</li>
+			<li>1934:Silver Bally Inc.</li>
+			<li>1935:Prodisti Co., Ltd.</li>
+			<li>1936:Codegen Technology Co., Ltd.</li>
+			<li>1937:Orientech Electronics Corp.:Orient Semiconductor Electronics Ltd. ???</li>
+			<li>1938:Project Information Company Ltd.</li>
+			<li>1939:Arbor Technology Corp.</li>
+			<li>1940:SunTop Computer Systems Corp.</li>
+			<li>1941:Funtech Entertainment Corp.(FCC ID: MDP)</li>
+			<li>1942:Sunflower Systems Inc.(FCC ID: LDT)</li>
+			<li>1943:Needs System Development Co., Ltd.</li>
+			<li>1945:Norm Advanced Technology Corp.</li>
+			<li>1947:Ten Yun Co., Ltd.</li>
+			<li>1948:Beneon Corp.</li>
+			<li>1949:National Advantages Computer Inc. </li>
+			<li>1950:Mits Technology Co., Ltd.</li>
+			<li>1951:Macromate Corp.</li>
+			<li>1953:Orlycon Enterprise Co., Ltd.</li>
+			<li>1954:Chung Yu Electronics Co., Ltd.</li>
+			<li>1955:Yamashita Engineering Manufacture</li>
+			<li>1957:High Large Corp.</li>
+			<li>1958:Young Micro Systems Inc.</li>
+			<li>1959:Fastfame Computer Co., Ltd.</li>
+			<li>1960:Acqutek Corp., Uses 1823 and 1618 code too.</li>
+			<li>1961:Deson Trade Inc.</li>
+			<li>1962:Astra Communication Corp.</li>
+			<li>1963:Dimensions Electronics Co., Ltd.</li>
+			<li>1964:Micron Design Technology Ltd.</li>
+			<li>1965:Cantta Enterprises Co., Ltd.</li>
+			<li>1968:Khi Way Enterprise Co., Ltd.</li>
+			<li>1969:Gemlight Computer Ltd.</li>
+			<li>1970:MAT Technologies Ltd.</li>
+			<li>1973:Fugu Tech Enterprise Co., Ltd.</li>
+			<li>1974:Green Taiwan Computer Co., Ltd.</li>
+			<li>1975:Supertone Electronic Co., Ltd.</li>
+			<li>1977:AT&amp;T Taiwan Telecommunications</li>
+			<li>1978:Winco Electronic Co., Ltd.</li>
+			<li>1980:Teryang Systems Co., Ltd.</li>
+			<li>1981:Nexcom International Co., Ltd.</li>
+			<li>1982:China Semiconductor Corp.</li>
+			<li>1985:Top Union Electronics Corp.</li>
+			<li>1986:DMP Electronics Co., Ltd.</li>
+			<li>1988:Concierge Co., Ltd.</li>
+			<li>1989:Atherton Technology Co., Ltd.(FCC ID: MT9)</li>
+			<li>1990:Expen Tech Electronics Co., Ltd.</li>
+			<li>1994:Japan Cere'Bro Computers Inc.:(CBR)</li>
+			<li>1996:Ikon Technologies Corp.</li>
+			<li>1998:Chang Tseng Corp.</li>
+			<li>2100:Kapok</li>
+			<li>2101:unknown</li>
+			<li>2292:Olivetti Computer</li>
+			<li>5034:TMC Research Corp.<br>Reason Technologies:??</li>
+			<li>5721:American Megatrends</li>
+			<li>6069:Ocean Technology (Octek)</li>
+			<li>6081:CSS Laboratories</li>
+			<li>6105:Dolch Computer Systems</li>
+			<li>6132:Technology Power Enterprises Inc.</li>
+			<li>6137:unknown</li>
+			<li>6155:???, Some boards use American Predator Corp codes</li>
+			<li>6165:Genoa</li>
+			<li>6181:unknown</li>
+			<li>6182:Peaktron</li>
+			<li>6214:Hewlett-Packard (HP)</li>
+			<li>6218:unknown:used on Amptron DX8100</li>
+			<li>6224:unknown</li>
+			<li>6247:TTC Computer Products</li>
+			<li>6257:unknown</li>
+			<li>6259:Young Micro Systems Inc</li>
+			<li>6265:unknown</li>
+			<li>6279:unknown</li>
+			<li>6285:Tyan Computer Corp.</li>
+			<li>6291:unknown</li>
+			<li>6326:Crystal</li>
+			<li>6328:Alaris Inc.</li>
+			<li>6377:Teknor industrial Computers Inc.</li>
+			<li>6377:unknown</li>
+			<li>6386:Pacific Information Inc.</li>
+			<li>6389:Super Micro Computer Inc.</li>
+			<li>6398:unknown:used by LION</li>
+			<li>6399:Mylex Corp.</li>
+			<li>6407:Elonex Plc.</li>
+			<li>6423:American Predator Corp. (APC)</li>
+			<li>6455:unknown</li>
+			<li>6666:CTL Corp</li>
+			<li>8003:QDI (Quantum Designs Ltd.)</li>
+			<li>8005:AVT Industrial Ltd.</li>
+			<li>8021:unknown</li>
+			<li>8027:unknown</li>
+			<li>8028:unknown</li>
+			<li>8031:Zida Technologies Ltd.</li>
+			<li>8036:unknown</li>
+			<li>8045:PC Partner Ltd. (VTech)</li>
+			<li>8054:Pine Technology</li>
+			<li>8078:Weal Union Development Ltd.</li>
+		</ul>
+  </tr>
+</table>
+{% endblock %}
