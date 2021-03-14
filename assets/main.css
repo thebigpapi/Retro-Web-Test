@@ -2,9 +2,10 @@
 
 /* base.html.twig */
 
-body, form {margin:0; padding:0;}
+body, form {margin:0; padding:0;background-color:#F9F9F9;}
 body, button, div.main input, select {font-family: Arial, sans-serif;}
 p, ul {margin-top: 14px; margin-bottom: 14px;}
+img {border:0;}
 
 a:link, a:visited {text-decoration: none;}
 a:hover {text-decoration: underline;}
@@ -31,20 +32,21 @@ form.index-buttons input.button2 {background: #ebebeb url(./images/card_disabled
 
 /* search.html.twig */
 
-div.sform {height: 1.6em; width: 90%; padding-bottom: 6px;}
-table.sform1 {width: 90%;}
+select.sform { width: 90%; vertical-align:middle;}
+input.sform { width: 90%; vertical-align:middle;}
+table.sform1 {width: 91%; margin-left:-3px;}
 div.sform select {height: 100%; width: 100%; }
-div.sform input {height: auto; width: 100%; /* **/ height: 90%; width: 99%; /** */}
+div.sform input {height: auto; width: 90%; /* **/ height: 90%; width: 99%; /** */}
 
-td.table-width, td.exp-width2 {width: 120px;text-align:center;}
-tr.exp-width1 {display:none;}
+td.table-width {width: 120px;text-align:center;}
+tr.title-width {display:none;}
 span.field1 {height: 1.75em; width: 15em; font-size:14px; margin-bottom:4px; /* **/ float:left; /** */}
 span.field1 span {float:left; margin-left:0.4em;}
 span.field1 input {height: 21px; width: 21px; float:left;  font-size:12px; /* **/ height: 1.25em; width: 1.25em; /** */}
 span.field2 {width: 12em;font-size:16px; margin-bottom:4px; /* **/ float:left; /** */}
 
-div.butn {text-align: center; margin-top:20px;}
-div.butn input {width:7.5em; height:2em; font-size:20px;}
+div.butn {text-align: center;}
+div.butn input {width:7.5em; height:2em; font-size:14px;}
 
 /* result.html.twig */
 
@@ -58,10 +60,18 @@ div.pagination span.current {font-weight:bold;}
 
 /* show.html.twig */
 
+table.stbl {
+  border: 1px solid #e0e0e0;
+  border-collapse: collapse;
+  background-color:#FFFFFF;
+  margin-bottom:10px;
+  width:100%;
+}
+table.stbl td, table.stbl th{padding: 5px 5px 5px;}
 div.show-images {width:25%;overflow: auto;float:left;height:500px; /* **/ height:auto; max-height:500px; /** */}
 span.show-image {width:100%;font-size:12px;display:block;}
 span.creditor {width:auto;display:block; text-align: center; word-wrap: break-word;}
-span.show-image a img {width: 100%; border:0;}
+span.show-image a img {width: 100%;}
 div.show-data {width:74%;float:left;padding-left:3px;font-size: 14px;overflow-x:auto;}
 div.show-data table, div.notes {font-size: 14px;}
 p.string-alias{text-align:center;font-size: 14px;}

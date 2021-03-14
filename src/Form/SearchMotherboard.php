@@ -118,7 +118,7 @@ class SearchMotherboard extends AbstractType
                 'choices' => $options['formFactors'],
 		        'placeholder' => 'Select a form factor ...',
             ])
-            ->add('motherboardBios', EntityType::class, [
+            /*->add('motherboardBios', EntityType::class, [
                 'class' => Manufacturer::class,
 
                 'choice_label' => 'shortNameIfExist',
@@ -126,9 +126,9 @@ class SearchMotherboard extends AbstractType
                 'expanded' => true,
                 'required' => false,
                 'choices' => $options['bios'],
-            ])
+            ])*/
             ->add('search', SubmitType::class)
-            ->add('searchChipsetManufacturer', SubmitType::class, ['label' => 'Search Chipset Manufacturer'])
+            ->add('searchChipsetManufacturer', SubmitType::class, ['label' => 'List chipsets'])
         ;
 
         $formModifier = function (FormInterface $form, Manufacturer $chipsetManufacturer = null) {
@@ -197,10 +197,10 @@ class SearchMotherboard extends AbstractType
             FormEvents::POST_SET_DATA,
             function (FormEvent $event) {
                 $form = $event->getForm();
-
+				
                 // this would be your entity, i.e. SportMeetup
                 $data = $event->getData();
-
+				
                 dd($form);
             }
         );*/
@@ -221,7 +221,7 @@ class SearchMotherboard extends AbstractType
         /*$builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
             $test = $event->getData();
             $form = $event->getForm();
-
+			
             if ($form->get('searchChipsetManufacturer')->isClicked())
             {
                 $formOptions = [
@@ -233,7 +233,7 @@ class SearchMotherboard extends AbstractType
                         // return $userRepository->createFriendsQueryBuilder($user);
                     },
                 ];
-
+				
                 $form->add('chipset', ChoiceType::class, [
                     //'class' => Chipset::class,
                     
@@ -254,7 +254,6 @@ class SearchMotherboard extends AbstractType
         $resolver->setDefaults([
             'moboManufacturers' => array(),
             'chipsetManufacturers' => array(),
-            'chipsets' => array(),
             'bios' => array(),
             'formFactors' => array(),
             'procPlatformTypes' => array(),

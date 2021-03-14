@@ -49,8 +49,8 @@
         <source>I/O ports</source>
         <target>Порты ввода/вывода</target>
       </trans-unit>
-      <trans-unit id="n.50DoY" resname="Ram type">
-        <source>Ram type</source>
+      <trans-unit id="n.50DoY" resname="RAM type">
+        <source>RAM type</source>
         <target>Тип оперативной памяти</target>
       </trans-unit>
       <trans-unit id="TI9YT3N" resname="Motherboard bios">

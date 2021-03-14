@@ -28,6 +28,11 @@ class ExpansionSlot
      */
     private $motherboardExpansionSlots;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $hiddenSearch;
+
     public function __construct()
     {
         $this->motherboardExpansionSlots = new ArrayCollection();
@@ -77,6 +82,18 @@ class ExpansionSlot
                 $motherboardExpansionSlot->setExpansionSlot(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getHiddenSearch(): ?bool
+    {
+        return $this->hiddenSearch;
+    }
+
+    public function setHiddenSearch(bool $hiddenSearch): self
+    {
+        $this->hiddenSearch = $hiddenSearch;
 
         return $this;
     }
