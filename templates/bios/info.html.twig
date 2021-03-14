@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{% trans %}BIOS Info{% endtrans %}{% endblock %}
+
+{% block body %}
+<h2 class="title">{% trans %}Where can I find the POST string?{% endtrans %}</h2>
+	<p>In general, the POST string is located in the bottom left side of the boot screen 
+		(for BIOSes which provide it). Depending on the BIOS vendor, the POST string may
+		provide various info about the board (like chipset or date). Here is a list of common 
+		vendors and their string meanings:</p>
+	<br>
+	<p><b>1.Award BIOS</b></p>
+	<img src="../../assets/images/bios/awardbios.jpg" style="width:100%">
+	<img src="../../assets/images/bios/awardstring.jpg" style="width:100%">
+	<p>You can find a list of Award chipset IDs <a href="./infoadv#award-chip">here</a>
+	and a list of Award board manufacturer IDs <a href="./infoadv#award-manuf">here</a></p>
+	<br>
+	<p><b>2.AMI BIOS</b></p>
+	<img src="../../assets/images/bios/amibios.jpg" style="width:100%">
+	<img src="../../assets/images/bios/amistring.jpg" style="width:100%">
+	<p>You can find a list of AMI board manufacturer IDs <a href="./infoadv#ami-manuf">here</a></p>
+	<br>
+	<p><b>3.Acer BIOS</b></p>
+	<img src="../../assets/images/bios/acerbios.jpg" style="width:100%">
+	
+
+
+{% endblock %}

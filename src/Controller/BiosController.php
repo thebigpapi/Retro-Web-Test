@@ -58,7 +58,24 @@ class BiosController extends AbstractController
             'bios_count' => count($bios),
         ]);
     }
-
+	/**
+     * @Route("/bios/info", name="bios_info")
+     */
+    public function binfo()
+    {        
+        return $this->render('bios/info.html.twig', [
+            'controller_name' => 'MainController',
+        ]);
+    }
+	/**
+     * @Route("/bios/infoadv", name="bios_infoadv")
+     */
+    public function binfoadv()
+    {        
+        return $this->render('bios/infoadv.html.twig', [
+            'controller_name' => 'MainController',
+        ]);
+    }
     /**
      * @Route("/bios/search", name="bios_search"), methods={"GET"})
      * @param Request $request

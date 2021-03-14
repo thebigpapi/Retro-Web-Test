@@ -2,7 +2,7 @@
 
 /* == cross compatibility between linux and windows == */
 /* global tags */
-input[type=text], input[type=submit], input[type=password], button, select {
+input[type=text], input[type=submit], input[type=reset], input[type=password], button, select {
   height: 22px;
   border-color:#d9d9d9;
   border-width: thin;
@@ -10,9 +10,11 @@ input[type=text], input[type=submit], input[type=password], button, select {
 }
 
 /* specific tags */
-input.button1, input.button2, input.admin-button {height:auto;border-width:2px;}
+input.button1, input.button2, input.button3, input.admin-button {height:auto;border-width:2px;}
 input.num {width:20px;}
-span.field1 input {font-size: 14px;}
+span.field1 {font-size: 12px;}
+select.sform{height:2.2em;}
+div.sform2 input[type=checkbox] {width:20px;height:20px;}
 
 @media (max-device-width: 600px) {
 	div.top-bar {font-size:12px; padding:0 0 0 5px;}
@@ -21,9 +23,19 @@ span.field1 input {font-size: 14px;}
 	div.top-bar span.form { width: 220px;}
 	div.top-bar select.goto {width: 38%;}
 	div.top-bar select.lang {width: 40%;}
+	
+	/* search.html.twig */
 	h2.title {font-size: 16px; margin: 10px 0;}
+	div.butn input {font-size:18px;}
 	div.page {font-size:14px;}
-
+	td.table-width {display:none;}
+	tr.title-width {display:table;margin-left: 2%;}
+	.sform, div.sform2{margin-left:5%;}
+	
+	span.field1 {width: 13em;}
+	span.field2 {width: 10em;}
+	table.sform1{margin-left:3%;}
+	
 	/* show.html.twig */
 	div.show-images {width:100%; max-height:400px;}
 	span.show-image, span.string-bios {font-size:8px;}
@@ -46,15 +58,14 @@ span.field1 input {font-size: 14px;}
 	div.page {width:90%;font-size:22px;}
 
 	/* index.html.twig */
-	form.index-buttons input {padding-top:300px;min-width:360px;font-size:18px;}
+	form.index-buttons input {padding-top:260px;width:16em;font-size:18px;}
 	form.index-buttons input.button1 {background-image: url(./images/motherboard_med.png);}
-	form.index-buttons input.button2 {background-image: url(./images/card_disabled_med.png);}
+	form.index-buttons input.button2 {background-image: url(./images/card_med.png);}
+	form.index-buttons input.button3 {background-image: url(./images/awchip_med.png);}
 
 	/* search.html.twig */
-	div.sform {height: 1.2em; width:80%;}
-	table.sform1 {width: 80%;}
-	div.sform input {height: 26px; width: 100%;}
-	td.table-width {width:180px;}
+	td.table-width, td.bios-width {width:210px;}
+	div.butn input {font-size:18px;}
 
 	/* result.html.twig */
 	div.results ul li{font-size:20px;}
@@ -66,8 +77,8 @@ span.field1 input {font-size: 14px;}
 	h2.title {margin: 20px 0;}
 
 	/* search.html.twig */
-	span.field1 {font-size:16px;}
-	td.table-width {width:200px;}
+	span.field1 {font-size:14px;}
+	td.table-width {width:220px;}
 
 	/* show.html.twig */
 	div.show-images {width:30%; max-height:600px;}

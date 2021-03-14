@@ -18,6 +18,9 @@ class MainController extends AbstractController
         if($request->get('motherboard') != null) {
             return $this->redirect('./motherboard/search/');
         }
+		if($request->get('bios') != null) {
+            return $this->redirect('./bios/search/');
+        }
         else {
             $latestMotherboards = $this->getDoctrine()
             ->getRepository(Motherboard::class)
@@ -35,6 +38,15 @@ class MainController extends AbstractController
     public function credits()
     {        
         return $this->render('main/credits.html.twig', [
+            'controller_name' => 'MainController',
+        ]);
+    }
+	/**
+     * @Route("/contact", name="app_contact")
+     */
+    public function contact()
+    {        
+        return $this->render('main/contact.html.twig', [
             'controller_name' => 'MainController',
         ]);
     }

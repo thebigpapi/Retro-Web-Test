@@ -18,39 +18,29 @@
 	<h2 class="title">{% trans %}Search for a bios{% endtrans %}</h2>
 
     <div id="hiddenDiv" style="display: none;"></div>
+	<a href="./info">Where can I find the POST string?</a>
 	<form name="search" method="post" action="./search">
-        <table>
+        <table style="width:100%;">
+			<tr class="title-width">
+				<td colspan="2"><b>{% trans %}Manufacturer{% endtrans %}</b></td>
+			</tr>
             <tr style="line-height: 200%;">
-                <td class="table-width"><b>{% trans %}Manufacturer{% endtrans %}</b></td>
-                <td>
-                    <div class="sform">{{ form_widget(form.manufacturer) }}</div>
-                </td>
+				<td class="table-width"><b>{% trans %}Manufacturer{% endtrans %}</b></td>
+                <td>{{ form_widget(form.manufacturer, {'attr': {'class': 'sform'}}) }}</td>
             </tr>
-            <tr style="line-height: 200%;">
-                <td class="table-width"><b>{% trans %}POST string{% endtrans %}</b></td>
-                <td>
-                    <div class="sform">{{ form_widget(form.post_string)|replace({' />': ' size="50">'})|raw }}</div> 
-                </td>
-            </tr>
-            <tr style="line-height: 200%;">
-                <td class="table-width"><b>{% trans %}Core version{% endtrans %}</b></td>
-				<td>
-                    <div class="sform">{{ form_widget(form.core_version) }}</div>
-                </td>
-            </tr>
-			<tr style="height:10px;"><td></td><td></td></tr>
-            <tr style="line-height: 100%;">
+			<tr class="title-width">
+				<td colspan="2"><b>{% trans %}Chipset manuf. and name{% endtrans %}</b></td>
+			</tr>
+			 <tr style="line-height: 100%;">
                 <td class="table-width"><b>{% trans %}Chipset manuf. and name{% endtrans %}</b></td>
 				<td>
 					<table class="sform1"><tr>
 						<td style="width:30%;">
-							<div class="sform" style="width:100%;">
-								{{ form_widget(form.chipsetManufacturer) }}
-							</div>
+								{{ form_widget(form.chipsetManufacturer, {'attr': {'class': 'sform', 'style':'width:100%'}}) }}
 						</td>
 						<td id="setchip2" style="width:50%;">
-							<div id="chipset_div" class="sform" style="width:100%;">
-								{{ form_widget(form.chipset) }}
+							<div id="chipset_div">
+								{{ form_widget(form.chipset, {'attr': {'class': 'sform', 'style':'width:100%'}}) }}
 							</div>
 						</td>
 						<td>
@@ -62,12 +52,26 @@
 					</tr></table>
                 </td>
             </tr>
-            <tr style="line-height: 100%;">
-                <td class="table-width"><b>{{ form_label(form.file_present) }}</b></td>
-                <td>
-                    <div class="sform">{{ form_widget(form.file_present) }}</div>
-                </td>
+			<tr class="title-width">
+				<td colspan="2"><b>{% trans %}POST string{% endtrans %}</b></td>
+			</tr>
+            <tr style="line-height: 200%;">
+				<td class="table-width"><b>{% trans %}POST string{% endtrans %}</b></td>
+                <td>{{ form_widget(form.post_string, {'attr': {'class': 'sform'}})|replace({' />': ' size="50">'})|raw }}</td>
             </tr>
+			<tr class="title-width">
+				<td colspan="2"><b>{% trans %}Core version{% endtrans %}</b></td>
+			</tr>
+            <tr style="line-height: 200%;">
+				<td class="table-width"><b>{% trans %}Core version{% endtrans %}</b></td>
+                <td>{{ form_widget(form.core_version, {'attr': {'class': 'sform', 'style': 'width:15%'}}) }}</td>
+            </tr>
+			<tr>
+				<td class="bios-width"><b>{% trans %}Only show results with download links{% endtrans %}</b></td>
+				<td>
+                    <div class="sform2">{{ form_widget(form.file_present) }}</div>
+                </td>
+			</tr>
         </table>
 		<div class="butn">
             {{ form_row(form.search)|replace({'<div><button': '<input', '</button></div>': '">', '>': ' value="'})|raw }}{{ form_rest(form) }}

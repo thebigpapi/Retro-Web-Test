@@ -13,7 +13,6 @@
             <tr>
                 <th>{% trans %}Manuf.{% endtrans %}</th>
                 <th>{% trans %}POST String{% endtrans %}</th>
-                <th>{% trans %}Note{% endtrans %}</th>
                 <th>{% trans %}BIOS Ver.{% endtrans %}</th>
                 <th>{% trans %}Core Ver.{% endtrans %}</th>
 				<th>{% trans %}Motherboard{% endtrans %}</th>
@@ -23,9 +22,9 @@
             <tr style="text-align:center">
                 <td>{{ b.getManufacturer().getShortNameIfExist() }}</td>
                 <td><span class="string-bios">{{ b.getPostString() }}</span></td>
-                <td><span>{{ b.getNote() }}</span></td>
                 <td>{% if b.getFileName() is not null %}
 						<a href="{{ vich_uploader_asset(b, 'romFile') }}">
+						<img src="../../assets/images/dw.gif" alt="" width="16" height="16" style="vertical-align: middle;">
 						{% if b.getBoardVersion() is not null %} 
 							{{ b.getBoardVersion() }}
 						{% else %}

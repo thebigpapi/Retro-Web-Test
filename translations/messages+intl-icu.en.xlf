@@ -23,7 +23,7 @@
       </trans-unit>
       <trans-unit id="bios.num">
         <source>bios.num</source>
-        <target>{count, plural, =0 {No bios found} one {1 bios found} other {# bios found}}</target>
+        <target>{count, plural, =0 {No BIOS entries found} one {1 BIOS entry found} other {# BIOS entries found}}</target>
       </trans-unit>
     </body>
   </file>

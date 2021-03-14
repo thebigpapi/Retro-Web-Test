@@ -30,6 +30,7 @@
 				{% if is_granted('ROLE_USER') %}<option value="{{ root }}/logout">{% trans %}Logout{% endtrans %}</option>{% endif %}
 				<option value="{{ root }}/credits">{% trans %}About{% endtrans %}</option>
 				<option value="/win3board">{% trans %}Board{% endtrans %}</option>
+				<option value="/contact">{% trans %}Contact Us{% endtrans %}</option>
 			</select>
 			<select class="lang" name="lang">
 				{% for locale in locales %}<option{% if locale == 'user.lang'|trans %} selected="selected"{% endif %} value="{{ locale }}">{{ 'name.lang'|trans(locale=locale) }}</option>{% endfor %}
