@@ -20,6 +20,10 @@
     <div id="hiddenDiv" style="display: none;"></div>
 	<a href="./info">Where can I find the POST string?</a>
 	<form name="search" method="post" action="./search">
+		<div class="butn">
+			<input id="rst-btn" type="reset" value="Reset fields">
+			{{ form_row(form.search)|replace({'<div><button': '<input', '</button></div>': '">', '>': ' value="'})|raw }}
+		</div>
         <table style="width:100%;">
 			<tr class="title-width">
 				<td colspan="2"><b>{% trans %}Manufacturer{% endtrans %}</b></td>
@@ -31,7 +35,7 @@
 			<tr class="title-width">
 				<td colspan="2"><b>{% trans %}Chipset manuf. and name{% endtrans %}</b></td>
 			</tr>
-			 <tr style="line-height: 100%;">
+			<tr style="line-height: 100%;">
                 <td class="table-width"><b>{% trans %}Chipset manuf. and name{% endtrans %}</b></td>
 				<td>
 					<table class="sform1"><tr>
@@ -66,71 +70,20 @@
 				<td class="table-width"><b>{% trans %}Core version{% endtrans %}</b></td>
                 <td>{{ form_widget(form.core_version, {'attr': {'class': 'sform', 'style': 'width:15%'}}) }}</td>
             </tr>
-			<tr>
-				<td class="bios-width"><b>{% trans %}Only show results with download links{% endtrans %}</b></td>
+			<tr class="title-width">
+				<td colspan="2"><b>{% trans %}Only show results with download links{% endtrans %}</b></td>
+			</tr>
+			<tr style="line-height: 100%;">
+				<td class="table-width"><b>{% trans %}Only show results with download links{% endtrans %}</b></td>
 				<td>
                     <div class="sform2">{{ form_widget(form.file_present) }}</div>
                 </td>
 			</tr>
         </table>
-		<div class="butn">
-            {{ form_row(form.search)|replace({'<div><button': '<input', '</button></div>': '">', '>': ' value="'})|raw }}{{ form_rest(form) }}
-        </div>
+		{{ form_rest(form) }}
    </form><br>
    
-<script type="text/javascript">
-function setChipset() {
-        var chipManuf = document.getElementById("search_chipsetManufacturer");
-        var form = document.getElementsByName("search")[0];
-        if (window.XMLHttpRequest)
-            var xhttp = new XMLHttpRequest();
-        else if (window.ActiveXObject)
-            var xhttp = new ActiveXObject("Microsoft.XMLHTTP");
-        xhttp.onreadystatechange = function() {  
-            if (xhttp.readyState == 4 && xhttp.status == 200) {
-                var currentForm = document.getElementById('chipset_div');
-                var parser = document.getElementById('hiddenDiv');
-				var lb1 = document.getElementById('setchip1');
-				var lb2 = document.getElementById('setchip2');
-				lb1.style.display="none";
-				lb2.style.display="";
-				lb2.style.width="70%";
-                parser.innerHTML = xhttp.responseText;
-                var doc = document.getElementById('chipset_div');
-                currentForm.innerHTML =  doc.innerHTML;
-                parser.innerHTML="";
-            }
-        };
-        var chipsetManufacturer = chipManuf.value;
-        var params = "search[chipsetManufacturer]="+chipsetManufacturer;
-        xhttp.open('POST', form.action, true);
-        xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        xhttp.send(params);
-    }
-	var lb1 = document.getElementById('setchip1');
-	var lb2 = document.getElementById('setchip2');
-    if (window.XMLHttpRequest)
-        var xhttp = new XMLHttpRequest();
-    else if (window.ActiveXObject)
-        var xhttp = new ActiveXObject("Microsoft.XMLHTTP");
-    if (xhttp) { 
-        document.getElementById('search_searchChipsetManufacturer').outerHTML="";
-		lb2.setAttribute("style", "width:70%;");
-    }
-    var chip = document.getElementById('search_chipsetManufacturer');
-    function addEvent(evnt, elem, func){
-        if(elem.addEventListener)
-            elem.addEventListener(evnt,func,false);
-        else if(elem.attachEvent) {
-            elem.attachEvent("on"+evnt,func);
-        }
-        else elem["on"+evnt] = func;
-    }
-    chip.onchange= function() {
-		setChipset();
-		lb1.style.display="initial";
-		lb2.style.display="none";
-	};
-</script>
+
+<script type="text/javascript" src="../assets/search.js"></script>
 {% endblock %}
 
