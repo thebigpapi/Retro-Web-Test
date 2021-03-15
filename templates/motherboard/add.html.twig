@@ -112,7 +112,20 @@
 		</tr>
 		<tr>
 			<td>CPU platforms : </td>
-			<td>{{ form_widget(form.processorPlatformType) }}</td>
+			<td><button type="button" onclick="expand('processorPlatformTypes-fields-list')">Add</button></td>
+			<td class="exp-table">
+				<div id="processorPlatformTypes-fields-list" data-widget-counter="{{ form.processorPlatformTypes|length }}"
+					data-prototype="{{ form_widget(form.processorPlatformTypes.vars.prototype)|e }}
+						<button type=button onclick=this.parentNode.parentNode.removeChild(this.parentNode);>Del</button>">
+					{% for platform in form.processorPlatformTypes %}
+						<div>{{ form_widget(platform) }}
+						<button type="button" onclick="this.parentNode.parentNode.removeChild(this.parentNode);">Del</button>
+						{{ form_errors(platform) }}
+						</div>
+					{% endfor %}
+				</div>
+				{{ form_errors(form.processorPlatformTypes) }}
+				</td>
 		</tr>
 		<tr>
 			<td>Max CPUs: </td>

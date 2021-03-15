@@ -59,9 +59,9 @@ class Motherboard
     private $motherboardIoPorts;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\ProcessorPlatformType", inversedBy="motherboards")
+     * @ORM\ManyToMany(targetEntity="App\Entity\ProcessorPlatformType", inversedBy="motherboards")
      */
-    private $processorPlatformType;
+    private $processorPlatformTypes;
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Processor", inversedBy="motherboards")
@@ -170,6 +170,7 @@ class Motherboard
         $this->lastEdited = new \DateTime('now');
         $this->motherboardAliases = new ArrayCollection();
         $this->cpuSockets = new ArrayCollection();
+        $this->processorPlatformTypes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -393,17 +394,29 @@ class Motherboard
     /**
      * @return Collection|ProcessorPlatformType[]
      */
-    public function getProcessorPlatformType(): ?ProcessorPlatformType
+    public function getProcessorPlatformTypes(): Collection
     {
-        return $this->processorPlatformType;
+        return $this->processorPlatformTypes;
     }
 
-    public function setProcessorPlatformType(?ProcessorPlatformType $processorPlatformType): self
+    public function addProcessorPlatformType(ProcessorPlatformType $processorPlatformType): self
     {
-        $this->processorPlatformType = $processorPlatformType;
+        if (!$this->processorPlatformTypes->contains($processorPlatformType)) {
+            $this->processorPlatformTypes[] = $processorPlatformType;
+        }
 
         return $this;
     }
+
+    public function removeProcessorPlatformType(ProcessorPlatformType $processorPlatformType): self
+    {
+        if ($this->processorPlatformTypes->contains($processorPlatformType)) {
+            $this->processorPlatformTypes->removeElement($processorPlatformType);
+        }
+
+        return $this;
+    }
+
 
     /**
      * @return Collection|Processor[]

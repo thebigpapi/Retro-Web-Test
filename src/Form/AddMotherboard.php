@@ -36,6 +36,7 @@ use App\Form\Type\ManualType;
 use App\Form\Type\MotherboardBiosType;
 use App\Form\Type\MotherboardImageTypeForm;
 use App\Form\Type\KnownIssueType;
+use App\Form\Type\ProcessorPlatformTypeForm;
 use App\Repository\ProcessorPlatformTypeRepository;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
@@ -252,13 +253,21 @@ class AddMotherboard extends AbstractType
                         'choices' => $processors,
                     ],
                 ]);*/
-                $form->add('processorPlatformType', EntityType::class, [
+                /*$form->add('processorPlatformTypes', EntityType::class, [
                     'class' => ProcessorPlatformType::class,
                     
                     'choice_label' => 'name',
                     'multiple' => false,
                     'expanded' => false,
                     'choices' => $platforms,
+                ]);*/
+                $form->add('processorPlatformTypes', CollectionType::class, [
+                    'entry_type' => ProcessorPlatformTypeForm::class,
+                    'allow_add' => true,
+                    'allow_delete' => true,
+                    'entry_options'  => [
+                        'choices' => $platforms,
+                    ],
                 ]);
             //}
             /*if($chipsetManufacturer)
@@ -290,8 +299,16 @@ class AddMotherboard extends AbstractType
             }
         );
 
-        $formPlatformModifier = function (FormInterface $form, ProcessorPlatformType $processorPlatformType = null) {
-            $processors = null === $processorPlatformType ? [] : $processorPlatformType->getCompatibleProcessingUnits()->toArray();
+        $formPlatformModifier = function (FormInterface $form, Collection $processorPlatformTypes = null) {
+            //$processors = null === $processorPlatformTypes ? [] : $processorPlatformTypes->getCompatibleProcessingUnits()->toArray();
+            $processors = array();
+            if (!$processorPlatformTypes->isEmpty()) {
+                foreach ($processorPlatformTypes as $platform) {
+                    $processors = array_merge($processors, $platform->getCompatibleProcessingUnits()->toArray());
+                }
+            }
+            
+            
             /*$formOptions = [
                 'class' => Chipset::class,
                 'choice_label' => 'getMainChipWithManufacturer',
@@ -335,10 +352,10 @@ class AddMotherboard extends AbstractType
                             {
                                 if($a->getSpeed() == $b->getSpeed())
                                 {
-                                    if($a->getL2() && $b->getL2())
+                                    /*if($a->getL2() && $b->getL2())
                                         return ($a->getL2()->getValue() < $b->getL2()->getValue()) ? -1 : 1;
                                     else
-                                        return 0;
+                                        return 0;*/
                                 }
                                 return ($a->getSpeed() < $b->getSpeed()) ? -1 : 1;
                             }
@@ -371,7 +388,7 @@ class AddMotherboard extends AbstractType
                 $data = $event->getData();
                 //dd($data);
 
-                $formPlatformModifier($event->getForm(), $data->getProcessorPlatformType());
+                $formPlatformModifier($event->getForm(), $data->getProcessorPlatformTypes());
             }
         );
 
@@ -381,11 +398,11 @@ class AddMotherboard extends AbstractType
                 function (FormEvent $event) use ($formPlatformModifier) {
                     // It's important here to fetch $event->getForm()->getData(), as
                     // $event->getData() will get you the client data (that is, the ID)
-                    $processorPlatformType = $event->getForm()->getData();
+                    $processorPlatformTypes = $event->getForm()->getData();
 
                     // since we've added the listener to the child, we'll have to pass on
                     // the parent to the callback functions!
-                    $formPlatformModifier($event->getForm()->getParent(), $processorPlatformType);
+                    $formPlatformModifier($event->getForm()->getParent(), $processorPlatformTypes);
                 }
             );
         }

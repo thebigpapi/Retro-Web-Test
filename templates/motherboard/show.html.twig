@@ -111,8 +111,16 @@
         {% if motherboard.getDimensions() is not null %}
             <tr><td>{% trans %}Dimensions:{% endtrans %}</td><td>{{ motherboard.getDimensions() }}</td></tr>
         {% endif %}
-        {% if motherboard.getProcessorPlatformType() is not null %}
-            <tr><td>{% trans %}Processor platform:{% endtrans %}</td><td>{{ motherboard.getProcessorPlatformType().getName() }}</td></tr>
+        {% if motherboard.getProcessorPlatformTypes() is not empty %}
+            <tr><td>{% trans %}Processor platform:{% endtrans %}</td>
+			<td>
+				{% for platform in motherboard.getProcessorPlatformTypes() %}
+					<span class="newdiv" style="background-color:#d0faca;">
+						{{ platform.getName() }} 
+					</span>
+				{% endfor %}
+			</td>
+			</tr>
         {% endif %}
 		{% if motherboard.getMaxCpu() is not null %}
             <tr><td>{% trans %}CPU sockets:{% endtrans %}</td><td>{{ motherboard.getMaxCpu()}}</td></tr>

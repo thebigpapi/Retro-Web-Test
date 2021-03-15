@@ -24,7 +24,7 @@ class ProcessorPlatformType
     private $name;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Motherboard", mappedBy="processorPlatformType")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Motherboard", inversedBy="processorPlatformTypes")
      */
     private $motherboards;
 
@@ -88,7 +88,7 @@ class ProcessorPlatformType
     {
         if (!$this->motherboards->contains($motherboard)) {
             $this->motherboards[] = $motherboard;
-            $motherboard->setProcessorPlatformType($this);
+            $motherboard->addProcessorPlatformType($this);
         }
 
         return $this;
@@ -97,11 +97,11 @@ class ProcessorPlatformType
     public function removeMotherboard(Motherboard $motherboard): self
     {
         if ($this->motherboards->contains($motherboard)) {
-            $this->motherboards->removeElement($motherboard);
-            // set the owning side to null (unless already changed)
-            if ($motherboard->getProcessorPlatformType() === $this) {
-                $motherboard->setProcessorPlatformType(null);
+            if ($this->motherboards->contains($motherboard)) {
+                $this->motherboards->removeElement($motherboard);
             }
+    
+            return $this;
         }
 
         return $this;
