@@ -19,6 +19,7 @@ use App\Entity\FormFactor;
 use App\Entity\MotherboardExpansionSlot;
 use App\Form\AddMotherboard;
 use App\Form\SearchMotherboard;
+use App\Entity\CpuSocket;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
@@ -430,12 +431,17 @@ class MotherboardController extends AbstractController
         $procPlatformTypes = $this->getDoctrine()
             ->getRepository(ProcessorPlatformType::class)
             ->findBy(array(), array('name'=>'ASC'));
+        
+        $sockets = $this->getDoctrine()
+            ->getRepository(CpuSocket::class)
+            ->findBy(array(), array('name'=>'ASC'));
 
         
         $form = $this->createForm(AddMotherboard::class, $mobo, [
             'chipsets' => $chipsets,
             'cpus' => $cpus,
             'procPlatformTypes' => $procPlatformTypes,
+            'sockets' => $sockets,
         ]);
         //dd($form);
         $form->handleRequest($request);

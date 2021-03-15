@@ -7,6 +7,7 @@ use App\Entity\ChipsetPart;
 use App\Entity\Manufacturer;
 use App\Entity\Coprocessor;
 use App\Entity\Processor;
+use App\Entity\CpuSocket;
 use App\Entity\ProcessorPlatformType;
 use App\Entity\CpuSpeed;
 use App\Entity\DramType;
@@ -26,6 +27,8 @@ use App\Form\ManageInstructionSet;
 use App\Form\EditInstructionSet;
 use App\Form\ManageProcessor;
 use App\Form\EditProcessor;
+use App\Form\ManageCpuSocket;
+use App\Form\EditCpuSocket;
 use App\Form\ManageChipset;
 use App\Form\EditChipset;
 use App\Form\ManageChipsetPart;
@@ -328,6 +331,14 @@ class AdminController extends AbstractController
             if($processorForm->get('add')->isClicked()) return $this->redirect('./processor_add');
         }
 
+        $cpuSocketForm = $this->createForm(ManageCpuSocket::class);
+
+        $cpuSocketForm->handleRequest($request);
+        if ($cpuSocketForm->isSubmitted() && $cpuSocketForm->isValid()) {
+            if($cpuSocketForm->get('edit')->isClicked()) return $this->redirect('./cpuSocket_edit/' . $cpuSocketForm->getData()['sockets']->getId());
+            if($cpuSocketForm->get('add')->isClicked()) return $this->redirect('./cpuSocket_add');
+        }
+
         $processorPlatformTypeForm = $this->createForm(ManageProcessorPlatformType::class);
 
         $processorPlatformTypeForm->handleRequest($request);
@@ -499,6 +510,7 @@ class AdminController extends AbstractController
             'chipsetPartForm' => $chipsetPartForm->createView(),
             'coprocessorForm' => $coprocessorForm->createView(),
             'processorForm' => $processorForm->createView(),
+            'cpuSocketForm' => $cpuSocketForm->createView(),
             'processorPlatformTypeForm' => $processorPlatformTypeForm->createView(),
             'manufacturerForm' => $manufacturerForm->createView(),
             'cpuSpeedForm' => $cpuSpeedForm->createView(),
@@ -722,6 +734,27 @@ class AdminController extends AbstractController
         return $this->render('admin/add_processor.html.twig', [
             'form' => $form->createView(),
         ]);
+    }
+
+    /**
+     * @Route("/admin/cpuSocket_add", name="cpuSocket_add")
+     * @param Request $request
+     */
+    public function cpuSocketAdd(Request $request)        
+    {
+        return $this->renderEntityForm($request, new CpuSocket(), EditCpuSocket::class, 'admin/add_cpuSocket.html.twig');
+    }
+
+    /**
+     * @Route("/admin/cpuSocket_edit/{id}", name="cpuSocket_edit", requirements={"id"="\d+"})
+     * @param Request $request
+     */
+    public function cpuSocketEdit(Request $request, int $id)        
+    {
+        return $this->renderEntityForm($request, $this->getDoctrine()
+                                        ->getRepository(CpuSocket::class)
+                                        ->find($id)
+                                        , EditCpuSocket::class, 'admin/add_cpuSocket.html.twig');
     }
 
     /**

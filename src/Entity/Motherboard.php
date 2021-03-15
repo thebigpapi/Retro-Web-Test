@@ -143,6 +143,11 @@ class Motherboard
      */
     private $motherboardAliases;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\CpuSocket", inversedBy="motherboards")
+     */
+    private $cpuSockets;
+
 
     public function __construct()
     {
@@ -164,6 +169,7 @@ class Motherboard
         $this->knownIssues = new ArrayCollection();
         $this->lastEdited = new \DateTime('now');
         $this->motherboardAliases = new ArrayCollection();
+        $this->cpuSockets = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -731,6 +737,34 @@ class Motherboard
             if ($motherboardAlias->getMotherboard() === $this) {
                 $motherboardAlias->setMotherboard(null);
             }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|CpuSocket[]
+     */
+    public function getCpuSockets(): Collection
+    {
+        return $this->cpuSockets;
+    }
+
+    public function addCpuSocket(CpuSocket $cpuSocket): self
+    {
+        if (!$this->cpuSockets->contains($cpuSocket)) {
+            $this->cpuSockets[] = $cpuSocket;
+            $cpuSocket->addMotherboard($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCpuSocket(CpuSocket $cpuSocket): self
+    {
+        if ($this->cpuSockets->contains($cpuSocket)) {
+            $this->cpuSockets->removeElement($cpuSocket);
+            $cpuSocket->removeMotherboard($this);
         }
 
         return $this;

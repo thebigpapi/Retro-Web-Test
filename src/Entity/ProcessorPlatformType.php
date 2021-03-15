@@ -43,6 +43,11 @@ class ProcessorPlatformType
      */
     private $ChildProcessorPlatformType;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\CpuSocket", mappedBy="platforms")
+     */
+    private $cpuSockets;
+
     public function __construct()
     {
         $this->processors = new ArrayCollection();
@@ -51,6 +56,7 @@ class ProcessorPlatformType
         $this->processingUnits = new ArrayCollection();
         $this->compatibleWith = new ArrayCollection();
         $this->ChildProcessorPlatformType = new ArrayCollection();
+        $this->cpuSockets = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -194,6 +200,34 @@ class ProcessorPlatformType
         if ($this->ChildProcessorPlatformType->contains($childProcessorPlatformType)) {
             $this->ChildProcessorPlatformType->removeElement($childProcessorPlatformType);
             $childProcessorPlatformType->removeCompatibleWith($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|CpuSocket[]
+     */
+    public function getCpuSockets(): Collection
+    {
+        return $this->cpuSockets;
+    }
+
+    public function addCpuSocket(CpuSocket $cpuSocket): self
+    {
+        if (!$this->cpuSockets->contains($cpuSocket)) {
+            $this->cpuSockets[] = $cpuSocket;
+            $cpuSocket->addPlatform($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCpuSocket(CpuSocket $cpuSocket): self
+    {
+        if ($this->cpuSockets->contains($cpuSocket)) {
+            $this->cpuSockets->removeElement($cpuSocket);
+            $cpuSocket->removePlatform($this);
         }
 
         return $this;
