@@ -2,6 +2,7 @@
 
 namespace App\Listener;
 
+use App\Entity\ChipImage;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Events;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
@@ -41,7 +42,7 @@ class ImageCacheSubscriber implements EventSubscriber
     public function preRemove(LifecycleEventArgs $args)
     {
         $entity = $args->getObject();
-        if (!$entity instanceof MotherboardImage){
+        if (!$entity instanceof MotherboardImage && !$entity instanceof ChipImage){
             return;
         }
         //dd($entity);
@@ -52,7 +53,7 @@ class ImageCacheSubscriber implements EventSubscriber
     public function preUpdate(PreUpdateEventArgs $args)
     {
         $entity = $args->getObject();
-        if (!$entity instanceof MotherboardImage){
+        if (!$entity instanceof MotherboardImage && !$entity instanceof ChipImage){
             return;
         }
         

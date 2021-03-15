@@ -24,25 +24,39 @@ class ProcessorPlatformType
     private $name;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Processor", mappedBy="processorPlatformType")
-     */
-    private $processors;
-
-    /**
      * @ORM\OneToMany(targetEntity="App\Entity\Motherboard", mappedBy="processorPlatformType")
      */
     private $motherboards;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Coprocessor", mappedBy="processor_platform_type")
+     * @ORM\OneToMany(targetEntity="App\Entity\ProcessingUnit", mappedBy="platform")
      */
-    private $coprocessors;
+    private $processingUnits;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\ProcessorPlatformType", inversedBy="ChildProcessorPlatformType")
+     */
+    private $compatibleWith;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\ProcessorPlatformType", mappedBy="compatibleWith")
+     */
+    private $ChildProcessorPlatformType;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\CpuSocket", mappedBy="platforms")
+     */
+    private $cpuSockets;
 
     public function __construct()
     {
         $this->processors = new ArrayCollection();
         $this->motherboards = new ArrayCollection();
         $this->coprocessors = new ArrayCollection();
+        $this->processingUnits = new ArrayCollection();
+        $this->compatibleWith = new ArrayCollection();
+        $this->ChildProcessorPlatformType = new ArrayCollection();
+        $this->cpuSockets = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -58,37 +72,6 @@ class ProcessorPlatformType
     public function setName(string $name): self
     {
         $this->name = $name;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Processor[]
-     */
-    public function getProcessors(): Collection
-    {
-        return $this->processors;
-    }
-
-    public function addProcessor(Processor $processor): self
-    {
-        if (!$this->processors->contains($processor)) {
-            $this->processors[] = $processor;
-            $processor->setProcessorPlatformType($this);
-        }
-
-        return $this;
-    }
-
-    public function removeProcessor(Processor $processor): self
-    {
-        if ($this->processors->contains($processor)) {
-            $this->processors->removeElement($processor);
-            // set the owning side to null (unless already changed)
-            if ($processor->getProcessorPlatformType() === $this) {
-                $processor->setProcessorPlatformType(null);
-            }
-        }
 
         return $this;
     }
@@ -125,31 +108,126 @@ class ProcessorPlatformType
     }
 
     /**
-     * @return Collection|Coprocessor[]
+     * @return Collection|ProcessingUnit[]
      */
-    public function getCoprocessors(): Collection
+    public function getProcessingUnits(): Collection
     {
-        return $this->coprocessors;
+        return $this->processingUnits;
     }
 
-    public function addCoprocessor(Coprocessor $coprocessor): self
+    public function addProcessingUnit(ProcessingUnit $processingUnit): self
     {
-        if (!$this->coprocessors->contains($coprocessor)) {
-            $this->coprocessors[] = $coprocessor;
-            $coprocessor->setProcessorPlatformType($this);
+        if (!$this->processingUnits->contains($processingUnit)) {
+            $this->processingUnits[] = $processingUnit;
+            $processingUnit->setPlatform($this);
         }
 
         return $this;
     }
 
-    public function removeCoprocessor(Coprocessor $coprocessor): self
+    public function removeProcessingUnit(ProcessingUnit $processingUnit): self
     {
-        if ($this->coprocessors->contains($coprocessor)) {
-            $this->coprocessors->removeElement($coprocessor);
+        if ($this->processingUnits->contains($processingUnit)) {
+            $this->processingUnits->removeElement($processingUnit);
             // set the owning side to null (unless already changed)
-            if ($coprocessor->getProcessorPlatformType() === $this) {
-                $coprocessor->setProcessorPlatformType(null);
+            if ($processingUnit->getPlatform() === $this) {
+                $processingUnit->setPlatform(null);
             }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ProcessingUnit[]
+     */
+    public function getCompatibleProcessingUnits(): Collection
+    {
+        $processingUnits = $this->getProcessingUnits();
+        foreach($this->getCompatibleWith() as $compatible)
+        {
+            $processingUnits = new ArrayCollection(array_merge($processingUnits->toArray(), $compatible->getProcessingUnits()->toArray()));
+        }
+        return $processingUnits;
+    }
+
+    /**
+     * @return Collection|self[]
+     */
+    public function getCompatibleWith(): Collection
+    {
+        return $this->compatibleWith;
+    }
+
+    public function addCompatibleWith(self $compatibleWith): self
+    {
+        if (!$this->compatibleWith->contains($compatibleWith)) {
+            $this->compatibleWith[] = $compatibleWith;
+        }
+
+        return $this;
+    }
+
+    public function removeCompatibleWith(self $compatibleWith): self
+    {
+        if ($this->compatibleWith->contains($compatibleWith)) {
+            $this->compatibleWith->removeElement($compatibleWith);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|self[]
+     */
+    public function getChildProcessorPlatformType(): Collection
+    {
+        return $this->ChildProcessorPlatformType;
+    }
+
+    public function addChildProcessorPlatformType(self $childProcessorPlatformType): self
+    {
+        if (!$this->ChildProcessorPlatformType->contains($childProcessorPlatformType)) {
+            $this->ChildProcessorPlatformType[] = $childProcessorPlatformType;
+            $childProcessorPlatformType->addCompatibleWith($this);
+        }
+
+        return $this;
+    }
+
+    public function removeChildProcessorPlatformType(self $childProcessorPlatformType): self
+    {
+        if ($this->ChildProcessorPlatformType->contains($childProcessorPlatformType)) {
+            $this->ChildProcessorPlatformType->removeElement($childProcessorPlatformType);
+            $childProcessorPlatformType->removeCompatibleWith($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|CpuSocket[]
+     */
+    public function getCpuSockets(): Collection
+    {
+        return $this->cpuSockets;
+    }
+
+    public function addCpuSocket(CpuSocket $cpuSocket): self
+    {
+        if (!$this->cpuSockets->contains($cpuSocket)) {
+            $this->cpuSockets[] = $cpuSocket;
+            $cpuSocket->addPlatform($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCpuSocket(CpuSocket $cpuSocket): self
+    {
+        if ($this->cpuSockets->contains($cpuSocket)) {
+            $this->cpuSockets->removeElement($cpuSocket);
+            $cpuSocket->removePlatform($this);
         }
 
         return $this;

@@ -7,6 +7,7 @@ use App\Entity\ChipsetPart;
 use App\Entity\Manufacturer;
 use App\Entity\Coprocessor;
 use App\Entity\Processor;
+use App\Entity\CpuSocket;
 use App\Entity\ProcessorPlatformType;
 use App\Entity\CpuSpeed;
 use App\Entity\DramType;
@@ -21,8 +22,13 @@ use App\Entity\VideoChipset;
 use App\Entity\AudioChipset;
 use App\Entity\User;
 use App\Entity\Creditor;
+use App\Entity\InstructionSet;
+use App\Form\ManageInstructionSet;
+use App\Form\EditInstructionSet;
 use App\Form\ManageProcessor;
 use App\Form\EditProcessor;
+use App\Form\ManageCpuSocket;
+use App\Form\EditCpuSocket;
 use App\Form\ManageChipset;
 use App\Form\EditChipset;
 use App\Form\ManageChipsetPart;
@@ -287,6 +293,34 @@ class AdminController extends AbstractController
             ->getRepository(Processor::class)
             ->findAllOrderByManufacturer();
 
+        usort($processors, function ($a, $b)
+            {
+                //dd($a->getName());
+                //if($a->getName() == "") return -1;
+                /*if ($a->getFullReference() == $b->getFullReference()) {
+                    return 0;
+                }*/
+                if($a->getManufacturer() == $b->getManufacturer())
+                {
+                    if($a->getName() == $b->getName())
+                    {
+                        if($a->getSpeed() == $b->getSpeed())
+                        {
+                            if($a->getL2() && $b->getL2())
+                                return ($a->getL2()->getValue() < $b->getL2()->getValue()) ? -1 : 1;
+                            else
+                                return 0;
+                        }
+                        return ($a->getSpeed()->getValue() < $b->getSpeed()->getValue() ) ? -1 : 1;
+                    }
+                    else
+                        return ($a->getName() < $b->getName()) ? -1 : 1;
+                }
+                else
+                    return ($a->getManufacturer() < $b->getManufacturer()) ? -1 : 1;
+            }
+        );
+
         $processorForm = $this->createForm(ManageProcessor::class, NULL, [
             'processors' => $processors,
         ]);
@@ -295,6 +329,14 @@ class AdminController extends AbstractController
         if ($processorForm->isSubmitted() && $processorForm->isValid()) {
             if($processorForm->get('edit')->isClicked()) return $this->redirect('./processor_edit/' . $processorForm->getData()['processors']->getId());
             if($processorForm->get('add')->isClicked()) return $this->redirect('./processor_add');
+        }
+
+        $cpuSocketForm = $this->createForm(ManageCpuSocket::class);
+
+        $cpuSocketForm->handleRequest($request);
+        if ($cpuSocketForm->isSubmitted() && $cpuSocketForm->isValid()) {
+            if($cpuSocketForm->get('edit')->isClicked()) return $this->redirect('./cpuSocket_edit/' . $cpuSocketForm->getData()['sockets']->getId());
+            if($cpuSocketForm->get('add')->isClicked()) return $this->redirect('./cpuSocket_add');
         }
 
         $processorPlatformTypeForm = $this->createForm(ManageProcessorPlatformType::class);
@@ -355,6 +397,14 @@ class AdminController extends AbstractController
         if ($formFactorForm->isSubmitted() && $formFactorForm->isValid()) {
             if($formFactorForm->get('edit')->isClicked()) return $this->redirect('./formFactor_edit/' . $formFactorForm->getData()['formFactors']->getId());
             if($formFactorForm->get('add')->isClicked()) return $this->redirect('./formFactor_add');
+        }
+
+        $instructionSetForm = $this->createForm(ManageInstructionSet::class, NULL);
+
+        $instructionSetForm->handleRequest($request);
+        if ($instructionSetForm->isSubmitted() && $instructionSetForm->isValid()) {
+            if($instructionSetForm->get('edit')->isClicked()) return $this->redirect('./instructionSet_edit/' . $instructionSetForm->getData()['instructionSets']->getId());
+            if($instructionSetForm->get('add')->isClicked()) return $this->redirect('./instructionSet_add');
         }
 
         $ioPortForm = $this->createForm(ManageIoPort::class, NULL);
@@ -460,12 +510,14 @@ class AdminController extends AbstractController
             'chipsetPartForm' => $chipsetPartForm->createView(),
             'coprocessorForm' => $coprocessorForm->createView(),
             'processorForm' => $processorForm->createView(),
+            'cpuSocketForm' => $cpuSocketForm->createView(),
             'processorPlatformTypeForm' => $processorPlatformTypeForm->createView(),
             'manufacturerForm' => $manufacturerForm->createView(),
             'cpuSpeedForm' => $cpuSpeedForm->createView(),
             'dramTypeForm' => $dramTypeForm->createView(),
             'expansionSlotForm' => $expansionSlotForm->createView(),
             'formFactorForm' => $formFactorForm->createView(),
+            'instructionSetForm' => $instructionSetForm->createView(),
             'ioPortForm' => $ioPortForm->createView(),
             'knownIssueForm' => $knownIssueForm->createView(),
             'languageForm' => $languageForm->createView(),
@@ -563,17 +615,20 @@ class AdminController extends AbstractController
 
     private function renderChipsetPartForm(Request $request, $chipsetPart) {
         $entityManager = $this->getDoctrine()->getManager();
-        $chipsetPartManufacturers = $this->getDoctrine()
-        ->getRepository(Manufacturer::class)
-        ->findBy(array(), array('name' => 'ASC', 'shortName' => 'ASC'));
 
-        $form = $this->createForm(EditChipsetPart::class, $chipsetPart, [
-            'chipsetPartManufacturers' => $chipsetPartManufacturers,
-        ]);
+        $form = $this->createForm(EditChipsetPart::class, $chipsetPart);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $chipsetPart = $form->getData();
+
+            foreach ($form['chip']['chipAliases']->getData() as $key => $val) {
+                $val->setChip($chipsetPart);
+            }
+            foreach ($form['chip']['images']->getData() as $key => $val) {
+                $val->setChip($chipsetPart);
+            }
+            
             
             $entityManager->persist($chipsetPart);
             $entityManager->flush();
@@ -608,16 +663,20 @@ class AdminController extends AbstractController
 
     private function renderCoprocessorForm(Request $request, $coprocessor) {
         $entityManager = $this->getDoctrine()->getManager();
-        $coprocessorManufacturers = $this->getDoctrine()
-        ->getRepository(Manufacturer::class)
-        ->findBy(array(), array('name' => 'ASC', 'shortName' => 'ASC'));
         
-        $form = $this->createForm(EditCoprocessor::class, $coprocessor, [
-            'coprocessorManufacturers' => $coprocessorManufacturers,
-        ]);
+        $form = $this->createForm(EditCoprocessor::class, $coprocessor);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $coprocessor = $form->getData();
+            foreach ($form['processingUnit']['instructionSets']->getData() as $key => $val) {
+                $val->addProcessingUnit($coprocessor);
+            }
+            foreach ($form['processingUnit']['chip']['chipAliases']->getData() as $key => $val) {
+                $val->setChip($coprocessor);
+            }
+            foreach ($form['processingUnit']['chip']['images']->getData() as $key => $val) {
+                $val->setChip($coprocessor);
+            }
             
             $entityManager->persist($coprocessor);
             $entityManager->flush();
@@ -652,25 +711,50 @@ class AdminController extends AbstractController
 
     private function renderProcessorForm(Request $request, $processor) {
         $entityManager = $this->getDoctrine()->getManager();
-        $processorManufacturers = $this->getDoctrine()
-        ->getRepository(Manufacturer::class)
-        ->findBy(array(), array('name' => 'ASC', 'shortName' => 'ASC'));
         
-        $form = $this->createForm(EditProcessor::class, $processor, [
-            'processorManufacturers' => $processorManufacturers,
-        ]);
+        $form = $this->createForm(EditProcessor::class, $processor);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $processor = $form->getData();
-            
+            foreach ($form['processingUnit']['instructionSets']->getData() as $key => $val) {
+                $val->addProcessingUnit($processor);
+            }
+            foreach ($form['processingUnit']['chip']['chipAliases']->getData() as $key => $val) {
+                $val->setChip($processor);
+            }
+            foreach ($form['processingUnit']['chip']['images']->getData() as $key => $val) {
+                $val->setChip($processor);
+            }
+
             $entityManager->persist($processor);
             $entityManager->flush();
 
             return $this->redirectToRoute('admin_manage_resources', array());
         }
-        return $this->render('admin/add_coprocessor.html.twig', [
+        return $this->render('admin/add_processor.html.twig', [
             'form' => $form->createView(),
         ]);
+    }
+
+    /**
+     * @Route("/admin/cpuSocket_add", name="cpuSocket_add")
+     * @param Request $request
+     */
+    public function cpuSocketAdd(Request $request)        
+    {
+        return $this->renderEntityForm($request, new CpuSocket(), EditCpuSocket::class, 'admin/add_cpuSocket.html.twig');
+    }
+
+    /**
+     * @Route("/admin/cpuSocket_edit/{id}", name="cpuSocket_edit", requirements={"id"="\d+"})
+     * @param Request $request
+     */
+    public function cpuSocketEdit(Request $request, int $id)        
+    {
+        return $this->renderEntityForm($request, $this->getDoctrine()
+                                        ->getRepository(CpuSocket::class)
+                                        ->find($id)
+                                        , EditCpuSocket::class, 'admin/add_cpuSocket.html.twig');
     }
 
     /**
@@ -798,6 +882,27 @@ class AdminController extends AbstractController
                                         ->getRepository(FormFactor::class)
                                         ->find($id)
                                     , EditFormFactor::class, 'admin/add_formFactor.html.twig');
+    }
+
+    /**
+     * @Route("/admin/instructionSet_add", name="instructionSet_add")
+     * @param Request $request
+     */
+    public function instructionSetAdd(Request $request)        
+    {
+        return $this->renderEntityForm($request, new InstructionSet(), EditInstructionSet::class, 'admin/add_instructionSet.html.twig');
+    }
+
+    /**
+     * @Route("/admin/instructionSet_edit/{id}", name="instructionSet_edit", requirements={"id"="\d+"})
+     * @param Request $request
+     */
+    public function instructionSetEdit(Request $request, int $id)        
+    {
+        return $this->renderEntityForm($request,$this->getDoctrine()
+                                        ->getRepository(InstructionSet::class)
+                                        ->find($id)
+                                    , EditInstructionSet::class, 'admin/add_instructionSet.html.twig');
     }
 
     /**

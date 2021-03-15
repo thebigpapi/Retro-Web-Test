@@ -1,0 +1,37 @@
+{% extends 'admin/header.html.twig' %}
+
+{% block title %}Manage instruction set{% endblock %}
+
+{% block body %}
+<div style="height:6em;"></div>
+{{ form_start(form, {'method': 'POST'}) }}
+<div class="editasset">
+	<b>{{form_label(form)}}</b> {{form_widget(form.save)}}
+	<table class="editasset">
+		
+		<tr>
+			<td>{{form_label(form.name)}}</td>
+			<td>{{form_widget(form.name)}}</td>
+		</tr>
+	</table>
+	<div>
+		<p>Compatible with instruction sets:</p> 
+		<button type="button" onclick="expand('compatibleWith-fields-list')">Add instruction set</button>
+		
+        {{ form_errors(form.compatibleWith) }}
+        <div id="compatibleWith-fields-list" data-widget-counter="{{ form.compatibleWith|length }}"
+            data-prototype="{{ form_widget(form.compatibleWith.vars.prototype)|e }}
+			<button type=button onclick=this.parentNode.parentNode.removeChild(this.parentNode);>Del</button>">
+            {% for instructionSet in form.compatibleWith %}
+            <div>
+                {{ form_errors(instructionSet) }}
+                {{ form_widget(instructionSet) }}
+                <button type="button" onclick="this.parentNode.parentNode.removeChild(this.parentNode);">Del</button>
+            </div>
+            {% endfor %}
+        </div>
+	</div>  
+<!-- {{ form_rest(form)|replace({'<input': ' --><input'})|raw }}
+<script src="{% if app.request.attributes.get('_route') == "instructionSet_edit" %}../{% endif %}../assets/add-collection-widget.js"></script>
+
+{% endblock %}

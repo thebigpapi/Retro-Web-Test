@@ -1,0 +1,37 @@
+{% extends 'admin/header.html.twig' %}
+
+{% block title %}Manage cpu socket{% endblock %}
+
+{% block body %}
+{{ form_start(form, {'method': 'POST'}) }}
+<div class="editasset">
+	<h2><b>{{form_label(form)}}</b></h2> {{form_widget(form.save)}}
+
+    <table class="editasset">
+		<tr>
+			<td>{{form_label(form.name)}}</td>
+			<td>{{form_widget(form.name)}}</td>
+		</tr>
+	</table> 
+
+	<div>
+		<p>Platforms:</p> 
+		<button type="button" onclick="expand('platforms-fields-list')">Add platform</button>
+		
+        {{ form_errors(form.platforms) }}
+        <div id="platforms-fields-list" data-widget-counter="{{ form.platforms|length }}"
+            data-prototype="{{ form_widget(form.platforms.vars.prototype)|e }}
+			<button type=button onclick=this.parentNode.parentNode.removeChild(this.parentNode);>Del</button>">
+            {% for platform in form.platforms %}
+            <div>
+                {{ form_errors(platform) }}
+                {{ form_widget(platform) }}
+                <button type="button" onclick="this.parentNode.parentNode.removeChild(this.parentNode);">Del</button>
+            </div>
+            {% endfor %}
+        </div>
+	</div>  
+</div>
+<!-- {{ form_rest(form)|replace({'<input': ' --><input'})|raw }}
+<script src="{% if app.request.attributes.get('_route') == "cpuSocket_edit" %}../{% endif %}../assets/add-collection-widget.js"></script>
+{% endblock %}

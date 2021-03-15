@@ -99,6 +99,13 @@
 		<div class="manage-buttons">{{ form_row(coprocessorForm.add) }}</div>
 
     {{ form_end(coprocessorForm) }}
+	{{ form_start(instructionSetForm, {'method': 'POST', 'action': './manage_resources'}) }}
+	
+		<div class="cpu-manage">{{ form_row(instructionSetForm.instructionSets) }}</div>
+		<div class="manage-buttons">{{ form_row(instructionSetForm.edit) }}</div>
+		<div class="manage-buttons">{{ form_row(instructionSetForm.add) }}</div>
+
+    {{ form_end(instructionSetForm) }}
 	{{ form_start(cpuSpeedForm, {'method': 'POST', 'action': './manage_resources'}) }}
 
         <div class="cpu-manage">{{ form_row(cpuSpeedForm.cpuSpeeds) }}</div>
@@ -106,6 +113,13 @@
 		<div class="manage-buttons">{{ form_row(cpuSpeedForm.add) }}</div>
 
     {{ form_end(cpuSpeedForm) }}
+	{{ form_start(cpuSocketForm, {'method': 'POST', 'action': './manage_resources'}) }}
+
+        <div class="cpu-manage">{{ form_row(cpuSocketForm.sockets) }}</div>
+		<div class="manage-buttons">{{ form_row(cpuSocketForm.edit) }}</div>
+		<div class="manage-buttons">{{ form_row(cpuSocketForm.add) }}</div>
+			
+    {{ form_end(cpuSocketForm) }}
     {{ form_start(processorPlatformTypeForm, {'method': 'POST', 'action': './manage_resources'}) }}
 
         <div class="cpu-manage">{{ form_row(processorPlatformTypeForm.processorPlatformTypes) }}</div>

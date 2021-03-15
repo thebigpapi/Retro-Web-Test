@@ -94,11 +94,28 @@
 			<td>{{ form_widget(form.dimensions) }}</td>
 		</tr>
 		<tr>
-			<td>CPU platform : </td>
+			<td>CPU sockets : </td>
+			<td><button type="button" onclick="expand('cpuSockets-fields-list')">Add</button></td>
+			<td class="exp-table">
+				<div id="cpuSockets-fields-list" data-widget-counter="{{ form.cpuSockets|length }}"
+					data-prototype="{{ form_widget(form.cpuSockets.vars.prototype)|e }}
+						<button type=button onclick=this.parentNode.parentNode.removeChild(this.parentNode);>Del</button>">
+					{% for cpuSocket in form.cpuSockets %}
+						<div>{{ form_widget(cpuSocket) }}
+						<button type="button" onclick="this.parentNode.parentNode.removeChild(this.parentNode);">Del</button>
+						{{ form_errors(cpuSocket) }}
+						</div>
+					{% endfor %}
+				</div>
+				{{ form_errors(form.cpuSockets) }}
+				</td>
+		</tr>
+		<tr>
+			<td>CPU platforms : </td>
 			<td>{{ form_widget(form.processorPlatformType) }}</td>
 		</tr>
 		<tr>
-			<td>CPU sockets: </td>
+			<td>Max CPUs: </td>
 			<td>{{ form_widget(form.maxCpu, {'attr': {'style': 'width:25px'}} ) }}</td>
 		</tr>
 	</table>
@@ -306,7 +323,7 @@
 		<tr style="text-align:center">
 			<td style="width:280px">
 				<b>CPU:</b>
-				<button type="button" onclick="expand('motherboardProcessor-fields-list')">Add</button>
+				<button type="button" onclick="expand('processors-fields-list')">Add</button>
 			</td>
 			<td>
 				<b>FSB speed:</b>
@@ -319,11 +336,11 @@
 		</tr>
 		<tr>
 			<td>
-				{{ form_errors(form.motherboardProcessor) }}
-				<div style="width:100%" id="motherboardProcessor-fields-list" data-widget-counter="{{ form.motherboardProcessor|length }}"
-                    data-prototype="{{ form_widget(form.motherboardProcessor.vars.prototype, {'attr': {'style': 'width:70%'}} )|e  }}
+				{{ form_errors(form.processors) }}
+				<div style="width:100%" id="processors-fields-list" data-widget-counter="{{ form.processors|length }}"
+                    data-prototype="{{ form_widget(form.processors.vars.prototype, {'attr': {'style': 'width:70%'}} )|e  }}
 					<button type=button onclick=this.parentNode.parentNode.removeChild(this.parentNode);>Del</button>">
-					{% for processor in form.motherboardProcessor %}
+					{% for processor in form.processors %}
                         <div>{{ form_widget(processor, {'attr': {'style': 'width:70%'}} ) }}
                         <button type="button" onclick="this.parentNode.parentNode.removeChild(this.parentNode);">Del</button></div>
 						{{ form_errors(processor) }}

@@ -9,82 +9,58 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ProcessorRepository")
  */
-class Processor
+class Processor extends ProcessingUnit
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
-    private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $name;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Manufacturer", inversedBy="processors")
-     * @ORM\OrderBy({"name" = "ASC", "shortName" = "ASC"})
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $manufacturer;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\ProcessorPlatformType", inversedBy="processors")
-     */
-    private $processorPlatformType;
-
-    /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Motherboard", mappedBy="motherboardProcessor")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Motherboard", mappedBy="processors")
      */
     private $motherboards;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\CacheSize", inversedBy="getProcessorsL1")
+     */
+    private $L1;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\CacheSize", inversedBy="getProcessorsL2")
+     */
+    private $L2;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\CacheSize", inversedBy="getProcessorsL3")
+     */
+    private $L3;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\CacheMethod", inversedBy="processors")
+     */
+    private $L1CacheMethod;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\CacheRatio", inversedBy="processorsL2")
+     */
+    private $L2CacheRatio;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\CacheRatio", inversedBy="processorsL3")
+     */
+    private $L3CacheRatio;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $core;
+
+    /**
+     * @ORM\Column(type="float")
+     */
+    private $voltage;
+
     public function __construct()
     {
-        $this->motherboardProcessors = new ArrayCollection();
+        parent::__construct();
         $this->motherboards = new ArrayCollection();
-    }
-
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
-
-    public function getName(): ?string
-    {
-        return $this->name;
-    }
-
-    public function setName(string $name): self
-    {
-        $this->name = $name;
-
-        return $this;
-    }
-
-    public function getManufacturer(): ?Manufacturer
-    {
-        return $this->manufacturer;
-    }
-
-    public function setManufacturer(?Manufacturer $manufacturer): self
-    {
-        $this->manufacturer = $manufacturer;
-
-        return $this;
-    }
-
-    public function getProcessorPlatformType(): ?ProcessorPlatformType
-    {
-        return $this->processorPlatformType;
-    }
-
-    public function setProcessorPlatformType(?ProcessorPlatformType $processorPlatformType): self
-    {
-        $this->processorPlatformType = $processorPlatformType;
-
-        return $this;
     }
 
     /**
@@ -99,7 +75,7 @@ class Processor
     {
         if (!$this->motherboards->contains($motherboard)) {
             $this->motherboards[] = $motherboard;
-            $motherboard->addMotherboardProcessor($this);
+            $motherboard->addProcessor($this);
         }
 
         return $this;
@@ -109,14 +85,146 @@ class Processor
     {
         if ($this->motherboards->contains($motherboard)) {
             $this->motherboards->removeElement($motherboard);
-            $motherboard->removeMotherboardProcessor($this);
+            $motherboard->removeProcessor($this);
         }
 
         return $this;
     }
 
     public function getNameWithPlatform() {
-        $this->getProcessorPlatformType() ? $pType = $this->getProcessorPlatformType()->getName() : $pType = "Unidentified";
-        return $this->getManufacturer()->getShortNameIfExist() . " " . $this->name . " (" . $pType . ")";
+        $this->getPlatform() ? $pType = $this->getPlatform()->getName() : $pType = "Unidentified";
+        return $this->getManufacturer()->getShortNameIfExist() . " " . $this->name . ' ' . $this->speed->getValueWithUnit() . ' [' . $this->partNumber . ']' . " (" . $pType . ")";
+    }
+
+    public function getNameWithSpecs() {
+        $cache = '';
+        if($this->L1) {
+            $cache = "[L1: " .$this->L1->getValueWithUnit();
+            if($this->L1CacheMethod) {
+                $cache = "$cache " .$this->L1CacheMethod->getName();
+            }
+            if($this->L2) {
+                $cache = "$cache, L2: " . $this->L2->getValueWithUnit();
+                if($this->L2CacheRatio) {
+                    $cache = "$cache ". $this->L2CacheRatio->getName();
+                }
+                if($this->L3) {
+                    $cache = "$cache, L3: " . $this->L3->getValueWithUnit();
+                    if($this->L3CacheRatio) {
+                        $cache = "$cache ". $this->L3CacheRatio->getName();
+                        
+                    }
+                }
+            }
+            $cache = "$cache]";
+        }
+
+        $core = $this->getCore() ? "($this->core)" : '';
+
+        $speed = $speed = $this->speed->getValueWithUnit() . ($this->fsb != $this->speed ? '/'.$this->fsb->getValueWithUnit():'');
+
+        $voltage = $this->getVoltage().'V';
+
+        $partno = "[$this->partNumber]";
+        
+        $pType = '(' . ($this->getPlatform() ? $this->getPlatform()->getName() : "Unidentified") . ')';
+        
+        return implode(" ", array($this->getManufacturer()->getShortNameIfExist(),$this->name, $core, $speed, $voltage, $cache, $partno, $pType ));
+    }
+
+    public function getL1(): ?CacheSize
+    {
+        return $this->L1;
+    }
+
+    public function setL1(?CacheSize $L1): self
+    {
+        $this->L1 = $L1;
+
+        return $this;
+    }
+
+    public function getL2(): ?CacheSize
+    {
+        return $this->L2;
+    }
+
+    public function setL2(?CacheSize $L2): self
+    {
+        $this->L2 = $L2;
+
+        return $this;
+    }
+
+    public function getL3(): ?CacheSize
+    {
+        return $this->L3;
+    }
+
+    public function setL3(?CacheSize $L3): self
+    {
+        $this->L3 = $L3;
+
+        return $this;
+    }
+
+    public function getL1CacheMethod(): ?CacheMethod
+    {
+        return $this->L1CacheMethod;
+    }
+
+    public function setL1CacheMethod(?CacheMethod $L1CacheMethod): self
+    {
+        $this->L1CacheMethod = $L1CacheMethod;
+
+        return $this;
+    }
+
+    public function getL2CacheRatio(): ?CacheRatio
+    {
+        return $this->L2CacheRatio;
+    }
+
+    public function setL2CacheRatio(?CacheRatio $L2CacheRatio): self
+    {
+        $this->L2CacheRatio = $L2CacheRatio;
+
+        return $this;
+    }
+
+    public function getL3CacheRatio(): ?CacheRatio
+    {
+        return $this->L3CacheRatio;
+    }
+
+    public function setL3CacheRatio(?CacheRatio $L3CacheRatio): self
+    {
+        $this->L3CacheRatio = $L3CacheRatio;
+
+        return $this;
+    }
+
+    public function getCore(): ?string
+    {
+        return $this->core;
+    }
+
+    public function setCore(?string $core): self
+    {
+        $this->core = $core;
+
+        return $this;
+    }
+
+    public function getVoltage(): ?float
+    {
+        return $this->voltage;
+    }
+
+    public function setVoltage(float $voltage): self
+    {
+        $this->voltage = $voltage;
+
+        return $this;
     }
 }
