@@ -60,7 +60,28 @@ div.results ul li ul.results-alias li span{font-size:0.8em;}
 div.pagination span.current {font-weight:bold;}
 
 /* show.html.twig */
-
+a.highslide-full-expand {
+   background: url(highslide/fullexpand.gif) no-repeat;
+   display: block;
+   margin: 0 10px 10px 0;
+   width: 34px;
+   height: 34px;
+}
+.highslide-loading {
+	display: block;
+	color: black;
+	font-size: 14px;
+	font-weight: bold;
+	text-transform: uppercase;
+	text-decoration: none;
+	padding: 3px;
+	border: 1px solid white;
+	background-color: white;
+	padding-left: 22px;
+	background-image: url(highslide/loader.white.gif);
+	background-repeat: no-repeat;
+	background-position: 3px 1px;
+}
 table.stbl {
   border: 1px solid #e0e0e0;
   border-collapse: collapse;

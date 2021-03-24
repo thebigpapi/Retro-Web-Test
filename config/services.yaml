@@ -5,8 +5,8 @@
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     app.locales: [de, en, es, fr, nl, ro, ru]
-    app.path: a #!php/const app.path
-    web.path: a #!php/const web.path
+    app.path: !php/const app.path
+    web.path: !php/const web.path
     
     app.pagination.max: 100
 
