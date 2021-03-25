@@ -55,9 +55,21 @@ class MotherboardController extends AbstractController
         if ($chipsetId && intval($chipsetId)) $criterias['chipset'] = "$chipsetId";
         elseif($chipsetId === "NULL") $criterias['chipset'] = NULL;
 
-        $processorPlatformTypeId = htmlentities($request->query->get('processorPlatformTypeId'));
-        if ($processorPlatformTypeId && intval($processorPlatformTypeId)) $criterias['processor_platform_type'] = "$processorPlatformTypeId";
-        elseif($processorPlatformTypeId === "NULL") $criterias['processor_platform_type'] = NULL;
+        $cpuSocket1 = htmlentities($request->query->get('cpuSocket1'));
+        if ($cpuSocket1 && intval($cpuSocket1)) $criterias['cpu_socket1'] = "$cpuSocket1";
+        elseif($cpuSocket1 === "NULL") $criterias['cpu_socket1'] = NULL;
+
+        $platform1 = htmlentities($request->query->get('platform1'));
+        if ($platform1 && intval($platform1)) $criterias['processor_platform_type1'] = "$platform1";
+        elseif($platform1 === "NULL") $criterias['processor_platform_type1'] = NULL;
+
+        $cpuSocket2 = htmlentities($request->query->get('cpuSocket2'));
+        if ($cpuSocket2 && intval($cpuSocket2)) $criterias['cpu_socket2'] = "$cpuSocket1";
+        elseif($cpuSocket2 === "NULL") $criterias['cpu_socket2'] = NULL;
+
+        $platform2 = htmlentities($request->query->get('platform2'));
+        if ($platform2 && intval($platform2)) $criterias['processor_platform_type2'] = "$platform1";
+        elseif($platform2 === "NULL") $criterias['processor_platform_type2'] = NULL;
 
         $chipsetManufacturerId = htmlentities($request->query->get('chipsetManufacturerId'));
         if ($chipsetManufacturerId && intval($chipsetManufacturerId) && !array_key_exists('chipset', $criterias)) $criterias['chipsetManufacturer'] = "$chipsetManufacturerId";
@@ -192,6 +204,9 @@ class MotherboardController extends AbstractController
             ->getRepository(IoPort::class)
             ->findAll();
         
+        $cpuSockets = $this->getDoctrine()
+        ->getRepository(CpuSocket::class)
+        ->findAll();
 
         $formFactors = $this->getDoctrine()
             ->getRepository(FormFactor::class)
@@ -225,12 +240,13 @@ class MotherboardController extends AbstractController
             'formFactors' => $formFactors,
             'procPlatformTypes' => $procPlatformTypes,
             'bios' => $biosManufacturers,
+            'cpuSockets' => $cpuSockets,
             ]);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             
-            if($form->get('searchChipsetManufacturer')->isClicked()){
+            if($form->get('searchChipsetManufacturer')->isClicked() || $form->get('searchSocket1')->isClicked() || $form->get('searchSocket2')->isClicked()){
                 return $this->render('motherboard/search.html.twig', [
                     'form' => $form->createView(),
                     'slots' => $slots,
@@ -308,13 +324,20 @@ class MotherboardController extends AbstractController
                 }
             }*/
 
-            if ($form['processorPlatformType']->getData()) {
-                /*if ($form['processorPlatformType']->getData()->getId() == 0) {
-                    $parameters['processorPlatformTypeId']  = "NULL";
-                }
-                else {*/
-                    $parameters['processorPlatformTypeId'] = $form['processorPlatformType']->getData()->getId();
-                //}
+            if ($form['cpuSocket1']->getData()) {
+                    $parameters['cpuSocket1'] = $form['cpuSocket1']->getData()->getId();
+            }
+
+            if ($form['platform1']->getData()) {
+                    $parameters['platform1'] = $form['platform1']->getData()->getId();
+            }
+
+            if ($form['cpuSocket2']->getData()) {
+                $parameters['cpuSocket2'] = $form['cpuSocket2']->getData()->getId();
+            }
+
+            if ($form['platform2']->getData()) {
+                    $parameters['platform2'] = $form['platform2']->getData()->getId();
             }
 
             /*if($form['searchProcessorPlatformType']->getData()){

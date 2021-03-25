@@ -208,6 +208,41 @@ class MotherboardRepository extends ServiceEntityRepository
         return $where;
     }
 
+    private function socketToSQL($socket1, $socket2, &$cpt)
+    {
+        if ($cpt != 0) $where = " AND ";
+        else $where = "";
+        // Two sockets
+        if($socket1 && $socket2 && $socket1 != $socket2)
+        {
+            $where = "$where mot0.id IN (SELECT motherboard_id FROM motherboard_cpu_socket WHERE cpu_socket_id=:socket1 OR cpu_socket_id=:socket2)";
+        }
+        else // One socket
+        {
+            $where = "$where mot0.id IN (SELECT motherboard_id FROM motherboard_cpu_socket WHERE cpu_socket_id=:socket)";
+        }
+        $cpt ++;
+        return $where;
+    }
+
+    private function platformToSQL($platform1, $platform2, &$cpt)
+    {
+        if ($cpt != 0) $where = " AND ";
+        else $where = "";
+
+        // Two platforms
+        if($platform1 && $platform2 && $platform1 != $platform2)
+        {
+            $where = "$where mot0.id IN (SELECT motherboard_id FROM motherboard_processor_platform_type WHERE processor_platform_type_id=:platform1 OR processor_platform_type_id=:platform2)";
+        }
+        else // One platform
+        {
+            $where = "$where mot0.id IN (SELECT motherboard_id FROM motherboard_processor_platform_type WHERE processor_platform_type_id=:platform)";
+        }
+        $cpt ++;
+        return $where;
+    }
+
     private function initResultSetMapping()
     {
         $rsm = new ResultSetMapping();
@@ -225,10 +260,6 @@ class MotherboardRepository extends ServiceEntityRepository
         $rsm->addJoinedEntityResult('App\Entity\Chipset', 'chp', 'mot0', 'chipset');
         $rsm->addFieldResult('chp', 'chp_id', 'id');
 
-        $rsm->addJoinedEntityResult('App\Entity\ProcessorPlatformType', 'pp', 'mot0', 'processorPlatformType');
-        $rsm->addFieldResult('pp', 'ppt_id', 'id');
-        $rsm->addFieldResult('pp', 'ppt_name', 'name');
-
         $rsm->addJoinedEntityResult('App\Entity\Manufacturer', 'man2', 'chp', 'manufacturer');
         $rsm->addFieldResult('man2', 'man2_id', 'id');
         $rsm->addFieldResult('man2', 'man2_name', 'name');
@@ -237,7 +268,7 @@ class MotherboardRepository extends ServiceEntityRepository
         return $rsm;
     }
 
-    private function prepareSQL(array $values, array $arrays, &$slotVals, &$ioVals, array $orderBy = null, $limit = null, $offset = null)
+    private function prepareSQL(array $values, array $arrays, &$slotVals, &$ioVals, array $orderBy = null)
     {
         //dd("test");
         $posFrom = 0;
@@ -255,6 +286,22 @@ class MotherboardRepository extends ServiceEntityRepository
         if(array_key_exists('chipsetManufacturer',$values)) {
             $chipsetManufacturer = $values['chipsetManufacturer'];
             unset($values['chipsetManufacturer']);
+        }
+        if (isset($values['cpu_socket1'])) {
+            $socket1 = $values['cpu_socket1'];
+            unset($values['cpu_socket1']);
+        }
+        if (isset($values['cpu_socket2'])) {
+            $socket2 = $values['cpu_socket2'];
+            unset($values['cpu_socket2']);
+        }
+        if (isset($values['processor_platform_type1'])) {
+            $platform1 = $values['processor_platform_type1'];
+            unset($values['processor_platform_type1']);
+        }
+        if (isset($values['processor_platform_type2'])) {
+            $platform2 = $values['processor_platform_type2'];
+            unset($values['processor_platform_type2']);
         }
 
         $where = $this->valuesToWhere($values, $posWhere);
@@ -344,6 +391,25 @@ class MotherboardRepository extends ServiceEntityRepository
         if (isset($arrays["dram"])) {
             $where = $where . $this->dramToSQL($arrays['dram'], $posWhere);
         }
+        if (isset($socket1) && isset($socket2)) {
+            $where = $where . $this->socketToSQL($socket1, $socket2, $posWhere);
+        }
+        else if (isset($socket1)) {
+            $where = $where . $this->socketToSQL($socket1, null, $posWhere);
+        }
+        else if (isset($socket2)) {
+            $where = $where . $this->socketToSQL($socket2, null, $posWhere);
+        }
+
+        if (isset($platform1) && isset($platform2)) {
+            $where = $where . $this->platformToSQL($platform1, $platform2, $posWhere);
+        }
+        else if (isset($platform1)) {
+            $where = $where . $this->platformToSQL($platform1, null, $posWhere);
+        }
+        else if (isset($platform2)) {
+            $where = $where . $this->platformToSQL($platform2, null, $posWhere);
+        }
 
         if ($posWhere != 0) {
             $where = "WHERE $where";
@@ -362,20 +428,6 @@ class MotherboardRepository extends ServiceEntityRepository
                     $orderBySQL = $orderBySQL . "$name $direction,";
             }
         }
-        
-        //LIMITE � MYSQL
-        /*$limitSQL = "";
-        if ($limit != NULL) {
-            $limitSQL = " LIMIT ";
-            if ($offset != NULL) {
-                $limitSQL = $limitSQL . "$offset,";
-            }
-            $limitSQL = $limitSQL . "$limit";
-            
-        }
-        elseif ($offset != NULL) {
-            $limitSQL = "$offset,0"; //BUG
-        }*/
 
         if(isset($chipsetManufacturer))
         {
@@ -392,13 +444,11 @@ class MotherboardRepository extends ServiceEntityRepository
             SELECT mot0.*, mot0.name as mot0_name,
             man1.id as man1_id, man1.name as man1_name, man1.short_name as man1_short_name,
             chp.id as chp_id, chp.manufacturer_id as chp_man_id,
-            man2.id as man2_id, man2.name as man2_name, man2.short_name as man2_short_name,
-            pp.id as ppt_id, pp.name as ppt_name 
+            man2.id as man2_id, man2.name as man2_name, man2.short_name as man2_short_name
             $from 
             LEFT JOIN manufacturer man1 ON mot0.manufacturer_id = man1.id 
             JOIN chipset chp ON mot0.chipset_id = chp.id 
             JOIN manufacturer man2 ON chp.manufacturer_id = man2.id 
-            JOIN processor_platform_type pp ON mot0.processor_platform_type_id = pp.id
             $where
 
         ";
@@ -406,11 +456,9 @@ class MotherboardRepository extends ServiceEntityRepository
         $noChipset = " SELECT mot0.*, mot0.name as mot0_name, 
         man1.id as man1_id, man1.name as man1_name, man1.short_name as man1_short_name,
         NULL, NULL, NULL, NULL,
-        NULL,
-        pp.id as ppt_id, pp.name as ppt_name 
+        NULL
         $from 
         LEFT JOIN manufacturer man1 ON mot0.manufacturer_id = man1.id 
-        JOIN processor_platform_type pp ON mot0.processor_platform_type_id = pp.id
         $whereNoChipset 
         ";
         ;
@@ -432,6 +480,36 @@ class MotherboardRepository extends ServiceEntityRepository
         }
         foreach ($ioVals as $key => $val){
             $query->setParameter($key, $val);
+        }
+        if (isset($values['cpu_socket1']) && isset($values['cpu_socket2']) && $values['cpu_socket1'] != $values['cpu_socket2']) {
+            $query->setParameter('socket1', $values['cpu_socket1']);
+            $query->setParameter('socket2', $values['cpu_socket2']);
+        }
+        else {
+            if (isset($values['cpu_socket1']) && !isset($values['cpu_socket2'])) {
+                $query->setParameter('socket', $values['cpu_socket1']);
+            }
+            else if (isset($values['cpu_socket2']) && !isset($values['cpu_socket1'])){
+                $query->setParameter('socket', $values['cpu_socket2']);
+            }
+            else if (isset($values['cpu_socket2']) && isset($values['cpu_socket1'])){
+                $query->setParameter('socket', $values['cpu_socket1']);
+            }
+        }
+        if (isset($values['processor_platform_type1']) && isset($values['processor_platform_type2']) && $values['processor_platform_type1'] != $values['processor_platform_type2']) {
+            $query->setParameter('platform1', $values['processor_platform_type1']);
+            $query->setParameter('platform2', $values['processor_platform_type2']);
+        }
+        else {
+            if (isset($values['processor_platform_type1']) && !isset($values['processor_platform_type2'])) {
+                $query->setParameter('platform', $values['processor_platform_type1']);
+            }
+            else if (isset($values['processor_platform_type2']) && !isset($values['processor_platform_type1'])) {
+                $query->setParameter('platform', $values['processor_platform_type2']);
+            }
+            else if (isset($values['processor_platform_type2']) && isset($values['processor_platform_type1'])) {
+                $query->setParameter('platform', $values['processor_platform_type1']);
+            }
         }
         foreach ($values as $key => $val) {
             if ($val != NULL){
@@ -455,7 +533,7 @@ class MotherboardRepository extends ServiceEntityRepository
         }
     }
 
-    public function findByWithJoin(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+    public function findByWithJoin(array $criteria, array $orderBy = null)
     {
         //throw new Exception("test");
         $arrays = array();
@@ -471,7 +549,7 @@ class MotherboardRepository extends ServiceEntityRepository
         $slotVals = array();
         $ioVals = array();
         
-        $sql = $this->prepareSQL($values, $arrays, $slotVals, $ioVals, $orderBy, $limit, $offset);
+        $sql = $this->prepareSQL($values, $arrays, $slotVals, $ioVals, $orderBy);
         
         $rsm = $this->initResultSetMapping();
 

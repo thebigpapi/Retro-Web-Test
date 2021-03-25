@@ -60,32 +60,78 @@
             <tr style="line-height: 100%;">
                 <td class="table-width"><b>{% trans %}Chipset manuf. and name{% endtrans %}</b></td>
 				<td>
+					<table class="sform1">
+						<tr>
+							<td style="width:30%;">
+									{{ form_widget(form.chipsetManufacturer, {'attr': {'class': 'sform', 'style':'width:100%'}}) }}
+							</td>
+							<td id="setchip2" style="width:50%;">
+								<div id="chipset_div">
+									{{ form_widget(form.chipset, {'attr': {'class': 'sform', 'style':'width:100%'}}) }}
+								</div>
+							</td>
+							<td>
+								<label id="setchip1" style="display:none;">Please wait ...</label>
+								<div>
+									{{ form_row(form.searchChipsetManufacturer)|replace({'<div><button': '<input', '</button></div>': '">', '>': ' value="'})|raw }}
+								</div>
+							</td>
+						</tr>
+					</table>
+                </td>
+            </tr>
+
+			<tr class="title-width">
+				<td colspan="2"><b>{% trans %}CPU socket and platform{% endtrans %}</b></td>
+			</tr>
+			<tr style="line-height: 100%;">
+                 <td class="table-width"><b>{% trans %}CPU socket{% endtrans %}</b></td>
+				<td>
 					<table class="sform1"><tr>
 						<td style="width:30%;">
-								{{ form_widget(form.chipsetManufacturer, {'attr': {'class': 'sform', 'style':'width:100%'}}) }}
+								{{ form_widget(form.cpuSocket1, {'attr': {'class': 'sform', 'style':'width:100%'}}) }}
 						</td>
-						<td id="setchip2" style="width:50%;">
-							<div id="chipset_div">
-								{{ form_widget(form.chipset, {'attr': {'class': 'sform', 'style':'width:100%'}}) }}
+						<td id="set_platform1_2" style="width:50%;">
+							<div id="platform_1_div">
+								{{ form_widget(form.platform1, {'attr': {'class': 'sform', 'style':'width:100%'}}) }}
 							</div>
 						</td>
 						<td>
-							<label id="setchip1" style="display:none;">Please wait ...</label>
+							<label id="set_platform1_1" style="display:none;">Please wait ...</label>
 							<div>
-								{{ form_row(form.searchChipsetManufacturer)|replace({'<div><button': '<input', '</button></div>': '">', '>': ' value="'})|raw }}
+								{{ form_row(form.searchSocket1)|replace({'<div><button': '<input', '</button></div>': '">', '>': ' value="'})|raw }}
+							</div>
+						</td>
+					</tr></table>
+                </td>
+            </tr>
+
+			<tr class="title-width">
+				<td colspan="2"><b>{% trans %}Second CPU socket and platform{% endtrans %}</b></td>
+			</tr>
+			<tr style="line-height: 100%;">
+                 <td class="table-width"><b>{% trans %}Second CPU socket{% endtrans %}</b></td>
+				<td>
+					<table class="sform1"><tr>
+						<td style="width:30%;">
+								{{ form_widget(form.cpuSocket2, {'attr': {'class': 'sform', 'style':'width:100%'}}) }}
+						</td>
+						<td id="set_platform2_2" style="width:50%;">
+							<div id="platform_1_div">
+								{{ form_widget(form.platform2, {'attr': {'class': 'sform', 'style':'width:100%'}}) }}
+							</div>
+						</td>
+						<td>
+							<label id="set_platform2_1" style="display:none;">Please wait ...</label>
+							<div>
+								{{ form_row(form.searchSocket2)|replace({'<div><button': '<input', '</button></div>': '">', '>': ' value="'})|raw }}
 							</div>
 						</td>
 					</tr></table>
                 </td>
             </tr>
 			
-			<tr class="title-width">
-				<td colspan="2"><b>{% trans %}CPU platform type{% endtrans %}</b></td>
-			</tr>
-            <tr style="line-height:100%;">
-                <td class="table-width"><b>{% trans %}CPU platform type{% endtrans %}</b></td>
-				<td>{{ form_widget(form.processorPlatformType, {'attr': {'class': 'sform'}}) }}</td>
-            </tr>
+			
         </table>
 		<div style="height:15px"></div>
 		<table>

@@ -12,6 +12,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use App\Entity\Manufacturer;
 use App\Entity\Chipset;
+use App\Entity\CpuSocket;
 use App\Entity\DramType;
 use App\Entity\FormFactor;
 use App\Entity\ProcessorPlatformType;
@@ -24,10 +25,23 @@ use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormInterface;
+use App\Repository\ProcessorPlatformTypeRepository;
+use Doctrine\ORM\EntityManagerInterface;
 
 
 class SearchMotherboard extends AbstractType
 {
+
+    public function __construct(EntityManagerInterface $entityManager)
+    {
+        $this->entityManager = $entityManager;
+    }
+
+    private function getProcessorPlatformTypeRepository(): ProcessorPlatformTypeRepository
+    {
+        return $this->entityManager->getRepository(ProcessorPlatformType::class);
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -67,7 +81,27 @@ class SearchMotherboard extends AbstractType
                 'label'    => ' ',
                 'required' => false,
             ])*/
-            ->add('processorPlatformType', ChoiceType::class, [
+            ->add('cpuSocket1', ChoiceType::class, [
+                //'class' => ProcessorPlatformType::class,
+                
+                'choice_label' => 'name',
+                'multiple' => false,
+                'expanded' => false,
+                'required' => false,
+                'choices' => $options['cpuSockets'],
+		        'placeholder' => 'Select a socket ...',
+            ])
+            ->add('cpuSocket2', ChoiceType::class, [
+                //'class' => ProcessorPlatformType::class,
+                
+                'choice_label' => 'name',
+                'multiple' => false,
+                'expanded' => false,
+                'required' => false,
+                'choices' => $options['cpuSockets'],
+		        'placeholder' => 'Select a socket ...',
+            ])
+            /*->add('processorPlatformType', ChoiceType::class, [
                 //'class' => ProcessorPlatformType::class,
                 
                 'choice_label' => 'name',
@@ -76,7 +110,7 @@ class SearchMotherboard extends AbstractType
                 'required' => false,
                 'choices' => $options['procPlatformTypes'],
 		        'placeholder' => 'Select a processor platform ...',
-            ])
+            ])*/
             /*->add('motherboardExpansionSlots', CollectionType::class, [
                 'entry_type' => SearchMotherboardExpansionSlotType::class,
                 /*'allow_add' => true,
@@ -129,6 +163,8 @@ class SearchMotherboard extends AbstractType
             ])*/
             ->add('search', SubmitType::class)
             ->add('searchChipsetManufacturer', SubmitType::class, ['label' => 'List chipsets'])
+            ->add('searchSocket1', SubmitType::class, ['label' => 'List platforms'])
+            ->add('searchSocket2', SubmitType::class, ['label' => 'List platforms'])
         ;
 
         $formModifier = function (FormInterface $form, Manufacturer $chipsetManufacturer = null) {
@@ -247,6 +283,85 @@ class SearchMotherboard extends AbstractType
             }
                 //dd($test);
         });*/
+
+        $formSocket1Modifier = function (FormInterface $form, CpuSocket $socket = null) {
+            $platforms = null === $socket ? $this->getProcessorPlatformTypeRepository()
+            ->findAll() : $socket->getPlatforms()->toArray();
+                $form->add('platform1', ChoiceType::class, [
+                    
+                    'choice_label' => 'name',
+                    'multiple' => false,
+                    'expanded' => false,
+                    'required' => false,
+                    'choices' => $platforms,
+                    'placeholder' => 'Select a processor platform ...',
+                ]);
+
+        };
+
+        $builder->addEventListener(
+            FormEvents::PRE_SET_DATA,
+            function (FormEvent $event) use ($formSocket1Modifier) {
+                // this would be your entity, i.e. SportMeetup
+                $data = $event->getData();
+                //dd($data);
+
+                $formSocket1Modifier($event->getForm(), null);
+            }
+        );
+
+        $builder->get('cpuSocket1')->addEventListener(
+            FormEvents::POST_SUBMIT,
+            function (FormEvent $event) use ($formSocket1Modifier) {
+                // It's important here to fetch $event->getForm()->getData(), as
+                // $event->getData() will get you the client data (that is, the ID)
+                $cpuSocket1 = $event->getForm()->getData();
+
+                // since we've added the listener to the child, we'll have to pass on
+                // the parent to the callback functions!
+                $formSocket1Modifier($event->getForm()->getParent(), $cpuSocket1);
+            }
+        );
+
+        $formSocket2Modifier = function (FormInterface $form, CpuSocket $socket = null) {
+            $platforms = null === $socket ? $this->getProcessorPlatformTypeRepository()
+            ->findAll() : $socket->getPlatforms()->toArray();
+                $form->add('platform2', ChoiceType::class, [
+                    
+                    'choice_label' => 'name',
+                    'multiple' => false,
+                    'expanded' => false,
+                    'required' => false,
+                    'choices' => $platforms,
+                    'placeholder' => 'Select a processor platform ...',
+                ]);
+
+        };
+            
+
+        $builder->addEventListener(
+            FormEvents::PRE_SET_DATA,
+            function (FormEvent $event) use ($formSocket2Modifier) {
+                // this would be your entity, i.e. SportMeetup
+                $data = $event->getData();
+                //dd($data);
+
+                $formSocket2Modifier($event->getForm(), null);
+            }
+        );
+
+        $builder->get('cpuSocket2')->addEventListener(
+            FormEvents::POST_SUBMIT,
+            function (FormEvent $event) use ($formSocket2Modifier) {
+                // It's important here to fetch $event->getForm()->getData(), as
+                // $event->getData() will get you the client data (that is, the ID)
+                $cpuSocket2 = $event->getForm()->getData();
+
+                // since we've added the listener to the child, we'll have to pass on
+                // the parent to the callback functions!
+                $formSocket2Modifier($event->getForm()->getParent(), $cpuSocket2);
+            }
+        );
     }
 
     public function configureOptions(OptionsResolver $resolver)
@@ -257,6 +372,7 @@ class SearchMotherboard extends AbstractType
             'bios' => array(),
             'formFactors' => array(),
             'procPlatformTypes' => array(),
+            'cpuSockets' => array(),
         ]);
     }
 }
