@@ -30,6 +30,12 @@ class EditProcessor extends AbstractType
             ->add('voltage', NumberType::class, [
                 'required' => true,
             ])
+            ->add('tdp', NumberType::class, [
+                'required' => false,
+            ])
+            ->add('processNode', NumberType::class, [
+                'required' => false,
+            ])
             ->add('L1', EntityType::class, [
                 'class' => CacheSize::class,
                 'choice_label' => 'getValueWithUnit',

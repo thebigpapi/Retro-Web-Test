@@ -57,6 +57,16 @@ class Processor extends ProcessingUnit
      */
     private $voltage;
 
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $tdp;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $ProcessNode;
+
     public function __construct()
     {
         parent::__construct();
@@ -224,6 +234,30 @@ class Processor extends ProcessingUnit
     public function setVoltage(float $voltage): self
     {
         $this->voltage = $voltage;
+
+        return $this;
+    }
+
+    public function getTdp(): ?int
+    {
+        return $this->tdp;
+    }
+
+    public function setTdp(?int $tdp): self
+    {
+        $this->tdp = $tdp;
+
+        return $this;
+    }
+
+    public function getProcessNode(): ?int
+    {
+        return $this->ProcessNode;
+    }
+
+    public function setProcessNode(?int $ProcessNode): self
+    {
+        $this->ProcessNode = $ProcessNode;
 
         return $this;
     }
