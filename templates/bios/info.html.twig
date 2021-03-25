@@ -10,29 +10,50 @@
 		vendors and their string meanings:</p>
 	<br>
 	<p><b>1.Award BIOS</b></p>
-	<a target="" href="../../assets/images/bios/awardbios.jpg">
+	<a target="" href="../../assets/images/bios/awardbios.jpg" class="highslide" onclick="return imgexp(this);">
 		<img src="../../assets/images/bios/awardbios.jpg" style="width:400px;margin-left:10%;">
 	</a>
-	<a target="" href="../../assets/images/bios/awardstring.jpg">
+	<a target="" href="../../assets/images/bios/awardstring.jpg" class="highslide" onclick="return imgexp(this);">
 		<img src="../../assets/images/bios/awardstring.jpg" style="width:400px;margin-left:10%;">
 	</a>
 	<p>You can find a list of Award chipset IDs <a href="./infoadv#award-chip">here</a>
 	and a list of Award board manufacturer IDs <a href="./infoadv#award-manuf">here</a></p>
 	<br>
 	<p><b>2.AMI BIOS</b></p>
-	<a target="" href="../../assets/images/bios/amibios.jpg">
+	<a target="" href="../../assets/images/bios/amibios.jpg" class="highslide" onclick="return imgexp(this);">
 		<img src="../../assets/images/bios/amibios.jpg" style="width:400px;margin-left:10%;">
 	</a>
-	<a target="" href="../../assets/images/bios/amistring.jpg">
+	<a target="" href="../../assets/images/bios/amistring.jpg" class="highslide" onclick="return imgexp(this);">
 		<img src="../../assets/images/bios/amistring.jpg" style="width:400px;margin-left:10%;">
 	</a>
 	<p>You can find a list of AMI board manufacturer IDs <a href="./infoadv#ami-manuf">here</a></p>
 	<br>
 	<p><b>3.Acer BIOS</b></p>
-	<a target="" href="../../assets/images/bios/acerbios.jpg">
+	<a target="" href="../../assets/images/bios/acerbios.jpg" class="highslide" onclick="return imgexp(this);">
 		<img src="../../assets/images/bios/acerbios.jpg" style="width:400px;margin-left:10%;">
 	</a>
-	
-
-
+	<div id="jsappend"></div>
+	<script type="text/javascript">
+		function imgexp(el){
+			var ua = window.navigator.userAgent;
+			var msie = ua.indexOf("MSIE ");
+			msie = parseInt(ua.substring(msie + 5, ua.indexOf(".", msie)));
+			if(msie == 4 || msie == 5)
+				return 0;
+			else
+				if(document.documentElement.clientWidth < 600 && ua.indexOf("Mobile") > 0)
+					return 0;
+				else return hs.expand(el);
+		}
+		var ua = window.navigator.userAgent;
+		var msie = ua.indexOf("MSIE ");
+		msie = parseInt(ua.substring(msie + 5, ua.indexOf(".", msie)));
+		if (!msie || msie > 5){
+			var h = document.getElementById("jsappend");
+			var js = document.createElement('script');
+			js.type = "text/javascript";
+			js.src = "{{ root }}/assets/highslide/highslide.js";
+			h.appendChild(js);
+		}
+	</script>
 {% endblock %}

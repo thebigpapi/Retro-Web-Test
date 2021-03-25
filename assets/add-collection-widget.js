@@ -54,6 +54,12 @@ function check_E(){
 			}
 		}
 	}
+	if (check_sel('cpuSockets-fields-list')){
+		alert("CPU sockets has duplicate entries!");
+		return false;}
+	if (check_sel('processorPlatformTypes-fields-list')){
+		alert("CPU platform has duplicate entries!");
+		return false;}
 	if (check_sel('motherboardMaxRams-fields-list')){
 		alert("Max system RAM has duplicate entries!");
 		return false;}
@@ -80,3 +86,63 @@ function check_E(){
 		return false;}
 	return true;
 }
+
+function setChipset(ok, formtype) {
+    var chipManuf = document.getElementById(formtype + "_chipsetManufacturer");
+    var form = document.getElementsByName(formtype)[0];
+    if (window.XMLHttpRequest)
+        var xhttp = new XMLHttpRequest();
+    else if (window.ActiveXObject)
+        var xhttp = new ActiveXObject("Microsoft.XMLHTTP");
+    xhttp.onreadystatechange = function() {  
+        if (xhttp.readyState == 4 && xhttp.status == 200) {
+            var currentForm = document.getElementById('chipset_div');
+            var parser = document.getElementById('hiddenDiv');
+			var lb1 = document.getElementById('setchip1');
+			var lb2 = document.getElementById('setchip2');
+			lb1.style.display="none";
+			lb2.style.display="";
+			lb2.style.width="70%";
+            parser.innerHTML = xhttp.responseText;
+            var doc = document.getElementById('chipset_div');
+            currentForm.innerHTML =  doc.innerHTML;
+            parser.innerHTML="";
+        }
+    };
+	var chipsetManufacturer = chipManuf.value;
+	if(ok)var chipsetManufacturer = "";
+    var params = formtype + "[chipsetManufacturer]="+chipsetManufacturer;
+    xhttp.open('POST', form.action, true);
+    xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    xhttp.send(params);
+}
+
+/* execution starts HERE; detect the selects and determine the type of search page*
+var lb1 = document.getElementById('setchip1');
+var lb2 = document.getElementById('setchip2');
+var cp1 = document.getElementById('cpuSockets-fields-list');
+//var cp2 = document.getElementById(formtype + '_chipsetManufacturer');
+
+/* compatibility for IE JS*
+if (window.XMLHttpRequest)
+    var xhttp = new XMLHttpRequest();
+else if (window.ActiveXObject)
+    var xhttp = new ActiveXObject("Microsoft.XMLHTTP");
+if (xhttp) { 
+    document.getElementById('cpuSockets-fields-list').outerHTML="";
+}
+
+/* event listeners*
+function addEvent(evnt, elem, func){
+    if(elem.addEventListener)
+        elem.addEventListener(evnt,func,false);
+    else if(elem.attachEvent) {
+        elem.attachEvent("on"+evnt,func);
+    }
+    else elem["on"+evnt] = func;
+}
+cp1.onchange= function() {
+	alert("test");
+	//setChipset(0,formtype);
+
+};*/

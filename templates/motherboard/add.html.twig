@@ -93,9 +93,23 @@
 			<td>Dimensions : </td>
 			<td>{{ form_widget(form.dimensions) }}</td>
 		</tr>
+	</table>
+	<table style="background-color:#e6e6e6;color:#000000;border-radius: 6px; padding: 3px 3px 3px">
+		<tr style="text-align:center">
+			<td>
+				<b>CPU sockets : </b>
+				<button type="button" onclick="expand('cpuSockets-fields-list')">Add</button>
+			</td>	  
+			<td>
+				<b>CPU platforms :</b>
+				<button type="button" onclick="expand('processorPlatformTypes-fields-list')">Add</button>
+			</td>
+			<td>
+				<b>FSB speed:</b>
+				<button type="button" onclick="expand('cpuSpeed-fields-list')">Add</button>
+			</td>			
+		</tr>
 		<tr>
-			<td>CPU sockets : </td>
-			<td><button type="button" onclick="expand('cpuSockets-fields-list')">Add</button></td>
 			<td class="exp-table">
 				<div id="cpuSockets-fields-list" data-widget-counter="{{ form.cpuSockets|length }}"
 					data-prototype="{{ form_widget(form.cpuSockets.vars.prototype)|e }}
@@ -108,11 +122,7 @@
 					{% endfor %}
 				</div>
 				{{ form_errors(form.cpuSockets) }}
-				</td>
-		</tr>
-		<tr>
-			<td>CPU platforms : </td>
-			<td><button type="button" onclick="expand('processorPlatformTypes-fields-list')">Add</button></td>
+			</td>
 			<td class="exp-table">
 				<div id="processorPlatformTypes-fields-list" data-widget-counter="{{ form.processorPlatformTypes|length }}"
 					data-prototype="{{ form_widget(form.processorPlatformTypes.vars.prototype)|e }}
@@ -125,11 +135,19 @@
 					{% endfor %}
 				</div>
 				{{ form_errors(form.processorPlatformTypes) }}
-				</td>
-		</tr>
-		<tr>
-			<td>Max CPUs: </td>
-			<td>{{ form_widget(form.maxCpu, {'attr': {'style': 'width:25px'}} ) }}</td>
+			</td>
+			<td class="exp-table">
+				 {{ form_errors(form.cpuSpeed) }}
+                <div style="width:100%" id="cpuSpeed-fields-list" data-widget-counter="{{ form.cpuSpeed|length }}"
+                    data-prototype="{{ form_widget(form.cpuSpeed.vars.prototype, {'attr': {'style': 'width:70%'}} )|e  }}
+					<button type=button onclick=this.parentNode.parentNode.removeChild(this.parentNode);>Del</button>">
+                {% for speed in form.cpuSpeed %}
+                        <div>{{ form_widget(speed, {'attr': {'style': 'width:70%'}} ) }}
+                        <button type="button" onclick="this.parentNode.parentNode.removeChild(this.parentNode);">Del</button></div>
+						{{ form_errors(speed) }}
+                {% endfor %}
+                </div>
+			</td>
 		</tr>
 	</table>
 	<table style="background-color:#e6e6e6;color:#000000;border-radius: 6px; padding: 3px 3px 3px">
@@ -141,7 +159,8 @@
 			<td>
 				<b>Cache :</b>
 				<button type="button" onclick="expand('cacheSize-fields-list')">Add</button>
-			</td>	  
+			</td>
+			<td>Max CPUs: {{ form_widget(form.maxCpu, {'attr': {'style': 'width:25px'}} ) }}</td>			
 		</tr>
 		<tr>
 			<td class="exp-table">
@@ -172,6 +191,7 @@
 				</div>
 				{{ form_errors(form.cacheSize) }}
 			</td>
+			<td></td>
 		</tr>
 	</table>	
 	<table>
@@ -332,16 +352,20 @@
 			<td>{{ form_widget(form.audioChipset) }}</td>
 		</tr>
 	</table>
-	<table style="background-color:#e6e6e6;color:#000000;border-radius: 6px; padding: 3px 3px 3px">
+	<span style="padding-left:10px;">
+			<b>Notes</b>
+	</span>
+	<div class="notes-field">
+		{{ form_row(form.note) }}
+	</div>
+</div>
+<table style="background-color:#e6e6e6;color:#000000;border-radius: 6px; padding: 3px 3px 3px;width:100%;">
 		<tr style="text-align:center">
 			<td style="width:280px">
 				<b>CPU:</b>
 				<button type="button" onclick="expand('processors-fields-list')">Add</button>
 			</td>
-			<td>
-				<b>FSB speed:</b>
-				<button type="button" onclick="expand('cpuSpeed-fields-list')">Add</button>
-			</td>
+			
 			<td>
 				<b>NPU:</b>
 				<button type="button" onclick="expand('coprocessors-fields-list')">Add</button>
@@ -354,45 +378,27 @@
                     data-prototype="{{ form_widget(form.processors.vars.prototype, {'attr': {'style': 'width:70%'}} )|e  }}
 					<button type=button onclick=this.parentNode.parentNode.removeChild(this.parentNode);>Del</button>">
 					{% for processor in form.processors %}
-                        <div>{{ form_widget(processor, {'attr': {'style': 'width:70%'}} ) }}
+                        <div>{{ form_widget(processor, {'attr': {'style': 'width:80%'}} ) }}
                         <button type="button" onclick="this.parentNode.parentNode.removeChild(this.parentNode);">Del</button></div>
 						{{ form_errors(processor) }}
 					{% endfor %}
                 </div>
 			</td>
-			<td class="exp-table">
-				 {{ form_errors(form.cpuSpeed) }}
-                <div style="width:100%" id="cpuSpeed-fields-list" data-widget-counter="{{ form.cpuSpeed|length }}"
-                    data-prototype="{{ form_widget(form.cpuSpeed.vars.prototype, {'attr': {'style': 'width:70%'}} )|e  }}
-					<button type=button onclick=this.parentNode.parentNode.removeChild(this.parentNode);>Del</button>">
-                {% for speed in form.cpuSpeed %}
-                        <div>{{ form_widget(speed, {'attr': {'style': 'width:70%'}} ) }}
-                        <button type="button" onclick="this.parentNode.parentNode.removeChild(this.parentNode);">Del</button></div>
-						{{ form_errors(speed) }}
-                {% endfor %}
-                </div>
-			</td>
+			
 			<td class="exp-table">
                 {{ form_errors(form.coprocessors) }}
                 <div style="width:100%" id="coprocessors-fields-list" data-widget-counter="{{ form.coprocessors|length }}"
                     data-prototype="{{ form_widget(form.coprocessors.vars.prototype, {'attr': {'style': 'width:70%'}} )|e  }}
 					<button type=button onclick=this.parentNode.parentNode.removeChild(this.parentNode);>Del</button>">
                 {% for coprocessor in form.coprocessors %}
-                        <div>{{ form_widget(coprocessor, {'attr': {'style': 'width:70%'}} ) }}
+                        <div>{{ form_widget(coprocessor, {'attr': {'style': 'width:80%'}} ) }}
                         <button type="button" onclick="this.parentNode.parentNode.removeChild(this.parentNode);">Del</button></div>
 						{{ form_errors(coprocessor) }}
                 {% endfor %}
                 </div>
 			</td>
 		</tr>
-	</table>
-	<span style="padding-left:10px;">
-			<b>Notes</b>
-	</span>
-	<div class="notes-field">
-		{{ form_row(form.note) }}
-	</div>
-</div>
+	</table><br>
 <!-- {{ form_rest(form)|replace({'<input': ' --><input'})|raw }}
 </form>
 
