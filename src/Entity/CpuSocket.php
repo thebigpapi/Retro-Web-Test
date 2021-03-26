@@ -19,7 +19,7 @@ class CpuSocket
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $name;
 
@@ -32,6 +32,11 @@ class CpuSocket
      * @ORM\ManyToMany(targetEntity="App\Entity\Motherboard", mappedBy="cpuSockets")
      */
     private $motherboards;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $type;
 
     public function __construct()
     {
@@ -49,7 +54,7 @@ class CpuSocket
         return $this->name;
     }
 
-    public function setName(string $name): self
+    public function setName(?string $name): self
     {
         $this->name = $name;
 
@@ -106,5 +111,23 @@ class CpuSocket
         }
 
         return $this;
+    }
+
+    public function getType(): ?string
+    {
+        return $this->type;
+    }
+
+    public function setType(?string $type): self
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+    public function getNameAndType(): ?string
+    {
+        if($this->name) return "$this->name ($this->type)";
+        else return $this->type;
     }
 }

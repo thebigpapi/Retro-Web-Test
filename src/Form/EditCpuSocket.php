@@ -36,6 +36,9 @@ class EditCpuSocket extends AbstractType
             ->add('name', TextType::class, [
                 'required' => false,
             ])
+            ->add('type', TextType::class, [
+                'required' => true,
+            ])
             ->add('platforms', CollectionType::class, [
                 'entry_type' => ProcessorPlatformTypeForm::class,
                 'allow_add' => true,

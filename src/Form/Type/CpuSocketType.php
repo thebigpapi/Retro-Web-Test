@@ -14,7 +14,7 @@ class CpuSocketType extends AbstractType
         $resolver->setDefaults([
             'class' => CpuSocket::class,
                 
-            'choice_label' => 'name',
+            'choice_label' => 'getNameAndType',
             'multiple' => false,
             'expanded' => false,
         ]);

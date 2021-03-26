@@ -16,7 +16,7 @@ class ManageCpuSocket extends AbstractType
         $builder
         ->add('sockets', EntityType::class, [
             'class' => CpuSocket::class,
-            'choice_label' => 'name',
+            'choice_label' => 'getNameAndType',
             'multiple' => false,
             'expanded' => false,
         ])

@@ -84,7 +84,7 @@ class SearchMotherboard extends AbstractType
             ->add('cpuSocket1', ChoiceType::class, [
                 //'class' => ProcessorPlatformType::class,
                 
-                'choice_label' => 'name',
+                'choice_label' => 'getNameAndType',
                 'multiple' => false,
                 'expanded' => false,
                 'required' => false,
@@ -94,7 +94,7 @@ class SearchMotherboard extends AbstractType
             ->add('cpuSocket2', ChoiceType::class, [
                 //'class' => ProcessorPlatformType::class,
                 
-                'choice_label' => 'name',
+                'choice_label' => 'getNameAndType',
                 'multiple' => false,
                 'expanded' => false,
                 'required' => false,
