@@ -64,11 +64,11 @@ class MotherboardController extends AbstractController
         elseif($platform1 === "NULL") $criterias['processor_platform_type1'] = NULL;
 
         $cpuSocket2 = htmlentities($request->query->get('cpuSocket2'));
-        if ($cpuSocket2 && intval($cpuSocket2)) $criterias['cpu_socket2'] = "$cpuSocket1";
+        if ($cpuSocket2 && intval($cpuSocket2)) $criterias['cpu_socket2'] = "$cpuSocket2";
         elseif($cpuSocket2 === "NULL") $criterias['cpu_socket2'] = NULL;
 
         $platform2 = htmlentities($request->query->get('platform2'));
-        if ($platform2 && intval($platform2)) $criterias['processor_platform_type2'] = "$platform1";
+        if ($platform2 && intval($platform2)) $criterias['processor_platform_type2'] = "$platform2";
         elseif($platform2 === "NULL") $criterias['processor_platform_type2'] = NULL;
 
         $chipsetManufacturerId = htmlentities($request->query->get('chipsetManufacturerId'));
