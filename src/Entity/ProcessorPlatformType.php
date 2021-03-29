@@ -139,16 +139,55 @@ class ProcessorPlatformType
     }
 
     /**
-     * @return Collection|ProcessingUnit[]
+     * @return Collection|Processor[]
      */
-    public function getCompatibleProcessingUnits(): Collection
+    public function getProcessors(): Collection
     {
-        $processingUnits = $this->getProcessingUnits();
+        $processors = array();
+        foreach ($this->processingUnits as $processor)
+        {
+            if($processor instanceof Processor) $processors[] = $processor;
+        }
+        return new ArrayCollection($processors);
+    }
+
+    /**
+     * @return Collection|Processor[]
+     */
+    public function getCompatibleProcessors(): Collection
+    {
+        $processors = $this->getProcessors()->toArray();
         foreach($this->getCompatibleWith() as $compatible)
         {
-            $processingUnits = new ArrayCollection(array_merge($processingUnits->toArray(), $compatible->getProcessingUnits()->toArray()));
+            $processors = array_merge($processors, $compatible->getProcessors()->toArray());
         }
-        return $processingUnits;
+        return new ArrayCollection($processors);
+    }
+
+    /**
+     * @return Collection|Coprocessor[]
+     */
+    public function getCoprocessors(): Collection
+    {
+        $coprocessors = array();
+        foreach ($this->processingUnits as $coprocessor)
+        {
+            if($coprocessor instanceof Coprocessor) $coprocessors[] = $coprocessor;
+        }
+        return new ArrayCollection($coprocessors);
+    }
+
+    /**
+     * @return Collection|Coprocessor[]
+     */
+    public function getCompatibleCoprocessors(): Collection
+    {
+        $coprocessors = $this->getProcessors()->toArray();
+        foreach($this->getCompatibleWith() as $compatible)
+        {
+            $coprocessors = array_merge($coprocessors, $compatible->getCoprocessors()->toArray());
+        }
+        return new ArrayCollection($coprocessors);
     }
 
     /**

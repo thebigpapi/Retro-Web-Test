@@ -126,4 +126,30 @@ abstract class ProcessingUnit extends Chip
 
         return implode(" ", array($this->getManufacturer()->getShortNameIfExist(),$this->name, $speed, $partno, $pType ));
     }
+
+    public static function sort(Collection $processingUnits): Collection
+    {
+        $array = $processingUnits->toArray();
+        usort($array, function ($a, $b)
+            {
+                if($a->getManufacturer() == $b->getManufacturer())
+                {
+                    if($a->getName() == $b->getName())
+                    {
+                        if($a->getSpeed() == $b->getSpeed())
+                        {
+                            return 0;
+                        }
+                        return ($a->getSpeed()->getValue() < $b->getSpeed()->getValue()) ? -1 : 1;
+                    }
+                    else
+                        return ($a->getName() < $b->getName()) ? -1 : 1;
+                }
+                else
+                    return ($a->getManufacturer() < $b->getManufacturer()) ? -1 : 1;
+            }
+        );
+        
+        return new ArrayCollection($array);
+    }
 }

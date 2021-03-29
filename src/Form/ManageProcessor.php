@@ -11,11 +11,13 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use App\Entity\Processor;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Doctrine\Common\Collections\ArrayCollection;
 
 class ManageProcessor extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $options['processors'] = Processor::sort(new ArrayCollection($options['processors']));
         $builder
         ->add('processors', EntityType::class, [
             'class' => Processor::class,

@@ -39,6 +39,7 @@ use App\Form\Type\KnownIssueType;
 use App\Form\Type\ProcessorPlatformTypeForm;
 use App\Repository\ProcessorPlatformTypeRepository;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
 use InvalidArgumentException;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -48,6 +49,8 @@ use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Process\Process;
+
 
 class AddMotherboard extends AbstractType
 {
@@ -304,7 +307,7 @@ class AddMotherboard extends AbstractType
             $processors = array();
             if (!$processorPlatformTypes->isEmpty()) {
                 foreach ($processorPlatformTypes as $platform) {
-                    $processors = array_merge($processors, $platform->getCompatibleProcessingUnits()->toArray());
+                    $processors = array_merge($processors, $platform->getCompatibleProcessors()->toArray());
                 }
             }
             
@@ -339,33 +342,7 @@ class AddMotherboard extends AbstractType
                         return ($a->getFullReference() < $b->getFullReference()) ? -1 : 1;
                     }
                 );*/
-                usort($processors, function ($a, $b)
-                    {
-                        //dd($a->getName());
-                        //if($a->getName() == "") return -1;
-                        /*if ($a->getFullReference() == $b->getFullReference()) {
-                            return 0;
-                        }*/
-                        if($a->getManufacturer() == $b->getManufacturer())
-                        {
-                            if($a->getName() == $b->getName())
-                            {
-                                if($a->getSpeed() == $b->getSpeed())
-                                {
-                                    /*if($a->getL2() && $b->getL2())
-                                        return ($a->getL2()->getValue() < $b->getL2()->getValue()) ? -1 : 1;
-                                    else
-                                        return 0;*/
-                                }
-                                return ($a->getSpeed() < $b->getSpeed()) ? -1 : 1;
-                            }
-                            else
-                                return ($a->getName() < $b->getName()) ? -1 : 1;
-                        }
-                        else
-                            return ($a->getManufacturer() < $b->getManufacturer()) ? -1 : 1;
-                    }
-                );
+                $processors = Processor::sort(new ArrayCollection($processors));
                 //if($chipsetManufacturer) dd($chipsets[94]->getFullReference()==" Unidentified ");
                 $form->add('processors', CollectionType::class, [
                     'entry_type' => ProcessorType::class,

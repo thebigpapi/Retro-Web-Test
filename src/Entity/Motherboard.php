@@ -417,6 +417,27 @@ class Motherboard
         return $this;
     }
 
+    /**
+     * @return Collection|Processor[]
+     */
+    public function getSortedProcessors(): Collection
+    {
+        $processors = array();
+        foreach($this->processors as $processor)
+        {
+            foreach ($processor->getChipAliases() as $alias)
+            {
+                $fakeCPU = clone $processor;
+                $fakeCPU->setName($alias->getName());
+                $fakeCPU->setManufacturer($alias->getManufacturer());
+                $fakeCPU->setPartNumber($alias->getPartNumber());
+                $processors[] = $fakeCPU;
+            }
+        }
+        $processors = array_merge($processors, $this->processors->toArray());
+        return Processor::sort(new ArrayCollection($processors));
+    }
+
 
     /**
      * @return Collection|Processor[]
