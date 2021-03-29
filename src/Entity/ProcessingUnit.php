@@ -21,6 +21,7 @@ abstract class ProcessingUnit extends Chip
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\CpuSpeed", inversedBy="processingUnits")
+     * @ORM\OrderBy({"value" = "ASC"})
      */
     protected $speed;
 
@@ -36,6 +37,7 @@ abstract class ProcessingUnit extends Chip
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\CpuSpeed", inversedBy="processingUnitsFsb")
+     * @ORM\OrderBy({"value" = "ASC"})
      */
     protected $fsb;
 

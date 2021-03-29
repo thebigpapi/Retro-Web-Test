@@ -16,6 +16,8 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Form\Type\InstructionSetType;
 use App\Form\Type\ChipType;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormView;
 
 class ProcessingUnitType extends AbstractType
 {

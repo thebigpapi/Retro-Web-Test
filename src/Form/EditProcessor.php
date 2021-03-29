@@ -15,6 +15,9 @@ use App\Entity\CacheSize;
 use App\Entity\CacheMethod;
 use App\Entity\CacheRatio;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormView;
+use Symfony\Component\Form\ChoiceList\View\ChoiceView;
 
 class EditProcessor extends AbstractType
 {
@@ -94,5 +97,15 @@ class EditProcessor extends AbstractType
         $resolver->setDefaults([
             'data_class' => Processor::class,
         ]);
+    }
+
+    public function finishView(FormView $view, FormInterface $form, array $options)
+    {
+        usort($view->children['processingUnit']->children['fsb']->vars['choices'], function(ChoiceView $a, ChoiceView $b) {
+            return ($a->data->getValue() > $b->data->getValue());
+        });
+        usort($view->children['processingUnit']->children['speed']->vars['choices'], function(ChoiceView $a, ChoiceView $b) {
+            return ($a->data->getValue() > $b->data->getValue());
+        });
     }
 }
