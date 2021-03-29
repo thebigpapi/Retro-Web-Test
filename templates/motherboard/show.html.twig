@@ -144,7 +144,7 @@
 			</tr>
         {% endif %}
 		{% if motherboard.getMotherboardMaxRams() or motherboard.getDramType() is not empty %}
-            <tr><td>{% trans %}Supported RAM types and size:{% endtrans %}</td><td>
+            <tr><td>{% trans %}Supported RAM size and types:{% endtrans %}</td><td>
 			{% if motherboard.getMotherboardMaxRams() is not empty %}
                 {% for maxRam in motherboard.getMotherboardMaxRams()|sort((a, b) => a.getMaxRam().getValue() <=> b.getMaxRam().getValue()) %}
                     {% if maxRam.getMaxRam() is not null %}
@@ -168,7 +168,7 @@
             </td></tr>
         {% endif %}
 		{% if motherboard.getCacheSize() is not empty %}
-            <tr><td>{% trans %}Cache:{% endtrans %}</td><td>
+            <tr><td>{% trans %}Cache size:{% endtrans %}</td><td>
             {% for cache in motherboard.getCacheSize()|sort((a, b) => a.value <=> b.value) %}
                 <span class="newdiv" style="background-color:#d0faca;">
 					{% if cache.getValue() > 1023 %}
@@ -336,7 +336,7 @@
 	{% if motherboard.getProcessors() is not null %}
 	<b>{% trans %}Supported CPUs:{% endtrans %}</b>
 	{% if motherboard.getMaxCpu() is not null %}
-        ({% trans %}Max CPUs:{% endtrans %}</td><td>{{ motherboard.getMaxCpu()}})
+        ({% trans %}max CPUs:{% endtrans %}</td><td>{{ motherboard.getMaxCpu()}})
     {% endif %}
 	<div class="scroll-div"><table class="stbl">
 		<tr style="text-align:center;background-color:#e0e0e0;">
@@ -348,11 +348,13 @@
 			<th>L2 Cache</th>
 			<th>L3 Cache</th>
 			<th>Core</th>
+			<th>Process</th>
+			<th>TDP</th>
 			<th>Part Number</th>
 		</tr>
 		{% for processor in motherboard.processors|sort((a, b) => a.getPartNumber() <=> b.getPartNumber()) %}
 		<tr style="text-align:center;">
-			<td>{{ processor.manufacturer.getName() }}&nbsp;{{ processor.getName() }}</td>
+			<td>{{ processor.manufacturer.getShortNameIfExist() }}&nbsp;{{ processor.getName() }}</td>
 			<td>{{ processor.speed.getValueWithUnit() }}</td>
 			<td>{{ processor.fsb.getValueWithUnit() }}</td>
 			<td>{{ processor.voltage}}V</td>
@@ -385,6 +387,16 @@
 				{% else %}
 					-
 				{% endif %}</td>
+			<td>{% if processor.processNode is not null %}
+					{{ processor.processNode }}nm
+				{% else %}
+					-
+				{% endif %}</td>
+			<td>{% if processor.tdp is not null %}
+					{{ processor.tdp }}W
+				{% else %}
+					-
+				{% endif %}</td>
 			<td>{{ processor.partNumber}}</td>
 		</tr>
 		{% endfor %}
@@ -401,7 +413,7 @@
 		</tr>
 		{% for copro in motherboard.getCoprocessors()|sort((a, b) => a.getPartNumber() <=> b.getPartNumber()) %}
 		<tr style="text-align:center;">
-			<td>{{ copro.manufacturer.getName() }}&nbsp;{{ copro.getName() }}</td>
+			<td>{{ copro.manufacturer.getShortNameIfExist() }}&nbsp;{{ copro.getName() }}</td>
 			<td>{{ copro.speed.getValueWithUnit() }}</td>
 			<td>{{ copro.fsb.getValueWithUnit() }}</td>
 			<td>{{ copro.partNumber}}</td>

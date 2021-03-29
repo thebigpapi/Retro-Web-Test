@@ -62,18 +62,15 @@
 				<td>
 					<table class="sform1">
 						<tr>
-							<td style="width:30%;">
+							<td id="setchip1" style="width:30%;">
 									{{ form_widget(form.chipsetManufacturer, {'attr': {'class': 'sform', 'style':'width:100%'}}) }}
 							</td>
 							<td id="setchip2" style="width:50%;">
-								<div id="chipset_div">
 									{{ form_widget(form.chipset, {'attr': {'class': 'sform', 'style':'width:100%'}}) }}
-								</div>
 							</td>
 							<td>
-								<label id="setchip1" style="display:none;">Please wait ...</label>
-								<div>
-									{{ form_row(form.searchChipsetManufacturer)|replace({'<div><button': '<input', '</button></div>': '">', '>': ' value="'})|raw }}
+								<label id="setchip-lb" style="display:none;">Please wait ...</label>
+								<div>{{ form_row(form.searchChipsetManufacturer)|replace({'<div><button': '<input', '</button></div>': '">', '>': ' value="'})|raw }}
 								</div>
 							</td>
 						</tr>
@@ -88,16 +85,14 @@
                  <td class="table-width"><b>{% trans %}CPU socket{% endtrans %}</b></td>
 				<td>
 					<table class="sform1"><tr>
-						<td style="width:30%;">
-								{{ form_widget(form.cpuSocket1, {'attr': {'class': 'sform', 'style':'width:100%'}}) }}
+						<td id="setcpu1" style="width:30%;">
+							{{ form_widget(form.cpuSocket1, {'attr': {'class': 'sform', 'style':'width:100%'}}) }}
 						</td>
-						<td id="set_platform1_2" style="width:50%;">
-							<div id="platform_1_div">
-								{{ form_widget(form.platform1, {'attr': {'class': 'sform', 'style':'width:100%'}}) }}
-							</div>
+						<td id="setcpu2" style="width:50%;">
+							{{ form_widget(form.platform1, {'attr': {'class': 'sform', 'style':'width:100%'}}) }}
 						</td>
 						<td>
-							<label id="set_platform1_1" style="display:none;">Please wait ...</label>
+							<label id="setcpu1-lb" style="display:none;">Please wait ...</label>
 							<div>
 								{{ form_row(form.searchSocket1)|replace({'<div><button': '<input', '</button></div>': '">', '>': ' value="'})|raw }}
 							</div>
@@ -113,16 +108,14 @@
                  <td class="table-width"><b>{% trans %}Second CPU socket{% endtrans %}</b></td>
 				<td>
 					<table class="sform1"><tr>
-						<td style="width:30%;">
-								{{ form_widget(form.cpuSocket2, {'attr': {'class': 'sform', 'style':'width:100%'}}) }}
+						<td id="setcpu3" style="width:30%;">
+							{{ form_widget(form.cpuSocket2, {'attr': {'class': 'sform', 'style':'width:100%'}}) }}
 						</td>
-						<td id="set_platform2_2" style="width:50%;">
-							<div id="platform_1_div">
-								{{ form_widget(form.platform2, {'attr': {'class': 'sform', 'style':'width:100%'}}) }}
-							</div>
+						<td id="setcpu4" style="width:50%;">
+							{{ form_widget(form.platform2, {'attr': {'class': 'sform', 'style':'width:100%'}}) }}
 						</td>
 						<td>
-							<label id="set_platform2_1" style="display:none;">Please wait ...</label>
+							<label id="setcpu2-lb" style="display:none;">Please wait ...</label>
 							<div>
 								{{ form_row(form.searchSocket2)|replace({'<div><button': '<input', '</button></div>': '">', '>': ' value="'})|raw }}
 							</div>

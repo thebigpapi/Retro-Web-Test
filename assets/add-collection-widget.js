@@ -87,7 +87,10 @@ function check_E(){
 	return true;
 }
 
-function setChipset(ok, formtype) {
+function cpupdate() {
+	alert("test");
+	/*
+	
     var chipManuf = document.getElementById(formtype + "_chipsetManufacturer");
     var form = document.getElementsByName(formtype)[0];
     if (window.XMLHttpRequest)
@@ -114,35 +117,5 @@ function setChipset(ok, formtype) {
     var params = formtype + "[chipsetManufacturer]="+chipsetManufacturer;
     xhttp.open('POST', form.action, true);
     xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    xhttp.send(params);
+    xhttp.send(params);*/
 }
-
-/* execution starts HERE; detect the selects and determine the type of search page*
-var lb1 = document.getElementById('setchip1');
-var lb2 = document.getElementById('setchip2');
-var cp1 = document.getElementById('cpuSockets-fields-list');
-//var cp2 = document.getElementById(formtype + '_chipsetManufacturer');
-
-/* compatibility for IE JS*
-if (window.XMLHttpRequest)
-    var xhttp = new XMLHttpRequest();
-else if (window.ActiveXObject)
-    var xhttp = new ActiveXObject("Microsoft.XMLHTTP");
-if (xhttp) { 
-    document.getElementById('cpuSockets-fields-list').outerHTML="";
-}
-
-/* event listeners*
-function addEvent(evnt, elem, func){
-    if(elem.addEventListener)
-        elem.addEventListener(evnt,func,false);
-    else if(elem.attachEvent) {
-        elem.attachEvent("on"+evnt,func);
-    }
-    else elem["on"+evnt] = func;
-}
-cp1.onchange= function() {
-	alert("test");
-	//setChipset(0,formtype);
-
-};*/
