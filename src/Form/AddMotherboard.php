@@ -48,9 +48,10 @@ use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormEvent;
-use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Process\Process;
-
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormView;
+use Symfony\Component\Form\ChoiceList\View\ChoiceView;
 
 class AddMotherboard extends AbstractType
 {
@@ -200,6 +201,8 @@ class AddMotherboard extends AbstractType
                 'required' => false,
             ])
             ->add('save', SubmitType::class)
+            ->add('updatePlatforms', SubmitType::class, ['label' => 'Update platforms'])
+            ->add('updateProcessors', SubmitType::class, ['label' => 'Update processors'])
         ;
 
         $formSocketModifier = function (FormInterface $form, Collection $cpuSockets = null) {
@@ -396,5 +399,24 @@ class AddMotherboard extends AbstractType
             'sockets' => array(),
         ]);
     }
+
+    /*public function finishView(FormView $view, FormInterface $form, array $options)
+    {
+        dd($view);
+        $view->children['processors']->vars['data'] = Processor::sort($view->children['processors']->vars['data']);
+        //dd($view->children['images']->children[2]->children['creditor']->vars['choices']);
+        foreach ($view->children['images']->children as $image)
+        {
+            usort($image->children['creditor']->vars['choices'], function(ChoiceView $a, ChoiceView $b) {
+                return ($a->data->getName() > $b->data->getName());
+            });
+        }
+
+        /*dd($view->children['cpuSpeed']);
+        usort($view->children['cpuSpeed']->vars['choices'], function(ChoiceView $a, ChoiceView $b) {
+            return ($a->data->getValue() > $b->data->getValue());
+        });
+        
+    }*/
 
 }

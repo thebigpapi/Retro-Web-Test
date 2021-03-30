@@ -469,6 +469,11 @@ class MotherboardController extends AbstractController
         //dd($form);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+            if($form->get('updatePlatforms')->isClicked() || $form->get('updateProcessors')->isClicked()){
+                return $this->render('motherboard/add.html.twig', [
+                    'form' => $form->createView(),
+                ]);
+            }
             $mobo = $form->getData();
             $mobo->updateLastEdited();
             foreach ($form['motherboardAliases']->getData() as $key => $val) {
