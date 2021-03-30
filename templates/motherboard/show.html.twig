@@ -352,7 +352,7 @@
 			<th>TDP</th>
 			<th>Part Number</th>
 		</tr>
-		{% for processor in motherboard.processors|sort((a, b) => a.getPartNumber() <=> b.getPartNumber()) %}
+		{% for processor in motherboard.getSortedProcessors() %}
 		<tr style="text-align:center;">
 			<td>{{ processor.manufacturer.getShortNameIfExist() }}&nbsp;{{ processor.getName() }}</td>
 			<td>{{ processor.speed.getValueWithUnit() }}</td>

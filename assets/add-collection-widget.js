@@ -1,6 +1,10 @@
 /* add-collection-widget.js - most of the JS code runs from here */
 
-//function to add new widgets; written by computerguy08
+//function used to delete widgets
+function remove(id) {
+	id.parentNode.parentNode.removeChild(id.parentNode);
+}
+//function used to add new widgets
 function expand(id) { 
 	//store the table widget DOM in list and newWidget, increment the counter
 	var list = document.getElementById(id);
@@ -19,7 +23,7 @@ function expand(id) {
 	newElem.innerHTML = newWidget;
 	list.appendChild(newElem);	
 }
-// function used to check <select> duplicate options
+// function used to check duplicate widgets
 function check_sel(id){
 	var item = document.getElementById(id).children;
 	var tp = 0;
@@ -34,7 +38,7 @@ function check_sel(id){
 	}
 	return false;
 }
-// function used to check for null file uploads or duplicate 
+// function used to check for null file uploads or duplicate widgets
 function check_E(){
 	var manual = document.getElementById('manuals-fields-list').children;
 	var photo = document.getElementById('images-fields-list').children;
@@ -87,35 +91,41 @@ function check_E(){
 	return true;
 }
 
-function cpupdate() {
-	alert("test");
-	/*
+// function used to update CPU related widgets
+function cpupdate(obj) {
+    //var cpuSel = document.getElementById("processors-fields-list");
+	var form = document.getElementsByName("add_motherboard")[0];
+	var sel_type = obj.id.substring(16,obj.id.length-2);
+	//alert(cpuSel.children[3].children[0].tagName);
 	
-    var chipManuf = document.getElementById(formtype + "_chipsetManufacturer");
-    var form = document.getElementsByName(formtype)[0];
-    if (window.XMLHttpRequest)
+	if(sel_type == "cpuSockets"){
+		alert(sel_type);
+		const data = new URLSearchParams(new FormData(form).entries());
+		alert(data);
+		if (window.XMLHttpRequest)
         var xhttp = new XMLHttpRequest();
     else if (window.ActiveXObject)
         var xhttp = new ActiveXObject("Microsoft.XMLHTTP");
     xhttp.onreadystatechange = function() {  
         if (xhttp.readyState == 4 && xhttp.status == 200) {
-            var currentForm = document.getElementById('chipset_div');
+            var currentForm = document.getElementById("processorPlatformTypes-fields-list");
             var parser = document.getElementById('hiddenDiv');
-			var lb1 = document.getElementById('setchip1');
-			var lb2 = document.getElementById('setchip2');
-			lb1.style.display="none";
-			lb2.style.display="";
-			lb2.style.width="70%";
             parser.innerHTML = xhttp.responseText;
-            var doc = document.getElementById('chipset_div');
+            var doc = document.getElementById("processorPlatformTypes-fields-list");
             currentForm.innerHTML =  doc.innerHTML;
             parser.innerHTML="";
         }
     };
-	var chipsetManufacturer = chipManuf.value;
-	if(ok)var chipsetManufacturer = "";
-    var params = formtype + "[chipsetManufacturer]="+chipsetManufacturer;
+	var chipsetManufacturer = 0;
+    var params = "add_motherboard[cpuSockets][0]=2";
     xhttp.open('POST', form.action, true);
     xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    xhttp.send(params);*/
+    xhttp.send(params);
+	}
+	if(sel_type == "processorPlatformTypes"){
+		alert(sel_type);
+	}
+	
+    
+    
 }
