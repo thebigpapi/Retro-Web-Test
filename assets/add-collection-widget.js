@@ -90,7 +90,8 @@ function check_E(){
 		return false;}
 	return true;
 }
-
+var upd_btn = document.getElementById("updcpu");
+upd_btn.style.display="none";
 // function used to update CPU related widgets
 function cpupdate(obj) {
     //var cpuSel = document.getElementById("processors-fields-list");
@@ -99,33 +100,9 @@ function cpupdate(obj) {
 	//alert(cpuSel.children[3].children[0].tagName);
 	
 	if(sel_type == "cpuSockets"){
-		alert(sel_type);
-		const data = new URLSearchParams(new FormData(form).entries());
-		alert(data);
-		if (window.XMLHttpRequest)
-        var xhttp = new XMLHttpRequest();
-    else if (window.ActiveXObject)
-        var xhttp = new ActiveXObject("Microsoft.XMLHTTP");
-    xhttp.onreadystatechange = function() {  
-        if (xhttp.readyState == 4 && xhttp.status == 200) {
-            var currentForm = document.getElementById("processorPlatformTypes-fields-list");
-            var parser = document.getElementById('hiddenDiv');
-            parser.innerHTML = xhttp.responseText;
-            var doc = document.getElementById("processorPlatformTypes-fields-list");
-            currentForm.innerHTML =  doc.innerHTML;
-            parser.innerHTML="";
-        }
-    };
-	var chipsetManufacturer = 0;
-    var params = "add_motherboard[cpuSockets][0]=2";
-    xhttp.open('POST', form.action, true);
-    xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    xhttp.send(params);
+		document.getElementById("btn1").children[0].click();
 	}
 	if(sel_type == "processorPlatformTypes"){
-		alert(sel_type);
+		document.getElementById("btn2").children[0].click();
 	}
-	
-    
-    
 }

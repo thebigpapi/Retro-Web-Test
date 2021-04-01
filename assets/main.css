@@ -36,8 +36,7 @@ form.index-buttons input.button3 {background: #ebebeb url(./images/awchip_low.jp
 select.sform { width: 90%; vertical-align:middle;}
 input.sform { width: 90%; vertical-align:middle;}
 table.sform1 {width: 91%; margin-left:-3px;}
-div.sform select {height: 100%; width: 100%; }
-div.sform input {height: auto; width: 90%; /* **/ height: 90%; width: 99%; /** */}
+
 
 td.table-width, td.bios-width {width: 120px;text-align:center;}
 tr.title-width {display:none;}
@@ -89,6 +88,7 @@ table.stbl {
   margin-bottom:10px;
   width:100%;
 }
+tr.stbl-head{background-color:#e0e0e0;text-align:center;}
 table.stbl td, table.stbl th{padding: 5px 5px 5px;}
 div.show-images {width:25%;overflow: auto;float:left;height:500px; /* **/ height:auto; max-height:500px; /** */}
 span.show-image {width:100%;font-size:12px;display:block;}
@@ -110,8 +110,8 @@ td.exp-table {vertical-align: top;width:140px;}
 td.io-table {vertical-align: top;width:175px;}
 td.cpu-table {width:160px;}
 
-/* infoadv.html.twig */
-
+/* info/infoadv.html.twig */
+img.biosinfo-img{width:400px;margin-left:10%;}
 table.stbl-adv {
 	font-size:14px;
 	font-weight: normal;

@@ -36,7 +36,7 @@ select.sform{height:2.2em;}
 	table.sform1{margin-left:3%;}
 	
 	/* show.html.twig */
-	div.show-images {width:100%; max-height:400px;}
+	div.show-images {width:100%; max-height:400px;padding-top:5px;}
 	span.show-image, span.string-bios {font-size:8px;}
 	div.show-data {width:100%;padding:0;font-size:13px;}
 	td.io-table ul,td.exp-table ul {padding:0;}
@@ -46,13 +46,18 @@ select.sform{height:2.2em;}
 	td.cpu-table {width:85px;}
 
 	/* add.html.twig */
-	div.show-images{padding-top:5px;}
 	.ba0 {width:16%;margin:0;}
 	.ba1 {width:24%;margin:0;}
 	.ba2 {width:16%;margin:0;}
 	.ba3 {width:7%;margin:0;}
 	.ba4 {width:16%;margin:0;}
 	.ba5 {display:none;}
+
+	/* info.html.twig */
+	img.biosinfo-img{width:90%;margin:auto;display: block;}
+	table.stbl-adv{
+		font-size:10px;
+	}
 }
 
 @media (min-width: 1200px) {
@@ -70,7 +75,6 @@ select.sform{height:2.2em;}
 
 	/* result.html.twig */
 	div.results ul li{font-size:20px;}
-	td.io-table {width:240px;}
 }
 
 @media (min-width: 1400px) {
@@ -100,4 +104,17 @@ select.sform{height:2.2em;}
 	p.string-alias {margin-top:-25px;}
 	td.exp-table {width:250px;}
 	td.cpu-table {width:180px;}
+}
+@media (prefers-color-scheme: dark) {
+	body, form {margin:0; padding:0;background-color:#191919;color:#EEEEEE;}
+	form.index-buttons input.button1,form.index-buttons input.button2,
+	form.index-buttons input.button3, div.butn input{background-color:#303030;color:#FFFFFF;}
+	b.contrib {background: #191919; color: yellow;}
+	b.contrib a:link, b.contrib a:visited { color: #A600FF;}
+	a:link { color: orange;}
+	a:visited { color: #00e874;}
+	select.sform , input.sform, span.field1 input {background-color:#424242;color:#ececec;}
+	table.stbl, table.stbl-adv{background-color:#303030;color:#EEEEEE;}
+	tr.stbl-head{background-color:#606060;color:#EEEEEE;}
+	div.bios-image , .add-table, div.notes-field div textarea{background-color:#444444;color:#EEEEEE;}
 }

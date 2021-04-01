@@ -186,7 +186,7 @@
     <div class="scroll-div">
 		<b>{% trans %}BIOS images:{% endtrans %}</b>
         <table class="stbl">
-            <tr style="background-color:#e0e0e0;">
+            <tr class="stbl-head">
                 <th>{% trans %}Manuf.{% endtrans %}</th>
                 <th>{% trans %}POST String{% endtrans %}</th>
                 <th>{% trans %}Note{% endtrans %}</th>
@@ -232,7 +232,7 @@
 	</table>
     {% endif %}
 	<div class="scroll-div"><table class="stbl">
-		<tr style="text-align:center;background-color:#e0e0e0;">
+		<tr class="stbl-head">
 			{% if motherboard.getMotherboardIoPorts() is not empty %}
 				<td><b>{% trans %}I/O ports:{% endtrans %}</b></td>	  
 			{% endif %}
@@ -336,10 +336,10 @@
 	{% if motherboard.getProcessors() is not null %}
 	<b>{% trans %}Supported CPUs:{% endtrans %}</b>
 	{% if motherboard.getMaxCpu() is not null %}
-        ({% trans %}max CPUs:{% endtrans %}</td><td>{{ motherboard.getMaxCpu()}})
+        ({% trans %}max CPUs:{% endtrans %}{{ motherboard.getMaxCpu()}})
     {% endif %}
 	<div class="scroll-div"><table class="stbl">
-		<tr style="text-align:center;background-color:#e0e0e0;">
+		<tr class="stbl-head">
 			<th>Model</th>
 			<th>Speed</th>
 			<th>FSB</th>
@@ -405,7 +405,7 @@
 	{% if motherboard.getCoprocessors() is not empty %}
 	<b>{% trans %}Supported FPUs:{% endtrans %}</b>
 	<div class="scroll-div"><table class="stbl">
-		<tr style="text-align:center;background-color:#e0e0e0;">
+		<tr class="stbl-head">
 			<th>Model</th>
 			<th>Speed</th>
 			<th>FSB</th>

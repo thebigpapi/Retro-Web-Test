@@ -57,7 +57,7 @@
 	</table>
 	<div class="clrs"></div>
 
-	<div class="motherboard-aliases" style="background-color:#e6e6e6;color:#000000;border-radius: 6px; padding: 3px 3px 3px">
+	<div class="add-table">
 		<div>
 			<b>Alternative name:</b>
 			<button type="button" onclick="expand('motherboardAliases-fields-list')">Add</button>
@@ -94,7 +94,7 @@
 			<td>{{ form_widget(form.dimensions) }}</td>
 		</tr>
 	</table>
-	<table style="background-color:#e6e6e6;color:#000000;border-radius: 6px; padding: 3px 3px 3px">
+	<table class="add-table">
 		<tr style="text-align:center">
 			<td>
 				<b>CPU sockets : </b>
@@ -107,7 +107,8 @@
 			<td>
 				<b>FSB speed:</b>
 				<button type="button" onclick="expand('cpuSpeed-fields-list')">Add</button>
-			</td>			
+			</td>
+			<td>Max CPUs: {{ form_widget(form.maxCpu, {'attr': {'style': 'width:25px'}} ) }}</td>			
 		</tr>
 		<tr>
 			<td class="exp-table">
@@ -139,24 +140,27 @@
 			<td class="exp-table">
 				 {{ form_errors(form.cpuSpeed) }}
                 <div style="width:100%" id="cpuSpeed-fields-list" data-widget-counter="{{ form.cpuSpeed|length }}"
-                    data-prototype="{{ form_widget(form.cpuSpeed.vars.prototype, {'attr': {'style': 'width:70%'}} )|e  }}
+                    data-prototype="{{ form_widget(form.cpuSpeed.vars.prototype, {'attr': {'style': 'width:50%'}} )|e  }}
 					<button type=button onclick=remove(this);>Del</button>">
                 {% for speed in form.cpuSpeed %}
-                        <div>{{ form_widget(speed, {'attr': {'style': 'width:70%'}} ) }}
+                        <div>{{ form_widget(speed, {'attr': {'style': 'width:50%'}} ) }}
                         <button type="button" onclick="remove(this);">Del</button></div>
 						{{ form_errors(speed) }}
                 {% endfor %}
                 </div>
 			</td>
+			<td></td>
 		</tr>
-		<tr>
-			<td>{{ form_widget(form.updatePlatforms, {'attr': {'style': 'width:80%'}} ) }}</td>
-			<td>{{ form_widget(form.updateProcessors, {'attr': {'style': 'width:80%'}} ) }}</td>
+		<tr id="updcpu">
+			<td id="btn1">{{ form_widget(form.updatePlatforms, {'attr': {'style': 'width:80%'}} ) }}</td>
+			<td id="btn2">{{ form_widget(form.updateProcessors, {'attr': {'style': 'width:80%'}} ) }}</td>
+			<td></td>
 			<td></td>
 		</tr>
 	</table>
-	<table style="background-color:#e6e6e6;color:#000000;border-radius: 6px; padding: 3px 3px 3px">
-		<tr style="text-align:center">
+	<div class="clrs"></div>
+	<table>
+		<tr style="text-align:center;">
 			<td>
 				<b>Max system RAM : </b>
 				<button type="button" onclick="expand('motherboardMaxRams-fields-list')">Add</button>
@@ -165,7 +169,7 @@
 				<b>Cache :</b>
 				<button type="button" onclick="expand('cacheSize-fields-list')">Add</button>
 			</td>
-			<td>Max CPUs: {{ form_widget(form.maxCpu, {'attr': {'style': 'width:25px'}} ) }}</td>			
+			<td><b>Supported RAM types : </b></td>		
 		</tr>
 		<tr>
 			<td class="exp-table">
@@ -196,16 +200,21 @@
 				</div>
 				{{ form_errors(form.cacheSize) }}
 			</td>
-			<td></td>
-		</tr>
-	</table>	
-	<table>
-		<tr>
-			<td>Supported RAM types : </td>
-			<td><div class="ram-type">{{ form_widget(form.dramType) }}</div></td>
+			<td>
+				<div class="ram-type">
+				{% for ramtype in form.dramType %}
+					<span style="width:150px;display:inline-block;">
+						{{ form_widget(ramtype) }}
+						{{ form_label(ramtype) }}
+					</span>
+					{{ form_errors(ramtype) }}
+				{% endfor %}
+				</div>
+			</td>
 		</tr>
 	</table>
-	<div class="bios-image" style="background-color:#e6e6e6;border-radius: 6px; padding: 3px 3px 3px">
+	<div class="clrs"></div>	
+	<div class="bios-image">
 		<div>
 			<b>BIOS images:</b>
 			<button type="button" onclick="expand('motherboardBios-fields-list')">Add</button>
@@ -282,7 +291,7 @@
 	</div>
 	<div class="clrs"></div>
 	
-	<table style="background-color:#e6e6e6;color:#000000;border-radius: 6px; padding: 3px 3px 3px">
+	<table class="add-table">
 		<tr style="text-align:center">
 			<td>
 				<b>I/O ports : </b>
@@ -298,7 +307,7 @@
 			</td>	  
 		</tr>
 		<tr>
-			<td class="io-table">
+			<td class="exp-table">
 				<div id="motherboardIoPorts-fields-list" data-widget-counter="{{ form.motherboardIoPorts|length }}"
                     data-prototype="
 						{{ form_widget(form.motherboardIoPorts.vars.prototype.count, {'attr': {'class': 'num'}} )|e }} x 
@@ -313,7 +322,7 @@
                 </div>
 				{{ form_errors(form.motherboardIoPorts) }}
 			</td>
-			<td class="io-table">
+			<td class="exp-table">
 				<div id="motherboardExpansionSlots-fields-list" data-widget-counter="{{ form.motherboardExpansionSlots|length }}"
                     data-prototype="
 					{{ form_widget(form.motherboardExpansionSlots.vars.prototype.count, {'attr': {'class': 'num'}} )|e }} x 
@@ -364,11 +373,11 @@
 		{{ form_row(form.note) }}
 	</div>
 </div>
-<table style="background-color:#e6e6e6;color:#000000;border-radius: 6px; padding: 3px 3px 3px;width:100%;">
+<table class="add-table" style="width:100%;">
 		<tr style="text-align:center">
 			<td style="width:280px">
 				<b>CPU:</b>
-				<button type="button" onclick="cpupdate();expand('processors-fields-list')">Add</button>
+				<button type="button" onclick="expand('processors-fields-list')">Add</button>
 			</td>
 			<td>
 				<b>NPU:</b>
