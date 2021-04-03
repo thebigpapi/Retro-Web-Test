@@ -1,5 +1,5 @@
 function setChipset(ok, formtype, sel1, sel2, sel_lb, typ) {
-    var chipManuf = document.getElementById(sel1).childNodes[0];
+    var chipManuf = document.getElementById(sel1).childNodes;
 	var lb1 = document.getElementById(sel_lb);
 	var lb2 = document.getElementById(sel2);
 	lb1.style.display="";
@@ -14,17 +14,17 @@ function setChipset(ok, formtype, sel1, sel2, sel_lb, typ) {
             var currentForm = document.getElementById(sel2);
             var parser = document.getElementById('hiddenDiv');
 			var lb1 = document.getElementById(sel_lb);
-			var lb2 = document.getElementById(sel2);
 			lb1.style.display="none";
-			lb2.style.display="";
-			lb2.style.width="70%";
+			currentForm.style.display="";
+			currentForm.style.width="70%";
             parser.innerHTML = xhttp.responseText;
             var doc = document.getElementById(sel2);
             currentForm.innerHTML =  doc.innerHTML;
             parser.innerHTML="";
         }
     };
-	var chipsetManufacturer = chipManuf.value;
+	
+	var chipsetManufacturer = chipManuf[0].value;
 	if(ok)chipsetManufacturer = "";
     var params = formtype + typ + chipsetManufacturer;
     xhttp.open('POST', form.action, true);

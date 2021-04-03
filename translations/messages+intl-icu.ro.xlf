@@ -201,17 +201,17 @@
         <source>Unknown</source>
         <target>Necunoscut</target>
       </trans-unit>
-      <trans-unit id="I0m_uoh" resname="Chipset:">
-        <source>Chipset:</source>
-        <target>Chipset:</target>
+      <trans-unit id="I0m_uoh" resname="Chipset">
+        <source>Chipset</source>
+        <target>Chipset</target>
       </trans-unit>
-      <trans-unit id="O_VL2PE" resname="Processor platform:">
-        <source>Processor platform:</source>
-        <target>Platformă CPU:</target>
+      <trans-unit id="O_VL2PE" resname="CPU socket and platform">
+        <source>CPU socket and platform</source>
+        <target>Socket și platformă CPU</target>
       </trans-unit>
-      <trans-unit id="vhHptqG" resname="Maximum supported RAM:">
-        <source>Maximum supported RAM:</source>
-        <target>Cantitate max. de RAM:</target>
+      <trans-unit id="vhHptqG" resname="Supported RAM size and types">
+        <source>Supported RAM size and types</source>
+        <target>Tipul și dimens. max. de RAM</target>
       </trans-unit>
       <trans-unit id="lr3zG.4" resname="Cache:">
         <source>Cache:</source>

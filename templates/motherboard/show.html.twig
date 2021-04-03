@@ -99,7 +99,7 @@
             {% endif %}
 		</td></tr>
         {% if motherboard.getChipset() is not null %}
-            <tr><td>{% trans %}Chipset:{% endtrans %}</td><td>
+            <tr><td>{% trans %}Chipset{% endtrans %}:</td><td>
                 {% if motherboard.getChipset().getEncyclopediaLink() is not null %}
                     <a href="{{ motherboard.getChipset().getEncyclopediaLink() }}">
                         {{ motherboard.getChipset().getMainChipWithManufacturer() }}
@@ -113,7 +113,7 @@
             <tr><td>{% trans %}Dimensions:{% endtrans %}</td><td>{{ motherboard.getDimensions() }}</td></tr>
         {% endif %}
 		{% if motherboard.getCpuSockets() or motherboard.getProcessorPlatformTypes() is not empty %}
-            <tr><td>{% trans %}CPU socket and platform:{% endtrans %}</td>
+            <tr><td>{% trans %}CPU socket and platform{% endtrans %}:</td>
 			<td>
 			{% if motherboard.getCpuSockets() is not empty %}
 				{% for socket in motherboard.getCpuSockets() %}
@@ -144,7 +144,7 @@
 			</tr>
         {% endif %}
 		{% if motherboard.getMotherboardMaxRams() or motherboard.getDramType() is not empty %}
-            <tr><td>{% trans %}Supported RAM size and types:{% endtrans %}</td><td>
+            <tr><td>{% trans %}Supported RAM size and types{% endtrans %}:</td><td>
 			{% if motherboard.getMotherboardMaxRams() is not empty %}
                 {% for maxRam in motherboard.getMotherboardMaxRams()|sort((a, b) => a.getMaxRam().getValue() <=> b.getMaxRam().getValue()) %}
                     {% if maxRam.getMaxRam() is not null %}
@@ -168,7 +168,7 @@
             </td></tr>
         {% endif %}
 		{% if motherboard.getCacheSize() is not empty %}
-            <tr><td>{% trans %}Cache size:{% endtrans %}</td><td>
+            <tr><td>{% trans %}Cache:{% endtrans %}</td><td>
             {% for cache in motherboard.getCacheSize()|sort((a, b) => a.value <=> b.value) %}
                 <span class="newdiv" style="background-color:#d0faca;">
 					{% if cache.getValue() > 1023 %}

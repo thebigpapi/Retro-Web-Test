@@ -201,9 +201,9 @@
         <source>Unknown</source>
         <target>Onbekend</target>
       </trans-unit>
-      <trans-unit id="I0m_uoh" resname="Chipset:">
-        <source>Chipset:</source>
-        <target>Chipset:</target>
+      <trans-unit id="I0m_uoh" resname="Chipset">
+        <source>Chipset</source>
+        <target>Chipset</target>
       </trans-unit>
       <trans-unit id="O_VL2PE" resname="Processor platform:">
         <source>Processor platform:</source>
