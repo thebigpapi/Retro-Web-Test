@@ -100,9 +100,9 @@ function cpupdate(obj) {
 	//alert(cpuSel.children[3].children[0].tagName);
 	
 	if(sel_type == "cpuSockets"){
-		document.getElementById("btn1").children[0].click();
+		document.getElementById("btn1").childNodes[0].click();
 	}
 	if(sel_type == "processorPlatformTypes"){
-		document.getElementById("btn2").children[0].click();
+		document.getElementById("btn2").childNodes[0].click();
 	}
 }

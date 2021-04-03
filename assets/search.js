@@ -1,5 +1,5 @@
 function setChipset(ok, formtype, sel1, sel2, sel_lb, typ) {
-    var chipManuf = document.getElementById(sel1).children[0];
+    var chipManuf = document.getElementById(sel1).childNodes[0];
 	var lb1 = document.getElementById(sel_lb);
 	var lb2 = document.getElementById(sel2);
 	lb1.style.display="";
@@ -11,7 +11,7 @@ function setChipset(ok, formtype, sel1, sel2, sel_lb, typ) {
         var xhttp = new ActiveXObject("Microsoft.XMLHTTP");
     xhttp.onreadystatechange = function() {  
         if (xhttp.readyState == 4 && xhttp.status == 200) {
-            var currentForm = document.getElementById(sel2).children[0];
+            var currentForm = document.getElementById(sel2);
             var parser = document.getElementById('hiddenDiv');
 			var lb1 = document.getElementById(sel_lb);
 			var lb2 = document.getElementById(sel2);
@@ -19,7 +19,7 @@ function setChipset(ok, formtype, sel1, sel2, sel_lb, typ) {
 			lb2.style.display="";
 			lb2.style.width="70%";
             parser.innerHTML = xhttp.responseText;
-            var doc = document.getElementById(sel2).children[0];
+            var doc = document.getElementById(sel2);
             currentForm.innerHTML =  doc.innerHTML;
             parser.innerHTML="";
         }
@@ -61,16 +61,6 @@ if (xhttp) {
 		lb3.style.width="70%";
 		lb4.style.width="70%";
 	}
-}
-
-/* event listeners*/
-function addEvent(evnt, elem, func){
-    if(elem.addEventListener)
-        elem.addEventListener(evnt,func,false);
-    else if(elem.attachEvent) {
-        elem.attachEvent("on"+evnt,func);
-    }
-    else elem["on"+evnt] = func;
 }
 rst.onclick= function() {
 	setChipset(1,formtype, "setchip1", "setchip2", "setchip-lb", "[chipsetManufacturer]=");
