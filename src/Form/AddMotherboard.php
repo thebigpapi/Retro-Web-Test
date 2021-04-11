@@ -37,6 +37,7 @@ use App\Form\Type\MotherboardBiosType;
 use App\Form\Type\MotherboardImageTypeForm;
 use App\Form\Type\KnownIssueType;
 use App\Form\Type\ProcessorPlatformTypeForm;
+use App\Repository\CpuSocketRepository;
 use App\Repository\ProcessorPlatformTypeRepository;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -65,8 +66,27 @@ class AddMotherboard extends AbstractType
         return $this->entityManager->getRepository(ProcessorPlatformType::class);
     }
 
+    private function getCpuSockets(): CpuSocketRepository
+    {
+        return $this->entityManager->getRepository(CpuSocket::class);
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        /*$sockets = $options['sockets'] ?? null;
+        $platforms = null;
+        if($sockets) {
+            if($sockets->isEmpty()) {
+                $platforms = $this->getProcessorPlatformTypeRepository()
+                ->findAll();
+            }
+            else {
+                $platforms = array();
+                foreach ($sockets as $socket) {
+                    $platforms = array_merge($platforms,$socket->getPlatforms()->toArray());
+                }
+            }
+        }*/
         $builder
             ->add('name', TextType::class)
             ->add('dimensions', TextType::class, [
@@ -200,7 +220,7 @@ class AddMotherboard extends AbstractType
             ->add('maxCpu', NumberType::class, [
                 'required' => false,
             ])
-            ->add('processorPlatformTypes', CollectionType::class, [
+            /*->add('processorPlatformTypes', CollectionType::class, [
                 'entry_type' => ProcessorPlatformTypeForm::class,
                 'allow_add' => true,
                 'allow_delete' => true,
@@ -214,12 +234,12 @@ class AddMotherboard extends AbstractType
                 'entry_type' => ProcessorType::class,
                 'allow_add' => true,
                 'allow_delete' => true,
-            ])
+            ])*/
             ->add('save', SubmitType::class)
             ->add('updatePlatforms', SubmitType::class, ['label' => 'Update platforms'])
             ->add('updateProcessors', SubmitType::class, ['label' => 'Update processors'])
         ;
-
+                
         $formSocketModifier = function (FormInterface $form, Collection $cpuSockets = null) {
             if($cpuSockets->isEmpty()) {
                 //dd("test");
@@ -228,8 +248,18 @@ class AddMotherboard extends AbstractType
             }
             else {
                 $platforms = array();
-                foreach ($cpuSockets as $socket) {
-                    $platforms = array_merge($platforms,$socket->getPlatforms()->toArray());
+                if($cpuSockets[0] instanceof CpuSocket) 
+                {
+                    foreach ($cpuSockets as $socket) {
+                        $platforms = array_merge($platforms,$socket->getPlatforms()->toArray());
+                    }
+                }
+                else
+                {
+                    foreach ($cpuSockets as $socketId) {
+                        $socket = $this->getCpuSockets()->find($socketId);
+                        $platforms = array_merge($platforms,$socket->getPlatforms()->toArray());
+                    }
                 }
             }
 
@@ -251,45 +281,52 @@ class AddMotherboard extends AbstractType
                 // this would be your entity, i.e. SportMeetup
                 $data = $event->getData();
                 //dd($data->getCpuSockets());
-
+                
                 $formSocketModifier($event->getForm(), $data->getCpuSockets());
             }
         );
 
-        $builder->get('cpuSockets')->addEventListener(
-            FormEvents::POST_SUBMIT,
+        $builder->addEventListener(
+            FormEvents::PRE_SUBMIT,
             function (FormEvent $event) use ($formSocketModifier) {
                 // It's important here to fetch $event->getForm()->getData(), as
                 // $event->getData() will get you the client data (that is, the ID)
-                $cpuSockets = $event->getForm()->getData();
-
+                $cpuSocketsIds = (array_key_exists("cpuSockets", $event->getData())) ? $event->getData()["cpuSockets"]:null;
+                $formSocketModifier($event->getForm(), new ArrayCollection($cpuSocketsIds));
                 // since we've added the listener to the child, we'll have to pass on
                 // the parent to the callback functions!
-                $formSocketModifier($event->getForm()->getParent(), $cpuSockets);
+                
             }
         );
 
         $formPlatformModifier = function (FormInterface $form, Collection $processorPlatformTypes = null) {
             $processors = array();
             if (!$processorPlatformTypes->isEmpty()) {
-                foreach ($processorPlatformTypes as $platform) {
-                    $processors = array_merge($processors, $platform->getCompatibleProcessors()->toArray());
+                if($processorPlatformTypes[0] instanceof ProcessorPlatformType) 
+                {
+                    foreach ($processorPlatformTypes as $platform) {
+                        $processors = array_merge($processors,$platform->getCompatibleProcessors()->toArray());
+                    }
+                }
+                else
+                {
+                    foreach ($processorPlatformTypes as $platformId) {
+                        $platform = $this->getProcessorPlatformTypeRepository()->find($platformId);
+                        $processors = array_merge($processors,$platform->getCompatibleProcessors()->toArray());
+                    }
                 }
             }
-            //dd($processors);
             
-            
-                //dd($processorPlatformTypes);
-                $processors = Processor::sort(new ArrayCollection($processors));
-                //if($chipsetManufacturer) dd($chipsets[94]->getFullReference()==" Unidentified ");
-                $form->add('processors', CollectionType::class, [
-                    'entry_type' => ProcessorType::class,
-                    'allow_add' => true,
-                    'allow_delete' => true,
-                    'entry_options'  => [
-                        'choices' => $processors,
-                    ],
-                ]);
+            $processors = Processor::sort(new ArrayCollection($processors));
+            //if($chipsetManufacturer) dd($chipsets[94]->getFullReference()==" Unidentified ");
+            $form->add('processors', CollectionType::class, [
+                'entry_type' => ProcessorType::class,
+                'allow_add' => true,
+                'allow_delete' => true,
+                'entry_options'  => [
+                    'choices' => $processors,
+                ],
+            ]);
         };
             
 
@@ -299,27 +336,23 @@ class AddMotherboard extends AbstractType
                 // this would be your entity, i.e. SportMeetup
                 $data = $event->getData();
                 
-                //dd($data);
-
                 $formPlatformModifier($event->getForm(), $data->getProcessorPlatformTypes());
             }
         );
-
+        //dd($builder->get('processorPlatformTypes'));
         try {
-            $builder->get('processorPlatformTypes')->addEventListener(
-                FormEvents::POST_SUBMIT,
+            $builder->addEventListener(
+                FormEvents::PRE_SUBMIT,
                 function (FormEvent $event) use ($formPlatformModifier) {
-                    // It's important here to fetch $event->getForm()->getData(), as
-                    // $event->getData() will get you the client data (that is, the ID)
-                    $processorPlatformTypes = $event->getForm()->getData();
-
+                    $processorPlatformTypeIds = (array_key_exists("processorPlatformTypes", $event->getData())) ? $event->getData()["processorPlatformTypes"]:null;
+                    $formPlatformModifier($event->getForm(), new ArrayCollection($processorPlatformTypeIds));
+                    
                     // since we've added the listener to the child, we'll have to pass on
                     // the parent to the callback functions!
-                    $formPlatformModifier($event->getForm()->getParent(), $processorPlatformTypes);
                 }
             );
         }
-        catch (InvalidArgumentException $exception) {}
+        catch (InvalidArgumentException $exception) {dd($exception);}
     }
 
     public function configureOptions(OptionsResolver $resolver)
@@ -333,7 +366,7 @@ class AddMotherboard extends AbstractType
         ]);
     }
 
-    public function buildAfterSubmit(FormBuilderInterface $builder, array $options)
+ /*   public function buildAfterSubmit(FormBuilderInterface $builder, array $options)
 {
     dd($builder->getData());
     /*if ($builder->getData()->getBrand() !== null) {
@@ -343,8 +376,8 @@ class AddMotherboard extends AbstractType
             'multiple' => false,
             'expanded' => false,
         ));
-    }*/
-}
+    }
+}*/
 
     /*public function finishView(FormView $view, FormInterface $form, array $options)
     {
