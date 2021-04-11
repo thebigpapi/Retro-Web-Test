@@ -16,7 +16,7 @@ function setChipset(ok, formtype, sel1, sel2, sel_lb, typ) {
 			var lb1 = document.getElementById(sel_lb);
 			lb1.style.display="none";
 			currentForm.style.display="";
-			currentForm.style.width="70%";
+			currentForm.style.width="100%";
             parser.innerHTML = xhttp.responseText;
             var doc = document.getElementById(sel2);
             currentForm.innerHTML =  doc.innerHTML;
@@ -54,12 +54,12 @@ else if (window.ActiveXObject)
     var xhttp = new ActiveXObject("Microsoft.XMLHTTP");
 if (xhttp) { 
     document.getElementById(formtype + '_searchChipsetManufacturer').outerHTML="";
-	lb2.style.width="70%";
+	lb2.style.width="100%";
 	if(formtype != "search"){
 		document.getElementById(formtype + '_searchSocket1').outerHTML="";
 		document.getElementById(formtype + '_searchSocket2').outerHTML="";
-		lb3.style.width="70%";
-		lb4.style.width="70%";
+		lb3.style.width="100%";
+		lb4.style.width="100%";
 	}
 }
 rst.onclick= function() {

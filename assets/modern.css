@@ -24,16 +24,18 @@ select.sform{height:2.2em;}
 	div.top-bar select.lang {width: 40%;}
 	
 	/* search.html.twig */
-	h2.title {font-size: 16px; margin: 10px 0;}
+	h2.title {font-size: 16px; margin: 10px 0;}d
+	table.search-table {display:inline-block;}
+	table.search-table tr {display:flex;flex-wrap:wrap;height:auto;margin-bottom:5px;}
+	table.search-table td {display:block;width:100%;text-align:left;}
+	#setchip1, #setcpu1, #setcpu3 {width:100%;}
 	div.butn input {font-size:18px;}
 	div.page {font-size:14px;}
-	td.table-width {display:none;}
-	tr.title-width {display:table;margin-left: 2%;}
-	.sform, div.sform2{margin-left:5%;}
+	.sform, div.sform2, table.sform1 {margin-left:4%;}
 	div.sform2 input[type=checkbox] {width:20px;height:20px;}
 	span.field1 {width: 13em;}
 	span.field2 {width: 10em;}
-	table.sform1{margin-left:3%;}
+	table.sform1{margin-left:0;}
 	
 	/* show.html.twig */
 	div.show-images {width:100%; max-height:400px;padding-top:5px;}
@@ -72,6 +74,7 @@ select.sform{height:2.2em;}
 	/* search.html.twig */
 	td.table-width, td.bios-width {width:210px;}
 	div.butn input {font-size:18px;}
+	table.search-table tr {height:1.5em;}
 
 	/* result.html.twig */
 	div.results ul li{font-size:20px;}
@@ -109,6 +112,7 @@ select.sform{height:2.2em;}
 	body, form {margin:0; padding:0;background-color:#191919;color:#EEEEEE;}
 	form.index-buttons input.button1,form.index-buttons input.button2,
 	form.index-buttons input.button3, div.butn input{background-color:#303030;color:#FFFFFF;}
+	a.help-t span{background-color: black;color: #fff;border:1px solid #FFFFFF;}
 	b.contrib {background: #191919; color: yellow;}
 	b.contrib a:link, b.contrib a:visited { color: #A600FF;}
 	a:link { color: orange;}

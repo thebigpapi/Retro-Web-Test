@@ -357,7 +357,7 @@
 			<td>{{ processor.manufacturer.getShortNameIfExist() }}&nbsp;{{ processor.getName() }}</td>
 			<td>{{ processor.speed.getValueWithUnit() }}</td>
 			<td>{{ processor.fsb.getValueWithUnit() }}</td>
-			<td>{{ processor.voltage}}V</td>
+			<td>{{ processor.voltage}}</td>
 			<td>{% if processor.l1 is not null %}
 					{{ processor.l1.getValueWithUnit()}}
 					{% if processor.l1CacheMethod is not null %}

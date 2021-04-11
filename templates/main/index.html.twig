@@ -8,8 +8,7 @@
 			<input type="submit" class="button2" name="expansion" value="{% trans %}Find an expansion card{% endtrans %}" disabled="disabled">
 			<input type="submit" class="button3" name="bios" value="Find a BIOS image">
 		</div>
-	</form>{% if is_granted('ROLE_ADMIN') %}
-
+	</form>
 	<p><b>{% trans %}Recently added or updated boards:{% endtrans %}</b></p>
 	<div class="results">
 		<ul>
@@ -17,5 +16,5 @@
 			<li><a href="./motherboard/show/{{ motherboard.getId() }}">{{ motherboard.getManufacturerShortNameIfExist() }}&nbsp;{{ motherboard.name }}</a></li>		
 		{% endfor %}
 		</ul>
-	</div>{% endif %}
+	</div>
 {% endblock %}
