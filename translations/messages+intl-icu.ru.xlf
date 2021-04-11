@@ -201,9 +201,9 @@
         <source>Unknown</source>
         <target>Неизвестно</target>
       </trans-unit>
-      <trans-unit id="I0m_uoh" resname="Chipset:">
-        <source>Chipset:</source>
-        <target>Чипсет:</target>
+      <trans-unit id="I0m_uoh" resname="Chipset">
+        <source>Chipset</source>
+        <target>Чипсет</target>
       </trans-unit>
       <trans-unit id="O_VL2PE" resname="Processor platform:">
         <source>Processor platform:</source>
