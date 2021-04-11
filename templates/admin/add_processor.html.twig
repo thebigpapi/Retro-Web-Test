@@ -92,8 +92,20 @@
 			<td>{{form_widget(form.processingUnit.platform)}}</td>
 		</tr>
 		<tr>
-			<td>{{form_label(form.voltage)}}</td>
-			<td>{{form_widget(form.voltage)}} V</td>
+			<td>{{form_label(form.voltages)}} <button type="button" onclick="expand('voltages-fields-list')">Add</button> </td>
+			<td class="append_table" id="voltages-fields-list" data-widget-counter="{{ form.voltages|length }}"
+        data-prototype="
+			<div class=ba0>{{ form_widget(form.voltages.vars.prototype.value, {'attr': {'style': 'width:100%'}} )|e }}V</div>
+			<div class=ba3><button type=button onclick=this.parentNode.parentNode.parentNode.removeChild(this.parentNode.parentNode);>Del</button></div>
+		">
+			{% for voltage in form.voltages %}
+			<div>
+				<div class="ba0">{{ form_widget(voltage.value, {'attr': {'style': 'width:100%'}} ) }}V</div>
+				<div class="ba3"><button type="button" onclick="this.parentNode.parentNode.parentNode.removeChild(this.parentNode.parentNode);">Del</button></div>
+				{{ form_errors(voltage) }}
+			</div>
+			{% endfor %}
+			</td>
 		</tr>
 		<tr>
 			<td>{{form_label(form.tdp)}}</td>

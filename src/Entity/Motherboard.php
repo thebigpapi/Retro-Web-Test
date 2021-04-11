@@ -423,15 +423,15 @@ class Motherboard
     public function getSortedProcessors(): Collection
     {
         $processors = array();
-        foreach($this->processors as $processor)
-        {
-            foreach ($processor->getChipAliases() as $alias)
-            {
-                $fakeCPU = clone $processor;
-                $fakeCPU->setName($alias->getName());
-                $fakeCPU->setManufacturer($alias->getManufacturer());
-                $fakeCPU->setPartNumber($alias->getPartNumber());
-                $processors[] = $fakeCPU;
+        foreach($this->processors as $processor) {
+            foreach ($processor->getChipAliases() as $alias) {
+                if (($alias->getManufacturer() != $processor->getManufacturer()) && $alias->getName() != $processor->getName()) {
+                    $fakeCPU = clone $processor;
+                    $fakeCPU->setName($alias->getName());
+                    $fakeCPU->setManufacturer($alias->getManufacturer());
+                    $fakeCPU->setPartNumber($alias->getPartNumber());
+                    $processors[] = $fakeCPU;
+                }
             }
         }
         $processors = array_merge($processors, $this->processors->toArray());

@@ -200,6 +200,21 @@ class AddMotherboard extends AbstractType
             ->add('maxCpu', NumberType::class, [
                 'required' => false,
             ])
+            ->add('processorPlatformTypes', CollectionType::class, [
+                'entry_type' => ProcessorPlatformTypeForm::class,
+                'allow_add' => true,
+                'allow_delete' => true,
+                'entry_options'  => [
+                    'choices' => $this->getProcessorPlatformTypeRepository()
+                    ->findAll(),
+                ],
+                
+            ])
+            ->add('processors', CollectionType::class, [
+                'entry_type' => ProcessorType::class,
+                'allow_add' => true,
+                'allow_delete' => true,
+            ])
             ->add('save', SubmitType::class)
             ->add('updatePlatforms', SubmitType::class, ['label' => 'Update platforms'])
             ->add('updateProcessors', SubmitType::class, ['label' => 'Update processors'])
@@ -217,67 +232,16 @@ class AddMotherboard extends AbstractType
                     $platforms = array_merge($platforms,$socket->getPlatforms()->toArray());
                 }
             }
-            //dd($platforms);
-           
-            /*$formOptions = [
-                'class' => Chipset::class,
-                'choice_label' => 'getMainChipWithManufacturer',
-                'query_builder' => function (ChipsetRepository $chipsetRepository) use ($manufacturer) {
-                    return $chipsetRepository->findByManufacturer($manufacturer);
-                    // call a method on your repository that returns the query builder
-                    // return $userRepository->createFriendsQueryBuilder($user);
-                },
-            ];*/
-            
 
-
-            /*if($chipsetManufacturer)
-                $formOptions = array(new Chipset());
-            else
-                $formOptions = array();**/
-            /*if($chipsets)
-                dd($chipsets);*/
-            
-            /*if($chipsetManufacturer)
-            {*/
-               /*usort($processors, function ($a, $b)
-                    {
-                        if ($a->getFullReference() == $b->getFullReference()) {
-                            return 0;
-                        }
-                        if($a->getFullReference()==" Unidentified ") return -1;
-                        return ($a->getFullReference() < $b->getFullReference()) ? -1 : 1;
-                    }
-                );*/
-                
-                //if($chipsetManufacturer) dd($chipsets[94]->getFullReference()==" Unidentified ");
-                /*$form->add('processors', CollectionType::class, [
-                    'entry_type' => ProcessorType::class,
-                    'allow_add' => true,
-                    'allow_delete' => true,
-                    'entry_options'  => [
-                        'choices' => $processors,
-                    ],
-                ]);*/
-                /*$form->add('processorPlatformTypes', EntityType::class, [
-                    'class' => ProcessorPlatformType::class,
-                    
-                    'choice_label' => 'name',
-                    'multiple' => false,
-                    'expanded' => false,
+            $form->add('processorPlatformTypes', CollectionType::class, [
+                'entry_type' => ProcessorPlatformTypeForm::class,
+                'allow_add' => true,
+                'allow_delete' => true,
+                'entry_options'  => [
                     'choices' => $platforms,
-                ]);*/
-                $form->add('processorPlatformTypes', CollectionType::class, [
-                    'entry_type' => ProcessorPlatformTypeForm::class,
-                    'allow_add' => true,
-                    'allow_delete' => true,
-                    'entry_options'  => [
-                        'choices' => $platforms,
-                    ],
-                ]);
-            //}
-            /*if($chipsetManufacturer)
-                dd($form->getData());*/
+                ],
+            ]);
+
         };
             
 
@@ -306,45 +270,16 @@ class AddMotherboard extends AbstractType
         );
 
         $formPlatformModifier = function (FormInterface $form, Collection $processorPlatformTypes = null) {
-            //$processors = null === $processorPlatformTypes ? [] : $processorPlatformTypes->getCompatibleProcessingUnits()->toArray();
             $processors = array();
             if (!$processorPlatformTypes->isEmpty()) {
                 foreach ($processorPlatformTypes as $platform) {
                     $processors = array_merge($processors, $platform->getCompatibleProcessors()->toArray());
                 }
             }
+            //dd($processors);
             
             
-            /*$formOptions = [
-                'class' => Chipset::class,
-                'choice_label' => 'getMainChipWithManufacturer',
-                'query_builder' => function (ChipsetRepository $chipsetRepository) use ($manufacturer) {
-                    return $chipsetRepository->findByManufacturer($manufacturer);
-                    // call a method on your repository that returns the query builder
-                    // return $userRepository->createFriendsQueryBuilder($user);
-                },
-            ];*/
-            
-
-
-            /*if($chipsetManufacturer)
-                $formOptions = array(new Chipset());
-            else
-                $formOptions = array();**/
-            /*if($chipsets)
-                dd($chipsets);*/
-            
-            /*if($chipsetManufacturer)
-            {*/
-               /*usort($processors, function ($a, $b)
-                    {
-                        if ($a->getFullReference() == $b->getFullReference()) {
-                            return 0;
-                        }
-                        if($a->getFullReference()==" Unidentified ") return -1;
-                        return ($a->getFullReference() < $b->getFullReference()) ? -1 : 1;
-                    }
-                );*/
+                //dd($processorPlatformTypes);
                 $processors = Processor::sort(new ArrayCollection($processors));
                 //if($chipsetManufacturer) dd($chipsets[94]->getFullReference()==" Unidentified ");
                 $form->add('processors', CollectionType::class, [
@@ -355,9 +290,6 @@ class AddMotherboard extends AbstractType
                         'choices' => $processors,
                     ],
                 ]);
-            //}
-            /*if($chipsetManufacturer)
-                dd($form->getData());*/
         };
             
 
@@ -366,6 +298,7 @@ class AddMotherboard extends AbstractType
             function (FormEvent $event) use ($formPlatformModifier) {
                 // this would be your entity, i.e. SportMeetup
                 $data = $event->getData();
+                
                 //dd($data);
 
                 $formPlatformModifier($event->getForm(), $data->getProcessorPlatformTypes());
@@ -373,7 +306,7 @@ class AddMotherboard extends AbstractType
         );
 
         try {
-            $builder->get('processorPlatformType')->addEventListener(
+            $builder->get('processorPlatformTypes')->addEventListener(
                 FormEvents::POST_SUBMIT,
                 function (FormEvent $event) use ($formPlatformModifier) {
                     // It's important here to fetch $event->getForm()->getData(), as
@@ -400,11 +333,22 @@ class AddMotherboard extends AbstractType
         ]);
     }
 
+    public function buildAfterSubmit(FormBuilderInterface $builder, array $options)
+{
+    dd($builder->getData());
+    /*if ($builder->getData()->getBrand() !== null) {
+        $builder->add('model', EntityType::class, array(
+            'class'       => 'DEERCMS\ModelBundle\Entity\Model',
+            'choices'     => $models,
+            'multiple' => false,
+            'expanded' => false,
+        ));
+    }*/
+}
+
     /*public function finishView(FormView $view, FormInterface $form, array $options)
     {
-        dd($view);
         $view->children['processors']->vars['data'] = Processor::sort($view->children['processors']->vars['data']);
-        //dd($view->children['images']->children[2]->children['creditor']->vars['choices']);
         foreach ($view->children['images']->children as $image)
         {
             usort($image->children['creditor']->vars['choices'], function(ChoiceView $a, ChoiceView $b) {
@@ -412,7 +356,6 @@ class AddMotherboard extends AbstractType
             });
         }
 
-        /*dd($view->children['cpuSpeed']);
         usort($view->children['cpuSpeed']->vars['choices'], function(ChoiceView $a, ChoiceView $b) {
             return ($a->data->getValue() > $b->data->getValue());
         });

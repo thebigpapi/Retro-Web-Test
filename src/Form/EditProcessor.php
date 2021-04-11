@@ -14,6 +14,7 @@ use App\Entity\Processor;
 use App\Entity\CacheSize;
 use App\Entity\CacheMethod;
 use App\Entity\CacheRatio;
+use App\Form\Type\ProcessorVoltageType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
@@ -30,8 +31,10 @@ class EditProcessor extends AbstractType
             ->add('core', TextType::class, [
                 'required' => false,
             ])
-            ->add('voltage', NumberType::class, [
-                'required' => true,
+            ->add('voltages', CollectionType::class, [
+                'entry_type' => ProcessorVoltageType::class,
+                'allow_add' => true,
+                'allow_delete' => true,
             ])
             ->add('tdp', NumberType::class, [
                 'required' => false,

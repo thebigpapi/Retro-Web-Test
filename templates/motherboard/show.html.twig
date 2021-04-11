@@ -343,7 +343,7 @@
 			<th>Model</th>
 			<th>Speed</th>
 			<th>FSB</th>
-			<th>Voltage</th>
+			<th>Voltages</th>
 			<th>L1 Cache</th>
 			<th>L2 Cache</th>
 			<th>L3 Cache</th>
@@ -357,7 +357,7 @@
 			<td>{{ processor.manufacturer.getShortNameIfExist() }}&nbsp;{{ processor.getName() }}</td>
 			<td>{{ processor.speed.getValueWithUnit() }}</td>
 			<td>{{ processor.fsb.getValueWithUnit() }}</td>
-			<td>{{ processor.voltage}}V</td>
+			<td>{{ processor.getVoltagesWithValue()}}</td>
 			<td>{% if processor.l1 is not null %}
 					{{ processor.l1.getValueWithUnit()}}
 					{% if processor.l1CacheMethod is not null %}

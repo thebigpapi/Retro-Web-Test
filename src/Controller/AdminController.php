@@ -725,6 +725,9 @@ class AdminController extends AbstractController
             foreach ($form['processingUnit']['chip']['images']->getData() as $key => $val) {
                 $val->setChip($processor);
             }
+            foreach ($form['voltages']->getData() as $key => $val) {
+                $val->setProcessor($processor);
+            }
 
             $entityManager->persist($processor);
             $entityManager->flush();
