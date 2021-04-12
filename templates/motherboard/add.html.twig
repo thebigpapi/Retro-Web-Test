@@ -152,8 +152,8 @@
 			<td></td>
 		</tr>
 		<tr id="updcpu">
-			<td id="btn1">{{ form_widget(form.updatePlatforms, {'attr': {'style': 'width:80%'}} ) }}</td>
-			<td id="btn2">{{ form_widget(form.updateProcessors, {'attr': {'style': 'width:80%'}} ) }}</td>
+			<td id="btn1">{{ form_widget(form.updateProcessors, {'attr': {'style': 'width:80%'}} ) }}</td>
+			<td></td>
 			<td></td>
 			<td></td>
 		</tr>
@@ -417,5 +417,4 @@
 </form>
 
 <script type="text/javascript" src="{% if app.request.attributes.get('_route') == "motherboard_edit" %}../{% endif %}../assets/add-collection-widget.js"></script>
-
 {% endblock %}

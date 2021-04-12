@@ -118,7 +118,7 @@
 			{% if motherboard.getCpuSockets() is not empty %}
 				{% for socket in motherboard.getCpuSockets() %}
 					<span class="newdiv" style="background-color:#cae4fa;">
-						{{ socket.getName() }} 
+						{{ socket.getNameAndType}}
 					</span>
 				{% endfor %}
 			{% endif %}

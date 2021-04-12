@@ -237,7 +237,6 @@ class AddMotherboard extends AbstractType
                 'allow_delete' => true,
             ])*/
             ->add('save', SubmitType::class)
-            ->add('updatePlatforms', SubmitType::class, ['label' => 'Update platforms'])
             ->add('updateProcessors', SubmitType::class, ['label' => 'Update processors'])
         ;
                 

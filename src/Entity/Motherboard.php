@@ -424,15 +424,28 @@ class Motherboard
     {
         $processors = array();
         foreach($this->processors as $processor) {
+            $processorsTmp = array();
             foreach ($processor->getChipAliases() as $alias) {
                 if (($alias->getManufacturer() != $processor->getManufacturer()) && $alias->getName() != $processor->getName()) {
-                    $fakeCPU = clone $processor;
-                    $fakeCPU->setName($alias->getName());
-                    $fakeCPU->setManufacturer($alias->getManufacturer());
-                    $fakeCPU->setPartNumber($alias->getPartNumber());
-                    $processors[] = $fakeCPU;
+                    $alreadyAdded = false;
+                    foreach($processorsTmp as $processorTmp)
+                    {
+                        if (($alias->getManufacturer() == $processorTmp->getManufacturer()) && $alias->getName() == $processorTmp->getName())
+                        {
+                            $alreadyAdded = true;
+                        }
+                    }
+                    if(!$alreadyAdded)
+                    {
+                        $fakeCPU = clone $processor;
+                        $fakeCPU->setName($alias->getName());
+                        $fakeCPU->setManufacturer($alias->getManufacturer());
+                        $fakeCPU->setPartNumber($alias->getPartNumber());
+                        $processorsTmp[] = $fakeCPU;
+                    }
                 }
             }
+            $processors = array_merge($processors, $processorsTmp);
         }
         $processors = array_merge($processors, $this->processors->toArray());
         return Processor::sort(new ArrayCollection($processors));
