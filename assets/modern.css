@@ -15,7 +15,7 @@ input.num {width:20px;}
 span.field1 {font-size: 12px;}
 select.sform{height:2.2em;}
 
-@media (max-device-width: 600px) {
+@media (max-width: 600px) {
 	div.top-bar {font-size:12px; padding:0 0 0 5px;}
 	div.top-bar div.table-mobile {display: table; border-spacing: 2px;}
 	div.top-bar a, div.top-bar span.form {display: table-cell; vertical-align: middle; padding: 1px;}

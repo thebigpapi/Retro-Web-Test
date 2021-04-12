@@ -91,9 +91,9 @@ function check_E(){
 	return true;
 }
 var upd_btn = document.getElementById("updcpu");
-upd_btn.style.display="none";
+//upd_btn.style.display="none";
 // function used to update CPU related widgets
-function cpupdate(obj) {
+function cpukpdate(obj) {
     //var cpuSel = document.getElementById("processors-fields-list");
 	var form = document.getElementsByName("add_motherboard")[0];
 	var sel_type = obj.id.substring(16,obj.id.length-2);

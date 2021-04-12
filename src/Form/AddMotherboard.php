@@ -291,7 +291,7 @@ class AddMotherboard extends AbstractType
             function (FormEvent $event) use ($formSocketModifier) {
                 // It's important here to fetch $event->getForm()->getData(), as
                 // $event->getData() will get you the client data (that is, the ID)
-                $cpuSocketsIds = (array_key_exists("cpuSockets", $event->getData())) ? $event->getData()["cpuSockets"]:null;
+                $cpuSocketsIds = (array_key_exists("cpuSockets", $event->getData())) ? $event->getData()["cpuSockets"]:[];
                 $formSocketModifier($event->getForm(), new ArrayCollection($cpuSocketsIds));
                 // since we've added the listener to the child, we'll have to pass on
                 // the parent to the callback functions!
@@ -344,7 +344,7 @@ class AddMotherboard extends AbstractType
             $builder->addEventListener(
                 FormEvents::PRE_SUBMIT,
                 function (FormEvent $event) use ($formPlatformModifier) {
-                    $processorPlatformTypeIds = (array_key_exists("processorPlatformTypes", $event->getData())) ? $event->getData()["processorPlatformTypes"]:null;
+                    $processorPlatformTypeIds = (array_key_exists("processorPlatformTypes", $event->getData())) ? $event->getData()["processorPlatformTypes"]:[];
                     $formPlatformModifier($event->getForm(), new ArrayCollection($processorPlatformTypeIds));
                     
                     // since we've added the listener to the child, we'll have to pass on

@@ -39,7 +39,7 @@ input.sform { width: 90%; vertical-align:middle;}
 table.sform1 {width: 91%; margin-left:-3px;}
 
 
-td.table-width, td.bios-width {width: 120px;text-align:center;}
+td.table-width, td.bios-width {width: 130px;text-align:center;}
 tr.title-width {display:none;}
 span.field1 {height: 1.75em; width: 15em; font-size:14px; margin-bottom:4px; /* **/ float:left; /** */}
 span.field1 span {float:left; margin-left:0.4em;}
