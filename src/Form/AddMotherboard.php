@@ -22,6 +22,7 @@ use App\Entity\ProcessorPlatformType;
 use App\Entity\VideoChipset;
 use App\Entity\AudioChipset;
 use App\Entity\CpuSocket;
+use App\Entity\CpuSpeed;
 use App\Entity\MaxRam;
 use App\Form\Type\ProcessorType;
 use App\Form\Type\CoprocessorType;
@@ -299,7 +300,7 @@ class AddMotherboard extends AbstractType
             }
         );
 
-        $formPlatformModifier = function (FormInterface $form, Collection $processorPlatformTypes = null) {
+        $formPlatformModifier = function (FormInterface $form, Collection $processorPlatformTypes = null, Collection $fsbs = null) {
             $processors = array();
             if (!$processorPlatformTypes->isEmpty()) {
                 if($processorPlatformTypes[0] instanceof ProcessorPlatformType) 
@@ -316,15 +317,38 @@ class AddMotherboard extends AbstractType
                     }
                 }
             }
+            $processorsCorrected = array();
+            if (!$fsbs->isEmpty()) {
+                if($fsbs[0] instanceof CpuSpeed) 
+                {
+                    foreach ($fsbs as $fsb) {
+                        foreach($processors as $processor)
+                        {
+                            if ($processor->getFsb() == $fsb)
+                                $processorsCorrected[] = $processor;
+                        }
+                    }
+                }
+                else
+                {
+                    foreach ($fsbs as $fsb) {
+                        foreach($processors as $processor)
+                        {
+                            if ($processor->getFsb()->getId() == $fsb)
+                                $processorsCorrected[] = $processor;
+                        }
+                    }
+                }
+            }
             
-            $processors = Processor::sort(new ArrayCollection($processors));
+            $processorsCorrected = Processor::sort(new ArrayCollection($processorsCorrected));
             //if($chipsetManufacturer) dd($chipsets[94]->getFullReference()==" Unidentified ");
             $form->add('processors', CollectionType::class, [
                 'entry_type' => ProcessorType::class,
                 'allow_add' => true,
                 'allow_delete' => true,
                 'entry_options'  => [
-                    'choices' => $processors,
+                    'choices' => $processorsCorrected,
                 ],
             ]);
         };
@@ -336,7 +360,7 @@ class AddMotherboard extends AbstractType
                 // this would be your entity, i.e. SportMeetup
                 $data = $event->getData();
                 
-                $formPlatformModifier($event->getForm(), $data->getProcessorPlatformTypes());
+                $formPlatformModifier($event->getForm(), $data->getProcessorPlatformTypes(), $data->getCpuSpeed());
             }
         );
         //dd($builder->get('processorPlatformTypes'));
@@ -344,8 +368,9 @@ class AddMotherboard extends AbstractType
             $builder->addEventListener(
                 FormEvents::PRE_SUBMIT,
                 function (FormEvent $event) use ($formPlatformModifier) {
+                    $fsbIds = (array_key_exists("cpuSpeed", $event->getData())) ? $event->getData()["cpuSpeed"]:[];
                     $processorPlatformTypeIds = (array_key_exists("processorPlatformTypes", $event->getData())) ? $event->getData()["processorPlatformTypes"]:[];
-                    $formPlatformModifier($event->getForm(), new ArrayCollection($processorPlatformTypeIds));
+                    $formPlatformModifier($event->getForm(), new ArrayCollection($processorPlatformTypeIds), new ArrayCollection($fsbIds));
                     
                     // since we've added the listener to the child, we'll have to pass on
                     // the parent to the callback functions!
