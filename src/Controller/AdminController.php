@@ -64,6 +64,7 @@ use App\Form\EditAudioChipset;
 use App\Form\ManageUser;
 use App\Form\ManageCreditor;
 use App\Form\EditCreditor;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -291,35 +292,9 @@ class AdminController extends AbstractController
 
         $processors = $this->getDoctrine()
             ->getRepository(Processor::class)
-            ->findAllOrderByManufacturer();
+            ->findAll();
 
-        usort($processors, function ($a, $b)
-            {
-                //dd($a->getName());
-                //if($a->getName() == "") return -1;
-                /*if ($a->getFullReference() == $b->getFullReference()) {
-                    return 0;
-                }*/
-                if($a->getManufacturer() == $b->getManufacturer())
-                {
-                    if($a->getName() == $b->getName())
-                    {
-                        if($a->getSpeed() == $b->getSpeed())
-                        {
-                            if($a->getL2() && $b->getL2())
-                                return ($a->getL2()->getValue() < $b->getL2()->getValue()) ? -1 : 1;
-                            else
-                                return 0;
-                        }
-                        return ($a->getSpeed()->getValue() < $b->getSpeed()->getValue() ) ? -1 : 1;
-                    }
-                    else
-                        return ($a->getName() < $b->getName()) ? -1 : 1;
-                }
-                else
-                    return ($a->getManufacturer() < $b->getManufacturer()) ? -1 : 1;
-            }
-        );
+        $processors = Processor::sort(new ArrayCollection($processors))->toArray();
 
         $processorForm = $this->createForm(ManageProcessor::class, NULL, [
             'processors' => $processors,
