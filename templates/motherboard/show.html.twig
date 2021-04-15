@@ -9,6 +9,23 @@
 	{{ motherboard.getName() }}
 {% endblock %}
 
+{% block metatags %}
+	<meta name="description" content="{% if motherboard.getManufacturer() is not null %}{{ motherboard.getManufacturer().getShortNameIfExist() }}{% else %}Unknown{% endif %}
+ {{ motherboard.getName() }}{% if motherboard.getChipset() is not null %}
+, {% if motherboard.getChipset().getManufacturer() is not null %}{{ motherboard.getChipset().getManufacturer().getShortNameIfExist() }}{% endif %}
+{% if motherboard.getChipset().getPartNo() is not null %} {{ motherboard.getChipset().getPartNo() }}{% else %}Unidentified{% endif %}{% endif %}
+{% if motherboard.getFormFactor() is not null %}, {{ motherboard.getFormFactor().getName() }} {% else %}, Form factor: Unknown{% endif %}
+{% if motherboard.getCpuSockets() is not empty %}, {% for socket in motherboard.getCpuSockets() %}{% if socket.getName() is null %}{{ socket.getNameAndType}}{% else %}{{ socket.getName}}{% endif %}{% if not loop.last %}/{% endif %}{% endfor %}
+{% elseif motherboard.getProcessorPlatformTypes() is not empty %}, {% for platform in motherboard.getProcessorPlatformTypes() %}{{ platform.getName() }}{% if not loop.last %}/{% endif %}{% endfor %}{% endif %}
+{% if motherboard.getCpuSpeed() is not empty %}, speed:{% for frequency in motherboard.getCpuSpeed()|sort((a, b) => a.value <=> b.value) %}
+{% if loop.first %}{{ frequency.getValueWithUnit() }} -> {% endif %}{% if loop.last %}{{ frequency.getValueWithUnit() }}{% endif %}{% endfor %}{% endif %}
+{% if motherboard.getMotherboardBios() is not empty %}
+{% for bios in motherboard.getMotherboardBios()|sort((a, b) => b.postString <=> a.postString)|sort((a, b) => b.boardVersion <=> a.boardVersion) %}
+{% if bios.postString() is not empty %}
+{% if loop.first %}, BIOS: {{ bios.getPostString() }}{% endif %}{% if loop.index == 2 %},{{ bios.getPostString() }}{% endif %}{% endif %}{% endfor %}{% endif %}
+ | UH19">
+{% endblock %}
+
 {% block opengraph %}
 	<meta property="og:site_name" content="Ultimate Hardware 2019" >
 	{% apply spaceless %}
@@ -88,7 +105,9 @@
 
 <div class="show-data">
 	<p>
-		<b class="contrib">{% trans %}Would you like to improve this page? Click{% endtrans %} <a href="{% if is_granted('ROLE_ADMIN') %}../edit/{{ motherboard.getId() }}{% else %}/win3board/posting.php?mode=post&amp;f=96&amp;language=en{% endif %}">{% trans %}here{% endtrans %}</a>.</b>
+		<b class="contrib">{% trans %}Would you like to improve this page? Click{% endtrans %} <a href="
+		{% if is_granted('ROLE_ADMIN') %}../edit/{{ motherboard.getId() }}{% else %}/win3board/posting.php?mode=post&amp;f=96&amp;language=en{% endif %}">
+		{% trans %}here{% endtrans %}</a>.</b>
 	</p>
 	<table class="stbl">
         <tr><td class="main-table">{% trans %}Form factor:{% endtrans %}</td><td>
