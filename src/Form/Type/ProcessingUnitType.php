@@ -2,6 +2,7 @@
 
 namespace App\Form\Type;
 
+use App\Entity\CpuSocket;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -16,6 +17,8 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Form\Type\InstructionSetType;
 use App\Form\Type\ChipType;
+use App\Form\Type\CpuSocketType;
+use App\Repository\CpuSocketRepository;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 
@@ -31,10 +34,18 @@ class ProcessingUnitType extends AbstractType
         return $this->entityManager->getRepository(InstructionSet::class);
     }
 
+    private function getCpuSocketRepository(): CpuSocketRepository
+    {
+        return $this->entityManager->getRepository(CpuSocket::class);
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $instructionSets = $this->getManufacturerRepository()
         ->findBy(array(), array('name' => 'ASC'));
+        
+        $sockets = $this->getCpuSocketRepository()
+        ->findAll();
 
         $builder
             ->add('chip', ChipType::class, [
@@ -45,7 +56,7 @@ class ProcessingUnitType extends AbstractType
                 'choice_label' => 'getValueWithUnit',
                 'multiple' => false,
                 'expanded' => false,
-            ])            
+            ])
             ->add('platform', EntityType::class, [
                 'class' => ProcessorPlatformType::class,
                 'choice_label' => 'name',
@@ -65,6 +76,15 @@ class ProcessingUnitType extends AbstractType
                 'entry_options'  => [
                     'choices' => $instructionSets,
                 ],
+            ])
+            ->add('sockets', CollectionType::class, [
+                'entry_type' => CpuSocketType::class,
+                
+                'allow_add' => true,
+                'allow_delete' => true,
+                'entry_options'  => [
+                    'choices' => $sockets,
+                ]
             ]);
     }
 

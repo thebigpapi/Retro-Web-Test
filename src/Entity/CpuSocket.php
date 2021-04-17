@@ -38,10 +38,16 @@ class CpuSocket
      */
     private $type;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\ProcessingUnit", mappedBy="sockets")
+     */
+    private $processingUnits;
+
     public function __construct()
     {
         $this->platforms = new ArrayCollection();
         $this->motherboards = new ArrayCollection();
+        $this->processingUnits = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -129,5 +135,33 @@ class CpuSocket
     {
         if($this->name) return "$this->name ($this->type)";
         else return $this->type;
+    }
+
+    /**
+     * @return Collection|ProcessingUnit[]
+     */
+    public function getProcessingUnits(): Collection
+    {
+        return $this->processingUnits;
+    }
+
+    public function addProcessingUnit(ProcessingUnit $processingUnit): self
+    {
+        if (!$this->processingUnits->contains($processingUnit)) {
+            $this->processingUnits[] = $processingUnit;
+            $processingUnit->addSocket($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProcessingUnit(ProcessingUnit $processingUnit): self
+    {
+        if ($this->processingUnits->contains($processingUnit)) {
+            $this->processingUnits->removeElement($processingUnit);
+            $processingUnit->removeSocket($this);
+        }
+
+        return $this;
     }
 }

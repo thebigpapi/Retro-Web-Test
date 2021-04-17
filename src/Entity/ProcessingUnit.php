@@ -41,10 +41,16 @@ abstract class ProcessingUnit extends Chip
      */
     protected $fsb;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\CpuSocket", inversedBy="processingUnits")
+     */
+    private $sockets;
+
     public function __construct()
     {
         parent::__construct();
         $this->instructionSets = new ArrayCollection();
+        $this->sockets = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -153,5 +159,31 @@ abstract class ProcessingUnit extends Chip
         );
         
         return new ArrayCollection($array);
+    }
+
+    /**
+     * @return Collection|CpuSocket[]
+     */
+    public function getSockets(): Collection
+    {
+        return $this->sockets;
+    }
+
+    public function addSocket(CpuSocket $socket): self
+    {
+        if (!$this->sockets->contains($socket)) {
+            $this->sockets[] = $socket;
+        }
+
+        return $this;
+    }
+
+    public function removeSocket(CpuSocket $socket): self
+    {
+        if ($this->sockets->contains($socket)) {
+            $this->sockets->removeElement($socket);
+        }
+
+        return $this;
     }
 }
