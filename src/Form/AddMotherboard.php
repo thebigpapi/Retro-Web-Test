@@ -137,11 +137,11 @@ class AddMotherboard extends AbstractType
                 'expanded' => false,
                 'choices' => $options['procPlatformTypes'],
             ])*/
-            ->add('coprocessors', CollectionType::class, [
+            /*->add('coprocessors', CollectionType::class, [
                 'entry_type' => CoprocessorType::class,
                 'allow_add' => true,
                 'allow_delete' => true,
-            ])
+            ])*/
             ->add('cpuSpeed', CollectionType::class, [
                 'entry_type' => ProcessorSpeedType::class,
                 'allow_add' => true,
@@ -307,11 +307,13 @@ class AddMotherboard extends AbstractType
 
         $formPlatformModifier = function (FormInterface $form, Collection $processorPlatformTypes, Collection $fsbs, Collection $sockets) {
             $processorsWithPlatform = array();
+            $coprocessorsWithPlatform = array();
             if (!$processorPlatformTypes->isEmpty()) {
                 if($processorPlatformTypes[0] instanceof ProcessorPlatformType) 
                 {
                     foreach ($processorPlatformTypes as $platform) {
                         $processorsWithPlatform = array_merge($processorsWithPlatform,$platform->getCompatibleProcessors()->toArray());
+                        $coprocessorsWithPlatform = array_merge($coprocessorsWithPlatform, $platform->getCoprocessors()->toArray());
                     }
                 }
                 else
@@ -319,34 +321,47 @@ class AddMotherboard extends AbstractType
                     foreach ($processorPlatformTypes as $platformId) {
                         $platform = $this->getProcessorPlatformTypeRepository()->find($platformId);
                         $processorsWithPlatform = array_merge($processorsWithPlatform,$platform->getCompatibleProcessors()->toArray());
+                        $coprocessorsWithPlatform = array_merge($coprocessorsWithPlatform, $platform->getCoprocessors()->toArray());
                     }
                 }
             }
             $processorsWithFsb = array();
+            $coprocessorsWithFsb = array();
             if (!$fsbs->isEmpty()) {
                 if($fsbs[0] instanceof CpuSpeed) 
                 {
                     foreach ($fsbs as $fsb) {
-                        foreach($processorsWithPlatform as $processor)
+                        foreach($coprocessorsWithPlatform as $coprocessor)
                         {
-                            if ($processor->getFsb()->getValue() >= $fsb->getValue() - 1.0 && $processor->getFsb()->getValue() <= $fsb->getValue() + 1.0)
-                                $processorsWithFsb[] = $processor;
+                            if ($coprocessor->getFsb()->getValue() >= $fsb->getValue() - 1.0 && $coprocessor->getFsb()->getValue() <= $fsb->getValue() + 1.0)
+                                $coprocessorsWithFsb[] = $coprocessor;
+                        }
+                        foreach($coprocessorsWithPlatform as $coprocessor)
+                        {
+                            if ($coprocessor->getFsb()->getValue() >= $fsb->getValue() - 1.0 && $coprocessor->getFsb()->getValue() <= $fsb->getValue() + 1.0)
+                                $coprocessorsWithFsb[] = $coprocessor;
                         }
                     }
                 }
                 else
                 {
                     foreach ($fsbs as $fsbId) {
+                        $fsb = $this->getCpuSpeedRepository()->find($fsbId);
                         foreach($processorsWithPlatform as $processor)
                         {
-                            $fsb = $this->getCpuSpeedRepository()->find($fsbId);
                             if ($processor->getFsb()->getValue() >= $fsb->getValue() - 1.0 && $processor->getFsb()->getValue() <= $fsb->getValue() + 1.0)
                                 $processorsWithFsb[] = $processor;
+                        }
+                        foreach($coprocessorsWithPlatform as $coprocessor)
+                        {
+                            if ($coprocessor->getFsb()->getValue() >= $fsb->getValue() - 1.0 && $coprocessor->getFsb()->getValue() <= $fsb->getValue() + 1.0)
+                                $coprocessorsWithFsb[] = $coprocessor;
                         }
                     }
                 }
             }
             $processorsWithSocket = array();
+            $coprocessorsWithSocket = array();
             if (!$sockets->isEmpty()) {
                 if($sockets[0] instanceof CpuSocket) 
                 {
@@ -356,17 +371,27 @@ class AddMotherboard extends AbstractType
                             if ($processor->getSockets()->contains($socket))
                                 $processorsWithSocket[] = $processor;
                         }
+                        foreach($coprocessorsWithFsb as $coprocessor)
+                        {
+                            if ($coprocessor->getSockets()->contains($socket))
+                                $coprocessorsWithSocket[] = $coprocessor;
+                        }
                     }
                 }
                 else
                 {
                     //dd($sockets);
                     foreach ($sockets as $socketId) {
+                        $socket = $this->getCpuSocketsRepository()->find($socketId);
                         foreach($processorsWithFsb as $processor)
                         {
-                            $socket = $this->getCpuSocketsRepository()->find($socketId);
                             if ($processor->getSockets()->contains($socket))
                                 $processorsWithSocket[] = $processor;
+                        }
+                        foreach($coprocessorsWithFsb as $coprocessor)
+                        {
+                            if ($coprocessor->getSockets()->contains($socket))
+                                $coprocessorsWithSocket[] = $coprocessor;
                         }
                     }
                 }
@@ -374,10 +399,12 @@ class AddMotherboard extends AbstractType
             else
             {
                 $processorsWithSocket = $processorsWithFsb;
+                $coprocessorsWithSocket = $coprocessorsWithFsb;
             }
             //dd($sockets);
             
             $processorsWithSocket = Processor::sort(new ArrayCollection($processorsWithSocket));
+            $coprocessorsWithSocket = Coprocessor::sort(new ArrayCollection($coprocessorsWithSocket));
             //if($chipsetManufacturer) dd($chipsets[94]->getFullReference()==" Unidentified ");
             $form->add('processors', CollectionType::class, [
                 'entry_type' => ProcessorType::class,
@@ -385,6 +412,14 @@ class AddMotherboard extends AbstractType
                 'allow_delete' => true,
                 'entry_options'  => [
                     'choices' => $processorsWithSocket,
+                ],
+            ])
+            ->add('coprocessors', CollectionType::class, [
+                'entry_type' => CoprocessorType::class,
+                'allow_add' => true,
+                'allow_delete' => true,
+                'entry_options'  => [
+                    'choices' => $coprocessorsWithSocket,
                 ],
             ]);
         };
