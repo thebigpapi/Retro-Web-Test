@@ -39,6 +39,7 @@ use App\Form\Type\MotherboardImageTypeForm;
 use App\Form\Type\KnownIssueType;
 use App\Form\Type\ProcessorPlatformTypeForm;
 use App\Repository\CpuSocketRepository;
+use App\Repository\CpuSpeedRepository;
 use App\Repository\ProcessorPlatformTypeRepository;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -67,9 +68,14 @@ class AddMotherboard extends AbstractType
         return $this->entityManager->getRepository(ProcessorPlatformType::class);
     }
 
-    private function getCpuSockets(): CpuSocketRepository
+    private function getCpuSocketsRepository(): CpuSocketRepository
     {
         return $this->entityManager->getRepository(CpuSocket::class);
+    }
+
+    private function getCpuSpeedRepository(): CpuSpeedRepository
+    {
+        return $this->entityManager->getRepository(CpuSpeed::class);
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -257,7 +263,7 @@ class AddMotherboard extends AbstractType
                 else
                 {
                     foreach ($cpuSockets as $socketId) {
-                        $socket = $this->getCpuSockets()->find($socketId);
+                        $socket = $this->getCpuSocketsRepository()->find($socketId);
                         $platforms = array_merge($platforms,$socket->getPlatforms()->toArray());
                     }
                 }
@@ -323,17 +329,18 @@ class AddMotherboard extends AbstractType
                     foreach ($fsbs as $fsb) {
                         foreach($processors as $processor)
                         {
-                            if ($processor->getFsb() == $fsb)
+                            if ($processor->getFsb()->getValue() >= $fsb->getValue() - 1.0 && $processor->getFsb()->getValue() <= $fsb->getValue() + 1.0)
                                 $processorsCorrected[] = $processor;
                         }
                     }
                 }
                 else
                 {
-                    foreach ($fsbs as $fsb) {
+                    foreach ($fsbs as $fsbId) {
                         foreach($processors as $processor)
                         {
-                            if ($processor->getFsb()->getId() == $fsb)
+                            $fsb = $this->getCpuSpeedRepository()->find($fsbId);
+                            if ($processor->getFsb()->getValue() >= $fsb->getValue() - 1.0 && $processor->getFsb()->getValue() <= $fsb->getValue() + 1.0)
                                 $processorsCorrected[] = $processor;
                         }
                     }
