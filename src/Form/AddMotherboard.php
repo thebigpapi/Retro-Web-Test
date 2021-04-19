@@ -305,56 +305,86 @@ class AddMotherboard extends AbstractType
             }
         );
 
-        $formPlatformModifier = function (FormInterface $form, Collection $processorPlatformTypes = null, Collection $fsbs = null) {
-            $processors = array();
+        $formPlatformModifier = function (FormInterface $form, Collection $processorPlatformTypes, Collection $fsbs, Collection $sockets) {
+            $processorsWithPlatform = array();
             if (!$processorPlatformTypes->isEmpty()) {
                 if($processorPlatformTypes[0] instanceof ProcessorPlatformType) 
                 {
                     foreach ($processorPlatformTypes as $platform) {
-                        $processors = array_merge($processors,$platform->getCompatibleProcessors()->toArray());
+                        $processorsWithPlatform = array_merge($processorsWithPlatform,$platform->getCompatibleProcessors()->toArray());
                     }
                 }
                 else
                 {
                     foreach ($processorPlatformTypes as $platformId) {
                         $platform = $this->getProcessorPlatformTypeRepository()->find($platformId);
-                        $processors = array_merge($processors,$platform->getCompatibleProcessors()->toArray());
+                        $processorsWithPlatform = array_merge($processorsWithPlatform,$platform->getCompatibleProcessors()->toArray());
                     }
                 }
             }
-            $processorsCorrected = array();
+            $processorsWithFsb = array();
             if (!$fsbs->isEmpty()) {
                 if($fsbs[0] instanceof CpuSpeed) 
                 {
                     foreach ($fsbs as $fsb) {
-                        foreach($processors as $processor)
+                        foreach($processorsWithPlatform as $processor)
                         {
                             if ($processor->getFsb()->getValue() >= $fsb->getValue() - 1.0 && $processor->getFsb()->getValue() <= $fsb->getValue() + 1.0)
-                                $processorsCorrected[] = $processor;
+                                $processorsWithFsb[] = $processor;
                         }
                     }
                 }
                 else
                 {
                     foreach ($fsbs as $fsbId) {
-                        foreach($processors as $processor)
+                        foreach($processorsWithPlatform as $processor)
                         {
                             $fsb = $this->getCpuSpeedRepository()->find($fsbId);
                             if ($processor->getFsb()->getValue() >= $fsb->getValue() - 1.0 && $processor->getFsb()->getValue() <= $fsb->getValue() + 1.0)
-                                $processorsCorrected[] = $processor;
+                                $processorsWithFsb[] = $processor;
                         }
                     }
                 }
             }
+            $processorsWithSocket = array();
+            if (!$sockets->isEmpty()) {
+                if($sockets[0] instanceof CpuSocket) 
+                {
+                    foreach ($sockets as $socket) {
+                        foreach($processorsWithFsb as $processor)
+                        {
+                            if ($processor->getSockets()->contains($socket))
+                                $processorsWithSocket[] = $processor;
+                        }
+                    }
+                }
+                else
+                {
+                    //dd($sockets);
+                    foreach ($sockets as $socketId) {
+                        foreach($processorsWithFsb as $processor)
+                        {
+                            $socket = $this->getCpuSocketsRepository()->find($socketId);
+                            if ($processor->getSockets()->contains($socket))
+                                $processorsWithSocket[] = $processor;
+                        }
+                    }
+                }
+            }
+            else
+            {
+                $processorsWithSocket = $processorsWithFsb;
+            }
+            //dd($sockets);
             
-            $processorsCorrected = Processor::sort(new ArrayCollection($processorsCorrected));
+            $processorsWithSocket = Processor::sort(new ArrayCollection($processorsWithSocket));
             //if($chipsetManufacturer) dd($chipsets[94]->getFullReference()==" Unidentified ");
             $form->add('processors', CollectionType::class, [
                 'entry_type' => ProcessorType::class,
                 'allow_add' => true,
                 'allow_delete' => true,
                 'entry_options'  => [
-                    'choices' => $processorsCorrected,
+                    'choices' => $processorsWithSocket,
                 ],
             ]);
         };
@@ -366,7 +396,7 @@ class AddMotherboard extends AbstractType
                 // this would be your entity, i.e. SportMeetup
                 $data = $event->getData();
                 
-                $formPlatformModifier($event->getForm(), $data->getProcessorPlatformTypes(), $data->getCpuSpeed());
+                $formPlatformModifier($event->getForm(), $data->getProcessorPlatformTypes(), $data->getCpuSpeed(), $data->getCpuSockets());
             }
         );
         //dd($builder->get('processorPlatformTypes'));
@@ -376,7 +406,8 @@ class AddMotherboard extends AbstractType
                 function (FormEvent $event) use ($formPlatformModifier) {
                     $fsbIds = (array_key_exists("cpuSpeed", $event->getData())) ? $event->getData()["cpuSpeed"]:[];
                     $processorPlatformTypeIds = (array_key_exists("processorPlatformTypes", $event->getData())) ? $event->getData()["processorPlatformTypes"]:[];
-                    $formPlatformModifier($event->getForm(), new ArrayCollection($processorPlatformTypeIds), new ArrayCollection($fsbIds));
+                    $cpuSocketIds = (array_key_exists("cpuSockets", $event->getData())) ? $event->getData()["cpuSockets"]:[];
+                    $formPlatformModifier($event->getForm(), new ArrayCollection($processorPlatformTypeIds), new ArrayCollection($fsbIds), new ArrayCollection($cpuSocketIds));
                     
                     // since we've added the listener to the child, we'll have to pass on
                     // the parent to the callback functions!
