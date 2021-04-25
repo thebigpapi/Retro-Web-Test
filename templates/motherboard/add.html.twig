@@ -113,10 +113,10 @@
 		<tr>
 			<td class="exp-table">
 				<div id="cpuSockets-fields-list" data-widget-counter="{{ form.cpuSockets|length }}"
-					data-prototype="{{ form_widget(form.cpuSockets.vars.prototype, {'attr': {'onchange': 'cpupdate(this)'}})|e }}
+					data-prototype="{{ form_widget(form.cpuSockets.vars.prototype)|e }}
 						<button type=button onclick=remove(this);>Del</button>">
 					{% for cpuSocket in form.cpuSockets %}
-						<div>{{ form_widget(cpuSocket, {'attr': {'onchange': 'cpupdate(this)'}} ) }}
+						<div>{{ form_widget(cpuSocket) }}
 						<button type="button" onclick="remove(this);">Del</button>
 						{{ form_errors(cpuSocket) }}
 						</div>
@@ -126,10 +126,10 @@
 			</td>
 			<td class="exp-table">
 				<div id="processorPlatformTypes-fields-list" data-widget-counter="{{ form.processorPlatformTypes|length }}"
-					data-prototype="{{ form_widget(form.processorPlatformTypes.vars.prototype, {'attr': {'onchange': 'cpupdate(this)'}} )|e }}
+					data-prototype="{{ form_widget(form.processorPlatformTypes.vars.prototype)|e }}
 						<button type=button onclick=remove(this);>Del</button>">
 					{% for platform in form.processorPlatformTypes %}
-						<div>{{ form_widget(platform, {'attr': {'onchange': 'cpupdate(this)'}} ) }}
+						<div>{{ form_widget(platform) }}
 						<button type="button" onclick="remove(this);">Del</button>
 						{{ form_errors(platform) }}
 						</div>
@@ -149,13 +149,9 @@
                 {% endfor %}
                 </div>
 			</td>
-			<td></td>
-		</tr>
-		<tr id="updcpu">
-			<td id="btn1">{{ form_widget(form.updateProcessors, {'attr': {'style': 'width:80%'}} ) }}</td>
-			<td></td>
-			<td></td>
-			<td></td>
+			<td>
+				
+			</td>
 		</tr>
 	</table>
 	<div class="clrs"></div>
@@ -374,21 +370,27 @@
 	</div>
 </div>
 <table class="add-table" style="width:100%;">
-		<tr style="text-align:center">
+		<tr style="text-align:left">
 			<td style="width:280px">
 				<b>CPU:</b>
 				<button type="button" onclick="expand('processors-fields-list')">Add</button>
+				<button type="button" onclick="addCPU('processors-fields-list')">Add all CPUs</button>
+				{{ form_widget(form.updateProcessors) }}
+				<button type="button" onclick="removeCPU('processors-fields-list');">Delete all CPUs</button>
+				<span id="status-label" style="font-size:0.8em"></span>
 			</td>
 			<td>
 				<b>NPU:</b>
 				<button type="button" onclick="expand('coprocessors-fields-list')">Add</button>
+				<button type="button" onclick="addCPU('coprocessors-fields-list')">Add all NPUs</button>
+				<button type="button" onclick="removeCPU('coprocessors-fields-list');">Delete all NPUs</button>
 			</td>	  
 		</tr>
 		<tr>
 			<td>
 				{{ form_errors(form.processors) }}
 				<div style="width:100%" id="processors-fields-list" data-widget-counter="{{ form.processors|length }}"
-                    data-prototype="{{ form_widget(form.processors.vars.prototype, {'attr': {'style': 'width:70%'}} )|e  }}
+                    data-prototype="{{ form_widget(form.processors.vars.prototype, {'attr': {'style': 'width:80%'}} )|e  }}
 					<button type=button onclick=remove(this);>Del</button>">
 					{% for processor in form.processors %}
                         <div>{{ form_widget(processor, {'attr': {'style': 'width:80%'}} ) }}
@@ -404,7 +406,7 @@
                     data-prototype="{{ form_widget(form.coprocessors.vars.prototype, {'attr': {'style': 'width:70%'}} )|e  }}
 					<button type=button onclick=remove(this);>Del</button>">
                 {% for coprocessor in form.coprocessors %}
-                        <div>{{ form_widget(coprocessor, {'attr': {'style': 'width:80%'}} ) }}
+                        <div>{{ form_widget(coprocessor, {'attr': {'style': 'width:70%'}} ) }}
                         <button type="button" onclick="remove(this);">Del</button></div>
 						{{ form_errors(coprocessor) }}
                 {% endfor %}

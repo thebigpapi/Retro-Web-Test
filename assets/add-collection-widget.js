@@ -79,7 +79,7 @@ function check_E(){
 	if (check_sel('knownIssues-fields-list')){
 		alert("Known issues has duplicate entries!");
 		return false;}
-	if (check_sel('motherboardProcessor-fields-list')){
+	if (check_sel('processors-fields-list')){
 		alert("CPU has duplicate entries!");
 		return false;}
 	if (check_sel('cpuSpeed-fields-list')){
@@ -90,19 +90,33 @@ function check_E(){
 		return false;}
 	return true;
 }
-var upd_btn = document.getElementById("updcpu");
-//upd_btn.style.display="none";
-// function used to update CPU related widgets
-function cpukpdate(obj) {
-    //var cpuSel = document.getElementById("processors-fields-list");
-	var form = document.getElementsByName("add_motherboard")[0];
-	var sel_type = obj.id.substring(16,obj.id.length-2);
-	//alert(cpuSel.children[3].children[0].tagName);
+// function used to remove all CPU widgets
+function removeCPU(id) {
+    var cpuSel = document.getElementById(id);
+	cpuSel.innerHTML = "";
+	var status = document.getElementById("status-label");
+	if (id == "processors-fields-list")
+		status.textContent="Removed all CPUs";
+	if (id == "coprocessors-fields-list")
+		status.textContent="Removed all NPUs";
 	
-	if(sel_type == "cpuSockets"){
-		document.getElementById("btn1").childNodes[0].click();
+}
+function addCPU(id) {
+	var cpuSel = document.getElementById(id);
+	cpuSel.innerHTML = "";
+	var cp_cnt = 0;
+	var counter = cpuSel.getAttribute("data-widget-counter");
+	expand(id);
+	while(cpuSel.children[0].children[0].children[cp_cnt])
+		cp_cnt++;
+	for(var i = 1; i < cp_cnt; i++){
+		expand(id);
+		cpuSel.children[i].children[0].children[i].selected = 'selected';
 	}
-	if(sel_type == "processorPlatformTypes"){
-		document.getElementById("btn2").childNodes[0].click();
-	}
+	counter = cp_cnt;
+	var status = document.getElementById("status-label");
+	if (id == "processors-fields-list")
+		status.textContent="Added " + counter + " CPUs";
+	if (id == "coprocessors-fields-list")
+		status.textContent="Added " + counter + " NPUs";
 }
