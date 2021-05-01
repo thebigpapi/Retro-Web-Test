@@ -14,6 +14,7 @@ use App\Entity\Manufacturer;
 use App\Entity\Chipset;
 use App\Entity\MotherboardBios;
 use App\Form\Bios\Search;
+use App\Entity\ManufacturerBiosManufacturerCode;
 
 class BiosController extends AbstractController
 {
@@ -72,8 +73,11 @@ class BiosController extends AbstractController
      */
     public function binfoadv()
     {        
+        $data = $this->getDoctrine()->getRepository(ManufacturerBiosManufacturerCode::class)->findAll();
+
         return $this->render('bios/infoadv.html.twig', [
             'controller_name' => 'MainController',
+            'biosCodes' => $data,
         ]);
     }
     /**
