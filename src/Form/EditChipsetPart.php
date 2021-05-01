@@ -10,25 +10,15 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use App\Entity\ChipsetPart;
-use App\Entity\Manufacturer;
+use App\Form\Type\ChipType;
 
 class EditChipsetPart extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('manufacturer', EntityType::class, [
-                'class' => Manufacturer::class,
-                'choice_label' => 'shortNameIfExist',
-                'multiple' => false,
-                'expanded' => false,
-                'choices' => $options['chipsetPartManufacturers'],
-            ])
-            ->add('name', TextType::class, [
-                'required' => false,
-            ])
-            ->add('chip_no', TextType::class, [
-                'required' => false,
+            ->add('chip', ChipType::class, [
+                'data_class' => ChipsetPart::class,
             ])
             ->add('save', SubmitType::class)
             ;
@@ -38,7 +28,6 @@ class EditChipsetPart extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => ChipsetPart::class,
-            'chipsetPartManufacturers' => array(),
         ]);
     }
 }

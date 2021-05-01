@@ -33,9 +33,15 @@ class Creditor
      */
     private $motherboardImages;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\ChipImage", mappedBy="creditor")
+     */
+    private $chipImages;
+
     public function __construct()
     {
-        $this->motherboardImages = new ArrayCollection();
+        $this->chipImages = new ArrayCollection();
+        $this->license = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -92,6 +98,37 @@ class Creditor
             // set the owning side to null (unless already changed)
             if ($motherboardImage->getCreditor() === $this) {
                 $motherboardImage->setCreditor(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ChipImage[]
+     */
+    public function getLicense(): Collection
+    {
+        return $this->chipImages;
+    }
+
+    public function addLicense(ChipImage $chipImage): self
+    {
+        if (!$this->chipImages->contains($chipImage)) {
+            $this->chipImages[] = $chipImage;
+            $chipImage->setCreditor($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLicense(ChipImage $chipImage): self
+    {
+        if ($this->chipImages->contains($chipImage)) {
+            $this->chipImages->removeElement($chipImage);
+            // set the owning side to null (unless already changed)
+            if ($chipImage->getCreditor() === $this) {
+                $chipImage->setCreditor(null);
             }
         }
 

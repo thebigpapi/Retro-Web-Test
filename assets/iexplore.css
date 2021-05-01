@@ -14,3 +14,6 @@ span.field1 input { height: 21px; width: 21px; height: 15px\9; width: 15px\9; }
 
 div.show-images { _height:500px; *overfl\ow-x: hidden; }
 div.ie-fix { *padding-rig\ht: 16px; }
+
+/*	the hover box is moved down for IE, because the select element will display on top of it */
+a.help-t span{margin:55px 0 0 -65px;}

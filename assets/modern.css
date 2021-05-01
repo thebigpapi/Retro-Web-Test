@@ -2,7 +2,7 @@
 
 /* == cross compatibility between linux and windows == */
 /* global tags */
-input[type=text], input[type=submit], input[type=password], button, select {
+input[type=text], input[type=submit], input[type=reset], input[type=password], button, select {
   height: 22px;
   border-color:#d9d9d9;
   border-width: thin;
@@ -10,54 +10,74 @@ input[type=text], input[type=submit], input[type=password], button, select {
 }
 
 /* specific tags */
-input.button1, input.button2, input.admin-button {height:auto;border-width:2px;}
+input.button1, input.button2, input.button3, input.admin-button {height:auto;border-width:2px;}
 input.num {width:20px;}
-span.field1 input {font-size: 14px;}
+span.field1 {font-size: 12px;}
+select.sform{height:2.2em;}
 
-@media (max-device-width: 600px) {
+@media (max-width: 600px) {
 	div.top-bar {font-size:12px; padding:0 0 0 5px;}
 	div.top-bar div.table-mobile {display: table; border-spacing: 2px;}
 	div.top-bar a, div.top-bar span.form {display: table-cell; vertical-align: middle; padding: 1px;}
 	div.top-bar span.form { width: 220px;}
 	div.top-bar select.goto {width: 38%;}
 	div.top-bar select.lang {width: 40%;}
-	h2.title {font-size: 16px; margin: 10px 0;}
+	
+	/* search.html.twig */
+	h2.title {font-size: 16px; margin: 10px 0;}d
+	table.search-table {display:inline-block;}
+	table.search-table tr {display:flex;flex-wrap:wrap;height:auto;margin-bottom:5px;}
+	table.search-table td {display:block;width:100%;text-align:left;}
+	#setchip1, #setcpu1, #setcpu3 {width:100%;}
+	div.butn input {font-size:18px;}
 	div.page {font-size:14px;}
-
+	.sform, div.sform2, table.sform1 {margin-left:4%;}
+	div.sform2 input[type=checkbox] {width:20px;height:20px;}
+	span.field1 {width: 13em;}
+	span.field2 {width: 10em;}
+	table.sform1{margin-left:0;}
+	
 	/* show.html.twig */
-	div.show-images {width:100%; max-height:400px;}
+	div.show-images {width:100%; max-height:400px;padding-top:5px;}
 	span.show-image, span.string-bios {font-size:8px;}
 	div.show-data {width:100%;padding:0;font-size:13px;}
+	td.io-table ul,td.exp-table ul {padding:0;}
 	div.show-data table, div.notes {font-size:13px;}
+	div.show-cpus { font-size: 13px;}
 	p.string-alias {margin:10px 0;}
 	td.cpu-table {width:85px;}
 
 	/* add.html.twig */
-	div.show-images{padding-top:5px;}
 	.ba0 {width:16%;margin:0;}
 	.ba1 {width:24%;margin:0;}
 	.ba2 {width:16%;margin:0;}
 	.ba3 {width:7%;margin:0;}
 	.ba4 {width:16%;margin:0;}
 	.ba5 {display:none;}
+
+	/* info.html.twig */
+	img.biosinfo-img{width:90%;margin:auto;display: block;}
+	table.stbl-adv{
+		font-size:10px;
+	}
 }
 
 @media (min-width: 1200px) {
 	div.page {width:90%;font-size:22px;}
 
 	/* index.html.twig */
-	form.index-buttons input {padding-top:300px;min-width:360px;font-size:18px;}
+	form.index-buttons input {padding-top:260px;width:16em;font-size:18px;}
 	form.index-buttons input.button1 {background-image: url(./images/motherboard_med.png);}
-	form.index-buttons input.button2 {background-image: url(./images/card_disabled_med.png);}
+	form.index-buttons input.button2 {background-image: url(./images/card_med.png);}
+	form.index-buttons input.button3 {background-image: url(./images/awchip_med.png);}
 
 	/* search.html.twig */
-	div.sform {height: 1.2em; width:80%;}
-	div.sform input {height: 26px; width: 100%;}
-	td.table-width {width:20px;}
+	td.table-width, td.bios-width {width:210px;}
+	div.butn input {font-size:18px;}
+	table.search-table tr {height:1.5em;}
 
 	/* result.html.twig */
 	div.results ul li{font-size:20px;}
-	td.io-table {width:240px;}
 }
 
 @media (min-width: 1400px) {
@@ -65,14 +85,14 @@ span.field1 input {font-size: 14px;}
 	h2.title {margin: 20px 0;}
 
 	/* search.html.twig */
-	span.field1 {font-size:16px;}
-	td.table-width {width:60px;}
+	span.field1 {font-size:14px;}
+	td.table-width {width:220px;}
 
 	/* show.html.twig */
 	div.show-images {width:30%; max-height:600px;}
 	div.show-data {width:67%;padding-left:20px;}
 	p.string-alias {margin-top: -5px;}
-	td.main-table {width:200px;}
+	td.main-table {width:160px;}
 	td.cpu-table {width:160px;}
 }
 
@@ -83,8 +103,22 @@ span.field1 input {font-size: 14px;}
 	/* show.html.twig */
 	div.show-images {max-height:750px;}
 	div.show-data {width:68%; font-size: 18px;}
-	div.show-data table, div.notes { font-size:16px;}
+	div.show-data table, div.notes, div.show-cpus { font-size:16px;}
 	p.string-alias {margin-top:-25px;}
 	td.exp-table {width:250px;}
 	td.cpu-table {width:180px;}
+}
+@media (prefers-color-scheme: dark) {
+	body, form {margin:0; padding:0;background-color:#191919;color:#EEEEEE;}
+	form.index-buttons input.button1,form.index-buttons input.button2,
+	form.index-buttons input.button3, div.butn input{background-color:#303030;color:#FFFFFF;}
+	a.help-t span{background-color: black;color: #fff;border:1px solid #FFFFFF;}
+	b.contrib {background: #191919; color: yellow;}
+	b.contrib a:link, b.contrib a:visited { color: #A600FF;}
+	a:link { color: orange;}
+	a:visited { color: #00e874;}
+	select.sform , input.sform, span.field1 input {background-color:#424242;color:#ececec;}
+	table.stbl, table.stbl-adv{background-color:#303030;color:#EEEEEE;}
+	tr.stbl-head{background-color:#606060;color:#EEEEEE;}
+	div.bios-image , .add-table, div.notes-field div textarea{background-color:#444444;color:#EEEEEE;}
 }

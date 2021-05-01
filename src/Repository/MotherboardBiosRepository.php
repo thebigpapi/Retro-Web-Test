@@ -29,6 +29,36 @@ class MotherboardBiosRepository extends ServiceEntityRepository
         ;
     }
 
+    public function findBios(array $criterias)
+    {
+        $query = $this->createQueryBuilder('b');
+        
+        if(array_key_exists('file_present', $criterias))
+            $query->andWhere($query->expr()->isNotNull('b.file_name'));
+
+        if(array_key_exists('manufacturer_id', $criterias))
+            $query->andWhere('b.manufacturer = :manufacturer_id')
+                ->setParameter('manufacturer_id', $criterias['manufacturer_id']);
+        
+        if(array_key_exists('chipset_id', $criterias))
+            $query->join('b.motherboard', 'm')
+                ->andWhere('m.chipset = :chipset_id')
+                ->setParameter('chipset_id', $criterias['chipset_id']);
+        
+        if(array_key_exists('core_version', $criterias))
+            $query->andWhere('b.coreVersion = :coreVersion')
+                ->setParameter('coreVersion', $criterias['core_version']);
+
+        if(array_key_exists('post_string', $criterias))
+            $query->andWhere($query->expr()->like('b.postString', ':postString'))
+                ->setParameter('postString', '%'.$criterias['post_string'].'%');
+        
+        return $query->orderBy('b.postString', 'ASC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
     // /**
     //  * @return MotherboardBios[] Returns an array of MotherboardBios objects
     //  */

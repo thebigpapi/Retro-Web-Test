@@ -11,27 +11,18 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use App\Entity\Coprocessor;
 use App\Entity\ProcessorPlatformType;
 use App\Entity\Manufacturer;
+use App\Form\Type\ProcessingUnitType;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormView;
+use Symfony\Component\Form\ChoiceList\View\ChoiceView;
 
 class EditCoprocessor extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('manufacturer', EntityType::class, [
-                'class' => Manufacturer::class,
-                'choice_label' => 'shortNameIfExist',
-                'multiple' => false,
-                'expanded' => false,
-                'choices' => $options['coprocessorManufacturers'],
-            ])
-            ->add('name', TextType::class, [
-                'required' => false,
-            ])
-            ->add('processorPlatformType', EntityType::class, [
-                'class' => ProcessorPlatformType::class,
-                'choice_label' => 'name',
-                'multiple' => false,
-                'expanded' => false,
+            ->add('processingUnit', ProcessingUnitType::class, [
+                'data_class' => Coprocessor::class,
             ])
             ->add('save', SubmitType::class)
             ;
@@ -41,7 +32,16 @@ class EditCoprocessor extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Coprocessor::class,
-            'coprocessorManufacturers' => array(),
         ]);
+    }
+
+    public function finishView(FormView $view, FormInterface $form, array $options)
+    {
+        usort($view->children['processingUnit']->children['fsb']->vars['choices'], function(ChoiceView $a, ChoiceView $b) {
+            return ($a->data->getValue() > $b->data->getValue());
+        });
+        usort($view->children['processingUnit']->children['speed']->vars['choices'], function(ChoiceView $a, ChoiceView $b) {
+            return ($a->data->getValue() > $b->data->getValue());
+        });
     }
 }

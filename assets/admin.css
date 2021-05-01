@@ -8,6 +8,13 @@ div.butn div button { width:120px; height:40px; font-size:20px;}
 
 /* === add.html.twig ===  */
 
+.add-table{
+	background-color:#e6e6e6;
+	color:#000000;
+	border-radius: 6px;
+	padding: 3px 3px 3px;
+}
+
 /*title*/
 table.add-title { padding-top:20px; }
 td.ttl1{ height:30px;width:400px;font-size:18px}
@@ -29,7 +36,14 @@ div.ram-type div label {padding-right:15px;}
 div.clrs{ height:10px; }
 
 /*bios images/manuals*/
-div.bios-image { margin-top:16px;display:table-cell;color:#000000 }
+div.bios-image { 
+	background-color:#e6e6e6;
+	margin-top:16px;
+	display:table-cell;
+	color:#000000;
+	border-radius: 6px;
+	padding: 3px 3px 3px;
+ }
 .ba0, .ba1, .ba2, .ba3, .ba4, .ba5{display: inline-block;*display: inline;
 *vertical-align: middle;zoom: 1;margin:0px 2px 0px;text-align: center}
 .ba0 {width:9%;} 
@@ -40,7 +54,7 @@ div.bios-image { margin-top:16px;display:table-cell;color:#000000 }
 .ba5 {width:16%}
 
 td.exp-table {width:270px;}
-td.io-table {width:220px;}
+td.io-table {width:120px;}
 input.num {width:15px;}
 
 div.notes-field div { padding-bottom: 6px; padding-right: 4px; margin:auto }
@@ -70,16 +84,18 @@ div.editasset form div div label {width:180px;}
 div.editasset form div div input {width:400px;}
 
 @media (max-width: 1199px) {
-	
 	td.ttl1 {width:60%}
 	td.ttl2 {width:200px}
 }
-@media only screen and (min-device-width: 501px) and (max-width: 899px) {
+@media (min-width: 1620px) {
+	.ba1 {width:22%}
+}
+@media only screen and (min-width: 501px) and (max-width: 899px) {
 	div.general-manage div, div.cpu-manage div, div.ram-manage div, div.lang div { width: 80%;}
 	div.general-manage div label, div.cpu-manage div label, div.ram-manage div label, div.lang div label { width: 30%;}
 	div.general-manage div select, div.cpu-manage div select, div.ram-manage div select, div.lang div select { width: 68%; }
 }
-@media only screen and (max-device-width: 500px) {
+@media only screen and (max-width: 500px) {
 	div.general-manage div, div.cpu-manage div, div.ram-manage div, div.lang div { width: 75%;height:auto;}
 	div.general-manage div label, div.cpu-manage div label, div.ram-manage div label, div.lang div label { width: 32%}
 	div.general-manage div select, div.cpu-manage div select, div.ram-manage div select, div.lang div select { width: 68%;height:30px;font-size:18px;float:left }

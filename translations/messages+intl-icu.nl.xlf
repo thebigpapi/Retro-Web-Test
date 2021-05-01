@@ -21,8 +21,8 @@
         <source>motherboard.num</source>
         <target>{count, plural, =0 {geen moederbord gevonden} one {één moederbord gevonden} other {# moederborden gevonden}}</target>
       </trans-unit>
-      <trans-unit id="Ha9FyWp" resname="List motherboards whose the manufacturer starting with:">
-        <source>List motherboards whose the manufacturer starting with:</source>
+      <trans-unit id="Ha9FyWp" resname="List boards whose manufacturer name starts with:">
+        <source>List boards whose manufacturer name starts with:</source>
         <target>Toon moederborden waarvan de fabrikantnaam begint met:</target>
       </trans-unit>
       <trans-unit id="GvOExXf" resname="Manufacturer">
@@ -37,8 +37,8 @@
         <source>Form factor</source>
         <target>Formaat</target>
       </trans-unit>
-      <trans-unit id="_Hs9U_o" resname="Processor platform type">
-        <source>Processor platform type</source>
+      <trans-unit id="_Hs9U_o" resname="CPU platform type">
+        <source>CPU platform type</source>
         <target>Processor Platform</target>
       </trans-unit>
       <trans-unit id="snS7dgk" resname="Expansion slots">
@@ -49,8 +49,8 @@
         <source>I/O ports</source>
         <target>In- en uitgangen</target>
       </trans-unit>
-      <trans-unit id="n.50DoY" resname="Ram type">
-        <source>Ram type</source>
+      <trans-unit id="n.50DoY" resname="RAM type">
+        <source>RAM type</source>
         <target>Type geheugen</target>
       </trans-unit>
       <trans-unit id="TI9YT3N" resname="Motherboard bios">
@@ -201,9 +201,9 @@
         <source>Unknown</source>
         <target>Onbekend</target>
       </trans-unit>
-      <trans-unit id="I0m_uoh" resname="Chipset:">
-        <source>Chipset:</source>
-        <target>Chipset:</target>
+      <trans-unit id="I0m_uoh" resname="Chipset">
+        <source>Chipset</source>
+        <target>Chipset</target>
       </trans-unit>
       <trans-unit id="O_VL2PE" resname="Processor platform:">
         <source>Processor platform:</source>

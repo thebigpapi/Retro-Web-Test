@@ -59,14 +59,14 @@ class Motherboard
     private $motherboardIoPorts;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\ProcessorPlatformType", inversedBy="motherboards")
+     * @ORM\ManyToMany(targetEntity="App\Entity\ProcessorPlatformType", inversedBy="motherboards")
      */
-    private $processorPlatformType;
+    private $processorPlatformTypes;
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Processor", inversedBy="motherboards")
      */
-    private $motherboardProcessor;
+    private $processors;
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\CpuSpeed", inversedBy="motherboards")
@@ -143,10 +143,14 @@ class Motherboard
      */
     private $motherboardAliases;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\CpuSocket", inversedBy="motherboards")
+     */
+    private $cpuSockets;
+
 
     public function __construct()
     {
-        $this->motherboardProcessors = new ArrayCollection();
         $this->motherboardMaxRams = new ArrayCollection();
         $this->motherboardCpuSpeeds = new ArrayCollection();
         $this->motherboardBios = new ArrayCollection();
@@ -159,11 +163,14 @@ class Motherboard
         $this->cacheSize = new ArrayCollection();
         $this->dramType = new ArrayCollection();
         $this->manuals = new ArrayCollection();
+        $this->processors = new ArrayCollection();
         $this->coprocessors = new ArrayCollection();
         $this->images = new ArrayCollection();
         $this->knownIssues = new ArrayCollection();
         $this->lastEdited = new \DateTime('now');
         $this->motherboardAliases = new ArrayCollection();
+        $this->cpuSockets = new ArrayCollection();
+        $this->processorPlatformTypes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -387,14 +394,25 @@ class Motherboard
     /**
      * @return Collection|ProcessorPlatformType[]
      */
-    public function getProcessorPlatformType(): ?ProcessorPlatformType
+    public function getProcessorPlatformTypes(): Collection
     {
-        return $this->processorPlatformType;
+        return $this->processorPlatformTypes;
     }
 
-    public function setProcessorPlatformType(?ProcessorPlatformType $processorPlatformType): self
+    public function addProcessorPlatformType(ProcessorPlatformType $processorPlatformType): self
     {
-        $this->processorPlatformType = $processorPlatformType;
+        if (!$this->processorPlatformTypes->contains($processorPlatformType)) {
+            $this->processorPlatformTypes[] = $processorPlatformType;
+        }
+
+        return $this;
+    }
+
+    public function removeProcessorPlatformType(ProcessorPlatformType $processorPlatformType): self
+    {
+        if ($this->processorPlatformTypes->contains($processorPlatformType)) {
+            $this->processorPlatformTypes->removeElement($processorPlatformType);
+        }
 
         return $this;
     }
@@ -402,9 +420,62 @@ class Motherboard
     /**
      * @return Collection|Processor[]
      */
-    public function getMotherboardProcessor(): Collection
+    public function getSortedProcessors(): Collection
     {
-        return $this->motherboardProcessor;
+        $processors = array();
+        foreach($this->processors as $processor) {
+            $processorsTmp = array();
+            foreach ($processor->getChipAliases() as $alias) {
+                if (($alias->getManufacturer() != $processor->getManufacturer()) && $alias->getName() != $processor->getName()) {
+                    $alreadyAdded = false;
+                    foreach($processorsTmp as $processorTmp)
+                    {
+                        if (($alias->getManufacturer() == $processorTmp->getManufacturer()) && $alias->getName() == $processorTmp->getName())
+                        {
+                            $alreadyAdded = true;
+                        }
+                    }
+                    if(!$alreadyAdded)
+                    {
+                        $fakeCPU = clone $processor;
+                        $fakeCPU->setName($alias->getName());
+                        $fakeCPU->setManufacturer($alias->getManufacturer());
+                        $fakeCPU->setPartNumber($alias->getPartNumber());
+                        $processorsTmp[] = $fakeCPU;
+                    }
+                }
+            }
+            $processors = array_merge($processors, $processorsTmp);
+        }
+        $processors = array_merge($processors, $this->processors->toArray());
+        return Processor::sort(new ArrayCollection($processors));
+    }
+
+
+    /**
+     * @return Collection|Processor[]
+     */
+    public function getProcessors(): Collection
+    {
+        return $this->processors;
+    }
+
+    public function addProcessor(Processor $processor): self
+    {
+        if (!$this->processors->contains($processor)) {
+            $this->processors[] = $processor;
+        }
+
+        return $this;
+    }
+
+    public function removeProcessor(Processor $processor): self
+    {
+        if ($this->processors->contains($processor)) {
+            $this->processors->removeElement($processor);
+        }
+
+        return $this;
     }
 
     /**
@@ -713,6 +784,34 @@ class Motherboard
             if ($motherboardAlias->getMotherboard() === $this) {
                 $motherboardAlias->setMotherboard(null);
             }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|CpuSocket[]
+     */
+    public function getCpuSockets(): Collection
+    {
+        return $this->cpuSockets;
+    }
+
+    public function addCpuSocket(CpuSocket $cpuSocket): self
+    {
+        if (!$this->cpuSockets->contains($cpuSocket)) {
+            $this->cpuSockets[] = $cpuSocket;
+            $cpuSocket->addMotherboard($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCpuSocket(CpuSocket $cpuSocket): self
+    {
+        if ($this->cpuSockets->contains($cpuSocket)) {
+            $this->cpuSockets->removeElement($cpuSocket);
+            $cpuSocket->removeMotherboard($this);
         }
 
         return $this;

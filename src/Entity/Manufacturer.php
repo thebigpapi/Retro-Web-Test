@@ -63,6 +63,16 @@ class Manufacturer
      */
     private $motherboardAliases;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Chip", mappedBy="Manufacturer")
+     */
+    private $chips;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\ChipAlias", mappedBy="manufacturer")
+     */
+    private $chipAliases;
+
     public function __construct()
     {
         $this->motherboards = new ArrayCollection();
@@ -72,6 +82,8 @@ class Manufacturer
         $this->audioChipsets = new ArrayCollection();
         $this->chipsetParts = new ArrayCollection();
         $this->motherboardAliases = new ArrayCollection();
+        $this->chips = new ArrayCollection();
+        $this->chipAliases = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -322,6 +334,68 @@ class Manufacturer
             // set the owning side to null (unless already changed)
             if ($motherboardAlias->getManufacturer() === $this) {
                 $motherboardAlias->setManufacturer(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Chip[]
+     */
+    public function getChips(): Collection
+    {
+        return $this->chips;
+    }
+
+    public function addChip(Chip $chip): self
+    {
+        if (!$this->chips->contains($chip)) {
+            $this->chips[] = $chip;
+            $chip->setManufacturer($this);
+        }
+
+        return $this;
+    }
+
+    public function removeChip(Chip $chip): self
+    {
+        if ($this->chips->contains($chip)) {
+            $this->chips->removeElement($chip);
+            // set the owning side to null (unless already changed)
+            if ($chip->getManufacturer() === $this) {
+                $chip->setManufacturer(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ChipAlias[]
+     */
+    public function getChipAliases(): Collection
+    {
+        return $this->chipAliases;
+    }
+
+    public function addChipAlias(ChipAlias $chipAlias): self
+    {
+        if (!$this->chipAliases->contains($chipAlias)) {
+            $this->chipAliases[] = $chipAlias;
+            $chipAlias->setManufacturer($this);
+        }
+
+        return $this;
+    }
+
+    public function removeChipAlias(ChipAlias $chipAlias): self
+    {
+        if ($this->chipAliases->contains($chipAlias)) {
+            $this->chipAliases->removeElement($chipAlias);
+            // set the owning side to null (unless already changed)
+            if ($chipAlias->getManufacturer() === $this) {
+                $chipAlias->setManufacturer(null);
             }
         }
 

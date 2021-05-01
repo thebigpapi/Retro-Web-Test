@@ -4,9 +4,76 @@
 
 {% block body %}
 <div style="height:6em;"></div>
+{{ form_start(form, {'method': 'POST'}) }}
 <div class="editasset">
-	<h2><b>Edit: Chipset part</b></h2>
-    {{ form(form) }}
-</div>
 
+    <div class="show-images" style="max-height:none">
+		<div class="bar">
+			<span style="padding-left:10px;">
+				<b>Images</b>
+				<button type="button" onclick="expand('images-fields-list')">Add</button>
+			</span>
+		</div>
+        <div id="images-fields-list" data-widget-counter="{{ form.chip.images|length }}"
+            data-prototype="
+				<div class=imgp>{{ form_widget(form.chip.images.vars.prototype.imageFile, {'attr': {'style': 'width:100%'}})|e }}</div>
+				<div class=imgp><span>Creditor: </span>{{ form_widget(form.chip.images.vars.prototype.creditor)|e }}</div>
+				<div class=imgp><span>License: </span>{{ form_widget(form.chip.images.vars.prototype.license)|e }}</div>
+				<div class=imgp><span>Notes: </span>{{ form_widget(form.chip.images.vars.prototype.description)|e }}</div>
+				<div class=imgp>Uploaded file: 
+					<button type=button onclick=this.parentNode.parentNode.parentNode.removeChild(this.parentNode.parentNode);>Delete this entry</button></div>
+				<div class=imgp>{{ form_widget(form.chip.images.vars.prototype.file_name, {'attr': {'style': 'width:90%'}})|e }}</div>
+				">
+            {% for image in form.chip.images %}
+			<div class="addform" >
+				<div class="imgp">{{ form_widget(image.imageFile, {'attr': {'style': 'width:100%'}}) }}</div>
+				<div class="imgp"><span>Creditor: </span>{{ form_widget(image.creditor)}}</div>
+				<div class="imgp"><span>License: </span>{{ form_widget(image.license)}}</div>
+				<div class="imgp"><span>Notes: </span>{{ form_widget(image.description)}}</div>
+				<div class="imgp">Uploaded file: 
+					<button type="button" onclick="this.parentNode.parentNode.parentNode.removeChild(this.parentNode.parentNode);">Delete this entry</button>
+				</div>
+				<div class="imgp">{{ form_widget(image.file_name, {'attr': {'style': 'width:90%'}}) }}</div>
+			</div>
+            {% endfor %}
+			{{ form_errors(form.chip.images) }}
+        </div>
+	</div>
+	<table class="editasset">
+		<b>{{form_label(form)}}</b> {{form_widget(form.save)}}
+		<tr>
+			<td>{{form_label(form.chip.manufacturer)}}</td>
+			<td>{{form_widget(form.chip.manufacturer)}}</td>
+		</tr>
+		<tr>
+			<td>{{form_label(form.chip.name)}}</td>
+			<td>{{form_widget(form.chip.name)}}</td>
+		</tr>
+		<tr>
+			<td>Part number</td>
+			<td>{{form_widget(form.chip.partNumber)}}</td>
+		</tr>
+		<tr>
+			<td>{{form_label(form.chip.chipAliases)}} <button type="button" onclick="expand('chipAliases-fields-list')">Add</button> </td>
+			<td class="append_table" id="chipAliases-fields-list" data-widget-counter="{{ form.chip.chipAliases|length }}"
+        data-prototype="
+			<div class=ba0>{{ form_widget(form.chip.chipAliases.vars.prototype.manufacturer, {'attr': {'style': 'width:100%'}} )|e }}</div>
+			<div class=ba1>{{ form_widget(form.chip.chipAliases.vars.prototype.name, {'attr': {'style': 'width:100%'}} )|e }}</div>
+			<div class=ba2>{{ form_widget(form.chip.chipAliases.vars.prototype.partNumber, {'attr': {'style': 'width:100%'}} )|e }}</div>
+			<div class=ba3><button type=button onclick=this.parentNode.parentNode.parentNode.removeChild(this.parentNode.parentNode);>Del</button></div>
+		">
+			{% for alias in form.chip.chipAliases %}
+			<div>
+				<div class="ba0">{{ form_widget(alias.manufacturer, {'attr': {'style': 'width:100%'}} ) }}</div>
+				<div class="ba1">{{ form_widget(alias.name, {'attr': {'style': 'width:100%'}} ) }}</div>
+				<div class="ba1">{{ form_widget(alias.partNumber, {'attr': {'style': 'width:100%'}} ) }}</div>
+				<div class="ba3"><button type="button" onclick="this.parentNode.parentNode.parentNode.removeChild(this.parentNode.parentNode);">Del</button></div>
+				{{ form_errors(alias) }}
+			</div>
+			{% endfor %}
+			</td>
+		</tr>
+</div>
+<!-- {{ form_rest(form)|replace({'<input': ' --><input'})|raw }}
+<script src="{% if app.request.attributes.get('_route') == "chipset_part_edit" %}../{% endif %}../assets/add-collection-widget.js"></script>
 {% endblock %}

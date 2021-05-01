@@ -13,6 +13,9 @@ use App\Entity\MotherboardImageType;
 use App\Entity\Creditor;
 use App\Entity\License;
 use App\Form\Type\ImageType;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormView;
+use Symfony\Component\Form\ChoiceList\View\ChoiceView;
 
 class MotherboardImageTypeForm extends AbstractType
 {
@@ -79,6 +82,13 @@ class MotherboardImageTypeForm extends AbstractType
         $resolver->setDefaults([
             'data_class' => MotherboardImage::class,
         ]);
+    }
+
+    public function finishView(FormView $view, FormInterface $form, array $options)
+    {
+        usort($view->children['creditor']->vars['choices'], function(ChoiceView $a, ChoiceView $b) {
+            return ($a->data->getName() > $b->data->getName());
+        });  
     }
 
 }

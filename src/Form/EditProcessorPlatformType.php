@@ -9,8 +9,9 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use App\Entity\ProcessorPlatformType;
-use App\Entity\ProcessorPlatformTypePlatformType;
+use App\Form\Type\ProcessorPlatformTypeForm;
 use App\Entity\Manufacturer;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 
 class EditProcessorPlatformType extends AbstractType
 {
@@ -19,6 +20,11 @@ class EditProcessorPlatformType extends AbstractType
         $builder
             ->add('name', TextType::class, [
                 'required' => false,
+            ])
+            ->add('compatibleWith', CollectionType::class, [
+                'entry_type' => ProcessorPlatformTypeForm::class,
+                'allow_add' => true,
+                'allow_delete' => true,
             ])
             ->add('save', SubmitType::class)
             ;

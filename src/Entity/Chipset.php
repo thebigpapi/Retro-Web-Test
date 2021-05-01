@@ -119,6 +119,41 @@ class Chipset
         return "$fullName $chipset";
     }
 
+    public function getFullReference(): ?string
+    {
+        $fullName = "";
+        if ($this->part_no) {
+            $fullName = $fullName . " $this->part_no";
+            if ($this->name) {
+                $fullName = $fullName . " ($this->name)";
+            }
+        }
+        else {
+            if ($this->name) {
+                $fullName = $fullName . " $this->name";
+            }
+            else {
+                $fullName = $fullName . " Unidentified";
+            }
+        }
+        $chipset = "";
+        foreach($this->chipsetParts as $key => $part) {
+            if ($key === array_key_last($this->chipsetParts->getValues())) {
+                $chipset = $chipset . $part->getShortName();
+            }
+            else {
+                $chipset = $chipset . $part->getShortName() . ", ";
+            }
+
+        }
+        if ($chipset) {
+            $chipset = "[$chipset]";
+        }
+
+
+        return "$fullName $chipset";
+    }
+
     /**
      * @return Collection|Motherboard[]
      */
@@ -174,7 +209,7 @@ class Chipset
     {
         if (!$this->chipsetParts->contains($chipsetPart)) {
             $this->chipsetParts[] = $chipsetPart;
-            $chipsetPart->setChipset($this);
+            $chipsetPart->addChipset($this);
         }
 
         return $this;
@@ -185,8 +220,8 @@ class Chipset
         if ($this->chipsetParts->contains($chipsetPart)) {
             $this->chipsetParts->removeElement($chipsetPart);
             // set the owning side to null (unless already changed)
-            if ($chipsetPart->getChipset() === $this) {
-                $chipsetPart->setChipset(null);
+            if ($chipsetPart->getChipsets()->contains($this)) {
+                $chipsetPart->removeChipset($this);
             }
         }
 

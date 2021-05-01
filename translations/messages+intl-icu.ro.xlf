@@ -21,8 +21,8 @@
         <source>motherboard.num</source>
         <target>{count, plural, =0 {Nici o placă găsită} one {1 placă găsită} other {# plăci găsite}}</target>
       </trans-unit>
-      <trans-unit id="Ha9FyWp" resname="List motherboards whose the manufacturer starting with:">
-        <source>List motherboards whose the manufacturer starting with:</source>
+      <trans-unit id="Ha9FyWp" resname="List boards whose manufacturer name starts with:">
+        <source>List boards whose manufacturer name starts with:</source>
         <target>Afișează toate plăcile de bază al căror nume producător începe cu:</target>
       </trans-unit>
       <trans-unit id="GvOExXf" resname="Manufacturer">
@@ -37,8 +37,8 @@
         <source>Form factor</source>
         <target>Form factor</target>
       </trans-unit>
-      <trans-unit id="_Hs9U_o" resname="Processor platform type">
-        <source>Processor platform type</source>
+      <trans-unit id="_Hs9U_o" resname="CPU platform type">
+        <source>CPU platform type</source>
         <target>Platformă CPU</target>
       </trans-unit>
       <trans-unit id="snS7dgk" resname="Expansion slots">
@@ -49,8 +49,8 @@
         <source>I/O ports</source>
         <target>Port-uri I/O</target>
       </trans-unit>
-      <trans-unit id="n.50DoY" resname="Ram type">
-        <source>Ram type</source>
+      <trans-unit id="n.50DoY" resname="RAM type">
+        <source>RAM type</source>
         <target>Tip RAM</target>
       </trans-unit>
       <trans-unit id="TI9YT3N" resname="Motherboard bios">
@@ -201,17 +201,17 @@
         <source>Unknown</source>
         <target>Necunoscut</target>
       </trans-unit>
-      <trans-unit id="I0m_uoh" resname="Chipset:">
-        <source>Chipset:</source>
-        <target>Chipset:</target>
+      <trans-unit id="I0m_uoh" resname="Chipset">
+        <source>Chipset</source>
+        <target>Chipset</target>
       </trans-unit>
-      <trans-unit id="O_VL2PE" resname="Processor platform:">
-        <source>Processor platform:</source>
-        <target>Platformă CPU:</target>
+      <trans-unit id="O_VL2PE" resname="CPU socket and platform">
+        <source>CPU socket and platform</source>
+        <target>Socket și platformă CPU</target>
       </trans-unit>
-      <trans-unit id="vhHptqG" resname="Maximum supported RAM:">
-        <source>Maximum supported RAM:</source>
-        <target>Cantitate max. de RAM:</target>
+      <trans-unit id="vhHptqG" resname="Supported RAM size and types">
+        <source>Supported RAM size and types</source>
+        <target>Tipul și dimens. max. de RAM</target>
       </trans-unit>
       <trans-unit id="lr3zG.4" resname="Cache:">
         <source>Cache:</source>

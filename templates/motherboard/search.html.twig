@@ -14,104 +14,168 @@
 
 {% block title %}{% trans %}Search for a motherboard{% endtrans %}{% endblock %}
 
+
+{% block metatags %}
+	<meta name="description" content="Search for a motherboard by name, chipset, manufacturer, CPU platform, form factor, expansion slot count and more.">
+{% endblock %}
 {% block body %}
 	<h2 class="title">{% trans %}Search for a motherboard{% endtrans %}</h2>
-
-	<p style="text-align:center;">{% trans %}List motherboards whose the manufacturer starting with:{% endtrans %}<br>
+	<p style="text-align:center;">
+		{% trans %}List boards whose manufacturer name starts with:{% endtrans %}<br>
 		{% for letter in ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z']%}
-		<a href="./index/{{letter}}">{{letter}}</a>&nbsp;|
+			<a href="./index/{{letter}}">{{letter}}</a>&nbsp;|
 		{% endfor %}
 		<a href="./result/?manufacturerId=NULL">?</a>
 	</p>
-
+	<div id="hiddenDiv" style="display: none;"></div>
 	<form name="search_motherboard" method="post" action="./search">
-        <table>
-            <tr style="line-height: 200%;">
-                <th>{{ form_label(form.manufacturer) }}</th>
-                <td class="table-width" rowspan="13"></td>
-                <td>
-                    <div class="sform">{{ form_widget(form.manufacturer) }}</div>
-                </td>
-            </tr>
-            <tr style="line-height: 200%;">
-                <th>{{ form_label(form.name) }}</th>
-                <td>
-                    <div class="sform">{{ form_widget(form.name)|replace({' />': ' size="50">'})|raw }}</div> 
-                </td>
-            </tr>
-            <tr style="line-height: 200%;">
-                <th>{{ form_label(form.formFactor) }}</th>
-				<td>
-                    <div class="sform">{{ form_widget(form.formFactor) }}</div>
-                </td>
-            </tr>
-            <tr style="line-height: 200%;">
-                <th>{{ form_label(form.chipset) }}</th>
-				<td>
-                    <div class="sform">{{ form_widget(form.chipset) }}</div>
-                </td>
-            </tr>
-            <tr style="line-height: 100%;">
-                <th>{{ form_label(form.processorPlatformType) }}</th>
-				<td>
-                    <div class="sform">{{ form_widget(form.processorPlatformType) }}</div>
-                </td>
-            </tr>
-			<tr style="height:10px;"><td></td><td></td></tr>
+		<div class="butn">
+			<input id="rst-btn" type="reset" value="Reset fields">
+			{{ form_row(form.search)|replace({'<div><button': '<input', '</button></div>': '">', '>': ' value="'})|raw }}
+		</div>
+        <table class="search-table">
             <tr>
-                <th>{% trans %}Expansion slots{% endtrans %}</th>
-                <td>
-                    {% for slot in slots %}
-                        <span class="field1">
+				<td class="table-width">
+					<b>{% trans %}Name{% endtrans %}</b>
+					<a href="#" class="help-t">
+						<img src="../assets/images/help.png" alt="">
+						<span>{% trans %}This is where you enter the board part number, do not write the manufacturer name here!{% endtrans %}</span>
+					</a>
+				</td>
+                <td>{{ form_widget(form.name, {'attr': {'class': 'sform'}})|replace({' />': ' size="50">'})|raw }}</td>
+            </tr>
+			<tr>
+                <td class="table-width">
+					<b>{% trans %}Manufacturer{% endtrans %}</b>
+					<a href="#" class="help-t">
+						<img src="../assets/images/help.png" alt="">
+						<span>{% trans %}This is the board manufacturer (e.g: ASUS, Gigabyte, FIC){% endtrans %}</span>
+					</a>
+				</td>
+                <td>{{ form_widget(form.manufacturer, {'attr': {'class': 'sform'}}) }}</td>
+            </tr>
+            <tr>
+                <td class="table-width"><b>{% trans %}Form factor{% endtrans %}</b></td>
+				<td>{{ form_widget(form.formFactor, {'attr': {'class': 'sform'}}) }}</td>
+            </tr>
+            <tr>
+                <td class="table-width">
+					<b>{% trans %}Chipset{% endtrans %}</b>
+					<a href="#" class="help-t">
+						<img src="../assets/images/help.png" alt="">
+						<span>{% trans %}Select a manufacturer from the first field, then pick the part number from the second field{% endtrans %}</span>
+					</a>
+				</td>
+				<td>
+					<table class="sform1">
+						<tr>
+							<td id="setchip1">{{ form_widget(form.chipsetManufacturer, {'attr': {'class': 'sform', 'style':'width:100%'}}) }}</td>
+							<td id="setchip2">{{ form_widget(form.chipset, {'attr': {'class': 'sform', 'style':'width:100%'}}) }}</td>
+							<td>
+								<label id="setchip-lb" style="display:none;">Please wait ...</label>
+								<div>{{ form_row(form.searchChipsetManufacturer)|replace({'<div><button': '<input', '</button></div>': '">', '>': ' value="'})|raw }}
+								</div>
+							</td>
+						</tr>
+					</table>
+                </td>
+            </tr>
+			<tr>
+                <td class="table-width"><b>{% trans %}CPU socket{% endtrans %}</b>
+					<a href="#" class="help-t">
+						<img src="../assets/images/help.png" alt="">
+						<span>{% trans %}Select a CPU socket from the first field and/or pick the CPU platform from the second field{% endtrans %}</span>
+					</a>
+				</td>
+				<td>
+					<table class="sform1">
+						<tr>
+							<td id="setcpu1">{{ form_widget(form.cpuSocket1, {'attr': {'class': 'sform', 'style':'width:100%'}}) }}</td>
+							<td id="setcpu2">{{ form_widget(form.platform1, {'attr': {'class': 'sform', 'style':'width:100%'}}) }}</td>
+							<td>
+								<label id="setcpu1-lb" style="display:none;">Please wait ...</label>
+								<div>{{ form_row(form.searchSocket1)|replace({'<div><button': '<input', '</button></div>': '">', '>': ' value="'})|raw }}
+								</div>
+							</td>
+						</tr>
+					</table>
+                </td>
+            </tr>
+			<tr>
+                <td class="table-width"><b>{% trans %}2nd CPU socket{% endtrans %}</b></td>
+				<td>
+					<table class="sform1">
+						<tr>
+							<td id="setcpu3">{{ form_widget(form.cpuSocket2, {'attr': {'class': 'sform', 'style':'width:100%'}}) }}</td>
+							<td id="setcpu4">{{ form_widget(form.platform2, {'attr': {'class': 'sform', 'style':'width:100%'}}) }}</td>
+							<td>
+								<label id="setcpu2-lb" style="display:none;">Please wait ...</label>
+								<div>{{ form_row(form.searchSocket2)|replace({'<div><button': '<input', '</button></div>': '">', '>': ' value="'})|raw }}
+								</div>
+							</td>
+						</tr>
+					</table>
+                </td>
+            </tr>
+			<tr>
+				<td class="table-width">
+					<b>{% trans %}Expansion slots{% endtrans %}</b>
+					<a href="#" class="help-t">
+						<img src="../assets/images/help.png" alt="">
+						<span>{% trans %}0 - all boards without that slot will be shown{% endtrans %}</span>
+					</a>
+				</td>
+				<td><div class="sform2">
+					{% for slot in slots %}
+						{% if slot.hiddenSearch == false %}
+						<span class="field1">
 							<input type="text" size="2" name="slot{{slot.id}}">
 							<span>x {{ slot.name }}</span>
-                        </span>
-                    {% endfor %}
-                </td>
-            </tr>
-			<tr style="height:10px;"><td></td><td></td></tr>
+						</span>
+						{% endif %}
+					{% endfor %}
+				</div></td>
+			</tr>
 			<tr>
-                <th>{% trans %}I/O ports{% endtrans %}</th>
-                <td>
-                    {% for port in ports %}
-                        <span class="field1">
-							<input type="text" size="2" name="port{{port.id}}">
-							<span>x {{ port.name }}</span>
-						</span>
-                    {% endfor %}
-                </td>
-            </tr>
-			<tr style="height:10px;"><td></td><td></td></tr>
-            <tr>
-                <th>{% trans %}Ram type{% endtrans %}</th>
-                 <td>
-                    {% for child in form.dramType|keys %}
-                        <span class="field2" >
-						{{ form_widget(attribute(form.dramType,child)) }}
-						{{ form_label(attribute(form.dramType,child)) }}
-						</span>
-                    {% endfor %}
-                </td> 
-            </tr>
-			<tr style="height:10px;"><td></td><td></td></tr>
-            <tr>
-                <th>{% trans %}Motherboard bios{% endtrans %}</th>
-                <td>
-				<div style="width:100%;">
-				
-					{% for child in form.motherboardBios|keys %}
-                        <span class="field2">
-						{{ form_widget(attribute(form.motherboardBios,child)) }}
-						{{ form_label(attribute(form.motherboardBios,child)) }}
-						</span>
-                    {% endfor %}
-					</div>
-                </td>
-            </tr>
-        </table>
-		<div class="butn">
-            {{ form_row(form.search)|replace({'<div><button': '<input', '</button></div>': '">', '>': ' value="'})|raw }}{{ form_rest(form) }}
-        </div>
-   </form><br>
-
+				<td class="table-width">
+					<b>{% trans %}I/O ports{% endtrans %}</b>
+					<a href="#" class="help-t">
+						<img src="../assets/images/help.png" alt="">
+						<span>{% trans %}0 - all boards without that port will be shown{% endtrans %}</span>
+					</a>
+				</td>
+				<td><div class="sform2">
+				{% for port in ports %}
+                    <span class="field1">
+						<input type="text" size="2" name="port{{port.id}}">
+						<span>x {{ port.name }}</span>
+					</span>
+                {% endfor %}
+				</div></td>
+			</tr>
+			<!--<tr>
+				<td class="table-width"><b>{% trans %}RAM type{% endtrans %}</b></td>
+				<td><div class="sform2">
+				{% for child in form.dramType|keys %}
+                    <span class="field2" >
+					{{ form_widget(attribute(form.dramType,child)) }}
+					{{ form_label(attribute(form.dramType,child)) }}
+					</span>
+                {% endfor %}
+				</div></td>
+			</tr>-->
+		</table>
+		{{ form_rest(form)}}
+	</form><br>
+<div id="jsappend"></div>
+    <script type="text/javascript"><!--
+    if ((document.uniqueID || window.getSelection) && (window.XMLHttpRequest || window.ActiveXObject)) {
+        var h = document.getElementById("jsappend");
+        var js = document.createElement('script');
+        js.type = "text/javascript";
+        js.src = "../assets/search.js";
+        h.appendChild(js);
+    }
+    //--></script>   
 {% endblock %}
+

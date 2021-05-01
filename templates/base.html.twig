@@ -4,6 +4,8 @@
 	<head>{% set root = constant('app.path') %}
 		<meta http-equiv="content-type" content="text/html; charset=UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
+		{% block metatags %}
+		{% endblock %}
 		<title>{% block title %}Ultimate Hardware 2019{% endblock %}</title>
 		{% if isRobot(app.request.headers.get('User-Agent')) %}
 			<meta property="og:type" content="website">
@@ -30,6 +32,7 @@
 				{% if is_granted('ROLE_USER') %}<option value="{{ root }}/logout">{% trans %}Logout{% endtrans %}</option>{% endif %}
 				<option value="{{ root }}/credits">{% trans %}About{% endtrans %}</option>
 				<option value="/win3board">{% trans %}Board{% endtrans %}</option>
+				<option value="/contact">{% trans %}Contact Us{% endtrans %}</option>
 			</select>
 			<select class="lang" name="lang">
 				{% for locale in locales %}<option{% if locale == 'user.lang'|trans %} selected="selected"{% endif %} value="{{ locale }}">{{ 'name.lang'|trans(locale=locale) }}</option>{% endfor %}

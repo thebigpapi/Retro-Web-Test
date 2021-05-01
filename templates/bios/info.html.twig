@@ -1,0 +1,59 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{% trans %}BIOS Info{% endtrans %}{% endblock %}
+
+{% block body %}
+<h2 class="title">{% trans %}Where can I find the POST string?{% endtrans %}</h2>
+	<p>In general, the POST string is located in the bottom left side of the boot screen 
+		(for BIOSes which provide it). Depending on the BIOS vendor, the POST string may
+		provide various info about the board (like chipset or date). Here is a list of common 
+		vendors and their string meanings:</p>
+	<br>
+	<p><b>1.Award BIOS</b></p>
+	<a href="../../assets/images/bios/awardbios.jpg" class="highslide" onclick="return imgexp(this);">
+		<img src="../../assets/images/bios/awardbios.jpg" class="biosinfo-img" alt="awardbios">
+	</a>
+	<a href="../../assets/images/bios/awardstring.jpg" class="highslide" onclick="return imgexp(this);">
+		<img src="../../assets/images/bios/awardstring.jpg" class="biosinfo-img" alt="awardbiosinfo">
+	</a>
+	<p>You can find a list of Award chipset IDs <a href="./infoadv#award-chip">here</a>
+	and a list of Award board manufacturer IDs <a href="./infoadv#award-manuf">here</a></p>
+	<br>
+	<p><b>2.AMI BIOS</b></p>
+	<a href="../../assets/images/bios/amibios.jpg" class="highslide" onclick="return imgexp(this);">
+		<img src="../../assets/images/bios/amibios.jpg" class="biosinfo-img" alt="amibios">
+	</a>
+	<a href="../../assets/images/bios/amistring.jpg" class="highslide" onclick="return imgexp(this);">
+		<img src="../../assets/images/bios/amistring.jpg" class="biosinfo-img" alt="amibiosinfo">
+	</a>
+	<p>You can find a list of AMI board manufacturer IDs <a href="./infoadv#ami-manuf">here</a></p>
+	<br>
+	<p><b>3.Acer BIOS</b></p>
+	<a href="../../assets/images/bios/acerbios.jpg" class="highslide" onclick="return imgexp(this);">
+		<img src="../../assets/images/bios/acerbios.jpg" class="biosinfo-img" alt="acerbios">
+	</a>
+	<div id="jsappend"></div>
+	<script type="text/javascript">
+		function imgexp(el){
+			var ua = window.navigator.userAgent;
+			var msie = ua.indexOf("MSIE ");
+			msie = parseInt(ua.substring(msie + 5, ua.indexOf(".", msie)));
+			if(msie == 4 || msie == 5)
+				return 0;
+			else
+				if(document.documentElement.clientWidth < 600 && ua.indexOf("Mobile") > 0)
+					return 0;
+				else return hs.expand(el);
+		}
+		var ua = window.navigator.userAgent;
+		var msie = ua.indexOf("MSIE ");
+		msie = parseInt(ua.substring(msie + 5, ua.indexOf(".", msie)));
+		if (!msie || msie > 5){
+			var h = document.getElementById("jsappend");
+			var js = document.createElement('script');
+			js.type = "text/javascript";
+			js.src = "{{ root }}/assets/highslide/highslide.js";
+			h.appendChild(js);
+		}
+	</script>
+{% endblock %}

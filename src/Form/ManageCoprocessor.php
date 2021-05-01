@@ -19,7 +19,7 @@ class ManageCoprocessor extends AbstractType
         $builder
         ->add('coprocessors', EntityType::class, [
             'class' => Coprocessor::class,
-            'choice_label' => 'getNameWithPlatform',
+            'choice_label' => 'getNameWithSpecs',
             'multiple' => false,
             'expanded' => false,
             'choices' => $options['coprocessors'],
