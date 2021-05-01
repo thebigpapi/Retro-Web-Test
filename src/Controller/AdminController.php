@@ -762,7 +762,7 @@ class AdminController extends AbstractController
      */
     public function manufacturerAdd(Request $request)        
     {
-        return $this->renderEntityForm($request, new Manufacturer(), EditManufacturer::class, 'admin/add_manufacturer.html.twig');
+        return $this->renderManufacturerForm($request, new Manufacturer(), EditManufacturer::class, 'admin/add_manufacturer.html.twig');
     }
 
     /**
@@ -771,10 +771,37 @@ class AdminController extends AbstractController
      */
     public function manufacturerEdit(Request $request, int $id)        
     {
-        return $this->renderEntityForm($request,$this->getDoctrine()
+        return $this->renderManufacturerForm($request,$this->getDoctrine()
                                         ->getRepository(Manufacturer::class)
                                         ->find($id)
                                         , EditManufacturer::class, 'admin/add_manufacturer.html.twig');
+    }
+
+    private function renderManufacturerForm(Request $request, Manufacturer $entity, $class, $template)
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+        
+        $form = $this->createForm($class, $entity);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entity = $form->getData();
+
+            foreach ($form['biosCodes']->getData() as $key => $val) {
+                $val->setManufacturer($entity);
+            }
+            
+            $entityManager->persist($entity);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('admin_manage_resources', array());
+        }
+        return $this->render($template, [
+            'form' => $form->createView(),
+        ]);
+
+        /*foreach ($form['motherboardExpansionSlots']->getData() as $key => $val) {
+            $val->setMotherboard($mobo);
+        }*/
     }
 
 
