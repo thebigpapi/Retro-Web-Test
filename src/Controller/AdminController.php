@@ -526,7 +526,7 @@ class AdminController extends AbstractController
                                     );
     }
 
-    private function renderChipsetForm(Request $request, $chipset) {
+    private function renderChipsetForm(Request $request, Chipset $chipset) {
         $entityManager = $this->getDoctrine()->getManager();
         $chipsetManufacturers = $this->getDoctrine()
         ->getRepository(Manufacturer::class)
@@ -556,6 +556,11 @@ class AdminController extends AbstractController
             /*foreach ($form['chipsetChipsetParts']->getData() as $key => $val) {
                 $val->setChipset($chipset);
             }*/
+            foreach ($form['biosCodes']->getData() as $key => $val) {
+                $val->setChipset($chipset);
+            }
+
+            //dd($chipset);
             
             $entityManager->persist($chipset);
             $entityManager->flush();

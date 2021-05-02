@@ -4,6 +4,11 @@
 
 {% block body %}
 	<h2 class="title">{% trans %}Search results{% endtrans %}</h2>
+	{% if postStringAnalysis %}
+		<p style="text-align:center;padding-top:10px;">
+			<i>{{ "Couldn't find any exact POST string match, the results you see are generated using POST string analysis."|trans }}</i>
+		</p>
+	{% endif %}
 	<p style="text-align:center;padding-top:10px;">
 		<i>{{ 'bios.num'|trans({'count':bios_count}) }}</i>
 	</p>

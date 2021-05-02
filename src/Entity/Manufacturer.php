@@ -78,6 +78,11 @@ class Manufacturer
      */
     private $biosCodes;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\ChipsetBiosCode", mappedBy="biosManufacturer")
+     */
+    private $chipsetBiosCodes;
+
     public function __construct()
     {
         $this->motherboards = new ArrayCollection();
@@ -90,6 +95,7 @@ class Manufacturer
         $this->chips = new ArrayCollection();
         $this->chipAliases = new ArrayCollection();
         $this->biosCodes = new ArrayCollection();
+        $this->chipsetBiosCodes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -433,6 +439,37 @@ class Manufacturer
             // set the owning side to null (unless already changed)
             if ($biosCode->getManufacturer() === $this) {
                 $biosCode->setManufacturer(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ChipsetBiosCode[]
+     */
+    public function getChipsetBiosCodes(): Collection
+    {
+        return $this->chipsetBiosCodes;
+    }
+
+    public function addChipsetBiosCode(ChipsetBiosCode $chipsetBiosCode): self
+    {
+        if (!$this->chipsetBiosCodes->contains($chipsetBiosCode)) {
+            $this->chipsetBiosCodes[] = $chipsetBiosCode;
+            $chipsetBiosCode->setBiosManufacturer($this);
+        }
+
+        return $this;
+    }
+
+    public function removeChipsetBiosCode(ChipsetBiosCode $chipsetBiosCode): self
+    {
+        if ($this->chipsetBiosCodes->contains($chipsetBiosCode)) {
+            $this->chipsetBiosCodes->removeElement($chipsetBiosCode);
+            // set the owning side to null (unless already changed)
+            if ($chipsetBiosCode->getBiosManufacturer() === $this) {
+                $chipsetBiosCode->setBiosManufacturer(null);
             }
         }
 

@@ -340,48 +340,53 @@
 	</tr>
 </table>
 	{% for manufacturer, codes in biosCodes %}
-		{% set sortedCodes = codes %}
-		{% if manufacturer == "AMI" %}
-			<p id="ami-manuf">
-		{% elseif manufacturer == "Award" %}
-			<p id="award-manuf">
-		{% else %}
-			<p>
-		{% endif %}
+		<p id="{{manufacturer|lower}}-manuf">
 		<b>{{manufacturer}} BIOS manufacturer IDs</b></p>
 		<table class="stbl-adv">
 			<tr class="stbl-head">
-				<th>{{ codes[0].getCode() }}-{{ codes[(codes|length // 4)].getCode()}}</th>
-				<th>{{ codes[(codes|length // 4)+1].getCode() }}-{{ codes[2 * (codes|length // 4)+1].getCode() }}</th>
-				<th>{{ codes[2 * (codes|length // 4)+2].getCode() }}-{{ codes[3 * (codes|length // 4)+2].getCode() }}</th>
-				<th>{{ codes[3 * (codes|length // 4)+3].getCode()}}-{{codes[codes|length -1].getCode()}}</th>
+				<th>{{ codes[0].getCode() }}-{{ codes[(codes|length // 4)-1].getCode()}}</th>
+				<th>{{ codes[(codes|length // 4)].getCode() }}-{{ codes[2 * (codes|length // 4)-1].getCode() }}</th>
+				<th>{{ codes[2 * (codes|length // 4)].getCode() }}-{{ codes[3 * (codes|length // 4)-1].getCode() }}</th>
+				<th>{{ codes[3 * (codes|length // 4)].getCode()}}-{{codes[codes|length -1].getCode()}}</th>
 				
 			</tr>
+			<tr>{{codes|length}}</tr>
 			<tr>
 				<td>
+					<p>{{0}}:{{(codes|length // 4)}}</p>
 					<ul>
-					{% for code in codes|slice(0, (codes|length // 4)+1) %}
+					{% for code in codes|slice(0, (codes|length / 4)) %}
+						<li>{{ code.getCode() }}: {{ code.getManufacturer().getShortNameIfExist() }}</li>
+					{% endfor %}
+					</ul>
+				</td>
+				<td>
+					<p>{{(codes|length // 4)}}:{{(codes|length // 4)}}</p>
+					<ul>
+					{% for code in codes|slice((codes|length // 4), (codes|length // 4)) %}
+						<li>{{ code.getCode() }}: {{ code.getManufacturer().getShortNameIfExist() }}</li>
+					{% endfor %}
+					</ul>
+				</td>
+				<td>
+					<p>{{2 * (codes|length // 4)}}:{{(codes|length // 4)}}</p>
+					<ul>
+					{% for code in codes|slice(2 * (codes|length // 4), (codes|length // 4)) %}
+						<li>{{ code.getCode() }}: {{ code.getManufacturer().getShortNameIfExist() }}</li>
+					{% endfor %}
+					</ul>
+				</td>
+				<td>
+					<p>{{3 * (codes|length // 4)}}:{{(codes|length)-(3 * (codes|length // 4))}}</p>
+					<ul>
+					{% for code in codes|slice(3 * (codes|length // 4), (codes|length)-(3 * (codes|length // 4))) %}
 						<li>{{ code.getCode() }}: {{ code.getManufacturer().getShortNameIfExist() }}</li>
 					{% endfor %}
 					</ul>
 				</td>
 				<td>
 					<ul>
-					{% for code in codes|slice((codes|length // 4)+1, (codes|length // 4)+1) %}
-						<li>{{ code.getCode() }}: {{ code.getManufacturer().getShortNameIfExist() }}</li>
-					{% endfor %}
-					</ul>
-				</td>
-				<td>
-					<ul>
-					{% for code in codes|slice(2 * (codes|length // 4)+2, (codes|length // 4)+1) %}
-						<li>{{ code.getCode() }}: {{ code.getManufacturer().getShortNameIfExist() }}</li>
-					{% endfor %}
-					</ul>
-				</td>
-				<td>
-					<ul>
-					{% for code in codes|slice(3 * (codes|length // 4)+3, (codes|length)) %}
+					{% for code in codes %}
 						<li>{{ code.getCode() }}: {{ code.getManufacturer().getShortNameIfExist() }}</li>
 					{% endfor %}
 					</ul>

@@ -47,6 +47,50 @@ class BiosController extends AbstractController
         $data = $this->getDoctrine()
             ->getRepository(MotherboardBios::class)
             ->findBios($criterias);
+        
+        $postStringAnalysis = false;
+        if(empty($data)) {
+            try {
+                if($postString && $biosManufacturerId && intval($biosManufacturerId)) {
+                    $biosManufacturer = $this->getDoctrine()
+                    ->getRepository(Manufacturer::class)
+                    ->find($biosManufacturerId);
+
+                    if($biosManufacturer->getShortNameIfExist() == "AMI") {
+                        $subStr = explode("-", $postString);
+                        if (substr_count($postString, "-") == 3) { //Old AMI
+                            $mfgCode = $subStr[1]; 
+                        }
+                        else { //New AMI
+                            $mfgCode = substr($subStr[2], 2);
+                        }
+                    }
+                    else if ($biosManufacturer->getShortNameIfExist() == "Award") {
+                        $subStr = explode("-", $postString);
+                        $mfgCode = substr($subStr[count($subStr) - 2], 5, 2);
+                    }
+
+                    $biosCodes = $this->getDoctrine()->
+                        getRepository(ManufacturerBiosManufacturerCode::class)->
+                        findBy(array("biosManufacturer"=>$biosManufacturer));
+                    
+                    $manufacturers = array();
+                    foreach ($biosCodes as $biosCode) {
+                        if($mfgCode == $biosCode->getCode()) {
+                            $manufacturers[] = $biosCode->getManufacturer()->getId();
+                        }
+                    };
+                    if (!empty($manufacturers)) {
+                        $criterias['motherboard_manufacturer_ids'] = $manufacturers;
+                        $postStringAnalysis = true;
+                        $data = $this->getDoctrine()
+                            ->getRepository(MotherboardBios::class)
+                            ->findBios($criterias);
+                    }
+                }
+            }
+            catch (\Exception $e) {}
+        }
 
         $bios = $paginator->paginate(
             $data,
@@ -57,6 +101,7 @@ class BiosController extends AbstractController
         return $this->render('bios/result.html.twig', [
             'bios' => $bios,
             'bios_count' => count($bios),
+            'postStringAnalysis' => $postStringAnalysis,
         ]);
     }
 	/**
