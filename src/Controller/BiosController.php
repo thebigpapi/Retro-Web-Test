@@ -73,7 +73,29 @@ class BiosController extends AbstractController
      */
     public function binfoadv()
     {        
-        $data = $this->getDoctrine()->getRepository(ManufacturerBiosManufacturerCode::class)->findAll();
+        $biosCodes = $this->getDoctrine()->getRepository(ManufacturerBiosManufacturerCode::class)->findAll();
+
+        $data = array();
+
+        foreach ($biosCodes as $code)
+        {
+            $sn = $code->getBiosManufacturer()->getShortNameIfExist();
+            $data[$sn][] = $code;
+        }
+        //dd($data);
+
+        foreach ($data as $key => $codes)
+        {    
+            usort($codes, function ($a, $b)
+                {
+                    if ($a->getCode() == $b->getCode()) {
+                        return 0;
+                    }
+                    return ($a->getCode() < $b->getCode()) ? -1 : 1;
+                }
+            );
+            $data[$key] = $codes;
+        }
 
         return $this->render('bios/infoadv.html.twig', [
             'controller_name' => 'MainController',

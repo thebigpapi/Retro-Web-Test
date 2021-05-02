@@ -716,28 +716,40 @@
 		<th>1317-1856</th>
 		<th>1867-891E</th>
 	</tr>
-	<tr>
-		<td><ul>
-			{% for code in biosCodes|sort((a, b) => a.code <=> b.code)|slice(0, biosCodes|length / 3) %}
-				{% if code.getBiosManufacturer().getShortNameIfExist() == "AMI" %}
-					<li>{{ code.getCode() }}: {{ code.getManufacturer().getShortNameIfExist() }}</li>
-				{% endif %}
-			{% endfor %}
-		</ul></td>
-		<td><ul>
-			{% for code in biosCodes|sort((a, b) => a.code <=> b.code)|slice(2 * biosCodes|length / 3 , 2 * biosCodes|length / 3) %}
-				{% if code.getBiosManufacturer().getShortNameIfExist() == "AMI" %}
-					<li>ah{{ code.getCode() }}: {{ code.getManufacturer().getShortNameIfExist() }}</li>
-				{% endif %}
-			{% endfor %}
-		</ul></td>
-		<td><ul>
-			{% for code in biosCodes|sort((a, b) => a.code <=> b.code)|slice(2 * biosCodes|length / 3, biosCodes|length) %}
-				{% if code.getBiosManufacturer().getShortNameIfExist() == "AMI" %}
-					<li>{{ code.getCode() }}: {{ code.getManufacturer().getShortNameIfExist() }}</li>
-				{% endif %}
-			{% endfor %}
-		</ul></td>
-  </tr>
+	
 </table>
+	{% for manufacturer, codes in biosCodes %}
+		{% set sortedCodes = codes%}
+		<p><b>{{manufacturer}}</b></p>
+		<table class="stbl-adv">
+			<tr class="stbl-head">
+				<th>{{ codes[0].getCode() }}-{{ codes[(codes|length // 3)-1].getCode()}}</th>
+				<th>{{ codes[(codes|length // 3)].getCode() }}-{{ codes[2 * (codes|length // 3)-1].getCode() }}</th>
+				<th>{{ codes[2 * (codes|length // 3)].getCode()}}-{{codes[codes|length -1].getCode()}}</th>
+			</tr>
+			<tr>
+				<td>
+					<ul>
+					{% for code in codes|slice(0, (codes|length // 3)) %}
+						<li>{{ code.getCode() }}: {{ code.getManufacturer().getShortNameIfExist() }}</li>
+					{% endfor %}
+					</ul>
+				</td>
+				<td>
+					<ul>
+					{% for code in codes|slice((codes|length // 3), (codes|length // 3)) %}
+						<li>{{ code.getCode() }}: {{ code.getManufacturer().getShortNameIfExist() }}</li>
+					{% endfor %}
+					</ul>
+				</td>
+				<td>
+					<ul>
+					{% for code in codes|slice(2 * (codes|length // 3), (codes|length // 3)+2) %}
+						<li>{{ code.getCode() }}: {{ code.getManufacturer().getShortNameIfExist() }}</li>
+					{% endfor %}
+					</ul>
+				</td>
+			</tr>
+		</table>
+	{% endfor %}
 {% endblock %}
