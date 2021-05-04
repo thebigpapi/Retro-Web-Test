@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Listener;
+namespace App\EventSubscriber;
 
 use App\Entity\ChipImage;
 use Doctrine\Common\EventSubscriber;

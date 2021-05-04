@@ -4,7 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Motherboard;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\Query\ResultSetMapping;
 
 use Symfony\Component\Config\Definition\Exception\Exception;

@@ -309,7 +309,8 @@ class AddMotherboard extends AbstractType
             $processorsWithPlatform = array();
             $coprocessorsWithPlatform = array();
             if (!$processorPlatformTypes->isEmpty()) {
-                if($processorPlatformTypes[0] instanceof ProcessorPlatformType) 
+                
+                if(is_object($processorPlatformTypes[0]) && $this->entityManager->getMetadataFactory()->getMetadataFor(get_class($processorPlatformTypes[0]))->getName()=="App\Entity\ProcessorPlatformType") 
                 {
                     foreach ($processorPlatformTypes as $platform) {
                         $processorsWithPlatform = array_merge($processorsWithPlatform,$platform->getCompatibleProcessors()->toArray());
@@ -328,13 +329,14 @@ class AddMotherboard extends AbstractType
             $processorsWithFsb = array();
             $coprocessorsWithFsb = array();
             if (!$fsbs->isEmpty()) {
-                if($fsbs[0] instanceof CpuSpeed) 
+                if(is_object($fsbs[0]) && $this->entityManager->getMetadataFactory()->getMetadataFor(get_class($fsbs[0]))->getName()=="App\Entity\CpuSpeed")
                 {
+                    
                     foreach ($fsbs as $fsb) {
-                        foreach($coprocessorsWithPlatform as $coprocessor)
+                        foreach($processorsWithPlatform as $processor)
                         {
-                            if ($coprocessor->getFsb()->getValue() >= $fsb->getValue() - 1.0 && $coprocessor->getFsb()->getValue() <= $fsb->getValue() + 1.0)
-                                $coprocessorsWithFsb[] = $coprocessor;
+                            if ($processor->getFsb()->getValue() >= $fsb->getValue() - 1.0 && $processor->getFsb()->getValue() <= $fsb->getValue() + 1.0)
+                                $processorsWithFsb[] = $processor;
                         }
                         foreach($coprocessorsWithPlatform as $coprocessor)
                         {
@@ -363,8 +365,9 @@ class AddMotherboard extends AbstractType
             $processorsWithSocket = array();
             $coprocessorsWithSocket = array();
             if (!$sockets->isEmpty()) {
-                if($sockets[0] instanceof CpuSocket) 
+                if(is_object($sockets[0]) && $this->entityManager->getMetadataFactory()->getMetadataFor(get_class($sockets[0]))->getName()=="App\Entity\CpuSocket")
                 {
+                    
                     foreach ($sockets as $socket) {
                         foreach($processorsWithFsb as $processor)
                         {
