@@ -16,5 +16,17 @@
 		<form action="./admin/password" style="display: inline"><div style="display: inline">
 			<input type="submit" class="admin-button" style="background: #ebebeb url(./assets/images/usrs.png) center no-repeat;" value="Change password">
 		</div></form>
+		<div class="perks" style="text-align: left;">
+			<p><b>{% trans %}The last 50 added or updated boards:{% endtrans %}</b></p>
+			<div class="results">
+				<ul>
+        		{% for motherboard in latestMotherboards %}
+					<li><a href="./motherboard/show/{{ motherboard.getId() }}">{{ motherboard.getManufacturerShortNameIfExist() }}&nbsp;{{ motherboard.name }}</a></li>		
+				{% endfor %}
+				</ul>
+			</div>
+			<p><b>{% trans %}Boards in the database: {% endtrans %} {{boardCount|length}}</b></p>
+			<br>
+		</div>
 	</div>
 {% endblock %}

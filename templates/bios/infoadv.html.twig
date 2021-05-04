@@ -4,344 +4,31 @@
 
 {% block body %}
 <h2 class="title">{% trans %}Where can I find the POST string?{% endtrans %}</h2>
-<p id="award-chip"><b>Award BIOS chipset IDs</b></p>
+
+{% for manufacturer, codes in chipCodes %}
+<p id="{{manufacturer|lower}}-chip"><b>{{manufacturer}} BIOS chipset IDs</b></p>
 <table class="stbl-adv">
 	<tr class="stbl-head">
-		<th>Intel chipsets</th>
-		<th>VIA/OPTi/UMC chipsets</th>
+		<th>{{ codes[0].getCode() }}-{{ codes[(codes|length // 2)-1].getCode()}}</th>
+		<th>{{ codes[(codes|length // 2)].getCode() }}-{{ codes[(codes|length)-1].getCode() }}</th>
 	</tr>
 	<tr>
 		<td><ul>
-			<li>2A496: Intel 420TX chipset (Saturn I)</li>
-			<li>2B496: Intel 420TX chipset (Saturn I EISA)</li>
-			<li>2A498: Intel 420ZX chipset (Saturn II)</li>
-			<li>2A499: Intel 420EX chipset (Aries)</li>
-			<li>2A597: Intel 430LX chipset (Mercury)</li>
-			<li>2B597: Intel 430LX chipset (Mercury EISA)</li>
-			<li>2A59A: Intel 430NX chipset (Neptune)</li>
-			<li>2B59A: Intel 430NX chipset (Neptune EISA)</li>
-			<li>2A59B: Intel 430LX chipset (Mercury)</li>
-			<li>2A59C: Intel 430FX chipset (Triton I)</li>
-			<li>2A59F: Intel 430HX chipset (Triton II)</li>
-			<li>2B59F: Intel 430HX chipset (Triton II EISA)</li>
-			<li>2A59G: Intel 430VX chipset (Triton VX)</li>
-			<li>2A59H: Intel 430VX chipset (Triton VX w/illegal BIOS)</li>
-			<li>2A59I: Intel 430TX chipset (Triton TX)</li>
-			<li>2A69H: Intel 440FX chipset (Natoma)</li>
-			<li>2A69J: Intel 440LX chipset (Balboa)</li>
-			<li style="list-style-type:none;margin-left:3.5em;">Intel 440EX chipset</li>
-			<li>2A69K: Intel 440BX chipset (Seattle)</li>
-			<li style="list-style-type:none;margin-left:3.5em;">Intel 440GX chipset</li>
-			<li style="list-style-type:none;margin-left:3.5em;">Intel 440ZX chipset</li>
-			<li>3A69K: Intel 440BX/440ZX chipset</li>
-			<li>6A69N: Intel 440MX chipset</li>
-			<li>2B69D: Intel 450GX chipset (Orion EISA)</li>
-			<li>6A69L: Intel 820 chipset family (Camino)</li>
-			<li>6A69M: Intel 810 chipset family (Whitney)</li>
-			<li>6A69P: Intel 840 chipset family (Camino)</li>
-			<li>6A69R: Intel 815 chipset family (Solano)</li>
-			<li>6A69S: Intel 850 chipset (Tehama)</li>
-			<li>6A69T: Intel 845G(L) chipset (Brookdale)</li>
-			<li>6A69V: Intel 845(E) chipset (Brookdale)</li>
-			<li>6A79A: Intel 865 chipset family (Springdale)</li>
-			<li>6A79Y: Intel 865P chipset (Springdale-P)</li>
-			<li>6A79Z: Intel 865PE chipset (Springdale-PE)</li>
-			<li>6A79W: Intel 865GV chipset (Springdale-GV)</li>
-			<li>6A79(A/X): Intel 848P chipset family (Breeds Hill)</li>
-			<li>6A79B: Intel 875P chipset (Canterwood)</li>
-			<li style="list-style-type:none;margin-left:3.5em;">Intel E7210 chipset ()</li>
-			<li>6A79C: Intel E7230 chipset (Mukilteo)</li>
-			<li>6A79(D/U/V): Intel 915 chipset family (Grantsdale)</li>
-			<li>6A79E: Intel E7221 chipset (Copper River)</li>
-			<li>6A79F: Intel 925 chipset family (Alderwood)</li>
-			<li>6A79I: Intel 955X chipset (Lakeport-X)</li>
-			<li>6A79(I/R): Intel 975X chipset family (Glenwood)</li>
-			<li>6A79G: Intel 915GM chipset family (Alviso, Pentium M)</li>
-			<li>6A79(H/T): Intel 945 chipset family (Lakeport)</li>
-			<li>6A79K: Intel 945GM chipset family (Crestline, mobile)</li>
-			<li>6A79N: Intel 965 chipset family (Crestline, mobile)</li>
-			<li>6A79O: Intel G33 chipset (Bearlake)</li>
-			<li style="list-style-type:none;margin-left:3.5em;">Intel P35 chipset (Bearlake)</li>
-			<li style="list-style-type:none;margin-left:3.5em;">Intel Q35 chipset (Bearlake)</li>
-			<li style="list-style-type:none;margin-left:3.5em;">Intel X38 chipset (Bearlake)</li>
-			<li>6A79P: Intel G41 chipset (Eaglelake)</li>
-			<li style="list-style-type:none;margin-left:3.5em;">Intel P45 chipset (Eaglelake)</li>
-			<li style="list-style-type:none;margin-left:3.5em;">Intel X48 chipset (Bearlake)</li>
-			<li>6A89H: Intel Atom 2xx + 945GC</li>
-			<li>6A99O: Intel G31 chipset (Bearlake)</li>
-			<li style="list-style-type:none;margin-left:3.5em;">Intel P31 chipset (Bearlake)</li>
-			<li>7A69P: Intel P43 chipset (Eaglelake)</li>
-			<li style="list-style-type:none;margin-left:3.5em;">Intel Q45 chipset (Eaglelake)</li>
-			<li>7A89H: Intel Atom 3xx + 945GC</li>
-			<li>7A89P: Intel G43 chipset (Eaglelake)</li>
-			<li style="list-style-type:none;margin-left:3.5em;">Intel G45 chipset (Eaglelake)</li>
-			<li>7A89Q: Intel X58 chipset (Tylersburg)</li>
-			<li>7A89R: Intel P55 chipset (Ibex Peak)</li>
-			<li>7A89S: Intel Atom D4xx/D5xx + NM10</li>
-			<li>7A89T: Intel H55/H57/Q57 chipset (Ibex Peak)</li>
-			<li>7A89U: Intel B65/H67 chipset (Cougar Point)</li>
-			<li>7A89V: Intel P67 chipset (Cougar Point)</li>
-			<li>7A89W: Intel Z68 chipset (Cougar Point)</li>
-			<li>7A89X: Intel H61 chipset ()</li>
-			<li>8A79R: Intel SCH US15W</li>
-			<li>8A79S: Intel GM45 chipset (Cantiga, mobile)</li>
-			<li>8A79T: Intel X58 chipset (Tylersburg)</li>
-			<li>8A79W: Intel Q45 chipset (Eaglelake)</li>
-			<li>8A79Y: Intel 945GSE chipset (Calistoga, mobile)</li>
-			<li>8A89B: Intel Atom 4xx/5xx + ICH8 (Pine View)</li>
-			<li>8A89R: Intel Atom D2xxx (Cedar View)</li>
-			<li>9A69V: Intel i845PE (some EPoX boards)</li>
+		{% for code in codes|slice(0, (codes|length / 2)) %}
+			<li>{{ code.getCode() }}: {{ code.getChipset().getManufacturer().getShortNameIfExist() }} {{ code.getChipset().getPartNo() }} ({{ code.getChipset().getName() }}) </li>
+		{% endfor %}
 		</ul></td>
 		<td><ul>
-			<li style="list-style-type:none;"><b>VIA chipsets</b></li>
-			<li>214L2: VIA VT82C486 (GMC chipset)</li>
-			<li>214L6: VIA VT82C486/495/496</li>
-			<li>2A4L4: VIA VT82C486/496G/530MV</li>
-			<li>2A4L6: VIA VT82C496G/406/530MV</li>
-			<li>2C4L2: VIA VT82C486A</li>
-			<li>2C4L6: VIA VT82C496G</li>
-			<li>2C4L8: VIA VT82C425MV</li>
-			<li>2A5C7: VIA VT82C570M</li>
-			<li>2A5L5: VIA ???</li>
-			<li>2A5L7: VIA VT82C570M</li>
-			<li>2A5L9: VIA VT82C570M</li>
-			<li>2A5LA: VIA VT82C580VP</li>
-			<li>2A5LC: VIA VT82C590</li>
-			<li>2A5LD: VIA VT82C580VPX</li>
-			<li>2A5LE: VIA VT82C597/AT/598MVP</li>
-			<li>2A5LH: VIA MVP4</li>
-			<li>2A6LF: VIA VT82C691</li>
-			<li>2A6LG: VIA VT82C692BX/693</li>
-			<li>2A6LI: VIA MVP4 601</li>
-			<li>2A6LJ: VIA VT82C694X</li>
-			<li>2A6LK: VIA KX133</li>
-			<li>3A6LF: VIA VT82C691</li>
-			<li>6A5LE: VIA MVP3</li>
-			<li>6A5LH: VIA MVP4</li>
-			<li>6A6LG: VIA 693A/694A</li>
-			<li>6A6LI: VIA PLE133(T)</li>
-			<li>6A6LJ: VIA Apollo Pro 133A/T</li>
-			<li>6A6LK: VIA KX133</li>
-			<li>6A6LL: VIA PM133</li>
-			<li>6A6LM: VIA KT133(E)</li>
-			<li>6A6LN: VIA KLE133/KM133</li>
-			<li>6A6LO: VIA PLE133</li>
-			<li>6A6LP: VIA Apollo Pro 133T</li>
-			<li>6A6LS: VIA KT133A</li>
-			<li>6A6LU: VIA KT266</li>
-			<li>6A6LV: VIA KT266(A)/KT333/KM266</li>
-			<li>6A6LW: VIA P4M266/P4X266</li>
-			<li>6A6LY: VIA KT400(A)/KT600/KM400(A)</li>
-			<li>6A7L0: VIA K8T800</li>
-			<li>6A7L1: VIA K8M800</li>
-			<li>6A7L2: VIA PT800/PT880/P4X533/PM880/P4M800</li>
-			<li>6A7L3: VIA KT880</li>
-			<li>6A7L4: VIA PT880 Pro</li>
-			<li>6A7L5: VIA K8T890</li>
-			<li>6A7L6: VIA P4M800/CN700</li>
-			<li>6A7L7: VIA K8T890 + VT8237R</li>
-			<li>6A7L8: VIA PT890</li>
-			<li>6A7L9: VIA CX700</li>
-			<li>8A8LD: VIA VX900</li>
-			<li>IA6LJ: VIA 694X</li>
-			<li>JA6LM: VIA KT133 (Matsonic)</li>
-			<li>TA6LK: VIA KT133 (Chaintech)</li>
-			<li style="list-style-type:none;"><b>OPTi chipsets</b></li>
-			<li>214UE: OPTi 495SLC</li>
-			<li>215UM: OPTi 82C546/597</li>
-			<li>2A4UK: OPTi 802G</li>
-			<li>2C4UK: OPTi 802G</li>
-			<li>2A5UI: OPTi 82C596/597 or 596/546</li>
-			<li>2A5UL: OPTi 82C571/572</li>
-			<li>2A5UM: OPTi 82C546/547</li>
-			<li>2A5UN: OPTi Viper or Viper-M</li>
-			<li>2A5UP: OPTi Viper Max</li>
-			<li>2A5UQ: OPTi Firebridge II</li>
-			<li style="list-style-type:none;"><b>UMC chipsets</b></li>
-			<li>214X2: UMC 491</li>
-			<li>2C4X2: UMC 491</li>
-			<li>2A4X5: UMC 8886/8881</li>
-			<li>2A5X7: UMC 82C890</li>
-			<li>2A5X8: UMC UM8886F</li>
-			<li>2A5XA: UMC 890C</li>
-			<li>2A5XC: UMC ??? ite-8330g</li>
-			<li>2C4X6: UMC 8498F</li>
-			
-		</ul></td>
-	</tr>
-	<tr class="stbl-head">
-		<th>SiS chipsets</th>
-		<th>ALi/Cyrix chipsets</th>
-	</tr>
-	<tr>
-		<td><ul>
-			<li>154I5: SiS 85C431/420/411/406/405</li>
-			<li>2C4I7: SiS 461</li>
-			<li>214I8: SiS 85C471</li>
-			<li>214I8: SiS 85C471</li>
-			<li>2C4I8: SiS 85C471</li>
-			<li>2C4I9: SiS 85C471</li>
-			<li>2A4IB: SiS 85C496</li>
-			<li>2A5IA: SiS 85C501</li>
-			<li>2A5IC: SiS 5501</li>
-			<li>2A5ID: SiS 5511</li>
-			<li>2A5IE: SiS 5101</li>
-			<li>2A5IF: SiS 5596</li>
-			<li>2A5IH: SiS 5571</li>
-			<li>2A5II: SiS 5582</li>
-			<li>2A5IJ: SiS 5120 (mobile)</li>
-			<li>2A5IK: SiS 5591</li>
-			<li>2A5IM: SiS 530</li>
-			<li>2A5IO: SiS 530</li>
-			<li>2A6IL: SiS 5600</li>
-			<li>2A6IN: SiS 620</li>
-			<li>2A6IR: SiS 630</li>
-			<li>6A6IR: SiS 630</li>
-			<li>6A6IS: SiS 730</li>
-			<li>6A6IT: SiS 635</li>
-			<li>6A6IU: SiS 733</li>
-			<li>6A6IX: SiS 650</li>
-			<li>6A6IY: SiS 740</li>
-			<li>IL6IX: SiS 645 + 961 (Chaintech)</li>
-			<li>6A7I0: SiS 648/648FX</li>
-			<li>6A7I1: SiS 748</li>
-			<li>6A7I3: SiS 755</li>
-			<li>6A7I4: SiS 661FX</li>
-			<li>6A7I5: SiS 655FX</li>
-			<li>6A7I7: SiS 755/760</li>
-			<li>6A7I8: SiS 741</li>
-			<li>6A7IA: SiS 651</li>
-			<li>6A7IB: SiS 649</li>
-			<li>6A7IC: SiS 756</li>
-			<li>6A7ID: SiS 761GX</li>
-			<li>6A7IE: SiS 662</li>
-			<li>6A7IY: SiS 740</li>
-			
-		</ul></td>
-		<td><ul>
-			<li style="list-style-type:none;"><b>ALi chipsets</b></li>
-			<li>214K6: ALi M1419</li>
-			<li>219K3: ALi M1217</li>
-			<li>2A4K9/2A4KA: ALi M1429</li>
-			<li>2A4KC/2C4KC: ALi M1439/45/31(486 VLB/PCI/ISA)</li>
-			<li>2A4KD: ALi M1487/89(FinALi-486PCI)</li>
-			<li>2A5KB: ALi M1451/49(Aladdin)</li>
-			<li>2A5KE: ALi M1511(Aladdin II)</li>
-			<li>2A5KF: ALi M1521/23(Aladdin III)</li>
-			<li>2A5KI: ALi M1531/43(Aladdin IV)</li>
-			<li>2A5KK/6A5KK: ALi M1541/43(Aladdin V)</li>
-			<li>6A5KP: ALi M1561/43 (Aladdin 7 ArtX)</li>
-			<li>2A6KL: ALi M1621(Aladdin Pro II)</li>
-			<li>2A6KO/6A6KQ: ALi M1631(Aladdin TNT)</li>
-			<li>2A9KG: ALi M6117(embedded 386SX)</li>
-			<li>2A9KH: ALi M6117C(embedded 386SX)</li>
-			<li>6A6KT: ALi M1647</li>
-			<li>6A6KU: ALi M1651(Aladdin Pro 5)</li>
-			<li>6A6KX: ALi M1671(Aladdin P4)</li>
-			<li>6A7K0: AMD 8131 + ALi M1563</li>
-			<li>6A7K1/6A7K2: ALi M1683(A800N)</li>
-			<li>6A7K4: ULi M1689</li>
-			<li>6A7K8: ULi M1687</li>
-			<li style="list-style-type:none;"><b>Cyrix chipsets</b></li>
-			<li>2A431: Cyrix CX5510</li>
-			<li>2A432: Cyrix CX5520</li>
-			<li>2A433: Cyrix CX5520</li>
-			<li>2A434: Cyrix CX5530</li>
-			<li>6A434: Cyrix CX5530?</li>
-			<li>6A437: Cyrix ???</li>
-			<li>6A439: Cyrix CS5535</li>
-			<li>6A43A: Cyrix CS5536</li>
-		</ul></td>
-	</tr>
-	<tr class="stbl-head">
-		<th>nVidia/ATI(AMD) chipsets</th>
-		<th>Other chipsets</th>
-	</tr>
-	<tr>
-		<td><ul>
-			<li style="list-style-type:none;"><b>nVidia chipsets</b></li>
-			<li>6A61A: nVidia nForce</li>
-			<li>6A61B: nVidia nForce 2</li>
-			<li>6A61C: nVidia nForce 3</li>
-			<li>6A61E: nVidia nForce 4 SLI</li>
-			<li>6A61F: nVidia nForce 4</li>
-			<li>6A61H: nVidia nForce 590 SLI</li>
-			<li>6A61I: nVidia nForce 650i/680i (SLI)</li>
-			<li>6A61J: nVidia nForce 550/570 SLI/4 MCP</li>
-			<li>6A61K: nVidia nForce 430/630a/520LE</li>
-			<li>6A61L: nVidia nForce 560</li>
-			<li>6A61M: nVidia nForce C15G</li>
-			<li>6A61N: nVidia nForce 610i/630i</li>
-			<li>6A61O: nVidia nForce 8100/8200/720D/750a SLI</li>
-			<li>7A61Q: nVidia MCP7A (GF9400)</li>
-			<li>8A61O: nVidia MCP78S</li>
-			<li style="list-style-type:none;"><b>ATI/AMD chipsets</b></li>
-			<li>6A660: ATI Radeon IGP320</li>
-			<li>6A661: ATI Radeon IGP320 + VT82C686</li>
-			<li>6A662: ATI Radeon IGP340</li>
-			<li>6A664: ATI Radeon 9100 Pro IGP</li>
-			<li>6A665: ATI Radeon RS400</li>
-			<li>6A666: ATI Radeon RS480/RX480</li>
-			<li>6A7K6: ATI Radeon RS480</li>
-			<li>6A667: ATI Radeon RD600</li>
-			<li>6A668: ATI Radeon RD580</li>
-			<li>6A7K9: ATI Radeon RD580</li>
-			<li>6A669: AMD 690G/740G</li>
-			<li>6A66A: AMD 780G/790FX</li>
-			<li>2C4S0: AMD Elan 470</li>
-			<li>6A6S2: AMD 751</li>
-			<li>6A6S3: AMD 751-686A</li>
-			<li>6A6S6: AMD 760</li>
-			<li>6A6S7: AMD 762</li>
-			<li>7A66A: AMD 760G/770/790X</li>
-			<li>7A66B: AMD 785G/880G/890GX</li>
-			<li>7A66C: AMD 870</li>
-			<li>7A66D: AMD 890FX</li>
-			<li>7A66E: AMD A45 FCH/A50M</li>
-			<li>7A66F: AMD 990FX</li>
-			<li>7A66H: AMD A75</li>			
-		</ul></td>
-		<td><ul>
-			<li>213V1: SARC RC4018</li>
-			<li>219V0: SARC RC2016</li>
-			<li>2C9V0: SARC RC2016</li>
-			<li>21480: HiNT SC9204</li>
-			<li>214D1: HiNT SC9204</li>
-			<li>214D1: HiNT SC8006</li>
-			<li>2A4H2: CONTAQ 82C596</li>
-			<li>2A4H4: CONTAQ 82C596</li>
-			<li>2A4J6: Winbond W83C491</li>
-			<li>2C4J6: Winbond W83C491</li>
-			<li>2A4O3: EFAR EC802GL/EC100G</li>
-			<li>2C4O3: EFAR EC802GL/EC100G</li>
-			<li>2A5G7: VLSI VL82C594</li>
-			<li>2A5GB: VLSI VL82C541</li>
-			<li>2A5R5: Forex FRX58C613</li>
-			<li>2A5R6: Forex FRX58C613A</li>
-			<li>2A5T6: Acc Micro 2278</li>
-			<li>2A5T8: Acc Micro 2051</li>
-			<li>2C4T7: Acc Micro 2048</li>
-			<li>2C460: UNIchip U4800-VLX</li>
-			<li>214W3: VD 88C898</li>
-			<li>21917: ALD</li>
-			<li>2C917: ALD</li>
-			<li>2A4Z0: IMS8848/8849</li>
-			<li>2C470: HYF82481</li>
-			<li>2C4Y1: Samsung KS82C884</li>
-			<li>6A450: ST86</li>
-			<li>6A451: ST86</li>
-			<li>6A522: Transmeta Crusoe + VT82C686</li>
-			<li>6A524: Transmeta TM5800 + VT8231</li>
-			<li>6A526: Transmeta TM8000 + ULi1563</li>
-			<li>6A601: ServerWorks ServerSet III LE</li>
-			<li>6A602: ServerWorks LC-T</li>
-			<li>6A604: ServerWorks GCLE CSB5</li>
+		{% for code in codes|slice((codes|length // 2), (codes|length // 2)+1) %}
+			<li>{{ code.getCode() }}: {{ code.getChipset().getManufacturer().getShortNameIfExist() }} {{ code.getChipset().getPartNo() }} ({{ code.getChipset().getName() }}) </li>
+		{% endfor %}
 		</ul></td>
 	</tr>
 </table>
+{% endfor %}
 	{% for manufacturer, codes in biosCodes %}
 		<p id="{{manufacturer|lower}}-manuf">
-		<b>{{manufacturer}} BIOS manufacturer IDs</b></p>
+		<b>{{manufacturer}} BIOS manufacturer IDs: {{codes|length}}</b></p>
 		<table class="stbl-adv">
 			<tr class="stbl-head">
 				<th>{{ codes[0].getCode() }}-{{ codes[(codes|length // 4)-1].getCode()}}</th>
@@ -350,10 +37,9 @@
 				<th>{{ codes[3 * (codes|length // 4)].getCode()}}-{{codes[codes|length -1].getCode()}}</th>
 				
 			</tr>
-			<tr>{{codes|length}}</tr>
+			<tr></tr>
 			<tr>
 				<td>
-					<p>{{0}}:{{(codes|length // 4)}}</p>
 					<ul>
 					{% for code in codes|slice(0, (codes|length / 4)) %}
 						<li>{{ code.getCode() }}: {{ code.getManufacturer().getShortNameIfExist() }}</li>
@@ -361,7 +47,6 @@
 					</ul>
 				</td>
 				<td>
-					<p>{{(codes|length // 4)}}:{{(codes|length // 4)}}</p>
 					<ul>
 					{% for code in codes|slice((codes|length // 4), (codes|length // 4)) %}
 						<li>{{ code.getCode() }}: {{ code.getManufacturer().getShortNameIfExist() }}</li>
@@ -369,7 +54,6 @@
 					</ul>
 				</td>
 				<td>
-					<p>{{2 * (codes|length // 4)}}:{{(codes|length // 4)}}</p>
 					<ul>
 					{% for code in codes|slice(2 * (codes|length // 4), (codes|length // 4)) %}
 						<li>{{ code.getCode() }}: {{ code.getManufacturer().getShortNameIfExist() }}</li>
@@ -377,16 +61,8 @@
 					</ul>
 				</td>
 				<td>
-					<p>{{3 * (codes|length // 4)}}:{{(codes|length)-(3 * (codes|length // 4))}}</p>
 					<ul>
 					{% for code in codes|slice(3 * (codes|length // 4), (codes|length)-(3 * (codes|length // 4))) %}
-						<li>{{ code.getCode() }}: {{ code.getManufacturer().getShortNameIfExist() }}</li>
-					{% endfor %}
-					</ul>
-				</td>
-				<td>
-					<ul>
-					{% for code in codes %}
 						<li>{{ code.getCode() }}: {{ code.getManufacturer().getShortNameIfExist() }}</li>
 					{% endfor %}
 					</ul>

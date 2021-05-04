@@ -23,6 +23,7 @@ use App\Entity\AudioChipset;
 use App\Entity\User;
 use App\Entity\Creditor;
 use App\Entity\InstructionSet;
+use App\Entity\Motherboard;
 use App\Form\ManageInstructionSet;
 use App\Form\EditInstructionSet;
 use App\Form\ManageProcessor;
@@ -85,7 +86,12 @@ class AdminController extends AbstractController
      */
     public function index(Request $request)        
     {
+        $latestMotherboards = $this->getDoctrine()->getRepository(Motherboard::class)->find50Latest();
+        $boardCount = $this->getDoctrine()->getRepository(Motherboard::class)->findAll();
         return $this->render('admin/index.html.twig', [
+            'controller_name' => 'MainController',
+		    'latestMotherboards' => $latestMotherboards,
+            'boardCount' => $boardCount,
         ]);
     }
 
@@ -1146,4 +1152,5 @@ class AdminController extends AbstractController
                                         ->find($id)
                                         , EditCreditor::class, 'admin/add_creditor.html.twig');
     }
+
 }

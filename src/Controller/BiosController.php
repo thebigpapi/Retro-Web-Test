@@ -15,6 +15,7 @@ use App\Entity\Chipset;
 use App\Entity\MotherboardBios;
 use App\Form\Bios\Search;
 use App\Entity\ManufacturerBiosManufacturerCode;
+use App\Entity\ChipsetBiosCode;
 
 class BiosController extends AbstractController
 {
@@ -119,15 +120,16 @@ class BiosController extends AbstractController
     public function binfoadv()
     {        
         $biosCodes = $this->getDoctrine()->getRepository(ManufacturerBiosManufacturerCode::class)->findAll();
+        $chipCodes = $this->getDoctrine()->getRepository(ChipsetBiosCode::class)->findAll();
 
         $data = array();
+        $chipdata = array();
 
         foreach ($biosCodes as $code)
         {
             $sn = $code->getBiosManufacturer()->getShortNameIfExist();
             $data[$sn][] = $code;
         }
-        //dd($data);
 
         foreach ($data as $key => $codes)
         {    
@@ -142,9 +144,29 @@ class BiosController extends AbstractController
             $data[$key] = $codes;
         }
 
+        foreach ($chipCodes as $chcode)
+        {
+            $sna = $chcode->getBiosManufacturer()->getShortNameIfExist();
+            $chipdata[$sna][] = $chcode;
+        }
+
+        foreach ($chipdata as $key => $codes)
+        {    
+            usort($codes, function ($a, $b)
+                {
+                    if ($a->getCode() == $b->getCode()) {
+                        return 0;
+                    }
+                    return ($a->getCode() < $b->getCode()) ? -1 : 1;
+                }
+            );
+            $chipdata[$key] = $codes;
+        }
+
         return $this->render('bios/infoadv.html.twig', [
             'controller_name' => 'MainController',
             'biosCodes' => $data,
+            'chipCodes' => $chipdata,
         ]);
     }
     /**

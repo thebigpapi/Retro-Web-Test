@@ -83,6 +83,7 @@ select.sform{height:2.2em;}
 @media (min-width: 1400px) {
 	div.top-bar {font-size:20px;padding:10px 18px;}
 	h2.title {margin: 20px 0;}
+	div.perks, div.perks div.results ul li {font-size:16px;}
 
 	/* search.html.twig */
 	span.field1 {font-size:14px;}
