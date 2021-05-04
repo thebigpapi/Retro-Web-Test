@@ -578,6 +578,16 @@ class MotherboardRepository extends ServiceEntityRepository
         ;
     }
 
+    public function find50Latest()
+    {
+        return $this->createQueryBuilder('m')
+            ->orderBy('m.lastEdited', 'DESC')
+            ->setMaxResults(50)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
     // /**
     //  * @return Motherboard[] Returns an array of Motherboard objects
     //  */

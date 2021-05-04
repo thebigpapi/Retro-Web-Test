@@ -14,6 +14,8 @@ use App\Entity\Manufacturer;
 use App\Entity\Chipset;
 use App\Entity\MotherboardBios;
 use App\Form\Bios\Search;
+use App\Entity\ManufacturerBiosManufacturerCode;
+use App\Entity\ChipsetBiosCode;
 
 class BiosController extends AbstractController
 {
@@ -46,6 +48,50 @@ class BiosController extends AbstractController
         $data = $this->getDoctrine()
             ->getRepository(MotherboardBios::class)
             ->findBios($criterias);
+        
+        $postStringAnalysis = false;
+        if(empty($data)) {
+            try {
+                if($postString && $biosManufacturerId && intval($biosManufacturerId)) {
+                    $biosManufacturer = $this->getDoctrine()
+                    ->getRepository(Manufacturer::class)
+                    ->find($biosManufacturerId);
+
+                    if($biosManufacturer->getShortNameIfExist() == "AMI") {
+                        $subStr = explode("-", $postString);
+                        if (substr_count($postString, "-") == 3) { //Old AMI
+                            $mfgCode = $subStr[1]; 
+                        }
+                        else { //New AMI
+                            $mfgCode = substr($subStr[2], 2);
+                        }
+                    }
+                    else if ($biosManufacturer->getShortNameIfExist() == "Award") {
+                        $subStr = explode("-", $postString);
+                        $mfgCode = substr($subStr[count($subStr) - 2], 5, 2);
+                    }
+
+                    $biosCodes = $this->getDoctrine()->
+                        getRepository(ManufacturerBiosManufacturerCode::class)->
+                        findBy(array("biosManufacturer"=>$biosManufacturer));
+                    
+                    $manufacturers = array();
+                    foreach ($biosCodes as $biosCode) {
+                        if($mfgCode == $biosCode->getCode()) {
+                            $manufacturers[] = $biosCode->getManufacturer()->getId();
+                        }
+                    };
+                    if (!empty($manufacturers)) {
+                        $criterias['motherboard_manufacturer_ids'] = $manufacturers;
+                        $postStringAnalysis = true;
+                        $data = $this->getDoctrine()
+                            ->getRepository(MotherboardBios::class)
+                            ->findBios($criterias);
+                    }
+                }
+            }
+            catch (\Exception $e) {}
+        }
 
         $bios = $paginator->paginate(
             $data,
@@ -56,6 +102,7 @@ class BiosController extends AbstractController
         return $this->render('bios/result.html.twig', [
             'bios' => $bios,
             'bios_count' => count($bios),
+            'postStringAnalysis' => $postStringAnalysis,
         ]);
     }
 	/**
@@ -72,8 +119,54 @@ class BiosController extends AbstractController
      */
     public function binfoadv()
     {        
+        $biosCodes = $this->getDoctrine()->getRepository(ManufacturerBiosManufacturerCode::class)->findAll();
+        $chipCodes = $this->getDoctrine()->getRepository(ChipsetBiosCode::class)->findAll();
+
+        $data = array();
+        $chipdata = array();
+
+        foreach ($biosCodes as $code)
+        {
+            $sn = $code->getBiosManufacturer()->getShortNameIfExist();
+            $data[$sn][] = $code;
+        }
+
+        foreach ($data as $key => $codes)
+        {    
+            usort($codes, function ($a, $b)
+                {
+                    if ($a->getCode() == $b->getCode()) {
+                        return 0;
+                    }
+                    return ($a->getCode() < $b->getCode()) ? -1 : 1;
+                }
+            );
+            $data[$key] = $codes;
+        }
+
+        foreach ($chipCodes as $chcode)
+        {
+            $sna = $chcode->getBiosManufacturer()->getShortNameIfExist();
+            $chipdata[$sna][] = $chcode;
+        }
+
+        foreach ($chipdata as $key => $codes)
+        {    
+            usort($codes, function ($a, $b)
+                {
+                    if ($a->getCode() == $b->getCode()) {
+                        return 0;
+                    }
+                    return ($a->getCode() < $b->getCode()) ? -1 : 1;
+                }
+            );
+            $chipdata[$key] = $codes;
+        }
+
         return $this->render('bios/infoadv.html.twig', [
             'controller_name' => 'MainController',
+            'biosCodes' => $data,
+            'chipCodes' => $chipdata,
         ]);
     }
     /**

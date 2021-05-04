@@ -23,6 +23,7 @@ use App\Entity\AudioChipset;
 use App\Entity\User;
 use App\Entity\Creditor;
 use App\Entity\InstructionSet;
+use App\Entity\Motherboard;
 use App\Form\ManageInstructionSet;
 use App\Form\EditInstructionSet;
 use App\Form\ManageProcessor;
@@ -85,7 +86,12 @@ class AdminController extends AbstractController
      */
     public function index(Request $request)        
     {
+        $latestMotherboards = $this->getDoctrine()->getRepository(Motherboard::class)->find50Latest();
+        $boardCount = $this->getDoctrine()->getRepository(Motherboard::class)->findAll();
         return $this->render('admin/index.html.twig', [
+            'controller_name' => 'MainController',
+		    'latestMotherboards' => $latestMotherboards,
+            'boardCount' => $boardCount,
         ]);
     }
 
@@ -526,7 +532,7 @@ class AdminController extends AbstractController
                                     );
     }
 
-    private function renderChipsetForm(Request $request, $chipset) {
+    private function renderChipsetForm(Request $request, Chipset $chipset) {
         $entityManager = $this->getDoctrine()->getManager();
         $chipsetManufacturers = $this->getDoctrine()
         ->getRepository(Manufacturer::class)
@@ -556,6 +562,11 @@ class AdminController extends AbstractController
             /*foreach ($form['chipsetChipsetParts']->getData() as $key => $val) {
                 $val->setChipset($chipset);
             }*/
+            foreach ($form['biosCodes']->getData() as $key => $val) {
+                $val->setChipset($chipset);
+            }
+
+            //dd($chipset);
             
             $entityManager->persist($chipset);
             $entityManager->flush();
@@ -762,7 +773,7 @@ class AdminController extends AbstractController
      */
     public function manufacturerAdd(Request $request)        
     {
-        return $this->renderEntityForm($request, new Manufacturer(), EditManufacturer::class, 'admin/add_manufacturer.html.twig');
+        return $this->renderManufacturerForm($request, new Manufacturer(), EditManufacturer::class, 'admin/add_manufacturer.html.twig');
     }
 
     /**
@@ -771,10 +782,37 @@ class AdminController extends AbstractController
      */
     public function manufacturerEdit(Request $request, int $id)        
     {
-        return $this->renderEntityForm($request,$this->getDoctrine()
+        return $this->renderManufacturerForm($request,$this->getDoctrine()
                                         ->getRepository(Manufacturer::class)
                                         ->find($id)
                                         , EditManufacturer::class, 'admin/add_manufacturer.html.twig');
+    }
+
+    private function renderManufacturerForm(Request $request, Manufacturer $entity, $class, $template)
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+        
+        $form = $this->createForm($class, $entity);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entity = $form->getData();
+
+            foreach ($form['biosCodes']->getData() as $key => $val) {
+                $val->setManufacturer($entity);
+            }
+            
+            $entityManager->persist($entity);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('admin_manage_resources', array());
+        }
+        return $this->render($template, [
+            'form' => $form->createView(),
+        ]);
+
+        /*foreach ($form['motherboardExpansionSlots']->getData() as $key => $val) {
+            $val->setMotherboard($mobo);
+        }*/
     }
 
 
@@ -1114,4 +1152,5 @@ class AdminController extends AbstractController
                                         ->find($id)
                                         , EditCreditor::class, 'admin/add_creditor.html.twig');
     }
+
 }

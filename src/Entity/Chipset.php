@@ -53,10 +53,16 @@ class Chipset
      */
     private $part_no;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\ChipsetBiosCode", mappedBy="chipset", orphanRemoval=true, cascade={"persist"})
+     */
+    private $biosCodes;
+
     public function __construct()
     {
         $this->motherboards = new ArrayCollection();
         $this->chipsetParts = new ArrayCollection();
+        $this->biosCodes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -260,6 +266,37 @@ class Chipset
     public function setPartNo(?string $part_no): self
     {
         $this->part_no = $part_no;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ChipsetBiosCode[]
+     */
+    public function getBiosCodes(): Collection
+    {
+        return $this->biosCodes;
+    }
+
+    public function addBiosCode(ChipsetBiosCode $biosCode): self
+    {
+        if (!$this->biosCodes->contains($biosCode)) {
+            $this->biosCodes[] = $biosCode;
+            $biosCode->setChipset($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBiosCode(ChipsetBiosCode $biosCode): self
+    {
+        if ($this->biosCodes->contains($biosCode)) {
+            $this->biosCodes->removeElement($biosCode);
+            // set the owning side to null (unless already changed)
+            if ($biosCode->getChipset() === $this) {
+                $biosCode->setChipset(null);
+            }
+        }
 
         return $this;
     }

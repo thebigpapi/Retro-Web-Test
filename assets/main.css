@@ -30,7 +30,7 @@ form.index-buttons input {padding-top:145px;width:15em;font-size:12px;font-weigh
 form.index-buttons input.button1 {background: #ebebeb url(./images/motherboard_low.jpg) center no-repeat;}
 form.index-buttons input.button2 {background: #ebebeb url(./images/card_low.jpg) center no-repeat;}
 form.index-buttons input.button3 {background: #ebebeb url(./images/awchip_low.jpg) center no-repeat;}
-
+div.perks, div.perks div.results ul li {font-size:14px;}
 /* search.html.twig */
 table.search-table{width:100%;}
 table.search-table tr {height: 2em;}

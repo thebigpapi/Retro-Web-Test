@@ -9,6 +9,8 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use App\Entity\Manufacturer;
+use App\Form\Type\ManufacturerBiosManufacturerCodeType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 
 class EditManufacturer extends AbstractType
 {
@@ -20,6 +22,11 @@ class EditManufacturer extends AbstractType
                 'required' => false,
             ])
             ->add('save', SubmitType::class)
+            ->add('biosCodes', CollectionType::class, [
+                'entry_type' => ManufacturerBiosManufacturerCodeType::class,
+                'allow_add' => true,
+                'allow_delete' => true,
+            ])
             ;
     }
 

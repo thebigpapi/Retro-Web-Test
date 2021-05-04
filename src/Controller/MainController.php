@@ -22,12 +22,10 @@ class MainController extends AbstractController
             return $this->redirect('./bios/search/');
         }
         else {
-            $latestMotherboards = $this->getDoctrine()
-            ->getRepository(Motherboard::class)
-            ->find10Latest();
+            $latestMotherboards = $this->getDoctrine()->getRepository(Motherboard::class)->find10Latest();
             return $this->render('main/index.html.twig', [
                 'controller_name' => 'MainController',
-		'latestMotherboards' => $latestMotherboards,
+		        'latestMotherboards' => $latestMotherboards,
             ]);
         }
     }

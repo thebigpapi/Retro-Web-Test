@@ -11,6 +11,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use App\Entity\Chipset;
 use App\Entity\Manufacturer;
+use App\Form\Type\ChipsetBiosCodeType;
 use App\Form\Type\ChipsetPartType;
 
 class EditChipset extends AbstractType
@@ -44,6 +45,11 @@ class EditChipset extends AbstractType
                 'entry_options'  => [
                     'choices' => $options['chipsetParts'],
                 ],
+            ])
+            ->add('biosCodes', CollectionType::class, [
+                'entry_type' => ChipsetBiosCodeType::class,
+                'allow_add' => true,
+                'allow_delete' => true,
             ])
 
             ->add('save', SubmitType::class)

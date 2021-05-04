@@ -47,6 +47,27 @@
             </div>
             {% endfor %}
         </div>
+	</div>
+	<div>
+		<p>Bios codes:</p> 
+		<button type="button" onclick="expand('biosCodes-fields-list')">Add code</button>
+		
+        {{ form_errors(form.biosCodes) }}
+        <div id="biosCodes-fields-list" data-widget-counter="{{ form.biosCodes|length }}"
+            data-prototype="
+				<div class=imgp><span>Bios manufacturer: </span>{{ form_widget(form.biosCodes.vars.prototype.biosManufacturer)|e }}</div>
+				<div class=imgp><span>Code: </span>{{ form_widget(form.biosCodes.vars.prototype.code)|e }}</div>
+				<div class=imgp><button type=button onclick=this.parentNode.parentNode.parentNode.removeChild(this.parentNode.parentNode);>Delete this entry</button></div>
+				">
+            {% for code in form.biosCodes %}
+			<div class="addform" >
+				<div class="imgp"><span>Bios manufacturer: </span>{{ form_widget(code.biosManufacturer)}}</div>
+				<div class="imgp"><span>Code: </span>{{ form_widget(code.code)}}</div>
+				<div class="imgp"><button type="button" onclick="this.parentNode.parentNode.parentNode.removeChild(this.parentNode.parentNode);">Delete this entry</button></div>
+			</div>
+            {% endfor %}
+			{{ form_errors(form.biosCodes) }}
+        </div>
 	</div>  
 <!-- {{ form_rest(form)|replace({'<input': ' --><input'})|raw }}
 <script src="{% if app.request.attributes.get('_route') == "chipset_edit" %}../{% endif %}../assets/add-collection-widget.js"></script>

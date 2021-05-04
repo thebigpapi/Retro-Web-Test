@@ -12,12 +12,15 @@
 			<input type="submit" class="button3" name="bios" value="Find a BIOS image">
 		</div>
 	</form>
-	<p><b>{% trans %}Recently added or updated boards:{% endtrans %}</b></p>
-	<div class="results">
-		<ul>
-        {% for motherboard in latestMotherboards %}
-			<li><a href="./motherboard/show/{{ motherboard.getId() }}">{{ motherboard.getManufacturerShortNameIfExist() }}&nbsp;{{ motherboard.name }}</a></li>		
-		{% endfor %}
-		</ul>
+	<div class="perks">
+		<p><b>{% trans %}Recently added or updated boards:{% endtrans %}</b></p>
+		<div class="results">
+			<ul>
+        	{% for motherboard in latestMotherboards %}
+				<li><a href="./motherboard/show/{{ motherboard.getId() }}">{{ motherboard.getManufacturerShortNameIfExist() }}&nbsp;{{ motherboard.name }}</a></li>		
+			{% endfor %}
+			
+			</ul>
+		</div>
 	</div>
 {% endblock %}
