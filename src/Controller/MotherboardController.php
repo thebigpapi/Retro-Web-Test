@@ -119,7 +119,6 @@ class MotherboardController extends AbstractController
             ->findByWithJoin($criterias, array('man1_name'=>'ASC', 'mot0_name'=>'ASC'));
         }
         catch(Exception $e) {
-            dd($e);
             return $this->redirectToRoute('motherboard_search');
         }
         $motherboards = $paginator->paginate(

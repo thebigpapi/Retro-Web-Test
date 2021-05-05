@@ -108,27 +108,7 @@ class Processor extends ProcessingUnit
     }
 
     public function getNameWithSpecs() {
-        $cache = '';
-        if($this->L1) {
-            $cache = "[L1: " .$this->L1->getValueWithUnit();
-            if($this->L1CacheMethod) {
-                $cache = "$cache " .$this->L1CacheMethod->getName();
-            }
-            if($this->L2) {
-                $cache = "$cache, L2: " . $this->L2->getValueWithUnit();
-                if($this->L2CacheRatio) {
-                    $cache = "$cache ". $this->L2CacheRatio->getName();
-                }
-                if($this->L3) {
-                    $cache = "$cache, L3: " . $this->L3->getValueWithUnit();
-                    if($this->L3CacheRatio) {
-                        $cache = "$cache ". $this->L3CacheRatio->getName();
-                        
-                    }
-                }
-            }
-            $cache = "$cache]";
-        }
+        $cache = $this->getCachesWithValue();
 
         $core = $this->getCore() ? "($this->core)" : '';
 
@@ -375,4 +355,41 @@ class Processor extends ProcessingUnit
         }
         return $res;
     }
+
+    public function getCachesWithValue():string
+    {
+        $cache = '';
+        if($this->L1) {
+            $cache = "[L1: " .$this->L1->getValueWithUnit();
+            if($this->L1CacheMethod) {
+                $cache = "$cache " .$this->L1CacheMethod->getName();
+            }
+            if($this->L2) {
+                $cache = "$cache, L2: " . $this->L2->getValueWithUnit();
+                if($this->L2CacheRatio) {
+                    $cache = "$cache ". $this->L2CacheRatio->getName();
+                }
+                if($this->L3) {
+                    $cache = "$cache, L3: " . $this->L3->getValueWithUnit();
+                    if($this->L3CacheRatio) {
+                        $cache = "$cache ". $this->L3CacheRatio->getName();
+                        
+                    }
+                }
+            }
+            $cache = "$cache]";
+        }
+        return $cache;
+    }
+
+    public function getProcessNodeWithValue():string
+    {
+        return $this->ProcessNode ? $this->ProcessNode. "nm":"";
+    }
+
+    public function getTdpWithValue():string
+    {
+        return $this->tdp ? $this->tdp. "W":"";
+    }
+    
 }

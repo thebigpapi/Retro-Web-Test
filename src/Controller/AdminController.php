@@ -24,6 +24,7 @@ use App\Entity\User;
 use App\Entity\Creditor;
 use App\Entity\InstructionSet;
 use App\Entity\Motherboard;
+use App\Form\Admin\Manage\ProcessorSearchType;
 use App\Form\ManageInstructionSet;
 use App\Form\EditInstructionSet;
 use App\Form\ManageProcessor;
@@ -74,6 +75,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
