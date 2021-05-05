@@ -568,6 +568,14 @@ class MotherboardRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    public function getCount()
+    {
+        return $this->createQueryBuilder('m')
+        ->select('count(m.id)')
+        ->getQuery()
+        ->getSingleScalarResult();
+    }
+
     public function find10Latest()
     {
         return $this->createQueryBuilder('m')
