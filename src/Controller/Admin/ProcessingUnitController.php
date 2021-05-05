@@ -90,17 +90,18 @@ class ProcessingUnitController extends AbstractController {
     {
         $processorSearch = $this->createForm(ProcessorSearchType::class);
 
-        $criterias = array();
+        $getParams = array();
         $processorSearch->handleRequest($request);
         if ($processorSearch->isSubmitted() && $processorSearch->isValid()) {
             $data = $processorSearch->getData();
-            if ($data['manufacturer']) $criterias["manufacturer"] = $data['manufacturer']->getId();
-            if ($data['platform']) $criterias["platform"] = $data['platform']->getId();
-            $criterias["entity"] = htmlentities($request->query->get('entity'));
-            return $this->redirect($this->generateUrl('admin_manage_processing_units', $criterias));
+            if ($data['manufacturer']) $getParams["manufacturer"] = $data['manufacturer']->getId();
+            if ($data['platform']) $getParams["platform"] = $data['platform']->getId();
+            $getParams["entity"] = "processor";
+            return $this->redirect($this->generateUrl('admin_manage_processing_units', $getParams));
         }
         else
         {
+            $criterias = array();
             $manufacturerId = htmlentities($request->query->get('manufacturer'));
             if ($manufacturerId && intval($manufacturerId))
                 $criterias["manufacturer"] = $manufacturerId;
@@ -130,17 +131,18 @@ class ProcessingUnitController extends AbstractController {
     {
         $coprocessorSearch = $this->createForm(ProcessorSearchType::class);
 
-        $criterias = array();
+        $getParams = array();
         $coprocessorSearch->handleRequest($request);
         if ($coprocessorSearch->isSubmitted() && $coprocessorSearch->isValid()) {
             $data = $coprocessorSearch->getData();
-            if ($data['manufacturer']) $criterias["manufacturer"] = $data['manufacturer']->getId();
-            if ($data['platform']) $criterias["platform"] = $data['platform']->getId();
-            $criterias["entity"] = htmlentities($request->query->get('entity'));
-            return $this->redirect($this->generateUrl('admin_manage_processing_units', $criterias));
+            if ($data['manufacturer']) $getParams["manufacturer"] = $data['manufacturer']->getId();
+            if ($data['platform']) $getParams["platform"] = $data['platform']->getId();
+            $getParams["entity"] = "coprocessor";
+            return $this->redirect($this->generateUrl('admin_manage_processing_units', $getParams));
         }
         else
         {
+            $criterias = array();
             $manufacturerId = htmlentities($request->query->get('manufacturer'));
             if ($manufacturerId && intval($manufacturerId))
                 $criterias["manufacturer"] = $manufacturerId;
