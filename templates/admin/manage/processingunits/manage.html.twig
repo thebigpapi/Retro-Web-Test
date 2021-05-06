@@ -4,8 +4,24 @@
 
 {% block body %}
     <ul>
-        <li><a href="./processingunits?entity=processor">processors</a></li>
-        <li><a href="./processingunits?entity=coprocessor">coprocessors</a></li>
+        <li><a href="./processingunits?entity=processor">{% trans %}processors{% endtrans %}</a></li>
+        <li><a href="./processingunits?entity=coprocessor">{% trans %}coprocessors{% endtrans %}</a></li>
+        <li><a href="./processingunits?entity=platform">{% trans %}platforms{% endtrans %}</a></li>
+        <li><a href="./processingunits?entity=instructionset">{% trans %}instruction sets{% endtrans %}</a></li>
     </ul>
-    {% block admin_body %}{% endblock %}
+    <div class="main">
+        <div class="page">
+            <h2 class="title">{{ entityDisplayNamePlural|capitalize }}</h2>
+            <hr>
+            <a class="result-link" href="./processingunits/{{entityName}}s/add/">Add a {{ entityDisplayName }}</a>
+            <div style="height:12em;">
+                {% if search is not empty %}
+                    {{ form(search) }}
+                {% endif %}
+                {{ render(controller(
+                    controllerList, {criterias: criterias}
+                )) }}
+            </div>
+        </div>
+    </div>
 {% endblock %}
