@@ -19,7 +19,7 @@
                     {{ form(search) }}
                 {% endif %}
                 {{ render(controller(
-                    controllerList, {criterias: criterias}
+                    controllerList, {criterias: criterias}, {page: page}
                 )) }}
             </div>
         </div>

@@ -99,7 +99,7 @@ class ProcessingUnitController extends AbstractController {
      */
     public function platformAdd(Request $request)        
     {
-        return $this->renderEntityForm($request, new ProcessorPlatformType(), EditProcessorPlatformType::class, 'admin/add_processorPlatformType.html.twig');
+        return $this->renderEntityForm($request, new ProcessorPlatformType(), EditProcessorPlatformType::class, 'admin/add_processorPlatformType.html.twig', 'platform');
     }
 
     /**
@@ -109,9 +109,9 @@ class ProcessingUnitController extends AbstractController {
     public function platformEdit(Request $request, int $id)        
     {
         return $this->renderEntityForm($request, $this->getDoctrine()
-                                        ->getRepository(ProcessorPlatformType::class)
-                                        ->find($id)
-                                        , EditProcessorPlatformType::class, 'admin/add_processorPlatformType.html.twig');
+            ->getRepository(ProcessorPlatformType::class)
+            ->find($id)
+            , EditProcessorPlatformType::class, 'admin/add_processorPlatformType.html.twig', 'platform');
     }
 
     /**
@@ -120,7 +120,7 @@ class ProcessingUnitController extends AbstractController {
      */
     public function instructionSetAdd(Request $request)        
     {
-        return $this->renderEntityForm($request, new InstructionSet(), EditInstructionSet::class, 'admin/add_instructionSet.html.twig');
+        return $this->renderEntityForm($request, new InstructionSet(), EditInstructionSet::class, 'admin/add_instructionSet.html.twig', 'instructionset');
     }
 
     /**
@@ -130,9 +130,9 @@ class ProcessingUnitController extends AbstractController {
     public function instructionSetEdit(Request $request, int $id)        
     {
         return $this->renderEntityForm($request,$this->getDoctrine()
-                                        ->getRepository(InstructionSet::class)
-                                        ->find($id)
-                                    , EditInstructionSet::class, 'admin/add_instructionSet.html.twig');
+            ->getRepository(InstructionSet::class)
+            ->find($id)
+        , EditInstructionSet::class, 'admin/add_instructionSet.html.twig', 'instructionset');
     }
 
     /**
@@ -170,6 +170,7 @@ class ProcessingUnitController extends AbstractController {
             "entityName" => "processor",
             "entityDisplayName" => $translator->trans("processor"),
             "entityDisplayNamePlural" => $translator->trans("processors"),
+            "page" => $request->query->getInt('page', 1),
         ]);
     }
 
@@ -204,6 +205,7 @@ class ProcessingUnitController extends AbstractController {
             "entityName" => "coprocessor",
             "entityDisplayName" => $translator->trans("math coprocessor"),
             "entityDisplayNamePlural" => $translator->trans("math coprocessors"),
+            "page" => $request->query->getInt('page', 1),
         ]);
     }
 
@@ -216,6 +218,7 @@ class ProcessingUnitController extends AbstractController {
             "entityName" => "platform",
             "entityDisplayName" => $translator->trans("platform"),
             "entityDisplayNamePlural" => $translator->trans("platforms"),
+            "page" => $request->query->getInt('page', 1),
         ]);
     }
 
@@ -228,6 +231,7 @@ class ProcessingUnitController extends AbstractController {
             "entityName" => "instructionset",
             "entityDisplayName" => $translator->trans("instruction set"),
             "entityDisplayNamePlural" => $translator->trans("instruction sets"),
+            "page" => $request->query->getInt('page', 1),
         ]);
     }
 
@@ -366,7 +370,7 @@ class ProcessingUnitController extends AbstractController {
         ]);
     }
 
-    private function renderEntityForm(Request $request, $entity, $class, $template) {
+    private function renderEntityForm(Request $request, $entity, $class, $template, $entityName) {
         $entityManager = $this->getDoctrine()->getManager();
         
         $form = $this->createForm($class, $entity);
@@ -377,7 +381,7 @@ class ProcessingUnitController extends AbstractController {
             $entityManager->persist($entity);
             $entityManager->flush();
 
-            return $this->redirectToRoute('admin_manage_resources', array());
+            return $this->redirect($this->generateUrl('admin_manage_processing_units', array("entity" => $entityName)));
         }
         return $this->render($template, [
             'form' => $form->createView(),

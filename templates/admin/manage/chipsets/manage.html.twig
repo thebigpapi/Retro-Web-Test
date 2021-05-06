@@ -1,0 +1,25 @@
+{% extends 'admin/header.html.twig' %}
+
+{% block title %}Manage chipsets{% endblock %}
+
+{% block body %}
+    <ul>
+        <li><a href="./chipsets?entity=chipset">{% trans %}chipsets{% endtrans %}</a></li>
+        <li><a href="./chipsets?entity=part">{% trans %}chipset parts{% endtrans %}</a></li>
+    </ul>
+    <div class="main">
+        <div class="page">
+            <h2 class="title">{{ entityDisplayNamePlural|capitalize }}</h2>
+            <hr>
+            <a class="result-link" href="./chipsets/{{entityName}}s/add/">Add a {{ entityDisplayName }}</a>
+            <div style="height:12em;">
+                {% if search is not empty %}
+                    {{ form(search) }}
+                {% endif %}
+                {{ render(controller(
+                    controllerList, {criterias: criterias}, {page: page}
+                )) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}
