@@ -3,14 +3,10 @@ namespace App\Controller\Admin;
 
 use App\Entity\Chipset;
 use App\Entity\ChipsetPart;
-use App\Entity\Coprocessor;
 use App\Entity\Manufacturer;
 use App\Form\Admin\Manage\ChipsetSearchType;
-use App\Form\Admin\Manage\ProcessorSearchType;
 use App\Form\EditChipset;
 use App\Form\EditChipsetPart;
-use App\Form\EditCoprocessor;
-use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\Routing\Annotation\Route;
