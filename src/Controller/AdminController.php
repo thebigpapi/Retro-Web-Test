@@ -89,11 +89,10 @@ class AdminController extends AbstractController
     public function index(Request $request)        
     {
         $latestMotherboards = $this->getDoctrine()->getRepository(Motherboard::class)->find50Latest();
-        $boardCount = $this->getDoctrine()->getRepository(Motherboard::class)->findAll();
         return $this->render('admin/index.html.twig', [
             'controller_name' => 'MainController',
 		    'latestMotherboards' => $latestMotherboards,
-            'boardCount' => $boardCount,
+            'moboCount' => $this->getDoctrine()->getRepository(Motherboard::class)->getCount(),
         ]);
     }
 

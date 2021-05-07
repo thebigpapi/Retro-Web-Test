@@ -3,17 +3,18 @@
 {% block title %}Manage memory{% endblock %}
 
 {% block body %}
-    <ul>
-        <li><a href="./memories?entity=ramtype">{% trans %}DRAM Types{% endtrans %}</a></li>
-        <li><a href="./memories?entity=ramsize">{% trans %}RAM Sizes{% endtrans %}</a></li>
-        <li><a href="./memories?entity=cachesize">{% trans %}Cache Sizes{% endtrans %}</a></li>
-    </ul>
-    <div class="main">
-        <div class="page">
-            <h2 class="title">{{ entityDisplayNamePlural|capitalize }}</h2>
-            <hr>
-            <a class="result-link" href="./memories/{{entityName}}s/add/">Add a {{ entityDisplayName }}</a>
-            <div style="height:12em;">
+<div class="main">
+    <div class="page">
+        <h2 class="title">{{ entityDisplayNamePlural|capitalize }}</h2>
+        <a href="./memories?entity=ramtype" class="admin-button" style="padding:0px 5px 0px;{% if entityDisplayName == "memory type" %}background-color: #afff97;{% endif %}">
+        <p {% if entityDisplayName == "memory type" %}style="color: #000000;"{% endif %}>{% trans %}DRAM Types{% endtrans %}</p></a>
+        <a href="./memories?entity=ramsize" class="admin-button" style="padding:0px 5px 0px;{% if entityDisplayName == "memory size" %}background-color: #afff97;{% endif %}">
+        <p {% if entityDisplayName == "memory size" %}style="color: #000000;"{% endif %}>{% trans %}RAM Sizes{% endtrans %}</p></a>
+        <a href="./memories?entity=cachesize" class="admin-button" style="padding:0px 5px 0px;{% if entityDisplayName == "cache size" %}background-color: #afff97;{% endif %}">
+        <p {% if entityDisplayName == "cache size" %}style="color: #000000;"{% endif %}>{% trans %}Cache Sizes{% endtrans %}</p></a>
+        <hr>
+        <a class="result-link" href="./memories/{{entityName}}s/add/">Add a {{ entityDisplayName }}</a>
+        <div style="height:12em;">
                 {% if search is not empty %}
                     {{ form(search) }}
                 {% endif %}
