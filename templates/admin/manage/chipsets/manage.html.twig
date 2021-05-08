@@ -3,13 +3,14 @@
 {% block title %}Manage chipsets{% endblock %}
 
 {% block body %}
-    <ul>
-        <li><a href="./chipsets?entity=chipset">{% trans %}chipsets{% endtrans %}</a></li>
-        <li><a href="./chipsets?entity=part">{% trans %}chipset parts{% endtrans %}</a></li>
-    </ul>
     <div class="main">
+        <a href="{{ path('admin_index') }}">Go back</a>
         <div class="page">
             <h2 class="title">{{ entityDisplayNamePlural|capitalize }}</h2>
+            <a href="./chipsets?entity=chipset" class="admin-button" style="padding:0px 5px 0px;{% if entityName == "chipset" %}background-color: #afff97;{% endif %}">
+            <p {% if entityName == "chipset" %}style="color: #000000;"{% endif %}>{% trans %}chipsets{% endtrans %}</p></a>
+            <a href="./chipsets?entity=part" class="admin-button" style="padding:0px 5px 0px;{% if entityName == "part" %}background-color: #afff97;{% endif %}">
+            <p {% if entityName == "part" %}style="color: #000000;"{% endif %}>{% trans %}chipset parts{% endtrans %}</p></a>
             <hr>
             <a class="result-link" href="./chipsets/{{entityName}}s/add/">Add a {{ entityDisplayName }}</a>
             <div style="height:12em;">
@@ -17,7 +18,7 @@
                     {{ form(search) }}
                 {% endif %}
                 {{ render(controller(
-                    controllerList, {criterias: criterias}, {page: page}
+                    controllerList, {criterias: criterias}, {page: page, entity: entityName}
                 )) }}
             </div>
         </div>

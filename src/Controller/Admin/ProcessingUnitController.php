@@ -166,7 +166,7 @@ class ProcessingUnitController extends AbstractController {
             "search" => $search->createView(),
             "criterias" => $criterias,
             "controllerList" => "App\\Controller\\Admin\\ProcessingUnitController::list_processor",
-            "entityName" => "processor",
+            "entityName" => $request->query->get('entity'),
             "entityDisplayName" => $translator->trans("processor"),
             "entityDisplayNamePlural" => $translator->trans("processors"),
             "page" => $request->query->getInt('page', 1),
@@ -201,7 +201,7 @@ class ProcessingUnitController extends AbstractController {
             "search" => $search->createView(),
             "criterias" => $criterias,
             "controllerList" => "App\\Controller\\Admin\\ProcessingUnitController::list_coprocessor",
-            "entityName" => "coprocessor",
+            "entityName" => $request->query->get('entity'),
             "entityDisplayName" => $translator->trans("math coprocessor"),
             "entityDisplayNamePlural" => $translator->trans("math coprocessors"),
             "page" => $request->query->getInt('page', 1),
@@ -214,7 +214,7 @@ class ProcessingUnitController extends AbstractController {
             "search" => "",
             "criterias" => array(),
             "controllerList" => "App\\Controller\\Admin\\ProcessingUnitController::list_platform",
-            "entityName" => "platform",
+            "entityName" => $request->query->get('entity'),
             "entityDisplayName" => $translator->trans("platform"),
             "entityDisplayNamePlural" => $translator->trans("platforms"),
             "page" => $request->query->getInt('page', 1),
@@ -227,7 +227,7 @@ class ProcessingUnitController extends AbstractController {
             "search" => "",
             "criterias" => array(),
             "controllerList" => "App\\Controller\\Admin\\ProcessingUnitController::list_instructionset",
-            "entityName" => "instructionset",
+            "entityName" => $request->query->get('entity'),
             "entityDisplayName" => $translator->trans("instruction set"),
             "entityDisplayNamePlural" => $translator->trans("instruction sets"),
             "page" => $request->query->getInt('page', 1),
@@ -249,7 +249,7 @@ class ProcessingUnitController extends AbstractController {
 
         return $this->render('admin/manage/processingunits/list.html.twig', [
             "objectList" => $paginatedProcessors,
-            "entityName" => "processor",
+            "entityName" => $request->query->get('entity'),
         ]);
     }
 
@@ -268,7 +268,7 @@ class ProcessingUnitController extends AbstractController {
 
         return $this->render('admin/manage/processingunits/list.html.twig', [
             "objectList" => $paginatedCoprocessors,
-            "entityName" => "coprocessor",
+            "entityName" => $request->query->get('entity'),
         ]);
     }
 
@@ -286,7 +286,7 @@ class ProcessingUnitController extends AbstractController {
 
         return $this->render('admin/manage/processingunits/list.html.twig', [
             "objectList" => $paginatedPlatforms,
-            "entityName" => "platform",
+            "entityName" => $request->query->get('entity'),
         ]);
     }
 
@@ -304,7 +304,7 @@ class ProcessingUnitController extends AbstractController {
 
         return $this->render('admin/manage/processingunits/list.html.twig', [
             "objectList" => $paginatedInstructionsets,
-            "entityName" => "instructionset",
+            "entityName" => $request->query->get('entity'),
         ]);
     }
 

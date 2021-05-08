@@ -4,16 +4,17 @@
 
 {% block body %}
 <div class="main">
+    <a href="{{ path('admin_index') }}">Go back</a>
     <div class="page">
         <h2 class="title">{{ entityDisplayNamePlural|capitalize }}</h2>
-        <a href="./processingunits?entity=processor" class="admin-button" style="padding:0px 5px 0px;{% if entityDisplayName == "processor" %}background-color: #afff97;{% endif %}">
-        <p {% if entityDisplayName == "processor" %}style="color: #000000;"{% endif %}>{% trans %}CPUs{% endtrans %}</p></a>
-        <a href="./processingunits?entity=coprocessor" class="admin-button" style="padding:0px 5px 0px;{% if entityDisplayName == "math coprocessor" %}background-color: #afff97;{% endif %}">
-        <p {% if entityDisplayName == "math coprocessor" %}style="color: #000000;"{% endif %}>{% trans %}NPUs{% endtrans %}</p></a>
-        <a href="./processingunits?entity=platform" class="admin-button" style="padding:0px 5px 0px;{% if entityDisplayName == "platform" %}background-color: #afff97;{% endif %}">
-        <p {% if entityDisplayName == "platform" %}style="color: #000000;"{% endif %}>{% trans %}CPU platforms{% endtrans %}</p></a>
-        <a href="./processingunits?entity=instructionset" class="admin-button" style="padding:0px 5px 0px;{% if entityDisplayName == "instruction set" %}background-color: #afff97;{% endif %}">
-        <p {% if entityDisplayName == "instruction set" %}style="color: #000000;"{% endif %}>{% trans %}Instruction Sets{% endtrans %}</p></a>
+        <a href="./processingunits?entity=processor" class="admin-button" style="padding:0px 5px 0px;{% if entityName == "processor" %}background-color: #afff97;{% endif %}">
+        <p {% if entityName == "processor" %}style="color: #000000;"{% endif %}>{% trans %}CPUs{% endtrans %}</p></a>
+        <a href="./processingunits?entity=coprocessor" class="admin-button" style="padding:0px 5px 0px;{% if entityName == "coprocessor" %}background-color: #afff97;{% endif %}">
+        <p {% if entityName == "coprocessor" %}style="color: #000000;"{% endif %}>{% trans %}NPUs{% endtrans %}</p></a>
+        <a href="./processingunits?entity=platform" class="admin-button" style="padding:0px 5px 0px;{% if entityName == "platform" %}background-color: #afff97;{% endif %}">
+        <p {% if entityName == "platform" %}style="color: #000000;"{% endif %}>{% trans %}CPU platforms{% endtrans %}</p></a>
+        <a href="./processingunits?entity=instructionset" class="admin-button" style="padding:0px 5px 0px;{% if entityName == "instructionset" %}background-color: #afff97;{% endif %}">
+        <p {% if entityName == "instructionset" %}style="color: #000000;"{% endif %}>{% trans %}Instruction Sets{% endtrans %}</p></a>
             <hr>
             <a class="result-link" href="./processingunits/{{entityName}}s/add/">Add a {{ entityDisplayName }}</a>
             <div style="height:12em;">
@@ -21,7 +22,7 @@
                     {{ form(search) }}
                 {% endif %}
                 {{ render(controller(
-                    controllerList, {criterias: criterias}, {page: page}
+                    controllerList, {criterias: criterias}, {page: page, entity: entityName}
                 )) }}
             </div>
         </div>

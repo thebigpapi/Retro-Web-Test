@@ -1,0 +1,26 @@
+{% extends 'admin/header.html.twig' %}
+
+{% block title %}Manage expansion chipsets{% endblock %}
+
+{% block body %}
+    <div class="main">
+        <a href="{{ path('admin_index') }}">Go back</a>
+        <div class="page">
+            <h2 class="title">{{ entityDisplayNamePlural|capitalize }}</h2>
+            <a href="./expansionchipsets?entity=audiochip" class="admin-button" style="padding:0px 5px 0px;{% if entityName == "audiochip" %}background-color: #afff97;{% endif %}">
+            <p {% if entityName == "audiochip" %}style="color: #000000;"{% endif %}>{% trans %}audio chips{% endtrans %}</p></a>
+            <a href="./expansionchipsets?entity=videochip" class="admin-button" style="padding:0px 5px 0px;{% if entityName == "videochip" %}background-color: #afff97;{% endif %}">
+            <p {% if entityName == "videochip" %}style="color: #000000;"{% endif %}>{% trans %}video chips{% endtrans %}</p></a>
+            <hr>
+            <a class="result-link" href="./expansionchipsets/{{entityName}}s/add/">Add a {{ entityDisplayName }}</a>
+            <div style="height:12em;">
+                {% if search is not empty %}
+                    {{ form(search) }}
+                {% endif %}
+                {{ render(controller(
+                    controllerList, {criterias: criterias}, {page: page, entity: entityName}
+                )) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}
