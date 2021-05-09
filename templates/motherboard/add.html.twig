@@ -418,5 +418,5 @@
 <!-- {{ form_rest(form)|replace({'<input': ' --><input'})|raw }}
 </form>
 
-<script type="text/javascript" src="{% if app.request.attributes.get('_route') == "motherboard_edit" %}../{% endif %}../assets/add-collection-widget.js"></script>
+<script type="text/javascript" src="{{root}}/assets/add-collection-widget.js"></script>
 {% endblock %}

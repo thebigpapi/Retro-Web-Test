@@ -1,15 +1,10 @@
 <?php
 namespace App\Controller\Admin;
 
-use App\Entity\Chipset;
-use App\Entity\ChipsetPart;
 use App\Entity\CpuSpeed;
 use App\Entity\Creditor;
 use App\Entity\KnownIssue;
 use App\Entity\Manufacturer;
-use App\Form\Admin\Manage\ChipsetSearchType;
-use App\Form\EditChipset;
-use App\Form\EditChipsetPart;
 use App\Form\EditCpuSpeed;
 use App\Form\EditCreditor;
 use App\Form\EditKnownIssue;

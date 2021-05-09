@@ -4,9 +4,10 @@
 
 {% block body %}
 <h2 class="title">Administration page</h2>
-<a href="../motherboard/add" class="admin-button">
+<a href="../admin/manage/motherboards" class="admin-button">
 	<img src="./assets/images/motherboard_add.jpg" style="padding:8px 25px 0px">
-	<p>Add a new board</p>
+	<p><b>{% trans %}Board count: {% endtrans %} {{moboCount}}</b></p>
+	<p>Manage motherboards</p>
 </a>
 <a href="./admin/manage/processingunits" class="admin-button">
 	<img src="./assets/images/486dx.png" style="padding:0px 30px 0px">
@@ -49,17 +50,6 @@ OLD PAGE STARTS HERE
 		<p>Manage resources</p>
 		<p>(legacy)</p>
 </a>
-		<div class="perks" style="text-align: left;">
-			<p><b>{% trans %}Board count: {% endtrans %} {{moboCount}}</b></p>
-			<p><b>{% trans %}The last 50 added or updated boards:{% endtrans %}</b></p>
-			<div class="results">
-				<ul>
-        		{% for motherboard in latestMotherboards %}
-					<li><a href="./motherboard/show/{{ motherboard.getId() }}">{{ motherboard.getManufacturerShortNameIfExist() }}&nbsp;{{ motherboard.name }}</a></li>		
-				{% endfor %}
-				</ul>
-			</div>
-			<br>
-		</div>
-	</div>
+		
+
 {% endblock %}

@@ -106,7 +106,7 @@
 <div class="show-data">
 	<p>
 		<b class="contrib">{% trans %}Would you like to improve this page? Click{% endtrans %} <a href="
-		{% if is_granted('ROLE_ADMIN') %}../edit/{{ motherboard.getId() }}{% else %}/win3board/posting.php?mode=post&amp;f=96&amp;language=en{% endif %}">
+		{% if is_granted('ROLE_ADMIN') %}{{ path('new_motherboard_edit', {id: motherboard.getId()}) }}{% else %}/win3board/posting.php?mode=post&amp;f=96&amp;language=en{% endif %}">
 		{% trans %}here{% endtrans %}</a>.</b>
 	</p>
 	<table class="stbl">
