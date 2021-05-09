@@ -1,8 +1,10 @@
 <?php
 namespace App\Controller\Admin;
 
+use App\Entity\CpuSocket;
 use App\Entity\ExpansionSlot;
 use App\Entity\IoPort;
+use App\Form\EditCpuSocket;
 use App\Form\EditExpansionSlot;
 use App\Form\EditIoPort;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -19,7 +21,7 @@ class ConnectorController extends AbstractController {
      */
 
     /**
-     * @Route("/admin/manage/connectors", name="admin_manage_conectors")
+     * @Route("/admin/manage/connectors", name="admin_manage_connectors")
      * @param Request $request
      */
     public function manage(Request $request, TranslatorInterface $translator)        
@@ -31,8 +33,11 @@ class ConnectorController extends AbstractController {
             case "io":
                 return $this->manage_io($request, $translator);
                 break;
+            case "socket":
+                return $this->manage_socket($request, $translator);
+                break;
             default:
-                return $this->redirect($this->generateUrl('admin_manage_conectors', array("entity" => "expansion")));
+                return $this->redirect($this->generateUrl('admin_manage_connectors', array("entity" => "expansion")));
         }
     }
 
@@ -52,9 +57,9 @@ class ConnectorController extends AbstractController {
     public function expansionSlotEdit(Request $request, int $id)        
     {
         return $this->renderEntityForm($request,$this->getDoctrine()
-                                        ->getRepository(ExpansionSlot::class)
-                                        ->find($id)
-                                    , EditExpansionSlot::class, 'admin/add_expansionSlot.html.twig', 'expansion');
+        ->getRepository(ExpansionSlot::class)
+        ->find($id)
+        , EditExpansionSlot::class, 'admin/add_expansionSlot.html.twig', 'expansion');
     }
 
     /**
@@ -73,9 +78,30 @@ class ConnectorController extends AbstractController {
     public function ioPortEdit(Request $request, int $id)        
     {
         return $this->renderEntityForm($request,$this->getDoctrine()
-                                        ->getRepository(IoPort::class)
-                                        ->find($id)
-                                    , EditIoPort::class, 'admin/add_ioPort.html.twig', 'io');
+        ->getRepository(IoPort::class)
+        ->find($id)
+        , EditIoPort::class, 'admin/add_ioPort.html.twig', 'io');
+    }
+
+    /**
+     * @Route("/admin/manage/connectors/sockets/add", name="new_cpuSocket_add")
+     * @param Request $request
+     */
+    public function cpuSocketAdd(Request $request)        
+    {
+        return $this->renderEntityForm($request, new CpuSocket(), EditCpuSocket::class, 'admin/add_cpuSocket.html.twig', 'socket');
+    }
+
+    /**
+     * @Route("/admin/manage/connectors/sockets/{id}/edit", name="new_cpuSocket_edit", requirements={"id"="\d+"})
+     * @param Request $request
+     */
+    public function cpuSocketEdit(Request $request, int $id)        
+    {
+        return $this->renderEntityForm($request, $this->getDoctrine()
+        ->getRepository(CpuSocket::class)
+        ->find($id)
+        , EditCpuSocket::class, 'admin/add_cpuSocket.html.twig', 'socket');
     }
 
     /**
@@ -104,6 +130,19 @@ class ConnectorController extends AbstractController {
             "entityName" => $request->query->get('entity'),
             "entityDisplayName" => $translator->trans("i/o connector"),
             "entityDisplayNamePlural" => $translator->trans("i/o connectors"),
+            "page" => $request->query->getInt('page', 1),
+        ]);
+    }
+
+    private function manage_socket(Request $request, TranslatorInterface $translator)        
+    {
+        return $this->render('admin/manage/connectors/manage.html.twig', [
+            "search" => "",
+            "criterias" => [],
+            "controllerList" => "App\\Controller\\Admin\\ConnectorController::list_socket",
+            "entityName" => $request->query->get('entity'),
+            "entityDisplayName" => $translator->trans("socket"),
+            "entityDisplayNamePlural" => $translator->trans("sockets"),
             "page" => $request->query->getInt('page', 1),
         ]);
     }
@@ -146,6 +185,25 @@ class ConnectorController extends AbstractController {
         ]);
     }
 
+    public function list_socket(Request $request, PaginatorInterface $paginator, array $criterias)        
+    {
+        $objects = $this->getDoctrine()
+            ->getRepository(CpuSocket::class)
+            ->findBy($criterias, ['type' => 'asc']);
+        
+
+        $paginatedObjects = $paginator->paginate(
+            $objects,
+            $request->query->getInt('page', 1),
+            $this->getParameter('app.pagination.max')
+        );
+
+        return $this->render('admin/manage/connectors/list.html.twig', [
+            "objectList" => $paginatedObjects,
+            "entityName" => $request->query->get('entity'),
+        ]);
+    }
+
     /**
      * Forms
      */
@@ -160,7 +218,7 @@ class ConnectorController extends AbstractController {
             $entityManager->persist($entity);
             $entityManager->flush();
 
-            return $this->redirect($this->generateUrl('admin_manage_memories', array("entity" => $entityName)));
+            return $this->redirect($this->generateUrl('admin_manage_connectors', array("entity" => $entityName)));
         }
         return $this->render($template, [
             'form' => $form->createView(),

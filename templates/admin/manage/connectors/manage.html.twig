@@ -11,6 +11,8 @@
         <p {% if entityName == "expansion" %}style="color: #000000;"{% endif %}>{% trans %}Expansion Slots{% endtrans %}</p></a>
         <a href="./connectors?entity=io" class="admin-button" style="padding:0px 5px 0px;{% if entityName == "io" %}background-color: #afff97;{% endif %}">
         <p {% if entityName == "io" %}style="color: #000000;"{% endif %}>{% trans %}I/O Ports{% endtrans %}</p></a>
+        <a href="./connectors?entity=socket" class="admin-button" style="padding:0px 5px 0px;{% if entityName == "socket" %}background-color: #afff97;{% endif %}">
+        <p {% if entityName == "socket" %}style="color: #000000;"{% endif %}>{% trans %}Sockets{% endtrans %}</p></a>
         <hr>
         <a class="result-link" href="./connectors/{{entityName}}s/add/">Add a {{ entityDisplayName }}</a>
         <div style="height:12em;">
