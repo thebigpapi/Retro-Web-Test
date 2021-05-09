@@ -1,0 +1,26 @@
+{% extends 'admin/header.html.twig' %}
+
+{% block title %}Manage connectors{% endblock %}
+
+{% block body %}
+<div class="main">
+    <a href="{{ path('admin_index') }}">Go back</a>
+    <div class="page">
+        <h2 class="title">{{ entityDisplayNamePlural|capitalize }}</h2>
+        <a href="./connectors?entity=expansion" class="admin-button" style="padding:0px 5px 0px;{% if entityName == "expansion" %}background-color: #afff97;{% endif %}">
+        <p {% if entityName == "expansion" %}style="color: #000000;"{% endif %}>{% trans %}Expansion Slots{% endtrans %}</p></a>
+        <a href="./connectors?entity=io" class="admin-button" style="padding:0px 5px 0px;{% if entityName == "io" %}background-color: #afff97;{% endif %}">
+        <p {% if entityName == "io" %}style="color: #000000;"{% endif %}>{% trans %}I/O Ports{% endtrans %}</p></a>
+        <hr>
+        <a class="result-link" href="./connectors/{{entityName}}s/add/">Add a {{ entityDisplayName }}</a>
+        <div style="height:12em;">
+                {% if search is not empty %}
+                    {{ form(search) }}
+                {% endif %}
+                {{ render(controller(
+                    controllerList, {criterias: criterias}, {page: page, entity: entityName}
+                )) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}

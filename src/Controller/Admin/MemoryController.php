@@ -114,7 +114,7 @@ class MemoryController extends AbstractController {
             "search" => "",
             "criterias" => [],
             "controllerList" => "App\\Controller\\Admin\\MemoryController::list_ramtype",
-            "entityName" => "ramtype",
+            "entityName" => $request->query->get('entity'),
             "entityDisplayName" => $translator->trans("memory type"),
             "entityDisplayNamePlural" => $translator->trans("memory types"),
             "page" => $request->query->getInt('page', 1),
@@ -127,7 +127,7 @@ class MemoryController extends AbstractController {
             "search" => "",
             "criterias" => [],
             "controllerList" => "App\\Controller\\Admin\\MemoryController::list_memorysize",
-            "entityName" => "ramsize",
+            "entityName" => $request->query->get('entity'),
             "entityDisplayName" => $translator->trans("memory size"),
             "entityDisplayNamePlural" => $translator->trans("memory sizes"),
             "page" => $request->query->getInt('page', 1),
@@ -140,7 +140,7 @@ class MemoryController extends AbstractController {
             "search" => "",
             "criterias" => [],
             "controllerList" => "App\\Controller\\Admin\\MemoryController::list_cachesize",
-            "entityName" => "cachesize",
+            "entityName" => $request->query->get('entity'),
             "entityDisplayName" => $translator->trans("cache size"),
             "entityDisplayNamePlural" => $translator->trans("cache sizes"),
             "page" => $request->query->getInt('page', 1),
@@ -162,7 +162,7 @@ class MemoryController extends AbstractController {
 
         return $this->render('admin/manage/memories/list.html.twig', [
             "objectList" => $paginatedObjects,
-            "entityName" => "ramtype",
+            "entityName" => $request->query->get('entity'),
         ]);
     }
 
@@ -181,7 +181,7 @@ class MemoryController extends AbstractController {
 
         return $this->render('admin/manage/memories/list.html.twig', [
             "objectList" => $paginatedObjects,
-            "entityName" => "ramsize",
+            "entityName" => $request->query->get('entity'),
         ]);
     }
 
@@ -200,7 +200,7 @@ class MemoryController extends AbstractController {
 
         return $this->render('admin/manage/memories/list.html.twig', [
             "objectList" => $paginatedObjects,
-            "entityName" => "cachesize",
+            "entityName" => $request->query->get('entity'),
         ]);
     }
 

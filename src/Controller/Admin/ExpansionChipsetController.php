@@ -2,16 +2,11 @@
 namespace App\Controller\Admin;
 
 use App\Entity\AudioChipset;
-use App\Entity\Chipset;
-use App\Entity\ChipsetPart;
 use App\Entity\Manufacturer;
 use App\Entity\VideoChipset;
 use App\Form\Admin\Manage\AudioChipSearchType;
-use App\Form\Admin\Manage\ChipsetSearchType;
 use App\Form\Admin\Manage\VideoChipSearchType;
 use App\Form\EditAudioChipset;
-use App\Form\EditChipset;
-use App\Form\EditChipsetPart;
 use App\Form\EditVideoChipset;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Knp\Component\Pager\PaginatorInterface;
