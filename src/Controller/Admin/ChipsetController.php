@@ -108,7 +108,7 @@ class ChipsetController extends AbstractController {
             "search" => $search->createView(),
             "criterias" => $criterias,
             "controllerList" => "App\\Controller\\Admin\\ChipsetController::list_chipset",
-            "entityName" => "chipset",
+            "entityName" => $request->query->get('entity'),
             "entityDisplayName" => $translator->trans("chipset"),
             "entityDisplayNamePlural" => $translator->trans("chipsets"),
             "page" => $request->query->getInt('page', 1),
@@ -139,7 +139,7 @@ class ChipsetController extends AbstractController {
             "search" => $search->createView(),
             "criterias" => $criterias,
             "controllerList" => "App\\Controller\\Admin\\ChipsetController::list_part",
-            "entityName" => "part",
+            "entityName" => $request->query->get('entity'),
             "entityDisplayName" => $translator->trans("chipset part"),
             "entityDisplayNamePlural" => $translator->trans("chipset parts"),
             "page" => $request->query->getInt('page', 1),
@@ -169,7 +169,7 @@ class ChipsetController extends AbstractController {
 
         return $this->render('admin/manage/chipsets/list.html.twig', [
             "objectList" => $paginatedObjects,
-            "entityName" => "chipset",
+            "entityName" => $request->query->get('entity'),
         ]);
     }
 
@@ -205,7 +205,7 @@ class ChipsetController extends AbstractController {
 
         return $this->render('admin/manage/chipsets/list.html.twig', [
             "objectList" => $paginatedObjects,
-            "entityName" => "part",
+            "entityName" => $request->query->get('entity'),
         ]);
     }
 
