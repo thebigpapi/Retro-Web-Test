@@ -1,5 +1,5 @@
 <?php
-namespace App\Form;
+namespace App\Form\Motherboard;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
@@ -29,7 +29,7 @@ use App\Repository\ProcessorPlatformTypeRepository;
 use Doctrine\ORM\EntityManagerInterface;
 
 
-class SearchMotherboard extends AbstractType
+class Search extends AbstractType
 {
 
     public function __construct(EntityManagerInterface $entityManager)

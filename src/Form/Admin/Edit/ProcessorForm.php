@@ -1,5 +1,5 @@
 <?php
-namespace App\Form;
+namespace App\Form\Admin\Edit;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -20,7 +20,7 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\ChoiceList\View\ChoiceView;
 
-class EditProcessor extends AbstractType
+class ProcessorForm extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {

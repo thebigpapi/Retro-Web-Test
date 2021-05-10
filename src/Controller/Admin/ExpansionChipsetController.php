@@ -4,6 +4,8 @@ namespace App\Controller\Admin;
 use App\Entity\AudioChipset;
 use App\Entity\Manufacturer;
 use App\Entity\VideoChipset;
+use App\Form\Admin\Edit\AudioChipsetForm;
+use App\Form\Admin\Edit\VideoChipsetForm;
 use App\Form\Admin\Manage\AudioChipSearchType;
 use App\Form\Admin\Manage\VideoChipSearchType;
 use App\Form\EditAudioChipset;
@@ -217,7 +219,7 @@ class ExpansionChipsetController extends AbstractController {
         ->getRepository(Manufacturer::class)
         ->findBy(array(), array('name' => 'ASC', 'shortName' => 'ASC'));
         
-        $form = $this->createForm(EditAudioChipset::class, $chipset, [
+        $form = $this->createForm(AudioChipsetForm::class, $chipset, [
             'chipsetManufacturers' => $chipsetManufacturers,
         ]);
         $form->handleRequest($request);
@@ -240,7 +242,7 @@ class ExpansionChipsetController extends AbstractController {
         ->getRepository(Manufacturer::class)
         ->findBy(array(), array('name' => 'ASC', 'shortName' => 'ASC'));
         
-        $form = $this->createForm(EditVideoChipset::class, $chipset, [
+        $form = $this->createForm(VideoChipsetForm::class, $chipset, [
             'chipsetManufacturers' => $chipsetManufacturers,
         ]);
         $form->handleRequest($request);

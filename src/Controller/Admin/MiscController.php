@@ -5,10 +5,10 @@ use App\Entity\CpuSpeed;
 use App\Entity\Creditor;
 use App\Entity\KnownIssue;
 use App\Entity\Manufacturer;
-use App\Form\EditCpuSpeed;
-use App\Form\EditCreditor;
-use App\Form\EditKnownIssue;
-use App\Form\EditManufacturer;
+use App\Form\Admin\Edit\CpuSpeedForm;
+use App\Form\Admin\Edit\CreditorForm;
+use App\Form\Admin\Edit\KnownIssueForm;
+use App\Form\Admin\Edit\ManufacturerForm;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\Routing\Annotation\Route;
@@ -73,7 +73,7 @@ class MiscController extends AbstractController {
      */
     public function knownIssueAdd(Request $request)        
     {
-        return $this->renderEntityForm($request, new KnownIssue(), EditKnownIssue::class, 'admin/add_knownIssue.html.twig', 'issue');
+        return $this->renderEntityForm($request, new KnownIssue(), KnownIssueForm::class, 'admin/add_knownIssue.html.twig', 'issue');
     }
 
     /**
@@ -85,7 +85,7 @@ class MiscController extends AbstractController {
         return $this->renderEntityForm($request,$this->getDoctrine()
         ->getRepository(KnownIssue::class)
         ->find($id)
-        , EditKnownIssue::class, 'admin/add_knownIssue.html.twig', 'issue');
+        , KnownIssueForm::class, 'admin/add_knownIssue.html.twig', 'issue');
     }
 
     /**
@@ -94,7 +94,7 @@ class MiscController extends AbstractController {
      */
     public function cpuSpeedAdd(Request $request)        
     {
-        return $this->renderEntityForm($request, new CpuSpeed(), EditCpuSpeed::class, 'admin/add_cpuSpeed.html.twig', 'freq');
+        return $this->renderEntityForm($request, new CpuSpeed(), CpuSpeedForm::class, 'admin/add_cpuSpeed.html.twig', 'freq');
     }
 
     /**
@@ -106,7 +106,7 @@ class MiscController extends AbstractController {
         return $this->renderEntityForm($request,$this->getDoctrine()
         ->getRepository(CpuSpeed::class)
         ->find($id)
-        , EditCpuSpeed::class, 'admin/add_cpuSpeed.html.twig', 'freq');
+        , CpuSpeedForm::class, 'admin/add_cpuSpeed.html.twig', 'freq');
     }
 
     /**
@@ -115,7 +115,7 @@ class MiscController extends AbstractController {
      */
     public function creditorAdd(Request $request)        
     {
-        return $this->renderEntityForm($request, new Creditor(), EditCreditor::class, 'admin/add_creditor.html.twig', 'creditor');
+        return $this->renderEntityForm($request, new Creditor(), CreditorForm::class, 'admin/add_creditor.html.twig', 'creditor');
     }
 
     /**
@@ -127,7 +127,7 @@ class MiscController extends AbstractController {
         return $this->renderEntityForm($request,$this->getDoctrine()
         ->getRepository(Creditor::class)
         ->find($id)
-        , EditCreditor::class, 'admin/add_creditor.html.twig', 'creditor');
+        , CreditorForm::class, 'admin/add_creditor.html.twig', 'creditor');
     }
 
     /**
@@ -266,7 +266,7 @@ class MiscController extends AbstractController {
     {
         $entityManager = $this->getDoctrine()->getManager();
         
-        $form = $this->createForm(EditManufacturer::class, $entity);
+        $form = $this->createForm(ManufacturerForm::class, $entity);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $entity = $form->getData();

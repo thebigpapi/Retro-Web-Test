@@ -2,18 +2,13 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Chipset;
-use App\Entity\ChipsetPart;
 use App\Entity\CpuSocket;
 use App\Entity\FormFactor;
-use App\Entity\Manufacturer;
 use App\Entity\Motherboard;
 use App\Entity\Processor;
 use App\Entity\ProcessorPlatformType;
-use App\Form\AddMotherboard;
-use App\Form\Admin\Manage\ChipsetSearchType;
-use App\Form\EditChipset;
-use App\Form\EditChipsetPart;
-use App\Form\EditFormFactor;
+use App\Form\Admin\Edit\FormFactorForm;
+use App\Form\Admin\Edit\MotherboardForm;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\Routing\Annotation\Route;
@@ -49,7 +44,7 @@ class MotherboardController extends AbstractController {
     * @Route("/admin/manage/motherboards/motherboards/add", name="new_motherboard_add")
     * @param Request $request
     */
-    public function add(Request $request)
+    public function motherboardAdd(Request $request)
     {
         return $this->renderMotherboardForm($request, new Motherboard());
     }
@@ -58,7 +53,7 @@ class MotherboardController extends AbstractController {
     * @Route("/admin/manage/motherboards/motherboards/{id}/edit", name="new_motherboard_edit", requirements={"id"="\d+"})
     * @param Request $request
     */
-    public function edit(Request $request, int $id)
+    public function motherboardEdit(Request $request, int $id)
     {
         return $this->renderMotherboardForm($request, $this->getDoctrine()
             ->getRepository(Motherboard::class)
@@ -73,7 +68,7 @@ class MotherboardController extends AbstractController {
      */
     public function formFactorAdd(Request $request)        
     {
-        return $this->renderEntityForm($request, new FormFactor(), EditFormFactor::class, 'admin/add_formFactor.html.twig', 'formfactor');
+        return $this->renderEntityForm($request, new FormFactor(), FormFactorForm::class, 'admin/add_formFactor.html.twig', 'formfactor');
     }
 
     /**
@@ -85,7 +80,7 @@ class MotherboardController extends AbstractController {
         return $this->renderEntityForm($request,$this->getDoctrine()
         ->getRepository(FormFactor::class)
         ->find($id)
-        , EditFormFactor::class, 'admin/add_formFactor.html.twig', 'formfactor');
+        , FormFactorForm::class, 'admin/add_formFactor.html.twig', 'formfactor');
     }
 
     /**
@@ -198,7 +193,7 @@ class MotherboardController extends AbstractController {
             ->findBy(array(), array('name'=>'ASC'));
 
         
-        $form = $this->createForm(AddMotherboard::class, $mobo, [
+        $form = $this->createForm(MotherboardForm::class, $mobo, [
             'chipsets' => $chipsets,
             'cpus' => $cpus,
             'procPlatformTypes' => $procPlatformTypes,

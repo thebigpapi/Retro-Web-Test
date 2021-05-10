@@ -18,8 +18,8 @@ use App\Entity\VideoChipset;
 use App\Entity\FormFactor;
 use App\Entity\MotherboardExpansionSlot;
 use App\Form\AddMotherboard;
-use App\Form\SearchMotherboard;
 use App\Entity\CpuSocket;
+use App\Form\Motherboard\Search;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
@@ -233,7 +233,7 @@ class MotherboardController extends AbstractController
             array_push($portsForm, $ioPort);
         }
         
-        $form = $this->createForm(SearchMotherboard::class, array(), [
+        $form = $this->createForm(Search::class, array(), [
             'moboManufacturers' => $moboManufacturers,
             'chipsetManufacturers' => $chipsetManufacturers,
             'formFactors' => $formFactors,

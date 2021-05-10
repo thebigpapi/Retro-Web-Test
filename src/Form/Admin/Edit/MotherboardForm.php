@@ -1,5 +1,5 @@
 <?php
-namespace App\Form;
+namespace App\Form\Admin\Edit;
 
 use App\Entity\Motherboard;
 use Symfony\Component\Form\AbstractType;
@@ -56,7 +56,7 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\ChoiceList\View\ChoiceView;
 
-class AddMotherboard extends AbstractType
+class MotherboardForm extends AbstractType
 {
     public function __construct(EntityManagerInterface $entityManager)
     {

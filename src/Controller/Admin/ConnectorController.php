@@ -4,9 +4,9 @@ namespace App\Controller\Admin;
 use App\Entity\CpuSocket;
 use App\Entity\ExpansionSlot;
 use App\Entity\IoPort;
-use App\Form\EditCpuSocket;
-use App\Form\EditExpansionSlot;
-use App\Form\EditIoPort;
+use App\Form\Admin\Edit\CpuSocketForm;
+use App\Form\Admin\Edit\ExpansionSlotForm;
+use App\Form\Admin\Edit\IoPortForm;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\Routing\Annotation\Route;
@@ -47,7 +47,7 @@ class ConnectorController extends AbstractController {
      */
     public function expansionSlotAdd(Request $request)        
     {
-        return $this->renderEntityForm($request, new ExpansionSlot(), EditExpansionSlot::class, 'admin/add_expansionSlot.html.twig', 'expansion');
+        return $this->renderEntityForm($request, new ExpansionSlot(), ExpansionSlotForm::class, 'admin/add_expansionSlot.html.twig', 'expansion');
     }
 
     /**
@@ -59,7 +59,7 @@ class ConnectorController extends AbstractController {
         return $this->renderEntityForm($request,$this->getDoctrine()
         ->getRepository(ExpansionSlot::class)
         ->find($id)
-        , EditExpansionSlot::class, 'admin/add_expansionSlot.html.twig', 'expansion');
+        , ExpansionSlotForm::class, 'admin/add_expansionSlot.html.twig', 'expansion');
     }
 
     /**
@@ -68,7 +68,7 @@ class ConnectorController extends AbstractController {
      */
     public function ioPortAdd(Request $request)        
     {
-        return $this->renderEntityForm($request, new IoPort(), EditIoPort::class, 'admin/add_ioPort.html.twig', 'io');
+        return $this->renderEntityForm($request, new IoPort(), IoPortForm::class, 'admin/add_ioPort.html.twig', 'io');
     }
 
     /**
@@ -80,7 +80,7 @@ class ConnectorController extends AbstractController {
         return $this->renderEntityForm($request,$this->getDoctrine()
         ->getRepository(IoPort::class)
         ->find($id)
-        , EditIoPort::class, 'admin/add_ioPort.html.twig', 'io');
+        , IoPortForm::class, 'admin/add_ioPort.html.twig', 'io');
     }
 
     /**
@@ -89,7 +89,7 @@ class ConnectorController extends AbstractController {
      */
     public function cpuSocketAdd(Request $request)        
     {
-        return $this->renderEntityForm($request, new CpuSocket(), EditCpuSocket::class, 'admin/add_cpuSocket.html.twig', 'socket');
+        return $this->renderEntityForm($request, new CpuSocket(), CpuSocketForm::class, 'admin/add_cpuSocket.html.twig', 'socket');
     }
 
     /**
@@ -101,7 +101,7 @@ class ConnectorController extends AbstractController {
         return $this->renderEntityForm($request, $this->getDoctrine()
         ->getRepository(CpuSocket::class)
         ->find($id)
-        , EditCpuSocket::class, 'admin/add_cpuSocket.html.twig', 'socket');
+        , CpuSocketForm::class, 'admin/add_cpuSocket.html.twig', 'socket');
     }
 
     /**

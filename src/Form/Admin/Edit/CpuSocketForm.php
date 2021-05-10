@@ -1,5 +1,5 @@
 <?php
-namespace App\Form;
+namespace App\Form\Admin\Edit;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -15,7 +15,7 @@ use App\Form\Type\ProcessorPlatformTypeForm;
 use App\Repository\ProcessorPlatformTypeRepository;
 use Doctrine\ORM\EntityManagerInterface;
 
-class EditCpuSocket extends AbstractType
+class CpuSocketForm extends AbstractType
 {
 
     public function __construct(EntityManagerInterface $entityManager)

@@ -5,8 +5,8 @@ use App\Entity\Chipset;
 use App\Entity\ChipsetPart;
 use App\Entity\Manufacturer;
 use App\Form\Admin\Manage\ChipsetSearchType;
-use App\Form\EditChipset;
-use App\Form\EditChipsetPart;
+use App\Form\Admin\Edit\ChipsetForm;
+use App\Form\Admin\Edit\ChipsetPartForm;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\Routing\Annotation\Route;
@@ -232,7 +232,7 @@ class ChipsetController extends AbstractController {
             }
         );
         
-        $form = $this->createForm(EditChipset::class, $chipset, [
+        $form = $this->createForm(ChipsetForm::class, $chipset, [
             'chipsetManufacturers' => $chipsetManufacturers,
             'chipsetParts' => $chipsetParts,
         ]);
@@ -257,7 +257,7 @@ class ChipsetController extends AbstractController {
     private function renderChipsetPartForm(Request $request, ChipsetPart $chipsetPart) {
         $entityManager = $this->getDoctrine()->getManager();
 
-        $form = $this->createForm(EditChipsetPart::class, $chipsetPart);
+        $form = $this->createForm(ChipsetPartForm::class, $chipsetPart);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {

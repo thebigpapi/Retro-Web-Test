@@ -1,5 +1,5 @@
 <?php
-namespace App\Form;
+namespace App\Form\Admin\Edit;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -8,16 +8,14 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use App\Entity\CpuSpeed;
+use App\Entity\IoPort;
 
-class EditCpuSpeed extends AbstractType
+class IoPortForm extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('value', TextType::class,[
-            'label' => 'Speed in MHz',
-            ])
+            ->add('name', TextType::class)
             ->add('save', SubmitType::class)
             ;
     }
@@ -25,7 +23,7 @@ class EditCpuSpeed extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => CpuSpeed::class,
+            'data_class' => IoPort::class,
         ]);
     }
 }

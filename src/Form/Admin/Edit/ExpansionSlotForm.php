@@ -1,5 +1,5 @@
 <?php
-namespace App\Form;
+namespace App\Form\Admin\Edit;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -11,7 +11,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use App\Entity\ExpansionSlot;
 
-class EditExpansionSlot extends AbstractType
+class ExpansionSlotForm extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {

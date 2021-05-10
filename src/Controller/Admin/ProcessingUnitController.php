@@ -5,11 +5,11 @@ use App\Entity\Coprocessor;
 use App\Entity\InstructionSet;
 use App\Entity\Processor;
 use App\Entity\ProcessorPlatformType;
+use App\Form\Admin\Edit\CoprocessorForm;
+use App\Form\Admin\Edit\InstructionSetForm;
+use App\Form\Admin\Edit\ProcessorForm;
+use App\Form\Admin\Edit\ProcessorPlatformTypeFormForm;
 use App\Form\Admin\Manage\ProcessorSearchType;
-use App\Form\EditCoprocessor;
-use App\Form\EditInstructionSet;
-use App\Form\EditProcessor;
-use App\Form\EditProcessorPlatformType;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Knp\Component\Pager\PaginatorInterface;
@@ -98,7 +98,7 @@ class ProcessingUnitController extends AbstractController {
      */
     public function platformAdd(Request $request)        
     {
-        return $this->renderEntityForm($request, new ProcessorPlatformType(), EditProcessorPlatformType::class, 'admin/add_processorPlatformType.html.twig', 'platform');
+        return $this->renderEntityForm($request, new ProcessorPlatformType(), ProcessorPlatformTypeFormForm::class, 'admin/add_processorPlatformType.html.twig', 'platform');
     }
 
     /**
@@ -110,7 +110,7 @@ class ProcessingUnitController extends AbstractController {
         return $this->renderEntityForm($request, $this->getDoctrine()
             ->getRepository(ProcessorPlatformType::class)
             ->find($id)
-            , EditProcessorPlatformType::class, 'admin/add_processorPlatformType.html.twig', 'platform');
+            , ProcessorPlatformTypeFormForm::class, 'admin/add_processorPlatformType.html.twig', 'platform');
     }
 
     /**
@@ -119,7 +119,7 @@ class ProcessingUnitController extends AbstractController {
      */
     public function instructionSetAdd(Request $request)        
     {
-        return $this->renderEntityForm($request, new InstructionSet(), EditInstructionSet::class, 'admin/add_instructionSet.html.twig', 'instructionset');
+        return $this->renderEntityForm($request, new InstructionSet(), InstructionSetForm::class, 'admin/add_instructionSet.html.twig', 'instructionset');
     }
 
     /**
@@ -131,7 +131,7 @@ class ProcessingUnitController extends AbstractController {
         return $this->renderEntityForm($request,$this->getDoctrine()
             ->getRepository(InstructionSet::class)
             ->find($id)
-        , EditInstructionSet::class, 'admin/add_instructionSet.html.twig', 'instructionset');
+        , InstructionSetForm::class, 'admin/add_instructionSet.html.twig', 'instructionset');
     }
 
     /**
@@ -315,7 +315,7 @@ class ProcessingUnitController extends AbstractController {
     private function renderCoprocessorForm(Request $request, Coprocessor $coprocessor) {
         $entityManager = $this->getDoctrine()->getManager();
         
-        $form = $this->createForm(EditCoprocessor::class, $coprocessor);
+        $form = $this->createForm(CoprocessorForm::class, $coprocessor);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $coprocessor = $form->getData();
@@ -342,7 +342,7 @@ class ProcessingUnitController extends AbstractController {
     private function renderProcessorForm(Request $request, Processor $processor) {
         $entityManager = $this->getDoctrine()->getManager();
         
-        $form = $this->createForm(EditProcessor::class, $processor);
+        $form = $this->createForm(ProcessorForm::class, $processor);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $processor = $form->getData();
