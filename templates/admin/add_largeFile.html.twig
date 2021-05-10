@@ -1,0 +1,63 @@
+{% extends 'admin/header.html.twig' %}
+
+{% block title %}Add large file{% endblock %}
+
+{% block body %}
+<div style="height:6em;"></div>
+<div class="editasset">
+	<h2><b>Add: Large file</b></h2>
+    {{ form(form) }}
+    <span id="message">{{ form_errors(form.file) }}</span>
+    <progress hidden="true" id="progressBar"></progress>
+</div>
+<script type="text/javascript">
+    document.getElementById("large_file_form_save").addEventListener("click", function(event) {
+        event.preventDefault()
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", window.location.href);
+        xhr.onprogress = function (e) {
+            if (e.lengthComputable) {
+                console.log(e.loaded+  " / " + e.total)
+            }
+        }
+        xhr.upload.addEventListener("progress", function(evt){
+            if (evt.lengthComputable) {
+                //console.log("add upload event-listener" + evt.loaded + "/" + evt.total);
+                bar = document.getElementById('progressBar')
+                bar.value=evt.loaded
+                bar.max=evt.total
+                bar.innerHTML = evt.loaded/evt.total*100
+
+                if(evt.loaded == evt.total) {
+                    document.getElementById("message").innerHTML = "Processing ..."
+                }
+                else {
+                    document.getElementById("message").innerHTML = "Upload in progress ..."
+                }
+            }
+        }, false);
+        xhr.onloadstart = function (e) {
+            bar = document.getElementById('progressBar')
+            bar.hidden=false
+        }
+        xhr.onloadend = function (e) {
+            if(xhr.status == 200) {    
+                var parser = new DOMParser();
+                var doc = parser.parseFromString(xhr.responseText, "text/html");
+                if (doc.getElementById("message")) {
+                    document.getElementById("message").innerHTML = doc.getElementById("message").innerHTML
+                }
+                else {
+                    document.getElementById("message").innerHTML = "Ok !"
+                }
+                console.log(xhr.responseUrl);
+            }
+            else {
+                document.getElementById("message").innerHTML = xhr.statusText
+            }
+        }
+        xhr.send(new FormData(document.getElementsByName('large_file_form')[0]));
+    }); 
+    
+</script>
+{% endblock %}
