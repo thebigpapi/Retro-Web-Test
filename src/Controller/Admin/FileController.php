@@ -2,7 +2,13 @@
 namespace App\Controller\Admin;
 
 use App\Entity\LargeFile;
+use App\Entity\MediaTypeFlag;
+use App\Entity\OsFamily;
+use App\Entity\OsFlag;
 use App\Form\Admin\Edit\LargeFileForm;
+use App\Form\Admin\Edit\MediaTypeFlagForm;
+use App\Form\Admin\Edit\OsFamilyForm;
+use App\Form\Admin\Edit\OsFlagForm;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\Routing\Annotation\Route;
@@ -26,12 +32,21 @@ class FileController extends AbstractController {
             case "largefile":
                 return $this->manage_largefiles($request, $translator);
                 break;
+            case "osfamily":
+                return $this->manage_osfamilies($request, $translator);
+                break;
+            case "osflag":
+                return $this->manage_osflags($request, $translator);
+                break;
+            case "mediatype":
+                return $this->manage_mediatypes($request, $translator);
+                break;
             default:
                 return $this->redirect($this->generateUrl('admin_manage_files', array("entity" => "largefile")));
         }
     }
 
-     /**
+    /**
      * @Route("/admin/manage/files/largefiles/add", name="new_largeFile_add")
      * @param Request $request
      */
@@ -44,11 +59,71 @@ class FileController extends AbstractController {
      * @Route("/admin/manage/files/largefiles/{id}/edit", name="new_largeFile_edit", requirements={"id"="\d+"})
      * @param Request $request
      */
-    public function dramTypeEdit(Request $request, int $id)        
+    public function largeFileEdit(Request $request, int $id)        
     {
         return $this->renderEntityForm($request, $this->getDoctrine()
         ->getRepository(LargeFile::class)
         ->find($id), LargeFileForm::class, 'admin/add_largeFile.html.twig', 'largefile');
+    }
+
+    /**
+     * @Route("/admin/manage/files/osfamilies/add", name="new_osFamily_add")
+     * @param Request $request
+     */
+    public function osFamilyAdd(Request $request)        
+    {
+        return $this->renderEntityForm($request, new OsFamily(), OsFamilyForm::class, 'admin/add_osFamily.html.twig', 'osfamily');
+    }
+
+    /**
+     * @Route("/admin/manage/files/osfamilies/{id}/edit", name="new_osFamily_edit", requirements={"id"="\d+"})
+     * @param Request $request
+     */
+    public function osFamilyEdit(Request $request, int $id)        
+    {
+        return $this->renderEntityForm($request, $this->getDoctrine()
+        ->getRepository(OsFamily::class)
+        ->find($id), OsFamilyForm::class, 'admin/add_osFamily.html.twig', 'osfamily');
+    }
+
+    /**
+     * @Route("/admin/manage/files/osflags/add", name="new_osFlag_add")
+     * @param Request $request
+     */
+    public function osFlagAdd(Request $request)        
+    {
+        return $this->renderEntityForm($request, new OsFlag(), OsFlagForm::class, 'admin/add_osFlag.html.twig', 'osflag');
+    }
+
+    /**
+     * @Route("/admin/manage/files/osflags/{id}/edit", name="new_osFlag_edit", requirements={"id"="\d+"})
+     * @param Request $request
+     */
+    public function osFlagEdit(Request $request, int $id)        
+    {
+        return $this->renderEntityForm($request, $this->getDoctrine()
+        ->getRepository(OsFlag::class)
+        ->find($id), OsFlagForm::class, 'admin/add_osFlag.html.twig', 'osflag');
+    }
+
+    /**
+     * @Route("/admin/manage/files/mediatypes/add", name="new_mediaType_add")
+     * @param Request $request
+     */
+    public function mediaTypeAdd(Request $request)        
+    {
+        return $this->renderEntityForm($request, new MediaTypeFlag(), MediaTypeFlagForm::class, 'admin/add_mediaTypeFlag.html.twig', 'mediatype');
+    }
+
+    /**
+     * @Route("/admin/manage/files/mediatypes/{id}/edit", name="new_mediaType_edit", requirements={"id"="\d+"})
+     * @param Request $request
+     */
+    public function mediaTypeEdit(Request $request, int $id)        
+    {
+        return $this->renderEntityForm($request, $this->getDoctrine()
+        ->getRepository(MediaTypeFlag::class)
+        ->find($id), MediaTypeFlagForm::class, 'admin/add_mediaTypeFlag.html.twig', 'mediatype');
     }
 
     /**
@@ -68,10 +143,103 @@ class FileController extends AbstractController {
         ]);
     }
 
+    private function manage_osfamilies(Request $request, TranslatorInterface $translator)        
+    {
+        return $this->render('admin/manage/files/manage.html.twig', [
+            "search" => "",
+            "criterias" => [],
+            "controllerList" => "App\\Controller\\Admin\\FileController::list_osfamily",
+            "entityName" => $request->query->get('entity'),
+            "entityDisplayName" => $translator->trans("os family"),
+            "entityDisplayNamePlural" => $translator->trans("os families"),
+            "page" => $request->query->getInt('page', 1),
+        ]);
+    }
+
+    private function manage_osflags(Request $request, TranslatorInterface $translator)        
+    {
+        return $this->render('admin/manage/files/manage.html.twig', [
+            "search" => "",
+            "criterias" => [],
+            "controllerList" => "App\\Controller\\Admin\\FileController::list_osflag",
+            "entityName" => $request->query->get('entity'),
+            "entityDisplayName" => $translator->trans("os flag"),
+            "entityDisplayNamePlural" => $translator->trans("os flags"),
+            "page" => $request->query->getInt('page', 1),
+        ]);
+    }
+
+    private function manage_mediatypes(Request $request, TranslatorInterface $translator)        
+    {
+        return $this->render('admin/manage/files/manage.html.twig', [
+            "search" => "",
+            "criterias" => [],
+            "controllerList" => "App\\Controller\\Admin\\FileController::list_mediatype",
+            "entityName" => $request->query->get('entity'),
+            "entityDisplayName" => $translator->trans("media type"),
+            "entityDisplayNamePlural" => $translator->trans("media types"),
+            "page" => $request->query->getInt('page', 1),
+        ]);
+    }
+
     public function list_largefile(Request $request, PaginatorInterface $paginator, array $criterias)        
     {
         $objects = $this->getDoctrine()
             ->getRepository(LargeFile::class)
+            ->findBy($criterias, ['name' => 'asc']);
+
+        $paginatedObjects = $paginator->paginate(
+            $objects,
+            $request->query->getInt('page', 1),
+            $this->getParameter('app.pagination.max')
+        );
+
+        return $this->render('admin/manage/files/list.html.twig', [
+            "objectList" => $paginatedObjects,
+            "entityName" => $request->query->get('entity'),
+        ]);
+    }
+
+    public function list_osfamily(Request $request, PaginatorInterface $paginator, array $criterias)        
+    {
+        $objects = $this->getDoctrine()
+            ->getRepository(OsFamily::class)
+            ->findBy($criterias, ['name' => 'asc']);
+
+        $paginatedObjects = $paginator->paginate(
+            $objects,
+            $request->query->getInt('page', 1),
+            $this->getParameter('app.pagination.max')
+        );
+
+        return $this->render('admin/manage/files/list.html.twig', [
+            "objectList" => $paginatedObjects,
+            "entityName" => $request->query->get('entity'),
+        ]);
+    }
+
+    public function list_osflag(Request $request, PaginatorInterface $paginator, array $criterias)        
+    {
+        $objects = $this->getDoctrine()
+            ->getRepository(OsFlag::class)
+            ->findBy($criterias, ['name' => 'asc']);
+
+        $paginatedObjects = $paginator->paginate(
+            $objects,
+            $request->query->getInt('page', 1),
+            $this->getParameter('app.pagination.max')
+        );
+
+        return $this->render('admin/manage/files/list.html.twig', [
+            "objectList" => $paginatedObjects,
+            "entityName" => $request->query->get('entity'),
+        ]);
+    }
+
+    public function list_mediatype(Request $request, PaginatorInterface $paginator, array $criterias)        
+    {
+        $objects = $this->getDoctrine()
+            ->getRepository(MediaTypeFlag::class)
             ->findBy($criterias, ['name' => 'asc']);
 
         $paginatedObjects = $paginator->paginate(

@@ -83,6 +83,11 @@ class Manufacturer
      */
     private $chipsetBiosCodes;
 
+    /**
+     * @ORM\OneToMany(targetEntity=OsFlag::class, mappedBy="manufacturer")
+     */
+    private $osFlags;
+
     public function __construct()
     {
         $this->motherboards = new ArrayCollection();
@@ -96,6 +101,7 @@ class Manufacturer
         $this->chipAliases = new ArrayCollection();
         $this->biosCodes = new ArrayCollection();
         $this->chipsetBiosCodes = new ArrayCollection();
+        $this->osFlags = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -470,6 +476,36 @@ class Manufacturer
             // set the owning side to null (unless already changed)
             if ($chipsetBiosCode->getBiosManufacturer() === $this) {
                 $chipsetBiosCode->setBiosManufacturer(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|OsFlag[]
+     */
+    public function getOsFlags(): Collection
+    {
+        return $this->osFlags;
+    }
+
+    public function addOsFlag(OsFlag $osFlag): self
+    {
+        if (!$this->osFlags->contains($osFlag)) {
+            $this->osFlags[] = $osFlag;
+            $osFlag->setManufacturer($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOsFlag(OsFlag $osFlag): self
+    {
+        if ($this->osFlags->removeElement($osFlag)) {
+            // set the owning side to null (unless already changed)
+            if ($osFlag->getManufacturer() === $this) {
+                $osFlag->setManufacturer(null);
             }
         }
 

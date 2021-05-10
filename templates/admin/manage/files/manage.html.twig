@@ -9,8 +9,18 @@
             <h2 class="title">{{ entityDisplayNamePlural|capitalize }}</h2>
             <a href="./files?entity=largefile" class="admin-button" style="padding:0px 5px 0px;{% if entityName == "largefile" %}background-color: #afff97;{% endif %}">
             <p {% if entityName == "largefile" %}style="color: #000000;"{% endif %}>{% trans %}Files{% endtrans %}</p></a>
+            <a href="./files?entity=osfamily" class="admin-button" style="padding:0px 5px 0px;{% if entityName == "osfamily" %}background-color: #afff97;{% endif %}">
+            <p {% if entityName == "osfamily" %}style="color: #000000;"{% endif %}>{% trans %}Os Families{% endtrans %}</p></a>
+            <a href="./files?entity=osflag" class="admin-button" style="padding:0px 5px 0px;{% if entityName == "osflag" %}background-color: #afff97;{% endif %}">
+            <p {% if entityName == "osflag" %}style="color: #000000;"{% endif %}>{% trans %}Os Flags{% endtrans %}</p></a>
+            <a href="./files?entity=mediatype" class="admin-button" style="padding:0px 5px 0px;{% if entityName == "mediatype" %}background-color: #afff97;{% endif %}">
+            <p {% if entityName == "mediatype" %}style="color: #000000;"{% endif %}>{% trans %}Media Types{% endtrans %}</p></a>
             <hr>
-            <a class="result-link" href="./files/{{entityName}}s/add/">Add a {{ entityDisplayName }}</a>
+            {% if entityName == "osfamily" %}
+                <a class="result-link" href="./files/osfamilies/add/">Add a {{ entityDisplayName }}</a>
+            {% else %}
+                <a class="result-link" href="./files/{{entityName}}s/add/">Add a {{ entityDisplayName }}</a>
+            {% endif %}
             <div style="height:12em;">
                 {% if search is not empty %}
                     {{ form(search) }}
