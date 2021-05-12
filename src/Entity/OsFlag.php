@@ -45,9 +45,15 @@ class OsFlag
      */
     private $osFamilies;
 
+    /**
+     * @ORM\OneToMany(targetEntity=LargeFileOsFlag::class, mappedBy="osFlag", orphanRemoval=true)
+     */
+    private $largeFiles;
+
     public function __construct()
     {
         $this->osFamilies = new ArrayCollection();
+        $this->largeFiles = new ArrayCollection();
     }
 
 
@@ -134,6 +140,41 @@ class OsFlag
         $this->osFamilies->removeElement($osFamily);
 
         return $this;
+    }
+
+    /**
+     * @return Collection|LargeFileOsFlag[]
+     */
+    public function getLargeFiles(): Collection
+    {
+        return $this->largeFiles;
+    }
+
+    public function addLargeFile(LargeFileOsFlag $largeFile): self
+    {
+        if (!$this->largeFiles->contains($largeFile)) {
+            $this->largeFiles[] = $largeFile;
+            $largeFile->setOsFlag($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLargeFile(LargeFileOsFlag $largeFile): self
+    {
+        if ($this->largeFiles->removeElement($largeFile)) {
+            // set the owning side to null (unless already changed)
+            if ($largeFile->getOsFlag() === $this) {
+                $largeFile->setOsFlag(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getFullVersion(): string
+    {
+        return $this->minorVersion ? "$this->majorVersion.$this->minorVersion" : "$this->majorVersion";
     }
 
 }

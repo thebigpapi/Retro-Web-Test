@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\MediaTypeFlagRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -51,6 +53,16 @@ class MediaTypeFlag
      * @ORM\Column(type="datetime")
      */
     private $updated_at;
+
+    /**
+     * @ORM\OneToMany(targetEntity=LargeFileMediaTypeFlag::class, mappedBy="mediaTypeFlag", orphanRemoval=true)
+     */
+    private $getLargeFiles;
+
+    public function __construct()
+    {
+        $this->getLargeFiles = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -115,6 +127,36 @@ class MediaTypeFlag
     public function setUpdatedAt(\DateTimeInterface $updated_at): self
     {
         $this->updated_at = $updated_at;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|LargeFileMediaTypeFlag[]
+     */
+    public function getGetLargeFiles(): Collection
+    {
+        return $this->getLargeFiles;
+    }
+
+    public function addGetLargeFile(LargeFileMediaTypeFlag $getLargeFile): self
+    {
+        if (!$this->getLargeFiles->contains($getLargeFile)) {
+            $this->getLargeFiles[] = $getLargeFile;
+            $getLargeFile->setMediaTypeFlag($this);
+        }
+
+        return $this;
+    }
+
+    public function removeGetLargeFile(LargeFileMediaTypeFlag $getLargeFile): self
+    {
+        if ($this->getLargeFiles->removeElement($getLargeFile)) {
+            // set the owning side to null (unless already changed)
+            if ($getLargeFile->getMediaTypeFlag() === $this) {
+                $getLargeFile->setMediaTypeFlag(null);
+            }
+        }
 
         return $this;
     }

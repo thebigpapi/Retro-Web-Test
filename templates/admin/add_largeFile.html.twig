@@ -6,7 +6,71 @@
 <div style="height:6em;"></div>
 <div class="editasset">
 	<h2><b>Add: Large file</b></h2>
-    {{ form(form) }}
+    {{ form_start(form, {'method': 'POST'}) }}
+    <div class="editasset">
+        <b>{{form_label(form)}}</b> {{form_widget(form.save)}}
+        <table class="editasset">
+            
+            <tr>
+                <td>{{form_label(form.name)}}</td>
+                <td>{{form_widget(form.name)}}</td>
+            </tr>
+            <tr>
+                <td>{{form_label(form.fileVersion)}}</td>
+                <td>{{form_widget(form.fileVersion)}}</td>
+            </tr>
+            <tr>
+                <td>{{form_label(form.file_name)}}</td>
+                <td>{{form_widget(form.file_name)}}</td>
+            </tr>
+            <tr>
+                <td>{{form_label(form.file)}}</td>
+                <td>{{form_widget(form.file)}}</td>
+            </tr>
+            <tr>
+                <td>{{form_label(form.subdirectory)}}</td>
+                <td>{{form_widget(form.subdirectory)}}</td>
+            </tr>
+            <tr>
+                <td>{{form_label(form.dumpQualityFlag)}}</td>
+                <td>{{form_widget(form.dumpQualityFlag)}}</td>
+            </tr>
+            <tr>
+                <td>{{form_label(form.hasActivationKey)}}</td>
+                <td>{{form_widget(form.hasActivationKey)}}</td>
+            </tr>
+            <tr>
+                <td>{{form_label(form.hasCopyProtection)}}</td>
+                <td>{{form_widget(form.hasCopyProtection)}}</td>
+            </tr>
+            <tr>
+                <td>Languages</td> 
+                <td>
+                    <div>
+                        {% include 'admin/entityList.html.twig' with {'entityName':'languages', 'entityDisplayName': 'language', 'entities':form.languages} %}	
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>Media type flags</td> 
+                <td>
+                    <div>
+                        {% include 'admin/entityList.html.twig' with {'entityName':'mediaTypeFlags', 'entityDisplayName': 'media type flag', 'entities':form.mediaTypeFlags} %}	
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>Os flags</td> 
+                <td>
+                    <div>
+                        {% include 'admin/entityList.html.twig' with {'entityName':'osFlags', 'entityDisplayName': 'os flag', 'entities':form.osFlags} %}	
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <!-- {{ form_rest(form)|replace({'<input': ' --><input'})|raw }}
+    <script src="{{root}}/assets/add-collection-widget.js"></script>
     <span id="message">{{ form_errors(form.file) }}</span>
     <progress hidden="true" id="progressBar"></progress>
 </div>

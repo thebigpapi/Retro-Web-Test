@@ -1,6 +1,7 @@
 <?php
 namespace App\Form\Admin\Edit;
 
+use App\Entity\DumpQualityFlag;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -8,7 +9,17 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\File;
 use App\Entity\LargeFile;
+use App\Form\Type\LanguageType;
+use App\Form\Type\LargeFileMediaTypeFlagType;
+use App\Form\Type\LargeFileOsFlagType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormView;
+use Symfony\Component\Form\ChoiceList\View\ChoiceView;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 
 class LargeFileForm extends AbstractType
 {
@@ -44,6 +55,45 @@ class LargeFileForm extends AbstractType
                     ])
                 ],
             ])
+            ->add('dumpQualityFlag', EntityType::class, [
+                'class' => DumpQualityFlag::class,
+                'choice_label' => 'name',
+                'multiple' => false,
+                'expanded' => false,
+                'required' => true,
+            ])
+            ->add('languages', CollectionType::class, [
+                'entry_type' => LanguageType::class,
+                'allow_add' => true,
+                'allow_delete' => true,
+            ])
+            ->add('mediaTypeFlags', CollectionType::class, [
+                'entry_type' => LargeFileMediaTypeFlagType::class,
+                'allow_add' => true,
+                'allow_delete' => true,
+            ])
+            ->add('osFlags', CollectionType::class, [
+                'entry_type' => LargeFileOsFlagType::class,
+                'allow_add' => true,
+                'allow_delete' => true,
+            ])
+            ->add('hasActivationKey', CheckboxType::class)
+            ->add('hasCopyProtection', CheckboxType::class)
+            ->add('fileVersion', TextType::class)
+            ->add('subdirectory', ChoiceType::class, [
+                'choices' => array(
+                    'apps' => 'apps',
+                    'docs' => 'docs',
+                    'oswin' => 'oswin',
+                    'vm' => 'vm',
+                    'bootdisks' => 'bootdisks',
+                    'drivers' => 'drivers',
+                    'games' => 'games',
+                    'osdos' => 'osdos',
+                    'dev' => 'dev',
+                    'osmisc' => 'osmisc'
+                ),
+            ])
             ->add('save', SubmitType::class)
             ;
     }
@@ -54,5 +104,13 @@ class LargeFileForm extends AbstractType
             'data_class' => LargeFile::class,
         ]);
     }
+
+    /*public function finishView(FormView $view, FormInterface $form, array $options)
+    {
+        dd($view);
+        /*usort($view->children['languages']->vars['choices'], function(ChoiceView $a, ChoiceView $b) {
+            return ($a->data->getName() > $b->data->getName());
+        });
+    }*/
 
 }

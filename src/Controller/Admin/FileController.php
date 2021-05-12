@@ -17,7 +17,6 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class FileController extends AbstractController {
 
-
     /**
      * Routing
      */
@@ -52,7 +51,7 @@ class FileController extends AbstractController {
      */
     public function largeFileAdd(Request $request)        
     {
-        return $this->renderEntityForm($request, new LargeFile(), LargeFileForm::class, 'admin/add_largeFile.html.twig', 'largefile');
+        return $this->renderLargeFileForm($request, new LargeFile(), 'admin/add_largeFile.html.twig');
     }
 
     /**
@@ -61,9 +60,9 @@ class FileController extends AbstractController {
      */
     public function largeFileEdit(Request $request, int $id)        
     {
-        return $this->renderEntityForm($request, $this->getDoctrine()
+        return $this->renderLargeFileForm($request, $this->getDoctrine()
         ->getRepository(LargeFile::class)
-        ->find($id), LargeFileForm::class, 'admin/add_largeFile.html.twig', 'largefile');
+        ->find($id), 'admin/add_largeFile.html.twig');
     }
 
     /**
@@ -269,6 +268,31 @@ class FileController extends AbstractController {
             $entityManager->flush();
 
             return $this->redirect($this->generateUrl('admin_manage_files', array("entity" => $entityName)));
+        }
+        return $this->render($template, [
+            'form' => $form->createView(),
+        ]);
+    }
+
+    private function renderLargeFileForm(Request $request, LargeFile $entity, $template) {
+        $entityManager = $this->getDoctrine()->getManager();
+        
+        $form = $this->createForm(LargeFileForm::class, $entity);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entity = $form->getData();
+
+            foreach ($form['mediaTypeFlags']->getData() as $key => $val) {
+                $val->setLargeFile($entity);
+            }
+            foreach ($form['osFlags']->getData() as $key => $val) {
+                $val->setLargeFile($entity);
+            }
+            
+            $entityManager->persist($entity);
+            $entityManager->flush();
+
+            return $this->redirect($this->generateUrl('admin_manage_files', array("entity" => 'largefile')));
         }
         return $this->render($template, [
             'form' => $form->createView(),
