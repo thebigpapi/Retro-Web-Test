@@ -4,43 +4,52 @@
 
 {% block body %}
 <h2 class="title">Administration page</h2>
-<a href="../admin/manage/motherboards" class="admin-button">
-	<img src="./assets/images/motherboard_add.jpg" style="padding:8px 25px 0px">
-	<p><b>{% trans %}Board count: {% endtrans %} {{moboCount}}</b></p>
-	<p>Manage motherboards</p>
+<h4>Manage:</h4>
+<hr>
+<a href="../admin/manage/motherboards" class="admin-button" style="width:205px;">
+	<img src="./assets/images/admin/motherboard.jpg" style="padding:8px 25px 0px" alt="board">
+	<p>Motherboards</p>
 </a>
-<a href="./admin/manage/processingunits" class="admin-button">
-	<img src="./assets/images/486dx.png" style="padding:0px 30px 0px">
-	<p>Manage processing units</p>
+<a href="./admin/manage/processingunits" class="admin-button" style="width:205px;">
+	<img src="./assets/images/admin/486dx.png" style="padding:0px 30px 0px" alt="cpu">
+	<p>Processing units</p>
 </a>
-<a href="./admin/manage/memories" class="admin-button">
-	<img src="./assets/images/memory.png" style="padding:2px 0px 1px">
-	<p>Manage memory</p>
+<a href="./admin/manage/memories" class="admin-button" style="width:205px;">
+	<img src="./assets/images/admin/memory.png" style="padding:2px 0px 1px" alt="memory">
+	<p>Memory</p>
 </a>
-<a href="./admin/manage/chipsets" class="admin-button">
-	<img src="./assets/images/chip.png" style="padding:2px 25px 2px">
-	<p>Manage chipsets</p>
+<a href="./admin/manage/chipsets" class="admin-button" style="width:205px;">
+	<img src="./assets/images/admin/chip.png" style="padding:2px 25px 2px" alt="chipset">
+	<p>Chipsets</p>
 </a>
-<a href="./admin/manage/expansionchipsets" class="admin-button">
-	<img src="./assets/images/chip.png" style="padding:2px 25px 2px">
-	<p>Manage expansion chipsets</p>
+<a href="./admin/manage/expansionchipsets" class="admin-button" style="width:205px;">
+	<img src="./assets/images/admin/exp_chip.jpg" style="padding:10px 25px 3px" alt="chip part">
+	<p>Expansion chipsets</p>
 </a>
-<a href="./admin/manage/connectors" class="admin-button">
-	<img src="./assets/images/chip.png" style="padding:2px 25px 2px">
-	<p>Manage connectors</p>
+<a href="./admin/manage/connectors" class="admin-button" style="width:205px;">
+	<img src="./assets/images/admin/conn.jpg" style="padding:11px 25px 10px" alt="connector">
+	<p>Connectors</p>
 </a>
-<a href="./admin/manage/miscs" class="admin-button">
-	<img src="./assets/images/chip.png" style="padding:2px 25px 2px">
-	<p>Manage miscs</p>
+<a href="./admin/manage/miscs" class="admin-button" style="width:205px;">
+	<img src="./assets/images/admin/other.png" style="padding:4px 25px 4px" alt="misc">
+	<p>Misc stuff</p>
 </a>
-<a href="./admin/password" class="admin-button">
-	<img src="./assets/images/login.gif" style="padding:5px 30px 5px">
+<a href="./admin/manage/files" class="admin-button" style="width:205px;">
+	<img src="./assets/images/admin/file.png" style="padding:5px 30px 5px" alt="file">
+	<p>Files</p>
+</a>
+<a href="./admin/password" class="admin-button" style="width:205px;">
+	<img src="./assets/images/login.gif" style="padding:5px 30px 5px" alt="passwd">
 	<p>Change password</p>
 </a>
 {% if is_granted('ROLE_SUPER_ADMIN') %}
-	<a href="./admin/manage_users/" class="admin-button">
+	<a href="./admin/manage_users/" class="admin-button" style="width:205px;">
 		<img src="./assets/images/login.gif" style="padding:5px 30px 5px">
 		<p>Manage users</p>
 	</a>
 {% endif %}
+
+<h4>Stats:</h4>
+<p><b>{% trans %}Board count: {% endtrans %} {{moboCount}}</b></p>
+
 {% endblock %}

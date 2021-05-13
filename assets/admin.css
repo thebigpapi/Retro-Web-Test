@@ -9,7 +9,7 @@ a.admin-button {
   	text-decoration: none;
   	display: inline-block;
   	font-size: 16px;
-  	margin: 2px 2px;
+  	margin-bottom: 4px;
 }
 a.admin-button:hover {background-color: rgb(170, 170, 170);}
 a.admin-button p{color: #000000;}

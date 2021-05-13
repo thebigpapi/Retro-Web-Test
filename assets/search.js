@@ -1,10 +1,13 @@
-function setChipset(ok, formtype, sel1, sel2, sel_lb, typ) {
+function setChipset(ok, formtype, sel1, sel2, sel_lb, typ, chk) {
     var chipManuf = document.getElementById(sel1).childNodes;
 	var lb1 = document.getElementById(sel_lb);
 	var lb2 = document.getElementById(sel2);
 	lb1.style.display="";
 	lb2.style.display="none";
-    var form = document.getElementsByName(formtype)[0];
+	if(chk)
+    	var form = document.getElementsByName(formtype + "_motherboard")[0];
+	else
+		var form = document.getElementsByName(formtype)[0];
     if (window.XMLHttpRequest)
         var xhttp = new XMLHttpRequest();
     else if (window.ActiveXObject)
@@ -33,15 +36,15 @@ function setChipset(ok, formtype, sel1, sel2, sel_lb, typ) {
 }
 
 /* execution starts HERE; detect the selects and determine the type of search page*/
+var chk = 0;
 if (document.getElementsByName("search_motherboard")[0])
-	var formtype = "search_motherboard";
-else
-	var formtype = "search";
+	chk = 1;
+var formtype = "search";
 var chip = document.getElementById(formtype + '_chipsetManufacturer');
 
 var rst = document.getElementById('rst-btn');
 var lb2 = document.getElementById('setchip2');
-if(formtype != "search"){
+if(chk){
 	var cpu1 = document.getElementById(formtype + '_cpuSocket1');
 	var cpu2 = document.getElementById(formtype + '_cpuSocket2');
 	var lb3 = document.getElementById('setcpu2');
@@ -55,7 +58,7 @@ else if (window.ActiveXObject)
 if (xhttp) { 
     document.getElementById(formtype + '_searchChipsetManufacturer').outerHTML="";
 	lb2.style.width="100%";
-	if(formtype != "search"){
+	if(chk){
 		document.getElementById(formtype + '_searchSocket1').outerHTML="";
 		document.getElementById(formtype + '_searchSocket2').outerHTML="";
 		lb3.style.width="100%";
@@ -63,20 +66,20 @@ if (xhttp) {
 	}
 }
 rst.onclick= function() {
-	setChipset(1,formtype, "setchip1", "setchip2", "setchip-lb", "[chipsetManufacturer]=");
-	if(formtype != "search"){
-		setChipset(1,formtype, "setcpu1", "setcpu2", "setcpu1-lb", "[cpuSocket1]=");
-		setChipset(1,formtype, "setcpu3", "setcpu4", "setcpu2-lb", "[cpuSocket2]=");
+	setChipset(1,formtype, "setchip1", "setchip2", "setchip-lb", "[chipsetManufacturer]=", chk);
+	if(chk){
+		setChipset(1,formtype, "setcpu1", "setcpu2", "setcpu1-lb", "[cpuSocket1]=", chk);
+		setChipset(1,formtype, "setcpu3", "setcpu4", "setcpu2-lb", "[cpuSocket2]=", chk);
 	}
 };
 chip.onchange= function() {
-	setChipset(0,formtype, "setchip1", "setchip2", "setchip-lb", "[chipsetManufacturer]=");
+	setChipset(0,formtype, "setchip1", "setchip2", "setchip-lb", "[chipsetManufacturer]=", chk);
 };
-if(formtype != "search"){
+if(chk){
 	cpu1.onchange= function() {
-		setChipset(0,formtype, "setcpu1", "setcpu2", "setcpu1-lb", "[cpuSocket1]=");
+		setChipset(0,formtype, "setcpu1", "setcpu2", "setcpu1-lb", "[cpuSocket1]=", chk);
 	};
 	cpu2.onchange= function() {
-		setChipset(0,formtype, "setcpu3", "setcpu4", "setcpu2-lb", "[cpuSocket2]=");
+		setChipset(0,formtype, "setcpu3", "setcpu4", "setcpu2-lb", "[cpuSocket2]=", chk);
 	};
 }

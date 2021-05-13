@@ -4,15 +4,21 @@
 
 {% block body %}
     <div class="main">
-        <a href="{{ path('admin_index') }}">Go back</a>
         <div class="page">
             <h2 class="title">{{ entityDisplayNamePlural|capitalize }}</h2>
+            <a href="{{ path('admin_index') }}" class="admin-button" style="padding:0px 5px 0px;">
+                <img src="{{ root }}/assets/images/back.png" style="padding-top:5px;vertical-align:top;" alt="add" style="display:inline-block;">
+                <p style="display:inline-block;">Go back</p>
+            </a>
             <a href="./expansionchipsets?entity=audiochip" class="admin-button" style="padding:0px 5px 0px;{% if entityName == "audiochip" %}background-color: #afff97;{% endif %}">
-            <p {% if entityName == "audiochip" %}style="color: #000000;"{% endif %}>{% trans %}audio chips{% endtrans %}</p></a>
+            <p {% if entityName == "audiochip" %}style="color: #000000;"{% endif %}>{% trans %}Audio chips{% endtrans %}</p></a>
             <a href="./expansionchipsets?entity=videochip" class="admin-button" style="padding:0px 5px 0px;{% if entityName == "videochip" %}background-color: #afff97;{% endif %}">
-            <p {% if entityName == "videochip" %}style="color: #000000;"{% endif %}>{% trans %}video chips{% endtrans %}</p></a>
+            <p {% if entityName == "videochip" %}style="color: #000000;"{% endif %}>{% trans %}Video chips{% endtrans %}</p></a>
+            <a href="./expansionchipsets/{{entityName}}s/add/" class="admin-button" style="padding:0px 5px 0px;float:right;">
+                <img src="{{ root }}/assets/images/add.png" style="padding-top:5px;vertical-align:top;" alt="add" style="display:inline-block;">
+                <p style="display:inline-block;">Add a {{ entityDisplayName }}</p>
+            </a>
             <hr>
-            <a class="result-link" href="./expansionchipsets/{{entityName}}s/add/">Add a {{ entityDisplayName }}</a>
             <div style="height:12em;">
                 {% if search is not empty %}
                     {{ form(search) }}
