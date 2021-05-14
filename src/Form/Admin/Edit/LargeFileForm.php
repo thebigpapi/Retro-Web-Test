@@ -77,9 +77,15 @@ class LargeFileForm extends AbstractType
                 'allow_add' => true,
                 'allow_delete' => true,
             ])
-            ->add('hasActivationKey', CheckboxType::class)
-            ->add('hasCopyProtection', CheckboxType::class)
-            ->add('fileVersion', TextType::class)
+            ->add('hasActivationKey', CheckboxType::class, [
+                'required' => false,
+            ])
+            ->add('hasCopyProtection', CheckboxType::class, [
+                'required' => false,
+            ])
+            ->add('fileVersion', TextType::class, [
+                'required' => false,
+            ])
             ->add('subdirectory', ChoiceType::class, [
                 'choices' => array(
                     'apps' => 'apps',

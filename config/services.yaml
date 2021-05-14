@@ -5,10 +5,10 @@
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     app.locales: [de, en, es, fr, nl, ro, ru]
-    # app.path: !php/const app.path
-    # web.path: !php/const web.path
-    app.path: .
-    web.path: .
+    app.path: !php/const app.path
+    web.path: !php/const web.path
+    #app.path: .
+    #web.path: .
     app.pagination.max: 100
 
     user_agent.crawlers: ['Discordbot','Twitterbot','Googlebot','Googlebot-Image','Bingbot','Slurp','DuckDuckBot','Baiduspider','Baiduspider-image','YandexBot','facebookexternalhit','www.qwant.com']

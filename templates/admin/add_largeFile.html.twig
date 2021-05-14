@@ -9,8 +9,12 @@
     {{ form_start(form, {'method': 'POST'}) }}
     <div class="editasset">
         <b>{{form_label(form)}}</b> {{form_widget(form.save)}}
+        <progress hidden="true" id="progressBar"></progress>
         <table class="editasset">
-            
+            <tr id="messageRow" hidden="true">
+                <td><label for="message">Message</label></td>
+                <td><span id="message">{{ form_errors(form.file) }}</span></td>
+            <tr>
             <tr>
                 <td>{{form_label(form.name)}}</td>
                 <td>{{form_widget(form.name)}}</td>
@@ -71,11 +75,11 @@
     </div>
     <!-- {{ form_rest(form)|replace({'<input': ' --><input'})|raw }}
     <script src="{{root}}/assets/add-collection-widget.js"></script>
-    <span id="message">{{ form_errors(form.file) }}</span>
-    <progress hidden="true" id="progressBar"></progress>
 </div>
 <script type="text/javascript">
     document.getElementById("large_file_form_save").addEventListener("click", function(event) {
+        var date = new Date()
+        var bytesLoaded = 0
         event.preventDefault()
         var xhr = new XMLHttpRequest();
         xhr.open("POST", window.location.href);
@@ -93,28 +97,48 @@
                 bar.innerHTML = evt.loaded/evt.total*100
 
                 if(evt.loaded == evt.total) {
-                    document.getElementById("message").innerHTML = "Processing ..."
+                    document.getElementById("message").innerHTML = "<ul><li>Processing ...</li></ul>"
                 }
                 else {
-                    document.getElementById("message").innerHTML = "Upload in progress ..."
+                    var newdate = new Date()
+                    var speed = (evt.loaded - bytesLoaded) * (1000/(newdate.getTime() - date.getTime()))
+                    if (speed > 1024)
+                        if (speed > 1024*1024)
+                            speedText = Number.parseFloat(speed/1024/1024).toFixed(1) + "MiB/s"
+                        else
+                            speedText = Number.parseFloat(speed/1024).toFixed(1) + "KiB/s"
+                    else
+                        speedText = Math.round(speed) + "B/s"
+                    //console.log(((evt.loaded - bytesLoaded) * (1000/(newdate.getTime() - date.getTime()))/1024/1024))
+                    document.getElementById("message").innerHTML = "<ul><li>Upload in progress ...</li><li>" + speedText + "</li></ul>"
+                    date = newdate
+                    bytesLoaded = evt.loaded
                 }
             }
         }, false);
         xhr.onloadstart = function (e) {
             bar = document.getElementById('progressBar')
-            bar.hidden=false
+            bar.hidden = false
+            button = document.getElementById('large_file_form_save')
+            button.hidden = true
+            messageRow = document.getElementById("messageRow")
+            messageRow.hidden = false
         }
         xhr.onloadend = function (e) {
-            if(xhr.status == 200) {    
+            if(xhr.status == 200) {
+                button = document.getElementById('large_file_form_save')
+                button.hidden = false
+                bar = document.getElementById('progressBar')
+                bar.hidden = true
                 var parser = new DOMParser();
                 var doc = parser.parseFromString(xhr.responseText, "text/html");
                 if (doc.getElementById("message")) {
                     document.getElementById("message").innerHTML = doc.getElementById("message").innerHTML
                 }
                 else {
-                    document.getElementById("message").innerHTML = "Ok !"
+                    window.location.href = xhr.responseURL
+                    document.body.innerHTML = xhr.responseText
                 }
-                console.log(xhr.responseUrl);
             }
             else {
                 document.getElementById("message").innerHTML = xhr.statusText
