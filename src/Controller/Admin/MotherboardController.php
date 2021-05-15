@@ -230,6 +230,9 @@ class MotherboardController extends AbstractController {
             foreach ($form['motherboardMaxRams']->getData() as $key => $val) {
                 $val->setMotherboard($mobo);
             }
+            foreach ($form['drivers']->getData() as $key => $val) {
+                $val->setMotherboard($mobo);
+            }
             if ($mobo->getManufacturer() != NULL && $mobo->getManufacturer()->getId() == 0) {
                 $mobo->setManufacturer(NULL);
             }

@@ -361,6 +361,10 @@
 			<td>Audio Chipset : </td>
 			<td>{{ form_widget(form.audioChipset) }}</td>
 		</tr>
+		<tr>
+			<td>{{ form_label(form.drivers) }}</td>
+			<td>{% include 'admin/entityList.html.twig' with {'entityName':'drivers', 'entityDisplayName': 'driver', 'entities':form.drivers} %}</td>
+		</tr>
 	</table>
 	<span style="padding-left:10px;">
 			<b>Notes</b>

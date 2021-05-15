@@ -1,0 +1,50 @@
+
+{% macro header() %}
+    <th>{% trans %}Languages{% endtrans %}</th>
+    <th>{% trans %}Media types{% endtrans %}</th>
+    <th>{% trans %}Name{% endtrans %}</th>
+    <th>{% trans %}Dump quality{% endtrans %}</th>
+    <th>{% trans %}Compatible OSes{% endtrans %}</th>
+    <th>{% trans %}Security{% endtrans %}</th>
+{% endmacro %}
+
+{% macro link(file) %}
+    <tr>
+        <td>
+            {% for lang in file.getLanguages() %}
+                <img src="{{ constant('app.path') }}/public/icons/language/{{lang.getIsoCode}}.gif" alt="{{lang.getOriginalName()}}" title="{{lang.getOriginalName()}}"/> 
+            {% endfor %}
+        </td>
+        <td>
+            {% for relation in file.getMediaTypeFlags() %}
+                <b>{{relation.getCount()}}x</b>
+                <img src="{{ vich_uploader_asset(relation.getMediaTypeFlag(), 'icon')}}" alt="{{relation.getMediaTypeFlag().getName()}}" title="{{relation.getMediaTypeFlag().getName()}}"/> 
+            {% endfor %}
+        </td>
+        <td><a href="{{ vich_uploader_asset(file, 'file')}}">{{file.getName()}} {{file.getFileVersion()}}</a></td>
+        <td>
+            <img src="{{ constant('app.path') }}/public/icons/dump_quality/{{file.dumpQualityFlag().getTagName()}}.gif" alt="{{file.dumpQualityFlag().getName()}}" title="{{file.dumpQualityFlag().getName()}}"/> 
+        </td>
+        <td>
+            {% set prevIcon = "" %}
+            {% for relation in file.getOsFlags() %}
+                {% if prevIcon != (relation.getOsFlag().getOsFamilies()|sort)[0].getFileName() %}
+                    <img src="{{ vich_uploader_asset((relation.getOsFlag().getOsFamilies()|sort)[0], 'osIcon')}}" alt="{{(relation.getOsFlag().getOsFamilies()|sort)[0].getName()}}" title="{{relation.getOsFlag().getName()}}"/>
+                {% endif %}
+                {% set prevIcon = (relation.getOsFlag().getOsFamilies()|sort)[0].getFileName() %}
+                {{ relation.getOsFlag().getFullVersion()}}
+                {% if relation.getUnsure() %}
+                    ?
+                {% endif %},
+            {% endfor %}
+        </td>
+        <td>
+            {% if file.hasActivationKey() %}
+                <img src="{{ constant('app.path') }}/public/icons/protection/activation_key.gif" alt="activation key" title="The program needs an activation key"/> 
+            {% endif %}
+            {% if file.hasCopyProtection() %}
+                <img src="{{ constant('app.path') }}/public/icons/protection/copy_protected.gif" alt="copy protected" title="The program is copy protected"/> 
+            {% endif %}
+        </td>
+    </tr>
+{% endmacro %}

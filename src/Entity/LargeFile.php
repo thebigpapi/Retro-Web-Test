@@ -90,11 +90,23 @@ class LargeFile
      */
     private $hasCopyProtection;
 
+    /**
+     * @ORM\OneToMany(targetEntity=LargeFileMotherboard::class, mappedBy="largeFile", orphanRemoval=true)
+     */
+    private $motherboards;
+
+    /**
+     * @ORM\OneToMany(targetEntity=LargeFileChipset::class, mappedBy="largeFile", orphanRemoval=true)
+     */
+    private $chipsets;
+
     public function __construct()
     {
         $this->languages = new ArrayCollection();
         $this->mediaTypeFlags = new ArrayCollection();
         $this->osFlags = new ArrayCollection();
+        $this->motherboards = new ArrayCollection();
+        $this->chipsets = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -292,6 +304,98 @@ class LargeFile
     public function setHasCopyProtection(bool $hasCopyProtection): self
     {
         $this->hasCopyProtection = $hasCopyProtection;
+
+        return $this;
+    }
+
+    public function getNameWithTags(): string
+    {
+        $tmp = $this->getLanguages();
+        $langs = "";
+        foreach ($tmp as $key => $language) {
+            if(array_key_last($tmp->toArray())==$key)
+                $langs .= $language->getIsoCode();
+            else
+                $langs .= $language->getIsoCode() . ", ";
+        }
+
+        $tmp = $this->getOsFlags();
+        $osTags = "";
+        foreach ($tmp as $key => $os) {
+            if(array_key_last($tmp->toArray())==$key)
+                $osTags .=  $os->getOsFlag()->getFullVersion();
+            else
+                $osTags .=  $os->getOsFlag()->getFullVersion() . ", ";
+        }
+
+        $tmp = $this->getMediaTypeFlags();
+        $mediaTypeTags = "";
+        foreach ($tmp as $key => $media) {
+            if(array_key_last($tmp->toArray())==$key)
+                $mediaTypeTags .=  $media->getMediaTypeFlag()->getTagName();
+            else
+                $mediaTypeTags .=  $media->getMediaTypeFlag()->getTagName() . ", ";
+        }
+
+        return $this->getName() . " " . $this->getFileVersion() ?? "" . " [" . $langs . "] [" . $mediaTypeTags . "] [" . $osTags . "]";
+    }
+
+    /**
+     * @return Collection|LargeFileMotherboard[]
+     */
+    public function getMotherboards(): Collection
+    {
+        return $this->motherboards;
+    }
+
+    public function addMotherboard(LargeFileMotherboard $motherboard): self
+    {
+        if (!$this->motherboards->contains($motherboard)) {
+            $this->motherboards[] = $motherboard;
+            $motherboard->setLargeFile($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMotherboard(LargeFileMotherboard $motherboard): self
+    {
+        if ($this->motherboards->removeElement($motherboard)) {
+            // set the owning side to null (unless already changed)
+            if ($motherboard->getLargeFile() === $this) {
+                $motherboard->setLargeFile(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|LargeFileChipset[]
+     */
+    public function getChipsets(): Collection
+    {
+        return $this->chipsets;
+    }
+
+    public function addChipset(LargeFileChipset $chipset): self
+    {
+        if (!$this->chipsets->contains($chipset)) {
+            $this->chipsets[] = $chipset;
+            $chipset->setLargeFile($this);
+        }
+
+        return $this;
+    }
+
+    public function removeChipset(LargeFileChipset $chipset): self
+    {
+        if ($this->chipsets->removeElement($chipset)) {
+            // set the owning side to null (unless already changed)
+            if ($chipset->getLargeFile() === $this) {
+                $chipset->setLargeFile(null);
+            }
+        }
 
         return $this;
     }

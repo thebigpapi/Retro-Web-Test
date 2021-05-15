@@ -37,6 +37,8 @@ use App\Form\Type\ManualType;
 use App\Form\Type\MotherboardBiosType;
 use App\Form\Type\MotherboardImageTypeForm;
 use App\Form\Type\KnownIssueType;
+use App\Form\Type\LargeFileMotherboardType;
+use App\Form\Type\LargeFileType;
 use App\Form\Type\ProcessorPlatformTypeForm;
 use App\Repository\CpuSocketRepository;
 use App\Repository\CpuSpeedRepository;
@@ -220,6 +222,11 @@ class MotherboardForm extends AbstractType
                 'choice_label' => 'getNameWithManufacturer',
                 'multiple' => false,
                 'expanded' => false,
+            ])
+            ->add('drivers', CollectionType::class, [
+                'entry_type' => LargeFileMotherboardType::class,
+                'allow_add' => true,
+                'allow_delete' => true,
             ])
             ->add('note', TextareaType::class, [
                 'required' => false,

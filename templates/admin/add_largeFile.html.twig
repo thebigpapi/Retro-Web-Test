@@ -125,11 +125,11 @@
             messageRow.hidden = false
         }
         xhr.onloadend = function (e) {
+            button = document.getElementById('large_file_form_save')
+            button.hidden = false
+            bar = document.getElementById('progressBar')
+            bar.hidden = true
             if(xhr.status == 200) {
-                button = document.getElementById('large_file_form_save')
-                button.hidden = false
-                bar = document.getElementById('progressBar')
-                bar.hidden = true
                 var parser = new DOMParser();
                 var doc = parser.parseFromString(xhr.responseText, "text/html");
                 if (doc.getElementById("message")) {

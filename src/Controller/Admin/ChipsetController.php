@@ -243,6 +243,9 @@ class ChipsetController extends AbstractController {
             foreach ($form['biosCodes']->getData() as $key => $val) {
                 $val->setChipset($chipset);
             }
+            foreach ($form['drivers']->getData() as $key => $val) {
+                $val->setChipset($chipset);
+            }
             
             $entityManager->persist($chipset);
             $entityManager->flush();

@@ -30,6 +30,10 @@
 			<td>{{form_label(form.encyclopedia_link)}}</td>
 			<td>{{form_widget(form.encyclopedia_link)}}</td>
 		</tr>
+		<tr>
+			<td>{{ form_label(form.drivers) }}</td>
+			<td>{% include 'admin/entityList.html.twig' with {'entityName':'drivers', 'entityDisplayName': 'driver', 'entities':form.drivers} %}</td>
+		</tr>
 	</table>
 	<div>
 		<p>Chipset parts:</p> 
