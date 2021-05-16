@@ -16,7 +16,7 @@ class CacheSizeForm extends AbstractType
     {
         $builder
             ->add('value', TextType::class,[
-            'label' => 'Size in KB',
+            'label' => 'Size in Bytes',
             ])
             ->add('save', SubmitType::class)
             ;

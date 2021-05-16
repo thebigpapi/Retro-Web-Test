@@ -71,11 +71,19 @@ class CacheSize
     
     public function getValueWithUnit(): ?string
     {
-        if ($this->value >= 1024){
-            return (round($this->value/1024, 2).'MB');
+        $val = $this->value;
+        if ($val >= 1024){
+            $val = round($val/1024, 2);
+            if ($val >= 1024)
+            {
+                return (round($val/1024, 2).'MB');
+            }
+            else {
+                return $val.'KB';
+            }
         }
         else{
-            return $this->value.'KB';
+            return $val.'B';
         }
     }
 
