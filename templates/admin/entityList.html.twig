@@ -4,12 +4,10 @@
 <div id="{{entityName}}-fields-list" data-widget-counter="{{ entities|length }}"
     data-prototype="{{ form_widget(entities.vars.prototype)|e }}
     <button type=button onclick=this.parentNode.parentNode.removeChild(this.parentNode);>Del</button>">
+    {% if entities is not empty %}
     <table>
         {% for entity in entities %}
         <tr>
-            <td>
-                {{ form_errors(entity) }}
-            </td>
             <td>
                 {{ form_widget(entity) }}
             </td>
@@ -17,6 +15,8 @@
                 <button type="button" onclick="this.parentNode.parentNode.removeChild(this.parentNode);">Del</button>
             </td>
         </tr>
+        {{ form_errors(entity) }}
         {% endfor %}
     </table>
+    {% endif %}
 </div>       

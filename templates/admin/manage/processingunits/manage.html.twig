@@ -18,18 +18,16 @@
         <p {% if entityName == "platform" %}style="color: #000000;"{% endif %}>{% trans %}CPU platforms{% endtrans %}</p></a>
         <a href="./processingunits?entity=instructionset" class="admin-button" style="padding:0px 5px 0px;{% if entityName == "instructionset" %}background-color: #afff97;{% endif %}">
         <p {% if entityName == "instructionset" %}style="color: #000000;"{% endif %}>{% trans %}Instruction Sets{% endtrans %}</p></a>
+        {% if search is not empty %}
+                    <div class="processing-search">{{ form(search) }}</div>
+        {% endif %}
         <a href="./processingunits/{{entityName}}s/add/" class="admin-button" style="padding:0px 5px 0px;float:right;">
             <img src="{{ root }}/assets/images/add.png" style="padding-top:5px;vertical-align:top;" alt="add" style="display:inline-block;">
             <p style="display:inline-block;">Add a {{ entityDisplayName }}</p>
         </a>
             <hr>
             <div style="height:12em;">
-                {% if search is not empty %}
-                    {{ form(search) }}
-                {% endif %}
-                {{ render(controller(
-                    controllerList, {criterias: criterias}, {page: page, entity: entityName}
-                )) }}
+                {{ render(controller(controllerList, {criterias: criterias}, {page: page, entity: entityName})) }}
             </div>
         </div>
     </div>

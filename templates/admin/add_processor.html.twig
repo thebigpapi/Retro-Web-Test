@@ -1,14 +1,13 @@
 {% extends 'admin/header.html.twig' %}
 
-{% block title %}Manage coprocessors{% endblock %}
+{% block title %}Manage CPUs{% endblock %}
 
 {% block body %}
 <div style="height:6em;"></div>
-
+<h2 style="text-align:center;"><b>Edit:CPUs</b></h2>
 {{ form_start(form, {'method': 'POST'}) }}
-<div class="editasset">
-	<h2><b>{{form_label(form)}}</b></h2> {{form_widget(form.save)}}
-
+<div class="editasset" style="width:70%;">
+	{{form_widget(form.save)}}
 	<div class="show-images" style="max-height:none">
 		<div class="bar">
 			<span style="padding-left:10px;">

@@ -1,12 +1,13 @@
 {% extends 'admin/header.html.twig' %}
 
-{% block title %}Manage processor platform types{% endblock %}
+{% block title %}Manage CPU platforms{% endblock %}
 
 {% block body %}
 <div style="height:6em;"></div>
+<h2 style="text-align:center;"><b>Edit:CPU platform</b></h2>
 {{ form_start(form, {'method': 'POST'}) }}
 <div class="editasset">
-	<b>{{form_label(form)}}</b> {{form_widget(form.save)}}
+	{{form_widget(form.save)}}
 	<table class="editasset">
 		
 		<tr>

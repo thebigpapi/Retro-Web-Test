@@ -1,14 +1,13 @@
 {% extends 'admin/header.html.twig' %}
 
-{% block title %}Add large file{% endblock %}
+{% block title %}Manage large files{% endblock %}
 
 {% block body %}
 <div style="height:6em;"></div>
-<div class="editasset">
-	<h2><b>Add: Large file</b></h2>
+	<h2 style="text-align:center;"><b>Edit: Large file</b></h2>
     {{ form_start(form, {'method': 'POST'}) }}
     <div class="editasset">
-        <b>{{form_label(form)}}</b> {{form_widget(form.save)}}
+        {{form_widget(form.save)}}
         <progress hidden="true" id="progressBar"></progress>
         <table class="editasset">
             <tr id="messageRow" hidden="true">
@@ -55,7 +54,7 @@
                     </div>
                 </td>
             </tr>
-            <tr>
+            <tr class="largefile-mt">
                 <td>Media type flags</td> 
                 <td>
                     <div>
@@ -72,7 +71,6 @@
                 </td>
             </tr>
         </table>
-    </div>
     <!-- {{ form_rest(form)|replace({'<input': ' --><input'})|raw }}
     <script src="{{root}}/assets/add-collection-widget.js"></script>
 </div>

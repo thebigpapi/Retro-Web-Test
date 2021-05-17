@@ -4,23 +4,29 @@
 
 {% block body %}
     <div class="main">
-        <a href="{{ path('admin_index') }}">Go back</a>
         <div class="page">
             <h2 class="title">{{ entityDisplayNamePlural|capitalize }}</h2>
+            <a href="{{ path('admin_index') }}" class="admin-button" style="padding:0px 5px 0px;">
+                <img src="{{ root }}/assets/images/back.png" style="padding-top:5px;vertical-align:top;" alt="add" style="display:inline-block;">
+                <p style="display:inline-block;">Go back</p>
+            </a>
             <a href="./files?entity=largefile" class="admin-button" style="padding:0px 5px 0px;{% if entityName == "largefile" %}background-color: #afff97;{% endif %}">
-            <p {% if entityName == "largefile" %}style="color: #000000;"{% endif %}>{% trans %}Files{% endtrans %}</p></a>
+            <p {% if entityName == "largefile" %}style="color: #000000;"{% endif %}>{% trans %}Large Files{% endtrans %}</p></a>
             <a href="./files?entity=osfamily" class="admin-button" style="padding:0px 5px 0px;{% if entityName == "osfamily" %}background-color: #afff97;{% endif %}">
-            <p {% if entityName == "osfamily" %}style="color: #000000;"{% endif %}>{% trans %}Os Families{% endtrans %}</p></a>
+            <p {% if entityName == "osfamily" %}style="color: #000000;"{% endif %}>{% trans %}OS Families{% endtrans %}</p></a>
             <a href="./files?entity=osflag" class="admin-button" style="padding:0px 5px 0px;{% if entityName == "osflag" %}background-color: #afff97;{% endif %}">
-            <p {% if entityName == "osflag" %}style="color: #000000;"{% endif %}>{% trans %}Os Flags{% endtrans %}</p></a>
+            <p {% if entityName == "osflag" %}style="color: #000000;"{% endif %}>{% trans %}OS Flags{% endtrans %}</p></a>
             <a href="./files?entity=mediatype" class="admin-button" style="padding:0px 5px 0px;{% if entityName == "mediatype" %}background-color: #afff97;{% endif %}">
             <p {% if entityName == "mediatype" %}style="color: #000000;"{% endif %}>{% trans %}Media Types{% endtrans %}</p></a>
-            <hr>
             {% if entityName == "osfamily" %}
-                <a class="result-link" href="./files/osfamilies/add/">Add a {{ entityDisplayName }}</a>
+            <a href="./files/osfamilies/add/" class="admin-button" style="padding:0px 5px 0px;float:right;">
             {% else %}
-                <a class="result-link" href="./files/{{entityName}}s/add/">Add a {{ entityDisplayName }}</a>
+            <a href="./files/{{entityName}}s/add/" class="admin-button" style="padding:0px 5px 0px;float:right;">
             {% endif %}
+                <img src="{{ root }}/assets/images/add.png" style="padding-top:5px;vertical-align:top;" alt="add" style="display:inline-block;">
+                <p style="display:inline-block;">Add a {{ entityDisplayName }}</p>
+            </a>
+            <hr>
             <div style="height:12em;">
                 {% if search is not empty %}
                     {{ form(search) }}

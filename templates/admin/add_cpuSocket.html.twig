@@ -1,12 +1,13 @@
 {% extends 'admin/header.html.twig' %}
 
-{% block title %}Manage cpu socket{% endblock %}
+{% block title %}Manage CPU sockets{% endblock %}
 
 {% block body %}
+<div style="height:5em;"></div>
+<h2 style="text-align:center;"><b>Edit:CPU Socket</b></h2>
 {{ form_start(form, {'method': 'POST'}) }}
 <div class="editasset">
-	<h2><b>{{form_label(form)}}</b></h2> {{form_widget(form.save)}}
-
+	{{form_widget(form.save)}}
     <table class="editasset">
 		<tr>
 			<td>{{form_label(form.name)}}</td>

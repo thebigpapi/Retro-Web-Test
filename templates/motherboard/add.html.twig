@@ -52,7 +52,10 @@
 		<tr>
 			<td class="ttl1">{{ form_widget(form.manufacturer) }}</td>
 			<td class="ttl2">{{ form_widget(form.name) }}</td>
-			<td class="ttl3">{{ form_row(form.save) }}</td>
+			<td class="ttl3">
+				{{ form_widget(form.save, {'attr': {'style': 'line-height: 4px;padding:15px;font-size: 16px;margin-left: 10px;'}} ) }}
+				<button type="button" style="line-height: 4px;padding:15px;font-size: 16px;" onclick="clone_board()">Clone board</button>
+			</td>
 		</tr>
 	</table>
 	<div class="clrs"></div>
