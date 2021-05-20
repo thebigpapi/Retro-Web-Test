@@ -92,7 +92,7 @@ div.lang div select { height: 25px; width: 60%; float:left;}
 div.editasset { width:50%;margin:auto;}
 div.editasset form div div label {width:180px;}
 div.editasset form div div input {width:400px;}
-tr.largefile-mt{background-color: #e0e0e0;}
+tr.darkbg{background-color: #e0e0e0;}
 div.processing-search{display:inline-block;width:390px;vertical-align:bottom;}
 div.processing-search div{display:inline-block;padding-left:5px;}
 
@@ -118,5 +118,5 @@ div.processing-search div{display:inline-block;padding-left:5px;}
 	a.admin-button {background-color: #333333;}
 	a.admin-button:hover {background-color: #5f5f5f;}
 	a.admin-button p{color: white;}
-	tr.largefile-mt{background-color: #5f5f5f;}
+	tr.darkbg{background-color: #5f5f5f;}
 }

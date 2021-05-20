@@ -50,15 +50,15 @@
                 <td>Languages</td> 
                 <td>
                     <div>
-                        {% include 'admin/entityList.html.twig' with {'entityName':'languages', 'entityDisplayName': 'language', 'entities':form.languages} %}	
+                        {% include 'macros/entityList.html.twig' with {'entityName':'languages', 'entityDisplayName': 'language', 'entities':form.languages} %}	
                     </div>
                 </td>
             </tr>
-            <tr class="largefile-mt">
+            <tr class="darkbg">
                 <td>Media type flags</td> 
                 <td>
                     <div>
-                        {% include 'admin/entityList.html.twig' with {'entityName':'mediaTypeFlags', 'entityDisplayName': 'media type flag', 'entities':form.mediaTypeFlags} %}	
+                        {% include 'macros/entityList.html.twig' with {'entityName':'mediaTypeFlags', 'entityDisplayName': 'media type flag', 'entities':form.mediaTypeFlags} %}	
                     </div>
                 </td>
             </tr>
@@ -66,7 +66,7 @@
                 <td>Os flags</td> 
                 <td>
                     <div>
-                        {% include 'admin/entityList.html.twig' with {'entityName':'osFlags', 'entityDisplayName': 'os flag', 'entities':form.osFlags} %}	
+                        {% include 'macros/entityList.html.twig' with {'entityName':'osFlags', 'entityDisplayName': 'os flag', 'entities':form.osFlags} %}	
                     </div>
                 </td>
             </tr>

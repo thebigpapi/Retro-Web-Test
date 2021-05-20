@@ -17,25 +17,11 @@
 			<td>{{form_label(form.type)}}</td>
 			<td>{{form_widget(form.type)}}</td>
 		</tr>
+		<tr>
+			<td>Platforms:</td>
+			<td>{% include 'macros/entityList.html.twig' with {'entityName':'platforms', 'entityDisplayName': 'platform', 'entities':form.platforms} %}</td>
+		</tr>
 	</table> 
-
-	<div>
-		<p>Platforms:</p> 
-		<button type="button" onclick="expand('platforms-fields-list')">Add platform</button>
-		
-        {{ form_errors(form.platforms) }}
-        <div id="platforms-fields-list" data-widget-counter="{{ form.platforms|length }}"
-            data-prototype="{{ form_widget(form.platforms.vars.prototype)|e }}
-			<button type=button onclick=this.parentNode.parentNode.removeChild(this.parentNode);>Del</button>">
-            {% for platform in form.platforms %}
-            <div>
-                {{ form_errors(platform) }}
-                {{ form_widget(platform) }}
-                <button type="button" onclick="this.parentNode.parentNode.removeChild(this.parentNode);">Del</button>
-            </div>
-            {% endfor %}
-        </div>
-	</div>  
 </div>
 <!-- {{ form_rest(form)|replace({'<input': ' --><input'})|raw }}
 <script src="{{root}}/assets/add-collection-widget.js"></script>

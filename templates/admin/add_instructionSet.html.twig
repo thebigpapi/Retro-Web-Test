@@ -9,7 +9,6 @@
 <div class="editasset">
 	{{form_widget(form.save)}}
 	<table class="editasset">
-		
 		<tr>
 			<td>{{form_label(form.name)}}</td>
 			<td>{{form_widget(form.name)}}</td>
@@ -17,20 +16,7 @@
 	</table>
 	<div>
 		<p>Compatible with instruction sets:</p> 
-		<button type="button" onclick="expand('compatibleWith-fields-list')">Add instruction set</button>
-		
-        {{ form_errors(form.compatibleWith) }}
-        <div id="compatibleWith-fields-list" data-widget-counter="{{ form.compatibleWith|length }}"
-            data-prototype="{{ form_widget(form.compatibleWith.vars.prototype)|e }}
-			<button type=button onclick=this.parentNode.parentNode.removeChild(this.parentNode);>Del</button>">
-            {% for instructionSet in form.compatibleWith %}
-            <div>
-                {{ form_errors(instructionSet) }}
-                {{ form_widget(instructionSet) }}
-                <button type="button" onclick="this.parentNode.parentNode.removeChild(this.parentNode);">Del</button>
-            </div>
-            {% endfor %}
-        </div>
+		{% include 'macros/entityList.html.twig' with {'entityName':'compatibleWith', 'entityDisplayName': 'instruction set', 'entities':form.compatibleWith} %}
 	</div>  
 <!-- {{ form_rest(form)|replace({'<input': ' --><input'})|raw }}
 <script src="{{root}}/assets/add-collection-widget.js"></script>

@@ -32,47 +32,17 @@
 		</tr>
 		<tr>
 			<td>{{ form_label(form.drivers) }}</td>
-			<td>{% include 'admin/entityList.html.twig' with {'entityName':'drivers', 'entityDisplayName': 'driver', 'entities':form.drivers} %}</td>
+			<td>{% include 'macros/entityList.html.twig' with {'entityName':'drivers', 'entityDisplayName': 'driver', 'entities':form.drivers} %}</td>
 		</tr>
-	</table>
-	<div>
-		<p>Chipset parts:</p> 
-		<button type="button" onclick="expand('chipsetParts-fields-list')">Add chipset part</button>
-		
-        {{ form_errors(form.chipsetParts) }}
-        <div id="chipsetParts-fields-list" data-widget-counter="{{ form.chipsetParts|length }}"
-            data-prototype="{{ form_widget(form.chipsetParts.vars.prototype)|e }}
-			<button type=button onclick=this.parentNode.parentNode.removeChild(this.parentNode);>Del</button>">
-            {% for chipsetChipsetPart in form.chipsetParts %}
-            <div>
-                {{ form_errors(chipsetChipsetPart) }}
-                {{ form_widget(chipsetChipsetPart) }}
-                <button type="button" onclick="this.parentNode.parentNode.removeChild(this.parentNode);">Del</button>
-            </div>
-            {% endfor %}
-        </div>
-	</div>
-	<div>
-		<p>Bios codes:</p> 
-		<button type="button" onclick="expand('biosCodes-fields-list')">Add code</button>
-		
-        {{ form_errors(form.biosCodes) }}
-        <div id="biosCodes-fields-list" data-widget-counter="{{ form.biosCodes|length }}"
-            data-prototype="
-				<div class=imgp><span>Bios manufacturer: </span>{{ form_widget(form.biosCodes.vars.prototype.biosManufacturer)|e }}</div>
-				<div class=imgp><span>Code: </span>{{ form_widget(form.biosCodes.vars.prototype.code)|e }}</div>
-				<div class=imgp><button type=button onclick=this.parentNode.parentNode.parentNode.removeChild(this.parentNode.parentNode);>Delete this entry</button></div>
-				">
-            {% for code in form.biosCodes %}
-			<div class="addform" >
-				<div class="imgp"><span>Bios manufacturer: </span>{{ form_widget(code.biosManufacturer)}}</div>
-				<div class="imgp"><span>Code: </span>{{ form_widget(code.code)}}</div>
-				<div class="imgp"><button type="button" onclick="this.parentNode.parentNode.parentNode.removeChild(this.parentNode.parentNode);">Delete this entry</button></div>
-			</div>
-            {% endfor %}
-			{{ form_errors(form.biosCodes) }}
-        </div>
-	</div>  
+		<tr class="darkbg">
+			<td>Chipset parts:</td>
+			<td>{% include 'macros/entityList.html.twig' with {'entityName':'chipsetParts', 'entityDisplayName': 'chipsetParts', 'entities':form.chipsetParts} %}</td>
+		</tr>
+		<tr>
+			<td>BIOS codes:</td>
+			<td>{% include 'macros/entityList.html.twig' with {'entityName':'biosCodes', 'entityDisplayName': 'biosCodes', 'entities':form.biosCodes} %}</td>
+		</tr>
+	</table> 
 <!-- {{ form_rest(form)|replace({'<input': ' --><input'})|raw }}
 <script src="{{root}}/assets/add-collection-widget.js"></script>
 

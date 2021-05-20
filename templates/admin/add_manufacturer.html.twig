@@ -8,7 +8,6 @@
 <div class="editasset">
 	<h2><b>Edit: Manufacturer</b></h2>
 	{{form_widget(form.save)}}
-
     <table class="editasset">
 		<tr>
 			<td>{{form_label(form.name)}}</td>
@@ -18,29 +17,11 @@
 			<td>{{form_label(form.shortName)}}</td>
 			<td>{{form_widget(form.shortName)}}</td>
 		</tr>
+		<tr>
+			<td>Bios codes:</td>
+			<td>{% include 'macros/entityList.html.twig' with {'entityName':'biosCodes', 'entityDisplayName': 'BIOS code', 'entities':form.biosCodes} %}</td>
+		</tr>
 	</table> 
-
-	<div>
-		<p>Bios codes:</p> 
-		<button type="button" onclick="expand('biosCodes-fields-list')">Add code</button>
-		
-        {{ form_errors(form.biosCodes) }}
-        <div id="biosCodes-fields-list" data-widget-counter="{{ form.biosCodes|length }}"
-            data-prototype="
-				<div class=imgp><span>Bios manufacturer: </span>{{ form_widget(form.biosCodes.vars.prototype.biosManufacturer)|e }}</div>
-				<div class=imgp><span>Code: </span>{{ form_widget(form.biosCodes.vars.prototype.code)|e }}</div>
-				<div class=imgp><button type=button onclick=this.parentNode.parentNode.parentNode.removeChild(this.parentNode.parentNode);>Delete this entry</button></div>
-				">
-            {% for code in form.biosCodes %}
-			<div class="addform" >
-				<div class="imgp"><span>Bios manufacturer: </span>{{ form_widget(code.biosManufacturer)}}</div>
-				<div class="imgp"><span>Code: </span>{{ form_widget(code.code)}}</div>
-				<div class="imgp"><button type="button" onclick="this.parentNode.parentNode.parentNode.removeChild(this.parentNode.parentNode);">Delete this entry</button></div>
-			</div>
-            {% endfor %}
-			{{ form_errors(form.biosCodes) }}
-        </div>
-	</div>  
 </div>
 <!-- {{ form_rest(form)|replace({'<input': ' --><input'})|raw }}
 <script src="{{root}}/assets/add-collection-widget.js"></script>

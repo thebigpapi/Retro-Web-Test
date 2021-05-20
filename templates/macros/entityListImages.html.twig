@@ -1,0 +1,30 @@
+
+{{ form_errors(entities) }}
+<div id="{{entityName}}-fields-list" data-widget-counter="{{ entities|length }}"
+    data-prototype="
+				<div class=imgp>{{ form_widget(entities.vars.prototype.imageFile, {'attr': {'style': 'width:100%'}})|e }}</div>
+				<div class=imgp><span>Creditor: </span>{{ form_widget(entities.vars.prototype.creditor)|e }}</div>
+				<div class=imgp><span>License: </span>{{ form_widget(entities.vars.prototype.license)|e }}</div>
+				<div class=imgp><span>Notes: </span>{{ form_widget(entities.vars.prototype.description)|e }}</div>
+				<div class=imgp>Uploaded file: 
+					<button type=button onclick=this.parentNode.parentNode.parentNode.removeChild(this.parentNode.parentNode);>Delete this entry</button></div>
+				<div class=imgp>{{ form_widget(entities.vars.prototype.file_name, {'attr': {'style': 'width:90%'}})|e }}</div>
+				">
+    {% if entities is not empty %}
+    <table>
+        {% for entity in entities %}
+        <div class="addform" >
+				<div class="imgp">{{ form_widget(entity.imageFile, {'attr': {'style': 'width:100%'}}) }}</div>
+				<div class="imgp"><span>Creditor: </span>{{ form_widget(entity.creditor)}}</div>
+				<div class="imgp"><span>License: </span>{{ form_widget(entity.license)}}</div>
+				<div class="imgp"><span>Notes: </span>{{ form_widget(entity.description)}}</div>
+				<div class="imgp">Uploaded file: 
+					<button type="button" onclick="this.parentNode.parentNode.parentNode.removeChild(this.parentNode.parentNode);">Delete this entry</button>
+				</div>
+				<div class="imgp">{{ form_widget(entity.file_name, {'attr': {'style': 'width:90%'}}) }}</div>
+			</div>
+        {{ form_errors(entity) }}
+        {% endfor %}
+    </table>
+    {% endif %}
+</div>       
