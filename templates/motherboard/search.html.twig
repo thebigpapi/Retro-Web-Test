@@ -32,6 +32,7 @@
 		<div class="butn">
 			<input id="rst-btn" type="reset" value="Reset fields">
 			{{ form_row(form.search)|replace({'<div><button': '<input', '</button></div>': '">', '>': ' value="'})|raw }}
+			{{ form_row(form.searchWithImages)|replace({'<div><button': '<input', '</button></div>': '">', '>': ' value="'})|raw }}
 		</div>
         <table class="search-table">
             <tr>

@@ -27,6 +27,18 @@
 						{% endfor %}
 						</ul>
 					{% endif %}
+					{% if show_images %}
+						{% if motherboard.getImages() is not empty %}
+							{% for image in motherboard.getImages()|sort((a, b) => b.motherboardImageType <=> a.motherboardImageType) %}
+								{% if image.motherboardImageType.id in [1, 2] %}
+									<a href="{{ vich_uploader_asset(image, 'imageFile')}}" class="highslide" 
+									onclick="return imgexp(this);">
+										<img src="{{ vich_uploader_asset(image, 'imageFile') | imagine_filter('motherboard_show_thumb') }}" alt="" title="{% if image.description %}{{ image.description }}{% endif %}">
+									</a>
+								{% endif %}
+							{% endfor %}
+						{% endif %}
+					{% endif %}
 				</li>
 					{#% if motherboard.getProcessorPlatformType() is not null %}
 						{{ motherboard.getProcessorPlatformType().getName() }}	
