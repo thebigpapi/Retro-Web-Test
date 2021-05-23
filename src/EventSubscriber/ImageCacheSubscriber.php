@@ -11,6 +11,7 @@ use Vich\UploaderBundle\Templating\Helper\UploaderHelper;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use App\Entity\Motherboard;
 use App\Entity\MotherboardImage;
+use Doctrine\ORM\Event\LifecycleEventArgs as EventLifecycleEventArgs;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
 
 class ImageCacheSubscriber implements EventSubscriber
@@ -39,7 +40,7 @@ class ImageCacheSubscriber implements EventSubscriber
         ];
     }
 
-    public function preRemove(LifecycleEventArgs $args)
+    public function preRemove(EventLifecycleEventArgs $args)
     {
         $entity = $args->getObject();
         if (!$entity instanceof MotherboardImage && !$entity instanceof ChipImage){

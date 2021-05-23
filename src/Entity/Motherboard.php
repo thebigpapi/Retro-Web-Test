@@ -825,7 +825,7 @@ class Motherboard
 
     public function getAllDrivers(): Collection
     {
-        return new ArrayCollection(array_merge($this->getChipset()->getDrivers()->toArray(), $this->getDrivers()->toArray()));
+        return new ArrayCollection(array_merge($this->getChipset() ? $this->getChipset()->getDrivers()->toArray():array(), $this->getDrivers()->toArray()));
     }
 
     /**
