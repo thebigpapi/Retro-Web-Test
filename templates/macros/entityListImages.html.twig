@@ -7,7 +7,7 @@
 				<div class=imgp><span>License: </span>{{ form_widget(entities.vars.prototype.license)|e }}</div>
 				<div class=imgp><span>Notes: </span>{{ form_widget(entities.vars.prototype.description)|e }}</div>
 				<div class=imgp>Uploaded file: 
-					<button type=button onclick=this.parentNode.parentNode.parentNode.removeChild(this.parentNode.parentNode);>Delete this entry</button></div>
+					<button type=button onclick=remove(this.parentNode)>Delete this entry</button></div>
 				<div class=imgp>{{ form_widget(entities.vars.prototype.file_name, {'attr': {'style': 'width:90%'}})|e }}</div>
 				">
     {% if entities is not empty %}
@@ -19,7 +19,7 @@
 				<div class="imgp"><span>License: </span>{{ form_widget(entity.license)}}</div>
 				<div class="imgp"><span>Notes: </span>{{ form_widget(entity.description)}}</div>
 				<div class="imgp">Uploaded file: 
-					<button type="button" onclick="this.parentNode.parentNode.parentNode.removeChild(this.parentNode.parentNode);">Delete this entry</button>
+					<button type="button" onclick="remove(this.parentNode)">Delete this entry</button>
 				</div>
 				<div class="imgp">{{ form_widget(entity.file_name, {'attr': {'style': 'width:90%'}}) }}</div>
 			</div>
