@@ -13,6 +13,9 @@ use App\Repository\ManufacturerRepository;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Form\ChoiceList\View\ChoiceView;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormView;
 
 class ChipType extends AbstractType
 {
@@ -28,16 +31,12 @@ class ChipType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $chipManufacturers = $this->getManufacturerRepository()
-        ->findBy(array(), array('name' => 'ASC', 'shortName' => 'ASC'));
-
         $builder
             ->add('manufacturer', EntityType::class, [
                 'class' => Manufacturer::class,
                 'choice_label' => 'shortNameIfExist',
                 'multiple' => false,
                 'expanded' => false,
-                'choices' => $chipManufacturers,
             ])
             ->add('name', TextType::class, [
                 'required' => false,
@@ -63,5 +62,12 @@ class ChipType extends AbstractType
         $resolver->setDefaults([
             'inherit_data' => true,
         ]);
+    }
+
+    public function finishView(FormView $view, FormInterface $form, array $options)
+    {
+        usort($view->vars['form']['manufacturer']->vars['choices'], function(ChoiceView $a, ChoiceView $b) {
+            return ($a->data->getShortNameIfExist() > $b->data->getShortNameIfExist());
+        });  
     }
 }
