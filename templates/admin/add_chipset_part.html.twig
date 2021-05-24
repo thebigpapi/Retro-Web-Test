@@ -36,6 +36,6 @@
 		</tr>
 	</table> 
 </div>
-<!-- {{ form_rest(form)|replace({'<input': ' --><input'})|raw }}
+{{ form_end(form, {'render_rest': false}) }}
 <script src="{{root}}/assets/add-collection-widget.js"></script>
 {% endblock %}

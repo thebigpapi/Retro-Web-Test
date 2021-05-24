@@ -422,7 +422,7 @@
 		</tr>
 	</table><br>
 <div id="hiddenDiv" style="display: none;"></div>
-<!-- {{ form_rest(form)|replace({'<input': ' --><input'})|raw }}
+{{ form_end(form, {'render_rest': false}) }}
 </form>
 
 <script type="text/javascript" src="{{root}}/assets/add-collection-widget.js"></script>
