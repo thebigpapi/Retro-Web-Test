@@ -48,7 +48,7 @@ span.field2 {width: 12em;font-size:16px; margin-bottom:4px; /* **/ float:left; /
 #setchip1, #setcpu1, #setcpu3 {width:30%;}
 #setchip2, #setcpu2, #setcpu4 {width:50%;}
 div.butn {text-align: center;}
-div.butn input {width:7.5em; height:2em; font-size:14px;}
+div.butn input {height:2.7em; font-size:14px;}
 a.help-t span{
 	position:absolute;
 	visibility:hidden;

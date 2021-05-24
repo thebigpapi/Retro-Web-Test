@@ -30,9 +30,11 @@
 	<div id="hiddenDiv" style="display: none;"></div>
 	<form name="search_motherboard" method="post" action="./search">
 		<div class="butn">
-			<input id="rst-btn" type="reset" value="Reset fields">
-			{{ form_row(form.search)|replace({'<div><button': '<input', '</button></div>': '">', '>': ' value="'})|raw }}
-			{{ form_row(form.searchWithImages)|replace({'<div><button': '<input', '</button></div>': '">', '>': ' value="'})|raw }}
+			<input id="rst-btn" type="reset" value="Reset fields" style="background: url(../assets/images/reset.png) no-repeat scroll 3px 2px;padding-left:40px;">
+			{{ form_row(form.search)|replace({'<div><button': '<input style="
+			background: url(../assets/images/search.png) no-repeat scroll 5px 2px;padding-left:40px;"', '</button></div>': '">', '>': ' value="'})|raw }}
+			{{ form_row(form.searchWithImages)|replace({'<div><button': '<input style="
+			background: url(../assets/images/search_photo.png) no-repeat scroll 5px 2px;padding-left:40px;"', '</button></div>': '">', '>': ' value="'})|raw }}
 		</div>
         <table class="search-table">
             <tr>
