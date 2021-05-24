@@ -43,7 +43,7 @@
 			<td>{% include 'macros/entityList.html.twig' with {'entityName':'biosCodes', 'entityDisplayName': 'biosCodes', 'entities':form.biosCodes} %}</td>
 		</tr>
 	</table> 
-<!-- {{ form_rest(form)|replace({'<input': ' --><input'})|raw }}
+{{ form_end(form, {'render_rest': false}) }}
 <script src="{{root}}/assets/add-collection-widget.js"></script>
 
 {% endblock %}
