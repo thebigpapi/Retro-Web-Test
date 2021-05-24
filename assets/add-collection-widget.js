@@ -15,7 +15,7 @@ function expand(id) {
 	counter++;
 	//set the new increment, create the new widget and concatenate after list
 	list.setAttribute("data-widget-counter", counter);
-	var newElem = document.createElement('tr');
+	var newElem = document.createElement('div');
 	if(id.indexOf('images-fields-list') != -1)
 		newElem.setAttribute("class", "addform");
 	if(id == 'motherboardBios-fields-list' || id == 'manuals-fields-list')
