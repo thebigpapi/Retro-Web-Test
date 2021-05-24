@@ -2,7 +2,7 @@
 
 /* === index.html.twig (administration) === */
 
-a.admin-button {
+a.admin-button,a.admin-button-index {
 	background-color: #ebebeb;
   	border: 1px solid gray;
   	text-align: center;
@@ -11,8 +11,9 @@ a.admin-button {
   	font-size: 16px;
   	margin-bottom: 4px;
 }
-a.admin-button:hover {background-color: rgb(170, 170, 170);}
-a.admin-button p{color: #000000;}
+a.admin-button-index {width:205px;}
+a.admin-button:hover, a.admin-button-index:hover {background-color: rgb(170, 170, 170);}
+a.admin-button p, a.admin-button-index p{color: #000000;}
 
 div.butn div button { width:120px; height:40px; font-size:20px;}
 
@@ -104,14 +105,11 @@ div.processing-search div{display:inline-block;padding-left:5px;}
 	.ba1 {width:22%}
 }
 @media only screen and (min-width: 501px) and (max-width: 899px) {
-	div.general-manage div, div.cpu-manage div, div.ram-manage div, div.lang div { width: 80%;}
-	div.general-manage div label, div.cpu-manage div label, div.ram-manage div label, div.lang div label { width: 30%;}
-	div.general-manage div select, div.cpu-manage div select, div.ram-manage div select, div.lang div select { width: 68%; }
+	
 }
 @media only screen and (max-width: 500px) {
-	div.general-manage div, div.cpu-manage div, div.ram-manage div, div.lang div { width: 75%;height:auto;}
-	div.general-manage div label, div.cpu-manage div label, div.ram-manage div label, div.lang div label { width: 32%}
-	div.general-manage div select, div.cpu-manage div select, div.ram-manage div select, div.lang div select { width: 68%;height:30px;font-size:18px;float:left }
+	a.admin-button-index {font-size: 16px;width:180px;}
+	a.admin-button {font-size: 12px;float:none;}
 	div.manage-buttons div button {height:25px; font-size:18px;}
 }
 @media (prefers-color-scheme: dark) {
