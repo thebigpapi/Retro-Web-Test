@@ -346,9 +346,9 @@ class ProcessingUnitController extends AbstractController {
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $processor = $form->getData();
-            foreach ($form['processingUnit']['instructionSets']->getData() as $key => $val) {
+            /*foreach ($form['processingUnit']['instructionSets']->getData() as $key => $val) {
                 $val->addProcessingUnit($processor);
-            }
+            }*/
             foreach ($form['processingUnit']['chip']['chipAliases']->getData() as $key => $val) {
                 $val->setChip($processor);
             }

@@ -12,7 +12,7 @@
                 {{ form_widget(entity) }}
             </td>
             <td>
-                <button type="button" onclick="remove(this)">Del</button>
+                <button type="button" onclick="remove(this.parentNode)">Del</button>
             </td>
         </tr>
         {{ form_errors(entity) }}
