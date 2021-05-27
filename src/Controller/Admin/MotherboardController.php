@@ -68,7 +68,7 @@ class MotherboardController extends AbstractController {
      */
     public function formFactorAdd(Request $request)        
     {
-        return $this->renderEntityForm($request, new FormFactor(), FormFactorForm::class, 'admin/add_formFactor.html.twig', 'formfactor');
+        return $this->renderEntityForm($request, new FormFactor(), FormFactorForm::class, 'admin/edit/motherboards/formFactor.html.twig', 'formfactor');
     }
 
     /**
@@ -80,7 +80,7 @@ class MotherboardController extends AbstractController {
         return $this->renderEntityForm($request,$this->getDoctrine()
         ->getRepository(FormFactor::class)
         ->find($id)
-        , FormFactorForm::class, 'admin/add_formFactor.html.twig', 'formfactor');
+        , FormFactorForm::class, 'admin/edit/motherboards/formFactor.html.twig', 'formfactor');
     }
 
     /**

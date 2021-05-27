@@ -98,7 +98,7 @@ class ProcessingUnitController extends AbstractController {
      */
     public function platformAdd(Request $request)        
     {
-        return $this->renderEntityForm($request, new ProcessorPlatformType(), ProcessorPlatformTypeFormForm::class, 'admin/add_processorPlatformType.html.twig', 'platform');
+        return $this->renderEntityForm($request, new ProcessorPlatformType(), ProcessorPlatformTypeFormForm::class, 'admin/edit/processingunits/processorPlatformType.html.twig', 'platform');
     }
 
     /**
@@ -110,7 +110,7 @@ class ProcessingUnitController extends AbstractController {
         return $this->renderEntityForm($request, $this->getDoctrine()
             ->getRepository(ProcessorPlatformType::class)
             ->find($id)
-            , ProcessorPlatformTypeFormForm::class, 'admin/add_processorPlatformType.html.twig', 'platform');
+            , ProcessorPlatformTypeFormForm::class, 'admin/edit/processingunits/processorPlatformType.html.twig', 'platform');
     }
 
     /**
@@ -119,7 +119,7 @@ class ProcessingUnitController extends AbstractController {
      */
     public function instructionSetAdd(Request $request)        
     {
-        return $this->renderEntityForm($request, new InstructionSet(), InstructionSetForm::class, 'admin/add_instructionSet.html.twig', 'instructionset');
+        return $this->renderEntityForm($request, new InstructionSet(), InstructionSetForm::class, 'admin/edit/processingunits/instructionSet.html.twig', 'instructionset');
     }
 
     /**
@@ -131,7 +131,7 @@ class ProcessingUnitController extends AbstractController {
         return $this->renderEntityForm($request,$this->getDoctrine()
             ->getRepository(InstructionSet::class)
             ->find($id)
-        , InstructionSetForm::class, 'admin/add_instructionSet.html.twig', 'instructionset');
+        , InstructionSetForm::class, 'admin/edit/processingunits/instructionSet.html.twig', 'instructionset');
     }
 
     /**
@@ -334,7 +334,7 @@ class ProcessingUnitController extends AbstractController {
 
             return $this->redirect($this->generateUrl('admin_manage_processing_units', array("entity" => "coprocessor"))); 
         }
-        return $this->render('admin/add_coprocessor.html.twig', [
+        return $this->render('admin/edit/processingunits/coprocessor.html.twig', [
             'form' => $form->createView(),
         ]);
     }
@@ -364,7 +364,7 @@ class ProcessingUnitController extends AbstractController {
 
             return $this->redirect($this->generateUrl('admin_manage_processing_units', array("entity" => "processor")));
         }
-        return $this->render('admin/add_processor.html.twig', [
+        return $this->render('admin/edit/processingunits/processor.html.twig', [
             'form' => $form->createView(),
         ]);
     }

@@ -39,12 +39,12 @@
 	<p>Files</p>
 </a>
 <a href="./admin/password" class="admin-button-index">
-	<img src="./assets/images/login.gif" style="padding:5px 30px 5px" alt="passwd">
+	<img src="./assets/images/admin/login.gif" style="padding:5px 30px 5px" alt="passwd">
 	<p>Change password</p>
 </a>
 {% if is_granted('ROLE_SUPER_ADMIN') %}
 	<a href="./admin/manage_users/" class="admin-button-index">
-		<img src="./assets/images/login.gif" style="padding:5px 30px 5px">
+		<img src="./assets/images/admin/login.gif" style="padding:5px 30px 5px">
 		<p>Manage users</p>
 	</a>
 {% endif %}

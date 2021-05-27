@@ -52,7 +52,7 @@ class MiscController extends AbstractController {
      */
     public function manufacturerAdd(Request $request)        
     {
-        return $this->renderManufacturerForm($request, new Manufacturer(), 'admin/add_manufacturer.html.twig');
+        return $this->renderManufacturerForm($request, new Manufacturer(), 'admin/edit/miscs/manufacturer.html.twig');
     }
 
     /**
@@ -64,7 +64,7 @@ class MiscController extends AbstractController {
         return $this->renderManufacturerForm($request,$this->getDoctrine()
         ->getRepository(Manufacturer::class)
         ->find($id)
-        , 'admin/add_manufacturer.html.twig');
+        , 'admin/edit/miscs/manufacturer.html.twig');
     }
 
     /**
@@ -73,7 +73,7 @@ class MiscController extends AbstractController {
      */
     public function knownIssueAdd(Request $request)        
     {
-        return $this->renderEntityForm($request, new KnownIssue(), KnownIssueForm::class, 'admin/add_knownIssue.html.twig', 'issue');
+        return $this->renderEntityForm($request, new KnownIssue(), KnownIssueForm::class, 'admin/edit/miscs/knownIssue.html.twig', 'issue');
     }
 
     /**
@@ -85,7 +85,7 @@ class MiscController extends AbstractController {
         return $this->renderEntityForm($request,$this->getDoctrine()
         ->getRepository(KnownIssue::class)
         ->find($id)
-        , KnownIssueForm::class, 'admin/add_knownIssue.html.twig', 'issue');
+        , KnownIssueForm::class, 'admin/edit/miscs/knownIssue.html.twig', 'issue');
     }
 
     /**
@@ -94,7 +94,7 @@ class MiscController extends AbstractController {
      */
     public function cpuSpeedAdd(Request $request)        
     {
-        return $this->renderEntityForm($request, new CpuSpeed(), CpuSpeedForm::class, 'admin/add_cpuSpeed.html.twig', 'freq');
+        return $this->renderEntityForm($request, new CpuSpeed(), CpuSpeedForm::class, 'admin/edit/miscs/cpuSpeed.html.twig', 'freq');
     }
 
     /**
@@ -106,7 +106,7 @@ class MiscController extends AbstractController {
         return $this->renderEntityForm($request,$this->getDoctrine()
         ->getRepository(CpuSpeed::class)
         ->find($id)
-        , CpuSpeedForm::class, 'admin/add_cpuSpeed.html.twig', 'freq');
+        , CpuSpeedForm::class, 'admin/edit/miscs/cpuSpeed.html.twig', 'freq');
     }
 
     /**
@@ -115,7 +115,7 @@ class MiscController extends AbstractController {
      */
     public function creditorAdd(Request $request)        
     {
-        return $this->renderEntityForm($request, new Creditor(), CreditorForm::class, 'admin/add_creditor.html.twig', 'creditor');
+        return $this->renderEntityForm($request, new Creditor(), CreditorForm::class, 'admin/edit/miscs/creditor.html.twig', 'creditor');
     }
 
     /**
@@ -127,7 +127,7 @@ class MiscController extends AbstractController {
         return $this->renderEntityForm($request,$this->getDoctrine()
         ->getRepository(Creditor::class)
         ->find($id)
-        , CreditorForm::class, 'admin/add_creditor.html.twig', 'creditor');
+        , CreditorForm::class, 'admin/edit/miscs/creditor.html.twig', 'creditor');
     }
 
     /**

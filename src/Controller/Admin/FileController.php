@@ -51,7 +51,7 @@ class FileController extends AbstractController {
      */
     public function largeFileAdd(Request $request)        
     {
-        return $this->renderLargeFileForm($request, new LargeFile(), 'admin/add_largeFile.html.twig');
+        return $this->renderLargeFileForm($request, new LargeFile(), 'admin/edit/files/largeFile.html.twig');
     }
 
     /**
@@ -62,7 +62,7 @@ class FileController extends AbstractController {
     {
         return $this->renderLargeFileForm($request, $this->getDoctrine()
         ->getRepository(LargeFile::class)
-        ->find($id), 'admin/add_largeFile.html.twig');
+        ->find($id), 'admin/edit/files/largeFile.html.twig');
     }
 
     /**
@@ -71,7 +71,7 @@ class FileController extends AbstractController {
      */
     public function osFamilyAdd(Request $request)        
     {
-        return $this->renderEntityForm($request, new OsFamily(), OsFamilyForm::class, 'admin/add_osFamily.html.twig', 'osfamily');
+        return $this->renderEntityForm($request, new OsFamily(), OsFamilyForm::class, 'admin/edit/files/osFamily.html.twig', 'osfamily');
     }
 
     /**
@@ -82,7 +82,7 @@ class FileController extends AbstractController {
     {
         return $this->renderEntityForm($request, $this->getDoctrine()
         ->getRepository(OsFamily::class)
-        ->find($id), OsFamilyForm::class, 'admin/add_osFamily.html.twig', 'osfamily');
+        ->find($id), OsFamilyForm::class, 'admin/edit/files/osFamily.html.twig', 'osfamily');
     }
 
     /**
@@ -91,7 +91,7 @@ class FileController extends AbstractController {
      */
     public function osFlagAdd(Request $request)        
     {
-        return $this->renderEntityForm($request, new OsFlag(), OsFlagForm::class, 'admin/add_osFlag.html.twig', 'osflag');
+        return $this->renderEntityForm($request, new OsFlag(), OsFlagForm::class, 'admin/edit/files/osFlag.html.twig', 'osflag');
     }
 
     /**
@@ -102,7 +102,7 @@ class FileController extends AbstractController {
     {
         return $this->renderEntityForm($request, $this->getDoctrine()
         ->getRepository(OsFlag::class)
-        ->find($id), OsFlagForm::class, 'admin/add_osFlag.html.twig', 'osflag');
+        ->find($id), OsFlagForm::class, 'admin/edit/files/osFlag.html.twig', 'osflag');
     }
 
     /**
@@ -111,7 +111,7 @@ class FileController extends AbstractController {
      */
     public function mediaTypeAdd(Request $request)        
     {
-        return $this->renderEntityForm($request, new MediaTypeFlag(), MediaTypeFlagForm::class, 'admin/add_mediaTypeFlag.html.twig', 'mediatype');
+        return $this->renderEntityForm($request, new MediaTypeFlag(), MediaTypeFlagForm::class, 'admin/edit/files/mediaTypeFlag.html.twig', 'mediatype');
     }
 
     /**
@@ -122,7 +122,7 @@ class FileController extends AbstractController {
     {
         return $this->renderEntityForm($request, $this->getDoctrine()
         ->getRepository(MediaTypeFlag::class)
-        ->find($id), MediaTypeFlagForm::class, 'admin/add_mediaTypeFlag.html.twig', 'mediatype');
+        ->find($id), MediaTypeFlagForm::class, 'admin/edit/files/mediaTypeFlag.html.twig', 'mediatype');
     }
 
     /**

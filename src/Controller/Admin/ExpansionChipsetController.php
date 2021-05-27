@@ -231,7 +231,7 @@ class ExpansionChipsetController extends AbstractController {
 
             return $this->redirect($this->generateUrl('admin_manage_expansion_chipsets', array("entity" => "audiochip")));
         }
-        return $this->render('admin/add_audioChipset.html.twig', [
+        return $this->render('admin/edit/expansion_chipsets/audioChipset.html.twig', [
             'form' => $form->createView(),
         ]);
     }
@@ -254,7 +254,7 @@ class ExpansionChipsetController extends AbstractController {
             
             return $this->redirect($this->generateUrl('admin_manage_expansion_chipsets', array("entity" => "videochip")));
         }
-        return $this->render('admin/add_videoChipset.html.twig', [
+        return $this->render('admin/edit/expansion_chipsets/videoChipset.html.twig', [
             'form' => $form->createView(),
         ]);
     }

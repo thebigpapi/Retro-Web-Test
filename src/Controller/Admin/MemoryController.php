@@ -47,7 +47,7 @@ class MemoryController extends AbstractController {
      */
     public function dramTypeAdd(Request $request)        
     {
-        return $this->renderEntityForm($request, new DramType(), DramTypeForm::class, 'admin/add_dramType.html.twig', 'ramtype');
+        return $this->renderEntityForm($request, new DramType(), DramTypeForm::class, 'admin/edit/memories/dramType.html.twig', 'ramtype');
     }
 
     /**
@@ -58,7 +58,7 @@ class MemoryController extends AbstractController {
     {
         return $this->renderEntityForm($request, $this->getDoctrine()
         ->getRepository(DramType::class)
-        ->find($id), DramTypeForm::class, 'admin/add_dramType.html.twig', 'ramtype');
+        ->find($id), DramTypeForm::class, 'admin/edit/memories/dramType.html.twig', 'ramtype');
     }
 
     /**
@@ -67,7 +67,7 @@ class MemoryController extends AbstractController {
      */
     public function ramSizeAdd(Request $request)        
     {
-        return $this->renderEntityForm($request, new MaxRam(), MaxRamForm::class, 'admin/add_maxRam.html.twig', 'ramsize');
+        return $this->renderEntityForm($request, new MaxRam(), MaxRamForm::class, 'admin/edit/memories/maxRam.html.twig', 'ramsize');
     }
 
     /**
@@ -79,7 +79,7 @@ class MemoryController extends AbstractController {
         return $this->renderEntityForm($request,$this->getDoctrine()
         ->getRepository(MaxRam::class)
         ->find($id)
-        , MaxRamForm::class, 'admin/add_maxRam.html.twig', 'ramsize');
+        , MaxRamForm::class, 'admin/edit/memories/maxRam.html.twig', 'ramsize');
     }
 
     /**
@@ -88,7 +88,7 @@ class MemoryController extends AbstractController {
      */
     public function cacheSizeAdd(Request $request)        
     {
-        return $this->renderEntityForm($request, new CacheSize(), CacheSizeForm::class, 'admin/add_cacheSize.html.twig', 'cachesize');
+        return $this->renderEntityForm($request, new CacheSize(), CacheSizeForm::class, 'admin/edit/memories/cacheSize.html.twig', 'cachesize');
     }
 
     /**
@@ -100,7 +100,7 @@ class MemoryController extends AbstractController {
         return $this->renderEntityForm($request,$this->getDoctrine()
         ->getRepository(CacheSize::class)
         ->find($id)
-        , CacheSizeForm::class, 'admin/add_cacheSize.html.twig', 'cachesize');
+        , CacheSizeForm::class, 'admin/edit/memories/cacheSize.html.twig', 'cachesize');
     }
 
     /**

@@ -252,7 +252,7 @@ class ChipsetController extends AbstractController {
 
             return $this->redirect($this->generateUrl('admin_manage_chipsets', array("entity" => "chipset")));
         }
-        return $this->render('admin/add_chipset.html.twig', [
+        return $this->render('admin/edit/chipsets/chipset.html.twig', [
             'form' => $form->createView(),
         ]);
     }
@@ -279,7 +279,7 @@ class ChipsetController extends AbstractController {
 
             return $this->redirect($this->generateUrl('admin_manage_chipsets', array("entity" => "part")));
         }
-        return $this->render('admin/add_chipset_part.html.twig', [
+        return $this->render('admin/edit/chipsets/chipset_part.html.twig', [
             'form' => $form->createView(),
         ]);
     }

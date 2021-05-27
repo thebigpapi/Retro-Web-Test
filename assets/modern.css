@@ -11,6 +11,10 @@ input[type=text], input[type=submit], input[type=reset], input[type=password], b
 
 /* specific tags */
 input.button1, input.button2, input.button3, input.admin-button {height:auto;border-width:2px;}
+input.butn-0{background:  url(../assets/images/search/reset.png) no-repeat scroll 1px 2px;padding-left:35px;}
+input.butn-1{background:  url(../assets/images/search/search.png) no-repeat scroll 5px 2px;padding-left:42px;}
+input.butn-2{background:  url(../assets/images/search/search_photo.png) no-repeat scroll 5px 2px;padding-left:42px;}
+a.help-t img{content:url("../assets/images/search/help.png");}
 input.num {width:20px;}
 span.field1 {font-size: 12px;}
 select.sform{height:2.2em;}
@@ -67,9 +71,9 @@ select.sform{height:2.2em;}
 
 	/* index.html.twig */
 	form.index-buttons input {padding-top:260px;width:16em;font-size:18px;}
-	form.index-buttons input.button1 {background-image: url(./images/motherboard_med.png);}
-	form.index-buttons input.button2 {background-image: url(./images/card_med.png);}
-	form.index-buttons input.button3 {background-image: url(./images/awchip_med.png);}
+	form.index-buttons input.button1 {background-image: url(./images/index/motherboard_med.png);}
+	form.index-buttons input.button2 {background-image: url(./images/index/card_med.png);}
+	form.index-buttons input.button3 {background-image: url(./images/index/awchip_med.png);}
 
 	/* search.html.twig */
 	td.table-width, td.bios-width {width:210px;}
