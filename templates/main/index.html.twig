@@ -5,13 +5,20 @@
 
 {% block body %}
 	<h2 class="title">{% trans %}Where do you want to go today?{% endtrans %}</h2>
-	<form action="./" class="index-buttons" method="get">
-		<div class="main">
-			<input type="submit" class="button1" name="motherboard" value="{% trans %}Search for a motherboard{% endtrans %}">
-			<input type="submit" class="button2" name="expansion" value="{% trans %}Find an expansion card{% endtrans %}" disabled="disabled">
-			<input type="submit" class="button3" name="bios" value="Find a BIOS image">
-		</div>
-	</form>
+	<div class="index-buttons" style="text-align:center;">
+		<a href="./motherboard/search/" alt="Search motherboard" class="index-button0">
+			<img src="{{ root }}/assets/images/index/motherboard_low.jpg">
+			<p>Search for a motherboard</p>
+		</a>
+		<a href="#" alt="" class="index-button1">
+			<img src="{{ root }}/assets/images/index/card_low.jpg">
+			<p>{% trans %}Find an expansion card{% endtrans %} [WIP]</p>
+		</a>
+		<a href="./bios/search" alt="" class="index-button2">
+			<img src="{{ root }}/assets/images/index/awchip_low.jpg">
+			<p>{% trans %}Find a BIOS image{% endtrans %}</p>
+		</a>
+	</div>
 	<div class="perks">
 		<p><b>{% trans %}Boards in the database: {% endtrans %} {{moboCount}}</b></p>
 		<p><b>{% trans %}Recently added or updated boards:{% endtrans %}</b></p>
@@ -24,4 +31,6 @@
 			</ul>
 		</div>
 	</div>
+	
+	
 {% endblock %}

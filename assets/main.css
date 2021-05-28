@@ -24,12 +24,21 @@ b.contrib {background: #FFFF00; color: #000000;}
 b.contrib a:link, b.contrib a:visited { color: #0000FF;}
 
 /* index.html.twig */
-
-form.index-buttons {padding-top: 18px;}
-form.index-buttons input {padding-top:145px;width:15em;font-size:12px;font-weight:bold;}
-form.index-buttons input.button1 {background: #ebebeb url(./images/index/motherboard_low.jpg) center no-repeat;}
-form.index-buttons input.button2 {background: #ebebeb url(./images/index/card_low.jpg) center no-repeat;}
-form.index-buttons input.button3 {background: #ebebeb url(./images/index/awchip_low.jpg) center no-repeat;}
+div.index-buttons a{
+	background-color: #ebebeb;
+	color:#000000;
+  	border: 1px solid gray;
+  	text-align: center;
+  	text-decoration: none;
+  	display: inline-block;
+  	font-size: 16px;
+  	margin-bottom: 4px;
+	width:200px;
+	height:200px;
+	vertical-align:top;
+}
+div.index-buttons a img{padding-top:20px;}
+div.index-buttons a.index-button2 img{padding-top:33px;padding-bottom:10px;}
 div.perks, div.perks div.results ul li {font-size:14px;}
 /* search.html.twig */
 table.search-table{width:100%;}
@@ -73,8 +82,8 @@ a.help-t:hover span{visibility:visible;}
 div.results ul {margin: 0;padding-left: 40px;}
 div.results ul li{line-height:140%;font-size: 16px;}
 ul.results-alias {list-style-type: none;}
-div.results ul.results-alias li {line-height:120%;}
-div.results ul li ul.results-alias li span{font-size:0.8em;}
+ul.results-alias li {line-height:120%;}
+ul.results-alias li span{font-size:0.8em;}
 
 div.pagination span.current {font-weight:bold;}
 

@@ -36,6 +36,8 @@
 		</tr>
 	</table> 
 </div>
-{{ form_end(form, {'render_rest': false}) }}
+<div id="hiddenDiv" style="display: none;">
+    {{ form_end(form) }}
+</div>
 <script src="{{root}}/assets/add-collection-widget.js"></script>
 {% endblock %}

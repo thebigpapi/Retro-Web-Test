@@ -70,10 +70,10 @@ select.sform{height:2.2em;}
 	div.page {width:90%;font-size:22px;}
 
 	/* index.html.twig */
-	form.index-buttons input {padding-top:260px;width:16em;font-size:18px;}
-	form.index-buttons input.button1 {background-image: url(./images/index/motherboard_med.png);}
-	form.index-buttons input.button2 {background-image: url(./images/index/card_med.png);}
-	form.index-buttons input.button3 {background-image: url(./images/index/awchip_med.png);}
+	div.index-buttons a{font-size: 16px;width:285px;height:285px;}
+	a.index-button0 img {content: url(./images/index/motherboard_med.png);}
+	a.index-button1 img {content: url(./images/index/card_med.png);}
+	a.index-button2 img {content: url(./images/index/awchip_med.png);padding:10px 0 10px;}
 
 	/* search.html.twig */
 	td.table-width, td.bios-width {width:210px;}
@@ -115,8 +115,8 @@ select.sform{height:2.2em;}
 }
 @media (prefers-color-scheme: dark) {
 	body, form {margin:0; padding:0;background-color:#191919;color:#EEEEEE;}
-	form.index-buttons input.button1,form.index-buttons input.button2,
-	form.index-buttons input.button3, div.butn input{background-color:#303030;color:#FFFFFF;}
+	div.index-buttons a{background-color: #333333;color: white;}
+	div.butn input{background-color:#303030;color:#FFFFFF;}
 	a.help-t span{background-color: black;color: #fff;border:1px solid #FFFFFF;}
 	b.contrib {background: #191919; color: yellow;}
 	b.contrib a:link, b.contrib a:visited { color: #A600FF;}
