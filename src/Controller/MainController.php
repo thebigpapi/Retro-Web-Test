@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use App\Entity\Motherboard;
+use App\Entity\MotherboardBios;
 
 class MainController extends AbstractController
 {
@@ -27,6 +28,7 @@ class MainController extends AbstractController
                 'controller_name' => 'MainController',
 		        'latestMotherboards' => $latestMotherboards,
                 'moboCount' => $this->getDoctrine()->getRepository(Motherboard::class)->getCount(),
+                'biosCount' => $this->getDoctrine()->getRepository(MotherboardBios::class)->getCount(),
             ]);
         }
     }
