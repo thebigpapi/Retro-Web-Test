@@ -21,7 +21,7 @@
                 <img src="{{ vich_uploader_asset(relation.getMediaTypeFlag(), 'icon')}}" alt="{{relation.getMediaTypeFlag().getName()}}" title="{{relation.getMediaTypeFlag().getName()}}"/> 
             {% endfor %}
         </td>
-        <td><a href="{{ vich_uploader_asset(file, 'file')}}">{{file.getName()}} {{file.getFileVersion()}}</a></td>
+        <td><a href="{{ vich_uploader_asset(file, 'file')}}">{{file.getName()}} {% if file.getFileVersion() %}{{file.getFileVersion()}}{% endif %} {% if file.getReleaseDateString() %}({{file.getReleaseDateString()}}){% endif %}</a></td>
         <td>
             <img src="{{ constant('app.path') }}/public/icons/dump_quality/{{file.dumpQualityFlag().getTagName()}}.gif" alt="{{file.dumpQualityFlag().getName()}}" title="{{file.dumpQualityFlag().getName()}}"/> 
         </td>
@@ -46,5 +46,10 @@
                 <img src="{{ constant('app.path') }}/public/icons/protection/copy_protected.gif" alt="copy protected" title="The program is copy protected"/> 
             {% endif %}
         </td>
+        {% if file.getNote() is not empty %} 
+            <td>
+                Note : {{ file.getNote() }}
+            </td>
+        {% endif %}
     </tr>
 {% endmacro %}

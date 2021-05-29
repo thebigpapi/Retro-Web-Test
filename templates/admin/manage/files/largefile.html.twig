@@ -1,6 +1,7 @@
 <tr>
     <td>{{object.getName()}}</td>
     <td>{{object.getFileVersion()}}</td>
+    <td>{{object.getReleaseDateString()}}</td>
     <td>
         {% for relation in object.getMediaTypeFlags() %}
             <b>{{relation.getCount()}}x</b>

@@ -23,6 +23,10 @@
                 <td>{{form_widget(form.fileVersion)}}</td>
             </tr>
             <tr>
+                <td>{{form_label(form.note)}}</td>
+                <td>{{form_widget(form.note)}}</td>
+            </tr>
+            <tr>
                 <td>{{form_label(form.file_name)}}</td>
                 <td>{{form_widget(form.file_name)}}</td>
             </tr>
@@ -69,6 +73,14 @@
                         {% include 'macros/entityList.html.twig' with {'entityName':'osFlags', 'entityDisplayName': 'os flag', 'entities':form.osFlags} %}	
                     </div>
                 </td>
+            </tr>
+            <tr>
+                <td>{{form_label(form.releaseDate)}}</td>
+                <td>{{form_widget(form.releaseDate)}}</td>
+            </tr>
+            <tr>
+                <td>{{form_label(form.datePrecision)}}</td>
+                <td>{{form_widget(form.datePrecision)}}</td>
             </tr>
         </table>
     <div id="hiddenDiv" style="display: none;">

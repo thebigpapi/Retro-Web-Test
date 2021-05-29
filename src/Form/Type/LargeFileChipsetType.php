@@ -15,7 +15,9 @@ class LargeFileChipsetType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('isRecommended', CheckboxType::class)
+            ->add('isRecommended', CheckboxType::class, [
+                'required' => false,
+            ])
             ->add('largeFile', EntityType::class, [
                 'class' => LargeFile::class,
                 'required' => false,

@@ -20,6 +20,8 @@ use Symfony\Component\Form\ChoiceList\View\ChoiceView;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
 class LargeFileForm extends AbstractType
 {
@@ -86,6 +88,9 @@ class LargeFileForm extends AbstractType
             ->add('fileVersion', TextType::class, [
                 'required' => false,
             ])
+            ->add('note', TextareaType::class, [
+                'required' => false,
+            ])
             ->add('subdirectory', ChoiceType::class, [
                 'choices' => array(
                     'apps' => 'apps',
@@ -99,6 +104,16 @@ class LargeFileForm extends AbstractType
                     'dev' => 'dev',
                     'osmisc' => 'osmisc'
                 ),
+            ])
+            ->add('releaseDate', DateType::class, [
+                'widget' => 'single_text',
+            ])
+            ->add('datePrecision', ChoiceType::class, [
+                'choices'  => [
+                    "Year only" => 'y',
+                    "Year and month" => 'm',
+                    "Full date" => 'd',
+                ],
             ])
             ->add('save', SubmitType::class)
             ;
