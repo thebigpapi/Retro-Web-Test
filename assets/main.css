@@ -24,6 +24,15 @@ b.contrib {background: #FFFF00; color: #000000;}
 b.contrib a:link, b.contrib a:visited { color: #0000FF;}
 
 /* index.html.twig */
+
+/* IE4 buttons */
+form.index-buttons {padding-top: 1px;}
+form.index-buttons input {padding-top:145px;width:15em;font-size:12px;}
+form.index-buttons input.button1 {background: #ebebeb url(./images/index/motherboard_low.jpg) 50% 30% no-repeat;}
+form.index-buttons input.button2 {background: #ebebeb url(./images/index/card_low.jpg) 50% 30%  no-repeat;}
+form.index-buttons input.button3 {background: #ebebeb url(./images/index/awchip_low.jpg) 50% 30%  no-repeat;}
+/* IE4 buttons */
+
 div.index-buttons a{
 	background-color: #ebebeb;
 	color:#000000;

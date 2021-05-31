@@ -24,11 +24,17 @@ class MainController extends AbstractController
         }
         else {
             $latestMotherboards = $this->getDoctrine()->getRepository(Motherboard::class)->find10Latest();
+            $request->headers->get('User-Agent');
+            $item = 0;
+            if (str_contains($request, 'MSIE 4')) $item = 4;
+            if (str_contains($request, 'MSIE 5')) $item = 5;
+            if (str_contains($request, 'MSIE 6')) $item = 6;
             return $this->render('main/index.html.twig', [
                 'controller_name' => 'MainController',
 		        'latestMotherboards' => $latestMotherboards,
                 'moboCount' => $this->getDoctrine()->getRepository(Motherboard::class)->getCount(),
                 'biosCount' => $this->getDoctrine()->getRepository(MotherboardBios::class)->getCount(),
+                'userAgent' => $item,
             ]);
         }
     }
