@@ -47,39 +47,45 @@
 		<tr>
 			<td class="ttl1"><b>Manufacturer</b></td>
 			<td class="ttl2"><b>Name</b></td>
-			<td></td>
 		</tr>
 		<tr>
 			<td class="ttl1">{{ form_widget(form.manufacturer) }}</td>
 			<td class="ttl2">{{ form_widget(form.name) }}</td>
-			<td class="ttl3">{{ form_row(form.save) }}</td>
 		</tr>
 	</table>
 	<div class="clrs"></div>
 
-	<div class="add-table">
+	<table style="width:100%;"><tr>
+		<td style="width:50%;">
 		<div>
 			<b>Alternative name:</b>
 			<button type="button" onclick="expand('motherboardAliases-fields-list')">Add</button>
 		</div>
 		<div class="append_table" id="motherboardAliases-fields-list" data-widget-counter="{{ form.motherboardAliases|length }}"
         data-prototype="
-			<div class=ba0>{{ form_widget(form.motherboardAliases.vars.prototype.manufacturer, {'attr': {'style': 'width:100%'}} )|e }}</div>
-			<div class=ba1>{{ form_widget(form.motherboardAliases.vars.prototype.name, {'attr': {'style': 'width:100%'}} )|e }}</div>
-			<div class=ba3><button type=button onclick=remove(this.parentNode);>Del</button></div>
+			<div class=ba6>{{ form_widget(form.motherboardAliases.vars.prototype.manufacturer, {'attr': {'style': 'width:100%'}} )|e }}</div>
+			<div class=ba6>{{ form_widget(form.motherboardAliases.vars.prototype.name, {'attr': {'style': 'width:100%'}} )|e }}</div>
+			<div class=ba2><button type=button onclick=remove(this.parentNode);>Del</button></div>
 		">
 			{% for alias in form.motherboardAliases %}
 			<div>
-				<div class="ba0">{{ form_widget(alias.manufacturer, {'attr': {'style': 'width:100%'}} ) }}</div>
-				<div class="ba1">{{ form_widget(alias.name, {'attr': {'style': 'width:100%'}} ) }}</div>
-				<div class="ba3"><button type="button" onclick="remove(this.parentNode);">Del</button></div>
+				<div class="ba6">{{ form_widget(alias.manufacturer, {'attr': {'style': 'width:100%'}} ) }}</div>
+				<div class="ba6">{{ form_widget(alias.name, {'attr': {'style': 'width:100%'}} ) }}</div>
+				<div class="ba2"><button type="button" onclick="remove(this.parentNode);">Del</button></div>
 				{{ form_errors(alias) }}
 			</div>
 			{% endfor %}
 		</div>
-	</div>
+		</td>
+		<td>
+			<input type="submit" id="motherboard_form_save" name="motherboard_form[save]" style="background: url({{ root }}/assets/images/admin/save.png) no-repeat scroll 5px 1px;
+			line-height: 4px;padding:18px 5px 18px 50px;font-size: 16px;margin-left: 5px;display:block;margin-bottom:5px;background-color: #ebebeb" value="Save board">
+			<input type="submit" style="background: url({{ root }}/assets/images/admin/clone.png) no-repeat scroll 5px 1px;
+			line-height: 4px;padding:18px 5px 18px 45px;font-size: 16px;margin-left: 5px;display:block;background-color: #ebebeb" onclick="clone_board()" value="Clone board">
+		</td>
+	</tr></table>
 
-	
+	</table>
 	<table>
 		<tr>
 			<td class="main-table">Form factor :</td>
@@ -361,6 +367,10 @@
 			<td>Audio Chipset : </td>
 			<td>{{ form_widget(form.audioChipset) }}</td>
 		</tr>
+		<tr>
+			<td>{{ form_label(form.drivers) }}</td>
+			<td>{% include 'macros/entityList.html.twig' with {'entityName':'drivers', 'entityDisplayName': 'driver', 'entities':form.drivers} %}</td>
+		</tr>
 	</table>
 	<span style="padding-left:10px;">
 			<b>Notes</b>
@@ -414,9 +424,9 @@
 			</td>
 		</tr>
 	</table><br>
-<div id="hiddenDiv" style="display: none;"></div>
-<!-- {{ form_rest(form)|replace({'<input': ' --><input'})|raw }}
+<div id="hiddenDiv" style="display: none;">
+    {{ form_end(form) }}
+</div>
 </form>
-
-<script type="text/javascript" src="{% if app.request.attributes.get('_route') == "motherboard_edit" %}../{% endif %}../assets/add-collection-widget.js"></script>
+<script type="text/javascript" src="{{root}}/assets/add-collection-widget.js"></script>
 {% endblock %}

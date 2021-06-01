@@ -28,6 +28,15 @@ class MotherboardBiosRepository extends ServiceEntityRepository
             ->getResult()
         ;
     }
+    public function getCount()
+    {
+        $qb = $this->createQueryBuilder('m');
+        $result = $qb->select('count(m.id)')
+            ->where($qb->expr()->isNotNull('m.file_name'))
+            ->getQuery()
+            ->getSingleScalarResult();
+        return $result;
+    }
 
     public function findBios(array $criterias)
     {

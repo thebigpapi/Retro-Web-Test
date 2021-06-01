@@ -1,0 +1,63 @@
+
+{% macro header() %}
+    <th>{% trans %}Language{% endtrans %}</th>
+    <th>{% trans %}Media type{% endtrans %}</th>
+    <th>{% trans %}Name{% endtrans %}</th>
+    <th>{% trans %}Quality{% endtrans %}</th>
+    <th>{% trans %}OS Compatibility{% endtrans %}</th>
+    <th>{% trans %}Security{% endtrans %}</th>
+{% endmacro %}
+
+{% macro link(file) %}
+    <tr style="text-align:center;border: 1px solid #e0e0e0;">
+        <td>
+            {% for lang in file.getLanguages() %}
+                <img src="{{ constant('app.path') }}/public/icons/language/{{lang.getIsoCode}}.gif" alt="{{lang.getOriginalName()}}" title="{{lang.getOriginalName()}}"> 
+            {% endfor %}
+        </td>
+        <td>
+            {% for relation in file.getMediaTypeFlags() %}
+                <b>{{relation.getCount()}}x</b>
+                <img src="{{ vich_uploader_asset(relation.getMediaTypeFlag(), 'icon')}}" alt="{{relation.getMediaTypeFlag().getName()}}" title="{{relation.getMediaTypeFlag().getName()}}"> 
+            {% endfor %}
+        </td>
+        <td><a href="{{ vich_uploader_asset(file, 'file')}}">{{file.getName()}} {% if file.getFileVersion() %}{{file.getFileVersion()}}{% endif %} {% if file.getReleaseDateString() %}({{file.getReleaseDateString()}}){% endif %}</a></td>
+        <td style="width:40px;">
+            <img src="{{ constant('app.path') }}/public/icons/dump_quality/{{file.dumpQualityFlag().getTagName()}}.gif" alt="{{file.dumpQualityFlag().getName()}}" title="{{file.dumpQualityFlag().getName()}}"> 
+        </td>
+        <td>
+            {% set prevIcon = "" %}
+            {% set prevIcon2 = "" %}
+            {% for relation in file.getOsFlags() %}
+                {% if prevIcon != (relation.getOsFlag().getOsFamilies()|sort)[0].getFileName() %}
+                {% if not loop.first %},{% endif %}
+                    {% set prevIcon2 = (relation.getOsFlag().getOsFamilies()|sort)[0].getFileName() %}
+                    <img src="{{ vich_uploader_asset((relation.getOsFlag().getOsFamilies()|sort)[0], 'osIcon')}}" alt="{{(relation.getOsFlag().getOsFamilies()|sort)[0].getName()}}" 
+                    title="{% for rel in file.getOsFlags() %}{% if prevIcon2 == (rel.getOsFlag().getOsFamilies()|sort)[0].getFileName() %}{{ rel.getOsFlag().getName()}}{% if not loop.last %},{% endif %} {% endif %}{% endfor %}">
+                    {{relation.getOsFlag().getName()}}
+                {% endif %}
+                
+                {% set prevIcon = (relation.getOsFlag().getOsFamilies()|sort)[0].getFileName() %}
+                {% if relation.getUnsure() %}
+                    ?
+                {% endif %}
+            {% endfor %}
+        </td>
+        <td>
+            {% if file.hasActivationKey() %}
+                <img src="{{ constant('app.path') }}/public/icons/protection/activation_key.gif" alt="activation key" title="The program needs an activation key"> 
+            {% endif %}
+            {% if file.hasCopyProtection() %}
+                <img src="{{ constant('app.path') }}/public/icons/protection/copy_protected.gif" alt="copy protected" title="The program is copy protected"> 
+            {% endif %}
+        </td>
+    </tr>
+    {% if file.getNote() is not empty %}
+    <tr> 
+        <td colspan="6" style="border-style: hidden solid solid solid;border-width: 1px;">
+            <div style="padding-left:10px;">Note : {{ file.getNote() }}</div>
+        </td>
+    </tr>
+    {% endif %}
+    
+{% endmacro %}

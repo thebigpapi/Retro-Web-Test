@@ -30,15 +30,16 @@
 	<div id="hiddenDiv" style="display: none;"></div>
 	<form name="search_motherboard" method="post" action="./search">
 		<div class="butn">
-			<input id="rst-btn" type="reset" value="Reset fields">
-			{{ form_row(form.search)|replace({'<div><button': '<input', '</button></div>': '">', '>': ' value="'})|raw }}
+			<input id="rst-btn" type="reset" value="Reset fields" class="butn-0">
+			{{ form_row(form.search)|replace({'<div><button': '<input class="butn-1"', '</button></div>': '">', '>': ' value="'})|raw }}
+			{{ form_row(form.searchWithImages)|replace({'<div><button': '<input class="butn-2"', '</button></div>': '">', '>': ' value="'})|raw }}
 		</div>
         <table class="search-table">
             <tr>
 				<td class="table-width">
 					<b>{% trans %}Name{% endtrans %}</b>
 					<a href="#" class="help-t">
-						<img src="../assets/images/help.png" alt="">
+						<img src="../assets/images/search/help.jpg" alt="">
 						<span>{% trans %}This is where you enter the board part number, do not write the manufacturer name here!{% endtrans %}</span>
 					</a>
 				</td>
@@ -48,7 +49,7 @@
                 <td class="table-width">
 					<b>{% trans %}Manufacturer{% endtrans %}</b>
 					<a href="#" class="help-t">
-						<img src="../assets/images/help.png" alt="">
+						<img src="../assets/images/search/help.jpg" alt="">
 						<span>{% trans %}This is the board manufacturer (e.g: ASUS, Gigabyte, FIC){% endtrans %}</span>
 					</a>
 				</td>
@@ -62,7 +63,7 @@
                 <td class="table-width">
 					<b>{% trans %}Chipset{% endtrans %}</b>
 					<a href="#" class="help-t">
-						<img src="../assets/images/help.png" alt="">
+						<img src="../assets/images/search/help.jpg" alt="">
 						<span>{% trans %}Select a manufacturer from the first field, then pick the part number from the second field{% endtrans %}</span>
 					</a>
 				</td>
@@ -73,7 +74,7 @@
 							<td id="setchip2">{{ form_widget(form.chipset, {'attr': {'class': 'sform', 'style':'width:100%'}}) }}</td>
 							<td>
 								<label id="setchip-lb" style="display:none;">Please wait ...</label>
-								<div>{{ form_row(form.searchChipsetManufacturer)|replace({'<div><button': '<input', '</button></div>': '">', '>': ' value="'})|raw }}
+								<div>{{ form_row(form.searchChipsetManufacturer)|replace({'<div><button': '<input style="background:#ebebeb;width:100px;"', '</button></div>': '">', '>': ' value="'})|raw }}
 								</div>
 							</td>
 						</tr>
@@ -83,7 +84,7 @@
 			<tr>
                 <td class="table-width"><b>{% trans %}CPU socket{% endtrans %}</b>
 					<a href="#" class="help-t">
-						<img src="../assets/images/help.png" alt="">
+						<img src="../assets/images/search/help.jpg" alt="">
 						<span>{% trans %}Select a CPU socket from the first field and/or pick the CPU platform from the second field{% endtrans %}</span>
 					</a>
 				</td>
@@ -94,7 +95,7 @@
 							<td id="setcpu2">{{ form_widget(form.platform1, {'attr': {'class': 'sform', 'style':'width:100%'}}) }}</td>
 							<td>
 								<label id="setcpu1-lb" style="display:none;">Please wait ...</label>
-								<div>{{ form_row(form.searchSocket1)|replace({'<div><button': '<input', '</button></div>': '">', '>': ' value="'})|raw }}
+								<div>{{ form_row(form.searchSocket1)|replace({'<div><button': '<input style="background:#ebebeb;width:100px;"', '</button></div>': '">', '>': ' value="'})|raw }}
 								</div>
 							</td>
 						</tr>
@@ -110,7 +111,7 @@
 							<td id="setcpu4">{{ form_widget(form.platform2, {'attr': {'class': 'sform', 'style':'width:100%'}}) }}</td>
 							<td>
 								<label id="setcpu2-lb" style="display:none;">Please wait ...</label>
-								<div>{{ form_row(form.searchSocket2)|replace({'<div><button': '<input', '</button></div>': '">', '>': ' value="'})|raw }}
+								<div>{{ form_row(form.searchSocket2)|replace({'<div><button': '<input style="background:#ebebeb;width:100px;"', '</button></div>': '">', '>': ' value="'})|raw }}
 								</div>
 							</td>
 						</tr>
@@ -121,7 +122,7 @@
 				<td class="table-width">
 					<b>{% trans %}Expansion slots{% endtrans %}</b>
 					<a href="#" class="help-t">
-						<img src="../assets/images/help.png" alt="">
+						<img src="../assets/images/search/help.jpg" alt="">
 						<span>{% trans %}0 - all boards without that slot will be shown{% endtrans %}</span>
 					</a>
 				</td>
@@ -140,7 +141,7 @@
 				<td class="table-width">
 					<b>{% trans %}I/O ports{% endtrans %}</b>
 					<a href="#" class="help-t">
-						<img src="../assets/images/help.png" alt="">
+						<img src="../assets/images/search/help.jpg" alt="">
 						<span>{% trans %}0 - all boards without that port will be shown{% endtrans %}</span>
 					</a>
 				</td>
@@ -165,7 +166,7 @@
 				</div></td>
 			</tr>-->
 		</table>
-		{{ form_rest(form)}}
+		<div>{{ form_rest(form)}}</div>
 	</form><br>
 <div id="jsappend"></div>
     <script type="text/javascript"><!--

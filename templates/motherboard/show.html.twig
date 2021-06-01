@@ -1,4 +1,7 @@
 {% extends 'base.html.twig' %}
+{% from 'macros/largeFile.html.twig' import link as driverLink %}
+{% from 'macros/largeFile.html.twig' import header as driverHeader %}
+
 
 {% block title %}
     {% if motherboard.getManufacturer() is not null %} 
@@ -106,7 +109,7 @@
 <div class="show-data">
 	<p>
 		<b class="contrib">{% trans %}Would you like to improve this page? Click{% endtrans %} <a href="
-		{% if is_granted('ROLE_ADMIN') %}../edit/{{ motherboard.getId() }}{% else %}/win3board/posting.php?mode=post&amp;f=96&amp;language=en{% endif %}">
+		{% if is_granted('ROLE_ADMIN') %}{{ path('new_motherboard_edit', {id: motherboard.getId()}) }}{% else %}/win3board/posting.php?mode=post&amp;f=96&amp;language=en{% endif %}">
 		{% trans %}here{% endtrans %}</a>.</b>
 	</p>
 	<table class="stbl">
@@ -201,8 +204,24 @@
         {% endif %}
 	</table>
 
+	{% if motherboard.getAllDrivers() is not empty %}
+    <div class="scroll-div">
+		<img src="../../assets/images/hardware.png" alt="driver" style="vertical-align: middle;padding-bottom: 10px;">
+		<b>{% trans %}Drivers:{% endtrans %}</b>
+        <table class="stbl">
+            <tr class="stbl-head">
+                {{ driverHeader() }}
+            </tr>
+            {% for driver in motherboard.getAllDrivers() %}
+            	{{ driverLink(driver.largeFile) }}	
+            {% endfor %}
+        </table>
+	</div>
+    {% endif %}
+
 	{% if motherboard.getMotherboardBios() is not empty %}
     <div class="scroll-div">
+		<img src="../../assets/images/chip.png" alt="bios" style="vertical-align: middle;padding-bottom: 10px;">
 		<b>{% trans %}BIOS images:{% endtrans %}</b>
         <table class="stbl">
             <tr class="stbl-head">
@@ -239,7 +258,10 @@
 	{% if motherboard.getManuals() is not empty %}
 	<table class="stbl">
             <tr>
-                <td>{% trans %}Manuals:{% endtrans %}<img src="../../assets/images/dw.gif" alt="" width="16" height="16" style="vertical-align: middle;"></td>
+                <td>
+					<img src="../../assets/images/manual.png" alt="manual" style="vertical-align: middle;padding-bottom: 10px;">
+					<b>{% trans %}Manuals:{% endtrans %}</b>
+				</td>
                 <td>
                     <ul>
                         {% for manual in motherboard.getManuals()|sort((a, b) => a.getLinkName <=> b.getLinkName) %}
@@ -292,8 +314,8 @@
 		{% endif %}
 		</tr>
 	</table></div>
-	<table>
-        {% if motherboard.getVideoChipset() is not null or motherboard.getMaxVideoRam() is not null %}
+    {% if motherboard.getVideoChipset() is not null or motherboard.getMaxVideoRam() is not null or motherboard.getAudioChipset() is not null %}
+		<table>
             <tr>
 				<td>{% trans %}Video Chipset:{% endtrans %}</td>
 				<td>
@@ -308,14 +330,16 @@
 				{% endif %}
 				</td>
 			</tr>
-        {% endif %}
-        {% if motherboard.getAudioChipset() is not null %}
+		{% if motherboard.getAudioChipset() is not null %}
             <tr>
 				<td>{% trans %}Audio Chipset:{% endtrans %}</td>
 				<td>{{ motherboard.getAudioChipset().getNameWithManufacturer() }}</td>
 			</tr>
         {% endif %}
-    </table>
+		</table>
+    {% endif %}
+        
+    
 
 	{% if motherboard.note is not null %} 
 		<div style="padding-top:10px">

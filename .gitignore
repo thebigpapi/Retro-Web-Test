@@ -5,6 +5,7 @@
 /.env.*.local
 /config/secrets/prod/prod.decrypt.private.php
 /public/bundles/
+/migrations/*
 /var/*
 /vendor/*
 ###< symfony/framework-bundle ###
@@ -20,6 +21,9 @@
 /public/motherboard/bios/*
 /public/motherboard/image/*
 /public/motherboard/manual/*
+/public/uploads/*
+/public/icons/*
+/public/chip/*
 !public/media/cache/.gitkeep
 !public/motherboard/bios/.gitkeep
 !public/motherboard/image/.gitkeep

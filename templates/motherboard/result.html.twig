@@ -4,12 +4,46 @@
 
 {% block body %}
 	<h2 class="title">{% trans %}Search results{% endtrans %}</h2>
-	<p><b class="contrib">{% trans %}Can't you find a motherboard? Click{% endtrans %} <a href="{% if is_granted('ROLE_ADMIN') %}../add{% else %}/win3board/posting.php?mode=post&amp;f=95&amp;language=en{% endif %}">{% trans %}here{% endtrans %}</a> {% trans %}to add it.{% endtrans %}</b></p>
+	<p><b class="contrib">{% trans %}Can't you find a motherboard? Click{% endtrans %} <a href="{% if is_granted('ROLE_ADMIN') %}{{ path('new_motherboard_add') }}{% else %}/win3board/posting.php?mode=post&amp;f=95&amp;language=en{% endif %}">{% trans %}here{% endtrans %}</a> {% trans %}to add it.{% endtrans %}</b></p>
 	<p style="text-align:center;padding-top:10px;">
 		<i>{{ 'motherboard.num'|trans({'count':motherboard_count}) }}</i>
 	</p>
 	{% if motherboards is not empty %}
-		<div class="results">
+	<div class="results">
+		{% if show_images %}
+			{% for motherboard in motherboards %}
+				<span style="display:inline-block;padding: 15px;">
+					{% if motherboard.getImages() is not empty %}
+					<span style="text-align: center;margin:auto;display:block;">
+						{% for image in motherboard.getImages()|sort((a, b) => b.motherboardImageType <=> a.motherboardImageType) %}
+							{% if image.motherboardImageType.id in [1, 2] %}
+								<a href="{{ vich_uploader_asset(image, 'imageFile')}}" class="highslide" onclick="return imgexp(this);">
+									<img src="{{ vich_uploader_asset(image, 'imageFile') | imagine_filter('motherboard_show_thumb') }}" alt="" title="{% if image.description %}{{ image.description }}{% endif %}">
+								</a>
+							{% endif %}
+						{% endfor %}
+					</span>
+					{% endif %}
+					<span style="text-align: center;text-decoration: none;display:block;">
+					<a class="result-link" style="text-align: center;display:inline-block;text-decoration: none;margin:auto;" href="../show/{{ motherboard.getId() }}">{{ motherboard.getManufacturerShortNameIfExist() }}&nbsp;{{ motherboard.name }}</a>
+					{% if motherboard.getMotherboardAliases() is not empty %}
+						
+						{% for alias in motherboard.getMotherboardAliases() %}
+							<span style="display:block;font-size:0.8em;padding-left:15px;">
+							
+							{% if alias.getManufacturer() is not null %}
+								{{ alias.getManufacturer().getShortNameIfExist() }}
+							{% else %}
+								Unknown
+							{% endif %}
+							&nbsp;{{ alias.name }}</span>
+						{% endfor %}
+						
+					{% endif %}
+					</span>
+				</span>		
+			{% endfor %}
+		{% else %}
 			<ul>
 			{% for motherboard in motherboards %}
 				<li>
@@ -27,13 +61,42 @@
 						{% endfor %}
 						</ul>
 					{% endif %}
+					
 				</li>
 					{#% if motherboard.getProcessorPlatformType() is not null %}
 						{{ motherboard.getProcessorPlatformType().getName() }}	
 					{% endif %#}		
 			{% endfor %}
 			</ul>
+		
+		{% endif %}
 		{{ knp_pagination_render(motherboards) }}
 		</div>
+	{% endif %}
+	{% if show_images %}
+	<div id="jsappend"></div>
+	<script type="text/javascript">
+		function imgexp(el){
+			var ua = window.navigator.userAgent;
+			var msie = ua.indexOf("MSIE ");
+			msie = parseInt(ua.substring(msie + 5, ua.indexOf(".", msie)));
+			if(msie == 4 || msie == 5)
+				return 0;
+			else
+				if(document.documentElement.clientWidth < 600 && ua.indexOf("Mobile") > 0)
+					return 0;
+				else return hs.expand(el);
+		}
+		var ua = window.navigator.userAgent;
+		var msie = ua.indexOf("MSIE ");
+		msie = parseInt(ua.substring(msie + 5, ua.indexOf(".", msie)));
+		if (!msie || msie > 5){
+			var h = document.getElementById("jsappend");
+			var js = document.createElement('script');
+			js.type = "text/javascript";
+			js.src = "{{ root }}/assets/highslide/highslide.js";
+			h.appendChild(js);
+		}
+	</script>
 	{% endif %}
 {% endblock %}

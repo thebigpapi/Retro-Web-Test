@@ -58,11 +58,17 @@ class Chipset
      */
     private $biosCodes;
 
+    /**
+     * @ORM\OneToMany(targetEntity=LargeFileChipset::class, mappedBy="chipset", orphanRemoval=true, cascade={"persist"})
+     */
+    private $drivers;
+
     public function __construct()
     {
         $this->motherboards = new ArrayCollection();
         $this->chipsetParts = new ArrayCollection();
         $this->biosCodes = new ArrayCollection();
+        $this->drivers = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -295,6 +301,36 @@ class Chipset
             // set the owning side to null (unless already changed)
             if ($biosCode->getChipset() === $this) {
                 $biosCode->setChipset(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|LargeFileChipset[]
+     */
+    public function getDrivers(): Collection
+    {
+        return $this->drivers;
+    }
+
+    public function addDriver(LargeFileChipset $driver): self
+    {
+        if (!$this->drivers->contains($driver)) {
+            $this->drivers[] = $driver;
+            $driver->setChipset($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDriver(LargeFileChipset $driver): self
+    {
+        if ($this->drivers->removeElement($driver)) {
+            // set the owning side to null (unless already changed)
+            if ($driver->getChipset() === $this) {
+                $driver->setChipset(null);
             }
         }
 

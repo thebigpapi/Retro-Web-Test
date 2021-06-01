@@ -148,6 +148,11 @@ class Motherboard
      */
     private $cpuSockets;
 
+    /**
+     * @ORM\OneToMany(targetEntity=LargeFileMotherboard::class, mappedBy="motherboard", orphanRemoval=true, cascade={"persist"})
+     */
+    private $drivers;
+
 
     public function __construct()
     {
@@ -171,6 +176,7 @@ class Motherboard
         $this->motherboardAliases = new ArrayCollection();
         $this->cpuSockets = new ArrayCollection();
         $this->processorPlatformTypes = new ArrayCollection();
+        $this->drivers = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -812,6 +818,41 @@ class Motherboard
         if ($this->cpuSockets->contains($cpuSocket)) {
             $this->cpuSockets->removeElement($cpuSocket);
             $cpuSocket->removeMotherboard($this);
+        }
+
+        return $this;
+    }
+
+    public function getAllDrivers(): Collection
+    {
+        return new ArrayCollection(array_merge($this->getChipset() ? $this->getChipset()->getDrivers()->toArray():array(), $this->getDrivers()->toArray()));
+    }
+
+    /**
+     * @return Collection|LargeFileMotherboard[]
+     */
+    public function getDrivers(): Collection
+    {
+        return $this->drivers;
+    }
+
+    public function addDriver(LargeFileMotherboard $driver): self
+    {
+        if (!$this->drivers->contains($driver)) {
+            $this->drivers[] = $driver;
+            $driver->setMotherboard($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDriver(LargeFileMotherboard $driver): self
+    {
+        if ($this->drivers->removeElement($driver)) {
+            // set the owning side to null (unless already changed)
+            if ($driver->getMotherboard() === $this) {
+                $driver->setMotherboard(null);
+            }
         }
 
         return $this;

@@ -1,0 +1,12 @@
+<tr>
+    <td>
+    {% if object.getManufacturer() is not null %}
+        {{object.getManufacturer().getShortNameIfExist()}}
+    {% else %}
+        Unknown
+    {% endif %}
+    </td>
+    <td>{{object.getName()}}</td>
+    <td>{{object.getLastEdited()|format_datetime()}}</td>
+    <td><a class="result-link" href="./motherboards/motherboards/{{ object.getId() }}/edit/">Edit</a></td>
+</tr>	

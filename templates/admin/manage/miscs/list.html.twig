@@ -1,0 +1,9 @@
+{% if objectList is not empty %}
+    <table class="results">
+        {% include 'admin/manage/miscs/' ~ entityName ~ '_thead.html.twig' %}
+        {% for object in objectList %}
+            {% include 'admin/manage/miscs/' ~ entityName ~ '.html.twig' with {'object':object} %}	
+        {% endfor %}
+    </table>
+    {{ knp_pagination_render(objectList) }}
+{% endif %}

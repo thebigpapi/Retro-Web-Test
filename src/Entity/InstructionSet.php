@@ -24,7 +24,7 @@ class InstructionSet
     private $name;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\ProcessingUnit", inversedBy="instructionSets")
+     * @ORM\ManyToMany(targetEntity="App\Entity\ProcessingUnit", mappedBy="instructionSets")
      */
     private $processingUnits;
 

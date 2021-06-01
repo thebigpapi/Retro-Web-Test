@@ -11,6 +11,7 @@ use Symfony\Component\Form\FormInterface;
 use App\Entity\ChipAlias;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use App\Entity\Manufacturer;
+use Symfony\Component\Form\ChoiceList\View\ChoiceView;
 
 class ChipAliasType extends AbstractType
 {
@@ -35,6 +36,14 @@ class ChipAliasType extends AbstractType
         $resolver->setDefaults([
             'data_class' => ChipAlias::class,
         ]);
+    }
+
+    public function finishView(FormView $view, FormInterface $form, array $options)
+    {
+        //dd($view->vars['form']['manufacturer']->vars['choices']);
+        usort($view->vars['form']['manufacturer']->vars['choices'], function(ChoiceView $a, ChoiceView $b) {
+            return ($a->data->getShortNameIfExist() > $b->data->getShortNameIfExist());
+        });  
     }
 
 }

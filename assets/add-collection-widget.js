@@ -16,7 +16,7 @@ function expand(id) {
 	//set the new increment, create the new widget and concatenate after list
 	list.setAttribute("data-widget-counter", counter);
 	var newElem = document.createElement('div');
-	if(id == 'images-fields-list')
+	if(id.indexOf('images-fields-list') != -1)
 		newElem.setAttribute("class", "addform");
 	if(id == 'motherboardBios-fields-list' || id == 'manuals-fields-list')
 		newElem.setAttribute("style", "width:100%"); 
@@ -119,4 +119,22 @@ function addCPU(id) {
 		status.textContent="Added " + counter + " CPUs";
 	if (id == "coprocessors-fields-list")
 		status.textContent="Added " + counter + " NPUs";
+}
+
+function clone_board() {
+	if (confirm('Are you sure you want to clone this board ?')) {
+		//replace the form URL
+		var frm = document.getElementsByName("add_motherboard")[0];
+		frm.action = '/' + 'admin/manage/motherboards/motherboards/add';
+		// remove all files
+		var images = document.getElementById("images-fields-list");
+		images.innerHTML = '';
+		var bioses = document.getElementById("motherboardBios-fields-list");
+		bioses.innerHTML = '';
+		var manuals = document.getElementById("manuals-fields-list");
+		manuals.innerHTML = '';
+		// submit the page
+		var save = document.getElementById("motherboard_form_save");
+		save.click();
+	}
 }

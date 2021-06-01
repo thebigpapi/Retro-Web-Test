@@ -1,0 +1,41 @@
+<tr>
+    <td>{{object.getName()}}</td>
+    <td>{{object.getFileVersion()}}</td>
+    <td>{{object.getReleaseDateString()}}</td>
+    <td>
+        {% for relation in object.getMediaTypeFlags() %}
+            <b>{{relation.getCount()}}x</b>
+            <img src="{{ vich_uploader_asset(relation.getMediaTypeFlag(), 'icon')}}"/> 
+        {% endfor %}
+    </td>
+    <td>
+        {% set prevIcon = "" %}
+        {% for relation in object.getOsFlags() %}
+            {% if prevIcon != (relation.getOsFlag().getOsFamilies()|sort)[0].getFileName() %}
+                <img src="{{ vich_uploader_asset((relation.getOsFlag().getOsFamilies()|sort)[0], 'osIcon')}}"/>
+            {% endif %}
+            {% set prevIcon = (relation.getOsFlag().getOsFamilies()|sort)[0].getFileName() %}
+            {{ relation.getOsFlag().getFullVersion()}}
+            {% if relation.getUnsure() %}
+                ?
+            {% endif %},
+        {% endfor %}
+    </td>
+    <td>
+        {% for lang in object.getLanguages() %}
+            <img src="{{ constant('app.path') }}/public/icons/language/{{lang.getIsoCode}}.gif"/> 
+        {% endfor %}
+    </td>
+    <td>
+        <img src="{{ constant('app.path') }}/public/icons/dump_quality/{{object.dumpQualityFlag().getTagName()}}.gif"/> 
+    </td>
+    <td>
+        {% if object.hasActivationKey() %}
+            <img src="{{ constant('app.path') }}/public/icons/protection/activation_key.gif"/> 
+        {% endif %}
+        {% if object.hasCopyProtection() %}
+            <img src="{{ constant('app.path') }}/public/icons/protection/copy_protected.gif"/> 
+        {% endif %}
+    </td>
+    <td><a class="result-link" href="./files/largefiles/{{ object.getId() }}/edit/">Edit</a></td>
+</tr>	

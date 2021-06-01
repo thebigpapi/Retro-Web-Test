@@ -11,10 +11,10 @@ use Vich\UploaderBundle\Templating\Helper\UploaderHelper;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use App\Entity\Motherboard;
 use App\Entity\MotherboardImage;
+use Doctrine\ORM\Event\LifecycleEventArgs as EventLifecycleEventArgs;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
 
-class ImageCacheSubscriber implements EventSubscriber
-{
+class ImageCacheSubscriber implements EventSubscriber {
     /**
      * @var CacheManager
      */
@@ -25,22 +25,19 @@ class ImageCacheSubscriber implements EventSubscriber
      */
     private $uploaderHelper;
 
-    public function __construct(CacheManager $cacheManager, UploaderHelper $uploaderHelper)
-    {
+    public function __construct(CacheManager $cacheManager, UploaderHelper $uploaderHelper) {
         $this->cacheManager = $cacheManager;
         $this->uploaderHelper = $uploaderHelper;
     }
 
-    public function getSubscribedEvents()
-    {
+    public function getSubscribedEvents() {
         return [
             'preRemove',
             'preUpdate'
         ];
     }
 
-    public function preRemove(LifecycleEventArgs $args)
-    {
+    public function preRemove(EventLifecycleEventArgs $args) {
         $entity = $args->getObject();
         if (!$entity instanceof MotherboardImage && !$entity instanceof ChipImage){
             return;
@@ -50,8 +47,7 @@ class ImageCacheSubscriber implements EventSubscriber
         $this->cacheManager->remove($this->uploaderHelper->asset($entity, 'imageFile'));
     }
 
-    public function preUpdate(PreUpdateEventArgs $args)
-    {
+    public function preUpdate(PreUpdateEventArgs $args) {
         $entity = $args->getObject();
         if (!$entity instanceof MotherboardImage && !$entity instanceof ChipImage){
             return;

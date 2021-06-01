@@ -31,7 +31,7 @@ abstract class ProcessingUnit extends Chip
     protected $platform;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\InstructionSet", mappedBy="processingUnits")
+     * @ORM\ManyToMany(targetEntity="App\Entity\InstructionSet", inversedBy="processingUnits")
      */
     protected $instructionSets;
 

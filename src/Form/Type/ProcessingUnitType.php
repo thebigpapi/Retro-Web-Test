@@ -19,34 +19,15 @@ use App\Form\Type\InstructionSetType;
 use App\Form\Type\ChipType;
 use App\Form\Type\CpuSocketType;
 use App\Repository\CpuSocketRepository;
+use Symfony\Component\Form\ChoiceList\View\ChoiceView;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 
 class ProcessingUnitType extends AbstractType
 {
-    public function __construct(EntityManagerInterface $entityManager)
-    {
-        $this->entityManager = $entityManager;
-    }
-
-    private function getManufacturerRepository(): InstructionSetRepository
-    {
-        return $this->entityManager->getRepository(InstructionSet::class);
-    }
-
-    private function getCpuSocketRepository(): CpuSocketRepository
-    {
-        return $this->entityManager->getRepository(CpuSocket::class);
-    }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
-    {
-        $instructionSets = $this->getManufacturerRepository()
-        ->findBy(array(), array('name' => 'ASC'));
-        
-        $sockets = $this->getCpuSocketRepository()
-        ->findAll();
-
+    {        
         $builder
             ->add('chip', ChipType::class, [
                 'data_class' => ProcessingUnit::class,
@@ -73,18 +54,12 @@ class ProcessingUnitType extends AbstractType
                 'entry_type' => InstructionSetType::class,
                 'allow_add' => true,
                 'allow_delete' => true,
-                'entry_options'  => [
-                    'choices' => $instructionSets,
-                ],
             ])
             ->add('sockets', CollectionType::class, [
                 'entry_type' => CpuSocketType::class,
                 
                 'allow_add' => true,
                 'allow_delete' => true,
-                'entry_options'  => [
-                    'choices' => $sockets,
-                ]
             ]);
     }
 
@@ -93,5 +68,21 @@ class ProcessingUnitType extends AbstractType
         $resolver->setDefaults([
             'inherit_data' => true,
         ]);
+    }
+
+    public function finishView(FormView $view, FormInterface $form, array $options)
+    {
+        usort($view->vars['form']['speed']->vars['choices'], function(ChoiceView $a, ChoiceView $b) {
+            return ($a->data->getValue() > $b->data->getValue());
+        });
+
+        usort($view->vars['form']['fsb']->vars['choices'], function(ChoiceView $a, ChoiceView $b) {
+            return ($a->data->getValue() > $b->data->getValue());
+        });
+
+        usort($view->vars['form']['platform']->vars['choices'], function(ChoiceView $a, ChoiceView $b) {
+            return ($a->data->getName() > $b->data->getName());
+        });
+
     }
 }

@@ -1,0 +1,10 @@
+<tr>
+    <td>{{object.getManufacturer().getShortNameIfExist()}}</td>
+    <td>{{object.getName()}}</td>
+    {% if object.getSpeed != object.getFsb() %}
+        <td>{{ object.getSpeed().getValueWithUnit() }}/{{ object.getFsb().getValueWithUnit() }}
+    {% else %}
+        <td>{{ object.getSpeed().getValueWithUnit() }}</td>
+    {% endif %}
+    <td><a class="result-link" href="./processingunits/coprocessors/{{ object.getId() }}/edit/">Edit</a></td>
+</tr>	

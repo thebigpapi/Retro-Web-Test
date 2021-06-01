@@ -85,6 +85,9 @@
     "egulias/email-validator": {
         "version": "3.1.1"
     },
+    "erusev/parsedown": {
+        "version": "1.7.0"
+    },
     "friendsofphp/proxy-manager-lts": {
         "version": "v1.0.3"
     },
@@ -127,6 +130,9 @@
     },
     "nikic/php-parser": {
         "version": "v4.10.5"
+    },
+    "php": {
+        "version": "7.4"
     },
     "phpdocumentor/reflection-common": {
         "version": "2.2.0"
@@ -538,6 +544,9 @@
         "version": "v5.2.7"
     },
     "twig/extra-bundle": {
+        "version": "v3.3.0"
+    },
+    "twig/intl-extra": {
         "version": "v3.3.0"
     },
     "twig/markdown-extra": {

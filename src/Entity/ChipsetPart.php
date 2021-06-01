@@ -19,6 +19,7 @@ class ChipsetPart extends Chip
 
     public function __construct()
     {
+        parent::__construct();
         $this->chipsetParts = new ArrayCollection();
     }
 
