@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
-  <file source-language="fr" target-language="ro" datatype="plaintext" original="file.ext">
+  <file source-language="en" target-language="ro" datatype="plaintext" original="file.ext">
     <header>
       <tool tool-id="symfony" tool-name="Symfony"/>
     </header>
@@ -337,6 +337,58 @@
         <source>This value should be valid JSON.</source>
         <target>Această valoare trebuie să fie un JSON valid.</target>
       </trans-unit>
+      <trans-unit id="9CWVEGq" resname="This collection should contain only unique elements.">
+        <source>This collection should contain only unique elements.</source>
+        <target>Acest set ar trebui să conțină numai elemente unice.</target>
+      </trans-unit>
+      <trans-unit id="WdvZfq." resname="This value should be positive.">
+        <source>This value should be positive.</source>
+        <target>Această valoare ar trebui să fie pozitivă.</target>
+      </trans-unit>
+      <trans-unit id="ubHMK2q" resname="This value should be either positive or zero.">
+        <source>This value should be either positive or zero.</source>
+        <target>Această valoare trebuie să fie pozitivă sau zero.</target>
+      </trans-unit>
+      <trans-unit id="IwNTzo_" resname="This value should be negative.">
+        <source>This value should be negative.</source>
+        <target>Această valoare ar trebui să fie negativă.</target>
+      </trans-unit>
+      <trans-unit id="0GfwMfP" resname="This value should be either negative or zero.">
+        <source>This value should be either negative or zero.</source>
+        <target>Această valoare trebuie să fie negativă sau zero.</target>
+      </trans-unit>
+      <trans-unit id="fs3qQZR" resname="This value is not a valid timezone.">
+        <source>This value is not a valid timezone.</source>
+        <target>Această valoare nu este un fus orar valid.</target>
+      </trans-unit>
+      <trans-unit id="40dnsod" resname="This password has been leaked in a data breach, it must not be used. Please use another password.">
+        <source>This password has been leaked in a data breach, it must not be used. Please use another password.</source>
+        <target>Această parolă a fost compromisă și nu poate fi utilizată. Vă rugăm să utilizați o altă parolă.</target>
+      </trans-unit>
+      <trans-unit id="VvxxWas" resname="This value should be between {{ min }} and {{ max }}.">
+        <source>This value should be between {{ min }} and {{ max }}.</source>
+        <target>Această valoare trebuie să fie între {{ min }} și {{ max }}.</target>
+      </trans-unit>
+      <trans-unit id="7g313cV" resname="This value is not a valid hostname.">
+        <source>This value is not a valid hostname.</source>
+        <target>Această valoare nu este un numele gazdei valid.</target>
+      </trans-unit>
+      <trans-unit id="xwtBimR" resname="The number of elements in this collection should be a multiple of {{ compared_value }}.">
+        <source>The number of elements in this collection should be a multiple of {{ compared_value }}.</source>
+        <target>Numărul de elemente din această colecție ar trebui să fie un multiplu al {{ compared_value }}.</target>
+      </trans-unit>
+      <trans-unit id="FDRZr.s" resname="This value should satisfy at least one of the following constraints:">
+        <source>This value should satisfy at least one of the following constraints:</source>
+        <target>Această valoare trebuie să îndeplinească cel puțin una dintre următoarele reguli:</target>
+      </trans-unit>
+      <trans-unit id="WwY0IGI" resname="Each element of this collection should satisfy its own set of constraints.">
+        <source>Each element of this collection should satisfy its own set of constraints.</source>
+        <target>Fiecare element din acest set ar trebui să îndeplinească propriul set de reguli.</target>
+      </trans-unit>
+      <trans-unit id="lrbaa8g" resname="This value is not a valid International Securities Identification Number (ISIN).">
+        <source>This value is not a valid International Securities Identification Number (ISIN).</source>
+        <target>Această valoare nu este un număr internațional de identificare (ISIN) valabil.</target>
+      </trans-unit>
       <trans-unit id=".SEaaBa" resname="This form should not contain extra fields.">
         <source>This form should not contain extra fields.</source>
         <target>Aceast formular nu ar trebui să conțină câmpuri suplimentare.</target>
@@ -348,6 +400,126 @@
       <trans-unit id="fvxWW3V" resname="The CSRF token is invalid. Please try to resubmit the form.">
         <source>The CSRF token is invalid. Please try to resubmit the form.</source>
         <target>Token-ul CSRF este invalid. Vă rugăm să trimiteți formularul incă o dată.</target>
+      </trans-unit>
+      <trans-unit id="eo1zeih" resname="This value is not a valid HTML5 color.">
+        <source>This value is not a valid HTML5 color.</source>
+        <target>Această valoare nu este un cod de culoare HTML5 valid.</target>
+      </trans-unit>
+      <trans-unit id="dN.ZVc0" resname="Please enter a valid birthdate.">
+        <source>Please enter a valid birthdate.</source>
+        <target>Vă rugăm să introduceți o dată de naștere validă.</target>
+      </trans-unit>
+      <trans-unit id="OPymPfZ" resname="The selected choice is invalid.">
+        <source>The selected choice is invalid.</source>
+        <target>Valoarea selectată este invalidă.</target>
+      </trans-unit>
+      <trans-unit id="GUH6TYE" resname="The collection is invalid.">
+        <source>The collection is invalid.</source>
+        <target>Colecția nu este validă.</target>
+      </trans-unit>
+      <trans-unit id="14il0ha" resname="Please select a valid color.">
+        <source>Please select a valid color.</source>
+        <target>Vă rugăm să selectați o culoare validă.</target>
+      </trans-unit>
+      <trans-unit id="4AJRUCC" resname="Please select a valid country.">
+        <source>Please select a valid country.</source>
+        <target>Vă rugăm să selectați o țară validă.</target>
+      </trans-unit>
+      <trans-unit id="xAI5mrh" resname="Please select a valid currency.">
+        <source>Please select a valid currency.</source>
+        <target>Vă rugăm să selectați o monedă validă.</target>
+      </trans-unit>
+      <trans-unit id="c6v9ASZ" resname="Please choose a valid date interval.">
+        <source>Please choose a valid date interval.</source>
+        <target>Vă rugăm să selectați un interval de zile valid.</target>
+      </trans-unit>
+      <trans-unit id="2BR60Jg" resname="Please enter a valid date and time.">
+        <source>Please enter a valid date and time.</source>
+        <target>Vă rugăm să introduceți o dată și o oră validă.</target>
+      </trans-unit>
+      <trans-unit id="ofLBhv0" resname="Please enter a valid date.">
+        <source>Please enter a valid date.</source>
+        <target>Vă rugăm să introduceți o dată validă.</target>
+      </trans-unit>
+      <trans-unit id="Xsmm6Mc" resname="Please select a valid file.">
+        <source>Please select a valid file.</source>
+        <target>Vă rugăm să selectați un fișier valid.</target>
+      </trans-unit>
+      <trans-unit id="Fka0cZD" resname="The hidden field is invalid.">
+        <source>The hidden field is invalid.</source>
+        <target>Câmpul ascuns este invalid.</target>
+      </trans-unit>
+      <trans-unit id="69ux5Ml" resname="Please enter an integer.">
+        <source>Please enter an integer.</source>
+        <target>Vă rugăm să introduceți un număr întreg.</target>
+      </trans-unit>
+      <trans-unit id="TQbat_9" resname="Please select a valid language.">
+        <source>Please select a valid language.</source>
+        <target>Vă rugăm să selectați o limbă validă.</target>
+      </trans-unit>
+      <trans-unit id="vpa7l8w" resname="Please select a valid locale.">
+        <source>Please select a valid locale.</source>
+        <target>Vă rugăm să selectați o setare locală validă.</target>
+      </trans-unit>
+      <trans-unit id="Gz8pWER" resname="Please enter a valid money amount.">
+        <source>Please enter a valid money amount.</source>
+        <target>Vă rugăm să introduceți o valoare monetară corectă.</target>
+      </trans-unit>
+      <trans-unit id="PRxiOhB" resname="Please enter a number.">
+        <source>Please enter a number.</source>
+        <target>Vă rugăm să introduceți un număr.</target>
+      </trans-unit>
+      <trans-unit id="seAdKJo" resname="The password is invalid.">
+        <source>The password is invalid.</source>
+        <target>Parola nu este validă.</target>
+      </trans-unit>
+      <trans-unit id="A5k0Q20" resname="Please enter a percentage value.">
+        <source>Please enter a percentage value.</source>
+        <target>Vă rugăm să introduceți o valoare procentuală.</target>
+      </trans-unit>
+      <trans-unit id="rH6V.WA" resname="The values do not match.">
+        <source>The values do not match.</source>
+        <target>Valorile nu coincid.</target>
+      </trans-unit>
+      <trans-unit id="Eopl1Sm" resname="Please enter a valid time.">
+        <source>Please enter a valid time.</source>
+        <target>Vă rugăm să introduceți o oră validă.</target>
+      </trans-unit>
+      <trans-unit id="ll14Sm9" resname="Please select a valid timezone.">
+        <source>Please select a valid timezone.</source>
+        <target>Vă rugăm să selectați un fus orar valid.</target>
+      </trans-unit>
+      <trans-unit id="1xP1kmd" resname="Please enter a valid URL.">
+        <source>Please enter a valid URL.</source>
+        <target>Vă rugăm să introduceți un URL valid.</target>
+      </trans-unit>
+      <trans-unit id="iMmAsrC" resname="Please enter a valid search term.">
+        <source>Please enter a valid search term.</source>
+        <target>Vă rugăm să introduceți un termen de căutare valid.</target>
+      </trans-unit>
+      <trans-unit id="GRMTXRX" resname="Please provide a valid phone number.">
+        <source>Please provide a valid phone number.</source>
+        <target>Vă rugăm să introduceți un număr de telefon valid.</target>
+      </trans-unit>
+      <trans-unit id="WkYuMDd" resname="The checkbox has an invalid value.">
+        <source>The checkbox has an invalid value.</source>
+        <target>Bifa nu are o valoare validă.</target>
+      </trans-unit>
+      <trans-unit id="lY5Mzyl" resname="Please enter a valid email address.">
+        <source>Please enter a valid email address.</source>
+        <target>Vă rugăm să introduceți o adresă de email validă.</target>
+      </trans-unit>
+      <trans-unit id="TzSC4.o" resname="Please select a valid option.">
+        <source>Please select a valid option.</source>
+        <target>Vă rugăm să selectați o opțiune validă.</target>
+      </trans-unit>
+      <trans-unit id="qGRcTk7" resname="Please select a valid range.">
+        <source>Please select a valid range.</source>
+        <target>Vă rugăm să selectați un interval valid.</target>
+      </trans-unit>
+      <trans-unit id="PU.w6nC" resname="Please enter a valid week.">
+        <source>Please enter a valid week.</source>
+        <target>Vă rugăm să introduceți o săptămână validă.</target>
       </trans-unit>
     </body>
   </file>

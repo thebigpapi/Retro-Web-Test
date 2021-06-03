@@ -1,38 +1,38 @@
 {% extends 'admin/header.html.twig' %}
 
-{% block title %}Administration index{% endblock %}
+{% block title %}{% trans %}Administration index{% endtrans %}{% endblock %}
 
 {% block body %}
-<h2 class="title">Administration page</h2>
+<h2 class="title">{% trans %}Administration page{% endtrans %}</h2>
 <h4>Manage:</h4>
 <hr>
 <a href="../admin/manage/motherboards" class="admin-button-index">
 	<img src="./assets/images/admin/motherboard.jpg" style="padding:8px 25px 0px" alt="board">
-	<p>Motherboards</p>
+	<p>{% trans %}Motherboards{% endtrans %}</p>
 </a>
 <a href="./admin/manage/processingunits" class="admin-button-index">
 	<img src="./assets/images/admin/486dx.png" style="padding:0px 30px 0px" alt="cpu">
-	<p>Processing units</p>
+	<p>{% trans %}Processing units{% endtrans %}</p>
 </a>
 <a href="./admin/manage/memories" class="admin-button-index">
 	<img src="./assets/images/admin/memory.png" style="padding:2px 0px 1px" alt="memory">
-	<p>Memory</p>
+	<p>{% trans %}Memory{% endtrans %}</p>
 </a>
 <a href="./admin/manage/chipsets" class="admin-button-index">
 	<img src="./assets/images/admin/chip.png" style="padding:2px 25px 2px" alt="chipset">
-	<p>Chipsets</p>
+	<p>{% trans %}Chipsets{% endtrans %}</p>
 </a>
 <a href="./admin/manage/expansionchipsets" class="admin-button-index">
 	<img src="./assets/images/admin/exp_chip.jpg" style="padding:10px 25px 3px" alt="chip part">
-	<p>Expansion chipsets</p>
+	<p>{% trans %}Expansion chipsets{% endtrans %}</p>
 </a>
 <a href="./admin/manage/connectors" class="admin-button-index">
 	<img src="./assets/images/admin/conn.jpg" style="padding:11px 25px 10px" alt="connector">
-	<p>Connectors</p>
+	<p>{% trans %}Connectors{% endtrans %}</p>
 </a>
 <a href="./admin/manage/miscs" class="admin-button-index">
 	<img src="./assets/images/admin/other.png" style="padding:4px 25px 4px" alt="misc">
-	<p>Misc stuff</p>
+	<p>{% trans %}Misc stuff{% endtrans %}</p>
 </a>
 <a href="./admin/manage/files" class="admin-button-index">
 	<img src="./assets/images/admin/file.png" style="padding:5px 30px 5px" alt="file">
@@ -40,12 +40,12 @@
 </a>
 <a href="./admin/password" class="admin-button-index">
 	<img src="./assets/images/admin/login.gif" style="padding:5px 30px 5px" alt="passwd">
-	<p>Change password</p>
+	<p>{% trans %}Change password{% endtrans %}</p>
 </a>
 {% if is_granted('ROLE_SUPER_ADMIN') %}
 	<a href="./admin/manage_users/" class="admin-button-index">
 		<img src="./assets/images/admin/login.gif" style="padding:5px 30px 5px">
-		<p>Manage users</p>
+		<p>{% trans %}Manage users{% endtrans %}</p>
 	</a>
 {% endif %}
 

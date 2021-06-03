@@ -15,17 +15,17 @@
 {% block title %}{% trans %}Search for a bios{% endtrans %}{% endblock %}
 
 {% block metatags %}
-	<meta name="description" content="Search for a motherboard BIOS by POST string, chipset, manufacturer, and more.">
+	<meta name="description" content="{% trans %}Search for a motherboard BIOS by POST string, chipset, manufacturer, and more.{% endtrans %}">
 {% endblock %}
 
 {% block body %}
 	<h2 class="title">{% trans %}Search for a bios{% endtrans %}</h2>
 
     <div id="hiddenDiv" style="display: none;"></div>
-	<a href="./info">Where can I find the POST string?</a>
+	<a href="./info">{% trans %}Where can I find the POST string?{% endtrans %}</a>
 	<form name="search" method="post" action="./search">
 		<div class="butn">
-			<input id="rst-btn" type="reset" value="Reset fields" class="butn-0">
+			<input id="rst-btn" type="reset" value="{% trans %}Reset fields{% endtrans %}" class="butn-0">
 			{{ form_row(form.search)|replace({'<div><button': '<input class="butn-1"', '</button></div>': '">', '>': ' value="'})|raw }}
 		</div>
         <table class="search-table">

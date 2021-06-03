@@ -30,7 +30,7 @@
 	<div id="hiddenDiv" style="display: none;"></div>
 	<form name="search_motherboard" method="post" action="./search">
 		<div class="butn">
-			<input id="rst-btn" type="reset" value="Reset fields" class="butn-0">
+			<input id="rst-btn" type="reset" value="{% trans %}Reset fields{% endtrans %}" class="butn-0">
 			{{ form_row(form.search)|replace({'<div><button': '<input class="butn-1"', '</button></div>': '">', '>': ' value="'})|raw }}
 			{{ form_row(form.searchWithImages)|replace({'<div><button': '<input class="butn-2"', '</button></div>': '">', '>': ' value="'})|raw }}
 		</div>
