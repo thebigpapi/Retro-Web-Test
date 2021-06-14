@@ -277,8 +277,8 @@
         <source>Supported CPUs:</source>
         <target>Processori supportati:</target>
       </trans-unit>
-      <trans-unit id="Wi7cldC" resname="Supported FPUs:">
-        <source>Supported FPUs:</source>
+      <trans-unit id="Wi7cldC" resname="Supported NPUs:">
+        <source>Supported NPUs:</source>
         <target>Coprocessori matematici supportati:</target>
       </trans-unit>
       <trans-unit id="hvaLMGP" resname="Supported FSB speeds:">
@@ -508,10 +508,6 @@
       <trans-unit id="M1JRciT" resname="instruction sets">
         <source>instruction sets</source>
         <target>set di istruzioni</target>
-      </trans-unit>
-      <trans-unit id="mLZwY8_" resname="Contact Us">
-        <source>Contact Us</source>
-        <target>Contattaci</target>
       </trans-unit>
       <trans-unit id="pP5lJk7" resname="Language">
         <source>Language</source>

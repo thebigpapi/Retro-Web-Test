@@ -5,7 +5,7 @@ NOTE: This project is in the BETA stage. If something doesn't work right, it's e
 
 Now, onto getting UH19 running on a machine. So far, it's been tested and used in Debian (for both ARM and x86-64 platforms). It may work in other software/hardware configurations, but it's not guaranteed.
 
-There are ? requirements to get the project running:
+There are 6 requirements to get the project running:
 1. A linux distro
 2. PHP 7.4
 3. Symfony (with CLI and Composer)
@@ -18,7 +18,7 @@ Begin by making sure you have the latest updates with `sudo apt update`, then pr
 
 # PHP install 
 
-Here are the commands to install PHP7.4 and it's required extensions for Symfony
+Here are the commands to install [PHP 7.4](https://computingforgeeks.com/how-to-install-latest-php-on-debian/) and it's required extensions for Symfony
 ```
 sudo apt -y install lsb-release apt-transport-https ca-certificates 
 sudo wget -O /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg
@@ -29,12 +29,12 @@ sudo apt install php7.4 php7.4-mbstring php7.4-dom php7.4-gd php7.4-intl php7.4-
 Install this as well, to let Composer run faster:`sudo apt install zip unzip php-zip`
 
 # Symfony install
-To install CLI, run these:
+To install [CLI](https://symfony.com/download), run these:
 ```
 wget https://get.symfony.com/cli/installer -O - | bash
 sudo mv /home/user/.symfony/bin/symfony /usr/local/bin/symfony
 ```
-And for Composer, run these:
+And for [Composer](https://getcomposer.org/download/), run these:
 ```
 php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
 php -r "if (hash_file('sha384', 'composer-setup.php') === '756890a4488ce9024fc62c56153228907f1545c228516cbf63f885e036d37e9a59d27d63f46af1d4d07ee0f76181c7d3') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;"

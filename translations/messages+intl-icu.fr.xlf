@@ -277,8 +277,8 @@
         <source>Supported CPUs:</source>
         <target>Processeurs supportés:</target>
       </trans-unit>
-      <trans-unit id="Wi7cldC" resname="Supported FPUs:">
-        <source>Supported FPUs:</source>
+      <trans-unit id="Wi7cldC" resname="Supported NPUs:">
+        <source>Supported NPUs:</source>
         <target>Coprocesseurs arithmétiques supportés:</target>
       </trans-unit>
       <trans-unit id="hvaLMGP" resname="Supported FSB speeds:">
@@ -508,10 +508,6 @@
       <trans-unit id="M1JRciT" resname="instruction sets">
         <source>instruction sets</source>
         <target>jeux d'instruction</target>
-      </trans-unit>
-      <trans-unit id="mLZwY8_" resname="Contact Us">
-        <source>Contact Us</source>
-        <target>Contactez-nous</target>
       </trans-unit>
       <trans-unit id="pP5lJk7" resname="Language">
         <source>Language</source>
@@ -779,7 +775,7 @@
       </trans-unit>
       <trans-unit id="Y3Ai04r" resname="BIOS chipset IDs">
         <source>BIOS chipset IDs</source>
-        <target>IDs de chipset pour BIOS</target>
+        <target>[[[[IDs de chipset pour BIOS]]]]</target>
       </trans-unit>
       <trans-unit id="J9Yqgab" resname="Search for a motherboard BIOS by POST string, chipset, manufacturer, and more.">
         <source>Search for a motherboard BIOS by POST string, chipset, manufacturer, and more.</source>
