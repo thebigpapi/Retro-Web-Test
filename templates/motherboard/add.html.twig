@@ -156,7 +156,7 @@
                 </div>
 			</td>
 			<td>
-				
+				{{ form_widget(form.updateProcessors) }}
 			</td>
 		</tr>
 	</table>
@@ -385,7 +385,6 @@
 				<b>CPU:</b>
 				<button type="button" onclick="expand('processors-fields-list')">Add</button>
 				<button type="button" onclick="addCPU('processors-fields-list')">Add all CPUs</button>
-				{{ form_widget(form.updateProcessors) }}
 				<button type="button" onclick="removeCPU('processors-fields-list');">Delete all CPUs</button>
 				<span id="status-label" style="font-size:0.8em"></span>
 			</td>

@@ -25,18 +25,28 @@
 	</head>
 	<body class="content">
 		<form action="{{ path('change_page') }}" method="get"><div class="top-bar"><div class="table-mobile">
-			<a href="{{ root }}/" style="text-decoration: none;"><b>Ultimate Hardware <small>2019 BETA</small></b></a>
-			<span class="form"><select class="goto" name="goto">
-				<option value="{{ app.request.requesturi }}">{% trans %}Go to...{% endtrans %}</option>
-				{% if is_granted('ROLE_ADMIN') %}<option selected="selected" value="{{ root }}/admin">{% trans %}Admin{% endtrans %}</option>{% endif %}
-				{% if is_granted('ROLE_USER') %}<option value="{{ root }}/logout">{% trans %}Logout{% endtrans %}</option>{% endif %}
-				<option value="{{ root }}/credits">{% trans %}About{% endtrans %}</option>
-				<option value="/win3board">{% trans %}Board{% endtrans %}</option>
-			</select>
+			<a href="{{ root }}/" style="text-decoration: none;">
+				<b>Ultimate Hardware <small>2019 BETA</small></b>
+			</a>
+			<a href="{{ root }}/credits" style="vertical-align:top;text-decoration:none;padding-left:5px;">
+				<img src="{{ root }}/assets/images/about.gif" alt="about">
+			</a>
+			<a href="/win3board" style="vertical-align:top;text-decoration:none;padding-left:5px;">
+				<img src="{{ root }}/assets/images/w3board.gif" alt="board">
+			</a>
+			<span class="form" style="padding-left:5px;">
 			<select class="lang" name="lang">
 				{% for locale in locales %}<option{% if locale == 'user.lang'|trans %} selected="selected"{% endif %} value="{{ locale }}">{{ 'name.lang'|trans(locale=locale) }}</option>{% endfor %}
 			</select>
 			<input type="submit" value=" OK "></span>
+			{% if is_granted('ROLE_ADMIN') %}
+			<a href="{{ root }}/admin" style="vertical-align:top;text-decoration:none;padding-left:5px;">
+				<img src="{{ root }}/assets/images/settings.gif" alt="admin">
+			</a>{% endif %}
+			{% if is_granted('ROLE_USER') %}
+			<a href="{{ root }}/logout" style="vertical-align:top;text-decoration:none;padding-left:5px;">
+				<img src="{{ root }}/assets/images/logout.gif" alt="logout">
+			</a>{% endif %}
 		</div></div></form>
 		<div class="main">
 			<div class="page">

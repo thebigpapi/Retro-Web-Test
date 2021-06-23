@@ -316,26 +316,22 @@
 	</table></div>
     {% if motherboard.getVideoChipset() is not null or motherboard.getMaxVideoRam() is not null or motherboard.getAudioChipset() is not null %}
 		<table>
+			{% if motherboard.getVideoChipset() is not null %}
             <tr>
 				<td>{% trans %}Video Chipset:{% endtrans %}</td>
-				<td>
-				{% if motherboard.getVideoChipset() is not null %}
-					{{ motherboard.getVideoChipset().getNameWithManufacturer() }}
-				{% else %}
-					Unknown
-				{% endif %}
-				
+				<td>{{ motherboard.getVideoChipset().getNameWithManufacturer() }}
 				{% if  motherboard.getMaxVideoRam() is not null %}
 					({{  motherboard.getMaxVideoRam().getValueWithUnit() }} max VRAM)
 				{% endif %}
 				</td>
 			</tr>
-		{% if motherboard.getAudioChipset() is not null %}
+			{% endif %}
+			{% if motherboard.getAudioChipset() is not null %}
             <tr>
 				<td>{% trans %}Audio Chipset:{% endtrans %}</td>
 				<td>{{ motherboard.getAudioChipset().getNameWithManufacturer() }}</td>
 			</tr>
-        {% endif %}
+        	{% endif %}
 		</table>
     {% endif %}
         
