@@ -349,26 +349,7 @@
 		</div>
 	{% endif %}
 	{% if is_granted('ROLE_ADMIN') %}
-		<a href="javascript:;" style="color:#c40000" onclick="delEntry()">Delete</a>
-
-		<div id="delDIV" style="display:none">
-			<b class="contrib">ARE YOU SURE THAT YOU WANT TO DELETE THIS ITEM?</b>
-			<input onclick="delEntry()" type="submit" value="NO">
-			<form action="../delete/{{ motherboard.getId() }}" style="display: inline"><div style="display: inline">
-				<input type="submit" value="YES">
-			</div></form>
-		</div>
-		
-		<script type="text/javascript">
-			function delEntry() {
-				var x = document.getElementById("delDIV");
-				if (x.style.display === "none") {
-					x.style.display = "inline";
-				} else {
-					x.style.display = "none";
-				}
-			}
-		</script>
+		<a href="{{ path("motherboard_delete", {id: motherboard.getId()}) }}" style="color:#c40000" onclick="delEntry()">Delete</a>
 	{% endif %}
 </div>
 <div class="show-cpus">

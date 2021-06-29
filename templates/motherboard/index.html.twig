@@ -8,7 +8,7 @@
 	{% if motherboards is not empty %}
 		<ul>
 			{% for motherboard in motherboards %}
-				<li><a href='../show/{{motherboard.id}}'>{{ motherboard.getManufacturerShortNameIfExist()}} {{motherboard.name}}</a></li>
+				<li><a href='{ path("motherboard_show", {id: motherboard.getId()}) }}'>{{ motherboard.getManufacturerShortNameIfExist()}} {{motherboard.name}}</a></li>
 			{% endfor %}
 		</ul>
 	{{ knp_pagination_render(motherboards) }}

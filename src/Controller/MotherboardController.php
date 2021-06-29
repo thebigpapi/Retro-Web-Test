@@ -29,6 +29,7 @@ use App\Service\FileUploader;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Exception;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 class MotherboardController extends AbstractController
 {
@@ -195,21 +196,47 @@ class MotherboardController extends AbstractController
 
     /**
     * @Route("/motherboards/{id}/delete/", name="motherboard_delete", requirements={"id"="\d+"})
+    * @param Request $request
     */
-    public function delete(int $id)
+    public function delete(Request $request, int $id)
     {
         $motherboard = $this->getDoctrine()
             ->getRepository(Motherboard::class)
             ->find($id);
-        $entityManager = $this->getDoctrine()->getManager();
-        $entityManager->remove($motherboard);
-        $entityManager->flush();
-        return new Response("Deleted $id");
+
         if (!$motherboard) {
             throw $this->createNotFoundException(
                 'No $motherboard found for id ' . $id
             );
-        }     
+        }
+
+        $form = $this->createFormBuilder()
+        ->add('No', SubmitType::class)
+        ->add('Yes', SubmitType::class)
+        ->getForm();
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            if ($form->get('No')->isClicked())
+            {
+                return $this->redirect($this->generateUrl('motherboard_show', array("id" => $id)));
+            }
+            if ($form->get('Yes')->isClicked())
+            {
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->remove($motherboard);
+                $entityManager->flush();
+                return $this->render('motherboard/delete_confirm.html.twig', [
+                    'id' => $id,
+                ]);
+            }
+
+        }
+
+        return $this->render('motherboard/delete.html.twig', [
+            'form' => $form->createView(),
+            'motherboard' => $motherboard,
+        ]);
     }
 
       /**
