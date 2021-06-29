@@ -28,7 +28,7 @@
 		<a href="./result/?manufacturerId=NULL">?</a>
 	</p>
 	<div id="hiddenDiv" style="display: none;"></div>
-	<form name="search_motherboard" method="post" action="./search">
+	<form name="search_motherboard" method="post" action="{{ path("motherboard_search") }}">
 		<div class="butn">
 			<input id="rst-btn" type="reset" value="{% trans %}Reset fields{% endtrans %}" class="butn-0">
 			{{ form_row(form.search)|replace({'<div><button': '<input class="butn-1"', '</button></div>': '">', '>': ' value="'})|raw }}

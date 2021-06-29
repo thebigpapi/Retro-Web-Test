@@ -34,7 +34,42 @@ class MotherboardController extends AbstractController
 {
 
     /**
-     * @Route("/motherboard/result/", name="mobosearch", methods={"GET"})
+     * @Route("/motherboard/result/", methods={"GET"})
+     * @param Request $request
+     */
+    public function redirectSearch(Request $request)
+    {
+        return $this->redirect($this->generateUrl('mobosearch', $request->query->all()));
+    }
+
+    /**
+    * @Route("/motherboard/show/{id}")
+    */
+    public function redirectShow($id)
+    {
+        return $this->redirect($this->generateUrl('motherboard_show', array("id" => $id)));
+    }
+
+    /**
+     * @Route("/motherboard/search/")
+     * @param Request $request
+     */
+    public function redirectNewSearch()
+    {
+        return $this->redirect($this->generateUrl('motherboard_search'));
+    }
+
+    /**
+     * @Route("/motherboard/index/{letter}", requirements={"letter"="\w"}), methods={"GET"})
+     * @param Request $request
+     */
+    public function redirectIndex(Request $request, string $letter)
+    {
+        return $this->redirect($this->generateUrl('moboindex', array_merge($request->query->all(), array("letter" => $letter))));
+    }
+
+    /**
+     * @Route("/motherboards/", name="mobosearch", methods={"GET"})
      * @param Request $request
      */
     public function searchResult(Request $request, PaginatorInterface $paginator)
@@ -138,9 +173,9 @@ class MotherboardController extends AbstractController
     }
     
     /**
-    * @Route("/motherboard/show/{id}", name="motherboard_show")
+    * @Route("/motherboards/{id}", name="motherboard_show", requirements={"id"="\d+"})
     */
-    public function show($id)
+    public function show(int $id)
     {
         $motherboard = $this->getDoctrine()
             ->getRepository(Motherboard::class)
@@ -178,7 +213,7 @@ class MotherboardController extends AbstractController
     }
 
       /**
-    * @Route("/motherboard/search", name="motherboard_search")
+    * @Route("/motherboards/search/", name="motherboard_search")
     * @param Request $request
     */
     public function search(Request $request, TranslatorInterface $translator)
@@ -430,7 +465,7 @@ class MotherboardController extends AbstractController
     }
 
     /**
-     * @Route("/motherboard/index/{letter}", name="moboindex", requirements={"letter"="\w"}), methods={"GET"})
+     * @Route("/motherboards/index/{letter}", name="moboindex", requirements={"letter"="\w"}), methods={"GET"})
      * @param Request $request
      */
     public function index(Request $request, PaginatorInterface $paginator, string $letter = '')

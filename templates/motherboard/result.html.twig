@@ -25,7 +25,7 @@
 					</span>
 					{% endif %}
 					<span style="text-align: center;text-decoration: none;display:block;">
-					<a class="result-link" style="text-align: center;display:inline-block;text-decoration: none;margin:auto;" href="../show/{{ motherboard.getId() }}">{{ motherboard.getManufacturerShortNameIfExist() }}&nbsp;{{ motherboard.name }}</a>
+					<a class="result-link" style="text-align: center;display:inline-block;text-decoration: none;margin:auto;" href="{{ path("motherboard_show", {id: motherboard.getId()}) }}">{{ motherboard.getManufacturerShortNameIfExist() }}&nbsp;{{ motherboard.name }}</a>
 					{% if motherboard.getMotherboardAliases() is not empty %}
 						
 						{% for alias in motherboard.getMotherboardAliases() %}
@@ -47,7 +47,7 @@
 			<ul>
 			{% for motherboard in motherboards %}
 				<li>
-					<a class="result-link" href="../show/{{ motherboard.getId() }}">{{ motherboard.getManufacturerShortNameIfExist() }}&nbsp;{{ motherboard.name }}</a>
+					<a class="result-link" href="{{ path("motherboard_show", {id: motherboard.getId()}) }}">{{ motherboard.getManufacturerShortNameIfExist() }}&nbsp;{{ motherboard.name }}</a>
 					{% if motherboard.getMotherboardAliases() is not empty %}
 						<ul class="results-alias">
 						{% for alias in motherboard.getMotherboardAliases() %}

@@ -7,7 +7,7 @@
 	<h2 class="title">{% trans %}Where do you want to go today?{% endtrans %}</h2>
 	{% if userAgent == 0 or userAgent > 5 %}
 	<div class="index-buttons" style="text-align:center;">
-		<a href="./motherboard/search/" class="index-button0">
+		<a href="{{ path("motherboard_search") }}" class="index-button0">
 			<span class="s1" style="display:inline-block;"><img src="{{ root }}/assets/images/index/motherboard_low.jpg" alt="find card"></span>
 			<span style="display:inline-block;">{% trans %}Search for a motherboard{% endtrans %} <br>({{moboCount}} {% trans %}entries{% endtrans %})</span>
 		</a>
@@ -15,7 +15,7 @@
 			<span class="s1" style="display:inline-block;"><img src="{{ root }}/assets/images/index/card_low.jpg" alt="find card"></span>
 			<span style="display:inline-block;">{% trans %}Find an expansion card{% endtrans %}<br> [WIP]</span>
 		</a>
-		<a href="./bios/search" class="index-button2">
+		<a href="{{ path("bios_search") }}" class="index-button2">
 			<span class="s1" style="display:inline-block;"><img src="{{ root }}/assets/images/index/awchip_low.jpg" alt="find BIOS"></span>
 			<span style="display:inline-block;">{% trans %}Find a BIOS image{% endtrans %} <br>({{biosCount}} {% trans %}files{% endtrans %})</span>
 		</a>
@@ -34,7 +34,7 @@
 		<div class="results">
 			<ul>
         	{% for motherboard in latestMotherboards %}
-				<li><a href="./motherboard/show/{{ motherboard.getId() }}">{{ motherboard.getManufacturerShortNameIfExist() }}&nbsp;{{ motherboard.name }}</a></li>		
+				<li><a href="{{ path("motherboard_show", {id:motherboard.getId()}) }}">{{ motherboard.getManufacturerShortNameIfExist() }}&nbsp;{{ motherboard.name }}</a></li>		
 			{% endfor %}
 			
 			</ul>
