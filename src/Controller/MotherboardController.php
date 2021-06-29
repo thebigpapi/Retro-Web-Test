@@ -194,9 +194,9 @@ class MotherboardController extends AbstractController
     }
 
     /**
-    * @Route("/motherboard/delete/{id}", name="motherboard_delete")
+    * @Route("/motherboards/{id}/delete/", name="motherboard_delete", requirements={"id"="\d+"})
     */
-    public function delete($id)
+    public function delete(int $id)
     {
         $motherboard = $this->getDoctrine()
             ->getRepository(Motherboard::class)
