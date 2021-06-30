@@ -206,7 +206,7 @@
 
 	{% if motherboard.getAllDrivers() is not empty %}
     <div class="scroll-div">
-		<img src="../../assets/images/hardware.png" alt="driver" style="vertical-align: middle;padding-bottom: 10px;">
+		<img src="{{ relative_path(asset('assets/images/hardware.png')) }}" alt="driver" style="vertical-align: middle;padding-bottom: 10px;">
 		<b>{% trans %}Drivers:{% endtrans %}</b>
         <table class="stbl">
             <tr class="stbl-head">
@@ -221,7 +221,7 @@
 
 	{% if motherboard.getMotherboardBios() is not empty %}
     <div class="scroll-div">
-		<img src="../../assets/images/chip.png" alt="bios" style="vertical-align: middle;padding-bottom: 10px;">
+		<img src="{{ relative_path(asset('assets/images/chip.png')) }}" alt="bios" style="vertical-align: middle;padding-bottom: 10px;">
 		<b>{% trans %}BIOS images:{% endtrans %}</b>
         <table class="stbl">
             <tr class="stbl-head">
@@ -238,7 +238,7 @@
                 <td><span>{{ bios.getNote() }}</span></td>
                 <td>{% if bios.getFileName() is not null %}
 						<a href="{{ vich_uploader_asset(bios, 'romFile') }}">
-							<img src="../../assets/images/dw.gif" alt="" width="16" height="16" style="vertical-align: middle;">
+							<img src="{{ relative_path(asset('assets/images/dw.gif')) }}" alt="" width="16" height="16" style="vertical-align: middle;">
 						{% if bios.getBoardVersion() is not null %} 
 							{{ bios.getBoardVersion() }}
 						{% else %}
@@ -259,7 +259,7 @@
 	<table class="stbl">
             <tr>
                 <td>
-					<img src="../../assets/images/manual.png" alt="manual" style="vertical-align: middle;padding-bottom: 10px;">
+					<img src="{{ relative_path(asset('assets/images/manual.png')) }}" alt="manual" style="vertical-align: middle;padding-bottom: 10px;">
 					<b>{% trans %}Manuals:{% endtrans %}</b>
 				</td>
                 <td>
@@ -463,7 +463,7 @@
 			var h = document.getElementById("jsappend");
 			var js = document.createElement('script');
 			js.type = "text/javascript";
-			js.src = "{{ root }}/assets/highslide/highslide.js";
+			js.src = "{{relative_path(asset('assets/highslide/highslide.js')) }}";
 			h.appendChild(js);
 		}
 </script>

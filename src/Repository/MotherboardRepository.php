@@ -25,16 +25,25 @@ class MotherboardRepository extends ServiceEntityRepository
 
     public function findAllAlphabetic(string $letter): array
     {
-        if ($letter == '') return array();
-        
-        $likematch = "$letter%";
         $entityManager = $this->getEntityManager();
-        $query = $entityManager->createQuery(
-            "SELECT mobo
-            FROM App\Entity\Motherboard mobo, App\Entity\Manufacturer man 
-            WHERE mobo.manufacturer=man AND COALESCE(man.shortName, man.name) like :likeMatch
-            ORDER BY man.name ASC, mobo.name ASC"
-        )->setParameter('likeMatch', $likematch);
+        if (empty($letter)) {
+            $query = $entityManager->createQuery(
+                "SELECT mobo
+                FROM App\Entity\Motherboard mobo 
+                WHERE mobo.manufacturer IS NULL
+                ORDER BY mobo.name ASC"
+            );
+        }
+        else {
+            $likematch = "$letter%";
+            
+            $query = $entityManager->createQuery(
+                "SELECT mobo
+                FROM App\Entity\Motherboard mobo, App\Entity\Manufacturer man 
+                WHERE mobo.manufacturer=man AND COALESCE(man.shortName, man.name) like :likeMatch
+                ORDER BY man.name ASC, mobo.name ASC"
+            )->setParameter('likeMatch', $likematch);
+        }
 
         return $query->getResult();
     }
