@@ -13,14 +13,14 @@
 			{% block opengraph %}
 				<meta property="og:title" content="Ultimate Hardware 2019" >
 				<meta property="og:description" content="The ultimate retro motherboard database" >
-				<meta property="og:image" content="{{ root }}/assets/images/logo.gif" >
+				<meta property="og:image" content="{{ absolute_url(asset('assets/images/logo.gif')) }}" >
 			{% endblock %}
 		{% endif %}
-		<link rel="stylesheet" media="all" type="text/css" href="{{ root }}/assets/main.css">
-		{% if css_for_admin is defined %}<link rel="stylesheet" media="all" type="text/css" href="{{ root }}/assets/admin.css">{% endif %}
-		<link rel="stylesheet" media="only screen" type="text/css" href="{{ root }}/assets/modern.css">
+		<link rel="stylesheet" media="all" type="text/css" href="{{ absolute_url(asset('assets/main.css')) }}">
+		{% if css_for_admin is defined %}<link rel="stylesheet" media="all" type="text/css" href="{{ absolute_url(asset('assets/admin.css')) }}">{% endif %}
+		<link rel="stylesheet" media="only screen" type="text/css" href="{{ absolute_url(asset('assets/modern.css')) }}">
 		<!--[if lt IE 9]>
-			<link rel="stylesheet" type="text/css" href="{{ root }}/assets/iexplore.css">
+			<link rel="stylesheet" type="text/css" href="{{ absolute_url(asset('assets/iexplore.css')) }}">
 		<![endif]-->
 	</head>
 	<body class="content">
@@ -29,10 +29,10 @@
 				<b>Ultimate Hardware <small>2019 BETA</small></b>
 			</a>
 			<a href="{{ root }}/credits" style="vertical-align:top;text-decoration:none;padding-left:5px;">
-				<img src="{{ root }}/assets/images/about.gif" alt="about">
+				<img src="{{ absolute_url(asset('assets/images/about.gif')) }}" alt="about">
 			</a>
 			<a href="/win3board" style="vertical-align:top;text-decoration:none;padding-left:5px;">
-				<img src="{{ root }}/assets/images/w3board.gif" alt="board">
+				<img src="{{ absolute_url(asset('assets/images/w3board.gif')) }}" alt="board">
 			</a>
 			<span class="form" style="padding-left:5px;">
 			<select class="lang" name="lang">
@@ -41,11 +41,11 @@
 			<input type="submit" value=" OK "></span>
 			{% if is_granted('ROLE_ADMIN') %}
 			<a href="{{ root }}/admin" style="vertical-align:top;text-decoration:none;padding-left:5px;">
-				<img src="{{ root }}/assets/images/settings.gif" alt="admin">
+				<img src="{{ absolute_url(asset('assets/images/settings.gif')) }}" alt="admin">
 			</a>{% endif %}
 			{% if is_granted('ROLE_USER') %}
 			<a href="{{ root }}/logout" style="vertical-align:top;text-decoration:none;padding-left:5px;">
-				<img src="{{ root }}/assets/images/logout.gif" alt="logout">
+				<img src="{{ absolute_url(asset('assets/images/logout.gif')) }}" alt="logout">
 			</a>{% endif %}
 		</div></div></form>
 		<div class="main">

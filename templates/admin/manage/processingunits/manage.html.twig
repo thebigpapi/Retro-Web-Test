@@ -7,7 +7,7 @@
     <div class="page">
         <h2 class="title">{{ entityDisplayNamePlural|capitalize }}</h2>
         <a href="{{ path('admin_index') }}" class="admin-button" style="padding:0px 5px 0px;">
-            <img src="{{ root }}/assets/images/back.png" style="padding-top:5px;vertical-align:top;" alt="add" style="display:inline-block;">
+            <img src="{{ absolute_url(asset('assets/images/back.png')) }}" style="padding-top:5px;vertical-align:top;" alt="add" style="display:inline-block;">
             <p style="display:inline-block;">Go back</p>
         </a>
         <a href="./processingunits?entity=processor" class="admin-button" style="padding:0px 5px 0px;{% if entityName == "processor" %}background-color: #afff97;{% endif %}">
@@ -22,7 +22,7 @@
                     <div class="processing-search">{{ form(search) }}</div>
         {% endif %}
         <a href="./processingunits/{{entityName}}s/add/" class="admin-button" style="padding:0px 5px 0px;float:right;">
-            <img src="{{ root }}/assets/images/add.png" style="padding-top:5px;vertical-align:top;" alt="add" style="display:inline-block;">
+            <img src="{{ absolute_url(asset('assets/images/add.png')) }}" style="padding-top:5px;vertical-align:top;" alt="add" style="display:inline-block;">
             <p style="display:inline-block;">Add a {{ entityDisplayName }}</p>
         </a>
             <hr>

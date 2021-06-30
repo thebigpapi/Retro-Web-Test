@@ -94,7 +94,7 @@
 			var h = document.getElementById("jsappend");
 			var js = document.createElement('script');
 			js.type = "text/javascript";
-			js.src = "{{ root }}/assets/highslide/highslide.js";
+			js.src = "{{ absolute_url(asset('assets/highslide/highslide.js')) }}";
 			h.appendChild(js);
 		}
 	</script>

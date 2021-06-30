@@ -29,7 +29,7 @@
                 <td><span class="string-bios">{{ b.getPostString() }}</span></td>
                 <td>{% if b.getFileName() is not null %}
 						<a href="{{ vich_uploader_asset(b, 'romFile') }}">
-						<img src="../../assets/images/dw.gif" alt="" width="16" height="16" style="vertical-align: middle;">
+						<img src="{{ absolute_url(asset('assets/images/dw.gif')) }}" alt="" width="16" height="16" style="vertical-align: middle;">
 						{% if b.getBoardVersion() is not null %} 
 							{{ b.getBoardVersion() }}
 						{% else %}
@@ -41,7 +41,7 @@
 					{% endif %}
 				</td>
 				<td>{{ b.getCoreVersion() }}</td>
-				<td><a class="result-link" href="../../motherboard/show/{{ b.getMotherboard().getId() }}">{{ b.getMotherboard().getManufacturerShortNameIfExist() }}&nbsp;{{ b.getMotherboard().name }}</a></td>
+				<td><a class="result-link" href="{{ path("motherboard_show", {id: b.getMotherboard().getId()}) }}">{{ b.getMotherboard().getManufacturerShortNameIfExist() }}&nbsp;{{ b.getMotherboard().name }}</a></td>
             </tr>
             {% endfor %}
 			</table>
