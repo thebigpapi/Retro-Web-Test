@@ -17,7 +17,7 @@ class MainController extends AbstractController
     public function index(Request $request)
     {
         if($request->get('motherboard') != null) {
-            return $this->redirect('./motherboard/search/');
+            return $this->redirect('./motherboards/search/');
         }
 		if($request->get('bios') != null) {
             return $this->redirect('./bios/search/');

@@ -25,10 +25,10 @@
 	</head>
 	<body class="content">
 		<form action="{{ path('change_page') }}" method="get"><div class="top-bar"><div class="table-mobile">
-			<a href="{{ root }}/" style="text-decoration: none;">
+			<a href="{{ path('app_homepage') }}" style="text-decoration: none;">
 				<b>Ultimate Hardware <small>2019 BETA</small></b>
 			</a>
-			<a href="{{ root }}/credits" style="vertical-align:top;text-decoration:none;padding-left:5px;">
+			<a href="{{ path('app_credits') }}" style="vertical-align:top;text-decoration:none;padding-left:5px;">
 				<img src="{{ absolute_url(asset('assets/images/about.gif')) }}" alt="about">
 			</a>
 			<a href="/win3board" style="vertical-align:top;text-decoration:none;padding-left:5px;">
@@ -40,11 +40,11 @@
 			</select>
 			<input type="submit" value=" OK "></span>
 			{% if is_granted('ROLE_ADMIN') %}
-			<a href="{{ root }}/admin" style="vertical-align:top;text-decoration:none;padding-left:5px;">
+			<a href="{{ path('admin_index') }}" style="vertical-align:top;text-decoration:none;padding-left:5px;">
 				<img src="{{ absolute_url(asset('assets/images/settings.gif')) }}" alt="admin">
 			</a>{% endif %}
 			{% if is_granted('ROLE_USER') %}
-			<a href="{{ root }}/logout" style="vertical-align:top;text-decoration:none;padding-left:5px;">
+			<a href="{{ path('app_logout') }}" style="vertical-align:top;text-decoration:none;padding-left:5px;">
 				<img src="{{ absolute_url(asset('assets/images/logout.gif')) }}" alt="logout">
 			</a>{% endif %}
 		</div></div></form>
