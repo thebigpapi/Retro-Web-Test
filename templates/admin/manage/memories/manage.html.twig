@@ -10,11 +10,11 @@
             <img src="{{ absolute_url(asset('assets/images/back.png')) }}" style="padding-top:5px;vertical-align:top;" alt="add" style="display:inline-block;">
             <p style="display:inline-block;">Go back</p>
         </a>
-        <a href="./memories?entity=ramtype" class="admin-button" style="padding:0px 5px 0px;{% if entityName == "ramtype" %}background-color: #afff97;{% endif %}">
+        <a href="{{ path('admin_manage_memories', {entity:"ramtype"}) }}" class="admin-button" style="padding:0px 5px 0px;{% if entityName == "ramtype" %}background-color: #afff97;{% endif %}">
         <p {% if entityName == "ramtype" %}style="color: #000000;"{% endif %}>{% trans %}DRAM Types{% endtrans %}</p></a>
-        <a href="./memories?entity=ramsize" class="admin-button" style="padding:0px 5px 0px;{% if entityName == "ramsize" %}background-color: #afff97;{% endif %}">
+        <a href="{{ path('admin_manage_memories', {entity:"size"}) }}" class="admin-button" style="padding:0px 5px 0px;{% if entityName == "ramsize" %}background-color: #afff97;{% endif %}">
         <p {% if entityName == "ramsize" %}style="color: #000000;"{% endif %}>{% trans %}RAM Sizes{% endtrans %}</p></a>
-        <a href="./memories?entity=cachesize" class="admin-button" style="padding:0px 5px 0px;{% if entityName == "cachesize" %}background-color: #afff97;{% endif %}">
+        <a href="{{ path('admin_manage_memories', {entity:"cachesize"}) }}" class="admin-button" style="padding:0px 5px 0px;{% if entityName == "cachesize" %}background-color: #afff97;{% endif %}">
         <p {% if entityName == "cachesize" %}style="color: #000000;"{% endif %}>{% trans %}Cache Sizes{% endtrans %}</p></a>
         <a href="./memories/{{entityName}}s/add/" class="admin-button" style="padding:0px 5px 0px;float:right;">
             <img src="{{ absolute_url(asset('assets/images/add.png')) }}" style="padding-top:5px;vertical-align:top;" alt="add" style="display:inline-block;">
