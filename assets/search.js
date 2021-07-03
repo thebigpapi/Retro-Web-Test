@@ -37,7 +37,7 @@ function setChipset(ok, formtype, sel1, sel2, sel_lb, typ, chk) {
 
 /* execution starts HERE; detect the selects and determine the type of search page*/
 var chk = 0;
-if (document.getElementsByName("search_motherboard")[0])
+if (document.getElementsByName("search[platform1]")[0])
 	chk = 1;
 var formtype = "search";
 var chip = document.getElementById(formtype + '_chipsetManufacturer');
