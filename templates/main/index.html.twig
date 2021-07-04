@@ -8,15 +8,15 @@
 	{% if userAgent == 0 or userAgent > 5 %}
 	<div class="index-buttons" style="text-align:center;">
 		<a href="{{ path("motherboard_search") }}" class="index-button0">
-			<span class="s1" style="display:inline-block;"><img src="{{ absolute_url(asset('assets/images/index/motherboard_low.jpg')) }}" alt="find card"></span>
+			<span class="s1" style="display:inline-block;"><img src="{{ absolute_url(asset('assets/images/index/motherboard_low.gif')) }}" alt="find card"></span>
 			<span style="display:inline-block;">{% trans %}Search for a motherboard{% endtrans %} <br>({{moboCount}} {% trans %}entries{% endtrans %})</span>
 		</a>
 		<a href="#" class="index-button1">
-			<span class="s1" style="display:inline-block;"><img src="{{ absolute_url(asset('assets/images/index/card_low.jpg')) }}" alt="find card"></span>
+			<span class="s1" style="display:inline-block;"><img src="{{ absolute_url(asset('assets/images/index/card_low.gif')) }}" alt="find card"></span>
 			<span style="display:inline-block;">{% trans %}Find an expansion card{% endtrans %}<br> [WIP]</span>
 		</a>
 		<a href="{{ path("bios_search") }}" class="index-button2">
-			<span class="s1" style="display:inline-block;"><img src="{{ absolute_url(asset('assets/images/index/awchip_low.jpg')) }}" alt="find BIOS"></span>
+			<span class="s1" style="display:inline-block;"><img src="{{ absolute_url(asset('assets/images/index/awchip_low.gif')) }}" alt="find BIOS"></span>
 			<span style="display:inline-block;">{% trans %}Find a BIOS image{% endtrans %} <br>({{biosCount}} {% trans %}files{% endtrans %})</span>
 		</a>
 	</div>
@@ -42,14 +42,14 @@
 	</div>
 	<table style="width:300px;float:right;font-size:0.7em;">
 		<tr>
-			<td><a href="https://discord.gg/HWWH7hsk2p"><img src="{{ absolute_url(asset('assets/images/index/discord')) }}{% if userAgent == 0 %}.png{% else %}.gif{% endif %}" alt="discord"></a></td>
+			<td><a href="https://discord.gg/HWWH7hsk2p"><img src="{{ absolute_url(asset('assets/images/index/discord.gif')) }}" alt="discord"></a></td>
 			<td><i>{% trans %}If you want to contribute to the UH19 project, or just have a friendly chat with us, you can{% endtrans %} <a href="https://discord.gg/HWWH7hsk2p">{% trans %}join our Discord server!{% endtrans %}</a></i></td>
 		</tr>
 		<tr>
 			<td><i>{% trans %}You can also find us on these forums{% endtrans %}:</i></td>
 			<td>
 				<a href="http://www.win3x.org/win3board/viewtopic.php?f=39&amp;t=26732"><img src="{{ absolute_url(asset('assets/images/index/win3x.gif')) }}" alt="win3x"></a>
-				<a href="https://www.vogons.org/viewtopic.php?f=46&amp;t=74070"><img src="{{ absolute_url(asset('assets/images/index/vogons')) }}{% if userAgent == 0 %}.png{% else %}.gif{% endif %}" alt="vogons"></a>
+				<a href="https://www.vogons.org/viewtopic.php?f=46&amp;t=74070"><img src="{{ absolute_url(asset('assets/images/index/vogons.gif')) }}" alt="vogons"></a>
 				<a href="https://dosreloaded.de/forum/index.php?thread/3599-ultimate-hardware-2019/&amp;pageNo=1"><img src="{{ absolute_url(asset('assets/images/index/dosreloaded.gif')) }}" alt="dosreloaded"></a>
 			</td>
 	</tr></table>
