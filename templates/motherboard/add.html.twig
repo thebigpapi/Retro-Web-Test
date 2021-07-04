@@ -58,25 +58,42 @@
 
 	<table style="width:100%;"><tr>
 		<td style="width:50%;">
-		<div>
-			<b>Alternative name:</b>
-			<button type="button" onclick="expand('motherboardAliases-fields-list')">Add</button>
-		</div>
-		<div class="append_table" id="motherboardAliases-fields-list" data-widget-counter="{{ form.motherboardAliases|length }}"
-        data-prototype="
-			<div class=ba6>{{ form_widget(form.motherboardAliases.vars.prototype.manufacturer, {'attr': {'style': 'width:100%'}} )|e }}</div>
-			<div class=ba6>{{ form_widget(form.motherboardAliases.vars.prototype.name, {'attr': {'style': 'width:100%'}} )|e }}</div>
-			<div class=ba2><button type=button onclick=remove(this.parentNode);>Del</button></div>
-		">
-			{% for alias in form.motherboardAliases %}
 			<div>
-				<div class="ba6">{{ form_widget(alias.manufacturer, {'attr': {'style': 'width:100%'}} ) }}</div>
-				<div class="ba6">{{ form_widget(alias.name, {'attr': {'style': 'width:100%'}} ) }}</div>
-				<div class="ba2"><button type="button" onclick="remove(this.parentNode);">Del</button></div>
-				{{ form_errors(alias) }}
+				<b>Alternative name:</b>
+				<button type="button" onclick="expand('motherboardAliases-fields-list')">Add</button>
 			</div>
-			{% endfor %}
-		</div>
+			<div class="append_table" id="motherboardAliases-fields-list" data-widget-counter="{{ form.motherboardAliases|length }}"
+			data-prototype="
+				<div class=ba6>{{ form_widget(form.motherboardAliases.vars.prototype.manufacturer, {'attr': {'style': 'width:100%'}} )|e }}</div>
+				<div class=ba6>{{ form_widget(form.motherboardAliases.vars.prototype.name, {'attr': {'style': 'width:100%'}} )|e }}</div>
+				<div class=ba2><button type=button onclick=remove(this.parentNode);>Del</button></div>
+			">
+				{% for alias in form.motherboardAliases %}
+				<div>
+					<div class="ba6">{{ form_widget(alias.manufacturer, {'attr': {'style': 'width:100%'}} ) }}</div>
+					<div class="ba6">{{ form_widget(alias.name, {'attr': {'style': 'width:100%'}} ) }}</div>
+					<div class="ba2"><button type="button" onclick="remove(this.parentNode);">Del</button></div>
+					{{ form_errors(alias) }}
+				</div>
+				{% endfor %}
+			</div>
+		</td>
+		<td>
+			<div>
+				<b>Redirections:</b>
+				<button type="button" onclick="expand('redirections-fields-list')">Add</button>
+			</div>
+			<div id="redirections-fields-list" data-widget-counter="{{ form.redirections|length }}"
+				data-prototype="{{ form_widget(form.redirections.vars.prototype)|e }}
+					<button type=button onclick=remove(this);>Del</button>">
+				{% for redirection in form.redirections %}
+					<div>{{ form_widget(redirection) }}
+					<button type="button" onclick="remove(this);">Del</button>
+					{{ form_errors(redirection) }}
+					</div>
+				{% endfor %}
+			</div>
+			{{ form_errors(form.redirections) }}
 		</td>
 		<td>
 			<input type="submit" id="motherboard_form_save" name="motherboard_form[save]" style="background: url({{ absolute_url(asset('assets/images/admin/save.png')) }}) no-repeat scroll 5px 1px;

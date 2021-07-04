@@ -9,6 +9,8 @@ use App\Entity\ExpansionSlot;
 use App\Entity\IoPort;
 use App\Entity\FormFactor;
 use App\Entity\CpuSocket;
+use App\Entity\IdRedirection;
+use App\Entity\MotherboardIdRedirection;
 use App\Form\Motherboard\Search;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
@@ -16,6 +18,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Exception;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 class MotherboardController extends AbstractController
@@ -159,10 +162,20 @@ class MotherboardController extends AbstractController
             ->find($id);
 
         if (!$motherboard) {
-            throw $this->createNotFoundException(
-                'No $motherboard found for id ' . $id
-            );
-        }     
+
+            $idRedirection = $this->getDoctrine()
+            ->getRepository(MotherboardIdRedirection::class)
+            ->findRedirection($id, 'uh19');
+
+            if(!$idRedirection) {
+                throw $this->createNotFoundException(
+                    'No $motherboard found for id ' . $id
+                );
+            }
+            else {
+                return $this->redirect($this->generateUrl('motherboard_show', array("id" => $idRedirection)));
+            }
+        }
 
         return $this->render('motherboard/show.html.twig', [
             'motherboard' => $motherboard,
@@ -180,6 +193,8 @@ class MotherboardController extends AbstractController
             ->getRepository(Motherboard::class)
             ->find($id);
 
+        $entityManager = $this->getDoctrine()->getManager();
+
         if (!$motherboard) {
             throw $this->createNotFoundException(
                 'No $motherboard found for id ' . $id
@@ -189,17 +204,51 @@ class MotherboardController extends AbstractController
         $form = $this->createFormBuilder()
         ->add('No', SubmitType::class)
         ->add('Yes', SubmitType::class)
+        ->add('Redirection', NumberType::class)
         ->getForm();
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            if ($form->get('No')->isClicked())
-            {
+            if ($form->get('No')->isClicked()) {
                 return $this->redirect($this->generateUrl('motherboard_show', array("id" => $id)));
             }
-            if ($form->get('Yes')->isClicked())
-            {
-                $entityManager = $this->getDoctrine()->getManager();
+            if ($form->get('Yes')->isClicked()) {
+                //If user selected a motherboard where the current id will redirect to
+                if($form->get('Redirection')) {
+                    $idRedirection = $form->get('Redirection')->getData();
+                    $destinationMotherboard = $this->getDoctrine()
+                    ->getRepository(Motherboard::class)
+                    ->find($idRedirection);
+
+                    
+                    if($destinationMotherboard) {
+                        //Creating new redirection
+                        $redirection = new MotherboardIdRedirection();
+                        $redirection->setSource($id);
+                        $redirection->setSourceType('uh19');
+                        $redirection->setDestination($destinationMotherboard);
+
+                        $entityManager->persist($redirection);
+
+                        //dd($motherboard->getRedirections()->toArray());
+
+                        //Moving each old redirection to the destination motherboard
+                        foreach($motherboard->getRedirections()->toArray() as $redirection) {
+                            $newRedirection = new MotherboardIdRedirection();
+                            $newRedirection->setSource($redirection->getSource());
+                            $newRedirection->setSourceType($redirection->getSourceType());
+                            $newRedirection->setDestination($destinationMotherboard);
+                            $entityManager->persist($newRedirection);
+                        }
+                        //dd($destinationMotherboard->getRedirections()->toArray());
+                    }
+                    else {
+                        throw $this->createNotFoundException(
+                            'No $motherboard found for id ' . $idRedirection
+                        );
+                    }
+                }
+                //Deleting the motherboard
                 $entityManager->remove($motherboard);
                 $entityManager->flush();
                 return $this->render('motherboard/delete_confirm.html.twig', [
@@ -215,7 +264,7 @@ class MotherboardController extends AbstractController
         ]);
     }
 
-      /**
+    /**
     * @Route("/motherboards/search/", name="motherboard_search")
     * @param Request $request
     */

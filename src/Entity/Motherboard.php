@@ -153,6 +153,11 @@ class Motherboard
      */
     private $drivers;
 
+    /**
+     * @ORM\OneToMany(targetEntity=MotherboardIdRedirection::class, mappedBy="destination", orphanRemoval=true, cascade={"persist"})
+     */
+    private $redirections;
+
 
     public function __construct()
     {
@@ -177,6 +182,7 @@ class Motherboard
         $this->cpuSockets = new ArrayCollection();
         $this->processorPlatformTypes = new ArrayCollection();
         $this->drivers = new ArrayCollection();
+        $this->redirections = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -852,6 +858,36 @@ class Motherboard
             // set the owning side to null (unless already changed)
             if ($driver->getMotherboard() === $this) {
                 $driver->setMotherboard(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|MotherboardIdRedirection[]
+     */
+    public function getRedirections(): Collection
+    {
+        return $this->redirections;
+    }
+
+    public function addRedirection(MotherboardIdRedirection $redirection): self
+    {
+        if (!$this->redirections->contains($redirection)) {
+            $this->redirections[] = $redirection;
+            $redirection->setDestination($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRedirection(MotherboardIdRedirection $redirection): self
+    {
+        if ($this->redirections->removeElement($redirection)) {
+            // set the owning side to null (unless already changed)
+            if ($redirection->getDestination() === $this) {
+                $redirection->setDestination(null);
             }
         }
 

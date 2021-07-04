@@ -39,6 +39,7 @@ use App\Form\Type\MotherboardImageTypeForm;
 use App\Form\Type\KnownIssueType;
 use App\Form\Type\LargeFileMotherboardType;
 use App\Form\Type\LargeFileType;
+use App\Form\Type\MotherboardIdRedirectionType;
 use App\Form\Type\ProcessorPlatformTypeForm;
 use App\Repository\CpuSocketRepository;
 use App\Repository\CpuSpeedRepository;
@@ -233,6 +234,11 @@ class MotherboardForm extends AbstractType
             ])
             ->add('maxCpu', NumberType::class, [
                 'required' => false,
+            ])
+            ->add('redirections', CollectionType::class, [
+                'entry_type' => MotherboardIdRedirectionType::class,
+                'allow_add' => true,
+                'allow_delete' => true,
             ])
             /*->add('processorPlatformTypes', CollectionType::class, [
                 'entry_type' => ProcessorPlatformTypeForm::class,
