@@ -10,7 +10,7 @@ img {border:0;}
 a:link, a:visited {text-decoration: none;}
 a:hover {text-decoration: underline;}
 
-div.top-bar {background:#343943;font-size:16px;padding:7px 18px;}
+div.top-bar {background:#343943;font-size:16px;padding:5px 18px;}
 div.top-bar a:link, div.top-bar a:visited {color: #FFFFFF;}
 div.top-bar small {color: #FF0000; font-size: 12px;}
 div.top-bar select, div.top-bar input { font-size: 12px;}
@@ -28,8 +28,8 @@ b.contrib a:link, b.contrib a:visited { color: #0000FF;}
 /* IE4 buttons */
 form.index-buttons {padding-top: 1px;}
 form.index-buttons input {padding-top:145px;width:15em;font-size:12px;}
-form.index-buttons input.button1 {background: #ebebeb url(./images/index/motherboard_low.jpg) 50% 30% no-repeat;}
-form.index-buttons input.button2 {background: #ebebeb url(./images/index/card_low.jpg) 50% 30%  no-repeat;}
+form.index-buttons input.button1 {background: #ebebeb url(./images/index/motherboard_low.gif) 50% 30% no-repeat;}
+form.index-buttons input.button2 {background: #ebebeb url(./images/index/card_low.gif) 50% 30%  no-repeat;}
 form.index-buttons input.button3 {background: #ebebeb url(./images/index/awchip_low.gif) 50% 30%  no-repeat;}
 /* IE4 buttons */
 

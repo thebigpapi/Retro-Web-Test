@@ -28,11 +28,11 @@
 			<a href="{{ path('app_homepage') }}" style="text-decoration: none;">
 				<b>Ultimate Hardware <small>2019 BETA</small></b>
 			</a>
-			<a href="{{ path('app_credits') }}" style="vertical-align:top;text-decoration:none;padding-left:5px;">
-				<img src="{{ absolute_url(asset('assets/images/about.gif')) }}" alt="about">
+			<a href="{{ path('app_credits') }}" style="text-decoration:none;padding-left:5px;">
+				<img src="{{ absolute_url(asset('assets/images/about.gif')) }}" align="top" alt="about">
 			</a>
-			<a href="/win3board" style="vertical-align:top;text-decoration:none;padding-left:5px;">
-				<img src="{{ absolute_url(asset('assets/images/w3board.gif')) }}" alt="board">
+			<a href="/win3board" style="text-decoration:none;padding-left:5px;">
+				<img src="{{ absolute_url(asset('assets/images/w3board.gif')) }}" align="top" alt="board" style="">
 			</a>
 			<span class="form" style="padding-left:5px;">
 			<select class="lang" name="lang">
@@ -40,12 +40,12 @@
 			</select>
 			<input type="submit" value=" OK "></span>
 			{% if is_granted('ROLE_ADMIN') %}
-			<a href="{{ path('admin_index') }}" style="vertical-align:top;text-decoration:none;padding-left:5px;">
-				<img src="{{ absolute_url(asset('assets/images/settings.gif')) }}" alt="admin">
+			<a href="{{ path('admin_index') }}" style="text-decoration:none;padding-left:5px;">
+				<img src="{{ absolute_url(asset('assets/images/settings.gif')) }}" align="top" alt="admin">
 			</a>{% endif %}
 			{% if is_granted('ROLE_USER') %}
-			<a href="{{ path('app_logout') }}" style="vertical-align:top;text-decoration:none;padding-left:5px;">
-				<img src="{{ absolute_url(asset('assets/images/logout.gif')) }}" alt="logout">
+			<a href="{{ path('app_logout') }}" style="text-decoration:none;padding-left:5px;">
+				<img src="{{ absolute_url(asset('assets/images/logout.gif')) }}" align="top" alt="logout">
 			</a>{% endif %}
 		</div></div></form>
 		<div class="main">
