@@ -12,7 +12,7 @@
         </a>
         <a href="{{ path('admin_manage_memories', {entity:"ramtype"}) }}" class="admin-button" style="padding:0px 5px 0px;{% if entityName == "ramtype" %}background-color: #afff97;{% endif %}">
         <p {% if entityName == "ramtype" %}style="color: #000000;"{% endif %}>{% trans %}DRAM Types{% endtrans %}</p></a>
-        <a href="{{ path('admin_manage_memories', {entity:"size"}) }}" class="admin-button" style="padding:0px 5px 0px;{% if entityName == "ramsize" %}background-color: #afff97;{% endif %}">
+        <a href="{{ path('admin_manage_memories', {entity:"ramsize"}) }}" class="admin-button" style="padding:0px 5px 0px;{% if entityName == "ramsize" %}background-color: #afff97;{% endif %}">
         <p {% if entityName == "ramsize" %}style="color: #000000;"{% endif %}>{% trans %}RAM Sizes{% endtrans %}</p></a>
         <a href="{{ path('admin_manage_memories', {entity:"cachesize"}) }}" class="admin-button" style="padding:0px 5px 0px;{% if entityName == "cachesize" %}background-color: #afff97;{% endif %}">
         <p {% if entityName == "cachesize" %}style="color: #000000;"{% endif %}>{% trans %}Cache Sizes{% endtrans %}</p></a>
