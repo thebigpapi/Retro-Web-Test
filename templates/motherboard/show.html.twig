@@ -190,10 +190,12 @@
             <tr><td>{% trans %}Cache:{% endtrans %}</td><td>
             {% for cache in motherboard.getCacheSize()|sort((a, b) => a.value <=> b.value) %}
                 <span class="newdiv" style="background-color:#d0faca;">
-					{% if cache.getValue() > 1023 %}
-						{{ cache.getValue() / 1024 }} {% trans %}MB{% endtrans %}<!--
+					{% if cache.getValue() > 1048575 %}
+						{{ cache.getValue() / 1048576 }} {% trans %}MB{% endtrans %}<!--
+					-->{% elseif cache.getValue() > 1023 %}
+						{{ cache.getValue() / 1024}} {% trans %}KB{% endtrans %}<!--
 					-->{% else %}
-						{{ cache.getValue() }} {% trans %}KB{% endtrans %}<!--
+						{{ cache.getValue()}} {% trans %}B{% endtrans %}<!--
 					-->{% endif %}<!--
 				--></span>
             {% endfor %}

@@ -70,7 +70,7 @@ This is a firewall, recommended to use.
 ```
 sudo apt install ufw
 sudo ufw allow 8000
-sudo allow ssh
+sudo ufw allow ssh
 sudo ufw enable
 ```
 

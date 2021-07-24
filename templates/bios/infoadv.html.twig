@@ -4,28 +4,6 @@
 
 {% block body %}
 <h2 class="title">{% trans %}Where can I find the POST string?{% endtrans %}</h2>
-
-{% for manufacturer, codes in chipCodes %}
-<p id="{{manufacturer|lower}}-chip"><b>{{manufacturer}} BIOS chipset IDs</b></p>
-<table class="stbl-adv">
-	<tr class="stbl-head">
-		<th>{{ codes[0].getCode() }}-{{ codes[(codes|length // 2)-1].getCode()}}</th>
-		<th>{{ codes[(codes|length // 2)].getCode() }}-{{ codes[(codes|length)-1].getCode() }}</th>
-	</tr>
-	<tr>
-		<td><ul>
-		{% for code in codes|slice(0, (codes|length / 2)) %}
-			<li>{{ code.getCode() }}: {{ code.getChipset().getManufacturer().getShortNameIfExist() }} {{ code.getChipset().getPartNo() }} ({{ code.getChipset().getName() }}) </li>
-		{% endfor %}
-		</ul></td>
-		<td><ul>
-		{% for code in codes|slice((codes|length // 2), (codes|length // 2)+1) %}
-			<li>{{ code.getCode() }}: {{ code.getChipset().getManufacturer().getShortNameIfExist() }} {{ code.getChipset().getPartNo() }} ({{ code.getChipset().getName() }}) </li>
-		{% endfor %}
-		</ul></td>
-	</tr>
-</table>
-{% endfor %}
 	{% for manufacturer, codes in biosCodes %}
 		<p id="{{manufacturer|lower}}-manuf">
 		<b>{{manufacturer}} BIOS manufacturer IDs: {{codes|length}}</b></p>
@@ -70,4 +48,26 @@
 			</tr>
 		</table>
 	{% endfor %}
+<p id="award-chip"></p>
+{% for manufacturer, codes in chipCodes %}
+<p><b>{{manufacturer}} chipset IDs</b></p>
+<table class="stbl-adv">
+	<tr class="stbl-head">
+		<th>{{ codes[0].getCode() }}-{{ codes[(codes|length // 2)-1].getCode()}}</th>
+		<th>{{ codes[(codes|length // 2)].getCode() }}-{{ codes[(codes|length)-1].getCode() }}</th>
+	</tr>
+	<tr>
+		<td><ul>
+		{% for code in codes|slice(0, (codes|length / 2)) %}
+			<li>{{ code.getCode() }}: {{ code.getChipset().getManufacturer().getShortNameIfExist() }} {{ code.getChipset().getPartNo() }} ({{ code.getChipset().getName() }}) </li>
+		{% endfor %}
+		</ul></td>
+		<td><ul>
+		{% for code in codes|slice((codes|length // 2), (codes|length // 2)+1) %}
+			<li>{{ code.getCode() }}: {{ code.getChipset().getManufacturer().getShortNameIfExist() }} {{ code.getChipset().getPartNo() }} ({{ code.getChipset().getName() }}) </li>
+		{% endfor %}
+		</ul></td>
+	</tr>
+</table>
+{% endfor %}
 {% endblock %}
