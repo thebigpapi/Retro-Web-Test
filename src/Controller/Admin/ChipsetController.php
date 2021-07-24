@@ -154,10 +154,22 @@ class ChipsetController extends AbstractController {
 
         usort($objects, function ($a, $b)
         {
-            if ($a->getMainChipWithManufacturer() == $b->getMainChipWithManufacturer()) {
-                return 0;
+            if ($a->getManufacturer()->getShortNameIfExist() == $b->getManufacturer()->getShortNameIfExist()) {
+                if ($a->getName() == $b->getName()) {
+                    if ($a->getPartNo() == $b->getPartNo()) {
+                        return 0;
+                    }
+                    else {
+                        return ($a->getPartNo() < $b->getPartNo()) ? -1 : 1;
+                    }
+                }
+                else {
+                    return ($a->getName() < $b->getName()) ? -1 : 1;
+                }
             }
-            return ($a->getMainChipWithManufacturer() < $b->getMainChipWithManufacturer()) ? -1 : 1;
+            else {
+                return ($a->getManufacturer()->getShortNameIfExist() < $b->getManufacturer()->getShortNameIfExist()) ? -1 : 1;
+            }
         }
         );
 

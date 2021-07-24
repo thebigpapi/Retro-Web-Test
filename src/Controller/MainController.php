@@ -14,8 +14,7 @@ class MainController extends AbstractController
      * @Route("/", name="app_homepage"), methods={"GET"})
      * @param Request $request
      */
-    public function index(Request $request)
-    {
+    public function index(Request $request) {
         if($request->get('motherboard') != null) {
             return $this->redirect('./motherboards/search/');
         }
@@ -24,7 +23,7 @@ class MainController extends AbstractController
         }
         else {
             $latestMotherboards = $this->getDoctrine()->getRepository(Motherboard::class)->find10Latest();
-            $request->headers->get('User-Agent');
+            //$request->headers->get('User-Agent');
             $item = 0;
             if (str_contains($request, 'MSIE 4')) $item = 4;
             if (str_contains($request, 'MSIE 5')) $item = 5;

@@ -151,7 +151,7 @@ class MotherboardController extends AbstractController
             'show_images' => $showImages,
         ]);
     }
-    
+
     /**
     * @Route("/motherboards/{id}", name="motherboard_show", requirements={"id"="\d+"})
     */
