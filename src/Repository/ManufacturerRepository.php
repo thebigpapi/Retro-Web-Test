@@ -36,10 +36,11 @@ class ManufacturerRepository extends ServiceEntityRepository
         $rsm->addFieldResult('man', 'name', 'name');
         $rsm->addFieldResult('man', 'short_name', 'shortName');
 
-        $query = $entityManager->createNativeQuery('SELECT DISTINCT manufacturer.id, manufacturer.name, manufacturer.short_name  
-        FROM motherboard_alias alias FULL OUTER JOIN motherboard mobo ON mobo.manufacturer_id=alias.manufacturer_id, manufacturer 
-        WHERE manufacturer.id=coalesce(alias.manufacturer_id,mobo.manufacturer_id) 
-        ORDER BY manufacturer.name;', $rsm
+        $query = $entityManager->createNativeQuery(
+            'SELECT DISTINCT manufacturer.id, manufacturer.name, manufacturer.short_name  
+            FROM motherboard_alias alias FULL OUTER JOIN motherboard mobo ON mobo.id=alias.motherboard_id, manufacturer 
+            WHERE manufacturer.id=coalesce(alias.manufacturer_id,mobo.manufacturer_id) 
+            ORDER BY manufacturer.name;', $rsm
         );
         
         return $query->setCacheable(true)
