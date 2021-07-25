@@ -1,8 +1,8 @@
 /* iexplore.css - extra stylesheet for Internet Explorer only */
 
-/*	set min-width at zero for IE8, to prevent too large buttons. That doesn't affect IE7 and older	*/
+/*	set margin-bottom at the index page, IE7 and inferior	*/
 
-form.index-buttons input { min-width: 0; }
+div.index-buttons a span.s1 span.s2 { *margin-bottom: 3px;}
 
 /*	set height at auto for IE8 and below, to prevent too big input. IE5.5 and lower use a different box-model, thus width is also adjusted	*/
 

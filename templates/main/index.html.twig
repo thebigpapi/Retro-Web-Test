@@ -5,21 +5,21 @@
 
 {% block body %}
 	<h2 class="title">{% trans %}Where do you want to go today?{% endtrans %}</h2>
-	{% if userAgent == 0 or userAgent > 5 %}
-	<div class="index-buttons" style="text-align:center;">
+	{% if userAgent != 'ie4' and userAgent != 'retrozilla' %}
+	<div class="index-buttons"><div class="main">
 		<a href="{{ path("motherboard_search") }}" class="index-button0">
-			<span class="s1" style="display:inline-block;"><img src="{{ absolute_url(asset('assets/images/index/motherboard_low.gif')) }}" alt="find card"></span>
-			<span style="display:inline-block;">{% trans %}Search for a motherboard{% endtrans %} <br>({{moboCount}} {% trans %}entries{% endtrans %})</span>
-		</a>
+			<span class="s1"><span class="s2"></span></span>
+			<span>{% trans %}Search for a motherboard{% endtrans %} <span>({{moboCount}} {% trans %}entries{% endtrans %})</span></span><!--
+		--></a>
 		<a href="#" class="index-button1">
-			<span class="s1" style="display:inline-block;"><img src="{{ absolute_url(asset('assets/images/index/card_low.gif')) }}" alt="find card"></span>
-			<span style="display:inline-block;">{% trans %}Find an expansion card{% endtrans %}<br> [WIP]</span>
-		</a>
+			<span class="s1"><span class="s2"></span></span>
+			<span>{% trans %}Find an expansion card{% endtrans %} <span> [WIP]</span></span><!--
+		--></a>
 		<a href="{{ path("bios_search") }}" class="index-button2">
-			<span class="s1" style="display:inline-block;"><img src="{{ absolute_url(asset('assets/images/index/awchip_low.gif')) }}" alt="find BIOS"></span>
-			<span style="display:inline-block;">{% trans %}Find a BIOS image{% endtrans %} <br>({{biosCount}} {% trans %}files{% endtrans %})</span>
-		</a>
-	</div>
+			<span class="s1"><span class="s2"></span></span>
+			<span>{% trans %}Find a BIOS image{% endtrans %} <span>({{biosCount}} {% trans %}files{% endtrans %})</span></span><!--
+		--></a>
+	</div></div>
 	{% else %}
 	<form action="./" class="index-buttons" method="get">
 		<div class="main">
@@ -36,7 +36,6 @@
         	{% for motherboard in latestMotherboards %}
 				<li><a href="{{ path("motherboard_show", {id:motherboard.getId()}) }}">{{ motherboard.getManufacturerShortNameIfExist() }}&nbsp;{{ motherboard.name }}</a></li>		
 			{% endfor %}
-			
 			</ul>
 		</div>
 	</div>

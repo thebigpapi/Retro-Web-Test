@@ -12,10 +12,12 @@ a:hover {text-decoration: underline;}
 
 div.top-bar {background:#343943;font-size:16px;padding:5px 18px;}
 div.top-bar a:link, div.top-bar a:visited {color: #FFFFFF;}
+div.top-bar a:hover {text-decoration: none;}
 div.top-bar small {color: #FF0000; font-size: 12px;}
 div.top-bar select, div.top-bar input { font-size: 12px;}
 div.top-bar select.goto {width: 9em;}
 div.top-bar select.lang {width: 8.33em;}
+div.top-bar img {vertical-align: top;}
 
 div.main, th {text-align: center;}
 div.page {text-align: left; margin: auto; width:98%;}
@@ -25,29 +27,33 @@ b.contrib a:link, b.contrib a:visited { color: #0000FF;}
 
 /* index.html.twig */
 
-/* IE4 buttons */
 form.index-buttons {padding-top: 1px;}
 form.index-buttons input {padding-top:145px;width:15em;font-size:12px;}
-form.index-buttons input.button1 {background: #ebebeb url(./images/index/motherboard_low.gif) 50% 30% no-repeat;}
-form.index-buttons input.button2 {background: #ebebeb url(./images/index/card_low.gif) 50% 30%  no-repeat;}
-form.index-buttons input.button3 {background: #ebebeb url(./images/index/awchip_low.gif) 50% 30%  no-repeat;}
-/* IE4 buttons */
+form.index-buttons input.button1 {background: #ebebeb url(./images/index/motherboard_alt.gif) center no-repeat;}
+form.index-buttons input.button2 {background: #ebebeb url(./images/index/card_alt.gif) center no-repeat;}
+form.index-buttons input.button3 {background: #ebebeb url(./images/index/awchip_alt.gif) center no-repeat;}
 
 div.index-buttons a{
 	background-color: #ebebeb;
 	color:#000000;
   	border: 1px solid gray;
   	text-align: center;
-  	text-decoration: none;
   	display: inline-block;
-  	font-size: 16px;
+  	font-size: 12px;
   	margin-bottom: 4px;
-	width:200px;
-	height:190px;
+	width:17em;
+	height:15em;
 	vertical-align:top;
 }
-div.index-buttons a span.s1{padding-top:15px;}
-div.index-buttons a.index-button2 span.s1{padding-top:28px;padding-bottom:10px;}
+div.index-buttons a:hover{
+  	text-decoration: none;
+}
+div.index-buttons a span {display:block;}
+div.index-buttons a span.s1{padding-top:1.25em;}
+div.index-buttons a span.s1 span.s2{height:10.5em; width: 10.5em;display: inline-block;}
+a.index-button0 span.s1 span.s2 {background-image: url(./images/index/motherboard_low.gif); background-position: center; background-repeat: no-repeat;}
+a.index-button1 span.s1 span.s2 {background-image: url(./images/index/card_low.gif); background-position: center; background-repeat: no-repeat;}
+a.index-button2 span.s1 span.s2 {background-image: url(./images/index/awchip_low.gif); background-position: center; background-repeat: no-repeat;}
 div.perks, div.perks div.results ul li {font-size:14px;}
 /* search.html.twig */
 table.search-table{width:100%;}

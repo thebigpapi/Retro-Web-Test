@@ -69,11 +69,11 @@ select.sform{height:2.2em;}
 	div.page {width:90%;font-size:22px;}
 
 	/* index.html.twig */
-	div.index-buttons a{font-size: 16px;width:285px;height:285px;}
-	a.index-button0 span.s1 {content: url(./images/index/motherboard_med.png);}
-	a.index-button1 span.s1 {content: url(./images/index/card_med.png);}
-	a.index-button2 span.s1 {content: url(./images/index/awchip_med.png);padding:10px 0 10px;}
-	div.index-buttons a.index-button2 span.s1{padding-top:25px;}
+	div.index-buttons a{font-size: 15px;width:19em;height:19em;}
+	div.index-buttons a span.s1 span.s2 {height:15em; width: 17.2em;}
+	a.index-button0 span.s1 span.s2 {background-image: url(./images/index/motherboard_med.png);}
+	a.index-button1 span.s1 span.s2 {background-image: url(./images/index/card_med.png);}
+	a.index-button2 span.s1 span.s2 {background-image: url(./images/index/awchip_med.png);}
 
 	/* search.html.twig */
 	td.table-width, td.bios-width {width:210px;}

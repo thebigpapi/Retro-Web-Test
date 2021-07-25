@@ -1,7 +1,7 @@
 {# templates/base.html.twig #}
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html dir="{{ 'dir.lang'|trans }}" lang="{{ 'user.lang'|trans }}">
-	<head>{% set root = constant('app.path') %}
+	<head>
 		<meta http-equiv="content-type" content="text/html; charset=UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		{% block metatags %}
@@ -25,27 +25,27 @@
 	</head>
 	<body class="content">
 		<form action="{{ path('change_page') }}" method="get"><div class="top-bar"><div class="table-mobile">
-			<a href="{{ path('app_homepage') }}" style="text-decoration: none;">
+			<a href="{{ path('app_homepage') }}">
 				<b>Ultimate Hardware <small>2019 BETA</small></b>
 			</a>
-			<a href="{{ path('app_credits') }}" style="text-decoration:none;padding-left:5px;">
-				<img src="{{ absolute_url(asset('assets/images/about.gif')) }}" align="top" alt="about">
+			<a href="{{ path('app_credits') }}">
+				<img src="{{ absolute_url(asset('assets/images/about.gif')) }}" alt="about">
 			</a>
-			<a href="/win3board" style="text-decoration:none;padding-left:5px;">
-				<img src="{{ absolute_url(asset('assets/images/w3board.gif')) }}" align="top" alt="board" style="">
+			<a href="/win3board">
+				<img src="{{ absolute_url(asset('assets/images/w3board.gif')) }}" alt="board">
 			</a>
-			<span class="form" style="padding-left:5px;">
+			<span class="form">
 			<select class="lang" name="lang">
 				{% for locale in locales %}<option{% if locale == 'user.lang'|trans %} selected="selected"{% endif %} value="{{ locale }}">{{ 'name.lang'|trans(locale=locale) }}</option>{% endfor %}
 			</select>
 			<input type="submit" value=" OK "></span>
 			{% if is_granted('ROLE_ADMIN') %}
-			<a href="{{ path('admin_index') }}" style="text-decoration:none;padding-left:5px;">
-				<img src="{{ absolute_url(asset('assets/images/settings.gif')) }}" align="top" alt="admin">
+			<a href="{{ path('admin_index') }}">
+				<img src="{{ absolute_url(asset('assets/images/settings.gif')) }}" alt="admin">
 			</a>{% endif %}
 			{% if is_granted('ROLE_USER') %}
-			<a href="{{ path('app_logout') }}" style="text-decoration:none;padding-left:5px;">
-				<img src="{{ absolute_url(asset('assets/images/logout.gif')) }}" align="top" alt="logout">
+			<a href="{{ path('app_logout') }}">
+				<img src="{{ absolute_url(asset('assets/images/logout.gif')) }}" alt="logout">
 			</a>{% endif %}
 		</div></div></form>
 		<div class="main">
