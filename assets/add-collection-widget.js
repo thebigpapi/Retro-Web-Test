@@ -125,7 +125,7 @@ function clone_board() {
 	if (confirm('Are you sure you want to clone this board ?')) {
 		//replace the form URL
 		var frm = document.getElementsByName("add_motherboard")[0];
-		frm.action = '/' + 'admin/manage/motherboards/motherboards/add';
+		frm.action = '/' + 'uh19/admin/manage/motherboards/motherboards/add';
 		// remove all files
 		var images = document.getElementById("images-fields-list");
 		images.innerHTML = '';
