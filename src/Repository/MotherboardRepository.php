@@ -224,7 +224,10 @@ class MotherboardRepository extends ServiceEntityRepository
         // Two sockets
         if($socket1 && $socket2 && $socket1 != $socket2)
         {
-            $where = "$where mot0.id IN (SELECT motherboard_id FROM motherboard_cpu_socket WHERE cpu_socket_id=:socket1 OR cpu_socket_id=:socket2)";
+            $where = "$where mot0.id IN (SELECT socket1.motherboard_id 
+            FROM motherboard_cpu_socket as socket1 
+            JOIN motherboard_cpu_socket as socket2 on socket1.motherboard_id = socket2.motherboard_id 
+            WHERE socket1.cpu_socket_id=:socket1 AND socket2.cpu_socket_id=:socket2)";
         }
         else // One socket
         {
@@ -242,7 +245,11 @@ class MotherboardRepository extends ServiceEntityRepository
         // Two platforms
         if($platform1 && $platform2 && $platform1 != $platform2)
         {
-            $where = "$where mot0.id IN (SELECT motherboard_id FROM motherboard_processor_platform_type WHERE processor_platform_type_id=:platform1 OR processor_platform_type_id=:platform2)";
+            //$where = "$where mot0.id IN (SELECT motherboard_id FROM motherboard_processor_platform_type WHERE processor_platform_type_id=:platform1 OR processor_platform_type_id=:platform2)";
+            $where = "$where mot0.id IN (SELECT platform1.motherboard_id 
+            FROM motherboard_processor_platform_type as platform1 
+            JOIN motherboard_processor_platform_type as platform2 on platform1.motherboard_id = platform2.motherboard_id 
+            WHERE platform1.processor_platform_type_id=:platform1 AND platform2.processor_platform_type_id=:platform2)";
         }
         else // One platform
         {
