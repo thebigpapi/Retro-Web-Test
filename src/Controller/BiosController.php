@@ -101,7 +101,7 @@ class BiosController extends AbstractController
 
         return $this->render('bios/result.html.twig', [
             'bios' => $bios,
-            'bios_count' => count($bios),
+            'bios_count' => count($data),
             'postStringAnalysis' => $postStringAnalysis,
         ]);
     }
