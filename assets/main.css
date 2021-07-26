@@ -15,7 +15,6 @@ div.top-bar a:link, div.top-bar a:visited {color: #FFFFFF;}
 div.top-bar a:hover {text-decoration: none;}
 div.top-bar small {color: #FF0000; font-size: 12px;}
 div.top-bar select, div.top-bar input { font-size: 12px;}
-div.top-bar select.goto {width: 9em;}
 div.top-bar select.lang {width: 8.33em;}
 div.top-bar img {vertical-align: top;}
 

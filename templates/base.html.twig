@@ -34,7 +34,7 @@
 			<a href="/win3board">
 				<img src="{{ absolute_url(asset('assets/images/w3board.gif')) }}" alt="board">
 			</a>
-			<span class="form">
+			<span class="form">	<input type="hidden" name="goto" value="{{ app.request.requesturi }}">
 			<select class="lang" name="lang">
 				{% for locale in locales %}<option{% if locale == 'user.lang'|trans %} selected="selected"{% endif %} value="{{ locale }}">{{ 'name.lang'|trans(locale=locale) }}</option>{% endfor %}
 			</select>

@@ -22,8 +22,7 @@ select.sform{height:2.2em;}
 	div.top-bar {font-size:12px; padding:0 0 0 5px;}
 	div.top-bar div.table-mobile {display: table; border-spacing: 2px;}
 	div.top-bar a, div.top-bar span.form {display: table-cell; vertical-align: middle; padding: 1px;}
-	div.top-bar span.form { width: 140px;}
-	div.top-bar select.goto {width: 38%;}
+	div.top-bar span.form {width: 140px;}
 	div.top-bar select.lang {width: 70%;}
 	
 	/* search.html.twig */
