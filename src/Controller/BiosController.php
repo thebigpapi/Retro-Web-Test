@@ -45,6 +45,10 @@ class BiosController extends AbstractController
         if ($chipsetId && intval($chipsetId)) $criterias['chipset_id'] = intval($chipsetId);
         elseif ($chipsetId == "NULL") $criterias['chipset_id'] = NULL;
 
+        if (empty($criterias)) {
+            return $this->redirectToRoute("bios_search");
+        }
+
         $data = $this->getDoctrine()
             ->getRepository(MotherboardBios::class)
             ->findBios($criterias);
