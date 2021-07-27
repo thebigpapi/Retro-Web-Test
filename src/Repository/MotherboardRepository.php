@@ -172,6 +172,10 @@ class MotherboardRepository extends ServiceEntityRepository
         else return $key ."_id =:$key";
     }
 
+    private function valueToWhere2($key, $value) {
+        return $key . "_id" . (is_null($value) ? " is NULL": "=:$key");
+    }
+
     private function valuesToWhere(&$values, &$cpt)
     {
         $where = "";
@@ -183,6 +187,13 @@ class MotherboardRepository extends ServiceEntityRepository
                 $where = $where . "mot0." . $this->valueToWhere($values, $key, $val) . " AND ";
             }
             $cpt ++;
+        }
+        return $where;
+    }
+
+    private function valuesToWhere2(array $values, array $where) : array {
+        foreach ($values as $key => $val) {
+            $where[] = "mot0." . $this->valuesToWhere2($key, $val);
         }
         return $where;
     }
@@ -202,6 +213,13 @@ class MotherboardRepository extends ServiceEntityRepository
         return $where;
     }
 
+    private function biosToSQL2(array $bios, array $where) : array {
+        foreach ($bios as $key => $val) {
+            $where[] = "mot0.id IN (SELECT motherboard_id FROM motherboard_bios bios WHERE bios.manufacturer_id=:bios$key)";
+        } 
+        return $where;
+    }
+
     private function dramToSQL($dram, &$cpt)
     {
         if ($cpt != 0) $where = " AND ";
@@ -213,6 +231,13 @@ class MotherboardRepository extends ServiceEntityRepository
             else
                 $where = "$where mot0.id IN (SELECT motherboard_id FROM motherboard_dram_type dram WHERE dram.dram_type_id=:dram$key) AND";
             $cpt ++;
+        } 
+        return $where;
+    }
+
+    private function dramToSQL2(array $dram, array $where) : array {
+        foreach ($dram as $key => $val) {
+            $where[] = "mot0.id IN (SELECT motherboard_id FROM motherboard_dram_type dram WHERE dram.dram_type_id=:dram$key)";
         } 
         return $where;
     }
@@ -237,6 +262,20 @@ class MotherboardRepository extends ServiceEntityRepository
         return $where;
     }
 
+    private function socketToSQL2($socket1, $socket2, array $where) : array {
+        // Two sockets
+        if($socket1 && $socket2 && $socket1 != $socket2) {
+            $where[] = "mot0.id IN (SELECT socket1.motherboard_id 
+            FROM motherboard_cpu_socket as socket1 
+            JOIN motherboard_cpu_socket as socket2 on socket1.motherboard_id = socket2.motherboard_id 
+            WHERE socket1.cpu_socket_id=:socket1 AND socket2.cpu_socket_id=:socket2)";
+        }
+        else {// One socket
+            $where[] = "mot0.id IN (SELECT motherboard_id FROM motherboard_cpu_socket WHERE cpu_socket_id=:socket)";
+        }
+        return $where;
+    }
+
     private function platformToSQL($platform1, $platform2, &$cpt)
     {
         if ($cpt != 0) $where = " AND ";
@@ -245,7 +284,6 @@ class MotherboardRepository extends ServiceEntityRepository
         // Two platforms
         if($platform1 && $platform2 && $platform1 != $platform2)
         {
-            //$where = "$where mot0.id IN (SELECT motherboard_id FROM motherboard_processor_platform_type WHERE processor_platform_type_id=:platform1 OR processor_platform_type_id=:platform2)";
             $where = "$where mot0.id IN (SELECT platform1.motherboard_id 
             FROM motherboard_processor_platform_type as platform1 
             JOIN motherboard_processor_platform_type as platform2 on platform1.motherboard_id = platform2.motherboard_id 
@@ -259,11 +297,24 @@ class MotherboardRepository extends ServiceEntityRepository
         return $where;
     }
 
+    private function platformToSQL2($platform1, $platform2, array $where): array {
+        // Two platforms
+        if ($platform1 && $platform2 && $platform1 != $platform2) {
+            $where[] = "mot0.id IN (SELECT platform1.motherboard_id 
+            FROM motherboard_processor_platform_type as platform1 
+            JOIN motherboard_processor_platform_type as platform2 on platform1.motherboard_id = platform2.motherboard_id 
+            WHERE platform1.processor_platform_type_id=:platform1 AND platform2.processor_platform_type_id=:platform2)";
+        }
+        else {// One platform
+            $where[] = "mot0.id IN (SELECT motherboard_id FROM motherboard_processor_platform_type WHERE processor_platform_type_id=:platform)";
+        }
+        return $where;
+    }
+
     private function initResultSetMapping()
     {
         $rsm = new ResultSetMapping();
         
-
         $rsm->addEntityResult('App\Entity\Motherboard', 'mot0');
         $rsm->addFieldResult('mot0', 'id', 'id');
         $rsm->addFieldResult('mot0', 'name', 'name');
@@ -286,7 +337,6 @@ class MotherboardRepository extends ServiceEntityRepository
 
     private function prepareSQL(array $values, array $arrays, &$slotVals, &$ioVals)
     {
-        //dd("test");
         $posFrom = 0;
         $posWhere = 0;
 
@@ -467,12 +517,156 @@ class MotherboardRepository extends ServiceEntityRepository
         LEFT JOIN manufacturer man1 ON mot0.manufacturer_id = man1.id 
         $whereNoChipset 
         ";
-        ;
+        
         if (array_key_exists('chipsetManufacturer', get_defined_vars())) // Chipset manufacturer searched
             if($chipsetManufacturer == null) // Motherboards with no chipset
                 $sql = "$noChipset"; 
         else // Motherboards with and without a chipset
             $sql = "$sql UNION $noChipset"; 
+
+        $sql .= "ORDER BY man1_name ASC, mot0_name ASC";
+
+        return $sql;
+    }
+
+    private function prepareSQL2(array $values, array $arrays, &$slotVals, &$ioVals)
+    {
+        $posFrom = 0;
+
+        // Gathering name and manufacturer which are handled differently compared to other values
+        if (isset($values['name'])) {
+            $name = $values['name'];
+            unset($values['name']);
+        }
+        if (isset($values['manufacturer'])) {
+            $manufacturer = $values['manufacturer'];
+            unset($values['manufacturer']);
+        }
+        if(array_key_exists('chipsetManufacturer',$values)) {
+            $chipsetManufacturer = $values['chipsetManufacturer'];
+            unset($values['chipsetManufacturer']);
+        }
+        if (isset($values['cpu_socket1'])) {
+            $socket1 = $values['cpu_socket1'];
+            unset($values['cpu_socket1']);
+        }
+        if (isset($values['cpu_socket2'])) {
+            $socket2 = $values['cpu_socket2'];
+            unset($values['cpu_socket2']);
+        }
+        if (isset($values['processor_platform_type1'])) {
+            $platform1 = $values['processor_platform_type1'];
+            unset($values['processor_platform_type1']);
+        }
+        if (isset($values['processor_platform_type2'])) {
+            $platform2 = $values['processor_platform_type2'];
+            unset($values['processor_platform_type2']);
+        }
+
+
+        $where = $this->valuesToWhere2($values, array());
+
+        // Treating name and manufacturer differently to other values (to search into actual motherboard name and alias)
+        if (isset($name) && $name != null) {
+            if(isset($manufacturer)) {
+                if($manufacturer == null) {
+                    $where[] = "((mot0.name ILIKE :name AND mot0.manufacturer_id IS NULL) OR mot0.id IN (SELECT motherboard_id FROM motherboard_alias AS ma WHERE ma.name ILIKE :name AND ma.manufacturer_id IS NULL)) ";
+                }
+                else {
+                    $where[] = "((mot0.name ILIKE :name AND mot0.manufacturer_id = :manufacturer) OR mot0.id IN (SELECT motherboard_id FROM motherboard_alias AS ma WHERE ma.name ILIKE :name AND ma.manufacturer_id = :manufacturer)) ";
+                }
+            }
+            else {
+                $where[] = "((mot0.name ILIKE :name) OR mot0.id IN (SELECT motherboard_id FROM motherboard_alias AS ma WHERE ma.name ILIKE :name)) ";
+            }
+        }
+        elseif (isset($manufacturer)) {
+            if($manufacturer == null) {
+                $where[] = "( mot0.manufacturer_id IS NULL OR mot0.id IN (SELECT motherboard_id FROM motherboard_alias AS ma WHERE ma.manufacturer_id IS NULL)) ";
+            }
+            else {
+                $where[] = "( mot0.manufacturer_id = :manufacturer OR mot0.id IN (SELECT motherboard_id FROM motherboard_alias AS ma WHERE ma.manufacturer_id = :manufacturer)) ";
+            }
+        }
+
+        $from = "FROM ";
+
+
+        if (!isset($arrays["ioPorts"]) && !isset($arrays["expansionSlots"])) {
+            $from = $from . "motherboard mot0";
+        }
+        else {
+            if (isset($arrays["expansionSlots"])) {
+                $from = $from . $this->expansionSlotsToSQL($arrays['expansionSlots'], $slotVals, $posFrom);
+            }
+            if (isset($arrays["ioPorts"])) {
+                $from = $from . $this->ioPortsToSQL($arrays['ioPorts'], $ioVals, $posFrom);
+            }
+        }
+        if (isset($arrays["bios"])) {
+            $where = $this->biosToSQL2($arrays['bios'], $where);
+        }
+        if (isset($arrays["dram"])) {
+            $where = $this->dramToSQL2($arrays['dram'], $where);
+        }
+        if (isset($socket1) && isset($socket2)) {
+            $where = $this->socketToSQL2($socket1, $socket2, $where);
+        }
+        elseif (isset($socket1)) {
+            $where = $this->socketToSQL2($socket1, null, $where);
+        }
+        elseif (isset($socket2)) {
+            $where = $this->socketToSQL2($socket2, null, $where);
+        }
+
+        if (isset($platform1) && isset($platform2)) {
+            $where = $this->platformToSQL2($platform1, $platform2, $where);
+        }
+        elseif (isset($platform1)) {
+            $where = $this->platformToSQL2($platform1, null, $where);
+        }
+        elseif (isset($platform2)) {
+            $where = $this->platformToSQL2($platform2, null, $where);
+        }
+
+        $whereNoChipset = $where;
+        $whereNoChipset[] = "mot0.chipset_id is NULL ";
+
+        if(isset($chipsetManufacturer))
+        {
+            $where[] = "chp.manufacturer_id=:chipsetManufacturer ";
+        }
+
+        $whereSQL = "WHERE " . implode(" AND ", $where);
+        $whereNoChipsetSQL = "WHERE " . implode(" AND ", $whereNoChipset);
+
+        $sql = "
+            SELECT mot0.*, mot0.name as mot0_name,
+            man1.id as man1_id, man1.name as man1_name, man1.short_name as man1_short_name,
+            chp.id as chp_id, chp.manufacturer_id as chp_man_id,
+            man2.id as man2_id, man2.name as man2_name, man2.short_name as man2_short_name
+            $from 
+            LEFT JOIN manufacturer man1 ON mot0.manufacturer_id = man1.id 
+            JOIN chipset chp ON mot0.chipset_id = chp.id 
+            JOIN manufacturer man2 ON chp.manufacturer_id = man2.id 
+            $whereSQL
+
+        ";
+
+        $noChipset = " SELECT mot0.*, mot0.name as mot0_name, 
+        man1.id as man1_id, man1.name as man1_name, man1.short_name as man1_short_name,
+        NULL, NULL, NULL, NULL,
+        NULL
+        $from 
+        LEFT JOIN manufacturer man1 ON mot0.manufacturer_id = man1.id 
+        $whereNoChipsetSQL 
+        ";
+        
+        if (array_key_exists('chipsetManufacturer', get_defined_vars())) // Chipset manufacturer searched
+            if($chipsetManufacturer == null) // Motherboards with no chipset
+                $sql = "$noChipset"; 
+        else // Motherboards with and without a chipset
+            $sql .= "$sql UNION $noChipset"; 
 
         $sql .= "ORDER BY man1_name ASC, mot0_name ASC";
 
@@ -548,7 +742,7 @@ class MotherboardRepository extends ServiceEntityRepository
         $slotVals = array();
         $ioVals = array();
         
-        $sql = $this->prepareSQL($values, $arrays, $slotVals, $ioVals);
+        $sql = $this->prepareSQL2($values, $arrays, $slotVals, $ioVals);
         
         $rsm = $this->initResultSetMapping();
 
