@@ -12,6 +12,7 @@ use App\Entity\CpuSocket;
 use App\Entity\IdRedirection;
 use App\Entity\MotherboardIdRedirection;
 use App\Form\Motherboard\Search;
+use App\Repository\MotherboardRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
@@ -330,6 +331,7 @@ class MotherboardController extends AbstractController
             'procPlatformTypes' => $procPlatformTypes,
             'bios' => $biosManufacturers,
             'cpuSockets' => $cpuSockets,
+            'csrf_protection' => false,
             ]);
 
         $form->handleRequest($request);

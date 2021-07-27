@@ -471,10 +471,10 @@ class MotherboardRepository extends ServiceEntityRepository
         if (array_key_exists('chipsetManufacturer', get_defined_vars())) // Chipset manufacturer searched
             if($chipsetManufacturer == null) // Motherboards with no chipset
                 $sql = "$noChipset"; 
-            else // Motherboards with a chipset
-                $sql = "$sql";            
         else // Motherboards with and without a chipset
             $sql = "$sql UNION $noChipset"; 
+
+        $sql .= "ORDER BY man1_name ASC, mot0_name ASC";
 
         return $sql;
     }
@@ -541,7 +541,6 @@ class MotherboardRepository extends ServiceEntityRepository
 
     public function findByWithJoin(array $criteria)
     {
-        //throw new Exception("test");
         $arrays = array();
         $values = array();
         $this->separateArraysFromValues($criteria, $arrays, $values);

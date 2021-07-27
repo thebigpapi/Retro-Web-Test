@@ -196,6 +196,7 @@ class BiosController extends AbstractController
         $form = $this->createForm(Search::class, array(), [
             'biosManufacturers' => $biosManufacturers,
             'chipsetManufacturers' => $chipsetManufacturers,
+            'csrf_protection' => false
             ]);
         
         $form->handleRequest($request);
