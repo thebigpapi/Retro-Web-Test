@@ -284,7 +284,7 @@ class MotherboardRepository extends ServiceEntityRepository
         return $rsm;
     }
 
-    private function prepareSQL(array $values, array $arrays, &$slotVals, &$ioVals, array $orderBy = null)
+    private function prepareSQL(array $values, array $arrays, &$slotVals, &$ioVals)
     {
         //dd("test");
         $posFrom = 0;
@@ -434,16 +434,6 @@ class MotherboardRepository extends ServiceEntityRepository
         else {
             $whereNoChipset = "WHERE mot0.chipset_id is NULL ";
         }
-        $orderBySQL = "";
-        if ($orderBy != NULL) {
-            $orderBySQL = " ORDER BY ";
-            foreach($orderBy as $name => $direction) {
-                if ($name == array_key_last($orderBy))
-                    $orderBySQL = $orderBySQL . "$name $direction ";
-                else
-                    $orderBySQL = $orderBySQL . "$name $direction,";
-            }
-        }
 
         if(isset($chipsetManufacturer))
         {
@@ -480,11 +470,11 @@ class MotherboardRepository extends ServiceEntityRepository
         ;
         if (array_key_exists('chipsetManufacturer', get_defined_vars())) // Chipset manufacturer searched
             if($chipsetManufacturer == null) // Motherboards with no chipset
-                $sql = "$noChipset $orderBySQL"; 
+                $sql = "$noChipset"; 
             else // Motherboards with a chipset
-                $sql = "$sql $orderBySQL";            
+                $sql = "$sql";            
         else // Motherboards with and without a chipset
-            $sql = "$sql UNION $noChipset $orderBySQL"; 
+            $sql = "$sql UNION $noChipset"; 
 
         return $sql;
     }
@@ -549,7 +539,7 @@ class MotherboardRepository extends ServiceEntityRepository
         }
     }
 
-    public function findByWithJoin(array $criteria, array $orderBy = null)
+    public function findByWithJoin(array $criteria)
     {
         //throw new Exception("test");
         $arrays = array();
@@ -559,7 +549,7 @@ class MotherboardRepository extends ServiceEntityRepository
         $slotVals = array();
         $ioVals = array();
         
-        $sql = $this->prepareSQL($values, $arrays, $slotVals, $ioVals, $orderBy);
+        $sql = $this->prepareSQL($values, $arrays, $slotVals, $ioVals);
         
         $rsm = $this->initResultSetMapping();
 
