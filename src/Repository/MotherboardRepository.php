@@ -555,12 +555,6 @@ class MotherboardRepository extends ServiceEntityRepository
         $arrays = array();
         $values = array();
         $this->separateArraysFromValues($criteria, $arrays, $values);
-        
-        // Saving name and manufacturer for later use
-        if(isset($values['name']) && $values['name'] != null)
-            $name = $values['name'];
-        if(isset($values['manufacturer']) && $values['manufacturer'] != null)
-            $manufacturer = $values['manufacturer'];
 
         $slotVals = array();
         $ioVals = array();
@@ -571,12 +565,6 @@ class MotherboardRepository extends ServiceEntityRepository
 
         $em = $this->getEntityManager();
         $query = $em->createNativeQuery($sql, $rsm);
-
-        // Putting name and manufacturer back
-        if(isset($name))
-            $values['name'] = $name;
-        if(isset($manufacturer))
-            $values['manufacturer'] = $manufacturer;
 
         $this->putDataInQuery($query, $values, $arrays, $slotVals, $ioVals);
 
