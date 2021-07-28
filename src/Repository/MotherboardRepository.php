@@ -63,11 +63,11 @@ class MotherboardRepository extends ServiceEntityRepository
     private function expansionSlotsToSQL($expansionSlots, &$slotVals, &$cpt)
     {
         $from = "";
-        foreach ($expansionSlots as $slot) {
+        foreach ($expansionSlots as $key => $slot) {
             $slotVals['id' . $cpt] = $slot['id'];
             
             $slotCount = "";
-            if($slot['count'] != null){
+            if(isset($slot['count'])){
                 $slotCount = " AND mex.count=:slotCount" . $cpt;
                 $slotVals['slotCount' . $cpt] = $slot['count']; 
                 if ($cpt == 0) {
@@ -110,6 +110,48 @@ class MotherboardRepository extends ServiceEntityRepository
         return $from;
     }
 
+    private function expansionSlotsToSQL2(array $expansionSlots, array $from): array
+    {
+        foreach ($expansionSlots as $key => $slot) {
+            $fromLength = count($from);
+            if (isset($slot['count'])){
+                if ($fromLength == 0) {
+                    $from[] = " ( 
+                        SELECT * 
+                        FROM motherboard mb 
+                        JOIN motherboard_expansion_slot mex ON mb.id=mex.motherboard_id 
+                        WHERE mex.expansion_slot_id=:idSlot" . $key . " AND mex.count=:slotCount" . $key . " 
+                        ) as mot" . $fromLength . " ";
+                }
+                else {
+                    $from[] = " INNER JOIN ( 
+                        SELECT * 
+                        FROM motherboard mb 
+                        JOIN motherboard_expansion_slot mex ON mb.id = mex.motherboard_id 
+                        WHERE mex.expansion_slot_id = :idSlot" . $key . " AND mex.count=:slotCount" . $key . " 
+                        ) as mot" . $fromLength . " ON mot" . ($fromLength - 1) . ".id = mot" . $fromLength . ".id ";
+                }
+            }
+            else {
+                if ($fromLength == 0) {
+                    $from[] = " ( 
+                        SELECT * 
+                        FROM motherboard mb 
+                        WHERE mb.id NOT IN (SELECT motherboard_id FROM motherboard_expansion_slot mex WHERE mex.expansion_slot_id = :idSlot" . $key . " 
+                        )) as mot" . $fromLength . " ";
+                }
+                else {
+                    $from[] = " INNER JOIN ( 
+                        SELECT * 
+                        FROM motherboard mb 
+                        WHERE mb.id NOT IN (SELECT motherboard_id FROM motherboard_expansion_slot mex WHERE mex.expansion_slot_id = :idSlot" . $key . " 
+                        )) as mot" . $fromLength . " ON mot" . ($fromLength - 1) . ".id = mot" . $fromLength . ".id ";
+                }
+            }
+        }
+        return $from;
+    }
+
     private function ioPortsToSQL($ioPorts, &$ioVals, &$cpt)
     {
         $from = "";
@@ -118,7 +160,7 @@ class MotherboardRepository extends ServiceEntityRepository
             
 
             $portCount = "";
-            if($port['count'] != null){
+            if(isset($port['count'])){
                 $portCount = " AND mip.count= :portCount" . $cpt;
                 $ioVals['portCount'.$cpt] = $port['count']; 
                 if ($cpt == 0) {
@@ -164,6 +206,49 @@ class MotherboardRepository extends ServiceEntityRepository
         return $from;
     }
 
+    private function ioPortsToSQL2(array $ioPorts, array $from): array
+    {
+        foreach ($ioPorts as $key => $port) {
+            $fromLength = count($from);
+            if (isset($port['count'])){
+                if ($fromLength == 0) {
+                    $from[] = " ( 
+                        SELECT * 
+                        FROM motherboard mb 
+                        JOIN motherboard_io_port mip ON mb.id = mip.motherboard_id 
+                        WHERE mip.io_port_id = :idPort" . $key . " AND mip.count= :portCount" . $key . " 
+                        ) as mot" . $fromLength . " ";
+                }
+                else {
+                    $from[] = " INNER JOIN ( 
+                        SELECT * 
+                        FROM motherboard mb 
+                        JOIN motherboard_io_port mip ON mb.id = mip.motherboard_id 
+                        WHERE mip.io_port_id = :idPort" . $key . " AND mip.count= :portCount" . $key . " 
+                        ) as mot" . $fromLength . " ON mot" . ($fromLength - 1) . ".id = mot" . $fromLength . ".id ";
+                }
+            }
+            else {
+                if ($fromLength == 0) {
+                    $from[] = " ( 
+                        SELECT * 
+                        FROM motherboard mb 
+                        WHERE mb.id NOT IN (SELECT motherboard_id FROM motherboard_io_port mip WHERE mip.io_port_id = :idPort" . $key . " 
+                        )) as mot" . $fromLength . " ";
+                }
+                else {
+                    $from[] = " INNER JOIN ( 
+                        SELECT * 
+                        FROM motherboard mb 
+                        WHERE mb.id NOT IN (SELECT motherboard_id FROM motherboard_io_port mip WHERE mip.io_port_id = :idPort" . $key . " 
+                        )) as mot" . $fromLength . " ON mot" . ($fromLength-1) . ".id = mot" . $fromLength . ".id ";
+                }
+            }
+        }
+
+        return $from;
+    }
+
     private function valueToWhere(&$values, $key, $value) {
         if (is_null($value)) {
             unset($values[$key]);
@@ -172,7 +257,7 @@ class MotherboardRepository extends ServiceEntityRepository
         else return $key ."_id =:$key";
     }
 
-    private function valueToWhere2($key, $value) {
+    private function valueToWhere2($key, $value) { //Warning ! Different behavior
         return $key . "_id" . (is_null($value) ? " is NULL": "=:$key");
     }
 
@@ -193,7 +278,7 @@ class MotherboardRepository extends ServiceEntityRepository
 
     private function valuesToWhere2(array $values, array $where) : array {
         foreach ($values as $key => $val) {
-            $where[] = "mot0." . $this->valuesToWhere2($key, $val);
+            $where[] = "mot0." . $this->valueToWhere2($key, $val);
         }
         return $where;
     }
@@ -522,7 +607,7 @@ class MotherboardRepository extends ServiceEntityRepository
             if($chipsetManufacturer == null) // Motherboards with no chipset
                 $sql = "$noChipset"; 
         else // Motherboards with and without a chipset
-            $sql = "$sql UNION $noChipset"; 
+            $sql .= " UNION $noChipset"; 
 
         $sql .= "ORDER BY man1_name ASC, mot0_name ASC";
 
@@ -531,8 +616,6 @@ class MotherboardRepository extends ServiceEntityRepository
 
     private function prepareSQL2(array $values, array $arrays, &$slotVals, &$ioVals)
     {
-        $posFrom = 0;
-
         // Gathering name and manufacturer which are handled differently compared to other values
         if (isset($values['name'])) {
             $name = $values['name'];
@@ -567,9 +650,9 @@ class MotherboardRepository extends ServiceEntityRepository
         $where = $this->valuesToWhere2($values, array());
 
         // Treating name and manufacturer differently to other values (to search into actual motherboard name and alias)
-        if (isset($name) && $name != null) {
-            if(isset($manufacturer)) {
-                if($manufacturer == null) {
+        if (isset($name) && ! is_null($name)) {
+            if (isset($manufacturer)) {
+                if (is_null($manufacturer)) {
                     $where[] = "((mot0.name ILIKE :name AND mot0.manufacturer_id IS NULL) OR mot0.id IN (SELECT motherboard_id FROM motherboard_alias AS ma WHERE ma.name ILIKE :name AND ma.manufacturer_id IS NULL)) ";
                 }
                 else {
@@ -581,7 +664,7 @@ class MotherboardRepository extends ServiceEntityRepository
             }
         }
         elseif (isset($manufacturer)) {
-            if($manufacturer == null) {
+            if (is_null($manufacturer)) {
                 $where[] = "( mot0.manufacturer_id IS NULL OR mot0.id IN (SELECT motherboard_id FROM motherboard_alias AS ma WHERE ma.manufacturer_id IS NULL)) ";
             }
             else {
@@ -589,18 +672,18 @@ class MotherboardRepository extends ServiceEntityRepository
             }
         }
 
-        $from = "FROM ";
+        $from = array();
 
 
         if (!isset($arrays["ioPorts"]) && !isset($arrays["expansionSlots"])) {
-            $from = $from . "motherboard mot0";
+            $from[] = "motherboard mot0";
         }
         else {
             if (isset($arrays["expansionSlots"])) {
-                $from = $from . $this->expansionSlotsToSQL($arrays['expansionSlots'], $slotVals, $posFrom);
+                $from = $this->expansionSlotsToSQL2($arrays['expansionSlots'], $from);
             }
             if (isset($arrays["ioPorts"])) {
-                $from = $from . $this->ioPortsToSQL($arrays['ioPorts'], $ioVals, $posFrom);
+                $from = $this->ioPortsToSQL2($arrays['ioPorts'], $from);
             }
         }
         if (isset($arrays["bios"])) {
@@ -632,20 +715,28 @@ class MotherboardRepository extends ServiceEntityRepository
         $whereNoChipset = $where;
         $whereNoChipset[] = "mot0.chipset_id is NULL ";
 
-        if(isset($chipsetManufacturer))
+        if (isset($chipsetManufacturer))
         {
             $where[] = "chp.manufacturer_id=:chipsetManufacturer ";
         }
 
-        $whereSQL = "WHERE " . implode(" AND ", $where);
-        $whereNoChipsetSQL = "WHERE " . implode(" AND ", $whereNoChipset);
+        if (! empty($where)) {
+            $whereSQL = "WHERE " . implode(" AND ", $where);
+        }
+        else $whereSQL = "";
+        if (! empty($whereNoChipset)) {
+            $whereNoChipsetSQL = "WHERE " . implode(" AND ", $whereNoChipset);
+        }
+        else $whereNoChipsetSQL = "";
+
+        $fromSql = "FROM " . implode("", $from);
 
         $sql = "
             SELECT mot0.*, mot0.name as mot0_name,
             man1.id as man1_id, man1.name as man1_name, man1.short_name as man1_short_name,
             chp.id as chp_id, chp.manufacturer_id as chp_man_id,
             man2.id as man2_id, man2.name as man2_name, man2.short_name as man2_short_name
-            $from 
+            $fromSql 
             LEFT JOIN manufacturer man1 ON mot0.manufacturer_id = man1.id 
             JOIN chipset chp ON mot0.chipset_id = chp.id 
             JOIN manufacturer man2 ON chp.manufacturer_id = man2.id 
@@ -657,7 +748,7 @@ class MotherboardRepository extends ServiceEntityRepository
         man1.id as man1_id, man1.name as man1_name, man1.short_name as man1_short_name,
         NULL, NULL, NULL, NULL,
         NULL
-        $from 
+        $fromSql 
         LEFT JOIN manufacturer man1 ON mot0.manufacturer_id = man1.id 
         $whereNoChipsetSQL 
         ";
@@ -666,7 +757,7 @@ class MotherboardRepository extends ServiceEntityRepository
             if($chipsetManufacturer == null) // Motherboards with no chipset
                 $sql = "$noChipset"; 
         else // Motherboards with and without a chipset
-            $sql .= "$sql UNION $noChipset"; 
+            $sql .= " UNION $noChipset"; 
 
         $sql .= "ORDER BY man1_name ASC, mot0_name ASC";
 
@@ -733,6 +824,75 @@ class MotherboardRepository extends ServiceEntityRepository
         }
     }
 
+    private function putDataInQuery2(&$query, array $values, array $arrays)
+    {
+        if (array_key_exists("expansionSlots", $arrays)) {
+            foreach ($arrays['expansionSlots'] as $key => $val){
+                $query->setParameter("idSlot" . $key, $val['id']);
+                if (array_key_exists("count", $arrays['expansionSlots'])) {
+                    $query->setParameter("slotCount" . $key, $val['count']);
+                }
+            }
+        }
+        if (array_key_exists("ioPorts", $arrays)) {
+            foreach ($arrays['ioPorts'] as $key => $val){
+                $query->setParameter("idPort" . $key, $val['id']);
+                if (array_key_exists("count", $arrays['ioPorts'])) {
+                    $query->setParameter("portCount" . $key, $val['count']);
+                }
+            }
+        }
+        if (isset($values['cpu_socket1']) && isset($values['cpu_socket2']) && $values['cpu_socket1'] != $values['cpu_socket2']) {
+            $query->setParameter('socket1', $values['cpu_socket1']);
+            $query->setParameter('socket2', $values['cpu_socket2']);
+        }
+        else {
+            if (isset($values['cpu_socket1']) && !isset($values['cpu_socket2'])) {
+                $query->setParameter('socket', $values['cpu_socket1']);
+            }
+            else if (isset($values['cpu_socket2']) && !isset($values['cpu_socket1'])){
+                $query->setParameter('socket', $values['cpu_socket2']);
+            }
+            else if (isset($values['cpu_socket2']) && isset($values['cpu_socket1'])){
+                $query->setParameter('socket', $values['cpu_socket1']);
+            }
+        }
+        if (isset($values['processor_platform_type1']) && isset($values['processor_platform_type2']) && $values['processor_platform_type1'] != $values['processor_platform_type2']) {
+            $query->setParameter('platform1', $values['processor_platform_type1']);
+            $query->setParameter('platform2', $values['processor_platform_type2']);
+        }
+        else {
+            if (isset($values['processor_platform_type1']) && !isset($values['processor_platform_type2'])) {
+                $query->setParameter('platform', $values['processor_platform_type1']);
+            }
+            else if (isset($values['processor_platform_type2']) && !isset($values['processor_platform_type1'])) {
+                $query->setParameter('platform', $values['processor_platform_type2']);
+            }
+            else if (isset($values['processor_platform_type2']) && isset($values['processor_platform_type1'])) {
+                $query->setParameter('platform', $values['processor_platform_type1']);
+            }
+        }
+        foreach ($values as $key => $val) {
+            if ($val != NULL){
+                if ($key !== "name")
+                    $query->setParameter($key, $val);
+                else {
+                    $query->setParameter($key, "%$val%");
+                }
+            }
+        }
+        if (isset($arrays["bios"])) {
+            foreach ($arrays["bios"] as $key => $val) {
+                $query->setParameter("bios$key", $val);
+            }
+        }
+        if (isset($arrays["dram"])) {
+            foreach ($arrays["dram"] as $key => $val) {
+                $query->setParameter("dram$key", $val);
+            }
+        }
+    }
+
     public function findByWithJoin(array $criteria)
     {
         $arrays = array();
@@ -749,7 +909,7 @@ class MotherboardRepository extends ServiceEntityRepository
         $em = $this->getEntityManager();
         $query = $em->createNativeQuery($sql, $rsm);
 
-        $this->putDataInQuery($query, $values, $arrays, $slotVals, $ioVals);
+        $this->putDataInQuery2($query, $values, $arrays);
 
         return $query->setCacheable(true)
             ->getResult();
