@@ -331,7 +331,7 @@ class MotherboardController extends AbstractController
             'procPlatformTypes' => $procPlatformTypes,
             'bios' => $biosManufacturers,
             'cpuSockets' => $cpuSockets,
-            'csrf_protection' => false,
+        //    'csrf_protection' => false,	// that code is aimed to remove cookie requirement but it breaks ajax stuff
             ]);
 
         $form->handleRequest($request);

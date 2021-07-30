@@ -196,7 +196,7 @@ class BiosController extends AbstractController
         $form = $this->createForm(Search::class, array(), [
             'biosManufacturers' => $biosManufacturers,
             'chipsetManufacturers' => $chipsetManufacturers,
-            'csrf_protection' => false
+        //    'csrf_protection' => false	// that code is aimed to remove cookie requirement but it breaks ajax stuff
             ]);
         
         $form->handleRequest($request);
