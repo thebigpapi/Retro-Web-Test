@@ -1,18 +1,19 @@
-/* Highslide JS ver 4.1.13 (2011-10-06) */
+/* Highslide JS ver 4.1.13 (2011-10-06), with custom modifications */
 
-if (!hs) { var hs = {
-// Language strings
-lang : {
-	cssDirection: 'ltr',
-	loadingText : 'Loading...',
-	loadingTitle : 'Click to cancel',
-	fullExpandTitle : 'Expand to actual size (f)',
-	creditsText : 'Powered by <i>Highslide JS</i>',
-	creditsTitle : 'Go to the Highslide JS homepage',
-	restoreTitle : 'Click to close image. Use arrow keys for next and previous.'
-},
+if (!hs) {
+
+if (document.uniqueID && !window.XMLHttpRequest) {
+	var iFrameFix = document.createElement('iframe');
+	iFrameFix.scrolling = 'no';
+	iFrameFix.src = "javascript:'<html></html>';";
+	iFrameFix.style.position = 'absolute';
+	iFrameFix.style.zIndex = '-1';
+	iFrameFix.style.filter = 'mask()';
+}
+
+var hs = {
 // See http://highslide.com/ref for examples of settings  
-graphicsDir : '../../assets/highslide/',
+graphicsDir : '../assets/highslide/',
 expandCursor : 'zoomin.cur', // null disables
 restoreCursor : 'zoomout.cur', // null disables
 expandDuration : 250, // milliseconds
@@ -130,6 +131,7 @@ animate: function(el, prop, opt) {
 		};
 	}
 	if (typeof opt.duration != 'number') opt.duration = 250;
+	if (typeof iFrameFix == 'object') opt.duration = 0;
 	opt.easing = Math[opt.easing] || Math.easeInQuad;
 	opt.curAnim = hs.extend({}, prop);
 	for (var name in prop) {
@@ -421,11 +423,6 @@ init : function () {
 		hs.ieLt9 = hs.ie && hs.uaVersion < 9;
 		
 		hs.getPageSize();
-		for (var x in hs.langDefaults) {
-			if (typeof hs[x] != 'undefined') hs.lang[x] = hs[x];
-			else if (typeof hs.lang[x] == 'undefined' && typeof hs.langDefaults[x] != 'undefined') 
-				hs.lang[x] = hs.langDefaults[x];
-		}
 		
 		hs.container = hs.createElement('div', {
 				className: 'highslide-container'
@@ -442,14 +439,13 @@ init : function () {
 		);
 		hs.loading = hs.createElement('a', {
 				className: 'highslide-loading',
-				title: hs.lang.loadingTitle,
-				innerHTML: hs.lang.loadingText,
 				href: 'javascript:;'
 			}, {
 				position: 'absolute',
 				top: '-9999px',
 				opacity: hs.loadingOpacity,
-				zIndex: 1
+				zIndex: 1,
+				height: '16px'
 			}, hs.container
 		);
 		hs.garbageBin = hs.createElement('div', null, { display: 'none' }, hs.container);
@@ -794,7 +790,6 @@ imageCreate : function() {
 		maxWidth: '9999px',
 		zIndex: 3
 	});
-    img.title = hs.lang.restoreTitle;
 	if (hs.safari && hs.uaVersion < 525) hs.container.appendChild(img);
     if (hs.ie && hs.flushImgSize) img.src = null;
 	img.src = this.src;
@@ -997,6 +992,12 @@ changeSize : function(up, to, dur) {
 	if (!up) easing = this.easingClose || easing;
 	var after = up ?
 		function() {
+			if (typeof iFrameFix == 'object') {
+				exp.wrapper.appendChild(iFrameFix);
+				iFrameFix.style.height = exp.wrapper.offsetHeight + 'px';
+				iFrameFix.style.width = exp.wrapper.offsetWidth + 'px';
+			}
+
 			setTimeout(function() {
 				exp.afterExpand();
 			}, 50);
@@ -1037,7 +1038,6 @@ afterExpand : function() {
 	this.mouseIsOver = this.x.pos < mX && mX < this.x.pos + this.x.get('wsize')
 		&& this.y.pos < mY && mY < this.y.pos + this.y.get('wsize');	
 	if (this.overlayBox) this.showOverlays();
-	
 },
 
 
@@ -1068,8 +1068,7 @@ writeCredits : function () {
 		href: hs.creditsHref,
 		target: hs.creditsTarget,
 		className: 'highslide-credits',
-		innerHTML: hs.lang.creditsText,
-		title: hs.lang.creditsTitle
+		innerHTML: '<i>Highslide JS</i>'
 	});
 	this.createOverlay({ 
 		overlayId: this.credits, 
@@ -1119,7 +1118,6 @@ getInline : function(types, addOverlay) {
 
 focus : function() {
 	this.wrapper.style.zIndex = hs.zIndexCounter += 2;
-		this.content.title = hs.lang.restoreTitle;
 		
 		if (hs.restoreCursor) {
 			hs.styleRestoreCursor = window.opera ? 'pointer' : 'url('+ hs.graphicsDir + hs.restoreCursor +'), pointer';
@@ -1149,6 +1147,12 @@ resizeTo: function(w, h) {
 	this.y.setSize(h);
 	this.x.setSize(w);
 	this.wrapper.style.height = this.y.get('wsize') +'px';
+
+	if (typeof iFrameFix == 'object') {
+		this.wrapper.appendChild(iFrameFix);
+		iFrameFix.style.height = this.wrapper.offsetHeight + 'px';
+		iFrameFix.style.width = this.wrapper.offsetWidth + 'px';
+	}
 },
 
 close : function() {
@@ -1195,7 +1199,6 @@ createOverlay : function (o) {
 			position: 'absolute',
 			visibility: 'hidden',
 			width: width,
-			direction: hs.lang.cssDirection || '',
 			opacity: 0
 		},this.overlayBox,
 		true
@@ -1385,7 +1388,6 @@ createFullExpand : function () {
 	this.fullExpandLabel = hs.createElement(
 		'a', {
 			href: 'javascript:hs.expanders['+ this.key +'].doFullExpand();',
-			title: hs.lang.fullExpandTitle,
 			className: 'highslide-full-expand'
 		}
 	);
@@ -1430,7 +1432,7 @@ afterClose : function () {
 }
 
 };
-hs.langDefaults = hs.lang;
+
 // history
 var HsExpander = hs.Expander;
 if (hs.ie && window == window.top) {
@@ -1447,8 +1449,6 @@ if (hs.ie && window == window.top) {
 hs.addEventListener(document, 'DOMContentLoaded', hs.ready);
 hs.addEventListener(window, 'load', hs.ready);
 
-// set handlers
-hs.addEventListener(document, 'ready', function() {
 	if (hs.expandCursor) {
 		var style = hs.createElement('style', { type: 'text/css' }, null, 
 			document.getElementsByTagName('HEAD')[0]), 
@@ -1470,7 +1470,7 @@ hs.addEventListener(document, 'ready', function() {
 		if (hs.expandCursor) addRule ('.highslide img', 
 			'cursor: url('+ hs.graphicsDir + hs.expandCursor +'), pointer !important;');
 	}
-});
+
 hs.addEventListener(window, 'resize', function() {
 	hs.getPageSize();
 });
