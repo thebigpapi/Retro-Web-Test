@@ -110,7 +110,7 @@
 		{% trans %}here{% endtrans %}</a>.</b>
 	</p>
 	<table class="stbl">
-        <tr><td class="main-table">{% trans %}Form factor:{% endtrans %}</td><td>
+        <tr><td><div style="width:170px;">{% trans %}Form factor:{% endtrans %}</div></td><td style="width: 100%;">
             {% if motherboard.getFormFactor() is not null %} 
                 {{ motherboard.getFormFactor().getName() }} 
             {% else %}
@@ -136,16 +136,12 @@
 			<td>
 			{% if motherboard.getCpuSockets() is not empty %}
 				{% for socket in motherboard.getCpuSockets() %}
-					<span class="newdiv" style="background-color:#cae4fa;">
-						{{ socket.getNameAndType}}
-					</span>
+					<span class="newdiv" style="background-color:#cae4fa;">{{ socket.getNameAndType}}</span>
 				{% endfor %}
 			{% endif %}
 			{% if motherboard.getProcessorPlatformTypes() is not empty %}
 				{% for platform in motherboard.getProcessorPlatformTypes() %}
-					<span class="newdiv" style="background-color:#fae9ca;">
-						{{ platform.getName() }} 
-					</span>
+					<span class="newdiv" style="background-color:#fae9ca;">{{ platform.getName() }}</span>
 				{% endfor %}
 			{% endif %}
 			</td>
@@ -156,8 +152,7 @@
 				<td>{% trans %}Supported FSB speeds:{% endtrans %}</td>
 				<td>
 					{% for frequency in motherboard.getCpuSpeed()|sort((a, b) => a.value <=> b.value) %}
-						<span class="newdiv" style="background-color:#d0faca;">
-						{{ frequency.getValueWithUnit() }}</span>
+						<span class="newdiv" style="background-color:#d0faca;">{{ frequency.getValueWithUnit() }}</span>
 					{% endfor %}
 				</td>
 			</tr>
@@ -167,13 +162,13 @@
 			{% if motherboard.getMotherboardMaxRams() is not empty %}
                 {% for maxRam in motherboard.getMotherboardMaxRams()|sort((a, b) => a.getMaxRam().getValue() <=> b.getMaxRam().getValue()) %}
                     {% if maxRam.getMaxRam() is not null %}
-					<span class="newdiv" style="background-color:#cae4fa;">
-						{% if maxRam.getMaxRam().getValue() > 1024 %}
-							{{ maxRam.getMaxRam().getValue() / 1024 }} {% trans %}MB{% endtrans %}<!--
-						-->{% elseif maxRam.getMaxRam().getValue() > 1024 * 1024 %}
-							{{ maxRam.getMaxRam().getValue() / (1024 * 1024) }} {% trans %}GB{% endtrans %}<!--
-						-->{% else %}
-							{{ maxRam.getMaxRam().getValue() }} {% trans %}KB{% endtrans %}<!--
+					<span class="newdiv" style="background-color:#cae4fa;"><!--
+						-->{% if maxRam.getMaxRam().getValue() > 1048575 %}<!--
+							-->{{ maxRam.getMaxRam().getValue() / 1048576 }} {% trans %}GB{% endtrans %}<!--
+						-->{% elseif maxRam.getMaxRam().getValue() > 1023 %}<!--
+							-->{{ maxRam.getMaxRam().getValue() / 1024 }} {% trans %}MB{% endtrans %}<!--
+						-->{% else %}<!--
+							-->{{ maxRam.getMaxRam().getValue() }} {% trans %}KB{% endtrans %}<!--
 						-->{% endif %}<!--
 						-->{% if maxRam.getNote() is not null %} ({{ maxRam.getNote()}}){% endif %}</span>
                     {% endif %}
@@ -189,13 +184,13 @@
 		{% if motherboard.getCacheSize() is not empty %}
             <tr><td>{% trans %}Cache:{% endtrans %}</td><td>
             {% for cache in motherboard.getCacheSize()|sort((a, b) => a.value <=> b.value) %}
-                <span class="newdiv" style="background-color:#d0faca;">
-					{% if cache.getValue() > 1048575 %}
-						{{ cache.getValue() / 1048576 }} {% trans %}MB{% endtrans %}<!--
-					-->{% elseif cache.getValue() > 1023 %}
-						{{ cache.getValue() / 1024}} {% trans %}KB{% endtrans %}<!--
-					-->{% else %}
-						{{ cache.getValue()}} {% trans %}B{% endtrans %}<!--
+                <span class="newdiv" style="background-color:#d0faca;"><!--
+					-->{% if cache.getValue() > 1048575 %}<!--
+						-->{{ cache.getValue() / 1048576 }} {% trans %}MB{% endtrans %}<!--
+					-->{% elseif cache.getValue() > 1023 %}<!--
+						-->{{ cache.getValue() / 1024}} {% trans %}KB{% endtrans %}<!--
+					-->{% else %}<!--
+						-->{{ cache.getValue()}} {% trans %}B{% endtrans %}<!--
 					-->{% endif %}<!--
 				--></span>
             {% endfor %}
@@ -205,7 +200,7 @@
 
 	{% if motherboard.getAllDrivers() is not empty %}
     <div class="scroll-div">
-		<img src="{{ absolute_url(asset('assets/images/hardware.gif')) }}" alt="driver" style="vertical-align: middle;padding-bottom: 10px;">
+		<img src="{{ absolute_url(asset('assets/images/hardware.gif')) }}" alt="" style="vertical-align: middle;padding-bottom: 10px;">
 		<b>{% trans %}Drivers:{% endtrans %}</b>
         <table class="stbl">
             <tr class="stbl-head">
@@ -220,7 +215,7 @@
 
 	{% if motherboard.getMotherboardBios() is not empty %}
     <div class="scroll-div">
-		<img src="{{ absolute_url(asset('assets/images/chip.gif')) }}" alt="bios" style="vertical-align: middle;padding-bottom: 10px;">
+		<img src="{{ absolute_url(asset('assets/images/chip.gif')) }}" alt="" style="vertical-align: middle;padding-bottom: 10px;">
 		<b>{% trans %}BIOS images:{% endtrans %}</b>
         <table class="stbl">
             <tr class="stbl-head">
@@ -258,7 +253,7 @@
 	<table class="stbl">
             <tr>
                 <td>
-					<img src="{{ absolute_url(asset('assets/images/manual.gif')) }}" alt="manual" style="vertical-align: middle;padding-bottom: 10px;">
+					<img src="{{ absolute_url(asset('assets/images/manual.gif')) }}" alt="" style="vertical-align: middle;padding-bottom: 10px;">
 					<b>{% trans %}Manuals:{% endtrans %}</b>
 				</td>
                 <td>

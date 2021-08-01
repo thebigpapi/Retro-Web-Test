@@ -1,7 +1,6 @@
 /* main.css - loaded by all browsers */
 
 /* base.html.twig */
-
 body, form {margin:0; padding:0;background-color:#F9F9F9;}
 body, button, div.main input, select {font-family: Arial, sans-serif;}
 p, ul {margin-top: 14px; margin-bottom: 14px;}
@@ -25,7 +24,6 @@ b.contrib {background: #FFFF00; color: #000000;}
 b.contrib a:link, b.contrib a:visited { color: #0000FF;}
 
 /* index.html.twig */
-
 form.index-buttons {padding-top: 1px;}
 form.index-buttons input {padding-top:145px;width:15em;font-size:12px;}
 form.index-buttons input.button1 {background: #ebebeb url(./images/index/motherboard_alt.gif) center no-repeat;}
@@ -54,6 +52,7 @@ a.index-button0 span.s1 span.s2 {background-image: url(./images/index/motherboar
 a.index-button1 span.s1 span.s2 {background-image: url(./images/index/card_low.gif); background-position: center; background-repeat: no-repeat;}
 a.index-button2 span.s1 span.s2 {background-image: url(./images/index/awchip_low.gif); background-position: center; background-repeat: no-repeat;}
 div.perks, div.perks div.results ul li {font-size:14px;}
+
 /* search.html.twig */
 table.search-table{width:100%;}
 table.search-table tr {height: 2em;}
@@ -62,8 +61,7 @@ input.sform { width: 90%; vertical-align:middle;}
 table.sform1 {width: 91%; margin-left:-3px;}
 
 
-td.table-width, td.bios-width {width: 130px;text-align:center;}
-tr.title-width {display:none;}
+td.table-width {width: 130px;text-align:center;}
 span.field1 {height: 1.75em; width: 15em; font-size:14px; margin-bottom:4px; /* **/ float:left; /** */}
 span.field1 span {float:left; margin-left:0.4em;}
 span.field1 input {height: 21px; width: 21px; float:left;  font-size:12px; /* **/ height: 1.25em; width: 1.25em; /** */}
@@ -91,8 +89,8 @@ a.help-t span{
 	text-decoration:none;
 }
 a.help-t:hover span{visibility:visible;}
-/* result.html.twig */
 
+/* result.html.twig */
 div.results ul {margin: 0;padding-left: 40px;}
 div.results ul li{line-height:140%;font-size: 16px;}
 ul.results-alias {list-style-type: none;}
@@ -109,20 +107,11 @@ a.highslide-full-expand {
    width: 34px;
    height: 34px;
 }
-.highslide-loading {
+a.highslide-loading {
+	background: url(highslide/loader.white.gif) no-repeat;
 	display: block;
-	color: black;
-	font-size: 14px;
-	font-weight: bold;
-	text-transform: uppercase;
-	text-decoration: none;
-	padding: 3px;
-	border: 1px solid white;
-	background-color: white;
-	padding-left: 22px;
-	background-image: url(highslide/loader.white.gif);
-	background-repeat: no-repeat;
-	background-position: 3px 1px;
+	height: 32px;
+	width: 32px;
 }
 table.stbl {
   border: 1px solid #e0e0e0;
@@ -148,10 +137,8 @@ span.string-bios {font-size:12px;}
 span.newdiv {padding:5px;margin-top: 1px;display: inline-block;color:#000000;
 border-style: solid;border-width: 1px;border-color: #ababab;}
 
-td.main-table {width:170px;}
 td.exp-table {vertical-align: top;width:140px;}
 td.io-table {vertical-align: top;width:175px;}
-td.cpu-table {width:160px;}
 
 /* info/infoadv.html.twig */
 img.biosinfo-img{width:400px;margin-left:10%;}

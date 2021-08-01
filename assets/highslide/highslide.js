@@ -16,8 +16,8 @@ var hs = {
 graphicsDir : '../assets/highslide/',
 expandCursor : 'zoomin.cur', // null disables
 restoreCursor : 'zoomout.cur', // null disables
-expandDuration : 250, // milliseconds
-restoreDuration : 250,
+expandDuration : 0, // milliseconds, 0 disables
+restoreDuration : 0,
 marginLeft : 15,
 marginRight : 15,
 marginTop : 15,
@@ -444,8 +444,7 @@ init : function () {
 				position: 'absolute',
 				top: '-9999px',
 				opacity: hs.loadingOpacity,
-				zIndex: 1,
-				height: '16px'
+				zIndex: 1
 			}, hs.container
 		);
 		hs.garbageBin = hs.createElement('div', null, { display: 'none' }, hs.container);
@@ -759,9 +758,6 @@ showLoading : function() {
 	
 	this.loading = hs.loading;
 	var exp = this;
-	this.loading.onclick = function() {
-		exp.cancelLoading();
-	};
 	var exp = this, 
 		l = this.x.get('loadingPos') +'px',
 		t = this.y.get('loadingPos') +'px';
@@ -1209,7 +1205,7 @@ createOverlay : function (o) {
 		opacity: 1,
 		offsetX: 0,
 		offsetY: 0,
-		dur: (o.fade === 0 || o.fade === false || (o.fade == 2 && hs.ie)) ? 0 : 250
+		dur: 0
 	});
 	hs.extend(overlay, o);
 	

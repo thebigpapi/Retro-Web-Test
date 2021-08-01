@@ -283,7 +283,7 @@
       </trans-unit>
       <trans-unit id="hvaLMGP" resname="Supported FSB speeds:">
         <source>Supported FSB speeds:</source>
-        <target>Fréquences supportées:</target>
+        <target>Fréquences FSB supportées:</target>
       </trans-unit>
       <trans-unit id="2k9_pY2" resname="Notes:">
         <source>Notes:</source>
@@ -547,7 +547,7 @@
       </trans-unit>
       <trans-unit id="DdGASbD" resname="Supported RAM size and types">
         <source>Supported RAM size and types</source>
-        <target>RAM supportée Supported RAM size and types</target>
+        <target>RAM supportée (capacité et type)</target>
       </trans-unit>
       <trans-unit id="EhfGxU7" resname="Drivers:">
         <source>Drivers:</source>

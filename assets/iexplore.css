@@ -2,7 +2,7 @@
 
 /*	set margin-bottom at the index page, IE7 and inferior	*/
 
-div.index-buttons a span.s1 span.s2 { *margin-bottom: 3px;}
+div.index-buttons a span.s1 span.s2 { *cursor: hand; *margin-bottom: 3px;}
 
 /*	set height at auto for IE8 and below, to prevent too big input. IE5.5 and lower use a different box-model, thus width is also adjusted	*/
 
@@ -13,7 +13,7 @@ span.field1 input { height: 21px; width: 21px; height: 15px\9; width: 15px\9; }
 /*	IE6 and IE7 add a horizontal scrollbar if there is a vertical one. A hidden padding-right is used to fix it */
 
 div.show-images { _height:500px; *overfl\ow-x: hidden; }
-div.ie-fix { *padding-rig\ht: 16px; }
+div.ie-fix { *padding-rig\ht: 17px; _padding-rig\ht: 16px; }
 
 /*	the hover box is moved down for IE, because the select element will display on top of it */
 a.help-t span{margin:55px 0 0 -65px;}
