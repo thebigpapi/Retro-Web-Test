@@ -743,7 +743,7 @@ class MotherboardRepository extends ServiceEntityRepository
             $fromSql 
             JOIN chipset chp ON mot0.chipset_id = chp.id 
             JOIN manufacturer man2 ON chp.manufacturer_id = man2.id 
-            $whereSQL
+            $whereSQL 
 
         ";
 
@@ -755,9 +755,10 @@ class MotherboardRepository extends ServiceEntityRepository
         $whereNoChipsetSQL 
         ";
         
-        if (array_key_exists('chipsetManufacturer', get_defined_vars())) // Chipset manufacturer searched
+        if (array_key_exists('chipsetManufacturer', get_defined_vars())) {// Chipset manufacturer searched
             if (is_null($chipsetManufacturer)) // Motherboards with no chipset
                 $sql = "$noChipset"; 
+        }
         else // Motherboards with and without a chipset
             $sql .= " UNION $noChipset"; 
 
