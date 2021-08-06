@@ -479,6 +479,37 @@ class MotherboardForm extends AbstractType
         ]);
     }
 
+    public function finishView(FormView $view, FormInterface $form, array $options)
+    {
+        usort($view->children["videoChipset"]->vars["choices"], function(ChoiceView $a, ChoiceView $b) {
+            if ($a->data->getManufacturer()->getShortNameIfExist() == $b->data->getManufacturer()->getShortNameIfExist()) {
+                if ($a->data->getName() == $b->data->getName()) {
+                    return 0;
+                }
+                else {
+                    return $a->data->getName() > $b->data->getName() ? 1 : -1;
+                }
+            }
+            else {
+                return $a->data->getManufacturer()->getShortNameIfExist() > $b->data->getManufacturer()->getShortNameIfExist() ? 1:-1;
+            }
+        });
+
+        usort($view->children['audioChipset']->vars["choices"], function(ChoiceView $a, ChoiceView $b) {
+            if ($a->data->getManufacturer()->getShortNameIfExist() == $b->data->getManufacturer()->getShortNameIfExist()) {
+                if ($a->data->getName() == $b->data->getName()) {
+                    return 0;
+                }
+                else {
+                    return $a->data->getName() > $b->data->getName() ? 1 : -1;
+                }
+            }
+            else {
+                return $a->data->getManufacturer()->getShortNameIfExist() > $b->data->getManufacturer()->getShortNameIfExist() ? 1:-1;
+            }
+        });  
+    }
+
  /*   public function buildAfterSubmit(FormBuilderInterface $builder, array $options)
 {
     dd($builder->getData());
