@@ -27,9 +27,6 @@ loadingOpacity : 0.75,
 padToMinWidth : false, // pad the popup width to make room for wide caption
 fullExpandPosition : 'bottom right',
 fullExpandOpacity : 1,
-showCredits : false, // you can set this to false if you want
-creditsHref : 'http://highslide.com/',
-creditsTarget : '_self',
 enableKeyListener : true,
 openerTagNames : ['a'], // Add more to allow slideshow indexing
 
@@ -52,7 +49,6 @@ overrides : [
 	'headingText',
 	'headingEval',
 	'headingOverlay',
-	'creditsPosition',
 	
 	'width',
 	'height',
@@ -444,7 +440,8 @@ init : function () {
 				position: 'absolute',
 				top: '-9999px',
 				opacity: hs.loadingOpacity,
-				zIndex: 1
+				zIndex: 1,
+				cursor: 'wait'
 			}, hs.container
 		);
 		hs.garbageBin = hs.createElement('div', null, { display: 'none' }, hs.container);
@@ -698,6 +695,7 @@ hs.Expander = function(a, params, custom, contentType) {
 		this[name] = params && typeof params[name] != 'undefined' ?
 			params[name] : hs[name];
 	}
+	if (a.name) this.src = a.name;
 	if (!this.src) this.src = a.href;
 	
 	// get thumb
@@ -755,14 +753,28 @@ error : function(e) {
 
 showLoading : function() {
 	if (this.onLoadStarted || this.loading) return;
-	
 	this.loading = hs.loading;
 	var exp = this;
-	var exp = this, 
-		l = this.x.get('loadingPos') +'px',
-		t = this.y.get('loadingPos') +'px';
-	setTimeout(function () { 
-		if (exp.loading) hs.setStyles(exp.loading, { left: l, top: t, zIndex: hs.zIndexCounter++ })}
+
+	cursorPosY = function(e) {
+		if (!e) e = window.event;
+		var eventDoc, doc, body;
+		if (e.pageY == null && e.clientY != null){
+			eventDoc = (e.target && e.target.ownerDocument) || document;
+			doc = eventDoc.documentElement;
+			body = eventDoc.body;
+			e.pageY = e.clientY +
+				(doc && doc.scrollTop  || body && body.scrollTop  || 0) -
+				(doc && doc.clientTop  || body && body.clientTop  || 0);
+		}
+		PosY = e.pageY;
+	};
+
+	PosX = exp.x.get('loadingPos');
+	hs.addEventListener(document, 'click', cursorPosY);
+	setTimeout(function() {
+		hs.removeEventListener(document, 'click', cursorPosY);
+		if (exp.loading) hs.setStyles(exp.loading, { left: PosX + 'px', top: (PosY - 16) + 'px', zIndex: hs.zIndexCounter++ })}
 	, 100);
 },
 
@@ -1059,19 +1071,6 @@ cancelLoading : function() {
 	if (this.loading) hs.loading.style.left = '-9999px';
 },
 
-writeCredits : function () {
-	this.credits = hs.createElement('a', {
-		href: hs.creditsHref,
-		target: hs.creditsTarget,
-		className: 'highslide-credits',
-		innerHTML: '<i>Highslide JS</i>'
-	});
-	this.createOverlay({ 
-		overlayId: this.credits, 
-		position: this.creditsPosition || 'top left' 
-	});
-},
-
 getInline : function(types, addOverlay) {
 	for (var i = 0; i < types.length; i++) {
 		var type = types[i], s = null;
@@ -1284,7 +1283,6 @@ positionOverlay : function(overlay) {
 
 getOverlays : function() {	
 	this.getInline(['heading', 'caption'], true);
-	if (hs.showCredits) this.writeCredits();
 	for (var i = 0; i < hs.overlays.length; i++) {
 		var o = hs.overlays[i], tId = o.thumbnailId, sg = o.slideshowGroup;
 		if ((!tId && !sg) || (tId && tId == this.thumbsUserSetId)
