@@ -205,7 +205,9 @@ class MotherboardController extends AbstractController
         $form = $this->createFormBuilder()
         ->add('No', SubmitType::class)
         ->add('Yes', SubmitType::class)
-        ->add('Redirection', NumberType::class)
+        ->add('Redirection', NumberType::class, [
+            'required' => false,
+        ])
         ->getForm();
 
         $form->handleRequest($request);
@@ -215,7 +217,7 @@ class MotherboardController extends AbstractController
             }
             if ($form->get('Yes')->isClicked()) {
                 //If user selected a motherboard where the current id will redirect to
-                if($form->get('Redirection')) {
+                if($form->get('Redirection') && ! is_null($form->get('Redirection')->getData())) {
                     $idRedirection = $form->get('Redirection')->getData();
                     $destinationMotherboard = $this->getDoctrine()
                     ->getRepository(Motherboard::class)
