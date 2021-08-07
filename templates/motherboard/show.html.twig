@@ -266,6 +266,7 @@
             </tr>
 	</table>
     {% endif %}
+	{% if motherboard.getMotherboardIoPorts() is not empty or motherboard.getMotherboardExpansionSlots() is not empty or motherboard.getKnownIssues() is not empty %}
 	<div class="scroll-div"><table class="stbl">
 		<tr class="stbl-head">
 			{% if motherboard.getMotherboardIoPorts() is not empty %}
@@ -308,6 +309,7 @@
 		{% endif %}
 		</tr>
 	</table></div>
+	{% endif %}
     {% if motherboard.getVideoChipset() is not null or motherboard.getMaxVideoRam() is not null or motherboard.getAudioChipset() is not null %}
 		<table>
 			{% if motherboard.getVideoChipset() is not null %}
@@ -347,7 +349,7 @@
 	{% endif %}
 </div>
 <div class="show-cpus">
-	{% if motherboard.getProcessors() is not null %}
+	{% if motherboard.getProcessors() is not empty %}
 	<b>{% trans %}Supported CPUs:{% endtrans %}</b>
 	{% if motherboard.getMaxCpu() is not null %}
         ({% trans %}max CPUs:{% endtrans %}{{ motherboard.getMaxCpu()}})
