@@ -104,9 +104,12 @@ class LargeFileForm extends AbstractType
                     'dev' => 'dev',
                     'osmisc' => 'osmisc'
                 ),
+                'placeholder' => 'Please select a directory',
+                'required' => true,
             ])
             ->add('releaseDate', DateType::class, [
                 'widget' => 'single_text',
+                'required' => true,
             ])
             ->add('datePrecision', ChoiceType::class, [
                 'choices'  => [
