@@ -70,7 +70,7 @@ select.sform{height:2.2em;}
 	div.index-buttons span.image-block span span {font-size: 15px; min-width: 285px; width: 19em;}
 	div.index-buttons span.image-block span span.img {height: 225px;}
 	a.index-button0 span.img {background-image: url(./images/index/motherboard_med.png);}
-	a.index-button1 span.img {background-image: url(./images/index/card_med.png);}
+	a.index-button1 span.img {background-image: url(./images/index/card_wip.png);}
 	a.index-button2 span.img {background-image: url(./images/index/awchip_med.png);}
 
 	/* search.html.twig */
