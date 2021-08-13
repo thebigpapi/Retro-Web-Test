@@ -13,7 +13,7 @@ if (document.uniqueID && !window.XMLHttpRequest) {
 
 var hs = {
 // See http://highslide.com/ref for examples of settings  
-graphicsDir : '../assets/highslide/',
+graphicsDir : js.src.substring(0, js.src.length - 12),
 expandCursor : 'zoomin.cur', // null disables
 restoreCursor : 'zoomout.cur', // null disables
 expandDuration : 0, // milliseconds, 0 disables
@@ -437,11 +437,15 @@ init : function () {
 				className: 'highslide-loading',
 				href: 'javascript:;'
 			}, {
+				background: 'url(' + hs.graphicsDir + 'loader.white.gif) no-repeat',
+				cursor: 'wait',
+				display: 'block',
 				position: 'absolute',
 				top: '-9999px',
 				opacity: hs.loadingOpacity,
-				zIndex: 1,
-				cursor: 'wait'
+				height: '32px',
+				width: '32px',
+				zIndex: 1
 			}, hs.container
 		);
 		hs.garbageBin = hs.createElement('div', null, { display: 'none' }, hs.container);
@@ -1383,7 +1387,13 @@ createFullExpand : function () {
 		'a', {
 			href: 'javascript:hs.expanders['+ this.key +'].doFullExpand();',
 			className: 'highslide-full-expand'
-		}
+		}, {
+				background: 'url(' + hs.graphicsDir + 'fullexpand.gif) no-repeat',
+				display: 'block',
+				margin: '0 10px 10px 0',
+				height: '34px',
+				width: '34px'
+			}
 	);
 	
 	this.createOverlay({ 
@@ -1461,7 +1471,7 @@ hs.addEventListener(window, 'load', hs.ready);
 			return 'expression( ( ( ignoreMe = document.documentElement.'+ prop +
 				' ? document.documentElement.'+ prop +' : document.body.'+ prop +' ) ) + \'px\' );';
 		}
-		if (hs.expandCursor) addRule ('.highslide img', 
+		if (hs.expandCursor) addRule ('a.highslide', 
 			'cursor: url('+ hs.graphicsDir + hs.expandCursor +'), pointer !important;');
 	}
 
