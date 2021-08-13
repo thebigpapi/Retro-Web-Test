@@ -23,6 +23,10 @@ h2.title {text-align: center; font-size:24px; margin: 15px 0;}
 b.contrib {background: #FFFF00; color: #000000;}
 b.contrib a:link, b.contrib a:visited { color: #0000FF;}
 
+span.image-block {text-align: center; display: -moz-inline-stack; display: inline-block; vertical-align: bottom;}
+span.image-block span {display:table;}
+span.image-block span span {display:block;}
+
 /* index.html.twig */
 form.index-buttons {padding-top: 1px;}
 form.index-buttons input {padding-top:145px;width:15em;font-size:12px;}
@@ -95,7 +99,12 @@ div.results ul {margin: 0;padding-left: 40px;}
 div.results ul li{line-height:140%;font-size: 16px;}
 ul.results-alias {list-style-type: none;}
 ul.results-alias li {line-height:120%;}
-ul.results-alias li span{font-size:0.8em;}
+ul.results-alias li small{font-size:0.8em;}
+
+div.results span.image-block {padding: 15px; width: 350px; /* **/ width: auto; /** */}
+div.results span.image-block span img {vertical-align:bottom; width:320px; margin-bottom:5px;}
+div.results span.image-block span span {font-size:16px; min-width:320px; width:20em;}
+div.results span.image-block span span.results-alias small {font-size:0.8em;}
 
 div.pagination span.current {font-weight:bold;}
 

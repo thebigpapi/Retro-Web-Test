@@ -80,6 +80,7 @@ select.sform{height:2.2em;}
 
 	/* result.html.twig */
 	div.results ul li{font-size:20px;}
+	div.results span.image-block span span {font-size:20px;width:16em;}
 }
 
 @media (min-width: 1400px) {
