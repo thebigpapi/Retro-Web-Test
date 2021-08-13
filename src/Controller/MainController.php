@@ -11,30 +11,16 @@ use App\Entity\MotherboardBios;
 class MainController extends AbstractController
 {
     /**
-     * @Route("/", name="app_homepage"), methods={"GET"})
-     * @param Request $request
+     * @Route("/", name="app_homepage")
      */
-    public function index(Request $request) {
-        if($request->get('motherboard') != null) {
-            return $this->redirect('./motherboards/search/');
-        }
-		if($request->get('bios') != null) {
-            return $this->redirect('./bios/search/');
-        }
-        else {
-            $latestMotherboards = $this->getDoctrine()->getRepository(Motherboard::class)->find10Latest();
-            //$request->headers->get('User-Agent');
-            $item = 0;
-            if (str_contains($request, 'MSIE 4') || (str_contains($request, 'MSIE 5') && str_contains($request, 'Windows 3.1'))) $item = 'ie4';
-            if (str_contains($request, 'Firefox/1.') || str_contains($request, 'Firefox/2.')) $item = 'retrozilla';
-            return $this->render('main/index.html.twig', [
-                'controller_name' => 'MainController',
-		        'latestMotherboards' => $latestMotherboards,
-                'moboCount' => $this->getDoctrine()->getRepository(Motherboard::class)->getCount(),
-                'biosCount' => $this->getDoctrine()->getRepository(MotherboardBios::class)->getCount(),
-                'userAgent' => $item,
-            ]);
-        }
+    public function index() {
+        $latestMotherboards = $this->getDoctrine()->getRepository(Motherboard::class)->find10Latest();
+        return $this->render('main/index.html.twig', [
+            'controller_name' => 'MainController',
+            'latestMotherboards' => $latestMotherboards,
+            'moboCount' => $this->getDoctrine()->getRepository(Motherboard::class)->getCount(),
+            'biosCount' => $this->getDoctrine()->getRepository(MotherboardBios::class)->getCount(),
+        ]);
     }
 
     /**
