@@ -5,36 +5,26 @@
 
 {% block body %}
 	<h2 class="title">{% trans %}Where do you want to go today?{% endtrans %}</h2>
-	{% if userAgent != 'ie4' and userAgent != 'retrozilla' %}
 	<div class="index-buttons"><div class="main">
-		<a href="{{ path("motherboard_search") }}" class="index-button0">
-			<span class="s1"><span class="s2"></span></span>
-			<span>{% trans %}Search for a motherboard{% endtrans %} <span>({{moboCount}} {% trans %}entries{% endtrans %})</span></span><!--
-		--></a>
-		<a name="under construction" class="index-button1">
-			<span class="s1"><span class="s2"></span></span>
-			<span>{% trans %}Find an expansion card{% endtrans %} <span> [WIP]</span></span><!--
-		--></a>
-		<a href="{{ path("bios_search") }}" class="index-button2">
-			<span class="s1"><span class="s2"></span></span>
-			<span>{% trans %}Find a BIOS image{% endtrans %} <span>({{biosCount}} {% trans %}files{% endtrans %})</span></span><!--
-		--></a>
+		<a href="{{ path("motherboard_search") }}" class="index-button0"><span class="image-block"><span>
+			<span class="img"></span>
+			<span>{% trans %}Search for a motherboard{% endtrans %}</span> <span>({{moboCount}} {% trans %}entries{% endtrans %})</span><!--
+		--></span></span></a>
+		<a name="under construction" class="index-button1"><span class="image-block"><span>
+			<span class="img"></span>
+			<span>{% trans %}Find an expansion card{% endtrans %}</span> <span>[WIP]</span><!--
+		--></span></span></a>
+		<a href="{{ path("bios_search") }}" class="index-button2"><span class="image-block"><span>
+			<span class="img"></span>
+			<span>{% trans %}Find a BIOS image{% endtrans %}</span> <span>({{biosCount}} {% trans %}files{% endtrans %})</span><!--
+		--></span></span></a>
 	</div></div>
-	{% else %}
-	<form action="./" class="index-buttons" method="get">
-		<div class="main">
-			<input type="submit" class="button1" name="motherboard" value="{% trans %}Search for a motherboard{% endtrans %}&#13;&#10;({{moboCount}} {% trans %}entries{% endtrans %})">
-			<input type="submit" class="button2" name="expansion" value="{% trans %}Find an expansion card{% endtrans %}&#13;&#10;[WIP]" disabled="disabled">
-			<input type="submit" class="button3" name="bios" value="{% trans %}Find a BIOS image{% endtrans %}&#13;&#10;({{biosCount}} {% trans %}files{% endtrans %})">
-		</div>
-	</form>
-	{% endif %}
 	<div class="perks">
 		<p><b>{% trans %}Recently added or updated boards:{% endtrans %}</b></p>
 		<div class="results">
 			<ul>
         	{% for motherboard in latestMotherboards %}
-				<li><a href="{{ path("motherboard_show", {id:motherboard.getId()}) }}">{{ motherboard.getManufacturerShortNameIfExist() }}&nbsp;{{ motherboard.name }}</a></li>		
+				<li><a href="{{ path("motherboard_show", {id:motherboard.getId()}) }}">{{ motherboard.getManufacturerShortNameIfExist() }}&nbsp;{{ motherboard.name }}</a></li>	
 			{% endfor %}
 			</ul>
 		</div>

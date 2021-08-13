@@ -67,11 +67,11 @@ select.sform{height:2.2em;}
 	div.page {width:90%;font-size:22px;}
 
 	/* index.html.twig */
-	div.index-buttons a{font-size: 15px;width:19em;height:19em;}
-	div.index-buttons a span.s1 span.s2 {height:15em; width: 17.2em;}
-	a.index-button0 span.s1 span.s2 {background-image: url(./images/index/motherboard_med.png);}
-	a.index-button1 span.s1 span.s2 {background-image: url(./images/index/card_med.png);}
-	a.index-button2 span.s1 span.s2 {background-image: url(./images/index/awchip_med.png);}
+	div.index-buttons span.image-block span span {font-size: 15px; min-width: 285px; width: 19em;}
+	div.index-buttons span.image-block span span.img {height: 225px;}
+	a.index-button0 span.img {background-image: url(./images/index/motherboard_med.png);}
+	a.index-button1 span.img {background-image: url(./images/index/card_med.png);}
+	a.index-button2 span.img {background-image: url(./images/index/awchip_med.png);}
 
 	/* search.html.twig */
 	td.table-width {width:210px;}
@@ -112,7 +112,7 @@ select.sform{height:2.2em;}
 
 @media (prefers-color-scheme: dark) {
 	body, form {margin:0; padding:0;background-color:#191919;color:#EEEEEE;}
-	div.index-buttons a{background-color: #333333;color: white;}
+	div.index-buttons span.image-block{background-color: #333333;color: white;}
 	div.butn input{background-color:#303030;color:#FFFFFF;}
 	a.help-t span{background-color: black;color: #fff;border:1px solid #FFFFFF;}
 	b.contrib {background: #191919; color: yellow;}

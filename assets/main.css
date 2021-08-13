@@ -28,33 +28,22 @@ span.image-block span {display:table;}
 span.image-block span span {display:block;}
 
 /* index.html.twig */
-form.index-buttons {padding-top: 1px;}
-form.index-buttons input {padding-top:145px;width:15em;font-size:12px;}
-form.index-buttons input.button1 {background: #ebebeb url(./images/index/motherboard_alt.gif) center no-repeat;}
-form.index-buttons input.button2 {background: #ebebeb url(./images/index/card_alt.gif) center no-repeat;}
-form.index-buttons input.button3 {background: #ebebeb url(./images/index/awchip_alt.gif) center no-repeat;}
+div.index-buttons span.image-block {background-color: #ebebeb; color:#000000;
+border: 1px solid gray; margin-bottom: 4px; padding: 15px 5px 5px;
+width: 204px; /* **/ width: auto; /** */}
 
-div.index-buttons a{
-	background-color: #ebebeb;
-	color:#000000;
-  	border: 1px solid gray;
-  	text-align: center;
-  	display: inline-block;
-  	font-size: 12px;
-  	margin-bottom: 4px;
-	width:17em;
-	height:15em;
-	vertical-align:top;
-}
-div.index-buttons a:hover{
-  	text-decoration: none;
-}
-div.index-buttons a span {display:block;}
-div.index-buttons a span.s1{padding-top:1.25em;}
-div.index-buttons a span.s1 span.s2{height:10.5em; width: 10.5em;display: inline-block;}
-a.index-button0 span.s1 span.s2 {background-image: url(./images/index/motherboard_low.gif); background-position: center; background-repeat: no-repeat;}
-a.index-button1 span.s1 span.s2 {background-image: url(./images/index/card_low.gif); background-position: center; background-repeat: no-repeat;}
-a.index-button2 span.s1 span.s2 {background-image: url(./images/index/awchip_low.gif); background-position: center; background-repeat: no-repeat;}
+div.index-buttons span.image-block span span {font-size: 12px; min-width: 192px; width:16em;}
+div.index-buttons span.image-block span span.img {height: 126px; margin-bottom:3px;
+background-position: center; background-repeat: no-repeat;}
+
+div.index-buttons a {cursor: default;}
+div.index-buttons a:hover{text-decoration: none;}
+
+a.index-button0 span, a.index-button2 span {cursor: hand; /* **/ cursor: pointer; /** */}
+a.index-button0 span.img {background-image: url(./images/index/motherboard_low.gif);}
+a.index-button1 span.img {background-image: url(./images/index/card_low.gif);}
+a.index-button2 span.img {background-image: url(./images/index/awchip_low.gif);}
+
 div.perks, div.perks div.results ul li {font-size:14px;}
 
 /* search.html.twig */

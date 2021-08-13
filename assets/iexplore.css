@@ -1,8 +1,8 @@
 /* iexplore.css - extra stylesheet for Internet Explorer only */
 
-/*	set margin-bottom at the index page, IE7 and inferior	*/
+/*	set cursor at the index page, IE7 and inferior	*/
 
-div.index-buttons a span.s1 span.s2 { *cursor: hand; *margin-bottom: 3px;}
+a.index-button0 span, a.index-button2 span { *cursor: hand; }
 
 /*	set height at auto for IE8 and below, to prevent too big input. IE5.5 and lower use a different box-model, thus width is also adjusted	*/
 
@@ -11,6 +11,7 @@ span.field1 input { height: 21px; width: 21px; height: 15px\9; width: 15px\9; }
 
 /*	width for image-block needs to be set in IE5.0, to simulate the inline-block property */
 
+div.index-buttons span.image-block { width: 204px; width/**/: auto; }
 div.results span.image-block { width: 350px; width/**/: auto; }
 
 /*	max-height is not supported by IE6 and older. Please note height isn't interpreted as min-height due to the overflow:auto in main.css	*/
