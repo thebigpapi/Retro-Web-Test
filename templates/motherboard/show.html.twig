@@ -68,12 +68,13 @@
 		<p class="string-alias"><b>
 		{% trans %}Also known as:{% endtrans %} 
 		{% for alias in motherboard.getMotherboardAliases() %}
+			<span class="alias-div">
 			{% if alias.getManufacturer() is not null %} 
 				{{ alias.getManufacturer().getShortNameIfExist() }}
 			{% else %}
 				Unknown
 			{% endif %}
-           	{{ alias.getName() }}{% if not loop.last %},{% endif %}
+           	{{ alias.getName() }}</span>
 		{% endfor %}
 		</b></p>
 	{% endif %}
