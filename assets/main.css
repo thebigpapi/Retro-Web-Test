@@ -30,13 +30,12 @@ span.image-block span span {display:block;}
 /* index.html.twig */
 div.index-buttons span.image-block {background-color: #ebebeb; color:#000000;
 border: 1px solid gray; margin-bottom: 4px; padding: 15px 5px 5px;
-width: 204px; /* **/ width: auto; /** */}
+vertical-align: top; width: 204px; /* **/ width: auto; /** */}
 
 div.index-buttons span.image-block span span {font-size: 12px; min-width: 192px; width:16em;}
 div.index-buttons span.image-block span span.img {height: 126px; margin-bottom:3px;
 background-position: center; background-repeat: no-repeat;}
 
-div.index-buttons a {cursor: default;}
 div.index-buttons a:hover{text-decoration: none;}
 
 a.index-button0 span, a.index-button2 span {cursor: hand; /* **/ cursor: pointer; /** */}

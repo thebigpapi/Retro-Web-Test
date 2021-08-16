@@ -11,7 +11,7 @@ span.field1 input { height: 21px; width: 21px; height: 15px\9; width: 15px\9; }
 
 /*	width for image-block needs to be set in IE5.0, to simulate the inline-block property */
 
-div.index-buttons span.image-block { width: 204px; width/**/: auto; }
+div.index-buttons span.image-block { *vertical-align: baseline;width: 204px; width/**/: auto; }
 div.results span.image-block { width: 350px; width/**/: auto; }
 
 /*	max-height is not supported by IE6 and older. Please note height isn't interpreted as min-height due to the overflow:auto in main.css	*/
