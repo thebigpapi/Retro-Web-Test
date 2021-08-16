@@ -4,9 +4,10 @@
 
 {% block body %}
 <h2 class="title">{% trans %}Where can I find the POST string?{% endtrans %}</h2>
+{% for i in 0..1 %}
 	{% for manufacturer, codes in biosCodes %}
-		<p id="{{manufacturer|lower}}-manuf">
-		<b>{{manufacturer}} BIOS manufacturer IDs: {{codes|length}}</b></p>
+	{% if (loop.parent.loop.index == 1 and manufacturer|lower == app.request.get('first')) or (loop.parent.loop.index == 2 and manufacturer|lower != app.request.get('first')) %}
+		<p><b>{{manufacturer}} BIOS manufacturer IDs: {{codes|length}}</b></p>
 		<table class="stbl-adv">
 			{% if codes|length > 3 %}
 			<tr class="stbl-head">
@@ -49,8 +50,9 @@
 				</td>
 			</tr>
 		</table>
+	{% endif %}
 	{% endfor %}
-<p id="award-chip"></p>
+{% if (loop.index == 1 and app.request.get('first') == 'award-chip') or (loop.index == 2 and app.request.get('first') != 'award-chip') %}
 {% for manufacturer, codes in chipCodes %}
 <p><b>{{manufacturer}} chipset IDs</b></p>
 <table class="stbl-adv">
@@ -75,5 +77,7 @@
 		</ul></td>
 	</tr>
 </table>
+{% endfor %}
+{% endif %}
 {% endfor %}
 {% endblock %}
