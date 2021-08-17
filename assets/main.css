@@ -128,7 +128,8 @@ td.exp-table {vertical-align: top;width:140px;}
 td.io-table {vertical-align: top;width:175px;}
 
 /* info/infoadv.html.twig */
-img.biosinfo-img{width:400px;margin-left:10%;}
+div.biosinfo span.image-block {margin: 0 0 0 10%;}
+div.biosinfo span.image-block, div.biosinfo img {width:400px;}
 table.stbl-adv {
 	font-size:14px;
 	font-weight: normal;
@@ -138,3 +139,4 @@ table.stbl-adv {
 	margin-bottom:10px;
 	width:100%;
 }
+table.stbl-adv td {vertical-align: top;}

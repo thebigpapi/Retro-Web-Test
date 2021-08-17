@@ -26,7 +26,7 @@ select.sform{height:2.2em;}
 	div.top-bar select.lang {width: 70%;}
 	
 	/* search.html.twig */
-	h2.title {font-size: 16px; margin: 10px 0;}d
+	h2.title {font-size: 16px; margin: 10px 0;}
 	table.search-table {display:inline-block;}
 	table.search-table tr {display:flex;flex-wrap:wrap;height:auto;margin-bottom:5px;}
 	table.search-table td {display:block;width:100%;text-align:left;}
@@ -56,8 +56,9 @@ select.sform{height:2.2em;}
 	.ba4 {width:16%;margin:0;}
 	.ba5 {display:none;}
 
-	/* info.html.twig */
-	img.biosinfo-img{width:90%;margin:auto;display: block;}
+	/* info/infoadv.html.twig */
+	div.biosinfo span.image-block {margin:auto;display:block;max-width:90%;}
+	div.biosinfo span.image-block img {display:block;width:100%;}
 	table.stbl-adv{
 		font-size:10px;
 	}
