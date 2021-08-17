@@ -124,8 +124,9 @@ function addCPU(id) {
 function clone_board() {
 	if (confirm('Are you sure you want to clone this board ?')) {
 		//replace the form URL
+		var str = window.location.href;
 		var frm = document.getElementsByName("add_motherboard")[0];
-		frm.action = '/' + 'uh19/admin/manage/motherboards/motherboards/add';
+		frm.action = str.substring(0, str.search("admin")) + 'admin/manage/motherboards/motherboards/add';
 		// remove all files
 		var images = document.getElementById("images-fields-list");
 		images.innerHTML = '';
