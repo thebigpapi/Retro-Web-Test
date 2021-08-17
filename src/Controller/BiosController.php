@@ -190,7 +190,6 @@ class BiosController extends AbstractController
         ->findAllBiosManufacturer();
         $unidentifiedMan = new Manufacturer();
         $unidentifiedMan->setName($notIdentifiedMessage);
-        array_unshift ($chipsetManufacturers, $unidentifiedMan);
         
 
         $form = $this->createForm(Search::class, array(), [
