@@ -23,7 +23,7 @@
 
     <div id="hiddenDiv" style="display: none;"></div>
 	<a href="./info">{% trans %}Where can I find the POST string?{% endtrans %}</a>
-	<form name="search" method="post" action="./search">
+	{{ form_start(form, {'method': 'POST', 'name': 'search', 'action':path("bios_search")}) }}
 		<div class="butn">
 			<input id="rst-btn" type="reset" value="{% trans %}Reset fields{% endtrans %}" class="butn-0">
 			{{ form_row(form.search)|replace({'<div><button': '<input class="butn-1"', '</button></div>': '">', '>': ' value="'})|raw }}

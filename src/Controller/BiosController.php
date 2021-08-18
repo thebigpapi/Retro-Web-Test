@@ -174,7 +174,7 @@ class BiosController extends AbstractController
         ]);
     }
     /**
-     * @Route("/bios/search", name="bios_search"), methods={"GET"})
+     * @Route("/bios/search/", name="bios_search"), methods={"GET"})
      * @param Request $request
      */
     public function search(Request $request, TranslatorInterface $translator)
