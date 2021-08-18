@@ -21,7 +21,7 @@ class BiosController extends AbstractController
 {
 
     /**
-     * @Route("/bios/result", name="bios_result"), methods={"GET"})
+     * @Route("/bios/", name="bios_result"), methods={"GET"})
      * @param Request $request
      */
     public function result(Request $request, PaginatorInterface $paginator)
