@@ -22,7 +22,7 @@
 	<h2 class="title">{% trans %}Search for a bios{% endtrans %}</h2>
 
     <div id="hiddenDiv" style="display: none;"></div>
-	<a href="./info">{% trans %}Where can I find the POST string?{% endtrans %}</a>
+	<a href="{{path("bios_info")}}">{% trans %}Where can I find the POST string?{% endtrans %}</a>
 	{{ form_start(form, {'method': 'POST', 'name': 'search', 'action':path("bios_search")}) }}
 		<div class="butn">
 			<input id="rst-btn" type="reset" value="{% trans %}Reset fields{% endtrans %}" class="butn-0">

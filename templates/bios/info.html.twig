@@ -17,8 +17,8 @@
 	<span class="image-block"><span>
 		<a href="{{ absolute_url(asset('assets/images/bios/awardstring.jpg')) }}" class="highslide" onclick="return imgexp(this);">
 			<img src="{{ absolute_url(asset('assets/images/bios/awardstring.gif')) }}" alt="awardbiosinfo" title=""></a></span></span>
-	<p>{% trans %}You can find a list of Award chipset IDs{% endtrans %} <a href="./infoadv?first=award-chip">{% trans %}here{% endtrans %}</a>
-	{% trans %}and a list of Award board manufacturer IDs{% endtrans %} <a href="./infoadv?first=award">{% trans %}here{% endtrans %}</a></p>
+	<p>{% trans %}You can find a list of Award chipset IDs{% endtrans %} <a href="{{path("bios_infoadv")}}?first=award-chip">{% trans %}here{% endtrans %}</a>
+	{% trans %}and a list of Award board manufacturer IDs{% endtrans %} <a href="{{path("bios_infoadv")}}?first=award">{% trans %}here{% endtrans %}</a></p>
 	<br>
 	<p><b>2. AMI BIOS</b></p>
 	<span class="image-block"><span>
@@ -27,7 +27,7 @@
 	<span class="image-block"><span>
 		<a href="{{ absolute_url(asset('assets/images/bios/amistring.jpg')) }}" class="highslide" onclick="return imgexp(this);">
 			<img src="{{ absolute_url(asset('assets/images/bios/amistring.gif')) }}" alt="amibiosinfo" title=""></a></span></span>
-	<p>{% trans %}You can find a list of AMI board manufacturer IDs{% endtrans %} <a href="./infoadv?first=ami">{% trans %}here{% endtrans %}</a></p>
+	<p>{% trans %}You can find a list of AMI board manufacturer IDs{% endtrans %} <a href="{{path("bios_infoadv")}}?first=ami">{% trans %}here{% endtrans %}</a></p>
 	<br>
 	<p><b>3. Acer BIOS</b></p>
 	<span class="image-block"><span>
