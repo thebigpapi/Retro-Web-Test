@@ -21,6 +21,10 @@
         <source>motherboard.num</source>
         <target>{count, plural, =0 {Материнская плата не найдена} one {одна материнская плата найдена} other {# материнских плат найдено}}</target>
       </trans-unit>
+      <trans-unit id="nmP4gEl" resname="bios.num">
+        <source>bios.num</source>
+        <target>{count, plural, =0 {Записей BIOS не найдено} one {1 запись BIOS найдена} other {# записей BIOS найдено}}</target>
+      </trans-unit>
       <trans-unit id="L48V8XH" resname="List boards whose manufacturer name starts with:">
         <source>List boards whose manufacturer name starts with:</source>
         <target>Показать материнские платы, для которых имя производителя начинается с:</target>
@@ -325,6 +329,14 @@
         <source>Select a socket ...</source>
         <target>Выберите сокет ...</target>
       </trans-unit>
+      <trans-unit id="TuxGG66" resname="List chipsets">
+        <source>List chipsets</source>
+        <target>Показать чипсеты</target>
+      </trans-unit>
+      <trans-unit id="X78JJ99" resname="List platforms">
+        <source>List platforms</source>
+        <target>Показать платформы</target>
+      </trans-unit>
       <trans-unit id="Pb9Ib.W" resname="Search with images">
         <source>Search with images</source>
         <target>Искать с картинками</target>
@@ -549,18 +561,6 @@
         <source>Find a BIOS image</source>
         <target>Найти образ BIOSa</target>
       </trans-unit>
-      <trans-unit id="eS03fUr" resname="If you want to contribute to the UH19 project, or just have a friendly chat with us, you can">
-        <source>If you want to contribute to the UH19 project, or just have a friendly chat with us, you can</source>
-        <target>Если вы хотите улучшить проект UH19 или просто с нами поболтать, то</target>
-      </trans-unit>
-      <trans-unit id="1dKU9Rg" resname="join our Discord server!">
-        <source>join our Discord server!</source>
-        <target>присоединяйтесь к нашему Discord серверу!</target>
-      </trans-unit>
-      <trans-unit id="i1LNBr5" resname="You can also find us on these forums">
-        <source>You can also find us on these forums</source>
-        <target>Вы можете нас также найти на этих форумах</target>
-      </trans-unit>
       <trans-unit id="OcO_EZi" resname="Index">
         <source>Index</source>
         <target>Индекс</target>
@@ -628,10 +628,6 @@
       <trans-unit id="n7zCsxm" resname="Couldn't find any exact POST string match, the results you see are generated using POST string analysis.">
         <source>Couldn't find any exact POST string match, the results you see are generated using POST string analysis.</source>
         <target>Точное соответствие POST строке не наийдено, результаты, которые вы видете были сгенерированы используя анализатор POST строки</target>
-      </trans-unit>
-      <trans-unit id="nmP4gEl" resname="bios.num">
-        <source>bios.num</source>
-        <target>{count, plural, =0 {Записей BIOS не найдено} one {1 запись BIOS найдена} other {# записей BIOS найдено}}</target>
       </trans-unit>
       <trans-unit id="Tgoy_RF" resname="Motherboard">
         <source>Motherboard</source>

@@ -21,6 +21,10 @@
         <source>motherboard.num</source>
         <target>{count, plural, =0 {Nessuna scheda madre trovata} one {1 scheda madre trovata} other {# schede madre trovate}}</target>
       </trans-unit>
+      <trans-unit id="nmP4gEl" resname="bios.num">
+        <source>bios.num</source>
+        <target>{count, plural, =0 {Nessun BIOS trovato} one {1 BIOS trovato} other {# BIOS trovati}}</target>
+      </trans-unit>
       <trans-unit id="L48V8XH" resname="List boards whose manufacturer name starts with:">
         <source>List boards whose manufacturer name starts with:</source>
         <target>Elenca le schede madre il quale produttore comincia con:</target>
@@ -317,6 +321,26 @@
         <source>to add it.</source>
         <target>per aggiungerla.</target>
       </trans-unit>
+      <trans-unit id="ULvKA5e" resname="Select a chipset manufacturer ...">
+        <source>Select a chipset manufacturer ...</source>
+        <target>Seleziona un produttore di chipset...</target>
+      </trans-unit>
+      <trans-unit id="aGxbQCL" resname="Select a socket ...">
+        <source>Select a socket ...</source>
+        <target>Seleziona un socket...</target>
+      </trans-unit>
+      <trans-unit id="TuxGG66" resname="List chipsets">
+        <source>List chipsets</source>
+        <target>Elenca chipset</target>
+      </trans-unit>
+      <trans-unit id="X78JJ99" resname="List platforms">
+        <source>List platforms</source>
+        <target>Elenca piattaforme</target>
+      </trans-unit>
+      <trans-unit id="Pb9Ib.W" resname="Search with images">
+        <source>Search with images</source>
+        <target>Cerca per immagini</target>
+      </trans-unit>
       <trans-unit id="milQXYK" resname="chipset">
         <source>chipset</source>
         <target>chipset</target>
@@ -557,6 +581,10 @@
         <source>max CPUs:</source>
         <target>max CPU:</target>
       </trans-unit>
+      <trans-unit id="uNrKNFR" resname="Reset fields">
+        <source>Reset fields</source>
+        <target>Reimposta i campi</target>
+      </trans-unit>
       <trans-unit id="e53DCbx" resname="This is where you enter the board part number, do not write the manufacturer name here!">
         <source>This is where you enter the board part number, do not write the manufacturer name here!</source>
         <target>Inserisci il modello della scheda, non inserire il produttore qui!</target>
@@ -601,10 +629,6 @@
         <source>Couldn't find any exact POST string match, the results you see are generated using POST string analysis.</source>
         <target>Impossible trovare una corrispondenza esatta. I risultati sono generati dall'analisi della stringa POST.</target>
       </trans-unit>
-      <trans-unit id="nmP4gEl" resname="bios.num">
-        <source>bios.num</source>
-        <target>{count, plural, =0 {Nessun BIOS trovato} one {1 BIOS trovato} other {# BIOS trovati}}</target>
-      </trans-unit>
       <trans-unit id="Tgoy_RF" resname="Motherboard">
         <source>Motherboard</source>
         <target>Scheda madre</target>
@@ -612,6 +636,10 @@
       <trans-unit id="TPdDwak" resname="Search for a bios">
         <source>Search for a bios</source>
         <target>Cerca un BIOS</target>
+      </trans-unit>
+      <trans-unit id="J9Yqgab" resname="Search for a motherboard BIOS by POST string, chipset, manufacturer, and more.">
+        <source>Search for a motherboard BIOS by POST string, chipset, manufacturer, and more.</source>
+        <target>Cerca un BIOS per stringa POST, chipset, produttore e altro.</target>
       </trans-unit>
       <trans-unit id="cokKsao" resname="This is the BIOS manufacturer (e.g: AMI, Award, Phoenix)">
         <source>This is the BIOS manufacturer (e.g: AMI, Award, Phoenix)</source>
@@ -645,6 +673,72 @@
         <source>BIOS Info</source>
         <target>Informazioni BIOS</target>
       </trans-unit>
+      <trans-unit id="3Bp6xRH" resname="In general, the POST string is located in the bottom left side of the boot screen &#10;&#9;&#9;(for BIOSes which provide it). Depending on the BIOS vendor, the POST string may&#10;&#9;&#9;provide various info about the board (like chipset or date). Here is a list of common &#10;&#9;&#9;vendors and their string meanings:">
+        <source>In general, the POST string is located in the bottom left side of the boot screen 
+		(for BIOSes which provide it). Depending on the BIOS vendor, the POST string may
+		provide various info about the board (like chipset or date). Here is a list of common 
+		vendors and their string meanings:</source>
+        <target>In generale, la stringa BIOS si trova in basso a destra della schermata d'avvio
+        (per i BIOS che ce l'hanno). In base al produttore del BIOS, la stringa POST può
+        fornire varie informazioni sulla scheda madre (come chipset o data di compilazione).
+        Ecco una lista di produttori comuni e di come leggere le relative stringhe:</target>
+      </trans-unit>
+      <trans-unit id="LKoHnBZ" resname="You can find a list of Award chipset IDs">
+        <source>You can find a list of Award chipset IDs</source>
+        <target>Puoi trovare una lista di ID chipset per BIOS Award</target>
+      </trans-unit>
+      <trans-unit id="zacmbbZ" resname="and a list of Award board manufacturer IDs">
+        <source>and a list of Award board manufacturer IDs</source>
+        <target>e una lista di ID di produttori di schede madre per BIOS Award</target>
+      </trans-unit>
+      <trans-unit id="IFzUR48" resname="You can find a list of AMI board manufacturer IDs">
+        <source>You can find a list of AMI board manufacturer IDs</source>
+        <target>Puoi trovare una lista di ID di produttori di schede madre per BIOS AMI</target>
+      </trans-unit>
+      <trans-unit id="B.ipEnJ" resname="Administration index">
+        <source>Administration index</source>
+        <target>Indice di amministrazione</target>
+      </trans-unit>
+      <trans-unit id="gS53VxE" resname="Administration page">
+        <source>Administration page</source>
+        <target>Pagina di amministrazione</target>
+      </trans-unit>
+      <trans-unit id="XO7a3C7" resname="Motherboards">
+        <source>Motherboards</source>
+        <target>Schede madre</target>
+      </trans-unit>
+      <trans-unit id="dIJORSw" resname="Processing units">
+        <source>Processing units</source>
+        <target>Unità di calcolo</target>
+      </trans-unit>
+      <trans-unit id="w5Y67ar" resname="Memory">
+        <source>Memory</source>
+        <target>Memoria</target>
+      </trans-unit>
+      <trans-unit id="Eb20.qS" resname="Chipsets">
+        <source>Chipsets</source>
+        <target>Chipset</target>
+      </trans-unit>
+      <trans-unit id="jDvkfAp" resname="Expansion chipsets">
+        <source>Expansion chipsets</source>
+        <target>Chipset di espansione</target>
+      </trans-unit>
+      <trans-unit id="w9Lnnr3" resname="Connectors">
+        <source>Connectors</source>
+        <target>Connettori</target>
+      </trans-unit>
+      <trans-unit id="HVhAjdr" resname="Misc stuff">
+        <source>Misc stuff</source>
+        <target>Miscellanea</target>
+      </trans-unit>
+      <trans-unit id="P5yZH2O" resname="Change password">
+        <source>Change password</source>
+        <target>Cambia password</target>
+      </trans-unit>
+      <trans-unit id="WGBuWCR" resname="Manage users">
+        <source>Manage users</source>
+        <target>Gestione utenti</target>
+      </trans-unit>
       <trans-unit id="SZooVmG" resname="Board count:">
         <source>Board count:</source>
         <target>Numero di schede:</target>
@@ -665,10 +759,6 @@
         <source>Creditors</source>
         <target>Creatori</target>
       </trans-unit>
-      <trans-unit id="XO7a3C7" resname="Motherboards">
-        <source>Motherboards</source>
-        <target>Schede madre</target>
-      </trans-unit>
       <trans-unit id="10Q.uwK" resname="Form factors">
         <source>Form factors</source>
         <target>Formati</target>
@@ -684,10 +774,6 @@
       <trans-unit id="Fi_dF43" resname="Sockets">
         <source>Sockets</source>
         <target>Socket</target>
-      </trans-unit>
-      <trans-unit id="Eb20.qS" resname="Chipsets">
-        <source>Chipsets</source>
-        <target>Chipset</target>
       </trans-unit>
       <trans-unit id="236NZCv" resname="Chipset parts">
         <source>Chipset parts</source>
@@ -744,100 +830,6 @@
       <trans-unit id="6odRJzI" resname="Cache Sizes">
         <source>Cache Sizes</source>
         <target>Dimensioni cache</target>
-      </trans-unit>
-      <trans-unit id="ULvKA5e" resname="Select a chipset manufacturer ...">
-        <source>Select a chipset manufacturer ...</source>
-        <target>Seleziona un produttore di chipset...</target>
-      </trans-unit>
-      <trans-unit id="aGxbQCL" resname="Select a socket ...">
-        <source>Select a socket ...</source>
-        <target>Seleziona un socket...</target>
-      </trans-unit>
-      <trans-unit id="Pb9Ib.W" resname="Search with images">
-        <source>Search with images</source>
-        <target>Cerca per immagini</target>
-      </trans-unit>
-      <trans-unit id="eS03fUr" resname="If you want to contribute to the UH19 project, or just have a friendly chat with us, you can">
-        <source>If you want to contribute to the UH19 project, or just have a friendly chat with us, you can</source>
-        <target>Se vuoi contribuire al progetto, o anche solo avere una chiacchierata amichevole con noi (solo in inglese), puoi</target>
-      </trans-unit>
-      <trans-unit id="1dKU9Rg" resname="join our Discord server!">
-        <source>join our Discord server!</source>
-        <target>unirti al nostro server Discord!</target>
-      </trans-unit>
-      <trans-unit id="i1LNBr5" resname="You can also find us on these forums">
-        <source>You can also find us on these forums</source>
-        <target>Puoi anche trovarci su questi forum</target>
-      </trans-unit>
-      <trans-unit id="uNrKNFR" resname="Reset fields">
-        <source>Reset fields</source>
-        <target>Reimposta i campi</target>
-      </trans-unit>
-      <trans-unit id="Y3Ai04r" resname="BIOS chipset IDs">
-        <source>BIOS chipset IDs</source>
-        <target>ID chipset per BIOS</target>
-      </trans-unit>
-      <trans-unit id="J9Yqgab" resname="Search for a motherboard BIOS by POST string, chipset, manufacturer, and more.">
-        <source>Search for a motherboard BIOS by POST string, chipset, manufacturer, and more.</source>
-        <target>Cerca un BIOS per stringa POST, chipset, produttore e altro.</target>
-      </trans-unit>
-      <trans-unit id="3Bp6xRH" resname="In general, the POST string is located in the bottom left side of the boot screen &#10;&#9;&#9;(for BIOSes which provide it). Depending on the BIOS vendor, the POST string may&#10;&#9;&#9;provide various info about the board (like chipset or date). Here is a list of common &#10;&#9;&#9;vendors and their string meanings:">
-        <source>In general, the POST string is located in the bottom left side of the boot screen 
-		(for BIOSes which provide it). Depending on the BIOS vendor, the POST string may
-		provide various info about the board (like chipset or date). Here is a list of common 
-		vendors and their string meanings:</source>
-        <target>In generale, la stringa BIOS si trova in basso a destra della schermata d'avvio
-        (per i BIOS che ce l'hanno). In base al produttore del BIOS, la stringa POST può
-        fornire varie informazioni sulla scheda madre (come chipset o data di compilazione).
-        Ecco una lista di produttori comuni e di come leggere le relative stringhe:</target>
-      </trans-unit>
-      <trans-unit id="LKoHnBZ" resname="You can find a list of Award chipset IDs">
-        <source>You can find a list of Award chipset IDs</source>
-        <target>Puoi trovare una lista di ID chipset per BIOS Award</target>
-      </trans-unit>
-      <trans-unit id="zacmbbZ" resname="and a list of Award board manufacturer IDs">
-        <source>and a list of Award board manufacturer IDs</source>
-        <target>e una lista di ID di produttori di schede madre per BIOS Award</target>
-      </trans-unit>
-      <trans-unit id="IFzUR48" resname="You can find a list of AMI board manufacturer IDs">
-        <source>You can find a list of AMI board manufacturer IDs</source>
-        <target>Puoi trovare una lista di ID di produttori di schede madre per BIOS AMI</target>
-      </trans-unit>
-      <trans-unit id="B.ipEnJ" resname="Administration index">
-        <source>Administration index</source>
-        <target>Indice di amministrazione</target>
-      </trans-unit>
-      <trans-unit id="gS53VxE" resname="Administration page">
-        <source>Administration page</source>
-        <target>Pagina di amministrazione</target>
-      </trans-unit>
-      <trans-unit id="dIJORSw" resname="Processing units">
-        <source>Processing units</source>
-        <target>Unità di calcolo</target>
-      </trans-unit>
-      <trans-unit id="w5Y67ar" resname="Memory">
-        <source>Memory</source>
-        <target>Memoria</target>
-      </trans-unit>
-      <trans-unit id="jDvkfAp" resname="Expansion chipsets">
-        <source>Expansion chipsets</source>
-        <target>Chipset di espansione</target>
-      </trans-unit>
-      <trans-unit id="w9Lnnr3" resname="Connectors">
-        <source>Connectors</source>
-        <target>Connettori</target>
-      </trans-unit>
-      <trans-unit id="HVhAjdr" resname="Misc stuff">
-        <source>Misc stuff</source>
-        <target>Miscellanea</target>
-      </trans-unit>
-      <trans-unit id="P5yZH2O" resname="Change password">
-        <source>Change password</source>
-        <target>Cambia password</target>
-      </trans-unit>
-      <trans-unit id="WGBuWCR" resname="Manage users">
-        <source>Manage users</source>
-        <target>Gestione utenti</target>
       </trans-unit>
     </body>
   </file>

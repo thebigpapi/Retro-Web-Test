@@ -21,6 +21,10 @@
         <source>motherboard.num</source>
         <target>{count, plural, =0 {kein Mainboard gefunden} one {ein Mainboard gefunden} other {# Mainboards gefunden}}</target>
       </trans-unit>
+      <trans-unit id="nmP4gEl" resname="bios.num">
+        <source>bios.num</source>
+        <target>{count, plural, =0 {Keine BIOS Einträge gefunden} one {1 BIOS Eintrag gefunden} other {# BIOS Einträge gefunden}}</target>
+      </trans-unit>
       <trans-unit id="L48V8XH" resname="List boards whose manufacturer name starts with:">
         <source>List boards whose manufacturer name starts with:</source>
         <target>Mainboards auflisten von denen der Herstellername mit folgendem anfängt:</target>
@@ -325,6 +329,14 @@
         <source>Select a socket ...</source>
         <target>Socket auswählen ...</target>
       </trans-unit>
+      <trans-unit id="TuxGG66" resname="List chipsets">
+        <source>List chipsets</source>
+        <target>Chipsätze anzeigen</target>
+      </trans-unit>
+      <trans-unit id="X78JJ99" resname="List platforms">
+        <source>List platforms</source>
+        <target>Plattformen anzeigen</target>
+      </trans-unit>
       <trans-unit id="Pb9Ib.W" resname="Search with images">
         <source>Search with images</source>
         <target>Suche mit Bildern</target>
@@ -549,18 +561,6 @@
         <source>Find a BIOS image</source>
         <target>Suche nach einem BIOS Abbild</target>
       </trans-unit>
-      <trans-unit id="eS03fUr" resname="If you want to contribute to the UH19 project, or just have a friendly chat with us, you can">
-        <source>If you want to contribute to the UH19 project, or just have a friendly chat with us, you can</source>
-        <target>Wenn Sie zum Projekt UH19 beitragen, oder einfach mit uns plaudern wollen, dann</target>
-      </trans-unit>
-      <trans-unit id="1dKU9Rg" resname="join our Discord server!">
-        <source>join our Discord server!</source>
-        <target>treten Sie unserem Discord server bei!</target>
-      </trans-unit>
-      <trans-unit id="i1LNBr5" resname="You can also find us on these forums">
-        <source>You can also find us on these forums</source>
-        <target>Sie können uns auch auf folgenden Foren finden</target>
-      </trans-unit>
       <trans-unit id="OcO_EZi" resname="Index">
         <source>Index</source>
         <target>Index</target>
@@ -628,10 +628,6 @@
       <trans-unit id="n7zCsxm" resname="Couldn't find any exact POST string match, the results you see are generated using POST string analysis.">
         <source>Couldn't find any exact POST string match, the results you see are generated using POST string analysis.</source>
         <target>Exakter POST String nicht gefunden, die aufgelisteten Resultate wurden generiert unter Verwendung der POST String Analyze.</target>
-      </trans-unit>
-      <trans-unit id="nmP4gEl" resname="bios.num">
-        <source>bios.num</source>
-        <target>{count, plural, =0 {Keine BIOS Einträge gefunden} one {1 BIOS Eintrag gefunden} other {# BIOS Einträge gefunden}}</target>
       </trans-unit>
       <trans-unit id="Tgoy_RF" resname="Motherboard">
         <source>Motherboard</source>
