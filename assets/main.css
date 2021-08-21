@@ -65,6 +65,7 @@ div.butn input {height:2.7em; font-size:14px;}
 input.butn-0{background: #ebebeb url(../assets/images/search/reset.gif) no-repeat scroll 0px 1px;padding-left:15px;}
 input.butn-1{background: #ebebeb url(../assets/images/search/search.gif) no-repeat scroll 4px 1px;padding-left:30px;}
 input.butn-2{background: #ebebeb url(../assets/images/search/search_photo.gif) no-repeat scroll 5px 1px;padding-left:15px;}
+input.butn-noajax {background-color: #ebebeb; color:#000000; width:11em;}
 a.help-t span{
 	position:absolute;
 	visibility:hidden;

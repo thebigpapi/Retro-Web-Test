@@ -74,7 +74,7 @@
 							<td id="setchip2">{{ form_widget(form.chipset, {'attr': {'class': 'sform', 'style':'width:100%'}}) }}</td>
 							<td>
 								<label id="setchip-lb" style="display:none;">Please wait ...</label>
-								<div>{{ form_row(form.searchChipsetManufacturer)|replace({'<div><button': '<input style="background:#ebebeb;width:11em;"', '</button></div>': '">', '>': ' value="'})|raw }}
+								<div>{{ form_row(form.searchChipsetManufacturer)|replace({'<div><button': '<input class="butn-noajax"', '</button></div>': '">', '>': ' value="'})|raw }}
 								</div>
 							</td>
 						</tr>
@@ -95,7 +95,7 @@
 							<td id="setcpu2">{{ form_widget(form.platform1, {'attr': {'class': 'sform', 'style':'width:100%'}}) }}</td>
 							<td>
 								<label id="setcpu1-lb" style="display:none;">Please wait ...</label>
-								<div>{{ form_row(form.searchSocket1)|replace({'<div><button': '<input style="background:#ebebeb;width:11em;"', '</button></div>': '">', '>': ' value="'})|raw }}
+								<div>{{ form_row(form.searchSocket1)|replace({'<div><button': '<input class="butn-noajax"', '</button></div>': '">', '>': ' value="'})|raw }}
 								</div>
 							</td>
 						</tr>
@@ -111,7 +111,7 @@
 							<td id="setcpu4">{{ form_widget(form.platform2, {'attr': {'class': 'sform', 'style':'width:100%'}}) }}</td>
 							<td>
 								<label id="setcpu2-lb" style="display:none;">Please wait ...</label>
-								<div>{{ form_row(form.searchSocket2)|replace({'<div><button': '<input style="background:#ebebeb;width:11em;"', '</button></div>': '">', '>': ' value="'})|raw }}
+								<div>{{ form_row(form.searchSocket2)|replace({'<div><button': '<input class="butn-noajax"', '</button></div>': '">', '>': ' value="'})|raw }}
 								</div>
 							</td>
 						</tr>

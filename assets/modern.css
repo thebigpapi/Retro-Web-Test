@@ -114,7 +114,7 @@ select.sform{height:2.2em;}
 @media (prefers-color-scheme: dark) {
 	body, form {margin:0; padding:0;background-color:#191919;color:#EEEEEE;}
 	div.index-buttons span.image-block{background-color: #333333;color: white;}
-	div.butn input{background-color:#303030;color:#FFFFFF;}
+	div.butn input, input.butn-noajax {background-color:#303030;color:#FFFFFF;}
 	a.help-t span{background-color: black;color: #fff;border:1px solid #FFFFFF;}
 	b.contrib {background: #191919; color: yellow;}
 	b.contrib a:link, b.contrib a:visited { color: #A600FF;}

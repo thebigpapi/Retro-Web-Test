@@ -54,7 +54,7 @@
 							<td id="setchip2">{{ form_widget(form.chipset, {'attr': {'class': 'sform', 'style':'width:100%'}}) }}</td>
 							<td>
 								<label id="setchip-lb" style="display:none;">Please wait ...</label>
-								<div>{{ form_row(form.searchChipsetManufacturer)|replace({'<div><button': '<input style="background:#ebebeb;width:11em;"', '</button></div>': '">', '>': ' value="'})|raw }}
+								<div>{{ form_row(form.searchChipsetManufacturer)|replace({'<div><button': '<input class="butn-noajax"', '</button></div>': '">', '>': ' value="'})|raw }}
 								</div>
 							</td>
 						</tr>
