@@ -55,7 +55,7 @@ class Search extends AbstractType
                 'required' => false,
             ])
             ->add('search', SubmitType::class)
-            ->add('searchChipsetManufacturer', SubmitType::class, ['label' => 'Search Chipset Manufacturer'])
+            ->add('searchChipsetManufacturer', SubmitType::class, ['label' => 'List chipsets'])
         ;
 
         $formModifier = function (FormInterface $form, Manufacturer $chipsetManufacturer = null) {
