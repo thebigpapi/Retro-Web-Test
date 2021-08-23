@@ -68,17 +68,13 @@
 					</a>
 				</td>
 				<td>
-					<table class="sform1">
-						<tr>
-							<td id="setchip1">{{ form_widget(form.chipsetManufacturer, {'attr': {'class': 'sform', 'style':'width:100%'}}) }}</td>
-							<td id="setchip2">{{ form_widget(form.chipset, {'attr': {'class': 'sform', 'style':'width:100%'}}) }}</td>
-							<td>
-								<label id="setchip-lb" style="display:none;">Please wait ...</label>
-								<div>{{ form_row(form.searchChipsetManufacturer)|replace({'<div><button': '<input class="butn-noajax"', '</button></div>': '">', '>': ' value="'})|raw }}
-								</div>
-							</td>
-						</tr>
-					</table>
+					<div class="sform1">
+						<span id="setchip1">{{ form_widget(form.chipsetManufacturer) }}</span>
+						<span class="sform1">
+							<span id="setchip-lb">{{ form_row(form.searchChipsetManufacturer)|replace({'<div><button': '<input', '</button></div>': '">', '>': ' value="'})|raw }}</span>
+							<span id="setchip2">{{ form_widget(form.chipset) }}</span>
+						</span>
+					</div>
                 </td>
             </tr>
 			<tr>
@@ -89,33 +85,25 @@
 					</a>
 				</td>
 				<td>
-					<table class="sform1">
-						<tr>
-							<td id="setcpu1">{{ form_widget(form.cpuSocket1, {'attr': {'class': 'sform', 'style':'width:100%'}}) }}</td>
-							<td id="setcpu2">{{ form_widget(form.platform1, {'attr': {'class': 'sform', 'style':'width:100%'}}) }}</td>
-							<td>
-								<label id="setcpu1-lb" style="display:none;">Please wait ...</label>
-								<div>{{ form_row(form.searchSocket1)|replace({'<div><button': '<input class="butn-noajax"', '</button></div>': '">', '>': ' value="'})|raw }}
-								</div>
-							</td>
-						</tr>
-					</table>
+					<div class="sform1">
+						<span id="setcpu1">{{ form_widget(form.cpuSocket1) }}</span>
+						<span class="sform1">
+							<span id="setcpu1-lb">{{ form_row(form.searchSocket1)|replace({'<div><button': '<input', '</button></div>': '">', '>': ' value="'})|raw }}</span>
+							<span id="setcpu2">{{ form_widget(form.platform1) }}</span>
+						</span>
+					</div>
                 </td>
             </tr>
 			<tr>
                 <td class="table-width"><b>{% trans %}2nd CPU socket{% endtrans %}</b></td>
 				<td>
-					<table class="sform1">
-						<tr>
-							<td id="setcpu3">{{ form_widget(form.cpuSocket2, {'attr': {'class': 'sform', 'style':'width:100%'}}) }}</td>
-							<td id="setcpu4">{{ form_widget(form.platform2, {'attr': {'class': 'sform', 'style':'width:100%'}}) }}</td>
-							<td>
-								<label id="setcpu2-lb" style="display:none;">Please wait ...</label>
-								<div>{{ form_row(form.searchSocket2)|replace({'<div><button': '<input class="butn-noajax"', '</button></div>': '">', '>': ' value="'})|raw }}
-								</div>
-							</td>
-						</tr>
-					</table>
+					<div class="sform1">
+						<span id="setcpu3">{{ form_widget(form.cpuSocket2) }}</span>
+						<span class="sform1">
+							<span id="setcpu2-lb">{{ form_row(form.searchSocket2)|replace({'<div><button': '<input', '</button></div>': '">', '>': ' value="'})|raw }}</span>
+							<span id="setcpu4">{{ form_widget(form.platform2) }}</span>
+						</span>
+					</div>
                 </td>
             </tr>
 			<tr>
@@ -170,7 +158,8 @@
 	</form><br>
 <div id="jsappend"></div>
     <script type="text/javascript"><!--
-    if ((document.uniqueID || window.getSelection) && (window.XMLHttpRequest || window.ActiveXObject)) {
+    if ((document.uniqueID || !document.all) && (window.XMLHttpRequest || window.ActiveXObject)) {
+		var ls = "{{ 'Please wait ...'|trans|e('js') }}";
         var h = document.getElementById("jsappend");
         var js = document.createElement('script');
         js.type = "text/javascript";

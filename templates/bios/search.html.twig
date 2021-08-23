@@ -20,9 +20,8 @@
 
 {% block body %}
 	<h2 class="title">{% trans %}Search for a bios{% endtrans %}</h2>
-
+	<p><a href="{{path("bios_info")}}">{% trans %}Where can I find the POST string?{% endtrans %}</a></p>
     <div id="hiddenDiv" style="display: none;"></div>
-	<a href="{{path("bios_info")}}">{% trans %}Where can I find the POST string?{% endtrans %}</a>
 	{{ form_start(form, {'method': 'POST', 'name': 'search', 'action':path("bios_search")}) }}
 		<div class="butn">
 			<input id="rst-btn" type="reset" value="{% trans %}Reset fields{% endtrans %}" class="butn-0">
@@ -40,7 +39,7 @@
                 <td>{{ form_widget(form.manufacturer, {'attr': {'class': 'sform'}}) }}</td>
             </tr>
 			<tr>
-                <td class="table-width" id="help-t">
+                <td class="table-width">
 					<b>{% trans %}Chipset{% endtrans %}</b>
 					<a href="#" class="help-t">
 						<img src="{{ absolute_url(asset('assets/images/search/help.gif')) }}" alt="">
@@ -48,17 +47,13 @@
 					</a>
 				</td>				
 				<td>
-					<table class="sform1">
-						<tr>
-							<td id="setchip1">{{ form_widget(form.chipsetManufacturer, {'attr': {'class': 'sform', 'style':'width:100%'}}) }}</td>
-							<td id="setchip2">{{ form_widget(form.chipset, {'attr': {'class': 'sform', 'style':'width:100%'}}) }}</td>
-							<td>
-								<label id="setchip-lb" style="display:none;">Please wait ...</label>
-								<div>{{ form_row(form.searchChipsetManufacturer)|replace({'<div><button': '<input class="butn-noajax"', '</button></div>': '">', '>': ' value="'})|raw }}
-								</div>
-							</td>
-						</tr>
-					</table>
+					<div class="sform1">
+						<span id="setchip1">{{ form_widget(form.chipsetManufacturer) }}</span>
+						<span class="sform1">
+							<span id="setchip-lb">{{ form_row(form.searchChipsetManufacturer)|replace({'<div><button': '<input', '</button></div>': '">', '>': ' value="'})|raw }}</span>
+							<span id="setchip2">{{ form_widget(form.chipset) }}</span>
+						</span>
+					</div>
                 </td>
             </tr>
             <tr>
@@ -94,9 +89,9 @@
 		
    </form><br>
 <div id="jsappend"></div>
-<input type="hidden" disabled="disabled" id="loadchip" value="{{ 'Please wait ...'|trans|e('html_attr') }}">
 <script type="text/javascript"><!--
-    if ((document.uniqueID || window.getSelection) && (window.XMLHttpRequest || window.ActiveXObject)) {
+    if ((document.uniqueID || !document.all) && (window.XMLHttpRequest || window.ActiveXObject)) {
+		var ls = "{{ 'Please wait ...'|trans|e('js') }}";
         var h = document.getElementById("jsappend");
         var js = document.createElement('script');
         js.type = "text/javascript";

@@ -18,7 +18,7 @@ div.top-bar select.lang {width: 8.33em;}
 div.top-bar img {vertical-align: top;}
 
 div.main, th {text-align: center;}
-div.page {text-align: left; margin: auto; width:98%;}
+div.page {text-align: left; font-size: 16px; margin: auto; width:98%;}
 h2.title {text-align: center; font-size:24px; margin: 15px 0;}
 b.contrib {background: #FFFF00; color: #000000;}
 b.contrib a:link, b.contrib a:visited { color: #0000FF;}
@@ -46,26 +46,28 @@ a.index-button2 span.img {background-image: url(./images/index/awchip_low.gif);}
 div.perks, div.perks div.results ul li {font-size:14px;}
 
 /* search.html.twig */
-table.search-table{width:100%;}
+table.search-table{font-size: 1em; width:100%;}
 table.search-table tr {height: 2em;}
-select.sform { width: 90%; vertical-align:middle;position:relative;}
+select.sform { width: 90%; vertical-align:middle;}
 input.sform { width: 90%; vertical-align:middle;}
-table.sform1 {width: 91%; margin-left:-3px;}
-
 
 td.table-width {width: 130px;text-align:center;}
 span.field1 {height: 1.75em; width: 15em; font-size:14px; margin-bottom:4px; /* **/ float:left; /** */}
 span.field1 span {float:left; margin-left:0.4em;}
 span.field1 input {height: 21px; width: 21px; float:left;  font-size:12px; /* **/ height: 1.25em; width: 1.25em; /** */}
 span.field2 {width: 12em;font-size:16px; margin-bottom:4px; /* **/ float:left; /** */}
-#setchip1, #setcpu1, #setcpu3 {width:30%;}
-#setchip2, #setcpu2, #setcpu4 {width:50%;}
+#setchip1, #setcpu1, #setcpu3 {margin-right: 5px;}
+#setchip2, #setcpu2, #setcpu4 {position: relative;}
+#setchip2 select, #setcpu2 select, #setcpu4 select {position:absolute;}
+div.sform1 input {background-color: #ebebeb; color: #000000; margin-right: 5px; width: 11em;}
+div.sform1 span.sform1 {height: 1.5em; width: 12.5em;}
+div.sform1 span {/* **/ float:left; /** */}
+div.sform1 select {vertical-align:top;}
 div.butn {text-align: center;}
 div.butn input {height:2.7em; font-size:14px;}
 input.butn-0{background: #ebebeb url(../assets/images/search/reset.gif) no-repeat scroll 0px 1px;padding-left:15px;}
 input.butn-1{background: #ebebeb url(../assets/images/search/search.gif) no-repeat scroll 4px 1px;padding-left:30px;}
 input.butn-2{background: #ebebeb url(../assets/images/search/search_photo.gif) no-repeat scroll 5px 1px;padding-left:15px;}
-input.butn-noajax {background-color: #ebebeb; color:#000000; width:11em;}
 a.help-t span{
 	position:absolute;
 	visibility:hidden;
