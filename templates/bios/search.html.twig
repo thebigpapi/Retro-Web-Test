@@ -27,7 +27,7 @@
 			<input id="rst-btn" type="reset" value="{% trans %}Reset fields{% endtrans %}" class="butn-0">
 			{{ form_row(form.search)|replace({'<div><button': '<input class="butn-1"', '</button></div>': '">', '>': ' value="'})|raw }}
 		</div>
-        <table class="search-table">
+        <table id="search-table">
             <tr>
 				<td class="table-width">
 					<b>{% trans %}Manufacturer{% endtrans %}</b>
@@ -47,12 +47,13 @@
 					</a>
 				</td>				
 				<td>
-					<div class="sform1">
-						<span id="setchip1">{{ form_widget(form.chipsetManufacturer) }}</span>
-						<span class="sform1">
-							<span id="setchip-lb">{{ form_row(form.searchChipsetManufacturer)|replace({'<div><button': '<input', '</button></div>': '">', '>': ' value="'})|raw }}</span>
+					<div class="sadv">
+						<div id="setchip1">{{ form_widget(form.chipsetManufacturer, {'attr': {'class': 'sform'}}) }}</div>
+						<div class="sform1">
+							<span id="setchip-lb"></span>
+							<span class="butn-noajax">{{ form_row(form.searchChipsetManufacturer)|replace({'<div><button': '<input', '</button></div>': '">', '>': ' value="'})|raw }}</span>
 							<span id="setchip2">{{ form_widget(form.chipset) }}</span>
-						</span>
+						</div>
 					</div>
                 </td>
             </tr>

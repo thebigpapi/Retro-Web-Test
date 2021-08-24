@@ -16,8 +16,9 @@ input.butn-1{background-position: 5px 2px;padding-left:42px;}
 input.butn-2{background-position: 5px 2px;padding-left:42px;}
 input.num {width:20px;}
 span.field1 {font-size: 12px;}
-div.sform1 select, div.sform1 input, select.sform{height:2.2em;}
-div.sform1 span.sform1 {height: 1.8em;}
+div.sform1 {position: relative;}
+table.ajax div.sform1 select {min-width: 90%;}
+#search-table select, span.butn-noajax input{height:2.2em;}
 
 @media (max-width: 600px) {
 	div.top-bar {font-size:12px; padding:0 0 0 5px;}
@@ -25,15 +26,17 @@ div.sform1 span.sform1 {height: 1.8em;}
 	div.top-bar a, div.top-bar span.form {display: table-cell; vertical-align: middle; padding: 1px;}
 	div.top-bar span.form {width: 140px;}
 	div.top-bar select.lang {width: 70%;}
+	div.page {font-size:14px;}
+	h2.title {font-size: 16px; margin: 10px 0;}
 	
 	/* search.html.twig */
-	h2.title {font-size: 16px; margin: 10px 0;}
-	table.search-table tr {height:auto;}
-	table.search-table td {display:block;width:100%;text-align:left;padding:0 0 4px 4%;}
-	#setchip1, #setcpu1, #setcpu3 {width:100%; margin-right: 0;}
-	#setchip1 select, #setcpu1 select, #setcpu3 select {min-width:90%;}
+	#search-table td {display:block;width:100%;text-align:left;padding:0 0 4px 4%;}
+	#search-table select {width: 90%;}
+	div.sadv div {padding:0 0 4px;}
+	div.sform1 span {float: none;}
+	div.sform1, div.sform1 select {position:static;}
+	table.ajax span.butn-noajax input {display:none;}
 	div.butn input {font-size:18px;height:2.2em;}
-	div.page {font-size:14px;}
 	div.sform2 input[type=checkbox] {width:20px;height:20px;}
 	span.field1 {width: 15em;}
 	span.field2 {width: 10em;}
@@ -76,8 +79,7 @@ div.sform1 span.sform1 {height: 1.8em;}
 	/* search.html.twig */
 	td.table-width {width:210px;}
 	div.butn input {font-size:18px;height:2.2em;}
-	table.search-table tr {height:1.5em;}
-	div.sform1 span.sform1 {height: 1.3em;}
+	#search-table tr {height:1.5em;}
 
 	/* result.html.twig */
 	div.results ul li{font-size:20px;}
@@ -92,6 +94,14 @@ div.sform1 span.sform1 {height: 1.8em;}
 	/* search.html.twig */
 	span.field1 {font-size:14px;}
 	td.table-width {width:220px;}
+	div.sadv {display: table; border-spacing: 0; width:90%;}
+	div.sadv div, div.sadv div.sform1 span {display: table-cell;vertical-align: middle;float:none;}
+	div.sadv div {padding:0 5px 0 0; width:30%;}
+	div.sadv div.sform1 {padding: 0; width:70%;}
+	div.sadv select {width:100%;}
+	div.sform1, div.sform1 select {position:static;}
+	table.ajax div.sadv div.sform1 span {display: block;}
+	table.ajax span.butn-noajax input {display:none;}
 
 	/* show.html.twig */
 	div.show-images {width:30%; max-height:600px;}
@@ -114,13 +124,13 @@ div.sform1 span.sform1 {height: 1.8em;}
 @media (prefers-color-scheme: dark) {
 	body, form {margin:0; padding:0;background-color:#191919;color:#EEEEEE;}
 	div.index-buttons span.image-block{background-color: #333333;color: white;}
-	div.butn input, div.sform1 input {background-color:#303030;color:#FFFFFF;}
+	div.butn input, span.butn-noajax input {background-color:#303030;color:#FFFFFF;}
 	a.help-t span{background-color: black;color: #fff;border:1px solid #FFFFFF;}
 	b.contrib {background: #191919; color: yellow;}
 	b.contrib a:link, b.contrib a:visited { color: #A600FF;}
 	a:link { color: orange;}
 	a:visited { color: #00e874;}
-	select.sform , input.sform, span.field1 input {background-color:#424242;color:#ececec;}
+	#search-table select, input.sform, span.field1 input {background-color:#424242;color:#ececec;}
 	table.stbl, table.stbl-adv{background-color:#303030;color:#EEEEEE;}
 	tr.stbl-head{background-color:#606060;color:#EEEEEE;}
 	div.bios-image , .add-table, div.notes-field div textarea{background-color:#444444;color:#EEEEEE;}

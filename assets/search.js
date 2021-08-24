@@ -2,8 +2,8 @@ function setChipset(ok, formtype, sel1, sel2, sel_lb, typ, chk) {
     var chipManuf = document.getElementById(sel1).childNodes;
 	var lb1 = document.getElementById(sel_lb);
 	var lb2 = document.getElementById(sel2);
-	lb1.innerHTML = ls;
 	lb2.style.display="none";
+	lb1.innerHTML = ls;
 	if(chk)
     	var form = document.getElementsByName(formtype + "_motherboard")[0];
 	else
@@ -23,7 +23,6 @@ function setChipset(ok, formtype, sel1, sel2, sel_lb, typ, chk) {
             var doc = document.getElementById(sel2);
             currentForm.innerHTML =  doc.innerHTML;
             parser.innerHTML="";
-			setMinWidth(sel1, sel2);
         }
     };
 	
@@ -33,23 +32,6 @@ function setChipset(ok, formtype, sel1, sel2, sel_lb, typ, chk) {
     xhttp.open('POST', form.action, true);
     xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     xhttp.send(params);
-}
-function setMinWidth(sel1, sel2, chk) {
-	if (!document.getElementsByClassName || (document.all && !window.atob)) {return;}
-	if(chk){
-		document.getElementById(sel1).getElementsByTagName('select')[0].style.minWidth =
-		document.getElementById("setchip1").getElementsByTagName('select')[0].offsetWidth + 'px';
-	}
-	if (document.getElementById(sel1).offsetTop == document.getElementById(sel2).parentNode.offsetTop) {
-		document.getElementById(sel2).getElementsByTagName('select')[0].style.minWidth =
-		document.getElementById(sel1).parentNode.parentNode.offsetWidth * 0.9 - 7
-		- document.getElementById(sel1).offsetWidth + 'px';
-		document.getElementById(sel2).parentNode.style.padding='';
-	} else {
-		document.getElementById(sel2).getElementsByTagName('select')[0].style.minWidth =
-		document.getElementById(sel1).getElementsByTagName('select')[0].offsetWidth + 'px';
-		document.getElementById(sel2).parentNode.style.padding='8px 0';
-	}
 }
 
 /* execution starts HERE; detect the selects and determine the type of search page*/
@@ -73,14 +55,9 @@ if (window.XMLHttpRequest)
 else if (window.ActiveXObject)
     var xhttp = new ActiveXObject("Microsoft.XMLHTTP");
 if (xhttp) { 
-	document.getElementById(formtype + '_searchChipsetManufacturer').parentNode.innerHTML="";
-	setMinWidth("setchip1", "setchip2");
-	if(chk){
-		document.getElementById(formtype + '_searchSocket1').parentNode.innerHTML="";
-		document.getElementById(formtype + '_searchSocket2').parentNode.innerHTML="";
-		setMinWidth("setcpu1", "setcpu2", chk);
-		setMinWidth("setcpu3", "setcpu4", chk);
-	}
+  document.getElementById('search-table').className = 'ajax';
+  document.getElementById('setchip2').style.display = 'none';
+  document.getElementById('setchip2').style.display = '';
 }
 rst.onclick= function() {
 	setChipset(1,formtype, "setchip1", "setchip2", "setchip-lb", "[chipsetManufacturer]=", chk);
@@ -99,11 +76,4 @@ if(chk){
 	cpu2.onchange= function() {
 		setChipset(0,formtype, "setcpu3", "setcpu4", "setcpu2-lb", "[cpuSocket2]=", chk);
 	};
-}
-window.onresize = function() {
-	setMinWidth("setchip1", "setchip2");
-	if(chk){
-		setMinWidth("setcpu1", "setcpu2", chk);
-		setMinWidth("setcpu3", "setcpu4", chk);
-	}
 }

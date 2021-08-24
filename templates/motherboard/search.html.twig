@@ -34,7 +34,7 @@
 			{{ form_row(form.search)|replace({'<div><button': '<input class="butn-1"', '</button></div>': '">', '>': ' value="'})|raw }}
 			{{ form_row(form.searchWithImages)|replace({'<div><button': '<input class="butn-2"', '</button></div>': '">', '>': ' value="'})|raw }}
 		</div>
-        <table class="search-table">
+        <table id="search-table">
             <tr>
 				<td class="table-width">
 					<b>{% trans %}Name{% endtrans %}</b>
@@ -68,12 +68,13 @@
 					</a>
 				</td>
 				<td>
-					<div class="sform1">
-						<span id="setchip1">{{ form_widget(form.chipsetManufacturer) }}</span>
-						<span class="sform1">
-							<span id="setchip-lb">{{ form_row(form.searchChipsetManufacturer)|replace({'<div><button': '<input', '</button></div>': '">', '>': ' value="'})|raw }}</span>
+					<div class="sadv">
+						<div id="setchip1">{{ form_widget(form.chipsetManufacturer, {'attr': {'class': 'sform'}}) }}</div>
+						<div class="sform1">
+							<span id="setchip-lb"></span>
+							<span class="butn-noajax">{{ form_row(form.searchChipsetManufacturer)|replace({'<div><button': '<input', '</button></div>': '">', '>': ' value="'})|raw }}</span>
 							<span id="setchip2">{{ form_widget(form.chipset) }}</span>
-						</span>
+						</div>
 					</div>
                 </td>
             </tr>
@@ -85,24 +86,26 @@
 					</a>
 				</td>
 				<td>
-					<div class="sform1">
-						<span id="setcpu1">{{ form_widget(form.cpuSocket1) }}</span>
-						<span class="sform1">
-							<span id="setcpu1-lb">{{ form_row(form.searchSocket1)|replace({'<div><button': '<input', '</button></div>': '">', '>': ' value="'})|raw }}</span>
+					<div class="sadv">
+						<div id="setcpu1">{{ form_widget(form.cpuSocket1, {'attr': {'class': 'sform'}}) }}</div>
+						<div class="sform1">
+							<span id="setcpu1-lb"></span>
+							<span class="butn-noajax">{{ form_row(form.searchSocket1)|replace({'<div><button': '<input', '</button></div>': '">', '>': ' value="'})|raw }}</span>
 							<span id="setcpu2">{{ form_widget(form.platform1) }}</span>
-						</span>
+						</div>
 					</div>
                 </td>
             </tr>
 			<tr>
                 <td class="table-width"><b>{% trans %}2nd CPU socket{% endtrans %}</b></td>
 				<td>
-					<div class="sform1">
-						<span id="setcpu3">{{ form_widget(form.cpuSocket2) }}</span>
-						<span class="sform1">
-							<span id="setcpu2-lb">{{ form_row(form.searchSocket2)|replace({'<div><button': '<input', '</button></div>': '">', '>': ' value="'})|raw }}</span>
+					<div class="sadv">
+						<div id="setcpu3">{{ form_widget(form.cpuSocket2, {'attr': {'class': 'sform'}}) }}</div>
+						<div class="sform1">
+							<span id="setcpu2-lb"></span>
+							<span class="butn-noajax">{{ form_row(form.searchSocket2)|replace({'<div><button': '<input', '</button></div>': '">', '>': ' value="'})|raw }}</span>
 							<span id="setcpu4">{{ form_widget(form.platform2) }}</span>
-						</span>
+						</div>
 					</div>
                 </td>
             </tr>
