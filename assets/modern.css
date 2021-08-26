@@ -30,6 +30,7 @@ table.ajax div.sform1 select {min-width: 90%;}
 	h2.title {font-size: 16px; margin: 10px 0;}
 	
 	/* search.html.twig */
+	#search-table tr.sep {display: none;}
 	#search-table td {display:block;width:100%;text-align:left;padding:0 0 4px 4%;}
 	#search-table select {width: 90%;}
 	div.sadv div {padding:0 0 4px;}
@@ -37,7 +38,6 @@ table.ajax div.sform1 select {min-width: 90%;}
 	div.sform1, div.sform1 select {position:static;}
 	table.ajax span.butn-noajax input {display:none;}
 	div.butn input {font-size:18px;height:2.2em;}
-	div.sform2 input[type=checkbox] {width:20px;height:20px;}
 	span.field1 {width: 15em;}
 	span.field2 {width: 10em;}
 	
@@ -121,11 +121,33 @@ table.ajax div.sform1 select {min-width: 90%;}
 	td.exp-table {width:250px;}
 }
 
+@media (hover: none) {
+	span.help-t img {display:none;}
+	span.help-t span.img {display:inline-block;width:16px;height:16px;}
+	span.help-t span.text {
+		background: #FFFFE1;
+		border:1px solid #000000;
+		color: #000000;
+		display: inline;
+		font-size:12px;
+		margin: -5px 0 0 15px;
+		padding: 3px;
+		position:absolute;
+		visibility: hidden;
+		z-index: 1;
+	}
+	span.help-t:hover span.text {visibility: visible;}
+}
+
+@media (pointer: coarse) {
+    div.sform2 input[type=checkbox] {width:20px;height:20px;}
+}
+
 @media (prefers-color-scheme: dark) {
 	body, form {margin:0; padding:0;background-color:#191919;color:#EEEEEE;}
 	div.index-buttons span.image-block{background-color: #333333;color: white;}
 	div.butn input, span.butn-noajax input {background-color:#303030;color:#FFFFFF;}
-	a.help-t span{background-color: black;color: #fff;border:1px solid #FFFFFF;}
+	span.help-t span.text{background-color: black;color: #fff;border:1px solid #FFFFFF;}
 	b.contrib {background: #191919; color: yellow;}
 	b.contrib a:link, b.contrib a:visited { color: #A600FF;}
 	a:link { color: orange;}

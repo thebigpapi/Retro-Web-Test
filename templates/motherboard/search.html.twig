@@ -38,20 +38,22 @@
             <tr>
 				<td class="table-width">
 					<b>{% trans %}Name{% endtrans %}</b>
-					<a href="#" class="help-t">
-						<img src="{{ absolute_url(asset('assets/images/search/help.gif')) }}" alt="">
-						<span>{% trans %}This is where you enter the board part number, do not write the manufacturer name here!{% endtrans %}</span>
-					</a>
+					<span class="help-t">
+						<img src="{{ absolute_url(asset('assets/images/search/help.gif')) }}" alt="" title="{{ 'This is where you enter the board part number, do not write the manufacturer name here!'|trans|e('html') }}" width="16" height="16">
+						<span class="img" style="background-image: url('{{ absolute_url(asset('assets/images/search/help.gif')) }}');"></span>
+						<span class="text">{% trans %}This is where you enter the board part number, do not write the manufacturer name here!{% endtrans %}</span>
+					</span>
 				</td>
                 <td>{{ form_widget(form.name, {'attr': {'class': 'sform'}})|replace({' />': ' size="50">'})|raw }}</td>
             </tr>
 			<tr>
                 <td class="table-width">
 					<b>{% trans %}Manufacturer{% endtrans %}</b>
-					<a href="#" class="help-t">
-						<img src="{{ absolute_url(asset('assets/images/search/help.gif')) }}" alt="">
-						<span>{% trans %}This is the board manufacturer (e.g: ASUS, Gigabyte, FIC){% endtrans %}</span>
-					</a>
+					<span class="help-t">
+						<img src="{{ absolute_url(asset('assets/images/search/help.gif')) }}" alt="" title="{{ 'This is the board manufacturer (e.g: ASUS, Gigabyte, FIC)'|trans|e('html') }}" width="16" height="16">
+						<span class="img" style="background-image: url('{{ absolute_url(asset('assets/images/search/help.gif')) }}');"></span>
+						<span class="text">{% trans %}This is the board manufacturer (e.g: ASUS, Gigabyte, FIC){% endtrans %}</span>
+					</span>
 				</td>
                 <td>{{ form_widget(form.manufacturer, {'attr': {'class': 'sform'}}) }}</td>
             </tr>
@@ -62,10 +64,11 @@
             <tr>
                 <td class="table-width">
 					<b>{% trans %}Chipset{% endtrans %}</b>
-					<a href="#" class="help-t">
-						<img src="{{ absolute_url(asset('assets/images/search/help.gif')) }}" alt="">
-						<span>{% trans %}Select a manufacturer from the first field, then pick the part number from the second field{% endtrans %}</span>
-					</a>
+					<span class="help-t">
+						<img src="{{ absolute_url(asset('assets/images/search/help.gif')) }}" alt="" title="{{ 'Select a manufacturer from the first field, then pick the part number from the second field'|trans|e('html') }}" width="16" height="16">
+						<span class="img" style="background-image: url('{{ absolute_url(asset('assets/images/search/help.gif')) }}');"></span>
+						<span class="text">{% trans %}Select a manufacturer from the first field, then pick the part number from the second field{% endtrans %}</span>
+					</span>
 				</td>
 				<td>
 					<div class="sadv">
@@ -80,10 +83,11 @@
             </tr>
 			<tr>
                 <td class="table-width"><b>{% trans %}CPU socket{% endtrans %}</b>
-					<a href="#" class="help-t">
-						<img src="{{ absolute_url(asset('assets/images/search/help.gif')) }}" alt="">
-						<span>{% trans %}Select a CPU socket from the first field and/or pick the CPU platform from the second field{% endtrans %}</span>
-					</a>
+					<span class="help-t">
+						<img src="{{ absolute_url(asset('assets/images/search/help.gif')) }}" alt="" title="{{ 'Select a CPU socket from the first field and/or pick the CPU platform from the second field'|trans|e('html') }}" width="16" height="16">
+						<span class="img" style="background-image: url('{{ absolute_url(asset('assets/images/search/help.gif')) }}');"></span>
+						<span class="text">{% trans %}Select a CPU socket from the first field and/or pick the CPU platform from the second field{% endtrans %}</span>
+					</span>
 				</td>
 				<td>
 					<div class="sadv">
@@ -109,13 +113,15 @@
 					</div>
                 </td>
             </tr>
+			<tr class="sep"><td></td><td></td></tr>
 			<tr>
 				<td class="table-width">
 					<b>{% trans %}Expansion slots{% endtrans %}</b>
-					<a href="#" class="help-t">
-						<img src="{{ absolute_url(asset('assets/images/search/help.gif')) }}" alt="">
-						<span>{% trans %}0 - all boards without that slot will be shown{% endtrans %}</span>
-					</a>
+					<span class="help-t">
+						<img src="{{ absolute_url(asset('assets/images/search/help.gif')) }}" alt="" title="{{ '0 - all boards without that slot will be shown'|trans|e('html') }}" width="16" height="16">
+						<span class="img" style="background-image: url('{{ absolute_url(asset('assets/images/search/help.gif')) }}');"></span>
+						<span class="text">{% trans %}0 - all boards without that slot will be shown{% endtrans %}</span>
+					</span>
 				</td>
 				<td><div class="sform2">
 					{% for slot in slots %}
@@ -128,13 +134,15 @@
 					{% endfor %}
 				</div></td>
 			</tr>
+			<tr class="sep"><td></td><td></td></tr>
 			<tr>
 				<td class="table-width">
 					<b>{% trans %}I/O ports{% endtrans %}</b>
-					<a href="#" class="help-t">
-						<img src="{{ absolute_url(asset('assets/images/search/help.gif')) }}" alt="">
-						<span>{% trans %}0 - all boards without that port will be shown{% endtrans %}</span>
-					</a>
+					<span class="help-t">
+						<img src="{{ absolute_url(asset('assets/images/search/help.gif')) }}" alt="" title="{{ '0 - all boards without that port will be shown'|trans|e('html') }}" width="16" height="16">
+						<span class="img" style="background-image: url('{{ absolute_url(asset('assets/images/search/help.gif')) }}');"></span>
+						<span class="text">{% trans %}0 - all boards without that port will be shown{% endtrans %}</span>
+					</span>
 				</td>
 				<td><div class="sform2">
 				{% for port in ports %}
@@ -145,7 +153,8 @@
                 {% endfor %}
 				</div></td>
 			</tr>
-			<!--<tr>
+			<!--<tr class="sep"><td></td><td></td></tr>
+				<tr>
 				<td class="table-width"><b>{% trans %}RAM type{% endtrans %}</b></td>
 				<td><div class="sform2">
 				{% for child in form.dramType|keys %}
