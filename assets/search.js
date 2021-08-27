@@ -41,7 +41,7 @@ if (document.getElementsByName("search[platform1]")[0])
 var formtype = "search";
 var chip = document.getElementById(formtype + '_chipsetManufacturer');
 
-var rst = document.getElementById('rst-btn');
+var rst = document.getElementById(formtype + '_ResetFields');
 var lb2 = document.getElementById('setchip2');
 if(chk){
 	var cpu1 = document.getElementById(formtype + '_cpuSocket1');
@@ -60,11 +60,18 @@ if (xhttp) {
   document.getElementById('setchip2').style.display = '';
 }
 rst.onclick= function() {
+	if(chk)
+    	var form = document.getElementsByName(formtype + "_motherboard")[0];
+	else
+		var form = document.getElementsByName(formtype)[0];
+
+form.reset();
 	setChipset(1,formtype, "setchip1", "setchip2", "setchip-lb", "[chipsetManufacturer]=", chk);
 	if(chk){
 		setChipset(1,formtype, "setcpu1", "setcpu2", "setcpu1-lb", "[cpuSocket1]=", chk);
 		setChipset(1,formtype, "setcpu3", "setcpu4", "setcpu2-lb", "[cpuSocket2]=", chk);
 	}
+	return false;
 };
 chip.onchange= function() {
 	setChipset(0,formtype, "setchip1", "setchip2", "setchip-lb", "[chipsetManufacturer]=", chk);

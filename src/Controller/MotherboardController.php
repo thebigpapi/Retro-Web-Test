@@ -102,6 +102,7 @@ class MotherboardController extends AbstractController
         if ($chipsetManufacturerId && intval($chipsetManufacturerId) && !array_key_exists('chipset', $criterias)) $criterias['chipsetManufacturer'] = "$chipsetManufacturerId";
         elseif($chipsetManufacturerId === "NULL" && !array_key_exists('chipset', $criterias)) $criterias['chipsetManufacturer'] = NULL;
 
+		$reset = boolval(htmlentities($request->query->get('reset')));
         $showImages = boolval(htmlentities($request->query->get('showImages')));
         
         //[{"id":1, "count":2}] 
@@ -126,7 +127,7 @@ class MotherboardController extends AbstractController
             $criterias['ioPorts'] = $ioPortsArray;
         }
 
-        if ($criterias == array()) {
+        if ($criterias == array() || $reset) {
             return $this->redirectToRoute('motherboard_search');
         }
         
@@ -365,6 +366,10 @@ class MotherboardController extends AbstractController
             else {
                 $parameters['manufacturerId'] = $form['manufacturer']->getData()->getId();
             }
+        }
+
+        if ($form['ResetFields']->isClicked()){
+            $parameters['reset'] = true;
         }
 
         if ($form['searchWithImages']->isClicked()){

@@ -2,7 +2,7 @@
 
 /* == cross compatibility between linux and windows == */
 /* global tags */
-input[type=text], input[type=submit], input[type=reset], input[type=password], button, select {
+input[type=text], input[type=submit], input[type=password], button, select {
   height: 22px;
   border-color:#d9d9d9;
   border-width: thin;

@@ -40,12 +40,13 @@ class BiosController extends AbstractController
 
         $filePresent = htmlentities($request->query->get('filePresent'));
         if ($filePresent && boolval($filePresent)) $criterias['file_present'] = boolval($filePresent);
+		$reset = boolval(htmlentities($request->query->get('reset')));
 
         $chipsetId = htmlentities($request->query->get('chipsetId'));
         if ($chipsetId && intval($chipsetId)) $criterias['chipset_id'] = intval($chipsetId);
         elseif ($chipsetId == "NULL") $criterias['chipset_id'] = NULL;
 
-        if (empty($criterias)) {
+        if (empty($criterias) || $reset) {
             return $this->redirectToRoute("bios_search");
         }
 
@@ -207,6 +208,10 @@ class BiosController extends AbstractController
             }
             $parameters = array();
             //dd($form->getData());
+
+			if ($form['ResetFields']->isClicked()){
+				$parameters['reset'] = true;
+			}
 
             if($postString = $form['post_string']->getData()) {
                 $parameters['postString'] = $postString;
