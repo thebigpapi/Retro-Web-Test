@@ -583,7 +583,7 @@
       </trans-unit>
       <trans-unit id="uNrKNFR" resname="Reset fields">
         <source>Reset fields</source>
-        <target>Reset fields</target>
+        <target>Reiniciar campos</target>
       </trans-unit>
       <trans-unit id="e53DCbx" resname="This is where you enter the board part number, do not write the manufacturer name here!">
         <source>This is where you enter the board part number, do not write the manufacturer name here!</source>
