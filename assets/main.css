@@ -67,9 +67,9 @@ table.ajax div.sform1 span.butn-noajax{float:right;}
 table.ajax span.butn-noajax input {visibility:hidden;}
 div.butn {text-align: center;}
 div.butn input {height:2.7em; font-size:14px;}
-input.butn-0{background: #ebebeb url(../assets/images/search/reset.gif) no-repeat scroll 0px 1px;padding-left:15px;}
-input.butn-1{background: #ebebeb url(../assets/images/search/search.gif) no-repeat scroll 4px 1px;padding-left:30px;}
-input.butn-2{background: #ebebeb url(../assets/images/search/search_photo.gif) no-repeat scroll 5px 1px;padding-left:15px;}
+input.butn-0{background: #ebebeb url(./images/search/reset.gif) no-repeat 0px 1px;padding-left:15px; /* **/ padding-left:35px; /** */}
+input.butn-1{background: #ebebeb url(./images/search/search.gif) no-repeat 4px 1px;padding-left:30px; /* **/ padding-left:42px; /** */}
+input.butn-2{background: #ebebeb url(./images/search/search_photo.gif) no-repeat 5px 1px;padding-left:15px; /* **/ padding-left:42px; /** */}
 span.help-t span {display:none;}
 
 /* result.html.twig */

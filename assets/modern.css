@@ -11,9 +11,9 @@ input[type=text], input[type=submit], input[type=reset], input[type=password], b
 
 /* specific tags */
 input.button1, input.button2, input.button3, input.admin-button {height:auto;border-width:2px;}
-input.butn-0{background-position: 1px 2px;padding-left:35px;}
-input.butn-1{background-position: 5px 2px;padding-left:42px;}
-input.butn-2{background-position: 5px 2px;padding-left:42px;}
+input.butn-0{background-position: 1px 2px;}
+input.butn-1{background-position: 5px 2px;}
+input.butn-2{background-position: 5px 2px;}
 input.num {width:20px;}
 span.field1 {font-size: 12px;}
 div.sform1 {position: relative;}
@@ -123,7 +123,12 @@ table.ajax div.sform1 select {min-width: 90%;}
 
 @media (hover: none) {
 	span.help-t img {display:none;}
-	span.help-t span.img {display:inline-block;width:16px;height:16px;}
+	span.help-t span.img {
+		background-image: url(./images/search/help.gif);
+		display: inline-block;
+		width: 16px;
+		height: 16px;
+	}
 	span.help-t span.text {
 		background: #FFFFE1;
 		border:1px solid #000000;
@@ -136,7 +141,7 @@ table.ajax div.sform1 select {min-width: 90%;}
 		visibility: hidden;
 		z-index: 1;
 	}
-	span.help-t:hover span.text {visibility: visible;}
+	span.help-t:hover span.text {visibility:visible;}
 }
 
 @media (pointer: coarse) {
