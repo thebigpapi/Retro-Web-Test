@@ -149,10 +149,10 @@ table.ajax div.sform1 select {min-width: 90%;}
 }
 
 @media (prefers-color-scheme: dark) {
-	body, form {margin:0; padding:0;background-color:#191919;color:#EEEEEE;}
+	body, form {background-color:#191919;color:#EEEEEE;}
 	div.index-buttons span.image-block{background-color: #333333;color: white;}
 	div.butn input, span.butn-noajax input {background-color:#303030;color:#FFFFFF;}
-	span.help-t span.text{background-color: black;color: #fff;border:1px solid #FFFFFF;}
+	span.help-t span.text{background-color: black;color: #fff;border-color:#FFFFFF;}
 	b.contrib {background: #191919; color: yellow;}
 	b.contrib a:link, b.contrib a:visited { color: #A600FF;}
 	a:link { color: orange;}
