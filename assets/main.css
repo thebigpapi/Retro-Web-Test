@@ -1,12 +1,13 @@
 /* main.css - loaded by all browsers */
 
 /* base.html.twig */
-body, form {margin:0; padding:0;background-color:#F9F9F9;}
+body, form {margin:0; padding:0;background-color:#F9F9F9; color:#000000;}
 body, button, div.main input, select {font-family: Arial, sans-serif;}
 p, ul {margin-top: 14px; margin-bottom: 14px;}
 img {border:0;}
 
-a:link, a:visited {text-decoration: none;}
+a:link {color: #0000FF; text-decoration: none;}
+a:visited {color: #800080; text-decoration: none;}
 a:hover {text-decoration: underline;}
 
 div.top-bar {background:#343943;font-size:16px;padding:5px 18px;}
@@ -66,7 +67,7 @@ div.sform1 span {/* **/ float:left; /** */}
 table.ajax div.sform1 span.butn-noajax{float:right;}
 table.ajax span.butn-noajax input {visibility:hidden;}
 div.butn {text-align: center;}
-div.butn input {height:2.7em; font-size:14px;}
+div.butn input {color: #000000; height:2.7em; font-size:14px;}
 input.butn-0{background: #ebebeb url(./images/search/reset.gif) no-repeat 0px 1px;padding-left:15px; /* **/ padding-left:35px; /** */}
 input.butn-1{background: #ebebeb url(./images/search/search.gif) no-repeat 4px 1px;padding-left:30px; /* **/ padding-left:42px; /** */}
 input.butn-2{background: #ebebeb url(./images/search/search_photo.gif) no-repeat 5px 1px;padding-left:15px; /* **/ padding-left:42px; /** */}
@@ -93,9 +94,10 @@ table.stbl {
   border-collapse: collapse;
   background-color:#FFFFFF;
   margin-bottom:10px;
+  color: #000000;
   width:100%;
 }
-tr.stbl-head{background-color:#e0e0e0;text-align:center;}
+tr.stbl-head{background-color:#e0e0e0;color:#000000;text-align:center;}
 table.stbl td, table.stbl th{padding: 5px 5px 5px;}
 div.show-images {width:25%;overflow: auto;float:left;height:500px; /* **/ height:auto; max-height:500px; /** */}
 span.show-image {width:100%;font-size:12px;display:block;}
@@ -122,6 +124,7 @@ table.stbl-adv {
 	border-collapse: collapse;
 	background-color:#FFFFFF;
 	margin-bottom:10px;
+	color: #000000;
 	width:100%;
 }
 table.stbl-adv td {vertical-align: top;}
