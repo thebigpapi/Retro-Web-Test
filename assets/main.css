@@ -40,7 +40,7 @@ background-position: center; background-repeat: no-repeat;}
 
 div.index-buttons a:hover{text-decoration: none;}
 
-a.index-button0 span, a.index-button2 span {cursor: hand; /* **/ cursor: pointer; /** */}
+a.index-button0 span, a.index-button2 span {_cursor: hand; /* **/ cursor: pointer; /** */}
 a.index-button0 span.img {background-image: url(./images/index/motherboard_low.gif);}
 a.index-button1 span.img {background-image: url(./images/index/card_wip.gif);}
 a.index-button2 span.img {background-image: url(./images/index/awchip_low.gif);}
