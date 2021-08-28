@@ -87,8 +87,7 @@ div.results span.image-block span span.results-alias small {font-size:0.8em;}
 div.pagination span.current {font-weight:bold;}
 
 /* show.html.twig */
-span.alias-div {padding:5px;margin-top: 1px;display: inline-block;
-	border-style: solid;border-width: 1px;border-color: #ababab;}
+span.text-block {border: 1px solid #ababab; display: -moz-inline-box; display: inline-block; margin-top: 1px; padding: 5px;}
 table.stbl {
   border: 1px solid #e0e0e0;
   border-collapse: collapse;
@@ -103,16 +102,13 @@ span.show-image {width:100%;font-size:12px;display:block;}
 span.creditor {width:auto;display:block; text-align: center; word-wrap: break-word;}
 span.show-image a img {width: 100%;}
 div.show-data {width:74%;float:left;padding-left:3px;font-size: 14px;overflow-x:auto;}
+div.show-data span.text-block {color:#000000;}
 div.show-data table, div.notes {font-size: 14px;}
 div.show-cpus {font-size: 14px;width:100%;clear:left;}
 div.show-cpus table{font-size: 14px;}
 div.scroll-div {overflow:auto;width:100%;}
 p.string-alias{text-align:center;font-size: 14px;}
 span.string-bios {font-size:12px;}
-
-span.newdiv {padding:5px;margin-top: 1px;display: inline-block;color:#000000;
-border-style: solid;border-width: 1px;border-color: #ababab;}
-
 td.exp-table {vertical-align: top;width:140px;}
 td.io-table {vertical-align: top;width:175px;}
 

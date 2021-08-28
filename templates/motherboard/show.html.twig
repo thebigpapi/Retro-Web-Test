@@ -66,13 +66,13 @@
 	</h2>
 	{% if motherboard.getMotherboardAliases() is not empty %}
 		<p class="string-alias"><b>
-		{% trans %}Also known as:{% endtrans %} 
+		<span class="text-block" style="border: none; padding-right: 0;">{% trans %}Also known as:{% endtrans %}</span>
 		{% for alias in motherboard.getMotherboardAliases() %}
-			<span class="alias-div">
-			{% if alias.getManufacturer() is not null %} 
-				{{ alias.getManufacturer().getShortNameIfExist() }}
+			<span class="text-block"
+			{% if alias.getManufacturer() is not null %}
+				>{{ alias.getManufacturer().getShortNameIfExist() }}
 			{% else %}
-				Unknown
+				>Unknown
 			{% endif %}
            	{{ alias.getName() }}</span>
 		{% endfor %}
@@ -137,12 +137,12 @@
 			<td>
 			{% if motherboard.getCpuSockets() is not empty %}
 				{% for socket in motherboard.getCpuSockets() %}
-					<span class="newdiv" style="background-color:#cae4fa;">{{ socket.getNameAndType}}</span>
+					<span class="text-block" style="background-color:#cae4fa;">{{ socket.getNameAndType}}</span>
 				{% endfor %}
 			{% endif %}
 			{% if motherboard.getProcessorPlatformTypes() is not empty %}
 				{% for platform in motherboard.getProcessorPlatformTypes() %}
-					<span class="newdiv" style="background-color:#fae9ca;">{{ platform.getName() }}</span>
+					<span class="text-block" style="background-color:#fae9ca;">{{ platform.getName() }}</span>
 				{% endfor %}
 			{% endif %}
 			</td>
@@ -153,7 +153,7 @@
 				<td>{% trans %}Supported FSB speeds:{% endtrans %}</td>
 				<td>
 					{% for frequency in motherboard.getCpuSpeed()|sort((a, b) => a.value <=> b.value) %}
-						<span class="newdiv" style="background-color:#d0faca;">{{ frequency.getValueWithUnit() }}</span>
+						<span class="text-block" style="background-color:#d0faca;">{{ frequency.getValueWithUnit() }}</span>
 					{% endfor %}
 				</td>
 			</tr>
@@ -163,21 +163,20 @@
 			{% if motherboard.getMotherboardMaxRams() is not empty %}
                 {% for maxRam in motherboard.getMotherboardMaxRams()|sort((a, b) => a.getMaxRam().getValue() <=> b.getMaxRam().getValue()) %}
                     {% if maxRam.getMaxRam() is not null %}
-					<span class="newdiv" style="background-color:#cae4fa;"><!--
-						-->{% if maxRam.getMaxRam().getValue() > 1048575 %}<!--
-							-->{{ maxRam.getMaxRam().getValue() / 1048576 }} {% trans %}GB{% endtrans %}<!--
-						-->{% elseif maxRam.getMaxRam().getValue() > 1023 %}<!--
-							-->{{ maxRam.getMaxRam().getValue() / 1024 }} {% trans %}MB{% endtrans %}<!--
-						-->{% else %}<!--
-							-->{{ maxRam.getMaxRam().getValue() }} {% trans %}KB{% endtrans %}<!--
-						-->{% endif %}<!--
-						-->{% if maxRam.getNote() is not null %} ({{ maxRam.getNote()}}){% endif %}</span>
+					<span class="text-block" style="background-color:#cae4fa;"
+						{% if maxRam.getMaxRam().getValue() > 1048575 %}
+							>{{ maxRam.getMaxRam().getValue() / 1048576 }} {% trans %}GB{% endtrans %}<!--
+						-->{% elseif maxRam.getMaxRam().getValue() > 1023 %}
+							>{{ maxRam.getMaxRam().getValue() / 1024 }} {% trans %}MB{% endtrans %}<!--
+						-->{% else %}
+							>{{ maxRam.getMaxRam().getValue() }} {% trans %}KB{% endtrans %}<!--
+						-->{% endif %}{% if maxRam.getNote() is not null %} ({{ maxRam.getNote()}}){% endif %}</span>
                     {% endif %}
                 {% endfor %}
 			{% endif %}
 			{% if motherboard.getDramType() is not empty %}
 				{% for dram in motherboard.getDramType() %}
-					<span class="newdiv" style="background-color:#fae9ca;">{{ dram.getName() }}</span>
+					<span class="text-block" style="background-color:#fae9ca;">{{ dram.getName() }}</span>
 				{% endfor %}
 			{% endif %}
             </td></tr>
@@ -185,15 +184,14 @@
 		{% if motherboard.getCacheSize() is not empty %}
             <tr><td>{% trans %}Cache:{% endtrans %}</td><td>
             {% for cache in motherboard.getCacheSize()|sort((a, b) => a.value <=> b.value) %}
-                <span class="newdiv" style="background-color:#d0faca;"><!--
-					-->{% if cache.getValue() > 1048575 %}<!--
-						-->{{ cache.getValue() / 1048576 }} {% trans %}MB{% endtrans %}<!--
-					-->{% elseif cache.getValue() > 1023 %}<!--
-						-->{{ cache.getValue() / 1024}} {% trans %}KB{% endtrans %}<!--
-					-->{% else %}<!--
-						-->{{ cache.getValue()}} {% trans %}B{% endtrans %}<!--
-					-->{% endif %}<!--
-				--></span>
+                <span class="text-block" style="background-color:#d0faca;"
+					{% if cache.getValue() > 1048575 %}
+						>{{ cache.getValue() / 1048576 }} {% trans %}MB{% endtrans %}<!--
+					-->{% elseif cache.getValue() > 1023 %}
+						>{{ cache.getValue() / 1024}} {% trans %}KB{% endtrans %}<!--
+					-->{% else %}
+						>{{ cache.getValue()}} {% trans %}B{% endtrans %}<!--
+					-->{% endif %}</span>
             {% endfor %}
             </td></tr>
         {% endif %}
