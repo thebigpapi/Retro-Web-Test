@@ -108,6 +108,7 @@ div.show-cpus {font-size: 14px;width:100%;clear:left;}
 div.show-cpus table{font-size: 14px;}
 div.scroll-div {overflow:auto;width:100%;}
 p.string-alias{text-align:center;font-size: 14px;}
+p.string-alias span.separator {/* **/ display: none; /** */}
 span.string-bios {font-size:12px;}
 td.exp-table {vertical-align: top;width:140px;}
 td.io-table {vertical-align: top;width:175px;}

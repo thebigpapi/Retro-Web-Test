@@ -74,7 +74,7 @@
 			{% else %}
 				>Unknown
 			{% endif %}
-           	{{ alias.getName() }}</span>
+           	{{ alias.getName() }}</span>{% if not loop.last %} <span class="separator">&nbsp;|&nbsp;</span>{% endif %}
 		{% endfor %}
 		</b></p>
 	{% endif %}
