@@ -84,7 +84,7 @@ ul.results-alias li small{font-size:0.8em;}
 
 div.results span.image-block {padding: 15px; width: 350px; /* **/ width: auto; /** */}
 div.results span.image-block span img {vertical-align:bottom; width:320px; margin-bottom:5px;}
-div.results span.image-block span span {font-size:16px; min-width:320px; width:20em;}
+div.results span.image-block span span {font-size:16px; min-width:320px; width:320px; /* **/ width:20em; /** */}
 div.results span.image-block span span.results-alias small {font-size:0.8em;}
 
 div.pagination span.current {font-weight:bold;}
