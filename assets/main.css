@@ -30,9 +30,10 @@ span.image-block span {display:table;}
 span.image-block span span {display:block;}
 
 /* index.html.twig */
+div.index-buttons span.margin-fix {margin-bottom: 1px; width: 204px; /* **/ margin-bottom: 0; width: auto; /** */ }
 div.index-buttons span.image-block {background-color: #ebebeb; color:#000000;
-border: 1px solid gray; margin-bottom: 4px; padding: 15px 5px 5px;
-vertical-align: top; width: 204px; /* **/ width: auto; /** */}
+border: 1px solid gray; padding: 15px 5px 5px; vertical-align: top;
+width: 204px; /* **/ margin-bottom: 4px; width: auto; /** */ }
 
 div.index-buttons span.image-block span span {font-size: 12px; min-width: 192px; width:16em;}
 div.index-buttons span.image-block span span.img {height: 126px; margin-bottom:3px;
@@ -40,6 +41,7 @@ background-position: center; background-repeat: no-repeat;}
 
 div.index-buttons a:hover{text-decoration: none;}
 
+div.index-buttons span.margin-fix, a.index-button1 span { cursor: default; }
 a.index-button0 span, a.index-button2 span {_cursor: hand; /* **/ cursor: pointer; /** */}
 a.index-button0 span.img {background-image: url(./images/index/motherboard_low.gif);}
 a.index-button1 span.img {background-image: url(./images/index/card_wip.gif);}

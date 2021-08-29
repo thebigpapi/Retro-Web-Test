@@ -6,18 +6,18 @@
 {% block body %}
 	<h2 class="title">{% trans %}Where do you want to go today?{% endtrans %}</h2>
 	<div class="index-buttons"><div class="main">
-		<a href="{{ path("motherboard_search") }}" class="index-button0"><span class="image-block"><span>
+		<span class="margin-fix"><a href="{{ path("motherboard_search") }}" class="index-button0"><span class="image-block"><span>
 			<span class="img"></span>
 			<span>{% trans %}Search for a motherboard{% endtrans %}</span> <span>({{moboCount}} {% trans %}entries{% endtrans %})</span><!--
-		--></span></span></a>
-		<a name="under construction" class="index-button1"><span class="image-block"><span>
+		--></span></span></a></span>
+		<span class="margin-fix"><a name="under construction" class="index-button1"><span class="image-block"><span>
 			<span class="img"></span>
 			<span>{% trans %}Find an expansion card{% endtrans %}</span> <span>[WIP]</span><!--
-		--></span></span></a>
-		<a href="{{ path("bios_search") }}" class="index-button2"><span class="image-block"><span>
+		--></span></span></a></span>
+		<span class="margin-fix"><a href="{{ path("bios_search") }}" class="index-button2"><span class="image-block"><span>
 			<span class="img"></span>
 			<span>{% trans %}Find a BIOS image{% endtrans %}</span> <span>({{biosCount}} {% trans %}files{% endtrans %})</span><!--
-		--></span></span></a>
+		--></span></span></a></span>
 	</div></div>
 	<div class="perks">
 		<p><b>{% trans %}Recently added or updated boards:{% endtrans %}</b></p>
