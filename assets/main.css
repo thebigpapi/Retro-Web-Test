@@ -118,7 +118,7 @@ td.exp-table {vertical-align: top;width:140px;}
 td.io-table {vertical-align: top;width:175px;}
 
 /* info/infoadv.html.twig */
-div.biosinfo span.image-block {margin: 0 0 0 10%;}
+div.biosinfo span.image-block {margin: 0 0 0 8%;}
 div.biosinfo span.image-block, div.biosinfo img {width:400px;}
 table.stbl-adv {
 	font-size:14px;
