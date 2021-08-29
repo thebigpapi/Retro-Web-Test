@@ -30,7 +30,7 @@ abstract class Chip
     protected $partNumber;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Manufacturer", inversedBy="chips")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Manufacturer", inversedBy="chips", fetch="EAGER")
      */
     protected $manufacturer;
 

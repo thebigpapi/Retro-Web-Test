@@ -29,7 +29,7 @@ class Motherboard
     private $dimensions;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Manufacturer", inversedBy="motherboards")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Manufacturer", inversedBy="motherboards", fetch="EAGER")
      */
     private $manufacturer;
 

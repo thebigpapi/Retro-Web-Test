@@ -7,6 +7,7 @@ use App\Entity\Manufacturer;
 use App\Form\Admin\Manage\ChipsetSearchType;
 use App\Form\Admin\Edit\ChipsetForm;
 use App\Form\Admin\Edit\ChipsetPartForm;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\Routing\Annotation\Route;
@@ -146,9 +147,9 @@ class ChipsetController extends AbstractController {
         ]);
     }
 
-    public function list_chipset(Request $request, PaginatorInterface $paginator, array $criterias)        
+    public function list_chipset(EntityManagerInterface $em, Request $request, PaginatorInterface $paginator, array $criterias)        
     {
-        $objects = $this->getDoctrine()
+        /*$objects = $this->getDoctrine()
             ->getRepository(Chipset::class)
             ->findBy($criterias);
 
@@ -177,6 +178,21 @@ class ChipsetController extends AbstractController {
             $objects,
             $request->query->getInt('page', 1),
             $this->getParameter('app.pagination.max')
+        );*/
+
+        $where = "";
+        if (!empty($criterias) && array_key_exists("manufacturer", $criterias)) {
+            $where = "WHERE m.id = :manufacturer";
+        }
+        
+        $dql   = "SELECT c FROM App:Chipset c JOIN c.manufacturer m $where ORDER BY m.name ASC, c.name ASC, c.part_no ASC";
+        $query = $em->createQuery($dql);
+        $query->setParameters($criterias);
+
+        $paginatedObjects = $paginator->paginate(
+            $query,
+            $request->query->getInt('page', 1),
+            $this->getParameter('app.pagination.max')
         );
 
         return $this->render('admin/manage/chipsets/list.html.twig', [
@@ -185,9 +201,9 @@ class ChipsetController extends AbstractController {
         ]);
     }
 
-    public function list_part(Request $request, PaginatorInterface $paginator, array $criterias)        
+    public function list_part(EntityManagerInterface $em, Request $request, PaginatorInterface $paginator, array $criterias)        
     {
-        $objects = $this->getDoctrine()
+        /*$objects = $this->getDoctrine()
             ->getRepository(ChipsetPart::class)
             ->findBy($criterias);
 
@@ -211,6 +227,21 @@ class ChipsetController extends AbstractController {
 
         $paginatedObjects = $paginator->paginate(
             $objects,
+            $request->query->getInt('page', 1),
+            $this->getParameter('app.pagination.max')
+        );*/
+
+        $where = "";
+        if (!empty($criterias) && array_key_exists("manufacturer", $criterias)) {
+            $where = "WHERE m.id = :manufacturer";
+        }
+
+        $dql   = "SELECT cp FROM App:ChipsetPart cp JOIN cp.manufacturer m $where ORDER BY m.name ASC, cp.partNumber ASC, cp.name ASC";
+        $query = $em->createQuery($dql);
+        $query->setParameters($criterias);
+
+        $paginatedObjects = $paginator->paginate(
+            $query,
             $request->query->getInt('page', 1),
             $this->getParameter('app.pagination.max')
         );

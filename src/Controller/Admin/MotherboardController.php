@@ -9,6 +9,7 @@ use App\Entity\Processor;
 use App\Entity\ProcessorPlatformType;
 use App\Form\Admin\Edit\FormFactorForm;
 use App\Form\Admin\Edit\MotherboardForm;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\Routing\Annotation\Route;
@@ -115,14 +116,25 @@ class MotherboardController extends AbstractController {
         ]);
     }
 
-    public function list_motherboard(Request $request, PaginatorInterface $paginator, array $criterias)        
+    public function list_motherboard(EntityManagerInterface $em, Request $request, PaginatorInterface $paginator, array $criterias)        
     {
-        $objects = $this->getDoctrine()
+        /*$objects = $this->getDoctrine()
             ->getRepository(Motherboard::class)
-            ->findBy($criterias, ["lastEdited" => "DESC"]);
+            ->findBy($criterias, ["lastEdited" => "DESC"]);*/
+
+        //$this->createQueryBuilder();
+
+        /*$paginatedObjects = $paginator->paginate(
+            $objects,
+            $request->query->getInt('page', 1),
+            $this->getParameter('app.pagination.max')
+        );*/
+
+        $dql   = "SELECT m FROM App:Motherboard m ORDER BY m.lastEdited DESC";
+        $query = $em->createQuery($dql);
 
         $paginatedObjects = $paginator->paginate(
-            $objects,
+            $query,
             $request->query->getInt('page', 1),
             $this->getParameter('app.pagination.max')
         );
