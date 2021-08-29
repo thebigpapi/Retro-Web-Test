@@ -166,7 +166,6 @@ class Search extends AbstractType
             ->add('searchChipsetManufacturer', SubmitType::class, ['label' => 'List chipsets'])
             ->add('searchSocket1', SubmitType::class, ['label' => 'List platforms'])
             ->add('searchSocket2', SubmitType::class, ['label' => 'List platforms'])
-            ->add('ResetFields', SubmitType::class)
         ;
 
         $formModifier = function (FormInterface $form, Manufacturer $chipsetManufacturer = null) {
