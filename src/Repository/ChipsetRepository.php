@@ -3,8 +3,9 @@
 namespace App\Repository;
 
 use App\Entity\Chipset;
+use App\Entity\Manufacturer;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * @method Chipset|null find($id, $lockMode = null, $lockVersion = null)
@@ -34,6 +35,20 @@ class ChipsetRepository extends ServiceEntityRepository
         );
 
         return $query->getResult();
+    }
+
+
+    /**
+     * @return Chipset[]
+     */
+    public function findByManufacturer(Manufacturer $man)
+    {
+        return $this->createQueryBuilder('c')
+            ->andWhere('c.manufacturer = :man')
+            ->setParameter('man', $man)
+            ->getQuery()
+            ->getResult()
+        ;
     }
 
     /**

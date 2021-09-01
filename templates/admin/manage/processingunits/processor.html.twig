@@ -1,0 +1,15 @@
+ <tr>
+    <td>{{object.getManufacturer().getShortNameIfExist()}}</td>
+    <td>{{object.getName()}}</td>
+    <td>{{object.getCore()}}</td>
+    {% if object.getSpeed != object.getFsb() %}
+        <td>{{ object.getSpeed().getValueWithUnit() }}/{{ object.getFsb().getValueWithUnit() }}
+    {% else %}
+        <td>{{ object.getSpeed().getValueWithUnit() }}</td>
+    {% endif %}
+    <td>{{ object.getVoltagesWithValue() }}</td>
+    <td>{{ object.getCachesWithValue() }}</td>
+    <td>{{ object.getProcessNodeWithValue()}}</td>
+    <td>{{ object.getTdpWithValue()}}</td>
+    <td><a class="result-link" href="./processingunits/processors/{{ object.getId() }}/edit/">Edit</a></td>
+</tr>

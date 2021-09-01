@@ -1,0 +1,836 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" target-language="it" datatype="plaintext" original="file.ext">
+    <header>
+      <tool tool-id="symfony" tool-name="Symfony"/>
+    </header>
+    <body>
+      <trans-unit id="j6sk4aX" resname="dir.lang">
+        <source>dir.lang</source>
+        <target>ltr</target>
+      </trans-unit>
+      <trans-unit id="O7SHbBA" resname="user.lang">
+        <source>user.lang</source>
+        <target>it</target>
+      </trans-unit>
+      <trans-unit id="hlv1Ekr" resname="name.lang">
+        <source>name.lang</source>
+        <target>Italiano</target>
+      </trans-unit>
+      <trans-unit id="A7rmw_g" resname="motherboard.num">
+        <source>motherboard.num</source>
+        <target>{count, plural, =0 {Nessuna scheda madre trovata} one {1 scheda madre trovata} other {# schede madre trovate}}</target>
+      </trans-unit>
+      <trans-unit id="nmP4gEl" resname="bios.num">
+        <source>bios.num</source>
+        <target>{count, plural, =0 {Nessun BIOS trovato} one {1 BIOS trovato} other {# BIOS trovati}}</target>
+      </trans-unit>
+      <trans-unit id="L48V8XH" resname="List boards whose manufacturer name starts with:">
+        <source>List boards whose manufacturer name starts with:</source>
+        <target>Elenca le schede madre il quale produttore comincia con:</target>
+      </trans-unit>
+      <trans-unit id="GvOExXf" resname="Manufacturer">
+        <source>Manufacturer</source>
+        <target>Produttore</target>
+      </trans-unit>
+      <trans-unit id="3NHVIj9" resname="Name">
+        <source>Name</source>
+        <target>Nome</target>
+      </trans-unit>
+      <trans-unit id="EoJwcm9" resname="Form factor">
+        <source>Form factor</source>
+        <target>Formato</target>
+      </trans-unit>
+      <trans-unit id="j0cHQCA" resname="CPU platform type">
+        <source>CPU platform type</source>
+        <target>Piattaforma processore</target>
+      </trans-unit>
+      <trans-unit id="snS7dgk" resname="Expansion slots">
+        <source>Expansion slots</source>
+        <target>Slot di espansione</target>
+      </trans-unit>
+      <trans-unit id="7N5tLMC" resname="I/O ports">
+        <source>I/O ports</source>
+        <target>Connettori di I/O</target>
+      </trans-unit>
+      <trans-unit id="y9vd.Mj" resname="RAM type">
+        <source>RAM type</source>
+        <target>Tipo di memoria</target>
+      </trans-unit>
+      <trans-unit id="TI9YT3N" resname="Motherboard bios">
+        <source>Motherboard bios</source>
+        <target>BIOS</target>
+      </trans-unit>
+      <trans-unit id="ScJmuqq" resname="Search">
+        <source>Search</source>
+        <target>Cerca</target>
+      </trans-unit>
+      <trans-unit id="ImOhtmq" resname="Select a manufacturer ...">
+        <source>Select a manufacturer ...</source>
+        <target>Seleziona un produttore...</target>
+      </trans-unit>
+      <trans-unit id="9yjkiyQ" resname="Select a form factor ...">
+        <source>Select a form factor ...</source>
+        <target>Seleziona un formato...</target>
+      </trans-unit>
+      <trans-unit id="VBFeZTF" resname="Select a chipset ...">
+        <source>Select a chipset ...</source>
+        <target>Seleziona un chipset...</target>
+      </trans-unit>
+      <trans-unit id="0JC8BUG" resname="Select a processor platform ...">
+        <source>Select a processor platform ...</source>
+        <target>Seleziona una piattaforma processore...</target>
+      </trans-unit>
+      <trans-unit id="KhL3bK4" resname="Not identified">
+        <source>Not identified</source>
+        <target>Non identificato</target>
+      </trans-unit>
+      <trans-unit id="owrbS70" resname="Search for a motherboard">
+        <source>Search for a motherboard</source>
+        <target>Cerca una scheda madre</target>
+      </trans-unit>
+      <trans-unit id="I73mL5g" resname="Where do you want to go today?">
+        <source>Where do you want to go today?</source>
+        <target>Dove vuoi andare oggi?</target>
+      </trans-unit>
+      <trans-unit id=".zxzlg4" resname="Find an expansion card">
+        <source>Find an expansion card</source>
+        <target>Trova una scheda di espansione</target>
+      </trans-unit>
+      <trans-unit id="71OpIF7" resname="Recently added or updated boards:">
+        <source>Recently added or updated boards:</source>
+        <target>Schede madre aggiunte o aggiornate di recente:</target>
+      </trans-unit>
+      <trans-unit id="Jq.gjQJ" resname="Go to...">
+        <source>Go to...</source>
+        <target>Vai a...</target>
+      </trans-unit>
+      <trans-unit id="Tvyg0Qx" resname="About">
+        <source>About</source>
+        <target>A proposito di</target>
+      </trans-unit>
+      <trans-unit id="SBbL.XS" resname="Board">
+        <source>Board</source>
+        <target>Forum</target>
+      </trans-unit>
+      <trans-unit id="0FJ_Sz1" resname="Logout">
+        <source>Logout</source>
+        <target>Disconnetti</target>
+      </trans-unit>
+      <trans-unit id="wcIksDz" resname="Admin">
+        <source>Admin</source>
+        <target>Admin</target>
+      </trans-unit>
+      <trans-unit id="acVpEs4" resname="You are logged in as">
+        <source>You are logged in as</source>
+        <target>Sei connesso come</target>
+      </trans-unit>
+      <trans-unit id="47ienTP" resname="Username">
+        <source>Username</source>
+        <target>Nome utente</target>
+      </trans-unit>
+      <trans-unit id="588_9PF" resname="Password">
+        <source>Password</source>
+        <target>Password</target>
+      </trans-unit>
+      <trans-unit id="_TJnqhH" resname="Remember me">
+        <source>Remember me</source>
+        <target>Ricorda le credenziali</target>
+      </trans-unit>
+      <trans-unit id="nWMiwfT" resname="Login">
+        <source>Login</source>
+        <target>Entra</target>
+      </trans-unit>
+      <trans-unit id="Sm_IPf9" resname="Please login">
+        <source>Please login</source>
+        <target>Per favore, effettua il login</target>
+      </trans-unit>
+      <trans-unit id="KmskrSh" resname="Credits">
+        <source>Credits</source>
+        <target>Ringraziamenti</target>
+      </trans-unit>
+      <trans-unit id="MzVNHiz" resname="About Ultimate Hardware 2019">
+        <source>About Ultimate Hardware 2019</source>
+        <target>A proposito di Ultimate Hardware 2019</target>
+      </trans-unit>
+      <trans-unit id="yqUGzeC" resname="This project wouldn't exist without:">
+        <source>This project wouldn't exist without:</source>
+        <target>Questo progetto non esisterebbe senza:</target>
+      </trans-unit>
+      <trans-unit id="gXz1Ufp" resname="project initiator">
+        <source>project initiator</source>
+        <target>creatore del progetto</target>
+      </trans-unit>
+      <trans-unit id="g0BzzAX" resname="UI development">
+        <source>UI development</source>
+        <target>sviluppo dell'interfaccia utente</target>
+      </trans-unit>
+      <trans-unit id="gCkfp92" resname="owner of win3x.org">
+        <source>owner of win3x.org</source>
+        <target>proprietario di win3x.org</target>
+      </trans-unit>
+      <trans-unit id="UDr_FaU" resname="owner of elhvb.com">
+        <source>owner of elhvb.com</source>
+        <target>proprietario di elhvb.com</target>
+      </trans-unit>
+      <trans-unit id="jYJZQja" resname="owner and creator of the chipset encyclopedia">
+        <source>owner and creator of the chipset encyclopedia</source>
+        <target>proprietario e creatore dell'enciclopedia dei chipset</target>
+      </trans-unit>
+      <trans-unit id="3g073u2" resname="as well as the contributors who add new content everyday!">
+        <source>as well as the contributors who add new content everyday!</source>
+        <target>così come i contributori che aggiungono nuovi contenuti tutti i giorni!</target>
+      </trans-unit>
+      <trans-unit id="ShnPd2L" resname="Also known as:">
+        <source>Also known as:</source>
+        <target>Anche conosciuto come:</target>
+      </trans-unit>
+      <trans-unit id="XG0l1nK" resname="Image by">
+        <source>Image by</source>
+        <target>Immagine di</target>
+      </trans-unit>
+      <trans-unit id="L_TB6f." resname="Would you like to improve this page? Click">
+        <source>Would you like to improve this page? Click</source>
+        <target>Vorresti migliorare questa pagina? Clicca</target>
+      </trans-unit>
+      <trans-unit id=".OyRUJd" resname="here">
+        <source>here</source>
+        <target>qui</target>
+      </trans-unit>
+      <trans-unit id="Z1JmPHv" resname="Form factor:">
+        <source>Form factor:</source>
+        <target>Formato:</target>
+      </trans-unit>
+      <trans-unit id="t2TNwOq" resname="Unknown">
+        <source>Unknown</source>
+        <target>Sconosciuto</target>
+      </trans-unit>
+      <trans-unit id="Swa9RnT" resname="Chipset">
+        <source>Chipset</source>
+        <target>Chipset</target>
+      </trans-unit>
+      <trans-unit id="O_VL2PE" resname="Processor platform:">
+        <source>Processor platform:</source>
+        <target>Piattaforma processore:</target>
+      </trans-unit>
+      <trans-unit id="vhHptqG" resname="Maximum supported RAM:">
+        <source>Maximum supported RAM:</source>
+        <target>Massima quantità di memoria:</target>
+      </trans-unit>
+      <trans-unit id="lr3zG.4" resname="Cache:">
+        <source>Cache:</source>
+        <target>Cache:</target>
+      </trans-unit>
+      <trans-unit id="Q8cFfro" resname="Supported RAM types:">
+        <source>Supported RAM types:</source>
+        <target>Tipi di memoria supportata:</target>
+      </trans-unit>
+      <trans-unit id="CHspSoe" resname="BIOS images:">
+        <source>BIOS images:</source>
+        <target>Immagini BIOS:</target>
+      </trans-unit>
+      <trans-unit id="5OvXTAJ" resname="Manuf.">
+        <source>Manuf.</source>
+        <target>Prod.</target>
+      </trans-unit>
+      <trans-unit id="W5.Xe2x" resname="POST String">
+        <source>POST String</source>
+        <target>POST String</target>
+      </trans-unit>
+      <trans-unit id="2NosSd8" resname="Note">
+        <source>Note</source>
+        <target>Note</target>
+      </trans-unit>
+      <trans-unit id="6bJjogu" resname="BIOS Ver.">
+        <source>BIOS Ver.</source>
+        <target>Ver. BIOS</target>
+      </trans-unit>
+      <trans-unit id="2HifZCc" resname="Core Ver.">
+        <source>Core Ver.</source>
+        <target>Ver. Nucleo</target>
+      </trans-unit>
+      <trans-unit id="2LEkHDU" resname="Manuals:">
+        <source>Manuals:</source>
+        <target>Manuali:</target>
+      </trans-unit>
+      <trans-unit id="g2gPsP_" resname="I/O ports:">
+        <source>I/O ports:</source>
+        <target>Connettori di I/O:</target>
+      </trans-unit>
+      <trans-unit id="atbwjk6" resname="Expansion slots:">
+        <source>Expansion slots:</source>
+        <target>Slot di espansione:</target>
+      </trans-unit>
+      <trans-unit id="zDVMp55" resname="Known issues:">
+        <source>Known issues:</source>
+        <target>Problemi conosciuti:</target>
+      </trans-unit>
+      <trans-unit id="xSL5du_" resname="Video Chipset:">
+        <source>Video Chipset:</source>
+        <target>Chipset video:</target>
+      </trans-unit>
+      <trans-unit id="HLWQ_ew" resname="Max VRAM:">
+        <source>Max VRAM:</source>
+        <target>Memoria video max:</target>
+      </trans-unit>
+      <trans-unit id="NkJG.cs" resname="Audio Chipset:">
+        <source>Audio Chipset:</source>
+        <target>Chipset audio:</target>
+      </trans-unit>
+      <trans-unit id="l60nfSb" resname="Supported CPUs:">
+        <source>Supported CPUs:</source>
+        <target>Processori supportati:</target>
+      </trans-unit>
+      <trans-unit id="Wi7cldC" resname="Supported NPUs:">
+        <source>Supported NPUs:</source>
+        <target>Coprocessori matematici supportati:</target>
+      </trans-unit>
+      <trans-unit id="hvaLMGP" resname="Supported FSB speeds:">
+        <source>Supported FSB speeds:</source>
+        <target>Frequenze FSB supportate:</target>
+      </trans-unit>
+      <trans-unit id="2k9_pY2" resname="Notes:">
+        <source>Notes:</source>
+        <target>Note:</target>
+      </trans-unit>
+      <trans-unit id="HQn2_iM" resname="MB">
+        <source>MB</source>
+        <target>MB</target>
+      </trans-unit>
+      <trans-unit id="tAQ7C4K" resname="GB">
+        <source>GB</source>
+        <target>GB</target>
+      </trans-unit>
+      <trans-unit id="WSgaayk" resname="KB">
+        <source>KB</source>
+        <target>KB</target>
+      </trans-unit>
+      <trans-unit id="9kNshmp" resname="Dimensions:">
+        <source>Dimensions:</source>
+        <target>Dimensioni:</target>
+      </trans-unit>
+      <trans-unit id="6XiwDeR" resname="Search results">
+        <source>Search results</source>
+        <target>Risultati della ricerca</target>
+      </trans-unit>
+      <trans-unit id="bLwa24." resname="Can't you find a motherboard? Click">
+        <source>Can't you find a motherboard? Click</source>
+        <target>Non trovi la tua scheda madre? Clicca</target>
+      </trans-unit>
+      <trans-unit id="au_we0Y" resname="to add it.">
+        <source>to add it.</source>
+        <target>per aggiungerla.</target>
+      </trans-unit>
+      <trans-unit id="ULvKA5e" resname="Select a chipset manufacturer ...">
+        <source>Select a chipset manufacturer ...</source>
+        <target>Seleziona un produttore di chipset...</target>
+      </trans-unit>
+      <trans-unit id="aGxbQCL" resname="Select a socket ...">
+        <source>Select a socket ...</source>
+        <target>Seleziona un socket...</target>
+      </trans-unit>
+      <trans-unit id="TuxGG66" resname="List chipsets">
+        <source>List chipsets</source>
+        <target>Elenca chipset</target>
+      </trans-unit>
+      <trans-unit id="X78JJ99" resname="List platforms">
+        <source>List platforms</source>
+        <target>Elenca piattaforme</target>
+      </trans-unit>
+      <trans-unit id="Pb9Ib.W" resname="Search with images">
+        <source>Search with images</source>
+        <target>Cerca per immagini</target>
+      </trans-unit>
+      <trans-unit id="milQXYK" resname="chipset">
+        <source>chipset</source>
+        <target>chipset</target>
+      </trans-unit>
+      <trans-unit id="50W2uEF" resname="chipsets">
+        <source>chipsets</source>
+        <target>chipset</target>
+      </trans-unit>
+      <trans-unit id="KE8JUgl" resname="chipset part">
+        <source>chipset part</source>
+        <target>componente del chipset</target>
+      </trans-unit>
+      <trans-unit id="FUFVpgj" resname="chipset parts">
+        <source>chipset parts</source>
+        <target>componenti del chipset</target>
+      </trans-unit>
+      <trans-unit id="BQ.TcMN" resname="expansion slot">
+        <source>expansion slot</source>
+        <target>slot di espansione</target>
+      </trans-unit>
+      <trans-unit id="4AJ_0md" resname="expansion slots">
+        <source>expansion slots</source>
+        <target>slot di espansione</target>
+      </trans-unit>
+      <trans-unit id="CSxir.n" resname="i/o connector">
+        <source>i/o connector</source>
+        <target>connettore di I/O</target>
+      </trans-unit>
+      <trans-unit id="z3I8mSs" resname="i/o connectors">
+        <source>i/o connectors</source>
+        <target>connettori di I/O</target>
+      </trans-unit>
+      <trans-unit id="R91Wwse" resname="socket">
+        <source>socket</source>
+        <target>socket</target>
+      </trans-unit>
+      <trans-unit id="8kODuJi" resname="sockets">
+        <source>sockets</source>
+        <target>socket</target>
+      </trans-unit>
+      <trans-unit id="xhGnnfV" resname="audio chip">
+        <source>audio chip</source>
+        <target>chip audio</target>
+      </trans-unit>
+      <trans-unit id="a..6Esb" resname="audio chips">
+        <source>audio chips</source>
+        <target>chip audio</target>
+      </trans-unit>
+      <trans-unit id="fh0GASI" resname="video chip">
+        <source>video chip</source>
+        <target>chip video</target>
+      </trans-unit>
+      <trans-unit id="gYbG7vg" resname="video chips">
+        <source>video chips</source>
+        <target>chip video</target>
+      </trans-unit>
+      <trans-unit id="O5w1jzb" resname="file">
+        <source>file</source>
+        <target>file</target>
+      </trans-unit>
+      <trans-unit id="PX2zfQj" resname="files">
+        <source>files</source>
+        <target>file</target>
+      </trans-unit>
+      <trans-unit id="X.oUCC1" resname="os family">
+        <source>os family</source>
+        <target>famiglia os</target>
+      </trans-unit>
+      <trans-unit id="VoI8pYR" resname="os families">
+        <source>os families</source>
+        <target>famiglie os</target>
+      </trans-unit>
+      <trans-unit id="uZVx8t0" resname="os flag">
+        <source>os flag</source>
+        <target>bandiera os</target>
+      </trans-unit>
+      <trans-unit id="HMgQCOO" resname="os flags">
+        <source>os flags</source>
+        <target>bandiere os</target>
+      </trans-unit>
+      <trans-unit id="b3gMqnq" resname="media type">
+        <source>media type</source>
+        <target>tipo di media</target>
+      </trans-unit>
+      <trans-unit id="bBow7.N" resname="media types">
+        <source>media types</source>
+        <target>tipi di media</target>
+      </trans-unit>
+      <trans-unit id="usYroce" resname="memory type">
+        <source>memory type</source>
+        <target>tipo di memoria</target>
+      </trans-unit>
+      <trans-unit id="P3oBXTy" resname="memory types">
+        <source>memory types</source>
+        <target>tipi di memoria</target>
+      </trans-unit>
+      <trans-unit id="Wo2TBu5" resname="memory size">
+        <source>memory size</source>
+        <target>dimensione memoria</target>
+      </trans-unit>
+      <trans-unit id="s1qAANb" resname="memory sizes">
+        <source>memory sizes</source>
+        <target>dimensioni memoria</target>
+      </trans-unit>
+      <trans-unit id="ycpw5Xg" resname="cache size">
+        <source>cache size</source>
+        <target>dimensione cache</target>
+      </trans-unit>
+      <trans-unit id="pbGIrF6" resname="cache sizes">
+        <source>cache sizes</source>
+        <target>dimensioni cache</target>
+      </trans-unit>
+      <trans-unit id="EAAoWaz" resname="manufacturer">
+        <source>manufacturer</source>
+        <target>produttore</target>
+      </trans-unit>
+      <trans-unit id="TSx86XF" resname="manufacturers">
+        <source>manufacturers</source>
+        <target>produttori</target>
+      </trans-unit>
+      <trans-unit id="fYcYr52" resname="known issue">
+        <source>known issue</source>
+        <target>problema conosciuto</target>
+      </trans-unit>
+      <trans-unit id="oJM.Ubq" resname="known issues">
+        <source>known issues</source>
+        <target>problemi conosciuti</target>
+      </trans-unit>
+      <trans-unit id="LpCJ.vx" resname="frequency">
+        <source>frequency</source>
+        <target>frequenza</target>
+      </trans-unit>
+      <trans-unit id="0whzVNa" resname="frequencies">
+        <source>frequencies</source>
+        <target>frequenze</target>
+      </trans-unit>
+      <trans-unit id="mbXU8zB" resname="creditor">
+        <source>creditor</source>
+        <target>creatore</target>
+      </trans-unit>
+      <trans-unit id="BaGVcP9" resname="creditors">
+        <source>creditors</source>
+        <target>creatori</target>
+      </trans-unit>
+      <trans-unit id="cvEGrMJ" resname="motherboard">
+        <source>motherboard</source>
+        <target>scheda madre</target>
+      </trans-unit>
+      <trans-unit id="27joc0." resname="motherboards">
+        <source>motherboards</source>
+        <target>schede madre</target>
+      </trans-unit>
+      <trans-unit id="hkDdIOz" resname="form factor">
+        <source>form factor</source>
+        <target>formato</target>
+      </trans-unit>
+      <trans-unit id="hyPgSVz" resname="form factors">
+        <source>form factors</source>
+        <target>formati</target>
+      </trans-unit>
+      <trans-unit id="2CW_b.1" resname="processor">
+        <source>processor</source>
+        <target>processore</target>
+      </trans-unit>
+      <trans-unit id="tjnrkVb" resname="processors">
+        <source>processors</source>
+        <target>processori</target>
+      </trans-unit>
+      <trans-unit id="7jiiieT" resname="math coprocessor">
+        <source>math coprocessor</source>
+        <target>coprocessore matematico</target>
+      </trans-unit>
+      <trans-unit id="wiNDVrx" resname="math coprocessors">
+        <source>math coprocessors</source>
+        <target>coprocessori matematici</target>
+      </trans-unit>
+      <trans-unit id="0pT8zgz" resname="platform">
+        <source>platform</source>
+        <target>piattaforma</target>
+      </trans-unit>
+      <trans-unit id="BoT2ucg" resname="platforms">
+        <source>platforms</source>
+        <target>piattaforme</target>
+      </trans-unit>
+      <trans-unit id="ZByYbQq" resname="instruction set">
+        <source>instruction set</source>
+        <target>set di istruzioni</target>
+      </trans-unit>
+      <trans-unit id="M1JRciT" resname="instruction sets">
+        <source>instruction sets</source>
+        <target>set di istruzioni</target>
+      </trans-unit>
+      <trans-unit id="pP5lJk7" resname="Language">
+        <source>Language</source>
+        <target>Lingua</target>
+      </trans-unit>
+      <trans-unit id="CA1pFH5" resname="Media type">
+        <source>Media type</source>
+        <target>Tipo di media</target>
+      </trans-unit>
+      <trans-unit id="GywIqHM" resname="Quality">
+        <source>Quality</source>
+        <target>Qualità</target>
+      </trans-unit>
+      <trans-unit id="91Fxrf8" resname="OS Compatibility">
+        <source>OS Compatibility</source>
+        <target>Compatibilità OS</target>
+      </trans-unit>
+      <trans-unit id="j2_0639" resname="Security">
+        <source>Security</source>
+        <target>Sicurezza</target>
+      </trans-unit>
+      <trans-unit id="h9Bc0Ig" resname="entries">
+        <source>entries</source>
+        <target>voci</target>
+      </trans-unit>
+      <trans-unit id="g8gogMG" resname="Find a BIOS image">
+        <source>Find a BIOS image</source>
+        <target>Trova un'immagine BIOS</target>
+      </trans-unit>
+      <trans-unit id="OcO_EZi" resname="Index">
+        <source>Index</source>
+        <target>Indice</target>
+      </trans-unit>
+      <trans-unit id="gWlLRhI" resname="CPU socket and platform">
+        <source>CPU socket and platform</source>
+        <target>Socket CPU e piattaforma</target>
+      </trans-unit>
+      <trans-unit id="DdGASbD" resname="Supported RAM size and types">
+        <source>Supported RAM size and types</source>
+        <target>Dimensione e tipi di RAM supportati</target>
+      </trans-unit>
+      <trans-unit id="EhfGxU7" resname="Drivers:">
+        <source>Drivers:</source>
+        <target>Driver:</target>
+      </trans-unit>
+      <trans-unit id="svQnzX." resname="max CPUs:">
+        <source>max CPUs:</source>
+        <target>max CPU:</target>
+      </trans-unit>
+      <trans-unit id="uNrKNFR" resname="Reset fields">
+        <source>Reset fields</source>
+        <target>Reimposta i campi</target>
+      </trans-unit>
+      <trans-unit id="e53DCbx" resname="This is where you enter the board part number, do not write the manufacturer name here!">
+        <source>This is where you enter the board part number, do not write the manufacturer name here!</source>
+        <target>Inserisci il modello della scheda, non inserire il produttore qui!</target>
+      </trans-unit>
+      <trans-unit id="QMOXEqZ" resname="This is the board manufacturer (e.g: ASUS, Gigabyte, FIC)">
+        <source>This is the board manufacturer (e.g: ASUS, Gigabyte, FIC)</source>
+        <target>Inserisci il produttore della scheda (es: ASUS, Gigabyte, FIC)</target>
+      </trans-unit>
+      <trans-unit id="MlMi9S4" resname="Select a manufacturer from the first field, then pick the part number from the second field">
+        <source>Select a manufacturer from the first field, then pick the part number from the second field</source>
+        <target>Seleziona un produttore dal primo campo, poi inserisci il modello nel secondo campo</target>
+      </trans-unit>
+      <trans-unit id="MSaeAWO" resname="CPU socket">
+        <source>CPU socket</source>
+        <target>Socket CPU</target>
+      </trans-unit>
+      <trans-unit id="Ch3n6vr" resname="Select a CPU socket from the first field and/or pick the CPU platform from the second field">
+        <source>Select a CPU socket from the first field and/or pick the CPU platform from the second field</source>
+        <target>Seleziona un socket CPU dal primo campo e/o scegli una piattaforma dal secondo</target>
+      </trans-unit>
+      <trans-unit id="F98LlqG" resname="2nd CPU socket">
+        <source>2nd CPU socket</source>
+        <target>2o socket CPU</target>
+      </trans-unit>
+      <trans-unit id="QgW5ebN" resname="0 - all boards without that slot will be shown">
+        <source>0 - all boards without that slot will be shown</source>
+        <target>0 - tutte le schede senza questo slot verranno mostrate</target>
+      </trans-unit>
+      <trans-unit id="gLJ1rHJ" resname="0 - all boards without that port will be shown">
+        <source>0 - all boards without that port will be shown</source>
+        <target>0 - tutte le schede senza questa porta verranno mostrate</target>
+      </trans-unit>
+      <trans-unit id="DjEjBp3" resname="Advanced BIOS Info">
+        <source>Advanced BIOS Info</source>
+        <target>Informazioni BIOS avanzate</target>
+      </trans-unit>
+      <trans-unit id="NNTNI.4" resname="Where can I find the POST string?">
+        <source>Where can I find the POST string?</source>
+        <target>Dove trovo la stringa POST?</target>
+      </trans-unit>
+      <trans-unit id="n7zCsxm" resname="Couldn't find any exact POST string match, the results you see are generated using POST string analysis.">
+        <source>Couldn't find any exact POST string match, the results you see are generated using POST string analysis.</source>
+        <target>Impossible trovare una corrispondenza esatta. I risultati sono generati dall'analisi della stringa POST.</target>
+      </trans-unit>
+      <trans-unit id="Tgoy_RF" resname="Motherboard">
+        <source>Motherboard</source>
+        <target>Scheda madre</target>
+      </trans-unit>
+      <trans-unit id="TPdDwak" resname="Search for a bios">
+        <source>Search for a bios</source>
+        <target>Cerca un BIOS</target>
+      </trans-unit>
+      <trans-unit id="J9Yqgab" resname="Search for a motherboard BIOS by POST string, chipset, manufacturer, and more.">
+        <source>Search for a motherboard BIOS by POST string, chipset, manufacturer, and more.</source>
+        <target>Cerca un BIOS per stringa POST, chipset, produttore e altro.</target>
+      </trans-unit>
+      <trans-unit id="cokKsao" resname="This is the BIOS manufacturer (e.g: AMI, Award, Phoenix)">
+        <source>This is the BIOS manufacturer (e.g: AMI, Award, Phoenix)</source>
+        <target>Questo è il produttore del BIOS (es: AMI, Award, Phoenix)</target>
+      </trans-unit>
+      <trans-unit id="Dt1S127" resname="POST string">
+        <source>POST string</source>
+        <target>Stringa POST</target>
+      </trans-unit>
+      <trans-unit id="KN.lZrn" resname="Core version">
+        <source>Core version</source>
+        <target>Versione nucleo</target>
+      </trans-unit>
+      <trans-unit id="tR3fVhG" resname="This is the version of the BIOS's core (e.g. 4.51pg)">
+        <source>This is the version of the BIOS's core (e.g. 4.51pg)</source>
+        <target>Questa è la versione del nucleo BIOS (es: 4.51pg)</target>
+      </trans-unit>
+      <trans-unit id="i9HhKCx" resname="Show results with files">
+        <source>Show results with files</source>
+        <target>Mostra i risultati con file</target>
+      </trans-unit>
+      <trans-unit id="ZrMcHHJ" resname="If checked, only BIOS entries with files attached will be shown">
+        <source>If checked, only BIOS entries with files attached will be shown</source>
+        <target>Se selezionato, verranno mostrate solo le voci BIOS con file allegati</target>
+      </trans-unit>
+      <trans-unit id="cuWi2PF" resname="Please wait ...">
+        <source>Please wait ...</source>
+        <target>Attendere prego...</target>
+      </trans-unit>
+      <trans-unit id="FWoLas0" resname="BIOS Info">
+        <source>BIOS Info</source>
+        <target>Informazioni BIOS</target>
+      </trans-unit>
+      <trans-unit id="3Bp6xRH" resname="In general, the POST string is located in the bottom left side of the boot screen &#10;&#9;&#9;(for BIOSes which provide it). Depending on the BIOS vendor, the POST string may&#10;&#9;&#9;provide various info about the board (like chipset or date). Here is a list of common &#10;&#9;&#9;vendors and their string meanings:">
+        <source>In general, the POST string is located in the bottom left side of the boot screen 
+		(for BIOSes which provide it). Depending on the BIOS vendor, the POST string may
+		provide various info about the board (like chipset or date). Here is a list of common 
+		vendors and their string meanings:</source>
+        <target>In generale, la stringa BIOS si trova in basso a destra della schermata d'avvio
+        (per i BIOS che ce l'hanno). In base al produttore del BIOS, la stringa POST può
+        fornire varie informazioni sulla scheda madre (come chipset o data di compilazione).
+        Ecco una lista di produttori comuni e di come leggere le relative stringhe:</target>
+      </trans-unit>
+      <trans-unit id="LKoHnBZ" resname="You can find a list of Award chipset IDs">
+        <source>You can find a list of Award chipset IDs</source>
+        <target>Puoi trovare una lista di ID chipset per BIOS Award</target>
+      </trans-unit>
+      <trans-unit id="zacmbbZ" resname="and a list of Award board manufacturer IDs">
+        <source>and a list of Award board manufacturer IDs</source>
+        <target>e una lista di ID di produttori di schede madre per BIOS Award</target>
+      </trans-unit>
+      <trans-unit id="IFzUR48" resname="You can find a list of AMI board manufacturer IDs">
+        <source>You can find a list of AMI board manufacturer IDs</source>
+        <target>Puoi trovare una lista di ID di produttori di schede madre per BIOS AMI</target>
+      </trans-unit>
+      <trans-unit id="B.ipEnJ" resname="Administration index">
+        <source>Administration index</source>
+        <target>Indice di amministrazione</target>
+      </trans-unit>
+      <trans-unit id="gS53VxE" resname="Administration page">
+        <source>Administration page</source>
+        <target>Pagina di amministrazione</target>
+      </trans-unit>
+      <trans-unit id="XO7a3C7" resname="Motherboards">
+        <source>Motherboards</source>
+        <target>Schede madre</target>
+      </trans-unit>
+      <trans-unit id="dIJORSw" resname="Processing units">
+        <source>Processing units</source>
+        <target>Unità di calcolo</target>
+      </trans-unit>
+      <trans-unit id="w5Y67ar" resname="Memory">
+        <source>Memory</source>
+        <target>Memoria</target>
+      </trans-unit>
+      <trans-unit id="Eb20.qS" resname="Chipsets">
+        <source>Chipsets</source>
+        <target>Chipset</target>
+      </trans-unit>
+      <trans-unit id="jDvkfAp" resname="Expansion chipsets">
+        <source>Expansion chipsets</source>
+        <target>Chipset di espansione</target>
+      </trans-unit>
+      <trans-unit id="w9Lnnr3" resname="Connectors">
+        <source>Connectors</source>
+        <target>Connettori</target>
+      </trans-unit>
+      <trans-unit id="HVhAjdr" resname="Misc stuff">
+        <source>Misc stuff</source>
+        <target>Miscellanea</target>
+      </trans-unit>
+      <trans-unit id="P5yZH2O" resname="Change password">
+        <source>Change password</source>
+        <target>Cambia password</target>
+      </trans-unit>
+      <trans-unit id="WGBuWCR" resname="Manage users">
+        <source>Manage users</source>
+        <target>Gestione utenti</target>
+      </trans-unit>
+      <trans-unit id="SZooVmG" resname="Board count:">
+        <source>Board count:</source>
+        <target>Numero di schede:</target>
+      </trans-unit>
+      <trans-unit id="cPF0URb" resname="Manufacturers">
+        <source>Manufacturers</source>
+        <target>Produttori</target>
+      </trans-unit>
+      <trans-unit id="ngaEa6L" resname="Known issues">
+        <source>Known issues</source>
+        <target>Problemi conosciuti</target>
+      </trans-unit>
+      <trans-unit id="G.qwQYh" resname="Frequencies">
+        <source>Frequencies</source>
+        <target>Frequenze</target>
+      </trans-unit>
+      <trans-unit id="s6DZqHh" resname="Creditors">
+        <source>Creditors</source>
+        <target>Creatori</target>
+      </trans-unit>
+      <trans-unit id="10Q.uwK" resname="Form factors">
+        <source>Form factors</source>
+        <target>Formati</target>
+      </trans-unit>
+      <trans-unit id="rAmiaGW" resname="Expansion Slots">
+        <source>Expansion Slots</source>
+        <target>Slot di espansione</target>
+      </trans-unit>
+      <trans-unit id="F15UxP2" resname="I/O Ports">
+        <source>I/O Ports</source>
+        <target>Porte di I/O</target>
+      </trans-unit>
+      <trans-unit id="Fi_dF43" resname="Sockets">
+        <source>Sockets</source>
+        <target>Socket</target>
+      </trans-unit>
+      <trans-unit id="236NZCv" resname="Chipset parts">
+        <source>Chipset parts</source>
+        <target>Componenti del chipset</target>
+      </trans-unit>
+      <trans-unit id="5C7sUEd" resname="Audio chips">
+        <source>Audio chips</source>
+        <target>Chip audio</target>
+      </trans-unit>
+      <trans-unit id="scLjR_J" resname="Video chips">
+        <source>Video chips</source>
+        <target>Chip video</target>
+      </trans-unit>
+      <trans-unit id="w.GUFZ4" resname="CPUs">
+        <source>CPUs</source>
+        <target>CPU</target>
+      </trans-unit>
+      <trans-unit id="MyibqyO" resname="NPUs">
+        <source>NPUs</source>
+        <target>NPU</target>
+      </trans-unit>
+      <trans-unit id="GVQ4Z5e" resname="CPU platforms">
+        <source>CPU platforms</source>
+        <target>Piattaforme CPU</target>
+      </trans-unit>
+      <trans-unit id=".ZL1sXY" resname="Instruction Sets">
+        <source>Instruction Sets</source>
+        <target>Set di istruzioni</target>
+      </trans-unit>
+      <trans-unit id="YJBGRRi" resname="Large Files">
+        <source>Large Files</source>
+        <target>File grandi</target>
+      </trans-unit>
+      <trans-unit id="l8uwIdV" resname="OS Families">
+        <source>OS Families</source>
+        <target>Famiglie di OS</target>
+      </trans-unit>
+      <trans-unit id="CoB4vtA" resname="OS Flags">
+        <source>OS Flags</source>
+        <target>Bandiere di OS</target>
+      </trans-unit>
+      <trans-unit id="BoYeaGZ" resname="Media Types">
+        <source>Media Types</source>
+        <target>Tipi di media</target>
+      </trans-unit>
+      <trans-unit id="Ipef5_p" resname="DRAM Types">
+        <source>DRAM Types</source>
+        <target>Tipi di DRAM</target>
+      </trans-unit>
+      <trans-unit id="OEnBhWv" resname="RAM Sizes">
+        <source>RAM Sizes</source>
+        <target>Dimensioni RAM</target>
+      </trans-unit>
+      <trans-unit id="6odRJzI" resname="Cache Sizes">
+        <source>Cache Sizes</source>
+        <target>Dimensioni cache</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

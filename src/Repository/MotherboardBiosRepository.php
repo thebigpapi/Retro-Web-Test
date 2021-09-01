@@ -4,7 +4,7 @@ namespace App\Repository;
 
 use App\Entity\MotherboardBios;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * @method MotherboardBios|null find($id, $lockMode = null, $lockVersion = null)
@@ -24,6 +24,65 @@ class MotherboardBiosRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('m')
             ->groupBy('m.manufacturer')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+    public function getCount()
+    {
+        $qb = $this->createQueryBuilder('m');
+        $result = $qb->select('count(m.id)')
+            ->where($qb->expr()->isNotNull('m.file_name'))
+            ->getQuery()
+            ->getSingleScalarResult();
+        return $result;
+    }
+
+    public function findBios(array $criterias)
+    {
+        $query = $this->createQueryBuilder('b');
+        $query->join('b.motherboard', 'm');
+
+        if(array_key_exists('file_present', $criterias))
+            $query->andWhere($query->expr()->isNotNull('b.file_name'));
+
+        if(array_key_exists('manufacturer_id', $criterias))
+            $query->andWhere('b.manufacturer = :manufacturer_id')
+                ->setParameter('manufacturer_id', $criterias['manufacturer_id']);
+
+        if(array_key_exists('motherboard_manufacturer_ids', $criterias))
+        {   
+            $cpt = 0;
+            $str = "";
+            foreach($criterias['motherboard_manufacturer_ids'] as $key => $id)
+            {
+                if(array_key_last($criterias['motherboard_manufacturer_ids']) == $key)
+                    $str = "$str m.manufacturer = :manufacturer_id$cpt";
+                else
+                    $str = "$str m.manufacturer = :manufacturer_id$cpt OR ";
+                $cpt++;
+            }
+            
+            $query->andWhere("($str)");
+            $cpt = 0;
+            foreach($criterias['motherboard_manufacturer_ids'] as $key => $id) {
+                $query->setParameter("manufacturer_id$cpt", $id);
+            }
+                
+        }
+        if(array_key_exists('chipset_id', $criterias))
+            $query->andWhere('m.chipset = :chipset_id')
+                ->setParameter('chipset_id', $criterias['chipset_id']);
+        
+        if(array_key_exists('core_version', $criterias))
+            $query->andWhere('b.coreVersion = :coreVersion')
+                ->setParameter('coreVersion', $criterias['core_version']);
+
+        if(array_key_exists('post_string', $criterias) && !array_key_exists('motherboard_manufacturer_ids', $criterias))
+            $query->andWhere($query->expr()->like('b.postString', ':postString'))
+                ->setParameter('postString', '%'.$criterias['post_string'].'%');
+        
+        return $query->orderBy('b.postString', 'ASC')
             ->getQuery()
             ->getResult()
         ;

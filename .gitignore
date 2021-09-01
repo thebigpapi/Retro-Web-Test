@@ -1,40 +1,30 @@
-# Cache, session files and log
-/var/cache/*
-/var/log/*
-/var/sessions/*
-!var/cache/.gitkeep
-!var/log/.gitkeep
-!var/sessions/.gitkeep
 
-# Managed by Composer
-/bin/*
-!bin/console
-!bin/symfony_requirements
+###> symfony/framework-bundle ###
+/.env.local
+/.env.local.php
+/.env.*.local
+/config/secrets/prod/prod.decrypt.private.php
+/public/bundles/
+/migrations/*
+/var/*
+/vendor/*
+###< symfony/framework-bundle ###
+
+###> symfony/phpunit-bridge ###
+.phpunit
+.phpunit.result.cache
+/phpunit.xml
+###< symfony/phpunit-bridge ###
 
 # Thumbnails and user uploads
 /public/media/cache/*
 /public/motherboard/bios/*
 /public/motherboard/image/*
 /public/motherboard/manual/*
+/public/uploads/*
+/public/icons/*
+/public/chip/*
 !public/media/cache/.gitkeep
 !public/motherboard/bios/.gitkeep
 !public/motherboard/image/.gitkeep
 !public/motherboard/manual/.gitkeep
-
-# Composer PHAR
-/composer.phar
-
-# Favicon
-favicon.ico
-
-# Backup entities generated with doctrine:generate:entities command
-**/Entity/*~
-
-# Embedded web-server pid file
-/.web-server-pid
-
-# Environment
-/.env.local
-/.env.local.php
-/.env.*.local
-.env

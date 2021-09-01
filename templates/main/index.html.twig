@@ -1,20 +1,32 @@
 {% extends 'base.html.twig' %}
+{% block metatags %}
+	<meta name="description" content="The ultimate retro motherboard database, here you can find board photos, BIOS images, manuals and more!">
+{% endblock %}
 
 {% block body %}
 	<h2 class="title">{% trans %}Where do you want to go today?{% endtrans %}</h2>
-	<form action="./" class="index-buttons" method="get">
-		<div class="main">
-			<input type="submit" class="button1" name="motherboard" value="{% trans %}Search for a motherboard{% endtrans %}">
-			<input type="submit" class="button2" name="expansion" value="{% trans %}Find an expansion card{% endtrans %}" disabled="disabled">
+	<div class="index-buttons"><div class="main">
+		<span class="margin-fix"><a href="{{ path("motherboard_search") }}" class="index-button0"><span class="image-block"><span>
+			<span class="img"></span>
+			<span>{% trans %}Search for a motherboard{% endtrans %}</span> <span>({{moboCount}} {% trans %}entries{% endtrans %})</span><!--
+		--></span></span></a></span>
+		<span class="margin-fix"><a name="under construction" class="index-button1"><span class="image-block"><span>
+			<span class="img"></span>
+			<span>{% trans %}Find an expansion card{% endtrans %}</span> <span>[WIP]</span><!--
+		--></span></span></a></span>
+		<span class="margin-fix"><a href="{{ path("bios_search") }}" class="index-button2"><span class="image-block"><span>
+			<span class="img"></span>
+			<span>{% trans %}Find a BIOS image{% endtrans %}</span> <span>({{biosCount}} {% trans %}files{% endtrans %})</span><!--
+		--></span></span></a></span>
+	</div></div>
+	<div class="perks">
+		<p><b>{% trans %}Recently added or updated boards:{% endtrans %}</b></p>
+		<div class="results">
+			<ul>
+        	{% for motherboard in latestMotherboards %}
+				<li><a href="{{ path("motherboard_show", {id:motherboard.getId()}) }}">{{ motherboard.getManufacturerShortNameIfExist() }}&nbsp;{{ motherboard.name }}</a></li>	
+			{% endfor %}
+			</ul>
 		</div>
-	</form>{% if is_granted('ROLE_ADMIN') %}
-
-	<p><b>{% trans %}Recently added or updated boards:{% endtrans %}</b></p>
-	<div class="results">
-		<ul>
-        {% for motherboard in latestMotherboards %}
-			<li><a href="./motherboard/show/{{ motherboard.getId() }}">{{ motherboard.getManufacturerShortNameIfExist() }}&nbsp;{{ motherboard.name }}</a></li>		
-		{% endfor %}
-		</ul>
-	</div>{% endif %}
+	</div>
 {% endblock %}

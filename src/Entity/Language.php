@@ -28,9 +28,25 @@ class Language
      */
     private $manuals;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $originalName;
+
+    /**
+     * @ORM\Column(type="string", length=10)
+     */
+    private $isoCode;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=LargeFile::class, mappedBy="languages")
+     */
+    private $largeFiles;
+
     public function __construct()
     {
         $this->manuals = new ArrayCollection();
+        $this->largeFiles = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -76,6 +92,57 @@ class Language
             if ($manual->getLanguage() === $this) {
                 $manual->setLanguage(null);
             }
+        }
+
+        return $this;
+    }
+
+    public function getOriginalName(): ?string
+    {
+        return $this->originalName;
+    }
+
+    public function setOriginalName(string $originalName): self
+    {
+        $this->originalName = $originalName;
+
+        return $this;
+    }
+
+    public function getIsoCode(): ?string
+    {
+        return $this->isoCode;
+    }
+
+    public function setIsoCode(string $isoCode): self
+    {
+        $this->isoCode = $isoCode;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|LargeFile[]
+     */
+    public function getLargeFiles(): Collection
+    {
+        return $this->largeFiles;
+    }
+
+    public function addLargeFile(LargeFile $largeFile): self
+    {
+        if (!$this->largeFiles->contains($largeFile)) {
+            $this->largeFiles[] = $largeFile;
+            $largeFile->addLanguage($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLargeFile(LargeFile $largeFile): self
+    {
+        if ($this->largeFiles->removeElement($largeFile)) {
+            $largeFile->removeLanguage($this);
         }
 
         return $this;

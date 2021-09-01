@@ -1,20 +1,55 @@
 {% extends 'admin/header.html.twig' %}
 
-{% block title %}Administration index{% endblock %}
+{% block title %}{% trans %}Administration index{% endtrans %}{% endblock %}
 
 {% block body %}
-	<h2 class="title">Administration page</h2>
-	<div class="main" style="padding-top: 18px">
-		<form action="./admin/manage_resources/" style="display: inline"><div style="display: inline">
-			<input type="submit" class="admin-button" style="background: #ebebeb url(./assets/images/db.png) center no-repeat;" value="Manage resouces">
-		</div></form>
-		{% if is_granted('ROLE_SUPER_ADMIN') %}
-			<form action="./admin/manage_users/" style="display: inline"><div style="display: inline">
-				<input type="submit" class="admin-button" style="background: #ebebeb url(./assets/images/usrs.png) center no-repeat;" value="Manage users">
-			</div></form>
-		{% endif %}
-		<form action="./admin/password" style="display: inline"><div style="display: inline">
-			<input type="submit" class="admin-button" style="background: #ebebeb url(./assets/images/usrs.png) center no-repeat;" value="Change password">
-		</div></form>
-	</div>
+<h2 class="title">{% trans %}Administration page{% endtrans %}</h2>
+<h4>Manage:</h4>
+<hr>
+<a href="{{ path('admin_manage_motherboards') }}" class="admin-button-index">
+	<img src="{{ absolute_url(asset('assets/images/admin/motherboard.jpg')) }}" style="padding:8px 25px 0px" alt="board">
+	<p>{% trans %}Motherboards{% endtrans %}</p>
+</a>
+<a href="{{ path('admin_manage_processing_units') }}" class="admin-button-index">
+	<img src="{{ absolute_url(asset('assets/images/admin/486dx.png')) }}" style="padding:0px 30px 0px" alt="cpu">
+	<p>{% trans %}Processing units{% endtrans %}</p>
+</a>
+<a href="{{ path('admin_manage_memories') }}" class="admin-button-index">
+	<img src="{{ absolute_url(asset('assets/images/admin/memory.png')) }}" style="padding:2px 0px 1px" alt="memory">
+	<p>{% trans %}Memory{% endtrans %}</p>
+</a>
+<a href="{{ path('admin_manage_chipsets') }}" class="admin-button-index">
+	<img src="{{ absolute_url(asset('assets/images/admin/chip.png')) }}" style="padding:2px 25px 2px" alt="chipset">
+	<p>{% trans %}Chipsets{% endtrans %}</p>
+</a>
+<a href="{{ path('admin_manage_expansion_chipsets') }}" class="admin-button-index">
+	<img src="{{ absolute_url(asset('assets/images/admin/exp_chip.jpg')) }}" style="padding:10px 25px 3px" alt="chip part">
+	<p>{% trans %}Expansion chipsets{% endtrans %}</p>
+</a>
+<a href="{{ path('admin_manage_connectors') }}" class="admin-button-index">
+	<img src="{{ absolute_url(asset('assets/images/admin/conn.jpg')) }}" style="padding:11px 25px 10px" alt="connector">
+	<p>{% trans %}Connectors{% endtrans %}</p>
+</a>
+<a href="{{ path('admin_manage_miscs') }}" class="admin-button-index">
+	<img src="{{ absolute_url(asset('assets/images/admin/other.png')) }}" style="padding:4px 25px 4px" alt="misc">
+	<p>{% trans %}Misc stuff{% endtrans %}</p>
+</a>
+<a href="{{ path('admin_manage_files') }}" class="admin-button-index">
+	<img src="{{ absolute_url(asset('assets/images/admin/file.png')) }}" style="padding:5px 30px 5px" alt="file">
+	<p>Files</p>
+</a>
+<a href="{{ path('admin_change_user_password') }}" class="admin-button-index">
+	<img src="{{ absolute_url(asset('assets/images/admin/login.gif')) }}" style="padding:5px 30px 5px" alt="passwd">
+	<p>{% trans %}Change password{% endtrans %}</p>
+</a>
+{% if is_granted('ROLE_SUPER_ADMIN') %}
+	<a href="{{ path('admin_manage_users') }}" class="admin-button-index">
+		<img src="{{ absolute_url(asset('assets/images/admin/login.gif')) }}" style="padding:5px 30px 5px">
+		<p>{% trans %}Manage users{% endtrans %}</p>
+	</a>
+{% endif %}
+
+<h4>Stats:</h4>
+<p><b>{% trans %}Board count: {% endtrans %} {{moboCount}}</b></p>
+
 {% endblock %}

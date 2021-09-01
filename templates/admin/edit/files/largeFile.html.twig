@@ -1,0 +1,163 @@
+{% extends 'admin/header.html.twig' %}
+
+{% block title %}Manage large files{% endblock %}
+
+{% block body %}
+<div style="height:6em;"></div>
+	<h2 style="text-align:center;"><b>Edit: Large file</b></h2>
+    {{ form_start(form, {'method': 'POST'}) }}
+    <div class="editasset">
+        {{form_widget(form.save)}}
+        <progress hidden="true" id="progressBar"></progress>
+        <table class="editasset">
+            <tr id="messageRow" hidden="true">
+                <td><label for="message">Message</label></td>
+                <td><span id="message">{{ form_errors(form.file) }}</span></td>
+            <tr>
+            <tr>
+                <td>{{form_label(form.name)}}</td>
+                <td>{{form_widget(form.name)}}</td>
+            </tr>
+            <tr>
+                <td>{{form_label(form.fileVersion)}}</td>
+                <td>{{form_widget(form.fileVersion)}}</td>
+            </tr>
+            <tr>
+                <td>{{form_label(form.note)}}</td>
+                <td>{{form_widget(form.note)}}</td>
+            </tr>
+            <tr>
+                <td>{{form_label(form.file_name)}}</td>
+                <td>{{form_widget(form.file_name)}}</td>
+            </tr>
+            <tr>
+                <td>{{form_label(form.file)}}</td>
+                <td>{{form_widget(form.file)}}</td>
+            </tr>
+            <tr>
+                <td>{{form_label(form.subdirectory)}}</td>
+                <td>{{form_widget(form.subdirectory)}}</td>
+            </tr>
+            <tr>
+                <td>{{form_label(form.dumpQualityFlag)}}</td>
+                <td>{{form_widget(form.dumpQualityFlag)}}</td>
+            </tr>
+            <tr>
+                <td>{{form_label(form.hasActivationKey)}}</td>
+                <td>{{form_widget(form.hasActivationKey)}}</td>
+            </tr>
+            <tr>
+                <td>{{form_label(form.hasCopyProtection)}}</td>
+                <td>{{form_widget(form.hasCopyProtection)}}</td>
+            </tr>
+            <tr>
+                <td>Languages</td> 
+                <td>
+                    <div>
+                        {% include 'macros/entityList.html.twig' with {'entityName':'languages', 'entityDisplayName': 'language', 'entities':form.languages} %}	
+                    </div>
+                </td>
+            </tr>
+            <tr class="darkbg">
+                <td>Media type flags</td> 
+                <td>
+                    <div>
+                        {% include 'macros/entityList.html.twig' with {'entityName':'mediaTypeFlags', 'entityDisplayName': 'media type flag', 'entities':form.mediaTypeFlags} %}	
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>Os flags</td> 
+                <td>
+                    <div>
+                        {% include 'macros/entityList.html.twig' with {'entityName':'osFlags', 'entityDisplayName': 'os flag', 'entities':form.osFlags} %}	
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>{{form_label(form.releaseDate)}}</td>
+                <td>{{form_widget(form.releaseDate)}}</td>
+            </tr>
+            <tr>
+                <td>{{form_label(form.datePrecision)}}</td>
+                <td>{{form_widget(form.datePrecision)}}</td>
+            </tr>
+        </table>
+    <div id="hiddenDiv" style="display: none;">
+        {{ form_end(form) }}
+    </div>
+    <script src="{{ absolute_url(asset('assets/add-collection-widget.js')) }}"></script>
+</div>
+<script type="text/javascript">
+    document.getElementById("large_file_form_save").addEventListener("click", function(event) {
+        var date = new Date()
+        var bytesLoaded = 0
+        event.preventDefault()
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", window.location.href);
+        xhr.onprogress = function (e) {
+            if (e.lengthComputable) {
+                console.log(e.loaded+  " / " + e.total)
+            }
+        }
+        xhr.upload.addEventListener("progress", function(evt){
+            if (evt.lengthComputable) {
+                //console.log("add upload event-listener" + evt.loaded + "/" + evt.total);
+                bar = document.getElementById('progressBar')
+                bar.value=evt.loaded
+                bar.max=evt.total
+                bar.innerHTML = evt.loaded/evt.total*100
+
+                if(evt.loaded == evt.total) {
+                    document.getElementById("message").innerHTML = "<ul><li>Processing ...</li></ul>"
+                }
+                else {
+                    var newdate = new Date()
+                    var speed = (evt.loaded - bytesLoaded) * (1000/(newdate.getTime() - date.getTime()))
+                    if (speed > 1024)
+                        if (speed > 1024*1024)
+                            speedText = Number.parseFloat(speed/1024/1024).toFixed(1) + "MiB/s"
+                        else
+                            speedText = Number.parseFloat(speed/1024).toFixed(1) + "KiB/s"
+                    else
+                        speedText = Math.round(speed) + "B/s"
+                    //console.log(((evt.loaded - bytesLoaded) * (1000/(newdate.getTime() - date.getTime()))/1024/1024))
+                    document.getElementById("message").innerHTML = "<ul><li>Upload in progress ...</li><li>" + speedText + "</li></ul>"
+                    date = newdate
+                    bytesLoaded = evt.loaded
+                }
+            }
+        }, false);
+        xhr.onloadstart = function (e) {
+            bar = document.getElementById('progressBar')
+            bar.hidden = false
+            button = document.getElementById('large_file_form_save')
+            button.hidden = true
+            messageRow = document.getElementById("messageRow")
+            messageRow.hidden = false
+        }
+        xhr.onloadend = function (e) {
+            button = document.getElementById('large_file_form_save')
+            button.hidden = false
+            bar = document.getElementById('progressBar')
+            bar.hidden = true
+            if(xhr.status == 200) {
+                var parser = new DOMParser();
+                var doc = parser.parseFromString(xhr.responseText, "text/html");
+                if (doc.getElementById("message")) {
+                    document.getElementById("message").innerHTML = doc.getElementById("message").innerHTML
+                }
+                else {
+                    window.location.href = xhr.responseURL
+                    document.body.innerHTML = xhr.responseText
+                }
+            }
+            else {
+                document.getElementById("message").innerHTML = xhr.statusText
+            }
+        }
+        xhr.send(new FormData(document.getElementsByName('large_file_form')[0]));
+    }); 
+    
+</script>
+{% endblock %}

@@ -1,0 +1,58 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{% trans %}BIOS Info{% endtrans %}{% endblock %}
+
+{% block body %}
+<h2 class="title">{% trans %}Where can I find the POST string?{% endtrans %}</h2>
+	<p>{% trans %}In general, the POST string is located in the bottom left side of the boot screen 
+		(for BIOSes which provide it). Depending on the BIOS vendor, the POST string may
+		provide various info about the board (like chipset or date). Here is a list of common 
+		vendors and their string meanings:{% endtrans %}</p>
+	<br>
+	<div class="biosinfo">
+	<p><b>1. Award BIOS</b></p>
+	<span class="image-block"><span>
+		<a href="{{ absolute_url(asset('assets/images/bios/awardbios.jpg')) }}" class="highslide" onclick="return imgexp(this);">
+			<img src="{{ absolute_url(asset('assets/images/bios/awardbios.gif')) }}" alt="awardbios" title=""></a></span></span>
+	<span class="image-block"><span>
+		<a href="{{ absolute_url(asset('assets/images/bios/awardstring.jpg')) }}" class="highslide" onclick="return imgexp(this);">
+			<img src="{{ absolute_url(asset('assets/images/bios/awardstring.gif')) }}" alt="awardbiosinfo" title=""></a></span></span>
+	<p>{% trans %}You can find a list of Award chipset IDs{% endtrans %} <a href="{{path("bios_infoadv")}}?first=award-chip">{% trans %}here{% endtrans %}</a>
+	{% trans %}and a list of Award board manufacturer IDs{% endtrans %} <a href="{{path("bios_infoadv")}}?first=award">{% trans %}here{% endtrans %}</a></p>
+	<br>
+	<p><b>2. AMI BIOS</b></p>
+	<span class="image-block"><span>
+		<a href="{{ absolute_url(asset('assets/images/bios/amibios.jpg')) }}" class="highslide" onclick="return imgexp(this);">
+			<img src="{{ absolute_url(asset('assets/images/bios/amibios.gif')) }}" alt="amibios" title=""></a></span></span>
+	<span class="image-block"><span>
+		<a href="{{ absolute_url(asset('assets/images/bios/amistring.jpg')) }}" class="highslide" onclick="return imgexp(this);">
+			<img src="{{ absolute_url(asset('assets/images/bios/amistring.gif')) }}" alt="amibiosinfo" title=""></a></span></span>
+	<p>{% trans %}You can find a list of AMI board manufacturer IDs{% endtrans %} <a href="{{path("bios_infoadv")}}?first=ami">{% trans %}here{% endtrans %}</a></p>
+	<br>
+	<p><b>3. Acer BIOS</b></p>
+	<span class="image-block"><span>
+		<a href="{{ absolute_url(asset('assets/images/bios/acerbios.jpg')) }}" class="highslide" onclick="return imgexp(this);">
+			<img src="{{ absolute_url(asset('assets/images/bios/acerbios.gif')) }}" alt="acerbios" title=""></a></span></span>
+	</div>
+	<div id="jsappend"></div>
+	<script type="text/javascript"><!--
+		var ua = window.navigator.userAgent;
+		var msie = ua.indexOf("MSIE ");
+		msie = parseInt(ua.substring(msie + 5, ua.indexOf(".", msie)));
+		if (!msie || msie > 5){
+			var h = document.getElementById("jsappend");
+			var js = document.createElement('script');
+			js.type = "text/javascript";
+			js.src = "{{ absolute_url(asset('assets/highslide/highslide.js')) }}";
+			h.appendChild(js);
+		}
+		function imgexp(el){
+			if(typeof js != 'object')
+				return 0;
+			else
+				if(ua.indexOf("Mobile") > 0 && (document.documentElement.clientWidth < 600))
+					return 0;
+				else return hs.expand(el);
+		}
+	//--></script>
+{% endblock %}

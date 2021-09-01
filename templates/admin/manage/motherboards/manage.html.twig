@@ -1,0 +1,26 @@
+{% extends 'admin/header.html.twig' %}
+
+{% block title %}Manage motherboards{% endblock %}
+
+{% block body %}
+<h2 class="title">{{ entityDisplayNamePlural|capitalize }}</h2>
+<a href="{{ path('admin_index') }}" class="admin-button" style="padding:0px 5px 0px;">
+    <img src="{{ absolute_url(asset('assets/images/back.png')) }}" style="padding-top:5px;vertical-align:top;" alt="add" style="display:inline-block;">
+    <p style="display:inline-block;">Go back</p>
+</a>
+<a href="{{ path('admin_manage_motherboards', {entity:"motherboard"})}}" class="admin-button" style="padding:0px 5px 0px;{% if entityName == "motherboard" %}background-color: #afff97;{% endif %}">
+    <p {% if entityName == "motherboard" %}style="color: #000000;"{% endif %}>{% trans %}Motherboards{% endtrans %}</p></a>
+<a href="{{ path('admin_manage_motherboards', {entity:"formfactor"})}}" class="admin-button" style="padding:0px 5px 0px;{% if entityName == "formfactor" %}background-color: #afff97;{% endif %}">
+    <p {% if entityName == "formfactor" %}style="color: #000000;"{% endif %}>{% trans %}Form factors{% endtrans %}</p></a>
+<a href="./motherboards/{{entityName}}s/add/" class="admin-button" style="padding:0px 5px 0px;float:right;">
+    <img src="{{ absolute_url(asset('assets/images/add.png')) }}" style="padding-top:5px;vertical-align:top;" alt="add" style="display:inline-block;">
+    <p style="display:inline-block;">Add a {{ entityDisplayName }}</p>
+</a>
+<hr>
+<div class="list-view">
+    {% if search is not empty %}
+        {{ form(search) }}
+    {% endif %}
+    {{ render(controller(controllerList, {criterias: criterias}, {page: page, entity: entityName})) }}
+</div>
+{% endblock %}

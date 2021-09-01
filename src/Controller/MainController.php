@@ -6,27 +6,21 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use App\Entity\Motherboard;
+use App\Entity\MotherboardBios;
 
 class MainController extends AbstractController
 {
     /**
-     * @Route("/", name="app_homepage"), methods={"GET"})
-     * @param Request $request
+     * @Route("/", name="app_homepage")
      */
-    public function index(Request $request)
-    {
-        if($request->get('motherboard') != null) {
-            return $this->redirect('./motherboard/search/');
-        }
-        else {
-            $latestMotherboards = $this->getDoctrine()
-            ->getRepository(Motherboard::class)
-            ->find10Latest();
-            return $this->render('main/index.html.twig', [
-                'controller_name' => 'MainController',
-		'latestMotherboards' => $latestMotherboards,
-            ]);
-        }
+    public function index() {
+        $latestMotherboards = $this->getDoctrine()->getRepository(Motherboard::class)->find10Latest();
+        return $this->render('main/index.html.twig', [
+            'controller_name' => 'MainController',
+            'latestMotherboards' => $latestMotherboards,
+            'moboCount' => $this->getDoctrine()->getRepository(Motherboard::class)->getCount(),
+            'biosCount' => $this->getDoctrine()->getRepository(MotherboardBios::class)->getCount(),
+        ]);
     }
 
     /**

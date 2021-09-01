@@ -63,6 +63,31 @@ class Manufacturer
      */
     private $motherboardAliases;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Chip", mappedBy="Manufacturer")
+     */
+    private $chips;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\ChipAlias", mappedBy="manufacturer")
+     */
+    private $chipAliases;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\ManufacturerBiosManufacturerCode", mappedBy="manufacturer", orphanRemoval=true, cascade={"persist"})
+     */
+    private $biosCodes;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\ChipsetBiosCode", mappedBy="biosManufacturer")
+     */
+    private $chipsetBiosCodes;
+
+    /**
+     * @ORM\OneToMany(targetEntity=OsFlag::class, mappedBy="manufacturer")
+     */
+    private $osFlags;
+
     public function __construct()
     {
         $this->motherboards = new ArrayCollection();
@@ -72,6 +97,11 @@ class Manufacturer
         $this->audioChipsets = new ArrayCollection();
         $this->chipsetParts = new ArrayCollection();
         $this->motherboardAliases = new ArrayCollection();
+        $this->chips = new ArrayCollection();
+        $this->chipAliases = new ArrayCollection();
+        $this->biosCodes = new ArrayCollection();
+        $this->chipsetBiosCodes = new ArrayCollection();
+        $this->osFlags = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -322,6 +352,160 @@ class Manufacturer
             // set the owning side to null (unless already changed)
             if ($motherboardAlias->getManufacturer() === $this) {
                 $motherboardAlias->setManufacturer(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Chip[]
+     */
+    public function getChips(): Collection
+    {
+        return $this->chips;
+    }
+
+    public function addChip(Chip $chip): self
+    {
+        if (!$this->chips->contains($chip)) {
+            $this->chips[] = $chip;
+            $chip->setManufacturer($this);
+        }
+
+        return $this;
+    }
+
+    public function removeChip(Chip $chip): self
+    {
+        if ($this->chips->contains($chip)) {
+            $this->chips->removeElement($chip);
+            // set the owning side to null (unless already changed)
+            if ($chip->getManufacturer() === $this) {
+                $chip->setManufacturer(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ChipAlias[]
+     */
+    public function getChipAliases(): Collection
+    {
+        return $this->chipAliases;
+    }
+
+    public function addChipAlias(ChipAlias $chipAlias): self
+    {
+        if (!$this->chipAliases->contains($chipAlias)) {
+            $this->chipAliases[] = $chipAlias;
+            $chipAlias->setManufacturer($this);
+        }
+
+        return $this;
+    }
+
+    public function removeChipAlias(ChipAlias $chipAlias): self
+    {
+        if ($this->chipAliases->contains($chipAlias)) {
+            $this->chipAliases->removeElement($chipAlias);
+            // set the owning side to null (unless already changed)
+            if ($chipAlias->getManufacturer() === $this) {
+                $chipAlias->setManufacturer(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ManufacturerBiosManufacturerCode[]
+     */
+    public function getBiosCodes(): Collection
+    {
+        return $this->biosCodes;
+    }
+
+    public function addBiosCode(ManufacturerBiosManufacturerCode $biosCode): self
+    {
+        if (!$this->biosCodes->contains($biosCodes)) {
+            $this->biosCodes[] = $biosCode;
+            $biosCode->setManufacturer($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBiosCode(ManufacturerBiosManufacturerCode $biosCode): self
+    {
+        if ($this->biosCodes->contains($biosCode)) {
+            $this->biosCodes->removeElement($biosCode);
+            // set the owning side to null (unless already changed)
+            if ($biosCode->getManufacturer() === $this) {
+                $biosCode->setManufacturer(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ChipsetBiosCode[]
+     */
+    public function getChipsetBiosCodes(): Collection
+    {
+        return $this->chipsetBiosCodes;
+    }
+
+    public function addChipsetBiosCode(ChipsetBiosCode $chipsetBiosCode): self
+    {
+        if (!$this->chipsetBiosCodes->contains($chipsetBiosCode)) {
+            $this->chipsetBiosCodes[] = $chipsetBiosCode;
+            $chipsetBiosCode->setBiosManufacturer($this);
+        }
+
+        return $this;
+    }
+
+    public function removeChipsetBiosCode(ChipsetBiosCode $chipsetBiosCode): self
+    {
+        if ($this->chipsetBiosCodes->contains($chipsetBiosCode)) {
+            $this->chipsetBiosCodes->removeElement($chipsetBiosCode);
+            // set the owning side to null (unless already changed)
+            if ($chipsetBiosCode->getBiosManufacturer() === $this) {
+                $chipsetBiosCode->setBiosManufacturer(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|OsFlag[]
+     */
+    public function getOsFlags(): Collection
+    {
+        return $this->osFlags;
+    }
+
+    public function addOsFlag(OsFlag $osFlag): self
+    {
+        if (!$this->osFlags->contains($osFlag)) {
+            $this->osFlags[] = $osFlag;
+            $osFlag->setManufacturer($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOsFlag(OsFlag $osFlag): self
+    {
+        if ($this->osFlags->removeElement($osFlag)) {
+            // set the owning side to null (unless already changed)
+            if ($osFlag->getManufacturer() === $this) {
+                $osFlag->setManufacturer(null);
             }
         }
 

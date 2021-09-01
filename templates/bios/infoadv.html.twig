@@ -1,0 +1,83 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{% trans %}Advanced BIOS Info{% endtrans %}{% endblock %}
+
+{% block body %}
+<h2 class="title">{% trans %}Where can I find the POST string?{% endtrans %}</h2>
+{% for i in 0..1 %}
+	{% for manufacturer, codes in biosCodes %}
+	{% if (loop.parent.loop.index == 1 and manufacturer|lower == app.request.get('first')) or (loop.parent.loop.index == 2 and manufacturer|lower != app.request.get('first')) %}
+		<p><b>{{manufacturer}} BIOS manufacturer IDs: {{codes|length}}</b></p>
+		<table class="stbl-adv">
+			{% if codes|length > 3 %}
+			<tr class="stbl-head">
+				<th>{{ codes[0].getCode() }}-{{ codes[(codes|length // 4)-1].getCode()}}</th>
+				<th>{{ codes[(codes|length // 4)].getCode() }}-{{ codes[2 * (codes|length // 4)-1].getCode() }}</th>
+				<th>{{ codes[2 * (codes|length // 4)].getCode() }}-{{ codes[3 * (codes|length // 4)-1].getCode() }}</th>
+				<th>{{ codes[3 * (codes|length // 4)].getCode()}}-{{codes[codes|length -1].getCode()}}</th>
+			</tr>
+			{% endif %}
+			<tr>
+				{% if codes|length > 3 %}
+				<td>
+					<ul>
+					{% for code in codes|slice(0, (codes|length / 4)) %}
+						<li>{{ code.getCode() }}: {{ code.getManufacturer().getShortNameIfExist() }}</li>
+					{% endfor %}
+					</ul>
+				</td>
+				<td>
+					<ul>
+					{% for code in codes|slice((codes|length // 4), (codes|length // 4)) %}
+						<li>{{ code.getCode() }}: {{ code.getManufacturer().getShortNameIfExist() }}</li>
+					{% endfor %}
+					</ul>
+				</td>
+				<td>
+					<ul>
+					{% for code in codes|slice(2 * (codes|length // 4), (codes|length // 4)) %}
+						<li>{{ code.getCode() }}: {{ code.getManufacturer().getShortNameIfExist() }}</li>
+					{% endfor %}
+					</ul>
+				</td>
+				{% endif %}
+				<td>
+					<ul>
+					{% for code in codes|slice(3 * (codes|length // 4), (codes|length)-(3 * (codes|length // 4))) %}
+						<li>{{ code.getCode() }}: {{ code.getManufacturer().getShortNameIfExist() }}</li>
+					{% endfor %}
+					</ul>
+				</td>
+			</tr>
+		</table>
+	{% endif %}
+	{% endfor %}
+{% if (loop.index == 1 and app.request.get('first') == 'award-chip') or (loop.index == 2 and app.request.get('first') != 'award-chip') %}
+{% for manufacturer, codes in chipCodes %}
+<p><b>{{manufacturer}} chipset IDs</b></p>
+<table class="stbl-adv">
+	{% if codes|length > 1 %}
+	<tr class="stbl-head">
+		<th>{{ codes[0].getCode() }}-{{ codes[(codes|length // 2)-1].getCode()}}</th>
+		<th>{{ codes[(codes|length // 2)].getCode() }}-{{ codes[(codes|length)-1].getCode() }}</th>
+	</tr>
+	{% endif %}
+	<tr>
+		{% if codes|length > 1 %}
+		<td><ul>
+		{% for code in codes|slice(0, (codes|length / 2)) %}
+			<li>{{ code.getCode() }}: {{ code.getChipset().getManufacturer().getShortNameIfExist() }} {{ code.getChipset().getPartNo() }} ({{ code.getChipset().getName() }}) </li>
+		{% endfor %}
+		</ul></td>
+		{% endif %}
+		<td><ul>
+		{% for code in codes|slice((codes|length // 2), (codes|length // 2)+1) %}
+			<li>{{ code.getCode() }}: {{ code.getChipset().getManufacturer().getShortNameIfExist() }} {{ code.getChipset().getPartNo() }} ({{ code.getChipset().getName() }}) </li>
+		{% endfor %}
+		</ul></td>
+	</tr>
+</table>
+{% endfor %}
+{% endif %}
+{% endfor %}
+{% endblock %}

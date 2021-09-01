@@ -4,7 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Manufacturer;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\Query\ResultSetMapping;
 
 /**
@@ -36,10 +36,11 @@ class ManufacturerRepository extends ServiceEntityRepository
         $rsm->addFieldResult('man', 'name', 'name');
         $rsm->addFieldResult('man', 'short_name', 'shortName');
 
-        $query = $entityManager->createNativeQuery('SELECT DISTINCT manufacturer.id, manufacturer.name, manufacturer.short_name  
-        FROM motherboard_alias alias FULL OUTER JOIN motherboard mobo ON mobo.manufacturer_id=alias.manufacturer_id, manufacturer 
-        WHERE manufacturer.id=coalesce(alias.manufacturer_id,mobo.manufacturer_id) 
-        ORDER BY manufacturer.name;', $rsm
+        $query = $entityManager->createNativeQuery(
+            'SELECT DISTINCT manufacturer.id, manufacturer.name, manufacturer.short_name  
+            FROM motherboard_alias alias FULL OUTER JOIN motherboard mobo ON mobo.id=alias.motherboard_id, manufacturer 
+            WHERE manufacturer.id=coalesce(alias.manufacturer_id,mobo.manufacturer_id) 
+            ORDER BY manufacturer.name;', $rsm
         );
         
         return $query->setCacheable(true)
@@ -74,6 +75,57 @@ class ManufacturerRepository extends ServiceEntityRepository
             'SELECT DISTINCT man
             FROM App\Entity\MotherboardBios bios, App\Entity\Manufacturer man 
             WHERE bios.manufacturer=man 
+            ORDER BY man.name ASC'
+        );
+
+        return $query->getResult();
+    }
+
+    /**
+     * @return Manufacturer[]
+     */
+    public function findAllProcessorManufacturer(): array
+    {
+        $entityManager = $this->getEntityManager();
+
+        $query = $entityManager->createQuery(
+            'SELECT DISTINCT man
+            FROM App\Entity\Processor p, App\Entity\Manufacturer man 
+            WHERE p.manufacturer=man 
+            ORDER BY man.name ASC'
+        );
+
+        return $query->getResult();
+    }
+
+    /**
+     * @return Manufacturer[]
+     */
+    public function findAllAudioChipManufacturer(): array
+    {
+        $entityManager = $this->getEntityManager();
+
+        $query = $entityManager->createQuery(
+            'SELECT DISTINCT man
+            FROM App\Entity\AudioChipset ac, App\Entity\Manufacturer man 
+            WHERE ac.manufacturer=man 
+            ORDER BY man.name ASC'
+        );
+
+        return $query->getResult();
+    }
+
+    /**
+     * @return Manufacturer[]
+     */
+    public function findAllVideoChipManufacturer(): array
+    {
+        $entityManager = $this->getEntityManager();
+
+        $query = $entityManager->createQuery(
+            'SELECT DISTINCT man
+            FROM App\Entity\VideoChipset vc, App\Entity\Manufacturer man 
+            WHERE vc.manufacturer=man 
             ORDER BY man.name ASC'
         );
 

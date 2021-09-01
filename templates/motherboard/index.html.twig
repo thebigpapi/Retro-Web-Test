@@ -4,11 +4,11 @@
 
 {% block body %}
 	<h2 class="title">{% trans %}Index{% endtrans %}</h2>
-	<p><b class="contrib">{% trans %}Can't you find a motherboard? Click{% endtrans %} <a href="{% if is_granted('ROLE_ADMIN') %}../add{% else %}/win3board/posting.php?mode=post&amp;f=95&amp;language=en{% endif %}">{% trans %}here{% endtrans %}</a> {% trans %}to add it.{% endtrans %}</b></p>
+	<p><b class="contrib">{% trans %}Can't you find a motherboard? Click{% endtrans %} <a href="{% if is_granted('ROLE_ADMIN') %}{{ path('new_motherboard_add') }}{% else %}/win3board/posting.php?mode=post&amp;f=95&amp;language=en{% endif %}">{% trans %}here{% endtrans %}</a> {% trans %}to add it.{% endtrans %}</b></p>
 	{% if motherboards is not empty %}
 		<ul>
 			{% for motherboard in motherboards %}
-				<li><a href='../show/{{motherboard.id}}'>{{ motherboard.getManufacturerShortNameIfExist()}} {{motherboard.name}}</a></li>
+				<li><a href='{{ path("motherboard_show", {id: motherboard.getId()}) }}'>{{ motherboard.getManufacturerShortNameIfExist()}} {{motherboard.name}}</a></li>
 			{% endfor %}
 		</ul>
 	{{ knp_pagination_render(motherboards) }}

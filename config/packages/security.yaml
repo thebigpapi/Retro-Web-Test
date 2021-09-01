@@ -52,14 +52,7 @@ security:
         # - { path: ^/profile, roles: ROLE_USER }
         # require ROLE_ADMIN for /admin*
         - { path: '^/login$', roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: '^/motherboard/add', roles: ROLE_ADMIN }
-        - { path: '^/motherboard/edit', roles: ROLE_ADMIN }
-        - { path: '^/motherboard/delete/*', roles: ROLE_ADMIN }
-        - { path: '^/manufacturer/*', roles: ROLE_ADMIN }
-        - { path: '^/chipset/*', roles: ROLE_ADMIN }
-        - { path: '^/processor/*', roles: ROLE_ADMIN }
-        - { path: '^/coprocessor/*', roles: ROLE_ADMIN }
-        - { path: '^/processorPlatformType/*', roles: ROLE_ADMIN }
+        - { path: '^/motherboards/\d+/delete/$', roles: ROLE_ADMIN }
         - { path: '^/admin/manage_users', roles: ROLE_SUPER_ADMIN }
         - { path: '^/admin/*', roles: ROLE_ADMIN }
 

@@ -19,7 +19,7 @@ class Chipset
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Manufacturer", inversedBy="chipsets")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Manufacturer", inversedBy="chipsets", fetch="EAGER")
      */
     private $manufacturer;
 
@@ -34,7 +34,7 @@ class Chipset
     private $name;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\ChipsetPart", inversedBy="chipsets")
+     * @ORM\ManyToMany(targetEntity="App\Entity\ChipsetPart", inversedBy="chipsets", fetch="EAGER")
      */
     private $chipsetParts;
 
@@ -53,10 +53,22 @@ class Chipset
      */
     private $part_no;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\ChipsetBiosCode", mappedBy="chipset", orphanRemoval=true, cascade={"persist"})
+     */
+    private $biosCodes;
+
+    /**
+     * @ORM\OneToMany(targetEntity=LargeFileChipset::class, mappedBy="chipset", orphanRemoval=true, cascade={"persist"})
+     */
+    private $drivers;
+
     public function __construct()
     {
         $this->motherboards = new ArrayCollection();
         $this->chipsetParts = new ArrayCollection();
+        $this->biosCodes = new ArrayCollection();
+        $this->drivers = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -110,6 +122,41 @@ class Chipset
                 $chipset = $chipset . $part->getShortName() . ", ";
             }
             
+        }
+        if ($chipset) {
+            $chipset = "[$chipset]";
+        }
+
+
+        return "$fullName $chipset";
+    }
+
+    public function getFullReference(): ?string
+    {
+        $fullName = "";
+        if ($this->part_no) {
+            $fullName = $fullName . " $this->part_no";
+            if ($this->name) {
+                $fullName = $fullName . " ($this->name)";
+            }
+        }
+        else {
+            if ($this->name) {
+                $fullName = $fullName . " $this->name";
+            }
+            else {
+                $fullName = $fullName . " Unidentified";
+            }
+        }
+        $chipset = "";
+        foreach($this->chipsetParts as $key => $part) {
+            if ($key === array_key_last($this->chipsetParts->getValues())) {
+                $chipset = $chipset . $part->getShortName();
+            }
+            else {
+                $chipset = $chipset . $part->getShortName() . ", ";
+            }
+
         }
         if ($chipset) {
             $chipset = "[$chipset]";
@@ -174,7 +221,7 @@ class Chipset
     {
         if (!$this->chipsetParts->contains($chipsetPart)) {
             $this->chipsetParts[] = $chipsetPart;
-            $chipsetPart->setChipset($this);
+            $chipsetPart->addChipset($this);
         }
 
         return $this;
@@ -185,8 +232,8 @@ class Chipset
         if ($this->chipsetParts->contains($chipsetPart)) {
             $this->chipsetParts->removeElement($chipsetPart);
             // set the owning side to null (unless already changed)
-            if ($chipsetPart->getChipset() === $this) {
-                $chipsetPart->setChipset(null);
+            if ($chipsetPart->getChipsets()->contains($this)) {
+                $chipsetPart->removeChipset($this);
             }
         }
 
@@ -225,6 +272,67 @@ class Chipset
     public function setPartNo(?string $part_no): self
     {
         $this->part_no = $part_no;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ChipsetBiosCode[]
+     */
+    public function getBiosCodes(): Collection
+    {
+        return $this->biosCodes;
+    }
+
+    public function addBiosCode(ChipsetBiosCode $biosCode): self
+    {
+        if (!$this->biosCodes->contains($biosCode)) {
+            $this->biosCodes[] = $biosCode;
+            $biosCode->setChipset($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBiosCode(ChipsetBiosCode $biosCode): self
+    {
+        if ($this->biosCodes->contains($biosCode)) {
+            $this->biosCodes->removeElement($biosCode);
+            // set the owning side to null (unless already changed)
+            if ($biosCode->getChipset() === $this) {
+                $biosCode->setChipset(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|LargeFileChipset[]
+     */
+    public function getDrivers(): Collection
+    {
+        return $this->drivers;
+    }
+
+    public function addDriver(LargeFileChipset $driver): self
+    {
+        if (!$this->drivers->contains($driver)) {
+            $this->drivers[] = $driver;
+            $driver->setChipset($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDriver(LargeFileChipset $driver): self
+    {
+        if ($this->drivers->removeElement($driver)) {
+            // set the owning side to null (unless already changed)
+            if ($driver->getChipset() === $this) {
+                $driver->setChipset(null);
+            }
+        }
 
         return $this;
     }

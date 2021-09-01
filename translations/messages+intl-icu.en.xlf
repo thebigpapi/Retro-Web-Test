@@ -5,21 +5,25 @@
       <tool tool-id="symfony" tool-name="Symfony"/>
     </header>
     <body>
-      <trans-unit id="dir.lang">
+      <trans-unit id="j6sk4aX" resname="dir.lang">
         <source>dir.lang</source>
         <target>ltr</target>
       </trans-unit>
-      <trans-unit id="user.lang">
+      <trans-unit id="O7SHbBA" resname="user.lang">
         <source>user.lang</source>
         <target>en</target>
       </trans-unit>
-      <trans-unit id="name.lang">
+      <trans-unit id="hlv1Ekr" resname="name.lang">
         <source>name.lang</source>
         <target>English</target>
       </trans-unit>
-      <trans-unit id="motherboard.num">
+      <trans-unit id="A7rmw_g" resname="motherboard.num">
         <source>motherboard.num</source>
         <target>{count, plural, =0 {No motherboard found} one {1 motherboard found} other {# motherboards found}}</target>
+      </trans-unit>
+      <trans-unit id="nmP4gEl" resname="bios.num">
+        <source>bios.num</source>
+        <target>{count, plural, =0 {No BIOS entries found} one {1 BIOS entry found} other {# BIOS entries found}}</target>
       </trans-unit>
     </body>
   </file>
