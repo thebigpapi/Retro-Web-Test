@@ -1,0 +1,3 @@
+App\Entity\MaxRam:
+  2mb:
+    value: 2048

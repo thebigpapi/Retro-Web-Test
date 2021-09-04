@@ -1,0 +1,4 @@
+App\Entity\Manufacturer:
+  abit:
+    name: "ABit Inc."
+    shortName: "Abit"

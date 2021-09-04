@@ -136,7 +136,7 @@ class Motherboard
     /**
      * @ORM\Column(type="integer", nullable=true)
      */
-    private $maxCpu;
+    private int $maxCpu;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\MotherboardAlias", mappedBy="motherboard", orphanRemoval=true, cascade={"persist"})
