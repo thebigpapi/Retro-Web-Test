@@ -49,17 +49,15 @@ class MaxRam
     {
         return $this->id;
     }
-    
+
     public function getValueWithUnit(): ?string
     {
-        if ($this->value >= (1024*1024)){
-            return round($this->value/(1024*1024), 2).'GB';
-        }
-        else if ($this->value >= 1024){
-            return round($this->value/1024, 2).'MB';
-        }
-        else{
-            return $this->value.'KB';
+        if ($this->value >= (1024 * 1024)) {
+            return round($this->value / (1024 * 1024), 2) . 'GB';
+        } elseif ($this->value >= 1024) {
+            return round($this->value / 1024, 2) . 'MB';
+        } else {
+            return $this->value . 'KB';
         }
     }
 

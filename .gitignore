@@ -28,3 +28,8 @@
 !public/motherboard/bios/.gitkeep
 !public/motherboard/image/.gitkeep
 !public/motherboard/manual/.gitkeep
+
+###> squizlabs/php_codesniffer ###
+/.phpcs-cache
+/phpcs.xml
+###< squizlabs/php_codesniffer ###
