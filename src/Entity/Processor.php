@@ -102,29 +102,32 @@ class Processor extends ProcessingUnit
         return $this;
     }
 
-    public function getNameWithPlatform() {
+    public function getNameWithPlatform()
+    {
         $this->getPlatform() ? $pType = $this->getPlatform()->getName() : $pType = "Unidentified";
         return $this->getManufacturer()->getShortNameIfExist() . " " . $this->name . ' ' . $this->speed->getValueWithUnit() . ' [' . $this->partNumber . ']' . " (" . $pType . ")";
     }
 
-    public function getNameWithSpecs() {
+    public function getNameWithSpecs()
+    {
+        
         $cache = $this->getCachesWithValue();
 
         $core = $this->getCore() ? "($this->core)" : '';
 
-        $speed = $speed = $this->speed->getValueWithUnit() . ($this->fsb != $this->speed ? '/'.$this->fsb->getValueWithUnit():'');
+        $speed = $this->speed->getValueWithUnit() . ($this->fsb != $this->speed ? '/' . $this->fsb->getValueWithUnit() : '');
 
         $voltages = $this->getVoltagesWithValue();
 
         $partno = "[$this->partNumber]";
-        
+
         $pType = '(' . ($this->getPlatform() ? $this->getPlatform()->getName() : "Unidentified") . ')';
 
-        $processNode = $this->ProcessNode ? $this->ProcessNode . 'nm': '';
+        $processNode = $this->ProcessNode ? $this->ProcessNode . 'nm' : '';
 
-        $tdp = $this->tdp ? $this->tdp . 'W':'';
-        
-        return implode(" ", array($this->getManufacturer()->getShortNameIfExist(),$this->name, $core, $speed, $voltages, $cache, $partno, $pType, $processNode, $tdp ));
+        $tdp = $this->tdp ? $this->tdp . 'W' : '';
+
+        return implode(" ", array($this->getManufacturer()->getShortNameIfExist(), $this->name, $core, $speed, $voltages, $cache, $partno, $pType, $processNode, $tdp));
     }
 
     public function getL1(): ?CacheSize
@@ -238,78 +241,63 @@ class Processor extends ProcessingUnit
     public static function sort(Collection $processors): Collection
     {
         $array = $processors->toArray();
-        usort($array, function ($a, $b)
-            {
-                if($a->getManufacturer() == $b->getManufacturer())
-                {
-                    if($a->getPlatform() == $b->getPlatform())
-                    {
+        usort(
+            $array,
+            function ($a, $b) {
+                if ($a->getManufacturer() == $b->getManufacturer()) {
+                    if ($a->getPlatform() == $b->getPlatform()) {
                         //if($a->getName() == $b->getName())
                         //{
-                            if($a->getFsb() == $b->getFsb())
-                            {
-                                if($a->getSpeed() == $b->getSpeed())
-                                {
-                                    if($a->getProcessNode() == $b->getProcessNode())
-                                    {
-                                        if($a->getL1() && $b->getL1())
-                                        {
-                                            if($a->getL1() == $b->getL1())
-                                            {
-                                                if($a->getL1CacheMethod() && $b->getL1CacheMethod())
-                                                {
-                                                    if($a->getL1CacheMethod() == $b->getL1CacheMethod())
-                                                    {
-                                                        if($a->getL2() && $b->getL2())
-                                                        {
-                                                            if($a->getL2CacheRatio() && $b->getL2CacheRatio())
-                                                            {
-                                                                if($a->getL2CacheRatio() == $b->getL2CacheRatio())
-                                                                {
-                                                                    if($a->getL3() && $b->getL3())
-                                                                    {
-                                                                        if($a->getL3CacheRatio() && $b->getL3CacheRatio())
-                                                                        {
-                                                                            if($a->getL3CacheRatio() == $b->getL3CacheRatio())
-                                                                            {
-                                                                                return 0;
-                                                                            }
-                                                                            return ($a->getL3CacheRatio()->getName() > $b->getL3CacheRatio()->getName()) ? -1 : 1;
+                        if ($a->getFsb() == $b->getFsb()) {
+                            if ($a->getSpeed() == $b->getSpeed()) {
+                                if ($a->getProcessNode() == $b->getProcessNode()) {
+                                    if ($a->getL1() && $b->getL1()) {
+                                        if ($a->getL1() == $b->getL1()) {
+                                            if ($a->getL1CacheMethod() && $b->getL1CacheMethod()) {
+                                                if ($a->getL1CacheMethod() == $b->getL1CacheMethod()) {
+                                                    if ($a->getL2() && $b->getL2()) {
+                                                        if ($a->getL2CacheRatio() && $b->getL2CacheRatio()) {
+                                                            if ($a->getL2CacheRatio() == $b->getL2CacheRatio()) {
+                                                                if ($a->getL3() && $b->getL3()) {
+                                                                    if ($a->getL3CacheRatio() && $b->getL3CacheRatio()) {
+                                                                        if ($a->getL3CacheRatio() == $b->getL3CacheRatio()) {
+                                                                            return 0;
                                                                         }
-                                                                        return ($a->getL3()->getValue() > $b->getL3()->getValue()) ? -1 : 1;
+                                                                        return ($a->getL3CacheRatio()->getName() > $b->getL3CacheRatio()->getName()) ? -1 : 1;
                                                                     }
+                                                                    return ($a->getL3()->getValue() > $b->getL3()->getValue()) ? -1 : 1;
                                                                 }
-                                                                return ($a->getL2CacheRatio()->getName() > $b->getL2CacheRatio()->getName()) ? -1 : 1;
                                                             }
-                                                            return ($a->getL2()->getValue() > $b->getL2()->getValue()) ? -1 : 1;
+                                                            return ($a->getL2CacheRatio()->getName() > $b->getL2CacheRatio()->getName()) ? -1 : 1;
                                                         }
-                                                        return ($a->getL2() && !$b->getL2()) ? -1 : 1;
+                                                        return ($a->getL2()->getValue() > $b->getL2()->getValue()) ? -1 : 1;
                                                     }
-                                                    return ($a->getL1CacheMethod()->getName() > $b->getL1CacheMethod()->getName()) ? -1 :1;
+                                                    return ($a->getL2() && !$b->getL2()) ? -1 : 1;
                                                 }
-                                                
+                                                return ($a->getL1CacheMethod()->getName() > $b->getL1CacheMethod()->getName()) ? -1 : 1;
                                             }
-                                            return ($a->getL1()->getValue() > $b->getL1()->getValue()) ? -1 :1;
                                         }
-                                        return ($a->getL1() && !$b->getL1()) ? -1 : 1;
+                                        return ($a->getL1()->getValue() > $b->getL1()->getValue()) ? -1 : 1;
                                     }
-                                    return ($a->getProcessNode() < $b->getProcessNode()) ? -1 :1;
+                                    return ($a->getL1() && !$b->getL1()) ? -1 : 1;
                                 }
-                                return ($a->getSpeed()->getValue() > $b->getSpeed()->getValue()) ? -1 : 1;
+                                return ($a->getProcessNode() < $b->getProcessNode()) ? -1 : 1;
                             }
-                            return ($a->getFsb()->getValue() > $b->getFsb()->getValue()) ? -1 : 1;
-                            
+                            return ($a->getSpeed()->getValue() > $b->getSpeed()->getValue()) ? -1 : 1;
+                        }
+                        return ($a->getFsb()->getValue() > $b->getFsb()->getValue()) ? -1 : 1;
+
                         //}
                         //return ($a->getName() < $b->getName()) ? -1 : 1;
-                    }
-                    else
+                    } else {
                         return ($a->getPlatform() < $b->getPlatform()) ? -1 : 1;
-                }
-                else
+                    }
+                } else {
                     return ($a->getManufacturer() < $b->getManufacturer()) ? -1 : 1;
+                }
             }
         );
-        
+
         return new ArrayCollection($array);
     }
 
@@ -344,36 +332,38 @@ class Processor extends ProcessingUnit
         return $this;
     }
 
-    public function getVoltagesWithValue():string
+    public function getVoltagesWithValue(): string
     {
         $res = "";
         $voltages = $this->getVoltages();
 
-        foreach($voltages as $voltage)
-        {
-            $res = ($voltages[array_key_first($voltages->toArray())] ==  $voltage) ? $voltage->getValueWithUnit() : $res . " - " . $voltage->getValueWithUnit();
+        foreach ($voltages as $voltage) {
+            if ($voltages[array_key_first($voltages->toArray())] ==  $voltage) {
+                $res = $voltage->getValueWithUnit();
+            } else {
+                $res . " - " . $voltage->getValueWithUnit();
+            }
         }
         return $res;
     }
 
-    public function getCachesWithValue():string
+    public function getCachesWithValue(): string
     {
         $cache = '';
-        if($this->L1) {
-            $cache = "[L1: " .$this->L1->getValueWithUnit();
-            if($this->L1CacheMethod) {
-                $cache = "$cache " .$this->L1CacheMethod->getName();
+        if ($this->L1) {
+            $cache = "[L1: " . $this->L1->getValueWithUnit();
+            if ($this->L1CacheMethod) {
+                $cache = "$cache " . $this->L1CacheMethod->getName();
             }
-            if($this->L2) {
+            if ($this->L2) {
                 $cache = "$cache, L2: " . $this->L2->getValueWithUnit();
-                if($this->L2CacheRatio) {
-                    $cache = "$cache ". $this->L2CacheRatio->getName();
+                if ($this->L2CacheRatio) {
+                    $cache = "$cache " . $this->L2CacheRatio->getName();
                 }
-                if($this->L3) {
+                if ($this->L3) {
                     $cache = "$cache, L3: " . $this->L3->getValueWithUnit();
-                    if($this->L3CacheRatio) {
-                        $cache = "$cache ". $this->L3CacheRatio->getName();
-                        
+                    if ($this->L3CacheRatio) {
+                        $cache = "$cache " . $this->L3CacheRatio->getName();
                     }
                 }
             }
@@ -382,14 +372,13 @@ class Processor extends ProcessingUnit
         return $cache;
     }
 
-    public function getProcessNodeWithValue():string
+    public function getProcessNodeWithValue(): string
     {
-        return $this->ProcessNode ? $this->ProcessNode. "nm":"";
+        return $this->ProcessNode ? $this->ProcessNode . "nm" : "";
     }
 
-    public function getTdpWithValue():string
+    public function getTdpWithValue(): string
     {
-        return $this->tdp ? $this->tdp. "W":"";
+        return $this->tdp ? $this->tdp . "W" : "";
     }
-    
 }

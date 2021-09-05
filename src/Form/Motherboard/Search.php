@@ -1,33 +1,23 @@
 <?php
+
 namespace App\Form\Motherboard;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use App\Entity\Manufacturer;
-use App\Entity\Chipset;
 use App\Entity\CpuSocket;
 use App\Entity\DramType;
-use App\Entity\FormFactor;
 use App\Entity\ProcessorPlatformType;
-use App\Entity\MaxRam;
-use App\Form\Type\SearchMotherboardExpansionSlotType;
-use App\Form\Type\SearchMotherboardIoPortType;
-use App\Repository\ChipsetRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormInterface;
 use App\Repository\ProcessorPlatformTypeRepository;
 use Doctrine\ORM\EntityManagerInterface;
-
 
 class Search extends AbstractType
 {
@@ -60,7 +50,7 @@ class Search extends AbstractType
                 'expanded' => false,
                 'required' => false,
                 'choices' => $options['moboManufacturers'],
-		        'placeholder' => 'Select a manufacturer ...'
+                'placeholder' => 'Select a manufacturer ...'
             ])
             /*->add('searchChipset', CheckboxType::class, [
                 'label'    => ' ',
@@ -74,42 +64,38 @@ class Search extends AbstractType
                 'expanded' => false,
                 'required' => false,
                 'choices' => $options['chipsetManufacturers'],
-		        'placeholder' => 'Select a chipset manufacturer ...',
+                'placeholder' => 'Select a chipset manufacturer ...',
             ])
-            
             /*->add('searchProcessorPlatformType', CheckboxType::class, [
                 'label'    => ' ',
                 'required' => false,
             ])*/
             ->add('cpuSocket1', ChoiceType::class, [
                 //'class' => ProcessorPlatformType::class,
-                
                 'choice_label' => 'getNameAndType',
                 'multiple' => false,
                 'expanded' => false,
                 'required' => false,
                 'choices' => $options['cpuSockets'],
-		        'placeholder' => 'Select a socket ...',
+                'placeholder' => 'Select a socket ...',
             ])
             ->add('cpuSocket2', ChoiceType::class, [
                 //'class' => ProcessorPlatformType::class,
-                
                 'choice_label' => 'getNameAndType',
                 'multiple' => false,
                 'expanded' => false,
                 'required' => false,
                 'choices' => $options['cpuSockets'],
-		        'placeholder' => 'Select a socket ...',
+                'placeholder' => 'Select a socket ...',
             ])
             /*->add('processorPlatformType', ChoiceType::class, [
                 //'class' => ProcessorPlatformType::class,
-                
                 'choice_label' => 'name',
                 'multiple' => false,
                 'expanded' => false,
                 'required' => false,
                 'choices' => $options['procPlatformTypes'],
-		        'placeholder' => 'Select a processor platform ...',
+                'placeholder' => 'Select a processor platform ...',
             ])*/
             /*->add('motherboardExpansionSlots', CollectionType::class, [
                 'entry_type' => SearchMotherboardExpansionSlotType::class,
@@ -125,7 +111,6 @@ class Search extends AbstractType
             ])*/
             ->add('dramType', EntityType::class, [
                 'class' => DramType::class,
-                
                 'choice_label' => 'name',
                 'multiple' => true,
                 'expanded' => true,
@@ -133,7 +118,7 @@ class Search extends AbstractType
             ])
             /*->add('motherboardMaxRam', EntityType::class, [
                 'class' => MaxRam::class,
-                
+
                 'choice_label' => 'name',
                 'multiple' => true,
                 'expanded' => true,
@@ -150,7 +135,7 @@ class Search extends AbstractType
                 'expanded' => false,
                 'required' => false,
                 'choices' => $options['formFactors'],
-		        'placeholder' => 'Select a form factor ...',
+                'placeholder' => 'Select a form factor ...',
             ])
             /*->add('motherboardBios', EntityType::class, [
                 'class' => Manufacturer::class,
@@ -181,7 +166,7 @@ class Search extends AbstractType
                 },
             ];*/
 
-            
+
 
 
             /*if($chipsetManufacturer)
@@ -190,22 +175,21 @@ class Search extends AbstractType
                 $formOptions = array();**/
             /*if($chipsets)
                 dd($chipsets);*/
-            
+
             /*if($chipsetManufacturer)
             {*/
-                usort($chipsets, function ($a, $b)
-                    {
-                        if ($a->getFullReference() == $b->getFullReference()) {
-                            return 0;
-                        }
-                        if($a->getFullReference()==" Unidentified ") return -1;
-                        return ($a->getFullReference() < $b->getFullReference()) ? -1 : 1;
+                usort($chipsets, function ($a, $b) {
+                    if ($a->getFullReference() == $b->getFullReference()) {
+                        return 0;
                     }
-                );
-                //if($chipsetManufacturer) dd($chipsets[94]->getFullReference()==" Unidentified ");
+                    if ($a->getFullReference() == " Unidentified ") {
+                        return -1;
+                    }
+                    return ($a->getFullReference() < $b->getFullReference()) ? -1 : 1;
+                });
+                //if ($chipsetManufacturer) dd($chipsets[94]->getFullReference()==" Unidentified ");
                 $form->add('chipset', ChoiceType::class, [
                     //'class' => Chipset::class,
-                    
                     'choice_label' => 'getFullReference',
                     'multiple' => false,
                     'expanded' => false,
@@ -217,7 +201,6 @@ class Search extends AbstractType
             /*if($chipsetManufacturer)
                 dd($form->getData());*/
         };
-            
 
         $builder->addEventListener(
             FormEvents::PRE_SET_DATA,
@@ -234,10 +217,10 @@ class Search extends AbstractType
             FormEvents::POST_SET_DATA,
             function (FormEvent $event) {
                 $form = $event->getForm();
-				
+
                 // this would be your entity, i.e. SportMeetup
                 $data = $event->getData();
-				
+
                 dd($form);
             }
         );*/
@@ -258,7 +241,7 @@ class Search extends AbstractType
         /*$builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
             $test = $event->getData();
             $form = $event->getForm();
-			
+
             if ($form->get('searchChipsetManufacturer')->isClicked())
             {
                 $formOptions = [
@@ -270,10 +253,9 @@ class Search extends AbstractType
                         // return $userRepository->createFriendsQueryBuilder($user);
                     },
                 ];
-				
+
                 $form->add('chipset', ChoiceType::class, [
                     //'class' => Chipset::class,
-                    
                     'choice_label' => 'getMainChipWithManufacturer',
                     'multiple' => false,
                     'expanded' => false,
@@ -289,7 +271,6 @@ class Search extends AbstractType
             $platforms = null === $socket ? $this->getProcessorPlatformTypeRepository()
             ->findAll() : $socket->getPlatforms()->toArray();
                 $form->add('platform1', ChoiceType::class, [
-                    
                     'choice_label' => 'name',
                     'multiple' => false,
                     'expanded' => false,
@@ -297,7 +278,6 @@ class Search extends AbstractType
                     'choices' => $platforms,
                     'placeholder' => 'Select a processor platform ...',
                 ]);
-
         };
 
         $builder->addEventListener(
@@ -328,7 +308,6 @@ class Search extends AbstractType
             $platforms = null === $socket ? $this->getProcessorPlatformTypeRepository()
             ->findAll() : $socket->getPlatforms()->toArray();
                 $form->add('platform2', ChoiceType::class, [
-                    
                     'choice_label' => 'name',
                     'multiple' => false,
                     'expanded' => false,
@@ -336,9 +315,7 @@ class Search extends AbstractType
                     'choices' => $platforms,
                     'placeholder' => 'Select a processor platform ...',
                 ]);
-
         };
-            
 
         $builder->addEventListener(
             FormEvents::PRE_SET_DATA,

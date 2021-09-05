@@ -1,9 +1,9 @@
 <?php
+
 namespace App\Form\Type;
 
 use App\Entity\LargeFileOsFlag;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -31,5 +31,4 @@ class LargeFileOsFlagType extends AbstractType
             'data_class' => LargeFileOsFlag::class,
         ]);
     }
-
 }

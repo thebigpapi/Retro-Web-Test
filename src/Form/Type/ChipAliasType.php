@@ -1,8 +1,8 @@
 <?php
+
 namespace App\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -41,9 +41,8 @@ class ChipAliasType extends AbstractType
     public function finishView(FormView $view, FormInterface $form, array $options)
     {
         //dd($view->vars['form']['manufacturer']->vars['choices']);
-        usort($view->vars['form']['manufacturer']->vars['choices'], function(ChoiceView $a, ChoiceView $b) {
+        usort($view->vars['form']['manufacturer']->vars['choices'], function (ChoiceView $a, ChoiceView $b) {
             return ($a->data->getShortNameIfExist() > $b->data->getShortNameIfExist());
-        });  
+        });
     }
-
 }

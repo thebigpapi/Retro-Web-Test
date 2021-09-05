@@ -13,7 +13,9 @@ use Doctrine\ORM\Query\ResultSetMapping;
  * @method Motherboard|null findOneBy(array $criteria, array $orderBy = null)
  * @method Motherboard[]    findAll()
  * @method Motherboard[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
- * @method Motherboard[]    findByWithJoin(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method Motherboard[]    findByWithJoin(array $criteria)
+ * @method Motherboard[]    find10Latest()
+ * @method Motherboard[]    find50Latest()
  */
 class MotherboardRepository extends ServiceEntityRepository
 {
@@ -930,6 +932,9 @@ class MotherboardRepository extends ServiceEntityRepository
         }*/
     }
 
+    /**
+     * @return Motherboard[] Returns an array of Motherboard objects
+     */
     public function findByWithJoin(array $criteria)
     {
         $arrays = array();
@@ -949,7 +954,7 @@ class MotherboardRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-    public function getCount()
+    public function getCount(): int
     {
         return $this->createQueryBuilder('m')
             ->select('count(m.id)')
@@ -957,6 +962,9 @@ class MotherboardRepository extends ServiceEntityRepository
             ->getSingleScalarResult();
     }
 
+    /**
+     * @return Motherboard[] Returns an array of Motherboard objects
+     */
     public function find10Latest()
     {
         return $this->createQueryBuilder('m')
@@ -966,6 +974,9 @@ class MotherboardRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    /**
+     * @return Motherboard[] Returns an array of Motherboard objects
+     */
     public function find50Latest()
     {
         return $this->createQueryBuilder('m')

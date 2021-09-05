@@ -1,22 +1,19 @@
 <?php
+
 namespace App\Form\Bios;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use App\Entity\Manufacturer;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormInterface;
-
 
 class Search extends AbstractType
 {
@@ -37,7 +34,7 @@ class Search extends AbstractType
                 'expanded' => false,
                 'required' => false,
                 'choices' => $options['chipsetManufacturers'],
-		        'placeholder' => 'Select a chipset manufacturer ...',
+                'placeholder' => 'Select a chipset manufacturer ...',
             ])
 
             ->add('manufacturer', EntityType::class, [
@@ -62,17 +59,15 @@ class Search extends AbstractType
             $chipsets = null === $chipsetManufacturer ? [] : $chipsetManufacturer->getChipsets()->toArray();
 
 
-                usort($chipsets, function ($a, $b)
-                    {
-                        if ($a->getFullReference() == $b->getFullReference()) {
-                            return 0;
-                        }
-                        return ($a->getFullReference() < $b->getFullReference()) ? -1 : 1;
+                usort($chipsets, function ($a, $b) {
+                    if ($a->getFullReference() == $b->getFullReference()) {
+                        return 0;
                     }
-                );
+                    return ($a->getFullReference() < $b->getFullReference()) ? -1 : 1;
+                });
+
                 $form->add('chipset', ChoiceType::class, [
                     //'class' => Chipset::class,
-                    
                     'choice_label' => 'getFullReference',
                     'multiple' => false,
                     'expanded' => false,
@@ -81,7 +76,6 @@ class Search extends AbstractType
                     'placeholder' => '*',
                 ]);
         };
-            
 
         $builder->addEventListener(
             FormEvents::PRE_SET_DATA,

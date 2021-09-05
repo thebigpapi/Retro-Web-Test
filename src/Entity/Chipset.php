@@ -54,7 +54,11 @@ class Chipset
     private $part_no;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\ChipsetBiosCode", mappedBy="chipset", orphanRemoval=true, cascade={"persist"})
+     * @ORM\OneToMany(
+     *   targetEntity="App\Entity\ChipsetBiosCode",
+     *   mappedBy="chipset",
+     *   orphanRemoval=true, cascade={"persist"}
+     * )
      */
     private $biosCodes;
 
@@ -91,37 +95,32 @@ class Chipset
 
     public function getMainChipWithManufacturer(): ?string
     {
-        if($this->getManufacturer()){
+        if ($this->getManufacturer()) {
             $manufacturer = $this->getManufacturer()->getShortNameIfExist();
-        }
-        else {
+        } else {
             $manufacturer = "";
         }
-        
+
         $fullName = $manufacturer;
         if ($this->part_no) {
             $fullName = $fullName . " $this->part_no";
             if ($this->name) {
                 $fullName = $fullName . " ($this->name)";
             }
-        }
-        else {
+        } else {
             if ($this->name) {
                 $fullName = $fullName . " $this->name";
-            }
-            else {
+            } else {
                 $fullName = $fullName . " Unidentified";
             }
         }
         $chipset = "";
-        foreach($this->chipsetParts as $key => $part) {
+        foreach ($this->chipsetParts as $key => $part) {
             if ($key === array_key_last($this->chipsetParts->getValues())) {
                 $chipset = $chipset . $part->getShortName();
-            }
-            else {
+            } else {
                 $chipset = $chipset . $part->getShortName() . ", ";
             }
-            
         }
         if ($chipset) {
             $chipset = "[$chipset]";
@@ -139,24 +138,20 @@ class Chipset
             if ($this->name) {
                 $fullName = $fullName . " ($this->name)";
             }
-        }
-        else {
+        } else {
             if ($this->name) {
                 $fullName = $fullName . " $this->name";
-            }
-            else {
+            } else {
                 $fullName = $fullName . " Unidentified";
             }
         }
         $chipset = "";
-        foreach($this->chipsetParts as $key => $part) {
+        foreach ($this->chipsetParts as $key => $part) {
             if ($key === array_key_last($this->chipsetParts->getValues())) {
                 $chipset = $chipset . $part->getShortName();
-            }
-            else {
+            } else {
                 $chipset = $chipset . $part->getShortName() . ", ";
             }
-
         }
         if ($chipset) {
             $chipset = "[$chipset]";

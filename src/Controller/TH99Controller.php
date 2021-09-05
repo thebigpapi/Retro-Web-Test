@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\MotherboardIdRedirection;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Repository\MotherboardIdRedirectionRepository;
 
 class TH99Controller extends AbstractController
 {
@@ -14,16 +15,15 @@ class TH99Controller extends AbstractController
     */
     public function motherboard(int $id)
     {
-        $idRedirection = $this->getDoctrine()
-            ->getRepository(MotherboardIdRedirection::class)
-            ->findRedirection($id, 'th99');
+        /** @var MotherboardIdRedirectionRepository */
+        $moboIdRedirectionRepo = $this->getDoctrine()->getRepository(MotherboardIdRedirection::class);
+        $idRedirection = $moboIdRedirectionRepo->findRedirection($id, 'th99');
 
-        if(!$idRedirection) {
+        if (!$idRedirection) {
             throw $this->createNotFoundException(
                 'No $motherboard found for id ' . $id
             );
-        }
-        else {
+        } else {
             return $this->redirect($this->generateUrl('motherboard_show', array("id" => $idRedirection)));
         }
     }

@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controller\Admin;
 
 use App\Entity\CacheSize;
@@ -13,7 +14,8 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-class MemoryController extends AbstractController {
+class MemoryController extends AbstractController
+{
 
 
     /**
@@ -24,17 +26,17 @@ class MemoryController extends AbstractController {
      * @Route("/admin/manage/memories", name="admin_manage_memories")
      * @param Request $request
      */
-    public function manage(Request $request, TranslatorInterface $translator)        
+    public function manage(Request $request, TranslatorInterface $translator)
     {
         switch (htmlentities($request->query->get('entity'))) {
             case "ramtype":
-                return $this->manage_ram_types($request, $translator);
+                return $this->manageRamTypes($request, $translator);
                 break;
             case "ramsize":
-                return $this->manage_ram_sizes($request, $translator);
+                return $this->manageRamSizes($request, $translator);
                 break;
             case "cachesize":
-                return $this->manage_cache_sizes($request, $translator);
+                return $this->manageCacheSizes($request, $translator);
                 break;
             default:
                 return $this->redirect($this->generateUrl('admin_manage_memories', array("entity" => "ramtype")));
@@ -45,74 +47,102 @@ class MemoryController extends AbstractController {
      * @Route("/admin/manage/memories/ramtypes/add", name="new_dramType_add")
      * @param Request $request
      */
-    public function dramTypeAdd(Request $request)        
+    public function dramTypeAdd(Request $request)
     {
-        return $this->renderEntityForm($request, new DramType(), DramTypeForm::class, 'admin/edit/memories/dramType.html.twig', 'ramtype');
+        return $this->renderEntityForm(
+            $request,
+            new DramType(),
+            DramTypeForm::class,
+            'admin/edit/memories/dramType.html.twig',
+            'ramtype'
+        );
     }
 
     /**
      * @Route("/admin/manage/memories/ramtypes/{id}/edit", name="new_dramType_edit", requirements={"id"="\d+"})
      * @param Request $request
      */
-    public function dramTypeEdit(Request $request, int $id)        
+    public function dramTypeEdit(Request $request, int $id)
     {
         return $this->renderEntityForm($request, $this->getDoctrine()
-        ->getRepository(DramType::class)
-        ->find($id), DramTypeForm::class, 'admin/edit/memories/dramType.html.twig', 'ramtype');
+            ->getRepository(DramType::class)
+            ->find($id), DramTypeForm::class, 'admin/edit/memories/dramType.html.twig', 'ramtype');
     }
 
     /**
      * @Route("/admin/manage/memories/ramsizes/add", name="new_ramSize_add")
      * @param Request $request
      */
-    public function ramSizeAdd(Request $request)        
+    public function ramSizeAdd(Request $request)
     {
-        return $this->renderEntityForm($request, new MaxRam(), MaxRamForm::class, 'admin/edit/memories/maxRam.html.twig', 'ramsize');
+        return $this->renderEntityForm(
+            $request,
+            new MaxRam(),
+            MaxRamForm::class,
+            'admin/edit/memories/maxRam.html.twig',
+            'ramsize'
+        );
     }
 
     /**
      * @Route("/admin/manage/memories/ramsizes/{id}/edit", name="new_ramSize_edit", requirements={"id"="\d+"})
      * @param Request $request
      */
-    public function ramSizeEdit(Request $request, int $id)        
+    public function ramSizeEdit(Request $request, int $id)
     {
-        return $this->renderEntityForm($request,$this->getDoctrine()
-        ->getRepository(MaxRam::class)
-        ->find($id)
-        , MaxRamForm::class, 'admin/edit/memories/maxRam.html.twig', 'ramsize');
+        return $this->renderEntityForm(
+            $request,
+            $this->getDoctrine()
+                ->getRepository(MaxRam::class)
+                ->find($id),
+            MaxRamForm::class,
+            'admin/edit/memories/maxRam.html.twig',
+            'ramsize'
+        );
     }
 
     /**
      * @Route("/admin/manage/memories/cachesizes/add", name="new_cacheSize_add")
      * @param Request $request
      */
-    public function cacheSizeAdd(Request $request)        
+    public function cacheSizeAdd(Request $request)
     {
-        return $this->renderEntityForm($request, new CacheSize(), CacheSizeForm::class, 'admin/edit/memories/cacheSize.html.twig', 'cachesize');
+        return $this->renderEntityForm(
+            $request,
+            new CacheSize(),
+            CacheSizeForm::class,
+            'admin/edit/memories/cacheSize.html.twig',
+            'cachesize'
+        );
     }
 
     /**
      * @Route("/admin/manage/memories/cachesizes/{id}/edit", name="new_cacheSize_edit", requirements={"id"="\d+"})
      * @param Request $request
      */
-    public function cacheSizeEdit(Request $request, int $id)        
+    public function cacheSizeEdit(Request $request, int $id)
     {
-        return $this->renderEntityForm($request,$this->getDoctrine()
-        ->getRepository(CacheSize::class)
-        ->find($id)
-        , CacheSizeForm::class, 'admin/edit/memories/cacheSize.html.twig', 'cachesize');
+        return $this->renderEntityForm(
+            $request,
+            $this->getDoctrine()
+                ->getRepository(CacheSize::class)
+                ->find($id),
+            CacheSizeForm::class,
+            'admin/edit/memories/cacheSize.html.twig',
+            'cachesize'
+        );
     }
 
     /**
      * Index pages
      */
 
-    private function manage_ram_types(Request $request, TranslatorInterface $translator)        
+    private function manageRamTypes(Request $request, TranslatorInterface $translator)
     {
         return $this->render('admin/manage/memories/manage.html.twig', [
             "search" => "",
             "criterias" => [],
-            "controllerList" => "App\\Controller\\Admin\\MemoryController::list_ramtype",
+            "controllerList" => "App\\Controller\\Admin\\MemoryController::listRamtype",
             "entityName" => $request->query->get('entity'),
             "entityDisplayName" => $translator->trans("memory type"),
             "entityDisplayNamePlural" => $translator->trans("memory types"),
@@ -120,12 +150,12 @@ class MemoryController extends AbstractController {
         ]);
     }
 
-    private function manage_ram_sizes(Request $request, TranslatorInterface $translator)        
+    private function manageRamSizes(Request $request, TranslatorInterface $translator)
     {
         return $this->render('admin/manage/memories/manage.html.twig', [
             "search" => "",
             "criterias" => [],
-            "controllerList" => "App\\Controller\\Admin\\MemoryController::list_memorysize",
+            "controllerList" => "App\\Controller\\Admin\\MemoryController::listMemorysize",
             "entityName" => $request->query->get('entity'),
             "entityDisplayName" => $translator->trans("memory size"),
             "entityDisplayNamePlural" => $translator->trans("memory sizes"),
@@ -133,12 +163,12 @@ class MemoryController extends AbstractController {
         ]);
     }
 
-    private function manage_cache_sizes(Request $request, TranslatorInterface $translator)        
+    private function manageCacheSizes(Request $request, TranslatorInterface $translator)
     {
         return $this->render('admin/manage/memories/manage.html.twig', [
             "search" => "",
             "criterias" => [],
-            "controllerList" => "App\\Controller\\Admin\\MemoryController::list_cachesize",
+            "controllerList" => "App\\Controller\\Admin\\MemoryController::listCachesize",
             "entityName" => $request->query->get('entity'),
             "entityDisplayName" => $translator->trans("cache size"),
             "entityDisplayNamePlural" => $translator->trans("cache sizes"),
@@ -146,12 +176,12 @@ class MemoryController extends AbstractController {
         ]);
     }
 
-    public function list_ramtype(Request $request, PaginatorInterface $paginator, array $criterias)        
+    public function listRamtype(Request $request, PaginatorInterface $paginator, array $criterias)
     {
         $objects = $this->getDoctrine()
             ->getRepository(DramType::class)
             ->findBy($criterias);
-        
+
 
         $paginatedObjects = $paginator->paginate(
             $objects,
@@ -165,12 +195,12 @@ class MemoryController extends AbstractController {
         ]);
     }
 
-    public function list_memorysize(Request $request, PaginatorInterface $paginator, array $criterias)        
+    public function listMemorysize(Request $request, PaginatorInterface $paginator, array $criterias)
     {
         $objects = $this->getDoctrine()
             ->getRepository(MaxRam::class)
             ->findBy($criterias, array("value" => "asc"));
-        
+
 
         $paginatedObjects = $paginator->paginate(
             $objects,
@@ -184,12 +214,12 @@ class MemoryController extends AbstractController {
         ]);
     }
 
-    public function list_cachesize(Request $request, PaginatorInterface $paginator, array $criterias)        
+    public function listCachesize(Request $request, PaginatorInterface $paginator, array $criterias)
     {
         $objects = $this->getDoctrine()
             ->getRepository(CacheSize::class)
             ->findBy($criterias, array("value" => "asc"));
-        
+
 
         $paginatedObjects = $paginator->paginate(
             $objects,
@@ -207,14 +237,15 @@ class MemoryController extends AbstractController {
     /**
      * Forms
      */
-    private function renderEntityForm(Request $request, $entity, $class, $template, $entityName) {
+    private function renderEntityForm(Request $request, $entity, $class, $template, $entityName)
+    {
         $entityManager = $this->getDoctrine()->getManager();
-        
+
         $form = $this->createForm($class, $entity);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $entity = $form->getData();
-            
+
             $entityManager->persist($entity);
             $entityManager->flush();
 
@@ -224,5 +255,4 @@ class MemoryController extends AbstractController {
             'form' => $form->createView(),
         ]);
     }
-
 }

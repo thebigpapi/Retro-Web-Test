@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Form\Admin\Edit;
 
 use Symfony\Component\Form\AbstractType;
@@ -54,5 +55,4 @@ class OsFamilyForm extends AbstractType
             'data_class' => OsFamily::class,
         ]);
     }
-
 }

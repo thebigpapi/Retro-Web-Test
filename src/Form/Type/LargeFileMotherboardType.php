@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Form\Type;
 
 use App\Entity\LargeFile;
@@ -8,7 +9,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use App\Entity\LargeFileMotherboard;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 
 class LargeFileMotherboardType extends AbstractType
 {
@@ -33,5 +33,4 @@ class LargeFileMotherboardType extends AbstractType
             'data_class' => LargeFileMotherboard::class,
         ]);
     }
-
 }

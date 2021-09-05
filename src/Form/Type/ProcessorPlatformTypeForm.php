@@ -1,12 +1,10 @@
 <?php
+
 namespace App\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use App\Entity\ProcessorPlatformType;
 
 class ProcessorPlatformTypeForm extends AbstractType
@@ -29,7 +27,7 @@ class ProcessorPlatformTypeForm extends AbstractType
     {
         $resolver->setDefaults([
             'class' => ProcessorPlatformType::class,
-                
+
             'choice_label' => 'getName',
             'multiple' => false,
             'expanded' => false,

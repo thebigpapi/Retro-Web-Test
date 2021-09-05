@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Form\Type;
 
 use App\Entity\LargeFileMediaTypeFlag;
@@ -30,5 +31,4 @@ class LargeFileMediaTypeFlagType extends AbstractType
             'data_class' => LargeFileMediaTypeFlag::class,
         ]);
     }
-
 }

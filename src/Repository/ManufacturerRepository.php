@@ -29,7 +29,6 @@ class ManufacturerRepository extends ServiceEntityRepository
         $entityManager = $this->getEntityManager();
 
         $rsm = new ResultSetMapping();
-        
 
         $rsm->addEntityResult('App\Entity\Manufacturer', 'man');
         $rsm->addFieldResult('man', 'id', 'id');
@@ -40,9 +39,10 @@ class ManufacturerRepository extends ServiceEntityRepository
             'SELECT DISTINCT manufacturer.id, manufacturer.name, manufacturer.short_name  
             FROM motherboard_alias alias FULL OUTER JOIN motherboard mobo ON mobo.id=alias.motherboard_id, manufacturer 
             WHERE manufacturer.id=coalesce(alias.manufacturer_id,mobo.manufacturer_id) 
-            ORDER BY manufacturer.name;', $rsm
+            ORDER BY manufacturer.name;',
+            $rsm
         );
-        
+
         return $query->setCacheable(true)
         ->getResult();
     }

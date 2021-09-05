@@ -1,8 +1,8 @@
 <?php
+
 namespace App\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use App\Entity\CpuSocket;
@@ -16,7 +16,6 @@ class CpuSocketType extends AbstractType
     {
         $resolver->setDefaults([
             'class' => CpuSocket::class,
-                
             'choice_label' => 'getNameAndType',
             'multiple' => false,
             'expanded' => false,
@@ -30,11 +29,12 @@ class CpuSocketType extends AbstractType
 
     public function finishView(FormView $view, FormInterface $form, array $options)
     {
-        usort($view->vars['choices'], function(ChoiceView $a, ChoiceView $b) {
-            if($a->data->getType() == $b->data->getType()) {
+        usort($view->vars['choices'], function (ChoiceView $a, ChoiceView $b) {
+            if ($a->data->getType() == $b->data->getType()) {
                 return ($a->data->getName() > $b->data->getName());
+            } else {
+                return ($a->data->getType() > $b->data->getType());
             }
-            else return ($a->data->getType() > $b->data->getType());
-        });  
+        });
     }
 }

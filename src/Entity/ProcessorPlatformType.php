@@ -100,7 +100,7 @@ class ProcessorPlatformType
             if ($this->motherboards->contains($motherboard)) {
                 $this->motherboards->removeElement($motherboard);
             }
-    
+
             return $this;
         }
 
@@ -144,9 +144,10 @@ class ProcessorPlatformType
     public function getProcessors(): Collection
     {
         $processors = array();
-        foreach ($this->processingUnits as $processor)
-        {
-            if($processor instanceof Processor) $processors[] = $processor;
+        foreach ($this->processingUnits as $processor) {
+            if ($processor instanceof Processor) {
+                $processors[] = $processor;
+            }
         }
         return new ArrayCollection($processors);
     }
@@ -157,8 +158,7 @@ class ProcessorPlatformType
     public function getCompatibleProcessors(): Collection
     {
         $processors = $this->getProcessors()->toArray();
-        foreach($this->getCompatibleWith() as $compatible)
-        {
+        foreach ($this->getCompatibleWith() as $compatible) {
             $processors = array_merge($processors, $compatible->getProcessors()->toArray());
         }
         return new ArrayCollection($processors);
@@ -170,9 +170,10 @@ class ProcessorPlatformType
     public function getCoprocessors(): Collection
     {
         $coprocessors = array();
-        foreach ($this->processingUnits as $coprocessor)
-        {
-            if($coprocessor instanceof Coprocessor) $coprocessors[] = $coprocessor;
+        foreach ($this->processingUnits as $coprocessor) {
+            if ($coprocessor instanceof Coprocessor) {
+                $coprocessors[] = $coprocessor;
+            }
         }
         return new ArrayCollection($coprocessors);
     }
@@ -183,8 +184,7 @@ class ProcessorPlatformType
     public function getCompatibleCoprocessors(): Collection
     {
         $coprocessors = $this->getProcessors()->toArray();
-        foreach($this->getCompatibleWith() as $compatible)
-        {
+        foreach ($this->getCompatibleWith() as $compatible) {
             $coprocessors = array_merge($coprocessors, $compatible->getCoprocessors()->toArray());
         }
         return new ArrayCollection($coprocessors);

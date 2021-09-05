@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controller\Admin;
 
 use App\Entity\Coprocessor;
@@ -17,7 +18,8 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-class ProcessingUnitController extends AbstractController {
+class ProcessingUnitController extends AbstractController
+{
 
 
     /**
@@ -28,23 +30,25 @@ class ProcessingUnitController extends AbstractController {
      * @Route("/admin/manage/processingunits", name="admin_manage_processing_units")
      * @param Request $request
      */
-    public function manage(Request $request, TranslatorInterface $translator)        
+    public function manage(Request $request, TranslatorInterface $translator)
     {
         switch (htmlentities($request->query->get('entity'))) {
             case "processor":
-                return $this->manage_processors($request, $translator);
+                return $this->manageProcessors($request, $translator);
                 break;
             case "coprocessor":
-                return $this->manage_coprocessors($request, $translator);
+                return $this->manageCoprocessors($request, $translator);
                 break;
             case "platform":
-                return $this->manage_platforms($request, $translator);
+                return $this->managePlatforms($request, $translator);
                 break;
             case "instructionset":
-                return $this->manage_instructionsets($request, $translator);
+                return $this->manageInstructionsets($request, $translator);
                 break;
             default:
-                return $this->redirect($this->generateUrl('admin_manage_processing_units', array("entity" => "processor")));
+                return $this->redirect(
+                    $this->generateUrl('admin_manage_processing_units', array("entity" => "processor"))
+                );
         }
     }
 
@@ -52,21 +56,26 @@ class ProcessingUnitController extends AbstractController {
      * @Route("/admin/manage/processingunits/coprocessors/add", name="new_coprocessor_add")
      * @param Request $request
      */
-    public function coprocessorAdd(Request $request)        
+    public function coprocessorAdd(Request $request)
     {
         return $this->renderCoprocessorForm($request, new Coprocessor());
     }
 
     /**
-     * @Route("/admin/manage/processingunits/coprocessors/{id}/edit", name="new_coprocessor_edit", requirements={"id"="\d+"})
+     * @Route(
+     *   "/admin/manage/processingunits/coprocessors/{id}/edit",
+     *   name="new_coprocessor_edit",
+     *   requirements={"id"="\d+"}
+     * )
      * @param Request $request
      */
-    public function coprocessorEdit(Request $request, int $id)        
+    public function coprocessorEdit(Request $request, int $id)
     {
-        return $this->renderCoprocessorForm($request, 
+        return $this->renderCoprocessorForm(
+            $request,
             $this->getDoctrine()
-            ->getRepository(Coprocessor::class)
-            ->find($id)
+                ->getRepository(Coprocessor::class)
+                ->find($id)
         );
     }
 
@@ -74,21 +83,26 @@ class ProcessingUnitController extends AbstractController {
      * @Route("/admin/manage/processingunits/processors/add", name="new_processor_add")
      * @param Request $request
      */
-    public function processorAdd(Request $request)        
+    public function processorAdd(Request $request)
     {
         return $this->renderProcessorForm($request, new Processor());
     }
 
     /**
-     * @Route("/admin/manage/processingunits/processors/{id}/edit", name="new_processor_edit", requirements={"id"="\d+"})
+     * @Route(
+     *   "/admin/manage/processingunits/processors/{id}/edit",
+     *   name="new_processor_edit",
+     *   requirements={"id"="\d+"}
+     * )
      * @param Request $request
      */
-    public function processorEdit(Request $request, int $id)        
+    public function processorEdit(Request $request, int $id)
     {
-        return $this->renderProcessorForm($request, 
+        return $this->renderProcessorForm(
+            $request,
             $this->getDoctrine()
-            ->getRepository(Processor::class)
-            ->find($id)
+                ->getRepository(Processor::class)
+                ->find($id)
         );
     }
 
@@ -96,49 +110,75 @@ class ProcessingUnitController extends AbstractController {
      * @Route("/admin/manage/processingunits/platforms/add", name="new_processorPlatformType_add")
      * @param Request $request
      */
-    public function platformAdd(Request $request)        
+    public function platformAdd(Request $request)
     {
-        return $this->renderEntityForm($request, new ProcessorPlatformType(), ProcessorPlatformTypeFormForm::class, 'admin/edit/processingunits/processorPlatformType.html.twig', 'platform');
+        return $this->renderEntityForm(
+            $request,
+            new ProcessorPlatformType(),
+            ProcessorPlatformTypeFormForm::class,
+            'admin/edit/processingunits/processorPlatformType.html.twig',
+            'platform'
+        );
     }
 
     /**
      * @Route("/admin/manage/processingunits/platforms/{id}/edit", name="new_platform_edit", requirements={"id"="\d+"})
      * @param Request $request
      */
-    public function platformEdit(Request $request, int $id)        
+    public function platformEdit(Request $request, int $id)
     {
-        return $this->renderEntityForm($request, $this->getDoctrine()
-            ->getRepository(ProcessorPlatformType::class)
-            ->find($id)
-            , ProcessorPlatformTypeFormForm::class, 'admin/edit/processingunits/processorPlatformType.html.twig', 'platform');
+        return $this->renderEntityForm(
+            $request,
+            $this->getDoctrine()
+                ->getRepository(ProcessorPlatformType::class)
+                ->find($id),
+            ProcessorPlatformTypeFormForm::class,
+            'admin/edit/processingunits/processorPlatformType.html.twig',
+            'platform'
+        );
     }
 
     /**
      * @Route("/admin/manage/processingunits/instructionsets/add", name="new_instructionSet_add")
      * @param Request $request
      */
-    public function instructionSetAdd(Request $request)        
+    public function instructionSetAdd(Request $request)
     {
-        return $this->renderEntityForm($request, new InstructionSet(), InstructionSetForm::class, 'admin/edit/processingunits/instructionSet.html.twig', 'instructionset');
+        return $this->renderEntityForm(
+            $request,
+            new InstructionSet(),
+            InstructionSetForm::class,
+            'admin/edit/processingunits/instructionSet.html.twig',
+            'instructionset'
+        );
     }
 
     /**
-     * @Route("/admin/manage/processingunits/instructionsets/{id}/edit", name=",new_instructionSet_edit", requirements={"id"="\d+"})
+     * @Route(
+     *   "/admin/manage/processingunits/instructionsets/{id}/edit",
+     *   name="new_instructionSet_edit",
+     *   requirements={"id"="\d+"}
+     * )
      * @param Request $request
      */
-    public function instructionSetEdit(Request $request, int $id)        
+    public function instructionSetEdit(Request $request, int $id)
     {
-        return $this->renderEntityForm($request,$this->getDoctrine()
-            ->getRepository(InstructionSet::class)
-            ->find($id)
-        , InstructionSetForm::class, 'admin/edit/processingunits/instructionSet.html.twig', 'instructionset');
+        return $this->renderEntityForm(
+            $request,
+            $this->getDoctrine()
+                ->getRepository(InstructionSet::class)
+                ->find($id),
+            InstructionSetForm::class,
+            'admin/edit/processingunits/instructionSet.html.twig',
+            'instructionset'
+        );
     }
 
     /**
      * Index pages
      */
 
-    private function manage_processors(Request $request, TranslatorInterface $translator)        
+    private function manageProcessors(Request $request, TranslatorInterface $translator)
     {
         $search = $this->createForm(ProcessorSearchType::class);
 
@@ -146,26 +186,30 @@ class ProcessingUnitController extends AbstractController {
         $search->handleRequest($request);
         if ($search->isSubmitted() && $search->isValid()) {
             $data = $search->getData();
-            if ($data['manufacturer']) $getParams["manufacturer"] = $data['manufacturer']->getId();
-            if ($data['platform']) $getParams["platform"] = $data['platform']->getId();
+            if ($data['manufacturer']) {
+                $getParams["manufacturer"] = $data['manufacturer']->getId();
+            }
+            if ($data['platform']) {
+                $getParams["platform"] = $data['platform']->getId();
+            }
             $getParams["entity"] = "processor";
             return $this->redirect($this->generateUrl('admin_manage_processing_units', $getParams));
-        }
-        else
-        {
+        } else {
             $criterias = array();
             $manufacturerId = htmlentities($request->query->get('manufacturer'));
-            if ($manufacturerId && intval($manufacturerId))
+            if ($manufacturerId && intval($manufacturerId)) {
                 $criterias["manufacturer"] = $manufacturerId;
+            }
             $platformId = htmlentities($request->query->get('platform'));
-            if ($platformId && intval($platformId))
+            if ($platformId && intval($platformId)) {
                 $criterias["platform"] = $platformId;
+            }
         }
 
         return $this->render('admin/manage/processingunits/manage.html.twig', [
             "search" => $search->createView(),
             "criterias" => $criterias,
-            "controllerList" => "App\\Controller\\Admin\\ProcessingUnitController::list_processor",
+            "controllerList" => "App\\Controller\\Admin\\ProcessingUnitController::listProcessor",
             "entityName" => $request->query->get('entity'),
             "entityDisplayName" => $translator->trans("processor"),
             "entityDisplayNamePlural" => $translator->trans("processors"),
@@ -173,7 +217,7 @@ class ProcessingUnitController extends AbstractController {
         ]);
     }
 
-    private function manage_coprocessors(Request $request, TranslatorInterface $translator)        
+    private function manageCoprocessors(Request $request, TranslatorInterface $translator)
     {
         $search = $this->createForm(ProcessorSearchType::class);
 
@@ -181,26 +225,30 @@ class ProcessingUnitController extends AbstractController {
         $search->handleRequest($request);
         if ($search->isSubmitted() && $search->isValid()) {
             $data = $search->getData();
-            if ($data['manufacturer']) $getParams["manufacturer"] = $data['manufacturer']->getId();
-            if ($data['platform']) $getParams["platform"] = $data['platform']->getId();
+            if ($data['manufacturer']) {
+                $getParams["manufacturer"] = $data['manufacturer']->getId();
+            }
+            if ($data['platform']) {
+                $getParams["platform"] = $data['platform']->getId();
+            }
             $getParams["entity"] = "coprocessor";
             return $this->redirect($this->generateUrl('admin_manage_processing_units', $getParams));
-        }
-        else
-        {
+        } else {
             $criterias = array();
             $manufacturerId = htmlentities($request->query->get('manufacturer'));
-            if ($manufacturerId && intval($manufacturerId))
+            if ($manufacturerId && intval($manufacturerId)) {
                 $criterias["manufacturer"] = $manufacturerId;
+            }
             $platformId = htmlentities($request->query->get('platform'));
-            if ($platformId && intval($platformId))
+            if ($platformId && intval($platformId)) {
                 $criterias["platform"] = $platformId;
+            }
         }
 
         return $this->render('admin/manage/processingunits/manage.html.twig', [
             "search" => $search->createView(),
             "criterias" => $criterias,
-            "controllerList" => "App\\Controller\\Admin\\ProcessingUnitController::list_coprocessor",
+            "controllerList" => "App\\Controller\\Admin\\ProcessingUnitController::listCoprocessor",
             "entityName" => $request->query->get('entity'),
             "entityDisplayName" => $translator->trans("math coprocessor"),
             "entityDisplayNamePlural" => $translator->trans("math coprocessors"),
@@ -208,12 +256,12 @@ class ProcessingUnitController extends AbstractController {
         ]);
     }
 
-    private function manage_platforms(Request $request, TranslatorInterface $translator)        
+    private function managePlatforms(Request $request, TranslatorInterface $translator)
     {
         return $this->render('admin/manage/processingunits/manage.html.twig', [
             "search" => "",
             "criterias" => array(),
-            "controllerList" => "App\\Controller\\Admin\\ProcessingUnitController::list_platform",
+            "controllerList" => "App\\Controller\\Admin\\ProcessingUnitController::listPlatform",
             "entityName" => $request->query->get('entity'),
             "entityDisplayName" => $translator->trans("platform"),
             "entityDisplayNamePlural" => $translator->trans("platforms"),
@@ -221,12 +269,12 @@ class ProcessingUnitController extends AbstractController {
         ]);
     }
 
-    private function manage_instructionsets(Request $request, TranslatorInterface $translator)        
+    private function manageInstructionsets(Request $request, TranslatorInterface $translator)
     {
         return $this->render('admin/manage/processingunits/manage.html.twig', [
             "search" => "",
             "criterias" => array(),
-            "controllerList" => "App\\Controller\\Admin\\ProcessingUnitController::list_instructionset",
+            "controllerList" => "App\\Controller\\Admin\\ProcessingUnitController::listInstructionset",
             "entityName" => $request->query->get('entity'),
             "entityDisplayName" => $translator->trans("instruction set"),
             "entityDisplayNamePlural" => $translator->trans("instruction sets"),
@@ -234,7 +282,7 @@ class ProcessingUnitController extends AbstractController {
         ]);
     }
 
-    public function list_processor(Request $request, PaginatorInterface $paginator, array $criterias)        
+    public function listProcessor(Request $request, PaginatorInterface $paginator, array $criterias)
     {
         $processors = $this->getDoctrine()
             ->getRepository(Processor::class)
@@ -253,7 +301,7 @@ class ProcessingUnitController extends AbstractController {
         ]);
     }
 
-    public function list_coprocessor(Request $request, PaginatorInterface $paginator, array $criterias)        
+    public function listCoprocessor(Request $request, PaginatorInterface $paginator, array $criterias)
     {
         $coprocessors = $this->getDoctrine()
             ->getRepository(Coprocessor::class)
@@ -272,7 +320,7 @@ class ProcessingUnitController extends AbstractController {
         ]);
     }
 
-    public function list_platform(Request $request, PaginatorInterface $paginator, array $criterias)        
+    public function listPlatform(Request $request, PaginatorInterface $paginator, array $criterias)
     {
         $platforms = $this->getDoctrine()
             ->getRepository(ProcessorPlatformType::class)
@@ -290,7 +338,7 @@ class ProcessingUnitController extends AbstractController {
         ]);
     }
 
-    public function list_instructionset(Request $request, PaginatorInterface $paginator, array $criterias)        
+    public function listInstructionset(Request $request, PaginatorInterface $paginator, array $criterias)
     {
         $instructionsets = $this->getDoctrine()
             ->getRepository(InstructionSet::class)
@@ -312,9 +360,10 @@ class ProcessingUnitController extends AbstractController {
      * Forms
      */
 
-    private function renderCoprocessorForm(Request $request, Coprocessor $coprocessor) {
+    private function renderCoprocessorForm(Request $request, Coprocessor $coprocessor)
+    {
         $entityManager = $this->getDoctrine()->getManager();
-        
+
         $form = $this->createForm(CoprocessorForm::class, $coprocessor);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -328,20 +377,23 @@ class ProcessingUnitController extends AbstractController {
             foreach ($form['processingUnit']['chip']['images']->getData() as $key => $val) {
                 $val->setChip($coprocessor);
             }
-            
+
             $entityManager->persist($coprocessor);
             $entityManager->flush();
 
-            return $this->redirect($this->generateUrl('admin_manage_processing_units', array("entity" => "coprocessor"))); 
+            return $this->redirect(
+                $this->generateUrl('admin_manage_processing_units', array("entity" => "coprocessor"))
+            );
         }
         return $this->render('admin/edit/processingunits/coprocessor.html.twig', [
             'form' => $form->createView(),
         ]);
     }
 
-    private function renderProcessorForm(Request $request, Processor $processor) {
+    private function renderProcessorForm(Request $request, Processor $processor)
+    {
         $entityManager = $this->getDoctrine()->getManager();
-        
+
         $form = $this->createForm(ProcessorForm::class, $processor);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -369,14 +421,15 @@ class ProcessingUnitController extends AbstractController {
         ]);
     }
 
-    private function renderEntityForm(Request $request, $entity, $class, $template, $entityName) {
+    private function renderEntityForm(Request $request, $entity, $class, $template, $entityName)
+    {
         $entityManager = $this->getDoctrine()->getManager();
-        
+
         $form = $this->createForm($class, $entity);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $entity = $form->getData();
-            
+
             $entityManager->persist($entity);
             $entityManager->flush();
 

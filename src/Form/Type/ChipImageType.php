@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
@@ -11,7 +12,6 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use App\Entity\ChipImage;
 use App\Entity\Creditor;
 use App\Entity\License;
-use App\Form\Type\ImageType;
 
 class ChipImageType extends AbstractType
 {
@@ -70,5 +70,4 @@ class ChipImageType extends AbstractType
             'data_class' => ChipImage::class,
         ]);
     }
-
 }

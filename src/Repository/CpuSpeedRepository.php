@@ -21,7 +21,7 @@ class CpuSpeedRepository extends ServiceEntityRepository
     }
 
     /**
-    * @return CpuSpeed[] 
+    * @return CpuSpeed[]
     */
     public function findAllOrderByValue()
     {
