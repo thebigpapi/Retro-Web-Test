@@ -52,12 +52,14 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\ChoiceList\View\ChoiceView;
+use Symfony\Contracts\Cache\CacheInterface;
 
 class MotherboardForm extends AbstractType
 {
-    public function __construct(EntityManagerInterface $entityManager)
+    public function __construct(EntityManagerInterface $entityManager, CacheInterface $cache)
     {
         $this->entityManager = $entityManager;
+        $this->cache = $cache;
     }
 
     private function getProcessorPlatformTypeRepository(): ProcessorPlatformTypeRepository

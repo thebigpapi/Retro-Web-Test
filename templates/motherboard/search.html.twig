@@ -153,18 +153,6 @@
                 {% endfor %}
 				</div></td>
 			</tr>
-			<!--<tr class="sep"><td></td><td></td></tr>
-				<tr>
-				<td class="table-width"><b>{% trans %}RAM type{% endtrans %}</b></td>
-				<td><div class="sform2">
-				{% for child in form.dramType|keys %}
-                    <span class="field2" >
-					{{ form_widget(attribute(form.dramType,child)) }}
-					{{ form_label(attribute(form.dramType,child)) }}
-					</span>
-                {% endfor %}
-				</div></td>
-			</tr>-->
 		</table>
 		<div>{{ form_rest(form)}}</div>
 	</form><br>

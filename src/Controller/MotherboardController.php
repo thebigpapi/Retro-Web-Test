@@ -21,6 +21,7 @@ use Knp\Component\Pager\PaginatorInterface;
 use Exception;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Contracts\Cache\CacheInterface;
 
 class MotherboardController extends AbstractController
 {
@@ -281,45 +282,53 @@ class MotherboardController extends AbstractController
      * @Route("/motherboards/search/", name="motherboard_search")
      * @param Request $request
      */
-    public function search(Request $request, TranslatorInterface $translator)
+    public function search(Request $request, TranslatorInterface $translator, CacheInterface $cache)
     {
         $notIdentifiedMessage = $translator->trans("Not identified");
         /** @var ManufacturerReposiotory */
         $manRepo = $this->getDoctrine()->getRepository(Manufacturer::class);
-        $moboManufacturers = $manRepo->findAllMotherboardManufacturer();
-        $unidentifiedMan = new Manufacturer();
-        $unidentifiedMan->setName($notIdentifiedMessage);
-        array_unshift($moboManufacturers, $unidentifiedMan);
+        $moboManufacturers = $cache->get("motherboardManufacturers", function () use ($manRepo, $notIdentifiedMessage) {
+            $manufacturers = $manRepo->findAllMotherboardManufacturer();
+            $unidentifiedMan = new Manufacturer();
+            $unidentifiedMan->setName($notIdentifiedMessage);
+            array_unshift($manufacturers, $unidentifiedMan);
+            return $manufacturers;
+        });
 
-        $chipsetManufacturers = $manRepo->findAllChipsetManufacturer();
-        $unidentifiedMan = new Manufacturer();
-        $unidentifiedMan->setName($notIdentifiedMessage);
-        array_unshift($chipsetManufacturers, $unidentifiedMan);
+        $chipsetManufacturers = $cache->get("chipsetManufacturers", function () use ($manRepo, $notIdentifiedMessage) {
+            $manufacturers = $manRepo->findAllChipsetManufacturer();
+            $unidentifiedMan = new Manufacturer();
+            $unidentifiedMan->setName($notIdentifiedMessage);
+            array_unshift($manufacturers, $unidentifiedMan);
+        });
 
-        $slots = $this->getDoctrine()
+        $slots = $cache->get("motherboardSlots", function () {
+            return $this->getDoctrine()
             ->getRepository(ExpansionSlot::class)
             ->findAll();
+        });
 
-        $ports = $this->getDoctrine()
+        $ports = $cache->get("motherboardIoPorts", function () {
+            return $this->getDoctrine()
             ->getRepository(IoPort::class)
             ->findAll();
+        });
 
-        $cpuSockets = $this->getDoctrine()
+        $cpuSockets = $cache->get("motherboardCpuSockets", function () {
+            return $this->getDoctrine()
             ->getRepository(CpuSocket::class)
             ->findAll();
+        });
 
-        $formFactors = $this->getDoctrine()
+        $formFactors = $cache->get("motherboardFormFactors", function () use ($notIdentifiedMessage) {
+            $formFactors = $this->getDoctrine()
             ->getRepository(FormFactor::class)
             ->findAll();
-        $unidentifiedFormFactor = new FormFactor();
-        $unidentifiedFormFactor->setName($notIdentifiedMessage);
-        array_unshift($formFactors, $unidentifiedFormFactor);
-
-        $procPlatformTypes = $this->getDoctrine()
-            ->getRepository(ProcessorPlatformType::class)
-            ->findBy(array(), array('name' => 'ASC'));
-
-        $biosManufacturers = $manRepo->findAllBiosManufacturer();
+            $unidentifiedFormFactor = new FormFactor();
+            $unidentifiedFormFactor->setName($notIdentifiedMessage);
+            array_unshift($formFactors, $unidentifiedFormFactor);
+            return $formFactors;
+        });
 
         $slotsForm = array();
         foreach ($slots as $k => $slotForm) {
@@ -336,8 +345,6 @@ class MotherboardController extends AbstractController
             'moboManufacturers' => $moboManufacturers,
             'chipsetManufacturers' => $chipsetManufacturers,
             'formFactors' => $formFactors,
-            'procPlatformTypes' => $procPlatformTypes,
-            'bios' => $biosManufacturers,
             'cpuSockets' => $cpuSockets,
             //'csrf_protection' => false, // that code is aimed to remove cookie requirement but it breaks ajax stuff
         ]);

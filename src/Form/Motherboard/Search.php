@@ -109,13 +109,6 @@ class Search extends AbstractType
                 'allow_delete' => true,
                 'required' => false,
             ])*/
-            ->add('dramType', EntityType::class, [
-                'class' => DramType::class,
-                'choice_label' => 'name',
-                'multiple' => true,
-                'expanded' => true,
-                'required' => false,
-            ])
             /*->add('motherboardMaxRam', EntityType::class, [
                 'class' => MaxRam::class,
 
@@ -137,15 +130,6 @@ class Search extends AbstractType
                 'choices' => $options['formFactors'],
                 'placeholder' => 'Select a form factor ...',
             ])
-            /*->add('motherboardBios', EntityType::class, [
-                'class' => Manufacturer::class,
-
-                'choice_label' => 'shortNameIfExist',
-                'multiple' => true,
-                'expanded' => true,
-                'required' => false,
-                'choices' => $options['bios'],
-            ])*/
             ->add('search', SubmitType::class)
             ->add('searchWithImages', SubmitType::class)
             ->add('searchChipsetManufacturer', SubmitType::class, ['label' => 'List chipsets'])
@@ -349,7 +333,6 @@ class Search extends AbstractType
             'chipsetManufacturers' => array(),
             'bios' => array(),
             'formFactors' => array(),
-            'procPlatformTypes' => array(),
             'cpuSockets' => array(),
         ]);
     }
