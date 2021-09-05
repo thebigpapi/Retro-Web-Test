@@ -93,7 +93,7 @@ class Chipset
     }
 
 
-    public function getMainChipWithManufacturer(): ?string
+    public function getMainChipWithManufacturer(): string
     {
         if ($this->getManufacturer()) {
             $manufacturer = $this->getManufacturer()->getShortNameIfExist();

@@ -212,7 +212,7 @@ class MotherboardController extends AbstractController
             }
         );
 
-        $cpus = $this->getDoctrine()
+        /*$cpus = $this->getDoctrine()
             ->getRepository(Processor::class)
             ->findAll();
 
@@ -224,11 +224,11 @@ class MotherboardController extends AbstractController
                 }
                 return ($a->getNameWithPlatform() < $b->getNameWithPlatform()) ? -1 : 1;
             }
-        );
+        );*/
 
-        $procPlatformTypes = $this->getDoctrine()
+        /*$procPlatformTypes = $this->getDoctrine()
             ->getRepository(ProcessorPlatformType::class)
-            ->findBy(array(), array('name' => 'ASC'));
+            ->findBy(array(), array('name' => 'ASC'));*/
 
         $sockets = $this->getDoctrine()
             ->getRepository(CpuSocket::class)
@@ -237,8 +237,8 @@ class MotherboardController extends AbstractController
 
         $form = $this->createForm(MotherboardForm::class, $mobo, [
             'chipsets' => $chipsets,
-            'cpus' => $cpus,
-            'procPlatformTypes' => $procPlatformTypes,
+            //'cpus' => $cpus,
+            //'procPlatformTypes' => $procPlatformTypes,
             'sockets' => $sockets,
         ]);
 
