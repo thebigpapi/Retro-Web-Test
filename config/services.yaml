@@ -4,6 +4,7 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
+
     app.locales: [de, en, es, fr, it, nl, ro, ru]
     #app.path: !php/const app.path
     #web.path: !php/const web.path
@@ -12,6 +13,7 @@ parameters:
     app.pagination.max: 100
 
     user_agent.crawlers: ['Discordbot','Twitterbot','Googlebot','Googlebot-Image','Bingbot','Slurp','DuckDuckBot','Baiduspider','Baiduspider-image','YandexBot','facebookexternalhit','www.qwant.com']
+
 
 services:
     # default configuration for services in *this* file
@@ -37,7 +39,3 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
-
-    App\EventSubscriber\ImageCacheSubscriber:
-        tags:
-           - { name: doctrine.event_subscriber, connection: default }

@@ -24,7 +24,7 @@ class ProcessorPlatformType
     private $name;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Motherboard", inversedBy="processorPlatformTypes")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Motherboard", mappedBy="processorPlatformTypes")
      */
     private $motherboards;
 

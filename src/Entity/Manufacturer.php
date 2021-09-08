@@ -69,7 +69,7 @@ class Manufacturer
     private $motherboardAliases;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Chip", mappedBy="Manufacturer")
+     * @ORM\OneToMany(targetEntity="App\Entity\Chip", mappedBy="manufacturer")
      */
     private $chips;
 
@@ -137,10 +137,10 @@ class Manufacturer
 
         return $this;
     }
-    
+
     public function getShortNameIfExist(): ?string
     {
-        if($this->shortName){
+        if ($this->shortName) {
             return $this->shortName;
         }
         return $this->name;

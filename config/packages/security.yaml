@@ -27,7 +27,8 @@ security:
             logout:
                 path:   app_logout
                 target: app_homepage
-            anonymous: lazy
+            anonymous: true
+            lazy: true
             provider: app_user_provider
             http_basic:
                 realm: Secured Area
