@@ -22,12 +22,12 @@ class Motherboard
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $name;
+    private ?string $name = null;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $dimensions;
+    private ?string $dimensions = null;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Manufacturer", inversedBy="motherboards", fetch="EAGER")
@@ -151,7 +151,7 @@ class Motherboard
     /**
      * @ORM\Column(type="string", length=2048, nullable=true)
      */
-    private $note;
+    private ?string $note = null;
 
     /**
      * @ORM\Column(type="datetime")
@@ -161,7 +161,7 @@ class Motherboard
     /**
      * @ORM\Column(type="integer", nullable=true)
      */
-    private int $maxCpu;
+    private ?int $maxCpu = null;
 
     /**
      * @ORM\OneToMany(

@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Request;
 use App\Repository\MotherboardRepository;
 use App\Entity\Motherboard;
 use App\Entity\MotherboardBios;
+use Symfony\Component\HttpKernel\KernelInterface;
 
 class MainController extends AbstractController
 {
@@ -30,8 +31,9 @@ class MainController extends AbstractController
     /**
      * @Route("/credits", name="app_credits")
      */
-    public function credits()
+    public function credits(KernelInterface $appKernel)
     {
+        dd($appKernel->getProjectDir());
         return $this->render('main/credits.html.twig', [
             'controller_name' => 'MainController',
         ]);
