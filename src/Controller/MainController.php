@@ -33,7 +33,6 @@ class MainController extends AbstractController
      */
     public function credits(KernelInterface $appKernel)
     {
-        dd($appKernel->getProjectDir());
         return $this->render('main/credits.html.twig', [
             'controller_name' => 'MainController',
         ]);

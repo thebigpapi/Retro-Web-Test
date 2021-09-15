@@ -1,0 +1,164 @@
+/* modern.css - extra stylesheet for browsers supporting media queries */
+
+/* == cross compatibility between linux and windows == */
+/* global tags */
+input[type=text], input[type=submit], input[type=reset],input[type=password], button, select {
+  height: 22px;
+  border-color:#d9d9d9;
+  border-width: thin;
+  border-radius: 0;
+}
+
+/* specific tags */
+input.button1, input.button2, input.button3, input.admin-button {height:auto;border-width:2px;}
+input.butn-0{background-position: 1px 2px;}
+input.butn-1{background-position: 5px 2px;}
+input.butn-2{background-position: 5px 2px;}
+input.num {width:20px;}
+span.field1 {font-size: 12px;}
+div.sform1 {position: relative;}
+table.ajax div.sform1 select {min-width: 90%;}
+#search-table select, span.butn-noajax input{height:2.2em;}
+
+@media (max-width: 600px) {
+	div.top-bar {font-size:12px; padding:0 0 0 5px;}
+	div.top-bar div.table-mobile {display: table; border-spacing: 2px;}
+	div.top-bar a, div.top-bar span.form {display: table-cell; vertical-align: middle; padding: 1px;}
+	div.top-bar span.form {width: 140px;}
+	div.top-bar select.lang {width: 70%;}
+	div.page {font-size:14px;}
+	h2.title {font-size: 16px; margin: 10px 0;}
+	
+	/* search.html.twig */
+	#search-table tr.sep {display: none;}
+	#search-table td {display:block;width:100%;text-align:left;padding:0 0 4px 4%;}
+	#search-table select {width: 90%;}
+	div.sadv div {padding:0 0 4px;}
+	div.sform1 span {float: none;}
+	div.sform1, div.sform1 select {position:static;}
+	table.ajax span.butn-noajax input {display:none;}
+	div.butn input {font-size:18px;height:2.2em;}
+	span.field1 {width: 15em;}
+	span.field2 {width: 10em;}
+	
+	/* show.html.twig */
+	div.show-images {width:100%; max-height:400px;padding-top:5px;}
+	span.show-image, span.string-bios {font-size:8px;}
+	div.show-data {width:100%;padding:0;font-size:13px;}
+	td.io-table ul,td.exp-table ul {padding:0;}
+	div.show-data table, div.notes {font-size:13px;}
+	div.show-cpus { font-size: 13px;}
+	p.string-alias {margin:10px 0;}
+
+	/* add.html.twig */
+	.ba0 {width:16%;margin:0;}
+	.ba1 {width:24%;margin:0;}
+	.ba2 {width:16%;margin:0;}
+	.ba3 {width:7%;margin:0;}
+	.ba4 {width:16%;margin:0;}
+	.ba5 {display:none;}
+
+	/* info/infoadv.html.twig */
+	div.biosinfo span.image-block {margin:auto;display:block;max-width:90%;}
+	div.biosinfo span.image-block img {display:block;width:100%;}
+	table.stbl-adv{
+		font-size:10px;
+	}
+}
+
+@media (min-width: 1200px) {
+	div.page {width:90%;font-size:22px;}
+
+	/* index.html.twig */
+	div.index-buttons span.image-block span span {font-size: 15px; min-width: 285px; width: 19em;}
+	div.index-buttons span.image-block span span.img {height: 225px;}
+	a.index-button0 span.img {background-image: url(./images/index/motherboard_med.png);}
+	a.index-button1 span.img {background-image: url(./images/index/card_wip.png);}
+	a.index-button2 span.img {background-image: url(./images/index/awchip_med.png);}
+
+	/* search.html.twig */
+	td.table-width {width:210px;}
+	div.butn input {font-size:18px;height:2.2em;}
+	#search-table tr {height:1.5em;}
+
+	/* result.html.twig */
+	div.results ul li{font-size:20px;}
+	div.results span.image-block span span {font-size:20px;width:16em;}
+}
+
+@media (min-width: 1400px) {
+	div.top-bar {font-size:20px;padding:10px 18px;}
+	h2.title {margin: 20px 0;}
+	div.perks, div.perks div.results ul li {font-size:16px;}
+
+	/* search.html.twig */
+	span.field1 {font-size:14px;}
+	td.table-width {width:220px;}
+	div.sadv {display: table; border-spacing: 0; width:90%;}
+	div.sadv div, div.sadv div.sform1 span {display: table-cell;vertical-align: middle;float:none;}
+	div.sadv div {padding:0 5px 0 0; width:30%;}
+	div.sadv div.sform1 {padding: 0; width:70%;}
+	div.sadv select {width:100%;}
+	div.sform1, div.sform1 select {position:static;}
+	table.ajax div.sadv div.sform1 span {display: block;}
+	table.ajax span.butn-noajax input {display:none;}
+
+	/* show.html.twig */
+	div.show-images {width:30%; max-height:600px;}
+	div.show-data {width:67%;padding-left:20px;}
+	p.string-alias {margin-top: -5px;}
+}
+
+@media (min-width: 1620px) {
+	div.page {width:80%;}
+	h2.title {margin: 40px 0;}
+
+	/* show.html.twig */
+	div.show-images {max-height:750px;}
+	div.show-data {width:68%; font-size: 18px;}
+	div.show-data table, div.notes, div.show-cpus { font-size:16px;}
+	p.string-alias {margin-top:-25px;}
+	td.exp-table {width:250px;}
+}
+
+@media (hover: none) {
+	span.help-t img {display:none;}
+	span.help-t span.img {
+		background-image: url(./images/search/help.gif);
+		display: inline-block;
+		width: 16px;
+		height: 16px;
+	}
+	span.help-t span.text {
+		background: #FFFFE1;
+		border:1px solid #000000;
+		color: #000000;
+		display: inline;
+		font-size:12px;
+		margin: -5px 0 0 15px;
+		padding: 3px;
+		position:absolute;
+		visibility: hidden;
+		z-index: 1;
+	}
+	span.help-t:hover span.text {visibility:visible;}
+}
+
+@media (pointer: coarse) {
+    div.sform2 input[type=checkbox] {width:20px;height:20px;}
+}
+
+@media (prefers-color-scheme: dark) {
+	body, form {background-color:#191919;color:#EEEEEE;}
+	div.index-buttons span.image-block{background-color: #333333;color: white;}
+	div.butn input, span.butn-noajax input {background-color:#303030;color:#FFFFFF;}
+	span.help-t span.text{background-color: black;color: #fff;border-color:#FFFFFF;}
+	b.contrib {background: #191919; color: yellow;}
+	b.contrib a:link, b.contrib a:visited { color: #A600FF;}
+	a:link { color: orange;}
+	a:visited { color: #00e874;}
+	#search-table select, input.sform, span.field1 input {background-color:#424242;color:#ececec;}
+	table.stbl, table.stbl-adv{background-color:#303030;color:#EEEEEE;}
+	tr.stbl-head{background-color:#606060;color:#EEEEEE;}
+	div.bios-image , .add-table, div.notes-field div textarea{background-color:#444444;color:#EEEEEE;}
+}
