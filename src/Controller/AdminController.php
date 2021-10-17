@@ -15,6 +15,7 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use App\Repository\MotherboardRepository;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class AdminController extends AbstractController
 {
@@ -38,9 +39,9 @@ class AdminController extends AbstractController
     /**
      * @Route("/admin/manage_users", name="admin_manage_users")
      * @param Request $request
-     * @param UserPasswordEncoderInterface $encoder
+     * @param UserPasswordHasherInterface $passwordHasher
      */
-    public function manageUsers(Request $request, UserPasswordEncoderInterface $encoder)
+    public function manageUsers(Request $request, UserPasswordHasherInterface $passwordHasher)
     {
         $entityManager = $this->getDoctrine()->getManager();
         $userForm = $this->createForm(ManageUser::class);
@@ -54,8 +55,8 @@ class AdminController extends AbstractController
                     ->find($userForm->getData()['users']->getId());
 
                 $password = $this->randomStr(16);
-                $encoded = $encoder->encodePassword($user, $password);
-                $user->setPassword($encoded);
+                $hashedPassword = $passwordHasher->hash($user, $password);
+                $user->setPassword($hashedPassword);
                 $entityManager->persist($user);
                 $entityManager->flush();
 
@@ -86,9 +87,9 @@ class AdminController extends AbstractController
     /**
      * @Route("/admin/manage_users/add", name="admin_add_user")
      * @param Request $request
-     * @param UserPasswordEncoderInterface $encoder
+     * @param UserPasswordHasherInterface $passwordHasher
      */
-    public function addUser(Request $request, UserPasswordEncoderInterface $encoder)
+    public function addUser(Request $request, UserPasswordHasherInterface $passwordHasher)
     {
         $form = $this->createFormBuilder()
             ->add('name', TextType::class)
@@ -105,8 +106,8 @@ class AdminController extends AbstractController
             $user->setRoles(array('ROLE_ADMIN'));
             $user->setUsername($data['name']);
             $password = $this->randomStr(16);
-            $encoded = $encoder->encodePassword($user, $password);
-            $user->setPassword($encoded);
+            $hashedPassword = $passwordHasher->hash($user, $password);
+            $user->setPassword($hashedPassword);
             $entityManager->persist($user);
             $entityManager->flush();
 
@@ -144,9 +145,9 @@ class AdminController extends AbstractController
     /**
      * @Route("/admin/password", name="admin_change_user_password")
      * @param Request $request
-     * @param UserPasswordEncoderInterface $encoder
+     * @param UserPasswordHasherInterface $passwordHasher
      */
-    public function changeUserPassword(Request $request, UserPasswordEncoderInterface $encoder)
+    public function changeUserPassword(Request $request, UserPasswordHasherInterface $passwordHasher)
     {
         $form = $this->createFormBuilder()
             ->add('old_password', PasswordType::class)
@@ -162,11 +163,11 @@ class AdminController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
 
             $user = $this->getUser();
-            $checkPass = $encoder->isPasswordValid($user, $data['old_password']);
+            $checkPass = $passwordHasher->isPasswordValid($user, $data['old_password']);
             if ($checkPass === true) {
                 if ($data['new_password'] === $data['new_password_confirm']) {
-                    $encoded = $encoder->encodePassword($user, $data['new_password_confirm']);
-                    $user->setPassword($encoded);
+                    $hashedPassword = $passwordHasher->hash($user, $data['new_password_confirm']);
+                    $user->setPassword($hashedPassword);
                     $entityManager->persist($user);
                     $entityManager->flush();
                     return new response("Password updated successfully !");
