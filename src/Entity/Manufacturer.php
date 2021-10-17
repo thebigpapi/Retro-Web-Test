@@ -10,8 +10,8 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ManufacturerRepository")
- * @UniqueEntity("name")
- * @UniqueEntity("shortName")
+ * @UniqueEntity(fields={"name", "shortName"})
+ * @ORM\ChangeTrackingPolicy("DEFERRED_EXPLICIT")
  */
 class Manufacturer
 {
@@ -23,13 +23,13 @@ class Manufacturer
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, unique=true)
      * @Assert\NotBlank
      */
     private $name;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="string", length=255, nullable=true, unique=true)
      */
     private $shortName;
 

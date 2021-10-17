@@ -44,7 +44,7 @@ class ManufacturerRepository extends ServiceEntityRepository
         );
 
         return $query->setCacheable(true)
-        ->getResult();
+            ->getResult();
     }
 
     /**

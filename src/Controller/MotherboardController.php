@@ -300,30 +300,31 @@ class MotherboardController extends AbstractController
             $unidentifiedMan = new Manufacturer();
             $unidentifiedMan->setName($notIdentifiedMessage);
             array_unshift($manufacturers, $unidentifiedMan);
+            return $manufacturers;
         });
 
         $slots = $cache->get("motherboardSlots", function () {
             return $this->getDoctrine()
-            ->getRepository(ExpansionSlot::class)
-            ->findAll();
+                ->getRepository(ExpansionSlot::class)
+                ->findAll();
         });
 
         $ports = $cache->get("motherboardIoPorts", function () {
             return $this->getDoctrine()
-            ->getRepository(IoPort::class)
-            ->findAll();
+                ->getRepository(IoPort::class)
+                ->findAll();
         });
 
         $cpuSockets = $cache->get("motherboardCpuSockets", function () {
             return $this->getDoctrine()
-            ->getRepository(CpuSocket::class)
-            ->findAll();
+                ->getRepository(CpuSocket::class)
+                ->findAll();
         });
 
         $formFactors = $cache->get("motherboardFormFactors", function () use ($notIdentifiedMessage) {
             $formFactors = $this->getDoctrine()
-            ->getRepository(FormFactor::class)
-            ->findAll();
+                ->getRepository(FormFactor::class)
+                ->findAll();
             $unidentifiedFormFactor = new FormFactor();
             $unidentifiedFormFactor->setName($notIdentifiedMessage);
             array_unshift($formFactors, $unidentifiedFormFactor);

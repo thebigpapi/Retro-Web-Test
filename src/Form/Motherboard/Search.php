@@ -134,8 +134,7 @@ class Search extends AbstractType
             ->add('searchWithImages', SubmitType::class)
             ->add('searchChipsetManufacturer', SubmitType::class, ['label' => 'List chipsets'])
             ->add('searchSocket1', SubmitType::class, ['label' => 'List platforms'])
-            ->add('searchSocket2', SubmitType::class, ['label' => 'List platforms'])
-        ;
+            ->add('searchSocket2', SubmitType::class, ['label' => 'List platforms']);
 
         $formModifier = function (FormInterface $form, Manufacturer $chipsetManufacturer = null) {
             $chipsets = null === $chipsetManufacturer ? [] : $chipsetManufacturer->getChipsets()->toArray();
@@ -162,25 +161,25 @@ class Search extends AbstractType
 
             /*if($chipsetManufacturer)
             {*/
-                usort($chipsets, function ($a, $b) {
-                    if ($a->getFullReference() == $b->getFullReference()) {
-                        return 0;
-                    }
-                    if ($a->getFullReference() == " Unidentified ") {
-                        return -1;
-                    }
-                    return ($a->getFullReference() < $b->getFullReference()) ? -1 : 1;
-                });
-                //if ($chipsetManufacturer) dd($chipsets[94]->getFullReference()==" Unidentified ");
-                $form->add('chipset', ChoiceType::class, [
-                    //'class' => Chipset::class,
-                    'choice_label' => 'getFullReference',
-                    'multiple' => false,
-                    'expanded' => false,
-                    'required' => false,
-                    'choices' => $chipsets,
-                    'placeholder' => '*',
-                ]);
+            usort($chipsets, function ($a, $b) {
+                if ($a->getFullReference() == $b->getFullReference()) {
+                    return 0;
+                }
+                if ($a->getFullReference() == " Unidentified ") {
+                    return -1;
+                }
+                return ($a->getFullReference() < $b->getFullReference()) ? -1 : 1;
+            });
+            //if ($chipsetManufacturer) dd($chipsets[94]->getFullReference()==" Unidentified ");
+            $form->add('chipset', ChoiceType::class, [
+                //'class' => Chipset::class,
+                'choice_label' => 'getFullReference',
+                'multiple' => false,
+                'expanded' => false,
+                'required' => false,
+                'choices' => $chipsets,
+                'placeholder' => '*',
+            ]);
             //}
             /*if($chipsetManufacturer)
                 dd($form->getData());*/
@@ -253,15 +252,15 @@ class Search extends AbstractType
 
         $formSocket1Modifier = function (FormInterface $form, CpuSocket $socket = null) {
             $platforms = null === $socket ? $this->getProcessorPlatformTypeRepository()
-            ->findAll() : $socket->getPlatforms()->toArray();
-                $form->add('platform1', ChoiceType::class, [
-                    'choice_label' => 'name',
-                    'multiple' => false,
-                    'expanded' => false,
-                    'required' => false,
-                    'choices' => $platforms,
-                    'placeholder' => 'Select a processor platform ...',
-                ]);
+                ->findAll() : $socket->getPlatforms()->toArray();
+            $form->add('platform1', ChoiceType::class, [
+                'choice_label' => 'name',
+                'multiple' => false,
+                'expanded' => false,
+                'required' => false,
+                'choices' => $platforms,
+                'placeholder' => 'Select a processor platform ...',
+            ]);
         };
 
         $builder->addEventListener(
@@ -290,15 +289,15 @@ class Search extends AbstractType
 
         $formSocket2Modifier = function (FormInterface $form, CpuSocket $socket = null) {
             $platforms = null === $socket ? $this->getProcessorPlatformTypeRepository()
-            ->findAll() : $socket->getPlatforms()->toArray();
-                $form->add('platform2', ChoiceType::class, [
-                    'choice_label' => 'name',
-                    'multiple' => false,
-                    'expanded' => false,
-                    'required' => false,
-                    'choices' => $platforms,
-                    'placeholder' => 'Select a processor platform ...',
-                ]);
+                ->findAll() : $socket->getPlatforms()->toArray();
+            $form->add('platform2', ChoiceType::class, [
+                'choice_label' => 'name',
+                'multiple' => false,
+                'expanded' => false,
+                'required' => false,
+                'choices' => $platforms,
+                'placeholder' => 'Select a processor platform ...',
+            ]);
         };
 
         $builder->addEventListener(
