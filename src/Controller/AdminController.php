@@ -11,7 +11,6 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use App\Repository\MotherboardRepository;
@@ -55,7 +54,7 @@ class AdminController extends AbstractController
                     ->find($userForm->getData()['users']->getId());
 
                 $password = $this->randomStr(16);
-                $hashedPassword = $passwordHasher->hash($user, $password);
+                $hashedPassword = $passwordHasher->hashPassword($user, $password);
                 $user->setPassword($hashedPassword);
                 $entityManager->persist($user);
                 $entityManager->flush();
@@ -106,7 +105,7 @@ class AdminController extends AbstractController
             $user->setRoles(array('ROLE_ADMIN'));
             $user->setUsername($data['name']);
             $password = $this->randomStr(16);
-            $hashedPassword = $passwordHasher->hash($user, $password);
+            $hashedPassword = $passwordHasher->hashPassword($user, $password);
             $user->setPassword($hashedPassword);
             $entityManager->persist($user);
             $entityManager->flush();
@@ -166,7 +165,7 @@ class AdminController extends AbstractController
             $checkPass = $passwordHasher->isPasswordValid($user, $data['old_password']);
             if ($checkPass === true) {
                 if ($data['new_password'] === $data['new_password_confirm']) {
-                    $hashedPassword = $passwordHasher->hash($user, $data['new_password_confirm']);
+                    $hashedPassword = $passwordHasher->hashPassword($user, $data['new_password_confirm']);
                     $user->setPassword($hashedPassword);
                     $entityManager->persist($user);
                     $entityManager->flush();
