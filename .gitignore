@@ -20,6 +20,7 @@
 /public/motherboard/bios/*
 /public/motherboard/image/*
 /public/motherboard/manual/*
+/public/motherboard/*
 /public/uploads/*
 /public/icons/*
 /public/chip/*

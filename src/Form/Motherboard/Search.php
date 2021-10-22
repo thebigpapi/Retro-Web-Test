@@ -10,7 +10,6 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use App\Entity\Manufacturer;
 use App\Entity\CpuSocket;
-use App\Entity\DramType;
 use App\Entity\ProcessorPlatformType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\FormEvents;
@@ -95,7 +94,7 @@ class Search extends AbstractType
                 'expanded' => false,
                 'required' => false,
                 'choices' => $options['procPlatformTypes'],
-                'placeholder' => 'Select a processor platform ...',
+		        'placeholder' => 'Select a processor platform ...',
             ])*/
             /*->add('motherboardExpansionSlots', CollectionType::class, [
                 'entry_type' => SearchMotherboardExpansionSlotType::class,
@@ -161,16 +160,17 @@ class Search extends AbstractType
 
             /*if($chipsetManufacturer)
             {*/
-            usort($chipsets, function ($a, $b) {
-                if ($a->getFullReference() == $b->getFullReference()) {
-                    return 0;
+            usort(
+                $chipsets,
+                function ($a, $b) {
+                    if ($a->getFullReference() == $b->getFullReference()) {
+                        return 0;
+                    }
+                    if ($a->getFullReference() == " Unidentified ") return -1;
+                    return ($a->getFullReference() < $b->getFullReference()) ? -1 : 1;
                 }
-                if ($a->getFullReference() == " Unidentified ") {
-                    return -1;
-                }
-                return ($a->getFullReference() < $b->getFullReference()) ? -1 : 1;
-            });
-            //if ($chipsetManufacturer) dd($chipsets[94]->getFullReference()==" Unidentified ");
+            );
+            //if($chipsetManufacturer) dd($chipsets[94]->getFullReference()==" Unidentified ");
             $form->add('chipset', ChoiceType::class, [
                 //'class' => Chipset::class,
                 'choice_label' => 'getFullReference',
@@ -332,6 +332,7 @@ class Search extends AbstractType
             'chipsetManufacturers' => array(),
             'bios' => array(),
             'formFactors' => array(),
+            'procPlatformTypes' => array(),
             'cpuSockets' => array(),
         ]);
     }

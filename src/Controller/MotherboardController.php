@@ -282,54 +282,49 @@ class MotherboardController extends AbstractController
      * @Route("/motherboards/search/", name="motherboard_search")
      * @param Request $request
      */
-    public function search(Request $request, TranslatorInterface $translator, CacheInterface $cache)
+    public function search(Request $request, TranslatorInterface $translator)
     {
         $notIdentifiedMessage = $translator->trans("Not identified");
-        /** @var ManufacturerReposiotory */
-        $manRepo = $this->getDoctrine()->getRepository(Manufacturer::class);
-        $moboManufacturers = $cache->get("motherboardManufacturers", function () use ($manRepo, $notIdentifiedMessage) {
-            $manufacturers = $manRepo->findAllMotherboardManufacturer();
-            $unidentifiedMan = new Manufacturer();
-            $unidentifiedMan->setName($notIdentifiedMessage);
-            array_unshift($manufacturers, $unidentifiedMan);
-            return $manufacturers;
-        });
+        $moboManufacturers = $this->getDoctrine()
+            ->getRepository(Manufacturer::class)
+            ->findAllMotherboardManufacturer();
+        $unidentifiedMan = new Manufacturer();
+        $unidentifiedMan->setName($notIdentifiedMessage);
+        array_unshift($moboManufacturers, $unidentifiedMan);
 
-        $chipsetManufacturers = $cache->get("chipsetManufacturers", function () use ($manRepo, $notIdentifiedMessage) {
-            $manufacturers = $manRepo->findAllChipsetManufacturer();
-            $unidentifiedMan = new Manufacturer();
-            $unidentifiedMan->setName($notIdentifiedMessage);
-            array_unshift($manufacturers, $unidentifiedMan);
-            return $manufacturers;
-        });
+        $chipsetManufacturers = $this->getDoctrine()
+            ->getRepository(Manufacturer::class)
+            ->findAllChipsetManufacturer();
+        $unidentifiedMan = new Manufacturer();
+        $unidentifiedMan->setName($notIdentifiedMessage);
+        array_unshift($chipsetManufacturers, $unidentifiedMan);
 
-        $slots = $cache->get("motherboardSlots", function () {
-            return $this->getDoctrine()
-                ->getRepository(ExpansionSlot::class)
-                ->findAll();
-        });
+        $slots = $this->getDoctrine()
+            ->getRepository(ExpansionSlot::class)
+            ->findAll();
 
-        $ports = $cache->get("motherboardIoPorts", function () {
-            return $this->getDoctrine()
-                ->getRepository(IoPort::class)
-                ->findAll();
-        });
+        $ports = $this->getDoctrine()
+            ->getRepository(IoPort::class)
+            ->findAll();
 
-        $cpuSockets = $cache->get("motherboardCpuSockets", function () {
-            return $this->getDoctrine()
-                ->getRepository(CpuSocket::class)
-                ->findAll();
-        });
+        $cpuSockets = $this->getDoctrine()
+            ->getRepository(CpuSocket::class)
+            ->findAll();
 
-        $formFactors = $cache->get("motherboardFormFactors", function () use ($notIdentifiedMessage) {
-            $formFactors = $this->getDoctrine()
-                ->getRepository(FormFactor::class)
-                ->findAll();
-            $unidentifiedFormFactor = new FormFactor();
-            $unidentifiedFormFactor->setName($notIdentifiedMessage);
-            array_unshift($formFactors, $unidentifiedFormFactor);
-            return $formFactors;
-        });
+        $formFactors = $this->getDoctrine()
+            ->getRepository(FormFactor::class)
+            ->findAll();
+        $unidentifiedFormFactor = new FormFactor();
+        $unidentifiedFormFactor->setName($notIdentifiedMessage);
+        array_unshift($formFactors, $unidentifiedFormFactor);
+
+        $procPlatformTypes = $this->getDoctrine()
+            ->getRepository(ProcessorPlatformType::class)
+            ->findBy(array(), array('name' => 'ASC'));
+
+        $biosManufacturers = $this->getDoctrine()
+            ->getRepository(Manufacturer::class)
+            ->findAllBiosManufacturer();
 
         $slotsForm = array();
         foreach ($slots as $k => $slotForm) {
@@ -346,19 +341,16 @@ class MotherboardController extends AbstractController
             'moboManufacturers' => $moboManufacturers,
             'chipsetManufacturers' => $chipsetManufacturers,
             'formFactors' => $formFactors,
+            'procPlatformTypes' => $procPlatformTypes,
+            'bios' => $biosManufacturers,
             'cpuSockets' => $cpuSockets,
-            //'csrf_protection' => false, // that code is aimed to remove cookie requirement but it breaks ajax stuff
+            //    'csrf_protection' => false,	// that code is aimed to remove cookie requirement but it breaks ajax stuff
         ]);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            if (
-                $form->get('searchChipsetManufacturer')->isClicked()
-                ||
-                $form->get('searchSocket1')->isClicked()
-                ||
-                $form->get('searchSocket2')->isClicked()
-            ) {
+
+            if ($form->get('searchChipsetManufacturer')->isClicked() || $form->get('searchSocket1')->isClicked() || $form->get('searchSocket2')->isClicked()) {
                 return $this->render('motherboard/search.html.twig', [
                     'form' => $form->createView(),
                     'slots' => $slots,
@@ -366,10 +358,7 @@ class MotherboardController extends AbstractController
                 ]);
             }
 
-            return $this->redirect($this->generateUrl(
-                'mobosearch',
-                $this->searchFormToParam($request, $form, $slots, $ports)
-            ));
+            return $this->redirect($this->generateUrl('mobosearch', $this->searchFormToParam($request, $form, $slots, $ports)));
         }
         return $this->render('motherboard/search.html.twig', [
             'form' => $form->createView(),
@@ -377,6 +366,7 @@ class MotherboardController extends AbstractController
             'ports' => $ports,
         ]);
     }
+
 
     private function searchFormToParam(Request $request, $form, $slots, $ports): array
     {
