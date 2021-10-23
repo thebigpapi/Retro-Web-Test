@@ -25,8 +25,7 @@ class MotherboardBiosRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('m')
             ->groupBy('m.manufacturer')
             ->getQuery()
-            ->getResult()
-        ;
+            ->getResult();
     }
     public function getCount()
     {
@@ -92,8 +91,7 @@ class MotherboardBiosRepository extends ServiceEntityRepository
 
         return $query->orderBy('b.postString', 'ASC')
             ->getQuery()
-            ->getResult()
-        ;
+            ->getResult();
     }
 
     // /**
