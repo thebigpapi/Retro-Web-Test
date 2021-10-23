@@ -1,5 +1,5 @@
 {# templates/base.html.twig #}
-<!DOCTYPE HTML PUBLIC "-//W3C//DTDHTML4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<!DOCTYPE HTML>
 <html dir="{{ 'dir.lang'|trans }}" lang="{{ 'user.lang'|trans }}">
 	<head>
 		<meta http-equiv="content-type" content="text/html; charset=UTF-8">
@@ -8,15 +8,15 @@
 			{% block title %}Ultimate Retro
 			{% endblock %}
 		</title>
-		{% if isRobot(app.request.headers.get('User-Agent')) %}
-			<meta property="og:type" content="website">
-			<meta property="og:url" content="http://www.ultimateretro.net/">
-			{% block opengraph %}
-				<meta property="og:title" content="Ultimate Retro">
-				<meta property="og:description" content="The ultimate retro motherboard database">
-				<meta property="og:image" content="{{ absolute_url(asset('assets/images/logo.gif')) }}">
-			{% endblock %}
-		{% endif %}
+		{#% if isRobot(app.request.headers.get('User-Agent')) %#}
+		<meta property="og:type" content="website">
+		<meta property="og:url" content="http://www.ultimateretro.net/">
+		{% block opengraph %}
+			<meta property="og:title" content="Ultimate Retro">
+			<meta property="og:description" content="The ultimate retro motherboard database">
+			<meta property="og:image" content="{{ absolute_url(asset('assets/images/logo.gif')) }}">
+		{% endblock %}
+		{#% endif %#}
 		<link rel="stylesheet" media="all" type="text/css" href="{{ absolute_url(asset('assets/main.css')) }}">
 		{% if css_for_admin is defined %}<link rel="stylesheet" media="all" type="text/css" href="{{ absolute_url(asset('assets/admin.css')) }}">
 		{% endif %}
