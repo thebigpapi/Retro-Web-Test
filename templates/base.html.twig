@@ -10,7 +10,7 @@
 		</title>
 		{% if isRobot(app.request.headers.get('User-Agent')) %}
 			<meta property="og:type" content="website">
-			<meta property="og:url" content="http://www.win3x.org/">
+			<meta property="og:url" content="http://www.ultimateretro.net/">
 			{% block opengraph %}
 				<meta property="og:title" content="Ultimate Retro">
 				<meta property="og:description" content="The ultimate retro motherboard database">
@@ -23,8 +23,8 @@
 		<link
 		rel="stylesheet" media="only screen" type="text/css" href="{{ absolute_url(asset('assets/modern.css')) }}">
 	<!--[if lt IE 9]>
-			<link rel="stylesheet" type="text/css" href="{{ absolute_url(asset('assets/iexplore.css')) }}">
-		<![endif]-->
+		<link rel="stylesheet" type="text/css" href="{{ absolute_url(asset('assets/iexplore.css')) }}">
+	<![endif]-->
 	</head>
 	<body class="content">
 		<form action="{{ path('change_page') }}" method="get">
@@ -37,9 +37,6 @@
 					</a>
 					<a href="{{ path('app_credits') }}">
 						<img src="{{ absolute_url(asset('assets/images/about.gif')) }}" alt="{% trans %}About{% endtrans %}" title="">
-					</a>
-					<a href="/win3board">
-						<img src="{{ absolute_url(asset('assets/images/w3board.gif')) }}" alt="{% trans %}Board{% endtrans %}" title="">
 					</a>
 					<span class="form">
 						<input type="hidden" name="goto" value="{{ app.request.requesturi }}">

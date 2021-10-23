@@ -1,17 +1,26 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{% trans %}Index{% endtrans %}{% endblock %}
+{% block title %}
+	{% trans %}Index{% endtrans %}
+{% endblock %}
 
 {% block body %}
 	<h2 class="title">{% trans %}Index{% endtrans %}</h2>
-	<p><b class="contrib">{% trans %}Can't you find a motherboard? Click{% endtrans %} <a href="{% if is_granted('ROLE_ADMIN') %}{{ path('new_motherboard_add') }}{% else %}/win3board/posting.php?mode=post&amp;f=95&amp;language=en{% endif %}">{% trans %}here{% endtrans %}</a> {% trans %}to add it.{% endtrans %}</b></p>
+	<p>
+		<b class="contrib">{% trans %}Can't you find a motherboard? Click{% endtrans %}
+			<a href="{% if is_granted('ROLE_ADMIN') %}{{ path('new_motherboard_add') }}{% else %}https://discord.gg/HWWH7hsk2p{% endif %}">{% trans %}here{% endtrans %}</a>
+			{% trans %}to add it.{% endtrans %}</b>
+	</p>
 	{% if motherboards is not empty %}
 		<ul>
 			{% for motherboard in motherboards %}
-				<li><a href='{{ path("motherboard_show", {id: motherboard.getId()}) }}'>{{ motherboard.getManufacturerShortNameIfExist()}} {{motherboard.name}}</a></li>
+				<li>
+					<a href='{{ path("motherboard_show", {id: motherboard.getId()}) }}'>{{ motherboard.getManufacturerShortNameIfExist()}}
+						{{motherboard.name}}</a>
+				</li>
 			{% endfor %}
 		</ul>
-	{{ knp_pagination_render(motherboards) }}
+		{{ knp_pagination_render(motherboards) }}
 	{% else %}
 		<p style="text-align:center;padding-top:10px;">
 			<i>{{ 'motherboard.num'|trans({'count':0}) }}</i>
