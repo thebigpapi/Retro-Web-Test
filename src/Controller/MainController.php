@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Request;
 use App\Repository\MotherboardRepository;
 use App\Entity\Motherboard;
 use App\Entity\MotherboardBios;
+use App\Repository\MotherboardBiosRepository;
 use Symfony\Component\HttpKernel\KernelInterface;
 
 class MainController extends AbstractController
@@ -15,16 +16,14 @@ class MainController extends AbstractController
     /**
      * @Route("/", name="app_homepage")
      */
-    public function index()
+    public function index(MotherboardRepository $motherboardRepository, MotherboardBiosRepository $motherboardBiosRepository)
     {
-        /** @var MotherboardRepository */
-        $moboRepo = $this->getDoctrine()->getRepository(Motherboard::class);
-        $latestMotherboards = $moboRepo->find10Latest();
+        $latestMotherboards = $motherboardRepository->find10Latest();
         return $this->render('main/index.html.twig', [
             'controller_name' => 'MainController',
             'latestMotherboards' => $latestMotherboards,
-            'moboCount' => $moboRepo->getCount(),
-            'biosCount' => $moboRepo->getCount(),
+            'moboCount' => $motherboardRepository->getCount(),
+            'biosCount' => $motherboardBiosRepository->getCount(),
         ]);
     }
 
