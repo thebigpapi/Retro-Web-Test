@@ -1,33 +1,37 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{% trans %}Credits{% endtrans %}{% endblock %}
+{% block title %}
+	{% trans %}Credits{% endtrans %}
+{% endblock %}
 
 {% block body %}
-<h2 class="title">{% trans %}About Ultimate Hardware 2019{% endtrans %}</h2>
+	<h2 class="title">{% trans %}About Ultimate Retro{% endtrans %}</h2>
 
-<div class="main"><div class="page" style="width:50%;">
-	<p>{% trans %}This project wouldn't exist without:{% endtrans %}</p>
-	<ul>
-	<li>Deksor ({% trans %}project initiator{% endtrans %})</li>
-	<li>computerguy08 ({% trans %}UI development{% endtrans %})</li>
-	<li>Big Monstro ({% trans %}owner of win3x.org{% endtrans %})</li> 
-	<li>evasive ({% trans %}owner of elhvb.com{% endtrans %})</li>
-	<li>mR_Slug ({% trans %}owner and creator of the chipset encyclopedia{% endtrans %})</li>
-	<li>scorp</li>
-	<li>Carlos S. M.</li>
-	<li>TheRealZago</li>
-	<li>edneil</li>
-	<li>DecoySportsGame</li>
-	<li>Predator99</li>
-	<li>Luckybob</li>
-	<li>minuszerodegrees.com</li>
-	<li>Total Hardware 1999</li>
-	<li>Microhouse Technical Library</li>
-	<li>{% trans %}as well as the contributors who add new content everyday!{% endtrans %}</li>
-	</ul>
-</div>
-<div class="page" style="width:70%;">
-	<img style="width:100%;" src="{{ absolute_url(asset('assets/images/credits.gif')) }}" alt="">
-</div></div>
+	<div class="main">
+		<div class="page" style="width:50%;">
+			<p>{% trans %}This project wouldn't exist without:{% endtrans %}</p>
+			<ul>
+				<li>Deksor ({% trans %}project initiator{% endtrans %})</li>
+				<li>computerguy08 ({% trans %}UI development{% endtrans %})</li>
+				<li>Big Monstro ({% trans %}owner of win3x.org{% endtrans %})</li>
+				<li>evasive ({% trans %}owner of elhvb.com{% endtrans %})</li>
+				<li>mR_Slug ({% trans %}owner and creator of the chipset encyclopedia{% endtrans %})</li>
+				<li>scorp</li>
+				<li>Carlos S. M.</li>
+				<li>TheRealZago</li>
+				<li>edneil</li>
+				<li>DecoySportsGame</li>
+				<li>Predator99</li>
+				<li>Luckybob</li>
+				<li>minuszerodegrees.com</li>
+				<li>Total Hardware 1999</li>
+				<li>Microhouse Technical Library</li>
+				<li>{% trans %}as well as the contributors who add new content everyday!{% endtrans %}</li>
+			</ul>
+		</div>
+		<div class="page" style="width:70%;">
+			<img style="width:100%;" src="{{ absolute_url(asset('assets/images/credits.gif')) }}" alt="">
+		</div>
+	</div>
 
 {% endblock %}

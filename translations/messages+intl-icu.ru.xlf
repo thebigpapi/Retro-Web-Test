@@ -149,9 +149,9 @@
         <source>Credits</source>
         <target>Благодарность</target>
       </trans-unit>
-      <trans-unit id="MzVNHiz" resname="About Ultimate Hardware 2019">
-        <source>About Ultimate Hardware 2019</source>
-        <target>О проекте Ultimate Hardware 2019</target>
+      <trans-unit id="MzVNHiz" resname="About Ultimate Retro">
+        <source>About Ultimate Retro</source>
+        <target>О проекте Ultimate Retro</target>
       </trans-unit>
       <trans-unit id="yqUGzeC" resname="This project wouldn't exist without:">
         <source>This project wouldn't exist without:</source>

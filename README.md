@@ -1,4 +1,4 @@
-# Ultimate Hardware 2019 
+# Ultimate Retro 
 
 This repo contains all the necesary files to get the basic UH19 page up and running.
 NOTE: This project is in the BETA stage. If something doesn't work right, it's expected behaviour :)
