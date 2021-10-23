@@ -162,3 +162,8 @@ table.ajax div.sform1 select {min-width: 90%;}
 	tr.stbl-head{background-color:#606060;color:#EEEEEE;}
 	div.bios-image , .add-table, div.notes-field div textarea{background-color:#444444;color:#EEEEEE;}
 }
+
+.grid-list {
+	display: grid;
+	grid-template-columns: repeat(4, 1fr);
+  }

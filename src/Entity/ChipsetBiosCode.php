@@ -17,13 +17,13 @@ class ChipsetBiosCode
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Chipset", inversedBy="biosCodes")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Chipset", inversedBy="biosCodes", fetch="EAGER")
      * @ORM\JoinColumn(nullable=false)
      */
     private $chipset;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Manufacturer", inversedBy="chipsetBiosCodes")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Manufacturer", inversedBy="chipsetBiosCodes", fetch="EAGER")
      * @ORM\JoinColumn(nullable=false)
      */
     private $biosManufacturer;

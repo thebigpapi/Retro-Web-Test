@@ -124,59 +124,23 @@ class BiosController extends AbstractController
             'controller_name' => 'MainController',
         ]);
     }
+
     /**
      * @Route("/bios/infoadv", name="bios_infoadv")
      */
-    public function binfoadv()
+    public function binfoadv(ManufacturerRepository $manufacturerRepository)
     {
-        $biosCodes = $this->getDoctrine()->getRepository(ManufacturerBiosManufacturerCode::class)->findAll();
-        $chipCodes = $this->getDoctrine()->getRepository(ChipsetBiosCode::class)->findAll();
 
-        $data = array();
-        $chipdata = array();
-
-        foreach ($biosCodes as $code) {
-            $sn = $code->getBiosManufacturer()->getShortNameIfExist();
-            $data[$sn][] = $code;
-        }
-
-        foreach ($data as $key => $codes) {
-            usort(
-                $codes,
-                function ($a, $b) {
-                    if ($a->getCode() == $b->getCode()) {
-                        return 0;
-                    }
-                    return ($a->getCode() < $b->getCode()) ? -1 : 1;
-                }
-            );
-            $data[$key] = $codes;
-        }
-
-        foreach ($chipCodes as $chcode) {
-            $sna = $chcode->getBiosManufacturer()->getShortNameIfExist();
-            $chipdata[$sna][] = $chcode;
-        }
-
-        foreach ($chipdata as $key => $codes) {
-            usort(
-                $codes,
-                function ($a, $b) {
-                    if ($a->getCode() == $b->getCode()) {
-                        return 0;
-                    }
-                    return ($a->getCode() < $b->getCode()) ? -1 : 1;
-                }
-            );
-            $chipdata[$key] = $codes;
-        }
+        $biosCodes = $manufacturerRepository->findAllBiosManufacturer2();
+        $chipdata = $manufacturerRepository->findAllChipsetBiosManufacturer();
 
         return $this->render('bios/infoadv.html.twig', [
             'controller_name' => 'MainController',
-            'biosCodes' => $data,
+            'biosCodes' => $biosCodes,
             'chipCodes' => $chipdata,
         ]);
     }
+
     /**
      * @Route("/bios/search/", name="bios_search"), methods={"GET"})
      * @param Request $request
