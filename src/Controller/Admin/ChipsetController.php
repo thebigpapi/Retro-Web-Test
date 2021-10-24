@@ -103,7 +103,7 @@ class ChipsetController extends AbstractController
                 $getParams["manufacturer"] = $data['manufacturer']->getId();
             }
             $getParams["entity"] = "chipset";
-            return $this->redirect($this->generateUrl('admin_manageChipsets', $getParams));
+            return $this->redirect($this->generateUrl('admin_manage_chipsets', $getParams));
         } else {
             $criterias = array();
             $manufacturerId = htmlentities($request->query->get('manufacturer'));
