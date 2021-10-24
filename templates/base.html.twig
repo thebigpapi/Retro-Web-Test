@@ -37,7 +37,20 @@
 					</a>
 					<a href="{{ path('app_credits') }}">
 						<img src="{{ absolute_url(asset('assets/images/about.png')) }}" srcset="{{ absolute_url(asset('assets/images/about.svg')) }} 24w" width="24" height="24" alt="{% trans %}About{% endtrans %}" title="" class="filter-white">
+						<span class="navbar-label">About</span>
 					</a>
+					{% if is_granted('ROLE_ADMIN') %}
+						<a href="{{ path('admin_index') }}">
+							<img src="{{ absolute_url(asset('assets/images/settings.gif')) }}" alt="{% trans %}Admin{% endtrans %}" title="">
+							<span class="navbar-label">Admin</span>
+						</a>
+					{% endif %}
+					{% if is_granted('ROLE_USER') %}
+						<a href="{{ path('app_logout') }}">
+							<img src="{{ absolute_url(asset('assets/images/logout.gif')) }}" alt="{% trans %}Logout{% endtrans %}" title="">
+							<span class="navbar-label">Logout</span>
+						</a>
+					{% endif %}
 					<span class="form">
 						<input type="hidden" name="goto" value="{{ app.request.requesturi }}">
 						<select class="lang" name="lang">
@@ -45,17 +58,8 @@
 								<option {% if locale == 'user.lang'|trans %} selected="selected" {% endif %} value="{{ locale }}">{{ 'name.lang'|trans(locale=locale) }}</option>
 							{% endfor %}
 						</select>
-						<input type="submit" value=" OK "></span>
-					{% if is_granted('ROLE_ADMIN') %}
-						<a href="{{ path('admin_index') }}">
-							<img src="{{ absolute_url(asset('assets/images/settings.gif')) }}" alt="{% trans %}Admin{% endtrans %}" title="">
-						</a>
-					{% endif %}
-					{% if is_granted('ROLE_USER') %}
-						<a href="{{ path('app_logout') }}">
-							<img src="{{ absolute_url(asset('assets/images/logout.gif')) }}" alt="{% trans %}Logout{% endtrans %}" title="">
-						</a>
-					{% endif %}
+						<input type="submit" value=" OK ">
+					</span>
 				</div>
 			</div>
 		</form>

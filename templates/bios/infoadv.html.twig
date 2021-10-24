@@ -7,35 +7,29 @@
 {% block body %}
 	<h2 class="title">{% trans %}Where can I find the POST string?{% endtrans %}</h2>
 	{% for manufacturer, codes in biosCodes %}
-		<p>
-			<b>
-				{{manufacturer}}
-				BIOS manufacturer IDs
-			</b>
-		</p>
-		<ul class="grid-list">
+	<div class="grid-list">
+		<p id="{{manufacturer}}"><b>{{manufacturer}} BIOS manufacturer IDs</b></p>
+		<ul>
 			{% for code in codes %}
 				<li>
-					{{ code[0] }}:
-					{{ code[1] }}
+					{{ code[1] }}:
+					{{ code[0] }}
 				</li>
 			{% endfor %}
 		</ul>
+	</div>
 	{% endfor %}
 	{% for manufacturer, codes in chipCodes %}
-		<p>
-			<b>
-				{{manufacturer}}
-				chipset IDs
-			</b>
-		</p>
-		<ul class="grid-list">
+	<div class="grid-list2">
+		<p><b>{{manufacturer}} chipset IDs</b></p>
+		<ul>
 			{% for code in codes %}
 				<li>
-					{{ code[0] }}:
-					{{ code[1] }}
+					{{ code[1] }}:
+					{{ code[0] }}
 				</li>
 			{% endfor %}
 		</ul>
+	</div>
 	{% endfor %}
 {% endblock %}

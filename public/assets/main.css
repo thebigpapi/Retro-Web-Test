@@ -10,13 +10,14 @@ a:link {color: #0000FF; text-decoration: none;}
 a:visited {color: #800080; text-decoration: none;}
 a:hover {text-decoration: underline;}
 
-div.top-bar {background:#343943;font-size:16px;padding:5px 18px;}
+div.top-bar {background:#343943;font-size:16px;padding:5px 0px 5px 15px;}
 div.top-bar a:link, div.top-bar a:visited {color: #FFFFFF;}
 div.top-bar a:hover {text-decoration: none;}
 div.top-bar small {color: #FF0000; font-size: 12px;}
 div.top-bar select, div.top-bar input { font-size: 12px;}
 div.top-bar select.lang {width: 8.33em;}
 div.top-bar img {vertical-align: top;}
+div.table-mobile {line-height: 25px;}
 
 div.main, th {text-align: center;}
 div.main select, div.main input {font-size: 13px;}
