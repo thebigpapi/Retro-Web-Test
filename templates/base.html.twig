@@ -36,7 +36,7 @@
 						</b>
 					</a>
 					<a href="{{ path('app_credits') }}">
-						<img src="{{ absolute_url(asset('assets/images/about.gif')) }}" alt="{% trans %}About{% endtrans %}" title="">
+						<img src="{{ absolute_url(asset('assets/images/about.png')) }}" srcset="{{ absolute_url(asset('assets/images/about.svg')) }} 24w" width="24" height="24" alt="{% trans %}About{% endtrans %}" title="" class="filter-white">
 					</a>
 					<span class="form">
 						<input type="hidden" name="goto" value="{{ app.request.requesturi }}">

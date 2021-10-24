@@ -130,3 +130,7 @@ table.stbl-adv {
 	width:100%;
 }
 table.stbl-adv td {vertical-align: top;}
+
+.filter-white {
+	filter: invert(99%) sepia(100%) saturate(18%) hue-rotate(243deg) brightness(103%) contrast(100%);
+}
