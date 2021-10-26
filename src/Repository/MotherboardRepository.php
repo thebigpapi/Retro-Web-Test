@@ -381,7 +381,7 @@ class MotherboardRepository extends ServiceEntityRepository
             JOIN motherboard_processor_platform_type as platform2 ON
             platform1.motherboard_id = platform2.motherboard_id 
             WHERE platform1.processor_platform_type_id=:platform1 AND platform2.processor_platform_type_id=:platform2)";
-        } else {// One platform
+        } else { // One platform
             $where = "$where mot0.id IN (SELECT motherboard_id FROM motherboard_processor_platform_type 
             WHERE processor_platform_type_id=:platform)";
         }
@@ -609,7 +609,7 @@ class MotherboardRepository extends ServiceEntityRepository
         ";
 
         if (array_key_exists('chipsetManufacturer', get_defined_vars())) { // Chipset manufacturer searched
-            if ($chipsetManufacturer == null) {// Motherboards with no chipset
+            if ($chipsetManufacturer == null) { // Motherboards with no chipset
                 $sql = "$noChipset";
             } else { // Motherboards with and without a chipset
                 $sql .= " UNION $noChipset";
@@ -984,6 +984,22 @@ class MotherboardRepository extends ServiceEntityRepository
             ->setMaxResults(50)
             ->getQuery()
             ->getResult();
+    }
+
+    /**
+     * @return array Returns an array of motherboard ids
+     */
+    public function findAllIds()
+    {
+        $entityManager = $this->getEntityManager();
+
+        $query = $entityManager->createQuery(
+            'SELECT m.id, m.lastEdited
+            FROM App\Entity\Motherboard m'
+        );
+
+        // returns an array of Product objects
+        return $query->getResult();
     }
 
     // /**
