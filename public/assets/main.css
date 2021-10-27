@@ -2,9 +2,16 @@
 
 /* base.html.twig */
 body, form {margin:0; padding:0;background-color:#F9F9F9; color:#000000;}
-body, button, div.main input, select {font-family: Arial, sans-serif;}
+body, button, div.main input, select {font-family: Trebuchet MS, sans-serif;}
+div.main {position: relative;min-height: 91vh;}
+div.page {padding-bottom: 2.5rem;}
 p, ul {margin-top: 14px; margin-bottom: 14px;}
 img {border:0;}
+footer.footer {position: absolute;bottom: 0;width: 100%;height: 2.5rem;background-color: #343943;}
+div.foot-container {width: 60%;margin:auto;padding: 0 15px;}
+div.foot-part {display:inline-block;}
+div.foot-part div{width: 9em;padding: 0 15px;text-align:left;}
+div.foot-part div a{color: #e0e0e0;}
 
 a:link {color: #0000FF; text-decoration: none;}
 a:visited {color: #800080; text-decoration: none;}
@@ -17,7 +24,7 @@ div.top-bar small {color: #FF0000; font-size: 12px;}
 div.top-bar select, div.top-bar input { font-size: 12px;}
 div.top-bar select.lang {width: 8.33em;}
 div.top-bar img {vertical-align: top;}
-div.table-mobile {line-height: 25px;}
+div.table-mobile {line-height: 24px;}
 
 div.main, th {text-align: center;}
 div.main select, div.main input {font-size: 13px;}
@@ -31,6 +38,7 @@ span.image-block span {display:table;}
 span.image-block span span {display:block;}
 
 /* index.html.twig */
+div.index-buttons {text-align:center;}
 div.index-buttons span.margin-fix {margin-bottom: 1px; width: 204px; /* **/ margin-bottom: 0; width: auto; /** */ }
 div.index-buttons span.image-block {background-color: #ebebeb; color:#000000;
 border: 1px solid gray; padding: 15px 5px 5px; vertical-align: top;

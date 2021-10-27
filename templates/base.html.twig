@@ -35,22 +35,6 @@
 							<small>BETA</small>
 						</b>
 					</a>
-					<a href="{{ path('app_credits') }}">
-						<img src="{{ absolute_url(asset('assets/images/about.png')) }}" srcset="{{ absolute_url(asset('assets/images/about.svg')) }} 24w" width="24" height="24" alt="{% trans %}About{% endtrans %}" title="" class="filter-white">
-						<span class="navbar-label">About</span>
-					</a>
-					{% if is_granted('ROLE_ADMIN') %}
-						<a href="{{ path('admin_index') }}">
-							<img src="{{ absolute_url(asset('assets/images/settings.gif')) }}" alt="{% trans %}Admin{% endtrans %}" title="">
-							<span class="navbar-label">Admin</span>
-						</a>
-					{% endif %}
-					{% if is_granted('ROLE_USER') %}
-						<a href="{{ path('app_logout') }}">
-							<img src="{{ absolute_url(asset('assets/images/logout.gif')) }}" alt="{% trans %}Logout{% endtrans %}" title="">
-							<span class="navbar-label">Logout</span>
-						</a>
-					{% endif %}
 					<span class="form">
 						<input type="hidden" name="goto" value="{{ app.request.requesturi }}">
 						<select class="lang" name="lang">
@@ -60,12 +44,51 @@
 						</select>
 						<input type="submit" value=" OK ">
 					</span>
+					{% if is_granted('ROLE_USER') %}
+						<a href="{{ path('app_logout') }}">
+							<img src="{{ absolute_url(asset('assets/images/logout.gif')) }}" alt="{% trans %}Logout{% endtrans %}" title="">
+							<span class="navbar-label">Logout</span>
+						</a>
+					{% else %}
+						<a href="{{ path('app_login') }}">
+							<img src="{{ absolute_url(asset('assets/images/logout.gif')) }}" alt="{% trans %}Logout{% endtrans %}" title="">
+							<span class="navbar-label">Login</span>
+						</a>
+					{% endif %}
+					{% if is_granted('ROLE_ADMIN') %}
+						<a href="{{ path('admin_index') }}">
+							<img src="{{ absolute_url(asset('assets/images/settings.gif')) }}" alt="{% trans %}Admin{% endtrans %}" title="">
+							<span class="navbar-label">Admin</span>
+						</a>
+					{% endif %}
 				</div>
 			</div>
 		</form>
 		<div class="main">
-			<div class="page"> {% block body %}{% endblock %}
-				</div>
-			</div>
-		</body>
-	</html>
+			<div class="page">{% block body %}{% endblock %}</div>
+			<footer class="footer">
+      			<div class="foot-container">
+				  	<div class="foot-part">
+						<div><a href="{{ path('app_credits') }}">
+							<img src="{{ absolute_url(asset('assets/images/about.png')) }}" srcset="{{ absolute_url(asset('assets/images/about.svg')) }} 24w" width="16" height="16" alt="about us" class="filter-white">
+							<span class="navbar-label">About us</span>
+						</a></div>
+						<div><a href="https://discord.gg/HWWH7hsk2p">
+							<img src="{{ absolute_url(asset('assets/images/discord.png')) }}"  width="16" height="16" alt="discord logo">
+							<span class="navbar-label">Join our Discord</span>
+						</a></div>
+					</div>
+					<div class="foot-part">
+						<div><a href="#">
+							<img src="{{ absolute_url(asset('assets/images/about.png')) }}" srcset="{{ absolute_url(asset('assets/images/about.svg')) }} 24w" width="16" height="16" alt="about us" class="filter-white">
+							<span class="navbar-label">Email us(TBA)</span>
+						</a></div>
+					</div>
+					<div class="foot-part">
+        				<div style="width:20em;">Designed by Deksor and computerguy08. 2019-2021 All wrongs reversed.</div>
+					</div>
+      			</div>
+    		</footer>
+		</div>
+	</body>
+</html>

@@ -8,7 +8,7 @@
 	<h2 class="title">{% trans %}Where can I find the POST string?{% endtrans %}</h2>
 	{% for manufacturer, codes in biosCodes %}
 	<div class="grid-list">
-		<p id="{{manufacturer}}"><b>{{manufacturer}} BIOS manufacturer IDs</b></p>
+		<p><b>{{manufacturer}} BIOS manufacturer IDs</b></p>
 		<ul>
 			{% for code in codes %}
 				<li>

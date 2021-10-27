@@ -4,6 +4,8 @@
 
 {% block body %}
 <div class="main"><div class="page">
+	<div style="padding-top:50px;">You're about to access the administration pages. If you don't know what this is about, you're in the wrong place.
+	<br>Click <a href="{{ path('app_homepage') }}">this link</a> to return to the main page.</div>
 	<table style="margin:auto;margin-top:50px;"><tr>
 		<td>
 			<img src="{{ absolute_url(asset('assets/images/admin/login.gif')) }}" alt="">
@@ -14,6 +16,7 @@
 			<a href="{{ path('app_logout') }}">{% trans %}Logout{% endtrans %}</a>
 		{% else %}
 		<form action="" method="post">
+		
 			<table>
 				<tr>
 					<td colspan="2"><h2>{% trans %}Please login{% endtrans %}</h2></td>
@@ -28,8 +31,8 @@
 					<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}"></td>
 				</tr>
 				<tr>
-					<td><button style="margin-top:10px;" type="submit">{% trans %}Login{% endtrans %}</button></td>
 					<td><label><input type="checkbox" name="_remember_me"> {% trans %}Remember me{% endtrans %}</label></td>
+					<td><button style="margin-top:10px;" type="submit">{% trans %}Login{% endtrans %}</button></td>
 				</tr>
 			</table>
 		</form>
