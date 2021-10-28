@@ -75,7 +75,7 @@ div.notes-field label { display:none }
 div.notes-field div textarea { width:95%; height:100px }
 
 /* === manage_xxxx.html.twig === */
-div.list-view{height:12em;}
+div.list-view{min-height:12em;}
 
 /* === add_xxxxxx.html.twig === */
 div.editasset { width:50%;margin:auto;}

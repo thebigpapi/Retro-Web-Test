@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block body %}
-	<h2 class="title">{% trans %}Search results{% endtrans %}</h2>
+	<div class="title"><b>{% trans %}Search results{% endtrans %}</b></div>
 	<p>
 		<b class="contrib">{% trans %}Can't you find a motherboard? Click{% endtrans %}
 			<a href="{% if is_granted('ROLE_ADMIN') %}{{ path('new_motherboard_add') }}{% else %}https://discord.gg/HWWH7hsk2p{% endif %}">{% trans %}here{% endtrans %}</a>

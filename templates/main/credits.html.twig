@@ -5,10 +5,7 @@
 {% endblock %}
 
 {% block body %}
-	<h2 class="title">{% trans %}About Ultimate Retro{% endtrans %}</h2>
-
-	<div class="main">
-		<div class="page" style="width:50%;">
+	<div class="title"><b>{% trans %}About Ultimate Retro{% endtrans %}</div>
 			<p>{% trans %}This project wouldn't exist without:{% endtrans %}</p>
 			<ul>
 				<li>Deksor ({% trans %}project initiator{% endtrans %})</li>
@@ -28,10 +25,8 @@
 				<li>Microhouse Technical Library</li>
 				<li>{% trans %}as well as the contributors who add new content everyday!{% endtrans %}</li>
 			</ul>
-		</div>
 		<div class="page" style="width:70%;">
 			<img style="width:100%;" src="{{ absolute_url(asset('assets/images/credits.gif')) }}" alt="">
 		</div>
-	</div>
 
 {% endblock %}
