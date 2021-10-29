@@ -12,6 +12,8 @@ use App\Entity\CpuSocket;
 use App\Entity\IdRedirection;
 use App\Entity\MotherboardIdRedirection;
 use App\Form\Motherboard\Search;
+use App\Repository\ManufacturerRepository;
+use App\Repository\MotherboardIdRedirectionRepository;
 use App\Repository\MotherboardRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
@@ -68,7 +70,7 @@ class MotherboardController extends AbstractController
      * @Route("/motherboards/", name="mobosearch", methods={"GET"})
      * @param Request $request
      */
-    public function searchResult(Request $request, PaginatorInterface $paginator)
+    public function searchResult(Request $request, PaginatorInterface $paginator, MotherboardRepository $motherboardRepository)
     {
         $criterias = array();
         $name = htmlentities($request->query->get('name'));
@@ -147,9 +149,7 @@ class MotherboardController extends AbstractController
 
         //dd($criterias);
         try {
-            /** @var MotherboardRepository */
-            $moboRepo = $this->getDoctrine()->getRepository(Motherboard::class);
-            $data = $moboRepo->findByWithJoin($criterias, array('man1_name' => 'ASC', 'mot0_name' => 'ASC'));
+            $data = $motherboardRepository->findByWithJoin($criterias, array('man1_name' => 'ASC', 'mot0_name' => 'ASC'));
         } catch (Exception $e) {
             return $this->redirectToRoute('motherboard_search');
         }
@@ -170,17 +170,14 @@ class MotherboardController extends AbstractController
     /**
      * @Route("/motherboards/{id}", name="motherboard_show", requirements={"id"="\d+"})
      */
-    public function show(int $id)
+    public function show(int $id, MotherboardIdRedirectionRepository $motherboardIdRedirectionRepository)
     {
         $motherboard = $this->getDoctrine()
             ->getRepository(Motherboard::class)
             ->find($id);
 
         if (!$motherboard) {
-
-            /** @var MotherboardIdRedirectionRepository */
-            $moboIdRedirectionRepo = $this->getDoctrine()->getRepository(MotherboardIdRedirection::class);
-            $idRedirection = $moboIdRedirectionRepo->findRedirection($id, 'uh19');
+            $idRedirection = $motherboardIdRedirectionRepository->findRedirection($id, 'uh19');
 
             if (!$idRedirection) {
                 throw $this->createNotFoundException(
@@ -201,11 +198,9 @@ class MotherboardController extends AbstractController
      * @Route("/motherboards/{id}/delete/", name="motherboard_delete", requirements={"id"="\d+"})
      * @param Request $request
      */
-    public function delete(Request $request, int $id)
+    public function delete(Request $request, int $id, MotherboardRepository $motherboardRepository)
     {
-        $motherboard = $this->getDoctrine()
-            ->getRepository(Motherboard::class)
-            ->find($id);
+        $motherboard = $motherboardRepository->find($id);
 
         $entityManager = $this->getDoctrine()->getManager();
 
@@ -232,9 +227,7 @@ class MotherboardController extends AbstractController
                 //If user selected a motherboard where the current id will redirect to
                 if ($form->get('Redirection') && !is_null($form->get('Redirection')->getData())) {
                     $idRedirection = $form->get('Redirection')->getData();
-                    $destinationMotherboard = $this->getDoctrine()
-                        ->getRepository(Motherboard::class)
-                        ->find($idRedirection);
+                    $destinationMotherboard = $motherboardRepository->find($idRedirection);
 
 
                     if ($destinationMotherboard) {
@@ -282,19 +275,15 @@ class MotherboardController extends AbstractController
      * @Route("/motherboards/search/", name="motherboard_search")
      * @param Request $request
      */
-    public function search(Request $request, TranslatorInterface $translator)
+    public function search(Request $request, TranslatorInterface $translator, ManufacturerRepository $manufacturerRepository)
     {
         $notIdentifiedMessage = $translator->trans("Not identified");
-        $moboManufacturers = $this->getDoctrine()
-            ->getRepository(Manufacturer::class)
-            ->findAllMotherboardManufacturer();
+        $moboManufacturers = $manufacturerRepository->findAllMotherboardManufacturer();
         $unidentifiedMan = new Manufacturer();
         $unidentifiedMan->setName($notIdentifiedMessage);
         array_unshift($moboManufacturers, $unidentifiedMan);
 
-        $chipsetManufacturers = $this->getDoctrine()
-            ->getRepository(Manufacturer::class)
-            ->findAllChipsetManufacturer();
+        $chipsetManufacturers = $manufacturerRepository->findAllChipsetManufacturer();
         $unidentifiedMan = new Manufacturer();
         $unidentifiedMan->setName($notIdentifiedMessage);
         array_unshift($chipsetManufacturers, $unidentifiedMan);
@@ -322,9 +311,7 @@ class MotherboardController extends AbstractController
             ->getRepository(ProcessorPlatformType::class)
             ->findBy(array(), array('name' => 'ASC'));
 
-        $biosManufacturers = $this->getDoctrine()
-            ->getRepository(Manufacturer::class)
-            ->findAllBiosManufacturer();
+        $biosManufacturers = $manufacturerRepository->findAllBiosManufacturer();
 
         $slotsForm = array();
         foreach ($slots as $k => $slotForm) {
@@ -458,11 +445,9 @@ class MotherboardController extends AbstractController
      * @Route("/motherboards/index/{letter}", name="moboindex", requirements={"letter"="\w"}), methods={"GET"})
      * @param Request $request
      */
-    public function index(Request $request, PaginatorInterface $paginator, string $letter = '')
+    public function index(Request $request, PaginatorInterface $paginator, string $letter = '', MotherboardRepository $motherboardRepository)
     {
-        /** @var MotherboardRepository */
-        $moboRepo = $this->getDoctrine()->getRepository(Motherboard::class);
-        $data = $moboRepo->findAllAlphabetic($letter);
+        $data = $motherboardRepository->findAllAlphabetic($letter);
 
         usort(
             $data,
