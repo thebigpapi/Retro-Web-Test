@@ -30,7 +30,7 @@ class MainController extends AbstractController
     /**
      * @Route("/credits", name="app_credits")
      */
-    public function credits(KernelInterface $appKernel)
+    public function credits()
     {
         return $this->render('main/credits.html.twig', [
             'controller_name' => 'MainController',
