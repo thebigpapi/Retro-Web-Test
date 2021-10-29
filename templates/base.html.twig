@@ -5,8 +5,7 @@
 		<meta http-equiv="content-type" content="text/html; charset=UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1"> {% block metatags %}{% endblock %}
 		<title>
-			{% block title %}Ultimate Retro
-			{% endblock %}
+			{% block title %}Ultimate Retro{% endblock %}
 		</title>
 		{#% if isRobot(app.request.headers.get('User-Agent')) %#}
 		<meta property="og:type" content="website">
@@ -25,11 +24,7 @@
 		<form action="{{ path('change_page') }}" method="get">
 			<div class="navbar">
 				<div class="navbar-inner">
-					<a href="{{ path('app_homepage') }}">
-						<b>Ultimate Retro
-							<small>BETA</small>
-						</b>
-					</a>
+					<a href="{{ path('app_homepage') }}"><b>Ultimate Retro<small>BETA</small></b></a>
 					<span class="form">
 						<input type="hidden" name="goto" value="{{ app.request.requesturi }}">
 						<select class="lang" name="lang">
@@ -80,7 +75,7 @@
 						</a></div>
 					</div>
 					<div class="foot-part">
-        				<div style="width:20em;">Designed by Deksor and computerguy08. 2019-2021 All wrongs reversed.</div>
+        				<div style="width:20em;color:#FFFFFF;">Designed by Deksor and computerguy08.<br>(c) 2019-2021 All wrongs reversed.</div>
 					</div>
       			</div>
     		</footer>
