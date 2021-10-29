@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 use App\Entity\User;
-use App\Entity\Motherboard;
 use App\Form\ManageUser;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
@@ -23,15 +22,13 @@ class AdminController extends AbstractController
      * @Route("/admin", name="admin_index")
      * @param Request $request
      */
-    public function index(Request $request)
+    public function index(MotherboardRepository $motherboardRepository)
     {
-        /** @var MotherboardRepository */
-        $moboRepo = $this->getDoctrine()->getRepository(Motherboard::class);
-        $latestMotherboards = $moboRepo->find50Latest();
+        $latestMotherboards = $motherboardRepository->find50Latest();
         return $this->render('admin/index.html.twig', [
             'controller_name' => 'MainController',
             'latestMotherboards' => $latestMotherboards,
-            'moboCount' => $moboRepo->getCount(),
+            'moboCount' => $motherboardRepository->getCount(),
         ]);
     }
 
