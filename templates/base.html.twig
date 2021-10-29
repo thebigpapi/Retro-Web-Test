@@ -5,7 +5,8 @@
 		<meta http-equiv="content-type" content="text/html; charset=UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1"> {% block metatags %}{% endblock %}
 		<title>
-			{% block title %}Ultimate Retro{% endblock %}
+			{% block title %}Ultimate Retro
+			{% endblock %}
 		</title>
 		{#% if isRobot(app.request.headers.get('User-Agent')) %#}
 		<meta property="og:type" content="website">
@@ -19,66 +20,72 @@
 		<link rel="stylesheet" media="all" type="text/css" href="{{ absolute_url(asset('assets/main.css')) }}">
 		{% if css_for_admin is defined %}<link rel="stylesheet" media="all" type="text/css" href="{{ absolute_url(asset('assets/admin.css')) }}">
 		{% endif %}
+		{% for locale in locales %}
+			<link rel="alternate" hreflang="{{ locale }}" href="{{ path('app_homepage', {_locale: locale}) }}"/>
+		{% endfor %}
+		<link rel="alternate" hreflang="x-default" href="{{ path('app_homepage', {_locale: 'en'}) }}"/>
 	</head>
 	<body class="content">
-		<form action="{{ path('change_page') }}" method="get">
-			<div class="navbar">
-				<div class="navbar-inner">
-					<a href="{{ path('app_homepage') }}"><b>Ultimate Retro <small>BETA</small></b></a>
-					<span class="form">
-						<input type="hidden" name="goto" value="{{ app.request.requesturi }}">
-						<select class="lang" name="lang">
-							{% for locale in locales %}
-								<option {% if locale == 'user.lang'|trans %} selected="selected" {% endif %} value="{{ locale }}">{{ 'name.lang'|trans(locale=locale) }}</option>
-							{% endfor %}
-						</select>
-						<input type="submit" value=" OK ">
-					</span>
-					{% if is_granted('ROLE_USER') %}
-						<a href="{{ path('app_logout') }}" class="nav-link">
-							<img src="{{ absolute_url(asset('assets/images/logout.gif')) }}" alt="{% trans %}Logout{% endtrans %}" title="">
-							<span class="navbar-label">Logout</span>
-						</a>
-					{% else %}
-						<a href="{{ path('app_login') }}" class="nav-link">
-							<img src="{{ absolute_url(asset('assets/images/logout.gif')) }}" alt="{% trans %}Logout{% endtrans %}" title="">
-							<span class="navbar-label">Login</span>
-						</a>
-					{% endif %}
-					{% if is_granted('ROLE_ADMIN') %}
-						<a href="{{ path('admin_index') }}" class="nav-link">
-							<img src="{{ absolute_url(asset('assets/images/settings.gif')) }}" alt="{% trans %}Admin{% endtrans %}" title="">
-							<span class="navbar-label">Admin</span>
-						</a>
-					{% endif %}
-				</div>
+
+		<div class="navbar">
+			<div class="navbar-inner">
+				<a href="{{ path('app_homepage') }}">
+					<b>Ultimate Retro
+						<small>BETA</small>
+					</b>
+				</a>
+				{% if is_granted('ROLE_USER') %}
+					<a href="{{ path('app_logout') }}" class="nav-link">
+						<img src="{{ absolute_url(asset('assets/images/logout.gif')) }}" alt="{% trans %}Logout{% endtrans %}" title="">
+						<span class="navbar-label">Logout</span>
+					</a>
+				{% else %}
+					<a href="{{ path('app_login') }}" class="nav-link">
+						<img src="{{ absolute_url(asset('assets/images/logout.gif')) }}" alt="{% trans %}Logout{% endtrans %}" title="">
+						<span class="navbar-label">Login</span>
+					</a>
+				{% endif %}
+				{% if is_granted('ROLE_ADMIN') %}
+					<a href="{{ path('admin_index') }}" class="nav-link">
+						<img src="{{ absolute_url(asset('assets/images/settings.gif')) }}" alt="{% trans %}Admin{% endtrans %}" title="">
+						<span class="navbar-label">Admin</span>
+					</a>
+				{% endif %}
 			</div>
-		</form>
-		<div class="main">
-			<div class="page">{% block body %}{% endblock %}</div>
-			<footer class="footer">
-      			<div class="foot-container">
-				  	<div class="foot-part">
-						<div><a href="{{ path('app_credits') }}">
-							<img src="{{ absolute_url(asset('assets/images/about.png')) }}" srcset="{{ absolute_url(asset('assets/images/about.svg')) }} 24w" width="16" height="16" alt="about" class="filter-white">
-							<span class="navbar-label">About us</span>
-						</a></div>
-						<div><a href="https://discord.gg/HWWH7hsk2p">
-							<img src="{{ absolute_url(asset('assets/images/discord.png')) }}"  width="16" height="16" alt="discord">
-							<span class="navbar-label">Join our Discord</span>
-						</a></div>
-					</div>
-					<div class="foot-part">
-						<div><a href="#">
-							<img src="{{ absolute_url(asset('assets/images/email.png')) }}" height="16" alt="email">
-							<span class="navbar-label">Email us(TBA)</span>
-						</a></div>
-					</div>
-					<div class="foot-part">
-        				<div style="width:20em;color:#FFFFFF;">Designed by Deksor and computerguy08.<br>(c) 2019-2021 All wrongs reversed.</div>
-					</div>
-      			</div>
-    		</footer>
 		</div>
-	</body>
-</html>
+
+		<div class="main">
+			<div class="page"> {% block body %}{% endblock %}
+				</div>
+				<footer class="footer">
+					<div class="foot-container">
+						<div class="foot-part">
+							<div>
+								<a href="{{ path('app_credits') }}">
+									<img src="{{ absolute_url(asset('assets/images/about.png')) }}" srcset="{{ absolute_url(asset('assets/images/about.svg')) }} 24w" width="16" height="16" alt="about" class="filter-white">
+									<span class="navbar-label">About us</span>
+								</a>
+							</div>
+							<div>
+								<a href="https://discord.gg/HWWH7hsk2p">
+									<img src="{{ absolute_url(asset('assets/images/discord.png')) }}" width="16" height="16" alt="discord">
+									<span class="navbar-label">Join our Discord</span>
+								</a>
+							</div>
+						</div>
+						<div class="foot-part">
+							<div>
+								<a href="#">
+									<img src="{{ absolute_url(asset('assets/images/email.png')) }}" height="16" alt="email">
+									<span class="navbar-label">Email us(TBA)</span>
+								</a>
+							</div>
+						</div>
+						<div class="foot-part">
+							<div style="width:20em;color:#FFFFFF;">Designed by Deksor and computerguy08.<br>(c) 2019-2021 All wrongs reversed.</div>
+						</div>
+					</div>
+				</footer>
+			</div>
+		</body>
+	</html>

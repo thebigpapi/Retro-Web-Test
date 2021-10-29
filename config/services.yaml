@@ -4,7 +4,8 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
-    app.locales: [de, en, es, fr, it, nl, ro, ru]
+    app.locales: de|en|es|fr|it|nl|ro|ru|
+    locale: en
 
     app.pagination.max: 100
     user_agent.crawlers: ['Discordbot','Twitterbot','Googlebot','Googlebot-Image','Bingbot','Slurp','DuckDuckBot','Baiduspider','Baiduspider-image','YandexBot','facebookexternalhit','www.qwant.com']

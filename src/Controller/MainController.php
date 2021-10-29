@@ -36,21 +36,4 @@ class MainController extends AbstractController
             'controller_name' => 'MainController',
         ]);
     }
-
-    /**
-     * @Route("/change_page/", name="change_page"), methods={"GET"})
-     * @param Request $request
-     */
-    public function changePage(Request $request)
-    {
-        if ($locale = $request->get('lang')) {
-            $request->getSession()->set('_locale', $locale);
-        }
-
-        if ($url = $request->get('goto')) {
-            return $this->redirect($url);
-        }
-
-        return $this->redirect('../');
-    }
 }

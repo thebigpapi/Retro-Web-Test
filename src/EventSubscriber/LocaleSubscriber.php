@@ -21,11 +21,11 @@ class LocaleSubscriber implements EventSubscriberInterface
 
     private function getPreferedLocale(array $clientLangs)
     {
-        $serverLangs = $this->params->get('app.locales');
+        $serverLangs = explode('|', $this->params->get('app.locales'));
 
         if (($max = count($clientLangs)) > 0) {
             for ($i = 0; $i < $max; $i++) {
-                if (in_array(substr($clientLangs[$i], 0, 2), $serverLangs)) {
+                if (in_array($clientLangs[$i], $serverLangs)) {
                     return $clientLangs[$i];
                 }
             }
