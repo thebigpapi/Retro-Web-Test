@@ -3,35 +3,29 @@
 {% block title %}
 	{% trans %}Credits{% endtrans %}
 {% endblock %}
-
+{% block opengraph %}
+	<style>
+		div.main {background-color:#191919 !important;color:#EEEEEE !important;overflow:hidden;background-repeat: repeat;background-image: url(./assets/images/background.png);}
+		a.credits-lnk:link { color: orange !important;}a.credits-lnk:visited { color: #00e874 !important;}
+	</style>
+{% endblock %}
 {% block body %}
-	<h2 class="title">{% trans %}About Ultimate Retro{% endtrans %}</h2>
-
-	<div class="main">
-		<div class="page" style="width:50%;">
-			<p>{% trans %}This project wouldn't exist without:{% endtrans %}</p>
-			<ul>
-				<li>Deksor ({% trans %}project initiator{% endtrans %})</li>
-				<li>computerguy08 ({% trans %}UI development{% endtrans %})</li>
-				<li>Big Monstro ({% trans %}owner of win3x.org{% endtrans %})</li>
-				<li>evasive ({% trans %}owner of elhvb.com{% endtrans %})</li>
-				<li>mR_Slug ({% trans %}owner and creator of the chipset encyclopedia{% endtrans %})</li>
-				<li>scorp</li>
-				<li>Carlos S. M.</li>
-				<li>TheRealZago</li>
-				<li>edneil</li>
-				<li>DecoySportsGame</li>
-				<li>Predator99</li>
-				<li>Luckybob</li>
-				<li>minuszerodegrees.com</li>
-				<li>Total Hardware 1999</li>
-				<li>Microhouse Technical Library</li>
-				<li>{% trans %}as well as the contributors who add new content everyday!{% endtrans %}</li>
-			</ul>
-		</div>
-		<div class="page" style="width:70%;">
-			<img style="width:100%;" src="{{ absolute_url(asset('assets/images/credits.gif')) }}" alt="">
-		</div>
-	</div>
-
+<div class="title"><b>{% trans %}About Ultimate Retro{% endtrans %}</b></div>
+<p>This is a project aimed at documenting as many pieces of hardware as possible, built entirely by volunteers, who code for the site/add new entries in their free time.
+All the images that are added on this site should comply with <a class="credits-lnk" href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>, unless specified otherwise by the image owner.</p>
+<p>Partial list of people who helped shape this project:</p>
+<ul>
+	<li>Deksor ({% trans %}project initiator{% endtrans %})</li>
+	<li>computerguy08 ({% trans %}UI development{% endtrans %})</li>
+	<li>Big Monstro ({% trans %}owner of win3x.org{% endtrans %})</li>
+	<li>evasive ({% trans %}owner of elhvb.com{% endtrans %})</li>
+	<li>mR_Slug ({% trans %}owner and creator of the chipset encyclopedia{% endtrans %})</li>
+	<li>Necroware</li>
+	<li>Carlos S. M.</li>
+	<li>TheRealZago</li>
+	<li>edneil</li>
+	<li>DecoySportsGame</li>
+	<li>Predator99</li>
+	<li>Luckybob</li>
+</ul>
 {% endblock %}
