@@ -149,9 +149,9 @@
         <source>Credits</source>
         <target>Remerciements</target>
       </trans-unit>
-      <trans-unit id="MzVNHiz" resname="About Ultimate Retro">
+      <trans-unit id="gIuFVBA" resname="About Ultimate Retro">
         <source>About Ultimate Retro</source>
-        <target>À propos de Ultimate Retro</target>
+        <target>À propos d'Ultimate Retro</target>
       </trans-unit>
       <trans-unit id="yqUGzeC" resname="This project wouldn't exist without:">
         <source>This project wouldn't exist without:</source>
@@ -281,7 +281,7 @@
         <source>Supported CPUs:</source>
         <target>Processeurs supportés:</target>
       </trans-unit>
-      <trans-unit id="Wi7cldC" resname="Supported NPUs:">
+      <trans-unit id="gD.MBoJ" resname="Supported NPUs:">
         <source>Supported NPUs:</source>
         <target>Coprocesseurs arithmétiques supportés:</target>
       </trans-unit>
@@ -329,11 +329,11 @@
         <source>Select a socket ...</source>
         <target>Sélectionnez un socket ...</target>
       </trans-unit>
-      <trans-unit id="TuxGG66" resname="List chipsets">
+      <trans-unit id="kdq1_s0" resname="List chipsets">
         <source>List chipsets</source>
         <target>Lister des chipsets</target>
       </trans-unit>
-      <trans-unit id="X78JJ99" resname="List platforms">
+      <trans-unit id="rjP2089" resname="List platforms">
         <source>List platforms</source>
         <target>Lister des plateformes</target>
       </trans-unit>
@@ -830,6 +830,115 @@
       <trans-unit id="6odRJzI" resname="Cache Sizes">
         <source>Cache Sizes</source>
         <target>Tailles de Cache</target>
+      </trans-unit>
+      <trans-unit id="wmzUIH7" resname="psu connector">
+        <source>psu connector</source>
+        <target>connecteur d'alimentation</target>
+      </trans-unit>
+      <trans-unit id="TxSSkAW" resname="psu connectors">
+        <source>psu connectors</source>
+        <target>connecteurs d'alimentation</target>
+      </trans-unit>
+      <trans-unit id="66BMRo_" resname="Psu connectors">
+        <source>Psu connectors</source>
+        <target>Connecteurs d'alimentation</target>
+      </trans-unit>
+      <trans-unit id="4tClSWj" resname="Delete">
+        <source>Delete</source>
+        <target>Effacer</target>
+      </trans-unit>
+      <trans-unit id="335w5QI" resname="B">
+        <source>B</source>
+        <target>B</target>
+      </trans-unit>
+      <trans-unit id="u5RfUoY" resname="Copy protection">
+        <source>Copy protection</source>
+        <target>Protection contre la copie</target>
+      </trans-unit>
+      <trans-unit id="tLWAqa2" resname="About us">
+        <source>About us</source>
+        <target>À propos</target>
+      </trans-unit>
+      <trans-unit id="9xkTbOY" resname="Join our Discord">
+        <source>Join our Discord</source>
+        <target>Rejoindre notre discord (Anglais uniquement)</target>
+      </trans-unit>
+      <trans-unit id="6.Ls6ty" resname="Email us(TBA)">
+        <source>Email us(TBA)</source>
+        <target>Mail (Indisponible)</target>
+      </trans-unit>
+      <trans-unit id="ijaMrDe" resname="Designed by Deksor and computerguy08.">
+        <source>Designed by Deksor and computerguy08.</source>
+        <target>Designé par Deksor et computerguy08.</target>
+      </trans-unit>
+      <trans-unit id="1ianFd." resname="(c) 2019-2021 All wrongs reversed.">
+        <source>(c) 2019-2021 All wrongs reversed.</source>
+        <target>(c) 2019-2021 Tous gauches réservés.</target>
+      </trans-unit>
+      <trans-unit id="aEAnRLw" resname=", unless specified otherwise by the image owner.">
+        <source>, unless specified otherwise by the image owner.</source>
+        <target>, sauf précisé autrement par le propriétaire de l'image.</target>
+      </trans-unit>
+      <trans-unit id="pc8lMaN" resname="Partial list of people who helped shape this project:">
+        <source>Partial list of people who helped shape this project:</source>
+        <target>Liste partielle des personnes qui ont aidé au développement du projet:</target>
+      </trans-unit>
+      <trans-unit id="MKr5R3_" resname="Deksor (project initiator)">
+        <source>Deksor (project initiator)</source>
+        <target>Deksor (initiateur du projet)</target>
+      </trans-unit>
+      <trans-unit id="fc2FzUx" resname="computerguy08 (UI development)">
+        <source>computerguy08 (UI development)</source>
+        <target>computerguy08 (développement de l'IHM)</target>
+      </trans-unit>
+      <trans-unit id="1byp1RA" resname="Big Monstro, admin of">
+        <source>Big Monstro, admin of</source>
+        <target>Big Monstro, administrateur de</target>
+      </trans-unit>
+      <trans-unit id="mjgaTv7" resname="evasive, owner of">
+        <source>evasive, owner of</source>
+        <target>evasive, propriétaire de</target>
+      </trans-unit>
+      <trans-unit id="8R9zPQp" resname="mR_Slug, creator of the">
+        <source>mR_Slug, creator of the</source>
+        <target>mR_Slug, créateur de</target>
+      </trans-unit>
+      <trans-unit id="OOr_R4c" resname="TheRealZago, creator of">
+        <source>TheRealZago, creator of</source>
+        <target>TheRealZago, créateur de</target>
+      </trans-unit>
+      <trans-unit id="AyR4OMg" resname="You can also find us on these forums:">
+        <source>You can also find us on these forums:</source>
+        <target>Vous pouvez aussi nous retrouver sur ces forums:</target>
+      </trans-unit>
+      <trans-unit id="vv78zmI" resname="This is a project aimed at documenting as many pieces of hardware as possible, built entirely by volunteers, who code for the site/add new entries in their free time. All the images that are added on this site should comply with">
+        <source>This is a project aimed at documenting as many pieces of hardware as possible, built entirely by volunteers, who code for the site/add new entries in their free time. All the images that are added on this site should comply with</source>
+        <target>Ce projet a pour but de documenter autant de matériel que possible, entièrement construit par des bénévoles, qui développent le site/ajoutent du nouveau contenu pendant leur temps libre.
+			Toutes les images rajoutées respectent la license</target>
+      </trans-unit>
+      <trans-unit id="Y3BsSbW" resname="chipset encyclopedia">
+        <source>chipset encyclopedia</source>
+        <target>l'encyclopédie des chipsets</target>
+      </trans-unit>
+      <trans-unit id="GAvLnBk" resname="scorp, aka Necroware on">
+        <source>scorp, aka Necroware on</source>
+        <target>scorp, connu en tant que Necroware sur</target>
+      </trans-unit>
+      <trans-unit id="nyxf38W" resname="You're about to access the administration pages. If you don't know what this is about, you're in the wrong place.">
+        <source>You're about to access the administration pages. If you don't know what this is about, you're in the wrong place.</source>
+        <target>Vous êtes sur le point d'accéder aux pages d'administration. Si vous ne savez pas de quoi il s'agit, vous êtes au mauvais endroit.</target>
+      </trans-unit>
+      <trans-unit id="lbpO2TK" resname="Click">
+        <source>Click</source>
+        <target>Cliquez</target>
+      </trans-unit>
+      <trans-unit id="OGAGcrb" resname="this link">
+        <source>this link</source>
+        <target>sur ce lien</target>
+      </trans-unit>
+      <trans-unit id="PXjFcXe" resname="to return to the main page.">
+        <source>to return to the main page.</source>
+        <target>pour revenir au menu principal.</target>
       </trans-unit>
     </body>
   </file>
