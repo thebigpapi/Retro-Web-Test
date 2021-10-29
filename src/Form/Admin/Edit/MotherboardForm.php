@@ -22,6 +22,7 @@ use App\Entity\AudioChipset;
 use App\Entity\CpuSocket;
 use App\Entity\CpuSpeed;
 use App\Entity\MaxRam;
+use App\Entity\PSUConnector;
 use App\Form\Type\ProcessorType;
 use App\Form\Type\CoprocessorType;
 use App\Form\Type\ProcessorSpeedType;
@@ -38,6 +39,7 @@ use App\Form\Type\KnownIssueType;
 use App\Form\Type\LargeFileMotherboardType;
 use App\Form\Type\MotherboardIdRedirectionType;
 use App\Form\Type\ProcessorPlatformTypeForm;
+use App\Form\Type\PSUConnectorType;
 use App\Repository\CpuSocketRepository;
 use App\Repository\CpuSpeedRepository;
 use App\Repository\ProcessorPlatformTypeRepository;
@@ -249,6 +251,11 @@ class MotherboardForm extends AbstractType
                 'allow_add' => true,
                 'allow_delete' => true,
             ])*/
+            ->add('psuConnectors', CollectionType::class, [
+                'entry_type' => PSUConnectorType::class,
+                'allow_add' => true,
+                'allow_delete' => true,
+            ])
             ->add('save', SubmitType::class)
             ->add('updateProcessors', SubmitType::class, ['label' => 'Update processors']);
 
@@ -316,7 +323,7 @@ class MotherboardForm extends AbstractType
         ) {
             $processorsWithPlatform = array();
             $coprocessorsWithPlatform = array();
-            if (! $processorPlatformTypes->isEmpty()) {
+            if (!$processorPlatformTypes->isEmpty()) {
                 if (
                     is_object($processorPlatformTypes[0])
                     &&
