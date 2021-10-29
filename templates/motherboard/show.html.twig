@@ -46,14 +46,14 @@
 {% endblock %}
 
 {% block body %}
-<h2 class="title">
+<div class="title"><b>
 	{% if motherboard.getManufacturer() is not null %}
 		{{ motherboard.getManufacturer().getShortNameIfExist() }}
 	{% else %}
 		Unknown
 	{% endif %}
 	{{ motherboard.getName() }}
-</h2>
+</div></b>
 {% if motherboard.getMotherboardAliases() is not empty %}
 	<p class="string-alias">
 		<b>
@@ -205,44 +205,84 @@
 			{% trans %}B{% endtrans %}<!--
 																					-->{% endif %}
 	</span>
-{% endfor %}</tr></td></tr>{% endif %}</table>{% if motherboard.getAllDrivers() is not empty %}<div class="scroll-div"><img src="{{ absolute_url(asset('assets/images/hardware.gif')) }}" alt="" style="vertical-align: middle;padding-bottom: 10px;"><b>{% trans %}Drivers:{% endtrans %}</b><table class="stbl"><tr class="stbl-head">{{ driverHeader() }}</tr>{% for driver in motherboard.getAllDrivers() %}{{ driverLink(driver.largeFile) }}{% endfor %}</table></div>{% endif %}{% if motherboard.getMotherboardBios() is not empty %}<div class="scroll-div"><img src="{{ absolute_url(asset('assets/images/chip.gif')) }}" alt="" style="vertical-align: middle;padding-bottom: 10px;"><b>{% trans %}BIOS images:{% endtrans %}</b><table class="stbl"><tr class="stbl-head"><th>{% trans %}Manuf.{% endtrans %}</th><th>{% trans %}POST String{% endtrans %}</th><th>{% trans %}Note{% endtrans %}</th><th>{% trans %}BIOS Ver.{% endtrans %}</th><th>{% trans %}Core Ver.{% endtrans %}</th></tr>{% for bios in motherboard.getMotherboardBios()|sort((a, b) => b.boardVersion <=> a.boardVersion)|sort((a, b) => a.manufacturer <=> b.manufacturer) %}<tr style="text-align:center;border: 1px solid #e0e0e0;">
-<td>{{ bios.getManufacturer().getShortNameIfExist() }}</td>
-<td>
-	<span class="string-bios">{{ bios.getPostString() }}</span>
-</td>
-<td>
-	<span>{{ bios.getNote() }}</span>
-</td>
-<td>
-	{% if bios.getFileName() is not null %}
-		<a href="{{ vich_uploader_asset(bios, 'romFile') }}">
-			<img src="{{ absolute_url(asset('assets/images/dw.gif')) }}" alt="" width="16" height="16" style="vertical-align: middle;">
-			{% if bios.getBoardVersion() is not null %}
-				{{ bios.getBoardVersion() }}
+{% endfor %}</tr></td></tr>{% endif %}</table>
+{% if motherboard.getAllDrivers() is not empty %}
+	<div class="scroll-div">
+		<img src="{{ absolute_url(asset('assets/images/hardware.gif')) }}" alt="" style="vertical-align: middle;padding-bottom: 10px;">
+		<b>{% trans %}Drivers:{% endtrans %}</b>
+		<table class="stbl"><tr class="stbl-head">{{ driverHeader() }}</tr>
+		{% for driver in motherboard.getAllDrivers() %}{{ driverLink(driver.largeFile) }}{% endfor %}
+		</table>
+	</div>
+{% endif %}
+{% if motherboard.getMotherboardBios() is not empty %}
+<div class="scroll-div">
+	<img src="{{ absolute_url(asset('assets/images/chip.gif')) }}" alt="" style="vertical-align: middle;padding-bottom: 10px;">
+	<b>{% trans %}BIOS images:{% endtrans %}</b>
+	<table class="stbl"><tr class="stbl-head">
+	<th>{% trans %}Manuf.{% endtrans %}</th>
+	<th>{% trans %}POST String{% endtrans %}</th>
+	<th>{% trans %}Note{% endtrans %}</th>
+	<th>{% trans %}Core Ver.{% endtrans %}</th>
+	<th>{% trans %}BIOS Ver.{% endtrans %}</th></tr>
+	{% for bios in motherboard.getMotherboardBios()|sort((a, b) => b.boardVersion <=> a.boardVersion)|sort((a, b) => a.manufacturer <=> b.manufacturer) %}
+	<tr style="text-align:center;border: 1px solid #e0e0e0;">
+		<td>{{ bios.getManufacturer().getShortNameIfExist() }}</td>
+		<td>
+			<span class="string-bios">{{ bios.getPostString() }}</span>
+		</td>
+		<td>
+			<span>{{ bios.getNote() }}</span>
+		</td>
+		<td>{{ bios.getCoreVersion() }}</td>
+		<td>
+			{% if bios.getFileName() is not null %}
+				<a href="{{ vich_uploader_asset(bios, 'romFile') }}">
+					<img src="{{ absolute_url(asset('assets/images/dw.gif')) }}" alt="" width="16" height="16" style="vertical-align: middle;">
+					{% if bios.getBoardVersion() is not null %}
+						{{ bios.getBoardVersion() }}
+					{% else %}
+						???
+					{% endif %}
+				</a>
 			{% else %}
-				???
+				{{ bios.getBoardVersion() }}
 			{% endif %}
-		</a>
-	{% else %}
-		{{ bios.getBoardVersion() }}
-	{% endif %}
-</td>
-<td>{{ bios.getCoreVersion() }}</td></tr>{% endfor %}</table></div>{% endif %}{% if motherboard.getManuals() is not empty %}<table class="stbl"><tr><td><img src="{{ absolute_url(asset('assets/images/manual.gif')) }}" alt="" style="vertical-align: middle;padding-bottom: 10px;"><b>{% trans %}Manuals:{% endtrans %}</b></td><td><ul>
-{% for manual in motherboard.getManuals()|sort((a, b) => a.getLinkName <=> b.getLinkName) %}
-	<li>
-		<a href="{{ vich_uploader_asset(manual, 'manualFile') }}">{{ manual.getLinkName() }}</a>
-		({{ manual.getLanguage().getName()}})</li>
-{% endfor %}</ul></td></tr></table>{% endif %}{% if motherboard.getMotherboardIoPorts() is not empty or motherboard.getMotherboardExpansionSlots() is not empty or motherboard.getKnownIssues() is not empty %}<div class="scroll-div"><table class="stbl"><tr class="stbl-head">{% if motherboard.getMotherboardIoPorts() is not empty %}
+		</td>
+		
+	</tr>
+	{% endfor %}
+	</table>
+</div>
+{% endif %}
+{% if motherboard.getManuals() is not empty %}
+<table class="stbl"><tr>
+	<td><img src="{{ absolute_url(asset('assets/images/manual.gif')) }}" alt="" style="vertical-align: middle;padding-bottom: 10px;"><b>{% trans %}Manuals:{% endtrans %}</b></td>
+	<td><ul style="list-style-type: none;">
+	{% for manual in motherboard.getManuals()|sort((a, b) => a.getLinkName <=> b.getLinkName) %}
+		<li>
+			<a href="{{ vich_uploader_asset(manual, 'manualFile') }}">
+				<img src="{{ absolute_url(asset('assets/images/dw.gif')) }}" alt="" width="16" height="16" style="vertical-align: middle;">
+				{{ manual.getLinkName() }}
+			</a>
+			({{ manual.getLanguage().getName()}})</li>
+	{% endfor %}</ul></td>
+</tr></table>
+{% endif %}
+<div class="scroll-div">
+<table class="stbl"><tr class="stbl-head2">
 <td>
 	<b>{% trans %}I/O ports:{% endtrans %}</b>
-</td>{% endif %}{% if motherboard.getMotherboardExpansionSlots() is not empty %}
+</td>
 <td>
 	<b>{% trans %}Expansion slots:{% endtrans %}</b>
-</td>{% endif %}{% if motherboard.getKnownIssues() is not empty %}
+</td>
 <td>
 	<b>{% trans %}Known issues:{% endtrans %}</b>
-</td>{% endif %}</tr><tr>{% if motherboard.getMotherboardIoPorts() is not empty %}
-<td class="io-table">
+</td></tr>
+<tr>
+<td class="exp-table">
+{% if motherboard.getMotherboardIoPorts() is not empty %}
 	<ul style="list-style-type: none;">
 		{% for port in motherboard.getMotherboardIoPorts()|sort %}
 			<li>
@@ -251,8 +291,11 @@
 				{{ port.getIoPort().getName() }}</li>
 		{% endfor %}
 	</ul>
-</td>{% endif %}{% if motherboard.getMotherboardExpansionSlots() is not empty %}
-<td class="exp-table">
+{% else %}<p style="padding-left:45px;">N/A</p>
+{% endif %}
+</td>
+<td class="io-table">
+{% if motherboard.getMotherboardExpansionSlots() is not empty %}
 	<ul style="list-style-type: none;">
 		{% for slot in motherboard.getMotherboardExpansionSlots()|sort %}
 			<li>
@@ -261,14 +304,19 @@
 				{{ slot.getExpansionSlot().getName() }}</li>
 		{% endfor %}
 	</ul>
-</td>{% endif %}{% if motherboard.getKnownIssues() is not empty %}
+{% else %}<p style="padding-left:45px;">N/A</p>
+{% endif %}
+</td>
 <td class="exp-table">
+{% if motherboard.getKnownIssues() is not empty %}
 	<ul style="list-style-type: none;">
 		{% for issue in motherboard.getKnownIssues() %}
 			<li>{{ issue.getName() }}</li>
 		{% endfor %}
 	</ul>
-</td>{% endif %}</tr></table></div>{% endif %}{% if motherboard.getVideoChipset() is not null or motherboard.getMaxVideoRam() is not null or motherboard.getAudioChipset() is not null %}<table>{% if motherboard.getVideoChipset() is not null %}<tr><td>{% trans %}Video Chipset:{% endtrans %}</td><td>{{ motherboard.getVideoChipset().getNameWithManufacturer() }}
+{% else %}<p style="padding-left:45px;">N/A</p>
+{% endif %}
+</td></tr></table></div>{% if motherboard.getVideoChipset() is not null or motherboard.getMaxVideoRam() is not null or motherboard.getAudioChipset() is not null %}<table>{% if motherboard.getVideoChipset() is not null %}<tr><td>{% trans %}Video Chipset:{% endtrans %}</td><td>{{ motherboard.getVideoChipset().getNameWithManufacturer() }}
 {% if  motherboard.getMaxVideoRam() is not null %}
 	({{  motherboard.getMaxVideoRam().getValueWithUnit() }}
 	max VRAM)

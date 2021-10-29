@@ -19,7 +19,7 @@
 {% endblock %}
 
 {% block body %}
-	<h2 class="title">{% trans %}Search for a bios{% endtrans %}</h2>
+	<div class="title"><b>{% trans %}Search for a bios{% endtrans %}</b></div>
 	<p><a href="{{path("bios_info")}}">{% trans %}Where can I find the POST string?{% endtrans %}</a></p>
     <div id="hiddenDiv" style="display: none;"></div>
 	{{ form_start(form, {'method': 'POST', 'name': 'search', 'action':path("bios_search")}) }}

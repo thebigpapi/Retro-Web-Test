@@ -3,7 +3,7 @@
 {% block title %}{% trans %}Delete{% endtrans %}{% endblock %}
 
 {% block body %}
-	<h2 class="title">{% trans %}Delete{% endtrans %}</h2>
+	<div class="title"><b>{% trans %}Delete{% endtrans %}</b></div>
 	<p><b class="contrib">Are you sure you want to delete this motherboard ? ({{ motherboard.getManufacturerShortNameIfExist }} {{motherboard.getName}}) </b></p>
 	{{ form_start(form, {'method': 'POST'}) }}
     <span>{{form_widget(form.Yes)}} {{form_widget(form.No)}}</span>

@@ -1,10 +1,10 @@
 {% macro header() %}
 	<th>{% trans %}Language{% endtrans %}</th>
 	<th>{% trans %}Media type{% endtrans %}</th>
-	<th>{% trans %}Name{% endtrans %}</th>
+	<th>{% trans %}Copy protection{% endtrans %}</th>
 	<th>{% trans %}Quality{% endtrans %}</th>
 	<th>{% trans %}OS Compatibility{% endtrans %}</th>
-	<th>{% trans %}Security{% endtrans %}</th>
+	<th>{% trans %}Name{% endtrans %}</th>
 {% endmacro %}
 
 {% macro link(file) %}
@@ -21,13 +21,15 @@
 			{% endfor %}
 		</td>
 		<td>
-			<a href="{{ vich_uploader_asset(file, 'file')}}">{{file.getName()}}
-				{% if file.getFileVersion() %}
-					{{file.getFileVersion()}}
-				{% endif %}
-				{% if file.getReleaseDateString() %}({{file.getReleaseDateString()}})
-				{% endif %}
-			</a>
+			{% if file.hasActivationKey() %}
+				<img src="{{ asset('icons/protection/activation_key.gif') }}" alt="activation key" title="The program needs an activation key">
+			{% endif %}
+			{% if file.hasCopyProtection() %}
+				<img src="{{ asset('icons/protection/copy_protected.gif') }}" alt="copy protected" title="The program is copy protected">
+			{% endif %}
+			{% if not file.hasActivationKey() or not file.hasCopyProtection() %}
+				<p>N/A</P>
+			{% endif %}
 		</td>
 		<td style="width:40px;">
 			<img src="{{ asset('icons/dump_quality/' ~ file.dumpQualityFlag().getTagName() ~ '.gif') }}" alt="{{file.dumpQualityFlag().getName()}}" title="{{file.dumpQualityFlag().getName()}}">
@@ -51,12 +53,15 @@
 			{% endfor %}
 		</td>
 		<td>
-			{% if file.hasActivationKey() %}
-				<img src="{{ asset('icons/protection/activation_key.gif') }}" alt="activation key" title="The program needs an activation key">
-			{% endif %}
-			{% if file.hasCopyProtection() %}
-				<img src="{{ asset('icons/protection/copy_protected.gif') }}" alt="copy protected" title="The program is copy protected">
-			{% endif %}
+			<a href="{{ vich_uploader_asset(file, 'file')}}">
+				<img src="{{ absolute_url(asset('assets/images/dw.gif')) }}" alt="" width="16" height="16" style="vertical-align: middle;">
+				{{file.getName()}}
+				{% if file.getFileVersion() %}
+					{{file.getFileVersion()}}
+				{% endif %}
+				{% if file.getReleaseDateString() %}({{file.getReleaseDateString()}})
+				{% endif %}
+			</a>
 		</td>
 	</tr>
 	{% if file.getNote() is not empty %}

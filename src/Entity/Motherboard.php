@@ -197,6 +197,11 @@ class Motherboard
      */
     private $redirections;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=PSUConnector::class, mappedBy="motherboards")
+     */
+    private $psuConnectors;
+
 
     public function __construct()
     {
@@ -222,6 +227,7 @@ class Motherboard
         $this->processorPlatformTypes = new ArrayCollection();
         $this->drivers = new ArrayCollection();
         $this->redirections = new ArrayCollection();
+        $this->psuConnectors = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -938,6 +944,33 @@ class Motherboard
             if ($redirection->getDestination() === $this) {
                 $redirection->setDestination(null);
             }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|PSUConnector[]
+     */
+    public function getPsuConnectors(): Collection
+    {
+        return $this->psuConnectors;
+    }
+
+    public function addPsuConnector(PSUConnector $psuConnector): self
+    {
+        if (!$this->psuConnectors->contains($psuConnector)) {
+            $this->psuConnectors[] = $psuConnector;
+            $psuConnector->addMotherboard($this);
+        }
+
+        return $this;
+    }
+
+    public function removePsuConnector(PSUConnector $psuConnector): self
+    {
+        if ($this->psuConnectors->removeElement($psuConnector)) {
+            $psuConnector->removeMotherboard($this);
         }
 
         return $this;
