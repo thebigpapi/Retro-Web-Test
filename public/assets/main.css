@@ -17,12 +17,12 @@ a:hover {text-decoration: underline;}
 div.navbar {background:#343943;font-size:20px;}
 div.navbar-inner {line-height: 28px;padding:5px 0px 5px 15px;}
 div.navbar-inner a {color: #FFFFFF;text-decoration: none;}
-div.navbar-inner a.nav-link {display:inline-block;}
-div.navbar-inner a.nav-link:hover, div.foot-part div a:hover {color: #7ce5ff;}
 div.navbar-inner small {color: #FF0000; font-size: 12px;}
 div.navbar-inner select, div.top-bar input { font-size: 12px;}
 div.navbar-inner select.lang {width: 8.33em;}
-div.navbar-inner img {vertical-align: top;}
+a.nav-link {display:inline-block;}
+a.nav-link:hover, div.foot-part div a:hover {color: #7ce5ff;}
+a.nav-link img, div.foot-part div a img {vertical-align: top;padding-top:2px;}
 
 footer.footer {position: absolute;bottom: 0;width: 100%;background-color: #343943;}
 div.foot-container {width: 95%;margin:auto;padding: 5px 0px 5px;}
