@@ -22,4 +22,4 @@ liip_imagine:
                 #crop:
                 #    size: [ 300, 600 ]
                 relative_resize:
-                    widen: 320
+                    widen: 480
