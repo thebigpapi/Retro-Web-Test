@@ -18,7 +18,7 @@ div.navbar {background:#343943;font-size:20px;}
 div.navbar-inner {line-height: 28px;padding:5px 0px 5px 15px;}
 div.navbar-inner a {color: #FFFFFF;text-decoration: none;}
 div.navbar-inner a.nav-link {display:inline-block;}
-div.navbar-inner a.nav-link:hover {color: #7ce5ff;}
+div.navbar-inner a.nav-link:hover, div.foot-part div a:hover {color: #7ce5ff;}
 div.navbar-inner small {color: #FF0000; font-size: 12px;}
 div.navbar-inner select, div.top-bar input { font-size: 12px;}
 div.navbar-inner select.lang {width: 8.33em;}
@@ -28,7 +28,7 @@ footer.footer {position: absolute;bottom: 0;width: 100%;background-color: #34394
 div.foot-container {width: 95%;margin:auto;padding: 5px 0px 5px;}
 div.foot-part {display:inline-block;}
 div.foot-part div{width: 9em;padding: 0 15px;text-align:left;}
-div.foot-part div a{color: #e0e0e0;}
+div.foot-part div a{color: #e0e0e0;text-decoration:none;}
 
 div.main, th {text-align: center;}
 div.main select, div.main input {font-size: 13px;}
@@ -306,7 +306,7 @@ div.grid-list ul{display: grid;grid-template-columns: repeat(2, 1fr);font-size:1
 	a:visited { color: #00e874;}
 	#search-table select, input.sform, span.field1 input {background-color:#424242;color:#ececec;}
 	table.stbl, table.stbl-adv{background-color:#303030;color:#EEEEEE;}
-	tr.stbl-head{background-color:#606060;color:#EEEEEE;}
+	tr.stbl-head, tr.stbl-head2{background-color:#606060;color:#EEEEEE;}
 	div.bios-image , .add-table, div.notes-field div textarea{background-color:#444444;color:#EEEEEE;}
 	div.grid-list, div.grid-list2{background-color:#303030;border:1px solid #EEEEEE;}
 }
