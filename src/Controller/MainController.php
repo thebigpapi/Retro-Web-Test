@@ -4,12 +4,8 @@ namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\HttpFoundation\Request;
 use App\Repository\MotherboardRepository;
-use App\Entity\Motherboard;
-use App\Entity\MotherboardBios;
 use App\Repository\MotherboardBiosRepository;
-use Symfony\Component\HttpKernel\KernelInterface;
 
 class MainController extends AbstractController
 {

@@ -1,0 +1,6 @@
+#index:
+#    path: /
+#    controller: App\Controller\DefaultController::index
+redirect:
+  path: /
+  controller: App\Controller\RedirectController::redirectToLocale

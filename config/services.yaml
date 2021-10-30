@@ -26,5 +26,10 @@ services:
             - '../src/Kernel.php'
             - '../src/Tests/'
 
+    App\Controller\RedirectController:
+        calls:
+            - method: setContainer
+              arguments: ['@service_container']
+
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
