@@ -6,6 +6,7 @@ use App\Entity\Manufacturer;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\Query\ResultSetMapping;
+use Generator;
 
 /**
  * @method Manufacturer|null find($id, $lockMode = null, $lockVersion = null)
@@ -29,7 +30,6 @@ class ManufacturerRepository extends ServiceEntityRepository
         $entityManager = $this->getEntityManager();
 
         $rsm = new ResultSetMapping();
-        
 
         $rsm->addEntityResult('App\Entity\Manufacturer', 'man');
         $rsm->addFieldResult('man', 'id', 'id');
@@ -40,11 +40,12 @@ class ManufacturerRepository extends ServiceEntityRepository
             'SELECT DISTINCT manufacturer.id, manufacturer.name, manufacturer.short_name  
             FROM motherboard_alias alias FULL OUTER JOIN motherboard mobo ON mobo.id=alias.motherboard_id, manufacturer 
             WHERE manufacturer.id=coalesce(alias.manufacturer_id,mobo.manufacturer_id) 
-            ORDER BY manufacturer.name;', $rsm
+            ORDER BY manufacturer.name;',
+            $rsm
         );
-        
+
         return $query->setCacheable(true)
-        ->getResult();
+            ->getResult();
     }
 
     /**
@@ -79,6 +80,50 @@ class ManufacturerRepository extends ServiceEntityRepository
         );
 
         return $query->getResult();
+    }
+
+    /**
+     * @return array
+     */
+    public function findAllBiosManufacturer2(): array
+    {
+        $conn = $this->getEntityManager()
+            ->getConnection();
+        $sql = 'SELECT COALESCE(m.short_name, m.name) as biosMan, COALESCE(m2.short_name, m2.name) as moboMan, mbmc.code from manufacturer m 
+        JOIN manufacturer_bios_manufacturer_code mbmc on m.id = mbmc.bios_manufacturer_id
+        JOIN manufacturer m2 on mbmc.manufacturer_id = m2.id
+        ORDER BY biosMan, code;';
+        $stmt = $conn->prepare($sql);
+        $res = $stmt->executeQuery();
+
+        $data = array();
+        foreach ($res->fetchAllAssociative() as $row) {
+            $data[$row["biosman"]][] = array($row["moboman"], $row["code"]);
+        }
+
+        return $data;
+    }
+
+    /**
+     * @return array
+     */
+    public function findAllChipsetBiosManufacturer(): array
+    {
+        $conn = $this->getEntityManager()
+            ->getConnection();
+        $sql = 'SELECT COALESCE(m.short_name, m.name) as chipsetMan, concat(c.part_no, concat(\' \', c.name)) as chipsetName, cbc.code from manufacturer m 
+        JOIN chipset_bios_code cbc on m.id = cbc.bios_manufacturer_id
+        JOIN chipset c on cbc.chipset_id = c.id
+        ORDER BY chipsetMan, code;';
+        $stmt = $conn->prepare($sql);
+        $res = $stmt->executeQuery();
+
+        $data = array();
+        foreach ($res->fetchAllAssociative() as $row) {
+            $data[$row["chipsetman"]][] = array($row["chipsetname"], $row["code"]);
+        }
+
+        return $data;
     }
 
     /**

@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Form\Admin\Manage;
 
 use App\Entity\Manufacturer;
@@ -10,13 +11,13 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 
-class ProcessorSearchType extends AbstractType {
-    
+class ProcessorSearchType extends AbstractType
+{
     public function __construct(EntityManagerInterface $entityManager)
     {
         $this->entityManager = $entityManager;
     }
-    
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder

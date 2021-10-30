@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
@@ -23,5 +24,4 @@ class SearchMotherboardExpansionSlotType extends AbstractType
                 ])
             ->add('count', NumberType::class);
     }
-
 }

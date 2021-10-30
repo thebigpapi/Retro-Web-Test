@@ -17,13 +17,13 @@ class ManufacturerBiosManufacturerCode
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Manufacturer", inversedBy="biosCodes")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Manufacturer", inversedBy="biosCodes", fetch="EAGER")
      * @ORM\JoinColumn(nullable=false)
      */
     private $manufacturer;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Manufacturer")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Manufacturer", fetch="EAGER")
      * @ORM\JoinColumn(nullable=false)
      */
     private $biosManufacturer;

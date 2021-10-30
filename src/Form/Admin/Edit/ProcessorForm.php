@@ -1,9 +1,9 @@
 <?php
+
 namespace App\Form\Admin\Edit;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -90,7 +90,7 @@ class ProcessorForm extends AbstractType
                 'placeholder' => 'Select a cache ratio ...',
                 'required' => false,
             ])
-            
+
             ->add('save', SubmitType::class)
             ;
     }
@@ -104,17 +104,16 @@ class ProcessorForm extends AbstractType
 
     public function finishView(FormView $view, FormInterface $form, array $options)
     {
-        usort($view->vars['form']['L1']->vars['choices'], function(ChoiceView $a, ChoiceView $b) {
+        usort($view->vars['form']['L1']->vars['choices'], function (ChoiceView $a, ChoiceView $b) {
             return ($a->data->getValue() > $b->data->getValue());
         });
 
-        usort($view->vars['form']['L2']->vars['choices'], function(ChoiceView $a, ChoiceView $b) {
+        usort($view->vars['form']['L2']->vars['choices'], function (ChoiceView $a, ChoiceView $b) {
             return ($a->data->getValue() > $b->data->getValue());
         });
 
-        usort($view->vars['form']['L3']->vars['choices'], function(ChoiceView $a, ChoiceView $b) {
+        usort($view->vars['form']['L3']->vars['choices'], function (ChoiceView $a, ChoiceView $b) {
             return ($a->data->getValue() > $b->data->getValue());
         });
-
     }
 }

@@ -1,17 +1,16 @@
 
 ###> symfony/framework-bundle ###
+/.env
 /.env.local
 /.env.local.php
 /.env.*.local
 /config/secrets/prod/prod.decrypt.private.php
 /public/bundles/
-/migrations/*
-/var/*
-/vendor/*
+/var/
+/vendor/
 ###< symfony/framework-bundle ###
 
 ###> symfony/phpunit-bridge ###
-.phpunit
 .phpunit.result.cache
 /phpunit.xml
 ###< symfony/phpunit-bridge ###
@@ -21,10 +20,22 @@
 /public/motherboard/bios/*
 /public/motherboard/image/*
 /public/motherboard/manual/*
+/public/motherboard/*
 /public/uploads/*
 /public/icons/*
 /public/chip/*
+/public/cache/*
 !public/media/cache/.gitkeep
 !public/motherboard/bios/.gitkeep
 !public/motherboard/image/.gitkeep
 !public/motherboard/manual/.gitkeep
+
+###> squizlabs/php_codesniffer ###
+/.phpcs-cache
+/phpcs.xml
+###< squizlabs/php_codesniffer ###
+
+###> liip/imagine-bundle ###
+/public/media/cache/
+###< liip/imagine-bundle ###
+/nbproject/private/

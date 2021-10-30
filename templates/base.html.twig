@@ -1,57 +1,90 @@
 {# templates/base.html.twig #}
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<!DOCTYPE HTML>
 <html dir="{{ 'dir.lang'|trans }}" lang="{{ 'user.lang'|trans }}">
 	<head>
 		<meta http-equiv="content-type" content="text/html; charset=UTF-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		{% block metatags %}
-		{% endblock %}
-		<title>{% block title %}Ultimate Hardware 2019{% endblock %}</title>
-		{% if isRobot(app.request.headers.get('User-Agent')) %}
-			<meta property="og:type" content="website">
-			<meta property="og:url" content="http://www.win3x.org/">
-			{% block opengraph %}
-				<meta property="og:title" content="Ultimate Hardware 2019" >
-				<meta property="og:description" content="The ultimate retro motherboard database" >
-				<meta property="og:image" content="{{ absolute_url(asset('assets/images/logo.gif')) }}" >
+		<meta name="viewport" content="width=device-width, initial-scale=1"> {% block metatags %}{% endblock %}
+		<title>
+			{% block title %}Ultimate Retro
 			{% endblock %}
-		{% endif %}
+		</title>
+		{#% if isRobot(app.request.headers.get('User-Agent')) %#}
+		<meta property="og:type" content="website">
+		<meta property="og:url" content="http://www.ultimateretro.net/">
+		{% block opengraph %}
+			<meta property="og:title" content="Ultimate Retro">
+			<meta property="og:description" content="The ultimate retro motherboard database">
+			<meta property="og:image" content="{{ absolute_url(asset('assets/images/logo.webp')) }}">
+		{% endblock %}
+		{#% endif %#}
 		<link rel="stylesheet" media="all" type="text/css" href="{{ absolute_url(asset('assets/main.css')) }}">
-		{% if css_for_admin is defined %}<link rel="stylesheet" media="all" type="text/css" href="{{ absolute_url(asset('assets/admin.css')) }}">{% endif %}
-		<link rel="stylesheet" media="only screen" type="text/css" href="{{ absolute_url(asset('assets/modern.css')) }}">
-		<!--[if lt IE 9]>
-			<link rel="stylesheet" type="text/css" href="{{ absolute_url(asset('assets/iexplore.css')) }}">
-		<![endif]-->
+		{% if css_for_admin is defined %}<link rel="stylesheet" media="all" type="text/css" href="{{ absolute_url(asset('assets/admin.css')) }}">
+		{% endif %}
+		{% for locale in locales | split('|') %}
+			<link rel="alternate" hreflang="{{ locale }}" href="{{ absolute_url(path('app_homepage', {_locale: locale})) }}"/>
+		{% endfor %}
+		<link rel="alternate" hreflang="x-default" href="{{ absolute_url(path('app_homepage', {_locale: 'en'})) }}"/>
 	</head>
 	<body class="content">
-		<form action="{{ path('change_page') }}" method="get"><div class="top-bar"><div class="table-mobile">
-			<a href="{{ path('app_homepage') }}">
-				<b>Ultimate Hardware <small>2019 BETA</small></b>
-			</a>
-			<a href="{{ path('app_credits') }}">
-				<img src="{{ absolute_url(asset('assets/images/about.gif')) }}" alt="{% trans %}About{% endtrans %}" title="">
-			</a>
-			<a href="/win3board">
-				<img src="{{ absolute_url(asset('assets/images/w3board.gif')) }}" alt="{% trans %}Board{% endtrans %}" title="">
-			</a>
-			<span class="form">	<input type="hidden" name="goto" value="{{ app.request.requesturi }}">
-			<select class="lang" name="lang">
-				{% for locale in locales %}<option{% if locale == 'user.lang'|trans %} selected="selected"{% endif %} value="{{ locale }}">{{ 'name.lang'|trans(locale=locale) }}</option>{% endfor %}
-			</select>
-			<input type="submit" value=" OK "></span>
-			{% if is_granted('ROLE_ADMIN') %}
-			<a href="{{ path('admin_index') }}">
-				<img src="{{ absolute_url(asset('assets/images/settings.gif')) }}" alt="{% trans %}Admin{% endtrans %}" title="">
-			</a>{% endif %}
-			{% if is_granted('ROLE_USER') %}
-			<a href="{{ path('app_logout') }}">
-				<img src="{{ absolute_url(asset('assets/images/logout.gif')) }}" alt="{% trans %}Logout{% endtrans %}" title="">
-			</a>{% endif %}
-		</div></div></form>
-		<div class="main">
-			<div class="page">
-				{% block body %}{% endblock %}
+		<div class="navbar">
+			<div class="navbar-inner">
+				<a href="{{ path('app_homepage') }}">
+					<b>Ultimate Retro
+						<small>BETA</small>
+					</b>
+				</a>
+				{% if is_granted('ROLE_USER') %}
+					<a href="{{ path('app_logout') }}" class="nav-link">
+						<img src="{{ absolute_url(asset('assets/images/nav/power.svg')) }}" height="24" alt="logout">
+						<span class="navbar-label">{{'Logout'|trans}}</span>
+					</a>
+				{% else %}
+					<a href="{{ path('app_login') }}" class="nav-link">
+						<img src="{{ absolute_url(asset('assets/images/nav/power.svg')) }}" height="24" alt="login">
+						<span class="navbar-label">{{'Login'|trans}}</span>
+					</a>
+				{% endif %}
+				{% if is_granted('ROLE_ADMIN') %}
+					<a href="{{ path('admin_index') }}" class="nav-link">
+						<img src="{{ absolute_url(asset('assets/images/nav/settings.svg')) }}" height="24" alt="admin">
+						<span class="navbar-label">{{'Admin'|trans}}</span>
+					</a>
+				{% endif %}
 			</div>
 		</div>
-	</body>
-</html>
+
+		<div class="main">
+			<div class="page"> {% block body %}{% endblock %}
+				</div>
+				<footer class="footer">
+					<div class="foot-container">
+						<div class="foot-part">
+							<div>
+								<a href="{{ path('app_credits') }}">
+									<img src="{{ absolute_url(asset('assets/images/nav/about.svg')) }}" height="16" alt="about">
+									<span class="navbar-label">{{'About us'|trans}}</span>
+								</a>
+							</div>
+							<div>
+								<a href="https://discord.gg/HWWH7hsk2p">
+									<img src="{{ absolute_url(asset('assets/images/nav/discord.svg')) }}" height="16" alt="discord">
+									<span class="navbar-label">{{'Join our Discord'|trans}}</span>
+								</a>
+							</div>
+						</div>
+						<div class="foot-part">
+							<div>
+								<a href="#">
+									<img src="{{ absolute_url(asset('assets/images/nav/email.svg')) }}" height="16" alt="email">
+									<span class="navbar-label">{{'Email us(TBA)'|trans}}</span>
+								</a>
+							</div>
+						</div>
+						<div class="foot-part">
+							<div style="width:20em;color:#FFFFFF;">{{'Designed by Deksor and computerguy08.'|trans}}<br>{{'(c) 2019-2021 All wrongs reversed.'|trans}}</div>
+						</div>
+					</div>
+				</footer>
+			</div>
+		</body>
+	</html>

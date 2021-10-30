@@ -329,7 +329,7 @@ class LargeFile
         $tmp = $this->getLanguages();
         $langs = "";
         foreach ($tmp as $key => $language) {
-            if(array_key_last($tmp->toArray())==$key)
+            if (array_key_last($tmp->toArray()) == $key)
                 $langs .= $language->getIsoCode();
             else
                 $langs .= $language->getIsoCode() . ", ";
@@ -338,7 +338,7 @@ class LargeFile
         $tmp = $this->getOsFlags();
         $osTags = "";
         foreach ($tmp as $key => $os) {
-            if(array_key_last($tmp->toArray())==$key)
+            if (array_key_last($tmp->toArray()) == $key)
                 $osTags .=  $os->getOsFlag()->getFullVersion();
             else
                 $osTags .=  $os->getOsFlag()->getFullVersion() . ", ";
@@ -347,7 +347,7 @@ class LargeFile
         $tmp = $this->getMediaTypeFlags();
         $mediaTypeTags = "";
         foreach ($tmp as $key => $media) {
-            if(array_key_last($tmp->toArray())==$key)
+            if (array_key_last($tmp->toArray()) == $key)
                 $mediaTypeTags .=  $media->getMediaTypeFlag()->getTagName();
             else
                 $mediaTypeTags .=  $media->getMediaTypeFlag()->getTagName() . ", ";
@@ -435,10 +435,10 @@ class LargeFile
 
     public function setReleaseDate(?\DateTimeInterface $releaseDate): self
     {
+        //dd($releaseDate);
         $date = new DateTime();
 
-        switch ($this->getDatePrecision())
-        {
+        switch ($this->getDatePrecision()) {
             case "m":
                 $date->setDate($releaseDate->format("Y"), $releaseDate->format("m"), "1");
                 break;
@@ -456,8 +456,7 @@ class LargeFile
     public function getReleaseDateString(): ?string
     {
         if ($this->releaseDate) {
-            switch ($this->getDatePrecision())
-            {
+            switch ($this->getDatePrecision()) {
                 case "m":
                     return $this->releaseDate->format("Y-m");
                     break;
@@ -467,8 +466,7 @@ class LargeFile
                 default:
                     return $this->releaseDate->format("Y-m-d");
             }
-        }
-        else return null;
+        } else return null;
     }
 
     public function getDatePrecision(): ?string
@@ -478,8 +476,7 @@ class LargeFile
 
     public function setDatePrecision(?string $datePrecision): self
     {
-        switch ($datePrecision)
-        {
+        switch ($datePrecision) {
             case "m":
                 $char = "m";
                 break;
@@ -491,7 +488,7 @@ class LargeFile
         }
 
         $this->datePrecision = $char;
-        
+
         $this->setReleaseDate($this->getReleaseDate());
 
         return $this;

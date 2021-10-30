@@ -5,9 +5,12 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\MaxRamRepository")
+ * @UniqueEntity("value")
  */
 class MaxRam
 {
@@ -20,6 +23,8 @@ class MaxRam
 
     /**
      * @ORM\Column(type="bigint")
+     * @Assert\NotBlank
+     * @Assert\PositiveOrZero
      */
     private $value;
 
@@ -44,17 +49,15 @@ class MaxRam
     {
         return $this->id;
     }
-    
+
     public function getValueWithUnit(): ?string
     {
-        if ($this->value >= (1024*1024)){
-            return round($this->value/(1024*1024), 2).'GB';
-        }
-        else if ($this->value >= 1024){
-            return round($this->value/1024, 2).'MB';
-        }
-        else{
-            return $this->value.'KB';
+        if ($this->value >= (1024 * 1024)) {
+            return round($this->value / (1024 * 1024), 2) . 'GB';
+        } elseif ($this->value >= 1024) {
+            return round($this->value / 1024, 2) . 'MB';
+        } else {
+            return $this->value . 'KB';
         }
     }
 

@@ -20,11 +20,12 @@ class MotherboardIdRedirectionRepository extends ServiceEntityRepository
         parent::__construct($registry, MotherboardIdRedirection::class);
     }
 
-    public function findRedirection(int $id, string $sourceType):?int {
+    public function findRedirection(int $id, string $sourceType): ?int
+    {
 
         $entityManager = $this->getEntityManager();
 
-        try {        
+        try {
             $query = $entityManager->createQuery(
                 'SELECT max(redirection.destination)
                 FROM App\Entity\MotherboardIdRedirection redirection
@@ -33,12 +34,9 @@ class MotherboardIdRedirectionRepository extends ServiceEntityRepository
             ->setParameter('id', $id);
 
             return $query->getSingleScalarResult();
-        }
-        catch (Exception $e)
-        {
+        } catch (Exception $e) {
             return null;
         }
-        
     }
 
     // /**

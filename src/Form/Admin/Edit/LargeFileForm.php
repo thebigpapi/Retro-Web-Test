@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Form\Admin\Edit;
 
 use App\Entity\DumpQualityFlag;
@@ -14,9 +15,6 @@ use App\Form\Type\LargeFileMediaTypeFlagType;
 use App\Form\Type\LargeFileOsFlagType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\FormInterface;
-use Symfony\Component\Form\FormView;
-use Symfony\Component\Form\ChoiceList\View\ChoiceView;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
@@ -136,5 +134,4 @@ class LargeFileForm extends AbstractType
             return ($a->data->getName() > $b->data->getName());
         });
     }*/
-
 }

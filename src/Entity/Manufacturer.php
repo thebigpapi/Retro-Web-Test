@@ -5,9 +5,13 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ManufacturerRepository")
+ * @UniqueEntity(fields={"name", "shortName"})
+ * @ORM\ChangeTrackingPolicy("DEFERRED_EXPLICIT")
  */
 class Manufacturer
 {
@@ -19,12 +23,13 @@ class Manufacturer
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, unique=true)
+     * @Assert\NotBlank
      */
     private $name;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="string", length=255, nullable=true, unique=true)
      */
     private $shortName;
 
@@ -64,7 +69,7 @@ class Manufacturer
     private $motherboardAliases;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Chip", mappedBy="Manufacturer")
+     * @ORM\OneToMany(targetEntity="App\Entity\Chip", mappedBy="manufacturer")
      */
     private $chips;
 
@@ -109,7 +114,7 @@ class Manufacturer
         return $this->id;
     }
 
-    public function getName(): ?string
+    public function getName(): string
     {
         return $this->name;
     }
@@ -132,10 +137,10 @@ class Manufacturer
 
         return $this;
     }
-    
+
     public function getShortNameIfExist(): ?string
     {
-        if($this->shortName){
+        if ($this->shortName) {
             return $this->shortName;
         }
         return $this->name;
@@ -430,7 +435,7 @@ class Manufacturer
 
     public function addBiosCode(ManufacturerBiosManufacturerCode $biosCode): self
     {
-        if (!$this->biosCodes->contains($biosCodes)) {
+        if (!$this->biosCodes->contains($biosCode)) {
             $this->biosCodes[] = $biosCode;
             $biosCode->setManufacturer($this);
         }

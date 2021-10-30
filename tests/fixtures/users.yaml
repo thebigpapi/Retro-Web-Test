@@ -1,0 +1,4 @@
+App\Entity\User:
+  bigmonstro:
+    username: "Big Monstro"
+    password: "rfdrdndjhgdrudridir"

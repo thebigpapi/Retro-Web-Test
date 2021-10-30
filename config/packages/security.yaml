@@ -1,7 +1,5 @@
 security:
-    encoders:
-        App\Entity\User:
-            algorithm: auto
+    enable_authenticator_manager: true
 
     # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
     providers:
@@ -24,16 +22,20 @@ security:
                 secret:   '%kernel.secret%'
                 lifetime: 604800 # 1 week in seconds
                 path:     /
+            form_login:
+                # "login" is the name of the route created previously
+                login_path: app_login
+                check_path: app_login
+                enable_csrf: true
             logout:
                 path:   app_logout
                 target: app_homepage
-            anonymous: lazy
+            lazy: true
             provider: app_user_provider
             http_basic:
                 realm: Secured Area
-            guard:
-                authenticators:
-                    - App\Security\LoginFormAuthenticator
+            entry_point: App\Security\LoginFormAuthenticator
+            custom_authenticator: App\Security\LoginFormAuthenticator
             
 
             # activate different ways to authenticate
@@ -41,6 +43,11 @@ security:
 
             # https://symfony.com/doc/current/security/impersonating_user.html
             # switch_user: true
+    password_hashers:
+        # Use native password hasher, which auto-selects and migrates the best
+        # possible hashing algorithm (starting from Symfony 5.3 this is "bcrypt")
+        Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: 'auto'
+
     role_hierarchy:
         ROLE_ADMIN:       ROLE_USER
         ROLE_SUPER_ADMIN: ROLE_ADMIN

@@ -22,7 +22,7 @@ class ChipImage
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Chip", inversedBy="chipImages")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Chip", inversedBy="images")
      * @ORM\JoinColumn(nullable=false)
      */
     private $chip;
@@ -53,7 +53,7 @@ class ChipImage
     private $updated_at;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Creditor", inversedBy="images")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Creditor", inversedBy="chipImages")
      */
     private $creditor;
 

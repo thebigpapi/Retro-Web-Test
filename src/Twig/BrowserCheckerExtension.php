@@ -1,5 +1,5 @@
 <?php
-// src/Twig/BrowserCheckerExtension.php
+
 namespace App\Twig;
 
 use Twig\Extension\AbstractExtension;
@@ -30,14 +30,14 @@ class BrowserCheckerExtension extends AbstractExtension
     public function isRobot($ua)
     {
         $robots = $this->params->get("user_agent.crawlers");
-        
+
         $match = "/";
-        foreach ($robots as $key => $robot)
-        {
-            if (array_key_first($robots) == $key)
+        foreach ($robots as $key => $robot) {
+            if (array_key_first($robots) == $key) {
                 $match = $match . $robot;
-            else
+            } else {
                 $match = $match . "|" . $robot;
+            }
         }
         $match = $match . "/";
         return preg_match($match, $ua);

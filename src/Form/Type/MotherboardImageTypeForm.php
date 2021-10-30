@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
@@ -12,7 +13,6 @@ use App\Entity\MotherboardImage;
 use App\Entity\MotherboardImageType;
 use App\Entity\Creditor;
 use App\Entity\License;
-use App\Form\Type\ImageType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\ChoiceList\View\ChoiceView;
@@ -27,7 +27,7 @@ class MotherboardImageTypeForm extends AbstractType
                 'disabled' => true,
             ])
             ->add('imageFile', FileType::class, [
-                'label' => 'Image (png, jpg or gif file)',
+                'label' => 'Image (png, svg, jpg or gif file)',
 
                 // unmapped means that this field is not associated to any entity property
                 //'mapped' => false,
@@ -46,6 +46,7 @@ class MotherboardImageTypeForm extends AbstractType
                             'image/pjpeg',
                             'image/png',
                             'image/gif',
+                            'image/svg+xml',
                         ],
                         'mimeTypesMessage' => 'Please upload a valid image',
                     ])
@@ -86,9 +87,8 @@ class MotherboardImageTypeForm extends AbstractType
 
     public function finishView(FormView $view, FormInterface $form, array $options)
     {
-        usort($view->children['creditor']->vars['choices'], function(ChoiceView $a, ChoiceView $b) {
+        usort($view->children['creditor']->vars['choices'], function (ChoiceView $a, ChoiceView $b) {
             return ($a->data->getName() > $b->data->getName());
-        });  
+        });
     }
-
 }

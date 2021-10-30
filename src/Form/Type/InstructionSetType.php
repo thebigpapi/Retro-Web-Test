@@ -1,12 +1,10 @@
 <?php
+
 namespace App\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use App\Entity\InstructionSet;
 use Symfony\Component\Form\ChoiceList\View\ChoiceView;
 use Symfony\Component\Form\FormInterface;
@@ -32,7 +30,6 @@ class InstructionSetType extends AbstractType
     {
         $resolver->setDefaults([
             'class' => InstructionSet::class,
-                
             'choice_label' => 'getName',
             'multiple' => false,
             'expanded' => false,
@@ -52,8 +49,8 @@ class InstructionSetType extends AbstractType
 
     public function finishView(FormView $view, FormInterface $form, array $options)
     {
-        usort($view->vars['choices'], function(ChoiceView $a, ChoiceView $b) {
+        usort($view->vars['choices'], function (ChoiceView $a, ChoiceView $b) {
             return ($a->data->getName() > $b->data->getName());
-        });  
+        });
     }
 }

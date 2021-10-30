@@ -1,47 +1,65 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Login{% endblock %}
+{% block title %}Login
+{% endblock %}
 
 {% block body %}
-<div class="main"><div class="page">
-	<table style="margin:auto;margin-top:50px;"><tr>
-		<td>
-			<img src="{{ absolute_url(asset('assets/images/admin/login.gif')) }}" alt="">
-		</td>
-		<td>
-		{% if app.user %}
-			{% trans %}You are logged in as{% endtrans %} {{ app.user.username }}, 
-			<a href="{{ path('app_logout') }}">{% trans %}Logout{% endtrans %}</a>
-		{% else %}
-		<form action="" method="post">
-			<table>
-				<tr>
-					<td colspan="2"><h2>{% trans %}Please login{% endtrans %}</h2></td>
-				</tr>
-				<tr>
-					<td><label for="inputUsername">{% trans %}Username{% endtrans %}</label></td>
-					<td><input type="text" value="{{ last_username }}" name="username" id="inputUsername"></td>
-				</tr>
-				<tr>
-					<td><label for="inputPassword">{% trans %}Password{% endtrans %}</label></td>
-					<td><input type="password" name="password" id="inputPassword">
-					<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}"></td>
-				</tr>
-				<tr>
-					<td><button style="margin-top:10px;" type="submit">{% trans %}Login{% endtrans %}</button></td>
-					<td><label><input type="checkbox" name="_remember_me"> {% trans %}Remember me{% endtrans %}</label></td>
-				</tr>
-			</table>
-		</form>
+	<div style="padding-top:50px;">{% trans %}You're about to access the administration pages. If you don't know what this is about, you're in the wrong place.{% endtrans %}
+		<br>{% trans %}Click
+		{% endtrans %}
+		<a href="{{ path('app_homepage') }}">{{'this link'|trans}}</a>
+		{% trans %}to return to the main page.{% endtrans %}</div>
+	<table style="margin:auto;margin-top:50px;">
+		<tr>
+			<td>
+				<img src="{{ absolute_url(asset('assets/images/admin/login.gif')) }}" alt="">
+			</td>
+			<td>
+				{% if app.user %}
+					{% trans %}You are logged in as{% endtrans %}
+					{{ app.user.username }},
+					<a href="{{ path('app_logout') }}">{% trans %}Logout{% endtrans %}</a>
+				{% else %}
+					<form action="" method="post">
+
+						<table>
+							<tr>
+								<td colspan="2">
+									<h2>{% trans %}Please login{% endtrans %}</h2>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<label for="inputUsername">{% trans %}Username{% endtrans %}</label>
+								</td>
+								<td><input type="text" value="{{ last_username }}" name="username" id="inputUsername"></td>
+							</tr>
+							<tr>
+								<td>
+									<label for="inputPassword">{% trans %}Password{% endtrans %}</label>
+								</td>
+								<td><input type="password" name="password" id="inputPassword">
+									<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}"></td>
+							</tr>
+							<tr>
+								<td>
+									<label><input type="checkbox" name="_remember_me">
+										{% trans %}Remember me{% endtrans %}</label>
+								</td>
+								<td>
+									<button style="margin-top:10px;" type="submit">{% trans %}Login{% endtrans %}</button>
+								</td>
+							</tr>
+						</table>
+					</form>
+				{% endif %}
+			</td>
+		</tr>
+		{% if error %}
+			<tr>
+				<td></td>
+				<td colspan="2" style="font-size:16px">{{ error.messageKey|trans(error.messageData, 'security') }}</td>
+			</tr>
 		{% endif %}
-		</td>
-	</tr>
-	{% if error %}
-	<tr>
-		<td></td>
-		<td colspan="2" style="font-size:16px">{{ error.messageKey|trans(error.messageData, 'security') }}</td>
-	</tr>
-	{% endif %}
 	</table>
-</div></div>
 {% endblock %}

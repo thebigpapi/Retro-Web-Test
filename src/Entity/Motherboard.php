@@ -5,6 +5,7 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Query\Expr\Func;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\MotherboardRepository")
@@ -21,12 +22,12 @@ class Motherboard
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $name;
+    private ?string $name = null;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $dimensions;
+    private ?string $dimensions = null;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Manufacturer", inversedBy="motherboards", fetch="EAGER")
@@ -39,22 +40,41 @@ class Motherboard
     private $chipset;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\MotherboardMaxRam", mappedBy="motherboard", orphanRemoval=true, cascade={"persist"})
+     * @ORM\OneToMany(
+     *   targetEntity="App\Entity\MotherboardMaxRam",
+     *   mappedBy="motherboard",
+     *   orphanRemoval=true,
+     *   cascade={"persist"}
+     * )
      */
     private $motherboardMaxRams;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\MotherboardBios", mappedBy="motherboard", orphanRemoval=true, cascade={"persist"})
+     * @ORM\OneToMany(
+     *   targetEntity="App\Entity\MotherboardBios",
+     *   mappedBy="motherboard",
+     *   orphanRemoval=true,
+     *   cascade={"persist"}
+     * )
      */
     private $motherboardBios;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\MotherboardExpansionSlot", mappedBy="motherboard", orphanRemoval=true, cascade={"persist"})
+     * @ORM\OneToMany(
+     *   targetEntity="App\Entity\MotherboardExpansionSlot",
+     *   mappedBy="motherboard",
+     *   orphanRemoval=true,
+     *   cascade={"persist"}
+     * )
      */
     private $motherboardExpansionSlots;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\MotherboardIoPort", mappedBy="motherboard", orphanRemoval=true, cascade={"persist"})
+     * @ORM\OneToMany(
+     *   targetEntity="App\Entity\MotherboardIoPort",
+     *   mappedBy="motherboard",
+     *   orphanRemoval=true, cascade={"persist"}
+     * )
      */
     private $motherboardIoPorts;
 
@@ -99,7 +119,12 @@ class Motherboard
     private $coprocessors;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\MotherboardImage", mappedBy="motherboard", orphanRemoval=true, cascade={"persist"})
+     * @ORM\OneToMany(
+     *   targetEntity="App\Entity\MotherboardImage",
+     *   mappedBy="motherboard",
+     *   orphanRemoval=true,
+     *   cascade={"persist"}
+     * )
      */
     private $images;
 
@@ -126,7 +151,7 @@ class Motherboard
     /**
      * @ORM\Column(type="string", length=2048, nullable=true)
      */
-    private $note;
+    private ?string $note = null;
 
     /**
      * @ORM\Column(type="datetime")
@@ -136,10 +161,15 @@ class Motherboard
     /**
      * @ORM\Column(type="integer", nullable=true)
      */
-    private $maxCpu;
+    private ?int $maxCpu = null;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\MotherboardAlias", mappedBy="motherboard", orphanRemoval=true, cascade={"persist"})
+     * @ORM\OneToMany(
+     *   targetEntity="App\Entity\MotherboardAlias",
+     *   mappedBy="motherboard",
+     *   orphanRemoval=true,
+     *   cascade={"persist"}
+     * )
      */
     private $motherboardAliases;
 
@@ -149,14 +179,28 @@ class Motherboard
     private $cpuSockets;
 
     /**
-     * @ORM\OneToMany(targetEntity=LargeFileMotherboard::class, mappedBy="motherboard", orphanRemoval=true, cascade={"persist"})
+     * @ORM\OneToMany(
+     *   targetEntity=LargeFileMotherboard::class,
+     *   mappedBy="motherboard",
+     *   orphanRemoval=true,
+     *   cascade={"persist"}
+     * )
      */
     private $drivers;
 
     /**
-     * @ORM\OneToMany(targetEntity=MotherboardIdRedirection::class, mappedBy="destination", orphanRemoval=true, cascade={"persist"})
+     * @ORM\OneToMany(
+     *   targetEntity=MotherboardIdRedirection::class,
+     *   mappedBy="destination",
+     *   orphanRemoval=true, cascade={"persist"}
+     * )
      */
     private $redirections;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=PSUConnector::class, mappedBy="motherboards")
+     */
+    private $psuConnectors;
 
 
     public function __construct()
@@ -183,6 +227,7 @@ class Motherboard
         $this->processorPlatformTypes = new ArrayCollection();
         $this->drivers = new ArrayCollection();
         $this->redirections = new ArrayCollection();
+        $this->psuConnectors = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -213,13 +258,12 @@ class Motherboard
 
         return $this;
     }
-    
+
     public function getManufacturerShortNameIfExist(): ?string
     {
-        if($this->manufacturer){
+        if ($this->manufacturer) {
             return $this->manufacturer->getShortNameIfExist();
-        }
-        else{
+        } else {
             return 'Unknown';
         }
     }
@@ -273,7 +317,7 @@ class Motherboard
         $mmr->setMaxRam($maxRam);
         $mmr->setMotherboard($this);
         $mmr->setNote($note);
-        
+
         return $this->addMotherboardMaxRam($mmr);
     }
 
@@ -386,7 +430,7 @@ class Motherboard
         $mip->setIoPort($ioPort);
         $mip->setMotherboard($this);
         $mip->setCount($count);
-        
+
         return $this->addMotherboardIoPort($mip);
     }
 
@@ -435,20 +479,25 @@ class Motherboard
     public function getSortedProcessors(): Collection
     {
         $processors = array();
-        foreach($this->processors as $processor) {
+        foreach ($this->processors as $processor) {
             $processorsTmp = array();
             foreach ($processor->getChipAliases() as $alias) {
-                if (($alias->getManufacturer() != $processor->getManufacturer()) && $alias->getName() != $processor->getName()) {
+                if (
+                    ($alias->getManufacturer() != $processor->getManufacturer())
+                    &&
+                    $alias->getName() != $processor->getName()
+                ) {
                     $alreadyAdded = false;
-                    foreach($processorsTmp as $processorTmp)
-                    {
-                        if (($alias->getManufacturer() == $processorTmp->getManufacturer()) && $alias->getName() == $processorTmp->getName())
-                        {
+                    foreach ($processorsTmp as $processorTmp) {
+                        if (
+                            ($alias->getManufacturer() == $processorTmp->getManufacturer())
+                            &&
+                            $alias->getName() == $processorTmp->getName()
+                        ) {
                             $alreadyAdded = true;
                         }
                     }
-                    if(!$alreadyAdded)
-                    {
+                    if (!$alreadyAdded) {
                         $fakeCPU = clone $processor;
                         $fakeCPU->setName($alias->getName());
                         $fakeCPU->setManufacturer($alias->getManufacturer());
@@ -754,7 +803,8 @@ class Motherboard
         return $this;
     }
 
-    public function updateLastEdited() {
+    public function updateLastEdited()
+    {
         $this->lastEdited = new \DateTime('now');
     }
 
@@ -831,7 +881,12 @@ class Motherboard
 
     public function getAllDrivers(): Collection
     {
-        return new ArrayCollection(array_merge($this->getChipset() ? $this->getChipset()->getDrivers()->toArray():array(), $this->getDrivers()->toArray()));
+        return new ArrayCollection(
+            array_merge(
+                $this->getChipset() ? $this->getChipset()->getDrivers()->toArray() : array(),
+                $this->getDrivers()->toArray()
+            )
+        );
     }
 
     /**
@@ -894,4 +949,30 @@ class Motherboard
         return $this;
     }
 
+    /**
+     * @return Collection|PSUConnector[]
+     */
+    public function getPsuConnectors(): Collection
+    {
+        return $this->psuConnectors;
+    }
+
+    public function addPsuConnector(PSUConnector $psuConnector): self
+    {
+        if (!$this->psuConnectors->contains($psuConnector)) {
+            $this->psuConnectors[] = $psuConnector;
+            $psuConnector->addMotherboard($this);
+        }
+
+        return $this;
+    }
+
+    public function removePsuConnector(PSUConnector $psuConnector): self
+    {
+        if ($this->psuConnectors->removeElement($psuConnector)) {
+            $psuConnector->removeMotherboard($this);
+        }
+
+        return $this;
+    }
 }

@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
@@ -42,8 +43,8 @@ class LanguageType extends AbstractType
 
     public function finishView(FormView $view, FormInterface $form, array $options)
     {
-        usort($view->vars['choices'], function(ChoiceView $a, ChoiceView $b) {
+        usort($view->vars['choices'], function (ChoiceView $a, ChoiceView $b) {
             return ($a->data->getName() > $b->data->getName());
-        });  
+        });
     }
 }

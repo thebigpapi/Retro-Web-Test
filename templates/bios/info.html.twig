@@ -3,7 +3,7 @@
 {% block title %}{% trans %}BIOS Info{% endtrans %}{% endblock %}
 
 {% block body %}
-<h2 class="title">{% trans %}Where can I find the POST string?{% endtrans %}</h2>
+<div class="title"><b>{% trans %}Where can I find the POST string?{% endtrans %}</b></div>
 	<p>{% trans %}In general, the POST string is located in the bottom left side of the boot screen 
 		(for BIOSes which provide it). Depending on the BIOS vendor, the POST string may
 		provide various info about the board (like chipset or date). Here is a list of common 
@@ -16,7 +16,7 @@
 			<img src="{{ absolute_url(asset('assets/images/bios/awardbios.gif')) }}" alt="awardbios" title=""></a></span></span>
 	<span class="image-block"><span>
 		<a href="{{ absolute_url(asset('assets/images/bios/awardstring.jpg')) }}" class="highslide" onclick="return imgexp(this);">
-			<img src="{{ absolute_url(asset('assets/images/bios/awardstring.gif')) }}" alt="awardbiosinfo" title=""></a></span></span>
+			<img src="{{ absolute_url(asset('assets/images/bios/awardstring.jpg')) }}" alt="awardbiosinfo" title=""></a></span></span>
 	<p>{% trans %}You can find a list of Award chipset IDs{% endtrans %} <a href="{{path("bios_infoadv")}}?first=award-chip">{% trans %}here{% endtrans %}</a>
 	{% trans %}and a list of Award board manufacturer IDs{% endtrans %} <a href="{{path("bios_infoadv")}}?first=award">{% trans %}here{% endtrans %}</a></p>
 	<br>
@@ -33,7 +33,11 @@
 	<span class="image-block"><span>
 		<a href="{{ absolute_url(asset('assets/images/bios/acerbios.jpg')) }}" class="highslide" onclick="return imgexp(this);">
 			<img src="{{ absolute_url(asset('assets/images/bios/acerbios.gif')) }}" alt="acerbios" title=""></a></span></span>
+	<span class="image-block"><span>
+		<a href="{{ absolute_url(asset('assets/images/bios/acerstring.png')) }}" class="highslide" onclick="return imgexp(this);">
+			<img src="{{ absolute_url(asset('assets/images/bios/acerstring.png')) }}" alt="amibiosinfo" title=""></a></span></span>
 	</div>
+	<br>
 	<div id="jsappend"></div>
 	<script type="text/javascript"><!--
 		var ua = window.navigator.userAgent;

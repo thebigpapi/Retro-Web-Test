@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
@@ -79,5 +80,4 @@ class MotherboardBiosType extends AbstractType
             'data_class' => MotherboardBios::class,
         ]);
     }
-
 }

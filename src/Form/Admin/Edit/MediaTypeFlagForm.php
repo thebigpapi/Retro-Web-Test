@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Form\Admin\Edit;
 
 use App\Entity\MediaTypeFlag;
@@ -57,5 +58,4 @@ class MediaTypeFlagForm extends AbstractType
             'data_class' => MediaTypeFlag::class,
         ]);
     }
-
 }

@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Form\Type;
 
 use App\Entity\LargeFile;
@@ -33,5 +34,4 @@ class LargeFileChipsetType extends AbstractType
             'data_class' => LargeFileChipset::class,
         ]);
     }
-
 }

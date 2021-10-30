@@ -77,12 +77,12 @@ class VideoChipset
     public function getNameWithManufacturer()
     {
         if ($this->name) {
-            if($this->chipName) {
-                return $this->getManufacturer()->getShortNameIfExist() . " " . $this->name . " (" . $this->chipName . ")";
+            if ($this->chipName) {
+                return $this->manufacturer->getShortNameIfExist() . " " . $this->name . " (" . $this->chipName . ")";
             }
             return $this->getManufacturer()->getShortNameIfExist() . " " . $this->name;
         }
-        if($this->chipName) {
+        if ($this->chipName) {
             return $this->getManufacturer()->getShortNameIfExist() . " " . $this->chipName;
         }
         return $this->getManufacturer()->getShortNameIfExist() . " Unidentified";

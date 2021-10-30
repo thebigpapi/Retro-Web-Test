@@ -3,7 +3,7 @@
 {% block title %}{% trans %}Search results{% endtrans %}{% endblock %}
 
 {% block body %}
-	<h2 class="title">{% trans %}Search results{% endtrans %}</h2>
+	<div class="title"><b>{% trans %}Search results{% endtrans %}</b></div>
 	{% if postStringAnalysis %}
 		<p style="text-align:center;padding-top:10px;">
 			<i>{{ "Couldn't find any exact POST string match, the results you see are generated using POST string analysis."|trans }}</i>

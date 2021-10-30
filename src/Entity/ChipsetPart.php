@@ -13,7 +13,7 @@ class ChipsetPart extends Chip
 {
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\ChipsetPart", mappedBy="chipsetParts")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Chipset", mappedBy="chipsetParts")
      */
     private $chipsets;
 
@@ -62,10 +62,9 @@ class ChipsetPart extends Chip
     public function getShortName(): ?string
     {
         if ($this->name) {
-            return "$this->name ($this->partNumber)"; 
-        }
-        else {
-            return "$this->partNumber"; 
+            return "$this->name ($this->partNumber)";
+        } else {
+            return "$this->partNumber";
         }
     }
 }

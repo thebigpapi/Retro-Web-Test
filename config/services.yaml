@@ -2,15 +2,12 @@
 # Files in the packages/ subdirectory configure your dependencies.
 
 # Put parameters here that don't need to change on each machine where the app is deployed
-# https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
+# https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
-    app.locales: [de, en, es, fr, it, nl, ro, ru]
-    app.path: !php/const app.path
-    web.path: !php/const web.path
-    #app.path: .
-    #web.path: .
-    app.pagination.max: 100
+    app.locales: de|en|es|fr|it|nl|ro|ru
+    locale: en
 
+    app.pagination.max: 100
     user_agent.crawlers: ['Discordbot','Twitterbot','Googlebot','Googlebot-Image','Bingbot','Slurp','DuckDuckBot','Baiduspider','Baiduspider-image','YandexBot','facebookexternalhit','www.qwant.com']
 
 services:
@@ -29,15 +26,10 @@ services:
             - '../src/Kernel.php'
             - '../src/Tests/'
 
-    # controllers are imported separately to make sure services can be injected
-    # as action arguments even if you don't extend any base controller class
-    App\Controller\:
-        resource: '../src/Controller/'
-        tags: ['controller.service_arguments']
+    App\Controller\RedirectController:
+        calls:
+            - method: setContainer
+              arguments: ['@service_container']
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
-
-    App\EventSubscriber\ImageCacheSubscriber:
-        tags:
-           - { name: doctrine.event_subscriber, connection: default }

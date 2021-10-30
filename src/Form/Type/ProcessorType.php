@@ -1,12 +1,10 @@
 <?php
+
 namespace App\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use Symfony\Component\Form\FormView;
-use Symfony\Component\Form\FormInterface;
 use App\Entity\Processor;
 
 class ProcessorType extends AbstractType
@@ -15,7 +13,7 @@ class ProcessorType extends AbstractType
     {
         $resolver->setDefaults([
             'class' => Processor::class,
-                
+
             'choice_label' => 'getNameWithSpecs',
             'multiple' => false,
             'expanded' => false,
@@ -26,5 +24,4 @@ class ProcessorType extends AbstractType
     {
         return EntityType::class;
     }
-
 }

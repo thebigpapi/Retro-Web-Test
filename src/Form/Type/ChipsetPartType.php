@@ -1,12 +1,10 @@
 <?php
+
 namespace App\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use App\Entity\ChipsetPart;
 
 class ChipsetPartType extends AbstractType
@@ -29,7 +27,6 @@ class ChipsetPartType extends AbstractType
     {
         $resolver->setDefaults([
             'class' => ChipsetPart::class,
-                
             'choice_label' => 'getFullName',
             'multiple' => false,
             'expanded' => false,
