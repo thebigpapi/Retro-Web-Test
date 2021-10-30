@@ -105,14 +105,17 @@
 		{% trans %}here{% endtrans %}</a>.</b></p><table class="stbl">
 <tr>
 	<td>
-		<div style="width:170px;">{% trans %}Form factor:{% endtrans %}</div>
+		<div style="width:170px;">{% trans %}Form factor/PSU connector:{% endtrans %}</div>
 	</td>
 	<td style="width: 100%;">
 		{% if motherboard.getFormFactor() is not null %}
-			{{ motherboard.getFormFactor().getName() }}
+			<span class="text-block" style="background-color:#cae4fa;">{{ motherboard.getFormFactor().getName() }}</span>
 		{% else %}
-			{% trans %}Unknown{% endtrans %}
+			<span class="text-block" style="background-color:#cae4fa;">{% trans %}Unknown{% endtrans %}</span>
 		{% endif %}
+		{% for psu in motherboard.getPsuConnectors() %}
+			<span class="text-block" style="background-color:#fae9ca;">{{ psu.getName() }}</span>
+		{% endfor %}
 	</td>
 </tr>
 {% if motherboard.getChipset() is not null %}
