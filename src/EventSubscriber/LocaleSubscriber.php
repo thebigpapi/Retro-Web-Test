@@ -25,8 +25,8 @@ class LocaleSubscriber implements EventSubscriberInterface
 
         if (($max = count($clientLangs)) > 0) {
             for ($i = 0; $i < $max; $i++) {
-                if (in_array($clientLangs[$i], $serverLangs)) {
-                    return $clientLangs[$i];
+                if (in_array(substr($clientLangs[$i], 0, 2), $serverLangs)) {
+                    return substr($clientLangs[$i], 0, 2);
                 }
             }
         }
