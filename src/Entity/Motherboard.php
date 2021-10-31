@@ -198,7 +198,7 @@ class Motherboard
     private $redirections;
 
     /**
-     * @ORM\ManyToMany(targetEntity=PSUConnector::class, mappedBy="motherboards")
+     * @ORM\ManyToMany(targetEntity=PSUConnector::class, inversedBy="motherboards")
      */
     private $psuConnectors;
 

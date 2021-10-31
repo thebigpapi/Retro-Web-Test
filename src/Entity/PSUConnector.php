@@ -25,7 +25,7 @@ class PSUConnector
     private $name;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Motherboard::class, inversedBy="psuConnectors")
+     * @ORM\ManyToMany(targetEntity=Motherboard::class, mappedBy="psuConnectors")
      */
     private $motherboards;
 
