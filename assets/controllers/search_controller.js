@@ -9,6 +9,15 @@ export default class extends Controller {
         _this.xhttp = new XMLHttpRequest();
     }
 
+    reset() {
+        let _this = this;
+        _this.setChipset(1, formtype, "setchip1", "setchip2", "setchip-lb", "[chipsetManufacturer]=", chk);
+        if (chk) {
+            _this.setChipset(1, formtype, "setcpu1", "setcpu2", "setcpu1-lb", "[cpuSocket1]=", chk);
+            _this.setChipset(1, formtype, "setcpu3", "setcpu4", "setcpu2-lb", "[cpuSocket2]=", chk);
+        }
+    }
+
     change() {
         let _this = this;
         console.log("sending");
@@ -21,6 +30,8 @@ export default class extends Controller {
 
         var resetButton = document.getElementById('rst-btn');
         var lb2 = document.getElementById('setchip2');
+
+        console.log(chk);
         if (chk) {
             var cpu1 = document.getElementById(formtype + '_cpuSocket1');
             var cpu2 = document.getElementById(formtype + '_cpuSocket2');
@@ -32,13 +43,6 @@ export default class extends Controller {
         document.getElementById('setchip2').style.display = 'none';
         document.getElementById('setchip2').style.display = '';
 
-        resetButton.onclick = function () {
-            _this.setChipset(1, formtype, "setchip1", "setchip2", "setchip-lb", "[chipsetManufacturer]=", chk);
-            if (chk) {
-                _this.setChipset(1, formtype, "setcpu1", "setcpu2", "setcpu1-lb", "[cpuSocket1]=", chk);
-                _this.setChipset(1, formtype, "setcpu3", "setcpu4", "setcpu2-lb", "[cpuSocket2]=", chk);
-            }
-        };
         chip.onchange = function () {
             _this.setChipset(0, formtype, "setchip1", "setchip2", "setchip-lb", "[chipsetManufacturer]=", chk);
         };
