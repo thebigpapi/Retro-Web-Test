@@ -18,6 +18,7 @@
 		{% endblock %}
 		{#% endif %#}
 		<link rel="stylesheet" media="all" type="text/css" href="{{ absolute_url(asset('assets/main.css')) }}">
+		<link rel="stylesheet" media="all" type="text/css" href="{{ absolute_url(asset('assets/highslide/highslide.css')) }}">
 		{% if css_for_admin is defined %}<link rel="stylesheet" media="all" type="text/css" href="{{ absolute_url(asset('assets/admin.css')) }}">
 		{% endif %}
 		{% for locale in locales | split('|') %}
