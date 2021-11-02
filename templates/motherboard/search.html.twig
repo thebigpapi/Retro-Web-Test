@@ -21,7 +21,9 @@
 	<meta name="description" content="Search for a motherboard by name, chipset, manufacturer, CPU platform, form factor, expansion slot count and more.">
 {% endblock %}
 {% block body %}
-	<div class="title"><b>{% trans %}Search for a motherboard{% endtrans %}</b></div>
+	<div class="title">
+		<b>{% trans %}Search for a motherboard{% endtrans %}</b>
+	</div>
 	<p style="text-align:center;">
 		{% trans %}List boards whose manufacturer name starts with:{% endtrans %}<br>
 		{% for letter in ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z']%}
@@ -75,8 +77,8 @@
 				</span>
 			</td>
 			<td>
-				<div class="sadv">
-					<div id="setchip1">{{ form_widget(form.chipsetManufacturer, {'attr': {'class': 'sform'}}) }}</div>
+				<div class="sadv" data-controller="search">
+					<div id="setchip1">{{ form_widget(form.chipsetManufacturer, {'attr': {'class': 'sform', 'data-action': "change->search#change"}}) }}</div>
 					<div class="sform1">
 						<span id="setchip-lb"></span>
 						<span class="butn-noajax">{{ form_row(form.searchChipsetManufacturer)|replace({'<div><button': '<input', '</button></div>': '">', '>': ' value="'})|raw }}</span>
