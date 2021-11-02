@@ -2,6 +2,13 @@ import { Controller } from 'stimulus';
 
 export default class extends Controller {
 
+    connect() {
+        //Loading ajax on page load
+        console.log("Loading ajax");
+        let _this = this
+        _this.xhttp = new XMLHttpRequest();
+    }
+
     change() {
         let _this = this;
         console.log("sending");
@@ -12,7 +19,7 @@ export default class extends Controller {
         var formtype = "search";
         var chip = document.getElementById(formtype + '_chipsetManufacturer');
 
-        var rst = document.getElementById('rst-btn');
+        var resetButton = document.getElementById('rst-btn');
         var lb2 = document.getElementById('setchip2');
         if (chk) {
             var cpu1 = document.getElementById(formtype + '_cpuSocket1');
@@ -20,17 +27,12 @@ export default class extends Controller {
             var lb3 = document.getElementById('setcpu2');
             var lb4 = document.getElementById('setcpu4');
         }
-        /* compatibility for IE JS*/
-        if (window.XMLHttpRequest)
-            var xhttp = new XMLHttpRequest();
-        else if (window.ActiveXObject)
-            var xhttp = new ActiveXObject("Microsoft.XMLHTTP");
-        if (xhttp) {
-            document.getElementById('search-table').className = 'ajax';
-            document.getElementById('setchip2').style.display = 'none';
-            document.getElementById('setchip2').style.display = '';
-        }
-        rst.onclick = function () {
+
+        document.getElementById('search-table').className = 'ajax';
+        document.getElementById('setchip2').style.display = 'none';
+        document.getElementById('setchip2').style.display = '';
+
+        resetButton.onclick = function () {
             _this.setChipset(1, formtype, "setchip1", "setchip2", "setchip-lb", "[chipsetManufacturer]=", chk);
             if (chk) {
                 _this.setChipset(1, formtype, "setcpu1", "setcpu2", "setcpu1-lb", "[cpuSocket1]=", chk);
@@ -51,6 +53,7 @@ export default class extends Controller {
     }
 
     setChipset(ok, formtype, sel1, sel2, sel_lb, typ, chk) {
+        let _this = this;
         var chipManuf = document.getElementById(sel1).childNodes;
         var lb1 = document.getElementById(sel_lb);
         var lb2 = document.getElementById(sel2);
@@ -60,18 +63,15 @@ export default class extends Controller {
             var form = document.getElementsByName(formtype + "_motherboard")[0];
         else
             var form = document.getElementsByName(formtype)[0];
-        if (window.XMLHttpRequest)
-            var xhttp = new XMLHttpRequest();
-        else if (window.ActiveXObject)
-            var xhttp = new ActiveXObject("Microsoft.XMLHTTP");
-        xhttp.onreadystatechange = function () {
-            if (xhttp.readyState == 4 && xhttp.status == 200) {
+
+        _this.xhttp.onreadystatechange = function () {
+            if (_this.xhttp.readyState == 4 && _this.xhttp.status == 200) {
                 var currentForm = document.getElementById(sel2);
                 var parser = document.getElementById('hiddenDiv');
                 var lb1 = document.getElementById(sel_lb);
                 lb1.innerHTML = "";
                 currentForm.style.display = "";
-                parser.innerHTML = xhttp.responseText;
+                parser.innerHTML = _this.xhttp.responseText;
                 var doc = document.getElementById(sel2);
                 currentForm.innerHTML = doc.innerHTML;
                 parser.innerHTML = "";
@@ -81,8 +81,8 @@ export default class extends Controller {
         var chipsetManufacturer = chipManuf[0].value;
         if (ok) chipsetManufacturer = "";
         var params = formtype + typ + chipsetManufacturer;
-        xhttp.open('POST', form.action, true);
-        xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        xhttp.send(params);
+        _this.xhttp.open('POST', form.action, true);
+        _this.xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        _this.xhttp.send(params);
     }
 }
