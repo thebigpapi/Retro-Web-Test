@@ -39,3 +39,9 @@
 /public/media/cache/
 ###< liip/imagine-bundle ###
 /nbproject/private/
+
+###> symfony/webpack-encore-bundle ###
+/node_modules/
+/public/build/
+/public/assets/
+###<<< symfony/webpack-encore-bundle ###

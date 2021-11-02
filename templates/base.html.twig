@@ -17,9 +17,13 @@
 			<meta property="og:image" content="{{ absolute_url(asset('assets/images/logo.webp')) }}">
 		{% endblock %}
 		{#% endif %#}
-		<link rel="stylesheet" media="all" type="text/css" href="{{ absolute_url(asset('assets/main.css')) }}">
-		{% if css_for_admin is defined %}<link rel="stylesheet" media="all" type="text/css" href="{{ absolute_url(asset('assets/admin.css')) }}">
-		{% endif %}
+		{% block stylesheets %}
+			{{ encore_entry_link_tags('app') }}
+		{% endblock %}
+
+		{% block javascripts %}
+			{{ encore_entry_script_tags('app') }}
+		{% endblock %}
 		{% for locale in locales | split('|') %}
 			<link rel="alternate" hreflang="{{ locale }}" href="{{ absolute_url(path('app_homepage', {_locale: locale})) }}"/>
 		{% endfor %}
