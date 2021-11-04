@@ -113,12 +113,12 @@
 {% else %}&nbsp;{% endif %}
 </div>
 <div class="show-nav" id="sh-nav">
-	<a class="snav" href="#" onclick="show_gen()">
-		<img src="{{ absolute_url(asset('assets/images/odbc.gif')) }}" alt="" width="16" height="16" style="vertical-align: middle;padding-right:2px;">General</a>
-	<a class="snav" href="#downloads" onclick="show_dw()">
-		<img src="{{ absolute_url(asset('assets/images/dw.gif')) }}" alt="" width="16" height="16" style="vertical-align: middle;padding-right:2px;">Downloads</a>
-	<a class="snav" href="#cpus" onclick="show_cpu()">
-		<img src="{{ absolute_url(asset('assets/images/chip_small.gif')) }}" alt="" width="16" height="16" style="vertical-align: middle;padding-right:2px;">CPUs</a>
+	<a class="snav" onclick="show_gen()">
+		<img src="{{ absolute_url(asset('assets/images/data.svg')) }}" alt="" width="16" height="16" style="vertical-align: middle;padding-right:2px;">General</a>
+	<a class="snav" onclick="show_dw()">
+		<img src="{{ absolute_url(asset('assets/images/dw.svg')) }}" alt="" width="16" height="16" style="vertical-align: middle;padding-right:2px;">Downloads</a>
+	<a class="snav" onclick="show_cpu()">
+		<img src="{{ absolute_url(asset('assets/images/cpu.svg')) }}" alt="" width="16" height="16" style="vertical-align: middle;padding-right:2px;">CPUs</a>
 	<div><b class="contrib">{% trans %}Would you like to improve this page? Click{% endtrans %}
 	<a href="{% if is_granted('ROLE_ADMIN') %}{{ path('new_motherboard_edit', {id: motherboard.getId()}) }}{% else %}https://discord.gg/HWWH7hsk2p{% endif %}">
 	{% trans %}here{% endtrans %}</a>.</b></div>
@@ -127,19 +127,26 @@
 	<table class="stbl">
 		<tr>
 			<td>
-				<div style="width:170px;">{% trans %}Form factor/PSU connector:{% endtrans %}</div>
+				<div style="width:170px;">{% trans %}Form factor:{% endtrans %}</div>
 			</td>
 			<td style="width: 100%;">
 				{% if motherboard.getFormFactor() is not null %}
-					<span class="text-block" style="background-color:#cae4fa;">{{ motherboard.getFormFactor().getName() }}</span>
+					{{ motherboard.getFormFactor().getName() }}
 				{% else %}
-					<span class="text-block" style="background-color:#cae4fa;">{% trans %}Unknown{% endtrans %}</span>
+					{% trans %}Unknown{% endtrans %}
 				{% endif %}
+			</td>
+		</tr>
+	{% if motherboard.getPsuConnectors() is not empty %}
+		<tr>
+			<td>{% trans %}PSU connector{% endtrans %}:</td>
+			<td>
 				{% for psu in motherboard.getPsuConnectors() %}
-					<span class="text-block" style="background-color:#fae9ca;">{{ psu.getName() }}</span>
+					{{ psu.getName() }}{% if not loop.last %}, {% endif %}
 				{% endfor %}
 			</td>
 		</tr>
+	{% endif %}
 	{% if motherboard.getChipset() is not null %}
 		<tr>
 			<td>{% trans %}Chipset{% endtrans %}:</td>
@@ -299,20 +306,38 @@
 	{% endif %}
 </div>
 <div class="show-downloads" id="sh-downloads">
-	{% if motherboard.getAllDrivers() is not empty %}
 	<div class="scroll-div">
 		<img src="{{ absolute_url(asset('assets/images/hardware.gif')) }}" alt="" style="vertical-align: middle;padding-bottom: 10px;">
-		<b>{% trans %}Drivers:{% endtrans %}</b>
+		<span><b>{% trans %}Drivers:{% endtrans %} </b></span>
+		{% if motherboard.getAllDrivers() is not empty %}
+		<span>{{ motherboard.getAllDrivers.count() }}{% if motherboard.getAllDrivers.count() == 1 %} entry{% else %} entries{% endif %}</span>
 		<table class="stbl">
 			<tr class="stbl-head">{{ driverHeader() }}</tr>
 			{% for driver in motherboard.getAllDrivers() %}{{ driverLink(driver.largeFile) }}{% endfor %}
 		</table>
+		{% else %}
+		<span>not available</span>
+		{% endif %}
 	</div>
-	{% endif %}
-	{% if motherboard.getMotherboardBios() is not empty %}
 	<div class="scroll-div">
 		<img src="{{ absolute_url(asset('assets/images/chip.gif')) }}" alt="" style="vertical-align: middle;padding-bottom: 10px;">
-		<b>{% trans %}BIOS images:{% endtrans %}</b>
+		<span><b>{% trans %}BIOS images:{% endtrans %} </b></span>
+		{% if motherboard.getMotherboardBios() is not empty %}
+			{% set bfile_cnt = 0 %}
+			{% for bios in motherboard.getMotherboardBios() %}
+				{% if bios.getFileName() is not null %}{% set bfile_cnt = bfile_cnt + 1 %}{% endif %}
+			{% endfor %}
+			{% if bfile_cnt > 1 %}
+				<span>{{ bfile_cnt }} files</span>
+			{% elseif bfile_cnt > 0 %}
+				<span>{{ bfile_cnt }} file</span>
+			{% else %}
+				<span>no files available</span>
+			{% endif %}
+		{% else %}
+		<span>not available</span>
+		{% endif %}
+		{% if motherboard.getMotherboardBios() is not empty %}
 		<table class="stbl">
 			<tr class="stbl-head">
 				<th>{% trans %}Manuf.{% endtrans %}</th>
@@ -330,7 +355,7 @@
 				<td>
 				{% if bios.getFileName() is not null %}
 					<a href="{{ vich_uploader_asset(bios, 'romFile') }}">
-						<img src="{{ absolute_url(asset('assets/images/dw.gif')) }}" alt="" width="16" height="16" style="vertical-align: middle;">
+						<img src="{{ absolute_url(asset('assets/images/dw.svg')) }}" alt="" width="16" height="16" style="vertical-align: middle;">
 						{% if bios.getBoardVersion() is not null %}
 							{{ bios.getBoardVersion() }}
 						{% else %}
@@ -343,29 +368,35 @@
 			</tr>
 			{% endfor %}
 		</table>
+		{% endif %}
 	</div>
-	{% endif %}
-	{% if motherboard.getManuals() is not empty %}
-	<table class="stbl">
-		<tr>
-			<td>
-				<img src="{{ absolute_url(asset('assets/images/manual.gif')) }}" alt="" style="vertical-align: middle;padding-bottom: 10px;">
-				<b>{% trans %}Manuals:{% endtrans %}</b>
-			</td>
-			<td>
-				<ul style="list-style-type: none;">{% for manual in motherboard.getManuals()|sort((a, b) => a.getLinkName <=> b.getLinkName) %}
-					<li>
-						<a href="{{ vich_uploader_asset(manual, 'manualFile') }}">
-							<img src="{{ absolute_url(asset('assets/images/dw.gif')) }}" alt="" width="16" height="16" style="vertical-align: middle;">
-							{{ manual.getLinkName() }}
-						</a>
-						({{ manual.getLanguage().getName()}})
-					</li>
-				{% endfor %}</ul>
-			</td>
-		</tr>
-	</table>
-	{% endif %}
+	<div class="scroll-div">
+		<img src="{{ absolute_url(asset('assets/images/manual.gif')) }}" alt="" style="vertical-align: middle;padding-bottom: 10px;">
+		<span><b>{% trans %}Manuals:{% endtrans %} </b></span>
+		{% if motherboard.getManuals() is not empty %}
+		<span>{{ motherboard.getManuals.count() }}{% if motherboard.getManuals.count() == 1 %} entry{% else %} entries{% endif %}</span>
+		<table class="stbl">
+			<tr>
+				<td>
+					
+				</td>
+				<td>
+					<ul style="list-style-type: none;">{% for manual in motherboard.getManuals()|sort((a, b) => a.getLinkName <=> b.getLinkName) %}
+						<li>
+							<a href="{{ vich_uploader_asset(manual, 'manualFile') }}">
+								<img src="{{ absolute_url(asset('assets/images/dw.svg')) }}" alt="" width="16" height="16" style="vertical-align: middle;">
+								{{ manual.getLinkName() }}
+							</a>
+							({{ manual.getLanguage().getName()}})
+						</li>
+					{% endfor %}</ul>
+				</td>
+			</tr>
+		</table>
+		{% else %}
+		<span>not available</span>
+		{% endif %}
+	</div>
 </div>
 <div class="show-cpus" id="sh-cpus">
 		{% if motherboard.getProcessors() is not empty %}
@@ -383,35 +414,35 @@
 						<th>Core</th>
 						<th>Process</th>
 						<th>TDP</th>
-						<th>Part Number</th>
+						{#<th>Part Number</th>#}
 					</tr>
 					{% for processor in motherboard.getSortedProcessors() %}
 					<tr style="text-align:center;">
 						<td>{{ processor.manufacturer.getShortNameIfExist() }}&nbsp;{{ processor.getName() }}</td>
 						<td>{{ processor.speed.getValueWithUnit() }}</td>
 						<td>{{ processor.fsb.getValueWithUnit() }}</td>
-						<td>{{ processor.getVoltagesWithValue()}}</td>
+						<td>{{ processor.getVoltagesWithValue() }}</td>
 						<td>{% if processor.l1 is not null %}
 							{{ processor.l1.getValueWithUnit()}}
-							{% if processor.l1CacheMethod is not null %}
+							{#{% if processor.l1CacheMethod is not null %}
 								({{ processor.l1CacheMethod.getName()}})
-							{% endif %}
+							{% endif %}#}
 						{% else %}
 							-
 						{% endif %}</td>
 						<td>{% if processor.l2 is not null %}
 							{{ processor.l2.getValueWithUnit()}}
-							{% if processor.l2CacheRatio is not null %}
+							{#{% if processor.l2CacheRatio is not null %}
 								({{ processor.l2CacheRatio.getName()}})
-							{% endif %}
+							{% endif %}#}
 						{% else %}
 							-
 						{% endif %}</td>
 						<td>{% if processor.l3 is not null %}
 							{{ processor.l3.getValueWithUnit()}}
-							{% if processor.l3CacheRatio is not null %}
+							{#{% if processor.l3CacheRatio is not null %}
 								({{ processor.l3CacheRatio.getName()}})
-							{% endif %}
+							{% endif %}#}
 						{% else %}
 							-
 						{% endif %}</td>
@@ -430,7 +461,17 @@
 						{% else %}
 							-
 						{% endif %}</td>
-						<td>{{ processor.partNumber}}</td></tr>{% endfor %}</table></div>{% endif %}{% if motherboard.getCoprocessors() is not empty %}<b>{% trans %}Supported NPUs:{% endtrans %}</b><div class="scroll-div"><table class="stbl"><tr class="stbl-head"><th>Model</th><th>Speed</th><th>FSB</th><th>Part Number</th></tr>{% for copro in motherboard.getCoprocessors()|sort((a, b) => a.getPartNumber() <=> b.getPartNumber()) %}<tr style="text-align:center;">
+						{#<td>{{ processor.partNumber}}</td>#}</tr>
+					{% endfor %}
+				</table>
+			</div>
+		{% endif %}
+		{% if motherboard.getCoprocessors() is not empty %}
+			<b>{% trans %}Supported NPUs:{% endtrans %}</b>
+			<div class="scroll-div">
+				<table class="stbl">
+					<tr class="stbl-head"><th>Model</th><th>Speed</th><th>FSB</th><th>Part Number</th></tr>
+					{% for copro in motherboard.getCoprocessors()|sort((a, b) => a.getPartNumber() <=> b.getPartNumber()) %}<tr style="text-align:center;">
 						<td>{{ copro.manufacturer.getShortNameIfExist() }}&nbsp;{{ copro.getName() }}</td>
 						<td>{{ copro.speed.getValueWithUnit() }}</td>
 						<td>{{ copro.fsb.getValueWithUnit() }}</td>
@@ -445,25 +486,21 @@
 <div style="width:100%;clear:left;"></div>
 <script>
 	//alert(window.location.href);
-	var showimg = document.getElementById('sh-images');
 	var showgen = document.getElementById('sh-general');
 	var showdw = document.getElementById('sh-downloads');
 	var showcpu = document.getElementById('sh-cpus');
 	var shownav = document.getElementById('sh-nav');
 	function show_gen(){
-		showimg.style.display = 'block';
 		showgen.style.display = 'block';
 		showdw.style.display = 'none';
 		showcpu.style.display = 'none';
 	}
 	function show_dw(){
-		showimg.style.display = 'block';
 		showgen.style.display = 'none';
 		showdw.style.display = 'block';
 		showcpu.style.display = 'none';
 	}
 	function show_cpu(){
-		showimg.style.display = 'none';
 		showgen.style.display = 'none';
 		showdw.style.display = 'none';
 		showcpu.style.display = 'block';
