@@ -32,9 +32,9 @@
 		<a href="{{path("moboindex")}}">?</a>
 	</p>
 	<div id="hiddenDiv" style="display: none;"></div>
-	{{ form_start(form, {'method': 'POST', 'name': 'search_motherboard', 'action':path("motherboard_search")}) }}
+	{{ form_start(form, {'method': 'POST', 'name': 'search_motherboard', 'action':path("motherboard_search"), 'attr':{'data-controller':'search'}}) }}
 	<div class="butn">
-		<input id="rst-btn" type="reset" value="{% trans %}Reset fields{% endtrans %}" class="butn-0">
+		<input id="rst-btn" type="reset" value="{% trans %}Reset fields{% endtrans %}" class="butn-0" data-action="click->search#reset" data-reset-ids='search_chipsetManufacturer search_cpuSocket1 search_cpuSocket2'>
 		{{ form_row(form.search)|replace({'<div><button': '<input class="butn-1"', '</button></div>': '">', '>': ' value="'})|raw }}
 		{{ form_row(form.searchWithImages)|replace({'<div><button': '<input class="butn-2"', '</button></div>': '">', '>': ' value="'})|raw }}
 	</div>
@@ -77,11 +77,10 @@
 				</span>
 			</td>
 			<td>
-				<div class="sadv" data-controller="search">
-					<div id="setchip1">{{ form_widget(form.chipsetManufacturer, {'attr': {'class': 'sform', 'data-action': "change->search#change"}}) }}</div>
+				<div class="sadv">
+					<div id="setchip1">{{ form_widget(form.chipsetManufacturer, {'attr': {'class': 'sform', 'data-action': "change->search#search", 'data-target-id': 'search_chipset'}}) }}</div>
 					<div class="sform1">
 						<span id="setchip-lb"></span>
-						<span class="butn-noajax">{{ form_row(form.searchChipsetManufacturer)|replace({'<div><button': '<input', '</button></div>': '">', '>': ' value="'})|raw }}</span>
 						<span id="setchip2">{{ form_widget(form.chipset) }}</span>
 					</div>
 				</div>
@@ -98,10 +97,9 @@
 			</td>
 			<td>
 				<div class="sadv">
-					<div id="setcpu1">{{ form_widget(form.cpuSocket1, {'attr': {'class': 'sform'}}) }}</div>
+					<div id="setcpu1">{{ form_widget(form.cpuSocket1, {'attr': {'class': 'sform', 'data-action': "change->search#search", 'data-target-id': 'search_platform1'}}) }}</div>
 					<div class="sform1">
 						<span id="setcpu1-lb"></span>
-						<span class="butn-noajax">{{ form_row(form.searchSocket1)|replace({'<div><button': '<input', '</button></div>': '">', '>': ' value="'})|raw }}</span>
 						<span id="setcpu2">{{ form_widget(form.platform1) }}</span>
 					</div>
 				</div>
@@ -113,10 +111,9 @@
 			</td>
 			<td>
 				<div class="sadv">
-					<div id="setcpu3">{{ form_widget(form.cpuSocket2, {'attr': {'class': 'sform'}}) }}</div>
+					<div id="setcpu3">{{ form_widget(form.cpuSocket2, {'attr': {'class': 'sform',  'data-action': "change->search#search", 'data-target-id': 'search_platform2'}}) }}</div>
 					<div class="sform1">
 						<span id="setcpu2-lb"></span>
-						<span class="butn-noajax">{{ form_row(form.searchSocket2)|replace({'<div><button': '<input', '</button></div>': '">', '>': ' value="'})|raw }}</span>
 						<span id="setcpu4">{{ form_widget(form.platform2) }}</span>
 					</div>
 				</div>
@@ -176,20 +173,4 @@
 		</tr>
 	</table>
 	<div>{{ form_rest(form)}}</div>
-</form><br>
-<div id="jsappend"></div>
-<script
-	type="text/javascript">
-	<!--
-	if ((document.uniqueID || !document.all) && (window.XMLHttpRequest || window.ActiveXObject)) {
-var ls = "{{ 'Please wait ...'|trans|e('js') }}";
-var h = document.getElementById("jsappend");
-var js = document.createElement('script');
-js.type = "text/javascript";
-js.src = "{{ absolute_url(asset('assets/search.js')) }}";
-js.setAttribute("async", "");
-h.appendChild(js);
-}
-//
-	-->
-</script>{% endblock %}
+</form>{% endblock %}
