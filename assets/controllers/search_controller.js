@@ -32,7 +32,8 @@ export default class extends Controller {
 
     /**
      * Set the result of searching searched to target
-     * @param {*} searched The element that will be sent to the server
+     * @param {*} searchedName The name of the select element that will be sent to the server
+     * @param {*} searchedValue The value selected in the select element that will be sent to the server
      * @param {*} target The target element for the server's response
      */
     setResult(searchedName, searchedValue, targetId) {
