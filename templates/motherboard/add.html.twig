@@ -7,7 +7,7 @@
 
 
 	<form
-		name="add_motherboard" method="post" enctype="multipart/form-data" onsubmit="return check_E()">
+		data-controller="motherboard--add" name="add_motherboard" method="post" enctype="multipart/form-data" data-action="submit->motherboard--add#check">
 		{# form_start(form, {'method': 'POST','enctype':'multipart/form-data', 'onsubmit':'return check_E()'}) #}
 
 		<div class="show-images" style="max-height:none">
@@ -18,15 +18,15 @@
 				</span>
 			</div>
 			<div id="images-fields-list" data-widget-counter="{{ form.images|length }}" data-prototype="
-																																																																																				<div class=imgp>{{ form_widget(form.images.vars.prototype.imageFile, {'attr': {'style': 'width:100%'}})|e }}</div>
-																																																																																				<div class=imgp><span>Type: </span>{{ form_widget(form.images.vars.prototype.motherboardImageType)|e }}</div>
-																																																																																				<div class=imgp><span>Creditor: </span>{{ form_widget(form.images.vars.prototype.creditor)|e }}</div>
-																																																																																				<div class=imgp><span>License: </span>{{ form_widget(form.images.vars.prototype.license)|e }}</div>
-																																																																																				<div class=imgp><span>Notes: </span>{{ form_widget(form.images.vars.prototype.description)|e }}</div>
-																																																																																				<div class=imgp>Uploaded file:
-																																																																																					<button type=button onclick=remove(this.parentNode);>Delete this entry</button></div>
-																																																																																				<div class=imgp>{{ form_widget(form.images.vars.prototype.file_name, {'attr': {'style': 'width:90%'}})|e }}</div>
-																																																																																				">
+								<div class=imgp>{{ form_widget(form.images.vars.prototype.imageFile, {'attr': {'style': 'width:100%'}})|e }}</div>
+								<div class=imgp><span>Type: </span>{{ form_widget(form.images.vars.prototype.motherboardImageType)|e }}</div>
+								<div class=imgp><span>Creditor: </span>{{ form_widget(form.images.vars.prototype.creditor)|e }}</div>
+								<div class=imgp><span>License: </span>{{ form_widget(form.images.vars.prototype.license)|e }}</div>
+								<div class=imgp><span>Notes: </span>{{ form_widget(form.images.vars.prototype.description)|e }}</div>
+								<div class=imgp>Uploaded file:
+									<button type=button onclick=remove(this.parentNode);>Delete this entry</button></div>
+								<div class=imgp>{{ form_widget(form.images.vars.prototype.file_name, {'attr': {'style': 'width:90%'}})|e }}</div>
+								">
 				{% for image in form.images %}
 					<div class="addform">
 						<div class="imgp">{{ form_widget(image.imageFile, {'attr': {'style': 'width:100%'}}) }}</div>
@@ -81,10 +81,10 @@
 							<button type="button" onclick="expand('motherboardAliases-fields-list')">Add</button>
 						</div>
 						<div class="append_table" id="motherboardAliases-fields-list" data-widget-counter="{{ form.motherboardAliases|length }}" data-prototype="
-																																																																																																																																				<div class=ba6>{{ form_widget(form.motherboardAliases.vars.prototype.manufacturer, {'attr': {'style': 'width:100%'}} )|e }}</div>
-																																																																																																																																				<div class=ba6>{{ form_widget(form.motherboardAliases.vars.prototype.name, {'attr': {'style': 'width:100%'}} )|e }}</div>
-																																																																																																																																				<div class=ba2><button type=button onclick=remove(this.parentNode);>Del</button></div>
-																																																																																																																																			">
+														<div class=ba6>{{ form_widget(form.motherboardAliases.vars.prototype.manufacturer, {'attr': {'style': 'width:100%'}} )|e }}</div>
+														<div class=ba6>{{ form_widget(form.motherboardAliases.vars.prototype.name, {'attr': {'style': 'width:100%'}} )|e }}</div>
+														<div class=ba2><button type=button onclick=remove(this.parentNode);>Del</button></div>
+													">
 							{% for alias in form.motherboardAliases %}
 								<div>
 									<div class="ba6">{{ form_widget(alias.manufacturer, {'attr': {'style': 'width:100%'}}
@@ -116,9 +116,9 @@
 					</td>
 					<td>
 						<input type="submit" id="motherboard_form_save" name="motherboard_form[save]" style="background: url({{ absolute_url(asset('assets/images/admin/save.png')) }}) no-repeat scroll 5px 1px;
-																																																																																																																			line-height: 4px;padding:18px 5px 18px 50px;font-size: 16px;margin-left: 5px;display:block;margin-bottom:5px;background-color: #ebebeb" value="Save board">
+														line-height: 4px;padding:18px 5px 18px 50px;font-size: 16px;margin-left: 5px;display:block;margin-bottom:5px;background-color: #ebebeb" value="Save board">
 						<input type="button" style="background: url({{ absolute_url(asset('assets/images/admin/clone.png')) }}) no-repeat scroll 5px 1px;
-																																																																																																																			line-height: 4px;padding:18px 5px 18px 45px;font-size: 16px;margin-left: 5px;display:block;background-color: #ebebeb" onclick="clone_board()" value="Clone board">
+														line-height: 4px;padding:18px 5px 18px 45px;font-size: 16px;margin-left: 5px;displa	y:block;background-color: #ebebeb" data-action="click->motherboard--add#clone" value="Clone board">
 					</td>
 				</tr>
 			</table>
@@ -285,15 +285,15 @@
 				</div>
 			</div>
 			<div class="append_table" id="motherboardBios-fields-list" data-widget-counter="{{ form.motherboardBios|length }}" data-prototype="
-																																																																																			<div class=ba0>{{ form_widget(form.motherboardBios.vars.prototype.manufacturer, {'attr': {'style': 'width:100%'}} )|e }}</div>
-																																																																																			<div class=ba1>{{ form_widget(form.motherboardBios.vars.prototype.postString, {'attr': {'style': 'width:100%'}} )|e }}</div>
-																																																																																			<div class=ba2>{{ form_widget(form.motherboardBios.vars.prototype.note, {'attr': {'style': 'width:100%'}} )|e }}</div>
-																																																																																			<div class=ba3>{{ form_widget(form.motherboardBios.vars.prototype.boardVersion, {'attr': {'style': 'width:100%'}} )|e }}</div>
-																																																																																			<div class=ba3>{{ form_widget(form.motherboardBios.vars.prototype.coreVersion, {'attr': {'style': 'width:100%'}} )|e }}</div>
-																																																																																			<div class=ba4>{{ form_widget(form.motherboardBios.vars.prototype.romFile, {'attr': {'style': 'width:100%'}} )|e }}</div>
-																																																																																			<div class=ba5>{{ form_widget(form.motherboardBios.vars.prototype.file_name, {'attr': {'style': 'width:100%'}} )|e }}</div>
-																																																																																			<div class=ba3><button type=button onclick=remove(this.parentNode);>Del</button></div>
-																																																																																		">
+									<div class=ba0>{{ form_widget(form.motherboardBios.vars.prototype.manufacturer, {'attr': {'style': 'width:100%'}} )|e }}</div>
+									<div class=ba1>{{ form_widget(form.motherboardBios.vars.prototype.postString, {'attr': {'style': 'width:100%'}} )|e }}</div>
+									<div class=ba2>{{ form_widget(form.motherboardBios.vars.prototype.note, {'attr': {'style': 'width:100%'}} )|e }}</div>
+									<div class=ba3>{{ form_widget(form.motherboardBios.vars.prototype.boardVersion, {'attr': {'style': 'width:100%'}} )|e }}</div>
+									<div class=ba3>{{ form_widget(form.motherboardBios.vars.prototype.coreVersion, {'attr': {'style': 'width:100%'}} )|e }}</div>
+									<div class=ba4>{{ form_widget(form.motherboardBios.vars.prototype.romFile, {'attr': {'style': 'width:100%'}} )|e }}</div>
+									<div class=ba5>{{ form_widget(form.motherboardBios.vars.prototype.file_name, {'attr': {'style': 'width:100%'}} )|e }}</div>
+									<div class=ba3><button type=button onclick=remove(this.parentNode);>Del</button></div>
+								">
 				{% for bios in form.motherboardBios %}
 					<div style="width:100%">
 						<div class="ba0">{{ form_widget(bios.manufacturer, {'attr': {'style': 'width:100%'}}
@@ -341,11 +341,11 @@
 			</div>
 
 			<div id="manuals-fields-list" data-widget-counter="{{ form.manuals|length }}" data-prototype="
-																																																																																				<div class=ba1>{{ form_widget(form.manuals.vars.prototype.link_name, {'attr': {'style': 'width:100%'}} )|e }}</div>
-																																																																																				<div class=ba2>{{ form_widget(form.manuals.vars.prototype.language, {'attr': {'style': 'width:100%'}} )|e }}</div>
-																																																																																				<div class=ba4>{{ form_widget(form.manuals.vars.prototype.manualFile, {'attr': {'style': 'width:100%'}} )|e }}</div>
-																																																																																				<div class=ba5>{{ form_widget(form.manuals.vars.prototype.file_name, {'attr': {'style': 'width:100%'}} )|e }}</div>
-																																																																																				<div class=ba3><button type=button onclick=remove(this.parentNode);>Del</button></div>">
+								<div class=ba1>{{ form_widget(form.manuals.vars.prototype.link_name, {'attr': {'style': 'width:100%'}} )|e }}</div>
+								<div class=ba2>{{ form_widget(form.manuals.vars.prototype.language, {'attr': {'style': 'width:100%'}} )|e }}</div>
+								<div class=ba4>{{ form_widget(form.manuals.vars.prototype.manualFile, {'attr': {'style': 'width:100%'}} )|e }}</div>
+								<div class=ba5>{{ form_widget(form.manuals.vars.prototype.file_name, {'attr': {'style': 'width:100%'}} )|e }}</div>
+								<div class=ba3><button type=button onclick=remove(this.parentNode);>Del</button></div>">
 				{% for manual in form.manuals %}
 					<div style="width:100%">
 						<div class="ba1">{{ form_widget(manual.link_name, {'attr': {'style': 'width:100%'}}
@@ -388,13 +388,13 @@
 			<tr>
 				<td class="exp-table">
 					<div id="motherboardIoPorts-fields-list" data-widget-counter="{{ form.motherboardIoPorts|length }}" data-prototype="
-																																																																																																																						{{ form_widget(form.motherboardIoPorts.vars.prototype.count, {'attr': {'class': 'num'}} )|e }} x
-																																																																																																																						{{ form_widget(form.motherboardIoPorts.vars.prototype.io_port, {'attr': {'style': 'width:50%'}} )|e }}
-																																																																																																																						<button type=button onclick=remove(this);>Del</button>">
+													{{ form_widget(form.motherboardIoPorts.vars.prototype.count, {'attr': {'class': 'num'}} )|e }} x
+													{{ form_widget(form.motherboardIoPorts.vars.prototype.io_port, {'attr': {'style': 'width:50%'}} )|e }}
+													<button type=button onclick=remove(this);>Del</button>">
 						{% for port in form.motherboardIoPorts %}
 							<div>{{ form_widget(port.count, {'attr': {'class': 'num'}}
 								) }}
-																																																																																																																																							x
+																x
 								{{ form_widget(port.io_port, {'attr': {'style': 'width:50%'}}
 								) }}
 								<button type="button" onclick="remove(this);">Del</button>
@@ -406,13 +406,13 @@
 				</td>
 				<td class="exp-table">
 					<div id="motherboardExpansionSlots-fields-list" data-widget-counter="{{ form.motherboardExpansionSlots|length }}" data-prototype="
-																																																																																																																					{{ form_widget(form.motherboardExpansionSlots.vars.prototype.count, {'attr': {'class': 'num'}} )|e }} x
-																																																																																																																					{{ form_widget(form.motherboardExpansionSlots.vars.prototype.expansion_slot, {'attr': {'style': 'width:50%;display:inline'}} )|e  }}
-																																																																																																																					<button type=button onclick=remove(this);>Del</button>">
+												{{ form_widget(form.motherboardExpansionSlots.vars.prototype.count, {'attr': {'class': 'num'}} )|e }} x
+												{{ form_widget(form.motherboardExpansionSlots.vars.prototype.expansion_slot, {'attr': {'style': 'width:50%;display:inline'}} )|e  }}
+												<button type=button onclick=remove(this);>Del</button>">
 						{% for slot in form.motherboardExpansionSlots %}
 							<div>{{ form_widget(slot.count, {'attr': {'class': 'num'}}
 								) }}
-																																																																																																																																						x
+																x
 								{{ form_widget(slot.expansion_slot, {'attr': {'style': 'width:50%'}}
 								) }}
 								<button type="button" onclick="remove(this);">Del</button>
