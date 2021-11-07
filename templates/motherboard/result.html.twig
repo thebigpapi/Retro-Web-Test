@@ -5,7 +5,9 @@
 {% endblock %}
 
 {% block body %}
-	<div class="title"><b>{% trans %}Search results{% endtrans %}</b></div>
+	<div class="title">
+		<b>{% trans %}Search results{% endtrans %}</b>
+	</div>
 	<p>
 		<b class="contrib">{% trans %}Can't you find a motherboard? Click{% endtrans %}
 			<a href="{% if is_granted('ROLE_ADMIN') %}{{ path('new_motherboard_add') }}{% else %}https://discord.gg/HWWH7hsk2p{% endif %}">{% trans %}here{% endtrans %}</a>
@@ -30,7 +32,7 @@
 								<a class="result-link" href="{{ path("motherboard_show", {id: motherboard.getId()}) }}">{{ motherboard.getManufacturerShortNameIfExist() }}&nbsp;{{ motherboard.name }}</a>
 							</span>
 							<!--
-													{% if motherboard.getMotherboardAliases() is not empty %}-->
+																				{% if motherboard.getMotherboardAliases() is not empty %}-->
 
 							{% for alias in motherboard.getMotherboardAliases() %}
 								<span class="results-alias">
@@ -44,9 +46,9 @@
 										{{ alias.name }}</small>
 								</span>
 							{% endfor %}<!--
-														
-														{% endif %}
-												--></span>
+																						
+																						{% endif %}
+																				--></span>
 					</span>
 				{% endfor %}
 			{% else %}
@@ -72,8 +74,8 @@
 
 						</li>
 						{#% if motherboard.getProcessorPlatformType() is not null %}
-												{{ motherboard.getProcessorPlatformType().getName() }}	
-											{% endif %#}
+																		{{ motherboard.getProcessorPlatformType().getName() }}	
+																	{% endif %#}
 					{% endfor %}
 				</ul>
 
@@ -93,7 +95,7 @@ if (! msie || msie > 5) {
 var h = document.getElementById("jsappend");
 var js = document.createElement('script');
 js.type = "text/javascript";
-js.src = "{{ absolute_url(asset('assets/highslide/highslide.js')) }}";
+js.src = "{{ absolute_url(asset('build/highslide/highslide.js')) }}";
 h.appendChild(js);
 }
 function imgexp(el) {
@@ -104,7 +106,10 @@ return 0;
  else 
 return hs.expand(el);
 
+
 }
-//--></script>
+//
+			-->
+		</script>
 	{% endif %}
 {% endblock %}

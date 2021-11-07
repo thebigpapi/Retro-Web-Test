@@ -101,7 +101,7 @@
 &nbsp;{% endif %}</div><div class="show-data"><p>
 <b class="contrib">{% trans %}Would you like to improve this page? Click{% endtrans %}
 	<a href="
-																																			{% if is_granted('ROLE_ADMIN') %}{{ path('new_motherboard_edit', {id: motherboard.getId()}) }}{% else %}https://discord.gg/HWWH7hsk2p{% endif %}">
+																																						{% if is_granted('ROLE_ADMIN') %}{{ path('new_motherboard_edit', {id: motherboard.getId()}) }}{% else %}https://discord.gg/HWWH7hsk2p{% endif %}">
 		{% trans %}here{% endtrans %}</a>.</b></p><table class="stbl">
 <tr>
 	<td>
@@ -175,16 +175,16 @@
 						<span class="text-block" style="background-color:#cae4fa;" {% if maxRam.getMaxRam().getValue() > 1048575 %}>{{ maxRam.getMaxRam().getValue() / 1048576 }}
 							{% trans %}GB{% endtrans %}
 							<!--
-																																																																																				-->
+																																																																																											-->
 						{% elseif maxRam.getMaxRam().getValue() > 1023 %}
 							>{{ maxRam.getMaxRam().getValue() / 1024 }}
 							{% trans %}MB{% endtrans %}
 							<!--
-																																																																																				-->
+																																																																																											-->
 						{% else %}
 							>{{ maxRam.getMaxRam().getValue() }}
 							{% trans %}KB{% endtrans %}<!--
-																																																																																														-->{% endif %}
+																																																																																																						-->{% endif %}
 						{% if maxRam.getNote() is not null %}
 							({{ maxRam.getNote()}})
 						{% endif %}
@@ -205,18 +205,18 @@
 		<span class="text-block" style="background-color:#d0faca;" {% if cache.getValue() > 1048575 %}>{{ cache.getValue() / 1048576 }}
 			{% trans %}MB{% endtrans %}
 			<!--
-																																							-->
+																																										-->
 		{% elseif cache.getValue() > 1023 %}
 			>{{ cache.getValue() / 1024}}
 			{% trans %}KB{% endtrans %}
 			<!--
-																																							-->
+																																										-->
 		{% else %}
 			>{{ cache.getValue()}}
 			{% trans %}B{% endtrans %}<!--
-																																																	-->{% endif %}
+																																																					-->{% endif %}
 	</span>
-{% endfor %}</tr></td></tr>{% endif %}</table>{% if motherboard.getAllDrivers() is not empty %}<div class="scroll-div"><img src="{{ absolute_url(asset('assets/images/hardware.gif')) }}" alt="" style="vertical-align: middle;padding-bottom: 10px;"><b>{% trans %}Drivers:{% endtrans %}</b><table class="stbl"><tr class="stbl-head">{{ driverHeader() }}</tr>{% for driver in motherboard.getAllDrivers() %}{{ driverLink(driver.largeFile) }}{% endfor %}</table></div>{% endif %}{% if motherboard.getMotherboardBios() is not empty %}<div class="scroll-div"><img src="{{ absolute_url(asset('assets/images/chip.gif')) }}" alt="" style="vertical-align: middle;padding-bottom: 10px;"><b>{% trans %}BIOS images:{% endtrans %}</b><table class="stbl"><tr class="stbl-head"><th>{% trans %}Manuf.{% endtrans %}</th><th>{% trans %}POST String{% endtrans %}</th><th>{% trans %}Note{% endtrans %}</th><th>{% trans %}Core Ver.{% endtrans %}</th><th>{% trans %}BIOS Ver.{% endtrans %}</th></tr>{% for bios in motherboard.getMotherboardBios()|sort((a, b) => b.boardVersion <=> a.boardVersion)|sort((a, b) => a.manufacturer <=> b.manufacturer) %}<tr style="text-align:center;border: 1px solid #e0e0e0;">
+{% endfor %}</tr></td></tr>{% endif %}</table>{% if motherboard.getAllDrivers() is not empty %}<div class="scroll-div"><img src="{{ absolute_url(asset('build/images/hardware.gif')) }}" alt="" style="vertical-align: middle;padding-bottom: 10px;"><b>{% trans %}Drivers:{% endtrans %}</b><table class="stbl"><tr class="stbl-head">{{ driverHeader() }}</tr>{% for driver in motherboard.getAllDrivers() %}{{ driverLink(driver.largeFile) }}{% endfor %}</table></div>{% endif %}{% if motherboard.getMotherboardBios() is not empty %}<div class="scroll-div"><img src="{{ absolute_url(asset('build/images/chip.gif')) }}" alt="" style="vertical-align: middle;padding-bottom: 10px;"><b>{% trans %}BIOS images:{% endtrans %}</b><table class="stbl"><tr class="stbl-head"><th>{% trans %}Manuf.{% endtrans %}</th><th>{% trans %}POST String{% endtrans %}</th><th>{% trans %}Note{% endtrans %}</th><th>{% trans %}Core Ver.{% endtrans %}</th><th>{% trans %}BIOS Ver.{% endtrans %}</th></tr>{% for bios in motherboard.getMotherboardBios()|sort((a, b) => b.boardVersion <=> a.boardVersion)|sort((a, b) => a.manufacturer <=> b.manufacturer) %}<tr style="text-align:center;border: 1px solid #e0e0e0;">
 <td>{{ bios.getManufacturer().getShortNameIfExist() }}</td>
 <td>
 	<span class="string-bios">{{ bios.getPostString() }}</span>
@@ -228,7 +228,7 @@
 <td>
 	{% if bios.getFileName() is not null %}
 		<a href="{{ vich_uploader_asset(bios, 'romFile') }}">
-			<img src="{{ absolute_url(asset('assets/images/dw.gif')) }}" alt="" width="16" height="16" style="vertical-align: middle;">
+			<img src="{{ absolute_url(asset('build/images/dw.gif')) }}" alt="" width="16" height="16" style="vertical-align: middle;">
 			{% if bios.getBoardVersion() is not null %}
 				{{ bios.getBoardVersion() }}
 			{% else %}
@@ -238,11 +238,11 @@
 	{% else %}
 		{{ bios.getBoardVersion() }}
 	{% endif %}
-</td></tr>{% endfor %}</table></div>{% endif %}{% if motherboard.getManuals() is not empty %}<table class="stbl"><tr><td><img src="{{ absolute_url(asset('assets/images/manual.gif')) }}" alt="" style="vertical-align: middle;padding-bottom: 10px;"><b>{% trans %}Manuals:{% endtrans %}</b></td><td><ul style="list-style-type: none;">
+</td></tr>{% endfor %}</table></div>{% endif %}{% if motherboard.getManuals() is not empty %}<table class="stbl"><tr><td><img src="{{ absolute_url(asset('build/images/manual.gif')) }}" alt="" style="vertical-align: middle;padding-bottom: 10px;"><b>{% trans %}Manuals:{% endtrans %}</b></td><td><ul style="list-style-type: none;">
 {% for manual in motherboard.getManuals()|sort((a, b) => a.getLinkName <=> b.getLinkName) %}
 	<li>
 		<a href="{{ vich_uploader_asset(manual, 'manualFile') }}">
-			<img src="{{ absolute_url(asset('assets/images/dw.gif')) }}" alt="" width="16" height="16" style="vertical-align: middle;">
+			<img src="{{ absolute_url(asset('build/images/dw.gif')) }}" alt="" width="16" height="16" style="vertical-align: middle;">
 			{{ manual.getLinkName() }}
 		</a>
 		({{ manual.getLanguage().getName()}})</li>
@@ -341,7 +341,7 @@ if (! msie || msie > 5) {
 var h = document.getElementById("jsappend");
 var js = document.createElement('script');
 js.type = "text/javascript";
-js.src = "{{ absolute_url(asset('assets/highslide/highslide.js')) }}";
+js.src = "{{ absolute_url(asset('build/highslide/highslide.js')) }}";
 h.appendChild(js);
 }
 function imgexp(el) {
