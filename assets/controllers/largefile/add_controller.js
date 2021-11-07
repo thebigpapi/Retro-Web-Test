@@ -2,6 +2,10 @@ import { Controller } from 'stimulus';
 
 export default class extends Controller {
 
+    /**
+     * Submit the form
+     * @param {*} event 
+     */
     submit(event) {
 
         let date = new Date()

@@ -2,21 +2,38 @@ import { Controller } from 'stimulus';
 
 export default class extends Controller {
 
+    /**
+     * Check a specific element
+     * @param {*} id 
+     * @returns bool
+     */
     check_sel(id) {
         let item = document.getElementById(id).children;
         let tp = 0;
-        if (id == 'motherboardIoPorts-fields-list' || id == 'motherboardExpansionSlots-fields-list') tp = 1;
+        if (id == 'motherboardIoPorts-fields-list' || id == 'motherboardExpansionSlots-fields-list') {
+            tp = 1;
+        }
         let array1 = [];
         for (let i = 0; i < item.length; i++) {
             for (let j = 0; j < item[i].children[tp].options.length; j++) {
-                if (!array1[j]) array1[j] = 0;
-                if (item[i].children[tp].options[j].selected) array1[j] += 1;
-                if (array1[j] > 1) return true;
+                if (!array1[j]) {
+                    array1[j] = 0;
+                }
+                if (item[i].children[tp].options[j].selected) {
+                    array1[j] += 1;
+                }
+                if (array1[j] > 1) {
+                    return true;
+                }
             }
         }
         return false;
     }
 
+    /**
+     * Check that everything is fine before submiting the board
+     * @param {*} event 
+     */
     check(event) {
         let _this = this;
 
@@ -89,6 +106,9 @@ export default class extends Controller {
         }
     }
 
+    /**
+     * Clone the motherboard
+     */
     clone() {
         if (confirm('Are you sure you want to clone this board ?')) {
             //replace the form URL
