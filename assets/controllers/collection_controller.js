@@ -7,6 +7,10 @@ export default class extends Controller {
         this.expand(list);
     }
 
+    /**
+     * Add an element to the list
+     * @param {*} list the list to interract with
+     */
     expand(list) {
         //store the table widget DOM in list and newWidget, increment the counter
         let counter = list.getAttribute("data-widget-counter");
@@ -26,12 +30,18 @@ export default class extends Controller {
     }
 
     removeButton(event) {
-        this.remove(event.target.parentNode);
+        let element = event.target.parentNode;
+        let list = element.parentNode;
+        this.remove(element, list);
     }
 
-    remove(element) {
-        console.log(element.id);
-        element.parentNode.removeChild(element);
+    /**
+     * Remove the given element
+     * @param {*} element 
+     * @param {*} list
+     */
+    remove(element, list) {
+        list.removeChild(element);
     }
 
     clearAllButton(event) {
@@ -39,10 +49,14 @@ export default class extends Controller {
         this.clearAll(list);
     }
 
+    /**
+     * Remove each element from the list
+     * @param {*} list 
+     */
     clearAll(list) {
         let _this = this;
         while (list.children.length) {
-            _this.remove(list.children[0]);
+            _this.remove(list.children[0], list);
         }
         let status = document.getElementById("status-label");
         status.textContent = "Removed all elements";
@@ -53,6 +67,10 @@ export default class extends Controller {
         this.addAll(list);
     }
 
+    /**
+     * Add every possible element in the list
+     * @param {*} list 
+     */
     addAll(list) {
         let _this = this;
 
@@ -70,83 +88,4 @@ export default class extends Controller {
         let status = document.getElementById("status-label");
         status.textContent = "Added " + counter + " elements";
     }
-
-    add(event) {
-
-        let button = event.target;
-
-        for (let n = 0; n < button.length; n++) {
-            if (button[n].className == "add-another-collection-widget") {
-                button[n].onclick = function () {
-                    let list = document.getElementById(this.getAttribute("data-list-selector").substr(1));
-
-                    // Try to find the counter of the list or use the length of the list
-                    let counter = list.getAttribute("data-widget-counter");
-
-                    // grab the prototype template
-                    let newWidget = list.getAttribute("data-prototype");
-
-                    // replace the "__name__" used in the id and name of the prototype
-                    // with a unique number
-                    newWidget = newWidget.replace(/__name__/g, counter);
-
-                    // Increase the counter
-                    counter++;
-
-                    // And store it, the length cannot be used if deleting widgets is allowed
-                    list.setAttribute("data-widget-counter", counter);
-
-                    let newDelButton = document.createElement('button');
-                    newDelButton.innerText = "Delete";
-                    newDelButton.onclick = function () { list.removeChild(newElem); return false; };
-
-                    // create a new list element and add it to the list
-                    let newElem = document.createElement('li');
-                    newElem.innerHTML = newWidget;
-                    newElem.appendChild(newDelButton);
-                    list.appendChild(newElem);
-                };
-            }
-        }
-    }
-
-    addold(event) {
-
-        let btn = document.getElementsByTagName("button");
-
-        for (let n = 0; n < btn.length; n++) {
-            if (btn[n].className == "add-another-collection-widget") {
-                btn[n].onclick = function () {
-                    let list = document.getElementById(this.getAttribute("data-list-selector").substr(1));
-
-                    // Try to find the counter of the list or use the length of the list
-                    let counter = list.getAttribute("data-widget-counter");
-
-                    // grab the prototype template
-                    let newWidget = list.getAttribute("data-prototype");
-
-                    // replace the "__name__" used in the id and name of the prototype
-                    // with a unique number
-                    newWidget = newWidget.replace(/__name__/g, counter);
-
-                    // Increase the counter
-                    counter++;
-
-                    // And store it, the length cannot be used if deleting widgets is allowed
-                    list.setAttribute("data-widget-counter", counter);
-
-                    let newDelButton = document.createElement('button');
-                    newDelButton.innerText = "Delete";
-                    newDelButton.onclick = function () { list.removeChild(newElem); return false; };
-
-                    // create a new list element and add it to the list
-                    let newElem = document.createElement('li');
-                    newElem.innerHTML = newWidget;
-                    newElem.appendChild(newDelButton);
-                    list.appendChild(newElem);
-                };
-            }
-        }
-    }
-
 }
