@@ -1,16 +1,16 @@
-
-<button type="button" onclick="expand('{{entityName}}-fields-list')">Add {{entityDisplayName}}</button>
-{{ form_errors(entities) }}
-    <div id="{{entityName}}-fields-list" data-widget-counter="{{ entities|length }}"
-        data-prototype="{{ form_widget(entities.vars.prototype, {'attr': {'style': 'display:inline-block;'}})|e }}
-        <button type=button onclick=remove(this)>Del</button>">
-        {% if entities is not empty %}
-            {% for entity in entities %}
-            <div>
-                {{ form_widget(entity, {'attr': {'style': 'display:inline-block;'}}) }}
-                <button type="button" onclick="remove(this)">Del</button>
-            </div>
-            {{ form_errors(entity) }}
-            {% endfor %}
-        {% endif %}
-    </div>      
+<span data-controller="collection">
+	<button type="button" data-action="click->collection#expandButton" data-list-id="{{entityName}}-fields-list">Add
+		{{entityDisplayName}}</button>
+	{{ form_errors(entities) }}
+	<div id="{{entityName}}-fields-list" data-widget-counter="{{ entities|length }}" data-prototype="{{ form_widget(entities.vars.prototype, {'attr': {'style': 'display:inline-block;'}})|e }} <button type=button data-action='click->collection#removeButton'>Del</button>">
+		{% if entities is not empty %}
+			{% for entity in entities %}
+				<div>
+					{{ form_widget(entity, {'attr': {'style': 'display:inline-block;'}}) }}
+					<button type="button" data-action="click->collection#removeButton">Del</button>
+				</div>
+				{{ form_errors(entity) }}
+			{% endfor %}
+		{% endif %}
+	</div>
+</span>

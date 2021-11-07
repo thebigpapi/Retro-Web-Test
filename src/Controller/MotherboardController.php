@@ -336,15 +336,6 @@ class MotherboardController extends AbstractController
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-
-            if ($form->get('searchChipsetManufacturer')->isClicked() || $form->get('searchSocket1')->isClicked() || $form->get('searchSocket2')->isClicked()) {
-                return $this->render('motherboard/search.html.twig', [
-                    'form' => $form->createView(),
-                    'slots' => $slots,
-                    'ports' => $ports,
-                ]);
-            }
-
             return $this->redirect($this->generateUrl('mobosearch', $this->searchFormToParam($request, $form, $slots, $ports)));
         }
         return $this->render('motherboard/search.html.twig', [

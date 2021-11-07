@@ -166,11 +166,6 @@ class BiosController extends AbstractController
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            if ($form->get('searchChipsetManufacturer')->isClicked()) {
-                return $this->render('bios/search.html.twig', [
-                    'form' => $form->createView(),
-                ]);
-            }
             $parameters = array();
             //dd($form->getData());
 

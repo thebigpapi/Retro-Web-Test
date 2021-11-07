@@ -1,26 +1,27 @@
 {% extends 'admin/header.html.twig' %}
 
-{% block title %}Manage instruction sets{% endblock %}
+{% block title %}Manage instruction sets
+{% endblock %}
 
 {% block body %}
-<div style="height:6em;"></div>
-<h2 style="text-align:center;"><b>Edit:Instruction set</b></h2>
-{{ form_start(form, {'method': 'POST'}) }}
-<div class="editasset">
-	{{form_widget(form.save)}}
-	<table class="editasset">
-		<tr>
-			<td>{{form_label(form.name)}}</td>
-			<td>{{form_widget(form.name)}}</td>
-		</tr>
-	</table>
-	<div>
-		<p>Compatible with instruction sets:</p> 
-		{% include 'macros/entityList.html.twig' with {'entityName':'compatibleWith', 'entityDisplayName': 'instruction set', 'entities':form.compatibleWith} %}
-	</div>  
-<div id="hiddenDiv" style="display: none;">
-    {{ form_end(form) }}
-</div>
-<script src="{{ absolute_url(asset('assets/add-collection-widget.js')) }}"></script>
-
-{% endblock %}
+	<div style="height:6em;"></div>
+	<h2 style="text-align:center;">
+		<b>Edit:Instruction set</b>
+	</h2>
+	{{ form_start(form, {'method': 'POST'}) }}
+	<div class="editasset">
+		{{form_widget(form.save)}}
+		<table class="editasset">
+			<tr>
+				<td>{{form_label(form.name)}}</td>
+				<td>{{form_widget(form.name)}}</td>
+			</tr>
+		</table>
+		<div>
+			<p>Compatible with instruction sets:</p>
+			{% include 'macros/entityList.html.twig' with {'entityName':'compatibleWith', 'entityDisplayName': 'instruction set', 'entities':form.compatibleWith} %}
+		</div>
+		<div id="hiddenDiv" style="display: none;">
+			{{ form_end(form) }}
+		</div>
+	{% endblock %}

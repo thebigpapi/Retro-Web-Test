@@ -57,9 +57,9 @@ div.index-buttons a:hover{text-decoration: none;}
 
 div.index-buttons span.margin-fix, a.index-button1 span { cursor: default; }
 a.index-button0 span, a.index-button2 span {_cursor: hand; /* **/ cursor: pointer; /** */}
-a.index-button0 span.img {background-image: url(./images/index/motherboard_low.gif);}
-a.index-button1 span.img {background-image: url(./images/index/card_wip.gif);}
-a.index-button2 span.img {background-image: url(./images/index/awchip_low.gif);}
+a.index-button0 span.img {background-image: url(../images/index/motherboard_low.gif);}
+a.index-button1 span.img {background-image: url(../images/index/card_wip.gif);}
+a.index-button2 span.img {background-image: url(../images/index/awchip_low.gif);}
 
 div.perks, div.perks div.results ul li {font-size:14px;}
 
@@ -84,9 +84,9 @@ table.ajax div.sform1 span.butn-noajax{float:right;}
 table.ajax span.butn-noajax input {visibility:hidden;}
 div.butn {text-align: center;}
 div.butn input {color: #000000; height:2.7em; font-size:14px;}
-input.butn-0{background: #ebebeb url(./images/search/reset.gif) no-repeat 0px 1px;padding-left:35px;background-position: 1px 2px;}
-input.butn-1{background: #ebebeb url(./images/search/search.gif) no-repeat 4px 1px;padding-left:42px;background-position: 5px 2px;}
-input.butn-2{background: #ebebeb url(./images/search/search_photo.gif) no-repeat 5px 1px;padding-left:42px;background-position: 5px 2px;}
+input.butn-0{background: #ebebeb url(../images/search/reset.gif) no-repeat 0px 1px;padding-left:35px;background-position: 1px 2px;}
+input.butn-1{background: #ebebeb url(../images/search/search.gif) no-repeat 4px 1px;padding-left:42px;background-position: 5px 2px;}
+input.butn-2{background: #ebebeb url(../images/search/search_photo.gif) no-repeat 5px 1px;padding-left:42px;background-position: 5px 2px;}
 span.help-t span {display:none;}
 
 /* result.html.twig */
@@ -221,9 +221,9 @@ div.grid-list ul{display: grid;grid-template-columns: repeat(2, 1fr);font-size:1
 	/* index.html.twig */
 	div.index-buttons span.image-block span span {font-size: 15px; min-width: 285px; width: 19em;}
 	div.index-buttons span.image-block span span.img {height: 225px;}
-	a.index-button0 span.img {background-image: url(./images/index/motherboard_med.webp);}
-	a.index-button1 span.img {background-image: url(./images/index/card_wip.webp);}
-	a.index-button2 span.img {background-image: url(./images/index/awchip_med.webp);}
+	a.index-button0 span.img {background-image: url(../images/index/motherboard_med.webp);}
+	a.index-button1 span.img {background-image: url(../images/index/card_wip.webp);}
+	a.index-button2 span.img {background-image: url(../images/index/awchip_med.webp);}
 
 	/* search.html.twig */
 	td.table-width {width:210px;}
@@ -274,7 +274,7 @@ div.grid-list ul{display: grid;grid-template-columns: repeat(2, 1fr);font-size:1
 @media (hover: none) {
 	span.help-t img {display:none;}
 	span.help-t span.img {
-		background-image: url(./images/search/help.gif);
+		background-image: url(../images/search/help.gif);
 		display: inline-block;
 		width: 16px;
 		height: 16px;

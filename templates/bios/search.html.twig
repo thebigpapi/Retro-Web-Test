@@ -3,106 +3,98 @@
 {% form_theme form _self %}
 
 {% block checkbox_widget %}
-        {% set type = type|default('checkbox') %}
-        <input type="{{ type }}" {{ block('widget_attributes') }} {% if value is not empty %}value="{{ value }}" {% endif %}>
+	{% set type = type|default('checkbox') %}
+	<input type="{{ type }}" {{ block('widget_attributes') }} {% if value is not empty %} value="{{ value }}" {% endif %}>
 {% endblock %}
 
 {% block hidden_widget %}
-        {% set type = type|default('hidden') %}
-        <input type="{{ type }}" {{ block('widget_attributes') }} {% if value is not empty %}value="{{ value }}" {% endif %}>
+	{% set type = type|default('hidden') %}
+	<input type="{{ type }}" {{ block('widget_attributes') }} {% if value is not empty %} value="{{ value }}" {% endif %}>
 {% endblock %}
 
-{% block title %}{% trans %}Search for a bios{% endtrans %}{% endblock %}
+{% block title %}
+	{% trans %}Search for a bios{% endtrans %}
+{% endblock %}
 
 {% block metatags %}
 	<meta name="description" content="{% trans %}Search for a motherboard BIOS by POST string, chipset, manufacturer, and more.{% endtrans %}">
 {% endblock %}
 
 {% block body %}
-	<div class="title"><b>{% trans %}Search for a bios{% endtrans %}</b></div>
-	<p><a href="{{path("bios_info")}}">{% trans %}Where can I find the POST string?{% endtrans %}</a></p>
-    <div id="hiddenDiv" style="display: none;"></div>
-	{{ form_start(form, {'method': 'POST', 'name': 'search', 'action':path("bios_search")}) }}
-		<div class="butn">
-			<input id="rst-btn" type="reset" value="{% trans %}Reset fields{% endtrans %}" class="butn-0">
-			{{ form_row(form.search)|replace({'<div><button': '<input class="butn-1"', '</button></div>': '">', '>': ' value="'})|raw }}
-		</div>
-        <table id="search-table">
-            <tr>
-				<td class="table-width">
-					<b>{% trans %}Manufacturer{% endtrans %}</b>
-					<span class="help-t">
-						<img src="{{ absolute_url(asset('assets/images/search/help.gif')) }}" alt="" title="{{ 'This is the BIOS manufacturer (e.g: AMI, Award, Phoenix)'|trans|e('html') }}" width="16" height="16">
-						<span class="img"></span>
-						<span class="text">{% trans %}This is the BIOS manufacturer (e.g: AMI, Award, Phoenix){% endtrans %}</span>
-					</span>
-				</td>
-                <td>{{ form_widget(form.manufacturer, {'attr': {'class': 'sform'}}) }}</td>
-            </tr>
-			<tr>
-                <td class="table-width">
-					<b>{% trans %}Chipset{% endtrans %}</b>
-					<span class="help-t">
-						<img src="{{ absolute_url(asset('assets/images/search/help.gif')) }}" alt="" title="{{ 'Select a manufacturer from the first field, then pick the part number from the second field'|trans|e('html') }}" width="16" height="16">
-						<span class="img"></span>
-						<span class="text">{% trans %}Select a manufacturer from the first field, then pick the part number from the second field{% endtrans %}</span>
-					</span>
-				</td>				
-				<td>
-					<div class="sadv">
-						<div id="setchip1">{{ form_widget(form.chipsetManufacturer, {'attr': {'class': 'sform'}}) }}</div>
-						<div class="sform1">
-							<span id="setchip-lb"></span>
-							<span class="butn-noajax">{{ form_row(form.searchChipsetManufacturer)|replace({'<div><button': '<input', '</button></div>': '">', '>': ' value="'})|raw }}</span>
-							<span id="setchip2">{{ form_widget(form.chipset) }}</span>
-						</div>
+	<div class="title">
+		<b>{% trans %}Search for a bios{% endtrans %}</b>
+	</div>
+	<p>
+		<a href="{{path("bios_info")}}">{% trans %}Where can I find the POST string?{% endtrans %}</a>
+	</p>
+	<div id="hiddenDiv" style="display: none;"></div>
+	{{ form_start(form, {'method': 'POST', 'name': 'search', 'action':path("bios_search"), 'attr':{'data-controller':'search'}}) }}
+	<div class="butn">
+		<input id="rst-btn" type="reset" value="{% trans %}Reset fields{% endtrans %}" class="butn-0" data-action="click->search#reset" data-reset-ids="search_chipsetManufacturer">
+		{{ form_row(form.search)|replace({'<div><button': '<input class="butn-1"', '</button></div>': '">', '>': ' value="'})|raw }}
+	</div>
+	<table id="search-table">
+		<tr>
+			<td class="table-width">
+				<b>{% trans %}Manufacturer{% endtrans %}</b>
+				<span class="help-t">
+					<img src="{{ absolute_url(asset('build/images/search/help.gif')) }}" alt="" title="{{ 'This is the BIOS manufacturer (e.g: AMI, Award, Phoenix)'|trans|e('html') }}" width="16" height="16">
+					<span class="img"></span>
+					<span class="text">{% trans %}This is the BIOS manufacturer (e.g: AMI, Award, Phoenix){% endtrans %}</span>
+				</span>
+			</td>
+			<td>{{ form_widget(form.manufacturer, {'attr': {'class': 'sform'}}) }}</td>
+		</tr>
+		<tr>
+			<td class="table-width">
+				<b>{% trans %}Chipset{% endtrans %}</b>
+				<span class="help-t">
+					<img src="{{ absolute_url(asset('build/images/search/help.gif')) }}" alt="" title="{{ 'Select a manufacturer from the first field, then pick the part number from the second field'|trans|e('html') }}" width="16" height="16">
+					<span class="img"></span>
+					<span class="text">{% trans %}Select a manufacturer from the first field, then pick the part number from the second field{% endtrans %}</span>
+				</span>
+			</td>
+			<td>
+				<div class="sadv">
+					<div id="setchip1">{{ form_widget(form.chipsetManufacturer, {'attr': {'class': 'sform', 'data-action': "change->search#search", 'data-target-id': 'search_chipset'}}) }}</div>
+					<div class="sform1">
+						<span id="setchip-lb"></span>
+						<span id="setchip2">{{ form_widget(form.chipset) }}</span>
 					</div>
-                </td>
-            </tr>
-            <tr>
-				<td class="table-width">
-					<b>{% trans %}POST string{% endtrans %}</b>
-				</td>
-                <td>{{ form_widget(form.post_string, {'attr': {'class': 'sform'}})|replace({' />': ' size="50">'})|raw }}</td>
-            </tr>
-            <tr>
-				<td class="table-width">
-					<b>{% trans %}Core version{% endtrans %}</b>
-					<span class="help-t">
-						<img src="{{ absolute_url(asset('assets/images/search/help.gif')) }}" alt="" title="{{ "This is the version of the BIOS's core (e.g. 4.51pg)"|trans|e('html') }}" width="16" height="16">
-						<span class="img"></span>
-						<span class="text">{% trans %}This is the version of the BIOS's core (e.g. 4.51pg){% endtrans %}</span>
-					</span>
-				</td>
-                <td>{{ form_widget(form.core_version, {'attr': {'class': 'sform', 'style': 'width:15%'}})|replace({' />': ' size="50">'})|raw }}</td>
-            </tr>
-			<tr>
-				<td class="table-width">
-					<b>{% trans %}Show results with files{% endtrans %}</b>
-					<span class="help-t">
-						<img src="{{ absolute_url(asset('assets/images/search/help.gif')) }}" alt="" title="{{ 'If checked, only BIOS entries with files attached will be shown'|trans|e('html') }}" width="16" height="16">
-						<span class="img"></span>
-						<span class="text">{% trans %}If checked, only BIOS entries with files attached will be shown{% endtrans %}</span>
-					</span>
-				</td>
-				<td>
-                    <div class="sform2">{{ form_widget(form.file_present) }}</div>
-                </td>
-			</tr>
-        </table>
-		<div>{{ form_rest(form) }}</div>
-		
-   </form><br>
-<div id="jsappend"></div>
-<script type="text/javascript"><!--
-    if ((document.uniqueID || !document.all) && (window.XMLHttpRequest || window.ActiveXObject)) {
-		var ls = "{{ 'Please wait ...'|trans|e('js') }}";
-        var h = document.getElementById("jsappend");
-        var js = document.createElement('script');
-        js.type = "text/javascript";
-        js.src = "{{ absolute_url(asset('assets/search.js')) }}";
-        h.appendChild(js);
-    }
-    //--></script>  
-{% endblock %}
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td class="table-width">
+				<b>{% trans %}POST string{% endtrans %}</b>
+			</td>
+			<td>{{ form_widget(form.post_string, {'attr': {'class': 'sform'}})|replace({' />': ' size="50">'})|raw }}</td>
+		</tr>
+		<tr>
+			<td class="table-width">
+				<b>{% trans %}Core version{% endtrans %}</b>
+				<span class="help-t">
+					<img src="{{ absolute_url(asset('build/images/search/help.gif')) }}" alt="" title="{{ "This is the version of the BIOS's core (e.g. 4.51pg)"|trans|e('html') }}" width="16" height="16">
+					<span class="img"></span>
+					<span class="text">{% trans %}This is the version of the BIOS's core (e.g. 4.51pg){% endtrans %}</span>
+				</span>
+			</td>
+			<td>{{ form_widget(form.core_version, {'attr': {'class': 'sform', 'style': 'width:15%'}})|replace({' />': ' size="50">'})|raw }}</td>
+		</tr>
+		<tr>
+			<td class="table-width">
+				<b>{% trans %}Show results with files{% endtrans %}</b>
+				<span class="help-t">
+					<img src="{{ absolute_url(asset('build/images/search/help.gif')) }}" alt="" title="{{ 'If checked, only BIOS entries with files attached will be shown'|trans|e('html') }}" width="16" height="16">
+					<span class="img"></span>
+					<span class="text">{% trans %}If checked, only BIOS entries with files attached will be shown{% endtrans %}</span>
+				</span>
+			</td>
+			<td>
+				<div class="sform2">{{ form_widget(form.file_present) }}</div>
+			</td>
+		</tr>
+	</table>
+	<div>{{ form_rest(form) }}</div>
 
+</form>{% endblock %}
