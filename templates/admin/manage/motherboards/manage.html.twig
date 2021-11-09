@@ -9,20 +9,19 @@
 	<div class="title">
 		<b>{{ entityDisplayNamePlural|capitalize }}</b>
 	</div>
-	<a href="{{ path('admin_index') }}" class="admin-button" style="padding:0px 5px 0px;">
-		<img src="{{ absolute_url(asset('build/images/back.png')) }}" style="padding-top:5px;vertical-align:top;" alt="add" style="display:inline-block;">
-		<p style="display:inline-block;">Go back</p>
+	<a href="{{ path('admin_index') }}" class="admin-button">
+		<img src="{{ absolute_url(asset('build/images/back.svg')) }}" alt="add" width="32">
+		<p>Go back</p>
 	</a>
-	<a href="{{ path('admin_manage_motherboards', {entity:"motherboard"})}}" class="admin-button" style="padding:0px 5px 0px;{% if entityName == " motherboard" %}background-color: #afff97;{% endif %}">
+	<a href="{{ path('admin_manage_motherboards', {entity:"motherboard"})}}" class="admin-button" style="{% if entityName == "motherboard" %}background-color: #afff97;{% endif %}">
 		<p {% if entityName == "motherboard" %} style="color: #000000;" {% endif %}>{% trans %}Motherboards{% endtrans %}</p>
 	</a>
-	<a href="{{ path('admin_manage_motherboards', {entity:"formfactor"})}}" class="admin-button" style="padding:0px 5px 0px;{% if entityName == " formfactor" %}background-color: #afff97;{% endif %}">
+	<a href="{{ path('admin_manage_motherboards', {entity:"formfactor"})}}" class="admin-button" style="{% if entityName == "formfactor" %}background-color: #afff97;{% endif %}">
 		<p {% if entityName == "formfactor" %} style="color: #000000;" {% endif %}>{% trans %}Form factors{% endtrans %}</p>
 	</a>
-	<a href="./motherboards/{{entityName}}s/add/" class="admin-button" style="padding:0px 5px 0px;float:right;">
-		<img src="{{ absolute_url(asset('build/images/add.png')) }}" style="padding-top:5px;vertical-align:top;" alt="add" style="display:inline-block;">
-		<p style="display:inline-block;">Add
-			{{ entityDisplayName }}</p>
+	<a href="./motherboards/{{entityName}}s/add/" class="admin-button" style="float:right;">
+		<img src="{{ absolute_url(asset('build/images/add.svg')) }}"alt="add" width="32">
+		<p>Add {{ entityDisplayName }}</p>
 	</a>
 	<hr>
 	<div class="list-view">

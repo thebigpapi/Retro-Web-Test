@@ -22,8 +22,8 @@
 			<p>Compatible with platforms:</p>
 			{% include 'macros/entityList.html.twig' with {'entityName':'compatibleWith', 'entityDisplayName': 'platform', 'entities':form.compatibleWith} %}
 		</div>
-		<div id="hiddenDiv" style="display: none;">
-			{{ form_end(form) }}
-		</div>
-
-	{% endblock %}
+	</div>
+	<div id="hiddenDiv" style="display: none;">
+		{{ form_end(form) }}
+	</div>
+{% endblock %}

@@ -18,6 +18,9 @@
 		{% endblock %}
 		{#% endif %#}
 		{% block stylesheets %}
+		{% if is_granted('ROLE_USER') %}
+			{{ encore_entry_link_tags('admin_app') }}
+		{% endif %}
 			{{ encore_entry_link_tags('app') }}
 		{% endblock %}
 
@@ -54,6 +57,7 @@
 						<span class="navbar-label">{{'Admin'|trans}}</span>
 					</a>
 				{% endif %}
+				<span style="color:yellow">UNDER CONSTRUCTION, THINGS WILL BE BROKEN</span>
 			</div>
 		</div>
 

@@ -1,0 +1,80 @@
+#search-table{ font-size: 1em; width:100%; }
+#search-table tr { height: 2em; }
+#search-table tr.sep { height: 10px; }
+#search-table select{ height:2.2em; }
+select.sform { width: 90%; vertical-align:middle; }
+input.sform { width: 90%; vertical-align:middle; }
+
+td.table-width {width: 130px;text-align:center;}
+span.field1 { height: 1.75em; width: 15em; font-size:12px; margin-bottom:4px;float:left; }
+span.field1 span {float:left; margin-left:0.4em;}
+span.field1 input { height: 21px; width: 21px; float:left;font-size:12px;height: 1.25em; width: 1.25em; }
+span.field2 { width: 12em;font-size:16px; margin-bottom:4px;float:left; }
+div.sadv div { padding: 8px 0 4px; }
+div.sadv div.sform1 { padding: 0;position: relative; }
+div.sform1 select { position:absolute;min-width: 90%; }
+div.sform1 span { float:left; }
+div.butn { text-align: center; }
+div.butn input {color: $dark-color; height:2.7em; font-size:14px;}
+input.butn-0{background: $btn-lightbg-color url(../../images/search/reset.gif) no-repeat 0px 1px;padding-left:35px;background-position: 1px 2px;}
+input.butn-1{background: $btn-lightbg-color url(../../images/search/search.gif) no-repeat 4px 1px;padding-left:42px;background-position: 5px 2px;}
+input.butn-2{background: $btn-lightbg-color url(../../images/search/search_photo.gif) no-repeat 5px 1px;padding-left:42px;background-position: 5px 2px;}
+span.help-t span { display:none; }
+
+@media (max-width: 600px) {
+	#search-table tr.sep { display: none; }
+	#search-table td { display:block;width:100%;text-align:left;padding:0 0 4px 4%; }
+	#search-table select { width: 90%; }
+	div.sadv div { padding:0 0 4px; }
+	div.sform1 span { float: none; }
+	div.sform1, div.sform1 select { position:static; }
+	table.ajax span.butn-noajax input { display:none; }
+	div.butn input { font-size:18px;height:2.2em; }
+	span.field1 { width: 15em; }
+	span.field2 { width: 10em; }
+}
+@media (min-width: 1200px) {
+	td.table-width { width:210px; }
+	div.butn input { font-size:18px;height:2.2em; }
+	#search-table tr { height:1.5em; }
+}
+@media (min-width: 1400px) {
+	span.field1 { font-size:14px; }
+	td.table-width { width:220px; }
+	div.sadv { display: table; border-spacing: 0; width:90%; }
+	div.sadv div, div.sadv div.sform1 span { display: table-cell;vertical-align: middle;float:none; }
+	div.sadv div { padding:0 5px 0 0; width:30%; }
+	div.sadv div.sform1 { padding: 0; width:70%; }
+	div.sadv select { width:100%; }
+	div.sform1, div.sform1 select { position:static; }
+	table.ajax div.sadv div.sform1 span { display: block; }
+	table.ajax span.butn-noajax input { display:none; }
+}
+@media (hover: none) {
+	span.help-t img {display:none;}
+	span.help-t span.img {
+		background-image: url(../../images/search/help.gif);
+		display: inline-block;
+		width: 16px;
+		height: 16px;
+	}
+	span.help-t span.text {
+		background: $lightbg-color;
+		border:1px solid $dark-color;
+		color: $dark-color;
+		display: inline;
+		font-size:12px;
+		margin: -5px 0 0 15px;
+		padding: 3px;
+		position:absolute;
+		visibility: hidden;
+		z-index: 1;
+	}
+	span.help-t:hover span.text { visibility:visible; }
+}
+@media (pointer: coarse) { div.sform2 input[type=checkbox] {width:20px;height:20px;} }
+@media (prefers-color-scheme: dark) {
+    #search-table select, input.sform, span.field1 input {background-color:#424242;color:#ececec;}
+	div.butn input, span.butn-noajax input {background-color:$btn-darkbg-color;color:$light-color;}
+	span.help-t span.text{background-color: $dark-color;color:$light-color;border-color:$light-color;}
+}

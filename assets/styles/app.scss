@@ -1,0 +1,26 @@
+$font-family: Trebuchet MS, sans-serif;
+$light-color: #EEEEEE;
+$medium-color: #ABABAB;
+$dark-color: #000000;
+$lightbg-color: #F9F9F9;
+$darkbg-color: #191919;
+$navbar-color: #343943;
+$link-hover-color: #7ce5ff;
+$footer-link-color: #e0e0e0;
+$btn-lightbg-color:#ebebeb;
+$btn-darkbg-color:#303030;
+$dark-link: orange;
+$dark-link-visited:#00e874;
+
+body{
+    font-family: $font-family;
+    color: $dark-color;
+    background: $navbar-color;
+    margin:0; 
+    padding:0;
+}
+@import 'main/base';
+@import 'main/index';
+@import 'main/search';
+@import 'main/show';
+@import 'main/info';
