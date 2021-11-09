@@ -1,4 +1,4 @@
-<span data-controller="collection">
+<div data-controller="collection">
 	<button type="button" data-action="click->collection#expandButton" data-list-id="{{entityName}}-fields-list">Add
 		{{entityDisplayName}}</button>
 	{{ form_errors(entities) }}
@@ -13,4 +13,4 @@
 			{% endfor %}
 		{% endif %}
 	</div>
-</span>
+</div>

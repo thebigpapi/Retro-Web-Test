@@ -20,7 +20,7 @@
 			{% include 'macros/entityListImages.html.twig' with {'entityName':'chip.images', 'entities':form.chip.images} %}
 		</div>
 		<table class="editasset">
-			{{form_widget(form.save)}}
+			<tr><td colspan="2">{{form_widget(form.save)}}</td></tr>
 			<tr>
 				<td>{{form_label(form.chip.manufacturer)}}</td>
 				<td>{{form_widget(form.chip.manufacturer)}}</td>

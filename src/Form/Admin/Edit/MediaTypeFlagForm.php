@@ -27,7 +27,7 @@ class MediaTypeFlagForm extends AbstractType
                 'disabled' => true,
             ])
             ->add('icon', FileType::class, [
-                'label' => 'File (gif file)',
+                'label' => 'Icon (file)',
 
                 // unmapped means that this field is not associated to any entity property
                 //'mapped' => false,
@@ -40,11 +40,7 @@ class MediaTypeFlagForm extends AbstractType
                 // in the associated entity, so you can use the PHP constraint classes
                 'constraints' => [
                     new File([
-                        'maxSize' => '16k',
-                        'mimeTypes' => [
-                            'image/gif',
-                        ],
-                        'mimeTypesMessage' => 'Please upload a valid gif image',
+                        'maxSize' => '512k',
                     ])
                 ],
             ])

@@ -5,14 +5,14 @@
 	<td>
 		{% for relation in object.getMediaTypeFlags() %}
 			<b>{{relation.getCount()}}x</b>
-			<img src="{{ vich_uploader_asset(relation.getMediaTypeFlag(), 'icon')}}"/>
+			<img src="{{ vich_uploader_asset(relation.getMediaTypeFlag(), 'icon')}}" alt="" width="32">
 		{% endfor %}
 	</td>
 	<td>
 		{% set prevIcon = "" %}
 		{% for relation in object.getOsFlags() %}
 			{% if prevIcon != (relation.getOsFlag().getOsFamilies()|sort)[0].getFileName() %}
-				<img src="{{ vich_uploader_asset((relation.getOsFlag().getOsFamilies()|sort)[0], 'osIcon')}}"/>
+				<img src="{{ vich_uploader_asset((relation.getOsFlag().getOsFamilies()|sort)[0], 'osIcon')}}" alt="" width="16">
 			{% endif %}
 			{% set prevIcon = (relation.getOsFlag().getOsFamilies()|sort)[0].getFileName() %}
 			{{ relation.getOsFlag().getFullVersion()}}
@@ -23,18 +23,18 @@
 	</td>
 	<td>
 		{% for lang in object.getLanguages() %}
-			<img src="{{ asset('icons/language/' ~ lang.getIsoCode ~ '.gif') }}"/>
+			<img src="{{ asset('icons/language/' ~ lang.getIsoCode ~ '.gif') }}" alt="" width="32">
 		{% endfor %}
 	</td>
 	<td>
-		<img src="{{ asset('icons/dump_quality/' ~ object.dumpQualityFlag().getTagName() ~ '.gif') }}"/>
+		<img src="{{ asset('icons/dump_quality/' ~ object.dumpQualityFlag().getTagName() ~ '.gif') }}" alt="" width="32">
 	</td>
 	<td>
 		{% if object.hasActivationKey() %}
-			<img src="{{ asset('icons/protection/activation_key.gif') }}"/>
+			<img src="{{ asset('icons/protection/activation_key.gif') }}" alt="" width="32">
 		{% endif %}
 		{% if object.hasCopyProtection() %}
-			<img src="{{ asset('icons/protection/copy_protected.gif') }}"/>
+			<img src="{{ asset('icons/protection/copy_protected.gif') }}" alt="" width="32">
 		{% endif %}
 	</td>
 	<td>
