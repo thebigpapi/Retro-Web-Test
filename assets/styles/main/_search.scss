@@ -3,7 +3,7 @@
 #search-table tr.sep { height: 10px; }
 #search-table select{ height:2.2em; }
 select.sform { width: 90%; vertical-align:middle; }
-input.sform { width: 90%; vertical-align:middle; }
+input.sform { width: 89.5%; vertical-align:middle; }
 
 td.table-width {width: 130px;text-align:center;}
 span.field1 { height: 1.75em; width: 15em; font-size:12px; margin-bottom:4px;float:left; }
@@ -11,49 +11,47 @@ span.field1 span {float:left; margin-left:0.4em;}
 span.field1 input { height: 21px; width: 21px; float:left;font-size:12px;height: 1.25em; width: 1.25em; }
 span.field2 { width: 12em;font-size:16px; margin-bottom:4px;float:left; }
 div.sadv div { padding: 8px 0 4px; }
-div.sadv div.sform1 { padding: 0;position: relative; }
-div.sform1 select { position:absolute;min-width: 90%; }
-div.sform1 span { float:left; }
+div.sadv div.sform1 { padding: 0;/*position: relative;*/ }
+/*div.sform1 span { display:block; }
+div.sform1 select { /*position:absolute;*width: 100%; }*/
+div.sadv { width: 90%; }
+div.sadv div select { width: 100%; }
 div.butn { text-align: center; }
 div.butn input {color: $dark-color; height:2.7em; font-size:14px;}
-input.butn-0{background: $btn-lightbg-color url(../../images/search/reset.gif) no-repeat 0px 1px;padding-left:35px;background-position: 1px 2px;}
-input.butn-1{background: $btn-lightbg-color url(../../images/search/search.gif) no-repeat 4px 1px;padding-left:42px;background-position: 5px 2px;}
-input.butn-2{background: $btn-lightbg-color url(../../images/search/search_photo.gif) no-repeat 5px 1px;padding-left:42px;background-position: 5px 2px;}
+input.butn-0{background: $btn-lightbg-color url(../../images/search/reset.svg) no-repeat 0px 1px;padding-left:35px;background-position: 5px 5px;background-size: 23%;}
+input.butn-1{background: $btn-lightbg-color url(../../images/search/search.svg) no-repeat 4px 1px;padding-left:42px;background-position: 5px 2px;background-size: 35%;}
+input.butn-2{background: $btn-lightbg-color url(../../images/search/search_image.svg) no-repeat 5px 1px;padding-left:42px;background-position: 5px 0px;background-size: 20%;}
 span.help-t span { display:none; }
 
 @media (max-width: 600px) {
 	#search-table tr.sep { display: none; }
-	#search-table td { display:block;width:100%;text-align:left;padding:0 0 4px 4%; }
-	#search-table select { width: 90%; }
+	#search-table td { display:block;text-align:left;padding:0 0 4px 4%; }	
 	div.sadv div { padding:0 0 4px; }
-	div.sform1 span { float: none; }
-	div.sform1, div.sform1 select { position:static; }
-	table.ajax span.butn-noajax input { display:none; }
 	div.butn input { font-size:18px;height:2.2em; }
 	span.field1 { width: 15em; }
 	span.field2 { width: 10em; }
+	input.butn-0{padding-left:45px;background-position: 5px 3px;}
+	input.butn-1{padding-left:42px;background-position: 5px 2px;background-size: 33%;}
+	input.butn-2{padding-left:50px;background-position: 5px -2px;}
 }
 @media (min-width: 1200px) {
 	td.table-width { width:210px; }
 	div.butn input { font-size:18px;height:2.2em; }
 	#search-table tr { height:1.5em; }
+	input.butn-0{padding-left:45px;background-position: 5px 3px;}
+	input.butn-1{padding-left:42px;background-position: 5px 2px;background-size: 33%;}
+	input.butn-2{padding-left:50px;background-position: 5px -2px;}
 }
 @media (min-width: 1400px) {
 	span.field1 { font-size:14px; }
 	td.table-width { width:220px; }
-	div.sadv { display: table; border-spacing: 0; width:90%; }
-	div.sadv div, div.sadv div.sform1 span { display: table-cell;vertical-align: middle;float:none; }
-	div.sadv div { padding:0 5px 0 0; width:30%; }
+	div.sadv div { padding:0; width:29%;display:inline-block; }
 	div.sadv div.sform1 { padding: 0; width:70%; }
-	div.sadv select { width:100%; }
-	div.sform1, div.sform1 select { position:static; }
-	table.ajax div.sadv div.sform1 span { display: block; }
-	table.ajax span.butn-noajax input { display:none; }
 }
 @media (hover: none) {
 	span.help-t img {display:none;}
 	span.help-t span.img {
-		background-image: url(../../images/search/help.gif);
+		background-image: url(../../images/search/help.svg);
 		display: inline-block;
 		width: 16px;
 		height: 16px;
