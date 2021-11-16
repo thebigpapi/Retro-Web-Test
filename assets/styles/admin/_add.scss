@@ -6,14 +6,23 @@
 }
 
 /*title*/
-table.add-title { padding-top:20px; }
+table.add-title { padding-top:15px;padding-bottom:15px;margin:auto; }
 td.ttl1{ height:30px;width:400px;font-size:18px}
 td.ttl2{ height:30px;width:300px;font-size:18px}
 td.ttl3 div button{ height:30px;width:70px;font-size:18px}
 td.ttl1 select, td.ttl2 input{ width:100%;height:100%;font-size:20px }
+input.save-btn {
+	line-height: 4px;
+	padding:18px 5px 18px 45px;
+	font-size: 16px !important;
+	margin-left: 5px;
+	float: right;
+	background-color: #ebebeb !important;
+}
+#motherboard_form_save { background: url(../../images/admin/save.png) no-repeat scroll 5px 1px;padding:18px 5px 18px 50px; }
+#motherboard_clone { background: url(../../images/admin/clone.png) no-repeat scroll 5px 1px; }
 
 /*image section*/
-div.show-images{padding-top:90px;max-height:none}
 div.imgp{width:95%;padding-left:5%;max-width:250px;font-size:16px;padding-top:1px}
 div.imgp span{width:65px;display: inline-block;}
 div.imgp select{width:60%}
@@ -27,12 +36,14 @@ div.clrs{ height:10px; }
 
 /*bios images/manuals*/
 div.bios-image { 
-	background-color:#e6e6e6;
+	background-color: $lightbg-color;
 	margin-top:16px;
 	display:table-cell;
-	color:#000000;
-	border-radius: 6px;
+	color: $dark-color;
+	border: 1px solid $footer-link-color;
+	border-collapse: collapse;
 	padding: 3px 3px 3px;
+	width:100%;
  }
 .ba0, .ba1, .ba2, .ba3, .ba4, .ba5, .ba6{display: inline-block;*display: inline;
 *vertical-align: middle;zoom: 1;margin:0px 2px 0px;text-align: center}
