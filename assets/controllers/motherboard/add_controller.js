@@ -105,7 +105,13 @@ export default class extends Controller {
             event.preventDefault();
         }
     }
-
+    /**
+     * Save the motherboard
+     */
+     submit() {
+        let submit_btn = document.getElementById("motherboard_form_save");
+        submit_btn.click();
+    }
     /**
      * Clone the motherboard
      */
@@ -123,8 +129,7 @@ export default class extends Controller {
             let manuals = document.getElementById("manuals-fields-list");
             manuals.innerHTML = '';
             // submit the page
-            let save = document.getElementById("motherboard_form_save");
-            save.click();
+            this.submit();
         }
     }
 }

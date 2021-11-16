@@ -1,72 +1,64 @@
-.add-table{
-	background-color:#e6e6e6;
-	color:#000000;
-	border-radius: 6px;
-	padding: 3px 3px 3px;
-}
-
 /*title*/
 table.add-title { padding-top:15px;padding-bottom:15px;margin:auto; }
 td.ttl1{ height:30px;width:400px;font-size:18px}
 td.ttl2{ height:30px;width:300px;font-size:18px}
 td.ttl3 div button{ height:30px;width:70px;font-size:18px}
 td.ttl1 select, td.ttl2 input{ width:100%;height:100%;font-size:20px }
-input.save-btn {
-	line-height: 4px;
-	padding:18px 5px 18px 45px;
-	font-size: 16px !important;
-	margin-left: 5px;
-	float: right;
-	background-color: #ebebeb !important;
-}
-#motherboard_form_save { background: url(../../images/admin/save.png) no-repeat scroll 5px 1px;padding:18px 5px 18px 50px; }
-#motherboard_clone { background: url(../../images/admin/clone.png) no-repeat scroll 5px 1px; }
-
 /*image section*/
-div.imgp{width:95%;padding-left:5%;max-width:250px;font-size:16px;padding-top:1px}
+div.addform{
+	box-shadow:inset -1px -1px $dark-color,inset 1px 1px $footer-link-color,inset -2px -2px $medium-color,inset 2px 2px $lightbg-color;
+	background-color: $footer-link-color;
+	padding:3px; 
+	font-size:18px; 
+	width:95%;margin-top: 10px;
+	color:$dark-color;
+}
+div.imgp {width:95%;padding-left:5%;max-width:250px;font-size:16px;padding-top:1px}
 div.imgp span{width:65px;display: inline-block;}
 div.imgp select{width:60%}
-div.addform{box-shadow:inset -1px -1px #0a0a0a,inset 1px 1px #dfdfdf,inset -2px -2px grey,inset 2px 2px #fff;
-			background-color:#dedede;padding:3px; font-size:18px; width:95%;margin-top: 10px;color:#000000}
-			
-/*ram type*/			
-div.ram-type div label {padding-right:15px;}
-.image-table {background-color:white;width:90%;margin:auto;border-radius: 6px; margin: 10px 10px 10px}
-div.clrs{ height:10px; }
-
 /*bios images/manuals*/
 div.bios-image { 
 	background-color: $lightbg-color;
-	margin-top:16px;
-	display:table-cell;
 	color: $dark-color;
 	border: 1px solid $footer-link-color;
 	border-collapse: collapse;
-	padding: 3px 3px 3px;
-	width:100%;
+	padding: 0;
+	width:99%;
+	font-size:16px;
  }
-.ba0, .ba1, .ba2, .ba3, .ba4, .ba5, .ba6{display: inline-block;*display: inline;
-*vertical-align: middle;zoom: 1;margin:0px 2px 0px;text-align: center}
-.ba0 {width:9%;} 
-.ba1 {width:16%}
-.ba2 {width:10%}
-.ba3 {width:5%}
-.ba4 {width:20%}
-.ba5 {width:16%}
-.ba6 {width:40%}
-
+div.bios-image-head {
+	background-color:$footer-link-color;
+	color:$dark-color;
+	width:100%;
+	clear:left;
+	padding-bottom:5px;
+}
+.ba0, .ba1, .ba2, .ba3, .ba4, .ba5, .ba6, .ba7 {
+	display: inline-block;
+	margin:0px 2px 0px;
+	text-align: center;
+}
+div.ba0 {width:9%;} 
+div.ba1 {width:16%}
+div.ba2 {width:10%}
+div.ba3 {width:5%}
+div.ba4 {width:20%}
+div.ba5 {width:16%}
+div.ba6 {width:40%}
+div.ba7 {width:50%}
+#motherboardBios-fields-list, #manuals-fields-list, #drivers-fields-list {padding: 3px;}
 td.exp-table {width:270px;}
 td.io-table {width:120px;}
 input.num {width:15px;}
-
 div.notes-field div { padding-bottom: 6px; padding-right: 4px; margin:auto }
 div.notes-field label { display:none }
 div.notes-field div textarea { width:95%; height:100px }
-
 @media (max-width: 1199px) {
 	td.ttl1 {width:60%}
 	td.ttl2 {width:200px}
 }
-@media (min-width: 1620px) {
-	.ba1 {width:22%}
+@media (min-width: 1620px) { div.ba1 {width:22%} }
+@media (prefers-color-scheme: dark) {
+	div.bios-image-head { background-color:$btn-darkbg-color-hover;color:$light-color; }
+	div.bios-image, div.notes-field div textarea{ background-color:$btn-darkbg-color;color:$light-color; }
 }

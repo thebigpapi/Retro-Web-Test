@@ -85,7 +85,6 @@
 </b></p>{% endif %}
 <div class="show-images" id="sh-images">
 {% if motherboard.getImages() is not empty %}
-	<div class="ie-fix">
 	{% for image in motherboard.getImages()|sort((a, b) => a.motherboardImageType <=> b.motherboardImageType) %}
 		<div class="show-image">
 				<a href="{{ vich_uploader_asset(image, 'imageFile')}}" class="highslide" onclick="return hs.expand(this, { slideshowGroup: 'images' });">
@@ -109,19 +108,27 @@
 			</div>
 		</div>
 	{% endfor %}
-	</div>
-{% else %}&nbsp;{% endif %}
+{% else %}
+<div style="height:50px;">no images available :(</div>{% endif %}
 </div>
 <div class="show-nav" id="sh-nav">
 	<a class="snav" onclick="show_gen()">
-		<img src="{{ absolute_url(asset('build/images/data.svg')) }}" alt="" width="16" height="16" style="vertical-align: middle;padding-right:2px;">General</a>
+		<img src="{{ absolute_url(asset('build/images/data.svg')) }}" alt="" width="24" style="vertical-align: middle;padding-right:2px;">General</a>
 	<a class="snav" onclick="show_dw()">
-		<img src="{{ absolute_url(asset('build/images/dw.svg')) }}" alt="" width="16" height="16" style="vertical-align: middle;padding-right:2px;">Downloads</a>
+		<img src="{{ absolute_url(asset('build/images/dw.svg')) }}" alt="" width="24" style="vertical-align: middle;padding-right:2px;">Downloads</a>
 	<a class="snav" onclick="show_cpu()">
-		<img src="{{ absolute_url(asset('build/images/cpu.svg')) }}" alt="" width="16" height="16" style="vertical-align: middle;padding-right:2px;">CPUs</a>
-	<div><b class="contrib">{% trans %}Would you like to improve this page? Click{% endtrans %}
-	<a href="{% if is_granted('ROLE_ADMIN') %}{{ path('new_motherboard_edit', {id: motherboard.getId()}) }}{% else %}https://discord.gg/HWWH7hsk2p{% endif %}">
-	{% trans %}here{% endtrans %}</a>.</b></div>
+		<img src="{{ absolute_url(asset('build/images/cpu.svg')) }}" alt="" width="24" style="vertical-align: middle;padding-right:2px;">CPUs</a>
+	<div style="float:right;">
+	{% if is_granted('ROLE_ADMIN') %}
+	<a class="snav" href="{{ path("motherboard_delete", {id: motherboard.getId()}) }}">
+		<img src="{{ absolute_url(asset('build/images/delete.svg')) }}" alt="" width="24" style="vertical-align: middle;padding-right:2px;">Delete</a>
+	<a class="snav" href="{{ path('new_motherboard_edit', {id: motherboard.getId()}) }}">
+		<img src="{{ absolute_url(asset('build/images/edit.svg')) }}" alt="" width="24" style="vertical-align: middle;padding-right:2px;">Edit board</a>
+	{% else %}
+	<a class="snav" href="https://discord.gg/HWWH7hsk2p">
+		<img src="{{ absolute_url(asset('build/images/edit.svg')) }}" alt="" width="24" style="vertical-align: middle;padding-right:2px;">Improve this page</a>
+	{% endif %}
+	</div>
 </div>
 <div class="show-general" id="sh-general">
 	<table class="stbl">
@@ -167,21 +174,16 @@
 			<td>{{ motherboard.getDimensions() }}</td>
 		</tr>
 	{% endif %}
-	{% if motherboard.getCpuSockets() or motherboard.getProcessorPlatformTypes() is not empty %}
+	{% if motherboard.getCpuSockets() is not empty %}
 		<tr>
-			<td>{% trans %}CPU socket and platform{% endtrans %}:</td>
-			<td>
-				{% if motherboard.getCpuSockets() is not empty %}
-					{% for socket in motherboard.getCpuSockets() %}
-						<span class="text-block" style="background-color:#cae4fa;">{{ socket.getNameAndType}}</span>
-					{% endfor %}
-				{% endif %}
-				{% if motherboard.getProcessorPlatformTypes() is not empty %}
-					{% for platform in motherboard.getProcessorPlatformTypes() %}
-						<span class="text-block" style="background-color:#fae9ca;">{{ platform.getName() }}</span>
-					{% endfor %}
-				{% endif %}
-			</td>
+			<td>{% trans %}CPU socket{% endtrans %}:</td>
+			<td>{% for socket in motherboard.getCpuSockets() %}<span class="text-block">{{ socket.getNameAndType}}</span>{% endfor %}</td>		
+		</tr>
+	{% endif %}
+	{% if motherboard.getProcessorPlatformTypes() is not empty %}
+		<tr>
+			<td>{% trans %}CPU platform{% endtrans %}:</td>
+			<td>{% for platform in motherboard.getProcessorPlatformTypes() %}<span class="text-block">{{ platform.getName() }}</span>{% endfor %}</td>
 		</tr>
 	{% endif %}
 	{% if motherboard.getCpuSpeed() is not empty %}
@@ -194,37 +196,34 @@
 			</td>
 		</tr>
 	{% endif %}
-	{% if motherboard.getMotherboardMaxRams() or motherboard.getDramType() is not empty %}
+	{% if motherboard.getMotherboardMaxRams() is not empty %}
 		<tr>
-			<td>{% trans %}Supported RAM size and types{% endtrans %}:</td>
-			<td>
-				{% if motherboard.getMotherboardMaxRams() is not empty %}
-					{% for maxRam in motherboard.getMotherboardMaxRams()|sort((a, b) => a.getMaxRam().getValue() <=> b.getMaxRam().getValue()) %}
-						{% if maxRam.getMaxRam() is not null %}
-							<span class="text-block" style="background-color:#cae4fa;"> 
-							{% if maxRam.getMaxRam().getValue() > 1048575 %}
-								{{ maxRam.getMaxRam().getValue() / 1048576 }}
-								{% trans %}GB{% endtrans %}
-							{% elseif maxRam.getMaxRam().getValue() > 1023 %}
-								{{ maxRam.getMaxRam().getValue() / 1024 }}
-								{% trans %}MB{% endtrans %}
-							{% else %}
-								{{ maxRam.getMaxRam().getValue() }}
-								{% trans %}KB{% endtrans %}
-							{% endif %}
-							{% if maxRam.getNote() is not null %}
-								({{ maxRam.getNote()}})
-							{% endif %}
-							</span>
-						{% endif %}
-					{% endfor %}
+			<td>{% trans %}Supported RAM size{% endtrans %}:</td>
+			<td>{% for maxRam in motherboard.getMotherboardMaxRams()|sort((a, b) => a.getMaxRam().getValue() <=> b.getMaxRam().getValue()) %}
+				{% if maxRam.getMaxRam() is not null %}
+					<span class="text-block"> 
+					{% if maxRam.getMaxRam().getValue() > 1048575 %}
+						{{ maxRam.getMaxRam().getValue() / 1048576 }}
+						{% trans %}GB{% endtrans %}
+					{% elseif maxRam.getMaxRam().getValue() > 1023 %}
+						{{ maxRam.getMaxRam().getValue() / 1024 }}
+						{% trans %}MB{% endtrans %}
+					{% else %}
+						{{ maxRam.getMaxRam().getValue() }}
+						{% trans %}KB{% endtrans %}
+					{% endif %}
+					{% if maxRam.getNote() is not null %}
+						({{ maxRam.getNote()}})
+					{% endif %}
+					</span>
 				{% endif %}
-				{% if motherboard.getDramType() is not empty %}
-					{% for dram in motherboard.getDramType() %}
-						<span class="text-block" style="background-color:#fae9ca;">{{ dram.getName() }}</span>
-					{% endfor %}
-				{% endif %}
-			</td>
+			{% endfor %}</td>
+		</tr>
+	{% endif %}
+	{% if motherboard.getDramType() is not empty %}
+		<tr>
+			<td>{% trans %}Supported RAM types{% endtrans %}:</td>
+			<td>{% for dram in motherboard.getDramType() %}<span class="text-block">{{ dram.getName() }}</span>{% endfor %}</td>
 		</tr>
 	{% endif %}
 	{% if motherboard.getCacheSize() is not empty %}
@@ -232,7 +231,7 @@
 			<td>{% trans %}Cache:{% endtrans %}</td>
 			<td>
 			{% for cache in motherboard.getCacheSize()|sort((a, b) => a.value <=> b.value) %}
-				<span class="text-block" style="background-color:#d0faca;">
+				<span class="text-block" style="background-color:#d0faca;color:black;">
 				{% if cache.getValue() > 1048575 %}
 					{{ cache.getValue() / 1048576 }}
 					{% trans %}MB{% endtrans %}
@@ -465,6 +464,8 @@
 					{% endfor %}
 				</table>
 			</div>
+		{% else %}
+		<div>No CPUs listed.</div>	
 		{% endif %}
 		{% if motherboard.getCoprocessors() is not empty %}
 			<b>{% trans %}Supported NPUs:{% endtrans %}</b>
@@ -480,9 +481,10 @@
 					{% endfor %}
 				</table>
 			</div>
+		{% else %}
+		<div>No NPUs listed.</div>	
 		{% endif %}
 </div>
-{% if is_granted('ROLE_ADMIN') %}<a href="{{ path("motherboard_delete", {id: motherboard.getId()}) }}" style="color:#c40000" onclick="delEntry()">Delete</a>{% endif %}
 <div style="width:100%;clear:left;"></div>
 <script>
 	//alert(window.location.href);

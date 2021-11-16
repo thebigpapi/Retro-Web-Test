@@ -2,7 +2,8 @@ span.text-block {
     border: 1px solid $medium-color; 
     display: -moz-inline-box; 
     display: inline-block; 
-    margin-top: 1px; 
+    margin-top: 1px;
+    margin-left: 5px; 
     padding: 5px;
 }
 table.stbl {
@@ -40,7 +41,7 @@ div.show-nav, div.show-general, div.show-downloads, div.show-cpus {
     overflow-x:auto;
 }
 div.show-downloads, div.show-cpus { display:none; } /*general is the default tab*/
-div.show-general span.text-block { color:$dark-color; }
+/*div.show-general span.text-block { color:$dark-color; }*/
 div.scroll-div { overflow:auto;width:100%; }
 div.notes { 
     word-wrap: break-word;
@@ -89,5 +90,4 @@ td.io-table { vertical-align: top;width:175px; }
 	div.show-nav a.snav:hover { color: $link-hover-color; }
 	table.stbl, table.stbl-adv{ background-color:$btn-darkbg-color;color:$light-color; }
 	tr.stbl-head, tr.stbl-head2{ background-color:#606060;color:$light-color; }
-	div.bios-image , .add-table, div.notes-field div textarea{ background-color:#444444;color:$light-color; }
 }
