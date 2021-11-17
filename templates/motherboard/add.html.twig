@@ -38,6 +38,7 @@
 				">
 		{% for image in form.images %}
 			<div class="addform">
+				<img class="imgp-img" src="/motherboard/image/{{ image.vars.value.getFileName() }}" alt="f">
 				<div class="imgp">{{ form_widget(image.imageFile, {'attr': {'style': 'width:100%'}}) }}</div>
 				<div class="imgp"><span>Type:</span>{{ form_widget(image.motherboardImageType)}}</div>
 				<div class="imgp"><span>Creditor:</span>{{ form_widget(image.creditor)}}</div>
@@ -86,22 +87,9 @@
 						</div></td>
 					</tr>
 					<tr>
-						<td>
-							<div class="ba6">Manufacturer</div>
-							<div class="ba6">Name</div>
-							<div class="ba2">x</div>
-						</td>
-						<td>
-							<div class="ba6">Source</div>
-							<div class="ba6">Source type</div>
-							<div class="ba2">x</div>
-						</td>
-						<td></td>
-					</tr>
-					<tr>
 						<td><div class="append_table" id="motherboardAliases-fields-list" data-widget-counter="{{ form.motherboardAliases|length }}" data-prototype="
-								<div class=ba6>{{ form_widget(form.motherboardAliases.vars.prototype.manufacturer, {'attr': {'style': 'width:100%'}} )|e }}</div>
-								<div class=ba6>{{ form_widget(form.motherboardAliases.vars.prototype.name, {'attr': {'style': 'width:100%'}} )|e }}</div>
+								<div class=ba6>{{ form_widget(form.motherboardAliases.vars.prototype.manufacturer, {'attr': {'style': 'width:100%'}} )|replace({'</select>': '<option value="" disabled selected hidden>Select manufacturer</option></select>'})|raw|e }}</div>
+								<div class=ba6>{{ form_widget(form.motherboardAliases.vars.prototype.name, {'attr': {'style': 'width:100%', 'placeholder': 'Name'}} )|e }}</div>
 								<div class=ba2><button type=button data-action='click->collection#removeButtonXtd'>Del</button></div>
 								" data-controller="collection">
 								{% for alias in form.motherboardAliases %}
@@ -115,7 +103,7 @@
 								{{ form_errors(form.motherboardAliases) }}
 						</div></td>
 						<td><div id="redirections-fields-list" data-widget-counter="{{ form.redirections|length }}" data-prototype="
-								<div class=ba6>{{ form_widget(form.redirections.vars.prototype.source, {'attr': {'style': 'width:100%'}} )|e }}</div>
+								<div class=ba6>{{ form_widget(form.redirections.vars.prototype.source, {'attr': {'style': 'width:100%', 'placeholder': 'Source ID'}} )|e }}</div>
 								<div class=ba6>{{ form_widget(form.redirections.vars.prototype.sourceType, {'attr': {'style': 'width:100%'}} )|e }}</div> 
 								<div class=ba2><button type=button data-action='click->collection#removeButtonXtd'>Del</button></div>
 								" data-controller="collection">
@@ -188,13 +176,12 @@
 						<td class="exp-table">
 							<div id="motherboardMaxRams-fields-list" data-widget-counter="{{ form.motherboardMaxRams|length }}" data-prototype="
 								{{ form_widget(form.motherboardMaxRams.vars.prototype.max_ram)|e }} 
-								{{ form_widget(form.motherboardMaxRams.vars.prototype.note, {'attr': {'style': 'width:30%'}} )|e }} 
+								{{ form_widget(form.motherboardMaxRams.vars.prototype.note, {'attr': {'style': 'width:40%', 'placeholder': 'Note'}} )|e }} 
 								<button type=button data-action='click->collection#removeButton'>Del</button>
 								" data-controller="collection">
 								{% for maxRam in form.motherboardMaxRams %}
 									<div>{{ form_widget(maxRam.max_ram) }}
-										{{ form_widget(maxRam.note, {'attr': {'style': 'width:30%'}}
-										) }}
+										{{ form_widget(maxRam.note, {'attr': {'style': 'width:40%'}}) }}
 										<button type="button" data-action="click->collection#removeButton">Del</button>
 										{{ form_errors(maxRam) }}
 									</div>
@@ -458,7 +445,7 @@
 					{{ form_widget(form.processorPlatformTypes.vars.prototype, {'attr': {'style': 'width:80%'}} )|e }} 
 					<button type=button data-action='click->collection#removeButton'>Del</button>">
 						{% for platform in form.processorPlatformTypes %}
-							<div>{{ form_widget(platform) }}
+							<div>{{ form_widget(platform, {'attr': {'style': 'width:80%'}} ) }}
 								<button type="button" data-action="click->collection#removeButton">Del</button>
 								{{ form_errors(platform) }}
 							</div>
@@ -470,8 +457,7 @@
 					{{ form_errors(form.cpuSpeed) }}
 					<div style="width:100%" id="cpuSpeed-fields-list" data-widget-counter="{{ form.cpuSpeed|length }}" data-prototype="{{ form_widget(form.cpuSpeed.vars.prototype, {'attr': {'style': 'width:50%'}} )|e }} <button type=button data-action='click->collection#removeButton'>Del</button>">
 						{% for speed in form.cpuSpeed %}
-							<div>{{ form_widget(speed, {'attr': {'style': 'width:50%'}}
-								) }}
+							<div>{{ form_widget(speed, {'attr': {'style': 'width:50%'}}) }}
 								<button type="button" data-action="click->collection#removeButton">Del</button>
 							</div>
 							{{ form_errors(speed) }}
