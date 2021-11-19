@@ -57,6 +57,7 @@ p.string-alias span.separator { display: none; }
 span.string-bios { font-size:12px; }
 td.exp-table { vertical-align: top;width:140px; }
 td.io-table { vertical-align: top;width:175px; }
+.glightbox-clean .gdesc-inner {padding: 5px 20px;}
 
 @media (max-width: 600px) {
 	div.show-images { width:100%; max-height:400px;padding-top:5px; }
@@ -68,15 +69,18 @@ td.io-table { vertical-align: top;width:175px; }
     }
 	td.io-table ul,td.exp-table ul { padding:0; }
 }
+@media (min-width: 770px){.gslide-image img {min-height:66vh;max-height:67vh;}}
+@media (min-width: 1200px){.gslide-image img {min-height:90vh;max-height:91vh;}}
 @media (min-width: 1400px) {
 
 	div.show-images { width:30%; max-height:600px; }
 	div.show-nav, div.show-general, div.show-downloads, div.show-cpus { width:67%;padding-left:20px; }
 	div.grid-list ul{ display: grid;grid-template-columns: repeat(4, 1fr);font-size:16px; }
 	div.grid-list2 ul{ font-size:16px; }
+    .gslide-image img {min-height:96vh;max-height:97vh;}
 }
 @media (min-width: 1620px) {
-	div.show-images { max-height:750px; }
+	div.show-images { max-height:745px; }
 	div.show-nav, div.show-general, div.show-downloads, div.show-cpus { width:68%; font-size: 18px; }
 	div.show-general table, div.show-downloads table, div.notes, div.show-cpus { font-size:16px; }
 	p.string-alias { margin-top:-10px; }
@@ -91,3 +95,4 @@ td.io-table { vertical-align: top;width:175px; }
 	table.stbl, table.stbl-adv{ background-color:$btn-darkbg-color;color:$light-color; }
 	tr.stbl-head, tr.stbl-head2{ background-color:#606060;color:$light-color; }
 }
+

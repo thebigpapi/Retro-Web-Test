@@ -9,7 +9,10 @@
 import './styles/app.scss';
 import GLightbox from 'glightbox';
 
-const lightbox = GLightbox();
-
+const lightbox = GLightbox({
+    touchNavigation: true,
+    loop: true,
+    autoplayVideos: false
+});
 // start the Stimulus application
 import './bootstrap';

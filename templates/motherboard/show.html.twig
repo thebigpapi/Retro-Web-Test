@@ -77,10 +77,10 @@
 {% if motherboard.getImages() is not empty %}
 	{% for image in motherboard.getImages()|sort((a, b) => a.motherboardImageType <=> b.motherboardImageType) %}
 		<div class="show-image">
-				<a href="{{ vich_uploader_asset(image, 'imageFile')}}" class="glightbox">
+				<a href="{{ vich_uploader_asset(image, 'imageFile')}}" class="glightbox" data-description="{% if image.description %}{{ image.description }}{% endif %}">
 					<img src="{% if vich_uploader_asset(image, 'imageFile') | ext != "svg" %}
 					{{ vich_uploader_asset(image, 'imageFile') | imagine_filter('motherboard_show_thumb') }}{% else %}
-					{{ vich_uploader_asset(image, 'imageFile')}}{% endif %}" alt="" title="{% if image.description %}{{ image.description }}{% endif %}">
+					{{ vich_uploader_asset(image, 'imageFile')}}{% endif %}" alt="" title="{% if image.description %}{{ image.description }}{% endif %}" alt="">
 				</a>
 			{% if image.creditor %}
 				<span class="creditor">
@@ -93,9 +93,6 @@
 					{% endif %}
 				</span>
 			{% endif %}
-			<div class="highslide-caption">
-				{% if image.description %}{{ image.description }}{% endif %}
-			</div>
 		</div>
 	{% endfor %}
 {% else %}
@@ -478,11 +475,9 @@
 </div>
 <div style="width:100%;clear:left;"></div>
 <script>
-	//alert(window.location.href);
 	var showgen = document.getElementById('sh-general');
 	var showdw = document.getElementById('sh-downloads');
 	var showcpu = document.getElementById('sh-cpus');
-	var shownav = document.getElementById('sh-nav');
 	function show_gen(){
 		showgen.style.display = 'block';
 		showdw.style.display = 'none';
@@ -498,14 +493,5 @@
 		showdw.style.display = 'none';
 		showcpu.style.display = 'block';
 	}
-</script>
-
-
-<script type="text/javascript">
-  const lightbox = GLightbox({
-    touchNavigation: true,
-    loop: true,
-    autoplayVideos: true
-});
 </script>
 {% endblock %}
