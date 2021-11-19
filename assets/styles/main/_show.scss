@@ -18,7 +18,7 @@ tr.stbl-head, tr.stbl-head2{ background-color:$footer-link-color;color:$dark-col
 tr.stbl-head2{ text-align:left; }
 table.stbl td, table.stbl th{ padding: 5px 5px 5px; }
 tr.stbl-head2 td{ padding-left:45px; }
-div.show-images { width:25%;overflow: auto;float:left;height:500px;height:auto; max-height:500px; }
+div.show-images { width:25%;overflow: auto;float:left;min-height:50px;height:auto; max-height:500px; }
 div.show-image { width:100%;font-size:12px;display:block; }
 span.creditor { width:auto;display:block; text-align: center; word-wrap: break-word; }
 div.show-image a img { width: 100%; }

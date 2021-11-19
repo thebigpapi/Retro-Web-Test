@@ -43,17 +43,7 @@
 		{% endif %}
 	{% endif %}
 	{% endapply %}
-	<script src="{{ absolute_url(asset('assets/highslide/highslide.js')) }}"></script>
-	<script>
-	// HIGHSLIDE JS
-	if (hs.addSlideshow) hs.addSlideshow({
-		slideshowGroup: 'images',
-		repeat: false,
-		useControls: true,
-		fixedControls: 'fit',
-		overlayOptions: {opacity: 1,position: 'top right',hideOnMouseOut: true}
-	});
-	</script>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/glightbox/dist/css/glightbox.min.css" />
 {% endblock %}
 
 {% block body %}
@@ -87,7 +77,7 @@
 {% if motherboard.getImages() is not empty %}
 	{% for image in motherboard.getImages()|sort((a, b) => a.motherboardImageType <=> b.motherboardImageType) %}
 		<div class="show-image">
-				<a href="{{ vich_uploader_asset(image, 'imageFile')}}" class="highslide" onclick="return hs.expand(this, { slideshowGroup: 'images' });">
+				<a href="{{ vich_uploader_asset(image, 'imageFile')}}" class="glightbox">
 					<img src="{% if vich_uploader_asset(image, 'imageFile') | ext != "svg" %}
 					{{ vich_uploader_asset(image, 'imageFile') | imagine_filter('motherboard_show_thumb') }}{% else %}
 					{{ vich_uploader_asset(image, 'imageFile')}}{% endif %}" alt="" title="{% if image.description %}{{ image.description }}{% endif %}">
@@ -109,7 +99,8 @@
 		</div>
 	{% endfor %}
 {% else %}
-<div style="height:50px;">no images available :(</div>{% endif %}
+<p>no images available :(</p>
+{% endif %}
 </div>
 <div class="show-nav" id="sh-nav">
 	<a class="snav" onclick="show_gen()">
@@ -191,7 +182,7 @@
 			<td>{% trans %}Supported FSB speeds:{% endtrans %}</td>
 			<td>
 				{% for frequency in motherboard.getCpuSpeed()|sort((a, b) => a.value <=> b.value) %}
-					<span class="text-block" style="background-color:#d0faca;">{{ frequency.getValueWithUnit() }}</span>
+					<span class="text-block">{{ frequency.getValueWithUnit() }}</span>
 				{% endfor %}
 			</td>
 		</tr>
@@ -231,7 +222,7 @@
 			<td>{% trans %}Cache:{% endtrans %}</td>
 			<td>
 			{% for cache in motherboard.getCacheSize()|sort((a, b) => a.value <=> b.value) %}
-				<span class="text-block" style="background-color:#d0faca;color:black;">
+				<span class="text-block">
 				{% if cache.getValue() > 1048575 %}
 					{{ cache.getValue() / 1048576 }}
 					{% trans %}MB{% endtrans %}
@@ -507,5 +498,14 @@
 		showdw.style.display = 'none';
 		showcpu.style.display = 'block';
 	}
+</script>
+
+
+<script type="text/javascript">
+  const lightbox = GLightbox({
+    touchNavigation: true,
+    loop: true,
+    autoplayVideos: true
+});
 </script>
 {% endblock %}

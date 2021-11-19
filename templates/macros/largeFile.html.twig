@@ -22,17 +22,17 @@
 		</td>
 		<td>
 			{% if file.hasActivationKey() %}
-				<img src="{{ asset('icons/protection/activation_key.gif') }}" alt="activation key" title="The program needs an activation key" width="32">
+				<img src="{{ asset('icons/protection/activation_key.svg') }}" alt="activation key" title="The program needs an activation key" width="32">
 			{% endif %}
 			{% if file.hasCopyProtection() %}
-				<img src="{{ asset('icons/protection/copy_protected.gif') }}" alt="copy protected" title="The program is copy protected" width="32">
+				<img src="{{ asset('icons/protection/copy_protected.svg') }}" alt="copy protected" title="The program is copy protected" width="32">
 			{% endif %}
-			{% if not file.hasActivationKey() or not file.hasCopyProtection() %}
+			{% if not file.hasActivationKey() and not file.hasCopyProtection() %}
 				<p>N/A</P>
 			{% endif %}
 		</td>
 		<td style="width:40px;">
-			<img src="{{ asset('icons/dump_quality/' ~ file.dumpQualityFlag().getTagName() ~ '.gif') }}" alt="{{file.dumpQualityFlag().getName()}}" title="{{file.dumpQualityFlag().getName()}}" width="32">
+			<img src="{{ asset('icons/dump_quality/' ~ file.dumpQualityFlag().getTagName() ~ '.svg') }}" alt="{{file.dumpQualityFlag().getName()}}" title="{{file.dumpQualityFlag().getName()}}" width="32">
 		</td>
 		<td>
 			{% set prevIcon = "" %}
