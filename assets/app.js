@@ -9,7 +9,7 @@
 import './styles/app.scss';
 import GLightbox from 'glightbox';
 
-GLightbox();
+const lightbox = GLightbox();
 
 // start the Stimulus application
 import './bootstrap';
