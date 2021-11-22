@@ -19,7 +19,7 @@ class Chipset
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Manufacturer", inversedBy="chipsets", fetch="EAGER")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Manufacturer", inversedBy="chipsets")
      */
     private $manufacturer;
 
@@ -34,7 +34,7 @@ class Chipset
     private $name;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\ChipsetPart", inversedBy="chipsets", fetch="EAGER")
+     * @ORM\ManyToMany(targetEntity="App\Entity\ChipsetPart", inversedBy="chipsets")
      */
     private $chipsetParts;
 
