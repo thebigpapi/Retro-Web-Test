@@ -1,37 +1,19 @@
 div.index-buttons {text-align:center;}
-div.index-buttons span.margin-fix {
-    margin-bottom: 1px; 
-    width: 204px;
-    margin-bottom: 0; 
-    width: auto; 
-}
-div.index-buttons span.image-block {
+div.index-buttons a {
     background-color: $btn-lightbg-color; 
     color: $dark-color;
     border: 1px solid gray; 
     padding: 15px 5px 5px; 
     vertical-align: top;
-    width: 204px;
+    height: 265px;
+    width: 290px; 
     margin-bottom: 4px; 
-    width: auto; 
+    display:inline-block;
+    text-decoration: none;
 }
-div.index-buttons span.image-block span span {
-    font-size: 12px; 
-    min-width: 192px; 
-    width:16em;
-}
-div.index-buttons span.image-block span span.img {
-    height: 126px; 
-    margin-bottom:3px;
-    background-position: center; 
-    background-repeat: no-repeat;
-}
-div.index-buttons a:hover{text-decoration: none;}
-div.index-buttons span.margin-fix, a.index-button1 span { cursor: default; }
+div.index-buttons a div { font-size: 12px; }
+div.index-buttons a:hover div{ color:$link-hover-color1;}
 a.index-button0 span, a.index-button2 span {_cursor: hand;cursor: pointer;}
-a.index-button0 span.img {background-image: url(../../images/index/motherboard_low.gif);}
-a.index-button1 span.img {background-image: url(../../images/index/card_wip.gif);}
-a.index-button2 span.img {background-image: url(../../images/index/awchip_low.gif);}
 span.image-block {text-align: center; display: -moz-inline-stack; display: inline-block; vertical-align: bottom;}
 span.image-block span {display:table;}
 span.image-block span span {display:block;}
@@ -48,16 +30,13 @@ div.results span.image-block span img { vertical-align:bottom; width:320px; marg
 div.results span.image-block span span { font-size:16px; min-width:320px; width:20em; }
 div.results span.image-block span span.results-alias small { font-size:0.8em; }
 @media (min-width: 1200px) {
-	div.index-buttons span.image-block span span {font-size: 15px; min-width: 285px; width: 19em;}
-	div.index-buttons span.image-block span span.img {height: 225px;}
-	a.index-button0 span.img {background-image: url(../../images/index/motherboard_med.png);}
-	a.index-button1 span.img {background-image: url(../../images/index/card_wip.png);}
-	a.index-button2 span.img {background-image: url(../../images/index/awchip_med.png);}
+    div.index-buttons a div { font-size: 15px; }
     div.results ul li{font-size:20px;}
 	div.results span.image-block span span {font-size:20px;width:16em;}
 }
 @media (min-width: 1400px) { div.perks, div.perks div.results ul li {font-size:16px;} }
 @media (prefers-color-scheme: dark) {
-	div.index-buttons span.image-block{background-color: $btn-darkbg-color;color: $light-color;}
+	div.index-buttons a { background-color: $btn-darkbg-color;color: $light-color; }
+    div.index-buttons a:hover div { color:$link-hover-color;}
 }
 

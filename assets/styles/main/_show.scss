@@ -23,16 +23,19 @@ div.show-image { width:100%;font-size:12px;display:block; }
 span.creditor { width:auto;display:block; text-align: center; word-wrap: break-word; }
 div.show-image a img { width: 100%; }
 div.show-nav { padding:5px 0px 5px; }
-div.show-nav div { font-size:16px;display:inline-block; }
-div.show-nav a.snav {
+div.show-nav div { font-size:16px;float:right; }
+a.snav {
     font-size:18px;
     border: 1px solid $medium-color;
     display: -moz-inline-box; 
     display: inline-block; 
-    padding: 5px;color:$dark-color;
+    padding: 5px;
+    margin-top:2px;
+    color:$dark-color;
     text-decoration:none;
 }
-div.show-nav a.snav:hover { color: #48b6ff; }
+a.snav img { padding-right:5px;vertical-align: middle; }
+a.snav:hover { color: $link-hover-color;background-color:$navbar-color;cursor:pointer; }
 div.show-nav, div.show-general, div.show-downloads, div.show-cpus {
     width:74%;
     float:left;
@@ -64,11 +67,8 @@ td.io-table { vertical-align: top;width:175px; }
 @media (max-width: 600px) {
 	div.show-images { width:100%; max-height:400px;padding-top:5px; }
 	div.show-image, span.string-bios { font-size:8px; }
-	div.show-nav, div.show-general, div.show-downloads, div.show-cpus { 
-        width:100%;
-        padding-left:0;
-        font-size:13px; 
-    }
+	div.show-nav, div.show-general, div.show-downloads, div.show-cpus { width:100%;padding-left:0;font-size:13px; }
+    div.show-nav div { font-size:16px;float:none; }
     img.lang-flag {height:16px; width:32px;}
 	td.io-table ul,td.exp-table ul { padding:0; }
 }
@@ -93,8 +93,8 @@ td.io-table { vertical-align: top;width:175px; }
 
 
 @media (prefers-color-scheme: dark) {
-	div.show-nav a.snav { color:$lightbg-color; }
-	div.show-nav a.snav:hover { color: $link-hover-color; }
+	a.snav { color:$lightbg-color; }
+	a.snav:hover { color: #0099ff;background-color:$btn-lightbg-color; }
 	table.stbl, table.stbl-adv{ background-color:$btn-darkbg-color;color:$light-color; }
 	tr.stbl-head, tr.stbl-head2{ background-color:#606060;color:$light-color; }
 }

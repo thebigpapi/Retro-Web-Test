@@ -101,20 +101,20 @@
 </div>
 <div class="show-nav" id="sh-nav">
 	<a class="snav" onclick="show_gen()">
-		<img src="{{ absolute_url(asset('build/icons/show/data.svg')) }}" alt="" width="24" style="vertical-align: middle;padding-right:2px;">General</a>
+		<img src="{{ absolute_url(asset('build/icons/show/data.svg')) }}" alt="" width="24">General</a>
 	<a class="snav" onclick="show_dw()">
-		<img src="{{ absolute_url(asset('build/icons/dw.svg')) }}" alt="" width="24" style="vertical-align: middle;padding-right:2px;">Downloads</a>
+		<img src="{{ absolute_url(asset('build/icons/dw.svg')) }}" alt="" width="24">Downloads</a>
 	<a class="snav" onclick="show_cpu()">
-		<img src="{{ absolute_url(asset('build/icons/show/cpu.svg')) }}" alt="" width="24" style="vertical-align: middle;padding-right:2px;">CPUs</a>
-	<div style="float:right;">
+		<img src="{{ absolute_url(asset('build/icons/show/cpu.svg')) }}" alt="" width="24">CPUs</a>
+	<div>
 	{% if is_granted('ROLE_ADMIN') %}
 	<a class="snav" href="{{ path("motherboard_delete", {id: motherboard.getId()}) }}">
-		<img src="{{ absolute_url(asset('build/icons/show/delete.svg')) }}" alt="" width="24" style="vertical-align: middle;padding-right:2px;">Delete</a>
+		<img src="{{ absolute_url(asset('build/icons/show/delete.svg')) }}" alt="" width="24">Delete</a>
 	<a class="snav" href="{{ path('new_motherboard_edit', {id: motherboard.getId()}) }}">
-		<img src="{{ absolute_url(asset('build/icons/show/edit.svg')) }}" alt="" width="24" style="vertical-align: middle;padding-right:2px;">Edit board</a>
+		<img src="{{ absolute_url(asset('build/icons/show/edit.svg')) }}" alt="" width="24">Edit board</a>
 	{% else %}
 	<a class="snav" href="https://discord.gg/HWWH7hsk2p">
-		<img src="{{ absolute_url(asset('build/icons/show/edit.svg')) }}" alt="" width="24" style="vertical-align: middle;padding-right:2px;">Improve this page</a>
+		<img src="{{ absolute_url(asset('build/icons/show/edit.svg')) }}" alt="" width="24">Improve this page</a>
 	{% endif %}
 	</div>
 </div>
