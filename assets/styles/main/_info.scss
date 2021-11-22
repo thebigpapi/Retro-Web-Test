@@ -17,7 +17,7 @@ div.grid-list ul{display: grid;grid-template-columns: repeat(2, 1fr);font-size:1
 }
 @media (prefers-color-scheme: dark) {
 	div.grid-list, div.grid-list2{
-        background-color: $medium-color;
+        background-color: $btn-darkbg-color;
         border:1px solid $light-color;
     }
 }
