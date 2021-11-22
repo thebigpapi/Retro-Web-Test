@@ -11,7 +11,7 @@
 		<b>{{ entityDisplayNamePlural|capitalize }}</b>
 	</div>
 	<a href="{{ path('admin_index') }}" class="admin-button">
-		<img src="{{ absolute_url(asset('build/images/back.svg')) }}" alt="add" width="32">
+		<img src="{{ absolute_url(asset('build/icons/back.svg')) }}" alt="add" width="32">
 		<p>Go back</p>
 	</a>
 	<a href="{{ path('admin_manage_files', {entity:"largefile"}) }}" class="admin-button" style="{% if entityName == "largefile" %}background-color: #afff97;{% endif %}">
@@ -31,7 +31,7 @@
 		{% else %}
 		<a href="./files/{{entityName}}s/add/" class="admin-button" style="float:right;">
 		{% endif %}
-			<img src="{{ absolute_url(asset('build/images/add.svg')) }}" alt="add" width="32">
+			<img src="{{ absolute_url(asset('build/icons/add.svg')) }}" alt="add" width="32">
 			<p>Add {{ entityDisplayName }}</p>
 		</a>
 		<hr>

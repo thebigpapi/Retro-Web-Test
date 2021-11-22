@@ -43,6 +43,8 @@ div.show-nav, div.show-general, div.show-downloads, div.show-cpus {
 div.show-downloads, div.show-cpus { display:none; } /*general is the default tab*/
 /*div.show-general span.text-block { color:$dark-color; }*/
 div.scroll-div { overflow:auto;width:100%; }
+img.lang-flag {height:25px; width:46px;}
+img.lang-flag-lrg {height:16px; width:32px;}
 div.notes { 
     word-wrap: break-word;
     overflow: auto; 
@@ -55,7 +57,7 @@ div.notes {
 p.string-alias{ text-align:center;font-size: 14px;margin-top: -15px; }
 p.string-alias span.separator { display: none; }
 span.string-bios { font-size:12px; }
-td.exp-table { vertical-align: top;width:140px; }
+td.exp-table { vertical-align: top;width:210px; }
 td.io-table { vertical-align: top;width:175px; }
 .glightbox-clean .gdesc-inner {padding: 5px 20px;}
 
@@ -67,6 +69,7 @@ td.io-table { vertical-align: top;width:175px; }
         padding-left:0;
         font-size:13px; 
     }
+    img.lang-flag {height:16px; width:32px;}
 	td.io-table ul,td.exp-table ul { padding:0; }
 }
 @media (min-width: 770px){.gslide-image img {min-height:66vh;max-height:67vh;}}

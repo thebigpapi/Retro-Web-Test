@@ -23,18 +23,18 @@
 	</td>
 	<td>
 		{% for lang in object.getLanguages() %}
-			<img src="{{ asset('icons/language/' ~ lang.getIsoCode ~ '.gif') }}" alt="" width="32">
+			<img src="{{ asset('build/icons/language/' ~ lang.getIsoCode ~ '.svg') }}" alt="" class="lang-flag{% if loop.length > 4 %}-lrg{% endif %}">
 		{% endfor %}
 	</td>
 	<td>
-		<img src="{{ asset('icons/dump_quality/' ~ object.dumpQualityFlag().getTagName() ~ '.gif') }}" alt="" width="32">
+		<img src="{{ asset('build/icons/quality/' ~ object.dumpQualityFlag().getTagName() ~ '.svg') }}" alt="" width="32">
 	</td>
 	<td>
 		{% if object.hasActivationKey() %}
-			<img src="{{ asset('icons/protection/activation_key.gif') }}" alt="" width="32">
+			<img src="{{ asset('build/icons/protection/activation_key.svg') }}" alt="" width="32">
 		{% endif %}
 		{% if object.hasCopyProtection() %}
-			<img src="{{ asset('icons/protection/copy_protected.gif') }}" alt="" width="32">
+			<img src="{{ asset('build/icons/protection/copy_protected.svg') }}" alt="" width="32">
 		{% endif %}
 	</td>
 	<td>

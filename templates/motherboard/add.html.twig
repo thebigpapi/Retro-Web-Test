@@ -55,16 +55,16 @@
 	</div>
 	<div class="show-nav" id="sh-nav">
 		<a class="snav" onclick="show_gen()">
-			<img src="{{ absolute_url(asset('build/images/data.svg')) }}" alt="" width="24" style="vertical-align: middle;padding-right:2px;">General</a>
+			<img src="{{ absolute_url(asset('build/icons/show/data.svg')) }}" alt="" width="24" style="vertical-align: middle;padding-right:2px;">General</a>
 		<a class="snav" onclick="show_dw()">
-			<img src="{{ absolute_url(asset('build/images/dw.svg')) }}" alt="" width="24" style="vertical-align: middle;padding-right:2px;">Downloads</a>
+			<img src="{{ absolute_url(asset('build/icons/dw.svg')) }}" alt="" width="24" style="vertical-align: middle;padding-right:2px;">Downloads</a>
 		<a class="snav" onclick="show_cpu()">
-			<img src="{{ absolute_url(asset('build/images/cpu.svg')) }}" alt="" width="24" style="vertical-align: middle;padding-right:2px;">CPUs</a>
+			<img src="{{ absolute_url(asset('build/icons/show/cpu.svg')) }}" alt="" width="24" style="vertical-align: middle;padding-right:2px;">CPUs</a>
 		<div style="float:right;">
 			<a class="snav" data-action="click->motherboard--add#clone">
-				<img src="{{ absolute_url(asset('build/images/clone.svg')) }}" alt="" width="24" style="vertical-align: middle;padding-right:2px;">Clone board</a>
+				<img src="{{ absolute_url(asset('build/icons/clone.svg')) }}" alt="" width="24" style="vertical-align: middle;padding-right:2px;">Clone board</a>
 			<a class="snav" data-action="click->motherboard--add#submit">
-				<img src="{{ absolute_url(asset('build/images/edit.svg')) }}" alt="" width="24" style="vertical-align: middle;padding-right:2px;">Save board</a>	
+				<img src="{{ absolute_url(asset('build/icons/show/edit.svg')) }}" alt="" width="24" style="vertical-align: middle;padding-right:2px;">Save board</a>	
 		</div>
 	</div>
 	<input type="submit" style="display:none;" id="motherboard_form_save" name="motherboard_form[save]" value="Save board">
@@ -292,7 +292,7 @@
 	<div class="show-downloads" id="sh-downloads">
 		<div data-controller="collection">
 			<div style="padding-top:5px;">
-				<img src="{{ absolute_url(asset('build/images/hardware.gif')) }}" alt="" style="vertical-align: middle;padding-bottom: 10px;">
+				<img src="{{ absolute_url(asset('build/icons/show/hardware.svg')) }}" alt="" width="32" style="vertical-align: middle;padding-bottom: 10px;">
 				<b>Drivers: </b>
 				<button type="button" data-action="click->collection#expandButton" data-list-id="drivers-fields-list">Add</button>
 			</div>
@@ -308,7 +308,8 @@
 					" data-controller="collection">
 					{% for driver in form.drivers %}
 							<div>
-								{{ form_widget(driver, {'attr': {'style': 'width:80%'}}) }}
+								<div class="ba7">{{ form_widget(driver.largeFile, {'attr': {'style': 'width:100%'}} ) }}</div>
+								<div class="ba2">{{ form_widget(driver.isRecommended, {'attr': {'style': 'height:18px;width:18px;margin:0;'}} ) }}</div>
 								<button type="button" data-action="click->collection#removeButton">Del</button>
 							</div>
 							{{ form_errors(driver) }}
@@ -320,7 +321,7 @@
 		</div>	
 		<div data-controller="collection">
 			<div style="padding-top:5px;">
-				<img src="{{ absolute_url(asset('build/images/chip.gif')) }}" alt="" style="vertical-align: middle;padding-bottom: 10px;">
+				<img src="{{ absolute_url(asset('build/icons/show/chip.svg')) }}" alt="" width="32" style="vertical-align: middle;padding-bottom: 10px;">
 				<b>BIOS images: </b>
 				<button type="button" data-action="click->collection#expandButton" data-list-id="motherboardBios-fields-list">Add</button>
 			</div>
@@ -360,8 +361,8 @@
 							) }}</div>
 						<div class="ba5">{{ form_widget(bios.file_name, {'attr': {'style': 'width:100%'}}
 							) }}</div>
-						<div class="ba3" id="imgp-id">
-							<button type="button" data-action="click->collection#removeButton">Del</button>
+						<div class="ba3" id="downloads-id">
+							<button type="button" data-action="click->collection#removeButtonXtd">Del</button>
 						</div>
 						{{ form_errors(bios) }}
 					</div>
@@ -371,7 +372,7 @@
 		</div>
 		<div data-controller="collection">
 			<div style="padding-top:5px;">
-				<img src="{{ absolute_url(asset('build/images/manual.gif')) }}" alt="" style="vertical-align: middle;padding-bottom: 10px;">
+				<img src="{{ absolute_url(asset('build/icons/show/manual.svg')) }}" alt="" width="32" style="vertical-align: middle;padding-bottom: 10px;">
 				<b>Manuals:</b>
 				<button type="button" data-action="click->collection#expandButton" data-list-id="manuals-fields-list">Add</button>
 			</div>
@@ -399,7 +400,7 @@
 						<div class="ba5">{{ form_widget(manual.file_name, {'attr': {'style': 'width:100%'}}
 							) }}</div>
 						<div class="ba3" id="downloads-id">
-							<button type="button" data-action="click->collection#removeButton">Del</button>
+							<button type="button" data-action="click->collection#removeButtonXtd">Del</button>
 						</div>
 						{{ form_errors(manual) }}
 					</div>

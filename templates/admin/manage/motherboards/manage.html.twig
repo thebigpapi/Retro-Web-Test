@@ -10,7 +10,7 @@
 		<b>{{ entityDisplayNamePlural|capitalize }}</b>
 	</div>
 	<a href="{{ path('admin_index') }}" class="admin-button">
-		<img src="{{ absolute_url(asset('build/images/back.svg')) }}" alt="add" width="32">
+		<img src="{{ absolute_url(asset('build/icons/back.svg')) }}" alt="add" width="32">
 		<p>Go back</p>
 	</a>
 	<a href="{{ path('admin_manage_motherboards', {entity:"motherboard"})}}" class="admin-button" style="{% if entityName == "motherboard" %}background-color: #afff97;{% endif %}">
@@ -20,7 +20,7 @@
 		<p {% if entityName == "formfactor" %} style="color: #000000;" {% endif %}>{% trans %}Form factors{% endtrans %}</p>
 	</a>
 	<a href="./motherboards/{{entityName}}s/add/" class="admin-button" style="float:right;">
-		<img src="{{ absolute_url(asset('build/images/add.svg')) }}" alt="add" width="32">
+		<img src="{{ absolute_url(asset('build/icons/add.svg')) }}" alt="add" width="32">
 		<p>Add {{ entityDisplayName }}</p>
 	</a>
 	<hr>

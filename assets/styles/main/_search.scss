@@ -18,9 +18,9 @@ div.sadv { width: 90%; }
 div.sadv div select { width: 100%; }
 div.butn { text-align: center; }
 div.butn input {color: $dark-color; height:2.7em; font-size:14px;}
-input.butn-0{background: $btn-lightbg-color url(../../images/search/reset.svg) no-repeat 0px 1px;padding-left:35px;background-position: 5px 5px;background-size: 23%;}
-input.butn-1{background: $btn-lightbg-color url(../../images/search/search.svg) no-repeat 4px 1px;padding-left:42px;background-position: 5px 2px;background-size: 35%;}
-input.butn-2{background: $btn-lightbg-color url(../../images/search/search_image.svg) no-repeat 5px 1px;padding-left:42px;background-position: 5px 0px;background-size: 20%;}
+input.butn-0{background: $btn-lightbg-color url(../../icons/search/reset.svg) no-repeat 0px 1px;padding-left:35px;background-position: 5px 5px;background-size: 23%;}
+input.butn-1{background: $btn-lightbg-color url(../../icons/search/search.svg) no-repeat 4px 1px;padding-left:42px;background-position: 5px 2px;background-size: 35%;}
+input.butn-2{background: $btn-lightbg-color url(../../icons/search/search_image.svg) no-repeat 5px 1px;padding-left:42px;background-position: 5px 0px;background-size: 20%;}
 span.help-t span { display:none; }
 
 @media (max-width: 600px) {
@@ -51,7 +51,7 @@ span.help-t span { display:none; }
 @media (hover: none) {
 	span.help-t img {display:none;}
 	span.help-t span.img {
-		background-image: url(../../images/search/help.svg);
+		background-image: url(../../icons/search/help.svg);
 		display: inline-block;
 		width: 16px;
 		height: 16px;

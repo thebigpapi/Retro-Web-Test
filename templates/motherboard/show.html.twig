@@ -101,20 +101,20 @@
 </div>
 <div class="show-nav" id="sh-nav">
 	<a class="snav" onclick="show_gen()">
-		<img src="{{ absolute_url(asset('build/images/data.svg')) }}" alt="" width="24" style="vertical-align: middle;padding-right:2px;">General</a>
+		<img src="{{ absolute_url(asset('build/icons/show/data.svg')) }}" alt="" width="24" style="vertical-align: middle;padding-right:2px;">General</a>
 	<a class="snav" onclick="show_dw()">
-		<img src="{{ absolute_url(asset('build/images/dw.svg')) }}" alt="" width="24" style="vertical-align: middle;padding-right:2px;">Downloads</a>
+		<img src="{{ absolute_url(asset('build/icons/dw.svg')) }}" alt="" width="24" style="vertical-align: middle;padding-right:2px;">Downloads</a>
 	<a class="snav" onclick="show_cpu()">
-		<img src="{{ absolute_url(asset('build/images/cpu.svg')) }}" alt="" width="24" style="vertical-align: middle;padding-right:2px;">CPUs</a>
+		<img src="{{ absolute_url(asset('build/icons/show/cpu.svg')) }}" alt="" width="24" style="vertical-align: middle;padding-right:2px;">CPUs</a>
 	<div style="float:right;">
 	{% if is_granted('ROLE_ADMIN') %}
 	<a class="snav" href="{{ path("motherboard_delete", {id: motherboard.getId()}) }}">
-		<img src="{{ absolute_url(asset('build/images/delete.svg')) }}" alt="" width="24" style="vertical-align: middle;padding-right:2px;">Delete</a>
+		<img src="{{ absolute_url(asset('build/icons/show/delete.svg')) }}" alt="" width="24" style="vertical-align: middle;padding-right:2px;">Delete</a>
 	<a class="snav" href="{{ path('new_motherboard_edit', {id: motherboard.getId()}) }}">
-		<img src="{{ absolute_url(asset('build/images/edit.svg')) }}" alt="" width="24" style="vertical-align: middle;padding-right:2px;">Edit board</a>
+		<img src="{{ absolute_url(asset('build/icons/show/edit.svg')) }}" alt="" width="24" style="vertical-align: middle;padding-right:2px;">Edit board</a>
 	{% else %}
 	<a class="snav" href="https://discord.gg/HWWH7hsk2p">
-		<img src="{{ absolute_url(asset('build/images/edit.svg')) }}" alt="" width="24" style="vertical-align: middle;padding-right:2px;">Improve this page</a>
+		<img src="{{ absolute_url(asset('build/icons/show/edit.svg')) }}" alt="" width="24" style="vertical-align: middle;padding-right:2px;">Improve this page</a>
 	{% endif %}
 	</div>
 </div>
@@ -294,7 +294,7 @@
 </div>
 <div class="show-downloads" id="sh-downloads">
 	<div class="scroll-div">
-		<img src="{{ absolute_url(asset('build/images/hardware.gif')) }}" alt="" style="vertical-align: middle;padding-bottom: 10px;">
+		<img src="{{ absolute_url(asset('build/icons/show/hardware.svg')) }}" alt="" width="32" style="vertical-align: middle;padding-bottom: 10px;">
 		<span><b>{% trans %}Drivers:{% endtrans %} </b></span>
 		{% if motherboard.getAllDrivers() is not empty %}
 		<span>{{ motherboard.getAllDrivers.count() }}{% if motherboard.getAllDrivers.count() == 1 %} entry{% else %} entries{% endif %}</span>
@@ -307,7 +307,7 @@
 		{% endif %}
 	</div>
 	<div class="scroll-div">
-		<img src="{{ absolute_url(asset('build/images/chip.gif')) }}" alt="" style="vertical-align: middle;padding-bottom: 10px;">
+		<img src="{{ absolute_url(asset('build/icons/show/chip.svg')) }}" alt="" width="32" style="vertical-align: middle;padding-bottom: 10px;">
 		<span><b>{% trans %}BIOS images:{% endtrans %} </b></span>
 		{% if motherboard.getMotherboardBios() is not empty %}
 			{% set bfile_cnt = 0 %}
@@ -342,7 +342,7 @@
 				<td>
 				{% if bios.getFileName() is not null %}
 					<a href="{{ vich_uploader_asset(bios, 'romFile') }}">
-						<img src="{{ absolute_url(asset('build/images/dw.svg')) }}" alt="" width="16" height="16" style="vertical-align: middle;">
+						<img src="{{ absolute_url(asset('build/icons/dw.svg')) }}" alt="" width="16" height="16" style="vertical-align: middle;">
 						{% if bios.getBoardVersion() is not null %}
 							{{ bios.getBoardVersion() }}
 						{% else %}
@@ -358,7 +358,7 @@
 		{% endif %}
 	</div>
 	<div class="scroll-div">
-		<img src="{{ absolute_url(asset('build/images/manual.gif')) }}" alt="" style="vertical-align: middle;padding-bottom: 10px;">
+		<img src="{{ absolute_url(asset('build/icons/show/manual.svg')) }}" alt="" width="32" style="vertical-align: middle;padding-bottom: 10px;">
 		<span><b>{% trans %}Manuals:{% endtrans %} </b></span>
 		{% if motherboard.getManuals() is not empty %}
 		<span>{{ motherboard.getManuals.count() }}{% if motherboard.getManuals.count() == 1 %} entry{% else %} entries{% endif %}</span>
@@ -371,7 +371,7 @@
 					<ul style="list-style-type: none;">{% for manual in motherboard.getManuals()|sort((a, b) => a.getLinkName <=> b.getLinkName) %}
 						<li>
 							<a href="{{ vich_uploader_asset(manual, 'manualFile') }}">
-								<img src="{{ absolute_url(asset('build/images/dw.svg')) }}" alt="" width="16" height="16" style="vertical-align: middle;">
+								<img src="{{ absolute_url(asset('build/icons/dw.svg')) }}" alt="" width="16" height="16" style="vertical-align: middle;">
 								{{ manual.getLinkName() }}
 							</a>
 							({{ manual.getLanguage().getName()}})

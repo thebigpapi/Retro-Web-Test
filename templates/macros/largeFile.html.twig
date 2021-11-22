@@ -11,7 +11,7 @@
 	<tr style="text-align:center;border: 1px solid #e0e0e0;">
 		<td>
 			{% for lang in file.getLanguages() %}
-				<img src="{{ asset('icons/language/' ~ lang.getIsoCode ~ '.gif') }}" alt="{{lang.getOriginalName()}}" title="{{lang.getOriginalName()}}" width="32">
+				<img src="{{ asset('build/icons/language/' ~ lang.getIsoCode ~ '.svg') }}" alt="{{lang.getOriginalName()}}" title="{{lang.getOriginalName()}}" class="lang-flag{% if loop.length > 4 %}-lrg{% endif %}">
 			{% endfor %}
 		</td>
 		<td>
@@ -22,17 +22,17 @@
 		</td>
 		<td>
 			{% if file.hasActivationKey() %}
-				<img src="{{ asset('icons/protection/activation_key.svg') }}" alt="activation key" title="The program needs an activation key" width="32">
+				<img src="{{ asset('build/icons/protection/activation_key.svg') }}" alt="activation key" title="The program needs an activation key" width="32">
 			{% endif %}
 			{% if file.hasCopyProtection() %}
-				<img src="{{ asset('icons/protection/copy_protected.svg') }}" alt="copy protected" title="The program is copy protected" width="32">
+				<img src="{{ asset('build/icons/protection/copy_protected.svg') }}" alt="copy protected" title="The program is copy protected" width="32">
 			{% endif %}
 			{% if not file.hasActivationKey() and not file.hasCopyProtection() %}
 				<p>N/A</P>
 			{% endif %}
 		</td>
 		<td style="width:40px;">
-			<img src="{{ asset('icons/dump_quality/' ~ file.dumpQualityFlag().getTagName() ~ '.svg') }}" alt="{{file.dumpQualityFlag().getName()}}" title="{{file.dumpQualityFlag().getName()}}" width="32">
+			<img src="{{ asset('build/icons/quality/' ~ file.dumpQualityFlag().getTagName() ~ '.svg') }}" alt="{{file.dumpQualityFlag().getName()}}" title="{{file.dumpQualityFlag().getName()}}" width="32">
 		</td>
 		<td>
 			{% set prevIcon = "" %}
@@ -54,7 +54,7 @@
 		</td>
 		<td>
 			<a href="{{ vich_uploader_asset(file, 'file')}}">
-				<img src="{{ absolute_url(asset('build/images/dw.svg')) }}" alt="" width="16" style="vertical-align: middle;">
+				<img src="{{ absolute_url(asset('build/icons/dw.svg')) }}" alt="" width="16" style="vertical-align: middle;">
 				{{file.getName()}}
 				{% if file.getFileVersion() %}
 					{{file.getFileVersion()}}
