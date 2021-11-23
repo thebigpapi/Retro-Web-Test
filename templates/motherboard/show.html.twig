@@ -98,12 +98,12 @@
 <p>no images available :(</p>
 {% endif %}
 </div>
-<div class="show-nav" id="sh-nav">
-	<a class="snav" onclick="show_gen()">
+<div class="show-nav" id="sh-nav" data-controller="show">
+	<a class="snav" data-action='click->show#show_general'>
 		<img src="{{ absolute_url(asset('build/icons/show/data.svg')) }}" alt="" width="24">General</a>
-	<a class="snav" onclick="show_dw()">
+	<a class="snav" href="#downloads" data-action='click->show#show_downloads'>
 		<img src="{{ absolute_url(asset('build/icons/dw.svg')) }}" alt="" width="24">Downloads</a>
-	<a class="snav" onclick="show_cpu()">
+	<a class="snav" href="#cpus" data-action='click->show#show_cpus'>
 		<img src="{{ absolute_url(asset('build/icons/show/cpu.svg')) }}" alt="" width="24">CPUs</a>
 	<div>
 	{% if is_granted('ROLE_ADMIN') %}
@@ -473,24 +473,4 @@
 		{% endif %}
 </div>
 <div style="width:100%;clear:left;"></div>
-<script>
-	var showgen = document.getElementById('sh-general');
-	var showdw = document.getElementById('sh-downloads');
-	var showcpu = document.getElementById('sh-cpus');
-	function show_gen(){
-		showgen.style.display = 'block';
-		showdw.style.display = 'none';
-		showcpu.style.display = 'none';
-	}
-	function show_dw(){
-		showgen.style.display = 'none';
-		showdw.style.display = 'block';
-		showcpu.style.display = 'none';
-	}
-	function show_cpu(){
-		showgen.style.display = 'none';
-		showdw.style.display = 'none';
-		showcpu.style.display = 'block';
-	}
-</script>
 {% endblock %}

@@ -52,11 +52,18 @@ export default class extends Controller {
 
         let imageList = document.getElementById('images-fields-list').children;
         for (let i = 0; i < imageList.length; i++) {
-            if (imageList[i].children[0].children[0].files[0] == null) {
-                if (imageList[i].children[6].children[0].value == '') {
+            if (imageList[i].children[1].children[0].files[0] == null) {
+                if (imageList[i].children[7].children[0].value == '') {
                     errorMessage += "One of the file upload fields is empty! (image entry no." + (i + 1) + ")\n";
                     error = true;
                 }
+            }
+        }
+        let driverList = document.getElementById('drivers-fields-list').children;
+        for (let i = 0; i < driverList.length; i++) {
+            if (!driverList[i].children[0].children[0].value) {
+                errorMessage += "One of the drivers is empty! (entry no." + (i + 1) + ")\n";
+                error = true;
             }
         }
         if (_this.checkList('cpuSockets-fields-list')) {

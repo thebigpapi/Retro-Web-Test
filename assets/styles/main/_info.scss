@@ -7,6 +7,7 @@ div.grid-list ul{display: grid;grid-template-columns: repeat(2, 1fr);font-size:1
 @media (max-width: 600px) {
     div.biosinfo span.image-block {margin:auto;display:block;max-width:90%;}
     div.biosinfo span.image-block img {display:block;width:100%;}
+    div.grid-list ul{display: block;}
 }
 @media (min-width: 1200px) {
     div.grid-list2 ul{display: grid;grid-template-columns: repeat(2, 1fr);}

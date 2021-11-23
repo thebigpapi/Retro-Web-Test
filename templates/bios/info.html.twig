@@ -12,6 +12,7 @@
 				(for BIOSes which provide it). Depending on the BIOS vendor, the POST string may
 				provide various info about the board (like chipset or date). Here is a list of common 
 				vendors and their string meanings:{% endtrans %}</p>
+	<p>You can find a list of BIOS chipset and manufacturer IDs <a href="{{path("bios_infoadv")}}">here</a>
 	<br>
 	<div class="biosinfo">
 		<p>
@@ -29,11 +30,6 @@
 					<img src="{{ absolute_url(asset('build/images/bios/awardstring.jpg')) }}" alt="awardbiosinfo" title=""></a>
 			</span>
 		</span>
-		<p>{% trans %}You can find a list of Award chipset IDs{% endtrans %}
-			<a href="{{path("bios_infoadv")}}">{% trans %}here{% endtrans %}</a>
-			{% trans %}and a list of Award board manufacturer IDs{% endtrans %}
-			<a href="{{path("bios_infoadv")}}">{% trans %}here{% endtrans %}</a>
-		</p>
 		<br>
 		<p>
 			<b>2. AMI BIOS</b>
@@ -50,9 +46,6 @@
 					<img src="{{ absolute_url(asset('build/images/bios/amistring.gif')) }}" alt="amibiosinfo" title=""></a>
 			</span>
 		</span>
-		<p>{% trans %}You can find a list of AMI board manufacturer IDs{% endtrans %}
-			<a href="{{path("bios_infoadv")}}">{% trans %}here{% endtrans %}</a>
-		</p>
 		<br>
 		<p>
 			<b>3. Acer BIOS</b>
