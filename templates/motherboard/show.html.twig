@@ -101,9 +101,9 @@
 <div class="show-nav" id="sh-nav" data-controller="show">
 	<a class="snav" data-action='click->show#show_general'>
 		<img src="{{ absolute_url(asset('build/icons/show/data.svg')) }}" alt="" width="24">General</a>
-	<a class="snav" href="#downloads" data-action='click->show#show_downloads'>
+	<a class="snav" data-action='click->show#show_downloads'>
 		<img src="{{ absolute_url(asset('build/icons/dw.svg')) }}" alt="" width="24">Downloads</a>
-	<a class="snav" href="#cpus" data-action='click->show#show_cpus'>
+	<a class="snav" data-action='click->show#show_cpus'>
 		<img src="{{ absolute_url(asset('build/icons/show/cpu.svg')) }}" alt="" width="24">CPUs</a>
 	<div>
 	{% if is_granted('ROLE_ADMIN') %}
