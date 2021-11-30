@@ -396,25 +396,24 @@ class MotherboardController extends AbstractController
         }
 
         $parameters['expansionSlotsIds'] = array();
-        foreach ($slots as $key => $slot) {
-            $count = $request->request->get('slot' . $slot->getId());
-            if ($count != 0) {
-                $sloCount = array('id' => $slot->getId(), 'count' => $count);
+        foreach ($slots as $slot) {
+            $count = $request->request->get('slot' . $slot->getId(), );
+            if ((int)$count !== 0) {
+                $sloCount = array('id' => $slot->getId(), 'count' => (int)$count);
                 array_push($parameters['expansionSlotsIds'], $sloCount);
-            } elseif ($count == '0') {
+            } elseif ($count === '0') {
                 $sloCount = array('id' => $slot->getId(), 'count' => null);
                 array_push($parameters['expansionSlotsIds'], $sloCount);
             }
         }
-        //$parameters['expansionSlotsIds'] = $expansionSlots;
 
         $ioPorts = array();
-        foreach ($ports as $key => $port) {
+        foreach ($ports as $port) {
             $count = $request->request->get('port' . $port->getId());
-            if ($count != 0) {
-                $porCount = array('id' => $port->getId(), 'count' => $count);
+            if ((int)$count && $count !== 0) {
+                $porCount = array('id' => $port->getId(), 'count' => (int)$count);
                 array_push($ioPorts, $porCount);
-            } elseif ($count == '0') {
+            } elseif ($count === '0') {
                 $porCount = array('id' => $port->getId(), 'count' => null);
                 array_push($ioPorts, $porCount);
             }
