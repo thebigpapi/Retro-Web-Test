@@ -66,4 +66,5 @@ div.notes-field div textarea { width:95%; height:100px }
 @media (prefers-color-scheme: dark) {
 	div.bios-image-head { background-color:$btn-darkbg-color-hover;color:$light-color; }
 	div.bios-image, div.notes-field div textarea{ background-color:$btn-darkbg-color;color:$light-color; }
+	#large_file_form_file_name, div.ba5 input{color:white;}
 }
