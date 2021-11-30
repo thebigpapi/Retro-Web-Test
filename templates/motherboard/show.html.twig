@@ -76,7 +76,7 @@
 {% if motherboard.getImages() is not empty %}
 	{% for image in motherboard.getImages()|sort((a, b) => a.motherboardImageType <=> b.motherboardImageType) %}
 		<div class="show-image">
-				<a href="{{ vich_uploader_asset(image, 'imageFile')}}" class="glightbox" data-description="{% if image.description %}{{ image.description }}{% endif %}">
+				<a href="{{ vich_uploader_asset(image, 'imageFile')}}" class="glightbox" data-description="{% if image.description %}Notes: {{ image.description }}{% endif %}">
 					<img src="{% if vich_uploader_asset(image, 'imageFile') | ext != "svg" %}
 					{{ vich_uploader_asset(image, 'imageFile') | imagine_filter('motherboard_show_thumb') }}{% else %}
 					{{ vich_uploader_asset(image, 'imageFile')}}{% endif %}" alt="" title="{% if image.description %}{{ image.description }}{% endif %}" alt="">
@@ -177,9 +177,27 @@
 		<tr>
 			<td>{% trans %}Supported FSB speeds:{% endtrans %}</td>
 			<td>
-				{% for frequency in motherboard.getCpuSpeed()|sort((a, b) => a.value <=> b.value) %}
-					<span class="text-block">{{ frequency.getValueWithUnit() }}</span>
-				{% endfor %}
+				{% for frequency in motherboard.getCpuSpeed()|sort((a, b) => a.value <=> b.value) %}<span class="text-block">
+				{{ frequency.getValueWithUnit() }}</span>{% endfor %}
+			</td>
+		</tr>
+	{% endif %}
+	{% if motherboard.getCacheSize() is not empty %}
+		<tr>
+			<td>{% trans %}Cache:{% endtrans %}</td>
+			<td>
+			{% for cache in motherboard.getCacheSize()|sort((a, b) => a.value <=> b.value) %}<span class="text-block">
+				{% if cache.getValue() > 1048575 %}
+					{{ cache.getValue() / 1048576 }}
+					{% trans %}MB{% endtrans %}
+				{% elseif cache.getValue() > 1023 %}
+					{{ cache.getValue() / 1024}}
+					{% trans %}KB{% endtrans %}
+				{% else %}
+					{{ cache.getValue()}}
+					{% trans %}B{% endtrans %}
+				{% endif %}
+				</span>{% endfor %}
 			</td>
 		</tr>
 	{% endif %}
@@ -187,8 +205,6 @@
 		<tr>
 			<td>{% trans %}Supported RAM size{% endtrans %}:</td>
 			<td>{% for maxRam in motherboard.getMotherboardMaxRams()|sort((a, b) => a.getMaxRam().getValue() <=> b.getMaxRam().getValue()) %}
-				{% if maxRam.getMaxRam() is not null %}
-					<span class="text-block"> 
 					{% if maxRam.getMaxRam().getValue() > 1048575 %}
 						{{ maxRam.getMaxRam().getValue() / 1048576 }}
 						{% trans %}GB{% endtrans %}
@@ -200,38 +216,16 @@
 						{% trans %}KB{% endtrans %}
 					{% endif %}
 					{% if maxRam.getNote() is not null %}
-						({{ maxRam.getNote()}})
+						<i>({{ maxRam.getNote()}})</i>
 					{% endif %}
-					</span>
-				{% endif %}
+					{% if not loop.last %} / {% endif %}
 			{% endfor %}</td>
 		</tr>
 	{% endif %}
 	{% if motherboard.getDramType() is not empty %}
 		<tr>
 			<td>{% trans %}Supported RAM types{% endtrans %}:</td>
-			<td>{% for dram in motherboard.getDramType() %}<span class="text-block">{{ dram.getName() }}</span>{% endfor %}</td>
-		</tr>
-	{% endif %}
-	{% if motherboard.getCacheSize() is not empty %}
-		<tr>
-			<td>{% trans %}Cache:{% endtrans %}</td>
-			<td>
-			{% for cache in motherboard.getCacheSize()|sort((a, b) => a.value <=> b.value) %}
-				<span class="text-block">
-				{% if cache.getValue() > 1048575 %}
-					{{ cache.getValue() / 1048576 }}
-					{% trans %}MB{% endtrans %}
-				{% elseif cache.getValue() > 1023 %}
-					{{ cache.getValue() / 1024}}
-					{% trans %}KB{% endtrans %}
-				{% else %}
-					{{ cache.getValue()}}
-					{% trans %}B{% endtrans %}
-				{% endif %}
-				</span>
-			{% endfor %}
-			</td>
+			<td>{% for dram in motherboard.getDramType() %}{{ dram.getName() }}{% if not loop.last %}, {% endif %}{% endfor %}</td>
 		</tr>
 	{% endif %}
 	{% if motherboard.getVideoChipset() is not null %}<tr>
@@ -386,7 +380,7 @@
 </div>
 <div class="show-cpus" id="sh-cpus">
 		{% if motherboard.getProcessors() is not empty %}
-			<b>{% trans %}Supported CPUs:{% endtrans %}</b>{% if motherboard.getMaxCpu() is not null %}({% trans %}max CPUs:{% endtrans %}{{ motherboard.getMaxCpu()}}){% endif %}
+			{% if motherboard.getMaxCpu() > 1 %}<b>Multi CPU support: </b>yes ({{ motherboard.getMaxCpu()}} CPUs){% endif %}
 			<div class="scroll-div">
 				<table class="stbl">
 					<tr class="stbl-head">

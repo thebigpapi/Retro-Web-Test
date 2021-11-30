@@ -18,6 +18,7 @@
 	</p>
 	{% if motherboards is not empty %}
 		<div class="results">
+			{{ knp_pagination_render(motherboards) }}
 			{% if show_images %}
 				{% for motherboard in motherboards %}
 					<span class="image-block">
@@ -31,8 +32,7 @@
 							<span>
 								<a class="result-link" href="{{ path("motherboard_show", {id: motherboard.getId()}) }}">{{ motherboard.getManufacturerShortNameIfExist() }}&nbsp;{{ motherboard.name }}</a>
 							</span>
-							<!--{% if motherboard.getMotherboardAliases() is not empty %}-->
-							{% for alias in motherboard.getMotherboardAliases() %}
+							{% if motherboard.getMotherboardAliases() is not empty %}{% for alias in motherboard.getMotherboardAliases() %}
 								<span class="results-alias">
 									<small>&nbsp;
 
@@ -43,7 +43,7 @@
 										{% endif %}
 										{{ alias.name }}</small>
 								</span>
-							{% endfor %}<!--{% endif %}--></span>
+							{% endfor %}{% endif %}</span>
 					</span>
 				{% endfor %}
 			{% else %}

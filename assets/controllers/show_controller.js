@@ -2,21 +2,6 @@ import { Controller } from 'stimulus';
 
 export default class extends Controller {
     connect() {
-        
-        /*let history = window.history.length;
-        document.onmouseover = function(){
-            window.innerDocClick = true;
-        }
-        document.onmouseleave = function(){
-            window.innerDocClick = false;
-        }
-        window.onpopstate = function(){
-            //alert(window.innerDocClick);
-            //history.pushState({name: 'Example'}, "pushState example", 'page3.html');
-            alert(history.state);
-            if(!window.innerDocClick)
-                window.history.go(history - window.history.length);
-        }*/
         let URL = window.location.href;
         if (URL.indexOf("#downloads") != -1)
             this.show_downloads();

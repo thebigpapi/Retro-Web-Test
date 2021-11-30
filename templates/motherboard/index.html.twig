@@ -12,6 +12,7 @@
 			{% trans %}to add it.{% endtrans %}</b>
 	</p>
 	{% if motherboards is not empty %}
+		{{ knp_pagination_render(motherboards) }}
 		<ul>
 			{% for motherboard in motherboards %}
 				<li>
