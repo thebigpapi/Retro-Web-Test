@@ -42,7 +42,7 @@ class InstructionSetType extends AbstractType
             'data_class' => ChipsetChipsetPart::class,
         ]);
     }*/
-    public function getParent()
+    public function getParent(): ?string
     {
         return EntityType::class;
     }

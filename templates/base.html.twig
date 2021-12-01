@@ -8,7 +8,6 @@
 			{% block title %}Ultimate Retro
 			{% endblock %}
 		</title>
-		{#% if isRobot(app.request.headers.get('User-Agent')) %#}
 		<meta property="og:type" content="website">
 		<meta property="og:url" content="http://www.ultimateretro.net/">
 		{% block opengraph %}
@@ -16,7 +15,6 @@
 			<meta property="og:description" content="The ultimate retro motherboard database">
 			<meta property="og:image" content="{{ absolute_url(asset('build/images/logo.webp')) }}">
 		{% endblock %}
-		{#% endif %#}
 		{% block stylesheets %}
 		{% if is_granted('ROLE_USER') %}
 			{{ encore_entry_link_tags('admin_app') }}
