@@ -64,8 +64,7 @@
         "symfony/stopwatch": "^5.4",
         "symfony/var-dumper": "^5.4",
         "symfony/web-profiler-bundle": "^5.4",
-        "theofidry/alice-data-fixtures": "^1.4",
-        "vimeo/psalm": "^4.10"
+        "theofidry/alice-data-fixtures": "^1.4"
     },
     "config": {
         "optimize-autoloader": true,
