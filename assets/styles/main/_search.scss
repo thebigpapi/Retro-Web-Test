@@ -19,6 +19,24 @@ div.butn { text-align: center; }
 div.butn input {color: $dark-color; height:2.7em; font-size:14px;}
 span.help-t span { display:none; }
 
+p.index-list {
+	text-align:center;
+	overflow: hidden;
+	margin: 1em;
+}
+p.index-list > ul {
+	list-style: none;
+	padding: 0;
+	margin-left: -4px;
+}
+p.index-list > ul > li {
+	display: inline;
+	white-space: nowrap;
+}
+p.index-list > ul > li:before {
+	content: "\200B";
+}
+
 @media (max-width: 600px) {
 	#search-table tr.sep { display: none; }
 	#search-table td { display:block;text-align:left;padding:0 0 4px 4%; }	

@@ -432,11 +432,12 @@ class MotherboardController extends AbstractController
     }
 
     /**
-     * @Route("/motherboards/index/{letter}", name="moboindex", requirements={"letter"="\w"}), methods={"GET"})
+     * @Route("/motherboards/index/{letter}", name="moboindex", requirements={"letter"="\w|[?]"}), methods={"GET"})
      * @param Request $request
      */
     public function index(Request $request, PaginatorInterface $paginator, string $letter, MotherboardRepository $motherboardRepository)
     {
+        if ($letter == "?") $letter = "";
         $data = $motherboardRepository->findAllAlphabetic($letter);
 
         usort(
