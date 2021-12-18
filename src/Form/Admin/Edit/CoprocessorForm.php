@@ -36,13 +36,13 @@ class CoprocessorForm extends AbstractType
         usort(
             $view->children['processingUnit']->children['fsb']->vars['choices'],
             function (ChoiceView $a, ChoiceView $b) {
-                return ($a->data->getValue() > $b->data->getValue());
+                return ($a->data->getValue() <=> $b->data->getValue());
             }
         );
         usort(
             $view->children['processingUnit']->children['speed']->vars['choices'],
             function (ChoiceView $a, ChoiceView $b) {
-                return ($a->data->getValue() > $b->data->getValue());
+                return ($a->data->getValue() <=> $b->data->getValue());
             }
         );
     }

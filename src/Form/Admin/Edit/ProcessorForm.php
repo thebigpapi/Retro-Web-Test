@@ -105,15 +105,15 @@ class ProcessorForm extends AbstractType
     public function finishView(FormView $view, FormInterface $form, array $options)
     {
         usort($view->vars['form']['L1']->vars['choices'], function (ChoiceView $a, ChoiceView $b) {
-            return ($a->data->getValue() > $b->data->getValue());
+            return ($a->data->getValue() <=> $b->data->getValue());
         });
 
         usort($view->vars['form']['L2']->vars['choices'], function (ChoiceView $a, ChoiceView $b) {
-            return ($a->data->getValue() > $b->data->getValue());
+            return ($a->data->getValue() <=> $b->data->getValue());
         });
 
         usort($view->vars['form']['L3']->vars['choices'], function (ChoiceView $a, ChoiceView $b) {
-            return ($a->data->getValue() > $b->data->getValue());
+            return ($a->data->getValue() <=> $b->data->getValue());
         });
     }
 }

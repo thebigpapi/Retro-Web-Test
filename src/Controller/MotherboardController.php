@@ -12,9 +12,15 @@ use App\Entity\CpuSocket;
 use App\Entity\IdRedirection;
 use App\Entity\MotherboardIdRedirection;
 use App\Form\Motherboard\Search;
+use App\Repository\CpuSocketRepository;
+use App\Repository\ExpansionSlotRepository;
+use App\Repository\FormFactorRepository;
+use App\Repository\IoPortRepository;
 use App\Repository\ManufacturerRepository;
 use App\Repository\MotherboardIdRedirectionRepository;
 use App\Repository\MotherboardRepository;
+use App\Repository\ProcessorPlatformTypeRepository;
+use Doctrine\ORM\EntityManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
@@ -170,11 +176,9 @@ class MotherboardController extends AbstractController
     /**
      * @Route("/motherboards/{id}", name="motherboard_show", requirements={"id"="\d+"})
      */
-    public function show(int $id, MotherboardIdRedirectionRepository $motherboardIdRedirectionRepository)
+    public function show(int $id, MotherboardRepository $motherboardRepository, MotherboardIdRedirectionRepository $motherboardIdRedirectionRepository)
     {
-        $motherboard = $this->getDoctrine()
-            ->getRepository(Motherboard::class)
-            ->find($id);
+        $motherboard = $motherboardRepository->find($id);
 
         if (!$motherboard) {
             $idRedirection = $motherboardIdRedirectionRepository->findRedirection($id, 'uh19');
@@ -198,11 +202,9 @@ class MotherboardController extends AbstractController
      * @Route("/motherboards/{id}/delete/", name="motherboard_delete", requirements={"id"="\d+"})
      * @param Request $request
      */
-    public function delete(Request $request, int $id, MotherboardRepository $motherboardRepository)
+    public function delete(Request $request, int $id, MotherboardRepository $motherboardRepository, EntityManager $entityManager)
     {
         $motherboard = $motherboardRepository->find($id);
-
-        $entityManager = $this->getDoctrine()->getManager();
 
         if (!$motherboard) {
             throw $this->createNotFoundException(
@@ -275,7 +277,9 @@ class MotherboardController extends AbstractController
      * @Route("/motherboards/search/", name="motherboard_search")
      * @param Request $request
      */
-    public function search(Request $request, TranslatorInterface $translator, ManufacturerRepository $manufacturerRepository)
+    public function search(Request $request, TranslatorInterface $translator, ManufacturerRepository $manufacturerRepository,
+    ExpansionSlotRepository $expansionSlotRepository, IoPortRepository $ioPortRepository, CpuSocketRepository $cpuSocketRepository,
+    FormFactorRepository $formFactorRepository, ProcessorPlatformTypeRepository $processorPlatformTypeRepository)
     {
         $notIdentifiedMessage = $translator->trans("Not identified");
         $moboManufacturers = $manufacturerRepository->findAllMotherboardManufacturer();
@@ -288,28 +292,18 @@ class MotherboardController extends AbstractController
         $unidentifiedMan->setName($notIdentifiedMessage);
         array_unshift($chipsetManufacturers, $unidentifiedMan);
 
-        $slots = $this->getDoctrine()
-            ->getRepository(ExpansionSlot::class)
-            ->findAll();
+        $slots = $expansionSlotRepository->findAll();
 
-        $ports = $this->getDoctrine()
-            ->getRepository(IoPort::class)
-            ->findAll();
+        $ports = $ioPortRepository->findAll();
 
-        $cpuSockets = $this->getDoctrine()
-            ->getRepository(CpuSocket::class)
-            ->findAll();
+        $cpuSockets = $cpuSocketRepository->findAll();
 
-        $formFactors = $this->getDoctrine()
-            ->getRepository(FormFactor::class)
-            ->findAll();
+        $formFactors = $formFactorRepository->findAll();
         $unidentifiedFormFactor = new FormFactor();
         $unidentifiedFormFactor->setName($notIdentifiedMessage);
         array_unshift($formFactors, $unidentifiedFormFactor);
 
-        $procPlatformTypes = $this->getDoctrine()
-            ->getRepository(ProcessorPlatformType::class)
-            ->findBy(array(), array('name' => 'ASC'));
+        $procPlatformTypes = $processorPlatformTypeRepository->findBy(array(), array('name' => 'ASC'));
 
         $biosManufacturers = $manufacturerRepository->findAllBiosManufacturer();
 

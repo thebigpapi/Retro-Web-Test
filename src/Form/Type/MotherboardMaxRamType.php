@@ -37,7 +37,7 @@ class MotherboardMaxRamType extends AbstractType
     public function finishView(FormView $view, FormInterface $form, array $options)
     {
         usort($view->children['max_ram']->vars['choices'], function (ChoiceView $a, ChoiceView $b) {
-            return ($a->data->getValue() > $b->data->getValue());
+            return ($a->data->getValue() <=> $b->data->getValue());
         });
     }
 }
