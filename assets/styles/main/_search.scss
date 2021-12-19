@@ -1,14 +1,4 @@
-#search-table{ font-size: 1em; width:100%; }
-#search-table tr { height: 2em; }
-#search-table tr.sep { height: 10px; }
-#search-table select{ height:2.2em; }
-select.sform { width: 90%; vertical-align:middle; }
-input.sform { width: 89.5%; vertical-align:middle; }
-
-td.table-width {width: 130px;text-align:center;}
-li.field1 { height: 1.75em; width: 15em; font-size:12px; margin-bottom:4px;float:left; }
-li.field1 span {float:left; margin-left:0.4em;}
-li.field1 input { height: 21px; width: 21px; float:left;font-size:12px;height: 1.25em; width: 1.25em; }
+div.table-width {width: 130px;text-align:center;}
 span.field2 { width: 12em;font-size:16px; margin-bottom:4px;float:left; }
 div.sadv div { padding: 8px 0 4px; }
 div.sadv div.sform1 { padding: 0; }
@@ -45,6 +35,10 @@ form label, form legend {
 	font-weight: bold;
 }
 
+label[title] {
+	text-decoration: underline; //I picked that for testing, needs more talk
+}
+
 form ul {
 	display: grid;
 	grid-template-columns: repeat(6, 1fr);
@@ -68,6 +62,55 @@ form label, form input {
 div.search-nav {
 	margin:auto;
 	text-align: center;
+}
+
+#search-fieldset{
+	font-size: 1em;
+	width:100%;
+}
+
+#search-fieldset div {
+	height: 2em;
+}
+
+#search-fieldset tr.sep {
+	height: 10px;
+}
+
+#search-fieldset select {
+	height:2.2em;
+}
+
+select.sform {
+	width: 90%;
+	vertical-align:middle;
+}
+
+input.sform {
+	width: 89.5%;
+	vertical-align:middle;
+}
+
+li.field1 {
+	height: 1.75em;
+	width: 15em;
+	font-size:12px;
+	margin-bottom:4px;
+	float:left;
+}
+
+li.field1 span {
+	float:left;
+	margin-left:0.4em;
+}
+
+li.field1 input {
+	height: 21px;
+	width: 21px;
+	float:left;
+	font-size:12px;
+	height: 1.25em;
+	width: 1.25em;
 }
 
 @media (max-width: 600px) {
