@@ -21,70 +21,65 @@
 	<meta name="description" content="Search for a motherboard by name, chipset, manufacturer, CPU platform, form factor, expansion slot count and more.">
 {% endblock %}
 {% block body %}
+<!--
 	<div class="title">
-		<b>{% trans %}Search for a motherboard{% endtrans %}</b>
+		can't we remove this ??
 	</div>
-	<p class="index-list">
+	-->
+	<p class="index-title">
 		{% trans %}List boards whose manufacturer name starts with:{% endtrans %}<br>
-		<ul>
-			{% for letter in ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','?']%}
-				<li><a href="{{path("moboindex", {"letter":letter})}}">{{letter}}</a></li>
-			{% endfor %}
-		</ul>
 	</p>
+	<ul class="index-list">
+		{% for letter in ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','?']%}
+			<li><a href="{{path("moboindex", {"letter":letter})}}">{{letter}}</a></li>
+		{% endfor %}
+	</ul>
 	<div id="hiddenDiv" style="display: none;"></div>
 	{{ form_start(form, {'method': 'POST', 'name': 'search_motherboard', 'action':path("motherboard_search"), 'attr':{'data-controller':'search'}}) }}
-	<div class="search-nav">
-		<a class="snav" onclick="document.getElementById('rst-btn').click();return false;">
-			<img src="{{ absolute_url(asset('build/icons/search/reset.svg')) }}" alt="" width="24">{% trans %}Reset fields{% endtrans %}</a>
-		<a class="snav" onclick="document.getElementById('search_search').click();return false;">
-			<img src="{{ absolute_url(asset('build/icons/search/search.svg')) }}" alt="" width="24">{% trans %}Search{% endtrans %}</a>
-		<a class="snav" onclick="document.getElementById('search_searchWithImages').click();return false;">
-			<img src="{{ absolute_url(asset('build/icons/search/search_image.svg')) }}" alt="" width="24">{% trans %}Search with images{% endtrans %}</a>
+	<fieldset class="search-table">
+		<h3 class="title">{% trans %}Search for a motherboard{% endtrans %}</h3>
+		<section>
+			<div class="search-nav">
+				<a class="snav" onclick="document.getElementById('rst-btn').click();return false;">
+					<img src="{{ absolute_url(asset('build/icons/search/reset.svg')) }}" alt="" width="24">{% trans %}Reset fields{% endtrans %}
+				</a>
+				<a class="snav" onclick="document.getElementById('search_search').click();return false;">
+					<img src="{{ absolute_url(asset('build/icons/search/search.svg')) }}" alt="" width="24">{% trans %}Search{% endtrans %}
+				</a>
+				<a class="snav" onclick="document.getElementById('search_searchWithImages').click();return false;">
+					<img src="{{ absolute_url(asset('build/icons/search/search_image.svg')) }}" alt="" width="24">{% trans %}Search with images{% endtrans %}
+				</a>
 
-		<input id="rst-btn" type="reset" style="display:none;" value="reset" data-action="click->search#reset" data-reset-ids='search_chipsetManufacturer search_cpuSocket1 search_cpuSocket2'>
-		{{ form_row(form.search)|replace({'<div><button': '<input style="display:none;"', '</button></div>': '">', '>': ' value="'})|raw }}
-		{{ form_row(form.searchWithImages)|replace({'<div><button': '<input style="display:none;"', '</button></div>': '">', '>': ' value="'})|raw }}
-	</div>
-	<table id="search-table">
-		<tr>
-			<td class="table-width">
-				<b>{% trans %}Name{% endtrans %}</b>
+				<input id="rst-btn" type="reset" style="display:none;" value="reset" data-action="click->search#reset" data-reset-ids='search_chipsetManufacturer search_cpuSocket1 search_cpuSocket2'>
+				{{ form_row(form.search)|replace({'<div><button': '<input style="display:none;"', '</button></div>': '">', '>': ' value="'})|raw }}
+				{{ form_row(form.searchWithImages)|replace({'<div><button': '<input style="display:none;"', '</button></div>': '">', '>': ' value="'})|raw }}
+			</div>
+		</section>
+		<section>
+			<div>
+				<label for="name">{% trans %}Name{% endtrans %}</label>
 				<span class="help-t">
 					<img src="{{ absolute_url(asset('build/icons/search/help.svg')) }}" alt="" title="{{ 'This is where you enter the board part number, do not write the manufacturer name here!'|trans|e('html') }}" width="16" height="16">
 					<span class="img"></span>
-					<span class="text">{% trans %}This is where you enter the board part number, do not write the manufacturer name here!{% endtrans %}</span>
+					<span id="search_name_inst" class="text">{% trans %}This is where you enter the board part number, do not write the manufacturer name here!{% endtrans %}</span>
 				</span>
-			</td>
-			<td>{{ form_widget(form.name, {'attr': {'class': 'sform'}})|replace({' />': ' size="50">'})|raw }}</td>
-		</tr>
-		<tr>
-			<td class="table-width">
-				<b>{% trans %}Manufacturer{% endtrans %}</b>
-				<span class="help-t">
-					<img src="{{ absolute_url(asset('build/icons/search/help.svg')) }}" alt="" title="{{ 'This is the board manufacturer (e.g: ASUS, Gigabyte, FIC)'|trans|e('html') }}" width="16" height="16">
-					<span class="img"></span>
-					<span class="text">{% trans %}This is the board manufacturer (e.g: ASUS, Gigabyte, FIC){% endtrans %}</span>
-				</span>
-			</td>
-			<td>{{ form_widget(form.manufacturer, {'attr': {'class': 'sform'}}) }}</td>
-		</tr>
-		<tr>
-			<td class="table-width">
-				<b>{% trans %}Form factor{% endtrans %}</b>
-			</td>
-			<td>{{ form_widget(form.formFactor, {'attr': {'class': 'sform'}}) }}</td>
-		</tr>
-		<tr>
-			<td class="table-width">
-				<b>{% trans %}Chipset{% endtrans %}</b>
+				<div>
+					{{ form_widget(form.manufacturer, {'attr': {'class': 'sform', 'aria-describedby': 'search_manufacturer_inst'}}) }}
+					{{ form_widget(form.name, {'attr': {'class': 'sform', 'size': 50, 'aria-describedby': 'search_name_inst'}}) }}
+				</div>
+			</div>
+		</section>
+		<section>
+			<div>
+				{{ form_row(form.formFactor, {'attr': {'class': 'sform'}}) }}
+			</div>
+			<div>
+				{{ form_label(form.chipset) }}
 				<span class="help-t">
 					<img src="{{ absolute_url(asset('build/icons/search/help.svg')) }}" alt="" title="{{ 'Select a manufacturer from the first field, then pick the part number from the second field'|trans|e('html') }}" width="16" height="16">
 					<span class="img"></span>
 					<span class="text">{% trans %}Select a manufacturer from the first field, then pick the part number from the second field{% endtrans %}</span>
 				</span>
-			</td>
-			<td>
 				<div class="sadv">
 					<div id="setchip1">{{ form_widget(form.chipsetManufacturer, {'attr': {'class': 'sform', 'data-action': "change->search#search", 'data-target-id': 'search_chipset'}}) }}</div>
 					<div class="sform1">
@@ -92,18 +87,14 @@
 						<span id="setchip2">{{ form_widget(form.chipset) }}</span>
 					</div>
 				</div>
-			</td>
-		</tr>
-		<tr>
-			<td class="table-width">
-				<b>{% trans %}CPU socket{% endtrans %}</b>
+			</div>
+			<div>
+				<label for="search_cpuSocket1">{% trans %}CPU socket{% endtrans %}</label>
 				<span class="help-t">
 					<img src="{{ absolute_url(asset('build/icons/search/help.svg')) }}" alt="" title="{{ 'Select a CPU socket from the first field and/or pick the CPU platform from the second field'|trans|e('html') }}" width="16" height="16">
 					<span class="img"></span>
 					<span class="text">{% trans %}Select a CPU socket from the first field and/or pick the CPU platform from the second field{% endtrans %}</span>
 				</span>
-			</td>
-			<td>
 				<div class="sadv">
 					<div id="setcpu1">{{ form_widget(form.cpuSocket1, {'attr': {'class': 'sform', 'data-action': "change->search#search", 'data-target-id': 'search_platform1'}}) }}</div>
 					<div class="sform1">
@@ -111,13 +102,9 @@
 						<span id="setcpu2">{{ form_widget(form.platform1) }}</span>
 					</div>
 				</div>
-			</td>
-		</tr>
-		<tr>
-			<td class="table-width">
-				<b>{% trans %}2nd CPU socket{% endtrans %}</b>
-			</td>
-			<td>
+			</div>
+			<div>
+				<label for="search_cpuSocket2">{% trans %}2nd CPU socket{% endtrans %}</label>
 				<div class="sadv">
 					<div id="setcpu3">{{ form_widget(form.cpuSocket2, {'attr': {'class': 'sform',  'data-action': "change->search#search", 'data-target-id': 'search_platform2'}}) }}</div>
 					<div class="sform1">
@@ -125,60 +112,46 @@
 						<span id="setcpu4">{{ form_widget(form.platform2) }}</span>
 					</div>
 				</div>
-			</td>
-		</tr>
-		<tr class="sep">
-			<td></td>
-			<td></td>
-		</tr>
-		<tr>
-			<td class="table-width">
-				<b>{% trans %}Expansion slots{% endtrans %}</b>
+			</div>
+		</section>
+		<section>
+			<div>
+				<label for="search_expansion_slots">{% trans %}Expansion slots{% endtrans %}</label>
 				<span class="help-t">
 					<img src="{{ absolute_url(asset('build/icons/search/help.svg')) }}" alt="" title="{{ '0 - all boards without that slot will be shown'|trans|e('html') }}" width="16" height="16">
 					<span class="img"></span>
 					<span class="text">{% trans %}0 - all boards without that slot will be shown{% endtrans %}</span>
 				</span>
-			</td>
-			<td>
-				<div class="sform2">
+				<ul class="sform2" id="search_expansion_slots">
 					{% for slot in slots %}
 						{% if slot.hiddenSearch == false %}
-							<span class="field1">
+							<li class="field1">
 								<input type="text" size="2" name="slot{{slot.id}}">
-								<span>x
-									{{ slot.name }}</span>
-							</span>
+								<span>x{{ slot.name }}</span>
+							</li>
 						{% endif %}
 					{% endfor %}
-				</div>
-			</td>
-		</tr>
-		<tr class="sep">
-			<td></td>
-			<td></td>
-		</tr>
-		<tr>
-			<td class="table-width">
-				<b>{% trans %}I/O ports{% endtrans %}</b>
+				</ul>
+			</div>
+		</section>
+		<section>
+			<div>
+				<label for="search_io_ports">{% trans %}I/O ports{% endtrans %}</label>
 				<span class="help-t">
 					<img src="{{ absolute_url(asset('build/icons/search/help.svg')) }}" alt="" title="{{ '0 - all boards without that port will be shown'|trans|e('html') }}" width="16" height="16">
 					<span class="img"></span>
 					<span class="text">{% trans %}0 - all boards without that port will be shown{% endtrans %}</span>
 				</span>
-			</td>
-			<td>
-				<div class="sform2">
+				<ul class="sform2" id="search_io_ports">
 					{% for port in ports %}
-						<span class="field1">
+						<li class="field1">
 							<input type="text" size="2" name="port{{port.id}}">
-							<span>x
-								{{ port.name }}</span>
-						</span>
+							<span>x{{ port.name }}</span>
+						</li>
 					{% endfor %}
-				</div>
-			</td>
-		</tr>
-	</table>
+				</ul>
+			</div>
+		</section>
+	</fieldset>
 	<div>{{ form_rest(form)}}</div>
 </form>{% endblock %}

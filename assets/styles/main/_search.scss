@@ -6,35 +6,68 @@ select.sform { width: 90%; vertical-align:middle; }
 input.sform { width: 89.5%; vertical-align:middle; }
 
 td.table-width {width: 130px;text-align:center;}
-span.field1 { height: 1.75em; width: 15em; font-size:12px; margin-bottom:4px;float:left; }
-span.field1 span {float:left; margin-left:0.4em;}
-span.field1 input { height: 21px; width: 21px; float:left;font-size:12px;height: 1.25em; width: 1.25em; }
+li.field1 { height: 1.75em; width: 15em; font-size:12px; margin-bottom:4px;float:left; }
+li.field1 span {float:left; margin-left:0.4em;}
+li.field1 input { height: 21px; width: 21px; float:left;font-size:12px;height: 1.25em; width: 1.25em; }
 span.field2 { width: 12em;font-size:16px; margin-bottom:4px;float:left; }
 div.sadv div { padding: 8px 0 4px; }
 div.sadv div.sform1 { padding: 0; }
-div.search-nav { margin:auto;text-align: center; }
 div.sadv { width: 90%; }
 div.sadv div select { width: 100%; }
 div.butn { text-align: center; }
 div.butn input {color: $dark-color; height:2.7em; font-size:14px;}
 span.help-t span { display:none; }
 
-p.index-list {
+// Motherboard index
+p.index-title {
 	text-align:center;
 	overflow: hidden;
 	margin: 1em;
 }
-p.index-list > ul {
+ul.index-list {
+	text-align:center;
+	overflow: hidden;
+	margin: 1em;
 	list-style: none;
 	padding: 0;
 	margin-left: -4px;
 }
-p.index-list > ul > li {
+ul.index-list > li {
 	display: inline;
 	white-space: nowrap;
 }
-p.index-list > ul > li:before {
+ul.index-list > li:before {
 	content: "\200B";
+}
+
+// Motherboard search form
+form label, form legend {
+	font-weight: bold;
+}
+
+form ul {
+	display: grid;
+	grid-template-columns: repeat(6, 1fr);
+	font-size:14px;
+	list-style-type: none;
+}
+
+form h3 {
+	text-align: center;
+}
+
+form {
+	display: flex; 
+	flex-direction: row;
+}
+
+form label, form input {
+	display: block; 
+}
+
+div.search-nav {
+	margin:auto;
+	text-align: center;
 }
 
 @media (max-width: 600px) {

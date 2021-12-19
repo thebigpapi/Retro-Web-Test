@@ -31,66 +31,73 @@
 		<link rel="alternate" hreflang="x-default" href="{{ absolute_url(path('app_homepage', {_locale: 'en'})) }}"/>
 	</head>
 	<body class="content">
-		<div class="navbar">
-			<div class="navbar-inner">
-				<a href="{{ path('app_homepage') }}">
-					<b>Ultimate Retro
-						<small>BETA</small>
-					</b>
-				</a>
-				{% if is_granted('ROLE_USER') %}
-					<a href="{{ path('app_logout') }}" class="nav-link">
-						<img src="{{ absolute_url(asset('build/icons/nav/power.svg')) }}" height="24" alt="logout">
-						<span class="navbar-label">{{'Logout'|trans}}</span>
+		<header>
+			<div class="navbar">
+				<div class="navbar-inner">
+					<a href="{{ path('app_homepage') }}" title="Go to homepage">
+						<b>Ultimate Retro
+							<small>BETA</small>
+						</b>
 					</a>
-				{% else %}
-					<a href="{{ path('app_login') }}" class="nav-link">
-						<img src="{{ absolute_url(asset('build/icons/nav/power.svg')) }}" height="24" alt="login">
-						<span class="navbar-label">{{'Login'|trans}}</span>
-					</a>
-				{% endif %}
-				{% if is_granted('ROLE_ADMIN') %}
-					<a href="{{ path('admin_index') }}" class="nav-link">
-						<img src="{{ absolute_url(asset('build/icons/nav/settings.svg')) }}" height="24" alt="admin">
-						<span class="navbar-label">{{'Admin'|trans}}</span>
-					</a>
-				{% endif %}
-				{#<span style="color:yellow">UNDER CONSTRUCTION, THINGS WILL BE BROKEN</span>#}
+					<nav>
+						{% if is_granted('ROLE_USER') %}
+							<a href="{{ path('app_logout') }}" class="nav-link">
+								<img src="{{ absolute_url(asset('build/icons/nav/power.svg')) }}" height="24" alt="logout">
+								<span class="navbar-label">{{'Logout'|trans}}</span>
+							</a>
+						{% else %}
+							<a href="{{ path('app_login') }}" class="nav-link">
+								<img src="{{ absolute_url(asset('build/icons/nav/power.svg')) }}" height="24" alt="login">
+								<span class="navbar-label">{{'Login'|trans}}</span>
+							</a>
+						{% endif %}
+						{% if is_granted('ROLE_ADMIN') %}
+							<a href="{{ path('admin_index') }}" class="nav-link">
+								<img src="{{ absolute_url(asset('build/icons/nav/settings.svg')) }}" height="24" alt="admin">
+								<span class="navbar-label">{{'Admin'|trans}}</span>
+							</a>
+						{% endif %}
+					</nav>
+					{#<span style="color:yellow">UNDER CONSTRUCTION, THINGS WILL BE BROKEN</span>#}
+				</div>
 			</div>
-		</div>
+		</header>
 
 		<div class="main">
-			<div class="page"> {% block body %}{% endblock %}
+			<main>
+				<div class="page">
+					{% block body %}{% endblock %}
 				</div>
-				<footer class="footer">
-					<div class="foot-container">
-						<div class="foot-part">
-							<div>
-								<a href="{{ path('app_credits') }}">
-									<img src="{{ absolute_url(asset('build/icons/nav/about.svg')) }}" height="16" alt="about">
-									<span class="navbar-label">{{'About us'|trans}}</span>
-								</a>
-							</div>
-							<div>
-								<a href="https://discord.gg/HWWH7hsk2p">
-									<img src="{{ absolute_url(asset('build/icons/nav/discord.svg')) }}" height="16" alt="discord">
-									<span class="navbar-label">{{'Join our Discord'|trans}}</span>
-								</a>
-							</div>
+			</main>
+			<footer class="footer">
+				<div class="foot-container">
+					<div class="foot-part">
+						<div>
+							<a href="{{ path('app_credits') }}">
+								<img src="{{ absolute_url(asset('build/icons/nav/about.svg')) }}" height="16" alt="about">
+								<span class="navbar-label">{{'About us'|trans}}</span>
+							</a>
 						</div>
-						<div class="foot-part">
-							<div>
-								<a href="#">
-									<img src="{{ absolute_url(asset('build/icons/nav/email.svg')) }}" height="16" alt="email">
-									<span class="navbar-label">{{'Email us(TBA)'|trans}}</span>
-								</a>
-							</div>
-						</div>
-						<div class="foot-part">
-							<div style="width:20em;color:#FFFFFF;">{{'Designed by Deksor and computerguy08.'|trans}}<br>{{'(c) 2019-2021 All wrongs reversed.'|trans}}</div>
+						<div>
+							<a href="https://discord.gg/HWWH7hsk2p">
+								<img src="{{ absolute_url(asset('build/icons/nav/discord.svg')) }}" height="16" alt="discord">
+								<span class="navbar-label">{{'Join our Discord'|trans}}</span>
+							</a>
 						</div>
 					</div>
-				</footer>
-			</div>
-		</body>
-	</html>
+					<div class="foot-part">
+						<div>
+							<a href="#">
+								<img src="{{ absolute_url(asset('build/icons/nav/email.svg')) }}" height="16" alt="email">
+								<span class="navbar-label">{{'Email us(TBA)'|trans}}</span>
+							</a>
+						</div>
+					</div>
+					<div class="foot-part">
+						<div style="width:20em;color:#FFFFFF;">{{'Designed by Deksor and computerguy08.'|trans}}<br>{{'(c) 2019-2021 All wrongs reversed.'|trans}}</div>
+					</div>
+				</div>
+			</footer>
+		</div>
+	</body>
+</html>
