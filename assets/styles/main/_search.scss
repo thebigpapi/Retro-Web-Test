@@ -9,10 +9,9 @@ div.butn input {color: $dark-color; height:2.7em; font-size:14px;}
 span.help-t span { display:none; }
 
 // Motherboard index
-p.index-title {
+div.index-title {
 	text-align:center;
-	overflow: hidden;
-	margin: 1em;
+	padding: 10px 10px 20px;
 }
 ul.index-list {
 	text-align:center;

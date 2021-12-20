@@ -1,10 +1,10 @@
 /* navbar */
-div.navbar { background: $navbar-color;font-size: 20px; }
-div.navbar-inner { line-height: 28px;padding:5px 0px 5px 15px; }
-div.navbar-inner a { color: $light-color;text-decoration: none; }
-div.navbar-inner small { color: #FF0000; font-size: 12px; }
-div.navbar-inner select, div.top-bar input { font-size: 12px; }
-div.navbar-inner select.lang { width: 8.33em; }
+header.navbar { background: $navbar-color;font-size: 20px; }
+nav.navbar-inner { line-height: 28px;padding:5px 0px 5px 15px; }
+nav.navbar-inner a { color: $light-color;text-decoration: none; }
+nav.navbar-inner small { color: #FF0000; font-size: 12px; }
+nav.navbar-inner select, div.top-bar input { font-size: 12px; }
+nav.navbar-inner select.lang { width: 8.33em; }
 a.nav-link { display:inline-block; }
 a.nav-link:hover, div.foot-part div a:hover { color: $link-hover-color; }
 a.nav-link img, div.foot-part div a img { vertical-align: top;padding-top:2px; }

@@ -31,38 +31,33 @@
 		<link rel="alternate" hreflang="x-default" href="{{ absolute_url(path('app_homepage', {_locale: 'en'})) }}"/>
 	</head>
 	<body class="content">
-		<header>
-			<div class="navbar">
-				<div class="navbar-inner">
-					<a href="{{ path('app_homepage') }}" title="Go to homepage">
-						<b>Ultimate Retro
-							<small>BETA</small>
-						</b>
-					</a>
-					<nav>
-						{% if is_granted('ROLE_USER') %}
-							<a href="{{ path('app_logout') }}" class="nav-link">
-								<img src="{{ absolute_url(asset('build/icons/nav/power.svg')) }}" height="24" alt="logout">
-								<span class="navbar-label">{{'Logout'|trans}}</span>
-							</a>
-						{% else %}
-							<a href="{{ path('app_login') }}" class="nav-link">
-								<img src="{{ absolute_url(asset('build/icons/nav/power.svg')) }}" height="24" alt="login">
-								<span class="navbar-label">{{'Login'|trans}}</span>
-							</a>
-						{% endif %}
-						{% if is_granted('ROLE_ADMIN') %}
-							<a href="{{ path('admin_index') }}" class="nav-link">
-								<img src="{{ absolute_url(asset('build/icons/nav/settings.svg')) }}" height="24" alt="admin">
-								<span class="navbar-label">{{'Admin'|trans}}</span>
-							</a>
-						{% endif %}
-					</nav>
-					{#<span style="color:yellow">UNDER CONSTRUCTION, THINGS WILL BE BROKEN</span>#}
-				</div>
-			</div>
+		<header class="navbar">
+			<nav class="navbar-inner">
+				<a href="{{ path('app_homepage') }}" title="Go to homepage">
+					<b>Ultimate Retro
+						<small>BETA</small>
+					</b>
+				</a>
+			{% if is_granted('ROLE_USER') %}
+				<a href="{{ path('app_logout') }}" class="nav-link">
+					<img src="{{ absolute_url(asset('build/icons/nav/power.svg')) }}" height="24" alt="logout">
+					<span class="navbar-label">{{'Logout'|trans}}</span>
+				</a>
+			{% else %}
+				<a href="{{ path('app_login') }}" class="nav-link">
+					<img src="{{ absolute_url(asset('build/icons/nav/power.svg')) }}" height="24" alt="login">
+					<span class="navbar-label">{{'Login'|trans}}</span>
+				</a>
+			{% endif %}
+			{% if is_granted('ROLE_ADMIN') %}
+				<a href="{{ path('admin_index') }}" class="nav-link">
+					<img src="{{ absolute_url(asset('build/icons/nav/settings.svg')) }}" height="24" alt="admin">
+					<span class="navbar-label">{{'Admin'|trans}}</span>
+				</a>
+			{% endif %}
+				<span style="color:yellow">UNDER CONSTRUCTION, THINGS WILL BE BROKEN</span>
+			</nav>	
 		</header>
-
 		<div class="main">
 			<main>
 				<div class="page">

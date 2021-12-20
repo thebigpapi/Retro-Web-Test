@@ -21,19 +21,14 @@
 	<meta name="description" content="Search for a motherboard by name, chipset, manufacturer, CPU platform, form factor, expansion slot count and more.">
 {% endblock %}
 {% block body %}
-<!--
-	<div class="title">
-		can't we remove this ??
-	</div>
-	-->
-	<p class="index-title">
-		{% trans %}List boards whose manufacturer name starts with:{% endtrans %}<br>
-	</p>
-	<ul class="index-list">
-		{% for letter in ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','?']%}
-			<li><a href="{{path("moboindex", {"letter":letter})}}">{{letter}}</a></li>
-		{% endfor %}
-	</ul>
+<div class="index-title">
+	{% trans %}List boards whose manufacturer name starts with:{% endtrans %}<br>
+</div>
+<ul class="index-list">
+	{% for letter in ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','?']%}
+		<li><a href="{{path("moboindex", {"letter":letter})}}">{{letter}}</a></li>
+	{% endfor %}
+</ul>
 	<div id="hiddenDiv" style="display: none;"></div>
 	{{ form_start(form, {'method': 'POST', 'name': 'search_motherboard', 'action':path("motherboard_search"), 'attr':{'data-controller':'search'}}) }}
 	<fieldset id="search-fieldset">
