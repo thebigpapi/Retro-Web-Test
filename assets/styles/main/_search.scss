@@ -1,18 +1,9 @@
-div.table-width {width: 130px;text-align:center;}
-span.field2 { width: 12em;font-size:16px; margin-bottom:4px;float:left; }
-div.sadv div { padding: 8px 0 4px; }
-div.sadv div.sform1 { padding: 0; }
-div.sadv { width: 90%; }
-div.sadv div select { width: 100%; }
 div.butn { text-align: center; }
 div.butn input {color: $dark-color; height:2.7em; font-size:14px;}
-span.help-t span { display:none; }
+
 
 // Motherboard index
-div.index-title {
-	text-align:center;
-	padding: 10px 10px 20px;
-}
+div.index-title { text-align:center;padding-top: 20px; }
 ul.index-list {
 	text-align:center;
 	overflow: hidden;
@@ -21,115 +12,58 @@ ul.index-list {
 	padding: 0;
 	margin-left: -4px;
 }
-ul.index-list > li {
-	display: inline;
-	white-space: nowrap;
-}
-ul.index-list > li:before {
-	content: "\200B";
-}
+ul.index-list li { display: inline;padding:5px; }
+ul.index-list li:before { content: "\200B"; }
 
 // Motherboard search form
-form label, form legend {
-	font-weight: bold;
-}
-
-label[title] {
-	text-decoration: underline; //I picked that for testing, needs more talk
-}
-
-form ul {
-	display: grid;
-	grid-template-columns: repeat(6, 1fr);
-	font-size:14px;
-	list-style-type: none;
-}
-
-form h3 {
-	text-align: center;
-}
-
-form {
-	display: flex; 
-	flex-direction: row;
-}
-
-form label, form input {
-	display: block; 
-}
-
-div.search-nav {
-	margin:auto;
-	text-align: center;
-}
-
-#search-fieldset{
-	font-size: 1em;
-	width:100%;
-}
-
-#search-fieldset div {
-	height: 2em;
-}
-
-#search-fieldset tr.sep {
-	height: 10px;
-}
-
-#search-fieldset select {
-	height:2.2em;
-}
-
-select.sform {
-	width: 90%;
-	vertical-align:middle;
-}
-
-input.sform {
-	width: 89.5%;
-	vertical-align:middle;
-}
-
-li.field1 {
+div.search-nav-title { height: 2em;text-align: center; }
+div.search-nav { margin:auto;text-align: center;padding-bottom:5px; }
+div.search-widget { display:inline-block; width:77%; vertical-align:middle;padding-top:5px; }
+div.search-widget select { width:100%; }
+div.search-widget-short select { width:100%; }
+div.search-widget-long { padding-top:5px; }
+div.search-widget-long input { width:99.5%; }
+label.search-label { display: inline-block;text-align: center;width:120px; }
+/* expansion slots & IO ports */
+ul.slots-ports-widget { list-style:none;padding:0; }
+li.slot-port-item {
 	height: 1.75em;
 	width: 15em;
 	font-size:12px;
 	margin-bottom:4px;
 	float:left;
 }
-
-li.field1 span {
-	float:left;
-	margin-left:0.4em;
-}
-
-li.field1 input {
-	height: 21px;
-	width: 21px;
+li.slot-port-item span { float:left;margin-left:0.4em; }
+li.slot-port-item input {
 	float:left;
 	font-size:12px;
-	height: 1.25em;
+	height: 1.25em !important;
 	width: 1.25em;
 }
 
 @media (max-width: 600px) {
 	#search-table tr.sep { display: none; }
 	#search-table td { display:block;text-align:left;padding:0 0 4px 4%; }	
-	div.sadv div { padding:0 0 4px; }
 	div.butn input { font-size:18px;height:2.2em; }
-	span.field1 { width: 15em; }
-	span.field2 { width: 10em; }
+	div.search-widget { width:100%; }
+	li.slot-port-item { width: 15em; }
 }
+@media (min-width: 800px) {
+	div.search-widget { width:83%;}
+}
+
 @media (min-width: 1200px) {
-	td.table-width { width:210px; }
 	div.butn input { font-size:18px;height:2.2em; }
-	#search-table tr { height:1.5em; }
+	label.search-label { width:180px; }
+	div.search-widget { width:80%;padding-top:0;}
+	div.search-widget select, div.search-widget input { height:2.2em; }
+	div.search-widget-long input, div.search-widget input {height:2em;}
+	div.search-widget-short { display:inline-block;width:35%; }
+	div.search-widget-long { display:inline-block;width:63%;padding-top:0; }
+	#search_formFactor{ width:98.8%; }
 }
 @media (min-width: 1400px) {
-	span.field1 { font-size:14px; }
-	td.table-width { width:220px; }
-	div.sadv div { padding:0; width:29%;display:inline-block; }
-	div.sadv div.sform1 { padding: 0; width:70%; }
+	label.search-label { width:220px; }
 }
 @media (hover: none) {
 	span.help-t img {display:none;}
@@ -154,7 +88,9 @@ li.field1 input {
 }
 @media (pointer: coarse) { div.sform2 input[type=checkbox] {width:20px;height:20px;} }
 @media (prefers-color-scheme: dark) {
-    #search-table select, input.sform, span.field1 input {background-color:#424242;color:#ececec;}
-	div.butn input, span.butn-noajax input {background-color:$btn-darkbg-color;color:$light-color;}
+    div.search-widget select, div.search-widget-short select, div.search-widget-long input, li.slot-port-item input, div.search-widget input {
+		background-color:#424242;color:#ececec;
+	}
+	div.butn input {background-color:$btn-darkbg-color;color:$light-color;}
 	span.help-t span.text{background-color: $dark-color;color:$light-color;border-color:$light-color;}
 }
