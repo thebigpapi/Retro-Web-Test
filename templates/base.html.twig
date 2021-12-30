@@ -55,6 +55,10 @@
 					<span class="navbar-label">{{'Admin'|trans}}</span>
 				</a>
 			{% endif %}
+				<a href="{{ path('app_homepage') }}motherboards/search" class="nav-link">
+					<img src="{{ absolute_url(asset('build/icons/nav/searchbw.svg')) }}" height="24" alt="login">
+					<span class="navbar-label">{{'Search boards'|trans}}</span>
+				</a>
 				{#<span style="color:yellow">UNDER CONSTRUCTION, THINGS WILL BE BROKEN</span>#}
 			</nav>	
 		</header>
