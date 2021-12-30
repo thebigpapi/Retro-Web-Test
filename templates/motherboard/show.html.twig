@@ -25,6 +25,8 @@
 				<meta property="og:image" content="{{ vich_uploader_asset(image, 'imageFile')}}">
 			{% endif %}
 		{% endfor %}
+	{% else %}
+		<meta property="og:image" content="{{ absolute_url(asset('build/images/motherboard/image-missing.webp')) }}">
 	{% endif %}
 	{% if motherboard.getManufacturer() is not null %}
 		<meta property="og:title" content="{{ motherboard.getManufacturer().getShortNameIfExist() }} {{ motherboard.getName() }}">
@@ -95,7 +97,9 @@
 		</div>
 	{% endfor %}
 {% else %}
-<p>no images available :(</p>
+	<div class="show-image">
+		<img src={{ absolute_url(asset('build/images/motherboard/image-missing.webp')) }} title="no images available :(">
+	</div>
 {% endif %}
 </div>
 <div class="show-nav" id="sh-nav" data-controller="show">

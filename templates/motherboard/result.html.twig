@@ -28,6 +28,8 @@
 									<a href="{{ vich_uploader_asset(image, 'imageFile')}}" class="glightbox">
 										<img src="{{ vich_uploader_asset(image, 'imageFile') | imagine_filter('motherboard_show_thumb') }}" alt="" title="{% if image.description %}{{ image.description }}{% endif %}"></a>
 								{% endfor %}
+							{% else %}
+								<img src="{{ absolute_url(asset('build/images/motherboard/image-missing.webp')) }}" title="no images available :(">
 							{% endif %}
 							<span>
 								<a class="result-link" href="{{ path("motherboard_show", {id: motherboard.getId()}) }}">{{ motherboard.getManufacturerShortNameIfExist() }}&nbsp;{{ motherboard.name }}</a>
