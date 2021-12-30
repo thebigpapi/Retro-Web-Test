@@ -113,12 +113,9 @@
 	{% if is_granted('ROLE_ADMIN') %}
 	<a class="snav" href="{{ path("motherboard_delete", {id: motherboard.getId()}) }}">
 		<img src="{{ absolute_url(asset('build/icons/show/delete.svg')) }}" alt="" width="24">Delete</a>
+	{% endif %}
 	<a class="snav" href="{{ path('new_motherboard_edit', {id: motherboard.getId()}) }}">
 		<img src="{{ absolute_url(asset('build/icons/show/edit.svg')) }}" alt="" width="24">Edit board</a>
-	{% else %}
-	<a class="snav" href="https://discord.gg/HWWH7hsk2p">
-		<img src="{{ absolute_url(asset('build/icons/show/edit.svg')) }}" alt="" width="24">Improve this page</a>
-	{% endif %}
 	</div>
 </div>
 <div class="show-general" id="sh-general">
