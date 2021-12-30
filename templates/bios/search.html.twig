@@ -30,7 +30,7 @@
 	<div id="hiddenDiv" style="display: none;"></div>
 	{{ form_start(form, {'method': 'POST', 'name': 'search', 'action':path("bios_search"), 'attr':{'data-controller':'search'}}) }}
 	<fieldset id="search-fieldset">
-		<div class="search-nav-title">{% trans %}Search for a bios{% endtrans %}</div>
+		<div class="search-nav-title">{% trans %}Search for a BIOS{% endtrans %}</div>
 		<section>
 			<div class="search-nav">
 				<a class="snav" onclick="document.getElementById('rst-btn').click();return false;">
@@ -62,7 +62,7 @@
 			</div>
 			<div>
 				<label class="search-label" for="search_post_string">{% trans %}POST string{% endtrans %}</label>
-				<div class="search-widget">{{ form_widget(form.post_string, {'attr': {'class': 'sform', 'size':'50'}}) }}</div>
+				<div class="search-widget"><div class="search-widget-long">{{ form_widget(form.post_string) }}</div></div>
 			</div>
 			<div>
 				<label class="search-label" for="search_core_version" title="{% trans %}This is the version of the BIOS's core (e.g. 4.51pg){% endtrans %}"

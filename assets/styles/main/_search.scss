@@ -13,9 +13,11 @@ ul.index-list {
 	margin-left: -4px;
 }
 ul.index-list li { display: inline;padding:5px; }
+ul.index-list li a:hover { color:$link-hover-color1; }
 ul.index-list li:before { content: "\200B"; }
 
 // Motherboard search form
+form fieldset { border:none; }
 div.search-nav-title { height: 2em;text-align: center; }
 div.search-nav { margin:auto;text-align: center;padding-bottom:5px; }
 div.search-widget { display:inline-block; width:77%; vertical-align:middle;padding-top:5px; }
@@ -24,6 +26,7 @@ div.search-widget-short select { width:100%; }
 div.search-widget-long { padding-top:5px; }
 div.search-widget-long input { width:99.5%; }
 label.search-label { display: inline-block;text-align: center;width:120px; }
+label.search-label img { vertical-align:bottom; }
 /* expansion slots & IO ports */
 ul.slots-ports-widget { list-style:none;padding:0; }
 li.slot-port-item {
@@ -45,6 +48,7 @@ li.slot-port-item input {
 	#search-table tr.sep { display: none; }
 	#search-table td { display:block;text-align:left;padding:0 0 4px 4%; }	
 	div.butn input { font-size:18px;height:2.2em; }
+	label.search-label { width:auto;padding-top:5px; }
 	div.search-widget { width:100%; }
 	li.slot-port-item { width: 15em; }
 }
@@ -55,6 +59,7 @@ li.slot-port-item input {
 @media (min-width: 1200px) {
 	div.butn input { font-size:18px;height:2.2em; }
 	label.search-label { width:180px; }
+	label.search-label img { vertical-align:initial; }
 	div.search-widget { width:80%;padding-top:0;}
 	div.search-widget select, div.search-widget input { height:2.2em; }
 	div.search-widget-long input, div.search-widget input {height:2em;}
@@ -64,6 +69,7 @@ li.slot-port-item input {
 }
 @media (min-width: 1400px) {
 	label.search-label { width:220px; }
+	div.search-nav { padding-bottom: 15px; }
 }
 @media (hover: none) {
 	span.help-t img {display:none;}
@@ -91,6 +97,7 @@ li.slot-port-item input {
     div.search-widget select, div.search-widget-short select, div.search-widget-long input, li.slot-port-item input, div.search-widget input {
 		background-color:#424242;color:#ececec;
 	}
+	ul.index-list li a:hover { color:$link-hover-color; }
 	div.butn input {background-color:$btn-darkbg-color;color:$light-color;}
 	span.help-t span.text{background-color: $dark-color;color:$light-color;border-color:$light-color;}
 }
