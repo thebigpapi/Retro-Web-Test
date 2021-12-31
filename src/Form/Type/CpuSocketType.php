@@ -22,7 +22,7 @@ class CpuSocketType extends AbstractType
         ]);
     }
 
-    public function getParent()
+    public function getParent(): ?string
     {
         return EntityType::class;
     }
@@ -31,9 +31,9 @@ class CpuSocketType extends AbstractType
     {
         usort($view->vars['choices'], function (ChoiceView $a, ChoiceView $b) {
             if ($a->data->getType() == $b->data->getType()) {
-                return ($a->data->getName() > $b->data->getName());
+                return ($a->data->getName() <=> $b->data->getName());
             } else {
-                return ($a->data->getType() > $b->data->getType());
+                return ($a->data->getType() <=> $b->data->getType());
             }
         });
     }

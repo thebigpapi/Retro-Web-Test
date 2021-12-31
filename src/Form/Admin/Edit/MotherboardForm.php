@@ -586,12 +586,12 @@ class MotherboardForm extends AbstractType
         foreach ($view->children['images']->children as $image)
         {
             usort($image->children['creditor']->vars['choices'], function(ChoiceView $a, ChoiceView $b) {
-                return ($a->data->getName() > $b->data->getName());
+                return ($a->data->getName() <=> $b->data->getName());
             });
         }
 
         usort($view->children['cpuSpeed']->vars['choices'], function(ChoiceView $a, ChoiceView $b) {
-            return ($a->data->getValue() > $b->data->getValue());
+            return ($a->data->getValue() <=> $b->data->getValue());
         });
     }*/
 }

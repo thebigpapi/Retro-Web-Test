@@ -13,7 +13,7 @@ class LocaleSubscriber implements EventSubscriberInterface
     private $defaultLocale;
     private $params;
 
-    public function __construct($defaultLocale = 'en', ContainerBagInterface $params)
+    public function __construct(ContainerBagInterface $params, string $defaultLocale = 'en')
     {
         $this->defaultLocale = $defaultLocale;
         $this->params = $params;
@@ -55,7 +55,7 @@ class LocaleSubscriber implements EventSubscriberInterface
         //dd($request->query->get('_locale'));
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             // Defining a high level of priority

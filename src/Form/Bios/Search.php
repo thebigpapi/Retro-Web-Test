@@ -51,30 +51,28 @@ class Search extends AbstractType
                 'label'    => 'File is present ?',
                 'required' => false,
             ])
-            ->add('search', SubmitType::class)
-            ->add('searchChipsetManufacturer', SubmitType::class, ['label' => 'List chipsets'])
-        ;
+            ->add('search', SubmitType::class);
 
         $formModifier = function (FormInterface $form, Manufacturer $chipsetManufacturer = null) {
             $chipsets = null === $chipsetManufacturer ? [] : $chipsetManufacturer->getChipsets()->toArray();
 
 
-                usort($chipsets, function ($a, $b) {
-                    if ($a->getFullReference() == $b->getFullReference()) {
-                        return 0;
-                    }
-                    return ($a->getFullReference() < $b->getFullReference()) ? -1 : 1;
-                });
+            usort($chipsets, function ($a, $b) {
+                if ($a->getFullReference() == $b->getFullReference()) {
+                    return 0;
+                }
+                return ($a->getFullReference() < $b->getFullReference()) ? -1 : 1;
+            });
 
-                $form->add('chipset', ChoiceType::class, [
-                    //'class' => Chipset::class,
-                    'choice_label' => 'getFullReference',
-                    'multiple' => false,
-                    'expanded' => false,
-                    'required' => false,
-                    'choices' => $chipsets,
-                    'placeholder' => '*',
-                ]);
+            $form->add('chipset', ChoiceType::class, [
+                //'class' => Chipset::class,
+                'choice_label' => 'getFullReference',
+                'multiple' => false,
+                'expanded' => false,
+                'required' => false,
+                'choices' => $chipsets,
+                'placeholder' => '*',
+            ]);
         };
 
         $builder->addEventListener(

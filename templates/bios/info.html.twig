@@ -1,62 +1,67 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{% trans %}BIOS Info{% endtrans %}{% endblock %}
+{% block title %}
+	{% trans %}BIOS Info{% endtrans %}
+{% endblock %}
 
 {% block body %}
-<div class="title"><b>{% trans %}Where can I find the POST string?{% endtrans %}</b></div>
+	<div class="title">
+		<b>{% trans %}Where can I find the POST string?{% endtrans %}</b>
+	</div>
 	<p>{% trans %}In general, the POST string is located in the bottom left side of the boot screen 
-		(for BIOSes which provide it). Depending on the BIOS vendor, the POST string may
-		provide various info about the board (like chipset or date). Here is a list of common 
-		vendors and their string meanings:{% endtrans %}</p>
+				(for BIOSes which provide it). Depending on the BIOS vendor, the POST string may
+				provide various info about the board (like chipset or date). Here is a list of common 
+				vendors and their string meanings:{% endtrans %}</p>
+	<p>You can find a list of BIOS chipset and manufacturer IDs <a href="{{path("bios_infoadv")}}">here</a>
 	<br>
 	<div class="biosinfo">
-	<p><b>1. Award BIOS</b></p>
-	<span class="image-block"><span>
-		<a href="{{ absolute_url(asset('assets/images/bios/awardbios.jpg')) }}" class="highslide" onclick="return imgexp(this);">
-			<img src="{{ absolute_url(asset('assets/images/bios/awardbios.gif')) }}" alt="awardbios" title=""></a></span></span>
-	<span class="image-block"><span>
-		<a href="{{ absolute_url(asset('assets/images/bios/awardstring.jpg')) }}" class="highslide" onclick="return imgexp(this);">
-			<img src="{{ absolute_url(asset('assets/images/bios/awardstring.jpg')) }}" alt="awardbiosinfo" title=""></a></span></span>
-	<p>{% trans %}You can find a list of Award chipset IDs{% endtrans %} <a href="{{path("bios_infoadv")}}?first=award-chip">{% trans %}here{% endtrans %}</a>
-	{% trans %}and a list of Award board manufacturer IDs{% endtrans %} <a href="{{path("bios_infoadv")}}?first=award">{% trans %}here{% endtrans %}</a></p>
-	<br>
-	<p><b>2. AMI BIOS</b></p>
-	<span class="image-block"><span>
-		<a href="{{ absolute_url(asset('assets/images/bios/amibios.jpg')) }}" class="highslide" onclick="return imgexp(this);">
-			<img src="{{ absolute_url(asset('assets/images/bios/amibios.gif')) }}" alt="amibios" title=""></a></span></span>
-	<span class="image-block"><span>
-		<a href="{{ absolute_url(asset('assets/images/bios/amistring.jpg')) }}" class="highslide" onclick="return imgexp(this);">
-			<img src="{{ absolute_url(asset('assets/images/bios/amistring.gif')) }}" alt="amibiosinfo" title=""></a></span></span>
-	<p>{% trans %}You can find a list of AMI board manufacturer IDs{% endtrans %} <a href="{{path("bios_infoadv")}}?first=ami">{% trans %}here{% endtrans %}</a></p>
-	<br>
-	<p><b>3. Acer BIOS</b></p>
-	<span class="image-block"><span>
-		<a href="{{ absolute_url(asset('assets/images/bios/acerbios.jpg')) }}" class="highslide" onclick="return imgexp(this);">
-			<img src="{{ absolute_url(asset('assets/images/bios/acerbios.gif')) }}" alt="acerbios" title=""></a></span></span>
-	<span class="image-block"><span>
-		<a href="{{ absolute_url(asset('assets/images/bios/acerstring.png')) }}" class="highslide" onclick="return imgexp(this);">
-			<img src="{{ absolute_url(asset('assets/images/bios/acerstring.png')) }}" alt="amibiosinfo" title=""></a></span></span>
+		<p>
+			<b>1. Award BIOS</b>
+		</p>
+		<span class="image-block">
+			<span>
+				<a href="{{ absolute_url(asset('build/images/bios/awardbios.jpg')) }}" class="glightbox">
+					<img src="{{ absolute_url(asset('build/images/bios/awardbios.gif')) }}" alt="awardbios" title=""></a>
+			</span>
+		</span>
+		<span class="image-block">
+			<span>
+				<a href="{{ absolute_url(asset('build/images/bios/awardstring.jpg')) }}" class="glightbox">
+					<img src="{{ absolute_url(asset('build/images/bios/awardstring.jpg')) }}" alt="awardbiosinfo" title=""></a>
+			</span>
+		</span>
+		<br>
+		<p>
+			<b>2. AMI BIOS</b>
+		</p>
+		<span class="image-block">
+			<span>
+				<a href="{{ absolute_url(asset('build/images/bios/amibios.jpg')) }}" class="glightbox">
+					<img src="{{ absolute_url(asset('build/images/bios/amibios.gif')) }}" alt="amibios" title=""></a>
+			</span>
+		</span>
+		<span class="image-block">
+			<span>
+				<a href="{{ absolute_url(asset('build/images/bios/amistring.jpg')) }}" class="glightbox">
+					<img src="{{ absolute_url(asset('build/images/bios/amistring.gif')) }}" alt="amibiosinfo" title=""></a>
+			</span>
+		</span>
+		<br>
+		<p>
+			<b>3. Acer BIOS</b>
+		</p>
+		<span class="image-block">
+			<span>
+				<a href="{{ absolute_url(asset('build/images/bios/acerbios.jpg')) }}" class="glightbox">
+					<img src="{{ absolute_url(asset('build/images/bios/acerbios.gif')) }}" alt="acerbios" title=""></a>
+			</span>
+		</span>
+		<span class="image-block">
+			<span>
+				<a href="{{ absolute_url(asset('build/images/bios/acerstring.png')) }}" class="glightbox">
+					<img src="{{ absolute_url(asset('build/images/bios/acerstring.png')) }}" alt="amibiosinfo" title=""></a>
+			</span>
+		</span>
 	</div>
 	<br>
-	<div id="jsappend"></div>
-	<script type="text/javascript"><!--
-		var ua = window.navigator.userAgent;
-		var msie = ua.indexOf("MSIE ");
-		msie = parseInt(ua.substring(msie + 5, ua.indexOf(".", msie)));
-		if (!msie || msie > 5){
-			var h = document.getElementById("jsappend");
-			var js = document.createElement('script');
-			js.type = "text/javascript";
-			js.src = "{{ absolute_url(asset('assets/highslide/highslide.js')) }}";
-			h.appendChild(js);
-		}
-		function imgexp(el){
-			if(typeof js != 'object')
-				return 0;
-			else
-				if(ua.indexOf("Mobile") > 0 && (document.documentElement.clientWidth < 600))
-					return 0;
-				else return hs.expand(el);
-		}
-	//--></script>
 {% endblock %}

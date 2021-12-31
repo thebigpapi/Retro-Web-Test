@@ -1,21 +1,6 @@
 {
-    "amphp/amp": {
-        "version": "v2.6.0"
-    },
-    "amphp/byte-stream": {
-        "version": "v1.8.1"
-    },
     "composer/package-versions-deprecated": {
         "version": "1.11.99.1"
-    },
-    "composer/semver": {
-        "version": "3.2.5"
-    },
-    "composer/xdebug-handler": {
-        "version": "2.0.2"
-    },
-    "dnoegel/php-xdg-base-dir": {
-        "version": "v0.1.1"
     },
     "doctrine/annotations": {
         "version": "1.0",
@@ -121,12 +106,6 @@
     "fakerphp/faker": {
         "version": "v1.15.0"
     },
-    "felixfbecker/advanced-json-rpc": {
-        "version": "v3.2.1"
-    },
-    "felixfbecker/language-server-protocol": {
-        "version": "1.5.1"
-    },
     "friendsofphp/proxy-manager-lts": {
         "version": "v1.0.3"
     },
@@ -180,14 +159,8 @@
             "config/packages/test/nelmio_alice.yaml"
         ]
     },
-    "netresearch/jsonmapper": {
-        "version": "v4.0.0"
-    },
     "nikic/php-parser": {
         "version": "v4.10.5"
-    },
-    "openlss/lib-array2xml": {
-        "version": "1.0.0"
     },
     "php": {
         "version": "7.4"
@@ -644,7 +617,7 @@
         ]
     },
     "symfony/webpack-encore-bundle": {
-        "version": "1.9",
+        "version": "1.12",
         "recipe": {
             "repo": "github.com/symfony/recipes",
             "branch": "master",
@@ -652,15 +625,15 @@
             "ref": "0f274572ea315eb3b5884518a50ca43f211b4534"
         },
         "files": [
-            "assets/app.js",
-            "assets/bootstrap.js",
+            "assets/styles/app.css",
             "assets/controllers.json",
             "assets/controllers/hello_controller.js",
-            "assets/styles/app.css",
-            "config/packages/assets.yaml",
-            "config/packages/prod/webpack_encore.yaml",
-            "config/packages/test/webpack_encore.yaml",
+            "assets/app.js",
+            "assets/bootstrap.js",
             "config/packages/webpack_encore.yaml",
+            "config/packages/test/webpack_encore.yaml",
+            "config/packages/prod/webpack_encore.yaml",
+            "config/packages/assets.yaml",
             "package.json",
             "webpack.config.js"
         ]
@@ -701,13 +674,7 @@
             "config/packages/vich_uploader.yaml"
         ]
     },
-    "vimeo/psalm": {
-        "version": "4.10.0"
-    },
     "webmozart/assert": {
         "version": "1.10.0"
-    },
-    "webmozart/path-util": {
-        "version": "2.3.0"
     }
 }

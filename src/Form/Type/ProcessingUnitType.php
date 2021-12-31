@@ -65,15 +65,15 @@ class ProcessingUnitType extends AbstractType
     public function finishView(FormView $view, FormInterface $form, array $options)
     {
         usort($view->vars['form']['speed']->vars['choices'], function (ChoiceView $a, ChoiceView $b) {
-            return ($a->data->getValue() > $b->data->getValue());
+            return ($a->data->getValue() <=> $b->data->getValue());
         });
 
         usort($view->vars['form']['fsb']->vars['choices'], function (ChoiceView $a, ChoiceView $b) {
-            return ($a->data->getValue() > $b->data->getValue());
+            return ($a->data->getValue() <=> $b->data->getValue());
         });
 
         usort($view->vars['form']['platform']->vars['choices'], function (ChoiceView $a, ChoiceView $b) {
-            return ($a->data->getName() > $b->data->getName());
+            return ($a->data->getName() <=> $b->data->getName());
         });
     }
 }

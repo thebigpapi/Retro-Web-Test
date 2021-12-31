@@ -1,36 +1,45 @@
 {% extends 'admin/header.html.twig' %}
-
-{% block title %}Manage files{% endblock %}
+{% block opengraph %}
+	<style>div.page {width: 98% !important;}</style>
+{% endblock %}
+{% block title %}
+	Manage files
+{% endblock %}
 
 {% block body %}
-            <div class="title"><b>{{ entityDisplayNamePlural|capitalize }}</b></div>
-            <a href="{{ path('admin_index') }}" class="admin-button" style="padding:0px 5px 0px;">
-                <img src="{{ absolute_url(asset('assets/images/back.png')) }}" style="padding-top:5px;vertical-align:top;" alt="add" style="display:inline-block;">
-                <p style="display:inline-block;">Go back</p>
-            </a>
-            <a href="{{ path('admin_manage_files', {entity:"largefile"}) }}" class="admin-button" style="padding:0px 5px 0px;{% if entityName == "largefile" %}background-color: #afff97;{% endif %}">
-            <p {% if entityName == "largefile" %}style="color: #000000;"{% endif %}>{% trans %}Large Files{% endtrans %}</p></a>
-            <a href="{{ path('admin_manage_files', {entity:"osfamily"}) }}" class="admin-button" style="padding:0px 5px 0px;{% if entityName == "osfamily" %}background-color: #afff97;{% endif %}">
-            <p {% if entityName == "osfamily" %}style="color: #000000;"{% endif %}>{% trans %}OS Families{% endtrans %}</p></a>
-            <a href="{{ path('admin_manage_files', {entity:"osflag"}) }}" class="admin-button" style="padding:0px 5px 0px;{% if entityName == "osflag" %}background-color: #afff97;{% endif %}">
-            <p {% if entityName == "osflag" %}style="color: #000000;"{% endif %}>{% trans %}OS Flags{% endtrans %}</p></a>
-            <a href="{{ path('admin_manage_files', {entity:"mediatype"}) }}" class="admin-button" style="padding:0px 5px 0px;{% if entityName == "mediatype" %}background-color: #afff97;{% endif %}">
-            <p {% if entityName == "mediatype" %}style="color: #000000;"{% endif %}>{% trans %}Media Types{% endtrans %}</p></a>
-            {% if entityName == "osfamily" %}
-            <a href="./files/osfamilies/add/" class="admin-button" style="padding:0px 5px 0px;float:right;">
-            {% else %}
-            <a href="./files/{{entityName}}s/add/" class="admin-button" style="padding:0px 5px 0px;float:right;">
-            {% endif %}
-                <img src="{{ absolute_url(asset('assets/images/add.png')) }}" style="padding-top:5px;vertical-align:top;" alt="add" style="display:inline-block;">
-                <p style="display:inline-block;">Add {{ entityDisplayName }}</p>
-            </a>
-            <hr>
-            <div class="list-view">
-                {% if search is not empty %}
-                    {{ form(search) }}
-                {% endif %}
-                {{ render(controller(
+	<div class="title">
+		<b>{{ entityDisplayNamePlural|capitalize }}</b>
+	</div>
+	<a href="{{ path('admin_index') }}" class="admin-button">
+		<img src="{{ absolute_url(asset('build/icons/back.svg')) }}" alt="add" width="32">
+		<p>Go back</p>
+	</a>
+	<a href="{{ path('admin_manage_files', {entity:"largefile"}) }}" class="admin-button" style="{% if entityName == "largefile" %}background-color: #afff97;{% endif %}">
+		<p {% if entityName == "largefile" %} style="color: #000000;" {% endif %}>{% trans %}Large Files{% endtrans %}</p>
+	</a>
+	<a href="{{ path('admin_manage_files', {entity:"osfamily"}) }}" class="admin-button" style="{% if entityName == "osfamily" %}background-color: #afff97;{% endif %}">
+		<p {% if entityName == "osfamily" %} style="color: #000000;" {% endif %}>{% trans %}OS Families{% endtrans %}</p>
+	</a>
+	<a href="{{ path('admin_manage_files', {entity:"osflag"}) }}" class="admin-button" style="{% if entityName == "osflag" %}background-color: #afff97;{% endif %}">
+		<p {% if entityName == "osflag" %} style="color: #000000;" {% endif %}>{% trans %}OS Flags{% endtrans %}</p>
+	</a>
+	<a href="{{ path('admin_manage_files', {entity:"mediatype"}) }}" class="admin-button" style="{% if entityName == "mediatype" %}background-color: #afff97;{% endif %}">
+		<p {% if entityName == "mediatype" %} style="color: #000000;" {% endif %}>{% trans %}Media Types{% endtrans %}</p>
+	</a>
+	{% if entityName == "osfamily" %}
+		<a href="./files/osfamilies/add/" class="admin-button" style="float:right;">
+		{% else %}
+		<a href="./files/{{entityName}}s/add/" class="admin-button" style="float:right;">
+		{% endif %}
+			<img src="{{ absolute_url(asset('build/icons/add.svg')) }}" alt="add" width="32">
+			<p>Add {{ entityDisplayName }}</p>
+		</a>
+		<hr>
+		<div class="list-view">
+			{% if search is not empty %}
+				{{ form(search) }}{% endif %}
+				{{ render(controller(
                     controllerList, {criterias: criterias}, {page: page, entity: entityName}
                 )) }}
-            </div>
-{% endblock %}
+			</div>
+		{% endblock %}

@@ -88,7 +88,7 @@ class MotherboardImageTypeForm extends AbstractType
     public function finishView(FormView $view, FormInterface $form, array $options)
     {
         usort($view->children['creditor']->vars['choices'], function (ChoiceView $a, ChoiceView $b) {
-            return ($a->data->getName() > $b->data->getName());
+            return ($a->data->getName() <=> $b->data->getName());
         });
     }
 }

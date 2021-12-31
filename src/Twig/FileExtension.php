@@ -8,7 +8,7 @@ use Twig\TwigFilter;
 class FileExtension extends AbstractExtension
 {
 
-    public function getFilters()
+    public function getFilters(): array
     {
         return array(
             new TwigFilter('ext', array($this, 'ext')),

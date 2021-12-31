@@ -12,6 +12,7 @@ use App\Entity\MotherboardBios;
 use App\Form\Bios\Search;
 use App\Entity\ManufacturerBiosManufacturerCode;
 use App\Entity\ChipsetBiosCode;
+use App\Repository\ManufacturerBiosManufacturerCodeRepository;
 use App\Repository\ManufacturerRepository;
 use App\Repository\MotherboardBiosRepository;
 
@@ -22,7 +23,8 @@ class BiosController extends AbstractController
      * @Route("/bios/", name="bios_result"), methods={"GET"})
      * @param Request $request
      */
-    public function result(Request $request, PaginatorInterface $paginator)
+    public function result(Request $request, PaginatorInterface $paginator, MotherboardBiosRepository $motherboardBiosRepository,
+    ManufacturerRepository $manufacturerRepository, ManufacturerBiosManufacturerCodeRepository $manufacturerBiosManufacturerCodeRepository)
     {
         $criterias = array();
 
@@ -59,17 +61,13 @@ class BiosController extends AbstractController
             return $this->redirectToRoute("bios_search");
         }
 
-        /** @var MotherboardBiosRepository */
-        $bioRepo = $this->getDoctrine()->getRepository(MotherboardBios::class);
-        $data = $bioRepo->findBios($criterias);
+        $data = $motherboardBiosRepository->findBios($criterias);
 
         $postStringAnalysis = false;
         if (empty($data)) {
             try {
                 if ($postString && $biosManufacturerId && intval($biosManufacturerId)) {
-                    $biosManufacturer = $this->getDoctrine()
-                        ->getRepository(Manufacturer::class)
-                        ->find($biosManufacturerId);
+                    $biosManufacturer = $manufacturerRepository->find($biosManufacturerId);
 
                     if ($biosManufacturer->getShortNameIfExist() == "AMI") {
                         $subStr = explode("-", $postString);
@@ -83,9 +81,7 @@ class BiosController extends AbstractController
                         $mfgCode = substr($subStr[count($subStr) - 2], 5, 2);
                     }
 
-                    $biosCodes = $this->getDoctrine()
-                        ->getRepository(ManufacturerBiosManufacturerCode::class)
-                        ->findBy(array("biosManufacturer" => $biosManufacturer));
+                    $biosCodes = $manufacturerBiosManufacturerCodeRepository->findBy(array("biosManufacturer" => $biosManufacturer));
 
                     $manufacturers = array();
                     foreach ($biosCodes as $biosCode) {
@@ -96,7 +92,7 @@ class BiosController extends AbstractController
                     if (!empty($manufacturers)) {
                         $criterias['motherboard_manufacturer_ids'] = $manufacturers;
                         $postStringAnalysis = true;
-                        $data = $bioRepo->findBios($criterias);
+                        $data = $motherboardBiosRepository->findBios($criterias);
                     }
                 }
             } catch (\Exception $e) {
@@ -145,15 +141,13 @@ class BiosController extends AbstractController
      * @Route("/bios/search/", name="bios_search"), methods={"GET"})
      * @param Request $request
      */
-    public function search(Request $request, TranslatorInterface $translator)
+    public function search(Request $request, TranslatorInterface $translator, ManufacturerRepository $manufacturerRepository)
     {
         $notIdentifiedMessage = $translator->trans("Not identified");
-        /** @var ManufacturerRepository */
-        $manRepo = $this->getDoctrine()->getRepository(Manufacturer::class);
 
-        $chipsetManufacturers = $manRepo->findAllChipsetManufacturer();
+        $chipsetManufacturers = $manufacturerRepository->findAllChipsetManufacturer();
 
-        $biosManufacturers = $manRepo->findAllBiosManufacturer();
+        $biosManufacturers = $manufacturerRepository->findAllBiosManufacturer();
         $unidentifiedMan = new Manufacturer();
         $unidentifiedMan->setName($notIdentifiedMessage);
 
@@ -166,11 +160,6 @@ class BiosController extends AbstractController
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            if ($form->get('searchChipsetManufacturer')->isClicked()) {
-                return $this->render('bios/search.html.twig', [
-                    'form' => $form->createView(),
-                ]);
-            }
             $parameters = array();
             //dd($form->getData());
 

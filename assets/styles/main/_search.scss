@@ -1,0 +1,103 @@
+div.butn { text-align: center; }
+div.butn input {color: $dark-color; height:2.7em; font-size:14px;}
+
+
+// Motherboard index
+div.index-title { text-align:center;padding-top: 20px; }
+ul.index-list {
+	text-align:center;
+	overflow: hidden;
+	margin: 1em;
+	list-style: none;
+	padding: 0;
+	margin-left: -4px;
+}
+ul.index-list li { display: inline;padding:5px; }
+ul.index-list li a:hover { color:$link-hover-color1; }
+ul.index-list li:before { content: "\200B"; }
+
+// Motherboard search form
+form fieldset { border:none; }
+div.search-nav-title { height: 2em;text-align: center; }
+div.search-nav { margin:auto;text-align: center;padding-bottom:5px; }
+div.search-widget { display:inline-block; width:77%; vertical-align:middle;padding-top:5px; }
+div.search-widget select { width:100%; }
+div.search-widget-short select { width:100%; }
+div.search-widget-long { padding-top:5px; }
+div.search-widget-long input { width:99.5%; }
+label.search-label { display: inline-block;text-align: center;width:120px; }
+label.search-label img { vertical-align:bottom; }
+/* expansion slots & IO ports */
+ul.slots-ports-widget { list-style:none;padding:0; }
+li.slot-port-item {
+	height: 1.75em;
+	width: 15em;
+	font-size:12px;
+	margin-bottom:4px;
+	float:left;
+}
+li.slot-port-item span { float:left;margin-left:0.4em; }
+li.slot-port-item input {
+	float:left;
+	font-size:12px;
+	height: 1.25em !important;
+	width: 1.25em;
+}
+
+@media (max-width: 600px) {
+	#search-table tr.sep { display: none; }
+	#search-table td { display:block;text-align:left;padding:0 0 4px 4%; }	
+	div.butn input { font-size:18px;height:2.2em; }
+	label.search-label { width:auto;padding-top:5px; }
+	div.search-widget { width:100%; }
+	li.slot-port-item { width: 15em; }
+}
+@media (min-width: 800px) {
+	div.search-widget { width:83%;}
+}
+
+@media (min-width: 1200px) {
+	div.butn input { font-size:18px;height:2.2em; }
+	label.search-label { width:180px; }
+	label.search-label img { vertical-align:initial; }
+	div.search-widget { width:80%;padding-top:0;}
+	div.search-widget select, div.search-widget input { height:2.2em; }
+	div.search-widget-long input, div.search-widget input {height:2em;}
+	div.search-widget-short { display:inline-block;width:35%; }
+	div.search-widget-long { display:inline-block;width:63%;padding-top:0; }
+	#search_formFactor{ width:98.8%; }
+}
+@media (min-width: 1400px) {
+	label.search-label { width:220px; }
+	div.search-nav { padding-bottom: 15px; }
+}
+@media (hover: none) {
+	span.help-t img {display:none;}
+	span.help-t span.img {
+		display: inline-block;
+		width: 16px;
+		height: 16px;
+	}
+	span.help-t span.text {
+		background: $lightbg-color;
+		border:1px solid $dark-color;
+		color: $dark-color;
+		display: inline;
+		font-size:12px;
+		margin: -5px 0 0 15px;
+		padding: 3px;
+		position:absolute;
+		visibility: hidden;
+		z-index: 1;
+	}
+	span.help-t:hover span.text { visibility:visible; }
+}
+@media (pointer: coarse) { div.sform2 input[type=checkbox] {width:20px;height:20px;} }
+@media (prefers-color-scheme: dark) {
+    div.search-widget select, div.search-widget-short select, div.search-widget-long input, li.slot-port-item input, div.search-widget input {
+		background-color:#424242;color:#ececec;
+	}
+	ul.index-list li a:hover { color:$link-hover-color; }
+	div.butn input {background-color:$btn-darkbg-color;color:$light-color;}
+	span.help-t span.text{background-color: $dark-color;color:$light-color;border-color:$light-color;}
+}

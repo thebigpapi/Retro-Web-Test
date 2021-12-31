@@ -131,7 +131,7 @@ class LargeFileForm extends AbstractType
     {
         dd($view);
         /*usort($view->children['languages']->vars['choices'], function(ChoiceView $a, ChoiceView $b) {
-            return ($a->data->getName() > $b->data->getName());
+            return ($a->data->getName() <=> $b->data->getName());
         });
     }*/
 }

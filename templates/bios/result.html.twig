@@ -1,9 +1,13 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{% trans %}Search results{% endtrans %}{% endblock %}
+{% block title %}
+	{% trans %}Search results{% endtrans %}
+{% endblock %}
 
 {% block body %}
-	<div class="title"><b>{% trans %}Search results{% endtrans %}</b></div>
+	<div class="title">
+		<b>{% trans %}Search results{% endtrans %}</b>
+	</div>
 	{% if postStringAnalysis %}
 		<p style="text-align:center;padding-top:10px;">
 			<i>{{ "Couldn't find any exact POST string match, the results you see are generated using POST string analysis."|trans }}</i>
@@ -15,37 +19,42 @@
 	{% if bios is not empty %}
 		<div class="results">
 			<table>
-            <tr>
-                <th>{% trans %}Manuf.{% endtrans %}</th>
-                <th>{% trans %}POST String{% endtrans %}</th>
-                <th>{% trans %}BIOS Ver.{% endtrans %}</th>
-                <th>{% trans %}Core Ver.{% endtrans %}</th>
-				<th>{% trans %}Motherboard{% endtrans %}</th>
-            </tr>
-			{% for b in bios %}
-				
-            <tr style="text-align:center">
-                <td>{{ b.getManufacturer().getShortNameIfExist() }}</td>
-                <td><span class="string-bios">{{ b.getPostString() }}</span></td>
-                <td>{% if b.getFileName() is not null %}
-						<a href="{{ vich_uploader_asset(b, 'romFile') }}">
-						<img src="{{ absolute_url(asset('assets/images/dw.gif')) }}" alt="" width="16" height="16" style="vertical-align: middle;">
-						{% if b.getBoardVersion() is not null %} 
-							{{ b.getBoardVersion() }}
-						{% else %}
-							???
-						{% endif %}
-						</a>
-					{% else %}
-						{{ b.getBoardVersion() }}
-					{% endif %}
-				</td>
-				<td>{{ b.getCoreVersion() }}</td>
-				<td><a class="result-link" href="{{ path("motherboard_show", {id: b.getMotherboard().getId()}) }}">{{ b.getMotherboard().getManufacturerShortNameIfExist() }}&nbsp;{{ b.getMotherboard().name }}</a></td>
-            </tr>
-            {% endfor %}
+				<tr>
+					<th>{% trans %}Manuf.{% endtrans %}</th>
+					<th>{% trans %}POST String{% endtrans %}</th>
+					<th>{% trans %}BIOS Ver.{% endtrans %}</th>
+					<th>{% trans %}Core Ver.{% endtrans %}</th>
+					<th>{% trans %}Motherboard{% endtrans %}</th>
+				</tr>
+				{% for b in bios %}
+
+					<tr style="text-align:center">
+						<td>{{ b.getManufacturer().getShortNameIfExist() }}</td>
+						<td>
+							<span class="string-bios">{{ b.getPostString() }}</span>
+						</td>
+						<td>
+							{% if b.getFileName() is not null %}
+								<a href="{{ vich_uploader_asset(b, 'romFile') }}">
+									<img src="{{ absolute_url(asset('build/images/dw.svg')) }}" alt="" width="16" height="16" style="vertical-align: middle;">
+									{% if b.getBoardVersion() is not null %}
+										{{ b.getBoardVersion() }}
+									{% else %}
+										???
+									{% endif %}
+								</a>
+							{% else %}
+								{{ b.getBoardVersion() }}
+							{% endif %}
+						</td>
+						<td>{{ b.getCoreVersion() }}</td>
+						<td>
+							<a class="result-link" href="{{ path("motherboard_show", {id: b.getMotherboard().getId()}) }}">{{ b.getMotherboard().getManufacturerShortNameIfExist() }}&nbsp;{{ b.getMotherboard().name }}</a>
+						</td>
+					</tr>
+				{% endfor %}
 			</table>
-		{{ knp_pagination_render(bios) }}
+			{{ knp_pagination_render(bios) }}
 		</div>
 	{% endif %}
 {% endblock %}

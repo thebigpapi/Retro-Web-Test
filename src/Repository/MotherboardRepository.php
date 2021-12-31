@@ -251,7 +251,7 @@ class MotherboardRepository extends ServiceEntityRepository
         }
     }
 
-    private function valueToWhere2(string $key, string $value): string //Warning ! Different behavior
+    private function valueToWhere2(string $key, ?string $value): string //Warning ! Different behavior
     {
         return $key . "_id" . (is_null($value) ? " is NULL" : "=:$key");
     }

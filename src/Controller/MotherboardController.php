@@ -12,9 +12,15 @@ use App\Entity\CpuSocket;
 use App\Entity\IdRedirection;
 use App\Entity\MotherboardIdRedirection;
 use App\Form\Motherboard\Search;
+use App\Repository\CpuSocketRepository;
+use App\Repository\ExpansionSlotRepository;
+use App\Repository\FormFactorRepository;
+use App\Repository\IoPortRepository;
 use App\Repository\ManufacturerRepository;
 use App\Repository\MotherboardIdRedirectionRepository;
 use App\Repository\MotherboardRepository;
+use App\Repository\ProcessorPlatformTypeRepository;
+use Doctrine\ORM\EntityManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
@@ -170,11 +176,9 @@ class MotherboardController extends AbstractController
     /**
      * @Route("/motherboards/{id}", name="motherboard_show", requirements={"id"="\d+"})
      */
-    public function show(int $id, MotherboardIdRedirectionRepository $motherboardIdRedirectionRepository)
+    public function show(int $id, MotherboardRepository $motherboardRepository, MotherboardIdRedirectionRepository $motherboardIdRedirectionRepository)
     {
-        $motherboard = $this->getDoctrine()
-            ->getRepository(Motherboard::class)
-            ->find($id);
+        $motherboard = $motherboardRepository->find($id);
 
         if (!$motherboard) {
             $idRedirection = $motherboardIdRedirectionRepository->findRedirection($id, 'uh19');
@@ -198,11 +202,9 @@ class MotherboardController extends AbstractController
      * @Route("/motherboards/{id}/delete/", name="motherboard_delete", requirements={"id"="\d+"})
      * @param Request $request
      */
-    public function delete(Request $request, int $id, MotherboardRepository $motherboardRepository)
+    public function delete(Request $request, int $id, MotherboardRepository $motherboardRepository, EntityManager $entityManager)
     {
         $motherboard = $motherboardRepository->find($id);
-
-        $entityManager = $this->getDoctrine()->getManager();
 
         if (!$motherboard) {
             throw $this->createNotFoundException(
@@ -275,7 +277,9 @@ class MotherboardController extends AbstractController
      * @Route("/motherboards/search/", name="motherboard_search")
      * @param Request $request
      */
-    public function search(Request $request, TranslatorInterface $translator, ManufacturerRepository $manufacturerRepository)
+    public function search(Request $request, TranslatorInterface $translator, ManufacturerRepository $manufacturerRepository,
+    ExpansionSlotRepository $expansionSlotRepository, IoPortRepository $ioPortRepository, CpuSocketRepository $cpuSocketRepository,
+    FormFactorRepository $formFactorRepository, ProcessorPlatformTypeRepository $processorPlatformTypeRepository)
     {
         $notIdentifiedMessage = $translator->trans("Not identified");
         $moboManufacturers = $manufacturerRepository->findAllMotherboardManufacturer();
@@ -288,28 +292,18 @@ class MotherboardController extends AbstractController
         $unidentifiedMan->setName($notIdentifiedMessage);
         array_unshift($chipsetManufacturers, $unidentifiedMan);
 
-        $slots = $this->getDoctrine()
-            ->getRepository(ExpansionSlot::class)
-            ->findAll();
+        $slots = $expansionSlotRepository->findAll();
 
-        $ports = $this->getDoctrine()
-            ->getRepository(IoPort::class)
-            ->findAll();
+        $ports = $ioPortRepository->findAll();
 
-        $cpuSockets = $this->getDoctrine()
-            ->getRepository(CpuSocket::class)
-            ->findAll();
+        $cpuSockets = $cpuSocketRepository->findAll();
 
-        $formFactors = $this->getDoctrine()
-            ->getRepository(FormFactor::class)
-            ->findAll();
+        $formFactors = $formFactorRepository->findAll();
         $unidentifiedFormFactor = new FormFactor();
         $unidentifiedFormFactor->setName($notIdentifiedMessage);
         array_unshift($formFactors, $unidentifiedFormFactor);
 
-        $procPlatformTypes = $this->getDoctrine()
-            ->getRepository(ProcessorPlatformType::class)
-            ->findBy(array(), array('name' => 'ASC'));
+        $procPlatformTypes = $processorPlatformTypeRepository->findBy(array(), array('name' => 'ASC'));
 
         $biosManufacturers = $manufacturerRepository->findAllBiosManufacturer();
 
@@ -336,15 +330,6 @@ class MotherboardController extends AbstractController
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-
-            if ($form->get('searchChipsetManufacturer')->isClicked() || $form->get('searchSocket1')->isClicked() || $form->get('searchSocket2')->isClicked()) {
-                return $this->render('motherboard/search.html.twig', [
-                    'form' => $form->createView(),
-                    'slots' => $slots,
-                    'ports' => $ports,
-                ]);
-            }
-
             return $this->redirect($this->generateUrl('mobosearch', $this->searchFormToParam($request, $form, $slots, $ports)));
         }
         return $this->render('motherboard/search.html.twig', [
@@ -405,25 +390,24 @@ class MotherboardController extends AbstractController
         }
 
         $parameters['expansionSlotsIds'] = array();
-        foreach ($slots as $key => $slot) {
-            $count = $request->request->get('slot' . $slot->getId());
-            if ($count != 0) {
-                $sloCount = array('id' => $slot->getId(), 'count' => $count);
+        foreach ($slots as $slot) {
+            $count = $request->request->get('slot' . $slot->getId(), );
+            if ((int)$count !== 0) {
+                $sloCount = array('id' => $slot->getId(), 'count' => (int)$count);
                 array_push($parameters['expansionSlotsIds'], $sloCount);
-            } elseif ($count == '0') {
+            } elseif ($count === '0') {
                 $sloCount = array('id' => $slot->getId(), 'count' => null);
                 array_push($parameters['expansionSlotsIds'], $sloCount);
             }
         }
-        //$parameters['expansionSlotsIds'] = $expansionSlots;
 
         $ioPorts = array();
-        foreach ($ports as $key => $port) {
+        foreach ($ports as $port) {
             $count = $request->request->get('port' . $port->getId());
-            if ($count != 0) {
-                $porCount = array('id' => $port->getId(), 'count' => $count);
+            if ((int)$count && $count !== 0) {
+                $porCount = array('id' => $port->getId(), 'count' => (int)$count);
                 array_push($ioPorts, $porCount);
-            } elseif ($count == '0') {
+            } elseif ($count === '0') {
                 $porCount = array('id' => $port->getId(), 'count' => null);
                 array_push($ioPorts, $porCount);
             }
@@ -442,11 +426,12 @@ class MotherboardController extends AbstractController
     }
 
     /**
-     * @Route("/motherboards/index/{letter}", name="moboindex", requirements={"letter"="\w"}), methods={"GET"})
+     * @Route("/motherboards/index/{letter}", name="moboindex", requirements={"letter"="\w|[?]"}), methods={"GET"})
      * @param Request $request
      */
-    public function index(Request $request, PaginatorInterface $paginator, string $letter = '', MotherboardRepository $motherboardRepository)
+    public function index(Request $request, PaginatorInterface $paginator, string $letter, MotherboardRepository $motherboardRepository)
     {
+        if ($letter == "?") $letter = "";
         $data = $motherboardRepository->findAllAlphabetic($letter);
 
         usort(

@@ -13,6 +13,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use App\Repository\MotherboardRepository;
+use App\Repository\UserRepository;
+use Doctrine\ORM\EntityManager;
+use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class AdminController extends AbstractController
@@ -37,18 +40,15 @@ class AdminController extends AbstractController
      * @param Request $request
      * @param UserPasswordHasherInterface $passwordHasher
      */
-    public function manageUsers(Request $request, UserPasswordHasherInterface $passwordHasher)
+    public function manageUsers(Request $request, UserPasswordHasherInterface $passwordHasher, EntityManager $entityManager, UserRepository $userRepository)
     {
-        $entityManager = $this->getDoctrine()->getManager();
         $userForm = $this->createForm(ManageUser::class);
         $message = "";
 
         $userForm->handleRequest($request);
         if ($userForm->isSubmitted() && $userForm->isValid()) {
             if ($userForm->get('reset')->isClicked()) {
-                $user = $this->getDoctrine()
-                    ->getRepository(User::class)
-                    ->find($userForm->getData()['users']->getId());
+                $user = $userRepository->find($userForm->getData()['users']->getId());
 
                 $password = $this->randomStr(16);
                 $hashedPassword = $passwordHasher->hashPassword($user, $password);
@@ -62,9 +62,7 @@ class AdminController extends AbstractController
                 ]);
             }
             if ($userForm->get('delete')->isClicked()) {
-                $user = $this->getDoctrine()
-                    ->getRepository(User::class)
-                    ->find($userForm->getData()['users']->getId());
+                $user = $userRepository->find($userForm->getData()['users']->getId());
 
                 $message = "Successfully removed user " . $user->getUsername();
                 $entityManager->remove($user);
@@ -85,7 +83,7 @@ class AdminController extends AbstractController
      * @param Request $request
      * @param UserPasswordHasherInterface $passwordHasher
      */
-    public function addUser(Request $request, UserPasswordHasherInterface $passwordHasher)
+    public function addUser(Request $request, UserPasswordHasherInterface $passwordHasher, EntityManager $entityManager)
     {
         $form = $this->createFormBuilder()
             ->add('name', TextType::class)
@@ -96,14 +94,13 @@ class AdminController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
 
-            $entityManager = $this->getDoctrine()->getManager();
-
             $user = new User();
             $user->setRoles(array('ROLE_ADMIN'));
             $user->setUsername($data['name']);
             $password = $this->randomStr(16);
             $hashedPassword = $passwordHasher->hashPassword($user, $password);
             $user->setPassword($hashedPassword);
+
             $entityManager->persist($user);
             $entityManager->flush();
 
@@ -143,7 +140,7 @@ class AdminController extends AbstractController
      * @param Request $request
      * @param UserPasswordHasherInterface $passwordHasher
      */
-    public function changeUserPassword(Request $request, UserPasswordHasherInterface $passwordHasher)
+    public function changeUserPassword(Request $request, UserPasswordHasherInterface $passwordHasher, EntityManager $entityManager, UserRepository $userRepository)
     {
         $form = $this->createFormBuilder()
             ->add('old_password', PasswordType::class)
@@ -156,9 +153,8 @@ class AdminController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
 
-            $entityManager = $this->getDoctrine()->getManager();
-
-            $user = $this->getUser();
+            $user = $userRepository->findOneBy(["username" => $this->getUser()->getUserIdentifier()]);
+            
             $checkPass = $passwordHasher->isPasswordValid($user, $data['old_password']);
             if ($checkPass === true) {
                 if ($data['new_password'] === $data['new_password_confirm']) {
