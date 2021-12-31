@@ -31,11 +31,9 @@ export default class extends Controller {
     change_tag(parameter){
         let nextURL = window.location.href;
         let nextIndex = nextURL.indexOf("#");
-        if (parameter == "0"){
-            if(nextIndex != -1){
-                nextURL = nextURL.substring(0, nextIndex);
-                window.history.replaceState({},'', nextURL);
-            }
+        if (parameter == "0" && nextIndex != -1){
+            nextURL = nextURL.substring(0, nextIndex);
+            window.history.replaceState({},'', nextURL);
         }
         else{
             nextURL = nextURL.substring(0, nextIndex) + parameter;
