@@ -5,6 +5,9 @@
 a.login-image img{filter: invert(49%) sepia(98%) saturate(1883%) hue-rotate(202deg) brightness(108%) contrast(101%);}
 a.login-image img:hover{filter: invert(49%) sepia(98%) saturate(1883%) hue-rotate(202deg) brightness(158%) contrast(101%);}
 a.login-link:hover{color:#7ce5ff;}
+@media (max-width: 400px) {
+	img.login-logo{width:100%;}
+}
 </style>
 {% endblock %}
 {% block body %}
@@ -18,7 +21,7 @@ a.login-link:hover{color:#7ce5ff;}
 	<table style="margin:auto;margin-top:50px;">
 		<tr>
 			<td>
-				<img src="{{ absolute_url(asset('build/images/admin/login.gif')) }}" alt="">
+				<img class="login-logo" src="{{ absolute_url(asset('build/images/admin/login.gif')) }}" alt="">
 			</td>
 			<td>
 				{% if app.user %}
