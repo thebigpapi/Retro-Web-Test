@@ -26,9 +26,7 @@
 							{% if motherboard.getImages() is not empty %}
 								{% for image in motherboard.getImages()|filter(a => a.motherboardImageType.id in [1, 2])|sort((a, b) => b.motherboardImageType <=> a.motherboardImageType)|slice(0, 1) %}
 									<a href="{{ vich_uploader_asset(image, 'imageFile')}}" class="glightbox">
-										<img src="{% if vich_uploader_asset(image, 'imageFile') | ext != "svg" %}
-										{{ vich_uploader_asset(image, 'imageFile') | imagine_filter('motherboard_show_thumb') }}{% else %}
-										{{ vich_uploader_asset(image, 'imageFile')}}{% endif %}" alt="" title="{% if image.description %}{{ image.description }}{% endif %}"></a>
+										<img src="{{ vich_uploader_asset(image, 'imageFile') | imagine_filter('motherboard_show_thumb') }}" alt="" title="{% if image.description %}{{ image.description }}{% endif %}"></a>
 								{% endfor %}
 							{% else %}
 								<img src="{{ absolute_url(asset('build/images/motherboard/image-missing.webp')) }}" title="no images available :(">
