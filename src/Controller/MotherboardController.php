@@ -20,7 +20,7 @@ use App\Repository\ManufacturerRepository;
 use App\Repository\MotherboardIdRedirectionRepository;
 use App\Repository\MotherboardRepository;
 use App\Repository\ProcessorPlatformTypeRepository;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
@@ -202,7 +202,7 @@ class MotherboardController extends AbstractController
      * @Route("/motherboards/{id}/delete/", name="motherboard_delete", requirements={"id"="\d+"})
      * @param Request $request
      */
-    public function delete(Request $request, int $id, MotherboardRepository $motherboardRepository, EntityManager $entityManager)
+    public function delete(Request $request, int $id, MotherboardRepository $motherboardRepository, EntityManagerInterface $entityManager)
     {
         $motherboard = $motherboardRepository->find($id);
 

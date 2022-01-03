@@ -14,7 +14,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use App\Repository\MotherboardRepository;
 use App\Repository\UserRepository;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
@@ -40,7 +40,7 @@ class AdminController extends AbstractController
      * @param Request $request
      * @param UserPasswordHasherInterface $passwordHasher
      */
-    public function manageUsers(Request $request, UserPasswordHasherInterface $passwordHasher, EntityManager $entityManager, UserRepository $userRepository)
+    public function manageUsers(Request $request, UserPasswordHasherInterface $passwordHasher, EntityManagerInterface $entityManager, UserRepository $userRepository)
     {
         $userForm = $this->createForm(ManageUser::class);
         $message = "";
@@ -83,7 +83,7 @@ class AdminController extends AbstractController
      * @param Request $request
      * @param UserPasswordHasherInterface $passwordHasher
      */
-    public function addUser(Request $request, UserPasswordHasherInterface $passwordHasher, EntityManager $entityManager)
+    public function addUser(Request $request, UserPasswordHasherInterface $passwordHasher, EntityManagerInterface $entityManager)
     {
         $form = $this->createFormBuilder()
             ->add('name', TextType::class)
@@ -140,7 +140,7 @@ class AdminController extends AbstractController
      * @param Request $request
      * @param UserPasswordHasherInterface $passwordHasher
      */
-    public function changeUserPassword(Request $request, UserPasswordHasherInterface $passwordHasher, EntityManager $entityManager, UserRepository $userRepository)
+    public function changeUserPassword(Request $request, UserPasswordHasherInterface $passwordHasher, EntityManagerInterface $entityManager, UserRepository $userRepository)
     {
         $form = $this->createFormBuilder()
             ->add('old_password', PasswordType::class)
