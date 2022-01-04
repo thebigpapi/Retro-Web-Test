@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\MotherboardAliasRepository")
@@ -24,11 +25,13 @@ class MotherboardAlias
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Manufacturer", inversedBy="motherboardAliases")
+     * @Groups({"read:motherboard_alias:item", "read:motherboard_alias:collection", "read:motherboard:item", "read:motherboard:collection"})
      */
     private $manufacturer;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"read:motherboard_alias:item", "read:motherboard_alias:collection", "read:motherboard:item", "read:motherboard:collection"})
      */
     private $name;
 

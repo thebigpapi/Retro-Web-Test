@@ -29,6 +29,10 @@ use Knp\Component\Pager\PaginatorInterface;
 use Exception;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use Symfony\Component\Serializer\Serializer;
+use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Contracts\Cache\CacheInterface;
 
 class MotherboardController extends AbstractController
@@ -196,6 +200,30 @@ class MotherboardController extends AbstractController
             'motherboard' => $motherboard,
             'controller_name' => 'MotherboardController',
         ]);
+    }
+
+    /**
+     * @Route("/motherboards/{id}.json", name="motherboard_show_json", requirements={"id"="\d+"})
+     */
+    public function showJson(int $id, SerializerInterface $serializer, MotherboardRepository $motherboardRepository, MotherboardIdRedirectionRepository $motherboardIdRedirectionRepository)
+    {
+        $motherboard = $motherboardRepository->find($id);
+
+        if (!$motherboard) {
+            $idRedirection = $motherboardIdRedirectionRepository->findRedirection($id, 'uh19');
+
+            if (!$idRedirection) {
+                throw $this->createNotFoundException(
+                    'No $motherboard found for id ' . $id
+                );
+            } else {
+                return $this->redirect($this->generateUrl('motherboard_show', array("id" => $idRedirection)));
+            }
+        }
+
+        $data = $serializer->serialize($motherboard, 'json', ['groups' => ['read:motherboard:item']]);
+
+        return new JsonResponse($data, 200, [], true);
     }
 
     /**

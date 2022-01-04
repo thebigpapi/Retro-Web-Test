@@ -6,6 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Query\Expr\Func;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\MotherboardRepository")
@@ -21,6 +22,7 @@ class Motherboard
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"read:motherboard:item", "read:motherboard:collection"})
      */
     private ?string $name = null;
 
@@ -31,6 +33,7 @@ class Motherboard
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Manufacturer", inversedBy="motherboards", fetch="EAGER")
+     * @Groups({"read:motherboard:item", "read:motherboard:collection"})
      */
     private $manufacturer;
 
@@ -46,6 +49,7 @@ class Motherboard
      *   orphanRemoval=true,
      *   cascade={"persist"}
      * )
+     * @Groups({"read:motherboard:item"})
      */
     private $motherboardMaxRams;
 
@@ -66,6 +70,7 @@ class Motherboard
      *   orphanRemoval=true,
      *   cascade={"persist"}
      * )
+     * @Groups({"read:motherboard:item"})
      */
     private $motherboardExpansionSlots;
 
@@ -75,6 +80,7 @@ class Motherboard
      *   mappedBy="motherboard",
      *   orphanRemoval=true, cascade={"persist"}
      * )
+     * @Groups({"read:motherboard:item"})
      */
     private $motherboardIoPorts;
 
@@ -85,6 +91,7 @@ class Motherboard
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Processor", inversedBy="motherboards")
+     * @Groups({"read:motherboard:item"})
      */
     private $processors;
 
@@ -105,6 +112,7 @@ class Motherboard
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\FormFactor", inversedBy="motherboards")
+     * @Groups({"read:motherboard:item"})
      */
     private $formFactor;
 
@@ -150,6 +158,7 @@ class Motherboard
 
     /**
      * @ORM\Column(type="string", length=2048, nullable=true)
+     * @Groups({"read:motherboard:item"})
      */
     private ?string $note = null;
 
@@ -160,6 +169,7 @@ class Motherboard
 
     /**
      * @ORM\Column(type="integer", nullable=true)
+     * @Groups({"read:motherboard:item"})
      */
     private ?int $maxCpu = null;
 
@@ -170,6 +180,7 @@ class Motherboard
      *   orphanRemoval=true,
      *   cascade={"persist"}
      * )
+     * @Groups({"read:motherboard:item", "read:motherboard:collection"})
      */
     private $motherboardAliases;
 
@@ -199,6 +210,7 @@ class Motherboard
 
     /**
      * @ORM\ManyToMany(targetEntity=PSUConnector::class, inversedBy="motherboards")
+     * @Groups({"read:motherboard:item", "read:motherboard:collection"})
      */
     private $psuConnectors;
 

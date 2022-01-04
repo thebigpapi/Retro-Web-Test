@@ -6,6 +6,7 @@ use App\Repository\PSUConnectorRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=PSUConnectorRepository::class)
@@ -21,6 +22,7 @@ class PSUConnector
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"read:psu_connector:item", "read:psu_connector:collection", "read:motherboard:item"})
      */
     private $name;
 

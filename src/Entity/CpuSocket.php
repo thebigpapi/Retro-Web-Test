@@ -5,6 +5,7 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\CpuSocketRepository")
@@ -20,6 +21,7 @@ class CpuSocket
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"read:cpu_socket:item", "read:cpu_socket:collection", "read:motherboard:item"})
      */
     private $name;
 
@@ -35,6 +37,7 @@ class CpuSocket
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"read:cpu_socket:item", "read:cpu_socket:collection", "read:motherboard:item"})
      */
     private $type;
 

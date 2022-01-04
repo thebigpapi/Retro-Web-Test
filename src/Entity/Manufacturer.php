@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ManufacturerRepository")
@@ -25,11 +26,13 @@ class Manufacturer
     /**
      * @ORM\Column(type="string", length=255, unique=true)
      * @Assert\NotBlank
+     * @Groups({"read:manufacturer:item", "read:manufacturer:collection", "read:motherboard:item", "read:motherboard:collection"})
      */
     private $name;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true, unique=true)
+     * @Groups({"read:manufacturer:item", "read:manufacturer:collection", "read:motherboard:item", "read:motherboard:collection"})
      */
     private $shortName;
 

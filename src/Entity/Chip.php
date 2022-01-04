@@ -5,6 +5,7 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ChipRepository")
@@ -21,21 +22,25 @@ abstract class Chip
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"read:chip:item", "read:chip:collection", "read:motherboard:item"})
      */
     protected $name;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"read:chip:item", "read:chip:collection", "read:motherboard:item"})
      */
     protected $partNumber;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Manufacturer", inversedBy="chips", fetch="EAGER")
+     * @Groups({"read:chip:item", "read:chip:collection", "read:motherboard:item"})
      */
     protected $manufacturer;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\ChipAlias", mappedBy="chip", orphanRemoval=true, cascade={"persist"})
+     * @Groups({"read:chip:item", "read:chip:collection", "read:motherboard:item"})
      */
     private $chipAliases;
 

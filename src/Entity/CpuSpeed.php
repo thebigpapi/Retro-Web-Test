@@ -5,6 +5,7 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\CpuSpeedRepository")
@@ -20,9 +21,9 @@ class CpuSpeed
 
     /**
      * @ORM\Column(type="float")
+     * @Groups({"read:cpu_speed:item", "read:cpu_speed:collection", "read:motherboard:item"})
      */
     private $value;
-
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Motherboard", mappedBy="cpuSpeed")

@@ -5,6 +5,7 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ProcessingUnitRepository")
@@ -22,27 +23,32 @@ abstract class ProcessingUnit extends Chip
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\CpuSpeed", inversedBy="processingUnits")
      * @ORM\OrderBy({"value" = "ASC"})
+     * @Groups({"read:processing_unit:item", "read:processing_unit:collection", "read:motherboard:item"})
      */
     protected $speed;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\ProcessorPlatformType", inversedBy="processingUnits")
+     * @Groups({"read:processing_unit:item", "read:processing_unit:collection", "read:motherboard:item"})
      */
     protected $platform;
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\InstructionSet", inversedBy="processingUnits")
+     * @Groups({"read:processing_unit:item", "read:motherboard:item"})
      */
     protected $instructionSets;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\CpuSpeed", inversedBy="processingUnitsFsb")
      * @ORM\OrderBy({"value" = "ASC"})
+     * @Groups({"read:processing_unit:item", "read:processing_unit:collection", "read:motherboard:item"})
      */
     protected $fsb;
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\CpuSocket", inversedBy="processingUnits")
+     * @Groups({"read:processing_unit:item", "read:processing_unit:collection", "read:motherboard:item"})
      */
     private $sockets;
 

@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\MotherboardExpansionSlotRepository")
@@ -20,11 +21,13 @@ class MotherboardExpansionSlot
      * @ORM\Id()
      * @ORM\ManyToOne(targetEntity="App\Entity\ExpansionSlot", inversedBy="motherboardExpansionSlots")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"read:motherboard:item"})
      */
     private $expansion_slot;
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups({"read:motherboard:item"})
      */
     private $count;
 

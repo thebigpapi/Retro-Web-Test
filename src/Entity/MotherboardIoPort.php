@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\MotherboardIoPortRepository")
@@ -20,11 +21,13 @@ class MotherboardIoPort
      * @ORM\Id()
      * @ORM\ManyToOne(targetEntity="App\Entity\IoPort", inversedBy="motherboardIoPorts")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"read:motherboard:item"})
      */
     private $io_port;
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups({"read:motherboard:item"})
      */
     private $count;
 

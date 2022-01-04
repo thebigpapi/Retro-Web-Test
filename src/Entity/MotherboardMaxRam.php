@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\MotherboardMaxRamRepository")
@@ -21,11 +22,13 @@ class MotherboardMaxRam
      * @ORM\Id()
      * @ORM\ManyToOne(targetEntity="App\Entity\MaxRam", inversedBy="motherboardMaxRams")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"read:motherboard:item"})
      */
     private $max_ram;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"read:motherboard:item"})
      */
     private $note;
 

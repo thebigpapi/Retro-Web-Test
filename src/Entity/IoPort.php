@@ -5,6 +5,7 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\IoPortRepository")
@@ -20,6 +21,7 @@ class IoPort
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"read:io_port:item", "read:io_port:collection", "read:motherboard:item"})
      */
     private $name;
 
