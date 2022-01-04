@@ -62,6 +62,12 @@ div.notes {
     padding-bottom:20px;
     margin:auto;
 }
+div.chipset-textarea { 
+    word-wrap: break-word;
+    overflow: auto; 
+    overflow-y: hidden; 
+}
+div.chipset-textarea p { font-family: monospace;font-weight: 100;font-size:16px; }
 p.string-alias{ text-align:center;font-size: 14px;margin-top: -15px; }
 p.string-alias span.separator { display: none; }
 span.string-bios { font-size:12px; }

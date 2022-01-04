@@ -98,7 +98,7 @@
 	{% endfor %}
 {% else %}
 	<div class="show-image">
-		<img src={{ absolute_url(asset('build/images/motherboard/image-missing.webp')) }} title="no images available :(">
+		<img style="width:100%;" src="{{ absolute_url(asset('build/images/motherboard/image-missing.gif')) }}" title="no images available :(">
 	</div>
 {% endif %}
 </div>
@@ -146,13 +146,9 @@
 		<tr>
 			<td>{% trans %}Chipset{% endtrans %}:</td>
 			<td>
-				{% if motherboard.getChipset().getEncyclopediaLink() is not null %}
-					<a href="{{ path('app_homepage') }}chipsets/{{ motherboard.getChipset().getId()}}">
-						{{ motherboard.getChipset().getMainChipWithManufacturer() }}
-					</a>
-				{% else %}
+				<a href="{{ path('app_homepage') }}chipsets/{{ motherboard.getChipset().getId()}}">
 					{{ motherboard.getChipset().getMainChipWithManufacturer() }}
-				{% endif %}
+				</a>
 			</td>
 		</tr>
 	{% endif %}

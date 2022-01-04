@@ -16,7 +16,7 @@ div.index-buttons a img {
 }
 div.index-buttons a div { font-size: 12px; }
 div.index-buttons a:hover div{ color:$link-hover-color1;}
-a.index-button0 span, a.index-button2 span {_cursor: hand;cursor: pointer;}
+div.index-buttons a span {_cursor: hand;cursor: pointer;}
 span.image-block {text-align: center; display: -moz-inline-stack; display: inline-block; vertical-align: bottom;}
 span.image-block span {display:table;}
 span.image-block span span {display:block;}

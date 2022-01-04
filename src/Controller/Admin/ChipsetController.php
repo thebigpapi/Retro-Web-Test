@@ -258,7 +258,7 @@ class ChipsetController extends AbstractController
             $entityManager->persist($chipset);
             $entityManager->flush();
 
-            return $this->redirect($this->generateUrl('admin_manage_chipsets', array("entity" => "chipset")));
+            return $this->redirectToRoute('chipset_show', array('id' => $chipset->getId()));
         }
         return $this->render('admin/edit/chipsets/chipset.html.twig', [
             'form' => $form->createView(),

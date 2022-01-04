@@ -23,13 +23,26 @@
 		({{ chipset.getName() }})
 	</b>
 </div>
+{% if chipset.getChipsetParts() is not empty %}
+	<p class="string-alias">
+		<b>
+			<span class="text-block" style="border: none; padding-right: 0;">{% trans %}Chipset parts{% endtrans %}:</span>
+			{% for part in chipset.getChipsetParts() %}
+				<span class="text-block">{{ part.getFullName() }}</span>
+			{% if not loop.last %}
+				<span class="separator">&nbsp;|&nbsp;</span>
+			{% endif %}
+		{% endfor %}
+		</b>
+	</p>
+{% endif %}
 <div class="show-images" id="sh-images">
 {% if chipset.getChipsetParts() is not empty %}
     {% for chipPart in chipset.getChipsetParts() %}
         {% if chipPart.getImages() is not empty %}
         {% for image in chipPart.getImages()|sort((a, b) => a.motherboardImageType <=> b.motherboardImageType) %}
             <div class="show-image">
-				<a href="{{ vich_uploader_asset(image, 'imageFile')}}" class="glightbox" data-description="{% if image.description %}Notes: {{ image.description }}{% endif %}">
+				<a href="{{ vich_uploader_asset(image, 'imageFile')}}" class="glightbox" data-description="{{ chipPart.getFullName() }}{% if image.description %}Notes: {{ image.description }}{% endif %}">
 					<img src="{{ vich_uploader_asset(image, 'imageFile') | imagine_filter('motherboard_show_thumb') }}
                     " alt="" title="{% if image.description %}{{ image.description }}{% endif %}" alt="">
 				</a>
@@ -45,50 +58,38 @@
 				</span>
 			{% endif %}
 		</div>
-        {{ chipPart.getFullName() }}
         {% endfor %}
         {% endif %}
     {% endfor %}
 {% else %}
 	<div class="show-image">
-		<img src={{ absolute_url(asset('build/images/motherboard/image-missing.webp')) }} title="no images available :(">
+		<p style="font-size:20px;">no images available :(</p>
 	</div>
 {% endif %}
 </div>
+<div class="show-nav" id="sh-nav" data-controller="show">
+	<a class="snav" data-action='click->show#show_general'>
+		<img src="{{ absolute_url(asset('build/icons/show/data.svg')) }}" alt="" width="24">Description</a>
+	<a class="snav" data-action='click->show#show_downloads'>
+		<img src="{{ absolute_url(asset('build/icons/dw.svg')) }}" alt="" width="24">Downloads</a>
+	<div>
+	{#{% if is_granted('ROLE_ADMIN') %}
+	<a class="snav" href="{{ path("chipset_delete", {id: chipset.getId()}) }}">
+		<img src="{{ absolute_url(asset('build/icons/show/delete.svg')) }}" alt="" width="24">Delete</a>
+	{% endif %}#}
+	<a class="snav" href="{{ path('new_chipset_edit', {id: chipset.getId()}) }}">
+		<img src="{{ absolute_url(asset('build/icons/show/edit.svg')) }}" alt="" width="24">Edit chipset</a>
+	</div>
+</div>
 <div class="show-general" id="sh-general">
-	<table class="stbl">
-		<tr>
-			<td>
-				<div style="width:170px;">{% trans %}Release date:{% endtrans %}</div>
-			</td>
-			<td style="width: 100%;">
-				{% if chipset.getReleaseDate() is not null %}
-					{{ chipset.getReleaseDate() }}
-				{% else %}
-					{% trans %}Unknown{% endtrans %}
-				{% endif %}
-			</td>
-		</tr>
-	{% if chipset.getBiosCodes() is not empty %}
-		<tr>
-			<td>{% trans %}BIOS codes{% endtrans %}:</td>
-			<td>
-				test
-			</td>
-		</tr>
+	<div>{% trans %}Release date:{% endtrans %}&nbsp;{% if chipset.getReleaseDate() is not null %}{{ chipset.getReleaseDate() }}{% else %}{% trans %}Unknown{% endtrans %}{% endif %}&nbsp;&nbsp;
+	{% if chipset.getEncyclopediaLink() is not null %}<a href="{{ chipset.getEncyclopediaLink() }}">[Encyclopedia link]</a></div>{% endif %}
+	<br>
+	<div class="chipset-textarea">
+	{% if chipset.getDescription() is not empty %}
+		{% apply markdown_to_html %}{{ chipset.getDescription() }}{% endapply %}
 	{% endif %}
-    {% if chipset.getChipsetParts() is not empty %}
-        <tr>
-			<td>{% trans %}Chipset parts{% endtrans %}:</td>
-        <td>
-        <ul>
-        {% for chipPart in chipset.getChipsetParts() %}
-            <li>{{ chipPart.getFullName() }}</li>
-        {% endfor %}
-        </ul>
-        </td>
-    {% endif %}
-    </table>
+	</div>
 </div>
 <div class="show-downloads" id="sh-downloads">
 	<div class="scroll-div">

@@ -1,54 +1,113 @@
 {% extends 'admin/header.html.twig' %}
 
-{% block title %}Manage chipsets
-{% endblock %}
+{% block title %}Add/Edit chipset{% endblock %}
 
 {% block body %}
-	<div style="height:5em;"></div>
-	<h2 style="text-align:center;">
-		<b>Edit:Chipset</b>
-	</h2>
-	{{ form_start(form, {'method': 'POST'}) }}
-	<div class="editasset">
-		{{form_widget(form.save)}}
-		<table class="editasset">
-
-			<tr>
-				<td>{{form_label(form.manufacturer)}}</td>
-				<td>{{form_widget(form.manufacturer)}}</td>
-			</tr>
-			<tr>
-				<td>{{form_label(form.name)}}</td>
-				<td>{{form_widget(form.name)}}</td>
-			</tr>
-			<tr>
-				<td>Part number</td>
-				<td>{{form_widget(form.part_no)}}</td>
-			</tr>
-			<tr>
-				<td>{{form_label(form.release_date)}}</td>
-				<td>{{form_widget(form.release_date)}}</td>
-			</tr>
-			<tr>
-				<td>{{form_label(form.encyclopedia_link)}}</td>
-				<td>{{form_widget(form.encyclopedia_link)}}</td>
-			</tr>
-			<tr>
-				<td>{{ form_label(form.drivers) }}</td>
-				<td>{% include 'macros/entityList.html.twig' with {'entityName':'drivers', 'entityDisplayName': 'driver', 'entities':form.drivers} %}</td>
-			</tr>
-			<tr class="darkbg">
-				<td>Chipset parts:</td>
-				<td>{% include 'macros/entityList.html.twig' with {'entityName':'chipsetParts', 'entityDisplayName': 'chipsetParts', 'entities':form.chipsetParts} %}</td>
-			</tr>
-			<tr>
-				<td>BIOS codes:</td>
-				<td>{% include 'macros/entityList.html.twig' with {'entityName':'biosCodes', 'entityDisplayName': 'biosCodes', 'entities':form.biosCodes} %}</td>
-			</tr>
-		</table>
+<form data-controller="chipset--add" name="chipset_form" method="post" enctype="multipart/form-data" data-action="{#submit->chipset--add#check#}">
+	<table class="add-title">
+		<tr>
+			<td class="title-small"><b>Manufacturer</b></td>
+			<td class="title-small"><b>Part Number</b></td>
+			<td class="title-small"><b>Name</b></td>
+		</tr>
+		<tr>
+			<td class="title-small">{{ form_widget(form.manufacturer) }}</td>
+			<td class="title-small">{{ form_widget(form.part_no) }}</td>
+			<td class="title-small">{{ form_widget(form.name) }}</td>
+		</tr>
+	</table>
+	<div class="show-images" style="min-height:200px;" data-controller="collection">
+		<p>Chipset parts:</p>
+		<div data-controller="collection">
+			<button type="button" data-action="click->collection#expandButton" data-list-id="chipsetParts-fields-list">Add chipset parts</button>
+			{{ form_errors(form.chipsetParts) }}
+			<div id="chipsetParts-fields-list" data-widget-counter="{{ form.chipsetParts|length }}" data-prototype="
+				{{ form_widget(form.chipsetParts.vars.prototype, {'attr': {'style': 'display:inline-block;width:70%;'}})|e }}
+				<button type=button data-action='click->collection#removeButton'>Del</button>
+				">
+				{% if form.chipsetParts is not empty %}
+					{% for part in form.chipsetParts %}
+						<div>
+							{{ form_widget(part, {'attr': {'style': 'display:inline-block;width:70%;'}}) }}
+							<button type="button" data-action="click->collection#removeButton">Del</button>
+						</div>
+						{{ form_errors(part) }}
+					{% endfor %}
+				{% endif %}
+			</div>
+		</div>
+		<br>
+		<p>BIOS codes:</p>
+		<div data-controller="collection">
+			<button type="button" data-action="click->collection#expandButton" data-list-id="biosCodes-fields-list">Add BIOS codes</button>
+			{{ form_errors(form.biosCodes) }}
+			<div id="biosCodes-fields-list" data-widget-counter="{{ form.biosCodes|length }}" data-prototype="
+				{{ form_widget(form.biosCodes.vars.prototype.biosManufacturer, {'attr': {'style': 'display:inline-block;width:30%;'}})|e }}
+				{{ form_widget(form.biosCodes.vars.prototype.code, {'attr': {'style': 'display:inline-block;width:30%;', 'placeholder': 'Enter code ..'}})|e }}
+				<button type=button data-action='click->collection#removeButton'>Del</button>
+				">
+				{% if form.biosCodes is not empty %}
+					{% for part in form.biosCodes %}
+						<div>
+							{{ form_widget(part.biosManufacturer, {'attr': {'style': 'display:inline-block;width:30%;'}}) }}
+							{{ form_widget(part.code, {'attr': {'style': 'display:inline-block;width:30%;'}}) }}
+							<button type="button" data-action="click->collection#removeButton">Del</button>
+						</div>
+						{{ form_errors(part) }}
+					{% endfor %}
+				{% endif %}
+			</div>
+		</div>
 	</div>
+	<div class="show-nav" id="sh-nav" data-controller="show">
+		<a class="snav" data-action='click->show#show_general'>
+			<img src="{{ absolute_url(asset('build/icons/show/data.svg')) }}" alt="" width="24">Description</a>
+		<a class="snav" data-action='click->show#show_downloads'>
+			<img src="{{ absolute_url(asset('build/icons/dw.svg')) }}" alt="" width="24">Downloads</a>
+		<div style="float:right;">
+			<a class="snav" data-action="click->chipset--add#submit">
+				<img src="{{ absolute_url(asset('build/icons/show/edit.svg')) }}" alt="" width="24" style="vertical-align: middle;padding-right:2px;">Save chipset</a>	
+		</div>
+	</div>
+	<input type="submit" style="display:none;" id="chipset_form_save" name="chipset_form[save]" value="Save chipset">
+	<div class="show-general" id="sh-general">
+		<div style="display:inline-block;">{% trans %}Release date:{% endtrans %}&nbsp;{{form_widget(form.release_date)}}</div>
+		<div style="display:inline-block;">{% trans %}Encyclopedia link:{% endtrans %}&nbsp;{{form_widget(form.encyclopedia_link)}}</div>
+		{{form_widget(form.description, {'attr': {'style': 'width:98%;height:600px;'}}) }}
+	</div>
+	<div class="show-downloads" id="sh-downloads">
+		<div data-controller="collection">
+			<div style="padding-top:5px;">
+				<img src="{{ absolute_url(asset('build/icons/show/hardware.svg')) }}" alt="" width="32" style="vertical-align: middle;padding-bottom: 10px;">
+				<b>Drivers: </b>
+				<button type="button" data-action="click->collection#expandButton" data-list-id="drivers-fields-list">Add</button>
+			</div>
+			<div class="bios-image">
+				<div class="bios-image-head">
+					<div class="ba7"><b>File</b></div>
+					<div class="ba2"><b>Recommended</b></div>
+				</div>
+				<div id="drivers-fields-list" data-widget-counter="{{ form.drivers|length }}" data-prototype="
+					<div class=ba7>{{ form_widget(form.drivers.vars.prototype.largeFile, {'attr': {'style': 'width:100%'}} )|e }}</div>
+					<div class=ba2>{{ form_widget(form.drivers.vars.prototype.isRecommended, {'attr': {'style': 'height:18px;width:18px;margin:0;'}} )|e }}</div>
+					<button type=button data-action='click->collection#removeButton'>Del</button>
+					" data-controller="collection">
+					{% for driver in form.drivers %}
+							<div>
+								<div class="ba7">{{ form_widget(driver.largeFile, {'attr': {'style': 'width:100%'}} ) }}</div>
+								<div class="ba2">{{ form_widget(driver.isRecommended, {'attr': {'style': 'height:18px;width:18px;margin:0;'}} ) }}</div>
+								<button type="button" data-action="click->collection#removeButton">Del</button>
+							</div>
+							{{ form_errors(driver) }}
+					{% endfor %}
+				</div>
+				{{ form_errors(form.drivers) }}
+			</div>
+			{#{% include 'macros/entityList.html.twig' with {'entityName':'drivers', 'entityDisplayName': 'driver', 'entities':form.drivers} %}#}
+		</div>
+	</div>
+	<div style="width:100%;clear:left;"></div>
 	<div id="hiddenDiv" style="display: none;">
 		{{ form_end(form) }}
 	</div>
-	
 {% endblock %}

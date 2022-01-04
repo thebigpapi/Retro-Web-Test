@@ -67,6 +67,11 @@ class Chipset
      */
     private $drivers;
 
+    /**
+     * @ORM\Column(type="string", length=4096, nullable=true)
+     */
+    private $description;
+
     public function __construct()
     {
         $this->motherboards = new ArrayCollection();
@@ -328,6 +333,18 @@ class Chipset
                 $driver->setChipset(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(?string $description): self
+    {
+        $this->description = $description;
 
         return $this;
     }

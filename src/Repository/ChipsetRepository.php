@@ -37,6 +37,32 @@ class ChipsetRepository extends ServiceEntityRepository
         return $query->getResult();
     }
 
+    /**
+     * @return Chipset[]
+     */
+    public function findAllAlphabetic(string $letter): array
+    {
+        $entityManager = $this->getEntityManager();
+        if (empty($letter)) {
+            $query = $entityManager->createQuery(
+                "SELECT chip
+                FROM App\Entity\Chipset chip, App\Entity\Manufacturer man 
+                WHERE chip.manufacturer=man IS NULL
+                ORDER BY man.name ASC, chip.name ASC"
+            );
+        } else {
+            $likematch = "$letter%";
+
+            $query = $entityManager->createQuery(
+                "SELECT chip
+                FROM App\Entity\Chipset chip, App\Entity\Manufacturer man 
+                WHERE chip.manufacturer=man AND COALESCE(man.shortName, man.name) like :likeMatch
+                ORDER BY man.name ASC, chip.name ASC"
+            )->setParameter('likeMatch', $likematch);
+        }
+
+        return $query->getResult();
+    }
 
     /**
      * @return Chipset[]
@@ -50,49 +76,12 @@ class ChipsetRepository extends ServiceEntityRepository
             ->getResult()
         ;
     }
-
-    /**
-     * @return Chipset[]
-     */
-    public function findAllMotherboardChipset(): array
+    
+    public function getCount(): int
     {
-        $entityManager = $this->getEntityManager();
-
-        $query = $entityManager->createQuery(
-            'SELECT DISTINCT chip
-            FROM App\Entity\Chipset chip, App\Entity\Motherboard mobo 
-            WHERE mobo.chipset=chip'
-        );
-
-        return $query->getResult();
-    }
-
-    // /**
-    //  * @return Chipset[] Returns an array of Chipset objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('c.id', 'ASC')
-            ->setMaxResults(10)
+        return $this->createQueryBuilder('m')
+            ->select('count(m.id)')
             ->getQuery()
-            ->getResult()
-        ;
+            ->getSingleScalarResult();
     }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?Chipset
-    {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }
