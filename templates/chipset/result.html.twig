@@ -6,80 +6,40 @@
 
 {% block body %}
 	<div class="title">
-		<b>{% trans %}Search results huh??{% endtrans %}</b>
+		<b>{% trans %}Search results{% endtrans %}</b>
 	</div>
-	<p>
-		<b class="contrib">{% trans %}Can't you find a motherboard? Click{% endtrans %}
-			<a href="{% if is_granted('ROLE_ADMIN') %}{{ path('new_motherboard_add') }}{% else %}https://discord.gg/HWWH7hsk2p{% endif %}">{% trans %}here{% endtrans %}</a>
-			{% trans %}to add it.{% endtrans %}</b>
-	</p>
 	<p style="text-align:center;padding-top:10px;">
-		<i>{{ 'chipset.num'|trans({'count':chipset_count}) }}</i>
+		<i>{{ chipset_count }} chipsets</i>
 	</p>
 	{% if chipsets is not empty %}
 		<div class="results">
 			{{ knp_pagination_render(chipsets) }}
 			{% if show_images %}
 				{% for chipset in chipsets %}
-					<span class="image-block">
-						<span>
-							{% if chipset.getImages() is not empty %}
-								{% for image in motherboard.getImages()|filter(a => a.motherboardImageType.id in [1, 2])|sort((a, b) => b.motherboardImageType <=> a.motherboardImageType)|slice(0, 1) %}
-									<a href="{{ vich_uploader_asset(image, 'imageFile')}}" class="glightbox">
-										<img src="{% if vich_uploader_asset(image, 'imageFile') | ext != "svg" %}
-										{{ vich_uploader_asset(image, 'imageFile') | imagine_filter('motherboard_show_thumb') }}{% else %}
-										{{ vich_uploader_asset(image, 'imageFile')}}{% endif %}" alt="" title="{% if image.description %}{{ image.description }}{% endif %}"></a>
-								{% endfor %}
-							{% else %}
-								<img src="{{ absolute_url(asset('build/images/motherboard/image-missing.webp')) }}" title="no images available :(">
-							{% endif %}
-							<span>
-								<a class="result-link" href="{{ path("motherboard_show", {id: motherboard.getId()}) }}">{{ motherboard.getManufacturerShortNameIfExist() }}&nbsp;{{ motherboard.name }}</a>
-							</span>
-							{% if motherboard.getMotherboardAliases() is not empty %}{% for alias in motherboard.getMotherboardAliases() %}
-								<span class="results-alias">
-									<small>&nbsp;
-
-										{% if alias.getManufacturer() is not null %}
-											{{ alias.getManufacturer().getShortNameIfExist() }}
-										{% else %}
-											Unknown
-										{% endif %}
-										{{ alias.name }}</small>
-								</span>
-							{% endfor %}{% endif %}</span>
-					</span>
+					<span class="image-block"><span>
+					{% for chipPart in chipset.getChipsetParts() %}
+        				{% if chipPart.getImages() is not empty and loop.first %}
+							{% for image in chipPart.getImages()|slice(0, 1) %}
+								<a href="{{ vich_uploader_asset(image, 'imageFile')}}" class="glightbox">
+									<img src="{% if vich_uploader_asset(image, 'imageFile') | ext != "svg" %}
+									{{ vich_uploader_asset(image, 'imageFile') | imagine_filter('motherboard_show_thumb') }}{% else %}
+									{{ vich_uploader_asset(image, 'imageFile')}}{% endif %}" alt="" title="{% if image.description %}{{ image.description }}{% endif %}"></a>
+							{% endfor %}
+						{% endif %}
+						{% if loop.first %}<span>
+							<a class="result-link" href="{{ path("chipset_show", {id: chipset.getId()}) }}"
+							>{{ chipset.getManufacturer().getName() }}&nbsp;{{ chipset.getPartNo() }}({{ chipset.getName() }})</a>
+						</span>{% endif %}
+					{% endfor %}
+					</span></span>
 				{% endfor %}
 			{% else %}
-				<ul>
-					{% for motherboard in motherboards %}
-						<li>
-							<a class="result-link" href="{{ path("motherboard_show", {id: motherboard.getId()}) }}">{{ motherboard.getManufacturerShortNameIfExist() }}&nbsp;{{ motherboard.name }}</a>
-							{% if motherboard.getMotherboardAliases() is not empty %}
-								<ul class="results-alias">
-									{% for alias in motherboard.getMotherboardAliases() %}
-										<li>
-											<small>
-												{% if alias.getManufacturer() is not null %}
-													{{ alias.getManufacturer().getShortNameIfExist() }}
-												{% else %}
-													Unknown
-												{% endif %}
-												{{ alias.name }}</small>
-										</li>
-									{% endfor %}
-								</ul>
-							{% endif %}
-
-						</li>
-						{#% if motherboard.getProcessorPlatformType() is not null %}
-							{{ motherboard.getProcessorPlatformType().getName() }}	
-						{% endif %#}
-					{% endfor %}
-				</ul>
-
+				<ul>{% for chipset in chipsets %}
+					<li><a class="result-link" href="{{ path("chipset_show", {id: chipset.getId()}) }}"
+					>{{ chipset.getManufacturer().getName() }}&nbsp;{{ chipset.getPartNo() }}({{ chipset.getName() }})</a></li>
+				{% endfor %}</ul>
 			{% endif %}
-			{{ knp_pagination_render(motherboards) }}
+			{{ knp_pagination_render(chipsets) }}
 		</div>
 	{% endif %}
 {% endblock %}

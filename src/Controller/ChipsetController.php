@@ -50,9 +50,9 @@ class ChipsetController extends AbstractController
             &&
             !array_key_exists('chipset', $criterias)
         ) {
-            $criterias['chipsetManufacturer'] = "$chipsetManufacturerId";
+            $criterias['manufacturer'] = "$chipsetManufacturerId";
         } elseif ($chipsetManufacturerId === "NULL" && !array_key_exists('chipset', $criterias)) {
-            $criterias['chipsetManufacturer'] = null;
+            $criterias['manufacturer'] = null;
         }
 
         $showImages = boolval(htmlentities($request->query->get('showImages')));

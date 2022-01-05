@@ -88,6 +88,7 @@ class Search extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
+            'moboManufacturers' => array(),
             'chipsetManufacturers' => array(),
         ]);
     }

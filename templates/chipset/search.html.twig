@@ -53,10 +53,14 @@
 		</section>
 		<section>
 			<div>
-				<label class="search-label" for="search_name" title="{% trans %}This is where you enter the board part number, do not write the manufacturer name here!{% endtrans %}"
+				<label class="search-label" for="search_chipsetManufacturer" title="{% trans %}This is where you select the manufacturer name.{% endtrans %}"
+				>{% trans %}Manufacturer{% endtrans %}&nbsp;<img src="{{ absolute_url(asset('build/icons/search/help.svg')) }}" alt="" width="16" height="16"></label>
+				<div class="search-widget">
+					{{ form_widget(form.chipsetManufacturer) }}
+				</div>
+				<label class="search-label" for="search_name" title="{% trans %}This is where you enter the chipset part number.{% endtrans %}"
 				>{% trans %}Name{% endtrans %}&nbsp;<img src="{{ absolute_url(asset('build/icons/search/help.svg')) }}" alt="" width="16" height="16"></label>
 				<div class="search-widget">
-					<div class="search-widget-short">{{ form_widget(form.chipsetManufacturer) }}</div>
 					<div class="search-widget-long">{{ form_widget(form.name, {'attr': {'aria-describedby': 'search_name_inst'}}) }}</div>
 				</div>
 			</div>
