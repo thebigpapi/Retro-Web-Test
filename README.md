@@ -1,13 +1,13 @@
 # Ultimate Retro 
 
-This repo contains all the necesary files to get the basic UH19 page up and running.
+This repo contains all the necesary files to get the basic UR.net page up and running.
 NOTE: This project is in the BETA stage. If something doesn't work right, it's expected behaviour :)
 
-Now, onto getting UH19 running on a machine. So far, it's been tested and used in Debian (for both ARM and x86-64 platforms). It may work in other software/hardware configurations, but it's not guaranteed.
+Now, onto getting UR.net running on a machine. So far, it's been tested and used in Debian (for both ARM and x86-64 platforms). It may work in other software/hardware configurations, but it's not guaranteed.
 
 There are 6 requirements to get the project running:
 1. A linux distro
-2. PHP 7.4
+2. PHP 8.0
 3. Symfony (with CLI and Composer)
 4. PostgreSQL
 5. UFW
@@ -43,7 +43,7 @@ sudo mv composer.phar /usr/local/bin/composer
 php -r "unlink('composer-setup.php');"
 ```
 # PostgreSQL install
-Make sure you have a backup of the database ready for use by running this command on a server with UH19 already deployed on it, where [database name] is the name of the existing database, and [path/to/file.sql] is the path + filename where you want to save the backup (also make sure you save this file in a folder with enough permissions, otherwise it will complain): 
+Make sure you have a backup of the database ready for use by running this command on a server with UR.net already deployed on it, where [database name] is the name of the existing database, and [path/to/file.sql] is the path + filename where you want to save the backup (also make sure you save this file in a folder with enough permissions, otherwise it will complain): 
 `pg_dump [database name] > [/path/to/file.sql]`
 
 Now, back to the new machine, run these, where [username] is the username for the new database, [new database name] is the new database's name, and [password] is the password used in conjuction with the [username] for the new database:
@@ -56,7 +56,7 @@ psql
 
 At this point, you are in psql, with a different prompt
 ```
-CREATE DATABASE uh19db2;
+CREATE DATABASE urdb2;
 ALTER USER [username] WITH ENCRYPTED PASSWORD '[password]';
 GRANT ALL PRIVILEGES ON DATABASE "[new database name]" to [username];
 \q
@@ -75,15 +75,15 @@ sudo ufw enable
 ```
 
 # Git install
-Finally, install git with these commands, where [name] and [email] are the ones from your git account, and [branch] is one of the branches from UH19's git repo:
+Finally, install git with these commands, where [name] and [email] are the ones from your git account, and [branch] is one of the branches from UR.net's git repo:
 ### Never modify origin/master, unless you know what you're doing!!!
 ```
 sudo apt install git
 git config --global user.name [name]
 git config --global user.email [email]
 cd /var/www
-git clone https://github.com/Deksor/uh19.git
-cd uh19
+git clone https://gitlab.com/deksor/ultimateretro.git
+cd ultimateretro
 git checkout [branch]
 ```
 ## A few recommended steps:
@@ -91,16 +91,16 @@ git checkout [branch]
 
 Run these commands to have writing permissions to the local project files:
 ```
-[make sure you're inside the /uh19 dir]
+[make sure you're inside the /ultimateretro dir]
 git config core.filemode false
 cd ..
-sudo chmod -R 777 uh19
-cd uh19
+sudo chmod -R 777 ultimateretro
+cd ultimateretro
 ```
 A few directories will need write permissions in order for the site to run properly, such 
-as /uh19/var/ and /uh19/public.
+as /ultimateretro/var/ and /ultimateretro/public.
 
-Run this command (inside /uh19 dir) if you want git to remember your credentials:
+Run this command (inside /ultimateretro dir) if you want git to remember your credentials:
 `git config --global credential.helper store`
 
 Finally, add an environement file at the root (name: .env) with your own values for APP_ENV, APP_SECRET and DATABASEURL:
@@ -110,4 +110,4 @@ APP_SECRET=[insert_here_the_value_you_want]
 DATABASEURL=pgsql://[user]:[password]@[localhost]:[port]/[database]
 ```
 
-Now, the project is ready to run, type `symfony serve -d --document-root=./` inside the /uh19 dir.
+Now, the project is ready to run, type `symfony serve -d --document-root=./` inside the /ultimateretro dir.
