@@ -17,11 +17,17 @@
 		{% endblock %}
 		{% block stylesheets %}
 		{% if is_granted('ROLE_USER') %}
-			{{ encore_entry_link_tags('admin_app') }}
+			{{ encore_entry_link_tags('admin_app', attributes={
+    media: "print",
+	onload: "this.media='all'"
+}) }}
 		{% endif %}
-			{{ encore_entry_link_tags('app') }}
+			{{ encore_entry_link_tags('app', attributes={
+    media: "print",
+	onload: "this.media='all'"
+}) }}
+			<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/glightbox/dist/css/glightbox.min.css" media="print" onload="this.media='all'">
 		{% endblock %}
-			<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/glightbox/dist/css/glightbox.min.css" >
 		{% block javascripts %}
 			{{ encore_entry_script_tags('app') }}
 		{% endblock %}
