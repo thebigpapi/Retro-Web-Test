@@ -18,7 +18,7 @@ class SiteMapController extends AbstractController
     {
         $hostname = $request->getSchemeAndHttpHost();
 
-        $urls = $cache->get("sitemapUrls", function () use ($motherboardRepository) {
+        $urls = $cache->get("sitemapUrls" . $request->getLocale(), function () use ($motherboardRepository) {
             // Url array
             $urls = [];
 
