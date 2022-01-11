@@ -16,7 +16,7 @@
 		</td>
 		<td>
 			{% for relation in file.getMediaTypeFlags() %}
-				<b>{{relation.getCount()}}x</b>
+				<b style="vertical-align:super;">{{relation.getCount()}}x</b>
 				<img src="{{ vich_uploader_asset(relation.getMediaTypeFlag(), 'icon')}}" alt="{{relation.getMediaTypeFlag().getName()}}" title="{{relation.getMediaTypeFlag().getName()}}" width="32">
 			{% endfor %}
 		</td>
