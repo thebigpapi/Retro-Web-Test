@@ -81,7 +81,7 @@
 				<a href="{{ vich_uploader_asset(image, 'imageFile')}}" class="glightbox" data-description="{% if image.description %}Notes: {{ image.description }}{% endif %}">
 					<img src="{% if vich_uploader_asset(image, 'imageFile') | ext != "svg" %}
 					{{ vich_uploader_asset(image, 'imageFile') | imagine_filter('motherboard_show_thumb') }}{% else %}
-					{{ vich_uploader_asset(image, 'imageFile')}}{% endif %}" alt="" title="{% if image.description %}{{ image.description }}{% endif %}" alt="">
+					{{ vich_uploader_asset(image, 'imageFile')}}{% endif %}" alt="" title="{% if image.description %}{{ image.description }}{% endif %}">
 				</a>
 			{% if image.creditor %}
 				<span class="creditor">
@@ -98,7 +98,7 @@
 	{% endfor %}
 {% else %}
 	<div class="show-image">
-		<img src={{ absolute_url(asset('build/images/motherboard/image-missing.webp')) }} title="no images available :(">
+		<img src={{ absolute_url(asset('build/images/motherboard/image-missing.webp')) }} title="no images available :(" style="width:100%;">
 	</div>
 {% endif %}
 </div>
