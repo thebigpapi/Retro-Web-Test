@@ -60,10 +60,9 @@ class ChipsetController extends AbstractController
         if ($criterias == array()) {
             return $this->redirectToRoute('chipset_search');
         }
-
-        //dd($criterias);
+        
         try {
-            $data = $chipsetRepository->findBy($criterias);
+            $data = $chipsetRepository->findByChipset($criterias);
         } catch (Exception $e) {
             return $this->redirectToRoute('chipset_search');
         }
