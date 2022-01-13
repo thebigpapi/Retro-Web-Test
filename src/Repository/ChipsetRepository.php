@@ -42,43 +42,36 @@ class ChipsetRepository extends ServiceEntityRepository
     public function findByChipset(array $criteria): array
     {
         $entityManager = $this->getEntityManager();
-        $arrays = array();
-        $values = array();
-        $name = NULL;
-        $manufacturer = NULL;
-        $this->separateArraysFromValues($criteria, $arrays, $values);
-        if (array_key_exists('name', $values)) {
-            $name = strtolower($values['name']);
-            unset($values['name']);
+
+        $whereArray = array("chip.manufacturer = man");
+        $valuesArray = array();
+
+        // Checking values in criteria and creating WHERE statements
+        if (array_key_exists('name', $criteria)) {
+            $whereArray[] = "(LOWER(chip.name) LIKE :nameLike OR LOWER(chip.part_no) LIKE :nameLike)";
+            $valuesArray["nameLike"] = "%" . strtolower($criteria['name']) . "%";
         }
-        if (array_key_exists('manufacturer', $values)) {
-            $manufacturer = $values['manufacturer'];
-            unset($values['manufacturer']);
+        if (array_key_exists('manufacturer', $criteria)) {
+            $whereArray[] = "(man.id = :manufacturerId)";
+            $valuesArray["manufacturerId"] = (int)$criteria['manufacturer'];
         }
-        if($name == NULL){
-            $query = $entityManager->createQuery(
-                "SELECT chip
-                FROM App\Entity\Chipset chip, App\Entity\Manufacturer man 
-                WHERE chip.manufacturer=man AND man.id = :likeMatch
-                ORDER BY man.name ASC, chip.name ASC"
-            )->setParameter('likeMatch', $manufacturer);
+
+        // Building where statement
+        $whereString = implode(" AND ", $whereArray);
+
+        // Building query
+        $query = $entityManager->createQuery(
+            "SELECT chip
+            FROM App\Entity\Chipset chip, App\Entity\Manufacturer man 
+            WHERE $whereString
+            ORDER BY man.name ASC, chip.name ASC"
+        );
+
+        // Setting values
+        foreach ($valuesArray as $key => $value) {
+            $query->setParameter($key, $value);
         }
-        else if($manufacturer == NULL){
-            $query = $entityManager->createQuery(
-                'SELECT chip
-                FROM App\Entity\Chipset chip, App\Entity\Manufacturer man  
-                WHERE LOWER(chip.name) LIKE :likeMatch OR LOWER(chip.part_no) LIKE :likeMatch
-                ORDER BY man.name ASC, chip.part_no ASC, chip.name ASC'
-            )->setParameter('likeMatch', "%$name%");
-        }
-        else {
-            $query = $entityManager->createQuery(
-                'SELECT chip
-                FROM App\Entity\Chipset chip, App\Entity\Manufacturer man  
-                WHERE (chip.manufacturer=man AND man.id = :likeMatch1) AND (LOWER(chip.name) LIKE :likeMatch2 OR LOWER(chip.part_no) LIKE :likeMatch2)
-                ORDER BY man.name ASC, chip.part_no ASC, chip.name ASC'
-            )->setParameter('likeMatch1', "$manufacturer")->setParameter('likeMatch2', "%$name%");
-        }
+
         return $query->getResult();
     }
     /**
@@ -126,15 +119,5 @@ class ChipsetRepository extends ServiceEntityRepository
             ->select('count(m.id)')
             ->getQuery()
             ->getSingleScalarResult();
-    }
-    private function separateArraysFromValues(array $source, array &$arrays, array &$values): void
-    {
-        foreach ($source as $key => $val) {
-            if (is_array($val)) {
-                $arrays[$key] = json_decode(json_encode($val), true);
-            } else {
-                $values[$key] = $val;
-            }
-        }
     }
 }
