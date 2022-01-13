@@ -88,7 +88,6 @@ class ChipsetRepository extends ServiceEntityRepository
     {
         $entityManager = $this->getEntityManager();
         if (empty($letter)) {
-            dd($letter);
             $query = $entityManager->createQuery(
                 "SELECT chip
                 FROM App\Entity\Chipset chip, App\Entity\Manufacturer man 
@@ -97,7 +96,6 @@ class ChipsetRepository extends ServiceEntityRepository
             );
         } else {
             $likematch = "$letter%";
-            dd($likematch);
             $query = $entityManager->createQuery(
                 "SELECT chip
                 FROM App\Entity\Chipset chip, App\Entity\Manufacturer man 

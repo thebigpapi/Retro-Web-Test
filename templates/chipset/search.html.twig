@@ -25,7 +25,7 @@
 	{% trans %}List chipsets whose manufacturer name starts with:{% endtrans %}<br>
 </div>
 <ul class="index-list">
-	{% for letter in ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','?']%}
+	{% for letter in ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z']%}
 		<li><a href="{{path("chipsetindex", {"letter":letter})}}">{{letter}}</a></li>
 	{% endfor %}
 </ul>

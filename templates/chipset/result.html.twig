@@ -28,7 +28,9 @@
 						{% endif %}
 						{% if loop.first %}<span>
 							<a class="result-link" href="{{ path("chipset_show", {id: chipset.getId()}) }}"
-							>{{ chipset.getManufacturer().getName() }}&nbsp;{{ chipset.getPartNo() }}({{ chipset.getName() }})</a>
+							>{{ chipset.getManufacturer().getShortNameIfExist()}}<!--
+  							-->{% if chipset.getPartNo() is not null %}&nbsp;{{ chipset.getPartNo() }}{% endif %}<!--
+  							-->{% if chipset.getName() is not null %}&nbsp;({{ chipset.getName() }}){% endif %}</a>
 						</span>{% endif %}
 					{% endfor %}
 					</span></span>
@@ -36,7 +38,9 @@
 			{% else %}
 				<ul>{% for chipset in chipsets %}
 					<li><a class="result-link" href="{{ path("chipset_show", {id: chipset.getId()}) }}"
-					>{{ chipset.getManufacturer().getName() }}&nbsp;{{ chipset.getPartNo() }}({{ chipset.getName() }})</a></li>
+					>{{ chipset.getManufacturer().getShortNameIfExist()}}<!--
+  					-->{% if chipset.getPartNo() is not null %}&nbsp;{{ chipset.getPartNo() }}{% endif %}<!--
+  					-->{% if chipset.getName() is not null %}&nbsp;({{ chipset.getName() }}){% endif %}</a></li>
 				{% endfor %}</ul>
 			{% endif %}
 			{{ knp_pagination_render(chipsets) }}

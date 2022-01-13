@@ -60,7 +60,7 @@ class ChipsetController extends AbstractController
         if ($criterias == array()) {
             return $this->redirectToRoute('chipset_search');
         }
-        
+
         try {
             $data = $chipsetRepository->findByChipset($criterias);
         } catch (Exception $e) {
@@ -154,6 +154,7 @@ class ChipsetController extends AbstractController
 
         return $this->render('chipset/index.html.twig', [
             'chipsets' => $chipsets,
+            'chipset_count' => count($data),
         ]);
     }
 }

@@ -6,25 +6,21 @@
 
 {% block body %}
 	<div class="title"><b>{% trans %}Index{% endtrans %}</b></div>
-	<p>
-		<b class="contrib">{% trans %}Can't you find a motherboard? Click{% endtrans %}
-			<a href="{% if is_granted('ROLE_ADMIN') %}{{ path('new_motherboard_add') }}{% else %}https://discord.gg/HWWH7hsk2p{% endif %}">{% trans %}here{% endtrans %}</a>
-			{% trans %}to add it.{% endtrans %}</b>
+	<p style="text-align:center;padding-top:10px;">
+		<i>{{ chipset_count }} chipsets</i>
 	</p>
 	{% if chipsets is not empty %}
 		{{ knp_pagination_render(chipsets) }}
 		<ul>
 			{% for chipset in chipsets %}
 				<li>
-					<a href='{{ path("chipset_show", {id: chipset.getId()}) }}'>{{ chipset.getManufacturer().getShortNameIfExist()}}
-						{{chipset.name}}</a>
+					<a href='{{ path("chipset_show", {id: chipset.getId()}) }}'
+					>{{ chipset.getManufacturer().getShortNameIfExist()}}<!--
+  					-->{% if chipset.getPartNo() is not null %}&nbsp;{{ chipset.getPartNo() }}{% endif %}<!--
+  					-->{% if chipset.getName() is not null %}&nbsp;({{ chipset.getName() }}){% endif %}</a>
 				</li>
 			{% endfor %}
 		</ul>
 		{{ knp_pagination_render(chipsets) }}
-	{% else %}
-		<p style="text-align:center;padding-top:10px;">
-			<i>{{ 'chipset.num'|trans({'count':0}) }}</i>
-		</p>
 	{% endif %}
 {% endblock %}
