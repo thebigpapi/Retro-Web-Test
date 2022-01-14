@@ -6,6 +6,7 @@ use App\Entity\Manufacturer;
 use App\Form\Chipset\Search;
 use App\Repository\ChipsetRepository;
 use App\Repository\ManufacturerRepository;
+use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;

@@ -43,7 +43,7 @@ class ChipsetRepository extends ServiceEntityRepository
     {
         $entityManager = $this->getEntityManager();
 
-        $whereArray = array("chip.manufacturer = man");
+        $whereArray = array();
         $valuesArray = array();
 
         // Checking values in criteria and creating WHERE statements
@@ -62,9 +62,9 @@ class ChipsetRepository extends ServiceEntityRepository
         // Building query
         $query = $entityManager->createQuery(
             "SELECT chip
-            FROM App\Entity\Chipset chip, App\Entity\Manufacturer man 
+            FROM App\Entity\Chipset chip JOIN chip.manufacturer man
             WHERE $whereString
-            ORDER BY man.name ASC, chip.name ASC"
+            ORDER BY man.name ASC, chip.part_no ASC, chip.name ASC"
         );
 
         // Setting values
