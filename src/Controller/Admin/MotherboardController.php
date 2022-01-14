@@ -17,6 +17,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use App\Repository\ChipsetRepository;
+use App\Repository\MotherboardRepository;
 
 class MotherboardController extends AbstractController
 {
@@ -65,13 +66,11 @@ class MotherboardController extends AbstractController
      *    requirements={"id"="\d+"})
      * @param Request $request
      */
-    public function motherboardEdit(Request $request, int $id)
+    public function motherboardEdit(Request $request, MotherboardRepository $motherboardRepository, int $id)
     {
         return $this->renderMotherboardForm(
             $request,
-            $this->getDoctrine()
-                ->getRepository(Motherboard::class)
-                ->find($id)
+            $motherboardRepository->find($id)
         );
     }
 
