@@ -10,35 +10,35 @@ use Vich\UploaderBundle\Entity\File as EmbeddedFile;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\ManualRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\ChipsetDocumentationRepository")
  * @Vich\Uploadable
  */
-class Manual
+class ChipsetDocumentation
 {
     use DocumentationTrait;
     /**
      * NOTE: This is not a mapped field of entity metadata, just a simple property.
      * 
-     * @Vich\UploadableField(mapping="manual", fileNameProperty="file_name")
+     * @Vich\UploadableField(mapping="chipsetDoc", fileNameProperty="file_name")
      * 
      * @var File|null
      */
     private $manualFile;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Motherboard", inversedBy="manuals")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Chipset", inversedBy="manuals")
      */
-    private $motherboard;
+    private $chipset;
 
 
-    public function getMotherboard(): ?Motherboard
+    public function getChipset(): ?Chipset
     {
-        return $this->motherboard;
+        return $this->chipset;
     }
 
-    public function setMotherboard(?Motherboard $motherboard): self
+    public function setChipset(?Chipset $chipset): self
     {
-        $this->motherboard = $motherboard;
+        $this->chipset = $chipset;
 
         return $this;
     }
