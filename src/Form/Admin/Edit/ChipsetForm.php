@@ -15,6 +15,7 @@ use App\Entity\Manufacturer;
 use App\Form\Type\ChipsetBiosCodeType;
 use App\Form\Type\ChipsetPartType;
 use App\Form\Type\LargeFileChipsetType;
+use App\Form\Type\ChipsetDocumentationType;
 
 class ChipsetForm extends AbstractType
 {
@@ -55,6 +56,11 @@ class ChipsetForm extends AbstractType
             ])
             ->add('drivers', CollectionType::class, [
                 'entry_type' => LargeFileChipsetType::class,
+                'allow_add' => true,
+                'allow_delete' => true,
+            ])
+            ->add('manuals', CollectionType::class, [
+                'entry_type' => ChipsetDocumentationType::class,
                 'allow_add' => true,
                 'allow_delete' => true,
             ])

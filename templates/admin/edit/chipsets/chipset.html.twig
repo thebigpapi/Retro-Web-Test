@@ -105,6 +105,46 @@
 			</div>
 			{#{% include 'macros/entityList.html.twig' with {'entityName':'drivers', 'entityDisplayName': 'driver', 'entities':form.drivers} %}#}
 		</div>
+		<div data-controller="collection">
+			<div style="padding-top:5px;">
+				<img src="{{ absolute_url(asset('build/icons/show/manual.svg')) }}" alt="" width="32" style="vertical-align: middle;padding-bottom: 10px;">
+				<b>Manuals:</b>
+				<button type="button" data-action="click->collection#expandButton" data-list-id="manuals-fields-list">Add</button>
+			</div>
+			<div class="bios-image">
+				<div class="bios-image-head">
+					<div class="ba1"><b>Title</b></div>
+					<div class="ba2"><b>Language</b></div>
+					<div class="ba4"><b>File to upload</b></div>
+					<div class="ba5"><b>Uploaded file</b></div>
+				</div>
+				<div id="manuals-fields-list" data-widget-counter="{{ form.manuals|length }}" data-prototype="
+					<div class=ba1>{{ form_widget(form.manuals.vars.prototype.link_name, {'attr': {'style': 'width:100%'}} )|e }}</div>
+					<div class=ba2>{{ form_widget(form.manuals.vars.prototype.language, {'attr': {'style': 'width:100%'}} )|e }}</div>
+					<div class=ba4>{{ form_widget(form.manuals.vars.prototype.manualFile, {'attr': {'style': 'width:100%'}} )|e }}</div>
+					<div class=ba5>{{ form_widget(form.manuals.vars.prototype.file_name, {'attr': {'style': 'width:100%'}} )|e }}</div>
+					<div class=ba3 id=downloads-id><button type=button data-action='click->collection#removeButtonXtd'>Del</button></div>">
+				{% for manual in form.manuals %}
+					<div style="width:100%">
+						<div class="ba1">{{ form_widget(manual.link_name, {'attr': {'style': 'width:100%'}}
+							) }}</div>
+						<div class="ba2">{{ form_widget(manual.language, {'attr': {'style': 'width:100%'}}
+							) }}</div>
+						<div class="ba4">{{ form_widget(manual.manualFile, {'attr': {'style': 'width:100%'}}
+							) }}</div>
+						<div class="ba5">{{ form_widget(manual.file_name, {'attr': {'style': 'width:100%'}}
+							) }}</div>
+						<div class="ba3" id="downloads-id">
+							<button type="button" data-action="click->collection#removeButtonXtd">Del</button>
+						</div>
+						{{ form_errors(manual) }}
+					</div>
+				{% endfor %}
+				{{ form_errors(form.manuals) }}
+				</div>
+			</div>
+			{{ form_errors(form.manuals) }}
+		</div>
 	</div>
 	<div style="width:100%;clear:left;"></div>
 	<div id="hiddenDiv" style="display: none;">

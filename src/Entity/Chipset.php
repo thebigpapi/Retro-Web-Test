@@ -72,6 +72,11 @@ class Chipset
      */
     private $description;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\ChipsetDocumentation", mappedBy="chipset", orphanRemoval=true, cascade={"persist"})
+     */
+    private $manuals;
+
     public function __construct()
     {
         $this->motherboards = new ArrayCollection();
@@ -345,6 +350,36 @@ class Chipset
     public function setDescription(?string $description): self
     {
         $this->description = $description;
+
+        return $this;
+    }
+    /**
+     * @return Collection|ChipsetDocumentation[]
+     */
+    public function getManuals(): Collection
+    {
+        return $this->manuals;
+    }
+
+    public function addManual(ChipsetDocumentation $manual): self
+    {
+        if (!$this->manuals->contains($manual)) {
+            $this->manuals[] = $manual;
+            $manual->setChipset($this);
+        }
+
+        return $this;
+    }
+
+    public function removeManual(ChipsetDocumentation $manual): self
+    {
+        if ($this->manuals->contains($manual)) {
+            $this->manuals->removeElement($manual);
+            // set the owning side to null (unless already changed)
+            if ($manual->getChipset() === $this) {
+                $manual->setChipset(null);
+            }
+        }
 
         return $this;
     }
