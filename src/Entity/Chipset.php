@@ -75,7 +75,7 @@ class Chipset
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\ChipsetDocumentation", mappedBy="chipset", orphanRemoval=true, cascade={"persist"})
      */
-    private $manuals;
+    private $documentations;
 
     public function __construct()
     {
@@ -83,6 +83,7 @@ class Chipset
         $this->chipsetParts = new ArrayCollection();
         $this->biosCodes = new ArrayCollection();
         $this->drivers = new ArrayCollection();
+        $this->documentations = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -356,28 +357,28 @@ class Chipset
     /**
      * @return Collection|ChipsetDocumentation[]
      */
-    public function getManuals(): Collection
+    public function getDocumentations(): Collection
     {
-        return $this->manuals;
+        return $this->documentations;
     }
 
-    public function addManual(ChipsetDocumentation $manual): self
+    public function addManual(ChipsetDocumentation $documentation): self
     {
-        if (!$this->manuals->contains($manual)) {
-            $this->manuals[] = $manual;
-            $manual->setChipset($this);
+        if (!$this->documentations->contains($documentation)) {
+            $this->documentations[] = $documentation;
+            $documentation->setChipset($this);
         }
 
         return $this;
     }
 
-    public function removeManual(ChipsetDocumentation $manual): self
+    public function removeManual(ChipsetDocumentation $documentation): self
     {
-        if ($this->manuals->contains($manual)) {
-            $this->manuals->removeElement($manual);
+        if ($this->documentations->contains($documentation)) {
+            $this->documentations->removeElement($documentation);
             // set the owning side to null (unless already changed)
-            if ($manual->getChipset() === $this) {
-                $manual->setChipset(null);
+            if ($documentation->getChipset() === $this) {
+                $documentation->setChipset(null);
             }
         }
 

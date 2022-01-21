@@ -107,22 +107,22 @@
 	</div>
     <div class="scroll-div">
 		<img src="{{ absolute_url(asset('build/icons/show/manual.svg')) }}" alt="" width="32" style="vertical-align: middle;padding-bottom: 10px;">
-		<span><b>{% trans %}Manuals:{% endtrans %} </b></span>
-		{% if chipset.getManuals() is not empty %}
-		<span>{{ chipset.getManuals.count() }}{% if chipset.getManuals.count() == 1 %} entry{% else %} entries{% endif %}</span>
+		<span><b>{% trans %}Documentations:{% endtrans %} </b></span>
+		{% if chipset.getDocumentations() is not empty %}
+		<span>{{ chipset.getDocumentations.count() }}{% if chipset.getDocumentations.count() == 1 %} entry{% else %} entries{% endif %}</span>
 		<table class="stbl">
 			<tr>
 				<td>
 					
 				</td>
 				<td>
-					<ul style="list-style-type: none;">{% for manual in chipset.getManuals()|sort((a, b) => a.getLinkName <=> b.getLinkName) %}
+					<ul style="list-style-type: none;">{% for documentation in chipset.getDocumentations()|sort((a, b) => a.getLinkName <=> b.getLinkName) %}
 						<li>
-							<a href="{{ vich_uploader_asset(manual, 'manualFile') }}">
+							<a href="{{ vich_uploader_asset(documentation, 'manualFile') }}">
 								<img src="{{ absolute_url(asset('build/icons/dw.svg')) }}" alt="" width="16" height="16" style="vertical-align: middle;">
-								{{ manual.getLinkName() }}
+								{{ documentation.getLinkName() }}
 							</a>
-							({{ manual.getLanguage().getName()}})
+							({{ documentation.getLanguage().getName()}})
 						</li>
 					{% endfor %}</ul>
 				</td>

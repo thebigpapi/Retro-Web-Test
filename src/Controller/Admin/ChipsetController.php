@@ -254,6 +254,9 @@ class ChipsetController extends AbstractController
             foreach ($form['drivers']->getData() as $key => $val) {
                 $val->setChipset($chipset);
             }
+            foreach ($form['documentations']->getData() as $key => $val) {
+                $val->setChipset($chipset);
+            }
 
             $entityManager->persist($chipset);
             $entityManager->flush();

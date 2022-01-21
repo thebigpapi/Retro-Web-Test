@@ -59,7 +59,7 @@ class ChipsetForm extends AbstractType
                 'allow_add' => true,
                 'allow_delete' => true,
             ])
-            ->add('manuals', CollectionType::class, [
+            ->add('documentations', CollectionType::class, [
                 'entry_type' => ChipsetDocumentationType::class,
                 'allow_add' => true,
                 'allow_delete' => true,
