@@ -12,7 +12,7 @@
 			{% trans %}to add it.{% endtrans %}</b>
 	</p>
 	{% if motherboards is not empty %}
-		{{ knp_pagination_render(motherboards) }}
+		{{ knp_pagination_render(motherboards, 'macros/pagination.html.twig') }}
 		<ul>
 			{% for motherboard in motherboards %}
 				<li>
@@ -21,7 +21,7 @@
 				</li>
 			{% endfor %}
 		</ul>
-		{{ knp_pagination_render(motherboards) }}
+		{{ knp_pagination_render(motherboards, 'macros/pagination.html.twig') }}
 	{% else %}
 		<p style="text-align:center;padding-top:10px;">
 			<i>{{ 'motherboard.num'|trans({'count':0}) }}</i>

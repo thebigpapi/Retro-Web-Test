@@ -43,7 +43,46 @@ li.slot-port-item input {
 	height: 1.25em !important;
 	width: 1.25em;
 }
-
+div.pagination{
+	padding-bottom:5px;
+	display: table;
+  	margin: 0 auto;
+	-moz-user-select: -moz-none;
+	-khtml-user-select: none;
+	-webkit-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	span{
+		border: solid 1px #d7d7d7;
+		border-radius: 0.2rem;
+		color:$dark-color;
+		box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.3);
+		display:inline-block;
+		text-align: center;
+		margin-left:5px;
+		a{
+			color:$dark-color;
+			line-height:2rem;
+			display: block;
+			width: 2.6rem;
+			height: 2.3rem;
+		}
+	}
+	span:hover{ 
+		background-color:$link-hover-color;
+	}
+	span.current{ 
+		background-color:$link-hover-color;
+		line-height:2rem;
+		width: 2.6rem;
+		height: 2.3rem;
+	}
+	span.first, span.previous, span.next, span.last {
+		width: 3.2rem;
+		a{ width: 3.2rem; }
+	} 
+}
+	
 @media (max-width: 600px) {
 	#search-table tr.sep { display: none; }
 	#search-table td { display:block;text-align:left;padding:0 0 4px 4%; }	
@@ -96,6 +135,21 @@ li.slot-port-item input {
 @media (prefers-color-scheme: dark) {
     div.search-widget select, div.search-widget-short select, div.search-widget-long input, li.slot-port-item input, div.search-widget input {
 		background-color:#424242;color:#ececec;
+	}
+	div.pagination{
+		span{
+			border: solid 1px #d7d7d7;
+			box-shadow: 0 4px 6px 0 rgba(255, 255, 255, 0);
+			a{
+				color:$light-color;
+			}
+		}
+		span:hover{ 
+			color:$dark-color;
+			a{
+				color:$dark-color;
+			}
+		}
 	}
 	ul.index-list li a:hover { color:$link-hover-color; }
 	div.butn input {background-color:$btn-darkbg-color;color:$light-color;}

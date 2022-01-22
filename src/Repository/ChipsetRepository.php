@@ -64,7 +64,7 @@ class ChipsetRepository extends ServiceEntityRepository
             "SELECT chip
             FROM App\Entity\Chipset chip JOIN chip.manufacturer man
             WHERE $whereString
-            ORDER BY man.name ASC, chip.part_no ASC, chip.name ASC"
+            ORDER BY man.name ASC, chip.release_date ASC, chip.name ASC"
         );
 
         // Setting values

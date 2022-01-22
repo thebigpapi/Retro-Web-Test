@@ -1,5 +1,4 @@
 {% extends 'base.html.twig' %}
-
 {% block title %}
 	{% trans %}Search results{% endtrans %}
 {% endblock %}
@@ -13,7 +12,7 @@
 	</p>
 	{% if chipsets is not empty %}
 		<div class="results">
-			{{ knp_pagination_render(chipsets) }}
+			{{ knp_pagination_render(chipsets, 'macros/pagination.html.twig') }}
 			{% if show_images %}
 				{% for chipset in chipsets %}
 					<span class="image-block"><span>
@@ -31,6 +30,10 @@
 							>{{ chipset.getManufacturer().getShortNameIfExist()}}<!--
   							-->{% if chipset.getPartNo() is not null %}&nbsp;{{ chipset.getPartNo() }}{% endif %}<!--
   							-->{% if chipset.getName() is not null %}&nbsp;({{ chipset.getName() }}){% endif %}</a>
+							<a class="result-link" href="{{ path("chipset_show", {id: chipset.getId()}) }}"
+							>{% if chipset.getManufacturer() is not null %}{{ chipset.getManufacturer().getShortNameIfExist() }}{% else %}Unknown{% endif %}<!--
+							-->&nbsp;{{ chipset.getPartNo() }}<!--
+							-->{% if chipset.getName() is not null %}{% if chipset.getPartNo() is not null %}({{ chipset.getName() }}){% else %}{{ chipset.getName() }}{% endif %}{% endif %}</a>
 						</span>{% endif %}
 					{% endfor %}
 					</span></span>
@@ -38,12 +41,12 @@
 			{% else %}
 				<ul>{% for chipset in chipsets %}
 					<li><a class="result-link" href="{{ path("chipset_show", {id: chipset.getId()}) }}"
-					>{{ chipset.getManufacturer().getShortNameIfExist()}}<!--
-  					-->{% if chipset.getPartNo() is not null %}&nbsp;{{ chipset.getPartNo() }}{% endif %}<!--
-  					-->{% if chipset.getName() is not null %}&nbsp;({{ chipset.getName() }}){% endif %}</a></li>
+					>{% if chipset.getManufacturer() is not null %}{{ chipset.getManufacturer().getShortNameIfExist() }}{% else %}Unknown{% endif %}<!--
+					-->&nbsp;{{ chipset.getPartNo() }}<!--
+					-->&nbsp;{% if chipset.getName() is not null %}{% if chipset.getPartNo() is not null %}({{ chipset.getName() }}){% else %}{{ chipset.getName() }}{% endif %}{% endif %}</a></li>
 				{% endfor %}</ul>
 			{% endif %}
-			{{ knp_pagination_render(chipsets) }}
+			{{ knp_pagination_render(chipsets, 'macros/pagination.html.twig') }}
 		</div>
 	{% endif %}
 {% endblock %}

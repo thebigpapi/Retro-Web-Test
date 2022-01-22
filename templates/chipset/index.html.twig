@@ -10,7 +10,7 @@
 		<i>{{ chipset_count }} chipsets</i>
 	</p>
 	{% if chipsets is not empty %}
-		{{ knp_pagination_render(chipsets) }}
+		{{ knp_pagination_render(chipsets, 'macros/pagination.html.twig') }}
 		<ul>
 			{% for chipset in chipsets %}
 				<li>
@@ -21,6 +21,6 @@
 				</li>
 			{% endfor %}
 		</ul>
-		{{ knp_pagination_render(chipsets) }}
+		{{ knp_pagination_render(chipsets, 'macros/pagination.html.twig') }}
 	{% endif %}
 {% endblock %}

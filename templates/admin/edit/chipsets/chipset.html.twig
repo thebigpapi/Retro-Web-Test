@@ -4,16 +4,11 @@
 
 {% block body %}
 <form data-controller="chipset--add" name="chipset_form" method="post" enctype="multipart/form-data" data-action="{#submit->chipset--add#check#}">
-	<table class="add-title">
-		<tr>
-			<td class="title-small"><b>Manufacturer</b></td>
-			<td class="title-small"><b>Part Number</b></td>
-			<td class="title-small"><b>Name</b></td>
-		</tr>
+	<table class="add-title" style="padding:30px;">
 		<tr>
 			<td class="title-small">{{ form_widget(form.manufacturer) }}</td>
-			<td class="title-small">{{ form_widget(form.part_no) }}</td>
-			<td class="title-small">{{ form_widget(form.name) }}</td>
+			<td class="title-small">{{ form_widget(form.part_no, {'attr': {'placeholder': 'Part Number ...'}}) }}</td>
+			<td class="title-small">{{ form_widget(form.name, {'attr': {'placeholder': 'Name ...'}}) }}</td>
 		</tr>
 	</table>
 	<div class="show-images" style="min-height:200px;" data-controller="collection">
@@ -71,9 +66,9 @@
 	</div>
 	<input type="submit" style="display:none;" id="chipset_form_save" name="chipset_form[save]" value="Save chipset">
 	<div class="show-general" id="sh-general">
-		<div style="display:inline-block;">{% trans %}Release date:{% endtrans %}&nbsp;{{form_widget(form.release_date)}}</div>
-		<div style="display:inline-block;">{% trans %}Encyclopedia link:{% endtrans %}&nbsp;{{form_widget(form.encyclopedia_link)}}</div>
-		{{form_widget(form.description, {'attr': {'style': 'width:98%;height:600px;'}}) }}
+		<div style="display:inline-block;">{% trans %}Release date:{% endtrans %}&nbsp;{{form_widget(form.release_date, {'attr': {'placeholder': 'Template: YYYY/MM'}})}}</div>
+		<div style="display:inline-block;">{% trans %}Encyclopedia link:{% endtrans %}&nbsp;{{form_widget(form.encyclopedia_link, {'attr': {'placeholder': 'Insert HTTP link here...'}})}}</div>
+		{{form_widget(form.description, {'attr': {'style': 'width:98%;height:600px;', 'placeholder': 'Describe the chipset (max. 4096 characters) ...'}}) }}
 	</div>
 	<div class="show-downloads" id="sh-downloads">
 		<div data-controller="collection">
@@ -108,7 +103,7 @@
 		<div data-controller="collection">
 			<div style="padding-top:5px;">
 				<img src="{{ absolute_url(asset('build/icons/show/manual.svg')) }}" alt="" width="32" style="vertical-align: middle;padding-bottom: 10px;">
-				<b>Documentations:</b>
+				<b>Documentation:</b>
 				<button type="button" data-action="click->collection#expandButton" data-list-id="documentations-fields-list">Add</button>
 			</div>
 			<div class="bios-image">
