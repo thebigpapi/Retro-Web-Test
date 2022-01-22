@@ -87,7 +87,7 @@ export default class extends Controller {
         let elementCount = list.children[0].children[0].length;
         console.log(list.children[0]);
 
-        for (var i = 1; i < elementCount; i++) {
+        for (let i = 1; i < elementCount; i++) {
             _this.expand(list);
             list.children[i].children[0].children[i].selected = 'selected';
         }

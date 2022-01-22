@@ -115,7 +115,7 @@ export default class extends Controller {
     /**
      * Save the motherboard
      */
-     submit() {
+    submit() {
         let submit_btn = document.getElementById("motherboard_form_save");
         submit_btn.click();
     }
@@ -138,5 +138,61 @@ export default class extends Controller {
             // submit the page
             this.submit();
         }
+    }
+
+    /**
+     * Fetch CPU/NPU lists based on the parameters given by the user
+     * @param {*} event 
+     */
+    updateProcessors(event) {
+        event.preventDefault();
+        let _this = this;
+        let sockets = document.getElementById("cpuSockets-fields-list").children;
+        let platforms = document.getElementById("processorPlatformTypes-fields-list").children;
+        let frequencies = document.getElementById("cpuSpeed-fields-list").children;
+        let processors = document.getElementById("processors-fields-list").children;
+        let coprocessors = document.getElementById("coprocessors-fields-list").children;
+        let form = _this.element;
+
+        let params = new FormData();
+        for (let socket of sockets) {
+            let element = socket.children[0];
+            params.set(element.name, element.value);
+        }
+        for (let platform of platforms) {
+            let element = platform.children[0];
+            params.set(element.name, element.value);
+        }
+        for (let frequency of frequencies) {
+            let element = frequency.children[0];
+            params.set(element.name, element.value);
+        }
+        for (let processor of processors) {
+            let element = processor.children[0];
+            params.set(element.name, element.value);
+        }
+        for (let coprocessor of coprocessors) {
+            let element = coprocessor.children[0];
+            params.set(element.name, element.value);
+        }
+
+        (async () => {
+            const rawResponse = await fetch(form.action, {
+                method: 'POST',
+                body: params
+            });
+            let parser = new DOMParser();
+            let parsedResponse = parser.parseFromString(await rawResponse.text(), "text/html");
+
+            document.getElementById("cpuSockets-fields-list").innerHTML = parsedResponse.getElementById("cpuSockets-fields-list").innerHTML;
+            document.getElementById("processorPlatformTypes-fields-list").outerHTML = parsedResponse.getElementById("processorPlatformTypes-fields-list").outerHTML;
+            document.getElementById("processorPlatformTypes-fields-list").innerHTML = parsedResponse.getElementById("processorPlatformTypes-fields-list").innerHTML;
+            document.getElementById("cpuSpeed-fields-list").outerHTML = parsedResponse.getElementById("cpuSpeed-fields-list").outerHTML;
+            document.getElementById("cpuSpeed-fields-list").innerHTML = parsedResponse.getElementById("cpuSpeed-fields-list").innerHTML;
+            document.getElementById("processors-fields-list").outerHTML = parsedResponse.getElementById("processors-fields-list").outerHTML;
+            document.getElementById("processors-fields-list").innerHTML = parsedResponse.getElementById("processors-fields-list").innerHTML;
+            document.getElementById("coprocessors-fields-list").outerHTML = parsedResponse.getElementById("coprocessors-fields-list").outerHTML;
+            document.getElementById("coprocessors-fields-list").innerHTML = parsedResponse.getElementById("coprocessors-fields-list").innerHTML;
+        })();
     }
 }
