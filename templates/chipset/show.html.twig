@@ -57,20 +57,7 @@
 	<div class="show-image"><p style="font-size:20px;height:100px;">no images available :(</p></div>
 {% endif %}
 </div>
-<div class="show-nav" id="sh-nav" data-controller="show">
-	<a class="snav" data-action='click->show#show_general'>
-		<img src="{{ absolute_url(asset('build/icons/show/data.svg')) }}" alt="" width="24">Description</a>
-	<a class="snav" data-action='click->show#show_downloads'>
-		<img src="{{ absolute_url(asset('build/icons/dw.svg')) }}" alt="" width="24">Downloads</a>
-	<div>
-	{#{% if is_granted('ROLE_ADMIN') %}
-	<a class="snav" href="{{ path("chipset_delete", {id: chipset.getId()}) }}">
-		<img src="{{ absolute_url(asset('build/icons/show/delete.svg')) }}" alt="" width="24">Delete</a>
-	{% endif %}#}
-	<a class="snav" href="{{ path('new_chipset_edit', {id: chipset.getId()}) }}">
-		<img src="{{ absolute_url(asset('build/icons/show/edit.svg')) }}" alt="" width="24">Edit chipset</a>
-	</div>
-</div>
+{% include 'macros/navbar.html.twig' with {'type':'show', 'entity': chipset, 'entityName': 'chipset', 'count':2} %}
 <div class="show-general" id="sh-general">
 	<div>{% trans %}Release date:{% endtrans %}&nbsp;{% if chipset.getReleaseDate() is not null %}{{ chipset.getReleaseDate() }}{% else %}{% trans %}Unknown{% endtrans %}{% endif %}&nbsp;&nbsp;<!--
 	-->{% if chipset.getEncyclopediaLink() is not null %}<a href="{{ chipset.getEncyclopediaLink() }}">[Encyclopedia link]</a>{% endif %}</div>

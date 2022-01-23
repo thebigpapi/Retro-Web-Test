@@ -49,20 +49,7 @@
 		{{ form_errors(form.images) }}
 		</div>
 	</div>
-	<div class="show-nav" id="sh-nav" data-controller="show">
-		<a class="snav" data-action='click->show#show_general'>
-			<img src="{{ absolute_url(asset('build/icons/show/data.svg')) }}" alt="" width="24">General</a>
-		<a class="snav" data-action='click->show#show_downloads'>
-			<img src="{{ absolute_url(asset('build/icons/dw.svg')) }}" alt="" width="24">Downloads</a>
-		<a class="snav" data-action='click->show#show_cpus'>
-			<img src="{{ absolute_url(asset('build/icons/show/cpu.svg')) }}" alt="" width="24">CPUs</a>
-		<div style="float:right;">
-			<a class="snav" data-action="click->motherboard--add#clone">
-				<img src="{{ absolute_url(asset('build/icons/clone.svg')) }}" alt="" width="24" style="vertical-align: middle;padding-right:2px;">Clone board</a>
-			<a class="snav" data-action="click->motherboard--add#submit">
-				<img src="{{ absolute_url(asset('build/icons/show/edit.svg')) }}" alt="" width="24" style="vertical-align: middle;padding-right:2px;">Save board</a>	
-		</div>
-	</div>
+	{% include 'macros/navbar.html.twig' with {'type':'edit', 'entityName': 'motherboard', 'count':3} %}
 	<input type="submit" style="display:none;" id="motherboard_form_save" name="motherboard_form[save]" value="Save board">
 	<div class="show-general" id="sh-general">
 		<table class="stbl">
