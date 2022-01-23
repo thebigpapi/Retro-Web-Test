@@ -1,10 +1,10 @@
 /* navbar */
 header.navbar { background: $navbar-color;font-size: 20px; }
-nav.navbar-inner { line-height: 28px;padding:5px 0px 5px 15px; }
-nav.navbar-inner a { color: $light-color;text-decoration: none; }
-nav.navbar-inner small { color: #FF0000; font-size: 12px; }
-nav.navbar-inner select, div.top-bar input { font-size: 12px; }
-nav.navbar-inner select.lang { width: 8.33em; }
+nav.navbar-inner { 
+	line-height: 28px;padding:5px 0px 5px 15px;
+	a { color: $light-color;text-decoration: none; }
+	small { color: #FF0000; font-size: 12px; }
+}
 a.nav-link { display:inline-block; }
 a.nav-link:hover, div.foot-part div a:hover { color: $link-hover-color; }
 a.nav-link img, div.foot-part div a img { vertical-align: top;padding-top:2px; }
@@ -26,11 +26,6 @@ input[type=text], input[type=submit], input[type=reset],input[type=password], bu
 @media (max-width: 400px) { nav.navbar-inner a.nav-link span.navbar-label {display: none;} }
 @media (max-width: 600px) {
 	nav.navbar-inner { padding:5px 0px 5px 6px; }
-	div.top-bar {font-size:12px; padding:0 0 0 5px;}
-	div.top-bar div.table-mobile {display: table; border-spacing: 2px;}
-	div.top-bar a, div.top-bar span.form {display: table-cell; vertical-align: middle; padding: 1px;}
-	div.top-bar span.form {width: 140px;}
-	div.top-bar select.lang {width: 70%;}
 	nav.navbar-inner a.nav-link span.navbar-label { font-size:17px; }
 	div.page {font-size:14px;}
 	h2.title {font-size: 16px; margin: 10px 0;}

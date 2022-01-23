@@ -19,8 +19,8 @@ table.stbl td, table.stbl th{ padding: 5px 5px 5px; }
 tr.stbl-head2 td{ padding-left:45px; }
 div.show-images { width:25%;overflow: auto;float:left;min-height:50px;height:auto; max-height:500px; }
 div.show-image { width:100%;font-size:12px;display:block; }
-span.creditor { width:auto;display:block; text-align: center; word-wrap: break-word; }
 div.show-image a img { width: 100%; }
+span.creditor { width:auto;display:block; text-align: center; word-wrap: break-word; }
 div.show-nav { 
     padding:5px 0px 10px; 
     -moz-user-select: -moz-none;
@@ -28,8 +28,8 @@ div.show-nav {
     -webkit-user-select: none;
     -ms-user-select: none;
     user-select: none;
+    div { font-size:16px;float:right; }
 }
-div.show-nav div { font-size:16px;float:right; }
 a.snav {
     font-size:18px;
     border: 1px solid $medium-color;
@@ -40,8 +40,8 @@ a.snav {
     margin-top:2px;
     color:$dark-color;
     text-decoration:none;
+    img { padding-right:5px;vertical-align: middle; }
 }
-a.snav img { padding-right:5px;vertical-align: middle; }
 a.snav:hover { color: $link-hover-color;background-color:$navbar-color;cursor:pointer; }
 div.show-nav, div.show-general, div.show-downloads, div.show-cpus {
     width:74%;

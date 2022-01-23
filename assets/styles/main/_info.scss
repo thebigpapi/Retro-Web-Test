@@ -1,5 +1,7 @@
-div.biosinfo span.image-block {margin: 0 0 0 8%;}
-div.biosinfo span.image-block, div.biosinfo img {width:400px;}
+div.biosinfo{
+    img {width:400px;}
+    span.image-block {margin: 0 0 0 8%;width:400px;}
+}  
 div.grid-list, div.grid-list2{border: 1px solid $btn-darkbg-color;margin-top:15px;}
 div.grid-list p, div.grid-list2 p{padding-left:5px;}
 div.grid-list2 ul{display: block;font-size:14px;}

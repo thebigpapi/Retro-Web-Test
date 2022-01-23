@@ -1,62 +1,61 @@
-div.index-buttons {text-align:center;}
-div.index-buttons a {
-    background-color: $btn-lightbg-color; 
-    color: $dark-color;
-    border: 1px solid gray;
-    box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.3);
-    padding: 10px 5px 10px; 
-    vertical-align: top;
-    height: 220px;
-    width: 240px; 
-    margin-bottom: 4px; 
-    display:inline-block;
-    text-decoration: none;
-}
-div.index-buttons a img {
-    height: 85%;
-}
-div.index-buttons a div { font-size: 12px; }
-div.index-buttons a:hover div{ color:$link-hover-color1;}
-div.index-buttons a span {_cursor: hand;cursor: pointer;}
-span.image-block {text-align: center; display: -moz-inline-stack; display: inline-block; vertical-align: bottom;}
-span.image-block span {display:table;}
-span.image-block span span {display:block;}
-div.perks, div.perks div.results ul li {font-size:14px;}
-/* results */
-div.results ul { margin: 0;padding-left: 40px; }
-div.results ul li{ line-height:140%;font-size: 16px; }
-ul.results-alias { list-style-type: none; }
-ul.results-alias li { line-height:120%; }
-ul.results-alias li small{ font-size:0.8em; }
-
-div.results span.image-block { padding: 15px; width: auto; }
-div.results span.image-block span img { vertical-align:bottom; width:320px; margin-bottom:5px; }
-div.results span.image-block span span { font-size:16px; min-width:320px; width:20em; }
-div.results span.image-block span span.results-alias small { font-size:0.8em; }
-@media (max-width: 600px) {
-    div.index-buttons a { 
-        height: 180px;
-        width: 180px; 
+div.index-buttons {
+    text-align:center;
+    a {
+        background-color: $btn-lightbg-color; 
+        color: $dark-color;
+        border: 1px solid gray;
+        box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.3);
+        padding: 10px 5px 10px; 
+        vertical-align: top;
+        height: 220px;
+        width: 240px; 
+        margin-bottom: 4px; 
+        display:inline-block;
+        text-decoration: none;
+        img { height: 85%; }
+        div { font-size: 12px; }
+        span {_cursor: hand;cursor: pointer;}
     }
+    a:hover div{ color:$link-hover-color1;}
+}
+span.image-block {
+    text-align: center; 
+    display: -moz-inline-stack; 
+    display: inline-block; 
+    vertical-align: bottom;
+    span {display:table;}
+    span span {display:block;}
+}
+/* results */
+div.perks, div.perks div.results ul li {font-size:14px;}
+div.results{
+    ul { margin: 0;padding-left: 40px; }
+    ul li{ line-height:140%;font-size: 16px; }
+    span.image-block { 
+        padding: 15px; width: auto;
+        span img { vertical-align:bottom; width:320px; margin-bottom:5px; }
+        span span { font-size:16px; min-width:320px; width:20em; }
+        span span.results-alias small { font-size:0.8em; }
+    }
+    ul.results-alias { 
+        list-style-type: none;
+        li { line-height:120%; }
+        li small{ font-size:0.8em; } 
+    }
+} 
+
+@media (max-width: 600px) {
+    div.index-buttons a { height: 180px; width: 180px; }
 }
 
 @media (min-width: 1200px) {
-    div.index-buttons a {
-        height: 235px;
-        width: 250px; 
-    }
+    div.index-buttons a { height: 235px; width: 250px; }
     div.index-buttons a div { font-size: 15px; }
     div.results ul li{font-size:20px;}
 	div.results span.image-block span span {font-size:20px;width:16em;}
 }
 @media (min-width: 1400px) { 
-    div.index-buttons a {
-        height: 265px;
-        width: 290px; 
-    }
-    /*div.index-buttons a img {
-        height: 85%;
-    }*/
+    div.index-buttons a { height: 265px; width: 290px; }
     div.perks, div.perks div.results ul li {font-size:16px;}
 }
 @media (prefers-color-scheme: dark) {
