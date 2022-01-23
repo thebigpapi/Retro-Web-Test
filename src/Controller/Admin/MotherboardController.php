@@ -244,7 +244,7 @@ class MotherboardController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             if ($form->get('updateProcessors')->isClicked()) {
-                return $this->render('motherboard/add.html.twig', [
+                return $this->render('admin/edit/motherboards/motherboard.html.twig', [
                     'form' => $form->createView(),
                 ]);
             }
@@ -287,7 +287,7 @@ class MotherboardController extends AbstractController
 
             return $this->redirectToRoute('motherboard_show', array('id' => $mobo->getId()));
         }
-        return $this->render('motherboard/add.html.twig', [
+        return $this->render('admin/edit/motherboards/motherboard.html.twig', [
             'form' => $form->createView(),
         ]);
     }

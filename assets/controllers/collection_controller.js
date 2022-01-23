@@ -21,7 +21,7 @@ export default class extends Controller {
         //set the new increment, create the new widget and concatenate after list
         list.setAttribute("data-widget-counter", counter);
         let newElem = document.createElement('div');
-        if (list.id == 'images-fields-list' || list.id == 'chip.images-fields-list')
+        if (list.id == 'images-fields-list' || list.id == 'chip.images-fields-list' || list.id == 'processingUnit.chip.images-fields-list')
             newElem.setAttribute("class", "addform");
         if (list.id== 'motherboardBios-fields-list' || list.id == 'manuals-fields-list')
             newElem.setAttribute("style", "width:100%");

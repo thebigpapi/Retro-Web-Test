@@ -40,6 +40,11 @@ a.snav {
     margin-top:2px;
     color:$dark-color;
     text-decoration:none;
+    -moz-user-select: -moz-none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
     img { padding-right:5px;vertical-align: middle; }
 }
 a.snav:hover { color: $link-hover-color;background-color:$navbar-color;cursor:pointer; }

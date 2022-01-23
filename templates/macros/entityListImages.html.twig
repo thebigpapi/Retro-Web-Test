@@ -2,7 +2,8 @@
 	<div class="bar">
 		<span style="padding-left:10px;">
 			<b>Images</b>
-			<button type="button" data-action="click->collection#expandButton" data-list-id="{{entityName}}-fields-list">Add</button>
+			<a class="snav" data-action="click->collection#expandButton" data-list-id="{{entityName}}-fields-list">
+				<img src="{{ absolute_url(asset('build/icons/add.svg')) }}" data-list-id="{{entityName}}-fields-list" alt="" width="24" style="vertical-align: middle;padding-right:2px;">Add image</a>
 		</span>
 	</div>
 	<div id="{{entityName}}-fields-list" data-widget-counter="{{ entities|length }}" data-prototype="

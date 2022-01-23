@@ -1,4 +1,4 @@
-{% extends 'admin/header.html.twig' %}
+{% extends 'base.html.twig' %}
 
 {% block title %}Add/Edit motherboard{% endblock %}
 
@@ -7,12 +7,8 @@
 		{# form_start(form, {'method': 'POST','enctype':'multipart/form-data', 'onsubmit':'return check_E()'}) #}
 	<table class="add-title">
 		<tr>
-			<td class="title-select"><b>Manufacturer</b></td>
-			<td class="title-input"><b>Name</b></td>
-		</tr>
-		<tr>
 			<td class="title-select">{{ form_widget(form.manufacturer) }}</td>
-			<td class="title-input">{{ form_widget(form.name) }}</td>
+			<td class="title-input">{{ form_widget(form.name, {'attr': {'placeholder': 'Name ...'}}) }}</td>
 		</tr>
 	</table>
 	<div class="show-images" style="min-height:200px;" data-controller="collection">
