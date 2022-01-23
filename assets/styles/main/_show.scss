@@ -22,7 +22,7 @@ div.show-image { width:100%;font-size:12px;display:block; }
 span.creditor { width:auto;display:block; text-align: center; word-wrap: break-word; }
 div.show-image a img { width: 100%; }
 div.show-nav { 
-    padding:5px 0px 5px; 
+    padding:5px 0px 10px; 
     -moz-user-select: -moz-none;
     -khtml-user-select: none;
     -webkit-user-select: none;
@@ -33,6 +33,7 @@ div.show-nav div { font-size:16px;float:right; }
 a.snav {
     font-size:18px;
     border: 1px solid $medium-color;
+    box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.3);
     display: -moz-inline-box; 
     display: inline-block; 
     padding: 5px;

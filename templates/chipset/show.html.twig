@@ -49,11 +49,11 @@
 		</div>
         {% endfor %}
 		{% else %}
-			{% if loop.first %}<div class="show-image"><p style="font-size:20px;">no images available :(</p></div>{% endif %}
+			{% if loop.first %}<div class="show-image"><p style="font-size:20px;height:100px;">no images available :(</p></div>{% endif %}
         {% endif %}
     {% endfor %}
 {% else %}
-	<div class="show-image"><p style="font-size:20px;">no images available :(</p></div>
+	<div class="show-image"><p style="font-size:20px;height:100px;">no images available :(</p></div>
 {% endif %}
 </div>
 <div class="show-nav" id="sh-nav" data-controller="show">
