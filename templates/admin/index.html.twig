@@ -6,54 +6,50 @@
 
 {% block body %}
 	<div class="title">
-		<b>{% trans %}Administration page{% endtrans %}</b>
+		<b>Dashboard</b>
 	</div>
 	<h4>Manage:</h4>
-	<hr>
 	<a href="{{ path('admin_manage_motherboards') }}" class="admin-button-index">
 		<img src="{{ absolute_url(asset('build/images/admin/motherboard.jpg')) }}" style="padding:8px 25px 0px" alt="board">
-		<p>{% trans %}Motherboards{% endtrans %}</p>
+		<p>Motherboards</p>
 	</a>
 	<a href="{{ path('admin_manage_processing_units') }}" class="admin-button-index">
 		<img src="{{ absolute_url(asset('build/images/admin/486dx.png')) }}" style="padding:0px 30px 0px" alt="cpu">
-		<p>{% trans %}Processing units{% endtrans %}</p>
+		<p>Processing units</p>
 	</a>
 	<a href="{{ path('admin_manage_memories') }}" class="admin-button-index">
 		<img src="{{ absolute_url(asset('build/images/admin/memory.png')) }}" style="padding:2px 0px 1px" alt="memory">
-		<p>{% trans %}Memory{% endtrans %}</p>
+		<p>Memory</p>
 	</a>
 	<a href="{{ path('admin_manage_chipsets') }}" class="admin-button-index">
 		<img src="{{ absolute_url(asset('build/images/admin/chip.png')) }}" style="padding:2px 25px 2px" alt="chipset">
-		<p>{% trans %}Chipsets{% endtrans %}</p>
+		<p>Chipsets</p>
 	</a>
 	<a href="{{ path('admin_manage_expansion_chipsets') }}" class="admin-button-index">
-		<img src="{{ absolute_url(asset('build/images/admin/exp_chip.jpg')) }}" style="padding:10px 25px 3px" alt="chip part">
-		<p>{% trans %}Expansion chipsets{% endtrans %}</p>
+		<img src="{{ absolute_url(asset('build/images/admin/exp_chip.png')) }}" style="padding:10px 0px 0px" alt="chip part">
+		<p>Audio/Video chips</p>
 	</a>
 	<a href="{{ path('admin_manage_connectors') }}" class="admin-button-index">
-		<img src="{{ absolute_url(asset('build/icons/admin/connector.svg')) }}" width="128" style="padding:5px 30px 5px" alt="connector">
-		<p>{% trans %}Connectors{% endtrans %}</p>
-	</a>
-	<a href="{{ path('admin_manage_miscs') }}" class="admin-button-index">
-		<img src="{{ absolute_url(asset('build/images/admin/other.png')) }}" style="padding:4px 25px 4px" alt="misc">
-		<p>{% trans %}Misc stuff{% endtrans %}</p>
+		<img src="{{ absolute_url(asset('build/icons/admin/connector.svg')) }}" width="128" style="padding:10px 0px 0px" alt="connector">
+		<p>Connectors</p>
 	</a>
 	<a href="{{ path('admin_manage_files') }}" class="admin-button-index">
-		<img src="{{ absolute_url(asset('build/images/admin/file.png')) }}" style="padding:5px 30px 5px" alt="file">
+		<img src="{{ absolute_url(asset('build/images/admin/file.png')) }}" style="padding:8px 0px 0px" alt="file">
 		<p>Files</p>
 	</a>
+	<a href="{{ path('admin_manage_miscs') }}" class="admin-button-index">
+		<img src="{{ absolute_url(asset('build/icons/admin/misc.svg')) }}" width="128" style="padding:10px 0px 0px" alt="misc">
+		<p>Other fields</p>
+	</a>
 	<a href="{{ path('admin_change_user_password') }}" class="admin-button-index">
-		<img src="{{ absolute_url(asset('build/icons/admin/keys.svg')) }}" width="128" style="padding:5px 30px 5px" alt="passwd">
-		<p>{% trans %}Change password{% endtrans %}</p>
+		<img src="{{ absolute_url(asset('build/icons/admin/keys.svg')) }}" width="128" style="padding:10px 0px 0px" alt="passwd">
+		<p>Change password</p>
 	</a>
 	{% if is_granted('ROLE_SUPER_ADMIN') %}
 		<a href="{{ path('admin_manage_users') }}" class="admin-button-index">
-			<img src="{{ absolute_url(asset('build/icons/admin/user.svg')) }}" width="128" style="padding:5px 30px 5px" alt="user">
-			<p>{% trans %}Manage users{% endtrans %}</p>
+			<img src="{{ absolute_url(asset('build/icons/admin/user.svg')) }}" width="128" style="padding:10px 0px 0px" alt="user">
+			<p>Manage users</p>
 		</a>
 	{% endif %}
-
-	<h4>Stats:</h4>
-	<p><b>{% trans %}Board count:{% endtrans %} {{moboCount}}</b></p>
-
+	<br><a href="{{ path('admin_stats') }}">stats</a>
 {% endblock %}

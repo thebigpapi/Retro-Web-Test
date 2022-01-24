@@ -27,8 +27,19 @@ class AdminController extends AbstractController
      */
     public function index(MotherboardRepository $motherboardRepository)
     {
-        $latestMotherboards = $motherboardRepository->find50Latest();
         return $this->render('admin/index.html.twig', [
+            'controller_name' => 'MainController',
+        ]);
+    }
+
+    /**
+     * @Route("/admin/stats", name="admin_stats")
+     * @param Request $request
+     */
+    public function stats(MotherboardRepository $motherboardRepository)
+    {
+        $latestMotherboards = $motherboardRepository->find50Latest();
+        return $this->render('admin/stats.html.twig', [
             'controller_name' => 'MainController',
             'latestMotherboards' => $latestMotherboards,
             'moboCount' => $motherboardRepository->getCount(),
