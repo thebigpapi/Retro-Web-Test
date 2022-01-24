@@ -37,8 +37,6 @@ export default class extends Controller {
     removeButtonXtd(event) {
         let element = event.target.parentNode.parentNode;
         let list = element.parentNode;
-        if (element.id == "imgp-id" || element.id == "downloads-id")
-            list = element.parentNode.parentNode;
         this.remove(element, list);
     }
 

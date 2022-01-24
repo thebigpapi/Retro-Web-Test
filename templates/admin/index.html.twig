@@ -48,7 +48,7 @@
 	</a>
 	{% if is_granted('ROLE_SUPER_ADMIN') %}
 		<a href="{{ path('admin_manage_users') }}" class="admin-button-index">
-			<img src="{{ absolute_url(asset('build/icons/admin/user.svg')) }}" width="128" style="padding:5px 30px 5px">
+			<img src="{{ absolute_url(asset('build/icons/admin/user.svg')) }}" width="128" style="padding:5px 30px 5px" alt="user">
 			<p>{% trans %}Manage users{% endtrans %}</p>
 		</a>
 	{% endif %}

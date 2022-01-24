@@ -8,7 +8,7 @@
 		{% if entities is not empty %}
 			{% for entity in entities %}
 				<div>
-					{{ form_widget(entity, {'attr': {'style': 'display:inline-block;'}}) }}
+					{{ form_widget(entity, {'attr': {'style': 'display:inline-block;'}})|replace({'<option value="">': '<option label=" " value="">'})|raw }}
 					<a class="snav" data-action="click->collection#removeButton">
 						<img data-action="click->collection#removeButtonXtd" src="{{ absolute_url(asset('build/icons/show/delete.svg')) }}" alt="" width="24" style="vertical-align:middle;padding-right:2px;">Del</a>
 				</div>

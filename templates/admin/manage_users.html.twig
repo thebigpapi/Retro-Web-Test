@@ -3,24 +3,33 @@
 {% block title %}Manage resources{% endblock %}
 
 {% block body %}
-    <div class="title"><b>Manage users</b></div>
-    <div style="padding-top:50px;">
-    {{ form_start(userForm, {'method': 'POST'}) }}
-        <table>
-            <tr><td>{{ form_row(userForm.users) }}</td><td>{{ form_row(userForm.reset) }}</td><td>{{ form_row(userForm.add) }}</td><td>{{ form_row(userForm.delete) }}</td></tr>
-        </table>
-    {{ form_end(userForm) }}
-    <div>{{ message }}</div>
+<div class="title" style="padding-top:5em;">
+	<b>Manage users</b>
 </div>
-<script>
-    for(i = 0; i < document.forms.length; i++) {
+{{ form_start(userForm, {'method': 'POST'}) }}
+<div style="margin:0 auto;display:table;">
+	<img style="display:inline-block;" src="{{ absolute_url(asset('build/icons/admin/user.svg')) }}" width="128" alt="">
+	<table style="display:inline-block;">
+		<tr>
+			<td>Select an user:&nbsp;</td>
+			<td>{{ form_widget(userForm.users) }}</td>
+		</tr>
+        <tr>
+			<td>Action:&nbsp;</td>
+			<td>
+                <a class="snav" onclick="document.getElementById('manage_user_reset').click();">
+		            <img src="{{ absolute_url(asset('build/icons/search/reset.svg')) }}" alt="" width="24" style="vertical-align: middle;padding-right:2px;">Reset</a>
+                <a class="snav" onclick="document.getElementById('manage_user_add').click();">
+		            <img src="{{ absolute_url(asset('build/icons/add.svg')) }}" alt="" width="24" style="vertical-align: middle;padding-right:2px;">Add</a>
+                <a class="snav" onclick="if(confirm('Are you sure you want to delete this user?'))document.getElementById('manage_user_delete').click();">
+		            <img src="{{ absolute_url(asset('build/icons/show/delete.svg')) }}" alt="" width="24" style="vertical-align: middle;padding-right:2px;">Delete</a>
+            </td>
+		</tr>
+        <tr>
+            <td colspan="2">{{ message }}</td>
+        </tr>
+	</table>
+</div>
+<div id="hiddenDiv" style="display: none;">{{ form_widget(userForm.reset) }}{{ form_widget(userForm.add) }}{{ form_widget(userForm.delete) }}{{ form_end(userForm)|replace({'</form>': '</div></form>'})|raw }}
 
-    }
-    var buttons = document.getElementsByClassName("delbtn");
-    for(i = 0; i < buttons.length; i++)
-    {
-        buttons[i].preventDefault();
-        buttons[i].addEventListener('click', function () { if(confirm("Delete ?")) {document.forms[this.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.name].submit()}; });
-    }
-</script>
 {% endblock %}

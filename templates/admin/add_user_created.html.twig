@@ -3,5 +3,19 @@
 {% block title %}Manage users{% endblock %}
 
 {% block body %}
-    Successfully created user {{ username }} using password {{ password }}
+<div class="title" style="padding-top:5em;">
+	<b>Add a new user:</b>
+</div>
+<div style="margin:0 auto;display:table;">
+    <img style="display:inline-block;" src="{{ absolute_url(asset('build/icons/admin/user.svg')) }}" width="128" alt="">
+	<div style="display:inline-block;">
+		<div>Successfully created a new user with the following credentials:</div>
+        <ul>
+            <li>Username:&nbsp; {{ username }}</li>
+            <li>Password:&nbsp; {{ password }}</li>
+        </ul>
+    </div>
+    <a class="snav" href="{{ path('admin_manage_users') }}">
+		<img src="{{ absolute_url(asset('build/icons/back.svg')) }}" alt="" width="24" style="vertical-align: middle;padding-right:2px;">Go back</a>
+</div>
 {% endblock %}

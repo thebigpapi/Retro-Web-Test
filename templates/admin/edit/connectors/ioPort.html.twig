@@ -3,10 +3,19 @@
 {% block title %}Manage I/O ports{% endblock %}
 
 {% block body %}
-<div style="height:6em;"></div>
-<div class="editasset">
-	<h2><b>Edit: I/O Port</b></h2>
-    {{ form(form) }}
+<div class="title" style="padding-top:5em;">
+	<b>Edit:&nbsp;I/O Port&nbsp;&nbsp;</b>
+	<a class="snav" onclick="document.getElementById('io_port_form_save').click();">
+		<img src="{{ absolute_url(asset('build/icons/show/edit.svg')) }}" alt="" width="24" style="vertical-align: middle;padding-right:2px;">Save</a>
 </div>
-
+{{ form_start(form, {'method': 'POST'}) }}
+<div style="margin:0 auto;display:table;">
+	<table>
+        <tr>
+			<td>{{form_label(form.name)}}</td>
+			<td>{{form_widget(form.name)}}</td>
+		</tr>
+	</table>
+</div>
+<div id="hiddenDiv" style="display: none;">{{form_widget(form.save) }}{{ form_end(form)|replace({'</form>': '</div></form>'})|raw }}
 {% endblock %}
