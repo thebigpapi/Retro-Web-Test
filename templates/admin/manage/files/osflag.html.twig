@@ -3,5 +3,8 @@
     <td>{{object.getName()}}</td>
     <td>{{object.getMajorVersion()}}</td>
     <td>{{object.getMinorVersion()}}</td>
-    <td><a class="result-link" href="./files/osflags/{{ object.getId() }}/edit/">Edit</a></td>
+    <td>
+        <a class="snav" href="./files/osflags/{{ object.getId() }}/edit/">
+            <img src="{{ absolute_url(asset('build/icons/show/edit.svg')) }}" alt="" width="24">Edit</a>
+    </td>
 </tr>

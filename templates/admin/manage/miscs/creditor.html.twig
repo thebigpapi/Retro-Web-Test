@@ -1,5 +1,8 @@
  <tr>
     <td>{{object.getName()}}</td>
     <td><a href="{{object.getWebsite()}}">{{object.getWebsite()}}</a></td>
-    <td><a class="result-link" href="./miscs/creditors/{{ object.getId() }}/edit/">Edit</a></td>
+    <td>
+        <a class="snav" href="./miscs/creditors/{{ object.getId() }}/edit/">
+            <img src="{{ absolute_url(asset('build/icons/show/edit.svg')) }}" alt="" width="24">Edit</a>
+    </td>
 </tr>
