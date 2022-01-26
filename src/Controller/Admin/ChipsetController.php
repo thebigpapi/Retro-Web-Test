@@ -254,11 +254,14 @@ class ChipsetController extends AbstractController
             foreach ($form['drivers']->getData() as $key => $val) {
                 $val->setChipset($chipset);
             }
+            foreach ($form['documentations']->getData() as $key => $val) {
+                $val->setChipset($chipset);
+            }
 
             $entityManager->persist($chipset);
             $entityManager->flush();
 
-            return $this->redirect($this->generateUrl('admin_manage_chipsets', array("entity" => "chipset")));
+            return $this->redirectToRoute('chipset_show', array('id' => $chipset->getId()));
         }
         return $this->render('admin/edit/chipsets/chipset.html.twig', [
             'form' => $form->createView(),

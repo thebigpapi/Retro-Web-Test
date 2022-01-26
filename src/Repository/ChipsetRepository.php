@@ -36,7 +36,69 @@ class ChipsetRepository extends ServiceEntityRepository
 
         return $query->getResult();
     }
+    /**
+     * @return Chipset[]
+     */
+    public function findByChipset(array $criteria): array
+    {
+        $entityManager = $this->getEntityManager();
 
+        $whereArray = array();
+        $valuesArray = array();
+
+        // Checking values in criteria and creating WHERE statements
+        if (array_key_exists('name', $criteria)) {
+            $whereArray[] = "(LOWER(chip.name) LIKE :nameLike OR LOWER(chip.part_no) LIKE :nameLike)";
+            $valuesArray["nameLike"] = "%" . strtolower($criteria['name']) . "%";
+        }
+        if (array_key_exists('manufacturer', $criteria)) {
+            $whereArray[] = "(man.id = :manufacturerId)";
+            $valuesArray["manufacturerId"] = (int)$criteria['manufacturer'];
+        }
+
+        // Building where statement
+        $whereString = implode(" AND ", $whereArray);
+
+        // Building query
+        $query = $entityManager->createQuery(
+            "SELECT chip
+            FROM App\Entity\Chipset chip JOIN chip.manufacturer man
+            WHERE $whereString
+            ORDER BY man.name ASC, chip.release_date ASC, chip.name ASC"
+        );
+
+        // Setting values
+        foreach ($valuesArray as $key => $value) {
+            $query->setParameter($key, $value);
+        }
+
+        return $query->getResult();
+    }
+    /**
+     * @return Chipset[]
+     */
+    public function findAllAlphabetic(string $letter): array
+    {
+        $entityManager = $this->getEntityManager();
+        if (empty($letter)) {
+            $query = $entityManager->createQuery(
+                "SELECT chip
+                FROM App\Entity\Chipset chip, App\Entity\Manufacturer man 
+                WHERE chip.manufacturer=man IS NULL
+                ORDER BY man.name ASC, chip.name ASC"
+            );
+        } else {
+            $likematch = "$letter%";
+            $query = $entityManager->createQuery(
+                "SELECT chip
+                FROM App\Entity\Chipset chip, App\Entity\Manufacturer man 
+                WHERE chip.manufacturer=man AND COALESCE(man.shortName, man.name) like :likeMatch
+                ORDER BY man.name ASC, chip.name ASC"
+            )->setParameter('likeMatch', $likematch);
+        }
+
+        return $query->getResult();
+    }
 
     /**
      * @return Chipset[]
@@ -50,49 +112,12 @@ class ChipsetRepository extends ServiceEntityRepository
             ->getResult()
         ;
     }
-
-    /**
-     * @return Chipset[]
-     */
-    public function findAllMotherboardChipset(): array
+    
+    public function getCount(): int
     {
-        $entityManager = $this->getEntityManager();
-
-        $query = $entityManager->createQuery(
-            'SELECT DISTINCT chip
-            FROM App\Entity\Chipset chip, App\Entity\Motherboard mobo 
-            WHERE mobo.chipset=chip'
-        );
-
-        return $query->getResult();
-    }
-
-    // /**
-    //  * @return Chipset[] Returns an array of Chipset objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('c.id', 'ASC')
-            ->setMaxResults(10)
+        return $this->createQueryBuilder('m')
+            ->select('count(m.id)')
             ->getQuery()
-            ->getResult()
-        ;
+            ->getSingleScalarResult();
     }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?Chipset
-    {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

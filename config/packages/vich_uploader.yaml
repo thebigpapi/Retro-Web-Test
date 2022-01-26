@@ -6,6 +6,10 @@ vich_uploader:
             uri_prefix: /motherboard/manual
             upload_destination: '%kernel.project_dir%/public/motherboard/manual'
             namer: Vich\UploaderBundle\Naming\SmartUniqueNamer
+        chipsetDoc:
+            uri_prefix: /chipset/documentation
+            upload_destination: '%kernel.project_dir%/public/chipset/documentation'
+            namer: Vich\UploaderBundle\Naming\SmartUniqueNamer
         bios:
             uri_prefix: /motherboard/bios
             upload_destination: '%kernel.project_dir%/public/motherboard/bios'

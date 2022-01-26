@@ -5,17 +5,21 @@
 
 {% block body %}<div class="title"><b>{% trans %}Where do you want to go today?{% endtrans %}</b></div>
 	<div class="index-buttons">
-		<a href="{{ path("motherboard_search") }}" class="index-button0">
+		<a href="{{ path("motherboard_search") }}">
 			<img src="{{ absolute_url(asset('build/images/index/motherboard.png')) }}" alt="">
 			<div>{% trans %}Search for a motherboard{% endtrans %}</div><div>({{moboCount}}&nbsp;{% trans %}entries{% endtrans %})</div>
 		</a>
-		<a href="#" class="index-button1">
+		<a href="#">
 			<img src="{{ absolute_url(asset('build/images/index/card_wip.png')) }}" alt="">
 			<div>{% trans %}Find an expansion card{% endtrans %}</div><div>[WIP]</div>
 		</a>
-		<a href="{{ path("bios_search") }}" class="index-button2">
+		<a href="{{ path("bios_search") }}">
 			<img src="{{ absolute_url(asset('build/images/index/awchip.png')) }}" alt="">
 			<div>{% trans %}Find a BIOS image{% endtrans %}</div><div>({{biosCount}} {% trans %}files{% endtrans %})</div>
+		</a>
+		<a href="{{ path("chipset_search") }}">
+			<img src="{{ absolute_url(asset('build/images/index/440bxchip.png')) }}" alt="">
+			<div>{% trans %}Look up a chipset{% endtrans %}</div><div>({{chipCount}} {% trans %}entries{% endtrans %})</div>
 		</a>
 	</div>
 	<div class="perks">

@@ -146,13 +146,9 @@
 		<tr>
 			<td>{% trans %}Chipset{% endtrans %}:</td>
 			<td>
-				{% if motherboard.getChipset().getEncyclopediaLink() is not null %}
-					<a href="{{ motherboard.getChipset().getEncyclopediaLink() }}">
-						{{ motherboard.getChipset().getMainChipWithManufacturer() }}
-					</a>
-				{% else %}
+				<a href="{{ path('app_homepage') }}chipsets/{{ motherboard.getChipset().getId()}}">
 					{{ motherboard.getChipset().getMainChipWithManufacturer() }}
-				{% endif %}
+				</a>
 			</td>
 		</tr>
 	{% endif %}
