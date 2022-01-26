@@ -8,5 +8,13 @@
     </td>
     <td>{{object.getName()}}</td>
     <td>{{object.getLastEdited()|format_datetime()}}</td>
-    <td><a class="result-link" href="./motherboards/motherboards/{{ object.getId() }}/edit/">Edit</a></td>
+    <td>
+        <a class="snav" href="./motherboards/motherboards/{{ object.getId() }}/edit/">
+            <img src="{{ absolute_url(asset('build/icons/show/edit.svg')) }}" alt="" width="24">Edit</a>
+        <a class="snav" href="{{ path("motherboard_show", {id: object.getId()}) }}">
+            <img src="{{ absolute_url(asset('build/icons/search/search_image.svg')) }}" alt="" width="24">View</a>
+        <a class="snav" href="{{ path('motherboard_delete', {id: object.getId()}) }}">
+            <img src="{{ absolute_url(asset('build/icons/show/delete.svg')) }}" alt="" width="24">Del</a>
+    </td>
+
 </tr>	

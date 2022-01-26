@@ -6,5 +6,8 @@
     {% else %}
         <td>{{ object.getSpeed().getValueWithUnit() }}</td>
     {% endif %}
-    <td><a class="result-link" href="./processingunits/coprocessors/{{ object.getId() }}/edit/">Edit</a></td>
+    <td>
+        <a class="snav" href="./processingunits/coprocessors/{{ object.getId() }}/edit/">
+            <img src="{{ absolute_url(asset('build/icons/show/edit.svg')) }}" alt="" width="24">Edit</a>
+    </td>
 </tr>	

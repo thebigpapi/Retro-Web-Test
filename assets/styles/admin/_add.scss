@@ -55,6 +55,19 @@ input.num {width:15px;}
 div.notes-field div { padding-bottom: 6px; padding-right: 4px; margin:auto }
 div.notes-field label { display:none }
 div.notes-field div textarea { width:95%; height:100px }
+table.editasset tr td{
+	select, input{ width:100%; }
+}
+div.show-edit{
+	width:49%;
+	display:inline-block;
+	vertical-align:top;
+}
+@media (max-width: 600px) {
+	div.show-edit{
+		width:100%;
+	}
+}
 @media (max-width: 1199px) {
 	td.ttl1 {width:60%}
 	td.ttl2 {width:200px}

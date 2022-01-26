@@ -1,32 +1,11 @@
-{% extends 'admin/header.html.twig' %}
+{% extends 'base.html.twig' %}
 
-{% block title %}
-	Manage motherboards
-{% endblock %}
+{% block title %}Manage {{entityDisplayNamePlural}}{% endblock %}
 
 {% block body %}
-
-	<div class="title">
-		<b>{{ entityDisplayNamePlural|capitalize }}</b>
-	</div>
-	<a href="{{ path('admin_index') }}" class="admin-button">
-		<img src="{{ absolute_url(asset('build/icons/back.svg')) }}" alt="add" width="32">
-		<p>Go back</p>
-	</a>
-	<a href="{{ path('admin_manage_motherboards', {entity:"motherboard"})}}" class="admin-button" style="{% if entityName == "motherboard" %}background-color: #afff97;{% endif %}">
-		<p {% if entityName == "motherboard" %} style="color: #000000;" {% endif %}>{% trans %}Motherboards{% endtrans %}</p>
-	</a>
-	<a href="{{ path('admin_manage_motherboards', {entity:"formfactor"})}}" class="admin-button" style="{% if entityName == "formfactor" %}background-color: #afff97;{% endif %}">
-		<p {% if entityName == "formfactor" %} style="color: #000000;" {% endif %}>{% trans %}Form factors{% endtrans %}</p>
-	</a>
-	<a href="./motherboards/{{entityName}}s/add/" class="admin-button" style="float:right;">
-		<img src="{{ absolute_url(asset('build/icons/add.svg')) }}" alt="add" width="32">
-		<p>Add {{ entityDisplayName }}</p>
-	</a>
-	<hr>
-	<div class="list-view">
-		{% if search is not empty %}
-			{{ form(search) }}{% endif %}
-			{{ render(controller(controllerList, {criterias: criterias}, {page: page, entity: entityName})) }}
-		</div>
-	{% endblock %}
+	{% include 'admin/macros/admin_navbar.html.twig' with {
+		'category':'motherboards', 
+		'path':'motherboards', 
+		'set':{'motherboard':'Motherboards','formfactor':'Form factors'}
+	} %}
+{% endblock %}

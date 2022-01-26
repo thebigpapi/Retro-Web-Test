@@ -1,9 +1,10 @@
 {% if objectList is not empty %}
+    {{ knp_pagination_render(objectList, 'macros/pagination.html.twig') }}
     <table class="results">
         {% include 'admin/manage/files/' ~ entityName ~ '_thead.html.twig' %}
         {% for object in objectList %}
             {% include 'admin/manage/files/' ~ entityName ~ '.html.twig' with {'object':object} %}	
         {% endfor %}
     </table>
-    {{ knp_pagination_render(objectList) }}
+    {% if objectList.count > 25 %}{{ knp_pagination_render(objectList, 'macros/pagination.html.twig') }}{% endif %}
 {% endif %}

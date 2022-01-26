@@ -1,4 +1,4 @@
-{% extends 'admin/header.html.twig' %}
+{% extends 'base.html.twig' %}
 
 {% block title %}Add/Edit motherboard{% endblock %}
 
@@ -7,12 +7,8 @@
 		{# form_start(form, {'method': 'POST','enctype':'multipart/form-data', 'onsubmit':'return check_E()'}) #}
 	<table class="add-title">
 		<tr>
-			<td class="title-select"><b>Manufacturer</b></td>
-			<td class="title-input"><b>Name</b></td>
-		</tr>
-		<tr>
-			<td class="title-select">{{ form_widget(form.manufacturer) }}</td>
-			<td class="title-input">{{ form_widget(form.name) }}</td>
+			<td class="title-select">{{ form_widget(form.manufacturer)|replace({'<option value="">': '<option label=" " value="">'})|raw }}</td>
+			<td class="title-input">{{ form_widget(form.name, {'attr': {'placeholder': 'Name ...'}}) }}</td>
 		</tr>
 	</table>
 	<div class="show-images" style="min-height:200px;" data-controller="collection">
@@ -28,7 +24,7 @@
 				<div class=imgp><span>Creditor: </span>{{ form_widget(form.images.vars.prototype.creditor)|e }}</div>
 				<div class=imgp><span>License: </span>{{ form_widget(form.images.vars.prototype.license)|e }}</div>
 				<div class=imgp><span>Notes: </span>{{ form_widget(form.images.vars.prototype.description)|e }}</div>
-				<div class=imgp id=imgp-id>Uploaded file:
+				<div class=imgp>Uploaded file:
 				<button type=button data-action='click->collection#removeButtonXtd'>Delete this entry</button></div>
 				<div class=imgp>{{ form_widget(form.images.vars.prototype.file_name, {'attr': {'style': 'width:90%'}})|e }}</div>
 				">
@@ -49,35 +45,21 @@
 		{{ form_errors(form.images) }}
 		</div>
 	</div>
-	<div class="show-nav" id="sh-nav" data-controller="show">
-		<a class="snav" data-action='click->show#show_general'>
-			<img src="{{ absolute_url(asset('build/icons/show/data.svg')) }}" alt="" width="24">General</a>
-		<a class="snav" data-action='click->show#show_downloads'>
-			<img src="{{ absolute_url(asset('build/icons/dw.svg')) }}" alt="" width="24">Downloads</a>
-		<a class="snav" data-action='click->show#show_cpus'>
-			<img src="{{ absolute_url(asset('build/icons/show/cpu.svg')) }}" alt="" width="24">CPUs</a>
-		<div style="float:right;">
-			<a class="snav" data-action="click->motherboard--add#clone">
-				<img src="{{ absolute_url(asset('build/icons/clone.svg')) }}" alt="" width="24" style="vertical-align: middle;padding-right:2px;">Clone board</a>
-			<a class="snav" data-action="click->motherboard--add#submit">
-				<img src="{{ absolute_url(asset('build/icons/show/edit.svg')) }}" alt="" width="24" style="vertical-align: middle;padding-right:2px;">Save board</a>	
-		</div>
-	</div>
-	<input type="submit" style="display:none;" id="motherboard_form_save" name="motherboard_form[save]" value="Save board">
+	{% include 'macros/navbar.html.twig' with {'type':'edit', 'entityName': 'motherboard', 'count':3} %}
 	<div class="show-general" id="sh-general">
 		<table class="stbl">
 			<tr><td colspan="2">
 				<table style="width:100%;">
 					<tr>
-						<td width="40%"><div data-controller="collection">
+						<td style="width:40%"><div data-controller="collection">
 							<b>Alternative name:</b>
 							<button type="button" data-action="click->collection#expandButton" data-list-id="motherboardAliases-fields-list">Add</button>
 						</div></td>
-						<td width="30%"><div data-controller="collection">
+						<td style="width:30%"><div data-controller="collection">
 							<b>Redirections:</b>
 							<button type="button" data-action="click->collection#expandButton" data-list-id="redirections-fields-list">Add</button>
 						</div></td>
-						<td width="30%"><div data-controller="collection">
+						<td style="width:30%"><div data-controller="collection">
 							<b>PSU connectors:</b>
 							<button type="button" data-action="click->collection#expandButton" data-list-id="psuConnectors-fields-list">Add</button>
 						</div></td>
@@ -131,11 +113,11 @@
 			</td></tr>	
 			<tr>
 				<td style="width:170px;">Form factor :</td>
-				<td>{{ form_widget(form.formFactor) }}</td>
+				<td>{{ form_widget(form.formFactor)|replace({'<option value="">': '<option label=" " value="">'})|raw }}</td>
 			</tr>
 			<tr>
 				<td>Chipset :</td>
-				<td>{{ form_widget(form.chipset, {'attr': {'style': 'width:80%'}}) }}</td>
+				<td>{{ form_widget(form.chipset, {'attr': {'style': 'width:80%'}})|replace({'<option value="">': '<option label=" " value="">'})|raw }}</td>
 			</tr>
 			<tr>
 				<td>Dimensions :</td>
@@ -143,15 +125,15 @@
 			</tr>
 			<tr>
 				<td>Video Chipset :</td>
-				<td>{{ form_widget(form.videoChipset) }}</td>
+				<td>{{ form_widget(form.videoChipset)|replace({'<option value="">': '<option label=" " value="">'})|raw }}</td>
 			</tr>
 			<tr>
 				<td>Max video RAM :</td>
-				<td>{{ form_widget(form.maxVideoRam) }}</td>
+				<td>{{ form_widget(form.maxVideoRam)|replace({'<option value="">': '<option label=" " value="">'})|raw }}</td>
 			</tr>
 			<tr>
 				<td>Audio Chipset :</td>
-				<td>{{ form_widget(form.audioChipset) }}</td>
+				<td>{{ form_widget(form.audioChipset)|replace({'<option value="">': '<option label=" " value="">'})|raw }}</td>
 			</tr>
 			<tr><td colspan="2">
 				<table>
@@ -339,7 +321,7 @@
 					<div class=ba3>{{ form_widget(form.motherboardBios.vars.prototype.coreVersion, {'attr': {'style': 'width:100%'}} )|e }}</div>
 					<div class=ba4>{{ form_widget(form.motherboardBios.vars.prototype.romFile, {'attr': {'style': 'width:100%'}} )|e }}</div>
 					<div class=ba5>{{ form_widget(form.motherboardBios.vars.prototype.file_name, {'attr': {'style': 'width:100%'}} )|e }}</div>
-					<div class=ba3 id=downloads-id><button type=button data-action='click->collection#removeButtonXtd'>Del</button></div>
+					<div class=ba3><button type=button data-action='click->collection#removeButtonXtd'>Del</button></div>
 					">
 				{% for bios in form.motherboardBios %}
 					<div style="width:100%">
@@ -357,7 +339,7 @@
 							) }}</div>
 						<div class="ba5">{{ form_widget(bios.file_name, {'attr': {'style': 'width:100%'}}
 							) }}</div>
-						<div class="ba3" id="downloads-id">
+						<div class="ba3">
 							<button type="button" data-action="click->collection#removeButtonXtd">Del</button>
 						</div>
 						{{ form_errors(bios) }}
@@ -384,7 +366,7 @@
 					<div class=ba2>{{ form_widget(form.manuals.vars.prototype.language, {'attr': {'style': 'width:100%'}} )|e }}</div>
 					<div class=ba4>{{ form_widget(form.manuals.vars.prototype.manualFile, {'attr': {'style': 'width:100%'}} )|e }}</div>
 					<div class=ba5>{{ form_widget(form.manuals.vars.prototype.file_name, {'attr': {'style': 'width:100%'}} )|e }}</div>
-					<div class=ba3 id=downloads-id><button type=button data-action='click->collection#removeButtonXtd'>Del</button></div>">
+					<div class=ba3><button type=button data-action='click->collection#removeButtonXtd'>Del</button></div>">
 				{% for manual in form.manuals %}
 					<div style="width:100%">
 						<div class="ba1">{{ form_widget(manual.link_name, {'attr': {'style': 'width:100%'}}
@@ -395,7 +377,7 @@
 							) }}</div>
 						<div class="ba5">{{ form_widget(manual.file_name, {'attr': {'style': 'width:100%'}}
 							) }}</div>
-						<div class="ba3" id="downloads-id">
+						<div class="ba3">
 							<button type="button" data-action="click->collection#removeButtonXtd">Del</button>
 						</div>
 						{{ form_errors(manual) }}
@@ -409,7 +391,7 @@
 	</div>
 	<div class="show-cpus" id="sh-cpus">
 		<table class="stbl">
-			<tr style="stbl-head">
+			<tr class="stbl-head">
 				<td><div data-controller="collection">
 					<b>CPU sockets :</b>
 					<button type="button" data-action="click->collection#expandButton" data-list-id="cpuSockets-fields-list">Add</button>		
@@ -512,8 +494,5 @@
 	</table><br>
 	</div>
 	<div style="width:100%;clear:left;"></div>
-	<div id="hiddenDiv" style="display: none;">
-		{{ form_end(form) }}
-	</div>
-</form>
+	<div id="hiddenDiv" style="display: none;">{{ form_end(form)|replace({'</form>': '</div></form>'})|raw }}
 {% endblock %}

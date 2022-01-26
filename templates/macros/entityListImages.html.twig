@@ -2,7 +2,8 @@
 	<div class="bar">
 		<span style="padding-left:10px;">
 			<b>Images</b>
-			<button type="button" data-action="click->collection#expandButton" data-list-id="{{entityName}}-fields-list">Add</button>
+			<a class="snav" data-action="click->collection#expandButton" data-list-id="{{entityName}}-fields-list">
+				<img src="{{ absolute_url(asset('build/icons/add.svg')) }}" data-list-id="{{entityName}}-fields-list" alt="" width="24" style="vertical-align: middle;padding-right:2px;">Add image</a>
 		</span>
 	</div>
 	<div id="{{entityName}}-fields-list" data-widget-counter="{{ entities|length }}" data-prototype="
@@ -10,7 +11,7 @@
 		<div class=imgp><span>Creditor: </span>{{ form_widget(entities.vars.prototype.creditor)|e }}</div>
 		<div class=imgp><span>License: </span>{{ form_widget(entities.vars.prototype.license)|e }}</div>
 		<div class=imgp><span>Notes: </span>{{ form_widget(entities.vars.prototype.description)|e }}</div>
-		<div class=imgp id=imgp-id>Uploaded file:
+		<div class=imgp>Uploaded file:
 		<button type=button data-action='click->collection#removeButtonXtd'>Delete this entry</button></div>
 		<div class=imgp>{{ form_widget(entities.vars.prototype.file_name, {'attr': {'style': 'width:90%'}})|e }}</div>
 		">

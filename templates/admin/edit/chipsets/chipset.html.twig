@@ -1,4 +1,4 @@
-{% extends 'admin/header.html.twig' %}
+{% extends 'base.html.twig' %}
 
 {% block title %}Add/Edit chipset{% endblock %}
 
@@ -54,17 +54,7 @@
 			</div>
 		</div>
 	</div>
-	<div class="show-nav" id="sh-nav" data-controller="show">
-		<a class="snav" data-action='click->show#show_general'>
-			<img src="{{ absolute_url(asset('build/icons/show/data.svg')) }}" alt="" width="24">Description</a>
-		<a class="snav" data-action='click->show#show_downloads'>
-			<img src="{{ absolute_url(asset('build/icons/dw.svg')) }}" alt="" width="24">Downloads</a>
-		<div style="float:right;">
-			<a class="snav" data-action="click->chipset--add#submit">
-				<img src="{{ absolute_url(asset('build/icons/show/edit.svg')) }}" alt="" width="24" style="vertical-align: middle;padding-right:2px;">Save chipset</a>	
-		</div>
-	</div>
-	<input type="submit" style="display:none;" id="chipset_form_save" name="chipset_form[save]" value="Save chipset">
+	{% include 'macros/navbar.html.twig' with {'type':'edit', 'entityName': 'chipset', 'count':2} %}
 	<div class="show-general" id="sh-general">
 		<div style="display:inline-block;">{% trans %}Release date:{% endtrans %}&nbsp;{{form_widget(form.release_date, {'attr': {'placeholder': 'Template: YYYY/MM'}})}}</div>
 		<div style="display:inline-block;">{% trans %}Encyclopedia link:{% endtrans %}&nbsp;{{form_widget(form.encyclopedia_link, {'attr': {'placeholder': 'Insert HTTP link here...'}})}}</div>
@@ -83,13 +73,13 @@
 					<div class="ba2"><b>Recommended</b></div>
 				</div>
 				<div id="drivers-fields-list" data-widget-counter="{{ form.drivers|length }}" data-prototype="
-					<div class=ba7>{{ form_widget(form.drivers.vars.prototype.largeFile, {'attr': {'style': 'width:100%'}} )|e }}</div>
+					<div class=ba7>{{ form_widget(form.drivers.vars.prototype.largeFile, {'attr': {'style': 'width:100%'}})|replace({'<option value="">': '<option value="" disabled selected hidden>Select a driver:'})|raw|e }}</div>
 					<div class=ba2>{{ form_widget(form.drivers.vars.prototype.isRecommended, {'attr': {'style': 'height:18px;width:18px;margin:0;'}} )|e }}</div>
 					<button type=button data-action='click->collection#removeButton'>Del</button>
 					" data-controller="collection">
 					{% for driver in form.drivers %}
 							<div>
-								<div class="ba7">{{ form_widget(driver.largeFile, {'attr': {'style': 'width:100%'}} ) }}</div>
+								<div class="ba7">{{ form_widget(driver.largeFile, {'attr': {'style': 'width:100%'}} )|replace({'<option value="">': '<option label=" " value="">'})|raw }}</div>
 								<div class="ba2">{{ form_widget(driver.isRecommended, {'attr': {'style': 'height:18px;width:18px;margin:0;'}} ) }}</div>
 								<button type="button" data-action="click->collection#removeButton">Del</button>
 							</div>
@@ -98,7 +88,6 @@
 				</div>
 				{{ form_errors(form.drivers) }}
 			</div>
-			{#{% include 'macros/entityList.html.twig' with {'entityName':'drivers', 'entityDisplayName': 'driver', 'entities':form.drivers} %}#}
 		</div>
 		<div data-controller="collection">
 			<div style="padding-top:5px;">
@@ -142,7 +131,5 @@
 		</div>
 	</div>
 	<div style="width:100%;clear:left;"></div>
-	<div id="hiddenDiv" style="display: none;">
-		{{ form_end(form) }}
-	</div>
+	<div id="hiddenDiv" style="display: none;">{{ form_end(form)|replace({'</form>': '</div></form>'})|raw }}
 {% endblock %}

@@ -1,11 +1,22 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{% trans %}Delete{% endtrans %}{% endblock %}
+{% block title %}Delete motherboard{% endblock %}
 
 {% block body %}
-	<div class="title"><b>{% trans %}Delete{% endtrans %}</b></div>
-	<p><b class="contrib">Are you sure you want to delete this motherboard ? ({{ motherboard.getManufacturerShortNameIfExist }} {{motherboard.getName}}) </b></p>
-	{{ form_start(form, {'method': 'POST'}) }}
-    <span>{{form_widget(form.Yes)}} {{form_widget(form.No)}}</span>
-    {{ form_end (form)}}
+	<div class="title"><b>Delete: {{ motherboard.getManufacturerShortNameIfExist }} {{motherboard.getName}}</b></div>
+	<div style="display:table;margin:0 auto;padding-top:25px;">
+		<div style="display:table;margin:0 auto;padding-top:25px;">
+			<b>Are you sure you want to delete this motherboard ?</b>
+		</div>
+		<div style="display:table;margin:0 auto;padding-top:25px;">
+			<a class="snav" onclick="document.getElementById('form_Yes').click();">
+				<img src="{{ absolute_url(asset('build/icons/tick.svg')) }}" alt="" width="24">Yes</a>&nbsp;
+			<a class="snav" onclick="document.getElementById('form_No').click();">
+				<img src="{{ absolute_url(asset('build/icons/show/delete.svg')) }}" alt="" width="24">No</a>
+		</div>
+		<div style="display:table;margin:0 auto;padding-top:25px;">
+			<b>Redirection:&nbsp;</b>{{form_widget(form.Redirection)}}
+		</div>
+	</div>
+	<div style="display: none;">{{ form_start(form, {'method': 'POST'}) }}{{form_widget(form.Yes)}}{{form_widget(form.No)}}</div>{{ form_end (form)}}
 {% endblock %}

@@ -1,36 +1,11 @@
-{% extends 'admin/header.html.twig' %}
+{% extends 'base.html.twig' %}
 
-{% block title %}
-	Manage memory
-{% endblock %}
+{% block title %}Manage {{entityDisplayNamePlural}}{% endblock %}
 
 {% block body %}
-	<div class="title">
-		<b>{{ entityDisplayNamePlural|capitalize }}</b>
-	</div>
-	<a href="{{ path('admin_index') }}" class="admin-button">
-		<img src="{{ absolute_url(asset('build/icons/back.svg')) }}" alt="add" width="32">
-		<p>Go back</p>
-	</a>
-	<a href="{{ path('admin_manage_memories', {entity:"ramtype"}) }}" class="admin-button" style="{% if entityName == "ramtype" %}background-color: #afff97;{% endif %}">
-		<p {% if entityName == "ramtype" %} style="color: #000000;" {% endif %}>{% trans %}DRAM Types{% endtrans %}</p>
-	</a>
-	<a href="{{ path('admin_manage_memories', {entity:"ramsize"}) }}" class="admin-button" style="{% if entityName == "ramsize" %}background-color: #afff97;{% endif %}">
-		<p {% if entityName == "ramsize" %} style="color: #000000;" {% endif %}>{% trans %}RAM Sizes{% endtrans %}</p>
-	</a>
-	<a href="{{ path('admin_manage_memories', {entity:"cachesize"}) }}" class="admin-button" style="{% if entityName == "cachesize" %}background-color: #afff97;{% endif %}">
-		<p {% if entityName == "cachesize" %} style="color: #000000;" {% endif %}>{% trans %}Cache Sizes{% endtrans %}</p>
-	</a>
-	<a href="./memories/{{entityName}}s/add/" class="admin-button" style="float:right;">
-		<img src="{{ absolute_url(asset('build/icons/add.svg')) }}" alt="add" width="32">
-		<p>Add {{ entityDisplayName }}</p>
-	</a>
-	<hr>
-	<div class="list-view">
-		{% if search is not empty %}
-			{{ form(search) }}{% endif %}
-			{{ render(controller(
-                    controllerList, {criterias: criterias}, {page: page, entity: entityName}
-                )) }}
-		</div>
-	{% endblock %}
+	{% include 'admin/macros/admin_navbar.html.twig' with {
+		'category':'memories', 
+		'path':'memories', 
+		'set':{'ramtype':'RAM Types','ramsize':'RAM Sizes', 'cachesize':'Cache Sizes'}
+	} %}
+{% endblock %}
