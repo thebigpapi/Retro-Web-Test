@@ -175,7 +175,8 @@ export default class extends Controller {
             let element = coprocessor.children[0];
             params.set(element.name, element.value);
         }
-
+        let cursor = document.getElementById("cpu-wait");
+        cursor.style.display = "";
         (async () => {
             const rawResponse = await fetch(form.action, {
                 method: 'POST',
@@ -193,6 +194,25 @@ export default class extends Controller {
             document.getElementById("processors-fields-list").innerHTML = parsedResponse.getElementById("processors-fields-list").innerHTML;
             document.getElementById("coprocessors-fields-list").outerHTML = parsedResponse.getElementById("coprocessors-fields-list").outerHTML;
             document.getElementById("coprocessors-fields-list").innerHTML = parsedResponse.getElementById("coprocessors-fields-list").innerHTML;
+            let new_platforms = document.getElementById("processorPlatformTypes-fields-list");
+            for(let new_platform of new_platforms.children){
+                if(new_platform.children[2])
+                    if(new_platform.children[2].nodeName == "UL")
+                        new_platform.children[2].outerHTML = "";
+            }
+            let new_cpus = document.getElementById("processors-fields-list");
+            for(let i=new_cpus.children.length-1; i>0;i-=1){
+                if(new_cpus.children[i])
+                    if(new_cpus.children[i].nodeName == "UL"){
+                        new_cpus.children[i].outerHTML = "";
+                        i-=1;
+                        new_cpus.children[i].outerHTML = "";
+                    }
+            }
+            cursor.style.display = "none";
+            
+            
         })();
+        
     }
 }
