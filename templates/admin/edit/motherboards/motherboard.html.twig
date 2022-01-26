@@ -405,6 +405,7 @@
 					<button type="button" data-action="click->collection#expandButton" data-list-id="cpuSpeed-fields-list">Add</button>
 				</div></td>
 				<td>Max CPUs: {{ form_widget(form.maxCpu, {'attr': {'style': 'width:25px'}}) }}</td>
+				<td></td>
 			</tr><tr>
 				<td class="exp-table"><div data-controller="collection">
 					<div id="cpuSockets-fields-list" data-widget-counter="{{ form.cpuSockets|length }}" data-prototype="
@@ -444,7 +445,13 @@
 					</div>
 				</div></td>
 				<td>
-					{{ form_widget(form.updateProcessors) }}
+					{{ form_widget(form.updateProcessors, {'attr':{'data-action':'click->motherboard--add#updateProcessors'}}) }}
+				</td>
+				<td>
+					<div id="cpu-wait" style="display:none;">
+						<p style="margin-top:-35px;">Please wait :)</p>
+						<img src="{{ absolute_url(asset('build/images/cursor.gif')) }}" alt="" height="24">
+					</div>
 				</td>
 			</tr>
 		</table>
