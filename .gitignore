@@ -24,6 +24,7 @@
 /public/chipset/documentation/*
 /public/chipset/*
 /public/uploads/*
+/public/media/*
 /public/icons/*
 /public/chip/*
 /public/cache/*
