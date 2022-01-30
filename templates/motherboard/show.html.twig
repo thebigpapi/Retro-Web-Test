@@ -334,7 +334,7 @@
 	</div>
 	<div class="scroll-div">
 		<img src="{{ absolute_url(asset('build/icons/show/manual.svg')) }}" alt="" width="32" style="vertical-align: middle;padding-bottom: 10px;">
-		<span><b>{% trans %}Manuals:{% endtrans %} </b></span>
+		<span><b>{% trans %}Documentation:{% endtrans %} </b></span>
 		{% if motherboard.getManuals() is not empty %}
 		<span>{{ motherboard.getManuals.count() }}{% if motherboard.getManuals.count() == 1 %} entry{% else %} entries{% endif %}</span>
 		<table class="stbl">
