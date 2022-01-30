@@ -9,6 +9,9 @@ use Symfony\Component\Form\FormBuilderInterface;
 use App\Entity\MotherboardAlias;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use App\Entity\Manufacturer;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormView;
+use Symfony\Component\Form\ChoiceList\View\ChoiceView;
 
 class MotherboardAliasType extends AbstractType
 {
@@ -32,5 +35,12 @@ class MotherboardAliasType extends AbstractType
         $resolver->setDefaults([
             'data_class' => MotherboardAlias::class,
         ]);
+    }
+
+    public function finishView(FormView $view, FormInterface $form, array $options)
+    {
+        usort($view->children['manufacturer']->vars['choices'], function (ChoiceView $a, ChoiceView $b) {
+            return strnatcasecmp($a->data->getShortNameIfExist(), $b->data->getShortNameIfExist());
+        });
     }
 }
