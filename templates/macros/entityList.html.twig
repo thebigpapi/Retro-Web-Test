@@ -1,13 +1,16 @@
 <div data-controller="collection">
-	<button type="button" data-action="click->collection#expandButton" data-list-id="{{entityName}}-fields-list">Add
-		{{entityDisplayName}}</button>
+	<a class="snav" data-action="click->collection#expandButton" data-list-id="{{entityName}}-fields-list">
+		<img src="{{ absolute_url(asset('build/icons/add.svg')) }}" data-list-id="{{entityName}}-fields-list" alt="" width="24" style="vertical-align: middle;padding-right:2px;">Add {{entityDisplayName}}</a>
 	{{ form_errors(entities) }}
-	<div id="{{entityName}}-fields-list" data-widget-counter="{{ entities|length }}" data-prototype="{{ form_widget(entities.vars.prototype, {'attr': {'style': 'display:inline-block;'}})|e }} <button type=button data-action='click->collection#removeButton'>Del</button>">
+	<div id="{{entityName}}-fields-list" data-widget-counter="{{ entities|length }}" data-prototype="{{ form_widget(entities.vars.prototype, {'attr': {'style': 'display:inline-block;'}})|e }} 
+		<a class=snav data-action='click->collection#removeButton'>
+		<img data-action='click->collection#removeButtonXtd' src={{ absolute_url(asset('build/icons/show/delete.svg')) }} alt='' width=24 style=vertical-align:middle;padding-right:2px;>Del</a>">
 		{% if entities is not empty %}
 			{% for entity in entities %}
 				<div>
-					{{ form_widget(entity, {'attr': {'style': 'display:inline-block;'}}) }}
-					<button type="button" data-action="click->collection#removeButton">Del</button>
+					{{ form_widget(entity, {'attr': {'style': 'display:inline-block;'}})|replace({'<option value="">': '<option label=" " value="">'})|raw }}
+					<a class="snav" data-action="click->collection#removeButton">
+						<img data-action="click->collection#removeButtonXtd" src="{{ absolute_url(asset('build/icons/show/delete.svg')) }}" alt="" width="24" style="vertical-align:middle;padding-right:2px;">Del</a>
 				</div>
 				{{ form_errors(entity) }}
 			{% endfor %}

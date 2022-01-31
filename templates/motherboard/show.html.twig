@@ -102,22 +102,7 @@
 	</div>
 {% endif %}
 </div>
-<div class="show-nav" id="sh-nav" data-controller="show">
-	<a class="snav" data-action='click->show#show_general'>
-		<img src="{{ absolute_url(asset('build/icons/show/data.svg')) }}" alt="" width="24">General</a>
-	<a class="snav" data-action='click->show#show_downloads'>
-		<img src="{{ absolute_url(asset('build/icons/dw.svg')) }}" alt="" width="24">Downloads</a>
-	<a class="snav" data-action='click->show#show_cpus'>
-		<img src="{{ absolute_url(asset('build/icons/show/cpu.svg')) }}" alt="" width="24">CPUs</a>
-	<div>
-	{% if is_granted('ROLE_ADMIN') %}
-	<a class="snav" href="{{ path("motherboard_delete", {id: motherboard.getId()}) }}">
-		<img src="{{ absolute_url(asset('build/icons/show/delete.svg')) }}" alt="" width="24">Delete</a>
-	{% endif %}
-	<a class="snav" href="{{ path('new_motherboard_edit', {id: motherboard.getId()}) }}">
-		<img src="{{ absolute_url(asset('build/icons/show/edit.svg')) }}" alt="" width="24">Edit board</a>
-	</div>
-</div>
+{% include 'macros/navbar.html.twig' with {'type':'show', 'entity': motherboard, 'entityName': 'motherboard', 'count':3} %}
 <div class="show-general" id="sh-general">
 	<table class="stbl">
 		<tr>
@@ -146,13 +131,9 @@
 		<tr>
 			<td>{% trans %}Chipset{% endtrans %}:</td>
 			<td>
-				{% if motherboard.getChipset().getEncyclopediaLink() is not null %}
-					<a href="{{ motherboard.getChipset().getEncyclopediaLink() }}">
-						{{ motherboard.getChipset().getMainChipWithManufacturer() }}
-					</a>
-				{% else %}
+				<a href="{{ path('app_homepage') }}chipsets/{{ motherboard.getChipset().getId()}}">
 					{{ motherboard.getChipset().getMainChipWithManufacturer() }}
-				{% endif %}
+				</a>
 			</td>
 		</tr>
 	{% endif %}
@@ -353,7 +334,7 @@
 	</div>
 	<div class="scroll-div">
 		<img src="{{ absolute_url(asset('build/icons/show/manual.svg')) }}" alt="" width="32" style="vertical-align: middle;padding-bottom: 10px;">
-		<span><b>{% trans %}Manuals:{% endtrans %} </b></span>
+		<span><b>{% trans %}Documentation:{% endtrans %} </b></span>
 		{% if motherboard.getManuals() is not empty %}
 		<span>{{ motherboard.getManuals.count() }}{% if motherboard.getManuals.count() == 1 %} entry{% else %} entries{% endif %}</span>
 		<table class="stbl">

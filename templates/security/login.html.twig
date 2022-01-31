@@ -21,7 +21,7 @@ a.login-link:hover{color:#7ce5ff;}
 	<table style="margin:auto;margin-top:50px;">
 		<tr>
 			<td>
-				<img class="login-logo" src="{{ absolute_url(asset('build/images/admin/login.gif')) }}" alt="">
+				<img class="login-logo" src="{{ absolute_url(asset('build/icons/admin/keys.svg')) }}" alt="" width="128">
 			</td>
 			<td>
 				{% if app.user %}
@@ -56,7 +56,7 @@ a.login-link:hover{color:#7ce5ff;}
 										{% trans %}Remember me{% endtrans %}</label>
 								</td>
 								<td>
-									<button style="margin-top:10px;" type="submit">{% trans %}Login{% endtrans %}</button>
+									<button style="margin-top:10px;float:right;" type="submit">{% trans %}Login{% endtrans %}</button>
 								</td>
 							</tr>
 						</table>

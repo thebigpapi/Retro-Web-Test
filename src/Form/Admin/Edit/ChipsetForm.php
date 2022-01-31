@@ -7,6 +7,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use App\Entity\Chipset;
@@ -14,6 +15,7 @@ use App\Entity\Manufacturer;
 use App\Form\Type\ChipsetBiosCodeType;
 use App\Form\Type\ChipsetPartType;
 use App\Form\Type\LargeFileChipsetType;
+use App\Form\Type\ChipsetDocumentationType;
 
 class ChipsetForm extends AbstractType
 {
@@ -56,6 +58,14 @@ class ChipsetForm extends AbstractType
                 'entry_type' => LargeFileChipsetType::class,
                 'allow_add' => true,
                 'allow_delete' => true,
+            ])
+            ->add('documentations', CollectionType::class, [
+                'entry_type' => ChipsetDocumentationType::class,
+                'allow_add' => true,
+                'allow_delete' => true,
+            ])
+            ->add('description', TextareaType::class, [
+                'required' => false,
             ])
 
             ->add('save', SubmitType::class)

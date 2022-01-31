@@ -1,7 +1,6 @@
 div.butn { text-align: center; }
 div.butn input {color: $dark-color; height:2.7em; font-size:14px;}
 
-
 // Motherboard index
 div.index-title { text-align:center;padding-top: 20px; }
 ul.index-list {
@@ -11,10 +10,25 @@ ul.index-list {
 	list-style: none;
 	padding: 0;
 	margin-left: -4px;
+	-moz-user-select: -moz-none;
+	-khtml-user-select: none;
+	-webkit-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	li {
+		display: inline;
+		padding:2px;
+		a{
+			border: solid 1px $footer-link-color;
+			border-radius: 0.2rem;
+			display:inline-block;
+			width: 1.6rem;
+			height: 1.6rem;
+		}
+		a:hover { color:$dark-color;background-color:$link-hover-color; }
+	}
+	li:before { content: "\200B"; }
 }
-ul.index-list li { display: inline;padding:5px; }
-ul.index-list li a:hover { color:$link-hover-color1; }
-ul.index-list li:before { content: "\200B"; }
 
 // Motherboard search form
 form fieldset { border:none; }
@@ -35,15 +49,47 @@ li.slot-port-item {
 	font-size:12px;
 	margin-bottom:4px;
 	float:left;
+	span { float:left;margin-left:0.4em; }
+	input { float:left; font-size:12px; height: 1.25em !important; width: 1.25em; }
 }
-li.slot-port-item span { float:left;margin-left:0.4em; }
-li.slot-port-item input {
-	float:left;
-	font-size:12px;
-	height: 1.25em !important;
-	width: 1.25em;
+div.pagination{
+	padding-bottom:5px;
+	display: table;
+  	margin: 0 auto;
+	-moz-user-select: -moz-none;
+	-khtml-user-select: none;
+	-webkit-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	span{
+		border: solid 1px $footer-link-color;
+		border-radius: 0.2rem;
+		color:$dark-color;
+		box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.3);
+		display:inline-block;
+		text-align: center;
+		margin-left:5px;
+		a{
+			color:$dark-color;
+			line-height:2rem;
+			display: block;
+			width: 2.6rem;
+			height: 2.3rem;
+		}
+	}
+	span:hover{ background-color:$link-hover-color; }
+	span.current{ 
+		background-color:$link-hover-color;
+		line-height:2rem;
+		width: 2.6rem;
+		height: 2.3rem;
+	}
+	span.first, span.previous, span.next, span.last {
+		width: 3.2rem;
+		a{ width: 3.2rem; }
+	} 
 }
-
+	
 @media (max-width: 600px) {
 	#search-table tr.sep { display: none; }
 	#search-table td { display:block;text-align:left;padding:0 0 4px 4%; }	
@@ -55,7 +101,6 @@ li.slot-port-item input {
 @media (min-width: 800px) {
 	div.search-widget { width:83%;}
 }
-
 @media (min-width: 1200px) {
 	div.butn input { font-size:18px;height:2.2em; }
 	label.search-label { width:180px; }
@@ -72,32 +117,38 @@ li.slot-port-item input {
 	div.search-nav { padding-bottom: 15px; }
 }
 @media (hover: none) {
-	span.help-t img {display:none;}
-	span.help-t span.img {
-		display: inline-block;
-		width: 16px;
-		height: 16px;
-	}
-	span.help-t span.text {
-		background: $lightbg-color;
-		border:1px solid $dark-color;
-		color: $dark-color;
-		display: inline;
-		font-size:12px;
-		margin: -5px 0 0 15px;
-		padding: 3px;
-		position:absolute;
-		visibility: hidden;
-		z-index: 1;
-	}
+	span.help-t{
+		img {display:none;}
+		span.img { display: inline-block; width: 16px; height: 16px; }
+		span.text {
+			background: $lightbg-color;
+			border:1px solid $dark-color;
+			color: $dark-color;
+			display: inline;
+			font-size:12px;
+			margin: -5px 0 0 15px;
+			padding: 3px;
+			position:absolute;
+			visibility: hidden;
+			z-index: 1;
+		}
+	} 
 	span.help-t:hover span.text { visibility:visible; }
 }
 @media (pointer: coarse) { div.sform2 input[type=checkbox] {width:20px;height:20px;} }
 @media (prefers-color-scheme: dark) {
     div.search-widget select, div.search-widget-short select, div.search-widget-long input, li.slot-port-item input, div.search-widget input {
-		background-color:#424242;color:#ececec;
+		background-color: $dark-gray-color;color: $light-color;
 	}
-	ul.index-list li a:hover { color:$link-hover-color; }
+	div.pagination{
+		span{
+			border: solid 1px gray;
+			box-shadow: 0 4px 6px 0 rgba(255, 255, 255, 0);
+			a{ color:$light-color; }
+		}
+		span:hover a{ color:$dark-color; }
+	}
+	ul.index-list li a { border: solid 1px gray; }
 	div.butn input {background-color:$btn-darkbg-color;color:$light-color;}
 	span.help-t span.text{background-color: $dark-color;color:$light-color;border-color:$light-color;}
 }

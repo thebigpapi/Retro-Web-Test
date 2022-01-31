@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	{% trans %}Index{% endtrans %}
+{% endblock %}
+
+{% block body %}
+	<div class="title"><b>{% trans %}Index{% endtrans %}</b></div>
+	<p style="text-align:center;padding-top:10px;">
+		<i>{{ chipset_count }} chipsets</i>
+	</p>
+	{% if chipsets is not empty %}
+		{{ knp_pagination_render(chipsets, 'macros/pagination.html.twig') }}
+		<ul>
+			{% for chipset in chipsets %}
+				<li>
+					<a href='{{ path("chipset_show", {id: chipset.getId()}) }}'
+					>{{ chipset.getManufacturer().getShortNameIfExist()}}<!--
+  					-->{% if chipset.getPartNo() is not null %}&nbsp;{{ chipset.getPartNo() }}{% endif %}<!--
+  					-->{% if chipset.getName() is not null %}&nbsp;({{ chipset.getName() }}){% endif %}</a>
+				</li>
+			{% endfor %}
+		</ul>
+		{{ knp_pagination_render(chipsets, 'macros/pagination.html.twig') }}
+	{% endif %}
+{% endblock %}

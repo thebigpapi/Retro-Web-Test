@@ -3,7 +3,8 @@ import { Controller } from 'stimulus';
 export default class extends Controller {
     connect() {
         document.getElementById('sh-downloads').style.display = 'none';
-	    document.getElementById('sh-cpus').style.display = 'none';
+	    if(document.getElementById('sh-cpus'))
+            document.getElementById('sh-cpus').style.display = 'none';
         let URL = window.location.href;
         if (URL.indexOf("#downloads") != -1)
             this.show_downloads();
@@ -13,13 +14,15 @@ export default class extends Controller {
     show_general(){
         document.getElementById('sh-general').style.display = 'block';
 	    document.getElementById('sh-downloads').style.display = 'none';
-	    document.getElementById('sh-cpus').style.display = 'none';
+	    if(document.getElementById('sh-cpus'))
+            document.getElementById('sh-cpus').style.display = 'none';
         this.change_tag("0");
 	}
 	show_downloads(){
         document.getElementById('sh-general').style.display = 'none';
 	    document.getElementById('sh-downloads').style.display = 'block';
-	    document.getElementById('sh-cpus').style.display = 'none';
+	    if(document.getElementById('sh-cpus'))
+            document.getElementById('sh-cpus').style.display = 'none';
         this.change_tag("#downloads");
 	}
 	show_cpus(){

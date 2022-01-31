@@ -2,5 +2,8 @@
     <td>{{object.getName()}}</td>
     <td>{{object.getTagName()}}</td>
     <td><img src="{{ vich_uploader_asset(object, 'icon')}}" alt="" width="32"></td>
-    <td><a class="result-link" href="./files/mediatypes/{{ object.getId() }}/edit/">Edit</a></td>
+    <td>
+        <a class="snav" href="./files/mediatypes/{{ object.getId() }}/edit/">
+            <img src="{{ absolute_url(asset('build/icons/show/edit.svg')) }}" alt="" width="24">Edit</a>
+    </td>
 </tr>

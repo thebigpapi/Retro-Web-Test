@@ -1,0 +1,27 @@
+<div class="title">
+		<b>{{ entityDisplayNamePlural|capitalize }}</b>
+</div>
+<a href="{{ path('admin_index') }}" class="admin-button">
+	<img src="{{ absolute_url(asset('build/icons/back.svg')) }}" alt="add" width="32">
+	<p>Go back</p>
+</a>
+{% for key, value in set %}
+    <a href="{{ path('admin_manage_' ~ category, {entity:key})}}" class="admin-button" style="{% if entityName == key %}background-color: #afff97;{% endif %}">
+        <p {% if entityName == key %} style="color: #000000;" {% endif %}>{{value}}</p>
+    </a>
+{% endfor %}
+{% if search is not empty %}
+	<div class="processing-search">{{ form(search) }}</div>
+{% endif %}
+{% if entityName == "osfamily" %}
+	<a href="./{{path}}s/osfamilies/add/" class="admin-button" style="float:right;">
+{% else %}
+	<a href="./{{path}}/{{entityName}}s/add/" class="admin-button" style="float:right;">
+{% endif %}
+	<img src="{{ absolute_url(asset('build/icons/add.svg')) }}" alt="add" width="32">
+	<p>Add {{ entityDisplayName }}</p>
+</a>
+<hr>
+<div class="list-view">
+	{{ render(controller(controllerList, {criterias: criterias}, {page: page, entity: entityName})) }}
+</div>

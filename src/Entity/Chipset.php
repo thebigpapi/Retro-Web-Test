@@ -67,12 +67,23 @@ class Chipset
      */
     private $drivers;
 
+    /**
+     * @ORM\Column(type="string", length=4096, nullable=true)
+     */
+    private $description;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\ChipsetDocumentation", mappedBy="chipset", orphanRemoval=true, cascade={"persist"})
+     */
+    private $documentations;
+
     public function __construct()
     {
         $this->motherboards = new ArrayCollection();
         $this->chipsetParts = new ArrayCollection();
         $this->biosCodes = new ArrayCollection();
         $this->drivers = new ArrayCollection();
+        $this->documentations = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -326,6 +337,48 @@ class Chipset
             // set the owning side to null (unless already changed)
             if ($driver->getChipset() === $this) {
                 $driver->setChipset(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(?string $description): self
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+    /**
+     * @return Collection|ChipsetDocumentation[]
+     */
+    public function getDocumentations(): Collection
+    {
+        return $this->documentations;
+    }
+
+    public function addManual(ChipsetDocumentation $documentation): self
+    {
+        if (!$this->documentations->contains($documentation)) {
+            $this->documentations[] = $documentation;
+            $documentation->setChipset($this);
+        }
+
+        return $this;
+    }
+
+    public function removeManual(ChipsetDocumentation $documentation): self
+    {
+        if ($this->documentations->contains($documentation)) {
+            $this->documentations->removeElement($documentation);
+            // set the owning side to null (unless already changed)
+            if ($documentation->getChipset() === $this) {
+                $documentation->setChipset(null);
             }
         }
 
