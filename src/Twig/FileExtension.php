@@ -12,6 +12,7 @@ class FileExtension extends AbstractExtension
     {
         return array(
             new TwigFilter('ext', array($this, 'ext')),
+            new TwigFilter('force_to_int', fn ($value) => intval($value)),
         );
     }
 

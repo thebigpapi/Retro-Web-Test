@@ -9,6 +9,19 @@
 		<b>Statistics</b>
 	</div>
 	<p><b>{% trans %}Board count:{% endtrans %} {{moboCount}}</b></p>
+	<dl>
+		<dt>Top 15 board manufacturers:</dt>
+		{% for key, value in manufBoardCount %}
+		{% if loop.index < 16 %}
+			{% if loop.first %}{% set ref = value %}{% endif %}
+			<dd class="percentage percentage-{{ (value / ref * 100)|force_to_int }}">
+				<span class="text">
+				{{ key }}: {{ value }}
+				</span>
+			</dd>
+			
+		{% endif %}
+		{% endfor %}
+	</dl>
 	other stuff coming soon.
-
 {% endblock %}

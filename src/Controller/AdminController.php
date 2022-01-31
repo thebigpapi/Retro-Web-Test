@@ -13,6 +13,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use App\Repository\MotherboardRepository;
+use App\Repository\ManufacturerRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -36,12 +37,18 @@ class AdminController extends AbstractController
      * @Route("/admin/stats", name="admin_stats")
      * @param Request $request
      */
-    public function stats(MotherboardRepository $motherboardRepository)
+    public function stats(MotherboardRepository $motherboardRepository, ManufacturerRepository $manufRepository)
     {
-        $latestMotherboards = $motherboardRepository->find50Latest();
+        $manufArray = $manufRepository->findAll();
+        $manufBoardCount = array();
+        foreach ($manufArray as $manuf => $value) {
+            $manufBoardCount[$value->getShortNameIfExist()] = $motherboardRepository->getManufCount($value->getId());
+        }
+        arsort($manufBoardCount);
+        $latestMotherboards = $motherboardRepository->getManufCount(93);
         return $this->render('admin/stats.html.twig', [
             'controller_name' => 'MainController',
-            'latestMotherboards' => $latestMotherboards,
+            'manufBoardCount' => $manufBoardCount,
             'moboCount' => $motherboardRepository->getCount(),
         ]);
     }

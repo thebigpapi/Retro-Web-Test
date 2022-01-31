@@ -14,6 +14,66 @@ a.admin-button-index { width:205px; }
 a.admin-button:hover, a.admin-button-index:hover { background-color: $medium-color; }
 a.admin-button p, a.admin-button-index p{ color: $dark-color; }
 
+dl {
+	display: flex;
+	background-color: $btn-lightbg-color;
+	flex-direction: column;
+	width: 100%;
+	max-width: 700px;
+	position: relative;
+	padding: 20px;
+	dt {
+		width: 100%;
+		color:$dark-color;
+		text-align: center;
+		font-size: 1.2em;
+		margin-bottom: 20px;
+	  }
+	  dd.percentage {
+		font-size: .8em;
+		width: 75%;
+		height: 40px;
+		margin-left: 160px;
+		background: repeating-linear-gradient(
+		to right,#ddd,#ddd 1px,#fff 1px,#fff 5%
+	  );
+	  &:after {
+		content: "";
+		display: block;
+		background-color: $link-hover-color1;
+		width: 50px;
+		margin-bottom: 10px;
+		height: 90%;
+		position: relative;
+		top: 50%;
+		transform: translateY(-50%);
+		transition: background-color .3s ease;
+		cursor: pointer;
+	  }
+	}
+	
+	@for $i from 1 through 100 {
+	  dd.percentage-#{$i} {
+		&:after {
+		  $value: ($i * 1%);
+		  width: $value;
+		}
+	  }
+	}
+	  dd span.text {
+		font-weight: 600;
+		color:$dark-color;
+		display: flex;
+		align-items: center;
+		height: 40px;
+		width: 160px;
+		background-color: $btn-lightbg-color;
+		position: absolute;
+		left: 0;
+		justify-content: flex-end;
+	  }
+  } 
+
 /* === manage_xxxx.html.twig === */
 div.list-view{min-height:12em;}
 

@@ -977,13 +977,14 @@ class MotherboardRepository extends ServiceEntityRepository
     /**
      * @return Motherboard[] Returns an array of Motherboard objects
      */
-    public function find50Latest()
+    public function getManufCount($manufacturer): int
     {
         return $this->createQueryBuilder('m')
-            ->orderBy('m.lastEdited', 'DESC')
-            ->setMaxResults(50)
+            ->andWhere('m.manufacturer = :val')
+            ->setParameter('val', $manufacturer)
+            ->select('count(m.manufacturer)')
             ->getQuery()
-            ->getResult();
+            ->getSingleScalarResult();
     }
 
     /**
