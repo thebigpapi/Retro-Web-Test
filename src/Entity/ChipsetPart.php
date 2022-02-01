@@ -72,6 +72,11 @@ class ChipsetPart extends Chip
             return "$this->partNumber";
         }
     }
+
+    public function getShortNamePN(): ?string
+    {
+        return "$this->partNumber";
+    }
      /**
      * @return Collection|ChipDocumentation[]
      */

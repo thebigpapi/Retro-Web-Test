@@ -13,12 +13,7 @@
 		{{ knp_pagination_render(chipsets, 'macros/pagination.html.twig') }}
 		<ul>
 			{% for chipset in chipsets %}
-				<li>
-					<a href='{{ path("chipset_show", {id: chipset.getId()}) }}'
-					>{{ chipset.getManufacturer().getShortNameIfExist()}}<!--
-  					-->{% if chipset.getPartNo() is not null %}&nbsp;{{ chipset.getPartNo() }}{% endif %}<!--
-  					-->{% if chipset.getName() is not null %}&nbsp;({{ chipset.getName() }}){% endif %}</a>
-				</li>
+				<li><a href='{{ path("chipset_show", {id: chipset.getId()}) }}'>{{ chipset.getMainChipWithManufacturer() }}</a></li>
 			{% endfor %}
 		</ul>
 		{{ knp_pagination_render(chipsets, 'macros/pagination.html.twig') }}
