@@ -32,6 +32,45 @@
 				<td colspan="2">{% include 'macros/entityList.html.twig' with {'entityName':'chip.chipAliases', 'entityDisplayName': 'chip alias', 'entities':form.chip.chipAliases} %}</td>
 			</tr>
 		</table>
+		<div data-controller="collection">
+			<div style="padding-top:5px;">
+				<img src="{{ absolute_url(asset('build/icons/show/manual.svg')) }}" alt="" width="32" style="vertical-align: middle;padding-bottom: 10px;">
+				<b>Documentation:</b>
+				<button type="button" data-action="click->collection#expandButton" data-list-id="documentations-fields-list">Add</button>
+			</div>
+			<div class="bios-image">
+				<div class="bios-image-head">
+					<div class="ba1"><b>Title</b></div>
+					<div class="ba2"><b>Language</b></div>
+					<div class="ba4"><b>File to upload</b></div>
+					<div class="ba5"><b>Uploaded file</b></div>
+				</div>
+				<div id="documentations-fields-list" data-widget-counter="{{ form.chip.documentations|length }}" data-prototype="
+					<div class=ba1>{{ form_widget(form.chip.documentations.vars.prototype.link_name, {'attr': {'style': 'width:100%'}} )|e }}</div>
+					<div class=ba2>{{ form_widget(form.chip.documentations.vars.prototype.language, {'attr': {'style': 'width:100%'}} )|e }}</div>
+					<div class=ba4>{{ form_widget(form.chip.documentations.vars.prototype.manualFile, {'attr': {'style': 'width:100%'}} )|e }}</div>
+					<div class=ba5>{{ form_widget(form.chip.documentations.vars.prototype.file_name, {'attr': {'style': 'width:100%'}} )|e }}</div>
+					<div class=ba3 id=downloads-id><button type=button data-action='click->collection#removeButtonXtd'>Del</button></div>">
+				{% for documentation in form.chip.documentations %}
+					<div style="width:100%">
+						<div class="ba1">{{ form_widget(documentation.link_name, {'attr': {'style': 'width:100%'}}
+							) }}</div>
+						<div class="ba2">{{ form_widget(documentation.language, {'attr': {'style': 'width:100%'}}
+							) }}</div>
+						<div class="ba4">{{ form_widget(documentation.manualFile, {'attr': {'style': 'width:100%'}}
+							) }}</div>
+						<div class="ba5">{{ form_widget(documentation.file_name, {'attr': {'style': 'width:100%'}}
+							) }}</div>
+						<div class="ba3" id="downloads-id">
+							<button type="button" data-action="click->collection#removeButtonXtd">Del</button>
+						</div>
+						{{ form_errors(documentation) }}
+					</div>
+				{% endfor %}
+				{{ form_errors(form.chip.documentations) }}
+				</div>
+			</div>
+		</div>
 	</div>
 	<div id="hiddenDiv" style="display: none;">{{form_widget(form.save) }}{{ form_end(form)|replace({'</form>': '</div></form>'})|raw }}
 {% endblock %}

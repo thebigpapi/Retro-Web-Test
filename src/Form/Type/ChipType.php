@@ -54,6 +54,11 @@ class ChipType extends AbstractType
                 'allow_add' => true,
                 'allow_delete' => true,
             ])
+            ->add('documentations', CollectionType::class, [
+                'entry_type' => ChipDocumentationType::class,
+                'allow_add' => true,
+                'allow_delete' => true,
+            ])
             ;
     }
 
