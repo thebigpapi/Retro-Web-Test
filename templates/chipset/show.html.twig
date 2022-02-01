@@ -14,13 +14,13 @@
 {% block body %}
 <div class="title">
 	<b>{% if chipset.getManufacturer() is not null %}{{ chipset.getManufacturer().getShortNameIfExist() }}{% else %}Unknown{% endif %}<!--
-	-->&nbsp;{{ chipset.getPartNo() }}<!--
-	-->&nbsp;{% if chipset.getName() is not null %}{% if chipset.getPartNo() is not null %}({{ chipset.getName() }}){% else %}{{ chipset.getName() }}{% endif %}{% endif %}</b>
+	-->{% if chipset.getPartNo() is not null %}&nbsp;{{ chipset.getPartNo() }}{% endif %}<!--
+	-->{% if chipset.getName() is not null %}&nbsp;{% if chipset.getPartNo() is not null %}({{ chipset.getName() }}){% else %}{{ chipset.getName() }}{% endif %}{% endif %}</b>
 </div>
 {% if chipset.getChipsetParts() is not empty %}
 	<p class="string-alias">
 		<b><span class="text-block" style="border: none; padding-right: 0;">{% trans %}Chipset parts{% endtrans %}:</span>
-			{% for part in chipset.getChipsetParts() %}
+			{% for part in chipset.getChipsetParts()|sort((a, b) => b.partNumber <=> a.partNumber) %}
 				<span class="text-block">{{ part.getFullName() }}</span>
 		{% endfor %}</b>
 	</p>
@@ -28,7 +28,7 @@
 <!-- IMAGES -->
 <div class="show-images" id="sh-images">
 {% if chipset.getChipsetParts() is not empty %}
-    {% for chipPart in chipset.getChipsetParts() %}
+    {% for chipPart in chipset.getChipsetParts()|sort((a, b) => b.partNumber <=> a.partNumber) %}
         {% if chipPart.getImages() is not empty %}
         {% for image in chipPart.getImages()|sort((a, b) => a.motherboardImageType <=> b.motherboardImageType) %}
             <div class="show-image">
@@ -49,8 +49,6 @@
 			{% endif %}
 		</div>
         {% endfor %}
-		{% else %}
-			{% if loop.first %}<div class="show-image"><p style="font-size:20px;height:100px;">no images available :(</p></div>{% endif %}
         {% endif %}
     {% endfor %}
 {% else %}

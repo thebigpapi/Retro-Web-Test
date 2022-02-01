@@ -67,7 +67,7 @@ class ChipsetPart extends Chip
     public function getShortName(): ?string
     {
         if ($this->name) {
-            return "$this->name ($this->partNumber)";
+            return "$this->partNumber ($this->name)";
         } else {
             return "$this->partNumber";
         }
