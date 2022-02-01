@@ -26,12 +26,13 @@ class ChipsetDocumentationType extends AbstractType
                 'required' => false,
                 'constraints' => [
                     new File([
-                        'maxSize' => '16384k',
+                        'maxSize' => '16m',
                         'mimeTypes' => [
                             'application/pdf',
                             'application/x-pdf',
+                            'application/zip',
                         ],
-                        'mimeTypesMessage' => 'Please upload a valid PDF document',
+                        'mimeTypesMessage' => 'Please upload a valid PDF document or ZIP file',
                     ])
                 ],
             ])
