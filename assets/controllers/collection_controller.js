@@ -6,7 +6,15 @@ export default class extends Controller {
         let list = document.getElementById(event.target.dataset.listId);
         this.expand(list);
     }
-
+    addLink(){
+        let list = document.getElementById('chipsetParts-fields-list').childNodes;
+        list.forEach(function(item){
+            if(item.nodeName == "DIV"){
+                if(item.children[2].href.substring(item.children[2].href.length -1) == "#")
+                    item.children[2].href = "../../parts/" + item.children[0].value + "/edit";
+            }
+        });
+    }
     /**
      * Add an element to the list
      * @param {*} list the list to interract with
@@ -27,6 +35,7 @@ export default class extends Controller {
             newElem.setAttribute("style", "width:100%");
         newElem.innerHTML = newWidget;
         list.appendChild(newElem);
+        this.addLink();
     }
 
     removeButton(event) {

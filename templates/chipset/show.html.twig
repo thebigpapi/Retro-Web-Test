@@ -12,25 +12,25 @@
 {% endblock %}
 
 {% block body %}
+<!-- MANUF./NAME/PART NO. -->
 <div class="title">
 	<b>{% if chipset.getManufacturer() is not null %}{{ chipset.getManufacturer().getShortNameIfExist() }}{% else %}Unknown{% endif %}<!--
 	-->{% if chipset.getPartNo() is not null %}&nbsp;{{ chipset.getPartNo() }}{% endif %}<!--
 	-->{% if chipset.getName() is not null %}&nbsp;{% if chipset.getPartNo() is not null %}({{ chipset.getName() }}){% else %}{{ chipset.getName() }}{% endif %}{% endif %}</b>
 </div>
 {% if chipset.getChipsetParts() is not empty %}
-	<p class="string-alias">
-		<b><span class="text-block" style="border: none; padding-right: 0;">{% trans %}Chipset parts{% endtrans %}:</span>
-			{% for part in chipset.getChipsetParts()|sort((a, b) => b.partNumber <=> a.partNumber) %}
-				<span class="text-block">{{ part.getFullName() }}</span>
-		{% endfor %}</b>
-	</p>
+	<p class="string-alias"><b>
+		<span class="text-block" style="border: none; padding-right: 0;">{% trans %}Chipset parts{% endtrans %}:</span>
+		{% for part in chipset.getChipsetParts()|sort((a, b) => a.rank <=> b.rank) %}
+			<span class="text-block">{{ part.getFullName() }}</span>
+		{% endfor %}
+	</b></p>
 {% endif %}
 <!-- IMAGES -->
 <div class="show-images" id="sh-images">
 {% if chipset.getChipsetParts() is not empty %}
-    {% for chipPart in chipset.getChipsetParts()|sort((a, b) => b.partNumber <=> a.partNumber) %}
-        {% if chipPart.getImages() is not empty %}
-        {% for image in chipPart.getImages()|sort((a, b) => a.motherboardImageType <=> b.motherboardImageType) %}
+    {% for chipPart in chipset.getChipsetParts()|sort((a, b) => a.rank <=> b.rank)|filter(chipPart => chipPart.getImages() is not empty) %}
+        {% for image in chipPart.getImages() %}
             <div class="show-image">
 				<a href="{{ vich_uploader_asset(image, 'imageFile')}}" class="glightbox" data-description="{{ chipPart.getFullName() }}{% if image.description %}Notes: {{ image.description }}{% endif %}">
 					<img src="{{ vich_uploader_asset(image, 'imageFile') | imagine_filter('motherboard_show_thumb') }}
@@ -49,7 +49,6 @@
 			{% endif %}
 		</div>
         {% endfor %}
-        {% endif %}
     {% endfor %}
 {% else %}
 	<div class="show-image"><p style="font-size:20px;height:100px;">no images available :(</p></div>
@@ -65,6 +64,11 @@
 	{% if chipset.getDescription() is not empty %}
 		{% apply markdown_to_html %}{{ chipset.getDescription() }}{% endapply %}
 	{% endif %}
+	{% if chipset.getChipsetParts() is not empty %}
+    	{% for chipPart in chipset.getChipsetParts()|sort((a, b) => a.rank <=> b.rank)|filter(chipPart => chipPart.getDescription() is not empty) %}
+			{% apply markdown_to_html %}{{ chipPart.getDescription() }}{% endapply %}
+		{% endfor %}
+	{% endif %}
 	</div>
 </div>
 <div class="show-downloads" id="sh-downloads">
@@ -73,13 +77,13 @@
 		<img src="{{ absolute_url(asset('build/icons/show/hardware.svg')) }}" alt="" width="32" style="vertical-align: middle;padding-bottom: 10px;">
 		<span><b>{% trans %}Drivers:{% endtrans %} </b></span>
 		{% if chipset.getDrivers() is not empty %}
-		<span>{{ chipset.getDrivers.count() }}{% if chipset.getDrivers.count() == 1 %} entry{% else %} entries{% endif %}</span>
-		<table class="stbl">
-			<tr class="stbl-head">{{ driverHeader() }}</tr>
-			{% for driver in chipset.getDrivers() %}{{ driverLink(driver.largeFile) }}{% endfor %}
-		</table>
+			<span>{{ chipset.getDrivers.count() }}{% if chipset.getDrivers.count() == 1 %} entry{% else %} entries{% endif %}</span>
+			<table class="stbl">
+				<tr class="stbl-head">{{ driverHeader() }}</tr>
+				{% for driver in chipset.getDrivers() %}{{ driverLink(driver.largeFile) }}{% endfor %}
+			</table>
 		{% else %}
-		<span>not available</span>
+			<span>not available</span>
 		{% endif %}
 	</div>
 	<!-- CHIPSET PART DOCS -->
@@ -89,10 +93,8 @@
 			<span><b>{% trans %}Documentation:{% endtrans %} </b></span>
 			<!-- CHIPSET PART DOC COUNT -->
 			{% set docCount = 0 %}
-    		{% for chipPart in chipset.getChipsetParts() %}
-        		{% if chipPart.getDocumentations() is not empty %}
-					{% set docCount = docCount + 1 %}
-				{% endif %}
+    		{% for chipPart in chipset.getChipsetParts()|filter(chipPart => chipPart.getDocumentations() is not empty) %}
+				{% set docCount = docCount + 1 %}
 			{% endfor %}
 			{% if docCount > 0 %}
 				<span>{{ docCount }}&nbsp;{% if docCount == 1 %}file{% else %}files{% endif %}</span>
@@ -104,18 +106,16 @@
 				<tr>
 					<td>
 						<ul style="list-style-type: none;">
-						{% for chipPart in chipset.getChipsetParts() %}
-							{% if chipPart.getDocumentations() is not empty %}
-								{% for documentation in chipPart.getDocumentations()|sort((a, b) => a.getLinkName <=> b.getLinkName) %}
-								<li>
-									<a href="{{ vich_uploader_asset(documentation, 'manualFile') }}">
-										<img src="{{ absolute_url(asset('build/icons/dw.svg')) }}" alt="" width="16" height="16" style="vertical-align: middle;">
-										{{ documentation.getLinkName() }}
-									</a>
-									({{ documentation.getLanguage().getName()}})
-								</li>
-								{% endfor %}
-							{% endif %}
+						{% for chipPart in chipset.getChipsetParts()|filter(chipPart => chipPart.getDocumentations() is not empty) %}
+							{% for documentation in chipPart.getDocumentations()|sort((a, b) => a.getLinkName <=> b.getLinkName) %}
+							<li>
+								<a href="{{ vich_uploader_asset(documentation, 'manualFile') }}">
+									<img src="{{ absolute_url(asset('build/icons/dw.svg')) }}" alt="" width="16" height="16" style="vertical-align: middle;">
+									{{ documentation.getLinkName() }}
+								</a>
+								({{ documentation.getLanguage().getName()}})
+							</li>
+							{% endfor %}
 						{% endfor %}
 						</ul>
 					</td>
@@ -123,7 +123,7 @@
 			</table>
 		{% endif %}
 	</div>
-	<!-- CHIPSET DOCS -->
+	<!-- CHIPSET FILES -->
     <div class="scroll-div">
 		<img src="{{ absolute_url(asset('build/icons/show/manual.svg')) }}" alt="" width="32" style="vertical-align: middle;padding-bottom: 10px;">
 		<span><b>{% trans %}Other files:{% endtrans %} </b></span>
