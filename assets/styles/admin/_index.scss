@@ -6,6 +6,12 @@ a.admin-button,a.admin-button-index {
   	display: inline-block;
   	font-size: 16px;
   	margin-bottom: 4px;
+	text-decoration:none;
+	-moz-user-select: -moz-none;
+	-khtml-user-select: none;
+	-webkit-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
 }
 a.admin-button { padding:0px 5px 0px; }
 a.admin-button img { padding-top:7px;vertical-align:top;display:inline-block; }

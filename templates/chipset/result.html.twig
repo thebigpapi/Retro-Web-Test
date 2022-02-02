@@ -25,25 +25,15 @@
 									{{ vich_uploader_asset(image, 'imageFile')}}{% endif %}" alt="" title="{% if image.description %}{{ image.description }}{% endif %}"></a>
 							{% endfor %}
 						{% endif %}
-						{% if loop.first %}<span>
-							<a class="result-link" href="{{ path("chipset_show", {id: chipset.getId()}) }}"
-							>{{ chipset.getManufacturer().getShortNameIfExist()}}<!--
-  							-->{% if chipset.getPartNo() is not null %}&nbsp;{{ chipset.getPartNo() }}{% endif %}<!--
-  							-->{% if chipset.getName() is not null %}&nbsp;({{ chipset.getName() }}){% endif %}</a>
-							<a class="result-link" href="{{ path("chipset_show", {id: chipset.getId()}) }}"
-							>{% if chipset.getManufacturer() is not null %}{{ chipset.getManufacturer().getShortNameIfExist() }}{% else %}Unknown{% endif %}<!--
-							-->&nbsp;{{ chipset.getPartNo() }}<!--
-							-->{% if chipset.getName() is not null %}{% if chipset.getPartNo() is not null %}({{ chipset.getName() }}){% else %}{{ chipset.getName() }}{% endif %}{% endif %}</a>
-						</span>{% endif %}
+						{% if loop.first %}
+							<span><a class="result-link" href="{{ path("chipset_show", {id: chipset.getId()}) }}">{{ chipset.getMainChipWithManufacturer() }}</a></span>
+						{% endif %}
 					{% endfor %}
 					</span></span>
 				{% endfor %}
 			{% else %}
 				<ul>{% for chipset in chipsets %}
-					<li><a class="result-link" href="{{ path("chipset_show", {id: chipset.getId()}) }}"
-					>{% if chipset.getManufacturer() is not null %}{{ chipset.getManufacturer().getShortNameIfExist() }}{% else %}Unknown{% endif %}<!--
-					-->&nbsp;{{ chipset.getPartNo() }}<!--
-					-->&nbsp;{% if chipset.getName() is not null %}{% if chipset.getPartNo() is not null %}({{ chipset.getName() }}){% else %}{{ chipset.getName() }}{% endif %}{% endif %}</a></li>
+					<li><a class="result-link" href="{{ path("chipset_show", {id: chipset.getId()}) }}">{{ chipset.getMainChipWithManufacturer() }}</a></li>
 				{% endfor %}</ul>
 			{% endif %}
 			{{ knp_pagination_render(chipsets, 'macros/pagination.html.twig') }}

@@ -1,37 +1,74 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Manage chipset parts
-{% endblock %}
+{% block title %}Manage chipset part{% endblock %}
 
 {% block body %}
-	<div class="title" style="padding-top:5em;">
-		<b>Edit:&nbsp;Chipset part&nbsp;&nbsp;</b>
-		<a class="snav" onclick="document.getElementById('chipset_part_form_save').click();">
-			<img src="{{ absolute_url(asset('build/icons/show/edit.svg')) }}" alt="" width="24" style="vertical-align: middle;padding-right:2px;">Save</a>
-	</div>
 	{{ form_start(form, {'method': 'POST'}) }}
-	<div>
-		{% include 'macros/entityListImages.html.twig' with {'entityName':'chip.images', 'entities':form.chip.images} %}
+	<!-- MANUF./NAME/PART NO. -->
+	<table class="add-title" style="padding:30px;">
+		<tr>
+			<td class="title-small">{{ form_widget(form.chip.manufacturer) }}</td>
+			<td class="title-small">{{ form_widget(form.chip.partNumber, {'attr': {'placeholder': 'Part Number ...'}}) }}</td>
+			<td class="title-small">{{ form_widget(form.chip.name, {'attr': {'placeholder': 'Name ...'}}) }}</td>
+		</tr>
+	</table>
+	<!-- IMAGES AND NAVBAR -->
+	{% include 'macros/entityListImages.html.twig' with {'entityName':'chip.images', 'entities':form.chip.images} %}
+	{% include 'macros/navbar.html.twig' with {'type':'edit', 'entityName': 'chip', 'count':2} %}
+	<!-- DESCRIPTION -->
+	<div class="show-general" id="sh-general">
+		{{form_widget(form.chip.description, {'attr': {'style': 'width:98%;height:600px;', 'placeholder': 'Describe the chipset (max. 4096 characters) ...'}}) }}
+	</div>
+	<div class="show-downloads" id="sh-downloads">
+		<!-- CHIP ALIASES -->
 		<table>
 			<tr>
-				<td>{{form_label(form.chip.manufacturer)}}</td>
-				<td>{{form_widget(form.chip.manufacturer)}}</td>
+				<td>Rank:{{ form_widget(form.chip.rank) }}</td>
 			</tr>
 			<tr>
-				<td>{{form_label(form.chip.name)}}</td>
-				<td>{{form_widget(form.chip.name)}}</td>
+				<td>{{form_label(form.chip.chipAliases)}}</td>
 			</tr>
 			<tr>
-				<td>Part number</td>
-				<td>{{form_widget(form.chip.partNumber)}}</td>
-			</tr>
-			<tr>
-				<td colspan="2">{{form_label(form.chip.chipAliases)}}</td>
-			</tr>
-			<tr>
-				<td colspan="2">{% include 'macros/entityList.html.twig' with {'entityName':'chip.chipAliases', 'entityDisplayName': 'chip alias', 'entities':form.chip.chipAliases} %}</td>
+				<td>{% include 'macros/entityList.html.twig' with {'entityName':'chip.chipAliases', 'entityDisplayName': 'chip alias', 'entities':form.chip.chipAliases} %}</td>
 			</tr>
 		</table>
+		<!-- DOCS -->
+		<div data-controller="collection">
+			<div style="padding-top:5px;">
+				<img src="{{ absolute_url(asset('build/icons/show/manual.svg')) }}" alt="" width="32" style="vertical-align: middle;padding-bottom: 10px;">
+				<p style="display:inline-block;">Documentation: </p>
+				<a class="button-widget" data-action="click->collection#expandButton" data-list-id="documentations-fields-list">
+					<img src="{{ absolute_url(asset('build/icons/add.svg')) }}" data-list-id="documentations-fields-list" alt="" width="24" style="vertical-align: middle;padding-right:2px;">Add file</a>
+			</div>
+			<div class="bios-image">
+				<div class="bios-image-head">
+					<div class="ba1"><b>Title</b></div>
+					<div class="ba2"><b>Language</b></div>
+					<div class="ba4"><b>File to upload</b></div>
+					<div class="ba5"><b>Uploaded file</b></div>
+				</div>
+				<div id="documentations-fields-list" data-widget-counter="{{ form.chip.documentations|length }}" data-prototype="
+					<div class=ba1>{{ form_widget(form.chip.documentations.vars.prototype.link_name, {'attr': {'style': 'width:100%'}} )|e }}</div>
+					<div class=ba2>{{ form_widget(form.chip.documentations.vars.prototype.language, {'attr': {'style': 'width:100%'}} )|e }}</div>
+					<div class=ba4>{{ form_widget(form.chip.documentations.vars.prototype.manualFile, {'attr': {'style': 'width:100%'}} )|e }}</div>
+					<div class=ba5>{{ form_widget(form.chip.documentations.vars.prototype.file_name, {'attr': {'style': 'width:100%'}} )|e }}</div>
+					<a class=button-widget data-action='click->collection#removeButton'>
+						<img data-action='click->collection#removeButtonXtd' src={{ absolute_url(asset('build/icons/show/delete.svg')) }} alt='' width=16 style=vertical-align:middle;padding-right:2px;>Del</a>">
+				{% for documentation in form.chip.documentations %}
+					<div style="width:100%">
+						<div class="ba1">{{ form_widget(documentation.link_name, {'attr': {'style': 'width:100%'}}) }}</div>
+						<div class="ba2">{{ form_widget(documentation.language, {'attr': {'style': 'width:100%'}}) }}</div>
+						<div class="ba4">{{ form_widget(documentation.manualFile, {'attr': {'style': 'width:100%'}}) }}</div>
+						<div class="ba5">{{ form_widget(documentation.file_name, {'attr': {'style': 'width:100%'}}) }}</div>
+						<a class="button-widget" data-action="click->collection#removeButton">
+							<img data-action="click->collection#removeButtonXtd" src="{{ absolute_url(asset('build/icons/show/delete.svg')) }}" alt="" width="16" style="vertical-align:middle;padding-right:2px;">Del</a>
+						{{ form_errors(documentation) }}
+					</div>
+				{% endfor %}
+				{{ form_errors(form.chip.documentations) }}
+				</div>
+			</div>
+		</div>
 	</div>
 	<div id="hiddenDiv" style="display: none;">{{form_widget(form.save) }}{{ form_end(form)|replace({'</form>': '</div></form>'})|raw }}
 {% endblock %}

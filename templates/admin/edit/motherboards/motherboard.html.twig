@@ -19,6 +19,7 @@
 			</span>
 		</div>
 		<div id="images-fields-list" data-widget-counter="{{ form.images|length }}" data-prototype="
+				<div></div>
 				<div class=imgp>{{ form_widget(form.images.vars.prototype.imageFile, {'attr': {'style': 'width:100%'}})|e }}</div>
 				<div class=imgp><span>Type: </span>{{ form_widget(form.images.vars.prototype.motherboardImageType)|e }}</div>
 				<div class=imgp><span>Creditor: </span>{{ form_widget(form.images.vars.prototype.creditor)|e }}</div>

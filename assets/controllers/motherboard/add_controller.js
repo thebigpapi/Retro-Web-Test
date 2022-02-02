@@ -66,6 +66,13 @@ export default class extends Controller {
                 error = true;
             }
         }
+        let aliasesList = document.getElementById('motherboardAliases-fields-list').children;
+        for (let i = 0; i < aliasesList.length; i++) {
+            if (!aliasesList[i].children[0].children[0].value) {
+                errorMessage += "One of the aliases is empty! (entry no." + (i + 1) + ")\n";
+                error = true;
+            }
+        }
         if (_this.checkList('cpuSockets-fields-list')) {
             errorMessage += "CPU sockets has duplicate entries!\n";
             error = true;

@@ -128,9 +128,9 @@ class Chipset
         $chipset = "";
         foreach ($this->chipsetParts as $key => $part) {
             if ($key === array_key_last($this->chipsetParts->getValues())) {
-                $chipset = $chipset . $part->getShortName();
+                $chipset = $chipset . $part->getShortNamePN();
             } else {
-                $chipset = $chipset . $part->getShortName() . ", ";
+                $chipset = $chipset . $part->getShortNamePN() . ", ";
             }
         }
         if ($chipset) {

@@ -1,7 +1,18 @@
 import { Controller } from 'stimulus';
 
 export default class extends Controller {
-
+    connect() {
+        this.addLink();
+    }
+    addLink(){
+        let list = document.getElementById('chipsetParts-fields-list').childNodes;
+        list.forEach(function(item){
+            if(item.nodeName == "DIV"){
+                if(item.children[2].href.substring(item.children[2].href.length -1) == "#")
+                    item.children[2].href = "../../parts/" + item.children[0].value + "/edit";
+            }
+        });
+    }
     /**
      * Check a specific list for duplicates
      * @param {*} id 

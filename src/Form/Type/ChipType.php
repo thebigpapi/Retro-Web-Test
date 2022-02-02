@@ -3,7 +3,9 @@
 namespace App\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use App\Form\Type\ChipAliasType;
@@ -53,6 +55,17 @@ class ChipType extends AbstractType
                 'entry_type' => ChipImageType::class,
                 'allow_add' => true,
                 'allow_delete' => true,
+            ])
+            ->add('documentations', CollectionType::class, [
+                'entry_type' => ChipDocumentationType::class,
+                'allow_add' => true,
+                'allow_delete' => true,
+            ])
+            ->add('description', TextareaType::class, [
+                'required' => false,
+            ])
+            ->add('rank', NumberType::class, [
+                'required' => true,
             ])
             ;
     }

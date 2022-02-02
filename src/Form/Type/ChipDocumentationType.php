@@ -9,10 +9,10 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\File;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use App\Entity\ChipsetDocumentation;
+use App\Entity\ChipDocumentation;
 use App\Entity\Language;
 
-class ChipsetDocumentationType extends AbstractType
+class ChipDocumentationType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -26,13 +26,12 @@ class ChipsetDocumentationType extends AbstractType
                 'required' => false,
                 'constraints' => [
                     new File([
-                        'maxSize' => '16m',
+                        'maxSize' => '16384k',
                         'mimeTypes' => [
                             'application/pdf',
                             'application/x-pdf',
-                            'application/zip',
                         ],
-                        'mimeTypesMessage' => 'Please upload a valid PDF document or ZIP file',
+                        'mimeTypesMessage' => 'Please upload a valid PDF document',
                     ])
                 ],
             ])
@@ -49,7 +48,7 @@ class ChipsetDocumentationType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => ChipsetDocumentation::class,
+            'data_class' => ChipDocumentation::class,
         ]);
     }
 }
