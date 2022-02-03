@@ -2,9 +2,15 @@
     {{ knp_pagination_render(objectList, 'macros/pagination.html.twig') }}
     <table class="results">
         {% include 'admin/manage/chipsets/' ~ entityName ~ '_thead.html.twig' %}
-        {% for object in objectList %}
-            {% include 'admin/manage/chipsets/' ~ entityName ~ '.html.twig' with {'object':object} %}	
-        {% endfor %}
+        {% if entityName == "part" %}
+            {% for object in objectList|sort((a, b) => a.partNumber <=> b.partNumber) %}
+                {% include 'admin/manage/chipsets/' ~ entityName ~ '.html.twig' with {'object':object} %}	
+            {% endfor %}
+        {% else %}
+            {% for object in objectList|sort((a, b) => a.releaseDate <=> b.releaseDate) %}
+                {% include 'admin/manage/chipsets/' ~ entityName ~ '.html.twig' with {'object':object} %}	
+            {% endfor %}
+        {% endif %}
     </table>
     {% if objectList.count > 25 %}{{ knp_pagination_render(objectList, 'macros/pagination.html.twig') }}{% endif %}
 {% endif %}

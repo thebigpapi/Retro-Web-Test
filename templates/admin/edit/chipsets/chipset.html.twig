@@ -20,7 +20,7 @@
 		<div data-controller="collection">
 			{{ form_errors(form.chipsetParts) }}
 			<div id="chipsetParts-fields-list" data-widget-counter="{{ form.chipsetParts|length }}" data-prototype="
-				{{ form_widget(form.chipsetParts.vars.prototype, {'attr': {'style': 'display:inline-block;width:70%;'}})|e }}
+				{{ form_widget(form.chipsetParts.vars.prototype, {'attr': {'style': 'display:inline-block;width:70%;', 'data-action': 'change->collection#addLinkOverride'}})|e }}
 				<a class=button-widget data-action='click->collection#removeButton'>
 					<img data-action='click->collection#removeButtonXtd' src={{ absolute_url(asset('build/icons/show/delete.svg')) }} alt='' width=16 style=vertical-align:middle;padding-right:2px;>Del</a>
 				<a class=button-widget href=#>
@@ -28,7 +28,7 @@
 				{% if form.chipsetParts is not empty %}
 					{% for part in form.chipsetParts %}
 						<div>
-							{{ form_widget(part, {'attr': {'style': 'display:inline-block;width:70%;'}}) }}
+							{{ form_widget(part, {'attr': {'style': 'display:inline-block;width:70%;', 'data-action': 'change->collection#addLinkOverride'}}) }}
 							<a class="button-widget" data-action="click->collection#removeButton">
 								<img data-action="click->collection#removeButtonXtd" src="{{ absolute_url(asset('build/icons/show/delete.svg')) }}" alt="" width="16" style="vertical-align:middle;padding-right:2px;">Del</a>
 							<a class="button-widget" href="#">
