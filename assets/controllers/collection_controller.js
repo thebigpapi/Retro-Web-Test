@@ -17,6 +17,14 @@ export default class extends Controller {
             });
         }
     }
+    addLinkOverride(){
+        let list = document.getElementById('chipsetParts-fields-list').childNodes;
+        list.forEach(function(item){
+            if(item.nodeName == "DIV"){
+                item.children[2].href = "../../parts/" + item.children[0].value + "/edit";
+            }
+        });
+    }
     /**
      * Add an element to the list
      * @param {*} list the list to interract with

@@ -16,18 +16,14 @@
 			{% if show_images %}
 				{% for chipset in chipsets %}
 					<span class="image-block"><span>
-					{% for chipPart in chipset.getChipsetParts() %}
-        				{% if chipPart.getImages() is not empty and loop.first %}
+					{% for chipPart in chipset.getChipsetParts()|slice(0, 1) %}
+						{% if chipPart.getImages() is not empty %}
 							{% for image in chipPart.getImages()|slice(0, 1) %}
 								<a href="{{ vich_uploader_asset(image, 'imageFile')}}" class="glightbox">
-									<img src="{% if vich_uploader_asset(image, 'imageFile') | ext != "svg" %}
-									{{ vich_uploader_asset(image, 'imageFile') | imagine_filter('motherboard_show_thumb') }}{% else %}
-									{{ vich_uploader_asset(image, 'imageFile')}}{% endif %}" alt="" title="{% if image.description %}{{ image.description }}{% endif %}"></a>
+									<img src="{{ vich_uploader_asset(image, 'imageFile') | imagine_filter('motherboard_show_thumb') }}" alt="" title="{% if image.description %}{{ image.description }}{% endif %}"></a>
 							{% endfor %}
 						{% endif %}
-						{% if loop.first %}
-							<span><a class="result-link" href="{{ path("chipset_show", {id: chipset.getId()}) }}">{{ chipset.getMainChipWithManufacturer() }}</a></span>
-						{% endif %}
+						<span><a class="result-link" href="{{ path("chipset_show", {id: chipset.getId()}) }}">{{ chipset.getMainChipWithManufacturer() }}</a></span>
 					{% endfor %}
 					</span></span>
 				{% endfor %}
