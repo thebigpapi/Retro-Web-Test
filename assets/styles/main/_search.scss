@@ -97,6 +97,16 @@ div.pagination{
 	label.search-label { width:auto;padding-top:5px; }
 	div.search-widget { width:100%; }
 	li.slot-port-item { width: 15em; }
+	ul.index-list {
+		padding-left:15px;
+		li {
+			font-size:24px;
+			a{
+				width: 2.5rem;
+				height: 2.5rem;
+			}
+		}
+	}
 }
 @media (min-width: 800px) {
 	div.search-widget { width:83%;}
