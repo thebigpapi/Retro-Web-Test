@@ -1,11 +1,11 @@
 <div class="show-nav" id="sh-nav" data-controller="show">
 	<a class="snav" data-action='click->show#show_general'>
-		<img src="{{ absolute_url(asset('build/icons/show/data.svg')) }}" alt="" width="24">{% if entityName == "motherboard" %}General{% else %}Description{% endif %}</a>
+		<img src="{{ absolute_url(asset('build/icons/show/data.svg')) }}" alt="" width="24" height="24">{% if entityName == "motherboard" %}General{% else %}Description{% endif %}</a>
 	<a class="snav" data-action='click->show#show_downloads'>
-		<img src="{{ absolute_url(asset('build/icons/dw.svg')) }}" alt="" width="24">{% if entityName == "chip" %}Alias/Docs{% else %}Downloads{% endif %}</a>
+		<img src="{{ absolute_url(asset('build/icons/dw.svg')) }}" alt="" width="24" height="24">{% if entityName == "chip" %}Alias/Docs{% else %}Downloads{% endif %}</a>
     {% if count > 2 %}
 	<a class="snav" data-action='click->show#show_cpus'>
-		<img src="{{ absolute_url(asset('build/icons/show/cpu.svg')) }}" alt="" width="24">CPUs</a>
+		<img src="{{ absolute_url(asset('build/icons/show/cpu.svg')) }}" alt="" width="24" height="24">CPUs</a>
     {% endif %}
     {% if entityName == "motherboard" %}
         {% set name = entityName|slice(6, 5) %}
@@ -16,20 +16,20 @@
     <div>
         {% if is_granted('ROLE_ADMIN') and entityName == "motherboard" %}
         <a class="snav" href="{{ path(entityName ~ '_delete', {id: entity.getId()}) }}">
-            <img src="{{ absolute_url(asset('build/icons/show/delete.svg')) }}" alt="" width="24">Delete</a>
+            <img src="{{ absolute_url(asset('build/icons/show/delete.svg')) }}" alt="" width="24" height="24">Delete</a>
         {% endif %}
         <a class="snav" href="{{ path('new_' ~ entityName ~ '_edit', {id: entity.getId()}) }}">
-            <img src="{{ absolute_url(asset('build/icons/show/edit.svg')) }}" alt="" width="24">Edit {{name}}</a>
+            <img src="{{ absolute_url(asset('build/icons/show/edit.svg')) }}" alt="" width="24" height="24">Edit {{name}}</a>
     </div>
     {% endif %}
     {% if type == "edit" %}
     <div style="float:right;">
         {% if entityName == "motherboard" %}
 		<a class="snav" data-action="click->{{entityName}}--add#clone">
-			<img src="{{ absolute_url(asset('build/icons/clone.svg')) }}" alt="" width="24" style="vertical-align: middle;padding-right:2px;">Clone {{name}}</a>
+			<img src="{{ absolute_url(asset('build/icons/clone.svg')) }}" alt="" width="24" height="24" style="vertical-align: middle;padding-right:2px;">Clone {{name}}</a>
         {% endif %}
 		<a class="snav" {% if entityName == "chip" %}onclick="document.getElementById('chipset_part_form_save').click();"{% else %}data-action="click->{{entityName}}--add#submit"{% endif %}>
-			<img src="{{ absolute_url(asset('build/icons/show/edit.svg')) }}" alt="" width="24" style="vertical-align: middle;padding-right:2px;">Save {{name}}</a>	
+			<img src="{{ absolute_url(asset('build/icons/show/edit.svg')) }}" alt="" width="24" height="24" style="vertical-align: middle;padding-right:2px;">Save {{name}}</a>	
 	</div>
     {% endif %}
 </div>

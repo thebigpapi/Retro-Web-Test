@@ -46,7 +46,7 @@ ul.slots-ports-widget { list-style:none;padding:0; }
 li.slot-port-item {
 	height: 1.75em;
 	width: 15em;
-	font-size:12px;
+	font-size:14px;
 	margin-bottom:4px;
 	float:left;
 	span { float:left;margin-left:0.4em; }
@@ -96,7 +96,17 @@ div.pagination{
 	div.butn input { font-size:18px;height:2.2em; }
 	label.search-label { width:auto;padding-top:5px; }
 	div.search-widget { width:100%; }
-	li.slot-port-item { width: 15em; }
+	li.slot-port-item { width: 13em; }
+	ul.index-list {
+		padding-left:15px;
+		li {
+			font-size:24px;
+			a{
+				width: 2.5rem;
+				height: 2.5rem;
+			}
+		}
+	}
 }
 @media (min-width: 800px) {
 	div.search-widget { width:83%;}

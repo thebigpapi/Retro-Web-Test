@@ -78,22 +78,14 @@
 {% if motherboard.getImages() is not empty %}
 	{% for image in motherboard.getImages()|sort((a, b) => a.motherboardImageType <=> b.motherboardImageType) %}
 		<div class="show-image">
-				<a href="{{ vich_uploader_asset(image, 'imageFile')}}" class="glightbox" data-description="{% if image.description %}Notes: {{ image.description }}{% endif %}">
-					<img src="{% if vich_uploader_asset(image, 'imageFile') | ext != "svg" %}
-					{{ vich_uploader_asset(image, 'imageFile') | imagine_filter('motherboard_show_thumb') }}{% else %}
-					{{ vich_uploader_asset(image, 'imageFile')}}{% endif %}" alt="" title="{% if image.description %}{{ image.description }}{% endif %}">
-				</a>
-			{% if image.creditor %}
-				<span class="creditor">
-					{% if image.creditor.website %}
-						<a href="{{ image.creditor.website }}">{% trans %}Image by{% endtrans %}
-							{{ image.creditor.name }}</a>
-					{% else %}
-						{% trans %}Image by{% endtrans %}
-						{{ image.creditor.name }}
-					{% endif %}
-				</span>
-			{% endif %}
+			<a href="{{ vich_uploader_asset(image, 'imageFile')}}" class="glightbox" data-sizes="(max-width: 600px) 480px, 800px" data-description=
+			"{% if image.creditor %}<div style='float:right;'><div>{% if image.creditor.website %}<a href="{{ image.creditor.website }}">{% trans %}Image by{% endtrans %}{{image.creditor.name}}</a>
+			{% else %}{% trans %}Image by{% endtrans %}&nbsp;{{ image.creditor.name }}{% endif %}</div><div>{% if image.license.getId() == 1 %}<a style=color:#0085dd; href=https://creativecommons.org/licenses/by-sa/4.0/>CC BY-SA 4.0</a>{% endif %}</div></div>{% endif %}
+			{% if image.description %}<p>Notes: {{ image.description }}</p>{% endif %}">
+				<img src="{% if vich_uploader_asset(image, 'imageFile') | ext != "svg" %}{{ vich_uploader_asset(image, 'imageFile') | imagine_filter('motherboard_show_thumb') }}{% else %}{{ vich_uploader_asset(image, 'imageFile')}}{% endif %}"
+				width="640" height="480" alt="image{{ loop.index }}" title="{% if image.description %}{{ image.description }}{% endif %}">
+				Image {{ loop.index }} of {{ loop.length }}
+			</a>
 		</div>
 	{% endfor %}
 {% else %}
@@ -269,7 +261,7 @@
 </div>
 <div class="show-downloads" id="sh-downloads">
 	<div class="scroll-div">
-		<img src="{{ absolute_url(asset('build/icons/show/hardware.svg')) }}" alt="" width="32" style="vertical-align: middle;padding-bottom: 10px;">
+		<img src="{{ absolute_url(asset('build/icons/show/hardware.svg')) }}" alt="" width="32" height="32" style="height:auto;vertical-align: middle;padding-bottom: 10px;">
 		<span><b>{% trans %}Drivers:{% endtrans %} </b></span>
 		{% if motherboard.getAllDrivers() is not empty %}
 		<span>{{ motherboard.getAllDrivers.count() }}{% if motherboard.getAllDrivers.count() == 1 %} entry{% else %} entries{% endif %}</span>
@@ -282,7 +274,7 @@
 		{% endif %}
 	</div>
 	<div class="scroll-div">
-		<img src="{{ absolute_url(asset('build/icons/show/chip.svg')) }}" alt="" width="32" style="vertical-align: middle;padding-bottom: 10px;">
+		<img src="{{ absolute_url(asset('build/icons/show/chip.svg')) }}" alt="" width="32" height="32" style="height:auto;vertical-align: middle;padding-bottom: 10px;">
 		<span><b>{% trans %}BIOS images:{% endtrans %} </b></span>
 		{% if motherboard.getMotherboardBios() is not empty %}
 			{% set bfile_cnt = 0 %}
@@ -333,17 +325,14 @@
 		{% endif %}
 	</div>
 	<div class="scroll-div">
-		<img src="{{ absolute_url(asset('build/icons/show/manual.svg')) }}" alt="" width="32" style="vertical-align: middle;padding-bottom: 10px;">
+		<img src="{{ absolute_url(asset('build/icons/show/manual.svg')) }}" alt="" width="32" height="32" style="height:auto;vertical-align: middle;padding-bottom: 10px;">
 		<span><b>{% trans %}Documentation:{% endtrans %} </b></span>
 		{% if motherboard.getManuals() is not empty %}
 		<span>{{ motherboard.getManuals.count() }}{% if motherboard.getManuals.count() == 1 %} entry{% else %} entries{% endif %}</span>
 		<table class="stbl">
 			<tr>
 				<td>
-					
-				</td>
-				<td>
-					<ul style="list-style-type: none;">{% for manual in motherboard.getManuals()|sort((a, b) => a.getLinkName <=> b.getLinkName) %}
+					<ul class="docs-list">{% for manual in motherboard.getManuals()|sort((a, b) => a.getLinkName <=> b.getLinkName) %}
 						<li>
 							<a href="{{ vich_uploader_asset(manual, 'manualFile') }}">
 								<img src="{{ absolute_url(asset('build/icons/dw.svg')) }}" alt="" width="16" height="16" style="vertical-align: middle;">

@@ -10,6 +10,28 @@
 	{% endif %}
 	{{ chipset.getPartNo() }}
 {% endblock %}
+{% block metatags %}
+	<meta name="description" content="Chipset:{{ chipset.getMainChipWithManufacturer() }} Release date:{% if chipset.getReleaseDate() is not null %}{{ chipset.getReleaseDate() }}{% else %}unknown{% endif %}">
+{% endblock %}
+
+{% block opengraph %}
+	<meta property="og:site_name" content="Ultimate Retro">
+	{% apply spaceless %}
+	{% if chipset.getChipsetParts() is not empty %}
+		{% for chipPart in chipset.getChipsetParts()|sort((a, b) => a.rank <=> b.rank)|filter(chipPart => chipPart.getImages() is not empty)|slice(0,1) %}
+			{% for image in chipPart.getImages()|slice(0,1) %}
+				<meta property="og:image" content="{{ vich_uploader_asset(image, 'imageFile')}}">
+			{% endfor %}
+		{% endfor %}
+	{% else %}
+		<meta property="og:image" content="{{ absolute_url(asset('build/images/logo.webp')) }}">
+	{% endif %}
+	<meta property="og:title" content="{% if chipset.getManufacturer() is not null %}{{ chipset.getManufacturer().getShortNameIfExist() }}{% else %}Unknown{% endif %}
+	{% if chipset.getPartNo() is not null %}&nbsp;{{ chipset.getPartNo() }}{% endif %}{% if chipset.getName() is not null %}&nbsp;{% if chipset.getPartNo() is not null %}({{ chipset.getName() }}){% else %}{{ chipset.getName() }}{% endif %}{% endif %}">
+	<meta property="og:description" content="Get chipset info, images and drivers for {% if chipset.getManufacturer() is not null %}{{ chipset.getManufacturer().getShortNameIfExist() }}{% else %}Unknown{% endif %}
+	{% if chipset.getPartNo() is not null %}&nbsp;{{ chipset.getPartNo() }}{% endif %}{% if chipset.getName() is not null %}&nbsp;{% if chipset.getPartNo() is not null %}({{ chipset.getName() }}){% else %}{{ chipset.getName() }}{% endif %}{% endif %}!">
+	{% endapply %}
+{% endblock %}
 
 {% block body %}
 <!-- MANUF./NAME/PART NO. -->
@@ -30,23 +52,18 @@
 <div class="show-images" id="sh-images">
 {% if chipset.getChipsetParts() is not empty %}
     {% for chipPart in chipset.getChipsetParts()|sort((a, b) => a.rank <=> b.rank)|filter(chipPart => chipPart.getImages() is not empty) %}
-        {% for image in chipPart.getImages() %}
+		{% set lpindex = loop.index %}
+		{% set lplen = loop.length %}
+        {% for image in chipPart.getImages()|slice(0,1) %}
             <div class="show-image">
-				<a href="{{ vich_uploader_asset(image, 'imageFile')}}" class="glightbox" data-description="{{ chipPart.getFullName() }}{% if image.description %}Notes: {{ image.description }}{% endif %}">
+				<a href="{{ vich_uploader_asset(image, 'imageFile')}}" class="glightbox" data-description="
+				{{ chipPart.getFullName() }}{% if image.creditor %}<div style='float:right;'><div>{% if image.creditor.website %}<a href="{{ image.creditor.website }}">{% trans %}Image by{% endtrans %}{{image.creditor.name}}</a>
+				{% else %}{% trans %}Image by{% endtrans %}&nbsp;{{ image.creditor.name }}{% endif %}</div><div>{% if image.license.getId() == 1 %}<a style=color:#0085dd; href=https://creativecommons.org/licenses/by-sa/4.0/>CC BY-SA 4.0</a>{% endif %}</div></div>{% endif %}
+				{% if image.description %}<p>Notes: {{ image.description }}</p>{% endif %}">
 					<img src="{{ vich_uploader_asset(image, 'imageFile') | imagine_filter('motherboard_show_thumb') }}
-                    " alt="" title="{% if image.description %}{{ image.description }}{% endif %}" alt="">
+                    " width="640" height="480" alt="image{{ loop.index }}" title="{% if image.description %}{{ image.description }}{% endif %}">
+					Image {{ lpindex }} of {{ lplen }}
 				</a>
-			{% if image.creditor %}
-				<span class="creditor">
-					{% if image.creditor.website %}
-						<a href="{{ image.creditor.website }}">{% trans %}Image by{% endtrans %}
-							{{ image.creditor.name }}</a>
-					{% else %}
-						{% trans %}Image by{% endtrans %}
-						{{ image.creditor.name }}
-					{% endif %}
-				</span>
-			{% endif %}
 		</div>
         {% endfor %}
     {% endfor %}
@@ -102,6 +119,7 @@
 				<span>not available</span>
 			{% endif %}
 			<!-- CHIPSET PART DOC SHOW -->
+			{% if docCount > 0 %}
 			<table class="stbl">
 				<tr>
 					<td>
@@ -121,6 +139,7 @@
 					</td>
 				</tr>
 			</table>
+			{% endif %}
 		{% endif %}
 	</div>
 	<!-- CHIPSET FILES -->

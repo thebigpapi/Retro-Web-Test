@@ -30,6 +30,7 @@ Encore
      */
     .addEntry('app', './assets/app.js')
     .addEntry('admin_app', './assets/admin_app.js')
+    .addEntry('glightbox', './assets/glightbox.js')
     //.addEntry('motherboards/search', './assets/search.js')
 
     // enables the Symfony UX Stimulus bridge (used in assets/bootstrap.js)
