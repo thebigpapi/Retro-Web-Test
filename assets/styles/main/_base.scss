@@ -50,7 +50,7 @@ div.foot-part {
 		a.nav-link img { width:32px;padding-left:10px; }
 		a.nav-link span.navbar-label { font-size:17px;display: none; }
 	}
-	div.page {font-size:14px;}
+	div.page {font-size:22px;}
 	h2.title {font-size: 16px; margin: 10px 0;}
 	div.foot-container {text-align: left;width: 100%;}
 	div.foot-part { 
@@ -61,6 +61,7 @@ div.foot-part {
 }
 @media (max-width: 360px) { a.nav-link img { padding-left:2px !important; } }
 @media (max-width: 770px) { div.page { padding-bottom: 8rem; } }
+@media (max-width: 370px) { div.page { padding-bottom: 13rem; } }
 @media (min-width: 1200px) { div.page {width:90%;font-size:22px;} }
 @media (min-width: 1620px) { div.page { width:80%; }}
 @media (prefers-color-scheme: dark) {
