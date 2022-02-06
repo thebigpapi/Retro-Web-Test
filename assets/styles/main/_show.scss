@@ -20,7 +20,8 @@ tr.stbl-head2 td{ padding-left:45px; }
 div.show-images { width:25%;overflow: auto;float:left;min-height:150px;height:auto; max-height:500px; }
 div.show-image { width:100%;font-size:14px;display:block;text-align:center;color:$dark-color; }
 div.show-image a img { width: 100%;height:auto; }
-span.creditor { width:auto;display:block; text-align: center; word-wrap: break-word; }
+a.creditor-href { color:$dark-color; }
+a.creditor-href:hover { color:$link-hover-color1; }
 div.show-nav { 
     padding:5px 0px 10px; 
     -moz-user-select: -moz-none;
