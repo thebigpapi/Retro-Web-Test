@@ -33,6 +33,12 @@ class ExpansionSlot
      */
     private $hiddenSearch;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=ExpansionConnector::class, inversedBy="expansionSlots")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $connector;
+
     public function __construct()
     {
         $this->motherboardExpansionSlots = new ArrayCollection();
@@ -94,6 +100,18 @@ class ExpansionSlot
     public function setHiddenSearch(bool $hiddenSearch): self
     {
         $this->hiddenSearch = $hiddenSearch;
+
+        return $this;
+    }
+
+    public function getConnector(): ?ExpansionConnector
+    {
+        return $this->connector;
+    }
+
+    public function setConnector(?ExpansionConnector $connector): self
+    {
+        $this->connector = $connector;
 
         return $this;
     }
