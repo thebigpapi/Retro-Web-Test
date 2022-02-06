@@ -68,7 +68,6 @@ export default class extends Controller {
         }
         let aliasesList = document.getElementById('motherboardAliases-fields-list').children;
         for (let i = 0; i < aliasesList.length; i++) {
-            alert(aliasesList[i].children[0].children[0].value);
             if (aliasesList[i].children[0].children[0].value == "EMPTY") {
                 errorMessage += "One of the aliases is empty! (entry no." + (i + 1) + ")\n";
                 error = true;
