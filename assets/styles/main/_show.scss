@@ -29,10 +29,10 @@ div.show-nav {
     -webkit-user-select: none;
     -ms-user-select: none;
     user-select: none;
-    div { font-size:16px;float:right; }
+    //div { font-size:20px; }
 }
-a.snav {
-    font-size:18px;
+div.snav, a.snav {
+    font-size:20px;
     border: 1px solid $medium-color;
     box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.3);
     display: -moz-inline-box; 
@@ -48,7 +48,7 @@ a.snav {
     user-select: none;
     img { padding-right:5px;vertical-align: middle;height:auto; }
 }
-a.snav:hover { color: $link-hover-color;background-color:$navbar-color;cursor:pointer; }
+div.snav:hover, a.snav:hover { color: $link-hover-color;background-color:$navbar-color;cursor:pointer; }
 div.show-nav, div.show-general, div.show-downloads, div.show-cpus {
     width:74%;
     float:left;
@@ -56,7 +56,7 @@ div.show-nav, div.show-general, div.show-downloads, div.show-cpus {
     font-size: 14px;
     overflow-x:auto;
 }
-/*div.show-general span.text-block { color:$dark-color; }*/
+div.show-downloads, div.show-cpus { display:none; }
 div.scroll-div { overflow:auto;width:100%; }
 img.lang-flag {height:25px; width:46px;}
 img.lang-flag-lrg {height:16px; width:32px;}
@@ -86,7 +86,7 @@ td.io-table { vertical-align: top;width:175px; }
 @media (max-width: 600px) {
 	div.show-images { width:100%; max-height:400px;padding-top:5px; }
 	div.show-image, span.string-bios { font-size:8px; }
-	div.show-nav, div.show-general, div.show-downloads, div.show-cpus { width:100%;padding-left:0;font-size:17px; }
+	div.show-nav, div.show-general, div.show-downloads, div.show-cpus { width:100%;padding-left:0;font-size:16px; }
     div.show-nav div { font-size:16px; }
     img.lang-flag {height:16px; width:32px;}
 	td.io-table ul,td.exp-table ul { padding:0; }
@@ -113,8 +113,8 @@ td.io-table { vertical-align: top;width:175px; }
 
 
 @media (prefers-color-scheme: dark) {
-	a.snav { color:$lightbg-color;font-size:22px; }
-	a.snav:hover { color: #0099ff;background-color:$btn-lightbg-color; }
+	div.snav, a.snav { color:$lightbg-color; }
+	div.snav:hover, a.snav:hover { color: #0099ff;background-color:$btn-lightbg-color; }
 	table.stbl, table.stbl-adv{ background-color:$btn-darkbg-color;color:$light-color; }
 	tr.stbl-head, tr.stbl-head2{ background-color:#606060;color:$light-color; }
     a.glightbox { color:$light-color; }

@@ -2,9 +2,9 @@ import { Controller } from 'stimulus';
 
 export default class extends Controller {
     connect() {
-        document.getElementById('sh-downloads').style.display = 'none';
-	    if(document.getElementById('sh-cpus'))
-            document.getElementById('sh-cpus').style.display = 'none';
+        //document.getElementById('sh-downloads').style.display = 'none';
+	    //if(document.getElementById('sh-cpus'))
+        //    document.getElementById('sh-cpus').style.display = 'none';
         let URL = window.location.href;
         if (URL.indexOf("#downloads") != -1)
             this.show_downloads();
