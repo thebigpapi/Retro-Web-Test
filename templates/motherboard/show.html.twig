@@ -79,7 +79,7 @@
 	{% for image in motherboard.getImages()|sort((a, b) => a.motherboardImageType <=> b.motherboardImageType) %}
 		<div class="show-image">
 			<a href="{{ vich_uploader_asset(image, 'imageFile')}}" class="glightbox" data-sizes="(max-width: 600px) 480px, 800px" data-description=
-			"{% if image.creditor %}<div style='float:right;'><div>{% if image.creditor.website %}<a href="{{ image.creditor.website }}">{% trans %}Image by{% endtrans %}{{image.creditor.name}}</a>
+			"{% if image.creditor %}<div style='float:right;'><div>{% if image.creditor.website %}<a class=creditor-href href={{ image.creditor.website }}>{% trans %}Image by{% endtrans %}&nbsp;{{image.creditor.name}}</a>
 			{% else %}{% trans %}Image by{% endtrans %}&nbsp;{{ image.creditor.name }}{% endif %}</div><div>{% if image.license.getId() == 1 %}<a style=color:#0085dd; href=https://creativecommons.org/licenses/by-sa/4.0/>CC BY-SA 4.0</a>{% endif %}</div></div>{% endif %}
 			{% if image.description %}<p>Notes: {{ image.description }}</p>{% endif %}">
 				<img src="{% if vich_uploader_asset(image, 'imageFile') | ext != "svg" %}{{ vich_uploader_asset(image, 'imageFile') | imagine_filter('motherboard_show_thumb') }}{% else %}{{ vich_uploader_asset(image, 'imageFile')}}{% endif %}"
