@@ -51,10 +51,16 @@
 <!-- IMAGES -->
 <div class="show-images" id="sh-images">
 {% if chipset.getChipsetParts() is not empty %}
+	{% set lpindex = 0 %}
+	{% set lplen = 0 %}
+	{% for chipPart in chipset.getChipsetParts()|filter(chipPart => chipPart.getImages() is not empty) %}
+        {% for image in chipPart.getImages() %}
+			{% set lplen = lplen + 1 %}
+		{% endfor %}
+    {% endfor %}
     {% for chipPart in chipset.getChipsetParts()|sort((a, b) => a.rank <=> b.rank)|filter(chipPart => chipPart.getImages() is not empty) %}
-		{% set lpindex = loop.index %}
-		{% set lplen = loop.length %}
-        {% for image in chipPart.getImages()|slice(0,1) %}
+        {% for image in chipPart.getImages() %}
+			{% set lpindex = lpindex + 1 %}
             <div class="show-image">
 				<a href="{{ vich_uploader_asset(image, 'imageFile')}}" class="glightbox" data-description="
 				{{ chipPart.getFullName() }}{% if image.creditor %}<div style='float:right;'><div>{% if image.creditor.website %}<a class=creditor-href href={{ image.creditor.website }}>{% trans %}Image by{% endtrans %}{{image.creditor.name}}</a>
