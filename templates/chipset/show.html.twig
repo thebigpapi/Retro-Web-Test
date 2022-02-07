@@ -74,7 +74,7 @@
 {% include 'macros/navbar.html.twig' with {'type':'show', 'entity': chipset, 'entityName': 'chipset', 'count':2} %}
 <!-- DESCRIPRION -->
 <div class="show-general" id="sh-general">
-	<div>{% trans %}Release date:{% endtrans %}&nbsp;{% if chipset.getReleaseDate() is not null %}{{ chipset.getReleaseDate() }}{% else %}{% trans %}Unknown{% endtrans %}{% endif %}&nbsp;&nbsp;<!--
+	<div>{{'Release date'|trans}}:&nbsp;{% if chipset.getReleaseDate() is not null %}{{ chipset.getReleaseDate() }}{% else %}{% trans %}Unknown{% endtrans %}{% endif %}&nbsp;&nbsp;<!--
 	-->{% if chipset.getEncyclopediaLink() is not null %}<a href="{{ chipset.getEncyclopediaLink() }}">[Encyclopedia link]</a>{% endif %}</div>
 	<br>
 	<div class="chipset-textarea">

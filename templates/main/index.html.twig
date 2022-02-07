@@ -22,12 +22,12 @@
 			<div>{% trans %}Look up a chipset{% endtrans %}</div><div>({{chipCount}} {% trans %}entries{% endtrans %})</div>
 		</a>
 	</div>
-	<div class="perks">
+	<div class="perks" data-controller="datetime">
 		<p><b>{% trans %}Recently added or updated boards:{% endtrans %}</b></p>
 		<div class="results">
-			<ul>
+			<ul id="index-datetime">
         	{% for motherboard in latestMotherboards %}
-				<li><a href="{{ path("motherboard_show", {id:motherboard.getId()}) }}">{{ motherboard.getManufacturerShortNameIfExist() }}&nbsp;{{ motherboard.name }}</a></li>	
+				<li><a href="{{ path("motherboard_show", {id:motherboard.getId()}) }}">{{ motherboard.getLastEdited()|date("Y-m-d, G:i") }}| {{ motherboard.getManufacturerShortNameIfExist() }}&nbsp;{{ motherboard.name }}</a></li>	
 			{% endfor %}
 			</ul>
 		</div>
