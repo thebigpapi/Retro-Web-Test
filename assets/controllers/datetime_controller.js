@@ -2,20 +2,20 @@ import { Controller } from 'stimulus';
 
 export default class extends Controller {
     connect() {
-        let board_list = document.getElementById("index-datetime").children;
-        for (let i = 0; i < board_list.length; i++) {
-            let board = board_list[i].children[0].innerHTML;
-            let date = new Date(board.substring(0,board.indexOf("|")));
-            let date_offset = this.getTimeZone(date.getTimezoneOffset());
-            board_list[i].children[0].innerHTML = board.substring(0,board.indexOf("|")) + date_offset + board.substring(board.indexOf("|"));
-        }
-        
+        this.changeTime("index-datetime")
     }
-    getTimeZone(offset){
-        offset = Math.abs(offset);
-        let sign = offset < 0? '-' : '+';
-        let z1 = ((offset/60 | 0)<10? '0' : '') + (offset/60 | 0);
-        let z2 = ((offset%60)<10? '0' : '') + (offset%60);
-        return " GMT" + sign + z1 + z2;
+    changeTime(param){
+        let list = document.getElementById(param).children
+        for (let i = 0; i < list.length; i++) {
+            let board = list[i].children[0].innerHTML;
+            let date = new Date(board.substring(0,board.indexOf("|")));
+            let month = ((date.getMonth())<9? '0' : '') + (date.getMonth() + 1);
+            let day = ((date.getDate())<10? '0' : '') + (date.getDate());
+            let hours = ((date.getHours())<10? '0' : '') + (date.getHours());
+            let minutes = ((date.getMinutes())<10? '0' : '') + (date.getMinutes());
+            let timezone = date.toString().substring(date.toString().indexOf("G"),date.toString().indexOf("G")+8);
+            let new_date = date.getFullYear() + "-" + month + "-" + day + ", " + hours + ":" + minutes + " " + timezone;
+            list[i].children[0].innerHTML = new_date + board.substring(board.indexOf("|"));
+        }
     }
 }

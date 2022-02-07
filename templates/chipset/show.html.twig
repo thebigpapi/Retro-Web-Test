@@ -57,7 +57,7 @@
         {% for image in chipPart.getImages()|slice(0,1) %}
             <div class="show-image">
 				<a href="{{ vich_uploader_asset(image, 'imageFile')}}" class="glightbox" data-description="
-				{{ chipPart.getFullName() }}{% if image.creditor %}<div style='float:right;'><div>{% if image.creditor.website %}<a href="{{ image.creditor.website }}">{% trans %}Image by{% endtrans %}{{image.creditor.name}}</a>
+				{{ chipPart.getFullName() }}{% if image.creditor %}<div style='float:right;'><div>{% if image.creditor.website %}<a class=creditor-href href={{ image.creditor.website }}>{% trans %}Image by{% endtrans %}{{image.creditor.name}}</a>
 				{% else %}{% trans %}Image by{% endtrans %}&nbsp;{{ image.creditor.name }}{% endif %}</div><div>{% if image.license.getId() == 1 %}<a style=color:#0085dd; href=https://creativecommons.org/licenses/by-sa/4.0/>CC BY-SA 4.0</a>{% endif %}</div></div>{% endif %}
 				{% if image.description %}<p>Notes: {{ image.description }}</p>{% endif %}">
 					<img src="{{ vich_uploader_asset(image, 'imageFile') | imagine_filter('motherboard_show_thumb') }}
