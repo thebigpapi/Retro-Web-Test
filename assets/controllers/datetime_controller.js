@@ -15,7 +15,7 @@ export default class extends Controller {
             let minutes = ((date.getMinutes())<10? '0' : '') + (date.getMinutes());
             let timezone = date.toString().substring(date.toString().indexOf("G"),date.toString().indexOf("G")+8);
             let new_date = date.getFullYear() + "-" + month + "-" + day + ", " + hours + ":" + minutes + " " + timezone;
-            list[i].children[0].innerHTML = new_date + board.substring(board.indexOf("|"));
+            list[i].children[0].innerHTML = new_date + " " + board.substring(board.indexOf("|"));
         }
     }
 }

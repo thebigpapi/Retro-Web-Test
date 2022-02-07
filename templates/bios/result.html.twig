@@ -4,6 +4,10 @@
 	{% trans %}Search results{% endtrans %}
 {% endblock %}
 
+{% block metatags %}
+	<meta name="description" content="{% trans %}Search for a motherboard BIOS by POST string, chipset, manufacturer, and more.{% endtrans %}">
+{% endblock %}
+
 {% block body %}
 	<div class="title">
 		<b>{% trans %}Search results{% endtrans %}</b>
