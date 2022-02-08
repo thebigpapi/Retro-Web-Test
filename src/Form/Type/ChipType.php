@@ -55,19 +55,7 @@ class ChipType extends AbstractType
                 'entry_type' => ChipImageType::class,
                 'allow_add' => true,
                 'allow_delete' => true,
-            ])
-            ->add('documentations', CollectionType::class, [
-                'entry_type' => ChipDocumentationType::class,
-                'allow_add' => true,
-                'allow_delete' => true,
-            ])
-            ->add('description', TextareaType::class, [
-                'required' => false,
-            ])
-            ->add('rank', NumberType::class, [
-                'required' => true,
-            ])
-            ;
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
