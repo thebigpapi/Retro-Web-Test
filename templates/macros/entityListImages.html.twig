@@ -19,7 +19,7 @@
 		<div class="addform">
 			<img class="imgp-img" src="/chip/image/{{ image.vars.value.getFileName() }}" alt="f">
 			<div class="imgp">{{ form_widget(image.imageFile, {'attr': {'style': 'width:100%'}}) }}</div>
-			<div class="imgp"><span>Creditor:</span>{{ form_widget(image.creditor)}}</div>
+			<div class="imgp"><span>Creditor:</span>{{ form_widget(image.creditor)|replace({'<option value="">': '<option label=" " value="">'})|raw}}</div>
 			<div class="imgp"><span>License:</span>{{ form_widget(image.license)}}</div>
 			<div class="imgp"><span>Notes:</span>{{ form_widget(image.description)}}</div>
 			<div class="imgp">Uploaded file:
