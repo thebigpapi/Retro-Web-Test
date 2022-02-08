@@ -4,15 +4,14 @@
 	{% trans %}Search results{% endtrans %}
 {% endblock %}
 
+{% block metatags %}
+	<meta name="description" content="Search for a motherboard by name, chipset, manufacturer, CPU platform, form factor, expansion slot count and more.">
+{% endblock %}
+
 {% block body %}
 	<div class="title">
 		<b>{% trans %}Search results{% endtrans %}</b>
 	</div>
-	<p>
-		<b class="contrib">{% trans %}Can't you find a motherboard? Click{% endtrans %}
-			<a href="{% if is_granted('ROLE_ADMIN') %}{{ path('new_motherboard_add') }}{% else %}https://discord.gg/HWWH7hsk2p{% endif %}">{% trans %}here{% endtrans %}</a>
-			{% trans %}to add it.{% endtrans %}</b>
-	</p>
 	<p style="text-align:center;padding-top:10px;">
 		<i>{{ 'motherboard.num'|trans({'count':motherboard_count}) }}</i>
 	</p>

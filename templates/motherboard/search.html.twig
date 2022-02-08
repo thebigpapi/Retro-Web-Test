@@ -36,15 +36,15 @@
 		<section>
 			<h4 hidden>Search navigation</h4>
 			<div class="search-nav">
-				<a class="snav" onclick="document.getElementById('rst-btn').click();return false;">
-					<img src="{{ absolute_url(asset('build/icons/search/reset.svg')) }}" alt="" width="24">{% trans %}Reset fields{% endtrans %}
-				</a>
-				<a class="snav" onclick="document.getElementById('search_search').click();return false;">
-					<img src="{{ absolute_url(asset('build/icons/search/search.svg')) }}" alt="" width="24">{% trans %}Search{% endtrans %}
-				</a>
-				<a class="snav" onclick="document.getElementById('search_searchWithImages').click();return false;">
-					<img src="{{ absolute_url(asset('build/icons/search/search_image.svg')) }}" alt="" width="24">{% trans %}Search with images{% endtrans %}
-				</a>
+				<div class="snav" onclick="document.getElementById('rst-btn').click();return false;">
+					<img src="{{ absolute_url(asset('build/icons/search/reset.svg')) }}" alt="reset" width="24" height="24">{% trans %}Reset fields{% endtrans %}
+				</div>
+				<div class="snav" onclick="document.getElementById('search_search').click();return false;">
+					<img src="{{ absolute_url(asset('build/icons/search/search.svg')) }}" alt="search" width="24" height="24">{% trans %}Search{% endtrans %}
+				</div>
+				<div class="snav" onclick="document.getElementById('search_searchWithImages').click();return false;">
+					<img src="{{ absolute_url(asset('build/icons/search/search_image.svg')) }}" alt="imgsearch" width="24" height="24">{% trans %}Search with images{% endtrans %}
+				</div>
 
 				<input id="rst-btn" type="reset" style="display:none;" value="reset" data-action="click->search#reset" data-reset-ids='search_chipsetManufacturer search_cpuSocket1 search_cpuSocket2'>
 				{{ form_row(form.search)|replace({'<div><button': '<input style="display:none;"', '</button></div>': '">', '>': ' value="'})|raw }}

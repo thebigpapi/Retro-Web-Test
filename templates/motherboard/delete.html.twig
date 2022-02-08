@@ -18,5 +18,5 @@
 			<b>Redirection:&nbsp;</b>{{form_widget(form.Redirection)}}
 		</div>
 	</div>
-	<div style="display: none;">{{ form_start(form, {'method': 'POST'}) }}{{form_widget(form.Yes)}}{{form_widget(form.No)}}</div>{{ form_end (form)}}
+	<div style="display: none;">{{ form_start(form, {'method': 'POST'}) }}{{form_widget(form.Yes)}}{{form_widget(form.No)}}{{ form_end(form)}}</div>
 {% endblock %}

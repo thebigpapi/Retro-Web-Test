@@ -33,10 +33,10 @@
 		<div class="search-nav-title">{% trans %}Search for a BIOS{% endtrans %}</div>
 		<section>
 			<div class="search-nav">
-				<a class="snav" onclick="document.getElementById('rst-btn').click();return false;">
-					<img src="{{ absolute_url(asset('build/icons/search/reset.svg')) }}" alt="" width="24">{% trans %}Reset fields{% endtrans %}</a>
-				<a class="snav" onclick="document.getElementById('search_search').click();return false;">
-					<img src="{{ absolute_url(asset('build/icons/search/search.svg')) }}" alt="" width="24">{% trans %}Search{% endtrans %}</a>
+				<div class="snav" onclick="document.getElementById('rst-btn').click();return false;">
+					<img src="{{ absolute_url(asset('build/icons/search/reset.svg')) }}" alt="reset" width="24" height="24">{% trans %}Reset fields{% endtrans %}</div>
+				<div class="snav" onclick="document.getElementById('search_search').click();return false;">
+					<img src="{{ absolute_url(asset('build/icons/search/search.svg')) }}" alt="search" width="24" height="24">{% trans %}Search{% endtrans %}</div>
 				<input id="rst-btn" type="reset" value="reset" style="display:none;" data-action="click->search#reset" data-reset-ids="search_chipsetManufacturer">
 				{{ form_row(form.search)|replace({'<div><button': '<input style="display:none;"', '</button></div>': '">', '>': ' value="'})|raw }}
 			</div>

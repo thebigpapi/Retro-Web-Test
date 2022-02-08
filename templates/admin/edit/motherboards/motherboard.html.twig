@@ -34,7 +34,7 @@
 				<img class="imgp-img" src="/motherboard/image/{{ image.vars.value.getFileName() }}" alt="f">
 				<div class="imgp">{{ form_widget(image.imageFile, {'attr': {'style': 'width:100%'}}) }}</div>
 				<div class="imgp"><span>Type:</span>{{ form_widget(image.motherboardImageType)}}</div>
-				<div class="imgp"><span>Creditor:</span>{{ form_widget(image.creditor)}}</div>
+				<div class="imgp"><span>Creditor:</span>{{ form_widget(image.creditor)|replace({'<option value="">': '<option label=" " value="">'})|raw }}</div>
 				<div class="imgp"><span>License:</span>{{ form_widget(image.license)}}</div>
 				<div class="imgp"><span>Notes:</span>{{ form_widget(image.description)}}</div>
 				<div class="imgp">Uploaded file:
@@ -67,7 +67,7 @@
 					</tr>
 					<tr>
 						<td><div class="append_table" id="motherboardAliases-fields-list" data-widget-counter="{{ form.motherboardAliases|length }}" data-prototype="
-								<div class=ba6>{{ form_widget(form.motherboardAliases.vars.prototype.manufacturer, {'attr': {'style': 'width:100%'}} )|replace({'</select>': '<option value="" disabled selected hidden>Select manufacturer</option></select>'})|raw|e }}</div>
+								<div class=ba6>{{ form_widget(form.motherboardAliases.vars.prototype.manufacturer, {'attr': {'style': 'width:100%'}} )|replace({'</select>': '<option value="EMPTY" disabled selected hidden>Select manufacturer</option></select>'})|raw|e }}</div>
 								<div class=ba6>{{ form_widget(form.motherboardAliases.vars.prototype.name, {'attr': {'style': 'width:100%', 'placeholder': 'Name'}} )|e }}</div>
 								<div class=ba2><button type=button data-action='click->collection#removeButtonXtd'>Del</button></div>
 								" data-controller="collection">

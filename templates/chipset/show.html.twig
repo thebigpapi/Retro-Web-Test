@@ -51,20 +51,17 @@
 <!-- IMAGES -->
 <div class="show-images" id="sh-images">
 {% if chipset.getChipsetParts() is not empty %}
+	{% set lpindex = 0 %}
+	{% set lplen = 0 %}
+	{% for chipPart in chipset.getChipsetParts()|filter(chipPart => chipPart.getImages() is not empty) %}
+        {% for image in chipPart.getImages() %}
+			{% set lplen = lplen + 1 %}
+		{% endfor %}
+    {% endfor %}
     {% for chipPart in chipset.getChipsetParts()|sort((a, b) => a.rank <=> b.rank)|filter(chipPart => chipPart.getImages() is not empty) %}
-		{% set lpindex = loop.index %}
-		{% set lplen = loop.length %}
-        {% for image in chipPart.getImages()|slice(0,1) %}
-            <div class="show-image">
-				<a href="{{ vich_uploader_asset(image, 'imageFile')}}" class="glightbox" data-description="
-				{{ chipPart.getFullName() }}{% if image.creditor %}<div style='float:right;'><div>{% if image.creditor.website %}<a href="{{ image.creditor.website }}">{% trans %}Image by{% endtrans %}{{image.creditor.name}}</a>
-				{% else %}{% trans %}Image by{% endtrans %}&nbsp;{{ image.creditor.name }}{% endif %}</div><div>{% if image.license.getId() == 1 %}<a style=color:#0085dd; href=https://creativecommons.org/licenses/by-sa/4.0/>CC BY-SA 4.0</a>{% endif %}</div></div>{% endif %}
-				{% if image.description %}<p>Notes: {{ image.description }}</p>{% endif %}">
-					<img src="{{ vich_uploader_asset(image, 'imageFile') | imagine_filter('motherboard_show_thumb') }}
-                    " width="640" height="480" alt="image{{ loop.index }}" title="{% if image.description %}{{ image.description }}{% endif %}">
-					Image {{ lpindex }} of {{ lplen }}
-				</a>
-		</div>
+        {% for image in chipPart.getImages() %}
+			{% set lpindex = lpindex + 1 %}
+			{% include 'macros/images.html.twig' with {'type':'chipset', 'entity': image, 'index': lpindex, 'length': lplen} %}
         {% endfor %}
     {% endfor %}
 {% else %}
@@ -74,7 +71,7 @@
 {% include 'macros/navbar.html.twig' with {'type':'show', 'entity': chipset, 'entityName': 'chipset', 'count':2} %}
 <!-- DESCRIPRION -->
 <div class="show-general" id="sh-general">
-	<div>{% trans %}Release date:{% endtrans %}&nbsp;{% if chipset.getReleaseDate() is not null %}{{ chipset.getReleaseDate() }}{% else %}{% trans %}Unknown{% endtrans %}{% endif %}&nbsp;&nbsp;<!--
+	<div>{{'Release date'|trans}}:&nbsp;{% if chipset.getReleaseDate() is not null %}{{ chipset.getReleaseDate() }}{% else %}{% trans %}Unknown{% endtrans %}{% endif %}&nbsp;&nbsp;<!--
 	-->{% if chipset.getEncyclopediaLink() is not null %}<a href="{{ chipset.getEncyclopediaLink() }}">[Encyclopedia link]</a>{% endif %}</div>
 	<br>
 	<div class="chipset-textarea">

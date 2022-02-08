@@ -22,11 +22,17 @@ class ChipsetController extends AbstractController
     public function show(int $id, ChipsetRepository $chipsetRepository)
     {
         $chipset = $chipsetRepository->find($id);
-
-        return $this->render('chipset/show.html.twig', [
-            'chipset' => $chipset,
-            'controller_name' => 'ChipsetController',
-        ]);
+        if (!$chipset) {
+            throw $this->createNotFoundException(
+                'No $chipset found for id ' . $id
+            );
+        }
+        else{
+            return $this->render('chipset/show.html.twig', [
+                'chipset' => $chipset,
+                'controller_name' => 'ChipsetController',
+            ]);
+        }
     }
 
     /**

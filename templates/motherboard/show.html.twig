@@ -72,21 +72,11 @@
 				<span class="separator">&nbsp;|&nbsp;</span>
 			{% endif %}
 		{% endfor %}
-	</p>
 </b></p>{% endif %}
 <div class="show-images" id="sh-images">
 {% if motherboard.getImages() is not empty %}
 	{% for image in motherboard.getImages()|sort((a, b) => a.motherboardImageType <=> b.motherboardImageType) %}
-		<div class="show-image">
-			<a href="{{ vich_uploader_asset(image, 'imageFile')}}" class="glightbox" data-sizes="(max-width: 600px) 480px, 800px" data-description=
-			"{% if image.creditor %}<div style='float:right;'><div>{% if image.creditor.website %}<a class=creditor-href href={{ image.creditor.website }}>{% trans %}Image by{% endtrans %}&nbsp;{{image.creditor.name}}</a>
-			{% else %}{% trans %}Image by{% endtrans %}&nbsp;{{ image.creditor.name }}{% endif %}</div><div>{% if image.license.getId() == 1 %}<a style=color:#0085dd; href=https://creativecommons.org/licenses/by-sa/4.0/>CC BY-SA 4.0</a>{% endif %}</div></div>{% endif %}
-			{% if image.description %}<p>Notes: {{ image.description }}</p>{% endif %}">
-				<img src="{% if vich_uploader_asset(image, 'imageFile') | ext != "svg" %}{{ vich_uploader_asset(image, 'imageFile') | imagine_filter('motherboard_show_thumb') }}{% else %}{{ vich_uploader_asset(image, 'imageFile')}}{% endif %}"
-				width="640" height="480" alt="image{{ loop.index }}" title="{% if image.description %}{{ image.description }}{% endif %}">
-				Image {{ loop.index }} of {{ loop.length }}
-			</a>
-		</div>
+		{% include 'macros/images.html.twig' with {'type':'motherboard', 'entity': image, 'index': loop.index, 'length': loop.length} %}
 	{% endfor %}
 {% else %}
 	<div class="show-image">
