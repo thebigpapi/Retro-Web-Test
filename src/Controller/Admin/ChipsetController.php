@@ -284,7 +284,7 @@ class ChipsetController extends AbstractController
             foreach ($form['chip']['images']->getData() as $key => $val) {
                 $val->setChip($chipsetPart);
             }
-            foreach ($form['chip']['documentations']->getData() as $key => $val) {
+            foreach ($form['documentations']->getData() as $key => $val) {
                 $val->setChip($chipsetPart);
             }
 

@@ -115,6 +115,7 @@ td.io-table { vertical-align: top;width:175px; }
 @media (prefers-color-scheme: dark) {
 	div.snav, a.snav { color:$lightbg-color; }
 	div.snav:hover, a.snav:hover { color: #0099ff;background-color:$btn-lightbg-color; }
+    div.show-image p{ color:$light-color; }
 	table.stbl, table.stbl-adv{ background-color:$btn-darkbg-color;color:$light-color; }
 	tr.stbl-head, tr.stbl-head2{ background-color:#606060;color:$light-color; }
     a.glightbox { color:$light-color; }
