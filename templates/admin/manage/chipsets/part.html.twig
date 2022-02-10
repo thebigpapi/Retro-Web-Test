@@ -2,6 +2,9 @@
     <td>{{object.getManufacturer().getShortNameIfExist()}}</td>
     <td>{{object.getPartNumber()}}</td>
     <td>{{object.getName()}}</td>
+    <td>&nbsp;&nbsp;{{object.getRank()}}</td>
+    <td>{% if object.getDocumentations() is not empty%}[✓]{% endif %}</td>
+    <td>{% if object.getImages() is not empty%}[✓]{% endif %}</td>
     <td>
         <a class="button-widget" href="./chipsets/parts/{{ object.getId() }}/edit/">
             <img src="{{ absolute_url(asset('build/icons/show/edit.svg')) }}" alt="" width="20">Edit</a>

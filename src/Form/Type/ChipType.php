@@ -42,7 +42,7 @@ class ChipType extends AbstractType
                 'required' => false,
             ])
             ->add('partNumber', TextType::class, [
-                'required' => false,
+                'required' => true,
             ])
             ->add('chipAliases', CollectionType::class, [
                 'entry_type' => ChipAliasType::class,

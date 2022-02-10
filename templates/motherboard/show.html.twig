@@ -248,6 +248,7 @@
 			<div class="notes">{% apply markdown_to_html %}{{ motherboard.note }}{% endapply %}</div>
 		</div>
 	{% endif %}
+	<div id="index-datetime" data-controller="datetime"><div class="div-datetime">Last updated: <span>{{ motherboard.getLastEdited()|date("Y-m-d\\TH:i:s", "GMT") }}Z|</span></div></div>
 </div>
 <div class="show-downloads" id="sh-downloads">
 	<div class="scroll-div">

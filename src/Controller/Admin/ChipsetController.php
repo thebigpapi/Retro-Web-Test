@@ -169,7 +169,7 @@ class ChipsetController extends AbstractController
         $dql   = "SELECT c 
         FROM App:Chipset c 
         JOIN c.manufacturer m $where 
-        ORDER BY m.name ASC, c.name ASC, c.part_no ASC";
+        ORDER BY m.name ASC, c.release_date ASC, c.part_no ASC";
         $query = $em->createQuery($dql);
         $query->setParameters($criterias);
 
@@ -284,7 +284,7 @@ class ChipsetController extends AbstractController
             foreach ($form['chip']['images']->getData() as $key => $val) {
                 $val->setChip($chipsetPart);
             }
-            foreach ($form['chip']['documentations']->getData() as $key => $val) {
+            foreach ($form['documentations']->getData() as $key => $val) {
                 $val->setChip($chipsetPart);
             }
 
