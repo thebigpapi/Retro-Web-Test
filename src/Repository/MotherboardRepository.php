@@ -985,7 +985,7 @@ class MotherboardRepository extends ServiceEntityRepository
             'SELECT COALESCE(COALESCE(man.shortName, man.name), \'Unidentified\') as name, COUNT(m.id) as count
             FROM App\Entity\Motherboard m LEFT JOIN m.manufacturer man 
             GROUP BY man
-            ORDER BY name'
+            ORDER BY count DESC'
         )
         ->getResult();
 
@@ -994,7 +994,7 @@ class MotherboardRepository extends ServiceEntityRepository
         foreach($result as $subArray) {
             $finalArray[$subArray['name']] = $subArray['count'];
         };
-        
+
         return $finalArray;
     }
 
