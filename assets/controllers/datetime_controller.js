@@ -8,12 +8,15 @@ export default class extends Controller {
     changeTime(id) {
         let list = document.getElementById(id).children
         for (let element of list) {
-            let board = element.children[0].innerHTML;
-            let date = new Date(board.substring(0, board.indexOf("|")));
-
-            element.children[0].innerHTML = date.toLocaleString([], {year: 'numeric', month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit', timeZoneName:'short'});
-            if (document.getElementById(id).nodeName != "DIV")
-                element.children[0].innerHTML += " " + board.substring(board.indexOf("|"));
+            element.children[0].children[0].innerHTML = new Intl.DateTimeFormat('en-ca-iso8601', {
+                year: 'numeric', 
+                month: 'numeric', 
+                day: 'numeric', 
+                hour: '2-digit',
+                hour12: false, 
+                minute: '2-digit', 
+                timeZoneName:'short' 
+            }).format(new Date(element.children[0].children[0].innerHTML));
         }
     }
 }

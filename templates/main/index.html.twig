@@ -27,7 +27,7 @@
 		<div class="results">
 			<ul id="index-datetime">
         	{% for motherboard in latestMotherboards %}
-				<li><a href="{{ path("motherboard_show", {id:motherboard.getId()}) }}">{{ motherboard.getLastEdited()|date("Y-m-d\\TH:i:s", "GMT") }}Z| {{ motherboard.getManufacturerShortNameIfExist() }}&nbsp;{{ motherboard.name }}</a></li>	
+				<li><a href="{{ path("motherboard_show", {id:motherboard.getId()}) }}"><span>{{ motherboard.getLastEdited()|date("Y-m-d\\TH:i:s", "GMT") }}Z</span><span>| {{ motherboard.getManufacturerShortNameIfExist() }}&nbsp;{{ motherboard.name }}</span></a></li>	
 			{% endfor %}
 			</ul>
 		</div>

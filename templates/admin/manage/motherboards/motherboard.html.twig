@@ -7,7 +7,7 @@
     {% endif %}
     </td>
     <td>{{object.getName()}}</td>
-    <td>{{object.getLastEdited()|format_datetime()}}</td>
+    <td>{{object.getLastEdited()|date("Y-m-d, H:i:s", "GMT") }} GMT</td>
     <td>
         <a class="button-widget" href="./motherboards/motherboards/{{ object.getId() }}/edit/">
             <img src="{{ absolute_url(asset('build/icons/show/edit.svg')) }}" alt="" width="20">Edit</a>
