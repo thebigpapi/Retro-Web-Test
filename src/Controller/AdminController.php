@@ -37,15 +37,12 @@ class AdminController extends AbstractController
      * @Route("/admin/stats", name="admin_stats")
      * @param Request $request
      */
-    public function stats(MotherboardRepository $motherboardRepository, ManufacturerRepository $manufRepository)
+    public function stats(MotherboardRepository $motherboardRepository)
     {
-        $manufArray = $manufRepository->findAll();
         $manufBoardCount = array();
-        foreach ($manufArray as $manuf => $value) {
-            $manufBoardCount[$value->getShortNameIfExist()] = $motherboardRepository->getManufCount($value->getId());
-        }
-        arsort($manufBoardCount);
-        $latestMotherboards = $motherboardRepository->getManufCount(93);
+
+        $manufBoardCount = $motherboardRepository->getManufCount();
+        
         return $this->render('admin/stats.html.twig', [
             'controller_name' => 'MainController',
             'manufBoardCount' => $manufBoardCount,
