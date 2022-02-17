@@ -31,6 +31,10 @@
 	<meta property="og:description" content="Get chipset info, images and drivers for {% if chipset.getManufacturer() is not null %}{{ chipset.getManufacturer().getShortNameIfExist() }}{% else %}Unknown{% endif %}
 	{% if chipset.getPartNo() is not null %}&nbsp;{{ chipset.getPartNo() }}{% endif %}{% if chipset.getName() is not null %}&nbsp;{% if chipset.getPartNo() is not null %}({{ chipset.getName() }}){% else %}{{ chipset.getName() }}{% endif %}{% endif %}!">
 	{% endapply %}
+	{% for locale in locales | split('|')|filter(locale => locale != "en") %}
+		<link rel="alternate" hreflang="{{ locale }}" href="{{ absolute_url(path('chipset_show', {_locale: locale, id: chipset.getId()})) }}"/>
+	{% endfor %}
+	<link rel="alternate" hreflang="x-default" href="{{ absolute_url(path('chipset_show', {_locale: 'en', id: chipset.getId()})) }}"/>
 {% endblock %}
 
 {% block body %}
@@ -71,9 +75,18 @@
 {% include 'macros/navbar.html.twig' with {'type':'show', 'entity': chipset, 'entityName': 'chipset', 'count':2} %}
 <!-- DESCRIPRION -->
 <div class="show-general" id="sh-general">
-	<div>{{'Release date'|trans}}:&nbsp;{% if chipset.getReleaseDate() is not null %}{{ chipset.getReleaseDate() }}{% else %}{% trans %}Unknown{% endtrans %}{% endif %}&nbsp;&nbsp;<!--
-	-->{% if chipset.getEncyclopediaLink() is not null %}<a href="{{ chipset.getEncyclopediaLink() }}">[Encyclopedia link]</a>{% endif %}</div>
+	{% apply spaceless %}
+	<div>{{'Release date'|trans}}:&nbsp;
+		{% if chipset.getReleaseDate() is not null %}
+			{{ chipset.getReleaseDate() }}
+		{% else %}
+			{% trans %}Unknown{% endtrans %}
+		{% endif %}&nbsp;&nbsp;
+		{% if chipset.getEncyclopediaLink() is not null %}<a href="{{ chipset.getEncyclopediaLink() }}">[Encyclopedia link]</a>{% endif %}
+		&nbsp;&nbsp;<a href="{{ absolute_url(path('app_homepage')) }}motherboards/?chipsetId={{ chipset.getId() }}"/>[see all boards with this chipset]</a>
+	</div>
 	<br>
+	{% endapply %}
 	<div class="chipset-textarea">
 	{% if chipset.getDescription() is not empty %}
 		{% apply markdown_to_html %}{{ chipset.getDescription() }}{% endapply %}

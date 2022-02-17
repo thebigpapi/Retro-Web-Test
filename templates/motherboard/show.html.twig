@@ -45,6 +45,10 @@
 		{% endif %}
 	{% endif %}
 	{% endapply %}
+	{% for locale in locales | split('|')|filter(locale => locale != "en") %}
+		<link rel="alternate" hreflang="{{ locale }}" href="{{ absolute_url(path('motherboard_show', {_locale: locale, id: motherboard.getId()})) }}"/>
+	{% endfor %}
+	<link rel="alternate" hreflang="x-default" href="{{ absolute_url(path('motherboard_show', {_locale: 'en', id: motherboard.getId()})) }}"/>
 {% endblock %}
 
 {% block body %}
