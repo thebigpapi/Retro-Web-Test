@@ -14,9 +14,10 @@
 			<a class="snav" onclick="document.getElementById('form_No').click();">
 				<img src="{{ absolute_url(asset('build/icons/show/delete.svg')) }}" alt="" width="24">No</a>
 		</div>
+	{{ form_start(form, {'method': 'POST'}) }}
 		<div style="display:table;margin:0 auto;padding-top:25px;">
 			<b>Redirection:&nbsp;</b>{{form_widget(form.Redirection)}}
 		</div>
 	</div>
-	<div style="display: none;">{{ form_start(form, {'method': 'POST'}) }}{{form_widget(form.Yes)}}{{form_widget(form.No)}}{{ form_end(form)}}</div>
+	<div style="display: none;">{{form_widget(form.Yes)}}{{form_widget(form.No)}}{{ form_end(form)}}</div>
 {% endblock %}
