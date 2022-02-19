@@ -452,6 +452,7 @@ class MotherboardController extends AbstractController
 
         return $this->render('motherboard/index.html.twig', [
             'motherboards' => $motherboards,
+            'letter' => $letter,
         ]);
     }
 }

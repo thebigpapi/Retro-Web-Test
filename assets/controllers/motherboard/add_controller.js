@@ -10,16 +10,16 @@ export default class extends Controller {
     checkList(id) {
         let list = document.getElementById(id).children;
         let tp = 0;
-        if (id == 'motherboardIoPorts-fields-list' || id == 'motherboardExpansionSlots-fields-list') {
+        if (id === 'motherboardIoPorts-fields-list' || id === 'motherboardExpansionSlots-fields-list') {
             tp = 1;
         }
-        let array = [];
-        for (let i = 0; i < list.length; i++) {
-            for (let j = 0; j < list[i].children[tp].options.length; j++) {
+        let array = Array();
+        for (let element of list) {
+            for (let j = 0; j < element.children[tp].options.length; j++) {
                 if (!array[j]) {
                     array[j] = 0;
                 }
-                if (list[i].children[tp].options[j].selected) {
+                if (element.children[tp].options[j].selected) {
                     array[j] += 1;
                 }
                 if (array[j] > 1) {
@@ -41,9 +41,9 @@ export default class extends Controller {
         let errorMessage = "";
 
         let manualList = document.getElementById('manuals-fields-list').children;
-        for (let i = 0; i < manualList.length; i++) {
-            if (manualList[i].children[2].children[0].files[0] == null) {
-                if (manualList[i].children[3].children[0].value == '') {
+        for (let manual of manualList) {
+            if (manual.children[2].children[0].files[0] == null) {
+                if (manual.children[3].children[0].value == '') {
                     errorMessage += "One of the file upload fields is empty! (manual entry no." + (i + 1) + ")\n";
                     error = true;
                 }
@@ -51,24 +51,24 @@ export default class extends Controller {
         }
 
         let imageList = document.getElementById('images-fields-list').children;
-        for (let i = 0; i < imageList.length; i++) {
-            if (imageList[i].children[1].children[0].files[0] == null) {
-                if (imageList[i].children[7].children[0].value == '') {
+        for (let image of imageList) {
+            if (image.children[1].children[0].files[0] == null) {
+                if (image.children[7].children[0].value == '') {
                     errorMessage += "One of the file upload fields is empty! (image entry no." + (i + 1) + ")\n";
                     error = true;
                 }
             }
         }
         let driverList = document.getElementById('drivers-fields-list').children;
-        for (let i = 0; i < driverList.length; i++) {
-            if (!driverList[i].children[0].children[0].value) {
+        for (let driver of driverList) {
+            if (!driver.children[0].children[0].value) {
                 errorMessage += "One of the drivers is empty! (entry no." + (i + 1) + ")\n";
                 error = true;
             }
         }
         let aliasesList = document.getElementById('motherboardAliases-fields-list').children;
-        for (let i = 0; i < aliasesList.length; i++) {
-            if (aliasesList[i].children[0].children[0].value == "EMPTY") {
+        for (let alias of aliasesList) {
+            if (alias.children[0].children[0].value == "EMPTY") {
                 errorMessage += "One of the aliases is empty! (entry no." + (i + 1) + ")\n";
                 error = true;
             }
@@ -202,24 +202,24 @@ export default class extends Controller {
             document.getElementById("coprocessors-fields-list").outerHTML = parsedResponse.getElementById("coprocessors-fields-list").outerHTML;
             document.getElementById("coprocessors-fields-list").innerHTML = parsedResponse.getElementById("coprocessors-fields-list").innerHTML;
             let new_platforms = document.getElementById("processorPlatformTypes-fields-list");
-            for(let new_platform of new_platforms.children){
-                if(new_platform.children[2])
-                    if(new_platform.children[2].nodeName == "UL")
+            for (let new_platform of new_platforms.children) {
+                if (new_platform.children[2])
+                    if (new_platform.children[2].nodeName == "UL")
                         new_platform.children[2].outerHTML = "";
             }
             let new_cpus = document.getElementById("processors-fields-list");
-            for(let i=new_cpus.children.length-1; i>0;i-=1){
-                if(new_cpus.children[i])
-                    if(new_cpus.children[i].nodeName == "UL"){
+            for (let i = new_cpus.children.length - 1; i > 0; i -= 1) {
+                if (new_cpus.children[i])
+                    if (new_cpus.children[i].nodeName == "UL") {
                         new_cpus.children[i].outerHTML = "";
-                        i-=1;
+                        i -= 1;
                         new_cpus.children[i].outerHTML = "";
                     }
             }
             cursor.style.display = "none";
-            
-            
+
+
         })();
-        
+
     }
 }

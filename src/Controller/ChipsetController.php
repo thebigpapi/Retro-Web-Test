@@ -162,6 +162,7 @@ class ChipsetController extends AbstractController
         return $this->render('chipset/index.html.twig', [
             'chipsets' => $chipsets,
             'chipset_count' => count($data),
+            'letter' => $letter,
         ]);
     }
 }

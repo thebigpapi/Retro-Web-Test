@@ -3,13 +3,17 @@
 {% block title %}
 	{% trans %}Index{% endtrans %}
 {% endblock %}
-
+{% if letter %}{% set ltr = letter %}{% else %}{% set ltr = "?" %}{% endif %}
 {% block metatags %}
 	<meta name="description" content="Search for a motherboard by name, chipset, manufacturer, CPU platform, form factor, expansion slot count and more.">
+	{% for locale in locales | split('|')|filter(locale => locale != "en") %}
+		<link rel="alternate" hreflang="{{ locale }}" href="{{ absolute_url(path('moboindex', {_locale: locale, letter: ltr })) }}"/>
+	{% endfor %}
+	<link rel="alternate" hreflang="x-default" href="{{ absolute_url(path('moboindex', {_locale: 'en', letter: ltr })) }}"/>
 {% endblock %}
 
 {% block body %}
-	<div class="title"><b>{% trans %}Index{% endtrans %}</b></div>
+	<div class="title"><b>{{'Index'|trans}}: {{ltr}}</b></div>
 	{% if motherboards is not empty %}
 		{{ knp_pagination_render(motherboards, 'macros/pagination.html.twig') }}
 		<ul>

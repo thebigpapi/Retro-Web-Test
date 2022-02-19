@@ -17,7 +17,7 @@ div.addform{
 div.imgp {width:95%;padding-left:5%;max-width:250px;font-size:16px;padding-top:1px}
 div.imgp span{width:65px;display: inline-block;}
 div.imgp select{width:60%}
-img.imgp-img { float:right;width:30%; }
+img.imgp-img { float:right;width:21%;max-height:170px;display:none; }
 /*bios images/manuals*/
 div.bios-image { 
 	background-color: $lightbg-color;
@@ -66,7 +66,7 @@ div.show-edit{
 a.button-widget {
     font-size:18px;
     border: 1px solid $medium-color;
-    box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.3);
+    box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.3);
     display: -moz-inline-box; 
     display: inline-block; 
     padding: 3px;
@@ -90,11 +90,14 @@ a.button-widget:hover { color: $link-hover-color !important;background-color:$na
 @media (max-width: 1199px) {
 	td.ttl1 {width:60%}
 	td.ttl2 {width:200px}
-	img.imgp-img { display:none; }
+}
+@media (min-width: 1400px) { 
+	img.imgp-img { display:initial; }
 }
 @media (min-width: 1620px) { 
 	div.ba1 {width:22%}
 	div.addform {min-width:400px;}
+	img.imgp-img { width:30%; }
 }
 @media (prefers-color-scheme: dark) {
 	div.bios-image-head { background-color:$btn-darkbg-color-hover;color:$light-color; }

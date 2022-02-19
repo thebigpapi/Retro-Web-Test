@@ -19,6 +19,10 @@
 
 {% block metatags %}
 	<meta name="description" content="Search for a motherboard by name, chipset, manufacturer, CPU platform, form factor, expansion slot count and more.">
+	{% for locale in locales | split('|')|filter(locale => locale != "en") %}
+		<link rel="alternate" hreflang="{{ locale }}" href="{{ absolute_url(path('motherboard_search', {_locale: locale})) }}"/>
+	{% endfor %}
+	<link rel="alternate" hreflang="x-default" href="{{ absolute_url(path('motherboard_search', {_locale: 'en'})) }}"/>
 {% endblock %}
 {% block body %}
 <div class="index-title">

@@ -6,6 +6,10 @@
 
 {% block metatags %}
 	<meta name="description" content="BIOS info(AMI/Award manufacturer codes), Award chipset IDs">
+	{% for locale in locales | split('|')|filter(locale => locale != "en") %}
+		<link rel="alternate" hreflang="{{ locale }}" href="{{ absolute_url(path('bios_info', {_locale: locale})) }}"/>
+	{% endfor %}
+	<link rel="alternate" hreflang="x-default" href="{{ absolute_url(path('bios_info', {_locale: 'en'})) }}"/>
 {% endblock %}
 
 {% block body %}

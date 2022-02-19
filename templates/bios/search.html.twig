@@ -18,6 +18,10 @@
 
 {% block metatags %}
 	<meta name="description" content="{% trans %}Search for a motherboard BIOS by POST string, chipset, manufacturer, and more.{% endtrans %}">
+	{% for locale in locales | split('|')|filter(locale => locale != "en") %}
+		<link rel="alternate" hreflang="{{ locale }}" href="{{ absolute_url(path('bios_search', {_locale: locale})) }}"/>
+	{% endfor %}
+	<link rel="alternate" hreflang="x-default" href="{{ absolute_url(path('bios_search', {_locale: 'en'})) }}"/>
 {% endblock %}
 
 {% block body %}

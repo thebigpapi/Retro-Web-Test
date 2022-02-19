@@ -2,8 +2,11 @@
     <td>{{object.getManufacturer().getShortNameIfExist()}}</td>
     <td>{{object.getPartNo()}}</td>
     <td>{{object.getName()}}</td>
+    <td>{% if object.getChipsetParts() is not empty %}
+    {% for part in object.getChipsetParts() %}{{part.getPartNumber()}}{% if not loop.last %}, {% endif %}{% endfor %}
+    {% endif %}</td>
     <td>{{object.getReleaseDate()}}</td>
-    <td>
+    <td style="min-width:150px;">
         <a class="button-widget" href="./chipsets/chipsets/{{ object.getId() }}/edit/">
             <img src="{{ absolute_url(asset('build/icons/show/edit.svg')) }}" alt="" width="20">Edit</a>
         <a class="button-widget" href="{{ path("chipset_show", {id: object.getId()}) }}">

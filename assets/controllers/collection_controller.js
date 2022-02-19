@@ -9,21 +9,21 @@ export default class extends Controller {
     addLink(){
         if(document.getElementById('chipsetParts-fields-list')){
             let list = document.getElementById('chipsetParts-fields-list').childNodes;
-            list.forEach(function(item){
+            for (let item of list) {
                 if(item.nodeName == "DIV"){
                     if(item.children[2].href.substring(item.children[2].href.length -1) == "#")
                         item.children[2].href = "../../parts/" + item.children[0].value + "/edit";
                 }
-            });
+            }
         }
     }
     addLinkOverride(){
         let list = document.getElementById('chipsetParts-fields-list').childNodes;
-        list.forEach(function(item){
+        for (let item of list) {
             if(item.nodeName == "DIV"){
                 item.children[2].href = "../../parts/" + item.children[0].value + "/edit";
             }
-        });
+        }
     }
     /**
      * Add an element to the list
@@ -39,9 +39,9 @@ export default class extends Controller {
         //set the new increment, create the new widget and concatenate after list
         list.setAttribute("data-widget-counter", counter);
         let newElem = document.createElement('div');
-        if (list.id == 'images-fields-list' || list.id == 'chip.images-fields-list' || list.id == 'processingUnit.chip.images-fields-list')
+        if (list.id === 'images-fields-list' || list.id === 'chip.images-fields-list' || list.id === 'processingUnit.chip.images-fields-list')
             newElem.setAttribute("class", "addform");
-        if (list.id== 'motherboardBios-fields-list' || list.id == 'manuals-fields-list')
+        if (list.id === 'motherboardBios-fields-list' || list.id === 'manuals-fields-list')
             newElem.setAttribute("style", "width:100%");
         newElem.innerHTML = newWidget;
         list.appendChild(newElem);

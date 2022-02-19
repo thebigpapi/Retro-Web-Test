@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Manufacturer;
 use App\Entity\Motherboard;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\NativeQuery;
@@ -975,16 +976,26 @@ class MotherboardRepository extends ServiceEntityRepository
     }
 
     /**
-     * @return Motherboard[] Returns an array of Motherboard objects
+     * @return Motherboard[] Returns an array of Manufacturer's name and count of board for each manufacturer
      */
-    public function getManufCount($manufacturer): int
+    public function getManufCount(): array
     {
-        return $this->createQueryBuilder('m')
-            ->andWhere('m.manufacturer = :val')
-            ->setParameter('val', $manufacturer)
-            ->select('count(m.manufacturer)')
-            ->getQuery()
-            ->getSingleScalarResult();
+        $entityManager = $this->getEntityManager();
+        $result = $entityManager->createQuery(
+            'SELECT COALESCE(COALESCE(man.shortName, man.name), \'Unidentified\') as name, COUNT(m.id) as count
+            FROM App\Entity\Motherboard m LEFT JOIN m.manufacturer man 
+            GROUP BY man
+            ORDER BY count DESC'
+        )
+        ->getResult();
+
+        $finalArray = array();
+
+        foreach($result as $subArray) {
+            $finalArray[$subArray['name']] = $subArray['count'];
+        };
+
+        return $finalArray;
     }
 
     /**
