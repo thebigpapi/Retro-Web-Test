@@ -10,12 +10,12 @@ trait ImpreciseDateTrait {
     /**
      * @ORM\Column(type="date", nullable=true)
      */
-    private DateTime $releaseDate;
+    private ?DateTime $releaseDate = null;
 
     /**
      * @ORM\Column(type="string", length=1, nullable=true)
      */
-    private string $datePrecision;
+    private ?string $datePrecision = null;
 
     public function getReleaseDate(): ?DateTimeInterface
     {
@@ -24,19 +24,24 @@ trait ImpreciseDateTrait {
 
     public function setReleaseDate(?DateTimeInterface $releaseDate): self
     {
-        $date = new DateTime();
+        if ($releaseDate) {
+            $date = new DateTime();
 
-        switch ($this->getDatePrecision()) {
-            case "m":
-                $date->setDate($releaseDate->format("Y"), $releaseDate->format("m"), "1");
-                break;
-            case "y":
-                $date->setDate($releaseDate->format("Y"), "1", "1");
-                break;
-            default:
-                $date->setDate($releaseDate->format("Y"), $releaseDate->format("m"), $releaseDate->format("d"));
+            switch ($this->getDatePrecision()) {
+                case "m":
+                    $date->setDate($releaseDate->format("Y"), $releaseDate->format("m"), "1");
+                    break;
+                case "y":
+                    $date->setDate($releaseDate->format("Y"), "1", "1");
+                    break;
+                default:
+                    $date->setDate($releaseDate->format("Y"), $releaseDate->format("m"), $releaseDate->format("d"));
+            }
+            $this->releaseDate = $date;
         }
-        $this->releaseDate = $date;
+        else {
+            $this->releaseDate = null;
+        }
 
         return $this;
     }
