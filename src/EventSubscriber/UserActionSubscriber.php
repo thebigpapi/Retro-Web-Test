@@ -64,7 +64,7 @@ class UserActionSubscriber implements EventSubscriberInterface
             $keys[] = $key;
         }
 
-        $trace->setContent("Changes made to fields : " . implode(', ', $keys));
+        $trace->setContent(implode(', ', $keys));
         $trace->setDate(date_create());
 
         $this->entityManager->persist($trace);

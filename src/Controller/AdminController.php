@@ -52,17 +52,17 @@ class AdminController extends AbstractController
     }
 
     /**
-     * @Route("/admin/trace", name="admin_trace")
+     * @Route("/admin/logs", name="admin_logs")
      * @param Request $request
      */
-    public function trace(Request $request, TraceRepository $traceRepository, PaginatorInterface $paginator) {
+    public function logs(Request $request, TraceRepository $traceRepository, PaginatorInterface $paginator) {
         $paginatedObjects = $paginator->paginate(
             $traceRepository->findAll(),
             $request->query->getInt('page', 1),
             $this->getParameter('app.pagination.max')
         );
 
-        return $this->render('admin/trace.html.twig', [
+        return $this->render('admin/logs.html.twig', [
             'objectList' => $paginatedObjects,
         ]);
     }

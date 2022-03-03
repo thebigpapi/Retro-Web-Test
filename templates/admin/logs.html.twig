@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	{% trans %}Trace{% endtrans %}
+{% endblock %}
+
+{% block body %}
+    <div class="title">
+		<b>Trace</b>
+	</div>
+    {{ knp_pagination_render(objectList, 'macros/pagination.html.twig') }}
+    <table class="results">
+        <thead>
+            <tr>
+                <th style="text-align:center;"><i>User</i></th>
+                <th style="text-align:center;"><i>Action</i></th>
+                <th style="text-align:center;"><i>Item</i></th>
+                <th style="text-align:center;"><i>Changed fields</i></th>
+                <th style="text-align:center;"><i>Date</i></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for object in objectList|sort((a, b) => b.date <=> a.date) %}
+                <tr>
+                    <td style="padding:5px 10px 5px;">{{object.username}}</td>
+                    <td style="padding:5px 10px 5px;">{{object.eventType}}</td>
+                    <td style="padding:5px 10px 5px;">{{object.objectType()}}, [ID:{{object.objectId}}]</td>
+                    <td style="padding:5px 10px 5px;">{{object.content}}</td>
+                    <td style="padding:5px 10px 5px;">{{object.date |date("Y-m-d, H:i:s", "GMT") }} GMT</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% if objectList.count > 25 %}
+        {{ knp_pagination_render(objectList, 'macros/pagination.html.twig') }}
+    {% endif %}
+{% endblock %}
