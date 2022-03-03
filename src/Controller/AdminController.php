@@ -14,9 +14,11 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use App\Repository\MotherboardRepository;
 use App\Repository\ManufacturerRepository;
+use App\Repository\TraceRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ObjectManager;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class AdminController extends AbstractController
@@ -35,7 +37,6 @@ class AdminController extends AbstractController
 
     /**
      * @Route("/admin/stats", name="admin_stats")
-     * @param Request $request
      */
     public function stats(MotherboardRepository $motherboardRepository)
     {
@@ -47,6 +48,22 @@ class AdminController extends AbstractController
             'controller_name' => 'MainController',
             'manufBoardCount' => $manufBoardCount,
             'moboCount' => $motherboardRepository->getCount(),
+        ]);
+    }
+
+    /**
+     * @Route("/admin/trace", name="admin_trace")
+     * @param Request $request
+     */
+    public function trace(Request $request, TraceRepository $traceRepository, PaginatorInterface $paginator) {
+        $paginatedObjects = $paginator->paginate(
+            $traceRepository->findAll(),
+            $request->query->getInt('page', 1),
+            $this->getParameter('app.pagination.max')
+        );
+
+        return $this->render('admin/trace.html.twig', [
+            'objectList' => $paginatedObjects,
         ]);
     }
 
