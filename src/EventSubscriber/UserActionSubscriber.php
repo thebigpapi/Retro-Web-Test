@@ -86,7 +86,9 @@ class UserActionSubscriber implements EventSubscriberInterface
         $trace->setUsername($this->security->getUser()->getUsername());
         $trace->setEventType("DELETE");
         $trace->setObjectType($object::class);
-        $trace->setObjectId($object->getId());
+        if(method_exists($object, 'id')){
+            $trace->setObjectId($object->getId());
+        }
         $trace->setContent("");
         $trace->setDate(date_create());
 

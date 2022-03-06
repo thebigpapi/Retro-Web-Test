@@ -33,7 +33,7 @@ class Trace
     private $objectType;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", nullable=true)
      */
     private $objectId;
 

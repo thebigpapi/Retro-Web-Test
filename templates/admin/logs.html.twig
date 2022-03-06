@@ -1,12 +1,12 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-	{% trans %}Trace{% endtrans %}
+	{% trans %}Logs{% endtrans %}
 {% endblock %}
 
 {% block body %}
     <div class="title">
-		<b>Trace</b>
+		<b>Logs</b>
 	</div>
     {{ knp_pagination_render(objectList, 'macros/pagination.html.twig') }}
     <table class="results">
