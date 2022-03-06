@@ -34,11 +34,14 @@ class UserActionSubscriber implements EventSubscriberInterface
         }
 
         $trace = new Trace();
-        $trace->setUsername($this->security->getUser()->getUsername());
+        $trace->setUsername($this->security->getUser()->getUserIdentifier());
         $trace->setEventType("CREATE");
         $trace->setObjectType($object::class);
-        $trace->setObjectId($object->getId());
-        $trace->setContent("");
+        if(method_exists($object, 'getId')){
+            $trace->setObjectId($object->getId());
+        }
+
+        $trace->setContent(str_replace(["App\\\\Entity\\\\", "\u0000"], "", json_encode((array) $object, JSON_PRETTY_PRINT)));
         $trace->setDate(date_create());
 
         $this->entityManager->persist($trace);
@@ -53,18 +56,14 @@ class UserActionSubscriber implements EventSubscriberInterface
         }
 
         $trace = new Trace();
-        $trace->setUsername($this->security->getUser()->getUsername());
+        $trace->setUsername($this->security->getUser()->getUserIdentifier());
         $trace->setEventType("UPDATE");
         $trace->setObjectType($object::class);
-        $trace->setObjectId($object->getId());
-
-        $keys = [];
-
-        foreach ($args->getEntityChangeSet() as $key => $value) {
-            $keys[] = $key;
+        if(method_exists($object, 'getId')){
+            $trace->setObjectId($object->getId());
         }
 
-        $trace->setContent(implode(', ', $keys));
+        $trace->setContent(str_replace(["App\\\\Entity\\\\", "\u0000"], "", json_encode(["before" => (array) $args->getEntity(), "changes" => (array) $args->getEntityChangeSet()], JSON_PRETTY_PRINT)));
         $trace->setDate(date_create());
 
         $this->entityManager->persist($trace);
@@ -78,18 +77,20 @@ class UserActionSubscriber implements EventSubscriberInterface
     public function preRemove(LifecycleEventArgs $args) {
         $object = $args->getObject();
         
+        
         if($object instanceof Trace) { //Exclude trace to avoid infinite loop
             return;
         }
 
         $trace = new Trace();
-        $trace->setUsername($this->security->getUser()->getUsername());
+        $trace->setUsername($this->security->getUser()->getUserIdentifier());
         $trace->setEventType("DELETE");
         $trace->setObjectType($object::class);
-        if(method_exists($object, 'id')){
+        if(method_exists($object, 'getId')){
             $trace->setObjectId($object->getId());
         }
-        $trace->setContent("");
+
+        $trace->setContent(str_replace(["App\\\\Entity\\\\", "\u0000"], "", json_encode((array) $object, JSON_PRETTY_PRINT)));
         $trace->setDate(date_create());
 
         $this->entityManager->persist($trace);

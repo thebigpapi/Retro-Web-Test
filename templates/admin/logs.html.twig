@@ -24,7 +24,7 @@
                 <tr>
                     <td style="padding:5px 10px 5px;">{{object.username}}</td>
                     <td style="padding:5px 10px 5px;">{{object.eventType}}</td>
-                    <td style="padding:5px 10px 5px;">{{object.objectType()}}, [ID:{{object.objectId}}]</td>
+                    <td style="padding:5px 10px 5px;">{{object.objectType()}}{% if object.objectId %}, [ID:{{object.objectId}}]{% endif %}</td>
                     <td style="padding:5px 10px 5px;">{{object.content}}</td>
                     <td style="padding:5px 10px 5px;">{{object.date |date("Y-m-d, H:i:s", "GMT") }} GMT</td>
                 </tr>

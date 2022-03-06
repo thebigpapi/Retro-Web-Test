@@ -28,11 +28,6 @@ class MotherboardExpansionSlot
      */
     private $count;
 
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
-
     public function getMotherboard(): ?Motherboard
     {
         return $this->motherboard;
