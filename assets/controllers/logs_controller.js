@@ -13,7 +13,7 @@ export default class extends Controller {
               content.style.maxHeight = null;
             } else {
               content.style.maxHeight = "560px";
-              content.style.overflowY = "scroll";
+              content.style.overflow = "scroll";
             } 
           });
         }

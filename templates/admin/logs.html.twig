@@ -10,6 +10,7 @@
 		<b>Logs</b>
 	</div>
     {{ knp_pagination_render(objectList, 'macros/pagination.html.twig') }}
+    <div class="div-logs-table">
     <table id="logs-table" class="results" data-controller="logs">
         <thead>
             <tr>
@@ -38,6 +39,7 @@
             
         </tbody>
     </table>
+    </div>
     {% if objectList.count > 25 %}
         {{ knp_pagination_render(objectList, 'macros/pagination.html.twig') }}
     {% endif %}
