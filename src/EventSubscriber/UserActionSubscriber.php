@@ -63,7 +63,7 @@ class UserActionSubscriber implements EventSubscriberInterface
             $trace->setObjectId($object->getId());
         }
 
-        $trace->setContent(str_replace(["App\\\\Entity\\\\", "\u0000"], "", json_encode(["before" => (array) $args->getEntity(), "changes" => (array) $args->getEntityChangeSet()], JSON_PRETTY_PRINT)));
+        $trace->setContent(str_replace(["App\\\\Entity\\\\", "\u0000"], "", json_encode((array) $args->getEntityChangeSet(), JSON_PRETTY_PRINT)));
         $trace->setDate(date_create());
 
         $this->entityManager->persist($trace);

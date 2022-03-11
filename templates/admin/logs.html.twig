@@ -3,13 +3,14 @@
 {% block title %}
 	{% trans %}Logs{% endtrans %}
 {% endblock %}
+{% block opengraph %}<style>div.page {width: 98% !important;}</style>{% endblock %}
 
 {% block body %}
     <div class="title">
 		<b>Logs</b>
 	</div>
     {{ knp_pagination_render(objectList, 'macros/pagination.html.twig') }}
-    <table class="results">
+    <table id="logs-table" class="results" data-controller="logs">
         <thead>
             <tr>
                 <th style="text-align:center;"><i>User</i></th>
@@ -20,15 +21,21 @@
             </tr>
         </thead>
         <tbody>
+            
             {% for object in objectList|sort((a, b) => b.date <=> a.date) %}
                 <tr>
                     <td style="padding:5px 10px 5px;">{{object.username}}</td>
                     <td style="padding:5px 10px 5px;">{{object.eventType}}</td>
-                    <td style="padding:5px 10px 5px;">{{object.objectType()}}{% if object.objectId %}, [ID:{{object.objectId}}]{% endif %}</td>
+                    <td style="padding:5px 10px 5px;">{{object.objectType}}{% if object.objectId %},
+                    {% if object.objectType == "App\\Entity\\Motherboard" %}<a href="{{ path("motherboard_show", {id:object.objectId}) }}">[ID:{{object.objectId}}]</a>
+                    {% elseif object.objectType == "App\\Entity\\Chipset" %}<a href="{{ path("chipset_show", {id:object.objectId}) }}">[ID:{{object.objectId}}]</a>
+                    {% else %}[ID:{{object.objectId}}]{% endif %}
+                    {% endif %}</td>
                     <td style="padding:5px 10px 5px;">{{object.content}}</td>
-                    <td style="padding:5px 10px 5px;">{{object.date |date("Y-m-d, H:i:s", "GMT") }} GMT</td>
+                    <td style="padding:5px 10px 5px;min-width:140px;">{{object.date |date("Y-m-d, H:i:s", "GMT") }} GMT</td>
                 </tr>
             {% endfor %}
+            
         </tbody>
     </table>
     {% if objectList.count > 25 %}
