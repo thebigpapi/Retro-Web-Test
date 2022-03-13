@@ -45,6 +45,7 @@ div.results{
 } 
 
 @media (max-width: 600px) {
+    .mobile-col {display:none;}
     div.index-buttons a { height: 180px; width: 180px; }
 }
 
