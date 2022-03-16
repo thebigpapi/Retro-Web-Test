@@ -13,7 +13,7 @@ export default class extends Controller {
                 month: 'numeric', 
                 day: 'numeric', 
                 hour: '2-digit',
-                hour12: false, 
+                hourCycle:'h23',
                 minute: '2-digit', 
                 timeZoneName:'short' 
             }).format(new Date(element.children[0].children[0].innerHTML));

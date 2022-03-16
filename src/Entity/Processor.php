@@ -53,7 +53,7 @@ class Processor extends ProcessingUnit
     private $core;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="float", nullable=true)
      */
     private $tdp;
 
@@ -214,12 +214,12 @@ class Processor extends ProcessingUnit
         return $this;
     }
 
-    public function getTdp(): ?int
+    public function getTdp(): ?float
     {
         return $this->tdp;
     }
 
-    public function setTdp(?int $tdp): self
+    public function setTdp(?float $tdp): self
     {
         $this->tdp = $tdp;
 

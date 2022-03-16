@@ -325,6 +325,8 @@ class ProcessingUnitController extends AbstractController
         $platforms = $this->getDoctrine()
             ->getRepository(ProcessorPlatformType::class)
             ->findAll();
+            
+        usort($platforms, function ($a, $b) { return strnatcasecmp($a->getName(), $b->getName());});
 
         $paginatedPlatforms = $paginator->paginate(
             $platforms,
@@ -343,6 +345,8 @@ class ProcessingUnitController extends AbstractController
         $instructionsets = $this->getDoctrine()
             ->getRepository(InstructionSet::class)
             ->findAll();
+
+        usort($instructionsets, function ($a, $b) { return strnatcasecmp($a->getName(), $b->getName());});
 
         $paginatedInstructionsets = $paginator->paginate(
             $instructionsets,

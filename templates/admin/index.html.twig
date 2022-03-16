@@ -53,5 +53,7 @@
 	{% endif %}
 	<br><br>
 	<a class="snav" href="{{ path('admin_stats') }}">
-        <img src="{{ absolute_url(asset('build/icons/show/data.svg')) }}" alt="" width="24">Click here to view board stats</a>
+        <img src="{{ absolute_url(asset('build/icons/show/data.svg')) }}" alt="" width="24">Board stats</a>
+	<a class="snav" href="{{ path('admin_logs') }}">
+        <img src="{{ absolute_url(asset('build/icons/show/data.svg')) }}" alt="" width="24">Logs</a>
 {% endblock %}

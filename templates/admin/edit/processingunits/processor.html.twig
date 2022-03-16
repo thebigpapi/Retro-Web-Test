@@ -3,12 +3,15 @@
 {% block title %}Manage CPUs{% endblock %}
 
 {% block body %}
+
+<form data-controller="cpu--add" name="processor_form" method="post" enctype="multipart/form-data">
 <div class="title" style="padding-top:5em;">
 	<b>Edit:&nbsp;CPU&nbsp;&nbsp;</b>
-	<a class="snav" onclick="document.getElementById('processor_form_save').click();">
-		<img src="{{ absolute_url(asset('build/icons/show/edit.svg')) }}" alt="" width="24" style="vertical-align: middle;padding-right:2px;">Save</a>
+	<div class="snav" data-action="click->cpu--add#submit">
+		<img src="{{ absolute_url(asset('build/icons/show/edit.svg')) }}" alt="" width="24" style="vertical-align: middle;padding-right:2px;">Save</div>
+	<div class="snav" data-action="click->cpu--add#clone">
+		<img src="{{ absolute_url(asset('build/icons/clone.svg')) }}" alt="" width="24" height="24" style="vertical-align: middle;padding-right:2px;">Clone CPU</div>
 </div>
-{{ form_start(form, {'method': 'POST'}) }}
 {% include 'macros/entityListImages.html.twig' with {'entityName':'processingUnit.chip.images', 'entities':form.processingUnit.chip.images} %}
 <div class="show-images" style="max-height:initial;font-size: 16px;">	
 	<table>
