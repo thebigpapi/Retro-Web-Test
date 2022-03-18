@@ -19,10 +19,10 @@ class UserActionSubscriber implements EventSubscriberInterface
     public function getSubscribedEvents(): array {
         //dd($this->security->getUser());
         return [
-            'postPersist',
+            /*'postPersist',
             'preUpdate',
             'postUpdate',
-            'preRemove',
+            'preRemove',*/
         ];
     }
 
