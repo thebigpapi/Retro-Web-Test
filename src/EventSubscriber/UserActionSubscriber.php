@@ -14,7 +14,11 @@ use Doctrine\Persistence\Event\LifecycleEventArgs;
 class UserActionSubscriber implements EventSubscriberInterface
 {
 
-    public function __construct(private Security $security, private EntityManagerInterface $entityManager) {}
+    private array $removedObjects;
+
+    public function __construct(private Security $security, private EntityManagerInterface $entityManager) {
+        $removedObjects = array();
+    }
 
     public function getSubscribedEvents(): array {
         return [
@@ -22,6 +26,7 @@ class UserActionSubscriber implements EventSubscriberInterface
             'preUpdate',
             'postUpdate',
             'preRemove',
+            'postRemove',
         ];
     }
 
@@ -81,17 +86,25 @@ class UserActionSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $trace = new Trace();
-        $trace->setUsername($this->security->getUser()->getUserIdentifier());
-        $trace->setEventType("DELETE");
-        $trace->setObjectType($object::class);
-        if(method_exists($object, 'getId')){
-            $trace->setObjectId($object->getId());
+        $this->removedObjects[] = $object;
+    }
+
+    public function postRemove() {
+        foreach ($this->removedObjects as $object) {
+            $trace = new Trace();
+            $trace->setUsername($this->security->getUser()->getUserIdentifier());
+            $trace->setEventType("DELETE");
+            $trace->setObjectType($object::class);
+            if(method_exists($object, 'getId')){
+                $trace->setObjectId($object->getId());
+            }
+
+            $trace->setContent(str_replace(["App\\\\Entity\\\\", "\u0000"], "", json_encode((array) $object, JSON_PRETTY_PRINT)));
+            $trace->setDate(date_create());
+
+            $this->entityManager->persist($trace);
         }
 
-        $trace->setContent(str_replace(["App\\\\Entity\\\\", "\u0000"], "", json_encode((array) $object, JSON_PRETTY_PRINT)));
-        $trace->setDate(date_create());
-
-        $this->entityManager->persist($trace);
+        $this->entityManager->flush();
     }
 }
