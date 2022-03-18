@@ -17,12 +17,11 @@ class UserActionSubscriber implements EventSubscriberInterface
     public function __construct(private Security $security, private EntityManagerInterface $entityManager) {}
 
     public function getSubscribedEvents(): array {
-        //dd($this->security->getUser());
         return [
-            /*'postPersist',
+            'postPersist',
             'preUpdate',
             'postUpdate',
-            'preRemove',*/
+            'preRemove',
         ];
     }
 
@@ -94,6 +93,5 @@ class UserActionSubscriber implements EventSubscriberInterface
         $trace->setDate(date_create());
 
         $this->entityManager->persist($trace);
-        $this->entityManager->flush();
     }
 }
