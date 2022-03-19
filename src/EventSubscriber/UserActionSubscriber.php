@@ -86,7 +86,7 @@ class UserActionSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $this->removedObjects[] = $object;
+        $this->removedObjects[] = clone $object;
     }
 
     public function postRemove() {
