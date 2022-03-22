@@ -5,8 +5,7 @@
 		<meta http-equiv="content-type" content="text/html; charset=UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1"> {% block metatags %}{% endblock %}
 		<title>
-			{% block title %}Ultimate Retro
-			{% endblock %}
+			{% block title %}The Retro Web{% endblock %}
 		</title>
 		<meta property="og:type" content="website">
 		<meta property="og:url" content="http://www.ultimateretro.net/">
@@ -30,9 +29,7 @@
 		<header class="navbar">
 			<nav class="navbar-inner">
 				<a href="{{ path('app_homepage') }}" title="Go to homepage">
-					<b>Ultimate Retro
-						<small>BETA</small>
-					</b>
+					<b>The Retro Web</b>
 				</a>
 			{% if is_granted('ROLE_USER') %}
 				<a href="{{ path('app_logout') }}" class="nav-link">

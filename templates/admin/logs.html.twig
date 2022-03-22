@@ -23,7 +23,7 @@
         </thead>
         <tbody>
             
-            {% for object in objectList|sort((a, b) => b.date <=> a.date) %}
+            {% for object in objectList %}
                 <tr>
                     <td style="padding:5px 10px 5px;">{{object.username}}</td>
                     <td style="padding:5px 10px 5px;">{{object.eventType}}</td>

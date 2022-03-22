@@ -56,8 +56,18 @@ class AdminController extends AbstractController
      * @param Request $request
      */
     public function logs(Request $request, TraceRepository $traceRepository, PaginatorInterface $paginator) {
+        $logs = $traceRepository->findAll();
+        usort(
+            $logs,
+            function ($a, $b) {
+                if ($a->getDate() == $b->getDate()) {
+                    return 0;
+                }
+                return ($a->getDate() > $b->getDate()) ? -1 : 1;
+            }
+        );
         $paginatedObjects = $paginator->paginate(
-            $traceRepository->findAll(),
+            $logs,
             $request->query->getInt('page', 1),
             $this->getParameter('app.pagination.max')
         );
