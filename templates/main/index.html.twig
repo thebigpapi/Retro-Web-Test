@@ -1,10 +1,19 @@
 {% extends 'base.html.twig' %}
+{% block title %}The Retro Web{% endblock %}
 {% block metatags %}
 	<meta name="description" content="The ultimate retro motherboard database, here you can find board photos, BIOS images, manuals and more!">
 	<link rel="alternate" hreflang="x-default" href="{{ absolute_url(path('app_homepage')) }}"/>
 {% endblock %}
 
 {% block body %}MAIN page ??<div class="title"><b>{% trans %}Where do you want to go today?{% endtrans %}</b></div>
-<a href="{{ path('app_hardware') }}">hardware</a>
-	
+	<div class="index-buttons">
+		<a href="{{ path('app_hardware') }}">
+			<img src="{{ absolute_url(asset('build/images/index/motherboard.png')) }}" alt="">
+			<div>Hardware</div>
+		</a>
+		<a href="{{ path('app_articles') }}">
+			<img src="{{ absolute_url(asset('build/images/index/motherboard.png')) }}" alt="">
+			<div>Articles</div>
+		</a>
+	</div>
 {% endblock %}

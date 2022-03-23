@@ -1,5 +1,6 @@
 span.text-block {
-    border: 1px solid $medium-color; 
+    border: 1px solid $medium-color;
+    border-radius: 4px; 
     display: -moz-inline-box; 
     display: inline-block; 
     margin-right: 5px; 
@@ -23,21 +24,21 @@ div.show-image a img { width: 100%;height:auto; }
 a.creditor-href, a.license-href { color:$dark-color; img{vertical-align:top;} }
 a.license-href:hover, a.creditor-href:hover { color:$link-hover-color1; }
 div.show-nav { 
-    padding:5px 0px 10px; 
+    //padding:5px 0px 10px; 
     -moz-user-select: -moz-none;
     -khtml-user-select: none;
     -webkit-user-select: none;
     -ms-user-select: none;
     user-select: none;
-    //div { font-size:20px; }
 }
 div.snav, a.snav {
     font-size:20px;
     border: 1px solid $medium-color;
+    border-collapse: collapse;
     box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.3);
     display: -moz-inline-box; 
     display: inline-block; 
-    padding: 5px;
+    padding: 5px 7px 5px;
     margin-top:2px;
     color:$dark-color;
     text-decoration:none;
@@ -88,7 +89,7 @@ td.io-table { vertical-align: top;width:175px; }
 	div.show-images { width:100%; max-height:400px;padding-top:5px; }
 	/*div.show-image, span.string-bios { font-size:8px; }*/
 	div.show-nav, div.show-general, div.show-downloads, div.show-cpus,div.div-datetime { width:100%;padding-left:0;font-size:16px; }
-    div.show-nav div { font-size:16px; }
+    div.show-nav div, div.snav, a.snav { font-size:16px; }
     img.lang-flag {height:16px; width:32px;}
 	td.io-table ul,td.exp-table ul { padding:0; }
     ul.docs-list{padding:0;}

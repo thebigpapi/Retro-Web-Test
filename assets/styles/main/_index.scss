@@ -1,10 +1,14 @@
 div.index-buttons {
     text-align:center;
+    font-family: $font-family;
     a {
         background-color: $btn-lightbg-color; 
         color: $dark-color;
         border: 1px solid gray;
-        box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.3);
+        border-radius: 6px;
+        //box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.3);
+        box-shadow:0 0 8px #696969;
+        
         padding: 10px 5px 10px; 
         vertical-align: top;
         height: 220px;
@@ -16,7 +20,8 @@ div.index-buttons {
         div { font-size: 12px; }
         span {_cursor: hand;cursor: pointer;}
     }
-    a:hover div{ color:$link-hover-color1;}
+    a:hover{ box-shadow:0 0 16px #696969;transition: ease-in-out .2s box-shadow,ease-in-out .2s border-color,ease-in-out .2s color,ease-in-out .2s background-color;}
+    a:hover div{ color:$link-hover-color1;transition:ease-in-out .2s box-shadow,ease-in-out .2s border-color,ease-in-out .2s color,ease-in-out .2s background-color;}
 }
 span.image-block {
     text-align: center; 
@@ -26,8 +31,30 @@ span.image-block {
     span {display:table;}
     span span {display:block;}
 }
+div.perks{
+    display:flex;
+    align-items: center;
+    flex-direction: column;
+    div.perks-list{
+        display:flex;
+        align-items: center;
+        flex-wrap:wrap;
+        justify-content: center; 
+        div.perk{
+            background-color: #f6f6f6; 
+            border: 1px solid #77c5f9;
+            border-radius: 6px;
+            display:inline-block;
+            padding:7px;
+            margin:3px;
+            min-width: 300px;
+            a div.perk-name{color: #0979c3;}
+            a div.perk-name:hover{color:$link-hover-color;transition:ease-in-out .2s box-shadow,ease-in-out .2s border-color,ease-in-out .2s color,ease-in-out .2s background-color;}
+            a div.perk-date{color: $dark-color;}
+        }  
+    } 
+} 
 /* results */
-div.perks, div.perks div.results ul li {font-size:14px;}
 div.results{
     ul { margin: 0;padding-left: 40px; }
     ul li{ line-height:140%;font-size: 16px; }
@@ -42,7 +69,7 @@ div.results{
         li { line-height:120%; }
         li small{ font-size:0.8em; } 
     }
-} 
+}
 
 @media (max-width: 600px) {
     .mobile-col {display:none;}
@@ -52,15 +79,21 @@ div.results{
 @media (min-width: 1200px) {
     div.index-buttons a { height: 235px; width: 250px; }
     div.index-buttons a div { font-size: 15px; }
+    div.perks{font-size: 18px;}
     div.results ul li{font-size:20px;}
 	div.results span.image-block span span {font-size:20px;width:16em;}
 }
 @media (min-width: 1400px) { 
     div.index-buttons a { height: 265px; width: 290px; }
-    div.perks, div.perks div.results ul li {font-size:16px;}
 }
 @media (prefers-color-scheme: dark) {
 	div.index-buttons a { background-color: $btn-darkbg-color;color: $light-color; }
     div.index-buttons a:hover div { color:$link-hover-color;}
+    div.perks div.perks-list div.perk{
+        background-color: $btn-darkbg-color; 
+        a div.perk-name{color: #77c5f9;}
+        a div.perk-name:hover{color:#c6e8ff;}
+        a div.perk-date{color: $light-color;}
+    }
 }
 

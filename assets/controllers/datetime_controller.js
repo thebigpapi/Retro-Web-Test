@@ -8,7 +8,7 @@ export default class extends Controller {
     changeTime(id) {
         let list = document.getElementById(id).children
         for (let element of list) {
-            element.children[0].children[0].innerHTML = new Intl.DateTimeFormat('en-ca-iso8601', {
+            element.children[0].children[1].innerHTML = new Intl.DateTimeFormat('en-ca-iso8601', {
                 year: 'numeric', 
                 month: 'numeric', 
                 day: 'numeric', 
@@ -16,7 +16,7 @@ export default class extends Controller {
                 hourCycle:'h23',
                 minute: '2-digit', 
                 timeZoneName:'short' 
-            }).format(new Date(element.children[0].children[0].innerHTML));
+            }).format(new Date(element.children[0].children[1].innerHTML));
         }
     }
 }

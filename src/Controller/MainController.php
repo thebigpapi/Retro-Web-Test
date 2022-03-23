@@ -25,7 +25,7 @@ class MainController extends AbstractController
      */
     public function hardware(MotherboardRepository $motherboardRepository, MotherboardBiosRepository $motherboardBiosRepository, ChipsetRepository $chipsetRepository)
     {
-        $latestMotherboards = $motherboardRepository->find10Latest();
+        $latestMotherboards = $motherboardRepository->findLatest();
         return $this->render('hardware/index.html.twig', [
             'controller_name' => 'MainController',
             'latestMotherboards' => $latestMotherboards,
@@ -33,6 +33,13 @@ class MainController extends AbstractController
             'chipCount' => $chipsetRepository->getCount(),
             'biosCount' => $motherboardBiosRepository->getCount(),
         ]);
+    }
+    /**
+     * @Route("/articles", name="app_articles")
+     */
+    public function articles()
+    {
+        return $this->render('articles/index.html.twig');
     }
 
     /**

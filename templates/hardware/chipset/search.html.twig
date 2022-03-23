@@ -12,17 +12,12 @@
 	<input type="{{ type }}" {{ block('widget_attributes') }} {% if value is not empty %} value="{{ value }}" {% endif %}>
 {% endblock %}
 
-{% block title %}
-	{% trans %}Search for a motherboard{% endtrans %}
-{% endblock %}
+{% block title %}Search chipsets - TRW{% endblock %}
 
 
 {% block metatags %}
 	<meta name="description" content="Search for a chipset by name, manufacturer and part number.">
-	{% for locale in locales | split('|')|filter(locale => locale != "en") %}
-		<link rel="alternate" hreflang="{{ locale }}" href="{{ absolute_url(path('chipset_search', {_locale: locale})) }}"/>
-	{% endfor %}
-	<link rel="alternate" hreflang="x-default" href="{{ absolute_url(path('chipset_search', {_locale: 'en'})) }}"/>
+	<link rel="alternate" hreflang="x-default" href="{{ absolute_url(path('chipset_search')) }}"/>
 {% endblock %}
 {% block body %}
 <div class="index-title">

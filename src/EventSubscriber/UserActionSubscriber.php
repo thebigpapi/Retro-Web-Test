@@ -48,8 +48,8 @@ class UserActionSubscriber implements EventSubscriberInterface
         $search = '#(0000).*?(0000)#';
         $trace->setContent(str_replace("\u", "", preg_replace($search,"\u",json_encode((array) $object, JSON_PRETTY_PRINT))));
         $trace->setDate(date_create());
-        dd($object);
-        dd(json_encode((array) $object, JSON_PRETTY_PRINT, 3));
+        //dd($object);
+        //dd(json_encode((array) $object, JSON_PRETTY_PRINT, 3));
         $this->entityManager->persist($trace);
         $this->entityManager->flush();
     }
@@ -105,7 +105,9 @@ class UserActionSubscriber implements EventSubscriberInterface
                 $trace->setObjectId($object->getId());
             }
 
-            $trace->setContent(str_replace(["App\\\\Entity\\\\", "\u0000"], "", json_encode((array) $object, JSON_PRETTY_PRINT)));
+            $search = "/[^0000](.*)[^0000]/";
+            $search = '#(0000).*?(0000)#';
+            $trace->setContent(str_replace("\u", "", preg_replace($search,"\u",json_encode((array) $object, JSON_PRETTY_PRINT))));
             $trace->setDate(date_create());
 
             $this->entityManager->persist($trace);

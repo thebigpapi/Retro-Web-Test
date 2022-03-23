@@ -1,8 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}
-	{% trans %}Search results{% endtrans %}
-{% endblock %}
+{% block title %}Search results - TRW{% endblock %}
 
 {% block metatags %}
 	<meta name="description" content="Search for a motherboard by name, chipset, manufacturer, CPU platform, form factor, expansion slot count and more.">
@@ -10,7 +8,7 @@
 
 {% block body %}
 	<div class="title">
-		<b>{% trans %}Search results{% endtrans %}</b>
+		<b>Search results</b>
 	</div>
 	<p style="text-align:center;padding-top:10px;">
 		<i>{{ 'motherboard.num'|trans({'count':motherboard_count}) }}</i>

@@ -12,21 +12,15 @@
 	<input type="{{ type }}" {{ block('widget_attributes') }} {% if value is not empty %} value="{{ value }}" {% endif %}>
 {% endblock %}
 
-{% block title %}
-	{% trans %}Search for a motherboard{% endtrans %}
-{% endblock %}
-
+{% block title %}Search boards - TRW{% endblock %}
 
 {% block metatags %}
 	<meta name="description" content="Search for a motherboard by name, chipset, manufacturer, CPU platform, form factor, expansion slot count and more.">
-	{% for locale in locales | split('|')|filter(locale => locale != "en") %}
-		<link rel="alternate" hreflang="{{ locale }}" href="{{ absolute_url(path('motherboard_search', {_locale: locale})) }}"/>
-	{% endfor %}
-	<link rel="alternate" hreflang="x-default" href="{{ absolute_url(path('motherboard_search', {_locale: 'en'})) }}"/>
+	<link rel="alternate" hreflang="x-default" href="{{ absolute_url(path('motherboard_search')) }}"/>
 {% endblock %}
 {% block body %}
 <div class="index-title">
-	{% trans %}List boards whose manufacturer name starts with:{% endtrans %}<br>
+	List boards whose manufacturer name starts with:<br>
 </div>
 <ul class="index-list">
 	{% for letter in ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','?']%}
@@ -36,18 +30,18 @@
 	<div id="hiddenDiv" style="display: none;"></div>
 	{{ form_start(form, {'method': 'POST', 'name': 'search_motherboard', 'action':path("motherboard_search"), 'attr':{'data-controller':'search'}}) }}
 	<fieldset id="search-fieldset">
-		<div class="search-nav-title">{% trans %}Search for a motherboard{% endtrans %}</div>
+		<div class="search-nav-title">Search for a motherboard</div>
 		<section>
 			<h4 hidden>Search navigation</h4>
 			<div class="search-nav">
 				<div class="snav" onclick="document.getElementById('rst-btn').click();return false;">
-					<img src="{{ absolute_url(asset('build/icons/search/reset.svg')) }}" alt="reset" width="24" height="24">{% trans %}Reset fields{% endtrans %}
+					<img src="{{ absolute_url(asset('build/icons/search/reset.svg')) }}" alt="reset" width="24" height="24">Reset fields
 				</div>
 				<div class="snav" onclick="document.getElementById('search_search').click();return false;">
-					<img src="{{ absolute_url(asset('build/icons/search/search.svg')) }}" alt="search" width="24" height="24">{% trans %}Search{% endtrans %}
+					<img src="{{ absolute_url(asset('build/icons/search/search.svg')) }}" alt="search" width="24" height="24">Search
 				</div>
 				<div class="snav" onclick="document.getElementById('search_searchWithImages').click();return false;">
-					<img src="{{ absolute_url(asset('build/icons/search/search_image.svg')) }}" alt="imgsearch" width="24" height="24">{% trans %}Search with images{% endtrans %}
+					<img src="{{ absolute_url(asset('build/icons/search/search_image.svg')) }}" alt="imgsearch" width="24" height="24">Search with images
 				</div>
 
 				<input id="rst-btn" type="reset" style="display:none;" value="reset" data-action="click->search#reset" data-reset-ids='search_chipsetManufacturer search_cpuSocket1 search_cpuSocket2'>
@@ -58,8 +52,8 @@
 		<section>
 			<h4 hidden>Simple search</h4>
 			<div>
-				<label class="search-label" for="search_name" title="{% trans %}This is where you enter the board part number, do not write the manufacturer name here!{% endtrans %}"
-				>{% trans %}Name{% endtrans %}&nbsp;<img src="{{ absolute_url(asset('build/icons/search/help.svg')) }}" alt="" width="16" height="16"></label>
+				<label class="search-label" for="search_name" title="This is where you enter the board part number, do not write the manufacturer name here!"
+				>Name&nbsp;<img src="{{ absolute_url(asset('build/icons/search/help.svg')) }}" alt="" width="16" height="16"></label>
 				<div class="search-widget">
 					<div class="search-widget-short">{{ form_widget(form.manufacturer) }}</div>
 					<div class="search-widget-long">{{ form_widget(form.name, {'attr': {'aria-describedby': 'search_name_inst'}}) }}</div>
@@ -69,8 +63,8 @@
 		<section>
 			<h4 hidden>Advanced search</h4>
 			<div>
-				<label class="search-label" for="search_chipset" title="{% trans %}Select a manufacturer from the first field, then pick the part number from the second field{% endtrans %}"
-				>{% trans %}Chipset{% endtrans %}&nbsp;<img src="{{ absolute_url(asset('build/icons/search/help.svg')) }}" alt="" width="16" height="16"></label>
+				<label class="search-label" for="search_chipset" title="Select a manufacturer from the first field, then pick the part number from the second field"
+				>Chipset&nbsp;<img src="{{ absolute_url(asset('build/icons/search/help.svg')) }}" alt="" width="16" height="16"></label>
 				<div class="search-widget">
 					<div class="search-widget-short" id="setchip1">{{ form_widget(form.chipsetManufacturer, {'attr': {'data-action': "change->search#search", 'data-target-id': 'search_chipset'}}) }}</div>
 					<div class="search-widget-long">
@@ -80,8 +74,8 @@
 				</div>
 			</div>
 			<div>
-				<label class="search-label" for="search_cpuSocket1" title="{% trans %}Select a CPU socket from the first field and/or pick the CPU platform from the second field{% endtrans %}"
-				>{% trans %}CPU socket{% endtrans %}&nbsp;<img src="{{ absolute_url(asset('build/icons/search/help.svg')) }}" alt="" width="16" height="16"></label>
+				<label class="search-label" for="search_cpuSocket1" title="Select a CPU socket from the first field and/or pick the CPU platform from the second field"
+				>CPU socket&nbsp;<img src="{{ absolute_url(asset('build/icons/search/help.svg')) }}" alt="" width="16" height="16"></label>
 				<div class="search-widget">
 					<div class="search-widget-short" id="setcpu1">{{ form_widget(form.cpuSocket1, {'attr': {'data-action': "change->search#search", 'data-target-id': 'search_platform1'}}) }}</div>
 					<div class="search-widget-long">
@@ -91,7 +85,7 @@
 				</div>
 			</div>
 			<div>
-				<label class="search-label" for="search_cpuSocket2">{% trans %}2nd CPU socket{% endtrans %}</label>
+				<label class="search-label" for="search_cpuSocket2">2nd CPU socket</label>
 				<div class="search-widget">
 					<div class="search-widget-short" id="setcpu3">{{ form_widget(form.cpuSocket2, {'attr': {'data-action': "change->search#search", 'data-target-id': 'search_platform2'}}) }}</div>
 					<div class="search-widget-long">
@@ -101,12 +95,12 @@
 				</div>
 			</div>
 			<div>
-			    <label class="search-label" for="search_formFactor" title="">{% trans %}Form factor{% endtrans %}</label>
+			    <label class="search-label" for="search_formFactor" title="">Form factor</label>
 				<div class="search-widget">{{ form_widget(form.formFactor) }}</div>
 			</div>
 			<div>
-				<label class="search-label" for="search_expansion_slots" title="{% trans %}0 - all boards without that slot will be shown{% endtrans %}"
-				>{% trans %}Expansion slots{% endtrans %}&nbsp;<img src="{{ absolute_url(asset('build/icons/search/help.svg')) }}" alt="" width="16" height="16"></label>
+				<label class="search-label" for="search_expansion_slots" title="0 - all boards without that slot will be shown"
+				>Expansion slots&nbsp;<img src="{{ absolute_url(asset('build/icons/search/help.svg')) }}" alt="" width="16" height="16"></label>
 				<div class="search-widget" id="search_expansion_slots">
 					<ul class="slots-ports-widget">
 						{% for slot in slots %}
@@ -121,8 +115,8 @@
 				</div>
 			</div>
 			<div>
-				<label class="search-label" for="search_io_ports" title="{% trans %}0 - all boards without that port will be shown{% endtrans %}"
-				>{% trans %}I/O ports{% endtrans %}&nbsp;<img src="{{ absolute_url(asset('build/icons/search/help.svg')) }}" alt="" width="16" height="16"></label>
+				<label class="search-label" for="search_io_ports" title="0 - all boards without that port will be shown"
+				>I/O ports&nbsp;<img src="{{ absolute_url(asset('build/icons/search/help.svg')) }}" alt="" width="16" height="16"></label>
 				<div class="search-widget" id="search_io_ports">
 					<ul class="slots-ports-widget">
 						{% for port in ports %}

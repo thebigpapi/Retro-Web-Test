@@ -44,7 +44,7 @@ export default class extends Controller {
         for (let manual of manualList) {
             if (manual.children[2].children[0].files[0] == null) {
                 if (manual.children[3].children[0].value == '') {
-                    errorMessage += "One of the file upload fields is empty! (manual entry no." + (i + 1) + ")\n";
+                    errorMessage += "One of the file upload fields is empty!\n";
                     error = true;
                 }
             }
@@ -54,7 +54,7 @@ export default class extends Controller {
         for (let image of imageList) {
             if (image.children[1].children[0].files[0] == null) {
                 if (image.children[7].children[0].value == '') {
-                    errorMessage += "One of the file upload fields is empty! (image entry no." + (i + 1) + ")\n";
+                    errorMessage += "One of the file upload fields is empty!\n";
                     error = true;
                 }
             }
@@ -62,14 +62,14 @@ export default class extends Controller {
         let driverList = document.getElementById('drivers-fields-list').children;
         for (let driver of driverList) {
             if (!driver.children[0].children[0].value) {
-                errorMessage += "One of the drivers is empty! (entry no." + (i + 1) + ")\n";
+                errorMessage += "One of the drivers is empty!\n";
                 error = true;
             }
         }
         let aliasesList = document.getElementById('motherboardAliases-fields-list').children;
         for (let alias of aliasesList) {
             if (alias.children[0].children[0].value == "EMPTY") {
-                errorMessage += "One of the aliases is empty! (entry no." + (i + 1) + ")\n";
+                errorMessage += "One of the aliases is empty!\n";
                 error = true;
             }
         }

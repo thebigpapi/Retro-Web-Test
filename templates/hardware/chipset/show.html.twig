@@ -6,7 +6,7 @@
 	{% if chipset.getManufacturer() is not null %}
 		{{ chipset.getManufacturer().getShortNameIfExist() }}
 	{% else %}
-		{% trans %}Unknown{% endtrans %}
+		Unknown
 	{% endif %}
 	{{ chipset.getPartNo() }}
 {% endblock %}
@@ -15,7 +15,6 @@
 {% endblock %}
 
 {% block opengraph %}
-	<meta property="og:site_name" content="Ultimate Retro">
 	{% apply spaceless %}
 	{% if chipset.getChipsetParts() is not empty %}
 		{% for chipPart in chipset.getChipsetParts()|sort((a, b) => a.rank <=> b.rank)|filter(chipPart => chipPart.getImages() is not empty)|slice(0,1) %}
@@ -31,10 +30,7 @@
 	<meta property="og:description" content="Get chipset info, images and drivers for {% if chipset.getManufacturer() is not null %}{{ chipset.getManufacturer().getShortNameIfExist() }}{% else %}Unknown{% endif %}
 	{% if chipset.getPartNo() is not null %}&nbsp;{{ chipset.getPartNo() }}{% endif %}{% if chipset.getName() is not null %}&nbsp;{% if chipset.getPartNo() is not null %}({{ chipset.getName() }}){% else %}{{ chipset.getName() }}{% endif %}{% endif %}!">
 	{% endapply %}
-	{% for locale in locales | split('|')|filter(locale => locale != "en") %}
-		<link rel="alternate" hreflang="{{ locale }}" href="{{ absolute_url(path('chipset_show', {_locale: locale, id: chipset.getId()})) }}"/>
-	{% endfor %}
-	<link rel="alternate" hreflang="x-default" href="{{ absolute_url(path('chipset_show', {_locale: 'en', id: chipset.getId()})) }}"/>
+	<link rel="alternate" hreflang="x-default" href="{{ absolute_url(path('chipset_show', {id: chipset.getId()})) }}"/>
 {% endblock %}
 
 {% block body %}
@@ -46,7 +42,7 @@
 </div>
 {% if chipset.getChipsetParts() is not empty %}
 	<p class="string-alias"><b>
-		<span class="text-block" style="border: none; padding-right: 0;">{% trans %}Chipset parts{% endtrans %}:</span>
+		<span class="text-block" style="border: none; padding-right: 0;">Chipset parts:</span>
 		{% for part in chipset.getChipsetParts()|sort((a, b) => a.rank <=> b.rank) %}
 			<span class="text-block">{{ part.getFullName() }}</span>
 		{% endfor %}
@@ -80,7 +76,7 @@
 		{% if chipset.getReleaseDate() is not null %}
 			{{ chipset.getReleaseDate() }}
 		{% else %}
-			{% trans %}Unknown{% endtrans %}
+			Unknown
 		{% endif %}&nbsp;&nbsp;
 		{% if chipset.getEncyclopediaLink() is not null %}<a href="{{ chipset.getEncyclopediaLink() }}">[Encyclopedia link]</a>{% endif %}
 		&nbsp;&nbsp;<a href="{{ absolute_url(path('app_homepage')) }}hardware/motherboards/?chipsetId={{ chipset.getId() }}"/>[see all boards with this chipset]</a>
@@ -102,7 +98,7 @@
 	<!-- DRIVERS -->
 	<div class="scroll-div">
 		<img src="{{ absolute_url(asset('build/icons/show/hardware.svg')) }}" alt="" width="32" style="vertical-align: middle;padding-bottom: 10px;">
-		<span><b>{% trans %}Drivers:{% endtrans %} </b></span>
+		<span><b>Drivers: </b></span>
 		{% if chipset.getDrivers() is not empty %}
 			<span>{{ chipset.getDrivers.count() }}{% if chipset.getDrivers.count() == 1 %} entry{% else %} entries{% endif %}</span>
 			<table class="stbl">
@@ -117,7 +113,7 @@
 	<div class="scroll-div">
 		{% if chipset.getChipsetParts() is not empty %}
 			<img src="{{ absolute_url(asset('build/icons/show/manual.svg')) }}" alt="" width="32" style="vertical-align: middle;padding-bottom: 10px;">
-			<span><b>{% trans %}Documentation:{% endtrans %} </b></span>
+			<span><b>Documentation: </b></span>
 			<!-- CHIPSET PART DOC COUNT -->
 			{% set docCount = 0 %}
     		{% for chipPart in chipset.getChipsetParts()|filter(chipPart => chipPart.getDocumentations() is not empty) %}
@@ -155,7 +151,7 @@
 	<!-- CHIPSET FILES -->
     <div class="scroll-div">
 		<img src="{{ absolute_url(asset('build/icons/show/manual.svg')) }}" alt="" width="32" style="vertical-align: middle;padding-bottom: 10px;">
-		<span><b>{% trans %}Other files:{% endtrans %} </b></span>
+		<span><b>Other files: </b></span>
 		{% if chipset.getDocumentations() is not empty %}
 		<span>{{ chipset.getDocumentations.count() }}&nbsp;{% if chipset.getDocumentations.count() == 1 %}file{% else %}files{% endif %}</span>
 		<table class="stbl">

@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+{% block title %}Articles - TRW{% endblock %}
+{% block metatags %}
+	<meta name="description" content="The ultimate retro motherboard database, here you can find board photos, BIOS images, manuals and more!">
+	<link rel="alternate" hreflang="x-default" href="{{ absolute_url(path('app_homepage')) }}"/>
+{% endblock %}
+
+{% block body %}Articles ??<div class="title"><b>{% trans %}Where do you want to go today?{% endtrans %}</b></div>
+
+{% endblock %}
