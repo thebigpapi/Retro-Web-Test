@@ -17,7 +17,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class ChipsetController extends AbstractController
 {
     /**
-     * @Route("/hardware/chipsets/{id}", name="chipset_show", requirements={"id"="\d+"})
+     * @Route("/chipsets/{id}", name="chipset_show", requirements={"id"="\d+"})
      */
     public function show(int $id, ChipsetRepository $chipsetRepository)
     {
@@ -28,7 +28,7 @@ class ChipsetController extends AbstractController
             );
         }
         else{
-            return $this->render('hardware/chipset/show.html.twig', [
+            return $this->render('chipset/show.html.twig', [
                 'chipset' => $chipset,
                 'controller_name' => 'ChipsetController',
             ]);
@@ -36,7 +36,7 @@ class ChipsetController extends AbstractController
     }
 
     /**
-     * @Route("/hardware/chipsets/", name="chipsetsearch", methods={"GET"})
+     * @Route("/chipsets/", name="chipsetsearch", methods={"GET"})
      * @param Request $request
      */
     public function searchResult(Request $request, PaginatorInterface $paginator, ChipsetRepository $chipsetRepository)
@@ -79,7 +79,7 @@ class ChipsetController extends AbstractController
             $this->getParameter('app.pagination.max')
         );
 
-        return $this->render('hardware/chipset/result.html.twig', [
+        return $this->render('chipset/result.html.twig', [
             'controller_name' => 'ChipsetController',
             'chipsets' => $chipsets,
             'chipset_count' => count($data),
@@ -88,7 +88,7 @@ class ChipsetController extends AbstractController
     }
 
     /**
-     * @Route("/hardware/chipsets/search/", name="chipset_search")
+     * @Route("/chipsets/search/", name="chipset_search")
      * @param Request $request
      */
     public function search(Request $request, TranslatorInterface $translator, ManufacturerRepository $manufacturerRepository)
@@ -109,7 +109,7 @@ class ChipsetController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             return $this->redirect($this->generateUrl('chipsetsearch', $this->searchFormToParam($request, $form)));
         }
-        return $this->render('hardware/chipset/search.html.twig', [
+        return $this->render('chipset/search.html.twig', [
             'form' => $form->createView(),
         ]);
     }
@@ -135,7 +135,7 @@ class ChipsetController extends AbstractController
     }
 
     /**
-     * @Route("/hardware/chipsets/index/{letter}", name="chipsetindex", requirements={"letter"="\w|[?]"}), methods={"GET"})
+     * @Route("/chipsets/index/{letter}", name="chipsetindex", requirements={"letter"="\w|[?]"}), methods={"GET"})
      * @param Request $request
      */
     public function index(Request $request, PaginatorInterface $paginator, string $letter, ChipsetRepository $chipsetRepository)
@@ -159,7 +159,7 @@ class ChipsetController extends AbstractController
             $this->getParameter('app.pagination.max')
         );
 
-        return $this->render('hardware/chipset/index.html.twig', [
+        return $this->render('chipset/index.html.twig', [
             'chipsets' => $chipsets,
             'chipset_count' => count($data),
             'letter' => $letter,

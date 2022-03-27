@@ -12,34 +12,17 @@ class MainController extends AbstractController
 {
     /**
      * @Route("/", name="app_homepage")
-     * @param Request $request
      */
-    public function index(MotherboardRepository $motherboardRepository)
-    {
-        return $this->render('main/index.html.twig', [
-            'controller_name' => 'MainController',
-        ]);
-    }
-    /**
-     * @Route("/hardware", name="app_hardware")
-     */
-    public function hardware(MotherboardRepository $motherboardRepository, MotherboardBiosRepository $motherboardBiosRepository, ChipsetRepository $chipsetRepository)
+    public function index(MotherboardRepository $motherboardRepository, MotherboardBiosRepository $motherboardBiosRepository, ChipsetRepository $chipsetRepository)
     {
         $latestMotherboards = $motherboardRepository->findLatest();
-        return $this->render('hardware/index.html.twig', [
+        return $this->render('main/index.html.twig', [
             'controller_name' => 'MainController',
             'latestMotherboards' => $latestMotherboards,
             'moboCount' => $motherboardRepository->getCount(),
             'chipCount' => $chipsetRepository->getCount(),
             'biosCount' => $motherboardBiosRepository->getCount(),
         ]);
-    }
-    /**
-     * @Route("/articles", name="app_articles")
-     */
-    public function articles()
-    {
-        return $this->render('articles/index.html.twig');
     }
 
     /**

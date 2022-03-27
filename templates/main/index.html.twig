@@ -1,19 +1,40 @@
 {% extends 'base.html.twig' %}
-{% block title %}The Retro Web{% endblock %}
+{% block title %}Hardware - TRW{% endblock %}
 {% block metatags %}
-	<meta name="description" content="The ultimate retro motherboard database, here you can find board photos, BIOS images, manuals and more!">
+	<meta name="description" content="The Retro Web motherboard database, here you can find board photos, BIOS images, manuals and more!">
 	<link rel="alternate" hreflang="x-default" href="{{ absolute_url(path('app_homepage')) }}"/>
 {% endblock %}
 
-{% block body %}MAIN page ??<div class="title"><b>{% trans %}Where do you want to go today?{% endtrans %}</b></div>
+{% block body %}<div class="title"><b>Where do you want to go today?</b></div>
 	<div class="index-buttons">
-		<a href="{{ path('app_hardware') }}">
+		<a href="{{ path("motherboard_search") }}">
 			<img src="{{ absolute_url(asset('build/images/index/motherboard.png')) }}" alt="">
-			<div>Hardware</div>
+			<div>Motherboards</div><div>({{moboCount}}&nbsp;entries)</div>
 		</a>
-		<a href="{{ path('app_articles') }}">
-			<img src="{{ absolute_url(asset('build/images/index/motherboard.png')) }}" alt="">
-			<div>Articles</div>
+		<a href="#">
+			<img src="{{ absolute_url(asset('build/images/index/card_wip.png')) }}" alt="">
+			<div>Expansion cards</div><div>[WIP]</div>
 		</a>
+		<a href="{{ path("bios_search") }}">
+			<img src="{{ absolute_url(asset('build/images/index/awchip.png')) }}" alt="">
+			<div>BIOS images</div><div>({{biosCount}}&nbsp;files)</div>
+		</a>
+		<a href="{{ path("chipset_search") }}">
+			<img src="{{ absolute_url(asset('build/images/index/440bxchip.png')) }}" alt="">
+			<div>Chipsets</div><div>({{chipCount}}&nbsp;entries)</div>
+		</a>
+	</div>
+	<div class="perks" data-controller="datetime">
+		<p><b>Recently added/updated boards:</b></p>
+		<div id="index-datetime" class="perks-list">
+        {% for motherboard in latestMotherboards %}
+			<div class="perk">
+				<a href="{{ path("motherboard_show", {id:motherboard.getId()}) }}">
+					<div class="perk-name">{{ motherboard.getManufacturerShortNameIfExist() }}&nbsp;{{ motherboard.name }}</div>
+					<div class="perk-date">{{ motherboard.getLastEdited()|date("Y-m-d\\TH:i:s", "GMT") }}Z</div>
+				</a>
+			</div>	
+		{% endfor %}
+		</div>
 	</div>
 {% endblock %}

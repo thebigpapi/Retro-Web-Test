@@ -34,7 +34,7 @@ use Symfony\Contracts\Cache\CacheInterface;
 class MotherboardController extends AbstractController
 {
     /**
-     * @Route("/hardware/motherboards/", name="mobosearch", methods={"GET"})
+     * @Route("/motherboards/", name="mobosearch", methods={"GET"})
      * @param Request $request
      */
     public function searchResult(Request $request, PaginatorInterface $paginator, MotherboardRepository $motherboardRepository)
@@ -126,7 +126,7 @@ class MotherboardController extends AbstractController
             $this->getParameter('app.pagination.max')
         );
 
-        return $this->render('hardware/motherboard/result.html.twig', [
+        return $this->render('motherboard/result.html.twig', [
             'controller_name' => 'MotherboardController',
             'motherboards' => $motherboards,
             'motherboard_count' => count($data),
@@ -135,7 +135,7 @@ class MotherboardController extends AbstractController
     }
 
     /**
-     * @Route("/hardware/motherboards/{id}", name="motherboard_show", requirements={"id"="\d+"})
+     * @Route("/motherboards/{id}", name="motherboard_show", requirements={"id"="\d+"})
      */
     public function show(int $id, MotherboardRepository $motherboardRepository, MotherboardIdRedirectionRepository $motherboardIdRedirectionRepository)
     {
@@ -153,14 +153,14 @@ class MotherboardController extends AbstractController
             }
         }
 
-        return $this->render('hardware/motherboard/show.html.twig', [
+        return $this->render('motherboard/show.html.twig', [
             'motherboard' => $motherboard,
             'controller_name' => 'MotherboardController',
         ]);
     }
 
     /**
-     * @Route("/hardware/motherboards/{id}/delete/", name="motherboard_delete", requirements={"id"="\d+"})
+     * @Route("/motherboards/{id}/delete/", name="motherboard_delete", requirements={"id"="\d+"})
      * @param Request $request
      */
     public function delete(Request $request, int $id, MotherboardRepository $motherboardRepository, EntityManagerInterface $entityManager)
@@ -222,20 +222,20 @@ class MotherboardController extends AbstractController
                 //Deleting the motherboard
                 $entityManager->remove($motherboard);
                 $entityManager->flush();
-                return $this->render('hardware/motherboard/delete_confirm.html.twig', [
+                return $this->render('motherboard/delete_confirm.html.twig', [
                     'id' => $id,
                 ]);
             }
         }
 
-        return $this->render('hardware/motherboard/delete.html.twig', [
+        return $this->render('motherboard/delete.html.twig', [
             'form' => $form->createView(),
             'motherboard' => $motherboard,
         ]);
     }
 
     /**
-     * @Route("/hardware/motherboards/search/", name="motherboard_search")
+     * @Route("/motherboards/search/", name="motherboard_search")
      * @param Request $request
      */
     public function search(Request $request, TranslatorInterface $translator, ManufacturerRepository $manufacturerRepository,
@@ -293,7 +293,7 @@ class MotherboardController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             return $this->redirect($this->generateUrl('mobosearch', $this->searchFormToParam($request, $form, $slots, $ports)));
         }
-        return $this->render('hardware/motherboard/search.html.twig', [
+        return $this->render('motherboard/search.html.twig', [
             'form' => $form->createView(),
             'slots' => $slots,
             'ports' => $ports,
@@ -387,7 +387,7 @@ class MotherboardController extends AbstractController
     }
 
     /**
-     * @Route("/hardware/motherboards/index/{letter}", name="moboindex", requirements={"letter"="\w|[?]"}), methods={"GET"})
+     * @Route("/motherboards/index/{letter}", name="moboindex", requirements={"letter"="\w|[?]"}), methods={"GET"})
      * @param Request $request
      */
     public function index(Request $request, PaginatorInterface $paginator, string $letter, MotherboardRepository $motherboardRepository)
@@ -411,7 +411,7 @@ class MotherboardController extends AbstractController
             $this->getParameter('app.pagination.max')
         );
 
-        return $this->render('hardware/motherboard/index.html.twig', [
+        return $this->render('motherboard/index.html.twig', [
             'motherboards' => $motherboards,
             'letter' => $letter,
         ]);

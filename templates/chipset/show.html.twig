@@ -79,7 +79,7 @@
 			Unknown
 		{% endif %}&nbsp;&nbsp;
 		{% if chipset.getEncyclopediaLink() is not null %}<a href="{{ chipset.getEncyclopediaLink() }}">[Encyclopedia link]</a>{% endif %}
-		&nbsp;&nbsp;<a href="{{ absolute_url(path('app_homepage')) }}hardware/motherboards/?chipsetId={{ chipset.getId() }}"/>[see all boards with this chipset]</a>
+		&nbsp;&nbsp;<a href="{{ absolute_url(path('app_homepage')) }}motherboards/?chipsetId={{ chipset.getId() }}"/>[see all boards with this chipset]</a>
 	</div>
 	<br>
 	{% endapply %}

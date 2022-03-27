@@ -20,7 +20,7 @@ class BiosController extends AbstractController
 {
 
     /**
-     * @Route("/hardware/bios/", name="bios_result"), methods={"GET"})
+     * @Route("/bios/", name="bios_result"), methods={"GET"})
      * @param Request $request
      */
     public function result(Request $request, PaginatorInterface $paginator, MotherboardBiosRepository $motherboardBiosRepository,
@@ -105,24 +105,24 @@ class BiosController extends AbstractController
             $this->getParameter('app.pagination.max')
         );
 
-        return $this->render('hardware/bios/result.html.twig', [
+        return $this->render('bios/result.html.twig', [
             'bios' => $bios,
             'bios_count' => count($data),
             'postStringAnalysis' => $postStringAnalysis,
         ]);
     }
     /**
-     * @Route("/hardware/bios/info", name="bios_info")
+     * @Route("/bios/info", name="bios_info")
      */
     public function binfo()
     {
-        return $this->render('hardware/bios/info.html.twig', [
+        return $this->render('bios/info.html.twig', [
             'controller_name' => 'MainController',
         ]);
     }
 
     /**
-     * @Route("/hardware/bios/infoadv", name="bios_infoadv")
+     * @Route("/bios/infoadv", name="bios_infoadv")
      */
     public function binfoadv(ManufacturerRepository $manufacturerRepository)
     {
@@ -130,7 +130,7 @@ class BiosController extends AbstractController
         $biosCodes = $manufacturerRepository->findAllBiosManufacturer2();
         $chipdata = $manufacturerRepository->findAllChipsetBiosManufacturer();
 
-        return $this->render('hardware/bios/infoadv.html.twig', [
+        return $this->render('bios/infoadv.html.twig', [
             'controller_name' => 'MainController',
             'biosCodes' => $biosCodes,
             'chipCodes' => $chipdata,
@@ -138,7 +138,7 @@ class BiosController extends AbstractController
     }
 
     /**
-     * @Route("/hardware/bios/search/", name="bios_search"), methods={"GET"})
+     * @Route("/bios/search/", name="bios_search"), methods={"GET"})
      * @param Request $request
      */
     public function search(Request $request, TranslatorInterface $translator, ManufacturerRepository $manufacturerRepository)
@@ -181,7 +181,7 @@ class BiosController extends AbstractController
 
             return $this->redirect($this->generateUrl('bios_result', $parameters));
         }
-        return $this->render('hardware/bios/search.html.twig', [
+        return $this->render('bios/search.html.twig', [
             'form' => $form->createView(),
         ]);
     }

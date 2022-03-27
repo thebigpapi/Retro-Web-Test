@@ -1,3 +1,4 @@
+
 div.index-buttons {
     text-align:center;
     font-family: $font-family;
@@ -35,6 +36,9 @@ div.perks{
     display:flex;
     align-items: center;
     flex-direction: column;
+    p{
+        @include border(#77c5f9);
+    }
     div.perks-list{
         display:flex;
         align-items: center;
