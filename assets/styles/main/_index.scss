@@ -38,10 +38,11 @@ div.perks{
     //flex-direction: column;
     p{ @include border(#77c5f9); }
     div.perks-list{
-        display:flex;
-        align-items: center;
-        flex-wrap:wrap;
-        justify-content: center; 
+        display:grid;
+        grid-template-columns: repeat(auto-fill,minmax(300px,1fr));
+        //align-items: center;
+        //flex-wrap:wrap;
+        //justify-content: center; 
         div.perk{
             background-color: #f6f6f6; 
             border: 1px solid #77c5f9;
@@ -49,7 +50,14 @@ div.perks{
             display:inline-block;
             padding:7px;
             margin:3px;
-            min-width: 300px;
+            //width: 285px;
+            a div.perk-image {
+                display:flex;
+                height: 285px;
+                width: 100%; 
+                background-color:#1b1b1b;
+                img {margin:auto;max-width:270px;max-height:270px;}
+            }
             a div.perk-name{color: #0979c3;}
             a div.perk-name:hover{color:$link-hover-color;transition:ease-in-out .2s box-shadow,ease-in-out .2s border-color,ease-in-out .2s color,ease-in-out .2s background-color;}
             a div.perk-date{color: $dark-color;}
@@ -76,7 +84,7 @@ div.results{
 @media (max-width: 600px) {
     .mobile-col {display:none;}
     div.index-buttons a { height: 180px; width: 180px; }
-    div.perks div.perks-list div.perk{ width:100vw;}
+    div.perks div.perks-list div.perk{ width:95%;}
 }
 @media (max-width: 400px) { div.index-buttons a { height: 150px; width: 150px; } }
 @media (min-width: 1200px) {

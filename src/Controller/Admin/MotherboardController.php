@@ -8,6 +8,7 @@ use App\Entity\FormFactor;
 use App\Entity\Motherboard;
 use App\Entity\Processor;
 use App\Entity\ProcessorPlatformType;
+use App\Form\Admin\Manage\MotherboardSearchType;
 use App\Form\Admin\Edit\FormFactorForm;
 use App\Form\Admin\Edit\MotherboardForm;
 use Doctrine\ORM\EntityManagerInterface;
@@ -124,10 +125,50 @@ class MotherboardController extends AbstractController
 
     private function manageMotherboards(Request $request, TranslatorInterface $translator)
     {
+        $search = $this->createForm(MotherboardSearchType::class);
 
+        $getParams = array();
+        $search->handleRequest($request);
+        if ($search->isSubmitted() && $search->isValid()) {
+            $data = $search->getData();
+            if ($data['manufacturer']) {
+                $getParams["manufacturer"] = $data['manufacturer']->getId();
+            }
+            if ($data['formFactor']) {
+                $getParams["formFactor"] = $data['formFactor']->getId();
+            }
+            if ($data['name']) {
+                $getParams["name"] = $data['name'];
+            }
+            if ($data['chipset'])
+                $getParams["chipset"] = $data['chipset']->getId(); 
+            $getParams["entity"] = "motherboard";
+            //dd($getParams);
+            return $this->redirect($this->generateUrl('admin_manage_motherboards', $getParams));
+        } else {
+            $criterias = array();
+            $manufacturerId = htmlentities($request->query->get('manufacturer'));
+            if ($manufacturerId && intval($manufacturerId)) {
+                $criterias["manufacturer"] = $manufacturerId;
+            }
+            $formFactorId = htmlentities($request->query->get('formFactor'));
+            if ($formFactorId && intval($formFactorId)) {
+                $criterias["formFactor"] = $formFactorId;
+            }
+            $name = htmlentities($request->query->get('name'));
+            if ($name) {
+                $criterias["name"] = "$name";
+            }
+            $chipsetId = htmlentities($request->query->get('chipset'));
+            if ($chipsetId && intval($chipsetId)) {
+                $criterias["chipset"] = $chipsetId;
+            }
+        }
+        /*if($criterias)*/
+        //dd($request->query->get('entity'));
         return $this->render('admin/manage/motherboards/manage.html.twig', [
-            "search" => "",
-            "criterias" => [],
+            "search" => $search->createView(),
+            "criterias" => $criterias,
             "controllerList" => "App\\Controller\\Admin\\MotherboardController::listMotherboard",
             "entityName" => $request->query->get('entity'),
             "entityDisplayName" => $translator->trans("motherboard"),
@@ -150,18 +191,30 @@ class MotherboardController extends AbstractController
         ]);
     }
 
-    public function listMotherboard(
-        EntityManagerInterface $em,
-        Request $request,
-        PaginatorInterface $paginator,
-        array $criterias
-    ) {
+    public function listMotherboard(EntityManagerInterface $em, Request $request, PaginatorInterface $paginator, array $criterias) {
+        /*$where = "";
+        if (!empty($criterias) && array_key_exists("manufacturer", $criterias)) {
+            $where = "WHERE m.manufacturer = :manufacturer";
+        }
 
-        $dql   = "SELECT m FROM App:Motherboard m ORDER BY m.lastEdited DESC";
+        $dql   = "SELECT m FROM App:Motherboard m JOIN m.manufacturer n $where ORDER BY m.lastEdited DESC";
         $query = $em->createQuery($dql);
-
+        $query->setParameters($criterias);*/
+        $mobos = $this->getDoctrine()
+            ->getRepository(Motherboard::class)
+            ->findBy($criterias);
+        usort(
+            $mobos,
+            function ($a, $b) {
+                if ($a->getLastEdited() == $b->getLastEdited()) {
+                    return 0;
+                }
+                return ($a->getLastEdited() > $b->getLastEdited()) ? -1 : 1;
+            }
+        );
+        //$mobos = Motherboard::sort(new ArrayCollection($mobos));
         $paginatedObjects = $paginator->paginate(
-            $query,
+            $mobos,
             $request->query->getInt('page', 1),
             $this->getParameter('app.pagination.max')
         );
