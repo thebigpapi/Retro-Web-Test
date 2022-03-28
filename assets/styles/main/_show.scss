@@ -23,14 +23,7 @@ div.show-image { width:100%;font-size:14px;display:block;text-align:center;color
 div.show-image a img { width: 100%;height:auto; }
 a.creditor-href, a.license-href { color:$dark-color; img{vertical-align:top;} }
 a.license-href:hover, a.creditor-href:hover { color:$link-hover-color1; }
-div.show-nav { 
-    //padding:5px 0px 10px; 
-    -moz-user-select: -moz-none;
-    -khtml-user-select: none;
-    -webkit-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-}
+div.show-nav { @include noselect(); }
 div.snav, a.snav {
     font-size:20px;
     border: 1px solid $medium-color;
@@ -42,11 +35,7 @@ div.snav, a.snav {
     margin-top:2px;
     color:$dark-color;
     text-decoration:none;
-    -moz-user-select: -moz-none;
-    -khtml-user-select: none;
-    -webkit-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
+    @include noselect();
     img { padding-right:5px;vertical-align: middle;height:auto; }
 }
 div.div-datetime{font-size:14px;}

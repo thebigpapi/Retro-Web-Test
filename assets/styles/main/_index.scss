@@ -33,12 +33,10 @@ span.image-block {
     span span {display:block;}
 }
 div.perks{
-    display:flex;
-    align-items: center;
-    flex-direction: column;
-    p{
-        @include border(#77c5f9);
-    }
+    //display:flex;
+    //align-items: center;
+    //flex-direction: column;
+    p{ @include border(#77c5f9); }
     div.perks-list{
         display:flex;
         align-items: center;
@@ -78,8 +76,9 @@ div.results{
 @media (max-width: 600px) {
     .mobile-col {display:none;}
     div.index-buttons a { height: 180px; width: 180px; }
+    div.perks div.perks-list div.perk{ width:100vw;}
 }
-
+@media (max-width: 400px) { div.index-buttons a { height: 150px; width: 150px; } }
 @media (min-width: 1200px) {
     div.index-buttons a { height: 235px; width: 250px; }
     div.index-buttons a div { font-size: 15px; }
