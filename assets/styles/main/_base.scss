@@ -38,6 +38,11 @@ input[type=text], input[type=submit], input[type=reset],input[type=password], bu
 	border-width: thin;
 	border-radius: 0;
 }
+/* webkit scrollbar */
+::-webkit-scrollbar {width: 10px;}
+::-webkit-scrollbar-track {background: #f1f1f1;}
+::-webkit-scrollbar-thumb {background: #888;}
+::-webkit-scrollbar-thumb:hover {background: #555;}
 
 /* footer */
 footer.footer { 

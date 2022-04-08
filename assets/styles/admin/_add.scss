@@ -1,10 +1,12 @@
 /*title*/
-table.add-title { padding-top:15px;padding-bottom:15px;margin:auto; }
-table.add-title tr td { height:30px;font-size:18px }
-td.title-select{ width:400px; }
-td.title-input{ width:300px; }
-td.title-small{ width:250px; }
-table.add-title tr td select, table.add-title tr td input{ width:100%;height:100%;font-size:18px }
+div.add-title { 
+	padding-top:35px;padding-bottom:35px;margin:auto;display:flex;justify-content:center;
+	div { height:30px;font-size:18px; input{ width:100%;height:87%;font-size:18px; }select{ width:100%;height:100%;font-size:18px; }  }
+	div:nth-child(1){ width:400px;} 
+	div:nth-child(2){ width:300px;}
+	div:nth-child(3){ width:250px;} 
+}
+ 
 /*image section*/
 div.addform{
 	box-shadow:inset -1px -1px $dark-color,inset 1px 1px $footer-link-color,inset -2px -2px $medium-color,inset 2px 2px $lightbg-color;
@@ -18,12 +20,14 @@ div.imgp {width:95%;padding-left:5%;max-width:250px;font-size:16px;padding-top:1
 div.imgp span{width:65px;display: inline-block;}
 div.imgp select{width:60%}
 img.imgp-img { float:right;width:21%;max-height:170px;display:none; }
+div.show-table-three.edit{
+    div div{padding:0;}
+	div.show-table-three-head{margin:5px 0px 5px;}
+}
 /*bios images/manuals*/
 div.bios-image { 
 	background-color: $lightbg-color;
 	color: $dark-color;
-	border: 1px solid $footer-link-color;
-	border-collapse: collapse;
 	padding: 0;
 	width:99%;
 	font-size:16px;
