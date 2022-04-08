@@ -287,7 +287,7 @@
 		{% endfor %}
 	</div>
 	{% else %}
-	<div>No CPUs listed.</div>	
+	<div style="padding:5px;">No CPUs listed.</div>	
 {% endif %}
 <!-- NPUs -->
 {% if motherboard.getCoprocessors() is not empty %}<b>Supported NPUs:</b>
@@ -302,7 +302,7 @@
 		{% endfor %}
 	</div>
 {% else %}
-	<div>No NPUs listed.</div>	
+	<div style="padding:5px;">No NPUs listed.</div>	
 {% endif %}
 </div>
 <div style="width:100%;clear:left;"></div>

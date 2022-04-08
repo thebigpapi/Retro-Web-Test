@@ -72,16 +72,15 @@
 <!-- DESCRIPRION -->
 <div class="show-general" id="sh-general">
 	{% apply spaceless %}
-	<div>{{'Release date'|trans}}:&nbsp;
+	<div style="padding:5px;">{{'Release date'|trans}}:&nbsp;
 		{% if chipset.getReleaseDate() is not null %}
 			{{ chipset.getReleaseDate() }}
 		{% else %}
 			Unknown
 		{% endif %}&nbsp;&nbsp;
 		{% if chipset.getEncyclopediaLink() is not null %}<a href="{{ chipset.getEncyclopediaLink() }}">[Encyclopedia link]</a>{% endif %}
-		&nbsp;&nbsp;<a href="{{ absolute_url(path('app_homepage')) }}motherboards/?chipsetId={{ chipset.getId() }}"/>[see all boards with this chipset]</a>
+		&nbsp;&nbsp;<a href="{{ absolute_url(path('app_homepage')) }}motherboards/?chipsetId={{ chipset.getId() }}">[see all boards with this chipset]</a>
 	</div>
-	<br>
 	{% endapply %}
 	<div class="chipset-textarea">
 	{% if chipset.getDescription() is not empty %}
@@ -96,27 +95,32 @@
 </div>
 <div class="show-downloads" id="sh-downloads">
 	<!-- DRIVERS -->
-	<div class="scroll-div">
+	<div>
 		<img src="{{ absolute_url(asset('build/icons/show/hardware.svg')) }}" alt="" width="32" style="vertical-align: middle;padding-bottom: 10px;">
 		<span><b>Drivers: </b></span>
 		{% if chipset.getDrivers() is not empty %}
-			<span>{{ chipset.getDrivers.count() }}{% if chipset.getDrivers.count() == 1 %} entry{% else %} entries{% endif %}</span>
-			<table class="stbl">
-				<tr class="stbl-head">{{ driverHeader() }}</tr>
-				{% for driver in chipset.getDrivers() %}{{ driverLink(driver.largeFile) }}{% endfor %}
-			</table>
+		<span>{{ chipset.getDrivers.count() }}{% if chipset.getDrivers.count() == 1 %} entry{% else %} entries{% endif %}</span>
+		<div class="show-table drv" style="display:block;">
+			<div class="show-downloads-head">{{ driverHeader() }}</div>
+			{% for driver in chipset.getDrivers() %}
+				<div class="show-table-row">{{ driverLink(driver.largeFile) }}</div>
+				{% if driver.largeFile.getNote() is not empty %}
+				<div style="display:table;text-align:left;">Note: {{ driver.largeFile.getNote() }}</div>
+				{% endif %}
+			{% endfor %}
+		</div>
 		{% else %}
-			<span>not available</span>
+		<span>not available</span>
 		{% endif %}
 	</div>
 	<!-- CHIPSET PART DOCS -->
-	<div class="scroll-div">
+	<div>
 		{% if chipset.getChipsetParts() is not empty %}
 			<img src="{{ absolute_url(asset('build/icons/show/manual.svg')) }}" alt="" width="32" style="vertical-align: middle;padding-bottom: 10px;">
 			<span><b>Documentation: </b></span>
 			<!-- CHIPSET PART DOC COUNT -->
 			{% set docCount = 0 %}
-    		{% for chipPart in chipset.getChipsetParts()|filter(chipPart => chipPart.getDocumentations() is not empty) %}
+			{% for chipPart in chipset.getChipsetParts()|filter(chipPart => chipPart.getDocumentations() is not empty) %}
 				{% set docCount = docCount + 1 %}
 			{% endfor %}
 			{% if docCount > 0 %}
@@ -126,53 +130,35 @@
 			{% endif %}
 			<!-- CHIPSET PART DOC SHOW -->
 			{% if docCount > 0 %}
-			<table class="stbl">
-				<tr>
-					<td>
-						<ul style="list-style-type: none;">
-						{% for chipPart in chipset.getChipsetParts()|filter(chipPart => chipPart.getDocumentations() is not empty) %}
-							{% for documentation in chipPart.getDocumentations()|sort((a, b) => a.getLinkName <=> b.getLinkName) %}
-							<li>
-								<a href="{{ vich_uploader_asset(documentation, 'manualFile') }}">
-									<img src="{{ absolute_url(asset('build/icons/dw.svg')) }}" alt="" width="16" height="16" style="vertical-align: middle;">
-									{{ documentation.getLinkName() }}
-								</a>
-								({{ documentation.getLanguage().getName()}})
-							</li>
-							{% endfor %}
-						{% endfor %}
-						</ul>
-					</td>
-				</tr>
-			</table>
+			<div><div><div>
+				<ul style="list-style-type: none;">{% for chipPart in chipset.getChipsetParts()|filter(chipPart => chipPart.getDocumentations() is not empty) %}
+					{% for documentation in chipPart.getDocumentations()|sort((a, b) => a.getLinkName <=> b.getLinkName) %}
+					<li><a href="{{ vich_uploader_asset(documentation, 'manualFile') }}">
+						<img src="{{ absolute_url(asset('build/icons/dw.svg')) }}" alt="" width="16" height="16" style="vertical-align: middle;">
+						{{ documentation.getLinkName() }}</a>({{ documentation.getLanguage().getName()}})</li>
+					{% endfor %}
+				{% endfor %}</ul>
+			</div></div></div>
 			{% endif %}
 		{% endif %}
 	</div>
 	<!-- CHIPSET FILES -->
-    <div class="scroll-div">
+    <div>
 		<img src="{{ absolute_url(asset('build/icons/show/manual.svg')) }}" alt="" width="32" style="vertical-align: middle;padding-bottom: 10px;">
 		<span><b>Other files: </b></span>
 		{% if chipset.getDocumentations() is not empty %}
-		<span>{{ chipset.getDocumentations.count() }}&nbsp;{% if chipset.getDocumentations.count() == 1 %}file{% else %}files{% endif %}</span>
-		<table class="stbl">
-			<tr>
-				<td>
-					<ul style="list-style-type: none;">{% for documentation in chipset.getDocumentations()|sort((a, b) => a.getLinkName <=> b.getLinkName) %}
-						<li>
-							<a href="{{ vich_uploader_asset(documentation, 'manualFile') }}">
-								<img src="{{ absolute_url(asset('build/icons/dw.svg')) }}" alt="" width="16" height="16" style="vertical-align: middle;">
-								{{ documentation.getLinkName() }}
-							</a>
-							({{ documentation.getLanguage().getName()}})
-						</li>
-					{% endfor %}</ul>
-				</td>
-			</tr>
-		</table>
+			<span>{{ chipset.getDocumentations.count() }}&nbsp;{% if chipset.getDocumentations.count() == 1 %}file{% else %}files{% endif %}</span>
+			<div><div><div>
+				<ul style="list-style-type: none;">{% for documentation in chipset.getDocumentations()|sort((a, b) => a.getLinkName <=> b.getLinkName) %}
+					<li><a href="{{ vich_uploader_asset(documentation, 'manualFile') }}">
+						<img src="{{ absolute_url(asset('build/icons/dw.svg')) }}" alt="" width="16" height="16" style="vertical-align: middle;">
+						{{ documentation.getLinkName() }}</a>({{ documentation.getLanguage().getName()}})</li>
+				{% endfor %}</ul>
+			</div></div></div>
 		{% else %}
 		<span>not available</span>
 		{% endif %}
 	</div>
 </div>
-<div style="clear:left;"></div>
+<div style="width:100%;clear:left;"></div>
 {% endblock %}

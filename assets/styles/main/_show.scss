@@ -87,7 +87,7 @@ span.text-block {
 }
 img.lang-flag {height:25px; width:46px;}
 img.lang-flag-lrg {height:16px; width:32px;}
-div.div-datetime{font-size:14px;}
+div.div-datetime{font-size:14px;padding:5px;}
 ul.docs-list{list-style-type:none;}
 div.notes { 
     word-wrap: break-word;
@@ -121,6 +121,7 @@ div.chipset-textarea {
     word-wrap: break-word;
     overflow: auto; 
     overflow-y: hidden; 
+    padding:5px;
 }
 div.chipset-textarea p { font-family: monospace;font-weight: 100;font-size:16px; }
 p.string-alias{ text-align:center;font-size: 14px;margin-top: -15px; }
@@ -146,7 +147,7 @@ span.string-bios { font-size:12px; }
     .gslide-image img {min-height:88vh;max-height:90vh;}
 }
 @media (min-width: 1620px) {
-	div.show-images { max-height:745px; }
+	div.show-images { max-height:710px; }
 	div.show-nav, div.show-general, div.show-downloads, div.show-cpus { width:68%; }
     div.show-nav { font-size:18px; }
 	p.string-alias { margin-top:-10px; }
