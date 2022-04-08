@@ -49,7 +49,7 @@ div.show-general, div.show-downloads, div.show-cpus {
     float:left;
     font-size: 14px;
     overflow-x:auto;
-    background-color:$btn-darkbg-color;
+    background-color:$lightbg-color;
 }
 div.show-downloads, div.show-cpus { display:none; }
 div.show-table-two{
@@ -64,20 +64,8 @@ div.show-table-three{
     grid-template-rows: [first] 40px [second] auto [end];
     grid-template-columns: [first] calc(100% / 3) [second] calc(100% / 3) [third] calc(100% / 3) [end];
     div{padding: 5px 0px 5px;}
-    div.show-table-three-head{background-color:#606060;grid-row-start: 1;}
+    div.show-table-three-head{background-color:$footer-link-color;grid-row-start: 1;}
 }
-/*table.stbl {
-  //border: 1px solid $footer-link-color;
-  border-collapse: collapse;
-  background-color: $lightbg-color;
-  margin-bottom:10px;
-  color: $dark-color;
-  width:100%;
-}
-tr.stbl-head, tr.stbl-head2{ background-color:$footer-link-color;color:$dark-color;text-align:center; }
-tr.stbl-head2{ text-align:left; }
-table.stbl td, table.stbl th{ padding: 5px 5px 5px; }
-tr.stbl-head2 td{ padding-left:45px; }*/
 span.text-block {
     border: 1px solid $medium-color;
     border-radius: 4px; 
@@ -99,7 +87,7 @@ div.show-table{
     margin-bottom:10px;
     display: table;
     width: -webkit-fill-available;
-    div.show-downloads-head{background-color:#606060;}
+    div.show-downloads-head{background-color:$footer-link-color;}
     div.show-downloads-head, div.show-table-row{ 
         display: table-row;
         text-align:center;
@@ -110,7 +98,7 @@ div.show-downloads > div > img{ padding:5px;height:auto;vertical-align: middle;p
 div.show-cpus-table{
         display: table;
         width: -webkit-fill-available;
-        div.show-cpus-head{background-color:#606060;}
+        div.show-cpus-head{background-color:$footer-link-color;}
         div{ 
             display: table-row;
             text-align:center;
@@ -158,8 +146,7 @@ span.string-bios { font-size:12px; }
 	div.snav:hover, a.snav:hover { color: $link-hover-color1;background-color:$btn-lightbg-color; }
     div.show-image p{ color:$light-color; }
     div.show-general, div.show-downloads, div.show-cpus {background-color:$btn-darkbg-color;}
-	table.stbl, table.stbl-adv{ background-color:$btn-darkbg-color;color:$light-color; }
-	tr.stbl-head, tr.stbl-head2{ background-color:#606060;color:$light-color; }
+    div.show-cpus-table div.show-cpus-head, div.show-table-three div.show-table-three-head, div.show-table div.show-downloads-head {background-color:#606060;}
     a.glightbox { color:$light-color; }
 }
 

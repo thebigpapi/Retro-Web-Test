@@ -5,13 +5,11 @@
 {% block body %}
 <form data-controller="chipset--add" name="chipset_form" method="post" enctype="multipart/form-data" data-action="{#submit->chipset--add#check#}">
 	<!-- MANUF./NAME/PART NO. -->
-	<table class="add-title" style="padding:30px;">
-		<tr>
-			<td class="title-small">{{ form_widget(form.manufacturer) }}</td>
-			<td class="title-small">{{ form_widget(form.part_no, {'attr': {'placeholder': 'Part Number ...'}}) }}</td>
-			<td class="title-small">{{ form_widget(form.name, {'attr': {'placeholder': 'Name ...'}}) }}</td>
-		</tr>
-	</table>
+	<div class="add-title">
+			<div>{{ form_widget(form.manufacturer) }}</div>
+			<div>{{ form_widget(form.part_no, {'attr': {'placeholder': 'Part Number ...'}}) }}</div>
+			<div>{{ form_widget(form.name, {'attr': {'placeholder': 'Name ...'}}) }}</div>
+	</div>
 	<!-- CHIPSET PARTS -->
 	<div class="show-images" style="min-height:200px;" data-controller="collection">
 		<p style="display:inline-block;">Chipset parts:</p>
