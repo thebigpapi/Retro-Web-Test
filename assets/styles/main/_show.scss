@@ -22,6 +22,25 @@ div.snav, a.snav {
     img { padding-right:5px;vertical-align: middle;height:auto; }
 }
 div.snav:hover, a.snav:hover { color: $link-hover-color;background-color:$navbar-color;cursor:pointer; }
+div.show-nav{
+    display:flex;
+    align-items:center;
+    flex-wrap:wrap;
+    input {display: none;}
+    label {
+        display: flex;
+        align-items:center;
+        padding: 8px 10px;
+        cursor: pointer;
+        transition: background-color .3s;
+        img {margin-right:5px;}
+    }
+    label:hover, input:checked + label {
+        background: $btn-darkbg-color;
+        color:$link-hover-color;
+    }
+}
+
 /* === General page elements === */
 div.show-nav, div.show-general, div.show-downloads, div.show-cpus {
     width:74%;
@@ -32,7 +51,7 @@ div.show-nav, div.show-general, div.show-downloads, div.show-cpus {
 }
 div.show-downloads, div.show-cpus { display:none; }
 table.stbl {
-  border: 1px solid $footer-link-color;
+  //border: 1px solid $footer-link-color;
   border-collapse: collapse;
   background-color: $lightbg-color;
   margin-bottom:10px;
@@ -106,8 +125,9 @@ td.io-table { vertical-align: top;width:175px; }
 	td.io-table { width:210px; }
 }
 @media (prefers-color-scheme: dark) {
+    div.show-nav label:hover, div.show-nav input:checked + label {background: $btn-lightbg-color;color:#0099ff;}
 	div.snav, a.snav { color:$lightbg-color; }
-	div.snav:hover, a.snav:hover { color: #0099ff;background-color:$btn-lightbg-color; }
+	div.snav:hover, a.snav:hover { color: $link-hover-color1;background-color:$btn-lightbg-color; }
     div.show-image p{ color:$light-color; }
 	table.stbl, table.stbl-adv{ background-color:$btn-darkbg-color;color:$light-color; }
 	tr.stbl-head, tr.stbl-head2{ background-color:#606060;color:$light-color; }

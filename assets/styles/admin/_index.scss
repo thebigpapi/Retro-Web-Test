@@ -1,10 +1,10 @@
+/* === logging stuf === */
 pre { padding: 5px; margin: 5px;color:black; }
 .string { color: green; }
 .number { color: darkorange; }
 .boolean { color: blue; }
 .null { color: magenta; }
 .key { color: red; }
-
 .log-collapsible {
 	background-color: $btn-darkbg-color-hover;
 	color: white;
@@ -15,56 +15,31 @@ pre { padding: 5px; margin: 5px;color:black; }
 	text-align: left;
 	outline: none;
 	font-size: 15px;
-  }
-  
-  .active, .log-collapsible:hover {
+}
+.active, .log-collapsible:hover {
 	background-color: $link-hover-color;
 	color:black;
-  }
-  
-  .log-collapsible:after {
+}
+.log-collapsible:after {
 	content: '\002B';
 	color: white;
 	font-weight: bold;
 	float: right;
 	margin-left: 5px;
-  }
-  
-  .active:after {
+} 
+.active:after {
 	content: "\2212";
 	color:black;
-  }
-  
-  .log-content {
+}
+.log-content {
 	padding: 0 18px;
 	max-height: 0;
 	overflow: hidden;
 	width: 25vw;
 	transition: max-height 0.2s ease-out;
 	background-color: #f1f1f1;
-  }
-a.admin-button,a.admin-button-index {
-	background-color: $btn-lightbg-color;
-  	border: 1px solid $btn-darkbg-color-hover;
-  	text-align: center;
-  	text-decoration: none;
-  	display: inline-block;
-  	font-size: 16px;
-  	margin-bottom: 4px;
-	text-decoration:none;
-	-moz-user-select: -moz-none;
-	-khtml-user-select: none;
-	-webkit-user-select: none;
-	-ms-user-select: none;
-	user-select: none;
 }
-a.admin-button { padding:0px 5px 0px; }
-a.admin-button img { padding-top:7px;vertical-align:top;display:inline-block; }
-a.admin-button p { display:inline-block; }
-a.admin-button-index { width:205px; }
-a.admin-button:hover, a.admin-button-index:hover { background-color: $medium-color; }
-a.admin-button p, a.admin-button-index p{ color: $dark-color; }
-/* stats.html.twig */
+/* === board statistics === */
 dl {
 	display: flex;
 	background-color: $btn-lightbg-color;
@@ -114,8 +89,35 @@ dl {
 	}
 } 
 
+/* === admin dashboard === */
+a.admin-snav {
+	width:205px;
+	text-align: center;
+	margin:6px 0px 6px 0px;
+    font-size:20px;
+    border: 1px solid $medium-color;
+    border-collapse: collapse;
+    box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.3);
+    display: -moz-inline-box; 
+    display: inline-block; 
+    p{color:$dark-color;}
+    @include noselect();
+    img { vertical-align: middle;height:auto; }
+}
+a.admin-snav:hover { p{color: $link-hover-color;}background-color:$navbar-color;cursor:pointer; }
+div.admin-navbar{@include border(#77c5f9);padding-bottom:10px;}
+
 /* === manage_xxxx.html.twig === */
 div.list-view{min-height:12em;}
+div.entity-filter{
+	padding-bottom:10px;
+	//background-color:#1b1b1b;
+	span { @include border(#77c5f9);display:block;}
+	form div{
+		label{min-width:150px;display:inline-block;}
+		button{display:none;}
+	}
+}
 table.results {
 	border:1px solid $footer-link-color;
 	border-collapse: collapse;
@@ -128,8 +130,6 @@ div.editasset { width:50%;margin:auto; }
 div.editasset form div div label { width:180px; }
 div.editasset form div div input { width:400px; }
 tr.darkbg { background-color: $footer-link-color; }
-div.processing-search { display:inline-block;width:420px;vertical-align:bottom; }
-div.processing-search div { display:inline-block;padding-left:5px; }
 @media (max-width: 1199px) {
 	.log-content { width: 34vw;}
 	div.div-logs-table{overflow-x:scroll;}
@@ -164,9 +164,8 @@ div.processing-search div { display:inline-block;padding-left:5px; }
 @media (min-width: 1400px) { .log-content { width: 34vw;}}
 @media (min-width: 1620px) { .log-content { width: 42vw;}}
 @media (prefers-color-scheme: dark) {
-	a.admin-button, a.admin-button-index { background-color: $btn-darkbg-color; }
-	a.admin-button:hover, a.admin-button-index:hover { background-color: $btn-darkbg-color-hover; }
-	a.admin-button p, a.admin-button-index p{ color: $light-color; }
+	a.admin-snav p { color:$lightbg-color; }
+	a.admin-snav:hover { p{color: #0099ff;}background-color:$btn-lightbg-color; }
 	tr.darkbg{ background-color: $btn-darkbg-color-hover; }
 	table.results {
 		border:1px solid #5f5f5f;

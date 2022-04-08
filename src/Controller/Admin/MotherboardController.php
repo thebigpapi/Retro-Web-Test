@@ -317,6 +317,7 @@ class MotherboardController extends AbstractController
         }
         return $this->render('admin/edit/motherboards/motherboard.html.twig', [
             'form' => $form->createView(),
+            'moboid' =>$mobo->getId(),
         ]);
     }
 

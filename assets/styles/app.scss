@@ -3,10 +3,10 @@ $light-color: #EEEEEE;
 $medium-color: #ABABAB;
 $dark-color: #000000;
 $lightbg-color: #F9F9F9;
-$darkbg-color: #191919;
+$darkbg-color: #1b1b1b;
 $navbar-color: #303030;
 $link-hover-color: #7ce5ff;
-$link-hover-color1: #0099ff;
+$link-hover-color1: #0979c3;
 $footer-link-color: #d9d9d9;
 $btn-lightbg-color:#ebebeb;
 $btn-darkbg-color:#303030;
@@ -35,6 +35,7 @@ body{
     border-image-slice: 1;
     border-image-source: linear-gradient(to right,$color,transparent);
 }
+
 @import 'main/base';
 @import 'main/index';
 @import 'main/search';

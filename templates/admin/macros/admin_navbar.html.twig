@@ -1,27 +1,31 @@
 <div class="title">
 		<b>{{ entityDisplayNamePlural|capitalize }}</b>
 </div>
-<a href="{{ path('admin_index') }}" class="admin-button">
-	<img src="{{ absolute_url(asset('build/icons/back.svg')) }}" alt="add" width="32">
-	<p>Go back</p>
-</a>
+{% if path == "processingunits" %}
+	{% set name = "processor" %}
+{% else %}
+	{% set name = path|slice(0, path|length -1) %}
+{% endif %}
+{% if search is not empty %}
+	<div class="entity-filter">
+		<span>Filters:</span>
+		<div>{{ form_start(search) }}{{ form_end(search) }}</div>
+	</div>
+{% endif %}
+<div class="admin-navbar">
+<a class="snav" href="{{ path('admin_index') }}">
+    <img src="{{ absolute_url(asset('build/icons/back.svg')) }}" alt="back" width="24" height="24">Go back</a>
 {% for key, value in set %}
-    <a href="{{ path('admin_manage_' ~ category, {entity:key})}}" class="admin-button" style="{% if entityName == key %}background-color: #afff97;{% endif %}">
-        <p {% if entityName == key %} style="color: #000000;" {% endif %}>{{value}}</p>
-    </a>
+	<a class="snav" href="{{ path('admin_manage_' ~ category, {entity:key})}}" style="{% if entityName == key %}background-color: #afff97;color: #000000;{% endif %}">
+    	{{value}}</a>
 {% endfor %}
 {% if search is not empty %}
-	<div class="processing-search">{{ form(search) }}</div>
+<div class="snav" onclick="document.getElementById('{{name}}_search_search').click();">
+			<img src="{{ absolute_url(asset('build/icons/search/search.svg')) }}" alt="" width="24" height="24">Filter</div>
 {% endif %}
-{% if entityName == "osfamily" %}
-	<a href="./{{path}}s/osfamilies/add/" class="admin-button" style="float:right;">
-{% else %}
-	<a href="./{{path}}/{{entityName}}s/add/" class="admin-button" style="float:right;">
-{% endif %}
-	<img src="{{ absolute_url(asset('build/icons/add.svg')) }}" alt="add" width="32">
-	<p>Add {{ entityDisplayName }}</p>
-</a>
-<hr>
+<a class="snav" href="./{{path}}/{% if entityName == "osfamily" %}osfamilie{% else %}{{entityName}}{% endif %}s/add/" style="float:right;">
+    <img src="{{ absolute_url(asset('build/icons/add.svg')) }}" alt="back" width="24" height="24">Add {{ entityDisplayName }}</a>
+</div>
 <div class="list-view">
 	{{ render(controller(controllerList, {criterias: criterias}, {page: page, entity: entityName})) }}
 </div>

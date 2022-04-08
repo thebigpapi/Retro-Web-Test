@@ -22,6 +22,19 @@ class MotherboardSearchType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $chipsets = $this->entityManager->getRepository(Chipset::class)->findAll();
+        usort(
+            $chipsets,
+            function ($a, $b) {
+                if ($a->getManufacturer()->getName() == $b->getManufacturer()->getName()) {
+                    if ($a->getFullReference() == $b->getFullReference())
+                        return 0;
+                    if ($a->getFullReference() == " Unidentified ") return -1;
+                    return ($a->getFullReference() < $b->getFullReference()) ? -1 : 1;   
+                }
+                return ($a->getManufacturer()->getName() < $b->getManufacturer()->getName()) ? -1 : 1;
+            }
+        );
         $builder
             ->add('name', TextType::class, ['required' => false,])
             ->add('manufacturer', ChoiceType::class, [
@@ -47,9 +60,7 @@ class MotherboardSearchType extends AbstractType
                 'choice_label' => 'getMainChipWithManufacturer',
                 'multiple' => false,
                 'expanded' => false,
-                'choices' => $this->entityManager
-                ->getRepository(Chipset::class)
-                ->findAll(),
+                'choices' => $chipsets,
                 'required' => false,
             ])
             ->add('search', SubmitType::class);

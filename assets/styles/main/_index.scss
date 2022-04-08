@@ -55,13 +55,13 @@ div.perks{
                 display:flex;
                 height: 285px;
                 width: 100%; 
-                background-color:#1b1b1b;
+                background-color: $light-color;
                 img {margin:auto;max-width:270px;max-height:270px;}
             }
-            a div.perk-name{color: #0979c3;}
-            a div.perk-name:hover{color:$link-hover-color;transition:ease-in-out .2s box-shadow,ease-in-out .2s border-color,ease-in-out .2s color,ease-in-out .2s background-color;}
+            a div.perk-name{color: $link-hover-color1;}
             a div.perk-date{color: $dark-color;}
-        }  
+        } 
+        div.perk:hover{a div.perk-name{color:$link-hover-color;transition:ease-in-out .2s box-shadow,ease-in-out .2s border-color,ease-in-out .2s color,ease-in-out .2s background-color;}} 
     } 
 } 
 /* results */
@@ -100,11 +100,12 @@ div.results{
 @media (prefers-color-scheme: dark) {
 	div.index-buttons a { background-color: $btn-darkbg-color;color: $light-color; }
     div.index-buttons a:hover div { color:$link-hover-color;}
-    div.perks div.perks-list div.perk{
-        background-color: $btn-darkbg-color; 
-        a div.perk-name{color: #77c5f9;}
-        a div.perk-name:hover{color:#c6e8ff;}
-        a div.perk-date{color: $light-color;}
+    div.perks div.perks-list {
+        div.perk{background-color: $btn-darkbg-color;
+            a div.perk-image { background-color:$darkbg-color;}
+            a div.perk-name{color: #77c5f9;}
+            a div.perk-date{color: $light-color;}}
+        div.perk:hover{a div.perk-name{color:#c6e8ff;}}
     }
 }
 
