@@ -1,5 +1,5 @@
 /* === Images === */
-div.show-images { width:25%;overflow: auto;float:left;min-height:150px;height:auto; max-height:500px; }
+div.show-images { width:25%;overflow: auto;float:left;min-height:150px;height:auto; max-height:500px;padding-right:5px; }
 div.show-image { width:100%;font-size:14px;display:block;text-align:center;color:$dark-color; }
 div.show-image a img { width: 100%;height:auto; }
 a.creditor-href, a.license-href { color:$dark-color; img{vertical-align:top;} }
@@ -37,7 +37,7 @@ div.show-nav{
         transition: background-color .3s;
         img {margin-right:5px;}
     }
-    label:hover, input:checked + label {
+    label:hover, input[name="tabs"]:checked + label {
         background: $btn-darkbg-color;
         color:$link-hover-color;
     }
@@ -141,7 +141,7 @@ span.string-bios { font-size:12px; }
 	p.string-alias { margin-top:-10px; }
 }
 @media (prefers-color-scheme: dark) {
-    div.show-nav label:hover, div.show-nav input:checked + label {background: $btn-lightbg-color;color:#0099ff;}
+    div.show-nav label:hover, div.show-nav input[name="tabs"]:checked + label {background: $btn-lightbg-color;color:#0099ff;}
 	div.snav, a.snav { color:$lightbg-color; }
 	div.snav:hover, a.snav:hover { color: $link-hover-color1;background-color:$btn-lightbg-color; }
     div.show-image p{ color:$light-color; }

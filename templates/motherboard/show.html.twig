@@ -93,34 +93,34 @@
 		{% if motherboard.getChipset().getManufacturer() is not null %}{{ motherboard.getChipset().getManufacturer().getShortNameIfExist() }}
 		{% else %}Unknown{% endif %}<!---->
 		{% if motherboard.getChipset().getPartNo() is not null %}
-		&nbsp;{{ motherboard.getChipset().getPartNo() }}{% endif %}<!---->
-		{% if motherboard.getChipset().getName() is not null %}&nbsp;
+		{{ motherboard.getChipset().getPartNo() }}{% endif %}
+		{% if motherboard.getChipset().getName() is not null %}
 		{% if motherboard.getChipset().getPartNo() is not null %}
 		({{ motherboard.getChipset().getName() }}){% else %}
 		{{ motherboard.getChipset().getName() }}{% endif %}
 		{% endif %}</a>{% else %}Unknown{% endif %}</div>
-		<div><!-- Chipset parts go here, no header needed => --></div>
+		<div>Chipset parts:</div>
 		<div>{% for chipPart in motherboard.getChipset().getChipsetParts() %}<span class="text-block">{{ chipPart.getFullName() }}</span>{% endfor %}</div>
 		<div>Dimensions:</div>
 		<div>{{ motherboard.getDimensions() ?: 'Unknown' }}</div>
 		{% if motherboard.getCpuSockets() is not empty %}
 		<div>CPU socket{% if motherboard.getCpuSockets()|length > 1 %}s{% endif %}:</div>
-		<div>{% for socket in motherboard.getCpuSockets() %}<span class="text-block">{{ socket.getNameAndType}}</span>{% endfor %}</div>
+		<div>{% for socket in motherboard.getCpuSockets() %}{{ socket.getNameAndType}}{% if not loop.last %}, {% endif %}{% endfor %}</div>
 		{% endif %}
 		{% if motherboard.getProcessorPlatformTypes() is not empty %}
 		<div>CPU platform{% if motherboard.getProcessorPlatformTypes()|length > 1 %}s{% endif %}:</div>
-		<div>{% for platform in motherboard.getProcessorPlatformTypes() %}<span class="text-block">{{ platform.getName() }}</span>{% endfor %}</div>
+		<div>{% for platform in motherboard.getProcessorPlatformTypes() %}{{ platform.getName() }}{% if not loop.last %}, {% endif %}{% endfor %}</div>
 		{% endif %}
 		{% if motherboard.getCpuSpeed() is not empty %}
 		<div>Supported FSB speed{% if motherboard.getCpuSpeed()|length > 1 %}s{% endif %}:</div>
-		<div>{% for frequency in motherboard.getCpuSpeed()|sort((a, b) => a.value <=> b.value) %}<span class="text-block">{{ frequency.getValueWithUnit() }}</span>{% endfor %}</div>
+		<div>{% for frequency in motherboard.getCpuSpeed()|sort((a, b) => a.value <=> b.value) %}{{ frequency.getValueWithUnit() }}{% if not loop.last %}, {% endif %}{% endfor %}</div>
 		{% endif %}
 		{% if motherboard.getCacheSize() is not empty %}
 		<div>Cache:</div>
-		<div>{% for cache in motherboard.getCacheSize()|sort((a, b) => a.value <=> b.value) %}<span class="text-block">
+		<div>{% for cache in motherboard.getCacheSize()|sort((a, b) => a.value <=> b.value) %}
 			{% if cache.getValue() > 1048575 %}{{ cache.getValue() / 1048576 }}&nbsp;MB
 			{% elseif cache.getValue() > 1023 %}{{ cache.getValue() / 1024}}&nbsp;KB
-			{% else %}{{ cache.getValue()}}&nbsp;B{% endif %}</span>
+			{% else %}{{ cache.getValue()}}&nbsp;B{% endif %}{% if not loop.last %}, {% endif %}
 		{% endfor %}</div>
 		{% endif %}
 		{% if motherboard.getMotherboardMaxRams() is not empty %}

@@ -17,22 +17,54 @@
 		<div class="results">
 			{{ knp_pagination_render(motherboards, 'macros/pagination.html.twig') }}
 			{% if show_images %}
+			<div class="perks">
+				<div id="index-datetime" class="perks-list">
 				{% for motherboard in motherboards %}
-					<span class="image-block">
-						<span>
+					<div class="perk">
+						<div class="perk-image">
+						{% if motherboard.getImages() is not empty %}
+						{% for image in motherboard.getImages()|filter(a => a.motherboardImageType.id in [1, 2])|sort((a, b) => b.motherboardImageType <=> a.motherboardImageType)|slice(0, 1) %}
+							<a href="{{ vich_uploader_asset(image, 'imageFile')}}" class="glightbox"><img src="{% if vich_uploader_asset(image, 'imageFile') | ext != "svg" %}
+								{{ vich_uploader_asset(image, 'imageFile') | imagine_filter('motherboard_show_thumb') }}{% else %}
+								{{ vich_uploader_asset(image, 'imageFile')}}{% endif %}" alt="" title="Click to preview image"></a>
+						{% endfor %}
+						{% else %}
+							<img src="{{ absolute_url(asset('build/images/motherboard/image-missing.webp')) }}" title="no images available :(">
+						{% endif %}</div>
+						<a href="{{ path("motherboard_show", {id:motherboard.getId()}) }}" title="Click to visit page">
+							<div class="perk-name">{{ motherboard.getManufacturerShortNameIfExist() }}&nbsp;{{ motherboard.name }}</div>
+							<div class="perk-date">
+							{% if motherboard.getMotherboardAliases() is not empty %}{% for alias in motherboard.getMotherboardAliases() %}
+								<span class="results-alias">
+									<small>{% if alias.getManufacturer() is not null %}{{ alias.getManufacturer().getShortNameIfExist() }}{% else %}Unknown{% endif %}&nbsp;{{ alias.name }}</small>
+								</span>
+							{% endfor %}{% endif %}</div>
+						</a>
+					</div>	
+				{% endfor %}
+				</div>
+			</div>{#
+			<div class="perks">
+			<div id="index-datetime" class="perks-list">
+				{% for motherboard in motherboards %}
+				<a href="{{ path("motherboard_show", {id: motherboard.getId()}) }}">
+					<div class="perk">
+						
+							<div class="perk-image">
 							{% if motherboard.getImages() is not empty %}
 								{% for image in motherboard.getImages()|filter(a => a.motherboardImageType.id in [1, 2])|sort((a, b) => b.motherboardImageType <=> a.motherboardImageType)|slice(0, 1) %}
-									<a href="{{ vich_uploader_asset(image, 'imageFile')}}" class="glightbox">
-										<img src="{% if vich_uploader_asset(image, 'imageFile') | ext != "svg" %}
-										{{ vich_uploader_asset(image, 'imageFile') | imagine_filter('motherboard_show_thumb') }}{% else %}
-										{{ vich_uploader_asset(image, 'imageFile')}}{% endif %}" alt="" title="{% if image.description %}{{ image.description }}{% endif %}"></a>
+								sdf<a href=""></a>
+								{#href="{{ vich_uploader_asset(image, 'imageFile')}}" class="glightbo">
+									{#<img src="{% if vich_uploader_asset(image, 'imageFile') | ext != "svg" %}
+									{{ vich_uploader_asset(image, 'imageFile') | imagine_filter('motherboard_show_thumb') }}{% else %}
+									{{ vich_uploader_asset(image, 'imageFile')}}{% endif %}" alt="" title="{% if image.description %}{{ image.description }}{% endif %}">
 								{% endfor %}
 							{% else %}
 								<img src="{{ absolute_url(asset('build/images/motherboard/image-missing.webp')) }}" title="no images available :(">
 							{% endif %}
-							<span>
-								<a class="result-link" href="{{ path("motherboard_show", {id: motherboard.getId()}) }}">{{ motherboard.getManufacturerShortNameIfExist() }}&nbsp;{{ motherboard.name }}</a>
-							</span>
+							</div>
+							<div class="perk-name">{{ motherboard.getManufacturerShortNameIfExist() }}&nbsp;{{ motherboard.name }}</div>
+							<div class="perk-date">
 							{% if motherboard.getMotherboardAliases() is not empty %}{% for alias in motherboard.getMotherboardAliases() %}
 								<span class="results-alias">
 									<small>&nbsp;
@@ -44,9 +76,10 @@
 										{% endif %}
 										{{ alias.name }}</small>
 								</span>
-							{% endfor %}{% endif %}</span>
-					</span>
+							{% endfor %}{% endif %}</div>
+					</div></a>
 				{% endfor %}
+			</div></div>#}
 			{% else %}
 				<ul>
 					{% for motherboard in motherboards %}

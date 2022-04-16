@@ -51,15 +51,17 @@ div.perks{
             padding:7px;
             margin:3px;
             //width: 285px;
-            a div.perk-image {
+            a div.perk-image, div.perk-image {
                 display:flex;
                 height: 285px;
                 width: 100%; 
                 background-color: $light-color;
-                img {margin:auto;max-width:270px;max-height:270px;}
+                img, a.glightbox img {margin:auto;max-width:270px;max-height:270px;}
+                a.glightbox{margin:auto;}
             }
-            a div.perk-name{color: $link-hover-color1;}
-            a div.perk-date{color: $dark-color;}
+            a div.perk-name{padding: 10px;color: $link-hover-color1;}
+            div.perk-name {padding: 10px;}
+            a div.perk-date, div.perk-date{color: $dark-color;}
         } 
         div.perk:hover{a div.perk-name{color:$link-hover-color;transition:ease-in-out .2s box-shadow,ease-in-out .2s border-color,ease-in-out .2s color,ease-in-out .2s background-color;}} 
     } 
@@ -102,10 +104,10 @@ div.results{
     div.index-buttons a:hover div { color:$link-hover-color;}
     div.perks div.perks-list {
         div.perk{background-color: $btn-darkbg-color;
-            a div.perk-image { background-color:$darkbg-color;}
+            a div.perk-image, div.perk-image { background-color:$darkbg-color;}
             a div.perk-name{color: #77c5f9;}
-            a div.perk-date{color: $light-color;}}
-        div.perk:hover{a div.perk-name{color:#c6e8ff;}}
+            a div.perk-date, div.perk-date{color: $light-color;}}
+        div.perk:hover{a div.perk-name, div.perk-name a{color:#c6e8ff;}}
     }
 }
 
