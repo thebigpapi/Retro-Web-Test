@@ -1,7 +1,7 @@
 
 div.index-buttons {
     text-align:center;
-    font-family: $font-family;
+    font-family: $standard-font;
     a {
         background-color: $btn-lightbg-color; 
         color: $dark-color;
@@ -17,8 +17,9 @@ div.index-buttons {
         margin-bottom: 4px; 
         display:inline-block;
         text-decoration: none;
+        transition: ease-in-out .2s box-shadow,ease-in-out .2s border-color,ease-in-out .2s color,ease-in-out .2s background-color;
         img { height: 85%; }
-        div { font-size: 12px; }
+        div { font-size: 12px; transition: ease-in-out .2s box-shadow,ease-in-out .2s border-color,ease-in-out .2s color,ease-in-out .2s background-color;}
         span {_cursor: hand;cursor: pointer;}
     }
     a:hover{ box-shadow:0 0 16px #696969;transition: ease-in-out .2s box-shadow,ease-in-out .2s border-color,ease-in-out .2s color,ease-in-out .2s background-color;}
@@ -48,10 +49,12 @@ div.perks{
             border: 1px solid #77c5f9;
             border-radius: 6px;
             display:inline-block;
-            padding:7px;
+            //padding:7px;
             margin:3px;
             //width: 285px;
+            transition:ease-in-out .2s box-shadow,ease-in-out .2s border-color,ease-in-out .2s color,ease-in-out .2s background-color;
             a div.perk-image, div.perk-image {
+                border-radius: 6px;
                 display:flex;
                 height: 285px;
                 width: 100%; 
@@ -60,8 +63,8 @@ div.perks{
                 a.glightbox{margin:auto;}
             }
             a div.perk-name{padding: 10px;color: $link-hover-color1;}
-            div.perk-name {padding: 10px;}
-            a div.perk-date, div.perk-date{color: $dark-color;}
+            div.perk-name {padding: 10px;transition:ease-in-out .2s box-shadow,ease-in-out .2s border-color,ease-in-out .2s color,ease-in-out .2s background-color;}
+            a div.perk-date, div.perk-date{color: $dark-color; padding: 10px}
         } 
         div.perk:hover{a div.perk-name{color:$link-hover-color;transition:ease-in-out .2s box-shadow,ease-in-out .2s border-color,ease-in-out .2s color,ease-in-out .2s background-color;}} 
     } 

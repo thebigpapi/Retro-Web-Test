@@ -4,7 +4,7 @@ nav.navbar-links, nav.navbar-logo {
 	display: flex;
    	align-items: center;
 	flex-wrap: wrap;
-	font-family: Monospace, sans-serif;
+	font-family: $header-font;
 	font-size:15pt; 
 	line-height: 28px;padding:5px 0px 5px 15px;
 	a { 
@@ -12,7 +12,8 @@ nav.navbar-links, nav.navbar-logo {
    		align-items:center;
 		color: $light-color;text-decoration: none; 
 		margin: auto;
-		:hover { color: #fdbc96;transition: 0.15s; } 
+		transition:ease-in-out .2s color;
+		:hover { color: #fdbc96;transition:ease-in-out .2s color; } 
 		span.navbar-icon-label{font-size:26px;padding:0px 15px 0px 5px;} 
 	}
 	a.nav-link { 
@@ -27,11 +28,12 @@ nav.navbar-logo{ min-width: 240px;}
 p, ul {margin-top: 14px; margin-bottom: 14px;}
 img {border:0;}
 div.main { position: relative;min-height: 94vh;background-color: $lightbg-color; color: $dark-color;text-align: center; }
-div.main input, div.main select{ font-family: $font-family;font-size:13px; } 
+input, select{ font-family: $standard-font;font-size:13px; } 
 div.page { text-align: left; font-size: 16px; margin: auto; width:98%;padding-bottom: 4rem; }
-div.title { text-align: center; font-size:24px; padding: 20px; }
+div.title { text-align: center; font-size:24px; padding: 20px; font-family: $header-font;}
+a {transition:ease-in-out .2s color;}
 a:link, a:visited { text-decoration: none; }
-a:hover { color: $link-hover-color1;transition: 0.15s; }
+a:hover { color: $link-hover-color1; transition:ease-in-out .2s color;}
 input[type=text], input[type=submit], input[type=reset],input[type=password], button, select {
 	height: 22px;
 	border-color:#d9d9d9;
@@ -81,7 +83,7 @@ footer.footer {
 	}
 	div.perks{font-size:16px;}
 	div.page {font-size:22px;padding-bottom: 13rem; }
-	h2.title {font-size: 16px; margin: 10px 0;}
+	h2.title {font-size: 16px; margin: 10px 0; font-family: $header-font;}
 	footer.footer div.foot-container {
 		text-align: left;
 		width: 100%;

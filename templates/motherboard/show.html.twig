@@ -83,12 +83,12 @@
 <!-- GENERAL -->
 <div class="show-general" id="sh-general">
 	<div class="show-table-two">
-		<div>Form factor:</div>
+		<div class="table-side-header">Form factor</div>
 		<div>{{ motherboard.getFormFactor() ? motherboard.getFormFactor().getName() : 'Unknown' }}</div>
-		<div>PSU connector:</div>
+		<div class="table-side-header">PSU connector</div>
 		<div>{% if motherboard.getPsuConnectors() is not empty %}
 		{% for psu in motherboard.getPsuConnectors() %}{{ psu.getName() }}{% if not loop.last %}, {% endif %}{% endfor %}{% else %}Unknown{% endif %}</div>
-		<div>Chipset:</div>
+		<div class="table-side-header">Chipset</div>
 		<div>{% if motherboard.getChipset() is not empty %}<a href="{{ path('app_homepage') }}chipsets/{{ motherboard.getChipset().getId()}}">
 		{% if motherboard.getChipset().getManufacturer() is not null %}{{ motherboard.getChipset().getManufacturer().getShortNameIfExist() }}
 		{% else %}Unknown{% endif %}<!---->
@@ -99,24 +99,24 @@
 		({{ motherboard.getChipset().getName() }}){% else %}
 		{{ motherboard.getChipset().getName() }}{% endif %}
 		{% endif %}</a>{% else %}Unknown{% endif %}</div>
-		<div>Chipset parts:</div>
+		<div class="table-side-header">Chipset parts</div>
 		<div>{% for chipPart in motherboard.getChipset().getChipsetParts() %}<span class="text-block">{{ chipPart.getFullName() }}</span>{% endfor %}</div>
-		<div>Dimensions:</div>
+		<div class="table-side-header">Dimensions</div>
 		<div>{{ motherboard.getDimensions() ?: 'Unknown' }}</div>
 		{% if motherboard.getCpuSockets() is not empty %}
-		<div>CPU socket{% if motherboard.getCpuSockets()|length > 1 %}s{% endif %}:</div>
+		<div class="table-side-header">CPU socket{% if motherboard.getCpuSockets()|length > 1 %}s{% endif %}</div>
 		<div>{% for socket in motherboard.getCpuSockets() %}{{ socket.getNameAndType}}{% if not loop.last %}, {% endif %}{% endfor %}</div>
 		{% endif %}
 		{% if motherboard.getProcessorPlatformTypes() is not empty %}
-		<div>CPU platform{% if motherboard.getProcessorPlatformTypes()|length > 1 %}s{% endif %}:</div>
+		<div class="table-side-header">CPU platform{% if motherboard.getProcessorPlatformTypes()|length > 1 %}s{% endif %}</div>
 		<div>{% for platform in motherboard.getProcessorPlatformTypes() %}{{ platform.getName() }}{% if not loop.last %}, {% endif %}{% endfor %}</div>
 		{% endif %}
 		{% if motherboard.getCpuSpeed() is not empty %}
-		<div>Supported FSB speed{% if motherboard.getCpuSpeed()|length > 1 %}s{% endif %}:</div>
+		<div class="table-side-header">Supported FSB speed{% if motherboard.getCpuSpeed()|length > 1 %}s{% endif %}</div>
 		<div>{% for frequency in motherboard.getCpuSpeed()|sort((a, b) => a.value <=> b.value) %}{{ frequency.getValueWithUnit() }}{% if not loop.last %}, {% endif %}{% endfor %}</div>
 		{% endif %}
 		{% if motherboard.getCacheSize() is not empty %}
-		<div>Cache:</div>
+		<div class="table-side-header">Cache</div>
 		<div>{% for cache in motherboard.getCacheSize()|sort((a, b) => a.value <=> b.value) %}
 			{% if cache.getValue() > 1048575 %}{{ cache.getValue() / 1048576 }}&nbsp;MB
 			{% elseif cache.getValue() > 1023 %}{{ cache.getValue() / 1024}}&nbsp;KB
@@ -124,7 +124,7 @@
 		{% endfor %}</div>
 		{% endif %}
 		{% if motherboard.getMotherboardMaxRams() is not empty %}
-		<div>Supported RAM size:</div>
+		<div class="table-side-header">Supported RAM size</div>
 		<div>{% for maxRam in motherboard.getMotherboardMaxRams() %}
 			{% if maxRam.getMaxRam().getValue() > 1048575 %}{{ maxRam.getMaxRam().getValue() / 1048576 }}&nbsp;GB
 			{% elseif maxRam.getMaxRam().getValue() > 1023 %}{{ maxRam.getMaxRam().getValue() / 1024}}&nbsp;MB
@@ -132,45 +132,50 @@
 		{% endfor %}</div>
 		{% endif %}
 		{% if motherboard.getDramType() is not empty %}
-		<div>Supported RAM type{% if motherboard.getDramType()|length > 1 %}s{% endif %}:</div>
+		<div class="table-side-header">Supported RAM type{% if motherboard.getDramType()|length > 1 %}s{% endif %}</div>
 		<div>{% for dram in motherboard.getDramType() %}{{ dram.getName() }}{% if not loop.last %}, {% endif %}{% endfor %}</div>
 		{% endif %}
-		<div>Video chipset:</div>
+		<div class="table-side-header">Video chipset</div>
 		<div>{{ motherboard.getVideoChipset() ? motherboard.getVideoChipset().getNameWithManufacturer() : 'Unknown' }}
 		{% if motherboard.getMaxVideoRam() is not null %}({{  motherboard.getMaxVideoRam().getValueWithUnit() }} max VRAM){% endif %}</div>
-		<div>Audio chipset:</div>
+		<div class="table-side-header">Audio chipset</div>
 		<div>{{ motherboard.getAudioChipset() ? motherboard.getAudioChipset().getNameWithManufacturer() : 'Unknown' }}</div>
 	</div>
 	<div class="show-table-three">
-		<div class="show-table-three-head"><b>I/O ports:</b></div>
-		<div>{% if motherboard.getMotherboardIoPorts() is not empty %}
-			<ul style="list-style-type: none;padding:0;">
+		<div class="show-table-three-head"><b>I/O ports</b></div>
+		<div class="show-table-four">			
+			{% if motherboard.getMotherboardIoPorts() is not empty %}				
 				{% for port in motherboard.getMotherboardIoPorts()|sort %}
-					<li><b>{{ port.getCount() }}x&nbsp;</b>{{ port.getIoPort().getName() }}</li>
+					<div class="table-side-header"><b>{{ port.getCount() }}x&nbsp;</b></div><div>{{ port.getIoPort().getName() }}</div>
 				{% endfor %}
-			</ul>{% else %}<p>N/A</p>{% endif %}</div>
-		<div class="show-table-three-head"><b>Expansion slots:</b></div>
-		<div>{% if motherboard.getMotherboardExpansionSlots() is not empty %}
-			<ul style="list-style-type: none;padding:0;">
+			{% else %}<p>N/A</p>{% endif %}
+		</div>
+
+		<div class="show-table-three-head"><b>Expansion slots</b></div>
+		<div class="show-table-four">			
+			{% if motherboard.getMotherboardExpansionSlots() is not empty %}				
 				{% for slot in motherboard.getMotherboardExpansionSlots()|sort %}
-					<li><b>{{ slot.getCount() }}x&nbsp;</b>{{ slot.getExpansionSlot().getName() }}</li>
+					<div class="table-side-header"><b>{{ slot.getCount() }}x&nbsp;</b></div><div>{{ slot.getExpansionSlot().getName() }}</div>
 				{% endfor %}
-			</ul>{% else %}<p>N/A</p>{% endif %}</div>
-		<div class="show-table-three-head"><b>Known issues:</b></div>
-		<div>{% if motherboard.getKnownIssues() is not empty %}
-			<ul style="list-style-type: none;padding:0;">
+			{% else %}<p>N/A</p>{% endif %}
+		</div>
+
+		<div class="show-table-three-head"><b>Known issues</b></div>
+		<div class="show-table-four">			
+			{% if motherboard.getKnownIssues() is not empty %}				
 				{% for issue in motherboard.getKnownIssues()|sort %}
-					<li>{{ issue.getName() }}</li>
+					<div class="table-side-header"><b>&nbsp;</b></div><div>{{ issue.getName() }}</div>
 				{% endfor %}
-			</ul>{% else %}<p>N/A</p>{% endif %}</div>
+			{% else %}<p>N/A</p>{% endif %}
+		</div>
 	</div>
 	{% if motherboard.note is not null %}
 	<div style="padding-top:10px;padding-left: 5px;">
-		<div><b>Notes:</b></div>
+		<div><b>Notes</b></div>
 		<div class="notes">{% apply markdown_to_html %}{{ motherboard.note }}{% endapply %}</div>
 	</div>
 	{% endif %}
-	<div id="index-datetime" data-controller="datetime"><div><div class="div-datetime">Last updated: <span class="perk-date">{{ motherboard.getLastEdited()|date("Y-m-d\\TH:i:s", "GMT") }}Z</span></div></div></div>
+	<div id="index-datetime" data-controller="datetime"><div><div class="div-datetime">Last updated <span class="perk-date">{{ motherboard.getLastEdited()|date("Y-m-d\\TH:i:s", "GMT") }}Z</span></div></div></div>
 </div>
 <!-- DOWNLOADS -->
 <div class="show-downloads" id="sh-downloads">

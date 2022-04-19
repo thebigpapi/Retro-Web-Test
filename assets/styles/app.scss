@@ -1,4 +1,7 @@
-$font-family: Inter, sans-serif;
+@import url('https://fonts.googleapis.com/css2?family=Inter&family=Montserrat&display=swap');
+
+$standard-font: "Inter", "Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans","Liberation Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+$header-font: "Montserrat", "Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans","Liberation Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
 $light-color: #EEEEEE;
 $medium-color: #ABABAB;
 $dark-color: #000000;
@@ -15,7 +18,7 @@ $dark-link: orange;
 $dark-link-visited:#00e874;
 
 body{
-    font-family: system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans","Liberation Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";;
+    font-family: $standard-font;
     color: $dark-color;
     background: $navbar-color;
     margin:0; 

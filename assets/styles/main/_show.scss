@@ -55,8 +55,17 @@ div.show-downloads, div.show-cpus { display:none; }
 div.show-table-two{
     display:grid;
     grid-template-columns: [first] 180px [second] auto [end];
+    padding:5px;    
+    div{padding: 5px 0px 5px;vertical-align: middle;align-self:center}
+    div.table-side-header{text-align: right;font-style: italic;padding-right: 10px;}
+}
+div.show-table-four{
+    display:grid;
+    grid-template-columns: [first] 80px [second] auto [end];
     padding:5px;
-    div{padding: 5px 0px 5px;}
+    align-content: start;
+    div{padding: 5px 0px 5px;text-align: left;vertical-align: middle;align-self:center}
+    div.table-side-header{text-align: right;padding-right: 10px;}
 }
 div.show-table-three{
     display:grid;
