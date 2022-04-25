@@ -81,32 +81,29 @@
 				{% endfor %}
 			</div></div>#}
 			{% else %}
-				<ul>
+				<div class="plain-list">
 					{% for motherboard in motherboards %}
-						<li>
+						<div class="list-entry">
 							<a class="result-link" href="{{ path("motherboard_show", {id: motherboard.getId()}) }}">{{ motherboard.getManufacturerShortNameIfExist() }}&nbsp;{{ motherboard.name }}</a>
 							{% if motherboard.getMotherboardAliases() is not empty %}
-								<ul class="results-alias">
+								<div class="results-alias">
 									{% for alias in motherboard.getMotherboardAliases() %}
-										<li>
-											<small>
+											<div class="alias-entry"><small>
 												{% if alias.getManufacturer() is not null %}
 													{{ alias.getManufacturer().getShortNameIfExist() }}
 												{% else %}
 													Unknown
 												{% endif %}
-												{{ alias.name }}</small>
-										</li>
+												{{ alias.name }}</small></div>
 									{% endfor %}
-								</ul>
+								</div>
 							{% endif %}
-
-						</li>
+						</div>
 						{#% if motherboard.getProcessorPlatformType() is not null %}
 							{{ motherboard.getProcessorPlatformType().getName() }}	
 						{% endif %#}
 					{% endfor %}
-				</ul>
+				</div>
 
 			{% endif %}
 			{{ knp_pagination_render(motherboards, 'macros/pagination.html.twig') }}

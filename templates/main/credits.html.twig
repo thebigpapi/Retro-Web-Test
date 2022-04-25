@@ -12,18 +12,20 @@
 {% endblock %}
 {% block opengraph %}
 	<style>
-		div.main {
+		main {
 			background-color: #191919 !important;
 			color: #EEEEEE !important;
-			overflow: hidden;
 			background-repeat: repeat;
 			background-image: url('/build/images/background.webp');
+			text-shadow: 0 1px 5px black;
+		}
+		div.info-text {
+			width: 90%;
+			max-width: 1000px;
+			margin: 0 auto;
 		}
 		a.credits-lnk:link {
 			color: orange !important;
-		}
-		a.credits-lnk:visited {
-			color: #00e874 !important;
 		}
 	</style>
 {% endblock %}
@@ -31,38 +33,40 @@
 	<div class="title">
 		<b>{% trans %}About Ultimate Retro{% endtrans %}</b>
 	</div>
-	<p>{% trans %}This is a project aimed at documenting as many pieces of hardware as possible, built entirely by volunteers, who code for the site/add new entries in their free time. All the images that are added on this site should comply with{% endtrans %}
-		<a class="credits-lnk" href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>
-		{% trans %}, unless specified otherwise by the image owner.{% endtrans %}&nbsp;We also have a <a href="https://gitlab.com/deksor/ultimateretro">GitLab</a> repository, where you can see the code behind UR.</p>
-	<p>{% trans %}Partial list of people who helped shape this project:{% endtrans %}</p>
-	<ul>
-		<li>{% trans %}Deksor (project initiator){% endtrans %}</li>
-		<li>{% trans %}computerguy08 (UI development){% endtrans %}</li>
-		<li>{% trans %}evasive, owner of{% endtrans %}
-			<a class="credits-lnk" href="https://www.elhvb.com/">elhvb.com</a>
-		</li>
-		<li>{% trans %}mR_Slug, creator of the{% endtrans %}
-			<a class="credits-lnk" href="http://66.113.161.23/~mR_Slug/chipset/chipsets-v1.00.pl">{% trans %}chipset encyclopedia{% endtrans %}</a>
-		</li>
-		<li>{% trans %}TheRealZago, creator of{% endtrans %}
-			<a class="credits-lnk" href="https://theretroweb.com/">theretroweb.com</a>
-		</li>
-		<li>{% trans %}scorp, aka Necroware on{% endtrans %}
-			<a class="credits-lnk" href="https://www.youtube.com/channel/UCKU5nwSWYXa3xfXGBlKyvdw">YouTube</a>
-		</li>
-		<li>Carlos S. M.</li>
-		<li>edneil</li>
-		<li>DecoySportsGame</li>
-		<li>Predator99</li>
-		<li>Luckybob</li>
-	</ul>
-	<p>{% trans %}You can also find us on these forums:{% endtrans %}</p>
-	<ul>
-		<li>
-			<a class="credits-lnk" href="https://www.vogons.org/viewtopic.php?f=46&t=74070">VOGONS</a>
-		</li>
-		<li>
-			<a class="credits-lnk" href="https://dosreloaded.de/forum/index.php?thread/3599-ultimate-retro-ehem-ultimate-hardware-2019/">DOSReloaded</a>
-		</li>
-	</ul>
+	<div class="info-text">
+		<p>{% trans %}This is a project aimed at documenting as many pieces of hardware as possible, built entirely by volunteers, who code for the site/add new entries in their free time. All the images that are added on this site should comply with{% endtrans %}
+			<a class="credits-lnk" href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>
+			{% trans %}, unless specified otherwise by the image owner.{% endtrans %}&nbsp;We also have a <a class="credits-lnk" href="https://gitlab.com/deksor/ultimateretro">GitLab</a> repository, where you can see the code behind UR.</p>
+		<p>{% trans %}Partial list of people who helped shape this project:{% endtrans %}</p>
+		<ul>
+			<li>{% trans %}Deksor (project initiator){% endtrans %}</li>
+			<li>{% trans %}computerguy08 (UI development){% endtrans %}</li>
+			<li>{% trans %}evasive, owner of{% endtrans %}
+				<a class="credits-lnk" href="https://www.elhvb.com/">elhvb.com</a>
+			</li>
+			<li>{% trans %}mR_Slug, creator of the{% endtrans %}
+				<a class="credits-lnk" href="http://66.113.161.23/~mR_Slug/chipset/chipsets-v1.00.pl">{% trans %}chipset encyclopedia{% endtrans %}</a>
+			</li>
+			<li>{% trans %}TheRealZago, creator of{% endtrans %}
+				<a class="credits-lnk" href="https://theretroweb.com/">theretroweb.com</a>
+			</li>
+			<li>{% trans %}scorp, aka Necroware on{% endtrans %}
+				<a class="credits-lnk" href="https://www.youtube.com/channel/UCKU5nwSWYXa3xfXGBlKyvdw">YouTube</a>
+			</li>
+			<li>Carlos S. M.</li>
+			<li>edneil</li>
+			<li>DecoySportsGame</li>
+			<li>Predator99</li>
+			<li>Luckybob</li>
+		</ul>
+		<p>{% trans %}You can also find us on these forums:{% endtrans %}</p>
+		<ul>
+			<li>
+				<a class="credits-lnk" href="https://www.vogons.org/viewtopic.php?f=46&t=74070">VOGONS</a>
+			</li>
+			<li>
+				<a class="credits-lnk" href="https://dosreloaded.de/forum/index.php?thread/3599-ultimate-retro-ehem-ultimate-hardware-2019/">DOSReloaded</a>
+			</li>
+		</ul>
+	</div>
 	{% endblock %}

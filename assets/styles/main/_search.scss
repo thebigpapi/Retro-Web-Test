@@ -1,157 +1,272 @@
-div.butn { text-align: center; }
-div.butn input {color: $dark-color; height:2.7em; font-size:14px;}
+.index-list {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	padding-bottom: 10px;
+	width: 60%;
+	margin: 0 auto;
+
+	.index-letter {
+		background: $accent-bkg-light;
+		color: $accent-frg-light;
+		border: solid thin $border-light;
+		border-radius: 5px;
+		padding: 8px;
+		width: 20px;
+		display: flex;
+		justify-content: center;
+		margin: 3px;
+		transition: ease-in-out $anim-duration box-shadow, ease-in-out $anim-duration color;
+
+		&:hover {
+			color: $active-link-light;
+			box-shadow: 0px 0px 2px $shadow-light;
+			transition: ease-in-out $anim-duration box-shadow, ease-in-out $anim-duration color;
+
+			@media (prefers-color-scheme: dark) {
+				color: $active-link-dark;
+			}
+		}
+
+		@media (prefers-color-scheme: dark) {
+			background: $accent-bkg-dark;
+			color: $accent-frg-dark;
+			border-color: $border-dark;
+		}
+	}
+}
+
+div.pagination {
+	@include noselect();
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	padding-bottom: 10px;
+	margin: 0 auto;
+
+	a,
+	span {
+		background: $accent-bkg-light;
+		color: $accent-frg-light;
+		border: solid thin $border-light;
+		border-radius: 5px;
+		padding: 8px;
+		display: flex;
+		justify-content: center;
+		margin: 3px;
+		transition: ease-in-out $anim-duration box-shadow, ease-in-out $anim-duration color;
+
+		&:hover {
+			color: $active-link-light;
+			box-shadow: 0px 0px 2px $shadow-light;
+			transition: ease-in-out $anim-duration box-shadow, ease-in-out $anim-duration color;
+
+			@media (prefers-color-scheme: dark) {
+				color: $active-link-dark;
+			}
+		}
+
+		&.current {
+			background-color: $active-link-light;
+			color: $body-frg-light;
+
+			@media (prefers-color-scheme: dark) {
+				background-color: $active-link-dark;
+			}
+		}
+
+		&.first,
+		&.previous,
+		&.next,
+		&.last {
+			width: 5.3rem;
+		}
+
+		@media (prefers-color-scheme: dark) {
+			background: $accent-bkg-dark;
+			color: $accent-frg-dark;
+			border-color: $border-dark;
+		}
+	}
+}
+
+div.search-nav {
+	margin: auto;
+	//text-align: center;
+	padding-bottom: 10px;
+	display: flex;
+	justify-content: center;
+	flex-wrap: wrap;
+}
 
 // Motherboard index
-div.index-title { text-align:center;padding-top: 20px; }
-ul.index-list {
-	text-align:center;
-	overflow: hidden;
-	margin: 1em;
-	list-style: none;
-	padding: 0;
-	margin-left: -4px;
-	@include noselect();
-	li {
-		display: inline;
-		padding:2px;
-		a{
-			border: solid 1px $footer-link-color;
-			border-radius: 0.2rem;
-			display:inline-block;
-			width: 1.8rem;
-			height: 1.8rem;
-		}
-		a:hover { color:$dark-color;background-color:$link-hover-color; }
-	}
-	li:before { content: "\200B"; }
+div.index-title {
+	text-align: center;
+	padding-top: 20px;
 }
 
 // Motherboard search form
-form fieldset { border:none; }
-div.search-nav-title { height: 2em;text-align: center; }
-div.search-nav { margin:auto;text-align: center;padding-bottom:5px; }
-div.search-widget { display:inline-block; width:77%; vertical-align:middle;padding-top:5px; }
-div.search-widget select { width:100%; }
-div.search-widget-short select { width:100%; }
-div.search-widget-long { padding-top:5px; }
-div.search-widget-long input { width:99.5%; }
-label.search-label { display: inline-block;text-align: center;width:120px; }
-label.search-label img { vertical-align:bottom; }
-/* expansion slots & IO ports */
-ul.slots-ports-widget { list-style:none;padding:0; }
-li.slot-port-item {
-	height: 1.75em;
-	width: 15em;
-	font-size:14px;
-	margin-bottom:4px;
-	float:left;
-	span { float:left;margin-left:0.4em; }
-	input { float:left; font-size:12px; height: 1.25em !important; width: 1.25em; }
+form fieldset {
+	border: none;
 }
-div.pagination{
-	padding-top:7px;
-	padding-bottom:7px;
-	display: table;
-  	margin: 0 auto;
-	@include noselect();
-	span{
-		border: solid 1px $footer-link-color;
-		border-radius: 0.2rem;
-		color:$dark-color;
-		box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.3);
-		display:inline-block;
-		text-align: center;
-		margin-left:5px;
-		a{
-			color:$dark-color;
-			line-height:2rem;
-			display: block;
-			width: 2.6rem;
-			height: 2.3rem;
+
+section.search-form-grid {
+	padding-bottom: 10px;
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax($form-breakpoint - 45px, 1fr));
+	align-items: center;
+	column-gap: 20px;
+	row-gap: 10px;
+
+	@media (max-width: $form-breakpoint) {
+		display: block;
+	}
+}
+
+div.search-form-entry {
+	display: flex;
+	flex-wrap: wrap;
+
+	label.search-form-label {
+		width: 100%;
+		justify-self: start;
+		display: flex;
+		align-items: center;
+		padding-bottom: 5px;
+
+		img {
+			padding-left: 3px;
 		}
 	}
-	span:hover{ background-color:$link-hover-color; }
-	span.current{ 
-		background-color:$link-hover-color;
-		line-height:2rem;
-		width: 2.6rem;
-		height: 2.3rem;
-	}
-	span.first, span.previous, span.next, span.last {
-		width: 5.3rem;
-		a{ width: 5.3rem; }
-	} 
-}
-	
-@media (max-width: 600px) {
-	#search-table tr.sep { display: none; }
-	#search-table td { display:block;text-align:left;padding:0 0 4px 4%; }	
-	div.butn input { font-size:18px;height:2.2em; }
-	label.search-label { width:auto;padding-top:5px; }
-	div.search-widget { width:100%; }
-	li.slot-port-item { width: 13em; }
-	ul.index-list {
-		padding-left:15px;
-		li {
-			font-size:24px;
-			a{
-				width: 2.5rem;
-				height: 2.5rem;
+
+	div.search-form-widget {
+		flex-grow: 1;
+		align-items: center;
+
+		div {
+			display: flex;
+			flex-wrap: wrap;
+			width: 100%;
+			padding-bottom: 5px;
+
+			* {
+				flex-grow: 1;
 			}
 		}
 	}
 }
-@media (min-width: 800px) {
-	div.search-widget { width:83%;}
+
+div.search-form-many {
+	width: 100%;
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+	gap: 5px;
+
+	div.search-many-item {
+		display: flex;
+		align-items: center;
+
+		input {
+			width: 20px;
+			padding: 3px;
+		}
+
+		span {
+			padding-left: 5px;
+		}
+	}
+
 }
-@media (min-width: 1200px) {
-	div.butn input { font-size:18px;height:2.2em; }
-	label.search-label { width:180px; }
-	label.search-label img { vertical-align:initial; }
-	div.search-widget { width:80%;padding-top:0;}
-	div.search-widget select, div.search-widget input { height:2.2em; }
-	div.search-widget-long input, div.search-widget input {height:2em;}
-	div.search-widget-short { display:inline-block;width:35%; }
-	div.search-widget-long { display:inline-block;width:63%;padding-top:0; }
-	#search_formFactor{ width:98.8%; }
+
+div.search-nav-title {
+	height: 2em;
+	text-align: center;
 }
-@media (min-width: 1400px) {
-	label.search-label { width:220px; }
-	div.search-nav { padding-bottom: 15px; }
+
+div.plain-list {
+	padding: 15px;
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+	gap: 5px;
+
+	&.list-bios {
+		grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+	}
+
+	div.list-entry {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		border-bottom: solid thin $border-light;
+		padding: 5px;
+
+		@media (prefers-color-scheme: dark) {
+			border-color: $border-dark;
+		}
+
+		a {
+			flex-grow: 1;
+		}
+
+		div.results-alias {
+			flex-grow: 1;
+			padding-left: 5px;
+		}
+	}
+
+	.header-label {
+		padding-top: 3px;
+		font-weight: bold;
+		width: 100%;
+	}
+
+	.combo {
+		display: flex;
+		align-items: center;
+		gap: 5px;
+	}
 }
+
 @media (hover: none) {
-	span.help-t{
-		img {display:none;}
-		span.img { display: inline-block; width: 16px; height: 16px; }
+	span.help-t {
+		img {
+			display: none;
+		}
+
+		span.img {
+			display: inline-block;
+			width: 16px;
+			height: 16px;
+		}
+
 		span.text {
-			background: $lightbg-color;
-			border:1px solid $dark-color;
-			color: $dark-color;
+			background: $body-bkg-light;
+			border: 1px solid $border-light;
+			color: $body-frg-light;
 			display: inline;
-			font-size:12px;
+			font-size: 12px;
 			margin: -5px 0 0 15px;
 			padding: 3px;
-			position:absolute;
+			position: absolute;
 			visibility: hidden;
 			z-index: 1;
+
+			@media (prefers-color-scheme: dark) {
+				background: $body-bkg-dark;
+				border: 1px solid $border-dark;
+				color: $body-frg-dark;
+			}
 		}
-	} 
-	span.help-t:hover span.text { visibility:visible; }
+	}
+
+	span.help-t:hover span.text {
+		visibility: visible;
+	}
 }
-@media (pointer: coarse) { div.sform2 input[type=checkbox] {width:20px;height:20px;} }
-@media (prefers-color-scheme: dark) {
-    div.search-widget select, div.search-widget-short select, div.search-widget-long input, li.slot-port-item input, div.search-widget input {
-		background-color: $dark-gray-color;color: $light-color;
+
+@media (pointer: coarse) {
+	div.sform2 input[type=checkbox] {
+		width: 20px;
+		height: 20px;
 	}
-	div.pagination{
-		span{
-			border: solid 1px gray;
-			box-shadow: 0 4px 6px 0 rgba(255, 255, 255, 0);
-			a{ color:$light-color; }
-		}
-		span:hover a{ color:$dark-color; }
-	}
-	ul.index-list li a { border: solid 1px gray; }
-	div.butn input {background-color:$btn-darkbg-color;color:$light-color;}
-	span.help-t span.text{background-color: $dark-color;color:$light-color;border-color:$light-color;}
 }

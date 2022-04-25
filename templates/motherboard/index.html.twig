@@ -8,17 +8,16 @@
 {% endblock %}
 
 {% block body %}
-	<div class="title"><b>{{'Index'|trans}}: {{ltr}}</b></div>
+	<div class="title">{{'Index'|trans}}: {{ltr}}</div>
 	{% if motherboards is not empty %}
 		{{ knp_pagination_render(motherboards, 'macros/pagination.html.twig') }}
-		<ul>
+		<div class="plain-list">
 			{% for motherboard in motherboards %}
-				<li>
-					<a href='{{ path("motherboard_show", {id: motherboard.getId()}) }}'>{{ motherboard.getManufacturerShortNameIfExist()}}
-						{{motherboard.name}}</a>
-				</li>
+				<div class="list-entry">
+					<a href='{{ path("motherboard_show", {id: motherboard.getId()}) }}'>{{ motherboard.getManufacturerShortNameIfExist()}}&nbsp;{{motherboard.name}}</a>
+				</div>
 			{% endfor %}
-		</ul>
+		</div>
 		{{ knp_pagination_render(motherboards, 'macros/pagination.html.twig') }}
 	{% else %}
 		<p style="text-align:center;padding-top:10px;">

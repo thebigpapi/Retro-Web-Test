@@ -109,7 +109,7 @@
 						</div></td>
 					</tr>
 				</table>
-		<div class="show-table-two">
+		<div class="quick-spec-table">
 			<div>Form factor: </div>
 			<div>{{ form_widget(form.formFactor)|replace({'<option value="">': '<option label=" " value="">'})|raw }}</div>
 			<div>Chipset :</div>
@@ -123,8 +123,8 @@
 			<div>Audio Chipset :</div>
 			<div>{{ form_widget(form.audioChipset)|replace({'<option value="">': '<option label=" " value="">'})|raw }}</div>
 		</div>
-		<div class="show-table-three edit" style="grid-template-columns:auto;">
-			<div class="show-table-three-head" data-controller="collection"><b>Max system RAM: </b>
+		<div class="full-spec edit" style="grid-template-columns:auto;">
+			<div class="full-spec-head" data-controller="collection"><b>Max system RAM: </b>
 				<button type="button" data-action="click->collection#expandButton" data-list-id="motherboardMaxRams-fields-list">Add</button>
 			</div>
 			<div id="motherboardMaxRams-fields-list" data-widget-counter="{{ form.motherboardMaxRams|length }}" data-prototype="
@@ -142,7 +142,7 @@
 						{{ form_errors(form.motherboardMaxRams) }}
 					</div>
 					
-			<div class="show-table-three-head" data-controller="collection"><b>Cache: </b>
+			<div class="full-spec-head" data-controller="collection"><b>Cache: </b>
 				<button type="button" data-action="click->collection#expandButton" data-list-id="cacheSize-fields-list">Add</button>
 			</div>
 			<div id="cacheSize-fields-list" data-widget-counter="{{ form.cacheSize|length }}" data-prototype="
@@ -157,7 +157,7 @@
 						{% endfor %}
 						{{ form_errors(form.cacheSize) }}
 					</div>
-			<div class="show-table-three-head" data-controller="collection"><b>Supported RAM types: </b></div>
+			<div class="full-spec-head" data-controller="collection"><b>Supported RAM types: </b></div>
 			<div>{% for ramtype in form.dramType %}
 					<span style="width:130px;display:inline-block;font-size:13px;">
 						{{ form_widget(ramtype) }}
@@ -166,8 +166,8 @@
 					{{ form_errors(ramtype) }}
 				{% endfor %}</div>
 		</div>
-		<div class="show-table-three edit">
-			<div class="show-table-three-head" data-controller="collection"><b>I/O ports: </b><button type="button" data-action="click->collection#expandButton" data-list-id="motherboardIoPorts-fields-list">Add</button></div>
+		<div class="full-spec edit">
+			<div class="full-spec-head" data-controller="collection"><b>I/O ports: </b><button type="button" data-action="click->collection#expandButton" data-list-id="motherboardIoPorts-fields-list">Add</button></div>
 			<div id="motherboardIoPorts-fields-list" data-widget-counter="{{ form.motherboardIoPorts|length }}" data-prototype="
 				{{ form_widget(form.motherboardIoPorts.vars.prototype.count, {'attr': {'class': 'num'}} )|e }} x
 				{{ form_widget(form.motherboardIoPorts.vars.prototype.io_port, {'attr': {'style': 'width:50%'}} )|e }}
@@ -183,7 +183,7 @@
 				{% endfor %}
 				{{ form_errors(form.motherboardIoPorts) }}
 			</div>
-			<div class="show-table-three-head" data-controller="collection"><b>Expansion slots: </b><button type="button" data-action="click->collection#expandButton" data-list-id="motherboardExpansionSlots-fields-list">Add</button></div>
+			<div class="full-spec-head" data-controller="collection"><b>Expansion slots: </b><button type="button" data-action="click->collection#expandButton" data-list-id="motherboardExpansionSlots-fields-list">Add</button></div>
 			<div id="motherboardExpansionSlots-fields-list" data-widget-counter="{{ form.motherboardExpansionSlots|length }}" data-prototype="
 				{{ form_widget(form.motherboardExpansionSlots.vars.prototype.count, {'attr': {'class': 'num'}} )|e }} x
 				{{ form_widget(form.motherboardExpansionSlots.vars.prototype.expansion_slot, {'attr': {'style': 'width:50%;display:inline'}} )|e  }}
@@ -199,7 +199,7 @@
 				{% endfor %}
 				{{ form_errors(form.motherboardExpansionSlots) }}
 			</div>		
-			<div class="show-table-three-head" data-controller="collection"><b>Known issues: </b><button type="button" data-action="click->collection#expandButton" data-list-id="knownIssues-fields-list">Add</button></div>
+			<div class="full-spec-head" data-controller="collection"><b>Known issues: </b><button type="button" data-action="click->collection#expandButton" data-list-id="knownIssues-fields-list">Add</button></div>
 			<div id="knownIssues-fields-list" data-widget-counter="{{ form.knownIssues|length }}" data-prototype="
 				{{ form_widget(form.knownIssues.vars.prototype, {'attr': {'style': 'width:80%'}} )|e }}
 				<button type=button data-action='click->collection#removeButton'>Del</button>
@@ -347,8 +347,8 @@
 	</div>
 	<!-- CPUs -->
 	<div class="show-cpus" id="sh-cpus">
-		<div class="show-table-three edit">
-			<div class="show-table-three-head" data-controller="collection"><b>CPU sockets: </b><button type="button" data-action="click->collection#expandButton" data-list-id="cpuSockets-fields-list">Add</button></div>
+		<div class="full-spec edit">
+			<div class="full-spec-head" data-controller="collection"><b>CPU sockets: </b><button type="button" data-action="click->collection#expandButton" data-list-id="cpuSockets-fields-list">Add</button></div>
 			<div data-controller="collection">
 				<div id="cpuSockets-fields-list" data-widget-counter="{{ form.cpuSockets|length }}" data-prototype="
 					{{ form_widget(form.cpuSockets.vars.prototype)|e }} 
@@ -362,7 +362,7 @@
 				</div>
 				{{ form_errors(form.cpuSockets) }}
 			</div>
-			<div class="show-table-three-head" data-controller="collection"><b>CPU platforms: </b><button type="button" data-action="click->collection#expandButton" data-list-id="processorPlatformTypes-fields-list">Add</button></div>
+			<div class="full-spec-head" data-controller="collection"><b>CPU platforms: </b><button type="button" data-action="click->collection#expandButton" data-list-id="processorPlatformTypes-fields-list">Add</button></div>
 			<div data-controller="collection">
 				<div id="processorPlatformTypes-fields-list" data-widget-counter="{{ form.processorPlatformTypes|length }}" data-prototype="
 					{{ form_widget(form.processorPlatformTypes.vars.prototype, {'attr': {'style': 'width:80%'}} )|e }} 
@@ -376,7 +376,7 @@
 				</div>
 				{{ form_errors(form.processorPlatformTypes) }}
 			</div>
-			<div class="show-table-three-head" data-controller="collection"><b>FSB speed: </b><button type="button" data-action="click->collection#expandButton" data-list-id="cpuSpeed-fields-list">Add</button></div>
+			<div class="full-spec-head" data-controller="collection"><b>FSB speed: </b><button type="button" data-action="click->collection#expandButton" data-list-id="cpuSpeed-fields-list">Add</button></div>
 			<div data-controller="collection">
 				<div style="width:100%" id="cpuSpeed-fields-list" data-widget-counter="{{ form.cpuSpeed|length }}" data-prototype="{{ form_widget(form.cpuSpeed.vars.prototype, {'attr': {'style': 'width:50%'}} )|e }} <button type=button data-action='click->collection#removeButton'>Del</button>">
 						{% for speed in form.cpuSpeed %}
