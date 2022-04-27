@@ -1,9 +1,22 @@
-<tr>
-    <td>{{object.getManufacturer().getShortNameIfExist()}}</td>
-    <td>{{object.getName()}}</td>
-    <td>{{object.getChipName()}}</td>
-    <td>
-        <a class="button-widget" href="./expansionchipsets/videochips/{{ object.getId() }}/edit/">
-            <img src="{{ absolute_url(asset('build/icons/show/edit.svg')) }}" alt="" width="20">Edit</a>
-    </td>
-</tr>	
+<div class="list-entry">
+    <div class="header-label">Manufacturer</div>
+    <div>{{object.getManufacturer().getShortNameIfExist()}}</div>
+
+    {% if object.getName()|length > 0 %}
+        <div class="header-label">Name</div>
+        <div>{{object.getName()}}</div>
+    {% endif %}
+
+    {% if object.getChipName()|length > 0 %}
+        <div class="header-label">Part number</div>
+        <div>{{object.getChipName()}}</div>
+    {% endif %}
+
+    <div class="header-label">Actions</div>
+    <div class="toolbar toolbar-thin">
+        <a class="button" href="./expansionchipsets/videochips/{{ object.getId() }}/edit/">
+            <img src="{{ absolute_url(asset('build/icons/show/edit.svg')) }}" alt="" width="20">
+            <span>Edit</span>
+        </a>
+    </div>
+</div>	

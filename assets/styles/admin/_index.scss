@@ -1,3 +1,54 @@
+div.show-nav {
+	@include noselect();
+	flex-grow: 1;
+	display: flex;
+	align-items: end;
+	flex-wrap: wrap;
+	gap: 2px;
+
+	input {
+		display: none;
+	}
+
+	label {
+		display: flex;
+		align-items: center;
+		padding: 8px 10px;
+		height: 24px;
+		cursor: pointer;
+		transition: ease-in-out background-color $anim-duration, ease-in-out color $anim-duration;
+
+		img {
+			margin-right: 5px;
+		}
+
+		border-radius: 5px 5px 0px 0px;
+		border-bottom: thin solid transparent;
+
+		&:hover {
+			transition: ease-in-out background-color $anim-duration, ease-in-out color $anim-duration;
+			color: $active-link-light;
+
+			@media (prefers-color-scheme: dark) {
+				color: $active-link-dark;
+			}
+		}
+	}
+
+	label:hover,
+	label[checked] {
+		transition: ease-in-out background-color $anim-duration, ease-in-out color $anim-duration;
+		background: $accent-bkg-light;
+		border-bottom: thin solid $active-link-light;
+
+		@media (prefers-color-scheme: dark) {
+			background: $accent-bkg-dark;
+			border-bottom: thin solid $active-link-dark;
+		}
+	}
+}
+
+
 /* === logging stuf === */
 pre { padding: 5px; margin: 5px;color:black; }
 .string { color: green; }
@@ -36,7 +87,7 @@ pre { padding: 5px; margin: 5px;color:black; }
 	max-height: 0;
 	overflow: hidden;
 	width: 25vw;
-	transition: max-height 0.2s ease-out;
+	transition: max-height 0.15s ease-out;
 	background-color: #f1f1f1;
 }
 /* === board statistics === */
@@ -89,35 +140,9 @@ dl {
 	}
 } 
 
-/* === admin dashboard === */
-a.admin-snav {
-	width:205px;
-	text-align: center;
-	margin:6px 0px 6px 0px;
-    font-size:20px;
-    border: 1px solid $medium-color;
-    border-collapse: collapse;
-    box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.3);
-    display: -moz-inline-box; 
-    display: inline-block; 
-    p{color:$dark-color;}
-    @include noselect();
-    img { vertical-align: middle;height:auto; }
-}
-a.admin-snav:hover { p{color: $link-hover-color;}background-color:$navbar-color;cursor:pointer; }
-div.admin-navbar{@include border(#77c5f9);padding-bottom:10px;}
-
 /* === manage_xxxx.html.twig === */
-div.list-view{min-height:12em;}
-div.entity-filter{
-	padding-bottom:10px;
-	//background-color:#1b1b1b;
-	span { @include border(#77c5f9);display:block;}
-	form div{
-		label{min-width:150px;display:inline-block;}
-		button{display:none;}
-	}
-}
+div.list-view { padding: 10px 0; }
+
 table.results {
 	border:1px solid $footer-link-color;
 	border-collapse: collapse;
@@ -130,46 +155,3 @@ div.editasset { width:50%;margin:auto; }
 div.editasset form div div label { width:180px; }
 div.editasset form div div input { width:400px; }
 tr.darkbg { background-color: $footer-link-color; }
-@media (max-width: 1199px) {
-	.log-content { width: 34vw;}
-	div.div-logs-table{overflow-x:scroll;}
-	div.list-view{ height:auto;overflow-x:scroll; }
-	dl {
-		dd.percentage { margin-left: 100px;}
-		dd span.text { width: auto; }
-	}
-}
-@media (max-width: 1299px) {
-	a.admin-button { float:none !important; }
-	div.list-view { font-size:14px; }
-}
-@media only screen and (max-width: 500px) {
-	a.admin-button-index { font-size: 16px;width:180px; }
-	a.admin-button { font-size: 12px; }
-	div.manage-buttons div button { height:25px; font-size:18px; }
-	div.processing-search { width:auto; }
-	::-webkit-scrollbar { -webkit-appearance: none; }
-	::-webkit-scrollbar:horizontal { height: 12px; }
-	::-webkit-scrollbar-thumb {
-		background-color: $dark-color;
-		border-radius: 10px;
-		border: 2px solid $light-color;
-	}
-	::-webkit-scrollbar-track {
-		border-radius: 10px;
-		background-color: $light-color;
-	}
-	dl dd.percentage { margin-left: 60px;}
-}
-@media (min-width: 1400px) { .log-content { width: 34vw;}}
-@media (min-width: 1620px) { .log-content { width: 42vw;}}
-@media (prefers-color-scheme: dark) {
-	a.admin-snav p { color:$lightbg-color; }
-	a.admin-snav:hover { p{color: #0099ff;}background-color:$btn-lightbg-color; }
-	tr.darkbg{ background-color: $btn-darkbg-color-hover; }
-	table.results {
-		border:1px solid #5f5f5f;
-		border-collapse: collapse;
-		tr td{ border-top:1px solid #303030;}
-	}
-}

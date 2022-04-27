@@ -1,8 +1,13 @@
-<tr>
-    <td>{{object.getName()}}</td>
-    <td><img src="{{ vich_uploader_asset(object, 'osIcon')}}" alt="" width="32"></td>
-    <td>
-        <a class="button-widget" href="./files/osfamilies/{{ object.getId() }}/edit/">
-            <img src="{{ absolute_url(asset('build/icons/show/edit.svg')) }}" alt="" width="20">Edit</a>
-    </td>
-</tr>	
+<div class="list-entry">
+    <div class="header-label">Name</div>
+    <div>{{object.getName()}}</div>
+
+    <div class="header-label">Logo</div>
+    <div><img src="{{ vich_uploader_asset(object, 'osIcon')}}" alt="" width="32"></div>
+
+    <div class="header-label">Actions</div>
+    <div class="toolbar toolbar-thin">
+        <a class="button" href="./files/osfamilies/{{ object.getId() }}/edit/">
+            <img src="{{ absolute_url(asset('build/icons/show/edit.svg')) }}" alt="" width="20"><span>Edit</span></a>
+    </div>
+</div>

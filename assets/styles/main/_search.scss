@@ -90,13 +90,21 @@ div.pagination {
 	}
 }
 
-div.search-nav {
-	margin: auto;
-	//text-align: center;
+div.toolbar {
 	padding-bottom: 10px;
 	display: flex;
 	justify-content: center;
 	flex-wrap: wrap;
+
+	&.toolbar-thin {
+		padding-bottom: 5px;
+
+		button,
+		a.button {
+			padding: 3px;
+			margin: 3px;
+		}
+	}
 }
 
 // Motherboard index
@@ -123,7 +131,7 @@ section.search-form-grid {
 	}
 }
 
-div.search-form-entry {
+.search-form-entry {
 	display: flex;
 	flex-wrap: wrap;
 
@@ -150,6 +158,7 @@ div.search-form-entry {
 			padding-bottom: 5px;
 
 			* {
+				width: 100%;
 				flex-grow: 1;
 			}
 		}
@@ -178,7 +187,7 @@ div.search-form-many {
 
 }
 
-div.search-nav-title {
+div.toolbar-title {
 	height: 2em;
 	text-align: center;
 }
@@ -193,12 +202,18 @@ div.plain-list {
 		grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
 	}
 
+	&.editor-view {
+		grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+	}
+
 	div.list-entry {
 		display: flex;
 		flex-wrap: wrap;
 		align-items: center;
+		align-self: end;
 		border-bottom: solid thin $border-light;
 		padding: 5px;
+		gap: 5px;
 
 		@media (prefers-color-scheme: dark) {
 			border-color: $border-dark;
@@ -215,9 +230,9 @@ div.plain-list {
 	}
 
 	.header-label {
-		padding-top: 3px;
+		padding: 3px 0;
 		font-weight: bold;
-		width: 100%;
+		width: 50%;
 	}
 
 	.combo {

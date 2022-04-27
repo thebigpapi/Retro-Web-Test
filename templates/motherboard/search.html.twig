@@ -19,8 +19,6 @@
 	<link rel="alternate" hreflang="x-default" href="{{ absolute_url(path('motherboard_search')) }}"/>
 {% endblock %}
 {% block body %}
-
-	<div id="hiddenDiv" style="display: none;"></div>
 	{{ form_start(form, {'method': 'POST', 'name': 'search_motherboard', 'action':path("motherboard_search"), 'attr':{'data-controller':'search'}}) }}
 	<fieldset id="search-fieldset">
 		<div class="title">Search for a motherboard</div>
@@ -34,7 +32,7 @@
 		</div>
 		<section>
 			<h4 hidden>Search navigation</h4>
-			<div class="search-nav">
+			<div class="toolbar">
 				<button type="button" onclick="document.getElementById('rst-btn').click();return false;">
 					<img src="{{ absolute_url(asset('build/icons/search/reset.svg')) }}" alt="reset" width="24" height="24">
 					<span>Reset fields</span>
@@ -146,5 +144,5 @@
 		</div>
 
 	</fieldset>
-	<div>{{ form_rest(form)}}</div>
+	<div>{{ form_rest(form) }}</div>
 </form>{% endblock %}

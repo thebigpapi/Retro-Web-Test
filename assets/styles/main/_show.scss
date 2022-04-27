@@ -71,7 +71,7 @@ div.main-strip {
             @include noselect();
             flex-grow: 1;
             display: flex;
-            align-items: center;
+            align-items: end;
             flex-wrap: wrap;
             gap: 2px;
 
@@ -83,6 +83,7 @@ div.main-strip {
                 display: flex;
                 align-items: center;
                 padding: 8px 10px;
+                height: 24px;
                 cursor: pointer;
                 transition: ease-in-out background-color $anim-duration, ease-in-out color $anim-duration;
 
@@ -199,21 +200,27 @@ div.list-table {
     }
 }
 
-
+div.tag-container {
+    display: flex;
+    gap: 3px;
+    flex-wrap: wrap;
+}
 
 span.text-block {
     border: 1px solid $border-light;
     border-radius: 4px;
-    display: inline-block;
+    display: flex;
     margin: 2px;
     padding: 3px 5px 3px;
+    align-items: center;
+    gap: 4px;
 
     @media (prefers-color-scheme: dark) {
         border: 1px solid $border-dark;
     }
 }
 
-img.lang-flag {
+/*img.lang-flag {
     height: 25px;
     width: 46px;
 }
@@ -221,7 +228,7 @@ img.lang-flag {
 img.lang-flag-lrg {
     height: 16px;
     width: 32px;
-}
+}*/
 
 div.div-datetime {
     font-size: 14px;

@@ -1,20 +1,32 @@
-<tr>
-    <td>
-    {% if object.getManufacturer() is not null %}
-        {{object.getManufacturer().getShortNameIfExist()}}
-    {% else %}
-        Unknown
-    {% endif %}
-    </td>
-    <td>{{object.getName()}}</td>
-    <td>{{object.getLastEdited()|date("Y-m-d, H:i:s", "GMT") }} GMT</td>
-    <td style="min-width:210px;">
-        <a class="button-widget" href="./motherboards/motherboards/{{ object.getId() }}/edit/">
-            <img src="{{ absolute_url(asset('build/icons/show/edit.svg')) }}" alt="" width="20">Edit</a>
-        <a class="button-widget" href="{{ path("motherboard_show", {id: object.getId()}) }}">
-            <img src="{{ absolute_url(asset('build/icons/search/search_image.svg')) }}" alt="" width="20">View</a>
-        <a class="button-widget" href="{{ path('motherboard_delete', {id: object.getId()}) }}">
-            <img src="{{ absolute_url(asset('build/icons/show/delete.svg')) }}" alt="" width="20">Del</a>
-    </td>
+<div class="list-entry">
+    <div class="header-label">Manufacturer</div>
+    <div>
+        {% if object.getManufacturer() is not null %}
+            {{object.getManufacturer().getShortNameIfExist()}}
+        {% else %}
+            Unknown
+        {% endif %}
+    </div>
 
-</tr>	
+    <div class="header-label">Name</div>
+    <div>{{object.getName()}}</div>
+
+    <div class="header-label">Last edited</div>
+    <div>{{object.getLastEdited()|date("Y-m-d, H:i:s", "GMT") }} GMT</div>
+    
+    <div class="header-label">Actions</div>
+    <div class="toolbar toolbar-thin">
+        <a class="button" href="./motherboards/motherboards/{{ object.getId() }}/edit/">
+            <img src="{{ absolute_url(asset('build/icons/show/edit.svg')) }}" alt="" width="20">
+            <span>Edit</span>
+        </a>
+        <a class="button" href="{{ path("motherboard_show", {id: object.getId()}) }}">
+            <img src="{{ absolute_url(asset('build/icons/search/search_image.svg')) }}" alt="" width="20">
+            <span>View</span>
+        </a>
+        <a class="button" href="{{ path('motherboard_delete', {id: object.getId()}) }}">
+            <img src="{{ absolute_url(asset('build/icons/show/delete.svg')) }}" alt="" width="20">
+            <span>Del</span>
+        </a>
+    </div>
+</div>	

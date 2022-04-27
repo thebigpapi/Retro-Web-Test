@@ -1,12 +1,35 @@
-<tr>
-    <td>{{object.getManufacturer().getShortNameIfExist()}}</td>
-    <td>{{object.getPartNumber()}}</td>
-    <td>{{object.getName()}}</td>
-    <td>&nbsp;&nbsp;{{object.getRank()}}</td>
-    <td>{% if object.getDocumentations() is not empty%}[✓]{% endif %}</td>
-    <td>{% if object.getImages() is not empty%}[✓]{% endif %}</td>
-    <td>
-        <a class="button-widget" href="./chipsets/parts/{{ object.getId() }}/edit/">
-            <img src="{{ absolute_url(asset('build/icons/show/edit.svg')) }}" alt="" width="20">Edit</a>
-    </td>
-</tr>	
+<div class="list-entry">
+    <div class="header-label">Manufacturer</div>
+    <div>{{object.getManufacturer().getShortNameIfExist()}}</div>
+
+    {% if object.getPartNumber()|length > 0 %}
+        <div class="header-label">Part number</div>
+        <div>{{object.getPartNumber()}}</div>
+    {% endif %}
+
+    {% if object.getName()|length > 0 %}
+        <div class="header-label">Name</div>
+        <div>{{object.getName()}}</div>
+    {% endif %}
+
+    <div class="header-label">Rank</div>
+    <div>{{object.getRank()}}</div>
+
+    {% if object.getDocumentations() is not empty %}
+        <div class="header-label">Documentation</div>
+        <div>[✓]</div>
+    {% endif %}
+
+    {% if object.getImages() is not empty %}
+        <div class="header-label">Images</div>
+        <div>[✓]</div>
+    {% endif %}
+
+    <div class="header-label">Actions</div>
+    <div class="toolbar toolbar-thin">
+        <a class="button" href="./chipsets/parts/{{ object.getId() }}/edit/">
+            <img src="{{ absolute_url(asset('build/icons/show/edit.svg')) }}" alt="" width="20">
+            <span>Edit</span>
+        </a>
+    </div>
+</div>

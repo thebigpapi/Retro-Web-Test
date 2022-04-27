@@ -1,3 +1,53 @@
+/* Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter&family=Montserrat&display=swap');
+$standard-font: "Inter", "Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans","Liberation Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+$header-font: "Montserrat", "Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans","Liberation Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+$monospace-font: SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
+
+$anim-duration: 0.1s;
+
+/* Sizing */
+$wide-max-width: 1600px;
+$max-width: 1400px;
+$thin-max-width: 1000px;
+$form-breakpoint: 460px;
+
+/* Light mode colors */
+$head-bkg-light: #303030;
+$head-frg-light: #EEEEEE;
+$body-bkg-light: #F9F9F9;
+$body-frg-light: #000000;
+$accent-bkg-light: #e0e0e0;
+$accent-frg-light: #000000;
+$content-bkg-light: #F9F9F9;
+$content-frg-light: #000000;
+$normal-link-light: #0979c3;
+$active-link-light: #3dabf5;
+$visited-link-light: #0979c3;
+$border-light: #303030;
+$shadow-light: #696969;
+
+/* Dark mode colors */
+$head-bkg-dark: #303030;
+$head-frg-dark: #EEEEEE;
+$body-bkg-dark: #1B1B1B;
+$body-frg-dark: #EEEEEE;
+$accent-bkg-dark: #303030;
+$accent-frg-dark: #EEEEEE;
+$content-bkg-dark: #303030;
+$content-frg-dark: #EEEEEE;
+$normal-link-dark: #f79256;
+$active-link-dark: #fdbc96;
+$visited-link-dark: #f79256;
+$border-dark: #cdcdcd;
+$shadow-dark: #303030;
+
+
+
+
+
+
+
 $light-color: #EEEEEE;
 $medium-color: #ABABAB;
 $lightbg-color: #F9F9F9;
@@ -13,14 +63,44 @@ $btn-darkbg-color-hover:#5f5f5f;
 $dark-link: orange;
 $dark-link-visited:#00e874;
 
-@mixin noselect(){
+html {
+    height: 100%;
+    font-family: $standard-font;
+    color: $body-frg-light;
+    background: $body-bkg-light;
+
+    @media (prefers-color-scheme: dark) {
+        color: $body-frg-dark;
+        background: $body-bkg-dark;
+    }
+}
+
+body {
+    font-family: $standard-font;
+    color: $body-frg-light;
+    background: $body-bkg-light;
+    margin:0; 
+    padding:0;
+    display:flex;
+    flex-grow: 1;
+    flex-direction: column;
+    height: 100%;
+
+    @media (prefers-color-scheme: dark) {
+        color: $body-frg-dark;
+        background: $body-bkg-dark;
+    }
+}
+
+@mixin noselect() {
     -moz-user-select: -moz-none;
     -khtml-user-select: none;
     -webkit-user-select: none;
     -ms-user-select: none;
     user-select: none;
 }
-@mixin border($color){
+
+@mixin border($color) {
     border-width: 0;
     border-bottom-width: 3px;
     border-style: solid;

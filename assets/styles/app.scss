@@ -44,6 +44,14 @@ $shadow-dark: #303030;
 
 html {
     height: 100%;
+    font-family: $standard-font;
+    color: $body-frg-light;
+    background: $body-bkg-light;
+
+    @media (prefers-color-scheme: dark) {
+        color: $body-frg-dark;
+        background: $body-bkg-dark;
+    }
 }
 
 body {
@@ -56,6 +64,11 @@ body {
     flex-grow: 1;
     flex-direction: column;
     height: 100%;
+
+    @media (prefers-color-scheme: dark) {
+        color: $body-frg-dark;
+        background: $body-bkg-dark;
+    }
 }
 
 @mixin noselect() {

@@ -209,7 +209,8 @@ main {
 
 	input,
 	button,
-	select {
+	select,
+	a.button {
 		font-family: $standard-font;
 		font-size: 11pt;
 		transition: ease-in-out $anim-duration box-shadow;
@@ -232,7 +233,8 @@ main {
 		}
 	}
 
-	button {
+	button,
+	a.button {
 		display: flex;
 		align-items: center;
 		transition: ease-in-out $anim-duration color;
@@ -266,6 +268,7 @@ main {
 /* webkit scrollbar */
 ::-webkit-scrollbar {
 	width: 10px;
+	height: 10px;
 }
 
 ::-webkit-scrollbar-track {

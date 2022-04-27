@@ -20,9 +20,9 @@ div.imgp {width:95%;padding-left:5%;max-width:250px;font-size:16px;padding-top:1
 div.imgp span{width:65px;display: inline-block;}
 div.imgp select{width:60%}
 img.imgp-img { float:right;width:21%;max-height:170px;display:none; }
-div.show-table-three.edit{
+div.full-spec.edit{
     div div{padding:0;}
-	div.show-table-three-head{margin:5px 0px 5px;}
+	div.full-spec-head{margin:5px 0px 5px;}
 }
 /*bios images/manuals*/
 div.bios-image { 
@@ -86,7 +86,7 @@ a.button-widget {
 	
 }
 a.button-widget:hover { color: $link-hover-color !important;background-color:$navbar-color;cursor:pointer; }
-@media (max-width: 600px) {
+/*@media (max-width: 600px) {
 	div.show-edit{
 		width:100%;
 	}
@@ -109,4 +109,4 @@ a.button-widget:hover { color: $link-hover-color !important;background-color:$na
 	#large_file_form_file_name, div.ba5 input{color:white;}
 	a.button-widget { color:$lightbg-color !important; }
 	a.button-widget:hover { color: #0099ff !important;background-color:$btn-lightbg-color; } 
-}
+}*/
