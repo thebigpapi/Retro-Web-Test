@@ -88,8 +88,9 @@
 					({{ motherboard.getChipset().getName() }}){% else %}
 					{{ motherboard.getChipset().getName() }}{% endif %}
 					{% endif %}</a>{% else %}Unknown{% endif %}</div>
+					{% if motherboard.getChipset() is not null %}
 					<div class="quick-spec-head">Chipset parts</div>
-					<div>{% for chipPart in motherboard.getChipset().getChipsetParts() %}<span class="text-block">{{ chipPart.getFullName() }}</span>{% endfor %}</div>
+					<div>{% for chipPart in motherboard.getChipset().getChipsetParts() %}<span class="text-block">{{ chipPart.getFullName() }}</span>{% endfor %}</div>{% endif %}
 					<div class="quick-spec-head">Dimensions</div>
 					<div>{{ motherboard.getDimensions() ?: 'Unknown' }}</div>
 					{% if motherboard.getCpuSockets() is not empty %}
