@@ -331,7 +331,7 @@ class MotherboardController extends AbstractController
                 $mobo->setManufacturer(null);
             }
             
-            //$entityManager->persist($mobo);
+            $entityManager->persist($mobo);
 
             $entityManager->flush();
 
