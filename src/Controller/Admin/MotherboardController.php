@@ -125,7 +125,7 @@ class MotherboardController extends AbstractController
 
     private function manageMotherboards(Request $request, TranslatorInterface $translator)
     {
-        $search = $this->createForm(MotherboardSearchType::class);
+        /*$search = $this->createForm(MotherboardSearchType::class);
 
         $getParams = array();
         $search->handleRequest($request);
@@ -167,8 +167,10 @@ class MotherboardController extends AbstractController
         /*if($criterias)*/
         //dd($request->query->get('entity'));
         return $this->render('admin/manage/motherboards/manage.html.twig', [
-            "search" => $search->createView(),
-            "criterias" => $criterias,
+            /*"search" => $search->createView(),
+            "criterias" => $criterias,*/
+            "search" => "",
+            "criterias" => [],
             "controllerList" => "App\\Controller\\Admin\\MotherboardController::listMotherboard",
             "entityName" => $request->query->get('entity'),
             "entityDisplayName" => $translator->trans("motherboard"),
@@ -191,7 +193,7 @@ class MotherboardController extends AbstractController
         ]);
     }
 
-    public function listMotherboard(EntityManagerInterface $em, Request $request, PaginatorInterface $paginator, array $criterias) {
+    /*public function listMotherboard(EntityManagerInterface $em, Request $request, PaginatorInterface $paginator, /*array $criterias*) {
         /*$where = "";
         if (!empty($criterias) && array_key_exists("manufacturer", $criterias)) {
             $where = "WHERE m.manufacturer = :manufacturer";
@@ -199,10 +201,10 @@ class MotherboardController extends AbstractController
 
         $dql   = "SELECT m FROM App:Motherboard m JOIN m.manufacturer n $where ORDER BY m.lastEdited DESC";
         $query = $em->createQuery($dql);
-        $query->setParameters($criterias);*/
+        $query->setParameters($criterias);*
         $mobos = $this->getDoctrine()
-            ->getRepository(Motherboard::class)
-            ->findBy($criterias);
+            ->getRepository(Motherboard::class);
+            //->findBy($criterias);
         usort(
             $mobos,
             function ($a, $b) {
@@ -223,8 +225,28 @@ class MotherboardController extends AbstractController
             "objectList" => $paginatedObjects,
             "entityName" => $request->query->get('entity'),
         ]);
-    }
+    }*/
+    public function listMotherboard(
+        EntityManagerInterface $em,
+        Request $request,
+        PaginatorInterface $paginator,
+        array $criterias
+    ) {
 
+        $dql   = "SELECT m FROM App:Motherboard m ORDER BY m.lastEdited DESC";
+        $query = $em->createQuery($dql);
+
+        $paginatedObjects = $paginator->paginate(
+            $query,
+            $request->query->getInt('page', 1),
+            $this->getParameter('app.pagination.max')
+        );
+
+        return $this->render('admin/manage/motherboards/list.html.twig', [
+            "objectList" => $paginatedObjects,
+            "entityName" => $request->query->get('entity'),
+        ]);
+    }
     public function listFormfactor(Request $request, PaginatorInterface $paginator, array $criterias)
     {
         $objects = $this->getDoctrine()
@@ -268,7 +290,7 @@ class MotherboardController extends AbstractController
             'chipsets' => $chipsets,
             'sockets' => $sockets,
         ]);
-
+        
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             if ($form->get('updateProcessors')->isClicked()) {
