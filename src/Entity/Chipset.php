@@ -35,6 +35,7 @@ class Chipset
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\ChipsetPart", inversedBy="chipsets")
+     * @var ArrayCollection<ChipsetPart>
      */
     private $chipsetParts;
 
