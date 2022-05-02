@@ -271,6 +271,9 @@ class MotherboardController extends AbstractController
 
     private function renderMotherboardForm(Request $request, Motherboard $mobo, ChipsetRepository $chipsetRepository, CpuSocketRepository $cpuSocketRepository, EntityManagerInterface $entityManager)
     {
+        /**
+         * @var array<Chipset>
+         */
         $chipsets = $chipsetRepository->findAllChipsetManufacturer();
 
         usort(
