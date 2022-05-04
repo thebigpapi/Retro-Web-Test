@@ -331,3 +331,10 @@ span.string-bios {
 .glightbox-clean .gdesc-inner {
     padding: 5px 20px;
 }
+/* media queries used to hide some fields on mobile, to avoid severe overflows */
+@media screen and(max-width:650px){
+    div.show-cpus-table div div:nth-child(n+5){display:none;} /* CPUs */
+}
+@media screen and(max-width:500px){
+    div.show-table.drv, div.show-table.bios {div:nth-child(3), div:nth-child(4){display:none;}} /* drivers and BIOSes */
+}
