@@ -3,6 +3,7 @@ div.main-strip {
     flex-wrap: wrap;
     flex-direction: row-reverse;
     gap: 10px;
+    align-items: start;
 
     @media (max-width: 750px) {
         display: block;
@@ -120,6 +121,7 @@ div.main-strip {
         }
 
         div.internal-content {
+            padding: 5px;
             /* === General page elements === */
             div.show-general,
             div.show-downloads,
@@ -204,6 +206,9 @@ div.tag-container {
     display: flex;
     gap: 3px;
     flex-wrap: wrap;
+    align-items: center;
+    margin-top: 3px;
+    margin-bottom: 3px;
 }
 
 span.text-block {

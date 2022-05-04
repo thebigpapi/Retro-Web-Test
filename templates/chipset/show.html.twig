@@ -40,14 +40,6 @@
 	-->{% if chipset.getPartNo() is not null %}&nbsp;{{ chipset.getPartNo() }}{% endif %}<!--
 	-->{% if chipset.getName() is not null %}&nbsp;{% if chipset.getPartNo() is not null %}({{ chipset.getName() }}){% else %}{{ chipset.getName() }}{% endif %}{% endif %}
 </div>
-{% if chipset.getChipsetParts() is not empty %}
-	<p class="string-alias"><b>
-		<span class="text-block" style="border: none; padding-right: 0;">Chipset parts:</span>
-		{% for part in chipset.getChipsetParts()|sort((a, b) => a.rank <=> b.rank) %}
-			<span class="text-block">{{ part.getFullName() }}</span>
-		{% endfor %}
-	</b></p>
-{% endif %}
 
 <div class="main-strip">
 	<div class="internal-container">
@@ -56,7 +48,15 @@
 			<!-- DESCRIPRION -->
 			<div class="show-general" id="sh-general">
 				{% apply spaceless %}
-				<div style="padding:5px;">{{'Release date'|trans}}:&nbsp;
+				{% if chipset.getChipsetParts() is not empty %}
+					<div class="tag-container">
+						<span>Chipset parts:</span>
+						{% for part in chipset.getChipsetParts()|sort((a, b) => a.rank <=> b.rank) %}
+							<span class="text-block">{{ part.getFullName() }}</span>
+						{% endfor %}
+					</div>
+				{% endif %}
+				<div>{{'Release date'|trans}}:&nbsp;
 					{% if chipset.getReleaseDate() is not null %}
 						{{ chipset.getReleaseDate() }}
 					{% else %}
@@ -147,7 +147,7 @@
 		</div>
 	</div>
 
-	<!-- IMAGES -->	
+	<!-- IMAGES -->
 	{% if chipset.getChipsetParts() is not empty %}
 		{% set lpindex = 0 %}
 		{% set lplen = 0 %}
@@ -169,7 +169,7 @@
 	{#{% else %}
 		<div class="show-image"><p style="font-size:20px;height:100px;">no images available :(</p></div>#}
 	{% endif %}
-	
+
 </div>
 <div class="disclaimer">
 	<p><b>Disclaimer</b></p>

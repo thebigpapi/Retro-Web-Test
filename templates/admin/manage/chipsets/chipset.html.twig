@@ -1,4 +1,4 @@
-<div class="list-entry">
+<div class="list-entry centered">
     <div class="header-label">Manufacturer</div>
     <div>{{object.getManufacturer().getShortNameIfExist()}}</div>
 
@@ -16,7 +16,7 @@
 
     {% if object.getChipsetParts() is not empty %}
         <div class="header-label">Parts</div>
-        <div>
+        <div class="tag-container">
         {% for part in object.getChipsetParts() %}
             <span class="text-block">{{part.getPartNumber()}}</span>
         {% endfor %}

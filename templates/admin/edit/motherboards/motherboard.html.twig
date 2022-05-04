@@ -4,443 +4,522 @@
 
 {% block body %}
 <form data-controller="motherboard--add" name="add_motherboard" method="post" enctype="multipart/form-data" data-action="submit->motherboard--add#check">
+	<div class="title">Motherboard editor</div>
+
 	<!-- MANUF/TITLE -->
-	<div class="add-title">
-		<div>{{ form_widget(form.manufacturer)|replace({'<option value="">': '<option label=" " value="">'})|raw }}</div>
-		<div>{{ form_widget(form.name, {'attr': {'placeholder': 'Name ...'}}) }}</div>
-	</div>
-	<!-- IMAGES -->
-	<div class="show-images" style="min-height:200px;" data-controller="collection">
-		<div class="bar">
-			<span style="padding-left:10px;">
-				<b>Images</b>
-				<button type="button" data-action="click->collection#expandButton" data-list-id="images-fields-list">Add</button>
-			</span>
-		</div>
-		<div id="images-fields-list" data-widget-counter="{{ form.images|length }}" data-prototype="
-				<div></div>
-				<div class=imgp>{{ form_widget(form.images.vars.prototype.imageFile, {'attr': {'style': 'width:100%'}})|e }}</div>
-				<div class=imgp><span>Type: </span>{{ form_widget(form.images.vars.prototype.motherboardImageType)|e }}</div>
-				<div class=imgp><span>Creditor: </span>{{ form_widget(form.images.vars.prototype.creditor)|e }}</div>
-				<div class=imgp><span>License: </span>{{ form_widget(form.images.vars.prototype.license)|e }}</div>
-				<div class=imgp><span>Notes: </span>{{ form_widget(form.images.vars.prototype.description)|e }}</div>
-				<div class=imgp>Uploaded file:
-				<button type=button data-action='click->collection#removeButtonXtd'>Delete this entry</button></div>
-				<div class=imgp>{{ form_widget(form.images.vars.prototype.file_name, {'attr': {'style': 'width:90%'}})|e }}</div>
-				">
-		{% for image in form.images %}
-			<div class="addform">
-				<img class="imgp-img" src="/motherboard/image/{{ image.vars.value.getFileName() }}" alt="f">
-				<div class="imgp">{{ form_widget(image.imageFile, {'attr': {'style': 'width:100%'}}) }}</div>
-				<div class="imgp"><span>Type:</span>{{ form_widget(image.motherboardImageType)}}</div>
-				<div class="imgp"><span>Creditor:</span>{{ form_widget(image.creditor)|replace({'<option value="">': '<option label=" " value="">'})|raw }}</div>
-				<div class="imgp"><span>License:</span>{{ form_widget(image.license)}}</div>
-				<div class="imgp"><span>Notes:</span>{{ form_widget(image.description)}}</div>
-				<div class="imgp">Uploaded file:
-					<button type="button" data-action="click->collection#removeButtonXtd">Delete this entry</button>
-				</div>
-				<div class="imgp">{{ form_widget(image.file_name, {'attr': {'style': 'width:90%'}}) }}</div>
+	<section class="search-form-grid">
+		<div class="search-form-entry">
+			<div class="search-form-widget">
+				<label class="search-form-label">Manufacturer</label>
+				<div>{{ form_widget(form.manufacturer)|replace({'<option value="">': '<option label=" " value="">'})|raw }}</div>
 			</div>
-		{% endfor %}
-		{{ form_errors(form.images) }}
 		</div>
-	</div>
-	{% include 'macros/navbar.html.twig' with {'type':'edit', 'entityName': 'motherboard', 'count':3, 'moboid':moboid} %}
-	<!-- GENERAL -->
-	<div class="show-general" id="sh-general">
-		<table style="width:100%;">
-					<tr>
-						<td style="width:40%"><div data-controller="collection">
-							<b>Alternative name:</b>
-							<button type="button" data-action="click->collection#expandButton" data-list-id="motherboardAliases-fields-list">Add</button>
-						</div></td>
-						<td style="width:30%"><div data-controller="collection">
-							<b>Redirections:</b>
-							<button type="button" data-action="click->collection#expandButton" data-list-id="redirections-fields-list">Add</button>
-						</div></td>
-						<td style="width:30%"><div data-controller="collection">
-							<b>PSU connectors:</b>
-							<button type="button" data-action="click->collection#expandButton" data-list-id="psuConnectors-fields-list">Add</button>
-						</div></td>
-					</tr>
-					<tr>
-						<td><div class="append_table" id="motherboardAliases-fields-list" data-widget-counter="{{ form.motherboardAliases|length }}" data-prototype="
-								<div class=ba6>{{ form_widget(form.motherboardAliases.vars.prototype.manufacturer, {'attr': {'style': 'width:100%'}} )|replace({'</select>': '<option value="EMPTY" disabled selected hidden>Select manufacturer</option></select>'})|raw|e }}</div>
-								<div class=ba6>{{ form_widget(form.motherboardAliases.vars.prototype.name, {'attr': {'style': 'width:100%', 'placeholder': 'Name'}} )|e }}</div>
-								<div class=ba2><button type=button data-action='click->collection#removeButtonXtd'>Del</button></div>
-								" data-controller="collection">
-								{% for alias in form.motherboardAliases %}
-									<div>
-										<div class="ba6">{{ form_widget(alias.manufacturer, {'attr': {'style': 'width:100%'}}) }}</div>
-										<div class="ba6">{{ form_widget(alias.name, {'attr': {'style': 'width:100%'}}) }}</div>
-										<div class="ba2"><button type="button" data-action="click->collection#removeButtonXtd">Del</button></div>
-										{{ form_errors(alias) }}
-									</div>
-								{% endfor %}
-								{{ form_errors(form.motherboardAliases) }}
-						</div></td>
-						<td><div id="redirections-fields-list" data-widget-counter="{{ form.redirections|length }}" data-prototype="
-								<div class=ba6>{{ form_widget(form.redirections.vars.prototype.source, {'attr': {'style': 'width:100%', 'placeholder': 'Source ID'}} )|e }}</div>
-								<div class=ba6>{{ form_widget(form.redirections.vars.prototype.sourceType, {'attr': {'style': 'width:100%'}} )|e }}</div> 
-								<div class=ba2><button type=button data-action='click->collection#removeButtonXtd'>Del</button></div>
-								" data-controller="collection">
-								{% for redirection in form.redirections %}
-									<div>
-										<div class="ba6">{{ form_widget(redirection.source, {'attr': {'style': 'width:100%'}}) }}</div>
-										<div class="ba6">{{ form_widget(redirection.sourceType, {'attr': {'style': 'width:100%'}}) }}</div>
-										<div class="ba2"><button type="button" data-action="click->collection#removeButtonXtd">Del</button></div>
-										{{ form_errors(redirection) }}
-									</div>
-								{% endfor %}
-								{{ form_errors(form.redirections) }}
-						</div></td>
-						<td><div id="psuConnectors-fields-list" data-widget-counter="{{ form.psuConnectors|length }}" data-prototype="
-								{{ form_widget(form.psuConnectors.vars.prototype, {'attr': {'style': 'width:80%'}} )|e }}
-								<button type=button data-action='click->collection#removeButton'>Del</button>
-								" data-controller="collection">
-								{% for psuconn in form.psuConnectors %}
-									<div>
-										{{ form_widget(psuconn, {'attr': {'style': 'width:80%'}}) }}
-										<button type="button" data-action="click->collection#removeButton">Del</button>
-										{{ form_errors(psuconn) }}
-									</div>
-								{% endfor %}
-								{{ form_errors(form.psuConnectors) }}
-						</div></td>
-					</tr>
-				</table>
-		<div class="quick-spec-table">
-			<div>Form factor: </div>
-			<div>{{ form_widget(form.formFactor)|replace({'<option value="">': '<option label=" " value="">'})|raw }}</div>
-			<div>Chipset :</div>
-			<div>{{ form_widget(form.chipset, {'attr': {'style': 'width:80%'}})|replace({'<option value="">': '<option label=" " value="">'})|raw }}</div>
-			<div>Dimensions :</div>
-			<div>{{ form_widget(form.dimensions) }}</div>
-			<div>Video Chipset :</div>
-			<div>{{ form_widget(form.videoChipset)|replace({'<option value="">': '<option label=" " value="">'})|raw }}</div>
-			<div>Max video RAM :</div>
-			<div>{{ form_widget(form.maxVideoRam)|replace({'<option value="">': '<option label=" " value="">'})|raw }}</div>
-			<div>Audio Chipset :</div>
-			<div>{{ form_widget(form.audioChipset)|replace({'<option value="">': '<option label=" " value="">'})|raw }}</div>
-		</div>
-		<div class="full-spec edit" style="grid-template-columns:auto;">
-			<div class="full-spec-head" data-controller="collection"><b>Max system RAM: </b>
-				<button type="button" data-action="click->collection#expandButton" data-list-id="motherboardMaxRams-fields-list">Add</button>
+		<div class="search-form-entry">
+			<div class="search-form-widget">
+				<label class="search-form-label">Name</label>
+				<div>{{ form_widget(form.name, {'attr': {'placeholder': 'Name ...'}}) }}</div>
 			</div>
-			<div id="motherboardMaxRams-fields-list" data-widget-counter="{{ form.motherboardMaxRams|length }}" data-prototype="
-						{{ form_widget(form.motherboardMaxRams.vars.prototype.max_ram)|e }} 
-						{{ form_widget(form.motherboardMaxRams.vars.prototype.note, {'attr': {'style': 'width:40%', 'placeholder': 'Note'}} )|e }} 
-						<button type=button data-action='click->collection#removeButton'>Del</button>
-						" data-controller="collection">
-						{% for maxRam in form.motherboardMaxRams %}
-							<div>{{ form_widget(maxRam.max_ram) }}
-								{{ form_widget(maxRam.note, {'attr': {'style': 'width:40%'}}) }}
-								<button type="button" data-action="click->collection#removeButton">Del</button>
-								{{ form_errors(maxRam) }}
-							</div>
-						{% endfor %}
-						{{ form_errors(form.motherboardMaxRams) }}
+		</div>
+	</section>
+
+	<div class="toolbar" data-controller="show">
+		<button type="button" name="tabs" id="tab-nav-save" data-action="click->motherboard--add#submit"><img src="{{ absolute_url(asset('build/icons/show/edit.svg')) }}" alt="" width="24" height="24"><span>Save</span></button>
+		{% if is_granted('ROLE_ADMIN') and moboid is not null %}
+			<button type="button" name="tabs0" id="tab-nav-del" data-action='click->show#goToURL' data-URL="{{ path('motherboard_delete', {id: moboid}) }}"><img src="{{ absolute_url(asset('build/icons/show/delete.svg')) }}" alt="" width="24" height="24"><span>Delete</span></button>
+			<button type="button" name="tabs" id="tab-nav-clone" data-action="click->motherboard--add#clone"><img src="{{ absolute_url(asset('build/icons/clone.svg')) }}" alt="" width="24" height="24"><span>Clone</span></button>
+		{% endif %}		
+	</div>
+
+	<div class="main-strip">
+		<div class="internal-container">
+			{% include 'macros/navbar.html.twig' with {'type':'edit', 'entityName': 'motherboard', 'count':3, 'moboid':moboid} %}
+			<!-- GENERAL -->
+			<div class="show-general" id="sh-general">
+				<div class="quick-spec-table">
+					<div class="quick-spec-head">Alternative names</div>
+					<div data-controller="collection">
+						<div class="append_table" id="motherboardAliases-fields-list" data-widget-counter="{{ form.motherboardAliases|length }}"
+							data-prototype="
+								<div class=editor-form-widget><div>{{ form_widget(form.motherboardAliases.vars.prototype.manufacturer)|replace({'</select>': '<option value="EMPTY" disabled selected hidden>Select manufacturer</option></select>'})|raw|e }}</div></div>
+								<div class=editor-form-widget><div>{{ form_widget(form.motherboardAliases.vars.prototype.name, {'attr': {'placeholder': 'Name'}} )|e }}</div></div>
+								<div class=editor-form-widget><div><button type=button data-action='click->collection#removeButtonXtd'>Del</button></div>
+							</div>" data-controller="collection">
+							{% for alias in form.motherboardAliases %}
+								<div class="editor-row" style="padding:0">
+									<div class="editor-form-widget">
+										<div style="padding:0">{{ form_widget(alias.manufacturer) }}</div>
+									</div><div class="editor-form-widget">
+										<div style="padding:0">{{ form_widget(alias.name) }}</div>
+									</div><div class="editor-form-widget">
+										<div style="padding:0"><button type="button" data-action="click->collection#removeButtonXtd">Del</button></div>
+									</div>
+									{{ form_errors(alias) }}
+								</div>
+							{% endfor %}
+							{{ form_errors(form.motherboardAliases) }}
+						</div>
+						<div class="toolbar"><button type="button" data-action="click->collection#expandButton" data-list-id="motherboardAliases-fields-list">Add</button></div>
+						<hr>
 					</div>
 					
-			<div class="full-spec-head" data-controller="collection"><b>Cache: </b>
-				<button type="button" data-action="click->collection#expandButton" data-list-id="cacheSize-fields-list">Add</button>
-			</div>
-			<div id="cacheSize-fields-list" data-widget-counter="{{ form.cacheSize|length }}" data-prototype="
-						{{ form_widget(form.cacheSize.vars.prototype)|e }} 
-						<button type=button data-action='click->collection#removeButton'>Del</button>
+					<div class="quick-spec-head">Redirections</div>
+					<div data-controller="collection">
+						<div class="append_table" id="redirections-fields-list" data-widget-counter="{{ form.redirections|length }}"
+							data-prototype="
+								<div class=editor-form-widget><div>{{ form_widget(form.redirections.vars.prototype.source, {'attr': {'placeholder': 'Source ID'}})|e }}</div></div>
+								<div class=editor-form-widget><div>{{ form_widget(form.redirections.vars.prototype.sourceType)|e }}</div></div>
+								<div class=editor-form-widget><div><button type=button data-action='click->collection#removeButtonXtd'>Del</button></div>
+							</div>" data-controller="collection">
+							{% for redirection in form.redirections %}
+								<div class="editor-row" style="padding:0">
+									<div class="editor-form-widget">
+										<div style="padding:0">{{ form_widget(redirection.source) }}</div>
+									</div><div class="editor-form-widget">
+										<div style="padding:0">{{ form_widget(redirection.sourceType) }}</div>
+									</div><div class="editor-form-widget">
+										<div style="padding:0"><button type="button" data-action="click->collection#removeButtonXtd">Del</button></div>
+									</div>
+									{{ form_errors(redirection) }}
+								</div>
+							{% endfor %}
+							{{ form_errors(form.redirections) }}
+						</div>
+						<div class="toolbar"><button type="button" data-action="click->collection#expandButton" data-list-id="redirections-fields-list">Add</button></div>
+						<hr>
+					</div>
+
+					<div class="quick-spec-head">PSU connectors</div>
+					<div data-controller="collection">
+						<div class="append_table" id="psuConnectors-fields-list" data-widget-counter="{{ form.psuConnectors|length }}"
+							data-prototype="
+								<div class=editor-form-widget><div>{{ form_widget(form.psuConnectors.vars.prototype)|e }}</div></div>
+								<div class=editor-form-widget><div><button type=button data-action='click->collection#removeButtonXtd'>Del</button></div>
+							</div>" data-controller="collection">
+							{% for psuconn in form.psuConnectors %}
+								<div class="editor-row" style="padding:0">
+									<div class="editor-form-widget">
+										<div style="padding:0">{{ form_widget(psuconn) }}</div>
+									</div><div class="editor-form-widget">
+										<div style="padding:0"><button type="button" data-action="click->collection#removeButtonXtd">Del</button></div>
+									</div>
+									{{ form_errors(psuconn) }}
+								</div>
+							{% endfor %}
+							{{ form_errors(form.psuConnectors) }}
+						</div>
+						<div class="toolbar"><button type="button" data-action="click->collection#expandButton" data-list-id="psuConnectors-fields-list">Add</button></div>
+						<hr>
+					</div>
+
+					<div class="quick-spec-head">Form factor</div>
+					<div class="editor-row" style="padding:0"><div class="editor-form-widget">
+						<div>{{ form_widget(form.formFactor)|replace({'<option value="">': '<option label=" " value="">'})|raw }}</div>
+					</div></div>
+
+					<div class="quick-spec-head">Chipset</div>
+					<div class="editor-row" style="padding:0"><div class="editor-form-widget">
+						<div>{{ form_widget(form.chipset)|replace({'<option value="">': '<option label=" " value="">'})|raw }}</div>
+					</div></div>
+
+					<div class="quick-spec-head">Dimensions</div>
+					<div class="editor-row" style="padding:0"><div class="editor-form-widget">
+						<div>{{ form_widget(form.dimensions) }}</div>
+					</div></div>
+
+					<div class="quick-spec-head">Video chipset</div>
+					<div class="editor-row" style="padding:0"><div class="editor-form-widget">
+						<div>{{ form_widget(form.videoChipset)|replace({'<option value="">': '<option label=" " value="">'})|raw }}</div>
+					</div></div>
+
+					<div class="quick-spec-head">Max video RAM</div>
+					<div class="editor-row" style="padding:0"><div class="editor-form-widget">
+						<div>{{ form_widget(form.maxVideoRam)|replace({'<option value="">': '<option label=" " value="">'})|raw }}</div>
+					</div></div>
+
+					<div class="quick-spec-head">Audio chipset</div>
+					<div class="editor-row" style="padding:0"><div class="editor-form-widget">
+						<div>{{ form_widget(form.audioChipset)|replace({'<option value="">': '<option label=" " value="">'})|raw }}</div>
+					</div></div>
+				</div>
+
+
+				<div class="full-spec">
+					<div class="full-spec-head"><b>Max system RAM</b></div>
+					<div data-controller="collection">
+						<div class="append_table" id="motherboardMaxRams-fields-list" data-controller="collection" data-widget-counter="{{ form.motherboardMaxRams|length }}" data-prototype="
+								<div class='editor-form-widget'>
+									<div style='padding:0'>{{ form_widget(form.motherboardMaxRams.vars.prototype.max_ram)|e }}</div>
+								</div><div class='editor-form-widget'>
+									<div style='padding:0'>{{ form_widget(form.motherboardMaxRams.vars.prototype.note)|e }}</div>
+								</div><div class='editor-form-widget'>
+									<div style='padding:0'><button type='button' data-action='click->collection#removeButtonXtd'>Del</button></div>
+								</div>">
+							{% for maxRam in form.motherboardMaxRams %}
+								<div class="editor-row" style="padding:0">
+									<div class="editor-form-widget">
+										<div style="padding:0">{{ form_widget(maxRam.max_ram) }}</div>
+									</div><div class="editor-form-widget">
+										<div style="padding:0">{{ form_widget(maxRam.note) }}</div>
+									</div><div class="editor-form-widget">
+										<div style="padding:0"><button type="button" data-action="click->collection#removeButtonXtd">Del</button></div>
+									</div>
+									{{ form_errors(maxRam) }}
+								</div>
+							{% endfor %}
+							{{ form_errors(form.motherboardMaxRams) }}
+						</div>
+						<div class="toolbar"><button type="button" data-action="click->collection#expandButton" data-list-id="motherboardMaxRams-fields-list">Add</button></div>
+					</div>					
+
+					<div class="full-spec-head">Cache</div>
+					<div data-controller="collection">
+						<div class="append_table" id="cacheSize-fields-list" data-controller="collection" data-widget-counter="{{ form.cacheSize|length }}" data-prototype="
+								<div class='editor-form-widget'>
+									<div style='padding:0'>{{ form_widget(form.cacheSize.vars.prototype)|e }}</div>
+								</div><div class='editor-form-widget'>
+									<div style='padding:0'><button type='button' data-action='click->collection#removeButtonXtd'>Del</button></div>
+								</div>">
+							{% for size in form.cacheSize %}
+								<div class="editor-row" style="padding:0">
+									<div class="editor-form-widget">
+										<div style="padding:0">{{ form_widget(size) }}</div>
+									</div><div class="editor-form-widget">
+										<div style="padding:0"><button type="button" data-action="click->collection#removeButtonXtd">Del</button></div>
+									</div>
+									{{ form_errors(size) }}
+								</div>
+							{% endfor %}
+							{{ form_errors(form.cacheSize) }}
+						</div>
+						<div class="toolbar"><button type="button" data-action="click->collection#expandButton" data-list-id="cacheSize-fields-list">Add</button></div>
+					</div>
+
+
+					<div class="full-spec-head" data-controller="collection"><b>Supported RAM types: </b></div>
+					<div>{% for ramtype in form.dramType %}
+							<span style="width:130px;display:inline-block;font-size:13px;">
+								{{ form_widget(ramtype) }}
+								{{ form_label(ramtype) }}
+							</span>
+							{{ form_errors(ramtype) }}
+						{% endfor %}</div>
+				</div>
+				<div class="full-spec edit">
+					<div class="full-spec-head" data-controller="collection"><b>I/O ports: </b><button type="button" data-action="click->collection#expandButton" data-list-id="motherboardIoPorts-fields-list">Add</button></div>
+					<div id="motherboardIoPorts-fields-list" data-widget-counter="{{ form.motherboardIoPorts|length }}" data-prototype="
+						{{ form_widget(form.motherboardIoPorts.vars.prototype.count, {'attr': {'class': 'num'}} )|e }} x
+						{{ form_widget(form.motherboardIoPorts.vars.prototype.io_port, {'attr': {'style': 'width:50%'}} )|e }}
+						<button type=button data-action='click->collection#removeButtonXtd'>Del</button>
 						" data-controller="collection">
-						{% for size in form.cacheSize %}
-							<div>{{ form_widget(size) }}
-								<button type="button" data-action="click->collection#removeButton">Del</button>
-								{{ form_errors(size) }}
-							</div>
-						{% endfor %}
-						{{ form_errors(form.cacheSize) }}
-					</div>
-			<div class="full-spec-head" data-controller="collection"><b>Supported RAM types: </b></div>
-			<div>{% for ramtype in form.dramType %}
-					<span style="width:130px;display:inline-block;font-size:13px;">
-						{{ form_widget(ramtype) }}
-						{{ form_label(ramtype) }}
-					</span>
-					{{ form_errors(ramtype) }}
-				{% endfor %}</div>
-		</div>
-		<div class="full-spec edit">
-			<div class="full-spec-head" data-controller="collection"><b>I/O ports: </b><button type="button" data-action="click->collection#expandButton" data-list-id="motherboardIoPorts-fields-list">Add</button></div>
-			<div id="motherboardIoPorts-fields-list" data-widget-counter="{{ form.motherboardIoPorts|length }}" data-prototype="
-				{{ form_widget(form.motherboardIoPorts.vars.prototype.count, {'attr': {'class': 'num'}} )|e }} x
-				{{ form_widget(form.motherboardIoPorts.vars.prototype.io_port, {'attr': {'style': 'width:50%'}} )|e }}
-				<button type=button data-action='click->collection#removeButton'>Del</button>
-				" data-controller="collection">
-				{% for port in form.motherboardIoPorts %}
-					<div>
-						{{ form_widget(port.count, {'attr': {'class': 'num'}}) }} x
-						{{ form_widget(port.io_port, {'attr': {'style': 'width:50%'}}) }}
-						<button type="button" data-action="click->collection#removeButton">Del</button>
-					</div>
-					{{ form_errors(port) }}
-				{% endfor %}
-				{{ form_errors(form.motherboardIoPorts) }}
-			</div>
-			<div class="full-spec-head" data-controller="collection"><b>Expansion slots: </b><button type="button" data-action="click->collection#expandButton" data-list-id="motherboardExpansionSlots-fields-list">Add</button></div>
-			<div id="motherboardExpansionSlots-fields-list" data-widget-counter="{{ form.motherboardExpansionSlots|length }}" data-prototype="
-				{{ form_widget(form.motherboardExpansionSlots.vars.prototype.count, {'attr': {'class': 'num'}} )|e }} x
-				{{ form_widget(form.motherboardExpansionSlots.vars.prototype.expansion_slot, {'attr': {'style': 'width:50%;display:inline'}} )|e  }}
-				<button type=button data-action='click->collection#removeButton'>Del</button>
-				" data-controller="collection">
-				{% for slot in form.motherboardExpansionSlots %}
-					<div>
-						{{ form_widget(slot.count, {'attr': {'class': 'num'}}) }} x
-						{{ form_widget(slot.expansion_slot, {'attr': {'style': 'width:50%'}}) }}
-						<button type="button" data-action="click->collection#removeButton">Del</button>
-					</div>
-					{{ form_errors(slot) }}
-				{% endfor %}
-				{{ form_errors(form.motherboardExpansionSlots) }}
-			</div>		
-			<div class="full-spec-head" data-controller="collection"><b>Known issues: </b><button type="button" data-action="click->collection#expandButton" data-list-id="knownIssues-fields-list">Add</button></div>
-			<div id="knownIssues-fields-list" data-widget-counter="{{ form.knownIssues|length }}" data-prototype="
-				{{ form_widget(form.knownIssues.vars.prototype, {'attr': {'style': 'width:80%'}} )|e }}
-				<button type=button data-action='click->collection#removeButton'>Del</button>
-				" data-controller="collection">
-				{% for issue in form.knownIssues %}
-					<div>
-						{{ form_widget(issue, {'attr': {'style': 'width:80%'}}) }}
-						<button type="button" data-action="click->collection#removeButton">Del</button>
-					</div>
-					{{ form_errors(issue) }}
-				{% endfor %}
-				{{ form_errors(form.knownIssues) }}
-			</div>
-		</div>
-		<span style="padding-left:10px;">
-			<b>Notes</b>
-		</span>
-		<div class="notes-field">
-			{{ form_row(form.note) }}
-		</div>
-		<div style="height:10px;"></div>
-	</div>
-	<!-- DOWNLOADS -->
-	<div class="show-downloads" id="sh-downloads">
-		<div data-controller="collection">
-			<div style="padding-top:5px;">
-				<img src="{{ absolute_url(asset('build/icons/show/hardware.svg')) }}" alt="" width="32" style="vertical-align: middle;padding-bottom: 10px;">
-				<b>Drivers: </b>
-				<button type="button" data-action="click->collection#expandButton" data-list-id="drivers-fields-list">Add</button>
-			</div>
-			<div class="bios-image">
-				<div class="bios-image-head">
-					<div class="ba7"><b>File</b></div>
-					<div class="ba2"><b>Recommended</b></div>
-				</div>
-				<div id="drivers-fields-list" data-widget-counter="{{ form.drivers|length }}" data-prototype="
-					<div class=ba7>{{ form_widget(form.drivers.vars.prototype.largeFile, {'attr': {'style': 'width:100%'}} )|e }}</div>
-					<div class=ba2>{{ form_widget(form.drivers.vars.prototype.isRecommended, {'attr': {'style': 'height:18px;width:18px;margin:0;'}} )|e }}</div>
-					<button type=button data-action='click->collection#removeButton'>Del</button>
-					" data-controller="collection">
-					{% for driver in form.drivers %}
+						{% for port in form.motherboardIoPorts %}
 							<div>
-								<div class="ba7">{{ form_widget(driver.largeFile, {'attr': {'style': 'width:100%'}} ) }}</div>
-								<div class="ba2">{{ form_widget(driver.isRecommended, {'attr': {'style': 'height:18px;width:18px;margin:0;'}} ) }}</div>
-								<button type="button" data-action="click->collection#removeButton">Del</button>
+								{{ form_widget(port.count, {'attr': {'class': 'num'}}) }} x
+								{{ form_widget(port.io_port, {'attr': {'style': 'width:50%'}}) }}
+								<button type="button" data-action="click->collection#removeButtonXtd">Del</button>
 							</div>
-							{{ form_errors(driver) }}
-					{% endfor %}
-				</div>
-				{{ form_errors(form.drivers) }}
-			</div>
-			{#{% include 'macros/entityList.html.twig' with {'entityName':'drivers', 'entityDisplayName': 'driver', 'entities':form.drivers} %}#}
-		</div>	
-		<div data-controller="collection">
-			<div style="padding-top:5px;">
-				<img src="{{ absolute_url(asset('build/icons/show/chip.svg')) }}" alt="" width="32" style="vertical-align: middle;padding-bottom: 10px;">
-				<b>BIOS images: </b>
-				<button type="button" data-action="click->collection#expandButton" data-list-id="motherboardBios-fields-list">Add</button>
-			</div>
-			<div class="bios-image">
-				<div class="bios-image-head">
-					<div class="ba0"><b>Manuf.</b></div>
-					<div class="ba1"><b>POST String</b></div>
-					<div class="ba2"><b>Note</b></div>
-					<div class="ba3"><b>BIOS Ver.</b></div>
-					<div class="ba3"><b>Core Ver.</b></div>
-					<div class="ba4"><b>File to upload</b></div>
-					<div class="ba5"><b>Uploaded file</b></div>
-				</div>
-				<div class="append_table" id="motherboardBios-fields-list" data-widget-counter="{{ form.motherboardBios|length }}" data-prototype="
-					<div class=ba0>{{ form_widget(form.motherboardBios.vars.prototype.manufacturer, {'attr': {'style': 'width:100%'}} )|e }}</div>
-					<div class=ba1>{{ form_widget(form.motherboardBios.vars.prototype.postString, {'attr': {'style': 'width:100%'}} )|e }}</div>
-					<div class=ba2>{{ form_widget(form.motherboardBios.vars.prototype.note, {'attr': {'style': 'width:100%'}} )|e }}</div>
-					<div class=ba3>{{ form_widget(form.motherboardBios.vars.prototype.boardVersion, {'attr': {'style': 'width:100%'}} )|e }}</div>
-					<div class=ba3>{{ form_widget(form.motherboardBios.vars.prototype.coreVersion, {'attr': {'style': 'width:100%'}} )|e }}</div>
-					<div class=ba4>{{ form_widget(form.motherboardBios.vars.prototype.romFile, {'attr': {'style': 'width:100%'}} )|e }}</div>
-					<div class=ba5>{{ form_widget(form.motherboardBios.vars.prototype.file_name, {'attr': {'style': 'width:100%'}} )|e }}</div>
-					<div class=ba3><button type=button data-action='click->collection#removeButtonXtd'>Del</button></div>
-					">
-				{% for bios in form.motherboardBios %}
-					<div style="width:100%">
-						<div class="ba0">{{ form_widget(bios.manufacturer, {'attr': {'style': 'width:100%'}}
-							) }}</div>
-						<div class="ba1">{{ form_widget(bios.postString, {'attr': {'style': 'width:100%'}}
-							) }}</div>
-						<div class="ba2">{{ form_widget(bios.note, {'attr': {'style': 'width:100%'}}
-							) }}</div>
-						<div class="ba3">{{ form_widget(bios.boardVersion, {'attr': {'style': 'width:100%'}}
-							) }}</div>
-						<div class="ba3">{{ form_widget(bios.coreVersion, {'attr': {'style': 'width:100%'}}
-							) }}</div>
-						<div class="ba4">{{ form_widget(bios.romFile, {'attr': {'style': 'width:100%'}}
-							) }}</div>
-						<div class="ba5">{{ form_widget(bios.file_name, {'attr': {'style': 'width:100%'}}
-							) }}</div>
-						<div class="ba3">
-							<button type="button" data-action="click->collection#removeButtonXtd">Del</button>
-						</div>
-						{{ form_errors(bios) }}
+							{{ form_errors(port) }}
+						{% endfor %}
+						{{ form_errors(form.motherboardIoPorts) }}
 					</div>
-				{% endfor %}
+					<div class="full-spec-head" data-controller="collection"><b>Expansion slots: </b><button type="button" data-action="click->collection#expandButton" data-list-id="motherboardExpansionSlots-fields-list">Add</button></div>
+					<div id="motherboardExpansionSlots-fields-list" data-widget-counter="{{ form.motherboardExpansionSlots|length }}" data-prototype="
+						{{ form_widget(form.motherboardExpansionSlots.vars.prototype.count, {'attr': {'class': 'num'}} )|e }} x
+						{{ form_widget(form.motherboardExpansionSlots.vars.prototype.expansion_slot, {'attr': {'style': 'width:50%;display:inline'}} )|e  }}
+						<button type=button data-action='click->collection#removeButtonXtd'>Del</button>
+						" data-controller="collection">
+						{% for slot in form.motherboardExpansionSlots %}
+							<div>
+								{{ form_widget(slot.count, {'attr': {'class': 'num'}}) }} x
+								{{ form_widget(slot.expansion_slot, {'attr': {'style': 'width:50%'}}) }}
+								<button type="button" data-action="click->collection#removeButtonXtd">Del</button>
+							</div>
+							{{ form_errors(slot) }}
+						{% endfor %}
+						{{ form_errors(form.motherboardExpansionSlots) }}
+					</div>
+					<div class="full-spec-head" data-controller="collection"><b>Known issues: </b><button type="button" data-action="click->collection#expandButton" data-list-id="knownIssues-fields-list">Add</button></div>
+					<div id="knownIssues-fields-list" data-widget-counter="{{ form.knownIssues|length }}" data-prototype="
+						{{ form_widget(form.knownIssues.vars.prototype, {'attr': {'style': 'width:80%'}} )|e }}
+						<button type=button data-action='click->collection#removeButtonXtd'>Del</button>
+						" data-controller="collection">
+						{% for issue in form.knownIssues %}
+							<div>
+								{{ form_widget(issue, {'attr': {'style': 'width:80%'}}) }}
+								<button type="button" data-action="click->collection#removeButtonXtd">Del</button>
+							</div>
+							{{ form_errors(issue) }}
+						{% endfor %}
+						{{ form_errors(form.knownIssues) }}
+					</div>
 				</div>
+				<span style="padding-left:10px;">
+					<b>Notes</b>
+				</span>
+				<div class="notes-field">
+					{{ form_row(form.note) }}
+				</div>
+				<div style="height:10px;"></div>
+			</div>
+			<!-- DOWNLOADS -->
+			<div class="show-downloads" id="sh-downloads">
+				<div data-controller="collection">
+					<div style="padding-top:5px;">
+						<img src="{{ absolute_url(asset('build/icons/show/hardware.svg')) }}" alt="" width="32" style="vertical-align: middle;padding-bottom: 10px;">
+						<b>Drivers: </b>
+						<button type="button" data-action="click->collection#expandButton" data-list-id="drivers-fields-list">Add</button>
+					</div>
+					<div class="bios-image">
+						<div class="bios-image-head">
+							<div class="ba7"><b>File</b></div>
+							<div class="ba2"><b>Recommended</b></div>
+						</div>
+						<div id="drivers-fields-list" data-widget-counter="{{ form.drivers|length }}" data-prototype="
+							<div class=ba7>{{ form_widget(form.drivers.vars.prototype.largeFile, {'attr': {'style': 'width:100%'}} )|e }}</div>
+							<div class=ba2>{{ form_widget(form.drivers.vars.prototype.isRecommended, {'attr': {'style': 'height:18px;width:18px;margin:0;'}} )|e }}</div>
+							<button type=button data-action='click->collection#removeButtonXtd'>Del</button>
+							" data-controller="collection">
+							{% for driver in form.drivers %}
+									<div>
+										<div class="ba7">{{ form_widget(driver.largeFile, {'attr': {'style': 'width:100%'}} ) }}</div>
+										<div class="ba2">{{ form_widget(driver.isRecommended, {'attr': {'style': 'height:18px;width:18px;margin:0;'}} ) }}</div>
+										<button type="button" data-action="click->collection#removeButtonXtd">Del</button>
+									</div>
+									{{ form_errors(driver) }}
+							{% endfor %}
+						</div>
+						{{ form_errors(form.drivers) }}
+					</div>
+					{#{% include 'macros/entityList.html.twig' with {'entityName':'drivers', 'entityDisplayName': 'driver', 'entities':form.drivers} %}#}
+				</div>
+				<div data-controller="collection">
+					<div style="padding-top:5px;">
+						<img src="{{ absolute_url(asset('build/icons/show/chip.svg')) }}" alt="" width="32" style="vertical-align: middle;padding-bottom: 10px;">
+						<b>BIOS images: </b>
+						<button type="button" data-action="click->collection#expandButton" data-list-id="motherboardBios-fields-list">Add</button>
+					</div>
+					<div class="bios-image">
+						<div class="bios-image-head">
+							<div class="ba0"><b>Manuf.</b></div>
+							<div class="ba1"><b>POST String</b></div>
+							<div class="ba2"><b>Note</b></div>
+							<div class="ba3"><b>BIOS Ver.</b></div>
+							<div class="ba3"><b>Core Ver.</b></div>
+							<div class="ba4"><b>File to upload</b></div>
+							<div class="ba5"><b>Uploaded file</b></div>
+						</div>
+						<div class="append_table" id="motherboardBios-fields-list" data-widget-counter="{{ form.motherboardBios|length }}" data-prototype="
+							<div class=ba0>{{ form_widget(form.motherboardBios.vars.prototype.manufacturer, {'attr': {'style': 'width:100%'}} )|e }}</div>
+							<div class=ba1>{{ form_widget(form.motherboardBios.vars.prototype.postString, {'attr': {'style': 'width:100%'}} )|e }}</div>
+							<div class=ba2>{{ form_widget(form.motherboardBios.vars.prototype.note, {'attr': {'style': 'width:100%'}} )|e }}</div>
+							<div class=ba3>{{ form_widget(form.motherboardBios.vars.prototype.boardVersion, {'attr': {'style': 'width:100%'}} )|e }}</div>
+							<div class=ba3>{{ form_widget(form.motherboardBios.vars.prototype.coreVersion, {'attr': {'style': 'width:100%'}} )|e }}</div>
+							<div class=ba4>{{ form_widget(form.motherboardBios.vars.prototype.romFile, {'attr': {'style': 'width:100%'}} )|e }}</div>
+							<div class=ba5>{{ form_widget(form.motherboardBios.vars.prototype.file_name, {'attr': {'style': 'width:100%'}} )|e }}</div>
+							<div class=ba3><button type=button data-action='click->collection#removeButtonXtd'>Del</button></div>
+							">
+						{% for bios in form.motherboardBios %}
+							<div style="width:100%">
+								<div class="ba0">{{ form_widget(bios.manufacturer, {'attr': {'style': 'width:100%'}}
+									) }}</div>
+								<div class="ba1">{{ form_widget(bios.postString, {'attr': {'style': 'width:100%'}}
+									) }}</div>
+								<div class="ba2">{{ form_widget(bios.note, {'attr': {'style': 'width:100%'}}
+									) }}</div>
+								<div class="ba3">{{ form_widget(bios.boardVersion, {'attr': {'style': 'width:100%'}}
+									) }}</div>
+								<div class="ba3">{{ form_widget(bios.coreVersion, {'attr': {'style': 'width:100%'}}
+									) }}</div>
+								<div class="ba4">{{ form_widget(bios.romFile, {'attr': {'style': 'width:100%'}}
+									) }}</div>
+								<div class="ba5">{{ form_widget(bios.file_name, {'attr': {'style': 'width:100%'}}
+									) }}</div>
+								<div class="ba3">
+									<button type="button" data-action="click->collection#removeButtonXtd">Del</button>
+								</div>
+								{{ form_errors(bios) }}
+							</div>
+						{% endfor %}
+						</div>
+					</div>
+				</div>
+				<div data-controller="collection">
+					<div style="padding-top:5px;">
+						<img src="{{ absolute_url(asset('build/icons/show/manual.svg')) }}" alt="" width="32" style="vertical-align: middle;padding-bottom: 10px;">
+						<b>Documentation:</b>
+						<button type="button" data-action="click->collection#expandButton" data-list-id="manuals-fields-list">Add</button>
+					</div>
+					<div class="bios-image">
+						<div class="bios-image-head">
+							<div class="ba1"><b>Title</b></div>
+							<div class="ba2"><b>Language</b></div>
+							<div class="ba4"><b>File to upload</b></div>
+							<div class="ba5"><b>Uploaded file</b></div>
+						</div>
+						<div id="manuals-fields-list" data-widget-counter="{{ form.manuals|length }}" data-prototype="
+							<div class=ba1>{{ form_widget(form.manuals.vars.prototype.link_name, {'attr': {'style': 'width:100%'}} )|e }}</div>
+							<div class=ba2>{{ form_widget(form.manuals.vars.prototype.language, {'attr': {'style': 'width:100%'}} )|e }}</div>
+							<div class=ba4>{{ form_widget(form.manuals.vars.prototype.manualFile, {'attr': {'style': 'width:100%'}} )|e }}</div>
+							<div class=ba5>{{ form_widget(form.manuals.vars.prototype.file_name, {'attr': {'style': 'width:100%'}} )|e }}</div>
+							<div class=ba3><button type=button data-action='click->collection#removeButtonXtd'>Del</button></div>">
+						{% for manual in form.manuals %}
+							<div style="width:100%">
+								<div class="ba1">{{ form_widget(manual.link_name, {'attr': {'style': 'width:100%'}}
+									) }}</div>
+								<div class="ba2">{{ form_widget(manual.language, {'attr': {'style': 'width:100%'}}
+									) }}</div>
+								<div class="ba4">{{ form_widget(manual.manualFile, {'attr': {'style': 'width:100%'}}
+									) }}</div>
+								<div class="ba5">{{ form_widget(manual.file_name, {'attr': {'style': 'width:100%'}}
+									) }}</div>
+								<div class="ba3">
+									<button type="button" data-action="click->collection#removeButtonXtd">Del</button>
+								</div>
+								{{ form_errors(manual) }}
+							</div>
+						{% endfor %}
+						{{ form_errors(form.manuals) }}
+						</div>
+					</div>
+					{{ form_errors(form.manuals) }}
+				</div>
+			</div>
+			<!-- CPUs -->
+			<div class="show-cpus" id="sh-cpus">
+				<div class="full-spec edit">
+					<div class="full-spec-head" data-controller="collection"><b>CPU sockets: </b><button type="button" data-action="click->collection#expandButton" data-list-id="cpuSockets-fields-list">Add</button></div>
+					<div data-controller="collection">
+						<div id="cpuSockets-fields-list" data-widget-counter="{{ form.cpuSockets|length }}" data-prototype="
+							{{ form_widget(form.cpuSockets.vars.prototype)|e }}
+							<button type=button data-action='click->collection#removeButtonXtd'>Del</button>">
+								{% for cpuSocket in form.cpuSockets %}
+									<div>{{ form_widget(cpuSocket) }}
+										<button type="button" data-action="click->collection#removeButtonXtd">Del</button>
+										{{ form_errors(cpuSocket) }}
+									</div>
+								{% endfor %}
+						</div>
+						{{ form_errors(form.cpuSockets) }}
+					</div>
+					<div class="full-spec-head" data-controller="collection"><b>CPU platforms: </b><button type="button" data-action="click->collection#expandButton" data-list-id="processorPlatformTypes-fields-list">Add</button></div>
+					<div data-controller="collection">
+						<div id="processorPlatformTypes-fields-list" data-widget-counter="{{ form.processorPlatformTypes|length }}" data-prototype="
+							{{ form_widget(form.processorPlatformTypes.vars.prototype, {'attr': {'style': 'width:80%'}} )|e }}
+							<button type=button data-action='click->collection#removeButtonXtd'>Del</button>">
+								{% for platform in form.processorPlatformTypes %}
+									<div>{{ form_widget(platform, {'attr': {'style': 'width:80%'}} ) }}
+										<button type="button" data-action="click->collection#removeButtonXtd">Del</button>
+										{{ form_errors(platform) }}
+									</div>
+								{% endfor %}
+						</div>
+						{{ form_errors(form.processorPlatformTypes) }}
+					</div>
+					<div class="full-spec-head" data-controller="collection"><b>FSB speed: </b><button type="button" data-action="click->collection#expandButton" data-list-id="cpuSpeed-fields-list">Add</button></div>
+					<div data-controller="collection">
+						<div style="width:100%" id="cpuSpeed-fields-list" data-widget-counter="{{ form.cpuSpeed|length }}" data-prototype="{{ form_widget(form.cpuSpeed.vars.prototype, {'attr': {'style': 'width:50%'}} )|e }} <button type=button data-action='click->collection#removeButtonXtd'>Del</button>">
+								{% for speed in form.cpuSpeed %}
+									<div>{{ form_widget(speed, {'attr': {'style': 'width:50%'}}) }}
+										<button type="button" data-action="click->collection#removeButtonXtd">Del</button>
+									</div>
+									{{ form_errors(speed) }}
+							{% endfor %}
+						</div>
+						{{ form_errors(form.cpuSpeed) }}
+					</div>
+				</div>
+				Max CPUs: {{ form_widget(form.maxCpu, {'attr': {'style': 'width:25px'}}) }}
+				{{ form_widget(form.updateProcessors, {'attr':{'data-action':'click->motherboard--add#updateProcessors'}}) }}
+				<div id="cpu-wait" style="display:none;">
+					<p style="margin-top:-35px;">Please wait :)</p>
+					<img src="{{ absolute_url(asset('build/images/cursor.gif')) }}" alt="" height="24">
+				</div>
+				<br>
+
 			</div>
 		</div>
-		<div data-controller="collection">
-			<div style="padding-top:5px;">
-				<img src="{{ absolute_url(asset('build/icons/show/manual.svg')) }}" alt="" width="32" style="vertical-align: middle;padding-bottom: 10px;">
-				<b>Documentation:</b>
-				<button type="button" data-action="click->collection#expandButton" data-list-id="manuals-fields-list">Add</button>
+		<!-- IMAGES -->
+		<div class="show-images" style="min-height:200px;" data-controller="collection">
+			<div class="bar">
+				<span style="padding-left:10px;">
+					<b>Images</b>
+					<button type="button" data-action="click->collection#expandButton" data-list-id="images-fields-list">Add</button>
+				</span>
 			</div>
-			<div class="bios-image">
-				<div class="bios-image-head">
-					<div class="ba1"><b>Title</b></div>
-					<div class="ba2"><b>Language</b></div>
-					<div class="ba4"><b>File to upload</b></div>
-					<div class="ba5"><b>Uploaded file</b></div>
-				</div>
-				<div id="manuals-fields-list" data-widget-counter="{{ form.manuals|length }}" data-prototype="
-					<div class=ba1>{{ form_widget(form.manuals.vars.prototype.link_name, {'attr': {'style': 'width:100%'}} )|e }}</div>
-					<div class=ba2>{{ form_widget(form.manuals.vars.prototype.language, {'attr': {'style': 'width:100%'}} )|e }}</div>
-					<div class=ba4>{{ form_widget(form.manuals.vars.prototype.manualFile, {'attr': {'style': 'width:100%'}} )|e }}</div>
-					<div class=ba5>{{ form_widget(form.manuals.vars.prototype.file_name, {'attr': {'style': 'width:100%'}} )|e }}</div>
-					<div class=ba3><button type=button data-action='click->collection#removeButtonXtd'>Del</button></div>">
-				{% for manual in form.manuals %}
-					<div style="width:100%">
-						<div class="ba1">{{ form_widget(manual.link_name, {'attr': {'style': 'width:100%'}}
-							) }}</div>
-						<div class="ba2">{{ form_widget(manual.language, {'attr': {'style': 'width:100%'}}
-							) }}</div>
-						<div class="ba4">{{ form_widget(manual.manualFile, {'attr': {'style': 'width:100%'}}
-							) }}</div>
-						<div class="ba5">{{ form_widget(manual.file_name, {'attr': {'style': 'width:100%'}}
-							) }}</div>
-						<div class="ba3">
-							<button type="button" data-action="click->collection#removeButtonXtd">Del</button>
-						</div>
-						{{ form_errors(manual) }}
+			<div id="images-fields-list" data-widget-counter="{{ form.images|length }}" data-prototype="
+					<div></div>
+					<div class=imgp>{{ form_widget(form.images.vars.prototype.imageFile, {'attr': {'style': 'width:100%'}})|e }}</div>
+					<div class=imgp><span>Type: </span>{{ form_widget(form.images.vars.prototype.motherboardImageType)|e }}</div>
+					<div class=imgp><span>Creditor: </span>{{ form_widget(form.images.vars.prototype.creditor)|e }}</div>
+					<div class=imgp><span>License: </span>{{ form_widget(form.images.vars.prototype.license)|e }}</div>
+					<div class=imgp><span>Notes: </span>{{ form_widget(form.images.vars.prototype.description)|e }}</div>
+					<div class=imgp>Uploaded file:
+					<button type=button data-action='click->collection#removeButtonXtd'>Delete this entry</button></div>
+					<div class=imgp>{{ form_widget(form.images.vars.prototype.file_name, {'attr': {'style': 'width:90%'}})|e }}</div>
+					">
+			{% for image in form.images %}
+				<div class="addform">
+					<img class="imgp-img" src="/motherboard/image/{{ image.vars.value.getFileName() }}" alt="f">
+					<div class="imgp">{{ form_widget(image.imageFile, {'attr': {'style': 'width:100%'}}) }}</div>
+					<div class="imgp"><span>Type:</span>{{ form_widget(image.motherboardImageType)}}</div>
+					<div class="imgp"><span>Creditor:</span>{{ form_widget(image.creditor)|replace({'<option value="">': '<option label=" " value="">'})|raw }}</div>
+					<div class="imgp"><span>License:</span>{{ form_widget(image.license)}}</div>
+					<div class="imgp"><span>Notes:</span>{{ form_widget(image.description)}}</div>
+					<div class="imgp">Uploaded file:
+						<button type="button" data-action="click->collection#removeButtonXtd">Delete this entry</button>
 					</div>
-				{% endfor %}
-				{{ form_errors(form.manuals) }}
+					<div class="imgp">{{ form_widget(image.file_name, {'attr': {'style': 'width:90%'}}) }}</div>
 				</div>
+			{% endfor %}
+			{{ form_errors(form.images) }}
 			</div>
-			{{ form_errors(form.manuals) }}
 		</div>
 	</div>
-	<!-- CPUs -->
-	<div class="show-cpus" id="sh-cpus">
-		<div class="full-spec edit">
-			<div class="full-spec-head" data-controller="collection"><b>CPU sockets: </b><button type="button" data-action="click->collection#expandButton" data-list-id="cpuSockets-fields-list">Add</button></div>
-			<div data-controller="collection">
-				<div id="cpuSockets-fields-list" data-widget-counter="{{ form.cpuSockets|length }}" data-prototype="
-					{{ form_widget(form.cpuSockets.vars.prototype)|e }} 
-					<button type=button data-action='click->collection#removeButton'>Del</button>">
-						{% for cpuSocket in form.cpuSockets %}
-							<div>{{ form_widget(cpuSocket) }}
-								<button type="button" data-action="click->collection#removeButton">Del</button>
-								{{ form_errors(cpuSocket) }}
-							</div>
-						{% endfor %}
-				</div>
-				{{ form_errors(form.cpuSockets) }}
-			</div>
-			<div class="full-spec-head" data-controller="collection"><b>CPU platforms: </b><button type="button" data-action="click->collection#expandButton" data-list-id="processorPlatformTypes-fields-list">Add</button></div>
-			<div data-controller="collection">
-				<div id="processorPlatformTypes-fields-list" data-widget-counter="{{ form.processorPlatformTypes|length }}" data-prototype="
-					{{ form_widget(form.processorPlatformTypes.vars.prototype, {'attr': {'style': 'width:80%'}} )|e }} 
-					<button type=button data-action='click->collection#removeButton'>Del</button>">
-						{% for platform in form.processorPlatformTypes %}
-							<div>{{ form_widget(platform, {'attr': {'style': 'width:80%'}} ) }}
-								<button type="button" data-action="click->collection#removeButton">Del</button>
-								{{ form_errors(platform) }}
-							</div>
-						{% endfor %}
-				</div>
-				{{ form_errors(form.processorPlatformTypes) }}
-			</div>
-			<div class="full-spec-head" data-controller="collection"><b>FSB speed: </b><button type="button" data-action="click->collection#expandButton" data-list-id="cpuSpeed-fields-list">Add</button></div>
-			<div data-controller="collection">
-				<div style="width:100%" id="cpuSpeed-fields-list" data-widget-counter="{{ form.cpuSpeed|length }}" data-prototype="{{ form_widget(form.cpuSpeed.vars.prototype, {'attr': {'style': 'width:50%'}} )|e }} <button type=button data-action='click->collection#removeButton'>Del</button>">
-						{% for speed in form.cpuSpeed %}
-							<div>{{ form_widget(speed, {'attr': {'style': 'width:50%'}}) }}
-								<button type="button" data-action="click->collection#removeButton">Del</button>
-							</div>
-							{{ form_errors(speed) }}
-					{% endfor %}
-				</div>
-				{{ form_errors(form.cpuSpeed) }}
-			</div>
-		</div>
-		Max CPUs: {{ form_widget(form.maxCpu, {'attr': {'style': 'width:25px'}}) }}
-		{{ form_widget(form.updateProcessors, {'attr':{'data-action':'click->motherboard--add#updateProcessors'}}) }}
-		<div id="cpu-wait" style="display:none;">
-			<p style="margin-top:-35px;">Please wait :)</p>
-			<img src="{{ absolute_url(asset('build/images/cursor.gif')) }}" alt="" height="24">
-		</div>
-		<br>
+
 	<!-- TO BE REMOVED/CHANGED -->
-		<table class="stbl" data-controller="collection">
-			<tr class="stbl-head" style="text-align:left">
-				<td style="width:280px">
+		<div class="stbl" data-controller="collection">
+			<div class="stbl-head" style="text-align:left">
+				<div style="width:280px">
 					<b>CPU:</b>
 					<button type="button" data-action="click->collection#expandButton" data-list-id="processors-fields-list">Add</button>
 					<button type="button" data-action="click->collection#addAllButton" data-list-id="processors-fields-list">Add all CPUs</button>
 					<button type="button" data-action="click->collection#clearAllButton" data-list-id="processors-fields-list">Delete all CPUs</button>
 					<span id="status-label" style="font-size:0.8em"></span>
-				</td>
-				<td>
+				</div>
+				<div>
 					<b>NPU:</b>
 					<button type="button" data-action="click->collection#expandButton" data-list-id="coprocessors-fields-list">Add</button>
 					<button type="button" data-action="click->collection#addAllButton" data-list-id="coprocessors-fields-list">Add all NPUs</button>
 					<button type="button" data-action="click->collection#clearAllButton" data-list-id="coprocessors-fields-list">Delete all NPUs</button>
-				</td>
-			</tr>
-			<tr>
-				<td>
+				</div>
+			</div>
+			<div>
+				<div>
 					{{ form_errors(form.processors) }}
-					<div style="width:100%" id="processors-fields-list" data-widget-counter="{{ form.processors|length }}" data-prototype="{{ form_widget(form.processors.vars.prototype, {'attr': {'style': 'width:80%'}} )|e }} <button type=button data-action='click->collection#removeButton'>Del</button>">
+					<div style="width:100%" id="processors-fields-list" data-widget-counter="{{ form.processors|length }}" data-prototype="{{ form_widget(form.processors.vars.prototype, {'attr': {'style': 'width:80%'}} )|e }} <button type=button data-action='click->collection#removeButtonXtd'>Del</button>">
 						{% for processor in form.processors %}
 							<div>{{ form_widget(processor, {'attr': {'style': 'width:80%'}}
 								) }}
-								<button type="button" data-action="click->collection#removeButton">Del</button>
+								<button type="button" data-action="click->collection#removeButtonXtd">Del</button>
 							</div>
 							{{ form_errors(processor) }}
 						{% endfor %}
 					</div>
-				</td>
+				</div>
 
-				<td class="exp-table">
+				<div class="exp-table">
 					{{ form_errors(form.coprocessors) }}
-					<div style="width:100%" id="coprocessors-fields-list" data-widget-counter="{{ form.coprocessors|length }}" data-prototype="{{ form_widget(form.coprocessors.vars.prototype, {'attr': {'style': 'width:70%'}} )|e }} <button type=button data-action='click->collection#removeButton'>Del</button>">
+					<div style="width:100%" id="coprocessors-fields-list" data-widget-counter="{{ form.coprocessors|length }}" data-prototype="{{ form_widget(form.coprocessors.vars.prototype, {'attr': {'style': 'width:70%'}} )|e }} <button type=button data-action='click->collection#removeButtonXtd'>Del</button>">
 						{% for coprocessor in form.coprocessors %}
 							<div>{{ form_widget(coprocessor, {'attr': {'style': 'width:70%'}}
 								) }}
-								<button type="button" data-action="click->collection#removeButton">Del</button>
+								<button type="button" data-action="click->collection#removeButtonXtd">Del</button>
 							</div>
 							{{ form_errors(coprocessor) }}
 						{% endfor %}
 					</div>
-				</td>
-			</tr>
-		</table>
+				</div>
+			</div>
+		</div>
 	</div>
 	<div style="width:100%;clear:left;"></div>
 <div id="hiddenDiv" style="display: none;">{{ form_end(form)|replace({'</form>': '</div></form>'})|raw }}

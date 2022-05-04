@@ -16,17 +16,5 @@
     {% if type == "show" and is_granted('ROLE_USER') %}
         <input type="radio" name="tabs0" id="tab-nav-0" data-action='click->show#goToURL' data-URL="{{ path('new_' ~ entityName ~ '_edit', {id: entity.getId()}) }}">
         <label for="tab-nav-0"><img src="{{ absolute_url(asset('build/icons/show/edit.svg')) }}" alt="" width="24" height="24">Edit {{name}}</label>
-    {% endif %}
-    {% if type == "edit" %}
-        {% if entityName == "motherboard" %}
-            {% if is_granted('ROLE_ADMIN') and moboid is not null %}
-                <input type="radio" name="tabs0" id="tab-nav-del" data-action='click->show#goToURL' data-URL="{{ path(entityName ~ '_delete', {id: moboid}) }}">
-                <label for="tab-nav-del"><img src="{{ absolute_url(asset('build/icons/show/delete.svg')) }}" alt="" width="24" height="24">Delete</label>
-            {% endif %}
-            <input type="radio" name="tabs" id="tab-nav-clone" data-action="click->{{entityName}}--add#clone">
-            <label for="tab-nav-clone"><img src="{{ absolute_url(asset('build/icons/clone.svg')) }}" alt="" width="24" height="24">Clone {{name}}</label>
-        {% endif %}
-        <input type="radio" name="tabs" id="tab-nav-save" {% if entityName == "chip" %}onclick="document.getElementById('chipset_part_form_save').click();"{% else %}data-action="click->{{entityName}}--add#submit"{% endif %}>
-        <label for="tab-nav-save"><img src="{{ absolute_url(asset('build/icons/show/edit.svg')) }}" alt="" width="24" height="24">Save {{name}}</label>
-    {% endif %}
+    {% endif %}    
 </div>{% endapply %}

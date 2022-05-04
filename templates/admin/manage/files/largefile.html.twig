@@ -1,4 +1,4 @@
-<div class="list-entry">
+<div class="list-entry centered">
 	<div class="header-label">Name</div>
 	<div>{{object.getName()}}</div>
 
@@ -11,7 +11,7 @@
 	<div>{{object.getReleaseDateString()}}</div>
 
 	<div class="header-label">Media type</div>
-	<div>
+	<div class="tag-container">
 		{% for relation in object.getMediaTypeFlags() %}
 			<span class="text-block">
 				<span>{{relation.getCount()}}x</span>

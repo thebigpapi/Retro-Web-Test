@@ -1,4 +1,4 @@
-<div class="list-entry">
+<div class="list-entry centered">
     <div class="header-label">Manufacturer</div>
     <div>{{object.getManufacturer().getShortNameIfExist()}}</div>
 
@@ -23,7 +23,7 @@
     {% endif %}
 
     <div class="header-label">Other specs</div>
-    <div>
+    <div class="tag-container">
         {% if object.getVoltagesWithValue()|length > 0 %}
             <span class="text-block">Voltage: {{ object.getVoltagesWithValue() }}</span>
         {% endif %}

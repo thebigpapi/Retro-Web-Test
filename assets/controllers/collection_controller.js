@@ -39,10 +39,12 @@ export default class extends Controller {
         //set the new increment, create the new widget and concatenate after list
         list.setAttribute("data-widget-counter", counter);
         let newElem = document.createElement('div');
+        newElem.setAttribute("class", "editor-row");
+        newElem.setAttribute("style", "padding:0");
         if (list.id === 'images-fields-list' || list.id === 'chip.images-fields-list' || list.id === 'processingUnit.chip.images-fields-list')
-            newElem.setAttribute("class", "addform");
+            newElem.setAttribute("class", newElem.getAttribute("class") + " addform");
         if (list.id === 'motherboardBios-fields-list' || list.id === 'manuals-fields-list')
-            newElem.setAttribute("style", "width:100%");
+            newElem.setAttribute("style", newElem.getAttribute("style") + " width:100%");
         newElem.innerHTML = newWidget;
         list.appendChild(newElem);
         this.addLink();
@@ -54,7 +56,7 @@ export default class extends Controller {
         this.remove(element, list);
     }
     removeButtonXtd(event) {
-        let element = event.target.parentNode.parentNode;
+        let element = event.target.parentNode.parentNode.parentNode;
         let list = element.parentNode;
         this.remove(element, list);
     }
