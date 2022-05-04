@@ -149,16 +149,17 @@
 							{% endfor %}
 						{% else %}<div class="list-table-head"></div><div>N/A</div>{% endif %}
 					</div>
-
-					<div class="full-spec-head"><b>Known issues</b></div>
-					<div class="list-table">			
-						{% if motherboard.getKnownIssues() is not empty %}				
-							{% for issue in motherboard.getKnownIssues()|sort %}
-								<div class="list-table-head"><b>&nbsp;</b></div><div>{{ issue.getName() }}</div>
-							{% endfor %}
-						{% else %}<div class="list-table-head"></div><div>N/A</div>{% endif %}
-					</div>
 				</div>
+				{% if motherboard.getKnownIssues() is not empty %}
+				<div style="padding-top:10px;padding-left: 5px;">
+					<div><b>Known issues:</b></div>	
+					<div class="notes">{% apply markdown_to_html %}
+					{% for issue in motherboard.getKnownIssues()|sort %}
+					### {{ issue.getName() }}
+{{ issue.getDescription() }}
+					{% endfor %}{% endapply %}</div>
+				</div>			
+				{% endif %}
 				{% if motherboard.note is not null %}
 				<div style="padding-top:10px;padding-left: 5px;">
 					<div><b>Notes</b></div>

@@ -158,7 +158,7 @@ div.full-spec {
     display: grid;
     text-align: center;
     grid-template-rows: [first] 40px [second] auto [end];
-    grid-template-columns: [first] calc(100% / 3) [second] calc(100% / 3) [third] calc(100% / 3) [end];
+    grid-template-columns: [first] calc(100% / 2) [second] calc(100% / 2) [end];
 
     div {
         padding: 5px 0px 5px;
