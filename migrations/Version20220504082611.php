@@ -35,9 +35,9 @@ final class Version20220504082611 extends AbstractMigration
     {
         // this down() migration is auto-generated, please modify it to your needs
         /*$this->addSql('CREATE SCHEMA public');
-        $this->addSql('CREATE TABLE import (id INT DEFAULT NULL, file_name VARCHAR(255) DEFAULT NULL)');
+        $this->addSql('CREATE TABLE import (id INT DEFAULT NULL, file_name VARCHAR(255) DEFAULT NULL)');*/
         $this->addSql('ALTER TABLE known_issue DROP description');
-        $this->addSql('DROP INDEX psuconnector_motherboard_pkey');
+        /*$this->addSql('DROP INDEX psuconnector_motherboard_pkey');
         $this->addSql('ALTER TABLE motherboard_psuconnector ADD PRIMARY KEY (psuconnector_id, motherboard_id)');
         $this->addSql('ALTER INDEX idx_bd0db199d6871168 RENAME TO idx_df1d9f99d6871168');
         $this->addSql('ALTER INDEX idx_bd0db1996511e8a3 RENAME TO idx_df1d9f996511e8a3');

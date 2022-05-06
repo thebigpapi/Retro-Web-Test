@@ -130,6 +130,7 @@ class MotherboardForm extends AbstractType
                     'choices' => $options['sockets'],
                 ]
             ])
+            ->add('slug', TextType::class)
             /*->add('processorPlatformType', EntityType::class, [
                 'class' => ProcessorPlatformType::class,
                 'choice_label' => 'name',
