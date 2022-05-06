@@ -988,7 +988,7 @@ class Motherboard
 
     public function setSlug(string $slug): self
     {
-        $this->slug = $slug;
+        $this->slug = strtolower($slug);
 
         return $this;
     }
