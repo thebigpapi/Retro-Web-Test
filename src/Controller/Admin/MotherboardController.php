@@ -278,11 +278,12 @@ class MotherboardController extends AbstractController
 
         usort(
             $chipsets,
-            function ($a, $b) {
-                if ($a->getFullName() == $b->getFullName()) {
+
+            function (Chipset $a, Chipset $b) {
+                if ($a->getFullReference() === $b->getFullReference()) {
                     return 0;
                 }
-                return ($a->getFullName() < $b->getFullName()) ? -1 : 1;
+                return ($a->getFullReference() < $b->getFullReference()) ? -1 : 1;
             }
         );
 
