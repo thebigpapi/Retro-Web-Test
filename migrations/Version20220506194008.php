@@ -36,7 +36,6 @@ final class Version20220506194008 extends AbstractMigration
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
-        $this->addSql('CREATE SCHEMA public');
         $this->addSql('DROP INDEX UNIQ_7F7A0F2B989D9B62');
         $this->addSql('ALTER TABLE motherboard DROP slug');
     }
