@@ -15,7 +15,7 @@
 		{{ knp_pagination_render(chipsets, 'macros/pagination.html.twig') }}
 		<ul>
 			{% for chipset in chipsets %}
-				<li><a href='{{ path("chipset_show", {id: chipset.getId()}) }}'>{{ chipset.getMainChipWithManufacturer() }}</a></li>
+				<li><a href='{{ path("chipset_show", {id: chipset.getId()}) }}'>{{ chipset.getFullReference() }}</a></li>
 			{% endfor %}
 		</ul>
 		{{ knp_pagination_render(chipsets, 'macros/pagination.html.twig') }}
