@@ -135,6 +135,19 @@ class MotherboardController extends AbstractController
     }
 
     /**
+     * @Route("/motherboards/s/{slug}", name="motherboard_show_slug")
+     */
+    public function showSlug(string $slug, MotherboardRepository $motherboardRepository)
+    {
+        $motherboard = $motherboardRepository->findSlug($slug);
+
+        return $this->render('motherboard/show.html.twig', [
+            'motherboard' => $motherboard,
+            'controller_name' => 'MotherboardController',
+        ]);
+    }
+
+    /**
      * @Route("/motherboards/{id}", name="motherboard_show", requirements={"id"="\d+"})
      */
     public function show(int $id, MotherboardRepository $motherboardRepository, MotherboardIdRedirectionRepository $motherboardIdRedirectionRepository)
@@ -153,10 +166,7 @@ class MotherboardController extends AbstractController
             }
         }
 
-        return $this->render('motherboard/show.html.twig', [
-            'motherboard' => $motherboard,
-            'controller_name' => 'MotherboardController',
-        ]);
+        return $this->redirect($this->generateUrl('motherboard_show_slug', array("slug" => $motherboard->getSlug())));
     }
 
     /**
