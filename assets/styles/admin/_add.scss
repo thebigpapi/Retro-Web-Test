@@ -11,15 +11,15 @@ div.add-title {
 div.addform{
 	box-shadow:inset -1px -1px $dark-color,inset 1px 1px $footer-link-color,inset -2px -2px $medium-color,inset 2px 2px $lightbg-color;
 	background-color: $footer-link-color;
-	padding:3px; 
+	padding:10px; 
 	font-size:18px; 
-	width:95%;margin-top: 10px;
+	margin-top: 5px;
 	color:$dark-color;
 }
-div.imgp {width:95%;padding-left:5%;max-width:250px;font-size:16px;padding-top:1px}
+div.imgp {font-size:16px;padding-top:1px}
 div.imgp span{width:65px;display: inline-block;}
 div.imgp select{width:60%}
-img.imgp-img { float:right;width:21%;max-height:170px;display:none; }
+img.imgp-img { max-height:170px;max-width: 100%; }
 div.full-spec.edit{
     div div{padding:0;}
 	div.full-spec-head{margin:5px 0px 5px;}
@@ -29,7 +29,6 @@ div.bios-image {
 	background-color: $lightbg-color;
 	color: $dark-color;
 	padding: 0;
-	width:99%;
 	font-size:16px;
  }
 div.bios-image-head {
@@ -41,7 +40,7 @@ div.bios-image-head {
 }
 .ba0, .ba1, .ba2, .ba3, .ba4, .ba5, .ba6, .ba7 {
 	display: inline-block;
-	margin:0px 2px 0px;
+	margin:0px 4px 0px;
 	text-align: center;
 }
 div.ba0 {width:9%;} 
@@ -86,10 +85,24 @@ a.button-widget {
 	
 }
 a.button-widget:hover { color: $link-hover-color !important;background-color:$navbar-color;cursor:pointer; }
-/*@media (max-width: 600px) {
-	div.show-edit{
-		width:100%;
+div.old-cpu-table{
+	display:grid;
+	width: 100%;
+	grid-template-columns:[first] 50% [second] 50% [end];
+}
+@media (max-width: 500px) {
+	div.old-cpu-table{
+		grid-template-columns:auto;
 	}
+}
+
+div.show-nav a label{
+		color:$content-bkg-dark;
+		@media (prefers-color-scheme: dark) {
+			color:$content-bkg-light;
+		}
+	}
+/*
 }
 @media (max-width: 1199px) {
 	td.ttl1 {width:60%}

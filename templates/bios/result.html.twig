@@ -10,17 +10,17 @@
 
 {% block body %}
 	<div class="title">
-		<b>{% trans %}Search results{% endtrans %}</b>
+		<b>Search results</b>
 	</div>
 	{% if postStringAnalysis %}
 		<div>
 		<p>
-			<i>{{ "Couldn't find any exact POST string match, the results you see are generated using POST string analysis."|trans }}</i>
+			<i>Couldn't find any exact POST string match, the results you see are generated using POST string analysis.</i>
 		</p>
 		</div>
 	{% endif %}
 	<p style="text-align:center;padding-top:10px;">
-		<i>{{ 'bios.num'|trans({'count':bios_count}) }}</i>
+		<i>{{ bios_count > 0 ? bios_count : 'No' }}{{ bios_count == 1 ? ' result' : ' results' }}</i>
 	</p>
 	{% if bios is not empty %}
 		{{ knp_pagination_render(bios, 'macros/pagination.html.twig') }}
@@ -44,7 +44,7 @@
 				<div>
 					{% if b.getFileName() is not null %}
 						<a class="combo" href="{{ vich_uploader_asset(b, 'romFile') }}">
-							<img src="{{ absolute_url(asset('build/images/dw.svg')) }}" alt="" width="16" height="16">
+							<img src="{{ absolute_url(asset('build/icons/dw.svg')) }}" alt="" width="16" height="16">
 							<span>
 								{% if b.getBoardVersion() is not null %}
 									{{ b.getBoardVersion() }}

@@ -1,6 +1,6 @@
 {% if objectList is not empty %}
     {{ knp_pagination_render(objectList, 'macros/pagination.html.twig') }}
-    <div class="plain-list {% if entityName == "largefile" %}editor-view{% endif %}">
+    <div class="plain-list {% if entityName == "largefile" %}editor-view{% endif %}{% if entityName == "osflag" %}list-bios{% endif %}">
         {% for object in objectList %}
             {% include 'admin/manage/files/' ~ entityName ~ '.html.twig' with {'object':object} %}	
         {% endfor %}

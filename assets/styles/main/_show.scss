@@ -11,7 +11,7 @@ div.main-strip {
 
     /* === Images === */
     div.show-images {
-        flex: 2 1 25%;
+        flex: 0 1 25%;
         overflow: auto;
         min-height: 150px;
         height: auto;
@@ -150,10 +150,14 @@ div.quick-spec-table {
     }
 
     div.quick-spec-head {
-        text-align: right;
+        //text-align: right;
         font-style: italic;
         padding-right: 10px;
     }
+    div.quick-spec-head.editor {
+        align-self: initial;
+    }
+    
 }
 
 div.full-spec {
