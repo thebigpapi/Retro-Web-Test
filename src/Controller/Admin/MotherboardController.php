@@ -280,10 +280,7 @@ class MotherboardController extends AbstractController
             $chipsets,
 
             function (Chipset $a, Chipset $b) {
-                if ($a->getFullReference() === $b->getFullReference()) {
-                    return 0;
-                }
-                return ($a->getFullReference() < $b->getFullReference()) ? -1 : 1;
+                return $a->getFullName() <=> $b->getFullName();
             }
         );
 
