@@ -11,7 +11,7 @@
 	{{ chipset.getPartNo() }}
 {% endblock %}
 {% block metatags %}
-	<meta name="description" content="Chipset:{{ chipset.getMainChipWithManufacturer() }} Release date:{% if chipset.getReleaseDate() is not null %}{{ chipset.getReleaseDate() }}{% else %}unknown{% endif %}">
+	<meta name="description" content="Chipset:{{ chipset.getFullName() }} {{ chipset.getParts()}} Release date:{% if chipset.getReleaseDate() is not null %}{{ chipset.getReleaseDate() }}{% else %}unknown{% endif %}">
 {% endblock %}
 
 {% block opengraph %}
@@ -25,21 +25,15 @@
 	{% else %}
 		<meta property="og:image" content="{{ absolute_url(asset('build/images/logo.webp')) }}">
 	{% endif %}
-	<meta property="og:title" content="{% if chipset.getManufacturer() is not null %}{{ chipset.getManufacturer().getShortNameIfExist() }}{% else %}Unknown{% endif %}
-&nbsp;&nbsp;{% if chipset.getPartNo() is not null %}{{ chipset.getPartNo() }}{% endif %}{% if chipset.getName() is not null %}&nbsp;&nbsp;{% if chipset.getPartNo() is not null %}({{ chipset.getName() }}){% else %}{{ chipset.getName() }}{% endif %}{% endif %}">
-	<meta property="og:description" content="Get chipset info, images and drivers for {% if chipset.getManufacturer() is not null %}{{ chipset.getManufacturer().getShortNameIfExist() }}{% else %}Unknown{% endif %}
-&nbsp;{% if chipset.getPartNo() is not null %}{{ chipset.getPartNo() }}{% endif %}{% if chipset.getName() is not null %}&nbsp;{% if chipset.getPartNo() is not null %}({{ chipset.getName() }}){% else %}{{ chipset.getName() }}{% endif %}{% endif %}!">
+	<meta property="og:title" content="{{ chipset.getFullName() }}">
+	<meta property="og:description" content="Get chipset info, images and drivers for {{ chipset.getFullName() }}!">
 	{% endapply %}
 	<link rel="alternate" hreflang="x-default" href="{{ absolute_url(path('chipset_show', {id: chipset.getId()})) }}"/>
 {% endblock %}
 
 {% block body %}
 <!-- MANUF./NAME/PART NO. -->
-<div class="title">
-	{% if chipset.getManufacturer() is not null %}{{ chipset.getManufacturer().getShortNameIfExist() }}{% else %}Unknown{% endif %}<!--
-	-->{% if chipset.getPartNo() is not null %}&nbsp;{{ chipset.getPartNo() }}{% endif %}<!--
-	-->{% if chipset.getName() is not null %}&nbsp;{% if chipset.getPartNo() is not null %}({{ chipset.getName() }}){% else %}{{ chipset.getName() }}{% endif %}{% endif %}
-</div>
+<div class="title">{{ chipset.getFullName() }}</div>
 
 <div class="main-strip">
 	<div class="internal-container">

@@ -37,15 +37,14 @@
 					<img src="{{ absolute_url(asset('build/icons/search/reset.svg')) }}" alt="reset" width="24" height="24">
 					<span>Reset fields</span>
 				</button>
-				<button type="button" onclick="document.getElementById('search_search').click();return false;">
+				<button type="button" onclick="document.getElementById('search_searchWithImages').click();return false;">
 					<img src="{{ absolute_url(asset('build/icons/search/search.svg')) }}" alt="search" width="24" height="24">
 					<span>Search</span>
 				</button>
-				<button type="button" onclick="document.getElementById('search_searchWithImages').click();return false;">
-					<img src="{{ absolute_url(asset('build/icons/search/search_image.svg')) }}" alt="imgsearch" width="24" height="24">
-					<span>Search with images</span>
+				<button type="button" onclick="document.getElementById('search_search').click();return false;">
+					<img src="{{ absolute_url(asset('build/icons/search/search_noimage.svg')) }}" alt="searchnoimg" width="24" height="24">
+					<span>Search without images</span>
 				</button>
-
 				<input id="rst-btn" type="reset" style="display:none;" value="reset" data-action="click->search#reset" data-reset-ids='search_chipsetManufacturer search_cpuSocket1 search_cpuSocket2'>
 				{{ form_row(form.search)|replace({'<div><button': '<input style="display:none;"', '</button></div>': '">', '>': ' value="'})|raw }}
 				{{ form_row(form.searchWithImages)|replace({'<div><button': '<input style="display:none;"', '</button></div>': '">', '>': ' value="'})|raw }}
@@ -61,7 +60,7 @@
 				</label>
 				<div class="search-form-widget">
 					<div>{{ form_widget(form.manufacturer) }}</div>
-					<div>{{ form_widget(form.name, {'attr': {'aria-describedby': 'search_name_inst'}}) }}</div>
+					<div>{{ form_widget(form.name) }}</div>
 				</div>
 			</div>
 
@@ -110,8 +109,7 @@
 		</section>
 		
 		<div class="search-form-entry">
-			<label class="search-form-label" for="search_expansion_slots" title="0 - all boards without that slot will be shown"
-			>
+			<label class="search-form-label" title="0 - all boards without that slot will be shown">
 				<span>Expansion slots</span>
 				<img src="{{ absolute_url(asset('build/icons/search/help.svg')) }}" alt="" width="16" height="16">
 			</label>
@@ -119,8 +117,8 @@
 				{% for slot in slots %}
 					{% if slot.hiddenSearch == false %}
 						<div class="search-many-item">
-							<input type="text" size="2" name="slot{{slot.id}}">
-							<span>x&nbsp;{{ slot.name }}</span>
+							<input type="text" size="2" name="slot{{slot.id}}" id="id_slot{{slot.id}}">
+							<label for="id_slot{{slot.id}}">x&nbsp;{{ slot.name }}</label>
 						</div>
 					{% endif %}
 				{% endfor %}
@@ -128,7 +126,7 @@
 		</div>
 	
 		<div class="search-form-entry">
-			<label class="search-form-label" for="search_io_ports" title="0 - all boards without that port will be shown"
+			<label class="search-form-label" title="0 - all boards without that port will be shown"
 			>
 				<span>I/O ports</span>
 				<img src="{{ absolute_url(asset('build/icons/search/help.svg')) }}" alt="" width="16" height="16">
@@ -136,8 +134,8 @@
 			<div class="search-form-many" id="search_io_ports">
 				{% for port in ports %}
 					<div class="search-many-item">
-						<input type="text" size="2" name="port{{port.id}}">
-						<span>x&nbsp;{{ port.name }}</span>
+						<input type="text" size="2" name="port{{port.id}}" id="id_port{{port.id}}">
+						<label for="id_port{{port.id}}">x&nbsp;{{ port.name }}</label>
 					</div>
 				{% endfor %}
 			</div>

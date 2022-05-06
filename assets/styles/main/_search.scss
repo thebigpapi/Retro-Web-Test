@@ -119,13 +119,11 @@ form fieldset {
 }
 
 section.search-form-grid {
-	padding-bottom: 10px;
 	display: grid;
 	grid-template-columns: repeat(auto-fill, minmax($form-breakpoint - 45px, 1fr));
 	align-items: center;
 	column-gap: 20px;
 	row-gap: 10px;
-
 	@media (max-width: $form-breakpoint) {
 		display: block;
 	}
@@ -134,6 +132,7 @@ section.search-form-grid {
 .search-form-entry {
 	display: flex;
 	flex-wrap: wrap;
+	padding-top: 5px;
 
 	label.search-form-label {
 		width: 100%;
@@ -202,7 +201,7 @@ div.search-form-many {
 			padding: 3px;
 		}
 
-		span {
+		label {
 			padding-left: 5px;
 		}
 	}

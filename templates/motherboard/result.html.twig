@@ -11,7 +11,7 @@
 		<b>Search results</b>
 	</div>
 	<p style="text-align:center;padding-top:10px;">
-		<i>{{ 'motherboard.num'|trans({'count':motherboard_count}) }}</i>
+		<i>{{ motherboard_count > 0 ? motherboard_count : 'No' }}{{ motherboard_count == 1 ? ' result' : ' results' }}</i>
 	</p>
 	{% if motherboards is not empty %}
 		<div class="results">
@@ -43,43 +43,7 @@
 					</div>	
 				{% endfor %}
 				</div>
-			</div>{#
-			<div class="perks">
-			<div id="index-datetime" class="perks-list">
-				{% for motherboard in motherboards %}
-				<a href="{{ path("motherboard_show", {id: motherboard.getId()}) }}">
-					<div class="perk">
-						
-							<div class="perk-image">
-							{% if motherboard.getImages() is not empty %}
-								{% for image in motherboard.getImages()|filter(a => a.motherboardImageType.id in [1, 2])|sort((a, b) => b.motherboardImageType <=> a.motherboardImageType)|slice(0, 1) %}
-								sdf<a href=""></a>
-								{#href="{{ vich_uploader_asset(image, 'imageFile')}}" class="glightbo">
-									{#<img src="{% if vich_uploader_asset(image, 'imageFile') | ext != "svg" %}
-									{{ vich_uploader_asset(image, 'imageFile') | imagine_filter('motherboard_show_thumb') }}{% else %}
-									{{ vich_uploader_asset(image, 'imageFile')}}{% endif %}" alt="" title="{% if image.description %}{{ image.description }}{% endif %}">
-								{% endfor %}
-							{% else %}
-								<img src="{{ absolute_url(asset('build/images/motherboard/image-missing.webp')) }}" title="no images available :(">
-							{% endif %}
-							</div>
-							<div class="perk-name">{{ motherboard.getManufacturerShortNameIfExist() }}&nbsp;{{ motherboard.name }}</div>
-							<div class="perk-date">
-							{% if motherboard.getMotherboardAliases() is not empty %}{% for alias in motherboard.getMotherboardAliases() %}
-								<span class="results-alias">
-									<small>&nbsp;
-
-										{% if alias.getManufacturer() is not null %}
-											{{ alias.getManufacturer().getShortNameIfExist() }}
-										{% else %}
-											Unknown
-										{% endif %}
-										{{ alias.name }}</small>
-								</span>
-							{% endfor %}{% endif %}</div>
-					</div></a>
-				{% endfor %}
-			</div></div>#}
+			</div>
 			{% else %}
 				<div class="plain-list">
 					{% for motherboard in motherboards %}
@@ -99,12 +63,8 @@
 								</div>
 							{% endif %}
 						</div>
-						{#% if motherboard.getProcessorPlatformType() is not null %}
-							{{ motherboard.getProcessorPlatformType().getName() }}	
-						{% endif %#}
 					{% endfor %}
 				</div>
-
 			{% endif %}
 			{{ knp_pagination_render(motherboards, 'macros/pagination.html.twig') }}
 		</div>

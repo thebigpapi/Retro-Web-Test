@@ -89,8 +89,8 @@
 			</div>
 
 			<div class="search-form-entry">
-				<label class="search-form-label" for="search_file_present" title="{% trans %}If checked, only BIOS entries with files attached will be shown{% endtrans %}">
-					<div>{{ form_widget(form.file_present, {'attr': {'style': 'width:25px;height:25px'}}) }}</div>
+				<label class="search-form-label" title="{% trans %}If checked, only BIOS entries with files attached will be shown{% endtrans %}">
+					{{ form_widget(form.file_present, {'attr': {'style': 'width:25px;height:25px'}}) }}
 					<span>{% trans %}Show results with files{% endtrans %}</span>
 					<img src="{{ absolute_url(asset('build/icons/search/help.svg')) }}" alt="" width="16" height="16">
 				</label>
