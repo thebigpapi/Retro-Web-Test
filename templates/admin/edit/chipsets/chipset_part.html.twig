@@ -103,38 +103,7 @@
 			</div>
 		</div>
 		<!-- IMAGES AND NAVBAR -->
-		<div class="show-images" style="min-height:200px;" data-controller="collection">
-			<div class="bar">
-				<span style="padding-left:10px;display:flex;align-items: center;">
-					<b>Images</b>
-					{% include 'macros/buttons.html.twig' with {'type':'add', 'action': 'chip.images'} %}
-				</span>
-			</div>
-			<div id="chip.images-fields-list" data-widget-counter="{{ form.chip.images|length }}" data-prototype="
-				<div class=imgp>{{ form_widget(form.chip.images.vars.prototype.imageFile, {'attr': {'style': 'max-width: 95%;'}})|e }}</div>
-				<div class=imgp><span>Creditor: </span>{{ form_widget(form.chip.images.vars.prototype.creditor)|e }}</div>
-				<div class=imgp><span>License: </span>{{ form_widget(form.chip.images.vars.prototype.license)|e }}</div>
-				<div class=imgp><span>Notes: </span>{{ form_widget(form.chip.images.vars.prototype.description)|e }}</div>
-				<div class=imgp>Uploaded file:
-				{% include 'macros/buttons.html.twig' with {'type':'del', 'count':-1} %}</div>
-				<div class=imgp>{{ form_widget(form.chip.images.vars.prototype.file_name, {'attr': {'style': 'width:90%'}})|e }}</div>
-				">
-			{% for image in form.chip.images %}
-				<div class="addform">
-					<img class="imgp-img" src="/chip/image/{{ image.vars.value.getFileName() }}" alt="f">
-					<div class="imgp">{{ form_widget(image.imageFile, {'attr': {'style': 'max-width: 95%;'}}) }}</div>
-					<div class="imgp"><span>Creditor:</span>{{ form_widget(image.creditor)|replace({'<option value="">': '<option label=" " value="">'})|raw}}</div>
-					<div class="imgp"><span>License:</span>{{ form_widget(image.license)}}</div>
-					<div class="imgp"><span>Notes:</span>{{ form_widget(image.description)}}</div>
-					<div class="imgp">Uploaded file:
-						{% include 'macros/buttons.html.twig' with {'type':'del', 'count':-1} %}
-					</div>
-					<div class="imgp">{{ form_widget(image.file_name, {'attr': {'style': 'width:90%'}}) }}</div>
-				</div>
-			{% endfor %}
-			{{ form_errors(form.chip.images) }}
-			</div>
-		</div> 
+		{% include 'macros/entityListImages.html.twig' with {'entityName':'chip.images', 'entities':form.chip.images} %}
 	</div>
 	<div id="hiddenDiv" style="display: none;">{{form_widget(form.save) }}{{ form_end(form)|replace({'</form>': '</div></form>'})|raw }}
 {% endblock %}

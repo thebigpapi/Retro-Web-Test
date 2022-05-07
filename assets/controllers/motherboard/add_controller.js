@@ -44,17 +44,16 @@ export default class extends Controller {
         for (let manual of manualList) {
             if (manual.children[2].children[0].files[0] == null) {
                 if (manual.children[3].children[0].value == '') {
-                    errorMessage += "One of the file upload fields is empty!\n";
+                    errorMessage += "One of the manual file upload fields is empty!\n";
                     error = true;
                 }
             }
         }
-
         let imageList = document.getElementById('images-fields-list').children;
         for (let image of imageList) {
             if (image.children[1].children[0].files[0] == null) {
-                if (image.children[7].children[0].value == '') {
-                    errorMessage += "One of the file upload fields is empty!\n";
+                if (image.children[6].children[0].value == '') {
+                    errorMessage += "One of the image file upload fields is empty!\n";
                     error = true;
                 }
             }
@@ -64,6 +63,15 @@ export default class extends Controller {
             if (!driver.children[0].children[0].value) {
                 errorMessage += "One of the drivers is empty!\n";
                 error = true;
+            }
+        }
+        let biosList = document.getElementById('motherboardBios-fields-list').children;
+        for (let bios of biosList) {
+            if (bios.children[5].children[0].files[0] == null) {
+                if (bios.children[6].children[0].value == '') {
+                    errorMessage += "One of the BIOS file upload fields is empty!\n";
+                    error = true;
+                }
             }
         }
         let aliasesList = document.getElementById('motherboardAliases-fields-list').children;

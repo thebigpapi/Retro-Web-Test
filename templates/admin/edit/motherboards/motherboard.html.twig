@@ -48,19 +48,15 @@
 						{% include 'macros/buttons.html.twig' with {'type':'add', 'action': 'motherboardAliases'} %}</div>
 						<div class="append_table" id="motherboardAliases-fields-list" data-widget-counter="{{ form.motherboardAliases|length }}"
 							data-prototype="
-								<div class=editor-form-widget><div>{{ form_widget(form.motherboardAliases.vars.prototype.manufacturer)|replace({'</select>': '<option value="EMPTY" disabled selected hidden>Select manufacturer</option></select>'})|raw|e }}</div></div>
-								<div class=editor-form-widget><div>{{ form_widget(form.motherboardAliases.vars.prototype.name, {'attr': {'placeholder': 'Name'}} )|e }}</div></div>
-								<div class=editor-form-widget>{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
+								{{ form_widget(form.motherboardAliases.vars.prototype.manufacturer)|replace({'</select>': '<option value="EMPTY" disabled selected hidden>Select manufacturer</option></select>'})|raw|e }}
+								{{ form_widget(form.motherboardAliases.vars.prototype.name, {'attr': {'placeholder': 'Name'}} )|e }}
+								{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
 							</div>" data-controller="collection">
 							{% for alias in form.motherboardAliases %}
 								<div class="editor-row" style="padding:0">
-									<div class="editor-form-widget">
-										<div style="padding:0">{{ form_widget(alias.manufacturer)|replace({'<option value="">': '<option label=" " value="">'})|raw }}</div>
-									</div><div class="editor-form-widget">
-										<div style="padding:0">{{ form_widget(alias.name) }}</div>
-									</div><div class="editor-form-widget">
-										{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
-									</div>
+									{{ form_widget(alias.manufacturer)|replace({'<option value="">': '<option label=" " value="">'})|raw }}
+									{{ form_widget(alias.name) }}
+									{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
 									{{ form_errors(alias) }}
 								</div>
 							{% endfor %}
@@ -73,18 +69,15 @@
 						{% include 'macros/buttons.html.twig' with {'type':'add', 'action': 'redirections'} %}</div>
 						<div class="append_table" id="redirections-fields-list" data-widget-counter="{{ form.redirections|length }}"
 							data-prototype="
-								<div class=editor-form-widget><div>{{ form_widget(form.redirections.vars.prototype.source, {'attr': {'placeholder': 'Source ID'}})|e }}</div></div>
-								<div class=editor-form-widget><div>{{ form_widget(form.redirections.vars.prototype.sourceType)|e }}</div></div>
-								<div class=editor-form-widget>{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
+								{{ form_widget(form.redirections.vars.prototype.source, {'attr': {'placeholder': 'Source ID'}})|e }}
+								{{ form_widget(form.redirections.vars.prototype.sourceType)|e }}
+								{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
 							</div>" data-controller="collection">
 							{% for redirection in form.redirections %}
 								<div class="editor-row" style="padding:0">
-									<div class="editor-form-widget">
-										<div style="padding:0">{{ form_widget(redirection.source) }}</div>
-									</div><div class="editor-form-widget">
-										<div style="padding:0">{{ form_widget(redirection.sourceType) }}</div>
-									</div><div class="editor-form-widget">
-										{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
+									{{ form_widget(redirection.source) }}
+									{{ form_widget(redirection.sourceType) }}
+									{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
 									</div>
 									{{ form_errors(redirection) }}
 								</div>
@@ -98,16 +91,13 @@
 						{% include 'macros/buttons.html.twig' with {'type':'add', 'action': 'psuConnectors'} %}</div>
 						<div class="append_table" id="psuConnectors-fields-list" data-widget-counter="{{ form.psuConnectors|length }}"
 							data-prototype="
-								<div class=editor-form-widget><div>{{ form_widget(form.psuConnectors.vars.prototype)|e }}</div></div>
-								<div class=editor-form-widget>{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
+								{{ form_widget(form.psuConnectors.vars.prototype)|e }}
+								{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
 							</div>" data-controller="collection">
 							{% for psuconn in form.psuConnectors %}
 								<div class="editor-row" style="padding:0">
-									<div class="editor-form-widget">
-										<div style="padding:0">{{ form_widget(psuconn) }}</div>
-									</div><div class="editor-form-widget">
-										{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
-									</div>
+									{{ form_widget(psuconn) }}
+									{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
 									{{ form_errors(psuconn) }}
 								</div>
 							{% endfor %}
@@ -155,22 +145,14 @@
 						<div class="quick-spec-head editor">Max system RAM
 						{% include 'macros/buttons.html.twig' with {'type':'add', 'action': 'motherboardMaxRams'} %}</div>
 						<div class="append_table" id="motherboardMaxRams-fields-list" data-controller="collection" data-widget-counter="{{ form.motherboardMaxRams|length }}" data-prototype="
-								<div class='editor-form-widget'>
-									<div style='padding:0'>{{ form_widget(form.motherboardMaxRams.vars.prototype.max_ram)|e }}</div>
-								</div><div class='editor-form-widget'>
-									<div style='padding:0'>{{ form_widget(form.motherboardMaxRams.vars.prototype.note)|e }}</div>
-								</div><div class='editor-form-widget'>
-									{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
-								</div>">
+								{{ form_widget(form.motherboardMaxRams.vars.prototype.max_ram)|e }}
+								{{ form_widget(form.motherboardMaxRams.vars.prototype.note)|e }}
+								{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}">
 							{% for maxRam in form.motherboardMaxRams %}
 								<div class="editor-row" style="padding:0">
-									<div class="editor-form-widget">
-										<div style="padding:0">{{ form_widget(maxRam.max_ram) }}</div>
-									</div><div class="editor-form-widget">
-										<div style="padding:0">{{ form_widget(maxRam.note) }}</div>
-									</div><div class="editor-form-widget">
-										{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
-									</div>
+									{{ form_widget(maxRam.max_ram) }}
+									{{ form_widget(maxRam.note) }}
+									{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
 									{{ form_errors(maxRam) }}
 								</div>
 							{% endfor %}
@@ -182,18 +164,12 @@
 						<div class="quick-spec-head editor">Cache
 						{% include 'macros/buttons.html.twig' with {'type':'add', 'action': 'cacheSize'} %}</div>
 						<div class="append_table" id="cacheSize-fields-list" data-controller="collection" data-widget-counter="{{ form.cacheSize|length }}" data-prototype="
-								<div class='editor-form-widget'>
-									<div style='padding:0'>{{ form_widget(form.cacheSize.vars.prototype)|e }}</div>
-								</div><div class='editor-form-widget'>
-									{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
-								</div>">
+								{{ form_widget(form.cacheSize.vars.prototype)|e }}
+								{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}">
 							{% for size in form.cacheSize %}
 								<div class="editor-row" style="padding:0">
-									<div class="editor-form-widget">
-										<div style="padding:0">{{ form_widget(size) }}</div>
-									</div><div class="editor-form-widget">
-										{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
-									</div>
+									{{ form_widget(size) }}
+									{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
 									{{ form_errors(size) }}
 								</div>
 							{% endfor %}
@@ -422,9 +398,9 @@
 					<div class="quick-spec-table" style="padding:0;">
 						<div class="quick-spec-head editor">Max CPUs</div>
 						<div class="editor-row" style="padding:0;display:flex">
-							<div>{{ form_widget(form.maxCpu, {'attr': {'style': 'width:25px'}}) }}
+							{{ form_widget(form.maxCpu, {'attr': {'style': 'width:25px'}}) }}
 								{{ form_widget(form.updateProcessors, {'attr': {'data-action':'click->motherboard--add#updateProcessors', 'style': 'display:inline-block;'}}) }}
-							</div>
+							
 						</div>
 					</div>
 					<div id="cpu-wait" style="display:none;">
@@ -472,37 +448,7 @@
 			</div>
 		</div>
 		<!-- IMAGES -->
-		<div class="show-images" style="min-height:200px;" data-controller="collection">
-			<div class="bar">
-				<span style="padding-left:10px;display:flex;align-items: center;">
-					<b>Images</b>
-					{% include 'macros/buttons.html.twig' with {'type':'add', 'action': 'images'} %}
-				</span>
-			</div>
-			<div id="images-fields-list" data-widget-counter="{{ form.images|length }}" data-prototype="
-					<div></div>
-					<div class=imgp>{{ form_widget(form.images.vars.prototype.imageFile, {'attr': {'style': 'max-width: 95%;'}})|e }}</div>
-					<div class=imgp><span>Type: </span>{{ form_widget(form.images.vars.prototype.motherboardImageType)|e }}</div>
-					<div class=imgp><span>Creditor: </span>{{ form_widget(form.images.vars.prototype.creditor)|e }}</div>
-					<div class=imgp><span>License: </span>{{ form_widget(form.images.vars.prototype.license)|e }}</div>
-					<div class=imgp><span>Notes: </span>{{ form_widget(form.images.vars.prototype.description, {'attr': {'style': 'max-width: 95%;'}})|e }}</div>
-					<div class=imgp>Uploaded file:{{ form_widget(form.images.vars.prototype.file_name, {'attr': {'style': 'width:90%'}})|e }}</div>
-					{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}">
-			{% for image in form.images %}
-				<div class="addform">
-					<img class="imgp-img" src="/motherboard/image/{{ image.vars.value.getFileName() }}" alt="f">
-					<div class="imgp">{{ form_widget(image.imageFile) }}</div>
-					<div class="imgp"><span>Type:</span>{{ form_widget(image.motherboardImageType)}}</div>
-					<div class="imgp"><span>Creditor:</span>{{ form_widget(image.creditor)|replace({'<option value="">': '<option label=" " value="">'})|raw }}</div>
-					<div class="imgp"><span>License:</span>{{ form_widget(image.license)}}</div>
-					<div class="imgp"><span>Notes:</span>{{ form_widget(image.description, {'attr': {'style': 'max-width: 95%;'}}) }}</div>
-					<div class="imgp">File:{{ form_widget(image.file_name) }}</div>
-					{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
-				</div>
-			{% endfor %}
-			{{ form_errors(form.images) }}
-			</div>
-		</div>
+		{% include 'macros/entityListImages.html.twig' with {'entityName':'images', 'entities':form.images} %}
 	</div>
 	<div style="width:100%;clear:left;"></div>
 <div id="hiddenDiv" style="display: none;">{{ form_end(form)|replace({'</form>': '</div></form>'})|raw }}

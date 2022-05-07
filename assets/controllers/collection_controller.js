@@ -40,9 +40,9 @@ export default class extends Controller {
         list.setAttribute("data-widget-counter", counter);
         let newElem = document.createElement('div');
         newElem.setAttribute("class", "editor-row");
-        newElem.setAttribute("style", "padding:0");
+        //newElem.setAttribute("style", "padding:0");
         if (list.id === 'images-fields-list' || list.id === 'chip.images-fields-list' || list.id === 'processingUnit.chip.images-fields-list')
-            newElem.setAttribute("class", newElem.getAttribute("class") + " addform");
+            newElem.setAttribute("class", "addform");
         if (list.id === 'motherboardBios-fields-list' || list.id === 'manuals-fields-list')
             newElem.setAttribute("style", newElem.getAttribute("style") + " width:100%");
         newElem.innerHTML = newWidget;
