@@ -103,6 +103,7 @@ div.toolbar {
 		a.button {
 			padding: 3px;
 			margin: 3px;
+			width:auto;
 		}
 	}
 }
@@ -170,6 +171,7 @@ div.editor-row {
 	gap: 5px;
 	padding: 0 !important;
 	align-items: center;
+	&.addform{ padding:10px!important; }
 
 	div.editor-form-widget {
 		padding: 0 !important;

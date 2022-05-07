@@ -29,9 +29,9 @@
 	</section>
 
 	<div class="toolbar" data-controller="show">
-		<button type="button" name="tabs" id="tab-nav-save" data-action="click->motherboard--add#submit"><img src="{{ absolute_url(asset('build/icons/show/edit.svg')) }}" alt="" width="24" height="24"><span>Save</span></button>
+		<button type="button" name="tabs" id="tab-nav-save" data-action="click->motherboard--add#submit"><img src="{{ absolute_url(asset('build/icons/edit.svg')) }}" alt="" width="24" height="24"><span>Save</span></button>
 		{% if is_granted('ROLE_ADMIN') and moboid is not null %}
-			<button type="button" name="tabs0" id="tab-nav-del" data-action='click->show#goToURL' data-URL="{{ path('motherboard_delete', {id: moboid}) }}"><img src="{{ absolute_url(asset('build/icons/show/delete.svg')) }}" alt="" width="24" height="24"><span>Delete</span></button>
+			<button type="button" name="tabs0" id="tab-nav-del" data-action='click->show#goToURL' data-URL="{{ path('motherboard_delete', {id: moboid}) }}"><img src="{{ absolute_url(asset('build/icons/delete.svg')) }}" alt="" width="24" height="24"><span>Delete</span></button>
 			<button type="button" name="tabs" id="tab-nav-clone" data-action="click->motherboard--add#clone"><img src="{{ absolute_url(asset('build/icons/clone.svg')) }}" alt="" width="24" height="24"><span>Clone</span></button>
 		{% endif %}		
 	</div>

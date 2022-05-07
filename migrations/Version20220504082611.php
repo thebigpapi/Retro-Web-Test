@@ -22,7 +22,7 @@ final class Version20220504082611 extends AbstractMigration
         // this up() migration is auto-generated, please modify it to your needs
         //$this->addSql('DROP TABLE import');
         //$this->addSql('ALTER TABLE chipset_part ALTER rank DROP DEFAULT');
-        $this->addSql('ALTER TABLE known_issue ADD description VARCHAR(512) DEFAULT NULL');
+        //$this->addSql('ALTER TABLE known_issue ADD description VARCHAR(512) DEFAULT NULL');
         //$this->addSql('DROP INDEX "primary"');
         /*$this->addSql('ALTER TABLE motherboard_psuconnector ADD PRIMARY KEY (motherboard_id, psuconnector_id)');
         $this->addSql('ALTER INDEX idx_df1d9f996511e8a3 RENAME TO IDX_BD0DB1996511E8A3');
@@ -36,7 +36,7 @@ final class Version20220504082611 extends AbstractMigration
         // this down() migration is auto-generated, please modify it to your needs
         /*$this->addSql('CREATE SCHEMA public');
         $this->addSql('CREATE TABLE import (id INT DEFAULT NULL, file_name VARCHAR(255) DEFAULT NULL)');*/
-        $this->addSql('ALTER TABLE known_issue DROP description');
+        //$this->addSql('ALTER TABLE known_issue DROP description');
         /*$this->addSql('DROP INDEX psuconnector_motherboard_pkey');
         $this->addSql('ALTER TABLE motherboard_psuconnector ADD PRIMARY KEY (psuconnector_id, motherboard_id)');
         $this->addSql('ALTER INDEX idx_bd0db199d6871168 RENAME TO idx_df1d9f99d6871168');

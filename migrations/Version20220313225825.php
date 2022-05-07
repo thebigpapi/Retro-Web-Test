@@ -21,7 +21,7 @@ final class Version20220313225825 extends AbstractMigration
     {
         // this up() migration is auto-generated, please modify it to your needs
 
-        $this->addSql('ALTER TABLE processor ALTER tdp TYPE DOUBLE PRECISION');
+        //$this->addSql('ALTER TABLE processor ALTER tdp TYPE DOUBLE PRECISION');
     }
 
     public function down(Schema $schema): void

@@ -17,7 +17,7 @@
     <div class="header-label">Actions</div>
     <div class="toolbar toolbar-thin">
         <a class="button" href="./motherboards/motherboards/{{ object.getId() }}/edit/">
-            <img src="{{ absolute_url(asset('build/icons/show/edit.svg')) }}" alt="" width="20">
+            <img src="{{ absolute_url(asset('build/icons/edit.svg')) }}" alt="" width="20">
             <span>Edit</span>
         </a>
         <a class="button" href="{{ path("motherboard_show", {id: object.getId()}) }}">
@@ -25,7 +25,7 @@
             <span>View</span>
         </a>
         <a class="button" href="{{ path('motherboard_delete', {id: object.getId()}) }}">
-            <img src="{{ absolute_url(asset('build/icons/show/delete.svg')) }}" alt="" width="20">
+            <img src="{{ absolute_url(asset('build/icons/delete.svg')) }}" alt="" width="20">
             <span>Del</span>
         </a>
     </div>

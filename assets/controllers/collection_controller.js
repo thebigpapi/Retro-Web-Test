@@ -55,6 +55,11 @@ export default class extends Controller {
         let list = element.parentNode;
         this.remove(element, list);
     }
+    removeButtonEx(event) {
+        let element = event.target.parentNode.parentNode;
+        let list = element.parentNode;
+        this.remove(element, list);
+    }
     removeButtonXtd(event) {
         let element = event.target.parentNode.parentNode.parentNode;
         let list = element.parentNode;
