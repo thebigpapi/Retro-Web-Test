@@ -45,12 +45,12 @@
 					<!-- Aliases -->
 					<div class="quick-spec-table" data-controller="collection" style="padding:0;">
 						<div class="quick-spec-head editor editor">Alternative names
-						<button type="button" data-action="click->collection#expandButton" data-list-id="motherboardAliases-fields-list">Add</button></div>
+						{% include 'macros/buttons.html.twig' with {'type':'add', 'action': 'motherboardAliases'} %}</div>
 						<div class="append_table" id="motherboardAliases-fields-list" data-widget-counter="{{ form.motherboardAliases|length }}"
 							data-prototype="
 								<div class=editor-form-widget><div>{{ form_widget(form.motherboardAliases.vars.prototype.manufacturer)|replace({'</select>': '<option value="EMPTY" disabled selected hidden>Select manufacturer</option></select>'})|raw|e }}</div></div>
 								<div class=editor-form-widget><div>{{ form_widget(form.motherboardAliases.vars.prototype.name, {'attr': {'placeholder': 'Name'}} )|e }}</div></div>
-								<div class=editor-form-widget><div><button type=button data-action='click->collection#removeButtonXtd'>Del</button></div>
+								<div class=editor-form-widget>{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
 							</div>" data-controller="collection">
 							{% for alias in form.motherboardAliases %}
 								<div class="editor-row" style="padding:0">
@@ -59,7 +59,7 @@
 									</div><div class="editor-form-widget">
 										<div style="padding:0">{{ form_widget(alias.name) }}</div>
 									</div><div class="editor-form-widget">
-										<div style="padding:0"><button type="button" data-action="click->collection#removeButtonXtd">Del</button></div>
+										{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
 									</div>
 									{{ form_errors(alias) }}
 								</div>
@@ -70,12 +70,12 @@
 					<hr><!-- Redirections -->
 					<div class="quick-spec-table" data-controller="collection" style="padding:0;">
 						<div class="quick-spec-head editor">Redirections
-						<button type="button" data-action="click->collection#expandButton" data-list-id="redirections-fields-list">Add</button></div>
+						{% include 'macros/buttons.html.twig' with {'type':'add', 'action': 'redirections'} %}</div>
 						<div class="append_table" id="redirections-fields-list" data-widget-counter="{{ form.redirections|length }}"
 							data-prototype="
 								<div class=editor-form-widget><div>{{ form_widget(form.redirections.vars.prototype.source, {'attr': {'placeholder': 'Source ID'}})|e }}</div></div>
 								<div class=editor-form-widget><div>{{ form_widget(form.redirections.vars.prototype.sourceType)|e }}</div></div>
-								<div class=editor-form-widget><div><button type=button data-action='click->collection#removeButtonXtd'>Del</button></div>
+								<div class=editor-form-widget>{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
 							</div>" data-controller="collection">
 							{% for redirection in form.redirections %}
 								<div class="editor-row" style="padding:0">
@@ -84,7 +84,7 @@
 									</div><div class="editor-form-widget">
 										<div style="padding:0">{{ form_widget(redirection.sourceType) }}</div>
 									</div><div class="editor-form-widget">
-										<div style="padding:0"><button type="button" data-action="click->collection#removeButtonXtd">Del</button></div>
+										{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
 									</div>
 									{{ form_errors(redirection) }}
 								</div>
@@ -95,18 +95,18 @@
 					<hr><!-- PSU connectors -->
 					<div class="quick-spec-table" data-controller="collection" style="padding:0;">
 						<div class="quick-spec-head editor">PSU connectors
-						<button type="button" data-action="click->collection#expandButton" data-list-id="psuConnectors-fields-list">Add</button></div>
+						{% include 'macros/buttons.html.twig' with {'type':'add', 'action': 'psuConnectors'} %}</div>
 						<div class="append_table" id="psuConnectors-fields-list" data-widget-counter="{{ form.psuConnectors|length }}"
 							data-prototype="
 								<div class=editor-form-widget><div>{{ form_widget(form.psuConnectors.vars.prototype)|e }}</div></div>
-								<div class=editor-form-widget><div><button type=button data-action='click->collection#removeButtonXtd'>Del</button></div>
+								<div class=editor-form-widget>{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
 							</div>" data-controller="collection">
 							{% for psuconn in form.psuConnectors %}
 								<div class="editor-row" style="padding:0">
 									<div class="editor-form-widget">
 										<div style="padding:0">{{ form_widget(psuconn) }}</div>
 									</div><div class="editor-form-widget">
-										<div style="padding:0"><button type="button" data-action="click->collection#removeButtonXtd">Del</button></div>
+										{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
 									</div>
 									{{ form_errors(psuconn) }}
 								</div>
@@ -153,14 +153,14 @@
 					</div><!-- Max system RAM -->
 					<div class="quick-spec-table" data-controller="collection" style="padding:0;">
 						<div class="quick-spec-head editor">Max system RAM
-						<button type="button" data-action="click->collection#expandButton" data-list-id="motherboardMaxRams-fields-list">Add</button></div>
+						{% include 'macros/buttons.html.twig' with {'type':'add', 'action': 'motherboardMaxRams'} %}</div>
 						<div class="append_table" id="motherboardMaxRams-fields-list" data-controller="collection" data-widget-counter="{{ form.motherboardMaxRams|length }}" data-prototype="
 								<div class='editor-form-widget'>
 									<div style='padding:0'>{{ form_widget(form.motherboardMaxRams.vars.prototype.max_ram)|e }}</div>
 								</div><div class='editor-form-widget'>
 									<div style='padding:0'>{{ form_widget(form.motherboardMaxRams.vars.prototype.note)|e }}</div>
 								</div><div class='editor-form-widget'>
-									<div style='padding:0'><button type='button' data-action='click->collection#removeButtonXtd'>Del</button></div>
+									{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
 								</div>">
 							{% for maxRam in form.motherboardMaxRams %}
 								<div class="editor-row" style="padding:0">
@@ -169,7 +169,7 @@
 									</div><div class="editor-form-widget">
 										<div style="padding:0">{{ form_widget(maxRam.note) }}</div>
 									</div><div class="editor-form-widget">
-										<div style="padding:0"><button type="button" data-action="click->collection#removeButtonXtd">Del</button></div>
+										{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
 									</div>
 									{{ form_errors(maxRam) }}
 								</div>
@@ -180,19 +180,19 @@
 					<hr><!-- Cache -->					
 					<div class="quick-spec-table" data-controller="collection" style="padding:0">
 						<div class="quick-spec-head editor">Cache
-						<button type="button" data-action="click->collection#expandButton" data-list-id="cacheSize-fields-list">Add</button></div>
+						{% include 'macros/buttons.html.twig' with {'type':'add', 'action': 'cacheSize'} %}</div>
 						<div class="append_table" id="cacheSize-fields-list" data-controller="collection" data-widget-counter="{{ form.cacheSize|length }}" data-prototype="
 								<div class='editor-form-widget'>
 									<div style='padding:0'>{{ form_widget(form.cacheSize.vars.prototype)|e }}</div>
 								</div><div class='editor-form-widget'>
-									<div style='padding:0'><button type='button' data-action='click->collection#removeButtonXtd'>Del</button></div>
+									{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
 								</div>">
 							{% for size in form.cacheSize %}
 								<div class="editor-row" style="padding:0">
 									<div class="editor-form-widget">
 										<div style="padding:0">{{ form_widget(size) }}</div>
 									</div><div class="editor-form-widget">
-										<div style="padding:0"><button type="button" data-action="click->collection#removeButtonXtd">Del</button></div>
+										{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
 									</div>
 									{{ form_errors(size) }}
 								</div>
@@ -212,33 +212,33 @@
 						{% endfor %}</div>
 					</div><!-- Exp. slots and I/O ports -->
 					<div class="full-spec edit">
-						<div class="full-spec-head" data-controller="collection"><b>I/O ports: </b><button type="button" data-action="click->collection#expandButton" data-list-id="motherboardIoPorts-fields-list">Add</button></div>
+						<div class="full-spec-head" data-controller="collection"><b>I/O ports: </b>{% include 'macros/buttons.html.twig' with {'type':'add', 'action': 'motherboardIoPorts'} %}</div>
 						<div id="motherboardIoPorts-fields-list" data-widget-counter="{{ form.motherboardIoPorts|length }}" data-prototype="
 							{{ form_widget(form.motherboardIoPorts.vars.prototype.count, {'attr': {'class': 'num'}} )|e }} x
 							{{ form_widget(form.motherboardIoPorts.vars.prototype.io_port, {'attr': {'style': 'width:50%'}} )|e }}
-							<button type=button data-action='click->collection#removeButton'>Del</button>
+							{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
 							" data-controller="collection">
 							{% for port in form.motherboardIoPorts %}
 								<div class="editor-row" style="padding:0">
 									{{ form_widget(port.count, {'attr': {'class': 'num'}}) }} x
 									{{ form_widget(port.io_port, {'attr': {'style': 'width:50%'}}) }}
-									<button type="button" data-action="click->collection#removeButton">Del</button>
+									{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
 								</div>
 								{{ form_errors(port) }}
 							{% endfor %}
 							{{ form_errors(form.motherboardIoPorts) }}
 						</div>
-						<div class="full-spec-head" data-controller="collection"><b>Expansion slots: </b><button type="button" data-action="click->collection#expandButton" data-list-id="motherboardExpansionSlots-fields-list">Add</button></div>
+						<div class="full-spec-head" data-controller="collection"><b>Expansion slots: </b>{% include 'macros/buttons.html.twig' with {'type':'add', 'action': 'motherboardExpansionSlots'} %}</div>
 						<div id="motherboardExpansionSlots-fields-list" data-widget-counter="{{ form.motherboardExpansionSlots|length }}" data-prototype="
 							{{ form_widget(form.motherboardExpansionSlots.vars.prototype.count, {'attr': {'class': 'num'}} )|e }} x
 							{{ form_widget(form.motherboardExpansionSlots.vars.prototype.expansion_slot, {'attr': {'style': 'width:50%;display:inline'}} )|e  }}
-							<button type=button data-action='click->collection#removeButton'>Del</button>
+							{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
 							" data-controller="collection">
 							{% for slot in form.motherboardExpansionSlots %}
 								<div class="editor-row" style="padding:0">
 									{{ form_widget(slot.count, {'attr': {'class': 'num'}}) }} x
 									{{ form_widget(slot.expansion_slot, {'attr': {'style': 'width:50%'}}) }}
-									<button type="button" data-action="click->collection#removeButton">Del</button>
+									{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
 								</div>
 								{{ form_errors(slot) }}
 							{% endfor %}
@@ -247,15 +247,15 @@
 					</div><hr><!-- Known issues -->
 					<div class="quick-spec-table" data-controller="collection">
 						<div class="quick-spec-head editor">Known issues:
-						<button type="button" data-action="click->collection#expandButton" data-list-id="knownIssues-fields-list">Add</button></div>
+						{% include 'macros/buttons.html.twig' with {'type':'add', 'action': 'knownIssues'} %}</div>
 						<div id="knownIssues-fields-list" data-widget-counter="{{ form.knownIssues|length }}" data-prototype="
 							{{ form_widget(form.knownIssues.vars.prototype, {'attr': {'style': 'width:80%'}} )|e }}
-							<button type=button data-action='click->collection#removeButton'>Del</button>
+							{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
 							" data-controller="collection">
 							{% for issue in form.knownIssues %}
 								<div class="editor-row" style="padding:0">
 									{{ form_widget(issue, {'attr': {'style': 'width:80%'}}) }}
-									<button type="button" data-action="click->collection#removeButton">Del</button>
+									{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
 								</div>
 								{{ form_errors(issue) }}
 							{% endfor %}
@@ -272,7 +272,7 @@
 						<div style="padding-top:5px;display: flex;align-items: center;">
 							<img src="{{ absolute_url(asset('build/icons/show/hardware.svg')) }}" alt="" width="32" style="padding: 5px;">
 							<b>Drivers: </b>
-							<button type="button" data-action="click->collection#expandButton" data-list-id="drivers-fields-list">Add</button>
+							{% include 'macros/buttons.html.twig' with {'type':'add', 'action': 'drivers'} %}
 						</div>
 						<div class="bios-image">
 							<div class="bios-image-head">
@@ -282,13 +282,13 @@
 							<div id="drivers-fields-list" data-widget-counter="{{ form.drivers|length }}" data-prototype="
 								<div class=ba7>{{ form_widget(form.drivers.vars.prototype.largeFile, {'attr': {'style': 'width:100%'}} )|e }}</div>
 								<div class=ba2>{{ form_widget(form.drivers.vars.prototype.isRecommended, {'attr': {'style': 'height:18px;width:18px;margin:0;'}} )|e }}</div>
-								<button type=button data-action='click->collection#removeButton'>Del</button>
+								{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
 								" data-controller="collection">
 								{% for driver in form.drivers %}
 										<div class="editor-row" style="padding:0">
 											<div class="ba7">{{ form_widget(driver.largeFile, {'attr': {'style': 'width:100%'}} )|replace({'<option value="">': '<option label=" " value="">'})|raw }}</div>
 											<div class="ba2">{{ form_widget(driver.isRecommended, {'attr': {'style': 'height:18px;width:18px;margin:0;'}} ) }}</div>
-											<button type="button" data-action="click->collection#removeButton">Del</button>
+											{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
 										</div>
 										{{ form_errors(driver) }}
 								{% endfor %}
@@ -300,7 +300,7 @@
 						<div style="padding-top:10px;display: flex;align-items: center;">
 							<img src="{{ absolute_url(asset('build/icons/show/chip.svg')) }}" alt="" width="32" style="padding: 5px;">
 							<b>BIOS images: </b>
-							<button type="button" data-action="click->collection#expandButton" data-list-id="motherboardBios-fields-list">Add</button>
+							{% include 'macros/buttons.html.twig' with {'type':'add', 'action': 'motherboardBios'} %}
 						</div>
 						<div class="bios-image">
 							<div class="bios-image-head">
@@ -320,7 +320,7 @@
 								<div class=ba3>{{ form_widget(form.motherboardBios.vars.prototype.coreVersion, {'attr': {'style': 'width:100%'}} )|e }}</div>
 								<div class=ba4>{{ form_widget(form.motherboardBios.vars.prototype.romFile, {'attr': {'style': 'width:100%'}} )|e }}</div>
 								<div class=ba5>{{ form_widget(form.motherboardBios.vars.prototype.file_name, {'attr': {'style': 'width:100%'}} )|e }}</div>
-								<button style=display:inline-block; type=button data-action='click->collection#removeButton'>Del</button>
+								{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
 								">
 							{% for bios in form.motherboardBios %}
 								<div style="width:100%">
@@ -331,7 +331,7 @@
 									<div class="ba3">{{ form_widget(bios.coreVersion, {'attr': {'style': 'width:100%'}}) }}</div>
 									<div class="ba4">{{ form_widget(bios.romFile, {'attr': {'style': 'width:100%'}}) }}</div>
 									<div class="ba5">{{ form_widget(bios.file_name, {'attr': {'style': 'width:100%'}}) }}</div>
-									<button style="display:inline-block;" type="button" data-action="click->collection#removeButton">Del</button>
+									{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
 									{{ form_errors(bios) }}
 								</div>
 							{% endfor %}
@@ -342,7 +342,7 @@
 						<div style="padding-top:10px;display: flex;align-items: center;">
 							<img src="{{ absolute_url(asset('build/icons/show/manual.svg')) }}" alt="" width="32" style="padding: 5px;">
 							<b>Documentation:</b>
-							<button type="button" data-action="click->collection#expandButton" data-list-id="manuals-fields-list">Add</button>
+							{% include 'macros/buttons.html.twig' with {'type':'add', 'action': 'manuals'} %}
 						</div>
 						<div class="bios-image">
 							<div class="bios-image-head">
@@ -356,14 +356,14 @@
 								<div class=ba2>{{ form_widget(form.manuals.vars.prototype.language, {'attr': {'style': 'width:100%'}} )|e }}</div>
 								<div class=ba4>{{ form_widget(form.manuals.vars.prototype.manualFile, {'attr': {'style': 'width:100%'}} )|e }}</div>
 								<div class=ba5>{{ form_widget(form.manuals.vars.prototype.file_name, {'attr': {'style': 'width:100%'}} )|e }}</div>
-								<button style=display:inline-block; type=button data-action='click->collection#removeButton'>Del</button>">
+								{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}">
 							{% for manual in form.manuals %}
 								<div style="width:100%">
 									<div class="ba1">{{ form_widget(manual.link_name, {'attr': {'style': 'width:100%'}}) }}</div>
 									<div class="ba2">{{ form_widget(manual.language, {'attr': {'style': 'width:100%'}}) }}</div>
 									<div class="ba4">{{ form_widget(manual.manualFile, {'attr': {'style': 'width:100%'}}) }}</div>
 									<div class="ba5">{{ form_widget(manual.file_name, {'attr': {'style': 'width:100%'}}) }}</div>
-									<button style="display:inline-block;" type="button" data-action="click->collection#removeButton">Del</button>
+									{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
 									{{ form_errors(manual) }}
 								</div>
 							{% endfor %}
@@ -377,13 +377,13 @@
 				<div class="show-cpus" id="sh-cpus"><!-- CPU sockets -->
 					<div class="quick-spec-table" data-controller="collection">
 						<div class="quick-spec-head editor">CPU sockets
-						<button type="button" data-action="click->collection#expandButton" data-list-id="cpuSockets-fields-list">Add</button></div>
+						{% include 'macros/buttons.html.twig' with {'type':'add', 'action': 'cpuSockets'} %}</div>
 						<div id="cpuSockets-fields-list" data-widget-counter="{{ form.cpuSockets|length }}" data-prototype="
 							{{ form_widget(form.cpuSockets.vars.prototype, {'attr': {'style': 'width:100%;max-width:220px'}})|e }}
-							<button type=button data-action='click->collection#removeButton'>Del</button>">
+							{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}">
 								{% for cpuSocket in form.cpuSockets %}
 									<div class="editor-row" style="padding:0">{{ form_widget(cpuSocket, {'attr': {'style': 'width:100%;max-width:220px'}}) }}
-										<button type="button" data-action="click->collection#removeButton">Del</button>
+										{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
 										{{ form_errors(cpuSocket) }}
 									</div>
 								{% endfor %}
@@ -392,13 +392,13 @@
 					</div><hr><!-- CPU platforms -->
 					<div class="quick-spec-table" data-controller="collection">
 						<div class="quick-spec-head editor">CPU platforms
-						<button type="button" data-action="click->collection#expandButton" data-list-id="processorPlatformTypes-fields-list">Add</button></div>
+						{% include 'macros/buttons.html.twig' with {'type':'add', 'action': 'processorPlatformTypes'} %}</div>
 						<div id="processorPlatformTypes-fields-list" data-widget-counter="{{ form.processorPlatformTypes|length }}" data-prototype="
 							{{ form_widget(form.processorPlatformTypes.vars.prototype)|e }}
-							<button type=button data-action='click->collection#removeButton'>Del</button>">
+							{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}">
 								{% for platform in form.processorPlatformTypes %}
 									<div class="editor-row" style="padding:0">{{ form_widget(platform) }}
-										<button type="button" data-action="click->collection#removeButton">Del</button>
+										{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
 										{{ form_errors(platform) }}
 									</div>
 								{% endfor %}
@@ -407,12 +407,12 @@
 					</div><hr><!-- FSB speeds -->
 					<div class="quick-spec-table" data-controller="collection">
 						<div class="quick-spec-head editor">FSB speed
-						<button type="button" data-action="click->collection#expandButton" data-list-id="cpuSpeed-fields-list">Add</button></div>
+						{% include 'macros/buttons.html.twig' with {'type':'add', 'action': 'cpuSpeed'} %}</div>
 						<div style="width:100%" id="cpuSpeed-fields-list" data-widget-counter="{{ form.cpuSpeed|length }}" data-prototype="
-							{{ form_widget(form.cpuSpeed.vars.prototype)|e }} <button type=button data-action='click->collection#removeButton'>Del</button>">
+							{{ form_widget(form.cpuSpeed.vars.prototype)|e }} {% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}">
 								{% for speed in form.cpuSpeed %}
 									<div class="editor-row" style="padding:0">{{ form_widget(speed) }}
-										<button type="button" data-action="click->collection#removeButton">Del</button>
+										{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
 									</div>
 									{{ form_errors(speed) }}
 							{% endfor %}
@@ -430,6 +430,44 @@
 					<div id="cpu-wait" style="display:none;">
 						<span>Please wait :)</span><img src="{{ absolute_url(asset('build/images/cursor.gif')) }}" alt="" height="24" style="vertical-align: middle;">
 					</div>
+					<div class="old-cpu-table" data-controller="collection">
+						<div style="display:flex;" style="text-align:left">
+							<div>CPU</div>
+							<button type="button" data-action="click->collection#expandButton" data-list-id="processors-fields-list">Add</button>
+							<button type="button" data-action="click->collection#addAllButton" data-list-id="processors-fields-list">Add all CPUs</button>
+							<button type="button" data-action="click->collection#clearAllButton" data-list-id="processors-fields-list">Delete all CPUs</button>
+							<span id="status-label" style="font-size:0.8em"></span>
+						</div>
+						<div style="display:flex;" style="text-align:left">
+							<div>NPU:</div>
+							<button type="button" data-action="click->collection#expandButton" data-list-id="coprocessors-fields-list">Add</button>
+							<button type="button" data-action="click->collection#addAllButton" data-list-id="coprocessors-fields-list">Add all NPUs</button>
+							<button type="button" data-action="click->collection#clearAllButton" data-list-id="coprocessors-fields-list">Delete all NPUs</button>
+						</div>
+
+						<div>
+							{{ form_errors(form.processors) }}
+							<div style="width:100%" id="processors-fields-list" data-widget-counter="{{ form.processors|length }}" data-prototype="{{ form_widget(form.processors.vars.prototype, {'attr': {'style': 'width:80%'}} )|e }} {% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}">
+								{% for processor in form.processors %}
+									<div class="editor-row" style="padding:0;">{{ form_widget(processor, {'attr': {'style': 'width:80%'}}) }}
+										{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
+									</div>
+									{{ form_errors(processor) }}
+								{% endfor %}
+							</div>
+						</div>
+						<div>
+							{{ form_errors(form.coprocessors) }}
+							<div style="width:100%" id="coprocessors-fields-list" data-widget-counter="{{ form.coprocessors|length }}" data-prototype="{{ form_widget(form.coprocessors.vars.prototype, {'attr': {'style': 'width:70%'}} )|e }} {% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}">
+								{% for coprocessor in form.coprocessors %}
+									<div class="editor-row" style="padding:0;">{{ form_widget(coprocessor, {'attr': {'style': 'width:70%'}}) }}
+										{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
+									</div>
+									{{ form_errors(coprocessor) }}
+								{% endfor %}
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -438,7 +476,7 @@
 			<div class="bar">
 				<span style="padding-left:10px;display:flex;align-items: center;">
 					<b>Images</b>
-					<button type="button" data-action="click->collection#expandButton" data-list-id="images-fields-list">Add</button>
+					{% include 'macros/buttons.html.twig' with {'type':'add', 'action': 'images'} %}
 				</span>
 			</div>
 			<div id="images-fields-list" data-widget-counter="{{ form.images|length }}" data-prototype="
@@ -448,64 +486,21 @@
 					<div class=imgp><span>Creditor: </span>{{ form_widget(form.images.vars.prototype.creditor)|e }}</div>
 					<div class=imgp><span>License: </span>{{ form_widget(form.images.vars.prototype.license)|e }}</div>
 					<div class=imgp><span>Notes: </span>{{ form_widget(form.images.vars.prototype.description, {'attr': {'style': 'max-width: 95%;'}})|e }}</div>
-					<div class=imgp>Uploaded file:
-					<button type=button data-action='click->collection#removeButton'>Delete this entry</button></div>
-					<div class=imgp>{{ form_widget(form.images.vars.prototype.file_name, {'attr': {'style': 'width:90%'}})|e }}</div>
-					">
+					<div class=imgp>Uploaded file:{{ form_widget(form.images.vars.prototype.file_name, {'attr': {'style': 'width:90%'}})|e }}</div>
+					{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}">
 			{% for image in form.images %}
 				<div class="addform">
 					<img class="imgp-img" src="/motherboard/image/{{ image.vars.value.getFileName() }}" alt="f">
-					<button type="button" data-action="click->collection#removeButton">Delete this entry</button>
-					<div class="imgp">{{ form_widget(image.imageFile, {'attr': {'style': 'max-width: 95%;'}}) }}</div>
+					<div class="imgp">{{ form_widget(image.imageFile) }}</div>
 					<div class="imgp"><span>Type:</span>{{ form_widget(image.motherboardImageType)}}</div>
 					<div class="imgp"><span>Creditor:</span>{{ form_widget(image.creditor)|replace({'<option value="">': '<option label=" " value="">'})|raw }}</div>
 					<div class="imgp"><span>License:</span>{{ form_widget(image.license)}}</div>
 					<div class="imgp"><span>Notes:</span>{{ form_widget(image.description, {'attr': {'style': 'max-width: 95%;'}}) }}</div>
-					<div class="imgp">Uploaded file:
-						
-					</div>
-					<div class="imgp">{{ form_widget(image.file_name, {'attr': {'style': 'width:90%'}}) }}</div>
+					<div class="imgp">File:{{ form_widget(image.file_name) }}</div>
+					{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
 				</div>
 			{% endfor %}
 			{{ form_errors(form.images) }}
-			</div>
-		</div>
-		<div class="old-cpu-table" data-controller="collection">
-			<div style="display:flex;" style="text-align:left">
-				<div>CPU</div>
-				<button type="button" data-action="click->collection#expandButton" data-list-id="processors-fields-list">Add</button>
-				<button type="button" data-action="click->collection#addAllButton" data-list-id="processors-fields-list">Add all CPUs</button>
-				<button type="button" data-action="click->collection#clearAllButton" data-list-id="processors-fields-list">Delete all CPUs</button>
-				<span id="status-label" style="font-size:0.8em"></span>
-			</div>
-			<div style="display:flex;" style="text-align:left">
-				<div>NPU:</div>
-				<button type="button" data-action="click->collection#expandButton" data-list-id="coprocessors-fields-list">Add</button>
-				<button type="button" data-action="click->collection#addAllButton" data-list-id="coprocessors-fields-list">Add all NPUs</button>
-				<button type="button" data-action="click->collection#clearAllButton" data-list-id="coprocessors-fields-list">Delete all NPUs</button>
-			</div>
-
-			<div>
-				{{ form_errors(form.processors) }}
-				<div style="width:100%" id="processors-fields-list" data-widget-counter="{{ form.processors|length }}" data-prototype="{{ form_widget(form.processors.vars.prototype, {'attr': {'style': 'width:80%'}} )|e }} <button type=button data-action='click->collection#removeButton'>Del</button>">
-					{% for processor in form.processors %}
-						<div class="editor-row" style="padding:0;">{{ form_widget(processor, {'attr': {'style': 'width:80%'}}) }}
-							<button type="button" data-action="click->collection#removeButton">Del</button>
-						</div>
-						{{ form_errors(processor) }}
-					{% endfor %}
-				</div>
-			</div>
-			<div>
-				{{ form_errors(form.coprocessors) }}
-				<div style="width:100%" id="coprocessors-fields-list" data-widget-counter="{{ form.coprocessors|length }}" data-prototype="{{ form_widget(form.coprocessors.vars.prototype, {'attr': {'style': 'width:70%'}} )|e }} <button type=button data-action='click->collection#removeButton'>Del</button>">
-					{% for coprocessor in form.coprocessors %}
-						<div class="editor-row" style="padding:0;">{{ form_widget(coprocessor, {'attr': {'style': 'width:70%'}}) }}
-							<button type="button" data-action="click->collection#removeButton">Del</button>
-						</div>
-						{{ form_errors(coprocessor) }}
-					{% endfor %}
-				</div>
 			</div>
 		</div>
 	</div>

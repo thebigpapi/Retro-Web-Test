@@ -141,6 +141,9 @@ div.main-strip {
 div.quick-spec-table {
     display: grid;
     grid-template-columns: [first] 180px [second] auto [end];
+    @media (max-width: 500px) {
+		grid-template-columns: [first] 100px [second] auto [end];
+	}
     padding: 5px;
 
     div {

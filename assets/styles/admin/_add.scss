@@ -16,10 +16,17 @@ div.addform{
 	margin-top: 5px;
 	color:$dark-color;
 }
-div.imgp {font-size:16px;padding-top:1px}
-div.imgp span{width:65px;display: inline-block;}
-div.imgp select{width:60%}
 img.imgp-img { max-height:170px;max-width: 100%; }
+div.imgp {
+	font-size:16px;
+	padding-top:1px;
+	display:flex;
+	justify-content: space-between;
+	flex-wrap: wrap;
+	select {width:68%}
+	input[type=text] {width:65%}
+}
+
 div.full-spec.edit{
     div div{padding:0;}
 	div.full-spec-head{margin:5px 0px 5px;}

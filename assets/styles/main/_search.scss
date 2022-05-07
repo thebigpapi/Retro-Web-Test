@@ -172,7 +172,9 @@ div.editor-row {
 	padding: 0 !important;
 	align-items: center;
 	&.addform{ padding:10px!important; }
-
+	@media (max-width: 500px) {
+		select{ width:100%; }
+	}
 	div.editor-form-widget {
 		padding: 0 !important;
 
