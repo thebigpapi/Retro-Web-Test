@@ -1,6 +1,6 @@
 {% if objectList is not empty %}
     {{ knp_pagination_render(objectList, 'macros/pagination.html.twig') }}
-    <div class="plain-list">
+    <div class="plain-list list-bios">
         {% for object in objectList %}
             {% include 'admin/manage/expansion_chipsets/' ~ entityName ~ '.html.twig' with {'object':object} %}	
         {% endfor %}

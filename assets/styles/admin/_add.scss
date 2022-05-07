@@ -62,9 +62,12 @@ table.editasset tr td{
 	select, input{ width:100%; }
 }
 div.show-edit{
-	width:49%;
+	width:40%;
 	display:inline-block;
 	vertical-align:top;
+}
+div.show-edit.b{
+	width:59%;
 }
 
 div.old-cpu-table{

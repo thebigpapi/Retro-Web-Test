@@ -15,6 +15,6 @@
     {% endif %}
     {% if type == "show" and is_granted('ROLE_USER') %}
         <input type="radio" name="tabs0" id="tab-nav-0" data-action='click->show#goToURL' data-URL="{{ path('new_' ~ entityName ~ '_edit', {id: entity.getId()}) }}">
-        <label for="tab-nav-0"><img src="{{ absolute_url(asset('build/icons/show/edit.svg')) }}" alt="" width="24" height="24">Edit {{name}}</label>
+        <label for="tab-nav-0"><img src="{{ absolute_url(asset('build/icons/edit.svg')) }}" alt="" width="24" height="24">Edit {{name}}</label>
     {% endif %}    
 </div>{% endapply %}

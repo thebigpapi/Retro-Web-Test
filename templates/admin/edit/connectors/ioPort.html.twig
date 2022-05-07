@@ -3,10 +3,9 @@
 {% block title %}Manage I/O ports{% endblock %}
 
 {% block body %}
-<div class="title" style="padding-top:5em;">
+<div class="title" style="padding-top:5em;display:flex;justify-content:center;align-items:center;">
 	<b>Edit:&nbsp;I/O Port&nbsp;&nbsp;</b>
-	<a class="snav" onclick="document.getElementById('io_port_form_save').click();">
-		<img src="{{ absolute_url(asset('build/icons/show/edit.svg')) }}" alt="" width="24" style="vertical-align: middle;padding-right:2px;">Save</a>
+	<button type="button" name="tabs" id="tab-nav-save" onclick="document.getElementById('io_port_form_save').click();"><img src="{{ absolute_url(asset('build/icons/edit.svg')) }}" alt="" width="24" height="24"><span>Save</span></button>
 </div>
 {{ form_start(form, {'method': 'POST'}) }}
 <div style="margin:0 auto;display:table;">
