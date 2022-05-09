@@ -78,24 +78,17 @@
 					<div>{% if motherboard.getPsuConnectors() is not empty %}
 					{% for psu in motherboard.getPsuConnectors() %}{{ psu.getName() }}{% if not loop.last %}, {% endif %}{% endfor %}{% else %}Unknown{% endif %}</div>
 					<div class="quick-spec-head">Chipset</div>
-					<div>{% if motherboard.getChipset() is not empty %}<a href="{{ path('app_homepage') }}chipsets/{{ motherboard.getChipset().getId()}}">
-					{% if motherboard.getChipset().getManufacturer() is not null %}{{ motherboard.getChipset().getManufacturer().getShortNameIfExist() }}
-					{% else %}Unknown{% endif %}<!---->
-					{% if motherboard.getChipset().getPartNo() is not null %}
-					{{ motherboard.getChipset().getPartNo() }}{% endif %}
-					{% if motherboard.getChipset().getName() is not null %}
-					{% if motherboard.getChipset().getPartNo() is not null %}
-					({{ motherboard.getChipset().getName() }}){% else %}
-					{{ motherboard.getChipset().getName() }}{% endif %}
-					{% endif %}</a>{% else %}Unknown{% endif %}</div>
-					{% if motherboard.getChipset() is not null %}
+					{% if motherboard.getChipset() is not empty %}
+						<div><a href="{{ path('app_homepage') }}chipsets/{{ motherboard.getChipset().getId()}}">{{ motherboard.getChipset().getFullName() }}</a></div>
+						{% if motherboard.getChipset().getChipsetParts() is not empty %}
 						<div class="quick-spec-head">Chipset parts</div>
 						<div class="tag-container">
-							{% for chipPart in motherboard.getChipset().getChipsetParts() %}
-								<span class="text-block">{{ chipPart.getFullName() }}</span>
-							{% endfor %}
+						{% for chipPart in motherboard.getChipset().getChipsetParts() %}
+							<span class="text-block">{{ chipPart.getFullName() }}</span>
+						{% endfor %}
 						</div>
-					{% endif %}
+						{% endif %}
+					{% else %}<div>Unknown</div>{% endif %}
 					<div class="quick-spec-head">Dimensions</div>
 					<div>{{ motherboard.getDimensions() ?: 'Unknown' }}</div>
 					{% if motherboard.getCpuSockets() is not empty %}
