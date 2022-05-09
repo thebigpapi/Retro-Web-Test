@@ -73,24 +73,24 @@
 							{% include 'macros/buttons.html.twig' with {'type':'add', 'action': 'documentations'} %}
 						</div>
 						<div class="bios-image">
-							<div class="bios-image-head">
-								<div class="ba1"><b>Title</b></div>
-								<div class="ba2"><b>Language</b></div>
-								<div class="ba4"><b>File to upload</b></div>
-								<div class="ba5"><b>Uploaded file</b></div>
+							<div class="bios-image-head editor-row manual">
+								<div><b>Title</b></div>
+								<div><b>Language</b></div>
+								<div><b>File to upload</b></div>
+								<div><b>Uploaded file</b></div>
 							</div>
 							<div id="documentations-fields-list" data-widget-counter="{{ form.documentations|length }}" data-prototype="
-								<div class=ba1>{{ form_widget(form.documentations.vars.prototype.link_name, {'attr': {'style': 'width:100%'}} )|e }}</div>
-								<div class=ba2>{{ form_widget(form.documentations.vars.prototype.language, {'attr': {'style': 'width:100%'}} )|e }}</div>
-								<div class=ba4>{{ form_widget(form.documentations.vars.prototype.manualFile, {'attr': {'style': 'width:100%'}} )|e }}</div>
-								<div class=ba5>{{ form_widget(form.documentations.vars.prototype.file_name, {'attr': {'style': 'width:100%'}} )|e }}</div>
+								<div>{{ form_widget(form.documentations.vars.prototype.link_name, {'attr': {'style': 'width:100%'}} )|e }}</div>
+								<div>{{ form_widget(form.documentations.vars.prototype.language, {'attr': {'style': 'width:100%'}} )|e }}</div>
+								<div>{{ form_widget(form.documentations.vars.prototype.manualFile, {'attr': {'style': 'width:100%'}} )|e }}</div>
+								<div>{{ form_widget(form.documentations.vars.prototype.file_name, {'attr': {'style': 'width:100%'}} )|e }}</div>
 								{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}">
 							{% for documentation in form.documentations %}
-								<div style="width:100%">
-									<div class="ba1">{{ form_widget(documentation.link_name, {'attr': {'style': 'width:100%'}}) }}</div>
-									<div class="ba2">{{ form_widget(documentation.language, {'attr': {'style': 'width:100%'}}) }}</div>
-									<div class="ba4">{{ form_widget(documentation.manualFile, {'attr': {'style': 'width:100%'}}) }}</div>
-									<div class="ba5">{{ form_widget(documentation.file_name, {'attr': {'style': 'width:100%'}}) }}</div>
+								<div class="editor-row manual" style="padding:0">
+									<div>{{ form_widget(documentation.link_name, {'attr': {'style': 'width:100%'}}) }}</div>
+									<div>{{ form_widget(documentation.language, {'attr': {'style': 'width:100%'}}) }}</div>
+									<div>{{ form_widget(documentation.manualFile, {'attr': {'style': 'width:100%'}}) }}</div>
+									<div>{{ form_widget(documentation.file_name, {'attr': {'style': 'width:100%'}}) }}</div>
 									{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
 									{{ form_errors(documentation) }}
 								</div>

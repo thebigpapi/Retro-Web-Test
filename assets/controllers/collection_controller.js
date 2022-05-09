@@ -43,8 +43,12 @@ export default class extends Controller {
         //newElem.setAttribute("style", "padding:0");
         if (list.id === 'images-fields-list' || list.id === 'chip.images-fields-list' || list.id === 'processingUnit.chip.images-fields-list')
             newElem.setAttribute("class", "addform");
-        if (list.id === 'motherboardBios-fields-list' || list.id === 'manuals-fields-list')
-            newElem.setAttribute("style", newElem.getAttribute("style") + " width:100%");
+        if (list.id === 'drivers-fields-list')
+            newElem.setAttribute("class", newElem.getAttribute("class") + " drv");
+        if (list.id === 'motherboardBios-fields-list')
+            newElem.setAttribute("class", newElem.getAttribute("class") + " bios");
+        if (list.id === 'manuals-fields-list' || list.id === 'documentations-fields-list')
+            newElem.setAttribute("class", newElem.getAttribute("class") + " manual");
         newElem.innerHTML = newWidget;
         list.appendChild(newElem);
         this.addLink();

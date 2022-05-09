@@ -65,15 +65,6 @@ export default class extends Controller {
                 error = true;
             }
         }
-        let biosList = document.getElementById('motherboardBios-fields-list').children;
-        for (let bios of biosList) {
-            if (bios.children[5].children[0].files[0] == null) {
-                if (bios.children[6].children[0].value == '') {
-                    errorMessage += "One of the BIOS file upload fields is empty!\n";
-                    error = true;
-                }
-            }
-        }
         let aliasesList = document.getElementById('motherboardAliases-fields-list').children;
         for (let alias of aliasesList) {
             if (alias.children[0].children[0].value == "EMPTY") {

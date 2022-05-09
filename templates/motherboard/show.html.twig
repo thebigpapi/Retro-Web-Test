@@ -4,12 +4,7 @@
 
 
 {% block title %}
-	{% if motherboard.getManufacturer() is not null %}
-		{{ motherboard.getManufacturer().getShortNameIfExist() }}
-	{% else %}
-		Unknown
-	{% endif %}
-	{{ motherboard.getName() }}
+	{{ motherboard.getManufacturer() ? motherboard.getManufacturer().getShortNameIfExist() : 'Unknown' }} {{ motherboard.getName() }}
 {% endblock %}
 
 {% block metatags %}
@@ -50,12 +45,7 @@
 {% block body %}
 <!-- TITLE/ALIASES -->
 <div class="title">
-	{% if motherboard.getManufacturer() is not null %}
-		{{ motherboard.getManufacturer().getShortNameIfExist() }}
-	{% else %}
-		Unknown
-	{% endif %}
-	{{ motherboard.getName() }}
+	{{ motherboard.getManufacturer() ? motherboard.getManufacturer().getShortNameIfExist() : 'Unknown' }} {{ motherboard.getName() }}
 </div>
 {% if motherboard.getMotherboardAliases() is not empty %}
 <div class="tag-container" style="justify-content:center;padding-bottom:15px">

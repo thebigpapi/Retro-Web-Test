@@ -3,12 +3,7 @@
 {% from 'macros/largeFile.html.twig' import header as driverHeader %}
 
 {% block title %}
-	{% if chipset.getManufacturer() is not null %}
-		{{ chipset.getManufacturer().getShortNameIfExist() }}
-	{% else %}
-		Unknown
-	{% endif %}
-	{{ chipset.getPartNo() }}
+	{{ chipset.getManufacturer() ? chipset.getManufacturer().getShortNameIfExist() : 'Unknown' }} {{ chipset.getPartNo() }}
 {% endblock %}
 {% block metatags %}
 	<meta name="description" content="Chipset:{{ chipset.getFullName() }} {{ chipset.getParts()}} Release date:{% if chipset.getReleaseDate() is not null %}{{ chipset.getReleaseDate() }}{% else %}unknown{% endif %}">
@@ -41,7 +36,6 @@
 		<div class="internal-content">
 			<!-- DESCRIPRION -->
 			<div class="show-general" id="sh-general">
-				{% apply spaceless %}
 				{% if chipset.getChipsetParts() is not empty %}
 					<div class="tag-container">
 						<span>Chipset parts:</span>
@@ -50,16 +44,17 @@
 						{% endfor %}
 					</div>
 				{% endif %}
-				<div>Release date:&nbsp;
-					{% if chipset.getReleaseDate() is not null %}
-						{{ chipset.getReleaseDate() }}
-					{% else %}
-						Unknown
-					{% endif %}&nbsp;&nbsp;
-					{% if chipset.getEncyclopediaLink() is not null %}<a href="{{ chipset.getEncyclopediaLink() }}">[Encyclopedia link]</a>{% endif %}
-					&nbsp;&nbsp;<a href="{{ absolute_url(path('app_homepage')) }}motherboards/?chipsetId={{ chipset.getId() }}">[see all boards with this chipset]</a>
+				<div>
+					<span>Release date: {{ chipset.getReleaseDate() ? chipset.getReleaseDate() : 'Unknown' }}</span>
+					{% if chipset.getEncyclopediaLink() is not null %}
+					<a class='button-widget' href="{{ chipset.getEncyclopediaLink() }}">
+	    				<img src='{{ absolute_url(asset('build/icons/show/data.svg')) }}' alt='' width='16' style='vertical-align:middle;padding:3px;'>Encyclopedia link</a>
+					{% endif %}
+					<a class='button-widget' href="{{ absolute_url(path('app_homepage')) }}motherboards/?chipsetId={{ chipset.getId() }}">
+	    				<img src='{{ absolute_url(asset('build/icons/show/hardware.svg')) }}' alt='' width='16' style='vertical-align:middle;padding:3px;'>See all boards with this chipset</a>
+					<a class='button-widget' href="{{ absolute_url(path('app_homepage')) }}bios/?chipsetId={{ chipset.getId() }}">
+	    				<img src='{{ absolute_url(asset('build/icons/dw.svg')) }}' alt='' width='16' style='vertical-align:middle;padding:3px;'>See all BIOSes for this chipset</a>
 				</div>
-				{% endapply %}
 				<div class="chipset-textarea">
 				{% if chipset.getDescription() is not empty %}
 					{% apply markdown_to_html %}{{ chipset.getDescription() }}{% endapply %}

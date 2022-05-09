@@ -46,10 +46,22 @@ div.show-nav {
 			border-bottom: thin solid $active-link-dark;
 		}
 	}
+	a label{ // admin buttons
+		color:$content-bkg-dark;
+		@media (prefers-color-scheme: dark) {
+			color:$content-bkg-light;
+		}
+	}
 }
 
 
 /* === logging stuf === */
+table.results {
+	border:1px solid $footer-link-color;
+	border-collapse: collapse;
+	border-radius: 0.2rem;
+	tr td{ border-top:1px solid $footer-link-color;padding:3px;}
+}
 pre { padding: 5px; margin: 5px;color:black; }
 .string { color: green; }
 .number { color: darkorange; }
@@ -139,19 +151,3 @@ dl {
 		justify-content: flex-end;
 	}
 } 
-
-/* === manage_xxxx.html.twig === */
-div.list-view { padding: 10px 0; }
-
-table.results {
-	border:1px solid $footer-link-color;
-	border-collapse: collapse;
-	border-radius: 0.2rem;
-	tr td{ border-top:1px solid $footer-link-color;padding:3px;}
-}
-
-/* === add_xxxx.html.twig === */
-div.editasset { width:50%;margin:auto; }
-div.editasset form div div label { width:180px; }
-div.editasset form div div input { width:400px; }
-tr.darkbg { background-color: $footer-link-color; }

@@ -251,19 +251,19 @@
 							{% include 'macros/buttons.html.twig' with {'type':'add', 'action': 'drivers'} %}
 						</div>
 						<div class="bios-image">
-							<div class="bios-image-head">
-								<div class="ba7"><b>File</b></div>
-								<div class="ba2"><b>Recommended</b></div>
+							<div class="bios-image-head editor-row drv">
+								<div><b>File</b></div>
+								<div><b>Recommended</b></div>
 							</div>
 							<div id="drivers-fields-list" data-widget-counter="{{ form.drivers|length }}" data-prototype="
-								<div class=ba7>{{ form_widget(form.drivers.vars.prototype.largeFile, {'attr': {'style': 'width:100%'}} )|e }}</div>
-								<div class=ba2>{{ form_widget(form.drivers.vars.prototype.isRecommended, {'attr': {'style': 'height:18px;width:18px;margin:0;'}} )|e }}</div>
+								<div>{{ form_widget(form.drivers.vars.prototype.largeFile, {'attr': {'style': 'width:100%'}} )|e }}</div>
+								<div style=display:flex;justify-content:center;>{{ form_widget(form.drivers.vars.prototype.isRecommended, {'attr': {'style': 'height:18px;width:18px;margin:0;'}} )|e }}</div>
 								{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
 								" data-controller="collection">
 								{% for driver in form.drivers %}
-										<div class="editor-row" style="padding:0">
-											<div class="ba7">{{ form_widget(driver.largeFile, {'attr': {'style': 'width:100%'}} )|replace({'<option value="">': '<option label=" " value="">'})|raw }}</div>
-											<div class="ba2">{{ form_widget(driver.isRecommended, {'attr': {'style': 'height:18px;width:18px;margin:0;'}} ) }}</div>
+										<div class="editor-row drv" style="padding:0">
+											<div>{{ form_widget(driver.largeFile, {'attr': {'style': 'width:100%'}} )|replace({'<option value="">': '<option label=" " value="">'})|raw }}</div>
+											<div style="display:flex;justify-content:center;">{{ form_widget(driver.isRecommended, {'attr': {'style': 'height:18px;width:18px;margin:0;'}} ) }}</div>
 											{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
 										</div>
 										{{ form_errors(driver) }}
@@ -279,34 +279,34 @@
 							{% include 'macros/buttons.html.twig' with {'type':'add', 'action': 'motherboardBios'} %}
 						</div>
 						<div class="bios-image">
-							<div class="bios-image-head">
-								<div class="ba0"><b>Manuf.</b></div>
-								<div class="ba1"><b>POST String</b></div>
-								<div class="ba2"><b>Note</b></div>
-								<div class="ba3"><b>BIOS Ver.</b></div>
-								<div class="ba3"><b>Core Ver.</b></div>
-								<div class="ba4"><b>File to upload</b></div>
-								<div class="ba5"><b>Uploaded file</b></div>
+							<div class="bios-image-head editor-row bios">
+								<div><b>Manuf.</b></div>
+								<div><b>POST String</b></div>
+								<div><b>Note</b></div>
+								<div><b>BIOS Ver.</b></div>
+								<div><b>Core Ver.</b></div>
+								<div><b>File to upload</b></div>
+								<div><b>Uploaded file</b></div>
 							</div>
 							<div class="append_table" id="motherboardBios-fields-list" data-widget-counter="{{ form.motherboardBios|length }}" data-prototype="
-								<div class=ba0>{{ form_widget(form.motherboardBios.vars.prototype.manufacturer, {'attr': {'style': 'width:100%'}} )|e }}</div>
-								<div class=ba1>{{ form_widget(form.motherboardBios.vars.prototype.postString, {'attr': {'style': 'width:100%'}} )|e }}</div>
-								<div class=ba2>{{ form_widget(form.motherboardBios.vars.prototype.note, {'attr': {'style': 'width:100%'}} )|e }}</div>
-								<div class=ba3>{{ form_widget(form.motherboardBios.vars.prototype.boardVersion, {'attr': {'style': 'width:100%'}} )|e }}</div>
-								<div class=ba3>{{ form_widget(form.motherboardBios.vars.prototype.coreVersion, {'attr': {'style': 'width:100%'}} )|e }}</div>
-								<div class=ba4>{{ form_widget(form.motherboardBios.vars.prototype.romFile, {'attr': {'style': 'width:100%'}} )|e }}</div>
-								<div class=ba5>{{ form_widget(form.motherboardBios.vars.prototype.file_name, {'attr': {'style': 'width:100%'}} )|e }}</div>
+								<div>{{ form_widget(form.motherboardBios.vars.prototype.manufacturer, {'attr': {'style': 'width:100%'}} )|e }}</div>
+								<div>{{ form_widget(form.motherboardBios.vars.prototype.postString, {'attr': {'style': 'width:100%'}} )|e }}</div>
+								<div>{{ form_widget(form.motherboardBios.vars.prototype.note, {'attr': {'style': 'width:100%'}} )|e }}</div>
+								<div>{{ form_widget(form.motherboardBios.vars.prototype.boardVersion, {'attr': {'style': 'width:100%'}} )|e }}</div>
+								<div>{{ form_widget(form.motherboardBios.vars.prototype.coreVersion, {'attr': {'style': 'width:100%'}} )|e }}</div>
+								<div>{{ form_widget(form.motherboardBios.vars.prototype.romFile, {'attr': {'style': 'width:100%'}} )|e }}</div>
+								<div>{{ form_widget(form.motherboardBios.vars.prototype.file_name, {'attr': {'style': 'width:100%'}} )|e }}</div>
 								{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
 								">
 							{% for bios in form.motherboardBios %}
-								<div style="width:100%">
-									<div class="ba0">{{ form_widget(bios.manufacturer, {'attr': {'style': 'width:100%'}}) }}</div>
-									<div class="ba1">{{ form_widget(bios.postString, {'attr': {'style': 'width:100%'}}) }}</div>
-									<div class="ba2">{{ form_widget(bios.note, {'attr': {'style': 'width:100%'}}) }}</div>
-									<div class="ba3">{{ form_widget(bios.boardVersion, {'attr': {'style': 'width:100%'}}) }}</div>
-									<div class="ba3">{{ form_widget(bios.coreVersion, {'attr': {'style': 'width:100%'}}) }}</div>
-									<div class="ba4">{{ form_widget(bios.romFile, {'attr': {'style': 'width:100%'}}) }}</div>
-									<div class="ba5">{{ form_widget(bios.file_name, {'attr': {'style': 'width:100%'}}) }}</div>
+								<div class="editor-row bios" style="padding:0">
+									<div>{{ form_widget(bios.manufacturer, {'attr': {'style': 'width:100%'}}) }}</div>
+									<div>{{ form_widget(bios.postString, {'attr': {'style': 'width:100%'}}) }}</div>
+									<div>{{ form_widget(bios.note, {'attr': {'style': 'width:100%'}}) }}</div>
+									<div>{{ form_widget(bios.boardVersion, {'attr': {'style': 'width:100%'}}) }}</div>
+									<div>{{ form_widget(bios.coreVersion, {'attr': {'style': 'width:100%'}}) }}</div>
+									<div>{{ form_widget(bios.romFile, {'attr': {'style': 'width:100%'}}) }}</div>
+									<div>{{ form_widget(bios.file_name, {'attr': {'style': 'width:100%'}}) }}</div>
 									{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
 									{{ form_errors(bios) }}
 								</div>
@@ -321,24 +321,24 @@
 							{% include 'macros/buttons.html.twig' with {'type':'add', 'action': 'manuals'} %}
 						</div>
 						<div class="bios-image">
-							<div class="bios-image-head">
-								<div class="ba1"><b>Title</b></div>
-								<div class="ba2"><b>Language</b></div>
-								<div class="ba4"><b>File to upload</b></div>
-								<div class="ba5"><b>Uploaded file</b></div>
+							<div class="bios-image-head editor-row manual">
+								<div><b>Title</b></div>
+								<div><b>Language</b></div>
+								<div><b>File to upload</b></div>
+								<div><b>Uploaded file</b></div>
 							</div>
 							<div id="manuals-fields-list" data-widget-counter="{{ form.manuals|length }}" data-prototype="
-								<div class=ba1>{{ form_widget(form.manuals.vars.prototype.link_name, {'attr': {'style': 'width:100%'}} )|e }}</div>
-								<div class=ba2>{{ form_widget(form.manuals.vars.prototype.language, {'attr': {'style': 'width:100%'}} )|e }}</div>
-								<div class=ba4>{{ form_widget(form.manuals.vars.prototype.manualFile, {'attr': {'style': 'width:100%'}} )|e }}</div>
-								<div class=ba5>{{ form_widget(form.manuals.vars.prototype.file_name, {'attr': {'style': 'width:100%'}} )|e }}</div>
+								<div>{{ form_widget(form.manuals.vars.prototype.link_name, {'attr': {'style': 'width:100%'}} )|e }}</div>
+								<div>{{ form_widget(form.manuals.vars.prototype.language, {'attr': {'style': 'width:100%'}} )|e }}</div>
+								<div>{{ form_widget(form.manuals.vars.prototype.manualFile, {'attr': {'style': 'width:100%'}} )|e }}</div>
+								<div>{{ form_widget(form.manuals.vars.prototype.file_name, {'attr': {'style': 'width:100%'}} )|e }}</div>
 								{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}">
 							{% for manual in form.manuals %}
-								<div style="width:100%">
-									<div class="ba1">{{ form_widget(manual.link_name, {'attr': {'style': 'width:100%'}}) }}</div>
-									<div class="ba2">{{ form_widget(manual.language, {'attr': {'style': 'width:100%'}}) }}</div>
-									<div class="ba4">{{ form_widget(manual.manualFile, {'attr': {'style': 'width:100%'}}) }}</div>
-									<div class="ba5">{{ form_widget(manual.file_name, {'attr': {'style': 'width:100%'}}) }}</div>
+								<div class="editor-row manual" style="padding:0">
+									<div>{{ form_widget(manual.link_name, {'attr': {'style': 'width:100%'}}) }}</div>
+									<div>{{ form_widget(manual.language, {'attr': {'style': 'width:100%'}}) }}</div>
+									<div>{{ form_widget(manual.manualFile, {'attr': {'style': 'width:100%'}}) }}</div>
+									<div>{{ form_widget(manual.file_name, {'attr': {'style': 'width:100%'}}) }}</div>
 									{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
 									{{ form_errors(manual) }}
 								</div>
