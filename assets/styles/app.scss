@@ -64,6 +64,7 @@ body {
     flex-grow: 1;
     flex-direction: column;
     height: 100%;
+    min-height:100vh; //glightbox footer fix
 
     @media (prefers-color-scheme: dark) {
         color: $body-frg-dark;
