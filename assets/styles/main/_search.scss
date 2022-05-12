@@ -237,21 +237,14 @@ div.plain-list {
 	display: grid;
 	grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
 	gap: 5px;
-
-	&.list-bios {
-		grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-	}
-
-	&.editor-view {
-		grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
-	}
+	&.w300p { grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); }
+	&.w400p { grid-template-columns: repeat(auto-fill, minmax(400px, 1fr)); }
 
 	div.list-entry {
 		display: flex;
 		flex-wrap: wrap;
 		align-items: start;
 		align-content: start;
-		//align-self: end;
 		border-bottom: solid thin $border-light;
 		padding: 5px;
 		gap: 5px;
@@ -275,9 +268,7 @@ div.plain-list {
 		}
 	}
 
-	div div {
-		width: 65%;
-	}
+	div div { width: 65%; }
 
 	.header-label {
 		padding: 3px 0;
@@ -285,15 +276,30 @@ div.plain-list {
 		width: 30%;
 	}
 
-	.toolbar-thin {
-		width: auto;
-	}
+	.toolbar-thin { width: auto; }
 
 	.combo {
 		display: flex;
 		align-items: center;
 		gap: 5px;
 	}
+}
+// table variant for admin manage lists, toggled via JS
+div.plain-list.table {
+	display: table; //mimics the old <table> structure
+	div.list-entry.centered {
+		display: table-row;
+		&:nth-child(1){display:table-row !important;} //show the table style headers (normally hidden for grid view)
+		
+		div{
+			display:table-cell;
+			width:auto; //width reset to default (set value in the grid view)
+			padding:0px 15px;
+		}
+		&.largefile div{ padding:0px 2px;}
+		div.header-label{display:none;} // hide labels used in the grid view
+	}
+
 }
 
 @media (hover: none) {

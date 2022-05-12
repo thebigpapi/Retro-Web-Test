@@ -2,10 +2,8 @@
     <div class="header-label">Name</div>
     <div>{{object.getName()}}</div>
 
-    {% if object.getWebsite()|length > 0 %}
-        <div class="header-label">Website</div>
-        <div><a href="{{object.getWebsite()}}">{{object.getWebsite()}}</a></div>
-    {% endif %}
+    <div class="header-label">Website</div>
+    <div>{% if object.getWebsite()|length > 0 %}<a href="{{object.getWebsite()}}">{{object.getWebsite()}}</a>{% endif %}</div>
 
     <div class="header-label">Actions</div>
     <div class="toolbar toolbar-thin">

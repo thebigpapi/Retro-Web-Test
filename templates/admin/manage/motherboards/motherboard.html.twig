@@ -1,12 +1,6 @@
 <div class="list-entry centered">
     <div class="header-label">Manufacturer</div>
-    <div>
-        {% if object.getManufacturer() is not null %}
-            {{object.getManufacturer().getShortNameIfExist()}}
-        {% else %}
-            Unknown
-        {% endif %}
-    </div>
+    <div>{{ object.getManufacturer() ? object.getManufacturer().getShortNameIfExist() : 'Unknown' }}</div>
 
     <div class="header-label">Name</div>
     <div>{{object.getName()}}</div>
@@ -15,7 +9,7 @@
     <div>{{object.getLastEdited()|date("Y-m-d, H:i:s", "GMT") }} GMT</div>
     
     <div class="header-label">Actions</div>
-    <div class="toolbar toolbar-thin">
+    <div class="toolbar toolbar-thin" style="display:flex;flex-wrap: nowrap;">
         <a class="button" href="./motherboards/motherboards/{{ object.getId() }}/edit/">
             <img src="{{ absolute_url(asset('build/icons/edit.svg')) }}" alt="" width="20">
             <span>Edit</span>

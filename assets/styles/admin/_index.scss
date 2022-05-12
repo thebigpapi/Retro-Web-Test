@@ -2,7 +2,7 @@ div.show-nav {
 	@include noselect();
 	flex-grow: 1;
 	display: flex;
-	align-items: end;
+	//align-items: end;
 	flex-wrap: wrap;
 	gap: 2px;
 

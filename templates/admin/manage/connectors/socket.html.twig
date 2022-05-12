@@ -1,13 +1,10 @@
 <div class="list-entry centered">
-    {% if object.getName()|length > 0 %}
-        <div class="header-label">Name</div>
-        <div>{{object.getName()}}</div>
-    {% endif %}
 
-    {% if object.getType()|length > 0 %}
-        <div class="header-label">Type</div>
-        <div>{{object.getType()}}</div>
-    {% endif %}
+    <div class="header-label">Name</div>
+    <div>{{object.getName()|length > 0 ? object.getName()}}</div>
+
+    <div class="header-label">Type</div>
+    <div>{{object.getType()|length > 0 ? object.getType()}}</div>
 
     <div class="header-label">Actions</div>
     <div class="toolbar toolbar-thin">

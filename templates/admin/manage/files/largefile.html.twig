@@ -1,11 +1,10 @@
-<div class="list-entry centered">
+<div class="list-entry centered largefile">
 	<div class="header-label">Name</div>
 	<div>{{object.getName()}}</div>
 
-	{% if object.getFileVersion()|length > 0 %}
-		<div class="header-label">Version</div>
-		<div>{{object.getFileVersion()}}</div>
-	{% endif %}
+	<div class="header-label">Version</div>
+	<div>{{object.getFileVersion()|length > 0 ? object.getFileVersion()}}</div>
+
 
 	<div class="header-label">Release date</div>
 	<div>{{object.getReleaseDateString()}}</div>

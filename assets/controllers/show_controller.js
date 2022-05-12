@@ -51,4 +51,16 @@ export default class extends Controller {
         }
 
     }
+    show_table(){
+        let toggle = document.getElementById('table-switch');
+        let item = document.getElementsByClassName("plain-list")[0];
+        let item_class = item.getAttribute("class");
+        if (toggle.checked){
+            item.setAttribute("class", item_class + " table")
+        }
+        else{
+            item_class = item_class.substring(0,item_class.indexOf("table")-1);
+            item.setAttribute("class", item_class)
+        }
+    }
 }

@@ -5,15 +5,12 @@
     <div class="header-label">Name</div>
     <div>{{object.getName()}}</div>
 
-    {% if object.getMajorVersion()|length > 0 %}
-        <div class="header-label">Major version</div>
-        <div>{{object.getMajorVersion()}}</div>
-    {% endif %}
+    <div class="header-label">Major version</div>
+    <div>{{object.getMajorVersion()|length > 0 ? object.getMajorVersion()}}</div>
 
-    {% if object.getMinorVersion()|length > 0 %}
-        <div class="header-label">Minor version</div>
-        <div>{{object.getMinorVersion()}}</div>
-    {% endif %}
+
+    <div class="header-label">Minor version</div>
+    <div>{{object.getMinorVersion()|length > 0 ? object.getMinorVersion()}}</div>
 
     <div class="header-label">Actions</div>
     <div class="toolbar toolbar-thin">

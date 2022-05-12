@@ -5,10 +5,8 @@
     <div class="header-label">Name</div>
     <div>{{object.getName()}}</div>
 
-    {% if object.getCore()|length > 0 %}
-        <div class="header-label">Core</div>
-        <div>{{object.getCore()}}</div>
-    {% endif %}
+    <div class="header-label">Core</div>
+    <div>{{ object.getCore()|length > 0 ? object.getCore()}}</div>
 
     <div class="header-label">Speed</div>
     {% if object.getSpeed != object.getFsb() %}
@@ -17,10 +15,8 @@
         <div>{{ object.getSpeed().getValueWithUnit() }}</div>
     {% endif %}
 
-    {% if object.getCachesWithValue()|length > 0 %}
-        <div class="header-label">Cache</div>
-        <div>{{ object.getCachesWithValue() }}</div>
-    {% endif %}
+    <div class="header-label">Cache</div>
+    <div>{{ object.getCachesWithValue()|length > 0 ? object.getCachesWithValue() }}</div>
 
     <div class="header-label">Other specs</div>
     <div class="tag-container">

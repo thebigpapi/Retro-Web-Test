@@ -1,6 +1,29 @@
 {% if objectList is not empty %}
     {{ knp_pagination_render(objectList, 'macros/pagination.html.twig') }}
-    <div class="plain-list {% if entityName == "processor" %}editor-view{% endif %}{% if entityName == "coprocessor" %}list-bios{% endif %}">
+    <div class="plain-list {% if entityName == "processor" %}w400p{% endif %}{% if entityName == "coprocessor" %}w300p{% endif %}">
+        {% if entityName == "processor" %}<div class="list-entry centered" style="font-style:italic;display:none;">
+            <div>Manufacturer</div>
+            <div>Name</div>
+            <div>Core</div>
+            <div>Speed</div>
+            <div>Cache</div>
+            <div>Other specs</div>
+            <div>Actions</div>
+        </div>{% endif %}
+        {% if entityName == "coprocessor" %}<div class="list-entry centered" style="font-style:italic;display:none;">
+            <div>Manufacturer</div>
+            <div>Name</div>
+            <div>Speed</div>
+            <div>Actions</div>
+        </div>{% endif %}
+        {% if entityName == "platform" %}<div class="list-entry centered" style="font-style:italic;display:none;">
+            <div>Name</div>
+            <div>Actions</div>
+        </div>{% endif %}
+        {% if entityName == "instructionset" %}<div class="list-entry centered" style="font-style:italic;display:none;">
+            <div>Name</div>
+            <div>Actions</div>
+        </div>{% endif %}
         {% for object in objectList %}
             {% include 'admin/manage/processingunits/' ~ entityName ~ '.html.twig' with {'object':object} %}	
         {% endfor %}

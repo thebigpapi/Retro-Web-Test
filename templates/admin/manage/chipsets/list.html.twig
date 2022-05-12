@@ -1,6 +1,24 @@
 {% if objectList is not empty %}
     {{ knp_pagination_render(objectList, 'macros/pagination.html.twig') }}
-    <div class="plain-list {% if entityName == "chipset" or entityName == "part" %}editor-view{% endif %}">
+    <div class="plain-list {% if entityName == "chipset" or entityName == "part" %}w400p{% endif %}">
+        {% if entityName == "chipset" %}<div class="list-entry centered" style="font-style:italic;display:none;">
+            <div>Manufacturer</div>
+            <div>Part number</div>
+            <div>Name</div>
+            <div>Parts</div>
+            <div>Release date</div>
+            <div>Action</div>
+        </div>{% endif %}
+        {% if entityName == "part" %}
+        <div class="list-entry centered" style="font-style:italic;display:none;">
+            <div>Manufacturer</div>
+            <div>Part number</div>
+            <div>Name</div>
+            <div>Rank</div>
+            <div>Documentation</div>
+            <div>Images</div>
+            <div>Action</div>
+        </div>{% endif %}
         {% for object in objectList %}
             {% include 'admin/manage/chipsets/' ~ entityName ~ '.html.twig' with {'object':object} %}	
         {% endfor %}

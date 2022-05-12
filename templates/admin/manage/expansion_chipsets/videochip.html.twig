@@ -2,15 +2,11 @@
     <div class="header-label">Manufacturer</div>
     <div>{{object.getManufacturer().getShortNameIfExist()}}</div>
 
-    {% if object.getName()|length > 0 %}
-        <div class="header-label">Name</div>
-        <div>{{object.getName()}}</div>
-    {% endif %}
+    <div class="header-label">Name</div>
+    <div>{{object.getName()|length > 0 ? object.getName()}}</div>
 
-    {% if object.getChipName()|length > 0 %}
-        <div class="header-label">Part number</div>
-        <div>{{object.getChipName()}}</div>
-    {% endif %}
+    <div class="header-label">Part number</div>
+    <div>{{object.getChipName()|length > 0 ? object.getChipName()}}</div>
 
     <div class="header-label">Actions</div>
     <div class="toolbar toolbar-thin">

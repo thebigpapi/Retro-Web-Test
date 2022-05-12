@@ -1,6 +1,24 @@
 {% if objectList is not empty %}
     {{ knp_pagination_render(objectList, 'macros/pagination.html.twig') }}
-    <div class="plain-list {% if entityName == "creditor" %}editor-view{% endif %}{% if entityName == "issue" %}list-bios{% endif %}">
+    <div class="plain-list {% if entityName == "creditor" %}w400p{% endif %}{% if entityName == "issue" %}w300p{% endif %}">
+        {% if entityName == "manufacturer" %}<div class="list-entry centered" style="font-style:italic;display:none;">
+            <div>Name</div>
+            <div>Short name</div>
+            <div>Actions</div>
+        </div>{% endif %}
+        {% if entityName == "issue" %}<div class="list-entry centered" style="font-style:italic;display:none;">
+            <div>Description</div>
+            <div>Actions</div>
+        </div>{% endif %}
+        {% if entityName == "freq" %}<div class="list-entry centered" style="font-style:italic;display:none;">
+            <div>Speed</div>
+            <div>Actions</div>
+        </div>{% endif %}
+        {% if entityName == "creditor" %}<div class="list-entry centered" style="font-style:italic;display:none;">
+            <div>Name</div>
+            <div>Website</div>
+            <div>Actions</div>
+        </div>{% endif %}
         {% for object in objectList %}
             {% include 'admin/manage/miscs/' ~ entityName ~ '.html.twig' with {'object':object} %}	
         {% endfor %}
