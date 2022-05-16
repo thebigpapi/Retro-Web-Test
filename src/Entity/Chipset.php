@@ -69,7 +69,7 @@ class Chipset
     private $drivers;
 
     /**
-     * @ORM\Column(type="string", length=4096, nullable=true)
+     * @ORM\Column(type="string", length=8192, nullable=true)
      */
     private $description;
 
