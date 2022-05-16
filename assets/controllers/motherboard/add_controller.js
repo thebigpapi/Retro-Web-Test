@@ -158,9 +158,12 @@ export default class extends Controller {
         let frequencies = document.getElementById("cpuSpeed-fields-list").children;
         let processors = document.getElementById("processors-fields-list").children;
         let coprocessors = document.getElementById("coprocessors-fields-list").children;
+        let slug = document.getElementById("motherboard_form_slug");
+        
         let form = _this.element;
 
         let params = new FormData();
+        params.set(slug.name, slug.value);
         for (let socket of sockets) {
             let element = socket.children[0];
             params.set(element.name, element.value);
@@ -189,8 +192,8 @@ export default class extends Controller {
                 body: params
             });
             let parser = new DOMParser();
+            //console.log(await rawResponse.text());
             let parsedResponse = parser.parseFromString(await rawResponse.text(), "text/html");
-
             document.getElementById("cpuSockets-fields-list").innerHTML = parsedResponse.getElementById("cpuSockets-fields-list").innerHTML;
             document.getElementById("processorPlatformTypes-fields-list").outerHTML = parsedResponse.getElementById("processorPlatformTypes-fields-list").outerHTML;
             document.getElementById("processorPlatformTypes-fields-list").innerHTML = parsedResponse.getElementById("processorPlatformTypes-fields-list").innerHTML;
