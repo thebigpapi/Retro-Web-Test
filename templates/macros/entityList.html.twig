@@ -5,7 +5,7 @@
 		{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}">
 		{% if entities is not empty %}
 			{% for entity in entities %}
-				<div class="editor-row" style="padding:0">
+				<div class="editor-row nopad">
 					{{ form_widget(entity, {'attr': {'style': 'display:inline-block;'}})|replace({'<option value="">': '<option label=" " value="">'})|raw }}
 					{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
 				</div>

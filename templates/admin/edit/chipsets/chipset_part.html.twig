@@ -38,9 +38,9 @@
 				<!-- Description -->
 				<div class="show-general" id="sh-general">
 					<!-- Rank -->
-					<div class="quick-spec-table" style="padding:0;">
+					<div class="quick-spec-table nopad">
 						<div class="quick-spec-head">Rank</div>
-						<div class="editor-row" style="padding:0"><div class="editor-form-widget">
+						<div class="editor-row nopad"><div class="editor-form-widget">
 							<div>{{ form_widget(form.rank) }}</div>
 						</div></div>
 					</div>
@@ -48,14 +48,14 @@
 				</div>
 				<div class="show-downloads" id="sh-downloads">
 					<!-- CHIP ALIASES -->
-					<div class="quick-spec-table" data-controller="collection" style="padding:0;">
+					<div class="quick-spec-table nopad" data-controller="collection">
 						<div class="quick-spec-head editor">Chip Aliases
 						{% include 'macros/buttons.html.twig' with {'type':'add', 'action': 'chip.chipAliases'} %}</div>
 						<div id="chip.chipAliases-fields-list" data-widget-counter="{{ form.chip.chipAliases|length }}" data-prototype="{{ form_widget(form.chip.chipAliases.vars.prototype, {'attr': {'style': 'display:inline-block;'}})|e }} 
 							{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}">
 							{% if form.chip.chipAliases is not empty %}
 								{% for alias in form.chip.chipAliases %}
-									<div class="editor-row" style="padding:0">
+									<div class="editor-row nopad">
 										{{ form_widget(alias, {'attr': {'style': 'display:inline-block;'}})|replace({'<option value="">': '<option label=" " value="">'})|raw }}
 										{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
 									</div>
@@ -86,7 +86,7 @@
 								<div>{{ form_widget(form.documentations.vars.prototype.file_name, {'attr': {'style': 'width:100%'}} )|e }}</div>
 								{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}">
 							{% for documentation in form.documentations %}
-								<div class="editor-row manual" style="padding:0">
+								<div class="editor-row manual nopad">
 									<div>{{ form_widget(documentation.link_name, {'attr': {'style': 'width:100%'}}) }}</div>
 									<div>{{ form_widget(documentation.language, {'attr': {'style': 'width:100%'}}) }}</div>
 									<div>{{ form_widget(documentation.manualFile, {'attr': {'style': 'width:100%'}}) }}</div>

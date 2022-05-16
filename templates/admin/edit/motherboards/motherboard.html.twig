@@ -53,7 +53,7 @@
 								{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
 							</div>" data-controller="collection">
 							{% for alias in form.motherboardAliases %}
-								<div class="editor-row" style="padding:0">
+								<div class="editor-row nopad">
 									{{ form_widget(alias.manufacturer)|replace({'<option value="">': '<option label=" " value="">'})|raw }}
 									{{ form_widget(alias.name) }}
 									{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
@@ -74,7 +74,7 @@
 								{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
 							</div>" data-controller="collection">
 							{% for redirection in form.redirections %}
-								<div class="editor-row" style="padding:0">
+								<div class="editor-row nopad">
 									{{ form_widget(redirection.source) }}
 									{{ form_widget(redirection.sourceType) }}
 									{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
@@ -95,7 +95,7 @@
 								{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
 							</div>" data-controller="collection">
 							{% for psuconn in form.psuConnectors %}
-								<div class="editor-row" style="padding:0">
+								<div class="editor-row nopad">
 									{{ form_widget(psuconn) }}
 									{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
 									{{ form_errors(psuconn) }}
@@ -107,37 +107,37 @@
 					<hr><!-- Form factor -->
 					<div class="quick-spec-table" style="padding:0;">
 						<div class="quick-spec-head editor">Form factor</div>
-						<div class="editor-row" style="padding:0"><div class="editor-form-widget">
+						<div class="editor-row nopad"><div class="editor-form-widget">
 							<div>{{ form_widget(form.formFactor)|replace({'<option value="">': '<option label=" " value="">'})|raw }}</div>
 						</div></div>
 					</div><!-- Chipset -->
 					<div class="quick-spec-table" style="padding:0;">
 						<div class="quick-spec-head editor">Chipset</div>
-						<div class="editor-row" style="padding:0"><div class="editor-form-widget">
+						<div class="editor-row nopad"><div class="editor-form-widget">
 							<div>{{ form_widget(form.chipset)|replace({'<option value="">': '<option label=" " value="">'})|raw }}</div>
 						</div></div>
 					</div><!-- Dimensions -->
 					<div class="quick-spec-table" style="padding:0;">
 						<div class="quick-spec-head editor">Dimensions</div>
-						<div class="editor-row" style="padding:0"><div class="editor-form-widget">
+						<div class="editor-row nopad"><div class="editor-form-widget">
 							<div>{{ form_widget(form.dimensions) }}</div>
 						</div></div>
 					</div><!-- Video Chipset -->
 					<div class="quick-spec-table" style="padding:0;">
 						<div class="quick-spec-head editor">Video chipset</div>
-						<div class="editor-row" style="padding:0"><div class="editor-form-widget">
+						<div class="editor-row nopad"><div class="editor-form-widget">
 							<div>{{ form_widget(form.videoChipset)|replace({'<option value="">': '<option label=" " value="">'})|raw }}</div>
 						</div></div>
 					</div><!-- Max video RAM -->
 					<div class="quick-spec-table" style="padding:0;">
 						<div class="quick-spec-head editor">Max video RAM</div>
-						<div class="editor-row" style="padding:0"><div class="editor-form-widget">
+						<div class="editor-row nopad"><div class="editor-form-widget">
 							<div>{{ form_widget(form.maxVideoRam)|replace({'<option value="">': '<option label=" " value="">'})|raw }}</div>
 						</div></div>
 					</div><!-- Audio Chipset -->
 					<div class="quick-spec-table" style="padding:0;">
 						<div class="quick-spec-head editor">Audio chipset</div>
-						<div class="editor-row" style="padding:0"><div class="editor-form-widget">
+						<div class="editor-row nopad"><div class="editor-form-widget">
 							<div>{{ form_widget(form.audioChipset)|replace({'<option value="">': '<option label=" " value="">'})|raw }}</div>
 						</div></div>
 					</div><!-- Max system RAM -->
@@ -149,7 +149,7 @@
 								{{ form_widget(form.motherboardMaxRams.vars.prototype.note)|e }}
 								{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}">
 							{% for maxRam in form.motherboardMaxRams %}
-								<div class="editor-row" style="padding:0">
+								<div class="editor-row nopad">
 									{{ form_widget(maxRam.max_ram) }}
 									{{ form_widget(maxRam.note) }}
 									{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
@@ -160,14 +160,14 @@
 						</div>
 					</div>
 					<hr><!-- Cache -->					
-					<div class="quick-spec-table" data-controller="collection" style="padding:0">
+					<div class="quick-spec-table nopad" data-controller="collection">
 						<div class="quick-spec-head editor">Cache
 						{% include 'macros/buttons.html.twig' with {'type':'add', 'action': 'cacheSize'} %}</div>
 						<div class="append_table" id="cacheSize-fields-list" data-controller="collection" data-widget-counter="{{ form.cacheSize|length }}" data-prototype="
 								{{ form_widget(form.cacheSize.vars.prototype)|e }}
 								{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}">
 							{% for size in form.cacheSize %}
-								<div class="editor-row" style="padding:0">
+								<div class="editor-row nopad">
 									{{ form_widget(size) }}
 									{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
 									{{ form_errors(size) }}
@@ -195,7 +195,7 @@
 							{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
 							" data-controller="collection">
 							{% for port in form.motherboardIoPorts %}
-								<div class="editor-row" style="padding:0">
+								<div class="editor-row nopad">
 									{{ form_widget(port.count, {'attr': {'class': 'num'}}) }} x
 									{{ form_widget(port.io_port, {'attr': {'style': 'width:50%'}}) }}
 									{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
@@ -211,7 +211,7 @@
 							{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
 							" data-controller="collection">
 							{% for slot in form.motherboardExpansionSlots %}
-								<div class="editor-row" style="padding:0">
+								<div class="editor-row nopad">
 									{{ form_widget(slot.count, {'attr': {'class': 'num'}}) }} x
 									{{ form_widget(slot.expansion_slot, {'attr': {'style': 'width:50%'}}) }}
 									{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
@@ -229,7 +229,7 @@
 							{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
 							" data-controller="collection">
 							{% for issue in form.knownIssues %}
-								<div class="editor-row" style="padding:0">
+								<div class="editor-row nopad">
 									{{ form_widget(issue, {'attr': {'style': 'width:80%'}}) }}
 									{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
 								</div>
@@ -261,7 +261,7 @@
 								{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
 								" data-controller="collection">
 								{% for driver in form.drivers %}
-										<div class="editor-row drv" style="padding:0">
+										<div class="editor-row drv nopad">
 											<div>{{ form_widget(driver.largeFile, {'attr': {'style': 'width:100%'}} )|replace({'<option value="">': '<option label=" " value="">'})|raw }}</div>
 											<div style="display:flex;justify-content:center;">{{ form_widget(driver.isRecommended, {'attr': {'style': 'height:18px;width:18px;margin:0;'}} ) }}</div>
 											{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
@@ -299,7 +299,7 @@
 								{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
 								">
 							{% for bios in form.motherboardBios %}
-								<div class="editor-row bios" style="padding:0">
+								<div class="editor-row bios nopad">
 									<div>{{ form_widget(bios.manufacturer, {'attr': {'style': 'width:100%'}}) }}</div>
 									<div>{{ form_widget(bios.postString, {'attr': {'style': 'width:100%'}}) }}</div>
 									<div>{{ form_widget(bios.note, {'attr': {'style': 'width:100%'}}) }}</div>
@@ -334,7 +334,7 @@
 								<div>{{ form_widget(form.manuals.vars.prototype.file_name, {'attr': {'style': 'width:100%'}} )|e }}</div>
 								{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}">
 							{% for manual in form.manuals %}
-								<div class="editor-row manual" style="padding:0">
+								<div class="editor-row manual nopad">
 									<div>{{ form_widget(manual.link_name, {'attr': {'style': 'width:100%'}}) }}</div>
 									<div>{{ form_widget(manual.language, {'attr': {'style': 'width:100%'}}) }}</div>
 									<div>{{ form_widget(manual.manualFile, {'attr': {'style': 'width:100%'}}) }}</div>
@@ -358,7 +358,7 @@
 							{{ form_widget(form.cpuSockets.vars.prototype, {'attr': {'style': 'width:100%;max-width:220px'}})|e }}
 							{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}">
 								{% for cpuSocket in form.cpuSockets %}
-									<div class="editor-row" style="padding:0">{{ form_widget(cpuSocket, {'attr': {'style': 'width:100%;max-width:220px'}}) }}
+									<div class="editor-row nopad">{{ form_widget(cpuSocket, {'attr': {'style': 'width:100%;max-width:220px'}}) }}
 										{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
 										{{ form_errors(cpuSocket) }}
 									</div>
@@ -373,7 +373,7 @@
 							{{ form_widget(form.processorPlatformTypes.vars.prototype)|e }}
 							{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}">
 								{% for platform in form.processorPlatformTypes %}
-									<div class="editor-row" style="padding:0">{{ form_widget(platform) }}
+									<div class="editor-row nopad">{{ form_widget(platform) }}
 										{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
 										{{ form_errors(platform) }}
 									</div>
@@ -387,7 +387,7 @@
 						<div style="width:100%" id="cpuSpeed-fields-list" data-widget-counter="{{ form.cpuSpeed|length }}" data-prototype="
 							{{ form_widget(form.cpuSpeed.vars.prototype)|e }} {% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}">
 								{% for speed in form.cpuSpeed %}
-									<div class="editor-row" style="padding:0">{{ form_widget(speed) }}
+									<div class="editor-row nopad">{{ form_widget(speed) }}
 										{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
 									</div>
 									{{ form_errors(speed) }}

@@ -61,7 +61,7 @@
 								{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
 								" data-controller="collection">
 								{% for driver in form.drivers %}
-										<div class="editor-row drv" style="padding:0">
+										<div class="editor-row drv nopad">
 											<div>{{ form_widget(driver.largeFile, {'attr': {'style': 'width:100%'}} )|replace({'<option value="">': '<option label=" " value="">'})|raw }}</div>
 											<div style="display:flex;justify-content:center;">{{ form_widget(driver.isRecommended, {'attr': {'style': 'height:18px;width:18px;margin:0;'}} ) }}</div>
 											{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
@@ -93,7 +93,7 @@
 								<div>{{ form_widget(form.documentations.vars.prototype.file_name, {'attr': {'style': 'width:100%'}} )|e }}</div>
 								{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}">
 							{% for documentation in form.documentations %}
-								<div class="editor-row manual" style="padding:0">
+								<div class="editor-row manual nopad">
 									<div>{{ form_widget(documentation.link_name, {'attr': {'style': 'width:100%'}}) }}</div>
 									<div>{{ form_widget(documentation.language, {'attr': {'style': 'width:100%'}}) }}</div>
 									<div>{{ form_widget(documentation.manualFile, {'attr': {'style': 'width:100%'}}) }}</div>
@@ -122,7 +122,7 @@
 					{% include 'macros/buttons.html.twig' with {'type':'del', 'count':2} %}">
 					{% if form.chipsetParts is not empty %}
 						{% for part in form.chipsetParts %}
-							<div class="editor-row" style="padding:0">
+							<div class="editor-row nopad">
 								{{ form_widget(part, {'attr': {'style': 'width:100%;margin-top:4px;', 'data-action': 'change->collection#addLinkOverride'}}) }}
 								{% include 'macros/buttons.html.twig' with {'type':'del', 'count':2} %}
 							</div>
@@ -143,7 +143,7 @@
 					{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}">
 					{% if form.biosCodes is not empty %}
 						{% for part in form.biosCodes %}
-							<div class="editor-row" style="padding:0">
+							<div class="editor-row nopad">
 								{{ form_widget(part.biosManufacturer, {'attr': {'style': 'display:inline-block;width:30%;'}}) }}
 								{{ form_widget(part.code, {'attr': {'style': 'display:inline-block;width:30%;'}}) }}
 								{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
