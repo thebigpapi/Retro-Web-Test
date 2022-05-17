@@ -40,8 +40,6 @@ export default class extends Controller {
         list.setAttribute("data-widget-counter", counter);
         let newElem = document.createElement('div');
         newElem.setAttribute("class", "editor-row");
-        if (list.id === 'images-fields-list' || list.id === 'chip.images-fields-list' || list.id === 'processingUnit.chip.images-fields-list')
-            newElem.setAttribute("class", "addform");
         if (list.id === 'drivers-fields-list')
             newElem.setAttribute("class", newElem.getAttribute("class") + " drv");
         if (list.id === 'motherboardBios-fields-list')
@@ -49,6 +47,8 @@ export default class extends Controller {
         if (list.id === 'manuals-fields-list' || list.id === 'documentations-fields-list')
             newElem.setAttribute("class", newElem.getAttribute("class") + " manual");
         newElem.setAttribute("class", newElem.getAttribute("class") + " nopad");
+        if (list.id === 'images-fields-list' || list.id === 'chip.images-fields-list' || list.id === 'processingUnit.chip.images-fields-list')
+            newElem.setAttribute("class", "addform");
         newElem.innerHTML = newWidget;
         list.appendChild(newElem);
         this.addLink();

@@ -352,3 +352,7 @@ span.string-bios {
 @media screen and(max-width:500px){
     div.show-table.drv, div.show-table.bios {div:nth-child(3), div:nth-child(4){display:none;}} /* drivers and BIOSes */
 }
+/* media queries for gslide box size */
+@media (min-width: 770px){.gslide-image img {min-height:66vh;max-height:67vh;}}
+@media (min-width: 1200px){.gslide-image img {min-height:90vh;max-height:91vh;}}
+@media (min-width: 1400px) {.gslide-image img {min-height:88vh;max-height:90vh;}}

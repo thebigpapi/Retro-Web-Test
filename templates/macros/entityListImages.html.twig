@@ -30,7 +30,7 @@
 				<div class="imgp"><span>License:</span>{{ form_widget(image.license)}}</div>
 				<div class="imgp"><span>Notes:</span>{{ form_widget(image.description)}}</div>
 				<div class="imgp">File:{{ form_widget(image.file_name) }}</div>
-				{% include 'macros/buttons.html.twig' with {'type':'del', 'count':-1} %}
+				{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
 			</div>
 		{% endfor %}
 		{{ form_errors(entities) }}
