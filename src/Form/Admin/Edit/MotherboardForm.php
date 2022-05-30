@@ -114,7 +114,7 @@ class MotherboardForm extends AbstractType
             ])
             ->add('chipset', EntityType::class, [
                 'class' => Chipset::class,
-                'choice_label' => 'getFullReference',
+                'choice_label' => 'getFullName',
                 'multiple' => false,
                 'expanded' => false,
                 'choices' => $options['chipsets'],
