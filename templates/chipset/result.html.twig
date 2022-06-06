@@ -30,22 +30,17 @@
 									<img src="{{ vich_uploader_asset(image, 'imageFile') | imagine_filter('motherboard_show_thumb') }}" alt="" title="Click to preview image"></a>
 								{% endfor %}
 								{% else %}
-								<img src="{{ absolute_url(asset('build/images/chipset/image-missing.webp')) }}" title="no images available :(">
+								<img src="{{ absolute_url(asset('build/images/chipset/image-missing.webp')) }}" loading="lazy" width="250" height="200" title="no images available :(">
 							{% endif %}{% endfor %}
 						{% else %}
-							<img src="{{ absolute_url(asset('build/images/chipset/image-missing.webp')) }}" title="no images available :(">
+							<img src="{{ absolute_url(asset('build/images/chipset/image-missing.webp')) }}" loading="lazy" width="250" height="200" title="no images available :(">
 						{% endif %}
 						</div>
 						<a href="{{ path("chipset_show", {id: chipset.getId()}) }}" title="Click to visit page">
 							<div class="perk-name">{{ chipset.getFullName() }}</div>
 							<div class="perk-date">{% if chipset.getParts() is not empty %}<span class="results-alias">
 									<small>Parts: {{ chipset.getParts() }}</small>
-								</span>{% endif %}{#
-							{% if chipset.getChipsetParts() is not empty %}{% for chipPart in chipset.getChipsetParts() %}
-								<span class="results-alias">
-									<small>{{ chipPart.getFullName() }}</small>
-								</span>
-							{% endfor %}{% endif %}#}</div>
+								</span>{% endif %}</div>
 						</a>
 					</div>	
 				{% endfor %}

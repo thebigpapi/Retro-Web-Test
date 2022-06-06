@@ -26,10 +26,10 @@
 						{% for image in motherboard.getImages()|filter(a => a.motherboardImageType.id in [1, 2])|sort((a, b) => b.motherboardImageType <=> a.motherboardImageType)|slice(0, 1) %}
 							<a href="{{ vich_uploader_asset(image, 'imageFile')}}" class="glightbox"><img src="{% if vich_uploader_asset(image, 'imageFile') | ext != "svg" %}
 								{{ vich_uploader_asset(image, 'imageFile') | imagine_filter('motherboard_show_thumb') }}{% else %}
-								{{ vich_uploader_asset(image, 'imageFile')}}{% endif %}" alt="" title="Click to preview image"></a>
+								{{ vich_uploader_asset(image, 'imageFile')}}{% endif %}" alt="" loading="lazy" width="250" height="200" title="Click to preview image"></a>
 						{% endfor %}
 						{% else %}
-							<img src="{{ absolute_url(asset('build/images/motherboard/image-missing.webp')) }}" title="no images available :(">
+							<img src="{{ absolute_url(asset('build/images/motherboard/image-missing.webp')) }}" loading="lazy" width="250" height="200" title="no images available :(">
 						{% endif %}</div>
 						<a href="{{ path("motherboard_show", {id:motherboard.getId()}) }}" title="Click to visit page">
 							<div class="perk-name">{{ motherboard.getManufacturerShortNameIfExist() }}&nbsp;{{ motherboard.name }}</div>

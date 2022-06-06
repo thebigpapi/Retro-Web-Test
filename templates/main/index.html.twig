@@ -8,19 +8,19 @@
 {% block body %}<div class="title">Where do you want to go today?</div>
 	<div class="index-buttons">
 		<a href="{{ path("motherboard_search") }}">
-			<img src="{{ absolute_url(asset('build/images/index/motherboard.png')) }}" alt="">
+			<img src="{{ absolute_url(asset('build/images/index/motherboard.webp')) }}" alt="mobo" width="210" height="180">
 			<div>Motherboards</div><div>({{moboCount}}&nbsp;entries)</div>
 		</a>
 		<a href="#">
-			<img src="{{ absolute_url(asset('build/images/index/card_wip.png')) }}" alt="">
+			<img src="{{ absolute_url(asset('build/images/index/card.webp')) }}" alt="cards" width="210" height="180">
 			<div>Expansion cards</div><div>[WIP]</div>
 		</a>
 		<a href="{{ path("bios_search") }}">
-			<img src="{{ absolute_url(asset('build/images/index/awchip.png')) }}" alt="">
+			<img src="{{ absolute_url(asset('build/images/index/awchip.webp')) }}" alt="bios" width="210" height="180">
 			<div>BIOS images</div><div>({{biosCount}}&nbsp;files)</div>
 		</a>
 		<a href="{{ path("chipset_search") }}">
-			<img src="{{ absolute_url(asset('build/images/index/440bxchip.png')) }}" alt="">
+			<img src="{{ absolute_url(asset('build/images/index/440bxchip.webp')) }}" alt="chipset" width="210" height="180">
 			<div>Chipsets</div><div>({{chipCount}}&nbsp;entries)</div>
 		</a>
 	</div>
@@ -35,10 +35,10 @@
 					{% for image in motherboard.getImages()|filter(a => a.motherboardImageType.id in [1, 2])|sort((a, b) => b.motherboardImageType <=> a.motherboardImageType)|slice(0, 1) %}
 						<img src="{% if vich_uploader_asset(image, 'imageFile') | ext != "svg" %}
 							{{ vich_uploader_asset(image, 'imageFile') | imagine_filter('motherboard_show_thumb') }}{% else %}
-							{{ vich_uploader_asset(image, 'imageFile')}}{% endif %}" alt="" title="{% if image.description %}{{ image.description }}{% endif %}">
+							{{ vich_uploader_asset(image, 'imageFile')}}{% endif %}" alt="" loading="lazy" width="250" height="200" title="{% if image.description %}{{ image.description }}{% endif %}">
 					{% endfor %}
 					{% else %}
-						<img src="{{ absolute_url(asset('build/images/motherboard/image-missing.webp')) }}" title="no images available :(">
+						<img src="{{ absolute_url(asset('build/images/motherboard/image-missing.webp')) }}" alt="missing image" loading="lazy" width="250" height="200" title="no images available :(">
 					{% endif %}</div>
 					<div class="perk-name">{{ motherboard.getManufacturerShortNameIfExist() }}&nbsp;{{ motherboard.name }}</div>
 					<div class="perk-date">{{ motherboard.getLastEdited()|date("Y-m-d\\TH:i:s", "GMT") }}Z</div>

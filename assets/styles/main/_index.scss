@@ -26,6 +26,7 @@ div.index-buttons {
         transition: ease-in-out .15s box-shadow, ease-in-out .15s border-color, ease-in-out .15s color, ease-in-out .15s background-color;
 
         img {
+            width:auto;
             height: 85%;
         }
 
@@ -137,6 +138,8 @@ div.perks {
                 img,
                 a.glightbox img {
                     margin: auto;
+                    width:auto;
+                    height:auto;
                     max-width: 270px;
                     max-height: 270px;
                 }
