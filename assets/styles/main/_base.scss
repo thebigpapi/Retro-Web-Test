@@ -278,7 +278,7 @@ a.button-widget {
     padding: 3px;
     margin-top:2px;
 	background: $accent-bkg-light;
-	color: $head-frg-light;
+	color: $accent-frg-light;
 	transition: ease-in-out $anim-duration color;
 	@media (prefers-color-scheme: dark) {
 		background: $accent-bkg-dark;
