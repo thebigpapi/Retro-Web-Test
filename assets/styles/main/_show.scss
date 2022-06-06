@@ -67,7 +67,7 @@ div.main-strip {
         flex: 2 1 70%;
         display: flex;
         flex-direction: column;        
-
+        
         div.show-nav {
             @include noselect();
             flex-grow: 1;
@@ -122,6 +122,10 @@ div.main-strip {
 
         div.internal-content {
             padding: 5px;
+            background-color: $container-bkg-light;
+            @media (prefers-color-scheme: dark) {
+                background-color: $container-bkg-dark;
+            }
             /* === General page elements === */
             div.show-general,
             div.show-downloads,
