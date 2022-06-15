@@ -93,8 +93,7 @@ div.main-strip {
                 }
 
                 border-radius: 5px 5px 0px 0px;
-                border-bottom: thin solid transparent;
-
+                border: thin solid transparent;
                 &:hover {
                     transition: ease-in-out background-color $anim-duration, ease-in-out color $anim-duration;
                     color: $active-link-light;
@@ -108,11 +107,13 @@ div.main-strip {
             label:hover,
             input[name="tabs"]:checked+label {
                 transition: ease-in-out background-color $anim-duration, ease-in-out color $anim-duration;
-                background: $accent-bkg-light;
-                border-bottom: thin solid $active-link-light;
+                background: $container-bkg-light;
+                border: thin solid $content-frg-light;
+                border-bottom: thin solid $active-link-light;//background-color: $body-bkg-light;
 
                 @media (prefers-color-scheme: dark) {
-                    background: $accent-bkg-dark;
+                    background: $container-bkg-dark;
+                    border: thin solid $border-dark;
                     border-bottom: thin solid $active-link-dark;
                 }
             }
@@ -225,7 +226,7 @@ div.tag-container {
 }
 
 span.text-block {
-    border: 1px solid $border-light;
+    border: 1px solid #b5b5b5;
     border-radius: 4px;
     display: inline-block;
     margin: 2px;
@@ -234,7 +235,7 @@ span.text-block {
     gap: 4px;
 
     @media (prefers-color-scheme: dark) {
-        border: 1px solid $border-dark;
+        border: 1px solid #878787;
     }
 }
 

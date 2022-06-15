@@ -296,6 +296,7 @@ div.plain-list.table {
 			width:auto; //width reset to default (set value in the grid view)
 			padding:0px 15px;
 		}
+		&.bios div {padding: 3px 15px;}
 		&.largefile div{ padding:0px 2px;}
 		div.header-label{display:none;} // hide labels used in the grid view
 	}

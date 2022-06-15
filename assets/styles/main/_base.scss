@@ -277,7 +277,7 @@ a.button-widget {
     display: inline-block; 
     padding: 3px;
     margin-top:2px;
-	background: $accent-bkg-light;
+	background: $body-bkg-light;
 	color: $accent-frg-light;
 	transition: ease-in-out $anim-duration color;
 	@media (prefers-color-scheme: dark) {
@@ -286,7 +286,7 @@ a.button-widget {
 		border-color: $border-dark;
 	}
 	&:visited{
-		color: $head-frg-light;
+		color: $accent-frg-light;
 		@media (prefers-color-scheme: dark) {
 			color: $accent-frg-dark;
 		}
