@@ -141,6 +141,12 @@ class MotherboardController extends AbstractController
     {
         $motherboard = $motherboardRepository->findSlug($slug);
 
+        if (!$motherboard) {
+            throw $this->createNotFoundException(
+                'No $motherboard found for slug ' . $slug
+            );
+        }
+
         return $this->render('motherboard/show.html.twig', [
             'motherboard' => $motherboard,
             'controller_name' => 'MotherboardController',

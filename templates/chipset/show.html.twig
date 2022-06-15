@@ -50,7 +50,7 @@
 					<a class='button-widget' href="{{ chipset.getEncyclopediaLink() }}">
 	    				<img src='{{ absolute_url(asset('build/icons/show/data.svg')) }}' alt='' width='16' height='16' style='vertical-align:middle;padding:3px;'>Encyclopedia link</a>
 					{% endif %}
-					<a class='button-widget' href="{{ absolute_url(path('app_homepage')) }}motherboards/?chipsetId={{ chipset.getId() }}">
+					<a class='button-widget' href="{{ absolute_url(path('app_homepage')) }}motherboards/?chipsetId={{ chipset.getId() }}&amp;showImages=1">
 	    				<img src='{{ absolute_url(asset('build/icons/show/hardware.svg')) }}' alt='' width='16' height='16' style='vertical-align:middle;padding:3px;'>See all boards with this chipset</a>
 					<a class='button-widget' href="{{ absolute_url(path('app_homepage')) }}bios/?chipsetId={{ chipset.getId() }}">
 	    				<img src='{{ absolute_url(asset('build/icons/dw.svg')) }}' alt='' width='16' height='16' style='vertical-align:middle;padding:3px;'>See all BIOSes for this chipset</a>
