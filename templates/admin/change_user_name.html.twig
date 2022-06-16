@@ -1,11 +1,10 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Manage password
-{% endblock %}
+{% block title %}Manage username{% endblock %}
 
 {% block body %}
 <div class="title">
-	<b>Change password</b>	
+	<b>Change username</b>	
 </div>
 {{ form_start(form, {'method': 'POST'}) }}
 <div>	
@@ -13,28 +12,10 @@
 		<img src="{{ absolute_url(asset('build/icons/admin/keys.svg')) }}" width="128" alt="" style="justify-self: center">
 		<div class="search-form-entry">
 			<label class="search-form-label" for="search_name">
-				<span>Old password</span>
+				<span>New username</span>
 			</label>
 			<div class="search-form-widget">
-				<div>{{form_widget(form.old_password)}}</div>
-			</div>
-		</div>
-
-		<div class="search-form-entry">
-			<label class="search-form-label" for="search_name">
-				<span>New password</span>
-			</label>
-			<div class="search-form-widget">
-				<div>{{form_widget(form.new_password)}}</div>
-			</div>
-		</div>
-
-		<div class="search-form-entry">
-			<label class="search-form-label" for="search_name">
-				<span>New password confirm</span>
-			</label>
-			<div class="search-form-widget">
-				<div>{{form_widget(form.new_password_confirm)}}</div>
+				<div>{{form_widget(form.new_username)}}</div>
 			</div>
 		</div>
 	</div>

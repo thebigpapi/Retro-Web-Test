@@ -23,7 +23,7 @@ div.show-nav {
 		}
 
 		border-radius: 5px 5px 0px 0px;
-		border-bottom: thin solid transparent;
+		border: thin solid transparent;
 
 		&:hover {
 			transition: ease-in-out background-color $anim-duration, ease-in-out color $anim-duration;
@@ -38,13 +38,15 @@ div.show-nav {
 	label:hover,
 	label[checked] {
 		transition: ease-in-out background-color $anim-duration, ease-in-out color $anim-duration;
-		background: $accent-bkg-light;
-		border-bottom: thin solid $active-link-light;
+		background: $container-bkg-light;
+        border: thin solid $content-frg-light;
+        border-bottom: thin solid $active-link-light;//background-color: $body-bkg-light;
 
-		@media (prefers-color-scheme: dark) {
-			background: $accent-bkg-dark;
-			border-bottom: thin solid $active-link-dark;
-		}
+        @media (prefers-color-scheme: dark) {
+            background: $container-bkg-dark;
+            border: thin solid $border-dark;
+            border-bottom: thin solid $active-link-dark;
+        }
 	}
 	a label{ // admin buttons
 		color:$content-bkg-dark;

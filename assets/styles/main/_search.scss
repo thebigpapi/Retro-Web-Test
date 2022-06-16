@@ -299,7 +299,7 @@ div.plain-list.table {
 			padding:0px 15px;
 		}
 		&.bios div {padding: 6px 15px;}
-		&.bios.alt {
+		&.alt {
 			background:$accent-bkg-light;
 			@media (prefers-color-scheme: dark) {
 				background:$accent-bkg-dark;

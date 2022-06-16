@@ -216,4 +216,36 @@ class AdminController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
+    /**
+     * @Route("/admin/username", name="admin_change_user_name")
+     * @param Request $request
+     */
+    public function changeUserName(Request $request, EntityManagerInterface $entityManager, UserRepository $userRepository)
+    {
+        $form = $this->createFormBuilder()
+            ->add('new_username', TextType::class)
+            ->add('save', SubmitType::class)
+            ->getForm();
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $data = $form->getData();
+            $user = $userRepository->findOneBy(["username" => $this->getUser()->getUserIdentifier()]);
+            if (strlen($data['new_username']) > 4 && strlen($data['new_username']) < 32) {
+                if ($data['new_username'] === $user->getUsername()) {
+                    return new jsonresponse(array('error' => 'The username is identical, try again.'));
+                } else {
+                    $user->setUsername($data['new_username']);
+                    $entityManager->persist($user);
+                    $entityManager->flush();
+                    return new response("Username updated successfully ! Close this page and open TRW again.");
+                }
+            } else {
+                return new jsonresponse(array('error' => 'The username is invalid'));
+            }
+        }
+        return $this->render('admin/change_user_name.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
 }
