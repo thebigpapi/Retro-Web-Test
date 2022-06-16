@@ -285,6 +285,8 @@ div.plain-list {
 	}
 }
 // table variant for admin manage lists, toggled via JS
+@media screen and(min-width:651px){
+
 div.plain-list.table {
 	display: table; //mimics the old <table> structure
 	div.list-entry.centered {
@@ -296,12 +298,20 @@ div.plain-list.table {
 			width:auto; //width reset to default (set value in the grid view)
 			padding:0px 15px;
 		}
-		&.bios div {padding: 3px 15px;}
+		&.bios div {padding: 6px 15px;}
+		&.bios.alt {
+			background:$accent-bkg-light;
+			@media (prefers-color-scheme: dark) {
+				background:$accent-bkg-dark;
+			}
+		}
+		&.bios.nows{line-height:30px}
 		&.largefile div{ padding:0px 2px;}
 		div.header-label{display:none;} // hide labels used in the grid view
 	}
 
-}
+}}
+@media screen and(max-width:650px){div.list-entry.centered.head {display:none;}}
 
 @media (hover: none) {
 	span.help-t {

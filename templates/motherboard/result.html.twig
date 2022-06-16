@@ -14,7 +14,7 @@
 		<i>{{ motherboard_count > 0 ? motherboard_count : 'No' }}{{ motherboard_count == 1 ? ' result' : ' results' }}</i>
 	</p>
 	{% if motherboards is not empty %}
-		<div class="results">
+		<div class="results{% if not show_images %} lst{% endif %}">
 			{{ knp_pagination_render(motherboards, 'macros/pagination.html.twig') }}
 			{% if show_images %}
 			<div class="perks">
@@ -36,7 +36,7 @@
 							<div class="perk-date">
 							{% if motherboard.getMotherboardAliases() is not empty %}{% for alias in motherboard.getMotherboardAliases() %}
 								<span class="results-alias">
-									<small>{% if alias.getManufacturer() is not null %}{{ alias.getManufacturer().getShortNameIfExist() }}{% else %}Unknown{% endif %}&nbsp;{{ alias.name }}</small>
+									<small>{% if alias.getManufacturer() is not null %}{{ alias.getManufacturer().getShortNameIfExist() }}{% else %}Unknown{% endif %}&nbsp;{{ alias.name }}{% if not loop.last %} |{% endif %}</small>
 								</span>
 							{% endfor %}{% endif %}</div>
 						</a>
@@ -45,21 +45,24 @@
 				</div>
 			</div>
 			{% else %}
-				<ul>
+				<div class="plain-list w300p table">
+					<div class="list-entry centered  head" style="font-style:italic;">
+						<div>Name</div>
+						<div>Aliases</div>
+					</div>
 					{% for motherboard in motherboards %}
-						<li>
-							<a class="result-link" href="{{ path("motherboard_show", {id: motherboard.getId()}) }}">{{ motherboard.getManufacturerShortNameIfExist() }}&nbsp;{{ motherboard.name }}</a>
+					<div class="list-entry centered bios {% if loop.index is divisible by(2) %}alt{% endif %}">
+						<div><a class="result-link" href="{{ path("motherboard_show", {id: motherboard.getId()}) }}">{{ motherboard.getManufacturerShortNameIfExist() }}&nbsp;{{ motherboard.name }}</a></div>
+						<div>
 							{% if motherboard.getMotherboardAliases() is not empty %}
-								<ul class="results-alias">
-									{% for alias in motherboard.getMotherboardAliases() %}
-										<li><small>{{ alias.getManufacturer() ? alias.getManufacturer().getShortNameIfExist() : 'Unknown'}}&nbsp;{{ alias.name }}</small></li>
-									{% endfor %}
-								</ul>
+								{% for alias in motherboard.getMotherboardAliases() %}
+									<span>{{ alias.getManufacturer() ? alias.getManufacturer().getShortNameIfExist() : 'Unknown'}}&nbsp;{{ alias.name }}{% if not loop.last %} |{% endif %}</span>
+								{% endfor %}
 							{% endif %}
-
-						</li>
+						</div>
+					</div>
 					{% endfor %}
-				</ul>
+				</div>
 			{% endif %}
 			{{ knp_pagination_render(motherboards, 'macros/pagination.html.twig') }}
 		</div>

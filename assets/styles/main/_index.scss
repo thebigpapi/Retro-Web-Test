@@ -180,6 +180,7 @@ div.perks {
 
 /* results */
 div.results {
+    &.lst{display: flex;flex-direction: column;align-items: center;}
     ul {
         margin: 0;
         padding-left: 40px;

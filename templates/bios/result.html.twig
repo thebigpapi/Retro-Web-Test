@@ -23,28 +23,29 @@
 		<i>{{ bios_count > 0 ? bios_count : 'No' }}{{ bios_count == 1 ? ' result' : ' results' }}</i>
 	</p>
 	{% if bios is not empty %}
+	<div class="results lst">
 		{{ knp_pagination_render(bios, 'macros/pagination.html.twig') }}
 		<div class="plain-list w300p table">
-			<div class="list-entry centered" style="font-style:italic;">
+			<div class="list-entry centered head" style="font-style:italic;">
+				<div>Motherboard</div>
 				<div>POST string</div>
 				<div>Type</div>
-				<div>Motherboard</div>
 				<div>File</div>
 			</div>
 			{% for b in bios %}
-			<div class="list-entry centered bios">
-				<div class="header-label">POST string</div>
-				<div class="monospace">{{ b.getPostString() }}</div>
-
-				<div class="header-label">Type</div>
-				<div>{{ b.getManufacturer().getShortNameIfExist() }} {{ b.getCoreVersion() }}</div>
-
+			<div class="list-entry centered bios {% if loop.index is divisible by(2) %}alt{% endif %}">
 				<div class="header-label">Motherboard</div>
 				<div>
 					<a class="result-link" href="{{ path("motherboard_show", {id: b.getMotherboard().getId()}) }}">
 						{{ b.getMotherboard().getManufacturerShortNameIfExist() }}&nbsp;{{ b.getMotherboard().name }}
 					</a>
 				</div>
+
+				<div class="header-label">POST string</div>
+				<div class="monospace">{{ b.getPostString() }}</div>
+
+				<div class="header-label">Type</div>
+				<div>{{ b.getManufacturer().getShortNameIfExist() }} {{ b.getCoreVersion() }}</div>
 
 				<div class="header-label">File</div>
 				<div>
@@ -67,6 +68,7 @@
 			{% endfor %}
 		</div>
 		{{ knp_pagination_render(bios, 'macros/pagination.html.twig') }}
+	</div>
 	{% endif %}
 {% endblock %}
 
