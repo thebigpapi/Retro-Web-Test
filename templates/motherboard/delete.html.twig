@@ -9,10 +9,10 @@
 			<b>Are you sure you want to delete this motherboard ?</b>
 		</div>
 		<div style="display:table;margin:0 auto;padding-top:25px;">
-			<a class="snav" onclick="document.getElementById('form_Yes').click();">
+			<a class="button" onclick="document.getElementById('form_Yes').click();" style="display:inline-block;">
 				<img src="{{ absolute_url(asset('build/icons/tick.svg')) }}" alt="" width="24">Yes</a>&nbsp;
-			<a class="snav" onclick="document.getElementById('form_No').click();">
-				<img src="{{ absolute_url(asset('build/icons/show/delete.svg')) }}" alt="" width="24">No</a>
+			<a class="button" onclick="document.getElementById('form_No').click();" style="display:inline-block;">
+				<img src="{{ absolute_url(asset('build/icons/delete.svg')) }}" alt="" width="24">No</a>
 		</div>
 	{{ form_start(form, {'method': 'POST'}) }}
 		<div style="display:table;margin:0 auto;padding-top:25px;">

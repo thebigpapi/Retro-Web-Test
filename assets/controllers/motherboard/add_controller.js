@@ -30,6 +30,17 @@ export default class extends Controller {
         return false;
     }
 
+    getslug() {
+        let manuf = document.getElementById('motherboard_form_manufacturer');
+        let name = document.getElementById('motherboard_form_name');
+        let slug = document.getElementById('motherboard_form_slug');
+        let string = manuf.options[manuf.selectedIndex].text;
+        if(string == '')
+            string = 'unknown ' + name.value;
+        else
+            string = string + ' ' + name.value;
+        slug.value = string.replace(/[^a-z0-9_]+/gi, '-').replace(/^-|-$/g, '').toLowerCase().substring(0, 43);
+    }
     /**
      * Check that everything is fine before submiting the board
      * @param {*} event 
@@ -39,7 +50,6 @@ export default class extends Controller {
 
         let error = false;
         let errorMessage = "";
-
         let manualList = document.getElementById('manuals-fields-list').children;
         for (let manual of manualList) {
             if (manual.children[2].children[0].files[0] == null) {
@@ -72,6 +82,9 @@ export default class extends Controller {
                 error = true;
             }
         }
+        let slug = document.getElementById('motherboard_form_slug');
+        if(slug.value == '')
+            this.getslug();
         if (_this.checkList('cpuSockets-fields-list')) {
             errorMessage += "CPU sockets has duplicate entries!\n";
             error = true;
@@ -141,6 +154,9 @@ export default class extends Controller {
             bioses.innerHTML = '';
             let manuals = document.getElementById("manuals-fields-list");
             manuals.innerHTML = '';
+            let redirections = document.getElementById("redirections-fields-list");
+            redirections.innerHTML = '';
+            this.getslug();
             // submit the page
             this.submit();
         }

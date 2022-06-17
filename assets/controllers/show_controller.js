@@ -36,6 +36,11 @@ export default class extends Controller {
     goToURL(event){
         window.location.href = event.target.getAttribute("data-URL");
     }
+    
+    goToDelete(){
+        let idx = window.location.href.indexOf("/admin/manage/motherboards");
+        window.location.href = window.location.href.substring(0,idx) + "/motherboards" + window.location.href.substring(idx+39,window.location.href.indexOf("/edit")) + "/delete";
+    }
     change_tag(parameter){
         let nextURL = window.location.href;
         let nextIndex = nextURL.indexOf("#");

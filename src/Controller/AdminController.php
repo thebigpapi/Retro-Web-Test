@@ -78,6 +78,16 @@ class AdminController extends AbstractController
     }
 
     /**
+     * @Route("/admin/guidelines", name="admin_guidelines")
+     */
+    public function guidelines(MotherboardRepository $motherboardRepository)
+    {
+        return $this->render('admin/guidelines.html.twig', [
+            'controller_name' => 'MainController',
+        ]);
+    }
+
+    /**
      * @Route("/admin/users", name="admin_user_settings")
      */
     public function userIndex(MotherboardRepository $motherboardRepository)
