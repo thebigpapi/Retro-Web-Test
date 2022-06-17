@@ -7,6 +7,15 @@ export default class extends Controller {
             this.show_downloads();
         if (URL.indexOf("#cpus") != -1)
             this.show_cpus();
+        let toggle = document.getElementById('table-switch');
+        if(toggle){
+            let item = document.getElementsByClassName("plain-list")[0];
+            let item_class = item.getAttribute("class");
+            if(document.cookie == "state=1"){
+                item.setAttribute("class", item_class + " table")
+                toggle.checked = true;
+            }
+        }
     }
     show_general(){
         document.getElementById('sh-general').style.display = 'block';
@@ -60,10 +69,16 @@ export default class extends Controller {
         let toggle = document.getElementById('table-switch');
         let item = document.getElementsByClassName("plain-list")[0];
         let item_class = item.getAttribute("class");
+        if(document.cookie == "state=1"){
+            item.setAttribute("class", item_class + " table")
+        }
         if (toggle.checked){
+            document.cookie = "state=1";
             item.setAttribute("class", item_class + " table")
         }
         else{
+            if(document.cookie != "state=0")
+                document.cookie = "state=0";
             item_class = item_class.substring(0,item_class.indexOf("table")-1);
             item.setAttribute("class", item_class)
         }
