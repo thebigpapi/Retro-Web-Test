@@ -17,6 +17,10 @@
 
 Adding a motherboard to the database can be done with the built-in editor. In [Admin/Motherboards](https://theretroweb.com/admin/manage/motherboards?entity=motherboard), click *Add motherboard*.
 A rather long form will appear; let's run over the fields.
+You can access three different sections in the board editor as follows (the rest are always visible):
+* Description: for items 5. -> 19.
+* Downloads: for items 20. -> 22.
+* CPUs: for items 23. -> 28.
 
 1. #### Manufacturer
 
@@ -31,8 +35,8 @@ In this field you are supposed to type in the part number that you see on the bo
 
 3. #### Slug
 
-This field is used to generate a friendly URL for the board you're adding. This field is mandatory.  
-*Example: for a board named ASUS P2B-D2 (REV. 1.02) => asus-p2b-d2-rev.-1.02*
+This field is used to generate a friendly URL for the board you're adding. This field is mandatory.   
+Clicking [<img src="{{ absolute_url(asset('build/icons/edit.svg')) }}" alt="" width="16" style="vertical-align: middle;">*Get slug* ] will generate a slug automagically, based on the contents of 1. and 2.
 
 4. #### Images
 
@@ -76,6 +80,56 @@ Here you can add the amount of cache memory the motherboard supports. Clicking [
 
 15. #### Supported RAM types
 Here you can select the memory types the motherboard supports.
+
+16. #### I/O ports
+Here you can add I/O ports to the motherboard. Clicking [<img src="{{ absolute_url(asset('build/icons/add.svg')) }}" alt="" width="16" style="vertical-align: middle;">*Add* ] will give you two new fields, one for
+the amount of ports and the other for the port type.
+
+17. #### Expansion slots
+Here you can add expansion slots to the motherboard. Clicking [<img src="{{ absolute_url(asset('build/icons/add.svg')) }}" alt="" width="16" style="vertical-align: middle;">*Add* ] will give you two new fields, one for
+the amount of slots and the other for the slot type.
+
+18. #### Known issues
+Here you can add known issues to the motherboard. Clicking [<img src="{{ absolute_url(asset('build/icons/add.svg')) }}" alt="" width="16" style="vertical-align: middle;">*Add* ] will give you a new field for
+the known issue you want to add.
+
+19. #### Notes
+Here you can add notes to the motherboard. This field uses markdown text.
+
+20. #### Drivers
+Here you can add drivers to the motherboard from a pre-defined list. Clicking [<img src="{{ absolute_url(asset('build/icons/add.svg')) }}" alt="" width="16" style="vertical-align: middle;">*Add* ] will give you two new fields, one for
+the driver you want to add, and the other is a checkbox which prioritizes the driver visibility on the board page.
+
+21. #### BIOS images
+Here you can add BIOS images to the motherboard. Clicking [<img src="{{ absolute_url(asset('build/icons/add.svg')) }}" alt="" width="16" style="vertical-align: middle;">*Add* ] will give you a bunch of new fields for (in order): 
+BIOS manufacturer, POST string, core version, bios version, file upload section and uploaded file view.
+
+22. #### Manuals
+Here you can add manuals to the motherboard. Clicking [<img src="{{ absolute_url(asset('build/icons/add.svg')) }}" alt="" width="16" style="vertical-align: middle;">*Add* ] will give you a bunch of new fields for (in order): 
+manual name, language, file upload section and uploaded file view.
+
+23. #### CPU sockets
+Here you can add CPU sockets to the motherboard. Clicking [<img src="{{ absolute_url(asset('build/icons/add.svg')) }}" alt="" width="16" style="vertical-align: middle;">*Add* ] will give you a new field for
+the CPU socket you want to add.
+
+24. #### CPU platforms
+Here you can add CPU platforms to the motherboard. Clicking [<img src="{{ absolute_url(asset('build/icons/add.svg')) }}" alt="" width="16" style="vertical-align: middle;">*Add* ] will give you a new field for
+the CPU platform you want to add.
+
+25. #### FSB speeds
+Here you can add FSB speeds to the motherboard. Clicking [<img src="{{ absolute_url(asset('build/icons/add.svg')) }}" alt="" width="16" style="vertical-align: middle;">*Add* ] will give you a new field for
+the FSB speed you want to add.
+
+26. #### Max CPUs
+Here you can add the maximum amount of CPUs supported by the motherboard (mainly used by SMP capable boards like dual socket 370 for e.g.).
+
+27. #### CPUs
+In this section you can add and/or remove CPUs to/from the board. In order to use this section properly, you must first fill in all the appropriate details in fields 21. 22. and 23., then click the [*Update processors*] button, 
+after which you can add CPUs.
+
+28. #### NPUs
+In this section you can add and/or remove math coprocessors to/from the board. The procedures are identical with the CPU section.
+
 {% endapply %}
 	</div>
 	version 0.9RC
