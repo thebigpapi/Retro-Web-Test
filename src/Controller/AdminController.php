@@ -78,7 +78,17 @@ class AdminController extends AbstractController
     }
 
     /**
-     * @Route("/admin/manage_users", name="admin_manage_users")
+     * @Route("/admin/users", name="admin_user_settings")
+     */
+    public function userIndex(MotherboardRepository $motherboardRepository)
+    {
+        return $this->render('admin/users/index.html.twig', [
+            'controller_name' => 'MainController',
+        ]);
+    }
+
+    /**
+     * @Route("/admin/users/manage", name="admin_user_manage")
      * @param Request $request
      * @param UserPasswordHasherInterface $passwordHasher
      */
@@ -98,7 +108,7 @@ class AdminController extends AbstractController
                 $entityManager->persist($user);
                 $entityManager->flush();
 
-                return $this->render('admin/add_user_created.html.twig', [
+                return $this->render('admin/users/user_created.html.twig', [
                     'username' => $user->getUsername(),
                     'password' => $password,
                 ]);
@@ -111,17 +121,17 @@ class AdminController extends AbstractController
                 $entityManager->flush();
             }
             if ($userForm->get('add')->isClicked()) {
-                return $this->redirect('./manage_users/add');
+                return $this->redirect('./manage/add');
             }
         }
-        return $this->render('admin/manage_users.html.twig', [
+        return $this->render('admin/users/manage.html.twig', [
             'userForm' => $userForm->createView(),
             'message' => $message,
         ]);
     }
 
     /**
-     * @Route("/admin/manage_users/add", name="admin_add_user")
+     * @Route("/admin/users/manage/add", name="admin_user_add")
      * @param Request $request
      * @param UserPasswordHasherInterface $passwordHasher
      */
@@ -146,12 +156,12 @@ class AdminController extends AbstractController
             $entityManager->persist($user);
             $entityManager->flush();
 
-            return $this->render('admin/add_user_created.html.twig', [
+            return $this->render('admin/users/user_created.html.twig', [
                 'username' => $user->getUsername(),
                 'password' => $password,
             ]);
         }
-        return $this->render('admin/add_user.html.twig', [
+        return $this->render('admin/users/add.html.twig', [
             'form' => $form->createView(),
         ]);
     }
@@ -178,7 +188,7 @@ class AdminController extends AbstractController
     }
 
     /**
-     * @Route("/admin/password", name="admin_change_user_password")
+     * @Route("/admin/users/password", name="admin_user_changepwd")
      * @param Request $request
      * @param UserPasswordHasherInterface $passwordHasher
      */
@@ -204,20 +214,29 @@ class AdminController extends AbstractController
                     $user->setPassword($hashedPassword);
                     $entityManager->persist($user);
                     $entityManager->flush();
-                    return new response("Password updated successfully !");
+                    return $this->render('admin/users/message.html.twig', [
+                        'message' => 'Password updated successfully !',
+                        'path' => 'admin_user_settings',
+                    ]);
                 } else {
-                    return new jsonresponse(array('error' => 'The new password and verify aren\t matching.'));
+                    return $this->render('admin/users/message.html.twig', [
+                        'message' => 'New password fields do not match! Try again.',
+                        'path' => 'admin_user_changepwd',
+                    ]);
                 }
             } else {
-                return new jsonresponse(array('error' => 'The current password is incorrect.'));
+                return $this->render('admin/users/message.html.twig', [
+                    'message' => 'Current password does not match! Try again.',
+                    'path' => 'admin_user_changepwd',
+                ]);
             }
         }
-        return $this->render('admin/change_user_password.html.twig', [
+        return $this->render('admin/users/change_pass.html.twig', [
             'form' => $form->createView(),
         ]);
     }
     /**
-     * @Route("/admin/username", name="admin_change_user_name")
+     * @Route("/admin/users/username", name="admin_user_changename")
      * @param Request $request
      */
     public function changeUserName(Request $request, EntityManagerInterface $entityManager, UserRepository $userRepository)
@@ -233,18 +252,27 @@ class AdminController extends AbstractController
             $user = $userRepository->findOneBy(["username" => $this->getUser()->getUserIdentifier()]);
             if (strlen($data['new_username']) > 4 && strlen($data['new_username']) < 32) {
                 if ($data['new_username'] === $user->getUsername()) {
-                    return new jsonresponse(array('error' => 'The username is identical, try again.'));
+                    return $this->render('admin/users/message.html.twig', [
+                        'message' => 'Username is identical! Try again.',
+                        'path' => 'admin_user_changename',
+                    ]);
                 } else {
                     $user->setUsername($data['new_username']);
                     $entityManager->persist($user);
                     $entityManager->flush();
-                    return new response("Username updated successfully ! Close this page and open TRW again.");
+                    return $this->render('admin/users/message.html.twig', [
+                        'message' => 'Username updated successfully !',
+                        'path' => 'admin_user_settings',
+                    ]);
                 }
             } else {
-                return new jsonresponse(array('error' => 'The username is invalid'));
+                return $this->render('admin/users/message.html.twig', [
+                    'message' => 'Username is invalid! Try again.',
+                    'path' => 'admin_user_changename',
+                ]);
             }
         }
-        return $this->render('admin/change_user_name.html.twig', [
+        return $this->render('admin/users/change_name.html.twig', [
             'form' => $form->createView(),
         ]);
     }

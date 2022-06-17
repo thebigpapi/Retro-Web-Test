@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	{% trans %}User dashboard{% endtrans %}
+{% endblock %}
+
+{% block body %}
+	<div class="title">User dashboard
+	<a class="button" href="{{ path('admin_index') }}" style="display:inline-block;">
+		<img src="{{ absolute_url(asset('build/icons/back.svg')) }}" alt="" width="24" style="vertical-align: middle;padding-right:2px;">Go back</a></div>
+	<div class="index-buttons">
+		<a href="{{ path('admin_user_changepwd') }}">
+			<img src="{{ absolute_url(asset('build/icons/admin/keys.svg')) }}" alt="passwd">
+			<div>Change password</div>
+		</a>
+		<a href="{{ path('admin_user_changename') }}">
+			<img src="{{ absolute_url(asset('build/icons/admin/user.svg')) }}" alt="">
+			<div>Change username</div>
+		</a>
+		{% if is_granted('ROLE_SUPER_ADMIN') %}
+			<a href="{{ path('admin_user_manage') }}">
+				<img src="{{ absolute_url(asset('build/icons/admin/user.svg')) }}" alt="user">
+				<div>Manage users</div>
+			</a>
+		{% endif %}
+	</div>
+{% endblock %}

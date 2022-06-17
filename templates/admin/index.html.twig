@@ -5,7 +5,9 @@
 {% endblock %}
 
 {% block body %}
-	<div class="title">Dashboard</div>
+	<div class="title">Dashboard
+	<a class="button" href="{{ path('app_homepage') }}" style="display:inline-block;">
+		<img src="{{ absolute_url(asset('build/icons/back.svg')) }}" alt="" width="24" style="vertical-align: middle;padding-right:2px;">Go back</a></div>
 	<div class="index-buttons">
 		<a href="{{ path('admin_manage_motherboards') }}">
 			<img src="{{ absolute_url(asset('build/images/admin/motherboard.jpg')) }}" alt="board">
@@ -39,16 +41,10 @@
 			<img src="{{ absolute_url(asset('build/icons/admin/misc.svg')) }}" alt="misc">
 			<div>Other fields</div>
 		</a>
-		<a href="{{ path('admin_change_user_password') }}">
-			<img src="{{ absolute_url(asset('build/icons/admin/keys.svg')) }}" alt="passwd">
-			<div>Change password</div>
+		<a href="{{ path('admin_user_settings') }}">
+			<img src="{{ absolute_url(asset('build/icons/admin/user.svg')) }}" alt="">
+			<div>User settings</div>
 		</a>
-		{% if is_granted('ROLE_SUPER_ADMIN') %}
-			<a href="{{ path('admin_manage_users') }}">
-				<img src="{{ absolute_url(asset('build/icons/admin/user.svg')) }}" alt="user">
-				<div>Manage users</div>
-			</a>
-		{% endif %}
 	</div>
 
 	<div class="title"><h4>Under construction</h4></div>
@@ -60,10 +56,6 @@
 		<a href="{{ path('admin_logs') }}">
 			<img src="{{ absolute_url(asset('build/icons/show/data.svg')) }}" alt="">
 			<div>Logs</div>
-		</a>
-		<a href="{{ path('admin_change_user_name') }}">
-			<img src="{{ absolute_url(asset('build/icons/admin/user.svg')) }}" alt="">
-			<div>Change username</div>
 		</a>
 	</div>
 {% endblock %}

@@ -5,7 +5,7 @@
 {% block body %}
 <div class="title" style="padding-top:5em;">
 	<b>Add a new user:</b>
-    <a class="snav" onclick="document.getElementById('form_add').click();">
+    <a class="button" onclick="document.getElementById('form_add').click();" style="display:inline-block;">
 		<img src="{{ absolute_url(asset('build/icons/add.svg')) }}" alt="" width="24" style="vertical-align: middle;padding-right:2px;">Add</a>
 </div>
 {{ form_start(form, {'method': 'POST'}) }}
