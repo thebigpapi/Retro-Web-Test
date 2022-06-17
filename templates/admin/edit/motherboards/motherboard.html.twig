@@ -36,7 +36,6 @@
 		{% endif %}
 		<button type="button" name="tabs" id="tab-nav-getslug" data-action="click->motherboard--add#getslug"><img src="{{ absolute_url(asset('build/icons/clone.svg')) }}" alt="" width="24" height="24"><span>Get slug</span></button>		
 	</div>
-{{ path('app_homepage') }}/motherboards/{{moboid}}/delete
 	<div class="main-strip">
 		<div class="internal-container">
 			{% include 'macros/navbar.html.twig' with {'type':'edit', 'entityName': 'motherboard', 'count':3, 'moboid':moboid} %}
