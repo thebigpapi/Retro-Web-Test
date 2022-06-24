@@ -5,7 +5,13 @@
 {% if path == "processingunits" %}
 	{% set name = "processor" %}
 {% else %}
-	{% set name = path|slice(0, path|length -1) %}
+	{% if entityName == "audiochip" %}
+		{% set name = "audio_chip" %}
+	{% elseif entityName == "videochip" %}
+		{% set name = "video_chip" %}
+	{% else %}
+		{% set name = path|slice(0, path|length -1) %}
+	{% endif %}
 {% endif %}
 
 {% if search is not empty %}
