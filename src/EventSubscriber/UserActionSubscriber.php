@@ -22,11 +22,11 @@ class UserActionSubscriber implements EventSubscriberInterface
 
     public function getSubscribedEvents(): array {
         return [
-            'postPersist',
+            /*'postPersist',
             'preUpdate',
             'postUpdate',
             'preRemove',
-            'postRemove',
+            'postRemove',*/
         ];
     }
 
