@@ -77,9 +77,6 @@
 						<div class="show-downloads-head">{{ driverHeader() }}</div>
 						{% for driver in chipset.getDrivers() %}
 							<div class="show-table-row">{{ driverLink(driver.largeFile) }}</div>
-							{% if driver.largeFile.getNote() is not empty %}
-							<div style="display:table;text-align:left;">Note: {{ driver.largeFile.getNote() }}</div>
-							{% endif %}
 						{% endfor %}
 					</div>
 					{% else %}
