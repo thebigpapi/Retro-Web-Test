@@ -8,19 +8,20 @@
 {% block body %}<div class="title">Where do you want to go today?</div>
 	<div class="index-buttons">
 		<a href="{{ path("motherboard_search") }}">
-			<img src="{{ absolute_url(asset('build/images/index/motherboard.webp')) }}" alt="mobo" width="210" height="180">
+			<img src="{{ absolute_url(asset('build/icons/index/motherboard.svg')) }}" alt="mobo" width="210" height="180">
 			<div>Motherboards</div><div>({{moboCount}}&nbsp;entries)</div>
 		</a>
+		{# ============= when it's ready
 		<a href="#">
 			<img src="{{ absolute_url(asset('build/images/index/card.webp')) }}" alt="cards" width="210" height="180">
 			<div>Expansion cards</div><div>[WIP]</div>
-		</a>
+		</a>#}
 		<a href="{{ path("bios_search") }}">
-			<img src="{{ absolute_url(asset('build/images/index/awchip.webp')) }}" alt="bios" width="210" height="180">
+			<img src="{{ absolute_url(asset('build/icons/index/awchip.svg')) }}" alt="bios" width="210" height="180">
 			<div>BIOS images</div><div>({{biosCount}}&nbsp;files)</div>
 		</a>
 		<a href="{{ path("chipset_search") }}">
-			<img src="{{ absolute_url(asset('build/images/index/440bxchip.webp')) }}" alt="chipset" width="210" height="180">
+			<img src="{{ absolute_url(asset('build/icons/admin/chip.svg')) }}" alt="chipset" width="210" height="180">
 			<div>Chipsets</div><div>({{chipCount}}&nbsp;entries)</div>
 		</a>
 	</div>
