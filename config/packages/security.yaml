@@ -59,9 +59,9 @@ security:
         # - { path: ^/profile, roles: ROLE_USER }
         # require ROLE_ADMIN for /admin*
         - { path: '^/login$', roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: '^/\w+/motherboards/\d+/delete/$', roles: ROLE_ADMIN }
-        - { path: '^/\w+/admin/manage_users', roles: ROLE_SUPER_ADMIN }
-        - { path: '^/\w+/admin/*', roles: ROLE_ADMIN }
+        - { path: '^/motherboards/\d+/delete/$', roles: ROLE_ADMIN }
+        - { path: '^/admin/manage_users', roles: ROLE_SUPER_ADMIN }
+        - { path: '^/admin/*', roles: ROLE_ADMIN }
 
 
         # or require ROLE_ADMIN or IS_AUTHENTICATED_FULLY for /admin*

@@ -166,9 +166,9 @@ class ChipsetController extends AbstractController
             $where = "WHERE m.id = :manufacturer";
         }
 
-        $dql   = "SELECT c 
+        $dql   = "SELECT c, cp 
         FROM App:Chipset c 
-        JOIN c.manufacturer m $where 
+        JOIN c.manufacturer m JOIN c.chipsetParts cp $where 
         ORDER BY m.name ASC, c.release_date ASC, c.name ASC";
         $query = $em->createQuery($dql);
         $query->setParameters($criterias);

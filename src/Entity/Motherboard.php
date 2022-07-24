@@ -202,6 +202,11 @@ class Motherboard
      */
     private $psuConnectors;
 
+    /**
+     * @ORM\Column(type="string", length=80, unique=true)
+     */
+    private $slug;
+
 
     public function __construct()
     {
@@ -972,6 +977,18 @@ class Motherboard
         if ($this->psuConnectors->removeElement($psuConnector)) {
             $psuConnector->removeMotherboard($this);
         }
+
+        return $this;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(string $slug): self
+    {
+        $this->slug = strtolower($slug);
 
         return $this;
     }

@@ -1,59 +1,41 @@
 {% macro header() %}
-	<th>{% trans %}Language{% endtrans %}</th>
-	<th>{% trans %}Media type{% endtrans %}</th>
-	<th>{% trans %}Copy protection{% endtrans %}</th>
-	<th>{% trans %}Quality{% endtrans %}</th>
-	<th>{% trans %}OS Compatibility{% endtrans %}</th>
-	<th>{% trans %}Name{% endtrans %}</th>
+	<div><b>Language</b></div>
+	<div><b>Media type</b></div>
+	<div><b>Copy protection</b></div>
+	<div><b>Quality</b></div>
+	<div><b>OS Compatibility</b></div>
+	<div><b>Note</b></div>
+	<div><b>Name</b></div>
 {% endmacro %}
 
 {% macro link(file) %}
-	<tr style="text-align:center;border: 1px solid #e0e0e0;">
-		<td>
-			{% for lang in file.getLanguages() %}
-				<img src="{{ asset('build/icons/language/' ~ lang.getIsoCode ~ '.svg') }}" alt="{{lang.getOriginalName()}}" title="{{lang.getOriginalName()}}" class="lang-flag{% if loop.length > 4 %}-lrg{% endif %}">
-			{% endfor %}
-		</td>
-		<td>
-			{% for relation in file.getMediaTypeFlags() %}
-				<b style="vertical-align:super;">{{relation.getCount()}}x</b>
-				<img src="{{ vich_uploader_asset(relation.getMediaTypeFlag(), 'icon')}}" alt="{{relation.getMediaTypeFlag().getName()}}" title="{{relation.getMediaTypeFlag().getName()}}" width="32">
-			{% endfor %}
-		</td>
-		<td>
-			{% if file.hasActivationKey() %}
-				<img src="{{ asset('build/icons/protection/activation_key.svg') }}" alt="activation key" title="The program needs an activation key" width="32">
-			{% endif %}
-			{% if file.hasCopyProtection() %}
-				<img src="{{ asset('build/icons/protection/copy_protected.svg') }}" alt="copy protected" title="The program is copy protected" width="32">
-			{% endif %}
-			{% if not file.hasActivationKey() and not file.hasCopyProtection() %}
-				<p>N/A</P>
-			{% endif %}
-		</td>
-		<td style="width:40px;">
-			<img src="{{ asset('build/icons/quality/' ~ file.dumpQualityFlag().getTagName() ~ '.svg') }}" alt="{{file.dumpQualityFlag().getName()}}" title="{{file.dumpQualityFlag().getName()}}" width="32">
-		</td>
-		<td>
-			{% set prevIcon = "" %}
-			{% set prevIcon2 = "" %}
-			{% for relation in file.getOsFlags() %}
-				{% if prevIcon != (relation.getOsFlag().getOsFamilies()|sort)[0].getFileName() %}
-					{% if not loop.first %},
-					{% endif %}
-					{% set prevIcon2 = (relation.getOsFlag().getOsFamilies()|sort)[0].getFileName() %}
-					<img src="{{ vich_uploader_asset((relation.getOsFlag().getOsFamilies()|sort)[0], 'osIcon')}}" alt="{{(relation.getOsFlag().getOsFamilies()|sort)[0].getName()}}" title="{% for rel in file.getOsFlags() %}{% if prevIcon2 == (rel.getOsFlag().getOsFamilies()|sort)[0].getFileName() %}{{ rel.getOsFlag().getName()}}{% if not loop.last %},{% endif %} {% endif %}{% endfor %}" width="16">
-					{{relation.getOsFlag().getName()}}
+	<div>{% for lang in file.getLanguages() %}
+		<img src="{{ asset('build/icons/language/' ~ lang.getIsoCode ~ '.svg') }}" alt="{{lang.getOriginalName()}}" title="{{lang.getOriginalName()}}" class="lang-flag{% if loop.length > 4 %}-lrg{% endif %}">
+	{% endfor %}</div>
+	<div>{% for relation in file.getMediaTypeFlags() %}
+		<b style="vertical-align:super;">{{relation.getCount()}}x</b>
+		<img src="{{ vich_uploader_asset(relation.getMediaTypeFlag(), 'icon')}}" alt="{{relation.getMediaTypeFlag().getName()}}" title="{{relation.getMediaTypeFlag().getName()}}" width="32">
+	{% endfor %}</div>
+	<div>{% if file.hasActivationKey() %}
+		<img src="{{ asset('build/icons/protection/activation_key.svg') }}" alt="activation key" title="The program needs an activation key" width="32">
+	{% endif %}
+	{% if file.hasCopyProtection() %}
+		<img src="{{ asset('build/icons/protection/copy_protected.svg') }}" alt="copy protected" title="The program is copy protected" width="32">
+	{% endif %}
+	{% if not file.hasActivationKey() and not file.hasCopyProtection() %}
+		<p>N/A</P>
+	{% endif %}</div>
+	<div><img src="{{ asset('build/icons/quality/' ~ file.dumpQualityFlag().getTagName() ~ '.svg') }}" alt="{{file.dumpQualityFlag().getName()}}" title="{{file.dumpQualityFlag().getName()}}" width="32"></div>
+	<div>{% set prevIcon = "" %}{% set prevIcon2 = "" %}{% for relation in file.getOsFlags() %}
+			{% if prevIcon != (relation.getOsFlag().getOsFamilies()|sort)[0].getFileName() %}
+				{% set prevIcon2 = (relation.getOsFlag().getOsFamilies()|sort)[0].getFileName() %}
+				<span style="display:inline-block;"><img src="{{ vich_uploader_asset((relation.getOsFlag().getOsFamilies()|sort)[0], 'osIcon')}}" alt="{{(relation.getOsFlag().getOsFamilies()|sort)[0].getName()}}" title="{% for rel in file.getOsFlags() %}{% if prevIcon2 == (rel.getOsFlag().getOsFamilies()|sort)[0].getFileName() %}{{ rel.getOsFlag().getName()}}{% if not loop.last %},{% endif %} {% endif %}{% endfor %}" width="16">
+					{{relation.getOsFlag().getName()}}{{ relation.getUnsure() ? ' ?'}}</span>
 				{% endif %}
-
 				{% set prevIcon = (relation.getOsFlag().getOsFamilies()|sort)[0].getFileName() %}
-				{% if relation.getUnsure() %}
-					?
-				{% endif %}
-			{% endfor %}
-		</td>
-		<td>
-			<a href="{{ vich_uploader_asset(file, 'file')}}">
+	{% endfor %}</div>
+	<div>{{ file.getNote() ? file.getNote() }}</div>
+	<div><a href="{{ vich_uploader_asset(file, 'file')}}">
 				<img src="{{ absolute_url(asset('build/icons/dw.svg')) }}" alt="" width="16" style="vertical-align: middle;">
 				{{file.getName()}}
 				{% if file.getFileVersion() %}
@@ -62,15 +44,5 @@
 				{% if file.getReleaseDateString() %}({{file.getReleaseDateString()}})
 				{% endif %}
 			</a>
-		</td>
-	</tr>
-	{% if file.getNote() is not empty %}
-		<tr>
-			<td colspan="6" style="border-color: #e0e0e0;border-style: hidden solid solid solid;border-width: 1px;">
-				<div style="padding-left:10px;">Note :
-					{{ file.getNote() }}</div>
-			</td>
-		</tr>
-	{% endif %}
-
+	</div>
 {% endmacro %}

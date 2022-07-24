@@ -15,7 +15,7 @@ class MainController extends AbstractController
      */
     public function index(MotherboardRepository $motherboardRepository, MotherboardBiosRepository $motherboardBiosRepository, ChipsetRepository $chipsetRepository)
     {
-        $latestMotherboards = $motherboardRepository->find10Latest();
+        $latestMotherboards = $motherboardRepository->findLatest();
         return $this->render('main/index.html.twig', [
             'controller_name' => 'MainController',
             'latestMotherboards' => $latestMotherboards,

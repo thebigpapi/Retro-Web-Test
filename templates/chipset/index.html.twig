@@ -1,19 +1,13 @@
 {% extends 'base.html.twig' %}
-
-{% block title %}
-	{% trans %}Index{% endtrans %}
-{% endblock %}
 {% if letter %}{% set ltr = letter %}{% else %}{% set ltr = "?" %}{% endif %}
+{% block title %}Index: {{ltr}} - TRW{% endblock %}
 {% block metatags %}
 	<meta name="description" content="Search for a chipset by name, manufacturer, part number and more.">
-	{% for locale in locales | split('|')|filter(locale => locale != "en") %}
-		<link rel="alternate" hreflang="{{ locale }}" href="{{ absolute_url(path('chipsetindex', {_locale: locale, letter: ltr })) }}"/>
-	{% endfor %}
-	<link rel="alternate" hreflang="x-default" href="{{ absolute_url(path('chipsetindex', {_locale: 'en', letter: ltr })) }}"/>
+	<link rel="alternate" hreflang="x-default" href="{{ absolute_url(path('chipsetindex', {letter: ltr })) }}"/>
 {% endblock %}
 
 {% block body %}
-	<div class="title"><b>{{'Index'|trans}}: {{ltr}}</b></div>
+	<div class="title">Index: {{ltr}}</div>
 	<p style="text-align:center;padding-top:10px;">
 		<i>{{ chipset_count }} chipsets</i>
 	</p>
@@ -21,7 +15,7 @@
 		{{ knp_pagination_render(chipsets, 'macros/pagination.html.twig') }}
 		<ul>
 			{% for chipset in chipsets %}
-				<li><a href='{{ path("chipset_show", {id: chipset.getId()}) }}'>{{ chipset.getMainChipWithManufacturer() }}</a></li>
+				<li><a href='{{ path("chipset_show", {id: chipset.getId()}) }}'>{{ chipset.getFullReference() }}</a></li>
 			{% endfor %}
 		</ul>
 		{{ knp_pagination_render(chipsets, 'macros/pagination.html.twig') }}

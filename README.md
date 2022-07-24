@@ -1,9 +1,9 @@
-# Ultimate Retro 
+# The Retro Web
 
-This repo contains all the necesary files to get the basic UR.net page up and running.
+This repo contains all the necesary files to get the basic TRW page up and running.
 NOTE: This project is in the BETA stage. If something doesn't work right, it's expected behaviour :)
 
-Now, onto getting UR running on a machine. So far, it's been tested and used in Debian, Ubuntu and a Docker environment (for both ARM and x86-64 platforms). It may work in other software/hardware configurations, but it's not guaranteed.
+Now, onto getting TRW running on a machine. So far, it's been tested and used in Debian, Ubuntu and a Docker environment (for both ARM and x86-64 platforms). It may work in other software/hardware configurations, but it's not guaranteed.
 
 There are 7 requirements to get the project running:
 1. A linux distro
@@ -39,7 +39,7 @@ sudo mv /home/user/.symfony/bin/symfony /usr/local/bin/symfony
 And for [Composer](https://getcomposer.org/download/), run the commands provided on their site.
 
 # PostgreSQL install
-Make sure you have a backup of the database ready for use by running this command on a server with UR already deployed on it, where [database name] is the name of the existing database, and [path/to/file.sql] is the path + filename where you want to save the backup (also make sure you save this file in a folder with enough permissions, otherwise it will complain): 
+Make sure you have a backup of the database ready for use by running this command on a server with TRW already deployed on it, where [database name] is the name of the existing database, and [path/to/file.sql] is the path + filename where you want to save the backup (also make sure you save this file in a folder with enough permissions, otherwise it will complain): 
 `pg_dump [database name] > [/path/to/file.sql]`
 
 Now, back to the new machine, run these, where [username] is the username for the new database, [new database name] is the new database's name, and [password] is the password used in conjuction with the [username] for the new database:
@@ -71,7 +71,7 @@ sudo ufw enable
 ```
 
 # Git install
-Install git with these commands, where [name] and [email] are the ones from your git account, and [branch] is one of the branches from UR's git repo:
+Install git with these commands, where [name] and [email] are the ones from your git account, and [branch] is one of the branches from TRW's git repo:
 ### Never modify origin/master, unless you know what you're doing!!!
 ```
 sudo apt install git

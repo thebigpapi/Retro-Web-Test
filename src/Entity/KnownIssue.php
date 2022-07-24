@@ -28,6 +28,11 @@ class KnownIssue
      */
     private $motherboards;
 
+    /**
+     * @ORM\Column(type="string", length=512, nullable=true)
+     */
+    private $description;
+
     public function __construct()
     {
         $this->motherboards = new ArrayCollection();
@@ -74,6 +79,18 @@ class KnownIssue
             $this->motherboards->removeElement($motherboard);
             $motherboard->removeKnownIssue($this);
         }
+
+        return $this;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(?string $description): self
+    {
+        $this->description = $description;
 
         return $this;
     }

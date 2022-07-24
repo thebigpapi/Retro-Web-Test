@@ -5,9 +5,6 @@
 a.login-image img{filter: invert(49%) sepia(98%) saturate(1883%) hue-rotate(202deg) brightness(108%) contrast(101%);}
 a.login-image img:hover{filter: invert(49%) sepia(98%) saturate(1883%) hue-rotate(202deg) brightness(158%) contrast(101%);}
 a.login-link:hover{color:#7ce5ff;}
-@media (max-width: 400px) {
-	img.login-logo{width:100%;}
-}
 </style>
 {% endblock %}
 {% block body %}
@@ -18,19 +15,10 @@ a.login-link:hover{color:#7ce5ff;}
 			<img src="{{ absolute_url(asset('build/icons/nav/discord.svg')) }}" height="32" alt="discord" style="vertical-align:middle;">
 		</a>
 	</div>
-	<table style="margin:auto;margin-top:50px;">
-		<tr>
-			<td>
-				<img class="login-logo" src="{{ absolute_url(asset('build/icons/admin/keys.svg')) }}" alt="" width="128">
-			</td>
-			<td>
-				{% if app.user %}
-					{% trans %}You are logged in as{% endtrans %}
-					{{ app.user.username }},
-					<a href="{{ path('app_logout') }}">{% trans %}Logout{% endtrans %}</a>
-				{% else %}
-					<form method="post">
-
+	<div style="display:flex;flex-direction:row;flex-wrap:wrap;align-items:center;justify-content:center;margin-top:50px;">
+		<img src="{{ absolute_url(asset('build/icons/admin/keys.svg')) }}" alt="" width="128">
+		{% if app.user %}You are logged in as {{ app.user.username }}, <a href="{{ path('app_logout') }}">Logout</a>{% else %}
+		<form method="post">
 						<table>
 							<tr>
 								<td colspan="2">
@@ -60,15 +48,9 @@ a.login-link:hover{color:#7ce5ff;}
 								</td>
 							</tr>
 						</table>
-					</form>
-				{% endif %}
-			</td>
-		</tr>
-		{% if error %}
-			<tr>
-				<td></td>
-				<td colspan="2" style="font-size:16px">{{ error.messageKey|trans(error.messageData, 'security') }}</td>
-			</tr>
+		</form>
 		{% endif %}
-	</table>
+		
+	</div>
+	{% if error %}<span>{{ error.messageKey|trans(error.messageData, 'security') }}<span>{% endif %}
 {% endblock %}

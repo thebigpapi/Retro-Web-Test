@@ -1,35 +1,20 @@
+{% apply spaceless %}
 <div class="show-nav" id="sh-nav" data-controller="show">
-	<div class="snav" data-action='click->show#show_general'>
-		<img src="{{ absolute_url(asset('build/icons/show/data.svg')) }}" alt="" width="24" height="24">{% if entityName == "motherboard" %}General{% else %}Description{% endif %}</div>
-	<div class="snav" data-action='click->show#show_downloads'>
-		<img src="{{ absolute_url(asset('build/icons/dw.svg')) }}" alt="" width="24" height="24">{% if entityName == "chip" %}Alias/Docs{% else %}Downloads{% endif %}</div>
+    <input type="radio" name="tabs" id="tab-nav-1" checked data-action='click->show#show_general'>
+    <label for="tab-nav-1"><img src="{{ absolute_url(asset('build/icons/show/data.svg')) }}" alt="" width="24" height="24">Description</label>
+    <input type="radio" name="tabs" id="tab-nav-2" data-action='click->show#show_downloads'>
+    <label for="tab-nav-2"><img src="{{ absolute_url(asset('build/icons/dw.svg')) }}" alt="" width="24" height="24">Downloads</label>
     {% if count > 2 %}
-	<div class="snav" data-action='click->show#show_cpus'>
-		<img src="{{ absolute_url(asset('build/icons/show/cpu.svg')) }}" alt="" width="24" height="24">CPUs</div>
+    <input type="radio" name="tabs" id="tab-nav-3" data-action='click->show#show_cpus'>
+    <label for="tab-nav-3"><img src="{{ absolute_url(asset('build/icons/show/cpu.svg')) }}" alt="" width="24" height="24">CPUs</label>
     {% endif %}
     {% if entityName == "motherboard" %}
         {% set name = entityName|slice(6, 5) %}
     {% else %}
         {% set name = entityName %}
     {% endif %}
-    {% if type == "show" %}
-    <div style="float:right;">
-        {% if is_granted('ROLE_ADMIN') and entityName == "motherboard" %}
-        <a class="snav" href="{{ path(entityName ~ '_delete', {id: entity.getId()}) }}">
-            <img src="{{ absolute_url(asset('build/icons/show/delete.svg')) }}" alt="" width="24" height="24">Delete</a>
-        {% endif %}
-        <a class="snav" href="{{ path('new_' ~ entityName ~ '_edit', {id: entity.getId()}) }}">
-            <img src="{{ absolute_url(asset('build/icons/show/edit.svg')) }}" alt="" width="24" height="24">Edit {{name}}</a>
-    </div>
-    {% endif %}
-    {% if type == "edit" %}
-    <div style="float:right;">
-        {% if entityName == "motherboard" %}
-		<div class="snav" data-action="click->{{entityName}}--add#clone">
-			<img src="{{ absolute_url(asset('build/icons/clone.svg')) }}" alt="" width="24" height="24" style="vertical-align: middle;padding-right:2px;">Clone {{name}}</div>
-        {% endif %}
-		<div class="snav" {% if entityName == "chip" %}onclick="document.getElementById('chipset_part_form_save').click();"{% else %}data-action="click->{{entityName}}--add#submit"{% endif %}>
-			<img src="{{ absolute_url(asset('build/icons/show/edit.svg')) }}" alt="" width="24" height="24" style="vertical-align: middle;padding-right:2px;">Save {{name}}</div>	
-	</div>
-    {% endif %}
-</div>
+    {% if type == "show" and is_granted('ROLE_USER') %}
+        <input type="radio" name="tabs0" id="tab-nav-0" data-action='click->show#goToURL' data-URL="{{ path('new_' ~ entityName ~ '_edit', {id: entity.getId()}) }}">
+        <label for="tab-nav-0"><img src="{{ absolute_url(asset('build/icons/edit.svg')) }}" alt="" width="24" height="24">Edit {{name}}</label>
+    {% endif %}    
+</div>{% endapply %}

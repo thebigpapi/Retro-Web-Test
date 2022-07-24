@@ -1,8 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}
-	{% trans %}Search results{% endtrans %}
-{% endblock %}
+{% block title %}Search results - TRW{% endblock %}
 
 {% block metatags %}
 	<meta name="description" content="Search for a motherboard by name, chipset, manufacturer, CPU platform, form factor, expansion slot count and more.">
@@ -10,73 +8,61 @@
 
 {% block body %}
 	<div class="title">
-		<b>{% trans %}Search results{% endtrans %}</b>
+		<b>Search results</b>
 	</div>
 	<p style="text-align:center;padding-top:10px;">
-		<i>{{ 'motherboard.num'|trans({'count':motherboard_count}) }}</i>
+		<i>{{ motherboard_count > 0 ? motherboard_count : 'No' }}{{ motherboard_count == 1 ? ' result' : ' results' }}</i>
 	</p>
 	{% if motherboards is not empty %}
-		<div class="results">
+		<div class="results{% if not show_images %} lst{% endif %}">
 			{{ knp_pagination_render(motherboards, 'macros/pagination.html.twig') }}
 			{% if show_images %}
+			<div class="perks">
+				<div id="index-datetime" class="perks-list">
 				{% for motherboard in motherboards %}
-					<span class="image-block">
-						<span>
-							{% if motherboard.getImages() is not empty %}
-								{% for image in motherboard.getImages()|filter(a => a.motherboardImageType.id in [1, 2])|sort((a, b) => b.motherboardImageType <=> a.motherboardImageType)|slice(0, 1) %}
-									<a href="{{ vich_uploader_asset(image, 'imageFile')}}" class="glightbox">
-										<img src="{% if vich_uploader_asset(image, 'imageFile') | ext != "svg" %}
-										{{ vich_uploader_asset(image, 'imageFile') | imagine_filter('motherboard_show_thumb') }}{% else %}
-										{{ vich_uploader_asset(image, 'imageFile')}}{% endif %}" alt="" title="{% if image.description %}{{ image.description }}{% endif %}"></a>
-								{% endfor %}
-							{% else %}
-								<img src="{{ absolute_url(asset('build/images/motherboard/image-missing.webp')) }}" title="no images available :(">
-							{% endif %}
-							<span>
-								<a class="result-link" href="{{ path("motherboard_show", {id: motherboard.getId()}) }}">{{ motherboard.getManufacturerShortNameIfExist() }}&nbsp;{{ motherboard.name }}</a>
-							</span>
+					<div class="perk">
+						<div class="perk-image">
+						{% if motherboard.getImages() is not empty %}
+						{% for image in motherboard.getImages()|filter(a => a.motherboardImageType.id in [1, 2])|sort((a, b) => b.motherboardImageType <=> a.motherboardImageType)|slice(0, 1) %}
+							<a href="{{ vich_uploader_asset(image, 'imageFile')}}" class="glightbox"><img src="{% if vich_uploader_asset(image, 'imageFile') | ext != "svg" %}
+								{{ vich_uploader_asset(image, 'imageFile') | imagine_filter('motherboard_show_thumb') }}{% else %}
+								{{ vich_uploader_asset(image, 'imageFile')}}{% endif %}" alt="" loading="lazy" width="250" height="200" title="Click to preview image"></a>
+						{% endfor %}
+						{% else %}
+							<img src="{{ absolute_url(asset('build/images/motherboard/image-missing.webp')) }}" loading="lazy" width="250" height="200" title="no images available :(">
+						{% endif %}</div>
+						<a href="{{ path("motherboard_show", {id:motherboard.getId()}) }}" title="Click to visit page">
+							<div class="perk-name">{{ motherboard.getManufacturerShortNameIfExist() }}&nbsp;{{ motherboard.name }}</div>
+							<div class="perk-date">
 							{% if motherboard.getMotherboardAliases() is not empty %}{% for alias in motherboard.getMotherboardAliases() %}
 								<span class="results-alias">
-									<small>&nbsp;
-
-										{% if alias.getManufacturer() is not null %}
-											{{ alias.getManufacturer().getShortNameIfExist() }}
-										{% else %}
-											Unknown
-										{% endif %}
-										{{ alias.name }}</small>
+									<small>{% if alias.getManufacturer() is not null %}{{ alias.getManufacturer().getShortNameIfExist() }}{% else %}Unknown{% endif %}&nbsp;{{ alias.name }}{% if not loop.last %} |{% endif %}</small>
 								</span>
-							{% endfor %}{% endif %}</span>
-					</span>
+							{% endfor %}{% endif %}</div>
+						</a>
+					</div>	
 				{% endfor %}
+				</div>
+			</div>
 			{% else %}
-				<ul>
+				<div class="plain-list w300p table">
+					<div class="list-entry centered  head" style="font-style:italic;">
+						<div>Name</div>
+						<div>Aliases</div>
+					</div>
 					{% for motherboard in motherboards %}
-						<li>
-							<a class="result-link" href="{{ path("motherboard_show", {id: motherboard.getId()}) }}">{{ motherboard.getManufacturerShortNameIfExist() }}&nbsp;{{ motherboard.name }}</a>
+					<div class="list-entry centered bios {% if loop.index is divisible by(2) %}alt{% endif %}">
+						<div><a class="result-link" href="{{ path("motherboard_show", {id: motherboard.getId()}) }}">{{ motherboard.getManufacturerShortNameIfExist() }}&nbsp;{{ motherboard.name }}</a></div>
+						<div>
 							{% if motherboard.getMotherboardAliases() is not empty %}
-								<ul class="results-alias">
-									{% for alias in motherboard.getMotherboardAliases() %}
-										<li>
-											<small>
-												{% if alias.getManufacturer() is not null %}
-													{{ alias.getManufacturer().getShortNameIfExist() }}
-												{% else %}
-													Unknown
-												{% endif %}
-												{{ alias.name }}</small>
-										</li>
-									{% endfor %}
-								</ul>
+								{% for alias in motherboard.getMotherboardAliases() %}
+									<span>{{ alias.getManufacturer() ? alias.getManufacturer().getShortNameIfExist() : 'Unknown'}}&nbsp;{{ alias.name }}{% if not loop.last %} |{% endif %}</span>
+								{% endfor %}
 							{% endif %}
-
-						</li>
-						{#% if motherboard.getProcessorPlatformType() is not null %}
-							{{ motherboard.getProcessorPlatformType().getName() }}	
-						{% endif %#}
+						</div>
+					</div>
 					{% endfor %}
-				</ul>
-
+				</div>
 			{% endif %}
 			{{ knp_pagination_render(motherboards, 'macros/pagination.html.twig') }}
 		</div>

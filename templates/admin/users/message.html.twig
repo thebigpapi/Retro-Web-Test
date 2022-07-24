@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Message{% endblock %}
+
+{% block body %}
+<div class="title" style="padding-top:5em;">
+	<b>{{ message }}</b>
+</div>
+<div style="margin:0 auto;display:table;">
+    <a class="button" href="{{ path(path) }}" style="display:inline-block;">
+		<img src="{{ absolute_url(asset('build/icons/back.svg')) }}" alt="" width="24" style="vertical-align: middle;padding-right:2px;">Go back</a>
+</div>
+{% endblock %}

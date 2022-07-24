@@ -12,60 +12,67 @@
 	<input type="{{ type }}" {{ block('widget_attributes') }} {% if value is not empty %} value="{{ value }}" {% endif %}>
 {% endblock %}
 
-{% block title %}
-	{% trans %}Search for a motherboard{% endtrans %}
-{% endblock %}
+{% block title %}Search chipsets - TRW{% endblock %}
 
 
 {% block metatags %}
 	<meta name="description" content="Search for a chipset by name, manufacturer and part number.">
-	{% for locale in locales | split('|')|filter(locale => locale != "en") %}
-		<link rel="alternate" hreflang="{{ locale }}" href="{{ absolute_url(path('chipset_search', {_locale: locale})) }}"/>
-	{% endfor %}
-	<link rel="alternate" hreflang="x-default" href="{{ absolute_url(path('chipset_search', {_locale: 'en'})) }}"/>
+	<link rel="alternate" hreflang="x-default" href="{{ absolute_url(path('chipset_search')) }}"/>
 {% endblock %}
 {% block body %}
-<div class="index-title">
-	{% trans %}List chipsets whose manufacturer name starts with:{% endtrans %}<br>
-</div>
-<ul class="index-list">
-	{% for letter in ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z']%}
-		<li><a href="{{path("chipsetindex", {"letter":letter})}}">{{letter}}</a></li>
-	{% endfor %}
-</ul>
+
 	<div id="hiddenDiv" style="display: none;"></div>
 	{{ form_start(form, {'method': 'POST', 'name': 'search_chipset', 'action':path("chipset_search"), 'attr':{'data-controller':'search'}}) }}
 	<fieldset id="search-fieldset">
-		<div class="search-nav-title">{% trans %}Search for a chipset{% endtrans %}</div>
+		<div class="title">{% trans %}Search for a chipset{% endtrans %}</div>
+		<div class="index-title">
+			{% trans %}List chipsets whose manufacturer name starts with:{% endtrans %}<br>
+		</div>
+		<div class="index-list">
+			{% for letter in ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z']%}
+				<a class="index-letter" href="{{path("chipsetindex", {"letter":letter})}}">{{letter}}</a>
+			{% endfor %}
+		</div>
 		<section>
 			<h4 hidden>Search navigation</h4>
-			<div class="search-nav">
-				<div class="snav" onclick="document.getElementById('rst-btn').click();return false;">
-					<img src="{{ absolute_url(asset('build/icons/search/reset.svg')) }}" alt="reset" width="24" height="24">{% trans %}Reset fields{% endtrans %}
-				</div>
-				<div class="snav" onclick="document.getElementById('search_search').click();return false;">
-					<img src="{{ absolute_url(asset('build/icons/search/search.svg')) }}" alt="search" width="24" height="24">{% trans %}Search{% endtrans %}
-				</div>
-				<div class="snav" onclick="document.getElementById('search_searchWithImages').click();return false;">
-					<img src="{{ absolute_url(asset('build/icons/search/search_image.svg')) }}" alt="imgsearch" width="24" height="24">{% trans %}Search with images{% endtrans %}
-				</div>
-
+			<div class="toolbar">
+				<button type="button" onclick="document.getElementById('rst-btn').click();return false;">
+					<img src="{{ absolute_url(asset('build/icons/search/reset.svg')) }}" alt="reset" width="24" height="24">
+					<span>Reset fields</span>
+				</button>
+				<button type="button" onclick="document.getElementById('search_searchWithImages').click();return false;">
+					<img src="{{ absolute_url(asset('build/icons/search/search.svg')) }}" alt="imgsearch" width="24" height="24">
+					<span>Search</span>
+				</button>
+				<button type="button" onclick="document.getElementById('search_search').click();return false;">
+					<img src="{{ absolute_url(asset('build/icons/search/search_noimage.svg')) }}" alt="search" width="24" height="24">
+					<span>Search without images</span>
+				</button>
 				<input id="rst-btn" type="reset" style="display:none;" value="reset" data-action="click->search#reset" data-reset-ids='search_chipsetManufacturer search_cpuSocket1 search_cpuSocket2'>
 				{{ form_row(form.search)|replace({'<div><button': '<input style="display:none;"', '</button></div>': '">', '>': ' value="'})|raw }}
 				{{ form_row(form.searchWithImages)|replace({'<div><button': '<input style="display:none;"', '</button></div>': '">', '>': ' value="'})|raw }}
 			</div>
 		</section>
-		<section>
-			<div>
-				<label class="search-label" for="search_chipsetManufacturer" title="{% trans %}This is where you select the manufacturer name.{% endtrans %}"
-				>{% trans %}Manufacturer{% endtrans %}&nbsp;<img src="{{ absolute_url(asset('build/icons/search/help.svg')) }}" alt="" width="16" height="16"></label>
-				<div class="search-widget">
-					{{ form_widget(form.chipsetManufacturer) }}
+		<section class="search-form-grid">
+			<div class="search-form-entry">
+				<label class="search-form-label" for="search_chipsetManufacturer" title="{% trans %}This is where you select the manufacturer name.{% endtrans %}"
+				>
+					<span>{% trans %}Manufacturer{% endtrans %}</span>
+					<img src="{{ absolute_url(asset('build/icons/search/help.svg')) }}" alt="" width="16" height="16">
+				</label>
+				<div class="search-form-widget">
+					<div>{{ form_widget(form.chipsetManufacturer) }}</div>
 				</div>
-				<label class="search-label" for="search_name" title="{% trans %}This is where you enter the chipset part number.{% endtrans %}"
-				>{% trans %}Name{% endtrans %}&nbsp;<img src="{{ absolute_url(asset('build/icons/search/help.svg')) }}" alt="" width="16" height="16"></label>
-				<div class="search-widget">
-					<div class="search-widget-long">{{ form_widget(form.name, {'attr': {'aria-describedby': 'search_name_inst'}}) }}</div>
+			</div>
+
+			<div class="search-form-entry">
+				<label class="search-form-label" for="search_name" title="{% trans %}This is where you enter the chipset part number.{% endtrans %}"
+				>
+					<span>{% trans %}Name{% endtrans %}</span>
+					<img src="{{ absolute_url(asset('build/icons/search/help.svg')) }}" alt="" width="16" height="16">
+				</label>
+				<div class="search-form-widget">
+					<div>{{ form_widget(form.name) }}</div>
 				</div>
 			</div>
 		</section>

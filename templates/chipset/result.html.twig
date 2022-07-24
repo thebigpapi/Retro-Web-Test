@@ -1,7 +1,5 @@
 {% extends 'base.html.twig' %}
-{% block title %}
-	{% trans %}Search results{% endtrans %}
-{% endblock %}
+{% block title %}Search results - TRW{% endblock %}
 
 {% block metatags %}
 	<meta name="description" content="Search for a chipset by name, manufacturer, part number and more.">
@@ -12,29 +10,62 @@
 		<b>{% trans %}Search results{% endtrans %}</b>
 	</div>
 	<p style="text-align:center;padding-top:10px;">
-		<i>{{ chipset_count }} chipsets</i>
+		<i>{{ chipset_count > 0 ? chipset_count : 'No' }}{{ chipset_count == 1 ? ' result' : ' results' }}</i>
 	</p>
 	{% if chipsets is not empty %}
-		<div class="results">
+		<div class="results{% if not show_images %} lst{% endif %}">
 			{{ knp_pagination_render(chipsets, 'macros/pagination.html.twig') }}
 			{% if show_images %}
+				
+			<div class="perks">
+				<div id="index-datetime" class="perks-list">
 				{% for chipset in chipsets %}
-					<span class="image-block"><span>
-					{% for chipPart in chipset.getChipsetParts()|slice(0, 1) %}
-						{% if chipPart.getImages() is not empty %}
-							{% for image in chipPart.getImages()|slice(0, 1) %}
+					<div class="perk">
+						<div class="perk-image">
+						{% if chipset.getChipsetParts() is not empty %}
+							{% for chipPart in chipset.getChipsetParts()|sort((a, b) => a.rank <=> b.rank)|slice(0, 1) %}
+							{% if chipPart.getImages() is not empty %}
+								{% for image in chipPart.getImages()|slice(0, 1) %}
 								<a href="{{ vich_uploader_asset(image, 'imageFile')}}" class="glightbox">
-									<img src="{{ vich_uploader_asset(image, 'imageFile') | imagine_filter('motherboard_show_thumb') }}" alt="" title="{% if image.description %}{{ image.description }}{% endif %}"></a>
-							{% endfor %}
+									<img src="{{ vich_uploader_asset(image, 'imageFile') | imagine_filter('motherboard_show_thumb') }}" alt="" title="Click to preview image"></a>
+								{% endfor %}
+								{% else %}
+								<img src="{{ absolute_url(asset('build/images/chipset/image-missing.webp')) }}" loading="lazy" width="250" height="200" title="no images available :(">
+							{% endif %}{% endfor %}
+						{% else %}
+							<img src="{{ absolute_url(asset('build/images/chipset/image-missing.webp')) }}" loading="lazy" width="250" height="200" title="no images available :(">
 						{% endif %}
-						<span><a class="result-link" href="{{ path("chipset_show", {id: chipset.getId()}) }}">{{ chipset.getMainChipWithManufacturer() }}</a></span>
-					{% endfor %}
-					</span></span>
+						</div>
+						<a href="{{ path("chipset_show", {id: chipset.getId()}) }}" title="Click to visit page">
+							<div class="perk-name">{{ chipset.getFullName() }}</div>
+							<div class="perk-date">{% if chipset.getParts() is not empty %}<span class="results-alias">
+									<small>Parts: {% for chipPart in chipset.getChipsetParts()|sort((a, b) => a.rank <=> b.rank) %}{{ chipPart.getFullName() }}{% if not loop.last %}, {% endif %}{% endfor %}</small>
+								</span>{% endif %}</div>
+						</a>
+					</div>	
 				{% endfor %}
+				</div>
+			</div>
 			{% else %}
-				<ul>{% for chipset in chipsets %}
-					<li><a class="result-link" href="{{ path("chipset_show", {id: chipset.getId()}) }}">{{ chipset.getMainChipWithManufacturer() }}</a></li>
-				{% endfor %}</ul>
+				<div class="plain-list w300p table">
+					<div class="list-entry centered head" style="font-style:italic;">
+						<div>Name</div>
+						<div>Parts</div>
+					</div>
+					{% for chipset in chipsets %}
+					<div class="list-entry centered bios {% if loop.index is divisible by(2) %}alt{% endif %}{% if chipset.getChipsetParts() is empty %} nows{% endif %}">
+						<div class="header-label">Name</div>
+						<div><a class="result-link" href="{{ path("chipset_show", {id: chipset.getId()}) }}">{{ chipset.getFullName() }}</a></div>
+						<div class="header-label">Parts</div>
+						<div>
+							{% for chipPart in chipset.getChipsetParts()|sort((a, b) => a.rank <=> b.rank) %}
+								<span class="text-block" style="margin-right: 5px;">{{ chipPart.getFullName() }}</span>
+							{% endfor %}
+
+						</div>
+					</div>
+					{% endfor %}
+				</div>
 			{% endif %}
 			{{ knp_pagination_render(chipsets, 'macros/pagination.html.twig') }}
 		</div>

@@ -2,13 +2,13 @@ import { Controller } from 'stimulus';
 
 export default class extends Controller {
     connect() {
-        this.changeTime("index-datetime")
+        this.changeTime()
     }
 
-    changeTime(id) {
-        let list = document.getElementById(id).children
+    changeTime() {
+        let list = document.getElementsByClassName("perk-date");
         for (let element of list) {
-            element.children[0].children[0].innerHTML = new Intl.DateTimeFormat('en-ca-iso8601', {
+            element.innerHTML = new Intl.DateTimeFormat('en-ca-iso8601', {
                 year: 'numeric', 
                 month: 'numeric', 
                 day: 'numeric', 
@@ -16,7 +16,7 @@ export default class extends Controller {
                 hourCycle:'h23',
                 minute: '2-digit', 
                 timeZoneName:'short' 
-            }).format(new Date(element.children[0].children[0].innerHTML));
+            }).format(new Date(element.innerHTML));
         }
     }
 }

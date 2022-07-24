@@ -137,7 +137,7 @@ class Search extends AbstractType
 
             /*$formOptions = [
                 'class' => Chipset::class,
-                'choice_label' => 'getMainChipWithManufacturer',
+                'choice_label' => 'getFullReference',
                 'query_builder' => function (ChipsetRepository $chipsetRepository) use ($manufacturer) {
                     return $chipsetRepository->findByManufacturer($manufacturer);
                     // call a method on your repository that returns the query builder
@@ -226,7 +226,7 @@ class Search extends AbstractType
             {
                 $formOptions = [
                     'class' => Chipset::class,
-                    'choice_label' => 'getMainChipWithManufacturer',
+                    'choice_label' => 'getFullReference',
                     'query_builder' => function (ChipsetRepository $userRepository) {
                         return $userRepository->findAllMotherboardChipset();
                         // call a method on your repository that returns the query builder
@@ -236,7 +236,7 @@ class Search extends AbstractType
 
                 $form->add('chipset', ChoiceType::class, [
                     //'class' => Chipset::class,
-                    'choice_label' => 'getMainChipWithManufacturer',
+                    'choice_label' => 'getFullReference',
                     'multiple' => false,
                     'expanded' => false,
                     'required' => false,

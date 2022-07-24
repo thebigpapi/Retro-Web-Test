@@ -1,18 +1,22 @@
 {# templates/base.html.twig #}
 <!DOCTYPE HTML>
-<html dir="{{ 'dir.lang'|trans }}" lang="{{ 'user.lang'|trans }}">
+<html dir="auto" lang="en">
 	<head>
 		<meta http-equiv="content-type" content="text/html; charset=UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1"> {% block metatags %}{% endblock %}
-		<title>
-			{% block title %}Ultimate Retro
-			{% endblock %}
-		</title>
+		<title>{% block title %}{% endblock %}</title>
+		<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+		<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+		<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+		<link rel="manifest" href="/site.webmanifest">
+		<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+		<meta name="msapplication-TileColor" content="#da532c">
+		<meta name="theme-color" content="#ffffff">
 		<meta property="og:type" content="website">
 		<meta property="og:url" content="http://www.ultimateretro.net/">
 		{% block opengraph %}
-			<meta property="og:title" content="Ultimate Retro">
-			<meta property="og:description" content="The ultimate retro motherboard database">
+			<meta property="og:title" content="The Retro Web">
+			<meta property="og:description" content="The Retro Web hardware database">
 			<meta property="og:image" content="{{ absolute_url(asset('build/images/logo.webp')) }}">
 		{% endblock %}
 		{% block stylesheets %}
@@ -27,78 +31,69 @@
 		{% endblock %}
 	</head>
 	<body class="content">
-		<header class="navbar">
-			<nav class="navbar-inner">
-				<a href="{{ path('app_homepage') }}" title="Go to homepage">
-					<b>Ultimate Retro
-						<small>BETA</small>
-					</b>
-				</a>
-			{% if is_granted('ROLE_USER') %}
-				<a href="{{ path('app_logout') }}" class="nav-link">
-					<img src="{{ absolute_url(asset('build/icons/nav/power.svg')) }}" width="24" height="24" alt="logout">
-					<span class="navbar-label">{{'Logout'|trans}}</span>
-				</a>
-			{% else %}
-				<a href="{{ path('app_login') }}" class="nav-link">
-					<img src="{{ absolute_url(asset('build/icons/nav/power.svg')) }}" width="24" height="24" alt="login">
-					<span class="navbar-label">{{'Login'|trans}}</span>
-				</a>
-			{% endif %}
-			{% if is_granted('ROLE_ADMIN') %}
-				<a href="{{ path('admin_index') }}" class="nav-link">
-					<img src="{{ absolute_url(asset('build/icons/nav/settings.svg')) }}" width="24" height="24" alt="admin">
-					<span class="navbar-label">{{'Admin'|trans}}</span>
-				</a>
-			{% endif %}
-				<a href="{{ path('app_homepage') }}motherboards/search" class="nav-link">
-					<img src="{{ absolute_url(asset('build/icons/nav/searchbw.svg')) }}" width="24" height="24" alt="login">
-					<span class="navbar-label">{{'Search boards'|trans}}</span>
-				</a>
-				{#<span style="color:yellow">UNDER CONSTRUCTION, THINGS WILL BE BROKEN</span>#}
-			</nav>	
+		<header>
+			<div>
+				<nav class="navbar-logo">
+					<a href="{{ path('app_homepage') }}" title="Go to homepage">
+						<img src="{{ absolute_url(asset('build/images/icon.png')) }}" width="40" height="40" alt="logo">
+						<span class="navbar-icon-label">The Retro Web</span>
+						{#<img src="{{ absolute_url(asset('build/images/beta.png')) }}" width="" height="40" alt="beta">#}
+					</a>
+				</nav>
+				<nav class="navbar-links">
+					<a href="{{ path('app_homepage') }}" class="nav-link">
+						<img src="{{ absolute_url(asset('build/icons/nav/chip.svg')) }}" width="24" height="24" alt="login">
+						<span class="navbar-label">Hardware</span>
+					</a>
+					<a href="{{ path('app_homepage') }}" class="nav-link">
+						<img src="{{ absolute_url(asset('build/icons/nav/articles.svg')) }}" width="24" height="24" alt="art">
+						<span class="navbar-label">Articles</span>
+					</a>
+					{% if is_granted('ROLE_ADMIN') %}
+						<a href="{{ path('admin_index') }}" class="nav-link">
+							<img src="{{ absolute_url(asset('build/icons/nav/settings.svg')) }}" width="24" height="24" alt="admin">
+							<span class="navbar-label">Admin</span>
+						</a>
+						<a href="{{ path('app_logout') }}" class="nav-link">
+							<img src="{{ absolute_url(asset('build/icons/nav/power.svg')) }}" width="24" height="24" alt="logout">
+							<span class="navbar-label">Logout</span>
+						</a>
+					{% else %}
+						<a href="{{ path('app_login') }}" class="nav-link">
+							<img src="{{ absolute_url(asset('build/icons/nav/power.svg')) }}" width="24" height="24" alt="login">
+							<span class="navbar-label">Login</span>
+						</a>
+					{% endif %}
+				</nav>
+			</div>
 		</header>
-		<div class="main">
-			<main>
-				<div class="page">
-					{% block body %}{% endblock %}
+		<main>
+			<div class="page">
+				{% block body %}{% endblock %}
+			</div>
+		</main>
+		<footer>
+			<div>
+				<div class="footer-links">
+					<a href="{{ path('app_credits') }}">
+						<img src="{{ absolute_url(asset('build/icons/nav/about.svg')) }}" width="16" height="16" alt="about">
+						<span class="navbar-label">About us</span>
+					</a>
+					<a href="https://discord.gg/HWWH7hsk2p">
+						<img src="{{ absolute_url(asset('build/icons/nav/discord.svg')) }}" width="16" height="16" alt="discord">
+						<span class="navbar-label">Join our Discord</span>
+					</a>
+					<a href="#">
+						<img src="{{ absolute_url(asset('build/icons/nav/email.svg')) }}" width="16" height="16" alt="email">
+						<span class="navbar-label">Email us</span>
+					</a>
+					<a href="https://gitlab.com/deksor/ultimateretro">
+						<img src="{{ absolute_url(asset('build/icons/nav/gitlab.svg')) }}" width="16" height="16" alt="gitlab">
+						<span class="navbar-label">Our GitLab repo</span>
+					</a>
 				</div>
-			</main>
-			<footer class="footer">
-				<div class="foot-container">
-					<div class="foot-part">
-						<div>
-							<a href="{{ path('app_credits') }}">
-								<img src="{{ absolute_url(asset('build/icons/nav/about.svg')) }}" width="16" height="16" alt="about">
-								<span class="navbar-label">{{'About us'|trans}}</span>
-							</a>
-						</div>
-						<div>
-							<a href="https://discord.gg/HWWH7hsk2p">
-								<img src="{{ absolute_url(asset('build/icons/nav/discord.svg')) }}" width="16" height="16" alt="discord">
-								<span class="navbar-label">{{'Join our Discord'|trans}}</span>
-							</a>
-						</div>
-					</div>
-					<div class="foot-part">
-						<div>
-							<a href="#">
-								<img src="{{ absolute_url(asset('build/icons/nav/email.svg')) }}" width="16" height="16" alt="email">
-								<span class="navbar-label">{{'Email us(TBA)'|trans}}</span>
-							</a>
-						</div>
-						<div>
-							<a href="https://gitlab.com/deksor/ultimateretro">
-								<img src="{{ absolute_url(asset('build/icons/nav/gitlab.svg')) }}" width="16" height="16" alt="gitlab">
-								<span class="navbar-label">{{'Our GitLab repo'|trans}}</span>
-							</a>
-						</div>
-					</div>
-					<div class="foot-part">
-						<div class="foot-part-ident">{{'Designed by Deksor and computerguy08.'|trans}}<br>{{'(c) 2019-2022 All wrongs reversed.'|trans}}</div>
-					</div>
-				</div>
-			</footer>
-		</div>
+				<div class="footer-info">Designed by Deksor, computerguy096 and Zago. (c) 2019-2022 All wrongs reversed.</div>
+			</div>
+		</footer>
 	</body>
 </html>

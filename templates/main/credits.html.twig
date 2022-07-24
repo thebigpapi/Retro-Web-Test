@@ -1,68 +1,71 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-	{% trans %}Credits{% endtrans %}
+	Credits
 {% endblock %}
 {% block metatags %}
-	<meta name="description" content="The ultimate retro motherboard database, here you can find board photos, BIOS images, manuals and more!">
-	{% for locale in locales | split('|')|filter(locale => locale != "en") %}
-		<link rel="alternate" hreflang="{{ locale }}" href="{{ absolute_url(path('app_credits', {_locale: locale})) }}"/>
-	{% endfor %}
-	<link rel="alternate" hreflang="x-default" href="{{ absolute_url(path('app_credits', {_locale: 'en'})) }}"/>
+	<meta name="description" content="The Retro Web motherboard database, here you can find board photos, BIOS images, manuals and more!">
+	<link rel="alternate" hreflang="x-default" href="{{ absolute_url(path('app_credits')) }}"/>
 {% endblock %}
 {% block opengraph %}
 	<style>
-		div.main {
+		main {
 			background-color: #191919 !important;
 			color: #EEEEEE !important;
-			overflow: hidden;
 			background-repeat: repeat;
 			background-image: url('/build/images/background.webp');
+			text-shadow: 0 1px 5px black;
+		}
+		div.info-text {
+			width: 90%;
+			max-width: 1000px;
+			margin: 0 auto;
 		}
 		a.credits-lnk:link {
 			color: orange !important;
-		}
-		a.credits-lnk:visited {
-			color: #00e874 !important;
 		}
 	</style>
 {% endblock %}
 {% block body %}
 	<div class="title">
-		<b>{% trans %}About Ultimate Retro{% endtrans %}</b>
+		<b>About The Retro Web</b>
 	</div>
-	<p>{% trans %}This is a project aimed at documenting as many pieces of hardware as possible, built entirely by volunteers, who code for the site/add new entries in their free time. All the images that are added on this site should comply with{% endtrans %}
-		<a class="credits-lnk" href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>
-		{% trans %}, unless specified otherwise by the image owner.{% endtrans %}&nbsp;We also have a <a href="https://gitlab.com/deksor/ultimateretro">GitLab</a> repository, where you can see the code behind UR.</p>
-	<p>{% trans %}Partial list of people who helped shape this project:{% endtrans %}</p>
-	<ul>
-		<li>{% trans %}Deksor (project initiator){% endtrans %}</li>
-		<li>{% trans %}computerguy08 (UI development){% endtrans %}</li>
-		<li>{% trans %}evasive, owner of{% endtrans %}
-			<a class="credits-lnk" href="https://www.elhvb.com/">elhvb.com</a>
-		</li>
-		<li>{% trans %}mR_Slug, creator of the{% endtrans %}
-			<a class="credits-lnk" href="http://66.113.161.23/~mR_Slug/chipset/chipsets-v1.00.pl">{% trans %}chipset encyclopedia{% endtrans %}</a>
-		</li>
-		<li>{% trans %}TheRealZago, creator of{% endtrans %}
-			<a class="credits-lnk" href="https://theretroweb.com/">theretroweb.com</a>
-		</li>
-		<li>{% trans %}scorp, aka Necroware on{% endtrans %}
-			<a class="credits-lnk" href="https://www.youtube.com/channel/UCKU5nwSWYXa3xfXGBlKyvdw">YouTube</a>
-		</li>
-		<li>Carlos S. M.</li>
-		<li>edneil</li>
-		<li>DecoySportsGame</li>
-		<li>Predator99</li>
-		<li>Luckybob</li>
-	</ul>
-	<p>{% trans %}You can also find us on these forums:{% endtrans %}</p>
-	<ul>
-		<li>
-			<a class="credits-lnk" href="https://www.vogons.org/viewtopic.php?f=46&t=74070">VOGONS</a>
-		</li>
-		<li>
-			<a class="credits-lnk" href="https://dosreloaded.de/forum/index.php?thread/3599-ultimate-retro-ehem-ultimate-hardware-2019/">DOSReloaded</a>
-		</li>
-	</ul>
+	<div class="info-text">
+		<p>This is a project aimed at documenting as many pieces of hardware as possible, built entirely by volunteers, who code for the site/add new entries in their free time. All the images that are added on this site should comply with
+			<a class="credits-lnk" href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>
+			, unless specified otherwise by the image owner.&nbsp;We also have a <a class="credits-lnk" href="https://gitlab.com/deksor/ultimateretro">GitLab</a> repository, where you can see the code behind TRW.</p>
+		<p>Partial list of people who helped shape this project:</p>
+		<ul>
+			<li>Deksor (project initiator)</li>
+			<li>computerguy08 (UI development)</li>
+			<li>TheRealZago, owner of the former theretroweb.com site</li>
+			<li>evasive, owner of
+				<a class="credits-lnk" href="https://www.elhvb.com/">elhvb.com</a>
+			</li>
+			<li>mR_Slug, creator of the
+				<a class="credits-lnk" href="http://66.113.161.23/~mR_Slug/chipset/chipsets-v1.00.pl">chipset encyclopedia</a>
+			</li>
+			<li>scorp, aka Necroware on
+				<a class="credits-lnk" href="https://www.youtube.com/channel/UCKU5nwSWYXa3xfXGBlKyvdw">YouTube</a>
+			</li>
+			<li>
+				<a class="credits-lnk" href="https://0xcats.net/">0xCats</a>
+			</li>
+			<li>Carlos S. M.</li>
+			<li>edneil</li>
+			<li>DecoySportsGame</li>
+			<li>Predator99</li>
+			<li>Luckybob</li>
+		</ul>
+		<p>You can also find us on these forums:</p>
+		<ul>
+			<li>
+				<a class="credits-lnk" href="https://www.vogons.org/viewtopic.php?f=46&t=74070">VOGONS</a>
+			</li>
+			<li>
+				<a class="credits-lnk" href="https://dosreloaded.de/forum/index.php?thread/3599-ultimate-retro-ehem-ultimate-hardware-2019/">DOSReloaded</a>
+			</li>
+		</ul>
+		<p>Release: 2.0</p>
+	</div>
 	{% endblock %}

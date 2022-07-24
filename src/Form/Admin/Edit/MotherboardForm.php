@@ -114,8 +114,7 @@ class MotherboardForm extends AbstractType
             ])
             ->add('chipset', EntityType::class, [
                 'class' => Chipset::class,
-
-                'choice_label' => 'getMainChipWithManufacturer',
+                'choice_label' => 'getFullName',
                 'multiple' => false,
                 'expanded' => false,
                 'choices' => $options['chipsets'],
@@ -130,6 +129,7 @@ class MotherboardForm extends AbstractType
                     'choices' => $options['sockets'],
                 ]
             ])
+            ->add('slug', TextType::class)
             /*->add('processorPlatformType', EntityType::class, [
                 'class' => ProcessorPlatformType::class,
                 'choice_label' => 'name',

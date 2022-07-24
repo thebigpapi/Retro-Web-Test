@@ -1,9 +1,18 @@
-<tr>
-    <td>{{object.getName()}}</td>
-    <td>{{object.getTagName()}}</td>
-    <td><img src="{{ vich_uploader_asset(object, 'icon')}}" alt="" width="32"></td>
-    <td>
-        <a class="button-widget" href="./files/mediatypes/{{ object.getId() }}/edit/">
-            <img src="{{ absolute_url(asset('build/icons/show/edit.svg')) }}" alt="" width="20">Edit</a>
-    </td>
-</tr>
+<div class="list-entry centered{% if loop.index is divisible by(2) %} alt{% endif %}">
+    <div class="header-label">Name</div>
+    <div>{{object.getName()}}</div>
+
+    <div class="header-label">Tag</div>
+    <div class="tag-container">
+        <span class="text-block">
+            <img src="{{ vich_uploader_asset(object, 'icon')}}" alt="" width="32">
+            <span>{{object.getTagName()}}</span>
+        </span>
+    </div>
+
+    <div class="header-label">Actions</div>
+    <div class="toolbar toolbar-thin">
+        <a class="button" href="./files/mediatypes/{{ object.getId() }}/edit/">
+            <img src="{{ absolute_url(asset('build/icons/edit.svg')) }}" alt="" width="20"><span>Edit</span></a>
+    </div>
+</div>

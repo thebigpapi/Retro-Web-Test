@@ -1,8 +1,15 @@
-<tr>
-    <td>{{object.getName()}}</td>
-    <td>{{object.getShortName()}}</td>
-    <td>
-        <a class="button-widget" href="./miscs/manufacturers/{{ object.getId() }}/edit/">
-            <img src="{{ absolute_url(asset('build/icons/show/edit.svg')) }}" alt="" width="20">Edit</a>
-    </td>
-</tr>	
+<div class="list-entry centered{% if loop.index is divisible by(2) %} alt{% endif %}">
+    <div class="header-label">Name</div>
+    <div>{{object.getName()}}</div>
+
+    <div class="header-label">Short name</div>
+    <div>{{object.getShortName()}}</div>
+
+    <div class="header-label">Actions</div>
+    <div class="toolbar toolbar-thin">
+        <a class="button" href="./miscs/manufacturers/{{ object.getId() }}/edit/">
+            <img src="{{ absolute_url(asset('build/icons/edit.svg')) }}" alt="" width="20">
+            <span>Edit</span>
+        </a>
+    </div>
+</div>
