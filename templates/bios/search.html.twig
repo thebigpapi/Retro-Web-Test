@@ -40,8 +40,8 @@
 					<img src="{{ absolute_url(asset('build/icons/search/search.svg')) }}" alt="search" width="24" height="24">
 					<span>{% trans %}Search{% endtrans %}</span>
 				</button>
-				<input id="rst-btn" type="reset" value="reset" style="display:none;" data-action="click->search#reset" data-reset-ids="search_chipsetManufacturer">
-				{{ form_row(form.search)|replace({'<div><button': '<input style="display:none;"', '</button></div>': '">', '>': ' value="'})|raw }}
+				<input id="rst-btn" type="reset" value="reset" data-action="click->search#reset" data-reset-ids="search_chipsetManufacturer">
+				{{ form_row(form.search)|replace({'<div><button': '<input', '</button></div>': '">', '>': ' value="'})|raw }}
 			</div>
 		</section>
 		<section class="search-form-grid">
@@ -63,7 +63,7 @@
 					<img src="{{ absolute_url(asset('build/icons/search/help.svg')) }}" alt="" width="16" height="16">
 				</label>
 				<div class="search-form-widget">
-					<div id="setchip1">{{ form_widget(form.chipsetManufacturer, {'attr': {'data-action': "change->search#search", 'data-target-id': 'search_chipset'}}) }}</div>
+					<div id="setchip1">{{ form_widget(form.chipsetManufacturer, {'attr': {'data-action': "change->search#search", 'data-target-id': 'search_chipset', 'aria-label': "Chipset manufacturer"}}) }}</div>
 					<div>{{ form_widget(form.chipset) }}</div>
 				</div>
 			</div>

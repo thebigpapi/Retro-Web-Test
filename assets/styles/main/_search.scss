@@ -95,7 +95,7 @@ div.toolbar {
 	display: flex;
 	justify-content: center;
 	flex-wrap: wrap;
-
+	input{ display:none; }
 	&.toolbar-thin {
 		padding-bottom: 5px;
 

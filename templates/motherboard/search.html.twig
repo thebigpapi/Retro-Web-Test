@@ -45,9 +45,9 @@
 					<img src="{{ absolute_url(asset('build/icons/search/search_noimage.svg')) }}" alt="searchnoimg" width="24" height="24">
 					<span>Search without images</span>
 				</button>
-				<input id="rst-btn" type="reset" style="display:none;" value="reset" data-action="click->search#reset" data-reset-ids='search_chipsetManufacturer search_cpuSocket1 search_cpuSocket2'>
-				{{ form_row(form.searchWithImages)|replace({'<div><button': '<input style="display:none;"', '</button></div>': '">', '>': ' value="'})|raw }}
-				{{ form_row(form.search)|replace({'<div><button': '<input style="display:none;"', '</button></div>': '">', '>': ' value="'})|raw }}
+				<input id="rst-btn" type="reset" value="reset" data-action="click->search#reset" data-reset-ids='search_chipsetManufacturer search_cpuSocket1 search_cpuSocket2'>
+				{{ form_row(form.searchWithImages)|replace({'<div><button': '<input', '</button></div>': '">', '>': ' value="'})|raw }}
+				{{ form_row(form.search)|replace({'<div><button': '<input', '</button></div>': '">', '>': ' value="'})|raw }}
 			</div>
 		</section>
 		<section class="search-form-grid">
@@ -58,7 +58,7 @@
 					<img src="{{ absolute_url(asset('build/icons/search/help.svg')) }}" alt="" width="16" height="16">
 				</label>
 				<div class="search-form-widget">
-					<div>{{ form_widget(form.manufacturer) }}</div>
+					<div>{{ form_widget(form.manufacturer, {'attr': {'aria-label': "Manufacturer"}}) }}</div>
 					<div>{{ form_widget(form.name) }}</div>
 				</div>
 			</div>
@@ -68,7 +68,7 @@
 					<img src="{{ absolute_url(asset('build/icons/search/help.svg')) }}" alt="" width="16" height="16">
 				</label>
 				<div class="search-form-widget">
-					<div id="setchip1">{{ form_widget(form.chipsetManufacturer, {'attr': {'data-action': "change->search#search", 'data-target-id': 'search_chipset'}}) }}</div>
+					<div id="setchip1">{{ form_widget(form.chipsetManufacturer, {'attr': {'data-action': "change->search#search", 'data-target-id': 'search_chipset', 'aria-label': "Chipset manufacturer"}}) }}</div>
 					<div>{{ form_widget(form.chipset) }}</div>
 				</div>
 			</div>
@@ -79,7 +79,7 @@
 				</label>
 				<div class="search-form-widget">
 					<div id="setcpu1">{{ form_widget(form.cpuSocket1, {'attr': {'data-action': "change->search#search", 'data-target-id': 'search_platform1'}}) }}</div>
-					<div>{{ form_widget(form.platform1) }}</div>
+					<div>{{ form_widget(form.platform1, {'attr': {'aria-label': "CPU platform"}}) }}</div>
 				</div>
 			</div>
 			<div class="search-form-entry">
@@ -88,7 +88,7 @@
 				</label>
 				<div class="search-form-widget">
 					<div id="setcpu3">{{ form_widget(form.cpuSocket2, {'attr': {'data-action': "change->search#search", 'data-target-id': 'search_platform2'}}) }}</div>
-					<div>{{ form_widget(form.platform2) }}</div>
+					<div>{{ form_widget(form.platform2, {'attr': {'aria-label': "Secondary CPU platform"}}) }}</div>
 				</div>
 			</div>
 

@@ -42,8 +42,8 @@
 				<span>Search</span>
 			</button>
 
-			<input id="rst-btn" type="reset" style="display:none;" value="reset" data-action="click->search#reset" data-reset-ids=''>
-			{{ form_row(search.search)|replace({'<div><button': '<input style="display:none;"', '</button></div>': '">', '>': ' value="'})|raw }}
+			<input id="rst-btn" type="reset" value="reset" data-action="click->search#reset" data-reset-ids=''>
+			{{ form_row(search.search)|replace({'<div><button': '<input', '</button></div>': '">', '>': ' value="'})|raw }}
 		</div>
 	</fieldset>
 	<div>{{ form_rest(search) }}</div>
