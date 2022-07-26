@@ -140,17 +140,20 @@
 				</div>
 				{% if motherboard.getKnownIssues() is not empty %}
 				<div style="padding-top:10px;padding-left: 5px;">
-					<div><b>Known issues:</b></div>	
-					<div class="notes">{% apply markdown_to_html %}
-					{% for issue in motherboard.getKnownIssues()|sort %}
-					### {{ issue.getName() }}
-{{ issue.getDescription() }}
-					{% endfor %}{% endapply %}</div>
+					<h3><b>Known issues:</b></h3>	
+					<div class="notes">
+{% apply markdown_to_html %}{% for issue in motherboard.getKnownIssues()|sort %}
+* {{ issue.getName() }}
+
+     {{ issue.getDescription() }}
+
+{% endfor %}{% endapply %}
+					</div>
 				</div>			
 				{% endif %}
 				{% if motherboard.note is not null %}
 				<div style="padding-top:10px;padding-left: 5px;">
-					<div><b>Notes</b></div>
+					<h3><b>Notes</b></h3>
 					<div class="notes">{% apply markdown_to_html %}{{ motherboard.note }}{% endapply %}</div>
 				</div>
 				{% endif %}
