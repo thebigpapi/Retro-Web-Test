@@ -177,14 +177,21 @@
 					</div>
 					<hr><!-- Supported RAM types -->
 					<div class="quick-spec-table" data-controller="collection">
-						<div class="quick-spec-head editor">Supported RAM types:</div>
-						<div>{% for ramtype in form.dramType %}
-								<span style="width:130px;display:inline-block;font-size:13px;">
+						<div class="quick-spec-head editor">Supported RAM types:
+						{% include 'macros/buttons.html.twig' with {'type':'add', 'action': 'dramType'} %}</div>
+						<div class="append_table" id="dramType-fields-list" data-controller="collection" data-widget-counter="{{ form.dramType|length }}" data-prototype="
+								{{ form_widget(form.dramType.vars.prototype)|e }}
+								{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}">
+
+							{% for ramtype in form.dramType %}
+								<div class="editor-row nopad">
 									{{ form_widget(ramtype) }}
-									{{ form_label(ramtype) }}
-								</span>
-								{{ form_errors(ramtype) }}
-						{% endfor %}</div>
+									{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
+									{{ form_errors(ramtype) }}
+								</div>
+							{% endfor %}
+							{{ form_errors(form.dramType) }}
+						</div>
 					</div><!-- Exp. slots and I/O ports -->
 					<div class="full-spec edit">
 						<div class="full-spec-head" data-controller="collection"><b>I/O ports: </b>{% include 'macros/buttons.html.twig' with {'type':'add', 'action': 'motherboardIoPorts'} %}</div>

@@ -31,6 +31,7 @@ use App\Form\Type\MotherboardAliasType;
 use App\Form\Type\MotherboardIoPortType;
 use App\Form\Type\MotherboardMaxRamType;
 use App\Form\Type\CacheSizeType;
+use App\Form\Type\DramTypeType;
 use App\Form\Type\CpuSocketType;
 use App\Form\Type\ManualType;
 use App\Form\Type\MotherboardBiosType;
@@ -157,11 +158,10 @@ class MotherboardForm extends AbstractType
                 'allow_add' => true,
                 'allow_delete' => true,
             ])
-            ->add('dramType', EntityType::class, [
-                'class' => DramType::class,
-                'choice_label' => 'name',
-                'multiple' => true,
-                'expanded' => true,
+            ->add('dramType', CollectionType::class, [
+                'entry_type' => DramTypeType::class,
+                'allow_add' => true,
+                'allow_delete' => true,
             ])
             ->add('motherboardMaxRams', CollectionType::class, [
                 'entry_type' => MotherboardMaxRamType::class,
@@ -536,6 +536,9 @@ class MotherboardForm extends AbstractType
     {
         usort($view->children['manufacturer']->vars['choices'], function (ChoiceView $a, ChoiceView $b) {
             return strnatcasecmp($a->data->getShortNameIfExist(), $b->data->getShortNameIfExist());
+        });
+        usort($view->children['formFactor']->vars['choices'], function (ChoiceView $a, ChoiceView $b) {
+            return strnatcasecmp($a->data->getName(), $b->data->getName());
         });
 
         usort($view->children["videoChipset"]->vars["choices"], function (ChoiceView $a, ChoiceView $b) {
