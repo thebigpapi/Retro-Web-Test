@@ -1,11 +1,9 @@
 {% macro header() %}
 	<div><b>Language</b></div>
 	<div><b>Media type</b></div>
-	<div><b>Copy protection</b></div>
-	<div><b>Quality</b></div>
 	<div><b>OS Compatibility</b></div>
-	<div><b>Note</b></div>
 	<div><b>Name</b></div>
+	<div><b>Version</b></div>
 {% endmacro %}
 
 {% macro link(file) %}
@@ -16,16 +14,6 @@
 		<b style="vertical-align:super;">{{relation.getCount()}}x</b>
 		<img src="{{ vich_uploader_asset(relation.getMediaTypeFlag(), 'icon')}}" alt="{{relation.getMediaTypeFlag().getName()}}" title="{{relation.getMediaTypeFlag().getName()}}" width="32">
 	{% endfor %}</div>
-	<div>{% if file.hasActivationKey() %}
-		<img src="{{ asset('build/icons/protection/activation_key.svg') }}" alt="activation key" title="The program needs an activation key" width="32">
-	{% endif %}
-	{% if file.hasCopyProtection() %}
-		<img src="{{ asset('build/icons/protection/copy_protected.svg') }}" alt="copy protected" title="The program is copy protected" width="32">
-	{% endif %}
-	{% if not file.hasActivationKey() and not file.hasCopyProtection() %}
-		<p>N/A</P>
-	{% endif %}</div>
-	<div><img src="{{ asset('build/icons/quality/' ~ file.dumpQualityFlag().getTagName() ~ '.svg') }}" alt="{{file.dumpQualityFlag().getName()}}" title="{{file.dumpQualityFlag().getName()}}" width="32"></div>
 	<div>{% set prevIcon = "" %}{% set prevIcon2 = "" %}{% for relation in file.getOsFlags() %}
 			{% if prevIcon != (relation.getOsFlag().getOsFamilies()|sort)[0].getFileName() %}
 				{% set prevIcon2 = (relation.getOsFlag().getOsFamilies()|sort)[0].getFileName() %}
@@ -34,15 +22,11 @@
 				{% endif %}
 				{% set prevIcon = (relation.getOsFlag().getOsFamilies()|sort)[0].getFileName() %}
 	{% endfor %}</div>
-	<div>{{ file.getNote() ? file.getNote() }}</div>
+	<div><a href="{{ path("driver_show", {id: file.getId()}) }}">{{file.getName()}}</a>
+	</div>
 	<div><a href="{{ vich_uploader_asset(file, 'file')}}">
-				<img src="{{ absolute_url(asset('build/icons/dw.svg')) }}" alt="" width="16" style="vertical-align: middle;">
-				{{file.getName()}}
-				{% if file.getFileVersion() %}
-					{{file.getFileVersion()}}
-				{% endif %}
-				{% if file.getReleaseDateString() %}({{file.getReleaseDateString()}})
-				{% endif %}
-			</a>
+			<img src="{{ absolute_url(asset('build/icons/dw.svg')) }}" alt="" width="16" style="vertical-align: middle;">
+			{{ file.getFileVersion() ? file.getFileVersion() : 'Unknown' }}
+		</a>
 	</div>
 {% endmacro %}

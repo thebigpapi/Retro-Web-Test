@@ -9,22 +9,13 @@
 	<meta name="description" content="Driver:{{ driver.getName() }} Release date:unknown">
 {% endblock %}
 
-{#% block opengraph %}
+{% block opengraph %}
 	{% apply spaceless %}
-	{% if chipset.getChipsetParts() is not empty %}
-		{% for chipPart in chipset.getChipsetParts()|sort((a, b) => a.rank <=> b.rank)|filter(chipPart => chipPart.getImages() is not empty)|slice(0,1) %}
-			{% for image in chipPart.getImages()|slice(0,1) %}
-				<meta property="og:image" content="{{ vich_uploader_asset(image, 'imageFile')}}">
-			{% endfor %}
-		{% endfor %}
-	{% else %}
-		<meta property="og:image" content="{{ absolute_url(asset('build/images/logo.webp')) }}">
-	{% endif %}
-	<meta property="og:title" content="{{ chipset.getFullName() }}">
-	<meta property="og:description" content="Get chipset info, images and drivers for {{ chipset.getFullName() }}!">
+	<meta property="og:title" content="{{ driver.getName() }}">
+	<meta property="og:description" content="Get driver info for {{ driver.getName() }}!">
 	{% endapply %}
-	<link rel="alternate" hreflang="x-default" href="{{ absolute_url(path('chipset_show', {id: chipset.getId()})) }}"/>
-{% endblock %#}
+	<link rel="alternate" hreflang="x-default" href="{{ absolute_url(path('driver_show', {id: driver.getId()})) }}"/>
+{% endblock %}
 
 {% block body %}
 <!-- NAME -->
