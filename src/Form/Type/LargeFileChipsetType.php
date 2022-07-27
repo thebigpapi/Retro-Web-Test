@@ -10,6 +10,9 @@ use App\Entity\LargeFileChipset;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormView;
+use Symfony\Component\Form\ChoiceList\View\ChoiceView;
 
 class LargeFileChipsetType extends AbstractType
 {
@@ -33,5 +36,11 @@ class LargeFileChipsetType extends AbstractType
         $resolver->setDefaults([
             'data_class' => LargeFileChipset::class,
         ]);
+    }
+    public function finishView(FormView $view, FormInterface $form, array $options)
+    {
+        usort($view->children['largeFile']->vars['choices'], function (ChoiceView $a, ChoiceView $b) {
+            return strnatcasecmp($a->data->getName(), $b->data->getName());
+        });
     }
 }
