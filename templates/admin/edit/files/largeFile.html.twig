@@ -43,11 +43,11 @@
 						</tr>
 						<tr>
 							<td>{{form_label(form.subdirectory)}}</td>
-							<td>{{form_widget(form.subdirectory)}}</td>
+							<td>{{form_widget(form.subdirectory)|replace({'<option value="drivers">': '<option selected="selected" value="drivers">'})|raw }}</td>
 						</tr>
 						<tr>
 							<td>{{form_label(form.dumpQualityFlag)}}</td>
-							<td>{{form_widget(form.dumpQualityFlag)}}</td>
+							<td>{{form_widget(form.dumpQualityFlag)|replace({'<option value="5">': '<option selected="selected" value="5">'})|raw }}</td></td>
 						</tr>
 						<tr>
 							<td>{{form_label(form.hasActivationKey)}}</td>

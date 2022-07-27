@@ -130,7 +130,7 @@ class Chipset
             $manufacturer = "";
         }
 
-        $fullName = $manufacturer . $this->getFullReference() . $this->getParts();
+        $fullName = $manufacturer . $this->getFullReference() . ' ' . $this->getParts();
         return "$fullName";
     }
 

@@ -53,7 +53,7 @@ export default class extends Controller {
                 console.log(e.loaded + " / " + e.total)
             }
         }
-
+        let speedText;
         let bar;
         xhr.upload.addEventListener("progress", function (evt) {
             if (evt.lengthComputable) {
