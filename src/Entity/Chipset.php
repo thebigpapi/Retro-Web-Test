@@ -122,6 +122,18 @@ class Chipset
         return "$fullName";
     }
 
+    public function getFullNameParts(): string
+    {
+        if ($this->getManufacturer()) {
+            $manufacturer = $this->getManufacturer()->getShortNameIfExist();
+        } else {
+            $manufacturer = "";
+        }
+
+        $fullName = $manufacturer . $this->getFullReference() . $this->getParts();
+        return "$fullName";
+    }
+
     public function getFullName(): string
     {
         if ($this->getManufacturer()) {

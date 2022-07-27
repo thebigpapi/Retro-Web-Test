@@ -170,7 +170,7 @@ class Search extends AbstractType
             //if($chipsetManufacturer) dd($chipsets[94]->getFullReference()==" Unidentified ");
             $form->add('chipset', ChoiceType::class, [
                 //'class' => Chipset::class,
-                'choice_label' => 'getFullReference',
+                'choice_label' => 'getFullNameParts',
                 'multiple' => false,
                 'expanded' => false,
                 'required' => false,
