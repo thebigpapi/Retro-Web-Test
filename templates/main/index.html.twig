@@ -24,6 +24,10 @@
 			<img src="{{ absolute_url(asset('build/icons/admin/chip.svg')) }}" alt="chipset" width="210" height="180">
 			<div>Chipsets</div><div>({{chipCount}}&nbsp;entries)</div>
 		</a>
+		<a href="{{ path("driver_search") }}">
+			<img src="{{ absolute_url(asset('build/icons/show/hardware.svg')) }}" alt="driver" width="210" height="180">
+			<div>Drivers</div><div>({{driverCount}}&nbsp;files)</div>
+		</a>
 	</div>
 	<div class="perks" data-controller="datetime">
 		<p><b>Recently added and updated boards</b></p>

@@ -1,4 +1,5 @@
 {% apply spaceless %}
+{% if entityName != "drv" %}
 <div class="show-nav" id="sh-nav" data-controller="show">
     <input type="radio" name="tabs" id="tab-nav-1" checked data-action='click->show#show_general'>
     <label for="tab-nav-1"><img src="{{ absolute_url(asset('build/icons/show/data.svg')) }}" alt="" width="24" height="24">Description</label>
@@ -17,4 +18,11 @@
         <input type="radio" name="tabs0" id="tab-nav-0" data-action='click->show#goToURL' data-URL="{{ path('new_' ~ entityName ~ '_edit', {id: entity.getId()}) }}">
         <label for="tab-nav-0"><img src="{{ absolute_url(asset('build/icons/edit.svg')) }}" alt="" width="24" height="24">Edit {{name}}</label>
     {% endif %}    
-</div>{% endapply %}
+</div>
+{% else %}
+<div class="show-nav" id="sh-nav" data-controller="show">
+    <input type="radio" name="tabs" id="tab-nav-1" checked data-action='click->show#show_general'>
+    <label for="tab-nav-1"><img src="{{ absolute_url(asset('build/icons/show/data.svg')) }}" alt="" width="24" height="24">General</label>
+    <input type="radio" name="tabs" id="tab-nav-2" data-action='click->show#show_downloads'>
+    <label for="tab-nav-2"><img src="{{ absolute_url(asset('build/icons/show/data.svg')) }}" alt="" width="24" height="24">Description</label> 
+</div>{% endif %}{% endapply %}

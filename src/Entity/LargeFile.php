@@ -40,7 +40,7 @@ class LargeFile
     /**
      * NOTE: This is not a mapped field of entity metadata, just a simple property.
      * 
-     * @Vich\UploadableField(mapping="largefile", fileNameProperty="file_name")
+     * @Vich\UploadableField(mapping="largefile", fileNameProperty="file_name", size="size")
      * 
      * @var File|null
      */
@@ -106,6 +106,11 @@ class LargeFile
      * @ORM\Column(type="string", length=2048, nullable=true)
      */
     private $note;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $size;
 
     public function __construct()
     {
@@ -415,6 +420,18 @@ class LargeFile
     public function setNote(?string $note): self
     {
         $this->note = $note;
+
+        return $this;
+    }
+
+    public function getSize(): ?int
+    {
+        return $this->size;
+    }
+
+    public function setSize(?int $size): self
+    {
+        $this->size = $size;
 
         return $this;
     }
