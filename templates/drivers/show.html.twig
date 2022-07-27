@@ -78,6 +78,9 @@
 				</div>
 			</div>
 		</div>
+		{% if is_granted('ROLE_ADMIN') %}
+		<a href="../../admin/manage/files/largefiles/{{ driver.getId() }}/edit/">Edit</a>
+		{% endif %}
 		{% if driver.getNote() is not empty %}
 			{% apply markdown_to_html %}{{ driver.getNote() }}{% endapply %}
 		{% endif %}
