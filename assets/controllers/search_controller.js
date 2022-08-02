@@ -2,6 +2,26 @@ import { Controller } from 'stimulus';
 
 export default class extends Controller {
     connect() {
+        window.onload = () => {
+            if(document.getElementById('search_chipsetManufacturer')){
+                var select = document.getElementById('search_chipsetManufacturer');
+                var idx = select.options[select.selectedIndex].value;
+                if(idx)
+                    this.setResult('search[chipsetManufacturer]', idx, 'search_chipset');
+            }
+            if(document.getElementById('search_cpuSocket1')){
+                var select1 = document.getElementById('search_cpuSocket1');
+                var idx1 = select1.options[select1.selectedIndex].value;
+                if(idx1)
+                    this.setResult('search[cpuSocket1]', idx1, 'search_platform1');
+            }
+            if(document.getElementById('search_cpuSocket2')){
+                var select2 = document.getElementById('search_cpuSocket2');
+                var idx2 = select2.options[select2.selectedIndex].value;
+                if(idx2)
+                    this.setResult('search[cpuSocket2]', idx2, 'search_platform2');
+            }
+        }
     }
 
     /**
