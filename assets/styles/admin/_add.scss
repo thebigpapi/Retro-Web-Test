@@ -6,6 +6,11 @@ div.addform{
 	font-size:18px; 
 	margin-top: 5px;
 	color:$dark-color;
+	@media (prefers-color-scheme: dark) {
+		box-shadow:inset -1px -1px $medium-color,inset 1px 1px $accent-bkg-dark,inset -2px -2px $darkbg-color,inset 2px 2px $medium-color;
+		background-color: $accent-bkg-dark;
+		color:$light-color;
+	}
 }
 img.imgp-img { max-height:170px;max-width: 100%; }
 div.imgp {
@@ -26,12 +31,20 @@ div.full-spec.edit{
 div.bios-image { 
 	background-color: $lightbg-color;
 	color: $dark-color;
+	@media (prefers-color-scheme: dark) {
+		background-color: #484848;
+		color:$light-color;
+	}
 	padding: 0;
 	font-size:16px;
  }
 div.bios-image-head {
 	background-color:$footer-link-color;
 	color:$dark-color;
+	@media (prefers-color-scheme: dark) {
+		background-color: $btn-darkbg-color;
+		color:$light-color;
+	}
 	width:100%;
 	clear:left;
 	padding-bottom:5px;

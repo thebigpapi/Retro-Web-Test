@@ -174,7 +174,7 @@ div.full-spec {
     display: grid;
     text-align: center;
     grid-template-rows: [first] 40px [second] auto [end];
-    grid-template-columns: [first] calc(100% / 2) [second] calc(100% / 2) [end];
+    grid-template-columns: [first] max(180px, 16vw) [second] auto [end];
 
     div {
         padding: 5px 0px 5px;
@@ -184,7 +184,8 @@ div.full-spec {
         background-color: $accent-bkg-light;
         grid-row-start: 1;
         display: flex;
-        justify-content: center;
+        justify-content: left;
+        padding-left: 50px;
         align-items: center;
 
         @media (prefers-color-scheme: dark) {
@@ -204,7 +205,7 @@ div.list-table {
     align-content: start;
 
     div {
-        padding: 5px 0px 5px;
+        padding: 3px 0px 3px;
         text-align: left;
         vertical-align: middle;
         align-self: center
