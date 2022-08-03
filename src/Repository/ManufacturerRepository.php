@@ -37,7 +37,7 @@ class ManufacturerRepository extends ServiceEntityRepository
         $rsm->addFieldResult('man', 'short_name', 'shortName');
 
         $query = $entityManager->createNativeQuery(
-            'SELECT distinct manufacturer.id, manufacturer.name, manufacturer.short_name, coalesce(manufacturer.short_name, manufacturer.name) as realname
+            'SELECT distinct manufacturer.id, manufacturer.name, manufacturer.short_name, upper(coalesce(manufacturer.short_name, manufacturer.name)) as realname
             FROM motherboard_alias alias FULL OUTER JOIN motherboard mobo ON mobo.id=alias.motherboard_id, manufacturer
             WHERE manufacturer.id=coalesce(alias.manufacturer_id, mobo.manufacturer_id)
             ORDER BY realname;',
