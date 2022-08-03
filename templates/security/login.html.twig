@@ -8,12 +8,12 @@ a.login-link:hover{color:#7ce5ff;}
 </style>
 {% endblock %}
 {% block body %}
-	<div style="padding-top:50px;">{% trans %}You're about to access the administration pages. If you don't know what this is about, you're in the wrong place.{% endtrans %}
-		<br>{% trans %}Click{% endtrans %}&nbsp;<a class="login-link" href="{{ path('app_homepage') }}">{{'this link'|trans}}</a>&nbsp;{% trans %}to return to the main page.{% endtrans %}
-		<small><br>{% trans %}P.S: if you want to contribute to a board page, click here -> {% endtrans %}</small>
+	<div style="padding-top:50px;font-size: 13pt;">You're about to access the administration pages. If you don't know what this is about, you're in the wrong place.
+		<br>Click&nbsp;<a class="login-link" href="{{ path('app_homepage') }}">this link</a>&nbsp;to return to the main page.
+		<small><br>P.S: if you want to contribute to a board page, send us an Email or join our </small>
 		<a class="login-image" href="https://discord.gg/HWWH7hsk2p">
-			<img src="{{ absolute_url(asset('build/icons/nav/discord.svg')) }}" height="32" alt="discord" style="vertical-align:middle;">
-		</a>
+			<img src="{{ absolute_url(asset('build/icons/nav/discord.svg')) }}" height="32" alt="discord" style="vertical-align:middle;"><small> Discord</small>
+		</a><small> server.</small>
 	</div>
 	<div style="display:flex;flex-direction:row;flex-wrap:wrap;align-items:center;justify-content:center;margin-top:50px;">
 		<img src="{{ absolute_url(asset('build/icons/admin/keys.svg')) }}" alt="" width="128">
@@ -22,18 +22,18 @@ a.login-link:hover{color:#7ce5ff;}
 						<table>
 							<tr>
 								<td colspan="2">
-									<h2>{% trans %}Please login{% endtrans %}</h2>
+									<h2>Please login</h2>
 								</td>
 							</tr>
 							<tr>
 								<td>
-									<label for="inputUsername">{% trans %}Username{% endtrans %}</label>
+									<label for="inputUsername">Username</label>
 								</td>
 								<td><input type="text" value="{{ last_username }}" name="username" id="inputUsername"></td>
 							</tr>
 							<tr>
 								<td>
-									<label for="inputPassword">{% trans %}Password{% endtrans %}</label>
+									<label for="inputPassword">Password</label>
 								</td>
 								<td><input type="password" name="password" id="inputPassword">
 									<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}"></td>
@@ -41,10 +41,10 @@ a.login-link:hover{color:#7ce5ff;}
 							<tr>
 								<td>
 									<label><input type="checkbox" name="_remember_me">
-										{% trans %}Remember me{% endtrans %}</label>
+										Remember me</label>
 								</td>
 								<td>
-									<button style="margin-top:10px;float:right;" type="submit">{% trans %}Login{% endtrans %}</button>
+									<button style="margin-top:10px;float:right;" type="submit">Login</button>
 								</td>
 							</tr>
 						</table>
