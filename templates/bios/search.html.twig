@@ -73,8 +73,7 @@
 			</div>
 
 			<div class="search-form-entry">
-				<label class="search-form-label" for="search_core_version" title="This is the version of the BIOS's core (e.g. 4.51pg)"
-				>
+				<label class="search-form-label" for="search_core_version" title="This is the version of the BIOS's core (e.g. 4.51pg)">
 					<span>Core version</span>
 					<img src="{{ absolute_url(asset('build/icons/search/help.svg')) }}" alt="" width="16" height="16">
 				</label>
@@ -84,10 +83,13 @@
 			</div>
 
 			<div class="search-form-entry">
-				<label class="search-form-label" title="If checked, only BIOS entries with files attached will be shown">
-					{{ form_widget(form.file_present, {'attr': {'style': 'width:25px;height:25px'}}) }}
+				<label class="search-form-label file" title="If checked, only BIOS entries with files attached will be shown">
 					<span>Show results with files</span>
 					<img src="{{ absolute_url(asset('build/icons/search/help.svg')) }}" alt="" width="16" height="16">
+				</label>
+				<label class="search-form-widget">
+					{{ form_widget(form.file_present, {'attr': {'style': 'width:25px;height:25px'}}) }}
+					<span class="slider"></span>
 				</label>
 			</div>
 		</section>
