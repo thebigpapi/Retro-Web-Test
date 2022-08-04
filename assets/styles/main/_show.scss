@@ -281,11 +281,13 @@ div.show-table {
         text-align: center;
 
         div {
+            
             display: table-cell;
             padding: 5px 5px 5px;
             vertical-align: middle;
         }
     }
+    &.drv>div.show-table-row>div { border-bottom: 1px solid gray; }
 }
 
 div.show-downloads>div>img {
@@ -350,10 +352,11 @@ span.string-bios {
 /* media queries used to hide some fields on mobile, to avoid severe overflows */
 @media screen and(max-width:650px){
     div.show-cpus-table div div:nth-child(n+5){display:none;} /* CPUs */
+    div.show-table.bios div {div:nth-child(3){display:none;}} /* BIOSes */ 
 }
 @media screen and(max-width:500px){
-    div.show-table.drv div {div:nth-child(2){display:none;}} /* drivers */
-    div.show-table.bios div {div:nth-child(3), div:nth-child(4){display:none;}} /* BIOSes */ 
+    div.show-table.drv div {div:nth-child(1), div:nth-child(2){display:none;}} /* drivers */
+    div.show-table.bios div {div:nth-child(4){display:none;}} /* BIOSes */ 
 }
 /* media queries for gslide box size */
 @media (min-width: 770px){.gslide-image img {min-height:66vh;max-height:67vh;}}
