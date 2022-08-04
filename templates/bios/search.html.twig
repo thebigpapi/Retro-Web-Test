@@ -12,16 +12,11 @@
 	<input type="{{ type }}" {{ block('widget_attributes') }} {% if value is not empty %} value="{{ value }}" {% endif %}>
 {% endblock %}
 
-{% block title %}
-	{% trans %}Search for a bios{% endtrans %}
-{% endblock %}
+{% block title %}Search for a BIOS - TRW{% endblock %}
 
 {% block metatags %}
-	<meta name="description" content="{% trans %}Search for a motherboard BIOS by POST string, chipset, manufacturer, and more.{% endtrans %}">
-	{% for locale in locales | split('|')|filter(locale => locale != "en") %}
-		<link rel="alternate" hreflang="{{ locale }}" href="{{ absolute_url(path('bios_search', {_locale: locale})) }}"/>
-	{% endfor %}
-	<link rel="alternate" hreflang="x-default" href="{{ absolute_url(path('bios_search', {_locale: 'en'})) }}"/>
+	<meta name="description" content="Search for a motherboard BIOS by POST string, chipset, manufacturer, and more.">
+	<link rel="alternate" hreflang="x-default" href="{{ absolute_url(path('bios_search')) }}"/>
 {% endblock %}
 
 {% block body %}
@@ -29,16 +24,16 @@
 	<div id="hiddenDiv" style="display: none;"></div>
 	{{ form_start(form, {'method': 'POST', 'name': 'search', 'action':path("bios_search"), 'attr':{'data-controller':'search'}}) }}
 	<fieldset id="search-fieldset">
-		<div class="title">{% trans %}Search for a BIOS{% endtrans %}</div>
+		<div class="title">Search for a BIOS</div>
 		<section>
 			<div class="toolbar">
 				<button type="button" onclick="document.getElementById('rst-btn').click();return false;">
 					<img src="{{ absolute_url(asset('build/icons/search/reset.svg')) }}" alt="reset" width="24" height="24">
-					<span>{% trans %}Reset fields{% endtrans %}</span>
+					<span>Reset fields</span>
 				</button>
 				<button type="button" onclick="document.getElementById('search_search').click();return false;">
 					<img src="{{ absolute_url(asset('build/icons/search/search.svg')) }}" alt="search" width="24" height="24">
-					<span>{% trans %}Search{% endtrans %}</span>
+					<span>Search</span>
 				</button>
 				<input id="rst-btn" type="reset" value="reset" data-action="click->search#reset" data-reset-ids="search_chipsetManufacturer">
 				{{ form_row(form.search)|replace({'<div><button': '<input', '</button></div>': '">', '>': ' value="'})|raw }}
@@ -46,9 +41,9 @@
 		</section>
 		<section class="search-form-grid">
 			<div class="search-form-entry">
-				<label class="search-form-label" for="search_manufacturer" title="{% trans %}This is the BIOS manufacturer (e.g: AMI, Award, Phoenix){% endtrans %}"
+				<label class="search-form-label" for="search_manufacturer" title="This is the BIOS manufacturer (e.g: AMI, Award, Phoenix)"
 				>
-					<span>{% trans %}Manufacturer{% endtrans %}</span>
+					<span>Manufacturer</span>
 					<img src="{{ absolute_url(asset('build/icons/search/help.svg')) }}" alt="" width="16" height="16">
 				</label>
 				<div class="search-form-widget">
@@ -57,9 +52,9 @@
 			</div>
 
 			<div class="search-form-entry">
-				<label class="search-form-label" for="search_chipset" title="{% trans %}Select a manufacturer from the first field, then pick the part number from the second field{% endtrans %}"
+				<label class="search-form-label" for="search_chipset" title="Select a manufacturer from the first field, then pick the part number from the second field"
 				>
-					<span>{% trans %}Chipset{% endtrans %}</span>
+					<span>Chipset</span>
 					<img src="{{ absolute_url(asset('build/icons/search/help.svg')) }}" alt="" width="16" height="16">
 				</label>
 				<div class="search-form-widget">
@@ -70,7 +65,7 @@
 
 			<div class="search-form-entry">
 				<label class="search-form-label" for="search_post_string">
-					<span>{% trans %}POST string{% endtrans %}</span>
+					<span>POST string</span>
 				</label>
 				<div class="search-form-widget">
 					<div>{{ form_widget(form.post_string) }}</div>
@@ -78,9 +73,9 @@
 			</div>
 
 			<div class="search-form-entry">
-				<label class="search-form-label" for="search_core_version" title="{% trans %}This is the version of the BIOS's core (e.g. 4.51pg){% endtrans %}"
+				<label class="search-form-label" for="search_core_version" title="This is the version of the BIOS's core (e.g. 4.51pg)"
 				>
-					<span>{% trans %}Core version{% endtrans %}</span>
+					<span>Core version</span>
 					<img src="{{ absolute_url(asset('build/icons/search/help.svg')) }}" alt="" width="16" height="16">
 				</label>
 				<div class="search-form-widget">
@@ -89,17 +84,21 @@
 			</div>
 
 			<div class="search-form-entry">
-				<label class="search-form-label" title="{% trans %}If checked, only BIOS entries with files attached will be shown{% endtrans %}">
+				<label class="search-form-label" title="If checked, only BIOS entries with files attached will be shown">
 					{{ form_widget(form.file_present, {'attr': {'style': 'width:25px;height:25px'}}) }}
-					<span>{% trans %}Show results with files{% endtrans %}</span>
+					<span>Show results with files</span>
 					<img src="{{ absolute_url(asset('build/icons/search/help.svg')) }}" alt="" width="16" height="16">
 				</label>
 			</div>
 		</section>
 	</fieldset>
-	<p>
-		<a href="{{path("bios_info")}}">{% trans %}Where can I find the POST string?{% endtrans %}</a>
-	</p>
+	<br><div style="margin:12px;">
+		<div><i>Other actions:</i></div>
+		<a class='button-widget' href="{{path("bios_infoadv")}}">
+			<img src='{{ absolute_url(asset('build/icons/search/search.svg')) }}' alt='' width='16' height='16' style='vertical-align:middle;padding:3px;'>See the list of BIOS chipset and manufacturer IDs</a>
+		<a class='button-widget' href="{{path("bios_info")}}">
+			<img src='{{ absolute_url(asset('build/icons/admin/misc.svg')) }}' alt='' width='16' height='16' style='vertical-align:middle;padding:3px;'>Where can I find the POST string?</a>
+	</div>
 	<div>{{ form_rest(form) }}</div>
 
 </form>{% endblock %}

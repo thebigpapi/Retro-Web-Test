@@ -24,9 +24,9 @@
 	<div id="hiddenDiv" style="display: none;"></div>
 	{{ form_start(form, {'method': 'POST', 'name': 'search_chipset', 'action':path("chipset_search"), 'attr':{'data-controller':'search'}}) }}
 	<fieldset id="search-fieldset">
-		<div class="title">{% trans %}Search for a chipset{% endtrans %}</div>
+		<div class="title">Search for a chipset</div>
 		<div class="index-title">
-			{% trans %}List chipsets whose manufacturer name starts with:{% endtrans %}<br>
+			List chipsets whose manufacturer name starts with:<br>
 		</div>
 		<div class="index-list">
 			{% for letter in ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z']%}
@@ -55,9 +55,9 @@
 		</section>
 		<section class="search-form-grid">
 			<div class="search-form-entry">
-				<label class="search-form-label" for="search_chipsetManufacturer" title="{% trans %}This is where you select the manufacturer name.{% endtrans %}"
+				<label class="search-form-label" for="search_chipsetManufacturer" title="This is where you select the manufacturer name."
 				>
-					<span>{% trans %}Manufacturer{% endtrans %}</span>
+					<span>Manufacturer</span>
 					<img src="{{ absolute_url(asset('build/icons/search/help.svg')) }}" alt="" width="16" height="16">
 				</label>
 				<div class="search-form-widget">
@@ -66,9 +66,9 @@
 			</div>
 
 			<div class="search-form-entry">
-				<label class="search-form-label" for="search_name" title="{% trans %}This is where you enter the chipset part number.{% endtrans %}"
+				<label class="search-form-label" for="search_name" title="This is where you enter the chipset part number."
 				>
-					<span>{% trans %}Name{% endtrans %}</span>
+					<span>Name</span>
 					<img src="{{ absolute_url(asset('build/icons/search/help.svg')) }}" alt="" width="16" height="16">
 				</label>
 				<div class="search-form-widget">

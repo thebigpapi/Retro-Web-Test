@@ -1,5 +1,5 @@
 {% extends 'base.html.twig' %}
-{% block title %}Search results - TRW{% endblock %}
+{% block title %}Search results (drivers) - TRW{% endblock %}
 
 {% block metatags %}
 	<meta name="description" content="Search for a driver by name, manufacturer, part number and more.">
@@ -7,7 +7,7 @@
 
 {% block body %}
 	<div class="title">
-		<b>{% trans %}Search results{% endtrans %}</b>
+		<b>Search results</b>
 	</div>
 	<p style="text-align:center;padding-top:10px;">
 		<i>{{ driver_count > 0 ? driver_count : 'No' }}{{ driver_count == 1 ? ' result' : ' results' }}</i>

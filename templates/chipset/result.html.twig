@@ -1,5 +1,5 @@
 {% extends 'base.html.twig' %}
-{% block title %}Search results - TRW{% endblock %}
+{% block title %}Search results (chipset) - TRW{% endblock %}
 
 {% block metatags %}
 	<meta name="description" content="Search for a chipset by name, manufacturer, part number and more.">
@@ -7,7 +7,7 @@
 
 {% block body %}
 	<div class="title">
-		<b>{% trans %}Search results{% endtrans %}</b>
+		<b>Search results</b>
 	</div>
 	<p style="text-align:center;padding-top:10px;">
 		<i>{{ chipset_count > 0 ? chipset_count : 'No' }}{{ chipset_count == 1 ? ' result' : ' results' }}</i>

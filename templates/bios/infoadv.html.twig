@@ -1,19 +1,14 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}
-	{% trans %}Advanced BIOS Info{% endtrans %}
-{% endblock %}
+{% block title %}Advanced BIOS Info{% endblock %}
 
 {% block metatags %}
 	<meta name="description" content="Advanced BIOS info(AMI/Award manufacturer codes), Award chipset IDs">
-	{% for locale in locales | split('|')|filter(locale => locale != "en") %}
-		<link rel="alternate" hreflang="{{ locale }}" href="{{ absolute_url(path('bios_infoadv', {_locale: locale})) }}"/>
-	{% endfor %}
-	<link rel="alternate" hreflang="x-default" href="{{ absolute_url(path('bios_infoadv', {_locale: 'en'})) }}"/>
+	<link rel="alternate" hreflang="x-default" href="{{ absolute_url(path('bios_infoadv')) }}"/>
 {% endblock %}
 
 {% block body %}
-	<div class="title">{% trans %}Where can I find the POST string?{% endtrans %}</div>
+	<div class="title">Where can I find the POST string?</div>
 	{% for manufacturer, codes in biosCodes %}
 	<div class="grid-list">
 		<p><b>{{manufacturer}} BIOS manufacturer IDs</b></p>

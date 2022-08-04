@@ -133,7 +133,6 @@ section.search-form-grid {
 .search-form-entry {
 	display: flex;
 	flex-wrap: wrap;
-	padding-top: 8px;
 
 	label.search-form-label {
 		width: 100%;
@@ -141,7 +140,7 @@ section.search-form-grid {
 		display: flex;
 		align-items: center;
 		padding-bottom: 5px;
-
+		font-style:italic;
 		img {
 			padding-left: 3px;
 		}
@@ -164,6 +163,8 @@ section.search-form-grid {
 		}
 	}
 }
+
+#search-fieldset>div.search-form-entry { padding-top: 15px; }
 
 div.editor-row {
 	display: flex;
