@@ -17,6 +17,15 @@ div.main-strip {
         height: auto;
         max-height: 68vh;
         padding-right: 5px;
+        &.edit{
+            overflow: initial;
+            #images-fields-list, #chip\.images-fields-list{
+                overflow: auto;
+                min-height: 150px;
+                height: auto;
+                max-height: 60vh;
+            }
+        }
 
         @media (max-width: 750px) {
             padding-top: 15px;
