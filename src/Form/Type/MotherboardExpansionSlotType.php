@@ -9,6 +9,9 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use App\Entity\MotherboardExpansionSlot;
 use App\Entity\ExpansionSlot;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormView;
+use Symfony\Component\Form\ChoiceList\View\ChoiceView;
 
 class MotherboardExpansionSlotType extends AbstractType
 {
@@ -29,5 +32,11 @@ class MotherboardExpansionSlotType extends AbstractType
         $resolver->setDefaults([
             'data_class' => MotherboardExpansionSlot::class,
         ]);
+    }
+    public function finishView(FormView $view, FormInterface $form, array $options)
+    {
+        usort($view->children['expansion_slot']->vars['choices'], function (ChoiceView $a, ChoiceView $b) {
+            return strnatcasecmp($a->data->getName(), $b->data->getName());
+        });
     }
 }

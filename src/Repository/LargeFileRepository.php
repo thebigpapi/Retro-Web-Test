@@ -35,7 +35,57 @@ class LargeFileRepository extends ServiceEntityRepository
         ;
     }
     */
+    public function findAllAlphabetic(string $letter): array
+    {
+        $entityManager = $this->getEntityManager();
+        $likematch = "$letter%";
+        $query = $entityManager->createQuery(
+                "SELECT drv
+                FROM App\Entity\LargeFile drv 
+                WHERE drv.name like :likeMatch
+                ORDER BY drv.name ASC"
+            )->setParameter('likeMatch', $likematch);
 
+        return $query->getResult();
+    }
+    public function findByDriver(array $criteria): array
+    {
+        
+        $entityManager = $this->getEntityManager();
+
+        $whereArray = array();
+        $valuesArray = array();
+
+        // Checking values in criteria and creating WHERE statements
+        if (array_key_exists('name', $criteria)) {
+            $whereArray[] = "(LOWER(drv.name) LIKE :nameLike OR LOWER(drv.fileVersion) LIKE :nameLike)";
+            $valuesArray["nameLike"] = "%" . strtolower($criteria['name']) . "%";
+        }
+
+        // Building where statement
+        $whereString = implode(" AND ", $whereArray);
+
+        // Building query
+        $query = $entityManager->createQuery(
+            "SELECT drv
+            FROM App\Entity\LargeFile drv
+            WHERE $whereString
+            ORDER BY drv.name ASC"
+        );
+        
+        // Setting values
+        foreach ($valuesArray as $key => $value) {
+            $query->setParameter($key, $value);
+        }
+        return $query->getResult();
+    }
+    public function getCount(): int
+    {
+        return $this->createQueryBuilder('l')
+            ->select('count(l.id)')
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
     /*
     public function findOneBySomeField($value): ?LargeFile
     {

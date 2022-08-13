@@ -48,10 +48,6 @@ class LargeFileForm extends AbstractType
                 'constraints' => [
                     new File([
                         'maxSize' => '8192M',
-                        'mimeTypes' => [
-                            'application/zip',
-                        ],
-                        'mimeTypesMessage' => 'Please upload a valid archive',
                     ])
                 ],
             ])

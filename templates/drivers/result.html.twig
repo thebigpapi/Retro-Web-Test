@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+{% block title %}Search results (drivers) - TRW{% endblock %}
+
+{% block metatags %}
+	<meta name="description" content="Search for a driver by name, manufacturer, part number and more.">
+{% endblock %}
+
+{% block body %}
+	<div class="title">
+		<b>Search results</b>
+	</div>
+	<p style="text-align:center;padding-top:10px;">
+		<i>{{ driver_count > 0 ? driver_count : 'No' }}{{ driver_count == 1 ? ' result' : ' results' }}</i>
+	</p>
+	{% if drivers is not empty %}
+		<div class="results lst">
+			{{ knp_pagination_render(drivers, 'macros/pagination.html.twig') }}
+				<div class="plain-list w300p table">
+					<div class="list-entry centered head" style="font-style:italic;">
+						<div>Name</div>
+						<div>Version</div>
+					</div>
+					{% for driver in drivers %}
+					<div class="list-entry centered bios {% if loop.index is divisible by(2) %}alt{% endif %}">
+						<div class="header-label">Name</div>
+						<div><a class="result-link" href="{{ path("driver_show", {id: driver.getId()}) }}">{{ driver.getName() }}</a></div>
+						<div class="header-label">Version</div>
+						<div><a class="combo" href="{{ vich_uploader_asset(driver, 'file') }}">
+							<img src="{{ absolute_url(asset('build/icons/dw.svg')) }}" alt="" width="16" height="16">
+							<span>{{ driver.getFileVersion() ? driver.getFileVersion() : 'Unknown' }}</span>
+						</a></div>
+					</div>
+					{% endfor %}
+				</div>
+			{{ knp_pagination_render(drivers, 'macros/pagination.html.twig') }}
+		</div>
+	{% endif %}
+{% endblock %}

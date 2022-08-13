@@ -33,17 +33,22 @@ class Search extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        // sorting some fields before adding them to the form
+        usort($options['cpuSockets'], function ($a, $b) {
+            if(!$a->getName() && !$b->getName())return strnatcasecmp($a->getType(), $b->getType());
+            else return strnatcasecmp($a->getName(), $b->getName());
+        });
+
+        usort($options['formFactors'], function ($a, $b) {
+            return strnatcasecmp($a->getName(), $b->getName());
+        });
+
+        //now the form is being built
         $builder
             ->add('name', TextType::class, [
                 'required' => false,
             ])
-            /*->add('searchManufacturer', CheckboxType::class, [
-                'label'    => ' ',
-                'required' => false,
-            ])*/
             ->add('manufacturer', ChoiceType::class, [
-                //'class' => Manufacturer::class,
-
                 'choice_label' => 'shortNameIfExist',
                 'multiple' => false,
                 'expanded' => false,
@@ -51,13 +56,7 @@ class Search extends AbstractType
                 'choices' => $options['moboManufacturers'],
                 'placeholder' => 'Select a manufacturer ...'
             ])
-            /*->add('searchChipset', CheckboxType::class, [
-                'label'    => ' ',
-                'required' => false,
-            ])*/
             ->add('chipsetManufacturer', ChoiceType::class, [
-                //'class' => Chipset::class,
-
                 'choice_label' => 'getShortNameIfExist',
                 'multiple' => false,
                 'expanded' => false,
@@ -65,12 +64,7 @@ class Search extends AbstractType
                 'choices' => $options['chipsetManufacturers'],
                 'placeholder' => 'Select a chipset manufacturer ...',
             ])
-            /*->add('searchProcessorPlatformType', CheckboxType::class, [
-                'label'    => ' ',
-                'required' => false,
-            ])*/
             ->add('cpuSocket1', ChoiceType::class, [
-                //'class' => ProcessorPlatformType::class,
                 'choice_label' => 'getNameAndType',
                 'multiple' => false,
                 'expanded' => false,
@@ -79,7 +73,6 @@ class Search extends AbstractType
                 'placeholder' => 'Select a socket ...',
             ])
             ->add('cpuSocket2', ChoiceType::class, [
-                //'class' => ProcessorPlatformType::class,
                 'choice_label' => 'getNameAndType',
                 'multiple' => false,
                 'expanded' => false,
@@ -120,7 +113,6 @@ class Search extends AbstractType
                 'required' => false,
             ])*/
             ->add('formFactor', ChoiceType::class, [
-                //'class' => FormFactor::class,
                 'required' => false,
                 'choice_label' => 'name',
                 'multiple' => false,
@@ -134,29 +126,6 @@ class Search extends AbstractType
 
         $formModifier = function (FormInterface $form, Manufacturer $chipsetManufacturer = null) {
             $chipsets = null === $chipsetManufacturer ? [] : $chipsetManufacturer->getChipsets()->toArray();
-
-            /*$formOptions = [
-                'class' => Chipset::class,
-                'choice_label' => 'getMainChipWithManufacturer',
-                'query_builder' => function (ChipsetRepository $chipsetRepository) use ($manufacturer) {
-                    return $chipsetRepository->findByManufacturer($manufacturer);
-                    // call a method on your repository that returns the query builder
-                    // return $userRepository->createFriendsQueryBuilder($user);
-                },
-            ];*/
-
-
-
-
-            /*if($chipsetManufacturer)
-                $formOptions = array(new Chipset());
-            else
-                $formOptions = array();**/
-            /*if($chipsets)
-                dd($chipsets);*/
-
-            /*if($chipsetManufacturer)
-            {*/
             usort(
                 $chipsets,
                 function ($a, $b) {
@@ -167,89 +136,37 @@ class Search extends AbstractType
                     return ($a->getFullReference() < $b->getFullReference()) ? -1 : 1;
                 }
             );
-            //if($chipsetManufacturer) dd($chipsets[94]->getFullReference()==" Unidentified ");
+            $chipTag = null === $chipsetManufacturer ? "No chipset selected!" : "any " . $chipsetManufacturer->getShortNameIfExist() . " chipset";
             $form->add('chipset', ChoiceType::class, [
-                //'class' => Chipset::class,
-                'choice_label' => 'getFullReference',
+                'choice_label' => 'getFullNameParts',
                 'multiple' => false,
                 'expanded' => false,
                 'required' => false,
                 'choices' => $chipsets,
-                'placeholder' => '*',
+                'placeholder' => $chipTag,
             ]);
-            //}
-            /*if($chipsetManufacturer)
-                dd($form->getData());*/
         };
-
+        //dd($builder->get('chipsetManufacturer'));
         $builder->addEventListener(
             FormEvents::PRE_SET_DATA,
             function (FormEvent $event) use ($formModifier) {
-                // this would be your entity, i.e. SportMeetup
                 $data = $event->getData();
-                //dd($data);
-
                 $formModifier($event->getForm(), null);
             }
         );
 
-        /*$builder->addEventListener(
-            FormEvents::POST_SET_DATA,
-            function (FormEvent $event) {
-                $form = $event->getForm();
-
-                // this would be your entity, i.e. SportMeetup
-                $data = $event->getData();
-
-                dd($form);
-            }
-        );*/
-
         $builder->get('chipsetManufacturer')->addEventListener(
             FormEvents::POST_SUBMIT,
             function (FormEvent $event) use ($formModifier) {
-                // It's important here to fetch $event->getForm()->getData(), as
-                // $event->getData() will get you the client data (that is, the ID)
                 $chipsetManufacturer = $event->getForm()->getData();
-
-                // since we've added the listener to the child, we'll have to pass on
-                // the parent to the callback functions!
                 $formModifier($event->getForm()->getParent(), $chipsetManufacturer);
             }
         );
 
-        /*$builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
-            $test = $event->getData();
-            $form = $event->getForm();
-
-            if ($form->get('searchChipsetManufacturer')->isClicked())
-            {
-                $formOptions = [
-                    'class' => Chipset::class,
-                    'choice_label' => 'getMainChipWithManufacturer',
-                    'query_builder' => function (ChipsetRepository $userRepository) {
-                        return $userRepository->findAllMotherboardChipset();
-                        // call a method on your repository that returns the query builder
-                        // return $userRepository->createFriendsQueryBuilder($user);
-                    },
-                ];
-
-                $form->add('chipset', ChoiceType::class, [
-                    //'class' => Chipset::class,
-                    'choice_label' => 'getMainChipWithManufacturer',
-                    'multiple' => false,
-                    'expanded' => false,
-                    'required' => false,
-                    'choices' => $formOptions,
-                    'placeholder' => '*',
-                ]);
-            }
-                //dd($test);
-        });*/
-
         $formSocket1Modifier = function (FormInterface $form, CpuSocket $socket = null) {
             $platforms = null === $socket ? $this->getProcessorPlatformTypeRepository()
                 ->findAll() : $socket->getPlatforms()->toArray();
+            usort($platforms, function ($a, $b) {return strnatcasecmp($a->getName(), $b->getName());});
             $form->add('platform1', ChoiceType::class, [
                 'choice_label' => 'name',
                 'multiple' => false,
@@ -263,10 +180,7 @@ class Search extends AbstractType
         $builder->addEventListener(
             FormEvents::PRE_SET_DATA,
             function (FormEvent $event) use ($formSocket1Modifier) {
-                // this would be your entity, i.e. SportMeetup
                 $data = $event->getData();
-                //dd($data);
-
                 $formSocket1Modifier($event->getForm(), null);
             }
         );
@@ -274,12 +188,7 @@ class Search extends AbstractType
         $builder->get('cpuSocket1')->addEventListener(
             FormEvents::POST_SUBMIT,
             function (FormEvent $event) use ($formSocket1Modifier) {
-                // It's important here to fetch $event->getForm()->getData(), as
-                // $event->getData() will get you the client data (that is, the ID)
                 $cpuSocket1 = $event->getForm()->getData();
-
-                // since we've added the listener to the child, we'll have to pass on
-                // the parent to the callback functions!
                 $formSocket1Modifier($event->getForm()->getParent(), $cpuSocket1);
             }
         );
@@ -287,6 +196,7 @@ class Search extends AbstractType
         $formSocket2Modifier = function (FormInterface $form, CpuSocket $socket = null) {
             $platforms = null === $socket ? $this->getProcessorPlatformTypeRepository()
                 ->findAll() : $socket->getPlatforms()->toArray();
+            usort($platforms, function ($a, $b) {return strnatcasecmp($a->getName(), $b->getName());});
             $form->add('platform2', ChoiceType::class, [
                 'choice_label' => 'name',
                 'multiple' => false,
@@ -300,10 +210,7 @@ class Search extends AbstractType
         $builder->addEventListener(
             FormEvents::PRE_SET_DATA,
             function (FormEvent $event) use ($formSocket2Modifier) {
-                // this would be your entity, i.e. SportMeetup
                 $data = $event->getData();
-                //dd($data);
-
                 $formSocket2Modifier($event->getForm(), null);
             }
         );
@@ -311,12 +218,7 @@ class Search extends AbstractType
         $builder->get('cpuSocket2')->addEventListener(
             FormEvents::POST_SUBMIT,
             function (FormEvent $event) use ($formSocket2Modifier) {
-                // It's important here to fetch $event->getForm()->getData(), as
-                // $event->getData() will get you the client data (that is, the ID)
                 $cpuSocket2 = $event->getForm()->getData();
-
-                // since we've added the listener to the child, we'll have to pass on
-                // the parent to the callback functions!
                 $formSocket2Modifier($event->getForm()->getParent(), $cpuSocket2);
             }
         );

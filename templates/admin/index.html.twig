@@ -1,59 +1,63 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}
-	{% trans %}Administration index{% endtrans %}
-{% endblock %}
+{% block title %}Dashboard{% endblock %}
 
 {% block body %}
-	<div class="title">
-		<b>Dashboard</b>
-	</div>
-	<h4>Manage:</h4>
-	<a href="{{ path('admin_manage_motherboards') }}" class="admin-button-index">
-		<img src="{{ absolute_url(asset('build/images/admin/motherboard.jpg')) }}" style="padding:8px 25px 0px" alt="board">
-		<p>Motherboards</p>
-	</a>
-	<a href="{{ path('admin_manage_processing_units') }}" class="admin-button-index">
-		<img src="{{ absolute_url(asset('build/images/admin/486dx.png')) }}" style="padding:0px 30px 0px" alt="cpu">
-		<p>Processing units</p>
-	</a>
-	<a href="{{ path('admin_manage_memories') }}" class="admin-button-index">
-		<img src="{{ absolute_url(asset('build/images/admin/memory.png')) }}" style="padding:2px 0px 1px" alt="memory">
-		<p>Memory</p>
-	</a>
-	<a href="{{ path('admin_manage_chipsets') }}" class="admin-button-index">
-		<img src="{{ absolute_url(asset('build/images/admin/chip.png')) }}" style="padding:2px 25px 2px" alt="chipset">
-		<p>Chipsets</p>
-	</a>
-	<a href="{{ path('admin_manage_expansion_chipsets') }}" class="admin-button-index">
-		<img src="{{ absolute_url(asset('build/images/admin/exp_chip.png')) }}" style="padding:10px 0px 0px" alt="chip part">
-		<p>Audio/Video chips</p>
-	</a>
-	<a href="{{ path('admin_manage_connectors') }}" class="admin-button-index">
-		<img src="{{ absolute_url(asset('build/icons/admin/connector.svg')) }}" width="128" style="padding:10px 0px 0px" alt="connector">
-		<p>Connectors</p>
-	</a>
-	<a href="{{ path('admin_manage_files') }}" class="admin-button-index">
-		<img src="{{ absolute_url(asset('build/images/admin/file.png')) }}" style="padding:8px 0px 0px" alt="file">
-		<p>Files</p>
-	</a>
-	<a href="{{ path('admin_manage_miscs') }}" class="admin-button-index">
-		<img src="{{ absolute_url(asset('build/icons/admin/misc.svg')) }}" width="128" style="padding:10px 0px 0px" alt="misc">
-		<p>Other fields</p>
-	</a>
-	<a href="{{ path('admin_change_user_password') }}" class="admin-button-index">
-		<img src="{{ absolute_url(asset('build/icons/admin/keys.svg')) }}" width="128" style="padding:10px 0px 0px" alt="passwd">
-		<p>Change password</p>
-	</a>
-	{% if is_granted('ROLE_SUPER_ADMIN') %}
-		<a href="{{ path('admin_manage_users') }}" class="admin-button-index">
-			<img src="{{ absolute_url(asset('build/icons/admin/user.svg')) }}" width="128" style="padding:10px 0px 0px" alt="user">
-			<p>Manage users</p>
+	<div class="title">Dashboard
+	<a class="button" href="{{ path('app_homepage') }}" style="display:inline-block;">
+		<img src="{{ absolute_url(asset('build/icons/back.svg')) }}" alt="" width="24" style="vertical-align: middle;padding-right:2px;">Go back</a></div>
+	<div class="index-buttons">
+		<a href="{{ path('admin_manage_motherboards') }}">
+			<img src="{{ absolute_url(asset('build/icons/admin/board.svg')) }}" alt="board">
+			<div>Motherboards</div>
 		</a>
-	{% endif %}
-	<br><br>
-	<a class="snav" href="{{ path('admin_stats') }}">
-        <img src="{{ absolute_url(asset('build/icons/show/data.svg')) }}" alt="" width="24">Board stats</a>
-	<a class="snav" href="{{ path('admin_logs') }}">
-        <img src="{{ absolute_url(asset('build/icons/show/data.svg')) }}" alt="" width="24">Logs</a>
+		<a href="{{ path('admin_manage_processing_units') }}">
+			<img src="{{ absolute_url(asset('build/icons/admin/486dx.svg')) }}" alt="cpu">
+			<div>Processing units</div>
+		</a>
+		<a href="{{ path('admin_manage_memories') }}">
+			<img src="{{ absolute_url(asset('build/icons/admin/ram.svg')) }}" alt="memory">
+			<div>Memory</div>
+		</a>
+		<a href="{{ path('admin_manage_chipsets') }}">
+			<img src="{{ absolute_url(asset('build/icons/admin/chip.svg')) }}" alt="chipset">
+			<div>Chipsets</div>
+		</a>
+		<a href="{{ path('admin_manage_expansion_chipsets') }}">
+			<img src="{{ absolute_url(asset('build/icons/admin/exp.svg')) }}" alt="a/v chip">
+			<div>Audio/Video chips</div>
+		</a>
+		<a href="{{ path('admin_manage_connectors') }}">
+			<img src="{{ absolute_url(asset('build/icons/admin/connector.svg')) }}" alt="connector">
+			<div>Connectors</div>
+		</a>
+		<a href="{{ path('admin_manage_files') }}">
+			<img src="{{ absolute_url(asset('build/icons/admin/file.svg')) }}" alt="file">
+			<div>Files</div>
+		</a>
+		<a href="{{ path('admin_manage_miscs') }}">
+			<img src="{{ absolute_url(asset('build/icons/admin/misc.svg')) }}" alt="misc">
+			<div>Other fields</div>
+		</a>
+		<a href="{{ path('admin_user_settings') }}">
+			<img src="{{ absolute_url(asset('build/icons/admin/user.svg')) }}" alt="">
+			<div>User settings</div>
+		</a>
+	</div>
+
+	<div class="title"><h4>Under construction</h4></div>
+	<div class="index-buttons">
+		<a href="{{ path('admin_stats') }}">
+			<img src="{{ absolute_url(asset('build/icons/show/data.svg')) }}" alt="">
+			<div>Board stats</div>
+		</a>
+		<a href="{{ path('admin_logs') }}">
+			<img src="{{ absolute_url(asset('build/icons/show/data.svg')) }}" alt="">
+			<div>Logs</div>
+		</a>
+		<a href="{{ path('admin_guidelines') }}">
+			<img src="{{ absolute_url(asset('build/icons/show/data.svg')) }}" alt="">
+			<div>(NEW) Guidelines</div>
+		</a>
+	</div>
 {% endblock %}

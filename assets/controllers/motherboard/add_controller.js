@@ -30,6 +30,17 @@ export default class extends Controller {
         return false;
     }
 
+    getslug() {
+        let manuf = document.getElementById('motherboard_form_manufacturer');
+        let name = document.getElementById('motherboard_form_name');
+        let slug = document.getElementById('motherboard_form_slug');
+        let string = manuf.options[manuf.selectedIndex].text;
+        if(string == '')
+            string = 'unknown ' + name.value;
+        else
+            string = string + ' ' + name.value;
+        slug.value = string.replace(/[^a-z0-9_]+/gi, '-').replace(/^-|-$/g, '').toLowerCase().substring(0, 43);
+    }
     /**
      * Check that everything is fine before submiting the board
      * @param {*} event 
@@ -39,22 +50,20 @@ export default class extends Controller {
 
         let error = false;
         let errorMessage = "";
-
         let manualList = document.getElementById('manuals-fields-list').children;
         for (let manual of manualList) {
             if (manual.children[2].children[0].files[0] == null) {
                 if (manual.children[3].children[0].value == '') {
-                    errorMessage += "One of the file upload fields is empty! (manual entry no." + (i + 1) + ")\n";
+                    errorMessage += "One of the manual file upload fields is empty!\n";
                     error = true;
                 }
             }
         }
-
         let imageList = document.getElementById('images-fields-list').children;
         for (let image of imageList) {
             if (image.children[1].children[0].files[0] == null) {
-                if (image.children[7].children[0].value == '') {
-                    errorMessage += "One of the file upload fields is empty! (image entry no." + (i + 1) + ")\n";
+                if (image.children[6].children[0].value == '') {
+                    errorMessage += "One of the image file upload fields is empty!\n";
                     error = true;
                 }
             }
@@ -62,17 +71,20 @@ export default class extends Controller {
         let driverList = document.getElementById('drivers-fields-list').children;
         for (let driver of driverList) {
             if (!driver.children[0].children[0].value) {
-                errorMessage += "One of the drivers is empty! (entry no." + (i + 1) + ")\n";
+                errorMessage += "One of the drivers is empty!\n";
                 error = true;
             }
         }
         let aliasesList = document.getElementById('motherboardAliases-fields-list').children;
         for (let alias of aliasesList) {
             if (alias.children[0].children[0].value == "EMPTY") {
-                errorMessage += "One of the aliases is empty! (entry no." + (i + 1) + ")\n";
+                errorMessage += "One of the aliases is empty!\n";
                 error = true;
             }
         }
+        let slug = document.getElementById('motherboard_form_slug');
+        if(slug.value == '')
+            this.getslug();
         if (_this.checkList('cpuSockets-fields-list')) {
             errorMessage += "CPU sockets has duplicate entries!\n";
             error = true;
@@ -142,6 +154,9 @@ export default class extends Controller {
             bioses.innerHTML = '';
             let manuals = document.getElementById("manuals-fields-list");
             manuals.innerHTML = '';
+            let redirections = document.getElementById("redirections-fields-list");
+            redirections.innerHTML = '';
+            this.getslug();
             // submit the page
             this.submit();
         }
@@ -159,9 +174,12 @@ export default class extends Controller {
         let frequencies = document.getElementById("cpuSpeed-fields-list").children;
         let processors = document.getElementById("processors-fields-list").children;
         let coprocessors = document.getElementById("coprocessors-fields-list").children;
+        let slug = document.getElementById("motherboard_form_slug");
+        
         let form = _this.element;
 
         let params = new FormData();
+        params.set(slug.name, slug.value);
         for (let socket of sockets) {
             let element = socket.children[0];
             params.set(element.name, element.value);
@@ -190,8 +208,8 @@ export default class extends Controller {
                 body: params
             });
             let parser = new DOMParser();
+            //console.log(await rawResponse.text());
             let parsedResponse = parser.parseFromString(await rawResponse.text(), "text/html");
-
             document.getElementById("cpuSockets-fields-list").innerHTML = parsedResponse.getElementById("cpuSockets-fields-list").innerHTML;
             document.getElementById("processorPlatformTypes-fields-list").outerHTML = parsedResponse.getElementById("processorPlatformTypes-fields-list").outerHTML;
             document.getElementById("processorPlatformTypes-fields-list").innerHTML = parsedResponse.getElementById("processorPlatformTypes-fields-list").innerHTML;

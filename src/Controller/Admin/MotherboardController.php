@@ -8,6 +8,7 @@ use App\Entity\FormFactor;
 use App\Entity\Motherboard;
 use App\Entity\Processor;
 use App\Entity\ProcessorPlatformType;
+use App\Form\Admin\Manage\MotherboardSearchType;
 use App\Form\Admin\Edit\FormFactorForm;
 use App\Form\Admin\Edit\MotherboardForm;
 use Doctrine\ORM\EntityManagerInterface;
@@ -17,7 +18,10 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use App\Repository\ChipsetRepository;
+use App\Repository\CpuSocketRepository;
+use App\Repository\FormFactorRepository;
 use App\Repository\MotherboardRepository;
+use Doctrine\ORM\EntityManager;
 
 class MotherboardController extends AbstractController
 {
@@ -54,9 +58,15 @@ class MotherboardController extends AbstractController
      * @Route("/admin/manage/motherboards/motherboards/add", name="new_motherboard_add")
      * @param Request $request
      */
-    public function motherboardAdd(Request $request)
+    public function motherboardAdd(Request $request, ChipsetRepository $chipsetRepository, CpuSocketRepository $cpuSocketRepository, EntityManagerInterface $entityManager)
     {
-        return $this->renderMotherboardForm($request, new Motherboard());
+        return $this->renderMotherboardForm(
+            $request,
+            new Motherboard(), 
+            $chipsetRepository, 
+            $cpuSocketRepository, 
+            $entityManager
+        );
     }
 
     /**
@@ -66,11 +76,14 @@ class MotherboardController extends AbstractController
      *    requirements={"id"="\d+"})
      * @param Request $request
      */
-    public function motherboardEdit(Request $request, MotherboardRepository $motherboardRepository, int $id)
+    public function motherboardEdit(Request $request, MotherboardRepository $motherboardRepository, int $id, ChipsetRepository $chipsetRepository, CpuSocketRepository $cpuSocketRepository, EntityManagerInterface $entityManager)
     {
         return $this->renderMotherboardForm(
             $request,
-            $motherboardRepository->find($id)
+            $motherboardRepository->find($id),
+            $chipsetRepository, 
+            $cpuSocketRepository, 
+            $entityManager
         );
     }
 
@@ -78,14 +91,15 @@ class MotherboardController extends AbstractController
      * @Route("/admin/manage/motherboards/formfactors/add", name="new_formFactor_add")
      * @param Request $request
      */
-    public function formFactorAdd(Request $request)
+    public function formFactorAdd(Request $request, EntityManagerInterface $entityManager)
     {
         return $this->renderEntityForm(
             $request,
             new FormFactor(),
             FormFactorForm::class,
             'admin/edit/motherboards/formFactor.html.twig',
-            'formfactor'
+            'formfactor',
+            $entityManager
         );
     }
 
@@ -93,16 +107,15 @@ class MotherboardController extends AbstractController
      * @Route("/admin/manage/motherboards/formfactors/{id}/edit", name="new_formFactor_edit", requirements={"id"="\d+"})
      * @param Request $request
      */
-    public function formFactorEdit(Request $request, int $id)
+    public function formFactorEdit(Request $request, int $id, FormFactorRepository $formFactorRepository, EntityManagerInterface $entityManager)
     {
         return $this->renderEntityForm(
             $request,
-            $this->getDoctrine()
-                ->getRepository(FormFactor::class)
-                ->find($id),
+            $formFactorRepository->find($id),
             FormFactorForm::class,
             'admin/edit/motherboards/formFactor.html.twig',
-            'formfactor'
+            'formfactor',
+            $entityManager
         );
     }
 
@@ -112,8 +125,50 @@ class MotherboardController extends AbstractController
 
     private function manageMotherboards(Request $request, TranslatorInterface $translator)
     {
+        /*$search = $this->createForm(MotherboardSearchType::class);
 
+        $getParams = array();
+        $search->handleRequest($request);
+        if ($search->isSubmitted() && $search->isValid()) {
+            $data = $search->getData();
+            if ($data['manufacturer']) {
+                $getParams["manufacturer"] = $data['manufacturer']->getId();
+            }
+            if ($data['formFactor']) {
+                $getParams["formFactor"] = $data['formFactor']->getId();
+            }
+            if ($data['name']) {
+                $getParams["name"] = $data['name'];
+            }
+            if ($data['chipset'])
+                $getParams["chipset"] = $data['chipset']->getId(); 
+            $getParams["entity"] = "motherboard";
+            //dd($getParams);
+            return $this->redirect($this->generateUrl('admin_manage_motherboards', $getParams));
+        } else {
+            $criterias = array();
+            $manufacturerId = htmlentities($request->query->get('manufacturer'));
+            if ($manufacturerId && intval($manufacturerId)) {
+                $criterias["manufacturer"] = $manufacturerId;
+            }
+            $formFactorId = htmlentities($request->query->get('formFactor'));
+            if ($formFactorId && intval($formFactorId)) {
+                $criterias["formFactor"] = $formFactorId;
+            }
+            $name = htmlentities($request->query->get('name'));
+            if ($name) {
+                $criterias["name"] = "$name";
+            }
+            $chipsetId = htmlentities($request->query->get('chipset'));
+            if ($chipsetId && intval($chipsetId)) {
+                $criterias["chipset"] = $chipsetId;
+            }
+        }
+        /*if($criterias)*/
+        //dd($request->query->get('entity'));
         return $this->render('admin/manage/motherboards/manage.html.twig', [
+            /*"search" => $search->createView(),
+            "criterias" => $criterias,*/
             "search" => "",
             "criterias" => [],
             "controllerList" => "App\\Controller\\Admin\\MotherboardController::listMotherboard",
@@ -138,23 +193,45 @@ class MotherboardController extends AbstractController
         ]);
     }
 
+    /*public function listMotherboard(EntityManagerInterface $em, Request $request, PaginatorInterface $paginator, /*array $criterias*) {
+        /*$where = "";
+        if (!empty($criterias) && array_key_exists("manufacturer", $criterias)) {
+            $where = "WHERE m.manufacturer = :manufacturer";
+        }
+
+        $dql   = "SELECT m FROM App:Motherboard m JOIN m.manufacturer n $where ORDER BY m.lastEdited DESC";
+        $query = $em->createQuery($dql);
+        $query->setParameters($criterias);*
+        $mobos = $this->getDoctrine()
+            ->getRepository(Motherboard::class);
+            //->findBy($criterias);
+        usort(
+            $mobos,
+            function ($a, $b) {
+                if ($a->getLastEdited() == $b->getLastEdited()) {
+                    return 0;
+                }
+                return ($a->getLastEdited() > $b->getLastEdited()) ? -1 : 1;
+            }
+        );
+        //$mobos = Motherboard::sort(new ArrayCollection($mobos));
+        $paginatedObjects = $paginator->paginate(
+            $mobos,
+            $request->query->getInt('page', 1),
+            $this->getParameter('app.pagination.max')
+        );
+
+        return $this->render('admin/manage/motherboards/list.html.twig', [
+            "objectList" => $paginatedObjects,
+            "entityName" => $request->query->get('entity'),
+        ]);
+    }*/
     public function listMotherboard(
         EntityManagerInterface $em,
         Request $request,
         PaginatorInterface $paginator,
         array $criterias
     ) {
-        /*$objects = $this->getDoctrine()
-            ->getRepository(Motherboard::class)
-            ->findBy($criterias, ["lastEdited" => "DESC"]);*/
-
-        //$this->createQueryBuilder();
-
-        /*$paginatedObjects = $paginator->paginate(
-            $objects,
-            $request->query->getInt('page', 1),
-            $this->getParameter('app.pagination.max')
-        );*/
 
         $dql   = "SELECT m FROM App:Motherboard m ORDER BY m.lastEdited DESC";
         $query = $em->createQuery($dql);
@@ -170,7 +247,6 @@ class MotherboardController extends AbstractController
             "entityName" => $request->query->get('entity'),
         ]);
     }
-
     public function listFormfactor(Request $request, PaginatorInterface $paginator, array $criterias)
     {
         $objects = $this->getDoctrine()
@@ -193,54 +269,29 @@ class MotherboardController extends AbstractController
      * Forms
      */
 
-    private function renderMotherboardForm(Request $request, Motherboard $mobo)
+    private function renderMotherboardForm(Request $request, Motherboard $mobo, ChipsetRepository $chipsetRepository, CpuSocketRepository $cpuSocketRepository, EntityManagerInterface $entityManager)
     {
-        $entityManager = $this->getDoctrine()->getManager();
-
-        /** @var ChipsetRepository */
-        $chipsetRepo = $this->getDoctrine()->getRepository(Chipset::class);
-        $chipsets = $chipsetRepo->findAllChipsetManufacturer();
+        /**
+         * @var array<Chipset>
+         */
+        $chipsets = $chipsetRepository->findAllChipsetManufacturer();
 
         usort(
             $chipsets,
-            function ($a, $b) {
-                if ($a->getMainChipWithManufacturer() == $b->getMainChipWithManufacturer()) {
-                    return 0;
-                }
-                return ($a->getMainChipWithManufacturer() < $b->getMainChipWithManufacturer()) ? -1 : 1;
+
+            function (Chipset $a, Chipset $b) {
+                return $a->getFullName() <=> $b->getFullName();
             }
         );
 
-        /*$cpus = $this->getDoctrine()
-            ->getRepository(Processor::class)
-            ->findAll();
-
-        usort(
-            $cpus,
-            function ($a, $b) {
-                if ($a->getNameWithPlatform() == $b->getNameWithPlatform()) {
-                    return 0;
-                }
-                return ($a->getNameWithPlatform() < $b->getNameWithPlatform()) ? -1 : 1;
-            }
-        );*/
-
-        /*$procPlatformTypes = $this->getDoctrine()
-            ->getRepository(ProcessorPlatformType::class)
-            ->findBy(array(), array('name' => 'ASC'));*/
-
-        $sockets = $this->getDoctrine()
-            ->getRepository(CpuSocket::class)
-            ->findBy(array(), array('name' => 'ASC'));
+        $sockets = $cpuSocketRepository->findBy(array(), array('name' => 'ASC'));
 
 
         $form = $this->createForm(MotherboardForm::class, $mobo, [
             'chipsets' => $chipsets,
-            //'cpus' => $cpus,
-            //'procPlatformTypes' => $procPlatformTypes,
             'sockets' => $sockets,
         ]);
-
+        
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             if ($form->get('updateProcessors')->isClicked()) {
@@ -250,37 +301,37 @@ class MotherboardController extends AbstractController
             }
             $mobo = $form->getData();
             $mobo->updateLastEdited();
-            foreach ($form['motherboardAliases']->getData() as $key => $val) {
+            foreach ($form['motherboardAliases']->getData() as $val) {
                 $val->setMotherboard($mobo);
             }
-            foreach ($form['motherboardIoPorts']->getData() as $key => $val) {
+            foreach ($form['motherboardIoPorts']->getData() as $val) {
                 $val->setMotherboard($mobo);
             }
-            foreach ($form['motherboardExpansionSlots']->getData() as $key => $val) {
+            foreach ($form['motherboardExpansionSlots']->getData() as $val) {
                 $val->setMotherboard($mobo);
             }
-            foreach ($form['manuals']->getData() as $key => $val) {
+            foreach ($form['manuals']->getData() as $val) {
                 $val->setMotherboard($mobo);
             }
-            foreach ($form['motherboardBios']->getData() as $key => $val) {
+            foreach ($form['motherboardBios']->getData() as $val) {
                 $val->setMotherboard($mobo);
             }
-            foreach ($form['images']->getData() as $key => $val) {
+            foreach ($form['images']->getData() as $val) {
                 $val->setMotherboard($mobo);
             }
-            foreach ($form['motherboardMaxRams']->getData() as $key => $val) {
+            foreach ($form['motherboardMaxRams']->getData() as $val) {
                 $val->setMotherboard($mobo);
             }
-            foreach ($form['drivers']->getData() as $key => $val) {
+            foreach ($form['drivers']->getData() as $val) {
                 $val->setMotherboard($mobo);
             }
-            foreach ($form['redirections']->getData() as $key => $val) {
+            foreach ($form['redirections']->getData() as $val) {
                 $val->setDestination($mobo);
             }
             if ($mobo->getManufacturer() != null && $mobo->getManufacturer()->getId() == 0) {
                 $mobo->setManufacturer(null);
             }
-            //dd($mobo);
+            
             $entityManager->persist($mobo);
 
             $entityManager->flush();
@@ -289,13 +340,12 @@ class MotherboardController extends AbstractController
         }
         return $this->render('admin/edit/motherboards/motherboard.html.twig', [
             'form' => $form->createView(),
+            'moboid' =>$mobo->getId(),
         ]);
     }
 
-    private function renderEntityForm(Request $request, $entity, $class, $template, $entityName)
+    private function renderEntityForm(Request $request, $entity, $class, $template, $entityName, EntityManagerInterface $entityManager)
     {
-        $entityManager = $this->getDoctrine()->getManager();
-
         $form = $this->createForm($class, $entity);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {

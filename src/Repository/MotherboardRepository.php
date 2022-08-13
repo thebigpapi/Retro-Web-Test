@@ -11,11 +11,12 @@ use Doctrine\ORM\Query\ResultSetMapping;
 
 /**
  * @method Motherboard|null find($id, $lockMode = null, $lockVersion = null)
+ * @method Motherboard|null findSlug($slug)
  * @method Motherboard|null findOneBy(array $criteria, array $orderBy = null)
  * @method Motherboard[]    findAll()
  * @method Motherboard[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  * @method Motherboard[]    findByWithJoin(array $criteria)
- * @method Motherboard[]    find10Latest()
+ * @method Motherboard[]    findLatest()
  * @method Motherboard[]    find50Latest()
  */
 class MotherboardRepository extends ServiceEntityRepository
@@ -23,6 +24,18 @@ class MotherboardRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Motherboard::class);
+    }
+
+    public function findSlug(string $slug): Motherboard|null {
+        $entityManager = $this->getEntityManager();
+
+        $query = $entityManager->createQuery(
+            "SELECT mobo
+            FROM App\Entity\Motherboard mobo
+            WHERE mobo.slug = :slug"
+        )->setParameter('slug', $slug);
+
+        return $query->getOneOrNullResult();
     }
 
     public function findAllAlphabetic(string $letter): array
@@ -966,11 +979,11 @@ class MotherboardRepository extends ServiceEntityRepository
     /**
      * @return Motherboard[] Returns an array of Motherboard objects
      */
-    public function find10Latest()
+    public function findLatest()
     {
         return $this->createQueryBuilder('m')
             ->orderBy('m.lastEdited', 'DESC')
-            ->setMaxResults(10)
+            ->setMaxResults(12)
             ->getQuery()
             ->getResult();
     }

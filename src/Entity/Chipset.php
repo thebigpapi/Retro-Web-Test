@@ -35,6 +35,7 @@ class Chipset
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\ChipsetPart", inversedBy="chipsets")
+     * @var ArrayCollection<ChipsetPart>
      */
     private $chipsetParts;
 
@@ -68,7 +69,7 @@ class Chipset
     private $drivers;
 
     /**
-     * @ORM\Column(type="string", length=4096, nullable=true)
+     * @ORM\Column(type="string", length=8192, nullable=true)
      */
     private $description;
 
@@ -103,45 +104,7 @@ class Chipset
         return $this;
     }
 
-
-    public function getMainChipWithManufacturer(): string
-    {
-        if ($this->getManufacturer()) {
-            $manufacturer = $this->getManufacturer()->getShortNameIfExist();
-        } else {
-            $manufacturer = "";
-        }
-
-        $fullName = $manufacturer;
-        if ($this->part_no) {
-            $fullName = $fullName . " $this->part_no";
-            if ($this->name) {
-                $fullName = $fullName . " ($this->name)";
-            }
-        } else {
-            if ($this->name) {
-                $fullName = $fullName . " $this->name";
-            } else {
-                $fullName = $fullName . " Unidentified";
-            }
-        }
-        $chipset = "";
-        foreach ($this->chipsetParts as $key => $part) {
-            if ($key === array_key_last($this->chipsetParts->getValues())) {
-                $chipset = $chipset . $part->getShortNamePN();
-            } else {
-                $chipset = $chipset . $part->getShortNamePN() . ", ";
-            }
-        }
-        if ($chipset) {
-            $chipset = "[$chipset]";
-        }
-
-
-        return "$fullName $chipset";
-    }
-
-    public function getFullReference(): ?string
+    public function getFullReference(): string
     {
         $fullName = "";
         if ($this->part_no) {
@@ -156,12 +119,41 @@ class Chipset
                 $fullName = $fullName . " Unidentified";
             }
         }
+        return "$fullName";
+    }
+
+    public function getFullNameParts(): string
+    {
+        if ($this->getManufacturer()) {
+            $manufacturer = $this->getManufacturer()->getShortNameIfExist();
+        } else {
+            $manufacturer = "";
+        }
+
+        $fullName = $manufacturer . $this->getFullReference() . ' ' . $this->getParts();
+        return "$fullName";
+    }
+
+    public function getFullName(): string
+    {
+        if ($this->getManufacturer()) {
+            $manufacturer = $this->getManufacturer()->getShortNameIfExist();
+        } else {
+            $manufacturer = "";
+        }
+
+        $fullName = $manufacturer . $this->getFullReference();
+        return "$fullName";
+    }
+
+    public function getParts(): string
+    {
         $chipset = "";
         foreach ($this->chipsetParts as $key => $part) {
             if ($key === array_key_last($this->chipsetParts->getValues())) {
-                $chipset = $chipset . $part->getShortName();
+                $chipset = $chipset . $part->getShortNamePN();
             } else {
-                $chipset = $chipset . $part->getShortName() . ", ";
+                $chipset = $chipset . $part->getShortNamePN() . ", ";
             }
         }
         if ($chipset) {
@@ -169,7 +161,7 @@ class Chipset
         }
 
 
-        return "$fullName $chipset";
+        return "$chipset";
     }
 
     /**

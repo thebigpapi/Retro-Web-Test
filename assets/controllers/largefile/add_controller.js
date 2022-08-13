@@ -1,13 +1,48 @@
 import { Controller } from 'stimulus';
 
 export default class extends Controller {
-
+    /**
+     * Check that everything is fine before submiting the board
+     * @param {*} event 
+     */
+    check(event) {
+        let error = false;
+        let errorMessage = "";
+        let name = document.getElementById('large_file_form_name');
+        let file = document.getElementById('large_file_form_file');
+        let existingFile = document.getElementById('large_file_form_file_name');
+        let subdir = document.getElementById('large_file_form_subdirectory');
+        if(!name.value){
+            error = true;
+            errorMessage += "The name field is empty!\n";
+        }
+        if(!file.files[0] && existingFile.value == ""){
+            error = true;
+            errorMessage += "No file is uploaded!\n";
+        }
+        if(subdir.value == ""){
+            error = true;
+            errorMessage += "Subdirectory not selected!\n";
+        }
+        if (error) {
+            alert(errorMessage);
+            return false;
+        }
+        return true;
+    }
+    /**
+     * Submit the form
+     * @param {*} event 
+     */
+     submit_try(event) {
+         if (this.check())
+            this.submit(event);
+     }
     /**
      * Submit the form
      * @param {*} event 
      */
     submit(event) {
-
         let date = new Date()
         let bytesLoaded = 0
         event.preventDefault()
@@ -18,7 +53,7 @@ export default class extends Controller {
                 console.log(e.loaded + " / " + e.total)
             }
         }
-
+        let speedText;
         let bar;
         xhr.upload.addEventListener("progress", function (evt) {
             if (evt.lengthComputable) {
@@ -50,12 +85,13 @@ export default class extends Controller {
         }, false);
 
         let button;
+        let messageRow;
         xhr.onloadstart = function (e) {
             bar = document.getElementById('progressBar')
             bar.hidden = false
             button = document.getElementById('large_file_form_save')
             button.hidden = true
-            messageRow = document.getElementById("messageRow")
+            messageRow = document.getElementById("messageRow") 
             messageRow.hidden = false
         }
         xhr.onloadend = function (e) {

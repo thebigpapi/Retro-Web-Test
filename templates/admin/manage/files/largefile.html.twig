@@ -1,44 +1,88 @@
-<tr>
-	<td>{{object.getName()}}</td>
-	<td>{{object.getFileVersion()}}</td>
-	<td>{{object.getReleaseDateString()}}</td>
-	<td>
+<div class="list-entry centered largefile{% if loop.index is divisible by(2) %} alt{% endif %}">
+	<div class="header-label">Name</div>
+	<div><a href="{{ path("driver_show", {id: object.getId()}) }}">{{object.getName()}}</a></div>
+
+	<div class="header-label">Version</div>
+	<div>{{object.getFileVersion()|length > 0 ? object.getFileVersion()}}</div>
+
+
+	<div class="header-label">Release date</div>
+	<div>{{object.getReleaseDateString()}}</div>
+
+	<div class="header-label">Media type</div>
+	<div class="tag-container">
 		{% for relation in object.getMediaTypeFlags() %}
-			<b>{{relation.getCount()}}x</b>
-			<img src="{{ vich_uploader_asset(relation.getMediaTypeFlag(), 'icon')}}" alt="" width="32">
+			<span class="text-block">
+				<span>{{relation.getCount()}}x</span>
+				<img src="{{ vich_uploader_asset(relation.getMediaTypeFlag(), 'icon')}}" alt="" height="24">
+			</span>
 		{% endfor %}
-	</td>
-	<td>
+	</div>
+
+	<div class="header-label">OS support</div>
+	<div class="tag-container">
 		{% set prevIcon = "" %}
 		{% for relation in object.getOsFlags() %}
-			{% if prevIcon != (relation.getOsFlag().getOsFamilies()|sort)[0].getFileName() %}
-				<img src="{{ vich_uploader_asset((relation.getOsFlag().getOsFamilies()|sort)[0], 'osIcon')}}" alt="" width="16">
-			{% endif %}
-			{% set prevIcon = (relation.getOsFlag().getOsFamilies()|sort)[0].getFileName() %}
-			{{ relation.getOsFlag().getFullVersion()}}
-			{% if relation.getUnsure() %}
-				?
-			{% endif %},
+			<span class="text-block">
+				{% if prevIcon != (relation.getOsFlag().getOsFamilies()|sort)[0].getFileName() %}
+					<img src="{{ vich_uploader_asset((relation.getOsFlag().getOsFamilies()|sort)[0], 'osIcon')}}" alt="" height="24">
+				{% endif %}
+				{% set prevIcon = (relation.getOsFlag().getOsFamilies()|sort)[0].getFileName() %}
+				<span>{{ relation.getOsFlag().getFullVersion()}}
+				{% if relation.getUnsure() %}
+					?
+				{% endif %}</span>
+			</span>
 		{% endfor %}
-	</td>
-	<td>
+	</div>
+	
+	<div class="header-label">Language</div>
+	<div class="tag-container">
 		{% for lang in object.getLanguages() %}
-			<img src="{{ asset('build/icons/language/' ~ lang.getIsoCode ~ '.svg') }}" alt="" class="lang-flag{% if loop.length > 4 %}-lrg{% endif %}">
+			<span class="text-block">
+				<img src="{{ asset('build/icons/language/' ~ lang.getIsoCode ~ '.svg') }}" height="20"
+					alt="{{ lang.getIsoCode }}" class="lang-flag{% if loop.length > 4 %}-lrg{% endif %}">
+				<span>{{ lang.getIsoCode|upper }}</span>
+			</span>
 		{% endfor %}
-	</td>
-	<td>
-		<img src="{{ asset('build/icons/quality/' ~ object.dumpQualityFlag().getTagName() ~ '.svg') }}" alt="" width="32">
-	</td>
-	<td>
+	</div>
+
+	<div class="header-label">Dump quality</div>
+	<div class="tag-container">
+		<span class="text-block">
+			<img src="{{ asset('build/icons/quality/' ~ object.dumpQualityFlag().getTagName() ~ '.svg') }}"
+				alt="{{ object.dumpQualityFlag().getTagName() }}" height="24">
+			<span>{{ object.dumpQualityFlag().getTagName()|capitalize }}</span>
+		</span>
+	</div>
+
+	<div class="header-label">Copy protection</div>
+	<div class="tag-container">
+		{% set protLvl = 0 %}
 		{% if object.hasActivationKey() %}
-			<img src="{{ asset('build/icons/protection/activation_key.svg') }}" alt="" width="32">
+			<span class="text-block">
+				<img src="{{ asset('build/icons/protection/activation_key.svg') }}" alt="" height="24">
+				<span>Activation key</span>
+			</span>
+			{% set protLvl = 1 %}
 		{% endif %}
 		{% if object.hasCopyProtection() %}
-			<img src="{{ asset('build/icons/protection/copy_protected.svg') }}" alt="" width="32">
+			<span class="text-block">
+				<img src="{{ asset('build/icons/protection/copy_protected.svg') }}" alt="" height="24">
+				<span>Copy protection</span>
+			</span>
+			{% set protLvl = 2 %}
 		{% endif %}
-	</td>
-	<td>
-        <a class="snav" href="./files/largefiles/{{ object.getId() }}/edit/">
-            <img src="{{ absolute_url(asset('build/icons/show/edit.svg')) }}" alt="" width="24">Edit</a>
-    </td>
-</tr>
+		{% if protLvl == 0 %}
+			<span class="text-block">
+				None or unknown
+			</span>
+		{% endif %}
+	</div>
+
+	<div class="header-label">Actions</div>
+    <div class="toolbar toolbar-thin">
+        <a class="button" href="./files/largefiles/{{ object.getId() }}/edit/">
+            <img src="{{ absolute_url(asset('build/icons/edit.svg')) }}" alt="" height="24"><span>Edit</span></a>
+    </div>
+</div>

@@ -1,26 +1,20 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}
-	{% trans %}BIOS Info{% endtrans %}
-{% endblock %}
+{% block title %}BIOS Info{% endblock %}
 
 {% block metatags %}
 	<meta name="description" content="BIOS info(AMI/Award manufacturer codes), Award chipset IDs">
-	{% for locale in locales | split('|')|filter(locale => locale != "en") %}
-		<link rel="alternate" hreflang="{{ locale }}" href="{{ absolute_url(path('bios_info', {_locale: locale})) }}"/>
-	{% endfor %}
-	<link rel="alternate" hreflang="x-default" href="{{ absolute_url(path('bios_info', {_locale: 'en'})) }}"/>
+	<link rel="alternate" hreflang="x-default" href="{{ absolute_url(path('bios_info')) }}"/>
 {% endblock %}
 
 {% block body %}
 	<div class="title">
-		<b>{% trans %}Where can I find the POST string?{% endtrans %}</b>
+		<b>Where can I find the POST string?</b>
 	</div>
-	<p>{% trans %}In general, the POST string is located in the bottom left side of the boot screen 
+	<p>In general, the POST string is located in the bottom left side of the boot screen 
 				(for BIOSes which provide it). Depending on the BIOS vendor, the POST string may
 				provide various info about the board (like chipset or date). Here is a list of common 
-				vendors and their string meanings:{% endtrans %}</p>
-	<p>You can find a list of BIOS chipset and manufacturer IDs <a href="{{path("bios_infoadv")}}">here</a>
+				vendors and their string meanings:</p>
 	<br>
 	<div class="biosinfo">
 		<p>
@@ -29,7 +23,7 @@
 		<span class="image-block">
 			<span>
 				<a href="{{ absolute_url(asset('build/images/bios/awardbios.jpg')) }}" class="glightbox">
-					<img src="{{ absolute_url(asset('build/images/bios/awardbios.gif')) }}" alt="awardbios" title=""></a>
+					<img src="{{ absolute_url(asset('build/images/bios/awardbios.jpg')) }}" alt="awardbios" title=""></a>
 			</span>
 		</span>
 		<span class="image-block">
@@ -45,13 +39,13 @@
 		<span class="image-block">
 			<span>
 				<a href="{{ absolute_url(asset('build/images/bios/amibios.jpg')) }}" class="glightbox">
-					<img src="{{ absolute_url(asset('build/images/bios/amibios.gif')) }}" alt="amibios" title=""></a>
+					<img src="{{ absolute_url(asset('build/images/bios/amibios.jpg')) }}" alt="amibios" title=""></a>
 			</span>
 		</span>
 		<span class="image-block">
 			<span>
 				<a href="{{ absolute_url(asset('build/images/bios/amistring.jpg')) }}" class="glightbox">
-					<img src="{{ absolute_url(asset('build/images/bios/amistring.gif')) }}" alt="amibiosinfo" title=""></a>
+					<img src="{{ absolute_url(asset('build/images/bios/amistring.jpg')) }}" alt="amibiosinfo" title=""></a>
 			</span>
 		</span>
 		<br>
@@ -61,7 +55,7 @@
 		<span class="image-block">
 			<span>
 				<a href="{{ absolute_url(asset('build/images/bios/acerbios.jpg')) }}" class="glightbox">
-					<img src="{{ absolute_url(asset('build/images/bios/acerbios.gif')) }}" alt="acerbios" title=""></a>
+					<img src="{{ absolute_url(asset('build/images/bios/acerbios.jpg')) }}" alt="acerbios" title=""></a>
 			</span>
 		</span>
 		<span class="image-block">

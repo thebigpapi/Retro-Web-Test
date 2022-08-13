@@ -27,12 +27,11 @@ class ChipsetRepository extends ServiceEntityRepository
     {
         $entityManager = $this->getEntityManager();
 
-        $query = $entityManager->createQuery(
-            'SELECT chip
-            FROM App\Entity\Chipset chip, App\Entity\Manufacturer man 
-            WHERE chip.manufacturer=man 
-            ORDER BY man.name ASC, chip.name ASC'
-        );
+        $dql   = "SELECT c, cp 
+        FROM App:Chipset c 
+        JOIN c.manufacturer m JOIN c.chipsetParts cp
+        ORDER BY m.name ASC, c.name ASC";
+        $query = $entityManager->createQuery($dql);
 
         return $query->getResult();
     }

@@ -63,15 +63,14 @@ class Search extends AbstractType
                 }
                 return ($a->getFullReference() < $b->getFullReference()) ? -1 : 1;
             });
-
+            $chipTag = null === $chipsetManufacturer ? "No chipset selected!" : "Select any " . $chipsetManufacturer->getShortNameIfExist() . " chipset ...";
             $form->add('chipset', ChoiceType::class, [
-                //'class' => Chipset::class,
                 'choice_label' => 'getFullReference',
                 'multiple' => false,
                 'expanded' => false,
                 'required' => false,
                 'choices' => $chipsets,
-                'placeholder' => '*',
+                'placeholder' => $chipTag,
             ]);
         };
 

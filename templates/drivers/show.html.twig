@@ -1,0 +1,97 @@
+{% extends 'base.html.twig' %}
+{% from 'macros/largeFile.html.twig' import link as driverLink %}
+{% from 'macros/largeFile.html.twig' import header as driverHeader %}
+
+{% block title %}
+	{{ driver.getName() }}
+{% endblock %}
+{% block metatags %}
+	<meta name="description" content="Driver:{{ driver.getName() }} Release date:unknown">
+{% endblock %}
+
+{% block opengraph %}
+	{% apply spaceless %}
+	<meta property="og:title" content="{{ driver.getName() }}">
+	<meta property="og:description" content="Get driver info for {{ driver.getName() }}!">
+	{% endapply %}
+	<link rel="alternate" hreflang="x-default" href="{{ absolute_url(path('driver_show', {id: driver.getId()})) }}"/>
+{% endblock %}
+
+{% block body %}
+<!-- NAME -->
+<div class="title">{{ driver.getName() }}</div>	
+<div class="main-strip">
+	<div class="internal-container">
+		<div class="internal-content">
+			<!-- DESCRIPRION -->
+			<div class="show-general" id="sh-general">
+				<div class="quick-spec-table">
+					<div class="quick-spec-head">Release Date</div>
+					<div>{{ driver.getReleaseDateString() ? driver.getReleaseDateString() : 'Unknown' }}</div>
+					<div class="quick-spec-head">Version</div>
+					<div>{{ driver.getFileVersion() ? driver.getFileVersion() : 'Unknown' }}</div>
+					<div class="quick-spec-head">Supported OS</div>
+					<div>
+					{% set prevIcon = "" %}
+					{% set prevIcon2 = "" %}
+					{% for relation in driver.getOsFlags() %}
+						{% if prevIcon != (relation.getOsFlag().getOsFamilies()|sort)[0].getFileName() %}
+							{% set prevIcon2 = (relation.getOsFlag().getOsFamilies()|sort)[0].getFileName() %}
+							<span style="display:inline-block;">
+								{% if not loop.first %}, {% endif %}
+								<img src="{{ vich_uploader_asset((relation.getOsFlag().getOsFamilies()|sort)[0], 'osIcon')}}" alt="{{(relation.getOsFlag().getOsFamilies()|sort)[0].getName()}}" title="{% for rel in driver.getOsFlags() %}{% if prevIcon2 == (rel.getOsFlag().getOsFamilies()|sort)[0].getFileName() %}{{ rel.getOsFlag().getName()}}{% if not loop.last %},{% endif %} {% endif %}{% endfor %}" width="16">
+								{{relation.getOsFlag().getName()}}
+								{{ relation.getUnsure() ? ' ?'}}
+							</span>
+						{% endif %}
+						{% set prevIcon = (relation.getOsFlag().getOsFamilies()|sort)[0].getFileName() %}
+					{% endfor %}</div>
+					<div class="quick-spec-head">Language</div>
+					<div>{% for lang in driver.getLanguages() %}{{lang.getOriginalName()}}{% if not loop.last %}, {% endif %}
+					{% endfor %}</div>
+
+					<div class="quick-spec-head">Media type</div>
+					<div style="display: flex;align-items: center;">{% for relation in driver.getMediaTypeFlags() %}
+						{{relation.getMediaTypeFlag().getName()}}<img src="{{ vich_uploader_asset(relation.getMediaTypeFlag(), 'icon')}}" style="padding-left: 5px;" alt="{{relation.getMediaTypeFlag().getName()}}" title="{{relation.getMediaTypeFlag().getName()}}" width="32">{% if not loop.last %}, {% endif %}
+					{% endfor %}</div>
+					{% if driver.hasActivationKey() or driver.hasCopyProtection() %}
+					<div class="quick-spec-head">Copy protection</div>
+					<div>{% if driver.hasActivationKey() %}
+						<img src="{{ asset('build/icons/protection/activation_key.svg') }}" alt="activation key" title="The program needs an activation key" width="32">
+					{% endif %}
+					{% if driver.hasCopyProtection() %}
+						<img src="{{ asset('build/icons/protection/copy_protected.svg') }}" alt="copy protected" title="The program is copy protected" width="32">
+					{% endif %}
+					</div>{% endif %}
+
+					<div class="quick-spec-head">Quality</div>	
+					<div><img src="{{ asset('build/icons/quality/' ~ driver.dumpQualityFlag().getTagName() ~ '.svg') }}" alt="{{driver.dumpQualityFlag().getName()}}" title="{{driver.dumpQualityFlag().getName()}}" width="32"></div>
+
+					
+					<div class="quick-spec-head">File</div>
+					<div><a href="{{ vich_uploader_asset(driver, 'file')}}">
+						<img src="{{ absolute_url(asset('build/icons/dw.svg')) }}" alt="" width="16" style="vertical-align: middle;">
+							Click to download
+							{% if driver.getSize() %}
+								( {% if driver.getSize() > 1048575 %}{{ (driver.getSize() / 1048576)|number_format(2) }}&nbsp;MB
+								{% elseif driver.getSize() > 1023 %}{{ (driver.getSize() / 1024)|number_format(2)}}&nbsp;KB
+								{% else %}{{ driver.getSize()}}&nbsp;Bytes{% endif %})
+							{% endif %}
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+		{% if is_granted('ROLE_ADMIN') %}
+		<a href="../../admin/manage/files/largefiles/{{ driver.getId() }}/edit/">Edit</a>
+		{% endif %}
+		{% if driver.getNote() is not empty %}
+			{% apply markdown_to_html %}{{ driver.getNote() }}{% endapply %}
+		{% endif %}
+		<div class="disclaimer">
+			<p><b>Disclaimer</b></p>
+			<p>The info found in this page might not be entirely correct. Feel free to amend this page by logging in, contacting us on Discord or via email.</p>
+		</div>
+	</div>
+</div>
+{% endblock %}

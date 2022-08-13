@@ -1,0 +1,138 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Guidelines{% endblock %}
+
+{% block body %}
+	<div class="title">
+		<b>Guidelines (BETA)</b>
+	</div>
+	<div class="guidelines-content">
+{% apply markdown_to_html %}
+
+## Motherboards
+
+#### Adding a board
+
+Adding a motherboard to the database can be done with the built-in editor. In [Admin/Motherboards](https://theretroweb.com/admin/manage/motherboards?entity=motherboard), click *Add motherboard*.
+A rather long form will appear; let's run over the fields.
+You can access three different sections in the board editor as follows (the rest are always visible):
+* Description: for items 5. -> 19.
+* Downloads: for items 20. -> 22.
+* CPUs: for items 23. -> 28.
+
+1. #### Manufacturer
+
+Here you are provided with a list of pre-defined manufacturers (this list can be edited [here](https://theretroweb.com/admin/manage/miscs?entity=manufacturer)), from which you can select the manufacturer of the board.  
+Leaving this field empty will select the manufacturer as "Unknown".  
+*Example: ASUS, Gigabyte, HP, Acer, etc.*
+
+2. #### Name
+
+In this field you are supposed to type in the part number that you see on the board silkscreen or manual cover. This field is mandatory.  
+*Example: GA-686BX (rev 1.0), Advanced/EV (Endeavor), M919, K7S41GX, etc.*
+
+3. #### Slug
+
+This field is used to generate a friendly URL for the board you're adding. This field is mandatory.   
+Clicking [<img src="{{ absolute_url(asset('build/icons/edit.svg')) }}" alt="" width="16" style="vertical-align: middle;">*Get slug* ] will generate a slug automagically, based on the contents of 1. and 2.
+
+4. #### Images
+
+This field lets you add images by clicking [<img src="{{ absolute_url(asset('build/icons/add.svg')) }}" alt="" width="16" style="vertical-align: middle;">*Add* ]. A new item is generated, where 
+you can select the file to be uploaded, the owner of the image, the type of the image (schema: board schematics/jumper layouts) and/or add notes.  
+Images need to be in one of the following formats: JPG, JPEG, PNG, GIF or SVG.
+
+5. #### Alternative names (or aliases)
+Here you can add multiple names for the board, if it has been sold in the past by multiple vendors, like ECS/PCchips/Amptron. 
+Clicking [<img src="{{ absolute_url(asset('build/icons/add.svg')) }}" alt="" width="16" style="vertical-align: middle;">*Add* ] will give you a new manufacturer and a name field, like at 1. and 2.  
+
+6. #### Redirections
+Here you can add redirection IDs for old boards in TRW which have been deleted or TH99 boards which haven't been added yet. 
+When you delete a board, copy its ID in this section if that board matches the current entry. Similarly, if you find a new board in TH99 which matches a board in TRW, use its ID in this section.
+Clicking [<img src="{{ absolute_url(asset('build/icons/add.svg')) }}" alt="" width="16" style="vertical-align: middle;">*Add* ] will give you two fields, one to select the redirect type, and one to input the ID.  
+To access boards using the TH99 ID, replace the URL as follows: ``https://theretroweb.com/th99/m/[insert TH99 ID here]``  
+To access boards using the old UR ID, replace the URL as follows: ``https://theretroweb.com/motherboards/[insert UR ID here]``
+
+7. #### PSU connectors
+Here you are provided with a list of pre-defined PSU connectors. Clicking [<img src="{{ absolute_url(asset('build/icons/add.svg')) }}" alt="" width="16" style="vertical-align: middle;">*Add* ] will give you a new field.
+
+8. #### Form factor
+Here you can select the shape standard of the board (ATX, Baby AT, LPX, etc.). If unsure, leave empty.
+
+9. #### Chipset
+Here you can select the chipset of the motherboard from a pre-defined list. If unsure, leave empty.
+
+10. #### Dimensions
+Here you can type in the physical dimensions of the board. Height x width in mm is preferred. If unsure, leave empty.
+
+11. #### Video/Audio chipset
+Here you can select the video/audio chipset of the motherboard from a pre-defined list. Leaving this field empty will select the audio/video chip as "unknown". If unsure, leave empty.
+
+12. #### Max video ram
+This field is tied to the video chipset and should be left empty if unsure.
+
+13. #### Max system ram
+Here you can add the max amount of memory the motherboard can make use of. Clicking [<img src="{{ absolute_url(asset('build/icons/add.svg')) }}" alt="" width="16" style="vertical-align: middle;">*Add* ] will give you two new fields, 
+one to select the memory size, and a text field to write a note if necesary (say, if one limit is for EDO and the other is for SDRAM).
+
+14. #### Cache
+Here you can add the amount of cache memory the motherboard supports. Clicking [<img src="{{ absolute_url(asset('build/icons/add.svg')) }}" alt="" width="16" style="vertical-align: middle;">*Add* ] will give you a new field to select the amount of cache to add.
+
+15. #### Supported RAM types
+Here you can select the memory types the motherboard supports.
+
+16. #### I/O ports
+Here you can add I/O ports to the motherboard. Clicking [<img src="{{ absolute_url(asset('build/icons/add.svg')) }}" alt="" width="16" style="vertical-align: middle;">*Add* ] will give you two new fields, one for
+the amount of ports and the other for the port type.
+
+17. #### Expansion slots
+Here you can add expansion slots to the motherboard. Clicking [<img src="{{ absolute_url(asset('build/icons/add.svg')) }}" alt="" width="16" style="vertical-align: middle;">*Add* ] will give you two new fields, one for
+the amount of slots and the other for the slot type.
+
+18. #### Known issues
+Here you can add known issues to the motherboard. Clicking [<img src="{{ absolute_url(asset('build/icons/add.svg')) }}" alt="" width="16" style="vertical-align: middle;">*Add* ] will give you a new field for
+the known issue you want to add.
+
+19. #### Notes
+Here you can add notes to the motherboard. This field uses markdown text.
+
+20. #### Drivers
+Here you can add drivers to the motherboard from a pre-defined list. Clicking [<img src="{{ absolute_url(asset('build/icons/add.svg')) }}" alt="" width="16" style="vertical-align: middle;">*Add* ] will give you two new fields, one for
+the driver you want to add, and the other is a checkbox which prioritizes the driver visibility on the board page.
+
+21. #### BIOS images
+Here you can add BIOS images to the motherboard. Clicking [<img src="{{ absolute_url(asset('build/icons/add.svg')) }}" alt="" width="16" style="vertical-align: middle;">*Add* ] will give you a bunch of new fields for (in order): 
+BIOS manufacturer, POST string, core version, bios version, file upload section and uploaded file view.  
+BIOS images need to be in one of the following formats: BIN, ZIP or EXE.
+
+22. #### Manuals
+Here you can add manuals to the motherboard. Clicking [<img src="{{ absolute_url(asset('build/icons/add.svg')) }}" alt="" width="16" style="vertical-align: middle;">*Add* ] will give you a bunch of new fields for (in order): 
+manual name, language, file upload section and uploaded file view.  
+Manuals need to be in a PDF format.
+
+23. #### CPU sockets
+Here you can add CPU sockets to the motherboard. Clicking [<img src="{{ absolute_url(asset('build/icons/add.svg')) }}" alt="" width="16" style="vertical-align: middle;">*Add* ] will give you a new field for
+the CPU socket you want to add.
+
+24. #### CPU platforms
+Here you can add CPU platforms to the motherboard. Clicking [<img src="{{ absolute_url(asset('build/icons/add.svg')) }}" alt="" width="16" style="vertical-align: middle;">*Add* ] will give you a new field for
+the CPU platform you want to add.
+
+25. #### FSB speeds
+Here you can add FSB speeds to the motherboard. Clicking [<img src="{{ absolute_url(asset('build/icons/add.svg')) }}" alt="" width="16" style="vertical-align: middle;">*Add* ] will give you a new field for
+the FSB speed you want to add.
+
+26. #### Max CPUs
+Here you can add the maximum amount of CPUs supported by the motherboard (mainly used by SMP capable boards like dual socket 370 e.g.).
+
+27. #### CPUs
+In this section you can add and/or remove CPUs to/from the board. In order to use this section properly, you must first fill in all the appropriate details in fields 21. 22. and 23., then click the [*Update processors*] button, 
+after which you can add CPUs.
+
+28. #### NPUs
+In this section you can add and/or remove math coprocessors to/from the board. The procedures are identical with the CPU section.
+
+{% endapply %}
+	</div>
+	version 0.9RC
+{% endblock %}

@@ -3,14 +3,13 @@
 {% block title %}Manage NPUs{% endblock %}
 
 {% block body %}
-<div class="title" style="padding-top:5em;">
+<div class="title" style="padding-top:5em;display:flex;justify-content:center;align-items:center;">
 	<b>Edit:&nbsp;NPU&nbsp;&nbsp;</b>
-	<a class="snav" onclick="document.getElementById('coprocessor_form_save').click();">
-		<img src="{{ absolute_url(asset('build/icons/show/edit.svg')) }}" alt="" width="24" style="vertical-align: middle;padding-right:2px;">Save</a>
+	<button type="button" name="tabs" id="tab-nav-save" onclick="document.getElementById('coprocessor_form_save').click();"><img src="{{ absolute_url(asset('build/icons/edit.svg')) }}" alt="" width="24" height="24"><span>Save</span></button>
 </div>
 {{ form_start(form, {'method': 'POST'}) }}
-{% include 'macros/entityListImages.html.twig' with {'entityName':'processingUnit.chip.images', 'entities':form.processingUnit.chip.images} %}
-<div class="show-general">	
+<div class="main-strip">
+	<div class="internal-container">
 	<table>
 		<tr>
 			<td>{{form_label(form.processingUnit.chip.manufacturer)}}</td>
@@ -40,7 +39,7 @@
 			<td>Instruction sets:</td>
 			<td>{% include 'macros/entityList.html.twig' with {'entityName':'processingUnit.instructionSets', 'entityDisplayName': 'instruction set', 'entities':form.processingUnit.instructionSets} %}</td>
 		</tr>
-		<tr class="darkbg">
+		<tr>
 			<td>Sockets:</td>
 			<td>{% include 'macros/entityList.html.twig' with {'entityName':'processingUnit.sockets', 'entityDisplayName': 'socket', 'entities':form.processingUnit.sockets} %}</td>
 		</tr>
@@ -49,6 +48,8 @@
 			<td>{% include 'macros/entityList.html.twig' with {'entityName':'processingUnit.chip.chipAliases', 'entityDisplayName': 'chip alias', 'entities':form.processingUnit.chip.chipAliases} %}</td>
 		</tr>
 	</table>
+	</div>
+	{% include 'macros/entityListImages.html.twig' with {'entityName':'processingUnit.chip.images', 'entities':form.processingUnit.chip.images} %}
 </div>
 <div id="hiddenDiv" style="display: none;">{{form_widget(form.save)}}{{ form_end(form)|replace({'</form>': '</div></form>'})|raw }}
 <div style="clear:left;"></div>

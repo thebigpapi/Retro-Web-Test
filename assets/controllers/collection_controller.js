@@ -39,10 +39,16 @@ export default class extends Controller {
         //set the new increment, create the new widget and concatenate after list
         list.setAttribute("data-widget-counter", counter);
         let newElem = document.createElement('div');
+        newElem.setAttribute("class", "editor-row");
+        if (list.id === 'drivers-fields-list')
+            newElem.setAttribute("class", newElem.getAttribute("class") + " drv");
+        if (list.id === 'motherboardBios-fields-list')
+            newElem.setAttribute("class", newElem.getAttribute("class") + " bios");
+        if (list.id === 'manuals-fields-list' || list.id === 'documentations-fields-list')
+            newElem.setAttribute("class", newElem.getAttribute("class") + " manual");
+        newElem.setAttribute("class", newElem.getAttribute("class") + " nopad");
         if (list.id === 'images-fields-list' || list.id === 'chip.images-fields-list' || list.id === 'processingUnit.chip.images-fields-list')
             newElem.setAttribute("class", "addform");
-        if (list.id === 'motherboardBios-fields-list' || list.id === 'manuals-fields-list')
-            newElem.setAttribute("style", "width:100%");
         newElem.innerHTML = newWidget;
         list.appendChild(newElem);
         this.addLink();
@@ -53,8 +59,13 @@ export default class extends Controller {
         let list = element.parentNode;
         this.remove(element, list);
     }
-    removeButtonXtd(event) {
+    removeButtonEx(event) {
         let element = event.target.parentNode.parentNode;
+        let list = element.parentNode;
+        this.remove(element, list);
+    }
+    removeButtonXtd(event) {
+        let element = event.target.parentNode.parentNode.parentNode;
         let list = element.parentNode;
         this.remove(element, list);
     }

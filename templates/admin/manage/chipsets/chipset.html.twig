@@ -1,15 +1,37 @@
-<tr>
-    <td>{{object.getManufacturer().getShortNameIfExist()}}</td>
-    <td>{{object.getPartNo()}}</td>
-    <td>{{object.getName()}}</td>
-    <td>{% if object.getChipsetParts() is not empty %}
-    {% for part in object.getChipsetParts() %}{{part.getPartNumber()}}{% if not loop.last %}, {% endif %}{% endfor %}
-    {% endif %}</td>
-    <td>{{object.getReleaseDate()}}</td>
-    <td style="min-width:150px;">
-        <a class="button-widget" href="./chipsets/chipsets/{{ object.getId() }}/edit/">
-            <img src="{{ absolute_url(asset('build/icons/show/edit.svg')) }}" alt="" width="20">Edit</a>
-        <a class="button-widget" href="{{ path("chipset_show", {id: object.getId()}) }}">
-            <img src="{{ absolute_url(asset('build/icons/search/search_image.svg')) }}" alt="" width="20">View</a>
-    </td>
-</tr>	
+<div class="list-entry centered{% if loop.index is divisible by(2) %} alt{% endif %}">
+    <div class="header-label">Manufacturer</div>
+    <div>{{object.getManufacturer().getShortNameIfExist()}}</div>
+
+    <div class="header-label">Part number</div>
+    <div>{{ object.getPartNo()|length > 0 ? object.getPartNo()}}</div>
+
+    <div class="header-label">Name</div>
+    <div>{{ object.getName()|length > 0 ? object.getName() : 'Unidentified'}}</div>
+
+    <div class="header-label">Parts</div>
+    {% if object.getChipsetParts() is not empty %}
+        <div class="tag-container">
+        {% for part in object.getChipsetParts() %}
+            <span class="text-block">{{part.getPartNumber()}}</span>
+        {% endfor %}
+        </div>
+    {% else %}
+        <div></div>
+    {% endif %}
+
+    <div class="header-label">Release date</div>
+    <div>{{ object.getReleaseDate()|length > 0 ? object.getReleaseDate(): 'Unknown'}}</div>
+
+
+    <div class="header-label">Actions</div>
+    <div class="toolbar toolbar-thin" style="display:flex;flex-wrap: nowrap;">
+        <a class="button" href="./chipsets/chipsets/{{ object.getId() }}/edit/">
+            <img src="{{ absolute_url(asset('build/icons/edit.svg')) }}" alt="" width="20">
+            <span>Edit</span>
+        </a>
+        <a class="button" href="{{ path("chipset_show", {id: object.getId()}) }}">
+            <img src="{{ absolute_url(asset('build/icons/search/search_image.svg')) }}" alt="" width="20">
+            <span>View</span>
+        </a>
+    </div>
+</div>	

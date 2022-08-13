@@ -1,108 +1,76 @@
-/*title*/
-table.add-title { padding-top:15px;padding-bottom:15px;margin:auto; }
-table.add-title tr td { height:30px;font-size:18px }
-td.title-select{ width:400px; }
-td.title-input{ width:300px; }
-td.title-small{ width:250px; }
-table.add-title tr td select, table.add-title tr td input{ width:100%;height:100%;font-size:18px }
 /*image section*/
 div.addform{
 	box-shadow:inset -1px -1px $dark-color,inset 1px 1px $footer-link-color,inset -2px -2px $medium-color,inset 2px 2px $lightbg-color;
 	background-color: $footer-link-color;
-	padding:3px; 
+	padding:10px; 
 	font-size:18px; 
-	width:95%;margin-top: 10px;
+	margin-top: 5px;
 	color:$dark-color;
+	@media (prefers-color-scheme: dark) {
+		box-shadow:inset -1px -1px $medium-color,inset 1px 1px $accent-bkg-dark,inset -2px -2px $darkbg-color,inset 2px 2px $medium-color;
+		background-color: $accent-bkg-dark;
+		color:$light-color;
+	}
 }
-div.imgp {width:95%;padding-left:5%;max-width:250px;font-size:16px;padding-top:1px}
-div.imgp span{width:65px;display: inline-block;}
-div.imgp select{width:60%}
-img.imgp-img { float:right;width:21%;max-height:170px;display:none; }
-/*bios images/manuals*/
+img.imgp-img { max-height:170px;max-width: 100%; }
+div.imgp {
+	font-size:16px;
+	padding-top:1px;
+	display:flex;
+	justify-content: space-between;
+	flex-wrap: wrap;
+	select {width:68%}
+	input[type=text] {width:65%}
+}
+
+div.full-spec.edit{
+    div div{padding:0;}
+	div.full-spec-head{margin:5px 0px 5px;}
+}
+/*drivers, bios images, manuals*/
 div.bios-image { 
 	background-color: $lightbg-color;
 	color: $dark-color;
-	border: 1px solid $footer-link-color;
-	border-collapse: collapse;
+	@media (prefers-color-scheme: dark) {
+		background-color: #484848;
+		color:$light-color;
+	}
 	padding: 0;
-	width:99%;
 	font-size:16px;
  }
 div.bios-image-head {
 	background-color:$footer-link-color;
 	color:$dark-color;
+	@media (prefers-color-scheme: dark) {
+		background-color: $btn-darkbg-color;
+		color:$light-color;
+	}
 	width:100%;
 	clear:left;
 	padding-bottom:5px;
-}
-.ba0, .ba1, .ba2, .ba3, .ba4, .ba5, .ba6, .ba7 {
-	display: inline-block;
-	margin:0px 2px 0px;
 	text-align: center;
 }
-div.ba0 {width:9%;} 
-div.ba1 {width:16%}
-div.ba2 {width:10%}
-div.ba3 {width:5%}
-div.ba4 {width:20%}
-div.ba5 {width:16%}
-div.ba6 {width:40%}
-div.ba7 {width:50%}
-#motherboardBios-fields-list, #manuals-fields-list, #drivers-fields-list {padding: 3px;}
-td.exp-table {width:270px;}
-td.io-table {width:120px;}
-input.num {width:15px;}
+input.num{width:15px;}
+/* notes section */
 div.notes-field div { padding-bottom: 6px; padding-right: 4px; margin:auto }
 div.notes-field label { display:none }
 div.notes-field div textarea { width:99%; height:150px }
-table.editasset tr td{
-	select, input{ width:100%; }
-}
 div.show-edit{
-	width:49%;
+	width:40%;
 	display:inline-block;
 	vertical-align:top;
 }
-a.button-widget {
-    font-size:18px;
-    border: 1px solid $medium-color;
-    box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.3);
-    display: -moz-inline-box; 
-    display: inline-block; 
-    padding: 3px;
-    margin-top:2px;
-    color:$dark-color !important;
-    text-decoration:none;
-    -moz-user-select: -moz-none;
-    -khtml-user-select: none;
-    -webkit-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-    img { padding-right:5px;vertical-align: middle; }
-	
+div.show-edit.b{
+	width:59%;
 }
-a.button-widget:hover { color: $link-hover-color !important;background-color:$navbar-color;cursor:pointer; }
-@media (max-width: 600px) {
-	div.show-edit{
-		width:100%;
+
+div.old-cpu-table{
+	display:grid;
+	width: 100%;
+	grid-template-columns:[first] 50% [second] 50% [end];
+}
+@media (max-width: 500px) {
+	div.old-cpu-table{
+		grid-template-columns:auto;
 	}
-}
-@media (max-width: 1199px) {
-	td.ttl1 {width:60%}
-	td.ttl2 {width:200px}
-}
-@media (min-width: 1400px) { 
-	img.imgp-img { display:initial; }
-}
-@media (min-width: 1620px) { 
-	div.ba1 {width:22%}
-	div.addform {min-width:400px;}
-	img.imgp-img { width:30%; }
-}
-@media (prefers-color-scheme: dark) {
-	div.bios-image-head { background-color:$btn-darkbg-color-hover;color:$light-color; }
-	div.bios-image, div.notes-field div textarea{ background-color:$btn-darkbg-color;color:$light-color; }
-	#large_file_form_file_name, div.ba5 input{color:white;}
-	a.button-widget { color:$lightbg-color !important; }
-	a.button-widget:hover { color: #0099ff !important;background-color:$btn-lightbg-color; } 
 }

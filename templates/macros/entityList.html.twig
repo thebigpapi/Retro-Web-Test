@@ -1,19 +1,17 @@
-<div data-controller="collection">
-	<a class="snav" data-action="click->collection#expandButton" data-list-id="{{entityName}}-fields-list">
-		<img src="{{ absolute_url(asset('build/icons/add.svg')) }}" data-list-id="{{entityName}}-fields-list" alt="" width="24" style="vertical-align: middle;padding-right:2px;">Add {{entityDisplayName}}</a>
-	{{ form_errors(entities) }}
+<div class="quick-spec-table" data-controller="collection">
+	<div class="quick-spec-head editor">
+	{% include 'macros/buttons.html.twig' with {'type':'add', 'action': entityName} %}</div>
 	<div id="{{entityName}}-fields-list" data-widget-counter="{{ entities|length }}" data-prototype="{{ form_widget(entities.vars.prototype, {'attr': {'style': 'display:inline-block;'}})|e }} 
-		<a class=snav data-action='click->collection#removeButton'>
-		<img data-action='click->collection#removeButtonXtd' src={{ absolute_url(asset('build/icons/show/delete.svg')) }} alt='' width=24 style=vertical-align:middle;padding-right:2px;>Del</a>">
+		{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}">
 		{% if entities is not empty %}
 			{% for entity in entities %}
-				<div>
+				<div class="editor-row nopad">
 					{{ form_widget(entity, {'attr': {'style': 'display:inline-block;'}})|replace({'<option value="">': '<option label=" " value="">'})|raw }}
-					<a class="snav" data-action="click->collection#removeButton">
-						<img data-action="click->collection#removeButtonXtd" src="{{ absolute_url(asset('build/icons/show/delete.svg')) }}" alt="" width="24" style="vertical-align:middle;padding-right:2px;">Del</a>
+					{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
 				</div>
 				{{ form_errors(entity) }}
 			{% endfor %}
 		{% endif %}
+		{{ form_errors(entities) }}
 	</div>
 </div>

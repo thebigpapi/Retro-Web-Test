@@ -9,6 +9,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use App\Entity\LargeFileMotherboard;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormView;
+use Symfony\Component\Form\ChoiceList\View\ChoiceView;
 
 class LargeFileMotherboardType extends AbstractType
 {
@@ -32,5 +35,11 @@ class LargeFileMotherboardType extends AbstractType
         $resolver->setDefaults([
             'data_class' => LargeFileMotherboard::class,
         ]);
+    }
+    public function finishView(FormView $view, FormInterface $form, array $options)
+    {
+        usort($view->children['largeFile']->vars['choices'], function (ChoiceView $a, ChoiceView $b) {
+            return strnatcasecmp($a->data->getName(), $b->data->getName());
+        });
     }
 }

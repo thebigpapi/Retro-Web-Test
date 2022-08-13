@@ -1,8 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}
-	{% trans %}Logs{% endtrans %}
-{% endblock %}
+{% block title %}Logs{% endblock %}
 {% block opengraph %}<style>div.page {width: 98% !important;}</style>{% endblock %}
 
 {% block body %}
@@ -23,7 +21,7 @@
         </thead>
         <tbody>
             
-            {% for object in objectList|sort((a, b) => b.date <=> a.date) %}
+            {% for object in objectList %}
                 <tr>
                     <td style="padding:5px 10px 5px;">{{object.username}}</td>
                     <td style="padding:5px 10px 5px;">{{object.eventType}}</td>

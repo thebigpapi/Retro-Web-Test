@@ -1,8 +1,13 @@
- <tr>
-    <td>{{object.getName()}}</td>
-    <td><a href="{{object.getWebsite()}}">{{object.getWebsite()}}</a></td>
-    <td>
-        <a class="button-widget" href="./miscs/creditors/{{ object.getId() }}/edit/">
-            <img src="{{ absolute_url(asset('build/icons/show/edit.svg')) }}" alt="" width="20">Edit</a>
-    </td>
-</tr>
+<div class="list-entry centered{% if loop.index is divisible by(2) %} alt{% endif %}">
+    <div class="header-label">Name</div>
+    <div>{{object.getName()}}</div>
+
+    <div class="header-label">Website</div>
+    <div>{% if object.getWebsite()|length > 0 %}<a href="{{object.getWebsite()}}">{{object.getWebsite()}}</a>{% endif %}</div>
+
+    <div class="header-label">Actions</div>
+    <div class="toolbar toolbar-thin">
+        <a class="button" href="./miscs/creditors/{{ object.getId() }}/edit/">
+            <img src="{{ absolute_url(asset('build/icons/edit.svg')) }}" alt="" width="20"><span>Edit</span></a>
+    </div>
+</div>
