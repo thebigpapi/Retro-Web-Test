@@ -62,7 +62,7 @@ class MotherboardImageType
     {
         if (!$this->motherboardImages->contains($motherboardImage)) {
             $this->motherboardImages[] = $motherboardImage;
-            $motherboardImage->setImageType($this);
+            $motherboardImage->setMotherboardImageType($this);
         }
 
         return $this;
@@ -73,8 +73,8 @@ class MotherboardImageType
         if ($this->motherboardImages->contains($motherboardImage)) {
             $this->motherboardImages->removeElement($motherboardImage);
             // set the owning side to null (unless already changed)
-            if ($motherboardImage->getImageType() === $this) {
-                $motherboardImage->setImageType(null);
+            if ($motherboardImage->getMotherboardImageType() === $this) {
+                $motherboardImage->setMotherboardImageType(null);
             }
         }
 
