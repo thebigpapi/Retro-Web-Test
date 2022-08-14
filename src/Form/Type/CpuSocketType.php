@@ -30,8 +30,12 @@ class CpuSocketType extends AbstractType
     public function finishView(FormView $view, FormInterface $form, array $options)
     {
         usort($view->vars['choices'], function (ChoiceView $a, ChoiceView $b) {
-            if(!$a->data->getName() && !$b->data->getName())return strnatcasecmp($a->data->getType(), $b->data->getType());
-            else return strnatcasecmp($a->data->getName(), $b->data->getName());
+            if (!$a->data->getName() && !$b->data->getName()) {
+                return strnatcasecmp($a->data->getType() ?? '', $b->data->getType() ?? '');
+            }
+            else {
+                return strnatcasecmp($a->data->getName() ?? '', $b->data->getName() ?? '');
+            }
         });
     }
 }

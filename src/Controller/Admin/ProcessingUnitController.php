@@ -326,7 +326,7 @@ class ProcessingUnitController extends AbstractController
             ->getRepository(ProcessorPlatformType::class)
             ->findAll();
             
-        usort($platforms, function ($a, $b) { return strnatcasecmp($a->getName(), $b->getName());});
+        usort($platforms, function ($a, $b) { return strnatcasecmp($a->getName() ?? '', $b->getName() ?? '');});
 
         $paginatedPlatforms = $paginator->paginate(
             $platforms,
@@ -346,7 +346,7 @@ class ProcessingUnitController extends AbstractController
             ->getRepository(InstructionSet::class)
             ->findAll();
 
-        usort($instructionsets, function ($a, $b) { return strnatcasecmp($a->getName(), $b->getName());});
+        usort($instructionsets, function ($a, $b) { return strnatcasecmp($a->getName() ?? '', $b->getName() ?? '');});
 
         $paginatedInstructionsets = $paginator->paginate(
             $instructionsets,

@@ -76,7 +76,7 @@ class ChipImageType extends AbstractType
     public function finishView(FormView $view, FormInterface $form, array $options)
     {
         usort($view->children['creditor']->vars['choices'], function (ChoiceView $a, ChoiceView $b) {
-            return strnatcasecmp($a->data->getName(), $b->data->getName());
+            return strnatcasecmp($a->data->getName() ?? '', $b->data->getName() ?? '');
         });
     }
 }
