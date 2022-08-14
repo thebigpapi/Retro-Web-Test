@@ -33,7 +33,7 @@ class ExpansionChipsetController extends AbstractController
      */
     public function manage(Request $request, TranslatorInterface $translator)
     {
-        switch (htmlentities($request->query->get('entity'))) {
+        switch (htmlentities($request->query->get('entity') ?? '')) {
             case "audiochip":
                 return $this->manageAudioChips($request, $translator);
                 break;
@@ -120,7 +120,7 @@ class ExpansionChipsetController extends AbstractController
             return $this->redirect($this->generateUrl('admin_manage_expansion_chipsets', $getParams));
         } else {
             $criterias = array();
-            $manufacturerId = htmlentities($request->query->get('manufacturer'));
+            $manufacturerId = htmlentities($request->query->get('manufacturer') ?? '');
             if ($manufacturerId && intval($manufacturerId)) {
                 $criterias["manufacturer"] = $manufacturerId;
             }
@@ -152,7 +152,7 @@ class ExpansionChipsetController extends AbstractController
             return $this->redirect($this->generateUrl('admin_manage_expansion_chipsets', $getParams));
         } else {
             $criterias = array();
-            $manufacturerId = htmlentities($request->query->get('manufacturer'));
+            $manufacturerId = htmlentities($request->query->get('manufacturer') ?? '');
             if ($manufacturerId && intval($manufacturerId)) {
                 $criterias["manufacturer"] = $manufacturerId;
             }

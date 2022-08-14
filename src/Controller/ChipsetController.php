@@ -49,7 +49,7 @@ class ChipsetController extends AbstractController
         if ($chipsetId && intval($chipsetId)) $criterias['chipset'] = "$chipsetId";
         elseif ($chipsetId === "NULL") $criterias['chipset'] = null;
 
-        $chipsetManufacturerId = htmlentities($request->query->get('chipsetManufacturerId'));
+        $chipsetManufacturerId = htmlentities($request->query->get('chipsetManufacturerId') ?? '');
         if (
             $chipsetManufacturerId
             &&

@@ -35,7 +35,7 @@ class MiscController extends AbstractController
      */
     public function manage(Request $request, TranslatorInterface $translator)
     {
-        switch (htmlentities($request->query->get('entity'))) {
+        switch (htmlentities($request->query->get('entity') ?? '')) {
             case "manufacturer":
                 return $this->manageManufacturers($request, $translator);
                 break;

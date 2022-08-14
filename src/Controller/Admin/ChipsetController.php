@@ -33,7 +33,7 @@ class ChipsetController extends AbstractController
      */
     public function manage(Request $request, TranslatorInterface $translator)
     {
-        switch (htmlentities($request->query->get('entity'))) {
+        switch (htmlentities($request->query->get('entity') ?? '')) {
             case "chipset":
                 return $this->manageChipsets($request, $translator);
                 break;
@@ -110,7 +110,7 @@ class ChipsetController extends AbstractController
             return $this->redirect($this->generateUrl('admin_manage_chipsets', $getParams));
         } else {
             $criterias = array();
-            $manufacturerId = htmlentities($request->query->get('manufacturer'));
+            $manufacturerId = htmlentities($request->query->get('manufacturer') ?? '');
             if ($manufacturerId && intval($manufacturerId)) {
                 $criterias["manufacturer"] = $manufacturerId;
             }
@@ -142,7 +142,7 @@ class ChipsetController extends AbstractController
             return $this->redirect($this->generateUrl('admin_manage_chipsets', $getParams));
         } else {
             $criterias = array();
-            $manufacturerId = htmlentities($request->query->get('manufacturer'));
+            $manufacturerId = htmlentities($request->query->get('manufacturer') ?? '');
             if ($manufacturerId && intval($manufacturerId)) {
                 $criterias["manufacturer"] = $manufacturerId;
             }

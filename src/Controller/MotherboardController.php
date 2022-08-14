@@ -40,38 +40,38 @@ class MotherboardController extends AbstractController
     public function searchResult(Request $request, PaginatorInterface $paginator, MotherboardRepository $motherboardRepository)
     {
         $criterias = array();
-        $name = htmlentities($request->query->get('name'));
+        $name = htmlentities($request->query->get('name') ?? '');
         if ($name) $criterias['name'] = "$name";
 
-        $manufacturerId = htmlentities($request->query->get('manufacturerId'));
+        $manufacturerId = htmlentities($request->query->get('manufacturerId') ?? '');
         if ($manufacturerId && intval($manufacturerId)) $criterias['manufacturer'] = "$manufacturerId";
         elseif ($manufacturerId === "NULL") $criterias['manufacturer'] = null;
 
-        $formFactorId = htmlentities($request->query->get('formFactorId'));
+        $formFactorId = htmlentities($request->query->get('formFactorId') ?? '');
         if ($formFactorId && intval($formFactorId)) $criterias['form_factor'] = "$formFactorId";
         elseif ($formFactorId === "NULL") $criterias['form_factor'] = null;
 
-        $chipsetId = htmlentities($request->query->get('chipsetId'));
+        $chipsetId = htmlentities($request->query->get('chipsetId') ?? '');
         if ($chipsetId && intval($chipsetId)) $criterias['chipset'] = "$chipsetId";
         elseif ($chipsetId === "NULL") $criterias['chipset'] = null;
 
-        $cpuSocket1 = htmlentities($request->query->get('cpuSocket1'));
+        $cpuSocket1 = htmlentities($request->query->get('cpuSocket1') ?? '');
         if ($cpuSocket1 && intval($cpuSocket1)) $criterias['cpu_socket1'] = "$cpuSocket1";
         elseif ($cpuSocket1 === "NULL") $criterias['cpu_socket1'] = null;
 
-        $platform1 = htmlentities($request->query->get('platform1'));
+        $platform1 = htmlentities($request->query->get('platform1') ?? '');
         if ($platform1 && intval($platform1)) $criterias['processor_platform_type1'] = "$platform1";
         elseif ($platform1 === "NULL") $criterias['processor_platform_type1'] = null;
 
-        $cpuSocket2 = htmlentities($request->query->get('cpuSocket2'));
+        $cpuSocket2 = htmlentities($request->query->get('cpuSocket2') ?? '');
         if ($cpuSocket2 && intval($cpuSocket2)) $criterias['cpu_socket2'] = "$cpuSocket2";
         elseif ($cpuSocket2 === "NULL") $criterias['cpu_socket2'] = null;
 
-        $platform2 = htmlentities($request->query->get('platform2'));
+        $platform2 = htmlentities($request->query->get('platform2') ?? '');
         if ($platform2 && intval($platform2)) $criterias['processor_platform_type2'] = "$platform2";
         elseif ($platform2 === "NULL") $criterias['processor_platform_type2'] = null;
 
-        $chipsetManufacturerId = htmlentities($request->query->get('chipsetManufacturerId'));
+        $chipsetManufacturerId = htmlentities($request->query->get('chipsetManufacturerId') ?? '');
         if (
             $chipsetManufacturerId
             &&
@@ -84,7 +84,7 @@ class MotherboardController extends AbstractController
             $criterias['chipsetManufacturer'] = null;
         }
 
-        $showImages = boolval(htmlentities($request->query->get('showImages')));
+        $showImages = boolval(htmlentities($request->query->get('showImages') ?? ''));
 
         //[{"id":1, "count":2}]
         $expansionSlotsIds = $request->query->get('expansionSlotsIds');

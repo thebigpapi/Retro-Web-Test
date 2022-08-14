@@ -32,7 +32,7 @@ class MemoryController extends AbstractController
      */
     public function manage(Request $request, TranslatorInterface $translator)
     {
-        switch (htmlentities($request->query->get('entity'))) {
+        switch (htmlentities($request->query->get('entity') ?? '')) {
             case "ramtype":
                 return $this->manageRamTypes($request, $translator);
                 break;

@@ -37,7 +37,7 @@ class ProcessingUnitController extends AbstractController
      */
     public function manage(Request $request, TranslatorInterface $translator)
     {
-        switch (htmlentities($request->query->get('entity'))) {
+        switch (htmlentities($request->query->get('entity') ?? '')) {
             case "processor":
                 return $this->manageProcessors($request, $translator);
                 break;
@@ -199,11 +199,11 @@ class ProcessingUnitController extends AbstractController
             return $this->redirect($this->generateUrl('admin_manage_processing_units', $getParams));
         } else {
             $criterias = array();
-            $manufacturerId = htmlentities($request->query->get('manufacturer'));
+            $manufacturerId = htmlentities($request->query->get('manufacturer') ?? '');
             if ($manufacturerId && intval($manufacturerId)) {
                 $criterias["manufacturer"] = $manufacturerId;
             }
-            $platformId = htmlentities($request->query->get('platform'));
+            $platformId = htmlentities($request->query->get('platform') ?? '');
             if ($platformId && intval($platformId)) {
                 $criterias["platform"] = $platformId;
             }
@@ -238,11 +238,11 @@ class ProcessingUnitController extends AbstractController
             return $this->redirect($this->generateUrl('admin_manage_processing_units', $getParams));
         } else {
             $criterias = array();
-            $manufacturerId = htmlentities($request->query->get('manufacturer'));
+            $manufacturerId = htmlentities($request->query->get('manufacturer') ?? '');
             if ($manufacturerId && intval($manufacturerId)) {
                 $criterias["manufacturer"] = $manufacturerId;
             }
-            $platformId = htmlentities($request->query->get('platform'));
+            $platformId = htmlentities($request->query->get('platform') ?? '');
             if ($platformId && intval($platformId)) {
                 $criterias["platform"] = $platformId;
             }

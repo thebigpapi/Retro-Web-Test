@@ -40,7 +40,7 @@ class DriversController extends AbstractController
     public function searchResult(Request $request, PaginatorInterface $paginator, LargeFileRepository $driverRepository)
     {
         $criterias = array();
-        $name = htmlentities($request->query->get('name'));
+        $name = htmlentities($request->query->get('name') ?? '');
         if ($name) $criterias['name'] = "$name";
 
         if ($criterias == array()) {

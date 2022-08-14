@@ -34,7 +34,7 @@ class FileController extends AbstractController
      */
     public function manage(Request $request, TranslatorInterface $translator)
     {
-        switch (htmlentities($request->query->get('entity'))) {
+        switch (htmlentities($request->query->get('entity') ?? '')) {
             case "largefile":
                 return $this->manageLargefiles($request, $translator);
                 break;
