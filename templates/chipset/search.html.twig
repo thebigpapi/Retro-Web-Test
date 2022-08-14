@@ -54,24 +54,15 @@
 			</div>
 		</section>
 		<section class="search-form-grid">
+			<div class="search-form-entry"></div>
 			<div class="search-form-entry">
-				<label class="search-form-label" for="search_chipsetManufacturer" title="This is where you select the manufacturer name."
-				>
-					<span>Manufacturer</span>
-					<img src="{{ absolute_url(asset('build/icons/search/help.svg')) }}" alt="" width="16" height="16">
-				</label>
-				<div class="search-form-widget">
-					<div>{{ form_widget(form.chipsetManufacturer) }}</div>
-				</div>
-			</div>
-
-			<div class="search-form-entry">
-				<label class="search-form-label" for="search_name" title="This is where you enter the chipset part number."
+				<label class="search-form-label" for="search_chipsetManufacturer" title="This is where you select the manufacturer name and enter the chipset part number."
 				>
 					<span>Name</span>
 					<img src="{{ absolute_url(asset('build/icons/search/help.svg')) }}" alt="" width="16" height="16">
 				</label>
 				<div class="search-form-widget">
+					<div>{{ form_widget(form.chipsetManufacturer) }}</div>
 					<div>{{ form_widget(form.name) }}</div>
 				</div>
 			</div>
