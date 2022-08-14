@@ -137,14 +137,22 @@ class MotherboardController extends AbstractController
     /**
      * @Route("/motherboards/s/{slug}", name="motherboard_show_slug")
      */
-    public function showSlug(string $slug, MotherboardRepository $motherboardRepository)
+    public function showSlug(string $slug, MotherboardRepository $motherboardRepository, MotherboardIdRedirectionRepository $motherboardIdRedirectionRepository)
     {
         $motherboard = $motherboardRepository->findSlug($slug);
 
         if (!$motherboard) {
-            throw $this->createNotFoundException(
-                'No $motherboard found for slug ' . $slug
-            );
+
+            $idRedirection = $motherboardIdRedirectionRepository->findRedirection($slug, 'uh19_slug');
+
+            if (!$idRedirection) {
+                throw $this->createNotFoundException(
+                    'No $motherboard found for slug ' . $slug
+                );
+            } else {
+                return $this->redirect($this->generateUrl('motherboard_show', array("id" => $idRedirection)));
+            }
+            
         }
 
         return $this->render('motherboard/show.html.twig', [
@@ -188,6 +196,7 @@ class MotherboardController extends AbstractController
                 'No $motherboard found for id ' . $id
             );
         }
+        $slug = $motherboard->getSlug();
 
         $form = $this->createFormBuilder()
             ->add('No', SubmitType::class)
@@ -216,7 +225,13 @@ class MotherboardController extends AbstractController
                         $redirection->setSourceType('uh19');
                         $redirection->setDestination($destinationMotherboard);
 
+                        $slugRedirection = new MotherboardIdRedirection();
+                        $slugRedirection->setSource($slug);
+                        $slugRedirection->setSourceType('uh19_slug');
+                        $slugRedirection->setDestination($destinationMotherboard);
+
                         $entityManager->persist($redirection);
+                        $entityManager->persist($slugRedirection);
 
                         //dd($motherboard->getRedirections()->toArray());
 
