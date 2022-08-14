@@ -8,6 +8,10 @@ use App\Entity\Manufacturer;
 use App\Form\Admin\Manage\ChipsetSearchType;
 use App\Form\Admin\Edit\ChipsetForm;
 use App\Form\Admin\Edit\ChipsetPartForm;
+use App\Repository\ChipsetPartRepository;
+use App\Repository\ChipsetRepository;
+use App\Repository\ManufacturerRepository;
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Knp\Component\Pager\PaginatorInterface;
@@ -45,22 +49,23 @@ class ChipsetController extends AbstractController
      * @Route("/admin/manage/chipsets/chipsets/add", name="new_chipset_add")
      * @param Request $request
      */
-    public function chipsetAdd(Request $request)
+    public function chipsetAdd(Request $request, EntityManagerInterface $entityManager, ManufacturerRepository $manufacturerRepository, ChipsetPartRepository $chipsetPartRepository)
     {
-        return $this->renderChipsetForm($request, new Chipset());
+        return $this->renderChipsetForm($request, new Chipset(), $entityManager, $manufacturerRepository, $chipsetPartRepository);
     }
 
     /**
      * @Route("/admin/manage/chipsets/chipsets/{id}/edit", name="new_chipset_edit", requirements={"id"="\d+"})
      * @param Request $request
      */
-    public function chipsetEdit(Request $request, int $id)
+    public function chipsetEdit(Request $request, int $id, ChipsetRepository $chipsetRepository, EntityManagerInterface $entityManager, ManufacturerRepository $manufacturerRepository, ChipsetPartRepository $chipsetPartRepository)
     {
         return $this->renderChipsetForm(
             $request,
-            $this->getDoctrine()
-                ->getRepository(Chipset::class)
-                ->find($id)
+            $chipsetRepository->find($id),
+            $entityManager,
+            $manufacturerRepository,
+            $chipsetPartRepository
         );
     }
 
@@ -68,22 +73,21 @@ class ChipsetController extends AbstractController
      * @Route("/admin/manage/chipsets/parts/add", name="new_chipset_part_add")
      * @param Request $request
      */
-    public function chipsetPartAdd(Request $request)
+    public function chipsetPartAdd(Request $request, EntityManagerInterface $entityManager)
     {
-        return $this->renderChipsetPartForm($request, new ChipsetPart());
+        return $this->renderChipsetPartForm($request, new ChipsetPart(), $entityManager);
     }
 
     /**
      * @Route("/admin/manage/chipsets/parts/{id}/edit", name="new_chipset_part_edit", requirements={"id"="\d+"})
      * @param Request $request
      */
-    public function chipsetPartEdit(Request $request, int $id)
+    public function chipsetPartEdit(Request $request, int $id, ChipsetPartRepository $chipsetPartRepository, EntityManagerInterface $entityManager)
     {
         return $this->renderChipsetPartForm(
             $request,
-            $this->getDoctrine()
-                ->getRepository(ChipsetPart::class)
-                ->find($id)
+            $chipsetPartRepository->find($id),
+            $entityManager
         );
     }
 
@@ -219,16 +223,11 @@ class ChipsetController extends AbstractController
      * Forms
      */
 
-    private function renderChipsetForm(Request $request, Chipset $chipset)
+    private function renderChipsetForm(Request $request, Chipset $chipset, EntityManagerInterface $entityManager, ManufacturerRepository $manufacturerRepository, ChipsetPartRepository $chipsetPartRepository)
     {
-        $entityManager = $this->getDoctrine()->getManager();
-        $chipsetManufacturers = $this->getDoctrine()
-            ->getRepository(Manufacturer::class)
-            ->findBy(array(), array('name' => 'ASC', 'shortName' => 'ASC'));
+        $chipsetManufacturers = $manufacturerRepository->findBy(array(), array('name' => 'ASC', 'shortName' => 'ASC'));
 
-        $chipsetParts = $this->getDoctrine()
-            ->getRepository(ChipsetPart::class)
-            ->findAll(array(), array('name' => 'ASC', 'shortName' => 'ASC'));
+        $chipsetParts = $chipsetPartRepository->findAll(array(), array('name' => 'ASC', 'shortName' => 'ASC'));
 
         usort(
             $chipsetParts,
@@ -268,10 +267,8 @@ class ChipsetController extends AbstractController
         ]);
     }
 
-    private function renderChipsetPartForm(Request $request, ChipsetPart $chipsetPart)
+    private function renderChipsetPartForm(Request $request, ChipsetPart $chipsetPart, EntityManagerInterface $entityManager)
     {
-        $entityManager = $this->getDoctrine()->getManager();
-
         $form = $this->createForm(ChipsetPartForm::class, $chipsetPart);
 
         $form->handleRequest($request);

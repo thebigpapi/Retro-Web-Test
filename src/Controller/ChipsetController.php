@@ -42,10 +42,10 @@ class ChipsetController extends AbstractController
     public function searchResult(Request $request, PaginatorInterface $paginator, ChipsetRepository $chipsetRepository)
     {
         $criterias = array();
-        $name = htmlentities($request->query->get('name'));
+        $name = htmlentities($request->query->get('name') ?? '');
         if ($name) $criterias['name'] = "$name";
 
-        $chipsetId = htmlentities($request->query->get('chipsetId'));
+        $chipsetId = htmlentities($request->query->get('chipsetId') ?? '');
         if ($chipsetId && intval($chipsetId)) $criterias['chipset'] = "$chipsetId";
         elseif ($chipsetId === "NULL") $criterias['chipset'] = null;
 
