@@ -9,6 +9,10 @@ use App\Form\Admin\Edit\AudioChipsetForm;
 use App\Form\Admin\Edit\VideoChipsetForm;
 use App\Form\Admin\Manage\AudioChipSearchType;
 use App\Form\Admin\Manage\VideoChipSearchType;
+use App\Repository\AudioChipsetRepository;
+use App\Repository\ManufacturerRepository;
+use App\Repository\VideoChipsetRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\Routing\Annotation\Route;
@@ -47,9 +51,9 @@ class ExpansionChipsetController extends AbstractController
      * @Route("/admin/manage/expansionchipsets/audiochips/add", name="new_audioChipset_add")
      * @param Request $request
      */
-    public function audioChipsetAdd(Request $request)
+    public function audioChipsetAdd(Request $request, EntityManagerInterface $entityManager, ManufacturerRepository $manufacturerRepository)
     {
-        return $this->renderAudioChipsetForm($request, new AudioChipset());
+        return $this->renderAudioChipsetForm($request, new AudioChipset(), $entityManager, $manufacturerRepository);
     }
 
     /**
@@ -60,13 +64,13 @@ class ExpansionChipsetController extends AbstractController
      * )
      * @param Request $request
      */
-    public function audioChipsetEdit(Request $request, int $id)
+    public function audioChipsetEdit(Request $request, int $id, AudioChipsetRepository $audioChipsetRepository, EntityManagerInterface $entityManager, ManufacturerRepository $manufacturerRepository)
     {
         return $this->renderAudioChipsetForm(
             $request,
-            $this->getDoctrine()
-                ->getRepository(AudioChipset::class)
-                ->find($id)
+            $audioChipsetRepository->find($id),
+            $entityManager,
+            $manufacturerRepository
         );
     }
 
@@ -74,9 +78,9 @@ class ExpansionChipsetController extends AbstractController
      * @Route("/admin/manage/expansionchipsets/videochips/add", name="new_videoChipset_add")
      * @param Request $request
      */
-    public function videoChipsetAdd(Request $request)
+    public function videoChipsetAdd(Request $request, EntityManagerInterface $entityManager, ManufacturerRepository $manufacturerRepository)
     {
-        return $this->renderVideoChipsetForm($request, new VideoChipset());
+        return $this->renderVideoChipsetForm($request, new VideoChipset(), $entityManager, $manufacturerRepository);
     }
 
     /**
@@ -87,13 +91,13 @@ class ExpansionChipsetController extends AbstractController
      * )
      * @param Request $request
      */
-    public function videoChipsetEdit(Request $request, int $id)
+    public function videoChipsetEdit(Request $request, int $id, VideoChipsetRepository $videoChipsetRepository, EntityManagerInterface $entityManager, ManufacturerRepository $manufacturerRepository)
     {
         return $this->renderVideoChipsetForm(
             $request,
-            $this->getDoctrine()
-                ->getRepository(VideoChipset::class)
-                ->find($id)
+            $videoChipsetRepository->find($id),
+            $entityManager,
+            $manufacturerRepository
         );
     }
 
@@ -165,11 +169,9 @@ class ExpansionChipsetController extends AbstractController
         ]);
     }
 
-    public function listAudioChip(Request $request, PaginatorInterface $paginator, array $criterias)
+    public function listAudioChip(Request $request, PaginatorInterface $paginator, array $criterias, AudioChipsetRepository $audioChipsetRepository)
     {
-        $objects = $this->getDoctrine()
-            ->getRepository(AudioChipset::class)
-            ->findBy($criterias);
+        $objects = $audioChipsetRepository->findBy($criterias);
 
         usort(
             $objects,
@@ -200,11 +202,9 @@ class ExpansionChipsetController extends AbstractController
         ]);
     }
 
-    public function listVideoChip(Request $request, PaginatorInterface $paginator, array $criterias)
+    public function listVideoChip(Request $request, PaginatorInterface $paginator, array $criterias, VideoChipsetRepository $videoChipsetRepository)
     {
-        $objects = $this->getDoctrine()
-            ->getRepository(VideoChipset::class)
-            ->findBy($criterias);
+        $objects = $videoChipsetRepository->findBy($criterias);
 
         usort(
             $objects,
@@ -239,12 +239,9 @@ class ExpansionChipsetController extends AbstractController
      * Forms
      */
 
-    private function renderAudioChipsetForm(Request $request, $chipset)
+    private function renderAudioChipsetForm(Request $request, $chipset, EntityManagerInterface $entityManager, ManufacturerRepository $manufacturerRepository)
     {
-        $entityManager = $this->getDoctrine()->getManager();
-        $chipsetManufacturers = $this->getDoctrine()
-            ->getRepository(Manufacturer::class)
-            ->findBy(array(), array('name' => 'ASC', 'shortName' => 'ASC'));
+        $chipsetManufacturers = $manufacturerRepository->findBy(array(), array('name' => 'ASC', 'shortName' => 'ASC'));
 
         $form = $this->createForm(AudioChipsetForm::class, $chipset, [
             'chipsetManufacturers' => $chipsetManufacturers,
@@ -265,12 +262,9 @@ class ExpansionChipsetController extends AbstractController
         ]);
     }
 
-    private function renderVideoChipsetForm(Request $request, $chipset)
+    private function renderVideoChipsetForm(Request $request, $chipset, EntityManagerInterface $entityManager, ManufacturerRepository $manufacturerRepository)
     {
-        $entityManager = $this->getDoctrine()->getManager();
-        $chipsetManufacturers = $this->getDoctrine()
-            ->getRepository(Manufacturer::class)
-            ->findBy(array(), array('name' => 'ASC', 'shortName' => 'ASC'));
+        $chipsetManufacturers = $manufacturerRepository->findBy(array(), array('name' => 'ASC', 'shortName' => 'ASC'));
 
         $form = $this->createForm(VideoChipsetForm::class, $chipset, [
             'chipsetManufacturers' => $chipsetManufacturers,

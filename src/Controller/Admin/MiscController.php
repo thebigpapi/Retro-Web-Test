@@ -10,6 +10,11 @@ use App\Form\Admin\Edit\CpuSpeedForm;
 use App\Form\Admin\Edit\CreditorForm;
 use App\Form\Admin\Edit\KnownIssueForm;
 use App\Form\Admin\Edit\ManufacturerForm;
+use App\Repository\CpuSpeedRepository;
+use App\Repository\CreditorRepository;
+use App\Repository\KnownIssueRepository;
+use App\Repository\ManufacturerRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\Routing\Annotation\Route;
@@ -52,23 +57,22 @@ class MiscController extends AbstractController
      * @Route("/admin/manage/miscs/manufacturers/add", name="new_manufacturer_add")
      * @param Request $request
      */
-    public function manufacturerAdd(Request $request)
+    public function manufacturerAdd(Request $request, EntityManagerInterface $entityManager)
     {
-        return $this->renderManufacturerForm($request, new Manufacturer(), 'admin/edit/miscs/manufacturer.html.twig');
+        return $this->renderManufacturerForm($request, new Manufacturer(), 'admin/edit/miscs/manufacturer.html.twig', $entityManager);
     }
 
     /**
      * @Route("/admin/manage/miscs/manufacturers/{id}/edit", name="new_manufacturer_edit", requirements={"id"="\d+"})
      * @param Request $request
      */
-    public function manufacturerEdit(Request $request, int $id)
+    public function manufacturerEdit(Request $request, int $id, ManufacturerRepository $manufacturerRepository, EntityManagerInterface $entityManager)
     {
         return $this->renderManufacturerForm(
             $request,
-            $this->getDoctrine()
-                ->getRepository(Manufacturer::class)
-                ->find($id),
-            'admin/edit/miscs/manufacturer.html.twig'
+            $manufacturerRepository->find($id),
+            'admin/edit/miscs/manufacturer.html.twig',
+            $entityManager
         );
     }
 
@@ -76,14 +80,15 @@ class MiscController extends AbstractController
      * @Route("/admin/manage/miscs/issues/add", name="new_knownIssue_add")
      * @param Request $request
      */
-    public function knownIssueAdd(Request $request)
+    public function knownIssueAdd(Request $request, EntityManagerInterface $entityManager)
     {
         return $this->renderEntityForm(
             $request,
             new KnownIssue(),
             KnownIssueForm::class,
             'admin/edit/miscs/knownIssue.html.twig',
-            'issue'
+            'issue',
+            $entityManager
         );
     }
 
@@ -91,16 +96,15 @@ class MiscController extends AbstractController
      * @Route("/admin/manage/miscs/issues/{id}/edit", name="new_knownIssue_edit", requirements={"id"="\d+"})
      * @param Request $request
      */
-    public function knownIssueEdit(Request $request, int $id)
+    public function knownIssueEdit(Request $request, int $id, KnownIssueRepository $knownIssueRepository, EntityManagerInterface $entityManager)
     {
         return $this->renderEntityForm(
             $request,
-            $this->getDoctrine()
-                ->getRepository(KnownIssue::class)
-                ->find($id),
+            $knownIssueRepository->find($id),
             KnownIssueForm::class,
             'admin/edit/miscs/knownIssue.html.twig',
-            'issue'
+            'issue',
+            $entityManager
         );
     }
 
@@ -108,14 +112,15 @@ class MiscController extends AbstractController
      * @Route("/admin/manage/miscs/freqs/add", name="new_cpuSpeed_add")
      * @param Request $request
      */
-    public function cpuSpeedAdd(Request $request)
+    public function cpuSpeedAdd(Request $request, EntityManagerInterface $entityManager)
     {
         return $this->renderEntityForm(
             $request,
             new CpuSpeed(),
             CpuSpeedForm::class,
             'admin/edit/miscs/cpuSpeed.html.twig',
-            'freq'
+            'freq',
+            $entityManager
         );
     }
 
@@ -123,16 +128,15 @@ class MiscController extends AbstractController
      * @Route("/admin/manage/miscs/freqs/{id}/edit", name="new_cpuSpeed_edit", requirements={"id"="\d+"})
      * @param Request $request
      */
-    public function cpuSpeedEdit(Request $request, int $id)
+    public function cpuSpeedEdit(Request $request, int $id, CpuSpeedRepository $cpuSpeedRepository, EntityManagerInterface $entityManager)
     {
         return $this->renderEntityForm(
             $request,
-            $this->getDoctrine()
-                ->getRepository(CpuSpeed::class)
-                ->find($id),
+            $cpuSpeedRepository->find($id),
             CpuSpeedForm::class,
             'admin/edit/miscs/cpuSpeed.html.twig',
-            'freq'
+            'freq',
+            $entityManager
         );
     }
 
@@ -140,14 +144,15 @@ class MiscController extends AbstractController
      * @Route("/admin/manage/miscs/creditors/add", name="new_creditor_add")
      * @param Request $request
      */
-    public function creditorAdd(Request $request)
+    public function creditorAdd(Request $request, EntityManagerInterface $entityManager)
     {
         return $this->renderEntityForm(
             $request,
             new Creditor(),
             CreditorForm::class,
             'admin/edit/miscs/creditor.html.twig',
-            'creditor'
+            'creditor',
+            $entityManager
         );
     }
 
@@ -155,16 +160,15 @@ class MiscController extends AbstractController
      * @Route("/admin/manage/miscs/creditors/{id}/edit", name="new_creditor_edit", requirements={"id"="\d+"})
      * @param Request $request
      */
-    public function creditorEdit(Request $request, int $id)
+    public function creditorEdit(Request $request, int $id, CreditorRepository $creditorRepository, EntityManagerInterface $entityManager)
     {
         return $this->renderEntityForm(
             $request,
-            $this->getDoctrine()
-                ->getRepository(Creditor::class)
-                ->find($id),
+            $creditorRepository->find($id),
             CreditorForm::class,
             'admin/edit/miscs/creditor.html.twig',
-            'creditor'
+            'creditor',
+            $entityManager
         );
     }
 
@@ -224,11 +228,9 @@ class MiscController extends AbstractController
         ]);
     }
 
-    public function listManufacturer(Request $request, PaginatorInterface $paginator, array $criterias)
+    public function listManufacturer(Request $request, PaginatorInterface $paginator, array $criterias, ManufacturerRepository $manufacturerRepository)
     {
-        $objects = $this->getDoctrine()
-            ->getRepository(Manufacturer::class)
-            ->findBy($criterias, ['name' => 'asc']);
+        $objects = $manufacturerRepository->findBy($criterias, ['name' => 'asc']);
 
         $paginatedObjects = $paginator->paginate(
             $objects,
@@ -242,11 +244,9 @@ class MiscController extends AbstractController
         ]);
     }
 
-    public function listIssue(Request $request, PaginatorInterface $paginator, array $criterias)
+    public function listIssue(Request $request, PaginatorInterface $paginator, array $criterias, KnownIssueRepository $knownIssueRepository)
     {
-        $objects = $this->getDoctrine()
-            ->getRepository(KnownIssue::class)
-            ->findBy($criterias);
+        $objects = $knownIssueRepository->findBy($criterias);
 
         $paginatedObjects = $paginator->paginate(
             $objects,
@@ -260,11 +260,9 @@ class MiscController extends AbstractController
         ]);
     }
 
-    public function listFreq(Request $request, PaginatorInterface $paginator, array $criterias)
+    public function listFreq(Request $request, PaginatorInterface $paginator, array $criterias, CpuSpeedRepository $cpuSpeedRepository)
     {
-        $objects = $this->getDoctrine()
-            ->getRepository(CpuSpeed::class)
-            ->findBy($criterias, ['value' => 'asc']);
+        $objects = $cpuSpeedRepository->findBy($criterias, ['value' => 'asc']);
 
         $paginatedObjects = $paginator->paginate(
             $objects,
@@ -278,11 +276,9 @@ class MiscController extends AbstractController
         ]);
     }
 
-    public function listCreditor(Request $request, PaginatorInterface $paginator, array $criterias)
+    public function listCreditor(Request $request, PaginatorInterface $paginator, array $criterias, CreditorRepository $creditorRepository)
     {
-        $objects = $this->getDoctrine()
-            ->getRepository(Creditor::class)
-            ->findBy($criterias, ['name' => 'asc']);
+        $objects = $creditorRepository->findBy($criterias, ['name' => 'asc']);
 
         $paginatedObjects = $paginator->paginate(
             $objects,
@@ -300,10 +296,8 @@ class MiscController extends AbstractController
      * Forms
      */
 
-    private function renderManufacturerForm(Request $request, Manufacturer $entity, $template)
+    private function renderManufacturerForm(Request $request, Manufacturer $entity, $template, EntityManagerInterface $entityManager)
     {
-        $entityManager = $this->getDoctrine()->getManager();
-
         $form = $this->createForm(ManufacturerForm::class, $entity);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -323,10 +317,8 @@ class MiscController extends AbstractController
         ]);
     }
 
-    private function renderEntityForm(Request $request, $entity, $class, $template, $entityName)
+    private function renderEntityForm(Request $request, $entity, $class, $template, $entityName, EntityManagerInterface $entityManager)
     {
-        $entityManager = $this->getDoctrine()->getManager();
-
         $form = $this->createForm($class, $entity);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
