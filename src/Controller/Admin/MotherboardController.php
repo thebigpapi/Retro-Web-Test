@@ -247,11 +247,9 @@ class MotherboardController extends AbstractController
             "entityName" => $request->query->get('entity'),
         ]);
     }
-    public function listFormfactor(Request $request, PaginatorInterface $paginator, array $criterias)
+    public function listFormfactor(Request $request, PaginatorInterface $paginator, array $criterias, FormFactorRepository $formFactorRepository)
     {
-        $objects = $this->getDoctrine()
-            ->getRepository(FormFactor::class)
-            ->findBy($criterias, ["name" => "ASC"]);
+        $objects = $formFactorRepository->findBy($criterias, ["name" => "ASC"]);
 
         $paginatedObjects = $paginator->paginate(
             $objects,

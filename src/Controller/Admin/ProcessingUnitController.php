@@ -11,7 +11,12 @@ use App\Form\Admin\Edit\InstructionSetForm;
 use App\Form\Admin\Edit\ProcessorForm;
 use App\Form\Admin\Edit\ProcessorPlatformTypeFormForm;
 use App\Form\Admin\Manage\ProcessorSearchType;
+use App\Repository\CoprocessorRepository;
+use App\Repository\InstructionSetRepository;
+use App\Repository\ProcessorPlatformTypeRepository;
+use App\Repository\ProcessorRepository;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\Routing\Annotation\Route;
@@ -56,9 +61,9 @@ class ProcessingUnitController extends AbstractController
      * @Route("/admin/manage/processingunits/coprocessors/add", name="new_coprocessor_add")
      * @param Request $request
      */
-    public function coprocessorAdd(Request $request)
+    public function coprocessorAdd(Request $request, EntityManagerInterface $entityManager)
     {
-        return $this->renderCoprocessorForm($request, new Coprocessor());
+        return $this->renderCoprocessorForm($request, new Coprocessor(), $entityManager);
     }
 
     /**
@@ -69,13 +74,12 @@ class ProcessingUnitController extends AbstractController
      * )
      * @param Request $request
      */
-    public function coprocessorEdit(Request $request, int $id)
+    public function coprocessorEdit(Request $request, int $id, CoprocessorRepository $coprocessorRepository, EntityManagerInterface $entityManager)
     {
         return $this->renderCoprocessorForm(
             $request,
-            $this->getDoctrine()
-                ->getRepository(Coprocessor::class)
-                ->find($id)
+            $coprocessorRepository->find($id),
+            $entityManager
         );
     }
 
@@ -83,9 +87,9 @@ class ProcessingUnitController extends AbstractController
      * @Route("/admin/manage/processingunits/processors/add", name="new_processor_add")
      * @param Request $request
      */
-    public function processorAdd(Request $request)
+    public function processorAdd(Request $request, EntityManagerInterface $entityManager)
     {
-        return $this->renderProcessorForm($request, new Processor());
+        return $this->renderProcessorForm($request, new Processor(), $entityManager);
     }
 
     /**
@@ -96,13 +100,12 @@ class ProcessingUnitController extends AbstractController
      * )
      * @param Request $request
      */
-    public function processorEdit(Request $request, int $id)
+    public function processorEdit(Request $request, int $id, ProcessorRepository $processorRepository, EntityManagerInterface $entityManager)
     {
         return $this->renderProcessorForm(
             $request,
-            $this->getDoctrine()
-                ->getRepository(Processor::class)
-                ->find($id)
+            $processorRepository->find($id),
+            $entityManager
         );
     }
 
@@ -110,14 +113,15 @@ class ProcessingUnitController extends AbstractController
      * @Route("/admin/manage/processingunits/platforms/add", name="new_processorPlatformType_add")
      * @param Request $request
      */
-    public function platformAdd(Request $request)
+    public function platformAdd(Request $request, EntityManagerInterface $entityManager)
     {
         return $this->renderEntityForm(
             $request,
             new ProcessorPlatformType(),
             ProcessorPlatformTypeFormForm::class,
             'admin/edit/processingunits/processorPlatformType.html.twig',
-            'platform'
+            'platform',
+            $entityManager
         );
     }
 
@@ -125,16 +129,15 @@ class ProcessingUnitController extends AbstractController
      * @Route("/admin/manage/processingunits/platforms/{id}/edit", name="new_platform_edit", requirements={"id"="\d+"})
      * @param Request $request
      */
-    public function platformEdit(Request $request, int $id)
+    public function platformEdit(Request $request, int $id, ProcessorPlatformTypeRepository $processorPlatformTypeRepository, EntityManagerInterface $entityManager)
     {
         return $this->renderEntityForm(
             $request,
-            $this->getDoctrine()
-                ->getRepository(ProcessorPlatformType::class)
-                ->find($id),
+            $processorPlatformTypeRepository->find($id),
             ProcessorPlatformTypeFormForm::class,
             'admin/edit/processingunits/processorPlatformType.html.twig',
-            'platform'
+            'platform',
+            $entityManager
         );
     }
 
@@ -142,14 +145,15 @@ class ProcessingUnitController extends AbstractController
      * @Route("/admin/manage/processingunits/instructionsets/add", name="new_instructionSet_add")
      * @param Request $request
      */
-    public function instructionSetAdd(Request $request)
+    public function instructionSetAdd(Request $request, EntityManagerInterface $entityManager)
     {
         return $this->renderEntityForm(
             $request,
             new InstructionSet(),
             InstructionSetForm::class,
             'admin/edit/processingunits/instructionSet.html.twig',
-            'instructionset'
+            'instructionset',
+            $entityManager
         );
     }
 
@@ -161,16 +165,15 @@ class ProcessingUnitController extends AbstractController
      * )
      * @param Request $request
      */
-    public function instructionSetEdit(Request $request, int $id)
+    public function instructionSetEdit(Request $request, int $id, InstructionSetRepository $instructionSetRepository, EntityManagerInterface $entityManager)
     {
         return $this->renderEntityForm(
             $request,
-            $this->getDoctrine()
-                ->getRepository(InstructionSet::class)
-                ->find($id),
+            $instructionSetRepository->find($id),
             InstructionSetForm::class,
             'admin/edit/processingunits/instructionSet.html.twig',
-            'instructionset'
+            'instructionset',
+            $entityManager
         );
     }
 
@@ -282,11 +285,9 @@ class ProcessingUnitController extends AbstractController
         ]);
     }
 
-    public function listProcessor(Request $request, PaginatorInterface $paginator, array $criterias)
+    public function listProcessor(Request $request, PaginatorInterface $paginator, array $criterias, ProcessorRepository $processorRepository)
     {
-        $processors = $this->getDoctrine()
-            ->getRepository(Processor::class)
-            ->findBy($criterias);
+        $processors = $processorRepository->findBy($criterias);
         $processors = Processor::sort(new ArrayCollection($processors));
 
         $paginatedProcessors = $paginator->paginate(
@@ -301,11 +302,9 @@ class ProcessingUnitController extends AbstractController
         ]);
     }
 
-    public function listCoprocessor(Request $request, PaginatorInterface $paginator, array $criterias)
+    public function listCoprocessor(Request $request, PaginatorInterface $paginator, array $criterias, CoprocessorRepository $coprocessorRepository)
     {
-        $coprocessors = $this->getDoctrine()
-            ->getRepository(Coprocessor::class)
-            ->findBy($criterias);
+        $coprocessors = $coprocessorRepository->findBy($criterias);
         $coprocessors = Coprocessor::sort(new ArrayCollection($coprocessors));
 
         $paginatedCoprocessors = $paginator->paginate(
@@ -320,13 +319,13 @@ class ProcessingUnitController extends AbstractController
         ]);
     }
 
-    public function listPlatform(Request $request, PaginatorInterface $paginator, array $criterias)
+    public function listPlatform(Request $request, PaginatorInterface $paginator, array $criterias, ProcessorPlatformTypeRepository $processorPlatformTypeRepository)
     {
-        $platforms = $this->getDoctrine()
-            ->getRepository(ProcessorPlatformType::class)
-            ->findAll();
+        $processorPlatformTypeRepository->findAll();
             
-        usort($platforms, function ($a, $b) { return strnatcasecmp($a->getName() ?? '', $b->getName() ?? '');});
+        usort($platforms, function ($a, $b) {
+            return strnatcasecmp($a->getName() ?? '', $b->getName() ?? '');
+        });
 
         $paginatedPlatforms = $paginator->paginate(
             $platforms,
@@ -340,13 +339,13 @@ class ProcessingUnitController extends AbstractController
         ]);
     }
 
-    public function listInstructionset(Request $request, PaginatorInterface $paginator, array $criterias)
+    public function listInstructionset(Request $request, PaginatorInterface $paginator, array $criterias, InstructionSetRepository $instructionSetRepository)
     {
-        $instructionsets = $this->getDoctrine()
-            ->getRepository(InstructionSet::class)
-            ->findAll();
+        $instructionSetRepository->findAll();
 
-        usort($instructionsets, function ($a, $b) { return strnatcasecmp($a->getName() ?? '', $b->getName() ?? '');});
+        usort($instructionsets, function ($a, $b) {
+            return strnatcasecmp($a->getName() ?? '', $b->getName() ?? '');
+        });
 
         $paginatedInstructionsets = $paginator->paginate(
             $instructionsets,
@@ -364,10 +363,8 @@ class ProcessingUnitController extends AbstractController
      * Forms
      */
 
-    private function renderCoprocessorForm(Request $request, Coprocessor $coprocessor)
+    private function renderCoprocessorForm(Request $request, Coprocessor $coprocessor, EntityManagerInterface $entityManager)
     {
-        $entityManager = $this->getDoctrine()->getManager();
-
         $form = $this->createForm(CoprocessorForm::class, $coprocessor);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -394,10 +391,8 @@ class ProcessingUnitController extends AbstractController
         ]);
     }
 
-    private function renderProcessorForm(Request $request, Processor $processor)
+    private function renderProcessorForm(Request $request, Processor $processor, EntityManagerInterface $entityManager)
     {
-        $entityManager = $this->getDoctrine()->getManager();
-
         $form = $this->createForm(ProcessorForm::class, $processor);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -425,10 +420,8 @@ class ProcessingUnitController extends AbstractController
         ]);
     }
 
-    private function renderEntityForm(Request $request, $entity, $class, $template, $entityName)
+    private function renderEntityForm(Request $request, $entity, $class, $template, $entityName, EntityManagerInterface $entityManager)
     {
-        $entityManager = $this->getDoctrine()->getManager();
-
         $form = $this->createForm($class, $entity);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
