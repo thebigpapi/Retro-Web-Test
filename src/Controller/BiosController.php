@@ -28,29 +28,29 @@ class BiosController extends AbstractController
     {
         $criterias = array();
 
-        $postString = htmlentities($request->query->get('postString'));
+        $postString = $request->query->get('postString');
         if ($postString) {
             $criterias['post_string'] = "$postString";
         }
 
-        $coreVersion = htmlentities($request->query->get('coreVersion'));
+        $coreVersion = htmlentities($request->query->get('coreVersion') ?? '');
         if ($coreVersion) {
             $criterias['core_version'] = "$coreVersion";
         }
 
-        $biosManufacturerId = htmlentities($request->query->get('biosManufacturerId'));
+        $biosManufacturerId = htmlentities($request->query->get('biosManufacturerId') ?? '');
         if ($biosManufacturerId && intval($biosManufacturerId)) {
             $criterias['manufacturer_id'] = intval($biosManufacturerId);
         } elseif ($biosManufacturerId == "NULL") {
             $criterias['manufacturer_id'] = null;
         }
 
-        $filePresent = htmlentities($request->query->get('filePresent'));
+        $filePresent = htmlentities($request->query->get('filePresent') ?? '');
         if ($filePresent && boolval($filePresent)) {
             $criterias['file_present'] = boolval($filePresent);
         }
 
-        $chipsetId = htmlentities($request->query->get('chipsetId'));
+        $chipsetId = htmlentities($request->query->get('chipsetId') ?? '');
         if ($chipsetId && intval($chipsetId)) {
             $criterias['chipset_id'] = intval($chipsetId);
         } elseif ($chipsetId == "NULL") {
