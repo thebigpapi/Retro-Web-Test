@@ -25,7 +25,7 @@
 				<div><a class="result-link" href="{{ path("chipset_show", {id: chipset.getId()}) }}">{{ chipset.getFullName() }}</a></div>
 				<div class="header-label">Parts</div>
 				<div>
-					{% for chipPart in chipset.getChipsetParts()|sort((a, b) => a.rank <=> b.rank) %}
+					{% for chipPart in chipset.getChipsetParts() %}
 						<span class="text-block" style="margin-right: 5px;">{{ chipPart.getFullName() }}</span>
 					{% endfor %}
 				</div>

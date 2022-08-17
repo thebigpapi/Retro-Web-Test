@@ -212,7 +212,17 @@ class Chipset
      */
     public function getChipsetParts(): Collection
     {
-        return $this->chipsetParts;
+        $sortedChips = $this->chipsetParts->toArray();
+
+        $res = usort($sortedChips, function ($a, $b) {
+            return ($a->getRank() <=> $b->getRank());
+        });
+
+        if ($res) {
+            return new ArrayCollection($sortedChips);
+        } else {
+            return $this->chipsetParts;
+        }
     }
 
     public function addChipsetPart(ChipsetPart $chipsetPart): self
