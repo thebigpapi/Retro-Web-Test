@@ -12,7 +12,7 @@
 {% block opengraph %}
 	{% apply spaceless %}
 	{% if chipset.getChipsetParts() is not empty %}
-		{% for chipPart in chipset.getChipsetParts()|sort((a, b) => a.rank <=> b.rank)|filter(chipPart => chipPart.getImages() is not empty)|slice(0,1) %}
+		{% for chipPart in chipset.getChipsetParts()|filter(chipPart => chipPart.getImages() is not empty)|slice(0,1) %}
 			{% for image in chipPart.getImages()|slice(0,1) %}
 				<meta property="og:image" content="{{ vich_uploader_asset(image, 'imageFile')}}">
 			{% endfor %}
@@ -39,7 +39,7 @@
 				{% if chipset.getChipsetParts() is not empty %}
 					<div class="tag-container">
 						<span>Chipset parts:</span>
-						{% for part in chipset.getChipsetParts()|sort((a, b) => a.rank <=> b.rank) %}
+						{% for part in chipset.getChipsetParts() %}
 							<span class="text-block">{{ part.getFullName() }}</span>
 						{% endfor %}
 					</div>
@@ -63,11 +63,11 @@
 					<hr>
 					<h1>Documented parts</h1>
 					<ul class="chipset-toc">
-						{% for chipPart in chipset.getChipsetParts()|sort((a, b) => a.rank <=> b.rank)|filter(chipPart => chipPart.getDescription() is not empty) %}
+						{% for chipPart in chipset.getChipsetParts()|filter(chipPart => chipPart.getDescription() is not empty) %}
 						<li><a href="#{{ chipPart.getShortNamePN() }}">{{ chipPart.getShortName() }}</a></li>
 						{% endfor %}	
 					</ul>				
-					{% for chipPart in chipset.getChipsetParts()|sort((a, b) => a.rank <=> b.rank)|filter(chipPart => chipPart.getDescription() is not empty) %}
+					{% for chipPart in chipset.getChipsetParts()|filter(chipPart => chipPart.getDescription() is not empty) %}
 						<hr><a name="{{ chipPart.getShortNamePN() }}"></a>
 						{% apply markdown_to_html %}{{ chipPart.getDescription() }}{% endapply %}
 					{% endfor %}
@@ -152,7 +152,7 @@
 		{% endfor %}
 		{% if lplen > 0 %}
 			<div class="show-images" id="sh-images">
-				{% for chipPart in chipset.getChipsetParts()|sort((a, b) => a.rank <=> b.rank)|filter(chipPart => chipPart.getImages() is not empty) %}
+				{% for chipPart in chipset.getChipsetParts()|filter(chipPart => chipPart.getImages() is not empty) %}
 					{% for image in chipPart.getImages() %}
 						{% set lpindex = lpindex + 1 %}
 						{% include 'macros/images.html.twig' with {'type':'chipset', 'entity': image, 'index': lpindex, 'length': lplen} %}

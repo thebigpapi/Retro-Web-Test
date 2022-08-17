@@ -29,7 +29,7 @@ class ChipsetRepository extends ServiceEntityRepository
 
         $dql   = "SELECT c, cp 
         FROM App:Chipset c 
-        JOIN c.manufacturer m JOIN c.chipsetParts cp
+        JOIN c.manufacturer m LEFT JOIN c.chipsetParts cp
         ORDER BY m.name ASC, c.name ASC";
         $query = $entityManager->createQuery($dql);
 
