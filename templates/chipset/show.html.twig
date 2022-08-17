@@ -60,6 +60,8 @@
 					{% apply markdown_to_html %}{{ chipset.getDescription() }}{% endapply %}
 				{% endif %}
 				{% if chipset.getChipsetParts() is not empty %}
+					<hr>
+					<h1>Documented parts</h1>
 					<ul class="chipset-toc">
 						{% for chipPart in chipset.getChipsetParts()|sort((a, b) => a.rank <=> b.rank)|filter(chipPart => chipPart.getDescription() is not empty) %}
 						<li><a href="#{{ chipPart.getShortNamePN() }}">{{ chipPart.getShortName() }}</a></li>
