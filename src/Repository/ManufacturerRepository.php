@@ -55,11 +55,18 @@ class ManufacturerRepository extends ServiceEntityRepository
     {
         $entityManager = $this->getEntityManager();
 
-        $query = $entityManager->createQuery(
-            'SELECT DISTINCT man
-            FROM App\Entity\Chipset chip, App\Entity\Manufacturer man 
-            WHERE chip.manufacturer=man 
-            ORDER BY man.name ASC'
+        $rsm = new ResultSetMapping();
+
+        $rsm->addEntityResult('App\Entity\Manufacturer', 'man');
+        $rsm->addFieldResult('man', 'id', 'id');
+        $rsm->addFieldResult('man', 'name', 'name');
+        $rsm->addFieldResult('man', 'short_name', 'shortName');
+
+        $query = $entityManager->createNativeQuery(
+            'SELECT DISTINCT man.id, man.name, man.short_name, COALESCE(man.name, man.short_name) realName
+            FROM chipset chip JOIN manufacturer man on chip.manufacturer_id=man.id 
+            ORDER BY realName ASC',
+            $rsm
         );
 
         return $query->getResult();

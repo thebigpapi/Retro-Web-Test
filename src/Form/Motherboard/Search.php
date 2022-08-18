@@ -2,6 +2,7 @@
 
 namespace App\Form\Motherboard;
 
+use App\Entity\Chipset;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -125,18 +126,18 @@ class Search extends AbstractType
             ->add('searchWithImages', SubmitType::class);
 
         $formModifier = function (FormInterface $form, Manufacturer $chipsetManufacturer = null) {
-            $chipsets = null === $chipsetManufacturer ? [] : $chipsetManufacturer->getChipsets()->toArray();
+            $chipsets = (null === $chipsetManufacturer) ? [] : $chipsetManufacturer->getChipsets()->toArray();
             usort(
                 $chipsets,
-                function ($a, $b) {
-                    if ($a->getFullReference() == $b->getFullReference()) {
+                function (Chipset $a, Chipset $b) {
+                    if ($a->getFullNameParts() == $b->getFullNameParts()) {
                         return 0;
                     }
-                    if ($a->getFullReference() == " Unidentified ") return -1;
-                    return ($a->getFullReference() < $b->getFullReference()) ? -1 : 1;
+                    if ($a->getFullNameParts() == " Unidentified ") return -1;
+                    return ($a->getFullNameParts() < $b->getFullNameParts()) ? -1 : 1;
                 }
             );
-            $chipTag = null === $chipsetManufacturer ? "No chipset selected!" : "any " . $chipsetManufacturer->getShortNameIfExist() . " chipset";
+            $chipTag = (null === $chipsetManufacturer) ? "No chipset selected!" : "any " . $chipsetManufacturer->getShortNameIfExist() . " chipset";
             $form->add('chipset', ChoiceType::class, [
                 'choice_label' => 'getFullNameParts',
                 'multiple' => false,
