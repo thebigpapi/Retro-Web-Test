@@ -39,6 +39,25 @@ class IdRedirectionRepository extends ServiceEntityRepository
         }
     }
 
+    /**
+     * Check if the redirection exists for $identifier for a given motherboard
+     */
+    public function checkRedirectionExists(int|string $identifier, int $motherboardId): bool
+    {
+        $entityManager = $this->getEntityManager();
+
+        $query = $entityManager->createQuery(
+            'SELECT redirection
+            FROM App\Entity\MotherboardIdRedirection redirection
+            WHERE redirection.source=:identifier AND NOT redirection.destination=:motherboardId '
+        )->setParameter('identifier', $identifier)
+        ->setParameter('motherboardId', $motherboardId);
+
+        return boolval(count($query->getResult()));
+    }
+
+       
+
     // /**
     //  * @return IdRedirection[] Returns an array of IdRedirection objects
     //  */

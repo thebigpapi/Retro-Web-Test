@@ -5,7 +5,9 @@ namespace App\Controller\Admin;
 use App\Entity\Chipset;
 use App\Entity\CpuSocket;
 use App\Entity\FormFactor;
+use App\Entity\IdRedirection;
 use App\Entity\Motherboard;
+use App\Repository\IdRedirectionRepository;
 use App\Entity\Processor;
 use App\Entity\ProcessorPlatformType;
 use App\Form\Admin\Manage\MotherboardSearchType;
@@ -22,6 +24,7 @@ use App\Repository\CpuSocketRepository;
 use App\Repository\FormFactorRepository;
 use App\Repository\MotherboardRepository;
 use Doctrine\ORM\EntityManager;
+use Exception;
 
 class MotherboardController extends AbstractController
 {
@@ -291,6 +294,16 @@ class MotherboardController extends AbstractController
             'chipsets' => $chipsets,
             'sockets' => $sockets,
         ]);
+
+        /**
+         * @var IdRedirectionRepository
+         */
+        $idRedirectionRepository = $entityManager->getRepository(IdRedirection::class);
+
+        /**
+         * @var MotherboardRepository
+         */
+        $motherboardRepository = $entityManager->getRepository(Motherboard::class);
         
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -326,6 +339,14 @@ class MotherboardController extends AbstractController
                 $val->setMotherboard($mobo);
             }
             foreach ($form['redirections']->getData() as $val) {
+                if ($idRedirectionRepository->checkRedirectionExists($val->getSource(), $mobo->getId())) {
+                    throw new Exception("Redirection {$val->getSource()} already exists.");
+                }
+
+                if ($motherboardRepository->checkIdentifierExists($val->getSource())) {
+                    throw new Exception("Identifier {$val->getSource()} still exists on a motherboard.");
+                }
+
                 $val->setDestination($mobo);
             }
             if ($mobo->getManufacturer() != null && $mobo->getManufacturer()->getId() == 0) {

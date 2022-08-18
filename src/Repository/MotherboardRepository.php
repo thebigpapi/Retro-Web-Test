@@ -38,6 +38,26 @@ class MotherboardRepository extends ServiceEntityRepository
         return $query->getOneOrNullResult();
     }
 
+    public function checkIdentifierExists(string|int $identifier): bool {
+        $entityManager = $this->getEntityManager();
+
+        if (is_int($identifier) && is_numeric($identifier)) {
+            $query = $entityManager->createQuery(
+                'SELECT mobo
+                FROM App\Entity\Motherboard mobo
+                WHERE mobo.id=:identifier'
+            )->setParameter('identifier', $identifier);
+        } else {
+            $query = $entityManager->createQuery(
+                'SELECT mobo
+                FROM App\Entity\Motherboard mobo
+                WHERE mobo.slug=:identifier'
+            )->setParameter('identifier', $identifier);
+        }
+
+        return boolval(count($query->getResult()));
+    }
+
     public function findAllAlphabetic(string $letter): array
     {
         $entityManager = $this->getEntityManager();
