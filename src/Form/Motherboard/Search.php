@@ -127,16 +127,25 @@ class Search extends AbstractType
 
         $formModifier = function (FormInterface $form, Manufacturer $chipsetManufacturer = null) {
             $chipsets = (null === $chipsetManufacturer) ? [] : $chipsetManufacturer->getChipsets()->toArray();
+            $unidentified = null;
+
+            foreach ($chipsets as $key => $val) {
+                if ($val->getName() == "unidentified") {
+                    $unidentified = $val;
+                    unset($chipsets[$key]);
+                }
+            }
+
             usort(
                 $chipsets,
                 function (Chipset $a, Chipset $b) {
-                    if ($a->getFullNameParts() == $b->getFullNameParts()) {
-                        return 0;
-                    }
-                    if ($a->getFullNameParts() == " Unidentified ") return -1;
-                    return ($a->getFullNameParts() < $b->getFullNameParts()) ? -1 : 1;
+                    return strcmp($a->getFullNameParts(), $b->getFullNameParts());
                 }
             );
+
+            if ($unidentified) {
+                array_unshift($chipsets, $unidentified);
+            }
             $chipTag = (null === $chipsetManufacturer) ? "No chipset selected!" : "any " . $chipsetManufacturer->getShortNameIfExist() . " chipset";
             $form->add('chipset', ChoiceType::class, [
                 'choice_label' => 'getFullNameParts',
