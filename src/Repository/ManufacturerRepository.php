@@ -63,7 +63,7 @@ class ManufacturerRepository extends ServiceEntityRepository
         $rsm->addFieldResult('man', 'short_name', 'shortName');
 
         $query = $entityManager->createNativeQuery(
-            'SELECT DISTINCT man.id, man.name, man.short_name, COALESCE(man.name, man.short_name) realName
+            'SELECT DISTINCT man.id, man.name, man.short_name, COALESCE(man.short_name, man.name) realName
             FROM chipset chip JOIN manufacturer man on chip.manufacturer_id=man.id 
             ORDER BY realName ASC',
             $rsm
