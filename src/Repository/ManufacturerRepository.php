@@ -57,13 +57,6 @@ class ManufacturerRepository extends ServiceEntityRepository
 
         $rsm = new ResultSetMapping();
 
-       /* $query = $entityManager->createQuery(
-            'SELECT DISTINCT man, COALESCE(man.name, man.short_name) realName
-            FROM App\Entity\Chipset chip, App\Entity\Manufacturer man 
-            WHERE chip.manufacturer=man 
-            ORDER BY realName ASC'
-        );*/
-
         $rsm->addEntityResult('App\Entity\Manufacturer', 'man');
         $rsm->addFieldResult('man', 'id', 'id');
         $rsm->addFieldResult('man', 'name', 'name');
