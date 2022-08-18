@@ -20,7 +20,7 @@ class MotherboardIdRedirectionRepository extends ServiceEntityRepository
         parent::__construct($registry, MotherboardIdRedirection::class);
     }
 
-    public function findRedirection(int $id, string $sourceType): ?int
+    public function findRedirection(int|string $identifier, string $sourceType): ?int
     {
 
         $entityManager = $this->getEntityManager();
@@ -29,9 +29,9 @@ class MotherboardIdRedirectionRepository extends ServiceEntityRepository
             $query = $entityManager->createQuery(
                 'SELECT max(redirection.destination)
                 FROM App\Entity\MotherboardIdRedirection redirection
-                WHERE :id=redirection.source AND :sourceType=redirection.sourceType'
+                WHERE :identifier=redirection.source AND :sourceType=redirection.sourceType'
             )->setParameter('sourceType', $sourceType)
-            ->setParameter('id', $id);
+            ->setParameter('identifier', $identifier);
 
             return $query->getSingleScalarResult();
         } catch (Exception $e) {

@@ -69,7 +69,7 @@
 						{% include 'macros/buttons.html.twig' with {'type':'add', 'action': 'redirections'} %}</div>
 						<div class="append_table" id="redirections-fields-list" data-widget-counter="{{ form.redirections|length }}"
 							data-prototype="
-								{{ form_widget(form.redirections.vars.prototype.source, {'attr': {'placeholder': 'Source ID'}})|e }}
+								{{ form_widget(form.redirections.vars.prototype.source, {'attr': {'placeholder': 'Source identifier'}})|e }}
 								{{ form_widget(form.redirections.vars.prototype.sourceType)|e }}
 								{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
 							</div>" data-controller="collection">

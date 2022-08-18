@@ -23,7 +23,7 @@
 					<div class="perk">
 						<div class="perk-image">
 						{% if chipset.getChipsetParts() is not empty %}
-							{% for chipPart in chipset.getChipsetParts()|sort((a, b) => a.rank <=> b.rank)|slice(0, 1) %}
+							{% for chipPart in chipset.getChipsetParts()|slice(0, 1) %}
 							{% if chipPart.getImages() is not empty %}
 								{% for image in chipPart.getImages()|slice(0, 1) %}
 								<a href="{{ vich_uploader_asset(image, 'imageFile')}}" class="glightbox">
@@ -39,7 +39,7 @@
 						<a href="{{ path("chipset_show", {id: chipset.getId()}) }}" title="Click to visit page">
 							<div class="perk-name">{{ chipset.getFullName() }}</div>
 							<div class="perk-date">{% if chipset.getParts() is not empty %}<span class="results-alias">
-									<small>Parts: {% for chipPart in chipset.getChipsetParts()|sort((a, b) => a.rank <=> b.rank) %}{{ chipPart.getFullName() }}{% if not loop.last %}, {% endif %}{% endfor %}</small>
+									<small>Parts: {% for chipPart in chipset.getChipsetParts() %}{{ chipPart.getFullName() }}{% if not loop.last %}, {% endif %}{% endfor %}</small>
 								</span>{% endif %}</div>
 						</a>
 					</div>	
@@ -58,7 +58,7 @@
 						<div><a class="result-link" href="{{ path("chipset_show", {id: chipset.getId()}) }}">{{ chipset.getFullName() }}</a></div>
 						<div class="header-label">Parts</div>
 						<div>
-							{% for chipPart in chipset.getChipsetParts()|sort((a, b) => a.rank <=> b.rank) %}
+							{% for chipPart in chipset.getChipsetParts() %}
 								<span class="text-block" style="margin-right: 5px;">{{ chipPart.getFullName() }}</span>
 							{% endfor %}
 
