@@ -44,11 +44,6 @@ class Manufacturer
     private $chipsets;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Processor", mappedBy="manufacturer")
-     */
-    private $processors;
-
-    /**
      * @ORM\OneToMany(targetEntity="App\Entity\VideoChipset", mappedBy="manufacturer")
      */
     private $videoChipsets;
@@ -57,11 +52,6 @@ class Manufacturer
      * @ORM\OneToMany(targetEntity="App\Entity\AudioChipset", mappedBy="manufacturer")
      */
     private $audioChipsets;
-
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\ChipsetPart", mappedBy="manufacturer")
-     */
-    private $chipsetParts;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\MotherboardAlias", mappedBy="manufacturer")
@@ -97,10 +87,8 @@ class Manufacturer
     {
         $this->motherboards = new ArrayCollection();
         $this->chipsets = new ArrayCollection();
-        $this->processors = new ArrayCollection();
         $this->videoChipsets = new ArrayCollection();
         $this->audioChipsets = new ArrayCollection();
-        $this->chipsetParts = new ArrayCollection();
         $this->motherboardAliases = new ArrayCollection();
         $this->chips = new ArrayCollection();
         $this->chipAliases = new ArrayCollection();
@@ -216,29 +204,6 @@ class Manufacturer
         return $this->processors;
     }
 
-    public function addProcessor(Processor $processor): self
-    {
-        if (!$this->processors->contains($processor)) {
-            $this->processors[] = $processor;
-            $processor->setManufacturer($this);
-        }
-
-        return $this;
-    }
-
-    public function removeProcessor(Processor $processor): self
-    {
-        if ($this->processors->contains($processor)) {
-            $this->processors->removeElement($processor);
-            // set the owning side to null (unless already changed)
-            if ($processor->getManufacturer() === $this) {
-                $processor->setManufacturer(null);
-            }
-        }
-
-        return $this;
-    }
-
     /**
      * @return Collection|VideoChipset[]
      */
@@ -295,37 +260,6 @@ class Manufacturer
             // set the owning side to null (unless already changed)
             if ($audioChipset->getManufacturer() === $this) {
                 $audioChipset->setManufacturer(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|ChipsetPart[]
-     */
-    public function getChipsetParts(): Collection
-    {
-        return $this->chipsetParts;
-    }
-
-    public function addChipsetPart(ChipsetPart $chipsetPart): self
-    {
-        if (!$this->chipsetParts->contains($chipsetPart)) {
-            $this->chipsetParts[] = $chipsetPart;
-            $chipsetPart->setManufacturer($this);
-        }
-
-        return $this;
-    }
-
-    public function removeChipsetPart(ChipsetPart $chipsetPart): self
-    {
-        if ($this->chipsetParts->contains($chipsetPart)) {
-            $this->chipsetParts->removeElement($chipsetPart);
-            // set the owning side to null (unless already changed)
-            if ($chipsetPart->getManufacturer() === $this) {
-                $chipsetPart->setManufacturer(null);
             }
         }
 
