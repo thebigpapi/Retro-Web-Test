@@ -12,6 +12,9 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use App\Entity\ChipsetPart;
 use App\Form\Type\ChipType;
 use App\Form\Type\ChipDocumentationType;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormView;
+use Symfony\Component\Form\ChoiceList\View\ChoiceView;
 
 class ChipsetPartForm extends AbstractType
 {
@@ -42,4 +45,10 @@ class ChipsetPartForm extends AbstractType
             'data_class' => ChipsetPart::class,
         ]);
     }
+	public function finishView(FormView $view, FormInterface $form, array $options)
+    {
+        usort($view->children['chip']->children['manufacturer']->vars['choices'], function (ChoiceView $a, ChoiceView $b) {
+            return strnatcasecmp($a->data->getShortNameIfExist(), $b->data->getShortNameIfExist());
+        });
+	}
 }

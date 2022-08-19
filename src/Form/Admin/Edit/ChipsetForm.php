@@ -16,6 +16,9 @@ use App\Form\Type\ChipsetBiosCodeType;
 use App\Form\Type\ChipsetPartType;
 use App\Form\Type\LargeFileChipsetType;
 use App\Form\Type\ChipsetDocumentationType;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormView;
+use Symfony\Component\Form\ChoiceList\View\ChoiceView;
 
 class ChipsetForm extends AbstractType
 {
@@ -80,4 +83,10 @@ class ChipsetForm extends AbstractType
             'chipsetParts' => array(),
         ]);
     }
+	public function finishView(FormView $view, FormInterface $form, array $options)
+    {
+        usort($view->children['manufacturer']->vars['choices'], function (ChoiceView $a, ChoiceView $b) {
+            return strnatcasecmp($a->data->getShortNameIfExist(), $b->data->getShortNameIfExist());
+        });
+	}
 }
