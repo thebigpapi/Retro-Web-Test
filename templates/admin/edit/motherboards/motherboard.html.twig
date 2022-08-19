@@ -44,7 +44,7 @@
 				<div class="show-general" id="sh-general">
 					<!-- Aliases -->
 					<div class="quick-spec-table" data-controller="collection" style="padding:0;">
-						<div class="quick-spec-head editor editor">Alternative names
+						<div class="quick-spec-head editor editor"><div>Alternative names</div>
 						{% include 'macros/buttons.html.twig' with {'type':'add', 'action': 'motherboardAliases'} %}</div>
 						<div class="append_table" id="motherboardAliases-fields-list" data-widget-counter="{{ form.motherboardAliases|length }}"
 							data-prototype="
@@ -65,7 +65,7 @@
 					</div>
 					<hr><!-- Redirections -->
 					<div class="quick-spec-table" data-controller="collection" style="padding:0;">
-						<div class="quick-spec-head editor">Redirections
+						<div class="quick-spec-head editor"><div>Redirections</div>
 						{% include 'macros/buttons.html.twig' with {'type':'add', 'action': 'redirections'} %}</div>
 						<div class="append_table" id="redirections-fields-list" data-widget-counter="{{ form.redirections|length }}"
 							data-prototype="
@@ -86,7 +86,7 @@
 					</div>
 					<hr><!-- PSU connectors -->
 					<div class="quick-spec-table" data-controller="collection" style="padding:0;">
-						<div class="quick-spec-head editor">PSU connectors
+						<div class="quick-spec-head editor"><div>PSU connectors</div>
 						{% include 'macros/buttons.html.twig' with {'type':'add', 'action': 'psuConnectors'} %}</div>
 						<div class="append_table" id="psuConnectors-fields-list" data-widget-counter="{{ form.psuConnectors|length }}"
 							data-prototype="
@@ -141,7 +141,7 @@
 						</div></div>
 					</div><!-- Max system RAM -->
 					<div class="quick-spec-table" data-controller="collection" style="padding:0;">
-						<div class="quick-spec-head editor">Max system RAM
+						<div class="quick-spec-head editor"><div>Max system RAM</div>
 						{% include 'macros/buttons.html.twig' with {'type':'add', 'action': 'motherboardMaxRams'} %}</div>
 						<div class="append_table" id="motherboardMaxRams-fields-list" data-controller="collection" data-widget-counter="{{ form.motherboardMaxRams|length }}" data-prototype="
 								{{ form_widget(form.motherboardMaxRams.vars.prototype.max_ram)|e }}
@@ -160,7 +160,7 @@
 					</div>
 					<hr><!-- Cache -->					
 					<div class="quick-spec-table nopad" data-controller="collection">
-						<div class="quick-spec-head editor">Cache
+						<div class="quick-spec-head editor"><div>Cache</div>
 						{% include 'macros/buttons.html.twig' with {'type':'add', 'action': 'cacheSize'} %}</div>
 						<div class="append_table" id="cacheSize-fields-list" data-controller="collection" data-widget-counter="{{ form.cacheSize|length }}" data-prototype="
 								{{ form_widget(form.cacheSize.vars.prototype)|e }}
@@ -177,7 +177,7 @@
 					</div>
 					<hr><!-- Supported RAM types -->
 					<div class="quick-spec-table" data-controller="collection">
-						<div class="quick-spec-head editor">Supported RAM types:
+						<div class="quick-spec-head editor"><div>Supported RAM types:</div>
 						{% include 'macros/buttons.html.twig' with {'type':'add', 'action': 'dramType'} %}</div>
 						<div class="append_table" id="dramType-fields-list" data-controller="collection" data-widget-counter="{{ form.dramType|length }}" data-prototype="
 								{{ form_widget(form.dramType.vars.prototype)|e }}
@@ -228,7 +228,7 @@
 						</div>
 					</div><hr><!-- Known issues -->
 					<div class="quick-spec-table" data-controller="collection">
-						<div class="quick-spec-head editor">Known issues:
+						<div class="quick-spec-head editor"><div>Known issues:</div>
 						{% include 'macros/buttons.html.twig' with {'type':'add', 'action': 'knownIssues'} %}</div>
 						<div id="knownIssues-fields-list" data-widget-counter="{{ form.knownIssues|length }}" data-prototype="
 							{{ form_widget(form.knownIssues.vars.prototype, {'attr': {'style': 'width:80%'}} )|e }}
@@ -358,7 +358,7 @@
 				<!-- CPUs -->
 				<div class="show-cpus" id="sh-cpus"><!-- CPU sockets -->
 					<div class="quick-spec-table" data-controller="collection">
-						<div class="quick-spec-head editor">CPU sockets
+						<div class="quick-spec-head editor"><div>CPU sockets</div>
 						{% include 'macros/buttons.html.twig' with {'type':'add', 'action': 'cpuSockets'} %}</div>
 						<div id="cpuSockets-fields-list" data-widget-counter="{{ form.cpuSockets|length }}" data-prototype="
 							{{ form_widget(form.cpuSockets.vars.prototype, {'attr': {'style': 'width:100%;max-width:220px'}})|e }}
@@ -373,7 +373,7 @@
 						{{ form_errors(form.cpuSockets) }}
 					</div><hr><!-- CPU platforms -->
 					<div class="quick-spec-table" data-controller="collection">
-						<div class="quick-spec-head editor">CPU platforms
+						<div class="quick-spec-head editor"><div>CPU platforms</div>
 						{% include 'macros/buttons.html.twig' with {'type':'add', 'action': 'processorPlatformTypes'} %}</div>
 						<div id="processorPlatformTypes-fields-list" data-widget-counter="{{ form.processorPlatformTypes|length }}" data-prototype="
 							{{ form_widget(form.processorPlatformTypes.vars.prototype)|e }}
@@ -388,7 +388,7 @@
 						{{ form_errors(form.processorPlatformTypes) }}
 					</div><hr><!-- FSB speeds -->
 					<div class="quick-spec-table" data-controller="collection">
-						<div class="quick-spec-head editor">FSB speed
+						<div class="quick-spec-head editor"><div>FSB speed</div>
 						{% include 'macros/buttons.html.twig' with {'type':'add', 'action': 'cpuSpeed'} %}</div>
 						<div style="width:100%" id="cpuSpeed-fields-list" data-widget-counter="{{ form.cpuSpeed|length }}" data-prototype="
 							{{ form_widget(form.cpuSpeed.vars.prototype)|e }} {% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}">
