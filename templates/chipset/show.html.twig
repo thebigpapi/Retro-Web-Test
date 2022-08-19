@@ -93,48 +93,47 @@
 				</div>
 				<!-- CHIPSET PART DOCS -->
 				<div>
+					<img src="{{ absolute_url(asset('build/icons/show/manual.svg')) }}" alt="" width="32" style="vertical-align: middle;padding-bottom: 10px;">
+					<span><b>Documentation: </b></span>
+					{% set docCount = 0 %}
+					{% if chipset.getDocumentations() is not empty %}
+						{% set moreDocCount = chipset.getDocumentations.count() %}
+					{% else %}
+						{% set moreDocCount = 0 %}
+					{% endif %}
 					{% if chipset.getChipsetParts() is not empty %}
-						<img src="{{ absolute_url(asset('build/icons/show/manual.svg')) }}" alt="" width="32" style="vertical-align: middle;padding-bottom: 10px;">
-						<span><b>Documentation: </b></span>
 						<!-- CHIPSET PART DOC COUNT -->
-						{% set docCount = 0 %}
 						{% for chipPart in chipset.getChipsetParts()|filter(chipPart => chipPart.getDocumentations() is not empty) %}
-							{% set docCount = docCount + 1 %}
+							{% set docCount = docCount + chipPart.getDocumentations().count() %}
 						{% endfor %}
-						{% if docCount > 0 %}
-							<span>{{ docCount }}&nbsp;{% if docCount == 1 %}file{% else %}files{% endif %}</span>
-						{% else %}
+					{% endif %}
+					{% set moreDocCount = docCount + moreDocCount %}
+					{% if moreDocCount > 0 %}
+						<span>{{ moreDocCount }}&nbsp;{% if moreDocCount == 1 %}file{% else %}files{% endif %}</span>
+					{% else %}
 							<span>not available</span>
-						{% endif %}
-						<!-- CHIPSET PART DOC SHOW -->
-						{% if docCount > 0 %}
+					{% endif %}
+					{% if moreDocCount > 0 %}
 						<div><div><div>
-							<ul style="list-style-type: none;">{% for chipPart in chipset.getChipsetParts()|filter(chipPart => chipPart.getDocumentations() is not empty) %}
+							<ul style="list-style-type: none;">
+							<!-- CHIPSET PART DOCS -->
+							{% if  chipset.getChipsetParts() is not empty %}{% for chipPart in chipset.getChipsetParts()|filter(chipPart => chipPart.getDocumentations() is not empty) %}
 								{% for documentation in chipPart.getDocumentations()|sort((a, b) => a.getLinkName <=> b.getLinkName) %}
 								<li><a href="{{ vich_uploader_asset(documentation, 'manualFile') }}">
 									<img src="{{ absolute_url(asset('build/icons/dw.svg')) }}" alt="" width="16" height="16" style="vertical-align: middle;">
 									{{ documentation.getLinkName() }}</a>({{ documentation.getLanguage().getName()}})</li>
+								{% endfor %}{% endfor %}
+							{% endif %}
+							<!-- MORE CHIPSET DOCS -->
+							{% if chipset.getDocumentations() is not empty %}
+								{% for documentation in chipset.getDocumentations()|sort((a, b) => a.getLinkName <=> b.getLinkName) %}
+									<li><a href="{{ vich_uploader_asset(documentation, 'manualFile') }}">
+										<img src="{{ absolute_url(asset('build/icons/dw.svg')) }}" alt="" width="16" height="16" style="vertical-align: middle;">
+										{{ documentation.getLinkName() }}</a>({{ documentation.getLanguage().getName()}})</li>
 								{% endfor %}
-							{% endfor %}</ul>
+							{% endif %}
+							</ul>
 						</div></div></div>
-						{% endif %}
-					{% endif %}
-				</div>
-				<!-- CHIPSET FILES -->
-				<div>
-					<img src="{{ absolute_url(asset('build/icons/show/manual.svg')) }}" alt="" width="32" style="vertical-align: middle;padding-bottom: 10px;">
-					<span><b>Other files: </b></span>
-					{% if chipset.getDocumentations() is not empty %}
-						<span>{{ chipset.getDocumentations.count() }}&nbsp;{% if chipset.getDocumentations.count() == 1 %}file{% else %}files{% endif %}</span>
-						<div><div><div>
-							<ul style="list-style-type: none;">{% for documentation in chipset.getDocumentations()|sort((a, b) => a.getLinkName <=> b.getLinkName) %}
-								<li><a href="{{ vich_uploader_asset(documentation, 'manualFile') }}">
-									<img src="{{ absolute_url(asset('build/icons/dw.svg')) }}" alt="" width="16" height="16" style="vertical-align: middle;">
-									{{ documentation.getLinkName() }}</a>({{ documentation.getLanguage().getName()}})</li>
-							{% endfor %}</ul>
-						</div></div></div>
-					{% else %}
-					<span>not available</span>
 					{% endif %}
 				</div>
 			</div>
