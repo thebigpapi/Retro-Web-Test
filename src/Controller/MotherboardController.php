@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Manufacturer;
 use App\Entity\FormFactor;
+use App\Entity\Motherboard;
 use App\Entity\MotherboardIdRedirection;
 use App\Form\Motherboard\Search;
 use App\Repository\CpuSocketRepository;
@@ -23,6 +24,7 @@ use Knp\Component\Pager\PaginatorInterface;
 use Exception;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Response;
 
 class MotherboardController extends AbstractController
@@ -294,7 +296,7 @@ class MotherboardController extends AbstractController
     }
 
 
-    private function searchFormToParam(Request $request, $form, $slots, $ports): array
+    private function searchFormToParam(Request $request, FormInterface $form, array $slots, array $ports): array
     {
         $parameters = array();
         if ($form['manufacturer']->getData()) {
@@ -382,12 +384,12 @@ class MotherboardController extends AbstractController
     #[Route('/motherboards/index/{letter}', name:"moboindex", requirements:['letter'=>'\w|[?]'], methods:['GET'])]
     public function index(Request $request, PaginatorInterface $paginator, string $letter, MotherboardRepository $motherboardRepository) : Response
     {
-        if ($letter == "?") $letter = "";
+        if ($letter === "?") $letter = "";
         $data = $motherboardRepository->findAllAlphabetic($letter);
 
         usort(
             $data,
-            function ($a, $b) {
+            function (Motherboard $a, Motherboard $b) {
                 if ($a->getManufacturerShortNameIfExist() == $b->getManufacturerShortNameIfExist()) {
                     return 0;
                 }
