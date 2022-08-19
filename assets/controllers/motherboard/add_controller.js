@@ -157,9 +157,7 @@ export default class extends Controller {
             let redirections = document.getElementById("redirections-fields-list");
             redirections.innerHTML = '';
 			let slug = document.getElementById('motherboard_form_slug');
-			let name = document.getElementById('motherboard_form_name');
 			slug.value = "";
-			name.value = "";
 			window.history.replaceState({},'', window.location.origin + '/admin/manage/motherboards/motherboards/add');
         }
     }
