@@ -122,12 +122,4 @@ class LargeFileForm extends AbstractType
             'data_class' => LargeFile::class,
         ]);
     }
-
-    /*public function finishView(FormView $view, FormInterface $form, array $options)
-    {
-        dd($view);
-        /*usort($view->children['languages']->vars['choices'], function(ChoiceView $a, ChoiceView $b) {
-            return ($a->data->getName() <=> $b->data->getName());
-        });
-    }*/
 }

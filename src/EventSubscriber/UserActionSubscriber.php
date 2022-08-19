@@ -48,8 +48,6 @@ class UserActionSubscriber implements EventSubscriberInterface
         $search = '#(0000).*?(0000)#';
         $trace->setContent(str_replace("\u", "", preg_replace($search,"\u",json_encode((array) $object, JSON_PRETTY_PRINT))));
         $trace->setDate(date_create());
-        //dd($object);
-        //dd(json_encode((array) $object, JSON_PRETTY_PRINT, 3));
         $this->entityManager->persist($trace);
         $this->entityManager->flush();
     }
@@ -68,14 +66,10 @@ class UserActionSubscriber implements EventSubscriberInterface
         if(method_exists($object, 'getId')){
             $trace->setObjectId($object->getId());
         }
-        //echo($object);
-        //echo("obj obj2");
-        //dd($args);
         $search = "/[^0000](.*)[^0000]/";
         $search = '#(0000).*?(0000)#';
         $trace->setContent(str_replace("\u", "", preg_replace($search,"\u",json_encode((array) $args->getEntityChangeSet(), JSON_PRETTY_PRINT))));
         $trace->setDate(date_create());
-        //echo($args);
         $this->entityManager->persist($trace);
         
     }

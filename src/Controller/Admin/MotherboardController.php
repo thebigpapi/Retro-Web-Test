@@ -143,7 +143,6 @@ class MotherboardController extends AbstractController
             if ($data['chipset'])
                 $getParams["chipset"] = $data['chipset']->getId(); 
             $getParams["entity"] = "motherboard";
-            //dd($getParams);
             return $this->redirect($this->generateUrl('admin_manage_motherboards', $getParams));
         } else {
             $criterias = array();
@@ -165,7 +164,6 @@ class MotherboardController extends AbstractController
             }
         }
         /*if($criterias)*/
-        //dd($request->query->get('entity'));
         return $this->render('admin/manage/motherboards/manage.html.twig', [
             /*"search" => $search->createView(),
             "criterias" => $criterias,*/

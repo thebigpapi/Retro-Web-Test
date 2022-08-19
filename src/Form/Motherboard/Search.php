@@ -146,7 +146,6 @@ class Search extends AbstractType
                 'placeholder' => $chipTag,
             ]);
         };
-        //dd($builder->get('chipsetManufacturer'));
         $builder->addEventListener(
             FormEvents::PRE_SET_DATA,
             function (FormEvent $event) use ($formModifier) {

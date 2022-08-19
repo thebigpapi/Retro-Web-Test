@@ -114,7 +114,6 @@ class MotherboardController extends AbstractController
             return $this->redirectToRoute('motherboard_search');
         }
 
-        //dd($criterias);
         try {
             $data = $motherboardRepository->findByWithJoin($criterias, array('man1_name' => 'ASC', 'mot0_name' => 'ASC'));
         } catch (Exception $e) {
@@ -218,8 +217,6 @@ class MotherboardController extends AbstractController
 
                         $entityManager->persist($redirection);
 
-                        //dd($motherboard->getRedirections()->toArray());
-
                         //Moving each old redirection to the destination motherboard
                         foreach ($motherboard->getRedirections()->toArray() as $redirection) {
                             $newRedirection = new MotherboardIdRedirection();
@@ -228,7 +225,6 @@ class MotherboardController extends AbstractController
                             $newRedirection->setDestination($destinationMotherboard);
                             $entityManager->persist($newRedirection);
                         }
-                        //dd($destinationMotherboard->getRedirections()->toArray());
                     } else {
                         throw $this->createNotFoundException(
                             'No $motherboard found for id ' . $idRedirection

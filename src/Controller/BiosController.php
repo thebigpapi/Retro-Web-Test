@@ -161,7 +161,6 @@ class BiosController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $parameters = array();
-            //dd($form->getData());
 
             if ($postString = $form['post_string']->getData()) {
                 $parameters['postString'] = $postString;
