@@ -2,14 +2,8 @@
 
 namespace App\Controller;
 
-use App\Entity\Motherboard;
 use App\Entity\Manufacturer;
-use App\Entity\ProcessorPlatformType;
-use App\Entity\ExpansionSlot;
-use App\Entity\IoPort;
 use App\Entity\FormFactor;
-use App\Entity\CpuSocket;
-use App\Entity\IdRedirection;
 use App\Entity\MotherboardIdRedirection;
 use App\Form\Motherboard\Search;
 use App\Repository\CpuSocketRepository;
@@ -29,15 +23,12 @@ use Knp\Component\Pager\PaginatorInterface;
 use Exception;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Contracts\Cache\CacheInterface;
+use Symfony\Component\HttpFoundation\Response;
 
 class MotherboardController extends AbstractController
 {
-    /**
-     * @Route("/motherboards/", name="mobosearch", methods={"GET"})
-     * @param Request $request
-     */
-    public function searchResult(Request $request, PaginatorInterface $paginator, MotherboardRepository $motherboardRepository)
+    #[Route('/motherboards/', name:'mobosearch', methods:['GET'])]
+    public function searchResult(Request $request, PaginatorInterface $paginator, MotherboardRepository $motherboardRepository): Response
     {
         $criterias = array();
         $name = htmlentities($request->query->get('name') ?? '');
@@ -133,10 +124,8 @@ class MotherboardController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/motherboards/s/{slug}", name="motherboard_show_slug")
-     */
-    public function showSlug(string $slug, MotherboardRepository $motherboardRepository)
+    #[Route('/motherboards/s/{slug}', name:'motherboard_show_slug')]
+    public function showSlug(string $slug, MotherboardRepository $motherboardRepository): Response
     {
         $motherboard = $motherboardRepository->findSlug($slug);
 
@@ -152,10 +141,8 @@ class MotherboardController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/motherboards/{id}", name="motherboard_show", requirements={"id"="\d+"})
-     */
-    public function show(int $id, MotherboardRepository $motherboardRepository, MotherboardIdRedirectionRepository $motherboardIdRedirectionRepository)
+    #[Route('/motherboards/{id}', name:'motherboard_show', requirements:['id'=>'\d+'])]
+    public function show(int $id, MotherboardRepository $motherboardRepository, MotherboardIdRedirectionRepository $motherboardIdRedirectionRepository): Response
     {
         $motherboard = $motherboardRepository->find($id);
 
@@ -174,11 +161,8 @@ class MotherboardController extends AbstractController
         return $this->redirect($this->generateUrl('motherboard_show_slug', array("slug" => $motherboard->getSlug())));
     }
 
-    /**
-     * @Route("/motherboards/{id}/delete/", name="motherboard_delete", requirements={"id"="\d+"})
-     * @param Request $request
-     */
-    public function delete(Request $request, int $id, MotherboardRepository $motherboardRepository, EntityManagerInterface $entityManager)
+    #[Route('/motherboards/{id}/delete/', name:'motherboard_delete', requirements:["id"=>"\d+"])]
+    public function delete(Request $request, int $id, MotherboardRepository $motherboardRepository, EntityManagerInterface $entityManager): Response
     {
         $motherboard = $motherboardRepository->find($id);
 
@@ -246,13 +230,10 @@ class MotherboardController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/motherboards/search/", name="motherboard_search")
-     * @param Request $request
-     */
+    #[Route('/motherboards/search/', name:'motherboard_search')]
     public function search(Request $request, TranslatorInterface $translator, ManufacturerRepository $manufacturerRepository,
     ExpansionSlotRepository $expansionSlotRepository, IoPortRepository $ioPortRepository, CpuSocketRepository $cpuSocketRepository,
-    FormFactorRepository $formFactorRepository, ProcessorPlatformTypeRepository $processorPlatformTypeRepository)
+    FormFactorRepository $formFactorRepository, ProcessorPlatformTypeRepository $processorPlatformTypeRepository) : Response
     {
         $notIdentifiedMessage = $translator->trans("Not identified");
         $moboManufacturers = $manufacturerRepository->findAllMotherboardManufacturer();
@@ -398,11 +379,8 @@ class MotherboardController extends AbstractController
         return $parameters;
     }
 
-    /**
-     * @Route("/motherboards/index/{letter}", name="moboindex", requirements={"letter"="\w|[?]"}), methods={"GET"})
-     * @param Request $request
-     */
-    public function index(Request $request, PaginatorInterface $paginator, string $letter, MotherboardRepository $motherboardRepository)
+    #[Route('/motherboards/index/{letter}', name:"moboindex", requirements:['letter'=>'\w|[?]'], methods:['GET'])]
+    public function index(Request $request, PaginatorInterface $paginator, string $letter, MotherboardRepository $motherboardRepository) : Response
     {
         if ($letter == "?") $letter = "";
         $data = $motherboardRepository->findAllAlphabetic($letter);
