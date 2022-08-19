@@ -151,10 +151,10 @@ abstract class ProcessingUnit extends Chip
                         return ($a->getSpeed()->getValue() < $b->getSpeed()->getValue()) ? -1 : 1;
                     }
                     else
-                        return ($a->getName() < $b->getName()) ? -1 : 1;
+                        return strcmp($a->getName(), $b->getName());
                 }
                 else
-                    return ($a->getManufacturer() < $b->getManufacturer()) ? -1 : 1;
+                    return strcmp($a->getManufacturer(), $b->getManufacturer());
             }
         );
         

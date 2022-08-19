@@ -323,7 +323,7 @@ class ProcessingUnitController extends AbstractController
     {
         $processorPlatformTypeRepository->findAll();
             
-        usort($platforms, function ($a, $b) {
+        usort($platforms, function (ProcessorPlatformType $a, ProcessorPlatformType $b) {
             return strnatcasecmp($a->getName() ?? '', $b->getName() ?? '');
         });
 
@@ -343,7 +343,7 @@ class ProcessingUnitController extends AbstractController
     {
         $instructionSetRepository->findAll();
 
-        usort($instructionsets, function ($a, $b) {
+        usort($instructionsets, function (InstructionSet $a, InstructionSet $b) {
             return strnatcasecmp($a->getName() ?? '', $b->getName() ?? '');
         });
 

@@ -276,7 +276,7 @@ class MotherboardController extends AbstractController
             $chipsets,
 
             function (Chipset $a, Chipset $b) {
-                return $a->getFullName() <=> $b->getFullName();
+                return strcmp($a->getFullName(), $b->getFullName());
             }
         );
 

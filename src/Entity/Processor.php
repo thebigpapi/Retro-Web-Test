@@ -243,7 +243,7 @@ class Processor extends ProcessingUnit
         $array = $processors->toArray();
         usort(
             $array,
-            function ($a, $b) {
+            function (Processor $a, Processor $b) {
                 if ($a->getManufacturer() == $b->getManufacturer()) {
                     if ($a->getPlatform() == $b->getPlatform()) {
                         //if($a->getName() == $b->getName())
