@@ -22,18 +22,13 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 class AdminController extends AbstractController
 {
 
-    /**
-     * @Route("/admin", name="admin_index")
-     * @param Request $request
-     */
+    #[Route('/admin', name:'admin_index')]
     public function index(): Response
     {
         return $this->render('admin/index.html.twig');
     }
 
-    /**
-     * @Route("/admin/stats", name="admin_stats")
-     */
+    #[Route('/admin/stats', name:'admin_stats')]
     public function stats(MotherboardRepository $motherboardRepository) : Response
     {
         $manufBoardCount = $motherboardRepository->getManufCount();
@@ -45,10 +40,7 @@ class AdminController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/admin/logs", name="admin_logs")
-     * @param Request $request
-     */
+    #[Route('/admin/logs', name:'admin_logs')]
     public function logs(Request $request, TraceRepository $traceRepository, PaginatorInterface $paginator): Response
     {
         $logs = $traceRepository->findAll();
@@ -72,27 +64,19 @@ class AdminController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/admin/guidelines", name="admin_guidelines")
-     */
-    public function guidelines()
+    #[Route('/admin/guidelines', name:'admin_guidelines')]
+    public function guidelines() : Response
     {
         return $this->render('admin/guidelines.html.twig');
     }
 
-    /**
-     * @Route("/admin/users", name="admin_user_settings")
-     */
-    public function userIndex()
+    #[Route('/admin/users', name:'admin_user_settings')]
+    public function userIndex() : Response
     {
         return $this->render('admin/users/index.html.twig');
     }
 
-    /**
-     * @Route("/admin/users/manage", name="admin_user_manage")
-     * @param Request $request
-     * @param UserPasswordHasherInterface $passwordHasher
-     */
+    #[Route('/admin/users/manage', name:'admin_user_manage')]
     public function manageUsers(Request $request, UserPasswordHasherInterface $passwordHasher, EntityManagerInterface $entityManager, UserRepository $userRepository) : Response
     {
         $userForm = $this->createForm(ManageUser::class);
@@ -131,11 +115,7 @@ class AdminController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/admin/users/manage/add", name="admin_user_add")
-     * @param Request $request
-     * @param UserPasswordHasherInterface $passwordHasher
-     */
+    #[Route('/admin/users/manage/add', name:'admin_user_add')]
     public function addUser(Request $request, UserPasswordHasherInterface $passwordHasher, EntityManagerInterface $entityManager) : Response
     {
         $form = $this->createFormBuilder()
@@ -188,11 +168,7 @@ class AdminController extends AbstractController
         return $str;
     }
 
-    /**
-     * @Route("/admin/users/password", name="admin_user_changepwd")
-     * @param Request $request
-     * @param UserPasswordHasherInterface $passwordHasher
-     */
+    #[Route('/admin/users/password', name:'admin_user_changepwd')]
     public function changeUserPassword(Request $request, UserPasswordHasherInterface $passwordHasher, EntityManagerInterface $entityManager, UserRepository $userRepository) : Response
     {
         $form = $this->createFormBuilder()
@@ -236,10 +212,8 @@ class AdminController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
-    /**
-     * @Route("/admin/users/username", name="admin_user_changename")
-     * @param Request $request
-     */
+    
+    #[Route('/admin/users/username', name:'admin_user_changename')]
     public function changeUserName(Request $request, EntityManagerInterface $entityManager, UserRepository $userRepository) : Response
     {
         $form = $this->createFormBuilder()
