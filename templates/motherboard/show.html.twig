@@ -113,11 +113,15 @@
 					<div class="quick-spec-head">Supported RAM type{% if motherboard.getDramType()|length > 1 %}s{% endif %}</div>
 					<div>{% for dram in motherboard.getDramType() %}{{ dram.getName() }}{% if not loop.last %}, {% endif %}{% endfor %}</div>
 					{% endif %}
+					{% if motherboard.getVideoChipset() is not empty %}
 					<div class="quick-spec-head">Video chipset</div>
 					<div>{{ motherboard.getVideoChipset() ? motherboard.getVideoChipset().getNameWithManufacturer() : 'Unknown' }}
 					{% if motherboard.getMaxVideoRam() is not null %}({{  motherboard.getMaxVideoRam().getValueWithUnit() }} max VRAM){% endif %}</div>
+					{% endif %}
+					{% if motherboard.getAudioChipset() is not empty %}
 					<div class="quick-spec-head">Audio chipset</div>
 					<div>{{ motherboard.getAudioChipset() ? motherboard.getAudioChipset().getNameWithManufacturer() : 'Unknown' }}</div>
+					{% endif %}
 				</div>
 				<div class="full-spec">
 					<div class="full-spec-head"><b>I/O ports</b></div>
