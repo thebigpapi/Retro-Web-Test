@@ -8,13 +8,12 @@ use App\Repository\MotherboardRepository;
 use App\Repository\MotherboardBiosRepository;
 use App\Repository\ChipsetRepository;
 use App\Repository\LargeFileRepository;
+use Symfony\Component\HttpFoundation\Response;
 
 class MainController extends AbstractController
 {
-    /**
-     * @Route("/", name="app_homepage")
-     */
-    public function index(MotherboardRepository $motherboardRepository, MotherboardBiosRepository $motherboardBiosRepository, ChipsetRepository $chipsetRepository, LargeFileRepository $largeFileRepository)
+    #[Route('/', name:'app_homepage')]
+    public function index(MotherboardRepository $motherboardRepository, MotherboardBiosRepository $motherboardBiosRepository, ChipsetRepository $chipsetRepository, LargeFileRepository $largeFileRepository) : Response
     {
         $latestMotherboards = $motherboardRepository->findLatest();
         return $this->render('main/index.html.twig', [
@@ -27,10 +26,8 @@ class MainController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/credits", name="app_credits")
-     */
-    public function credits()
+    #[Route('/credits', name:'app_credits')]
+    public function credits() : Response
     {
         return $this->render('main/credits.html.twig', [
             'controller_name' => 'MainController',
