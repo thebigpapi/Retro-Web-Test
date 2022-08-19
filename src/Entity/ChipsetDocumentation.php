@@ -26,7 +26,7 @@ class ChipsetDocumentation
     private $manualFile;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Chipset", inversedBy="manuals")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Chipset", inversedBy="documentations")
      */
     private $chipset;
 
