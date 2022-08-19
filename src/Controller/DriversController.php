@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\LargeFile;
 use App\Form\Drivers\Search;
 use App\Repository\LargeFileRepository;
 use Exception;
@@ -17,7 +18,7 @@ class DriversController extends AbstractController
     /**
      * @Route("/drivers/{id}", name="driver_show", requirements={"id"="\d+"})
      */
-    public function show(int $id, LargeFileRepository $driverRepository)
+    public function show(int $id, LargeFileRepository $driverRepository): Response
     {
         $driver = $driverRepository->find($id);
         if (!$driver) {
@@ -37,7 +38,7 @@ class DriversController extends AbstractController
      * @Route("/drivers/", name="driversearch", methods={"GET"})
      * @param Request $request
      */
-    public function searchResult(Request $request, PaginatorInterface $paginator, LargeFileRepository $driverRepository)
+    public function searchResult(Request $request, PaginatorInterface $paginator, LargeFileRepository $driverRepository): Response
     {
         $criterias = array();
         $name = htmlentities($request->query->get('name') ?? '');
@@ -69,15 +70,9 @@ class DriversController extends AbstractController
      * @Route("/drivers/search/", name="driver_search")
      * @param Request $request
      */
-    public function search(Request $request, TranslatorInterface $translator)
+    public function search(Request $request, TranslatorInterface $translator):Response
     {
-        $notIdentifiedMessage = $translator->trans("Not identified");
-
-
-
-        $form = $this->createForm(Search::class, array(), [
-
-        ]);
+        $form = $this->createForm(Search::class, array());
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -99,18 +94,15 @@ class DriversController extends AbstractController
      * @Route("/drivers/index/{letter}", name="driverindex", requirements={"letter"="\w|[?]"}), methods={"GET"})
      * @param Request $request
      */
-    public function index(Request $request, PaginatorInterface $paginator, string $letter, LargeFileRepository $driverRepository)
+    public function index(Request $request, PaginatorInterface $paginator, string $letter, LargeFileRepository $driverRepository): Response
     {
         if ($letter == "?") $letter = "";
         $data = $driverRepository->findAllAlphabetic($letter);
 
         usort(
             $data,
-            function ($a, $b) {
-                if ($a->getName() == $b->getName()) {
-                    return 0;
-                }
-                return ($a->getName() < $b->getName()) ? -1 : 1;
+            function (LargeFile $a, LargeFile $b) {
+                return strcmp($a->getName(), $b->getName());
             }
         );
 
