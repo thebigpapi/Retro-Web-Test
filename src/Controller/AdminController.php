@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Trace;
 use App\Entity\User;
 use App\Form\ManageUser;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -11,13 +12,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use App\Repository\MotherboardRepository;
-use App\Repository\ManufacturerRepository;
 use App\Repository\TraceRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\Persistence\ObjectManager;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
@@ -28,20 +26,16 @@ class AdminController extends AbstractController
      * @Route("/admin", name="admin_index")
      * @param Request $request
      */
-    public function index(MotherboardRepository $motherboardRepository)
+    public function index(): Response
     {
-        return $this->render('admin/index.html.twig', [
-            'controller_name' => 'MainController',
-        ]);
+        return $this->render('admin/index.html.twig');
     }
 
     /**
      * @Route("/admin/stats", name="admin_stats")
      */
-    public function stats(MotherboardRepository $motherboardRepository)
+    public function stats(MotherboardRepository $motherboardRepository) : Response
     {
-        $manufBoardCount = array();
-
         $manufBoardCount = $motherboardRepository->getManufCount();
         
         return $this->render('admin/stats.html.twig', [
@@ -55,11 +49,12 @@ class AdminController extends AbstractController
      * @Route("/admin/logs", name="admin_logs")
      * @param Request $request
      */
-    public function logs(Request $request, TraceRepository $traceRepository, PaginatorInterface $paginator) {
+    public function logs(Request $request, TraceRepository $traceRepository, PaginatorInterface $paginator): Response
+    {
         $logs = $traceRepository->findAll();
         usort(
             $logs,
-            function ($a, $b) {
+            function (Trace $a, Trace $b) {
                 if ($a->getDate() == $b->getDate()) {
                     return 0;
                 }
@@ -80,21 +75,17 @@ class AdminController extends AbstractController
     /**
      * @Route("/admin/guidelines", name="admin_guidelines")
      */
-    public function guidelines(MotherboardRepository $motherboardRepository)
+    public function guidelines()
     {
-        return $this->render('admin/guidelines.html.twig', [
-            'controller_name' => 'MainController',
-        ]);
+        return $this->render('admin/guidelines.html.twig');
     }
 
     /**
      * @Route("/admin/users", name="admin_user_settings")
      */
-    public function userIndex(MotherboardRepository $motherboardRepository)
+    public function userIndex()
     {
-        return $this->render('admin/users/index.html.twig', [
-            'controller_name' => 'MainController',
-        ]);
+        return $this->render('admin/users/index.html.twig');
     }
 
     /**
@@ -102,7 +93,7 @@ class AdminController extends AbstractController
      * @param Request $request
      * @param UserPasswordHasherInterface $passwordHasher
      */
-    public function manageUsers(Request $request, UserPasswordHasherInterface $passwordHasher, EntityManagerInterface $entityManager, UserRepository $userRepository)
+    public function manageUsers(Request $request, UserPasswordHasherInterface $passwordHasher, EntityManagerInterface $entityManager, UserRepository $userRepository) : Response
     {
         $userForm = $this->createForm(ManageUser::class);
         $message = "";
@@ -145,7 +136,7 @@ class AdminController extends AbstractController
      * @param Request $request
      * @param UserPasswordHasherInterface $passwordHasher
      */
-    public function addUser(Request $request, UserPasswordHasherInterface $passwordHasher, EntityManagerInterface $entityManager)
+    public function addUser(Request $request, UserPasswordHasherInterface $passwordHasher, EntityManagerInterface $entityManager) : Response
     {
         $form = $this->createFormBuilder()
             ->add('name', TextType::class)
@@ -183,9 +174,9 @@ class AdminController extends AbstractController
      * @return string
      */
     private function randomStr(
-        $length,
-        $keyspace = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
-    ) {
+        int $length,
+        string $keyspace = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
+    ) : string {
         $str = '';
         $max = mb_strlen($keyspace, '8bit') - 1;
         if ($max < 1) {
@@ -202,7 +193,7 @@ class AdminController extends AbstractController
      * @param Request $request
      * @param UserPasswordHasherInterface $passwordHasher
      */
-    public function changeUserPassword(Request $request, UserPasswordHasherInterface $passwordHasher, EntityManagerInterface $entityManager, UserRepository $userRepository)
+    public function changeUserPassword(Request $request, UserPasswordHasherInterface $passwordHasher, EntityManagerInterface $entityManager, UserRepository $userRepository) : Response
     {
         $form = $this->createFormBuilder()
             ->add('old_password', PasswordType::class)
@@ -249,7 +240,7 @@ class AdminController extends AbstractController
      * @Route("/admin/users/username", name="admin_user_changename")
      * @param Request $request
      */
-    public function changeUserName(Request $request, EntityManagerInterface $entityManager, UserRepository $userRepository)
+    public function changeUserName(Request $request, EntityManagerInterface $entityManager, UserRepository $userRepository) : Response
     {
         $form = $this->createFormBuilder()
             ->add('new_username', TextType::class)
