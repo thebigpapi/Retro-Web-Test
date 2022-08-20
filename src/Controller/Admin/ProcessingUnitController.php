@@ -30,11 +30,10 @@ class ProcessingUnitController extends AbstractController
     /**
      * Routing
      */
-
     /**
-     * @Route("/admin/manage/processingunits", name="admin_manage_processing_units")
      * @param Request $request
      */
+    #[Route(path: '/admin/manage/processingunits', name: 'admin_manage_processing_units')]
     public function manage(Request $request, TranslatorInterface $translator)
     {
         switch (htmlentities($request->query->get('entity') ?? '')) {
@@ -58,22 +57,18 @@ class ProcessingUnitController extends AbstractController
     }
 
     /**
-     * @Route("/admin/manage/processingunits/coprocessors/add", name="new_coprocessor_add")
      * @param Request $request
      */
+    #[Route(path: '/admin/manage/processingunits/coprocessors/add', name: 'new_coprocessor_add')]
     public function coprocessorAdd(Request $request, EntityManagerInterface $entityManager)
     {
         return $this->renderCoprocessorForm($request, new Coprocessor(), $entityManager);
     }
 
     /**
-     * @Route(
-     *   "/admin/manage/processingunits/coprocessors/{id}/edit",
-     *   name="new_coprocessor_edit",
-     *   requirements={"id"="\d+"}
-     * )
      * @param Request $request
      */
+    #[Route(path: '/admin/manage/processingunits/coprocessors/{id}/edit', name: 'new_coprocessor_edit', requirements: ['id' => '\d+'])]
     public function coprocessorEdit(Request $request, int $id, CoprocessorRepository $coprocessorRepository, EntityManagerInterface $entityManager)
     {
         return $this->renderCoprocessorForm(
@@ -84,22 +79,18 @@ class ProcessingUnitController extends AbstractController
     }
 
     /**
-     * @Route("/admin/manage/processingunits/processors/add", name="new_processor_add")
      * @param Request $request
      */
+    #[Route(path: '/admin/manage/processingunits/processors/add', name: 'new_processor_add')]
     public function processorAdd(Request $request, EntityManagerInterface $entityManager)
     {
         return $this->renderProcessorForm($request, new Processor(), $entityManager);
     }
 
     /**
-     * @Route(
-     *   "/admin/manage/processingunits/processors/{id}/edit",
-     *   name="new_processor_edit",
-     *   requirements={"id"="\d+"}
-     * )
      * @param Request $request
      */
+    #[Route(path: '/admin/manage/processingunits/processors/{id}/edit', name: 'new_processor_edit', requirements: ['id' => '\d+'])]
     public function processorEdit(Request $request, int $id, ProcessorRepository $processorRepository, EntityManagerInterface $entityManager)
     {
         return $this->renderProcessorForm(
@@ -110,9 +101,9 @@ class ProcessingUnitController extends AbstractController
     }
 
     /**
-     * @Route("/admin/manage/processingunits/platforms/add", name="new_processorPlatformType_add")
      * @param Request $request
      */
+    #[Route(path: '/admin/manage/processingunits/platforms/add', name: 'new_processorPlatformType_add')]
     public function platformAdd(Request $request, EntityManagerInterface $entityManager)
     {
         return $this->renderEntityForm(
@@ -126,9 +117,9 @@ class ProcessingUnitController extends AbstractController
     }
 
     /**
-     * @Route("/admin/manage/processingunits/platforms/{id}/edit", name="new_platform_edit", requirements={"id"="\d+"})
      * @param Request $request
      */
+    #[Route(path: '/admin/manage/processingunits/platforms/{id}/edit', name: 'new_platform_edit', requirements: ['id' => '\d+'])]
     public function platformEdit(Request $request, int $id, ProcessorPlatformTypeRepository $processorPlatformTypeRepository, EntityManagerInterface $entityManager)
     {
         return $this->renderEntityForm(
@@ -142,9 +133,9 @@ class ProcessingUnitController extends AbstractController
     }
 
     /**
-     * @Route("/admin/manage/processingunits/instructionsets/add", name="new_instructionSet_add")
      * @param Request $request
      */
+    #[Route(path: '/admin/manage/processingunits/instructionsets/add', name: 'new_instructionSet_add')]
     public function instructionSetAdd(Request $request, EntityManagerInterface $entityManager)
     {
         return $this->renderEntityForm(
@@ -158,13 +149,9 @@ class ProcessingUnitController extends AbstractController
     }
 
     /**
-     * @Route(
-     *   "/admin/manage/processingunits/instructionsets/{id}/edit",
-     *   name="new_instructionSet_edit",
-     *   requirements={"id"="\d+"}
-     * )
      * @param Request $request
      */
+    #[Route(path: '/admin/manage/processingunits/instructionsets/{id}/edit', name: 'new_instructionSet_edit', requirements: ['id' => '\d+'])]
     public function instructionSetEdit(Request $request, int $id, InstructionSetRepository $instructionSetRepository, EntityManagerInterface $entityManager)
     {
         return $this->renderEntityForm(

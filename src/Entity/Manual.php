@@ -10,9 +10,9 @@ use Vich\UploaderBundle\Entity\File as EmbeddedFile;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\ManualRepository")
  * @Vich\Uploadable
  */
+#[ORM\Entity(repositoryClass: 'App\Repository\ManualRepository')]
 class Manual
 {
     use DocumentationTrait;
@@ -24,18 +24,12 @@ class Manual
      * @var File|null
      */
     private $manualFile;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Motherboard", inversedBy="manuals")
-     */
+    #[ORM\ManyToOne(targetEntity: 'App\Entity\Motherboard', inversedBy: 'manuals')]
     private $motherboard;
-
-
     public function getMotherboard(): ?Motherboard
     {
         return $this->motherboard;
     }
-
     public function setMotherboard(?Motherboard $motherboard): self
     {
         $this->motherboard = $motherboard;

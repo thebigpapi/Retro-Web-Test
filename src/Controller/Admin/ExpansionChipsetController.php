@@ -26,11 +26,10 @@ class ExpansionChipsetController extends AbstractController
     /**
      * Routing
      */
-
     /**
-     * @Route("/admin/manage/expansionchipsets", name="admin_manage_expansion_chipsets")
      * @param Request $request
      */
+    #[Route(path: '/admin/manage/expansionchipsets', name: 'admin_manage_expansion_chipsets')]
     public function manage(Request $request, TranslatorInterface $translator)
     {
         switch (htmlentities($request->query->get('entity') ?? '')) {
@@ -48,22 +47,18 @@ class ExpansionChipsetController extends AbstractController
     }
 
     /**
-     * @Route("/admin/manage/expansionchipsets/audiochips/add", name="new_audioChipset_add")
      * @param Request $request
      */
+    #[Route(path: '/admin/manage/expansionchipsets/audiochips/add', name: 'new_audioChipset_add')]
     public function audioChipsetAdd(Request $request, EntityManagerInterface $entityManager, ManufacturerRepository $manufacturerRepository)
     {
         return $this->renderAudioChipsetForm($request, new AudioChipset(), $entityManager, $manufacturerRepository);
     }
 
     /**
-     * @Route(
-     *   "/admin/manage/expansionchipsets/audiochips/{id}/edit",
-     *   name="new_audioChipset_edit",
-     *   requirements={"id"="\d+"}
-     * )
      * @param Request $request
      */
+    #[Route(path: '/admin/manage/expansionchipsets/audiochips/{id}/edit', name: 'new_audioChipset_edit', requirements: ['id' => '\d+'])]
     public function audioChipsetEdit(Request $request, int $id, AudioChipsetRepository $audioChipsetRepository, EntityManagerInterface $entityManager, ManufacturerRepository $manufacturerRepository)
     {
         return $this->renderAudioChipsetForm(
@@ -75,22 +70,18 @@ class ExpansionChipsetController extends AbstractController
     }
 
     /**
-     * @Route("/admin/manage/expansionchipsets/videochips/add", name="new_videoChipset_add")
      * @param Request $request
      */
+    #[Route(path: '/admin/manage/expansionchipsets/videochips/add', name: 'new_videoChipset_add')]
     public function videoChipsetAdd(Request $request, EntityManagerInterface $entityManager, ManufacturerRepository $manufacturerRepository)
     {
         return $this->renderVideoChipsetForm($request, new VideoChipset(), $entityManager, $manufacturerRepository);
     }
 
     /**
-     * @Route(
-     *   "/admin/manage/expansionchipsets/videochips/{id}/edit",
-     *   name="new_videoChipset_edit",
-     *   requirements={"id"="\d+"}
-     * )
      * @param Request $request
      */
+    #[Route(path: '/admin/manage/expansionchipsets/videochips/{id}/edit', name: 'new_videoChipset_edit', requirements: ['id' => '\d+'])]
     public function videoChipsetEdit(Request $request, int $id, VideoChipsetRepository $videoChipsetRepository, EntityManagerInterface $entityManager, ManufacturerRepository $manufacturerRepository)
     {
         return $this->renderVideoChipsetForm(

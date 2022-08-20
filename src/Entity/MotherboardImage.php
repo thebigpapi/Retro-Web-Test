@@ -9,36 +9,26 @@ use Vich\UploaderBundle\Entity\File as EmbeddedFile;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\MotherboardImageRepository")
  * @Vich\Uploadable
  */
+#[ORM\Entity(repositoryClass: 'App\Repository\MotherboardImageRepository')]
 class MotherboardImage
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\MotherboardImageType", inversedBy="motherboardImages")
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\ManyToOne(targetEntity: 'App\Entity\MotherboardImageType', inversedBy: 'motherboardImages')]
+    #[ORM\JoinColumn(nullable: false)]
     private $motherboardImageType;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Motherboard", inversedBy="images")
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\ManyToOne(targetEntity: 'App\Entity\Motherboard', inversedBy: 'images')]
+    #[ORM\JoinColumn(nullable: false)]
     private $motherboard;
-
     /**
-     * @ORM\Column(type="string", length=255)
      * @var string|null
      */
+    #[ORM\Column(type: 'string', length: 255)]
     private $file_name;
-
     /**
      * NOTE: This is not a mapped field of entity metadata, just a simple property.
      * 
@@ -47,70 +37,52 @@ class MotherboardImage
      * @var File|null
      */
     private $imageFile;
-
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
      * @var string|null
      */
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $description;
-
-    /**
-     * @ORM\Column(type="datetime")
-     */
+    #[ORM\Column(type: 'datetime')]
     private $updated_at;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Creditor", inversedBy="motherboardImages")
-     */
+    #[ORM\ManyToOne(targetEntity: 'App\Entity\Creditor', inversedBy: 'motherboardImages')]
     private $creditor;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\License", inversedBy="motherboardImages")
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\ManyToOne(targetEntity: 'App\Entity\License', inversedBy: 'motherboardImages')]
+    #[ORM\JoinColumn(nullable: false)]
     private $license;
-
     public function getId(): ?int
     {
         return $this->id;
     }
-
     public function getMotherboardImageType(): ?MotherboardImageType
     {
         return $this->motherboardImageType;
     }
-
     public function setMotherboardImageType(?MotherboardImageType $motherboardImageType): self
     {
         $this->motherboardImageType = $motherboardImageType;
 
         return $this;
     }
-
     public function getMotherboard(): ?Motherboard
     {
         return $this->motherboard;
     }
-
     public function setMotherboard(?Motherboard $motherboard): self
     {
         $this->motherboard = $motherboard;
 
         return $this;
     }
-
     public function getFileName(): ?string
     {
         return $this->file_name;
     }
-
     public function setFileName(?string $file_name): self
     {
         $this->file_name = $file_name;
 
         return $this;
     }
-
     public function getImageFile(): ?File
     {
         return $this->imageFile;
@@ -124,48 +96,40 @@ class MotherboardImage
 
         return $this;
     }
-
     public function getDescription(): ?string
     {
         return $this->description;
     }
-
     public function setDescription(?string $description): self
     {
         $this->description = $description;
 
         return $this;
     }
-
     public function getUpdatedAt(): ?\DateTimeInterface
     {
         return $this->updated_at;
     }
-
     public function setUpdatedAt(\DateTimeInterface $updated_at): self
     {
         $this->updated_at = $updated_at;
 
         return $this;
     }
-
     public function getCreditor(): ?Creditor
     {
         return $this->creditor;
     }
-
     public function setCreditor(?Creditor $creditor): self
     {
         $this->creditor = $creditor;
 
         return $this;
     }
-
     public function getLicense(): ?License
     {
         return $this->license;
     }
-
     public function setLicense(?License $license): self
     {
         $this->license = $license;

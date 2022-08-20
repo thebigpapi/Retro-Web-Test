@@ -57,6 +57,7 @@
         "doctrine/doctrine-fixtures-bundle": "^3.4",
         "liip/test-fixtures-bundle": "^2.0.0",
         "phpcompatibility/php-compatibility": "^9.3",
+        "rector/rector": "^0.14.0",
         "symfony/browser-kit": "^5.4",
         "symfony/css-selector": "^5.4",
         "symfony/debug-bundle": "^5.4",

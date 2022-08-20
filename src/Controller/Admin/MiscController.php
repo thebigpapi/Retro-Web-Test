@@ -28,11 +28,10 @@ class MiscController extends AbstractController
     /**
      * Routing
      */
-
     /**
-     * @Route("/admin/manage/miscs", name="admin_manage_miscs")
      * @param Request $request
      */
+    #[Route(path: '/admin/manage/miscs', name: 'admin_manage_miscs')]
     public function manage(Request $request, TranslatorInterface $translator)
     {
         switch (htmlentities($request->query->get('entity') ?? '')) {
@@ -54,18 +53,18 @@ class MiscController extends AbstractController
     }
 
     /**
-     * @Route("/admin/manage/miscs/manufacturers/add", name="new_manufacturer_add")
      * @param Request $request
      */
+    #[Route(path: '/admin/manage/miscs/manufacturers/add', name: 'new_manufacturer_add')]
     public function manufacturerAdd(Request $request, EntityManagerInterface $entityManager)
     {
         return $this->renderManufacturerForm($request, new Manufacturer(), 'admin/edit/miscs/manufacturer.html.twig', $entityManager);
     }
 
     /**
-     * @Route("/admin/manage/miscs/manufacturers/{id}/edit", name="new_manufacturer_edit", requirements={"id"="\d+"})
      * @param Request $request
      */
+    #[Route(path: '/admin/manage/miscs/manufacturers/{id}/edit', name: 'new_manufacturer_edit', requirements: ['id' => '\d+'])]
     public function manufacturerEdit(Request $request, int $id, ManufacturerRepository $manufacturerRepository, EntityManagerInterface $entityManager)
     {
         return $this->renderManufacturerForm(
@@ -77,9 +76,9 @@ class MiscController extends AbstractController
     }
 
     /**
-     * @Route("/admin/manage/miscs/issues/add", name="new_knownIssue_add")
      * @param Request $request
      */
+    #[Route(path: '/admin/manage/miscs/issues/add', name: 'new_knownIssue_add')]
     public function knownIssueAdd(Request $request, EntityManagerInterface $entityManager)
     {
         return $this->renderEntityForm(
@@ -93,9 +92,9 @@ class MiscController extends AbstractController
     }
 
     /**
-     * @Route("/admin/manage/miscs/issues/{id}/edit", name="new_knownIssue_edit", requirements={"id"="\d+"})
      * @param Request $request
      */
+    #[Route(path: '/admin/manage/miscs/issues/{id}/edit', name: 'new_knownIssue_edit', requirements: ['id' => '\d+'])]
     public function knownIssueEdit(Request $request, int $id, KnownIssueRepository $knownIssueRepository, EntityManagerInterface $entityManager)
     {
         return $this->renderEntityForm(
@@ -109,9 +108,9 @@ class MiscController extends AbstractController
     }
 
     /**
-     * @Route("/admin/manage/miscs/freqs/add", name="new_cpuSpeed_add")
      * @param Request $request
      */
+    #[Route(path: '/admin/manage/miscs/freqs/add', name: 'new_cpuSpeed_add')]
     public function cpuSpeedAdd(Request $request, EntityManagerInterface $entityManager)
     {
         return $this->renderEntityForm(
@@ -125,9 +124,9 @@ class MiscController extends AbstractController
     }
 
     /**
-     * @Route("/admin/manage/miscs/freqs/{id}/edit", name="new_cpuSpeed_edit", requirements={"id"="\d+"})
      * @param Request $request
      */
+    #[Route(path: '/admin/manage/miscs/freqs/{id}/edit', name: 'new_cpuSpeed_edit', requirements: ['id' => '\d+'])]
     public function cpuSpeedEdit(Request $request, int $id, CpuSpeedRepository $cpuSpeedRepository, EntityManagerInterface $entityManager)
     {
         return $this->renderEntityForm(
@@ -141,9 +140,9 @@ class MiscController extends AbstractController
     }
 
     /**
-     * @Route("/admin/manage/miscs/creditors/add", name="new_creditor_add")
      * @param Request $request
      */
+    #[Route(path: '/admin/manage/miscs/creditors/add', name: 'new_creditor_add')]
     public function creditorAdd(Request $request, EntityManagerInterface $entityManager)
     {
         return $this->renderEntityForm(
@@ -157,9 +156,9 @@ class MiscController extends AbstractController
     }
 
     /**
-     * @Route("/admin/manage/miscs/creditors/{id}/edit", name="new_creditor_edit", requirements={"id"="\d+"})
      * @param Request $request
      */
+    #[Route(path: '/admin/manage/miscs/creditors/{id}/edit', name: 'new_creditor_edit', requirements: ['id' => '\d+'])]
     public function creditorEdit(Request $request, int $id, CreditorRepository $creditorRepository, EntityManagerInterface $entityManager)
     {
         return $this->renderEntityForm(

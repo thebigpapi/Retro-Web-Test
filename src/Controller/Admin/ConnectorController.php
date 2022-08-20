@@ -29,11 +29,10 @@ class ConnectorController extends AbstractController
     /**
      * Routing
      */
-
     /**
-     * @Route("/admin/manage/connectors", name="admin_manage_connectors")
      * @param Request $request
      */
+    #[Route(path: '/admin/manage/connectors', name: 'admin_manage_connectors')]
     public function manage(Request $request, TranslatorInterface $translator)
     {
         switch (htmlentities($request->query->get('entity') ?? '')) {
@@ -55,9 +54,9 @@ class ConnectorController extends AbstractController
     }
 
     /**
-     * @Route("/admin/manage/connectors/expansions/add", name="new_expansionSlot_add")
      * @param Request $request
      */
+    #[Route(path: '/admin/manage/connectors/expansions/add', name: 'new_expansionSlot_add')]
     public function expansionSlotAdd(Request $request, EntityManagerInterface $entityManagerInterface)
     {
         return $this->renderEntityForm(
@@ -71,9 +70,9 @@ class ConnectorController extends AbstractController
     }
 
     /**
-     * @Route("/admin/manage/connectors/expansions/{id}/edit", name="new_expansionSlot_edit", requirements={"id"="\d+"})
      * @param Request $request
      */
+    #[Route(path: '/admin/manage/connectors/expansions/{id}/edit', name: 'new_expansionSlot_edit', requirements: ['id' => '\d+'])]
     public function expansionSlotEdit(Request $request, int $id, ExpansionSlotRepository $expansionSlotRepository, EntityManagerInterface $entityManagerInterface)
     {
         return $this->renderEntityForm(
@@ -87,9 +86,9 @@ class ConnectorController extends AbstractController
     }
 
     /**
-     * @Route("/admin/manage/connectors/ios/add", name="new_ioPort_add")
      * @param Request $request
      */
+    #[Route(path: '/admin/manage/connectors/ios/add', name: 'new_ioPort_add')]
     public function ioPortAdd(Request $request, EntityManagerInterface $entityManagerInterface)
     {
         return $this->renderEntityForm(
@@ -103,9 +102,9 @@ class ConnectorController extends AbstractController
     }
 
     /**
-     * @Route("/admin/manage/connectors/ios/{id}/edit", name="new_ioPort_edit", requirements={"id"="\d+"})
      * @param Request $request
      */
+    #[Route(path: '/admin/manage/connectors/ios/{id}/edit', name: 'new_ioPort_edit', requirements: ['id' => '\d+'])]
     public function ioPortEdit(Request $request, int $id, IoPortRepository $ioPortRepository, EntityManagerInterface $entityManagerInterface)
     {
         return $this->renderEntityForm(
@@ -119,9 +118,9 @@ class ConnectorController extends AbstractController
     }
 
     /**
-     * @Route("/admin/manage/connectors/sockets/add", name="new_cpuSocket_add")
      * @param Request $request
      */
+    #[Route(path: '/admin/manage/connectors/sockets/add', name: 'new_cpuSocket_add')]
     public function cpuSocketAdd(Request $request, EntityManagerInterface $entityManagerInterface)
     {
         return $this->renderEntityForm(
@@ -135,9 +134,9 @@ class ConnectorController extends AbstractController
     }
 
     /**
-     * @Route("/admin/manage/connectors/sockets/{id}/edit", name="new_cpuSocket_edit", requirements={"id"="\d+"})
      * @param Request $request
      */
+    #[Route(path: '/admin/manage/connectors/sockets/{id}/edit', name: 'new_cpuSocket_edit', requirements: ['id' => '\d+'])]
     public function cpuSocketEdit(Request $request, int $id, CpuSpeedRepository $cpuSpeedRepository, EntityManagerInterface $entityManagerInterface)
     {
         return $this->renderEntityForm(
@@ -152,9 +151,9 @@ class ConnectorController extends AbstractController
 
 
     /**
-     * @Route("/admin/manage/connectors/psuconnectors/add", name="new_psu_add")
      * @param Request $request
      */
+    #[Route(path: '/admin/manage/connectors/psuconnectors/add', name: 'new_psu_add')]
     public function psuConnectorAdd(Request $request, EntityManagerInterface $entityManagerInterface)
     {
         return $this->renderEntityForm(
@@ -167,9 +166,9 @@ class ConnectorController extends AbstractController
         );
     }
     /**
-     * @Route("/admin/manage/connectors/psuconnectors/{id}/edit", name="new_psu_edit", requirements={"id"="\d+"})
      * @param Request $request
      */
+    #[Route(path: '/admin/manage/connectors/psuconnectors/{id}/edit', name: 'new_psu_edit', requirements: ['id' => '\d+'])]
     public function psuConnectorEdit(Request $request, int $id, PSUConnectorRepository $pSUConnectorRepository, EntityManagerInterface $entityManagerInterface)
     {
         return $this->renderEntityForm(

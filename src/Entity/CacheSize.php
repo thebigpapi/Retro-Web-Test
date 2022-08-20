@@ -6,43 +6,23 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\CacheSizeRepository")
- */
+#[ORM\Entity(repositoryClass: 'App\Repository\CacheSizeRepository')]
 class CacheSize
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
-
-    /**
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Column(type: 'integer')]
     private $value;
-
-    /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Motherboard", mappedBy="cacheSize")
-     */
+    #[ORM\ManyToMany(targetEntity: 'App\Entity\Motherboard', mappedBy: 'cacheSize')]
     private $motherboards;
-
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Processor", mappedBy="L1")
-     */
+    #[ORM\OneToMany(targetEntity: 'App\Entity\Processor', mappedBy: 'L1')]
     private $getProcessorsL1;
-
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Processor", mappedBy="L2")
-     */
+    #[ORM\OneToMany(targetEntity: 'App\Entity\Processor', mappedBy: 'L2')]
     private $getProcessorsL2;
-
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Processor", mappedBy="L3")
-     */
+    #[ORM\OneToMany(targetEntity: 'App\Entity\Processor', mappedBy: 'L3')]
     private $getProcessorsL3;
-
     public function __construct()
     {
         $this->motherboardCacheSizes = new ArrayCollection();
@@ -51,24 +31,20 @@ class CacheSize
         $this->getProcessorsL2 = new ArrayCollection();
         $this->getProcessorsL3 = new ArrayCollection();
     }
-
     public function getId(): ?int
     {
         return $this->id;
     }
-
     public function getValue(): ?int
     {
         return $this->value;
     }
-
     public function setValue(int $value): self
     {
         $this->value = $value;
 
         return $this;
     }
-    
     public function getValueWithUnit(): ?string
     {
         $val = $this->value;
@@ -86,7 +62,6 @@ class CacheSize
             return $val.'B';
         }
     }
-
     /**
      * @return Collection|Motherboard[]
      */
@@ -94,7 +69,6 @@ class CacheSize
     {
         return $this->motherboards;
     }
-
     public function addMotherboard(Motherboard $motherboard): self
     {
         if (!$this->motherboards->contains($motherboard)) {
@@ -104,7 +78,6 @@ class CacheSize
 
         return $this;
     }
-
     public function removeMotherboard(Motherboard $motherboard): self
     {
         if ($this->motherboards->contains($motherboard)) {
@@ -114,7 +87,6 @@ class CacheSize
 
         return $this;
     }
-
     /**
      * @return Collection|Processor[]
      */
@@ -122,7 +94,6 @@ class CacheSize
     {
         return $this->getProcessorsL1;
     }
-
     public function addGetProcessorsL1(Processor $getProcessorsL1): self
     {
         if (!$this->getProcessorsL1->contains($getProcessorsL1)) {
@@ -132,7 +103,6 @@ class CacheSize
 
         return $this;
     }
-
     public function removeGetProcessorsL1(Processor $getProcessorsL1): self
     {
         if ($this->getProcessorsL1->contains($getProcessorsL1)) {
@@ -145,7 +115,6 @@ class CacheSize
 
         return $this;
     }
-
     /**
      * @return Collection|Processor[]
      */
@@ -153,7 +122,6 @@ class CacheSize
     {
         return $this->getProcessorsL2;
     }
-
     public function addGetProcessorsL2(Processor $getProcessorsL2): self
     {
         if (!$this->getProcessorsL2->contains($getProcessorsL2)) {
@@ -163,7 +131,6 @@ class CacheSize
 
         return $this;
     }
-
     public function removeGetProcessorsL2(Processor $getProcessorsL2): self
     {
         if ($this->getProcessorsL2->contains($getProcessorsL2)) {
@@ -176,7 +143,6 @@ class CacheSize
 
         return $this;
     }
-
     /**
      * @return Collection|Processor[]
      */
@@ -184,7 +150,6 @@ class CacheSize
     {
         return $this->getProcessorsL3;
     }
-
     public function addGetProcessorsL3(Processor $getProcessorsL3): self
     {
         if (!$this->getProcessorsL3->contains($getProcessorsL3)) {
@@ -194,7 +159,6 @@ class CacheSize
 
         return $this;
     }
-
     public function removeGetProcessorsL3(Processor $getProcessorsL3): self
     {
         if ($this->getProcessorsL3->contains($getProcessorsL3)) {

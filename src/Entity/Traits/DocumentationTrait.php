@@ -15,33 +15,25 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
  */
 trait DocumentationTrait
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
      * @var string|null
      */
+    #[ORM\Column(type: 'string', length: 255)]
     private $file_name;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    #[ORM\Column(type: 'string', length: 255)]
     private $link_name;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Language", inversedBy="manuals")
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\ManyToOne(targetEntity: 'App\Entity\Language', inversedBy: 'manuals')]
+    #[ORM\JoinColumn(nullable: false)]
     private $language;
 
-    /**
-     * @ORM\Column(type="datetime")
-     */
+    #[ORM\Column(type: 'datetime')]
     private $updated_at;
 
 

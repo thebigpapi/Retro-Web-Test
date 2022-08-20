@@ -9,30 +9,23 @@ use Vich\UploaderBundle\Entity\File as EmbeddedFile;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\ChipImageRepository")
  * @Vich\Uploadable
  */
+#[ORM\Entity(repositoryClass: 'App\Repository\ChipImageRepository')]
 class ChipImage
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Chip", inversedBy="images")
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\ManyToOne(targetEntity: 'App\Entity\Chip', inversedBy: 'images')]
+    #[ORM\JoinColumn(nullable: false)]
     private $chip;
-
     /**
-     * @ORM\Column(type="string", length=255)
      * @var string|null
      */
+    #[ORM\Column(type: 'string', length: 255)]
     private $file_name;
-
     /**
      * NOTE: This is not a mapped field of entity metadata, just a simple property.
      * 
@@ -41,105 +34,79 @@ class ChipImage
      * @var File|null
      */
     private $imageFile;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $description;
-
-    /**
-     * @ORM\Column(type="datetime")
-     */
+    #[ORM\Column(type: 'datetime')]
     private $updated_at;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Creditor", inversedBy="chipImages")
-     */
+    #[ORM\ManyToOne(targetEntity: 'App\Entity\Creditor', inversedBy: 'chipImages')]
     private $creditor;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\License", inversedBy="chipImages")
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\ManyToOne(targetEntity: 'App\Entity\License', inversedBy: 'chipImages')]
+    #[ORM\JoinColumn(nullable: false)]
     private $license;
-
     public function getId(): ?int
     {
         return $this->id;
     }
-
     public function getChip(): ?Chip
     {
         return $this->chip;
     }
-
     public function setChip(?Chip $chip): self
     {
         $this->chip = $chip;
 
         return $this;
     }
-
     public function getFileName(): ?string
     {
         return $this->file_name;
     }
-
     public function setFileName(?string $file_name): self
     {
         $this->file_name = $file_name;
 
         return $this;
     }
-
     public function getDescription(): ?string
     {
         return $this->description;
     }
-
     public function setDescription(?string $description): self
     {
         $this->description = $description;
 
         return $this;
     }
-
     public function getUpdatedAt(): ?\DateTimeInterface
     {
         return $this->updated_at;
     }
-
     public function setUpdatedAt(\DateTimeInterface $updated_at): self
     {
         $this->updated_at = $updated_at;
 
         return $this;
     }
-
     public function getCreditor(): ?Creditor
     {
         return $this->creditor;
     }
-
     public function setCreditor(?Creditor $creditor): self
     {
         $this->creditor = $creditor;
 
         return $this;
     }
-
     public function getLicense(): ?License
     {
         return $this->license;
     }
-
     public function setLicense(?License $license): self
     {
         $this->license = $license;
 
         return $this;
     }
-
     public function getImageFile(): ?File
     {
         return $this->imageFile;

@@ -6,30 +6,20 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\CoprocessorRepository")
- */
+#[ORM\Entity(repositoryClass: 'App\Repository\CoprocessorRepository')]
 class Coprocessor extends ProcessingUnit
 {
-
-    /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Motherboard", mappedBy="coprocessors")
-     */
+    #[ORM\ManyToMany(targetEntity: 'App\Entity\Motherboard', mappedBy: 'coprocessors')]
     private $motherboards;
-
-
     public function __construct()
     {
         parent::__construct();
         $this->motherboards = new ArrayCollection();
     }
-
-    
     public function getNameWithManufacturer() 
     {
         return $this->getManufacturer()->getShortNameIfExist() . " " . $this->name;
     }
-
     /**
      * @return Collection|Motherboard[]
      */
@@ -37,7 +27,6 @@ class Coprocessor extends ProcessingUnit
     {
         return $this->motherboards;
     }
-
     public function addMotherboard(Motherboard $motherboard): self
     {
         if (!$this->motherboards->contains($motherboard)) {
@@ -47,7 +36,6 @@ class Coprocessor extends ProcessingUnit
 
         return $this;
     }
-
     public function removeMotherboard(Motherboard $motherboard): self
     {
         if ($this->motherboards->contains($motherboard)) {
@@ -57,10 +45,8 @@ class Coprocessor extends ProcessingUnit
 
         return $this;
     }
-
     public function getNameWithPlatform() {
         $this->getPlatform() ? $name = $this->getPlatform()->getName() : $name = "Unidentified";
         return $this->getManufacturer()->getShortNameIfExist() . " " . $this->name . " (" . $name . ")";
     }
-
 }

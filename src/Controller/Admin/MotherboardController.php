@@ -30,11 +30,10 @@ class MotherboardController extends AbstractController
     /**
      * Routing
      */
-
     /**
-     * @Route("/admin/manage/motherboards", name="admin_manage_motherboards")
      * @param Request $request
      */
+    #[Route(path: '/admin/manage/motherboards', name: 'admin_manage_motherboards')]
     public function manage(Request $request, TranslatorInterface $translator)
     {
         switch (htmlentities($request->query->get('entity') ?? '')) {
@@ -55,9 +54,9 @@ class MotherboardController extends AbstractController
     }
 
     /**
-     * @Route("/admin/manage/motherboards/motherboards/add", name="new_motherboard_add")
      * @param Request $request
      */
+    #[Route(path: '/admin/manage/motherboards/motherboards/add', name: 'new_motherboard_add')]
     public function motherboardAdd(Request $request, ChipsetRepository $chipsetRepository, CpuSocketRepository $cpuSocketRepository, EntityManagerInterface $entityManager)
     {
         return $this->renderMotherboardForm(
@@ -70,12 +69,9 @@ class MotherboardController extends AbstractController
     }
 
     /**
-     * @Route(
-     *   "/admin/manage/motherboards/motherboards/{id}/edit",
-     *    name="new_motherboard_edit",
-     *    requirements={"id"="\d+"})
      * @param Request $request
      */
+    #[Route(path: '/admin/manage/motherboards/motherboards/{id}/edit', name: 'new_motherboard_edit', requirements: ['id' => '\d+'])]
     public function motherboardEdit(Request $request, MotherboardRepository $motherboardRepository, int $id, ChipsetRepository $chipsetRepository, CpuSocketRepository $cpuSocketRepository, EntityManagerInterface $entityManager)
     {
         return $this->renderMotherboardForm(
@@ -88,9 +84,9 @@ class MotherboardController extends AbstractController
     }
 
     /**
-     * @Route("/admin/manage/motherboards/formfactors/add", name="new_formFactor_add")
      * @param Request $request
      */
+    #[Route(path: '/admin/manage/motherboards/formfactors/add', name: 'new_formFactor_add')]
     public function formFactorAdd(Request $request, EntityManagerInterface $entityManager)
     {
         return $this->renderEntityForm(
@@ -104,9 +100,9 @@ class MotherboardController extends AbstractController
     }
 
     /**
-     * @Route("/admin/manage/motherboards/formfactors/{id}/edit", name="new_formFactor_edit", requirements={"id"="\d+"})
      * @param Request $request
      */
+    #[Route(path: '/admin/manage/motherboards/formfactors/{id}/edit', name: 'new_formFactor_edit', requirements: ['id' => '\d+'])]
     public function formFactorEdit(Request $request, int $id, FormFactorRepository $formFactorRepository, EntityManagerInterface $entityManager)
     {
         return $this->renderEntityForm(

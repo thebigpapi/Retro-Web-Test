@@ -3,49 +3,34 @@
 namespace App\Entity;
 
 use App\Repository\TraceRepository;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\Entity;
 
-/**
- * @ORM\Entity(repositoryClass=TraceRepository::class)
- */
+#[Entity(repositoryClass:TraceRepository::class)]
 class Trace
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
-    private $id;
+    #[ORM\Column(type: Types::INTEGER)]
+    #[ORM\Id, ORM\GeneratedValue(strategy: 'AUTO')]
+    private ?int $id;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $username;
+    #[ORM\Column(type: Types::STRING, length:255)]
+    private string $username;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $eventType;
+    #[ORM\Column(type: Types::STRING, length:255)]
+    private string $eventType;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $objectType;
+    #[ORM\Column(type: Types::STRING, length:255)]
+    private string $objectType;
 
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
-    private $objectId;
+    #[ORM\Column(type: Types::INTEGER, nullable:true)]
+    private ?int $objectId;
 
-    /**
-     * @ORM\Column(type="string", length=10000)
-     */
-    private $content;
+    #[ORM\Column(type: Types::STRING, length:10000)]
+    private string $content;
 
-    /**
-     * @ORM\Column(type="datetime")
-     */
-    private $date;
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    private \DateTimeInterface|null $date;
 
     public function getId(): ?int
     {

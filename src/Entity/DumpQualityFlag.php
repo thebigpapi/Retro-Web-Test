@@ -7,67 +7,47 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass=DumpQualityFlagRepository::class)
- */
+#[ORM\Entity(repositoryClass: DumpQualityFlagRepository::class)]
 class DumpQualityFlag
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    #[ORM\Column(type: 'string', length: 255)]
     private $name;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    #[ORM\Column(type: 'string', length: 255)]
     private $tagName;
-
-    /**
-     * @ORM\OneToMany(targetEntity=LargeFile::class, mappedBy="dumpQualityFlag")
-     */
+    #[ORM\OneToMany(targetEntity: LargeFile::class, mappedBy: 'dumpQualityFlag')]
     private $largeFiles;
-
     public function __construct()
     {
         $this->largeFiles = new ArrayCollection();
     }
-
     public function getId(): ?int
     {
         return $this->id;
     }
-
     public function getName(): ?string
     {
         return $this->name;
     }
-
     public function setName(string $name): self
     {
         $this->name = $name;
 
         return $this;
     }
-
     public function getTagName(): ?string
     {
         return $this->tagName;
     }
-
     public function setTagName(string $tagName): self
     {
         $this->tagName = $tagName;
 
         return $this;
     }
-
     /**
      * @return Collection|LargeFile[]
      */
@@ -75,7 +55,6 @@ class DumpQualityFlag
     {
         return $this->largeFiles;
     }
-
     public function addLargeFile(LargeFile $largeFile): self
     {
         if (!$this->largeFiles->contains($largeFile)) {
@@ -85,7 +64,6 @@ class DumpQualityFlag
 
         return $this;
     }
-
     public function removeLargeFile(LargeFile $largeFile): self
     {
         if ($this->largeFiles->removeElement($largeFile)) {

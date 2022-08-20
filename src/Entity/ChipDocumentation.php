@@ -10,9 +10,9 @@ use Vich\UploaderBundle\Entity\File as EmbeddedFile;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\ChipDocumentationRepository")
  * @Vich\Uploadable
  */
+#[ORM\Entity(repositoryClass: 'App\Repository\ChipDocumentationRepository')]
 class ChipDocumentation
 {
     use DocumentationTrait;
@@ -24,18 +24,12 @@ class ChipDocumentation
      * @var File|null
      */
     private $manualFile;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Chip", inversedBy="manuals")
-     */
+    #[ORM\ManyToOne(targetEntity: 'App\Entity\Chip', inversedBy: 'manuals')]
     private $chip;
-
-
     public function getChip(): ?Chip
     {
         return $this->chip;
     }
-
     public function setChip(?Chip $chip): self
     {
         $this->chip = $chip;

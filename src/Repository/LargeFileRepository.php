@@ -50,7 +50,7 @@ class LargeFileRepository extends ServiceEntityRepository
     }
     public function findByDriver(array $criteria): array
     {
-        
+
         $entityManager = $this->getEntityManager();
 
         $whereArray = array();
@@ -72,7 +72,7 @@ class LargeFileRepository extends ServiceEntityRepository
             WHERE $whereString
             ORDER BY drv.name ASC"
         );
-        
+
         // Setting values
         foreach ($valuesArray as $key => $value) {
             $query->setParameter($key, $value);
