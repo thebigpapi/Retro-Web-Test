@@ -11,13 +11,10 @@ use Symfony\Contracts\Cache\CacheInterface;
 
 class SiteMapController extends AbstractController
 {
-    /**
-     * @Route("/sitemap.xml", name="sitemap", defaults={"_format"="xml"})
-     */
-    public function index(Request $request, MotherboardRepository $motherboardRepository, CacheInterface $cache): Response
+    #[Route(path: '/sitemap.xml', name: 'sitemap', defaults: ['_format' => 'xml'])]
+    public function index(Request $request, MotherboardRepository $motherboardRepository, CacheInterface $cache) : Response
     {
         $hostname = $request->getSchemeAndHttpHost();
-
         $urls = $cache->get("sitemapUrls" . $request->getLocale(), function () use ($motherboardRepository) {
             // Url array
             $urls = [];
@@ -47,14 +44,11 @@ class SiteMapController extends AbstractController
             }
             return $urls;
         });
-
         $response = new Response($this->renderView('site_map/index.xml.twig', [
             'urls' => $urls,
             'hostname' => $hostname,
         ]), 200);
-
         $response->headers->set('Content-Type', 'text/xml');
-
         return $response;
     }
 }

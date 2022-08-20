@@ -6,50 +6,38 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\IoPortRepository")
- */
+#[ORM\Entity(repositoryClass: 'App\Repository\IoPortRepository')]
 class IoPort
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    
+    #[ORM\Column(type: 'string', length: 255)]
     private $name;
-
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\MotherboardIoPort", mappedBy="io_port", orphanRemoval=true)
-     */
+    
+    #[ORM\OneToMany(targetEntity: 'App\Entity\MotherboardIoPort', mappedBy: 'io_port', orphanRemoval: true)]
     private $motherboardIoPorts;
 
     public function __construct()
     {
         $this->motherboardIoPorts = new ArrayCollection();
     }
-
     public function getId(): ?int
     {
         return $this->id;
     }
-
     public function getName(): ?string
     {
         return $this->name;
     }
-
     public function setName(string $name): self
     {
         $this->name = $name;
 
         return $this;
     }
-
     /**
      * @return Collection|MotherboardIoPort[]
      */
@@ -57,7 +45,6 @@ class IoPort
     {
         return $this->motherboardIoPorts;
     }
-
     public function addMotherboardIoPort(MotherboardIoPort $motherboardIoPort): self
     {
         if (!$this->motherboardIoPorts->contains($motherboardIoPort)) {
@@ -67,7 +54,6 @@ class IoPort
 
         return $this;
     }
-
     public function removeMotherboardIoPort(MotherboardIoPort $motherboardIoPort): self
     {
         if ($this->motherboardIoPorts->contains($motherboardIoPort)) {

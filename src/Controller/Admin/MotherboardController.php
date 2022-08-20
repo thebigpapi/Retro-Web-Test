@@ -33,14 +33,11 @@ class MotherboardController extends AbstractController
     /**
      * Routing
      */
-
-    /**
-     * @Route("/admin/manage/motherboards", name="admin_manage_motherboards")
-     * @param Request $request
-     */
+    
+    #[Route(path: '/admin/manage/motherboards', name: 'admin_manage_motherboards')]
     public function manage(Request $request, TranslatorInterface $translator)
     {
-        switch (htmlentities($request->query->get('entity'))) {
+        switch (htmlentities($request->query->get('entity') ?? '')) {
             case "motherboard":
                 return $this->manageMotherboards($request, $translator);
                 break;
@@ -57,10 +54,8 @@ class MotherboardController extends AbstractController
         }
     }
 
-    /**
-     * @Route("/admin/manage/motherboards/motherboards/add", name="new_motherboard_add")
-     * @param Request $request
-     */
+    
+    #[Route(path: '/admin/manage/motherboards/motherboards/add', name: 'new_motherboard_add')]
     public function motherboardAdd(Request $request, ChipsetRepository $chipsetRepository, CpuSocketRepository $cpuSocketRepository, EntityManagerInterface $entityManager)
     {
         return $this->renderMotherboardForm(
@@ -72,13 +67,8 @@ class MotherboardController extends AbstractController
         );
     }
 
-    /**
-     * @Route(
-     *   "/admin/manage/motherboards/motherboards/{id}/edit",
-     *    name="new_motherboard_edit",
-     *    requirements={"id"="\d+"})
-     * @param Request $request
-     */
+    
+    #[Route(path: '/admin/manage/motherboards/motherboards/{id}/edit', name: 'new_motherboard_edit', requirements: ['id' => '\d+'])]
     public function motherboardEdit(Request $request, MotherboardRepository $motherboardRepository, int $id, ChipsetRepository $chipsetRepository, CpuSocketRepository $cpuSocketRepository, EntityManagerInterface $entityManager)
     {
         return $this->renderMotherboardForm(
@@ -90,10 +80,8 @@ class MotherboardController extends AbstractController
         );
     }
 
-    /**
-     * @Route("/admin/manage/motherboards/formfactors/add", name="new_formFactor_add")
-     * @param Request $request
-     */
+    
+    #[Route(path: '/admin/manage/motherboards/formfactors/add', name: 'new_formFactor_add')]
     public function formFactorAdd(Request $request, EntityManagerInterface $entityManager)
     {
         return $this->renderEntityForm(
@@ -106,10 +94,8 @@ class MotherboardController extends AbstractController
         );
     }
 
-    /**
-     * @Route("/admin/manage/motherboards/formfactors/{id}/edit", name="new_formFactor_edit", requirements={"id"="\d+"})
-     * @param Request $request
-     */
+    
+    #[Route(path: '/admin/manage/motherboards/formfactors/{id}/edit', name: 'new_formFactor_edit', requirements: ['id' => '\d+'])]
     public function formFactorEdit(Request $request, int $id, FormFactorRepository $formFactorRepository, EntityManagerInterface $entityManager)
     {
         return $this->renderEntityForm(
@@ -146,7 +132,6 @@ class MotherboardController extends AbstractController
             if ($data['chipset'])
                 $getParams["chipset"] = $data['chipset']->getId(); 
             $getParams["entity"] = "motherboard";
-            //dd($getParams);
             return $this->redirect($this->generateUrl('admin_manage_motherboards', $getParams));
         } else {
             $criterias = array();
@@ -168,7 +153,6 @@ class MotherboardController extends AbstractController
             }
         }
         /*if($criterias)*/
-        //dd($request->query->get('entity'));
         return $this->render('admin/manage/motherboards/manage.html.twig', [
             /*"search" => $search->createView(),
             "criterias" => $criterias,*/
@@ -250,11 +234,9 @@ class MotherboardController extends AbstractController
             "entityName" => $request->query->get('entity'),
         ]);
     }
-    public function listFormfactor(Request $request, PaginatorInterface $paginator, array $criterias)
+    public function listFormfactor(Request $request, PaginatorInterface $paginator, array $criterias, FormFactorRepository $formFactorRepository)
     {
-        $objects = $this->getDoctrine()
-            ->getRepository(FormFactor::class)
-            ->findBy($criterias, ["name" => "ASC"]);
+        $objects = $formFactorRepository->findBy($criterias, ["name" => "ASC"]);
 
         $paginatedObjects = $paginator->paginate(
             $objects,
@@ -283,7 +265,7 @@ class MotherboardController extends AbstractController
             $chipsets,
 
             function (Chipset $a, Chipset $b) {
-                return $a->getFullName() <=> $b->getFullName();
+                return strcmp($a->getFullName(), $b->getFullName());
             }
         );
 

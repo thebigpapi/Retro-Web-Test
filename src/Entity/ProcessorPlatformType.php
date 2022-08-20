@@ -6,46 +6,30 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\ProcessorPlatformTypeRepository")
- */
+#[ORM\Entity(repositoryClass: 'App\Repository\ProcessorPlatformTypeRepository')]
 class ProcessorPlatformType
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    
+    #[ORM\Column(type: 'string', length: 255)]
     private $name;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Motherboard", mappedBy="processorPlatformTypes")
-     */
+    #[ORM\ManyToMany(targetEntity: 'App\Entity\Motherboard', mappedBy: 'processorPlatformTypes')]
     private $motherboards;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\ProcessingUnit", mappedBy="platform")
-     */
+    #[ORM\OneToMany(targetEntity: 'App\Entity\ProcessingUnit', mappedBy: 'platform')]
     private $processingUnits;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\ProcessorPlatformType", inversedBy="ChildProcessorPlatformType")
-     */
+    #[ORM\ManyToMany(targetEntity: 'App\Entity\ProcessorPlatformType', inversedBy: 'ChildProcessorPlatformType')]
     private $compatibleWith;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\ProcessorPlatformType", mappedBy="compatibleWith")
-     */
+    #[ORM\ManyToMany(targetEntity: 'App\Entity\ProcessorPlatformType', mappedBy: 'compatibleWith')]
     private $ChildProcessorPlatformType;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\CpuSocket", mappedBy="platforms")
-     */
+    #[ORM\ManyToMany(targetEntity: 'App\Entity\CpuSocket', mappedBy: 'platforms')]
     private $cpuSockets;
 
     public function __construct()
@@ -58,24 +42,20 @@ class ProcessorPlatformType
         $this->ChildProcessorPlatformType = new ArrayCollection();
         $this->cpuSockets = new ArrayCollection();
     }
-
     public function getId(): ?int
     {
         return $this->id;
     }
-
     public function getName(): ?string
     {
         return $this->name;
     }
-
     public function setName(string $name): self
     {
         $this->name = $name;
 
         return $this;
     }
-
     /**
      * @return Collection|Motherboards[]
      */
@@ -83,7 +63,6 @@ class ProcessorPlatformType
     {
         return $this->motherboards;
     }
-
     public function addMotherboards(Motherboard $motherboard): self
     {
         if (!$this->motherboards->contains($motherboard)) {
@@ -93,7 +72,6 @@ class ProcessorPlatformType
 
         return $this;
     }
-
     public function removeMotherboard(Motherboard $motherboard): self
     {
         if ($this->motherboards->contains($motherboard)) {
@@ -106,7 +84,6 @@ class ProcessorPlatformType
 
         return $this;
     }
-
     /**
      * @return Collection|ProcessingUnit[]
      */
@@ -114,7 +91,6 @@ class ProcessorPlatformType
     {
         return $this->processingUnits;
     }
-
     public function addProcessingUnit(ProcessingUnit $processingUnit): self
     {
         if (!$this->processingUnits->contains($processingUnit)) {
@@ -124,7 +100,6 @@ class ProcessorPlatformType
 
         return $this;
     }
-
     public function removeProcessingUnit(ProcessingUnit $processingUnit): self
     {
         if ($this->processingUnits->contains($processingUnit)) {
@@ -137,7 +112,6 @@ class ProcessorPlatformType
 
         return $this;
     }
-
     /**
      * @return Collection|Processor[]
      */
@@ -151,7 +125,6 @@ class ProcessorPlatformType
         }
         return new ArrayCollection($processors);
     }
-
     /**
      * @return Collection|Processor[]
      */
@@ -163,7 +136,6 @@ class ProcessorPlatformType
         }
         return new ArrayCollection($processors);
     }
-
     /**
      * @return Collection|Coprocessor[]
      */
@@ -177,7 +149,6 @@ class ProcessorPlatformType
         }
         return new ArrayCollection($coprocessors);
     }
-
     /**
      * @return Collection|Coprocessor[]
      */
@@ -189,7 +160,6 @@ class ProcessorPlatformType
         }
         return new ArrayCollection($coprocessors);
     }
-
     /**
      * @return Collection|self[]
      */
@@ -197,7 +167,6 @@ class ProcessorPlatformType
     {
         return $this->compatibleWith;
     }
-
     public function addCompatibleWith(self $compatibleWith): self
     {
         if (!$this->compatibleWith->contains($compatibleWith)) {
@@ -206,7 +175,6 @@ class ProcessorPlatformType
 
         return $this;
     }
-
     public function removeCompatibleWith(self $compatibleWith): self
     {
         if ($this->compatibleWith->contains($compatibleWith)) {
@@ -215,7 +183,6 @@ class ProcessorPlatformType
 
         return $this;
     }
-
     /**
      * @return Collection|self[]
      */
@@ -223,7 +190,6 @@ class ProcessorPlatformType
     {
         return $this->ChildProcessorPlatformType;
     }
-
     public function addChildProcessorPlatformType(self $childProcessorPlatformType): self
     {
         if (!$this->ChildProcessorPlatformType->contains($childProcessorPlatformType)) {
@@ -233,7 +199,6 @@ class ProcessorPlatformType
 
         return $this;
     }
-
     public function removeChildProcessorPlatformType(self $childProcessorPlatformType): self
     {
         if ($this->ChildProcessorPlatformType->contains($childProcessorPlatformType)) {
@@ -243,7 +208,6 @@ class ProcessorPlatformType
 
         return $this;
     }
-
     /**
      * @return Collection|CpuSocket[]
      */
@@ -251,7 +215,6 @@ class ProcessorPlatformType
     {
         return $this->cpuSockets;
     }
-
     public function addCpuSocket(CpuSocket $cpuSocket): self
     {
         if (!$this->cpuSockets->contains($cpuSocket)) {
@@ -261,7 +224,6 @@ class ProcessorPlatformType
 
         return $this;
     }
-
     public function removeCpuSocket(CpuSocket $cpuSocket): self
     {
         if ($this->cpuSockets->contains($cpuSocket)) {

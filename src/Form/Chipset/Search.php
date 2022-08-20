@@ -53,10 +53,6 @@ class Search extends AbstractType
                     return ($a->getFullReference() < $b->getFullReference()) ? -1 : 1;
                 }
             );
-            //if($chipsetManufacturer) dd($chipsets[94]->getFullReference()==" Unidentified ");
-            //}
-            /*if($chipsetManufacturer)
-                dd($form->getData());*/
         };
 
         $builder->addEventListener(
@@ -64,7 +60,6 @@ class Search extends AbstractType
             function (FormEvent $event) use ($formModifier) {
                 // this would be your entity, i.e. SportMeetup
                 $data = $event->getData();
-                //dd($data);
 
                 $formModifier($event->getForm(), null);
             }

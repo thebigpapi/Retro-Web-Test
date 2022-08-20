@@ -8,35 +8,24 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\MaxRamRepository")
- * @UniqueEntity("value")
- */
+#[ORM\Entity(repositoryClass: 'App\Repository\MaxRamRepository')]
+#[UniqueEntity('value')]
 class MaxRam
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
-
-    /**
-     * @ORM\Column(type="bigint")
-     * @Assert\NotBlank
-     * @Assert\PositiveOrZero
-     */
+    
+    #[ORM\Column(type: 'bigint')]
+    #[Assert\NotBlank]
+    #[Assert\PositiveOrZero]
     private $value;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\MotherboardMaxRam", mappedBy="max_ram", orphanRemoval=true)
-     */
+    #[ORM\OneToMany(targetEntity: 'App\Entity\MotherboardMaxRam', mappedBy: 'max_ram', orphanRemoval: true)]
     private $motherboardMaxRams;
 
-
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Motherboard", mappedBy="maxVideoRam")
-     */
+    #[ORM\OneToMany(targetEntity: 'App\Entity\Motherboard', mappedBy: 'maxVideoRam')]
     private $motherboards;
 
     public function __construct()
@@ -44,12 +33,10 @@ class MaxRam
         $this->motherboardMaxRams = new ArrayCollection();
         $this->motherboards = new ArrayCollection();
     }
-
     public function getId(): ?int
     {
         return $this->id;
     }
-
     public function getValueWithUnit(): ?string
     {
         if ($this->value >= (1024 * 1024)) {
@@ -60,19 +47,16 @@ class MaxRam
             return $this->value . 'KB';
         }
     }
-
     public function getValue(): ?int
     {
         return $this->value;
     }
-
     public function setValue(int $value): self
     {
         $this->value = $value;
 
         return $this;
     }
-
     /**
      * @return Collection|MotherboardMaxRam[]
      */
@@ -80,7 +64,6 @@ class MaxRam
     {
         return $this->motherboardMaxRams;
     }
-
     public function addMotherboardMaxRam(MotherboardMaxRam $motherboardMaxRam): self
     {
         if (!$this->motherboardMaxRams->contains($motherboardMaxRam)) {
@@ -90,7 +73,6 @@ class MaxRam
 
         return $this;
     }
-
     public function removeMotherboardMaxRam(MotherboardMaxRam $motherboardMaxRam): self
     {
         if ($this->motherboardMaxRams->contains($motherboardMaxRam)) {
@@ -103,7 +85,6 @@ class MaxRam
 
         return $this;
     }
-
     /**
      * @return Collection|Motherboard[]
      */
@@ -111,7 +92,6 @@ class MaxRam
     {
         return $this->motherboards;
     }
-
     public function addMotherboard(Motherboard $motherboard): self
     {
         if (!$this->motherboards->contains($motherboard)) {
@@ -121,7 +101,6 @@ class MaxRam
 
         return $this;
     }
-
     public function removeMotherboard(Motherboard $motherboard): self
     {
         if ($this->motherboards->contains($motherboard)) {

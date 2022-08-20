@@ -77,7 +77,6 @@ class Search extends AbstractType
             function (FormEvent $event) use ($formModifier) {
                 // this would be your entity, i.e. SportMeetup
                 $data = $event->getData();
-                //dd($data);
 
                 $formModifier($event->getForm(), null);
             }

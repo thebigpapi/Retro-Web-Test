@@ -6,42 +6,28 @@ use App\Entity\Language;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Vich\UploaderBundle\Entity\File as EmbeddedFile;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\ManualRepository")
- * @Vich\Uploadable
- */
+#[Vich\Uploadable]
+#[ORM\Entity(repositoryClass:'App\Repository\ManualRepository')]
 trait DocumentationTrait
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     * @var string|null
-     */
-    private $file_name;
+    #[ORM\Column(type: 'string', length: 255)]
+    private string|null $file_name;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    #[ORM\Column(type: 'string', length: 255)]
     private $link_name;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Language", inversedBy="manuals")
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\ManyToOne(targetEntity: 'App\Entity\Language', inversedBy: 'manuals')]
+    #[ORM\JoinColumn(nullable: false)]
     private $language;
 
-    /**
-     * @ORM\Column(type="datetime")
-     */
+    #[ORM\Column(type: 'datetime')]
     private $updated_at;
 
 

@@ -5,27 +5,19 @@ namespace App\Entity;
 use App\Repository\IdRedirectionRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass=IdRedirectionRepository::class)
- * @ORM\InheritanceType("JOINED")
- */
+#[ORM\Entity(repositoryClass: IdRedirectionRepository::class)]
+#[ORM\InheritanceType('JOINED')]
 abstract class IdRedirection
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
-
-    /**
-     * @ORM\Column(type="string")
-     */
+    
+    #[ORM\Column(type: 'string')]
     private $source;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    
+    #[ORM\Column(type: 'string', length: 255)]
     private $sourceType;
 
     public function __construct()
@@ -38,12 +30,12 @@ abstract class IdRedirection
         return $this->id;
     }
 
-    public function getSource(): ?string
+    public function getSource(): ?int
     {
         return $this->source;
     }
 
-    public function setSource(string $source): self
+    public function setSource(int $source): self
     {
         $this->source = $source;
 

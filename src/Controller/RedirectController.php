@@ -14,36 +14,28 @@ class RedirectController extends AbstractController
         return $this->redirectToRoute('app_homepage');
     }
     /* ==== WIN3X REDIRECTS ==== */
-    /**
-     * @Route("/hardware/motherboard/result/", methods={"GET"})
-     * @param Request $request
-     */
+    
+    #[Route(path: '/hardware/motherboard/result/', methods: ['GET'])]
     public function redirectSearch(Request $request)
     {
         return $this->redirect($this->generateUrl('mobosearch', $request->query->all()));
     }
 
-    /**
-     * @Route("/motherboard/show/{id}")
-     */
+    #[Route(path: '/motherboard/show/{id}')]
     public function redirectShow($id)
     {
         return $this->redirect($this->generateUrl('motherboard_show', array("id" => $id)));
     }
 
-    /**
-     * @Route("/motherboard/search/")
-     * @param Request $request
-     */
+    
+    #[Route(path: '/motherboard/search/')]
     public function redirectNewSearch()
     {
         return $this->redirect($this->generateUrl('motherboard_search'));
     }
 
-    /**
-     * @Route("/motherboard/index/{letter}", requirements={"letter"="\w"}), methods={"GET"})
-     * @param Request $request
-     */
+    
+    #[Route(path: '/motherboard/index/{letter}', requirements: ['letter' => '\w'])]
     public function redirectIndex(Request $request, string $letter)
     {
         return $this->redirect($this->generateUrl('moboindex', array_merge(
@@ -52,28 +44,20 @@ class RedirectController extends AbstractController
         )));
     }
 
-    /* ==== LANGUAGE REDIRECTS (from UR) ==== */
-    /* -- motherboards -- */
-    /**
-     * @Route("/{lang}/motherboards/search", requirements={"lang": "de|en|es|fr|it|nl|ro|ru"})
-     */
+    #[Route(path: '/{lang}/motherboards/search', requirements: ['lang' => 'de|en|es|fr|it|nl|ro|ru'])]
     public function redirectLangMoboSearch()
     {
         return $this->redirect($this->generateUrl('motherboard_search'));
     }
 
-    /**
-     * @Route("/{lang}/motherboards/{id}", requirements={"lang": "de|en|es|fr|it|nl|ro|ru"})
-     */
+    #[Route(path: '/{lang}/motherboards/{id}', requirements: ['lang' => 'de|en|es|fr|it|nl|ro|ru'])]
     public function redirectLangMoboShow($id)
     {
         return $this->redirect($this->generateUrl('motherboard_show', array("id" => $id)));
     }
 
-    /**
-     * @Route("/{lang}/motherboards/index/{letter}", requirements={"lang": "de|en|es|fr|it|nl|ro|ru", "letter"="\w"}), methods={"GET"})
-     * @param Request $request
-     */
+    
+    #[Route(path: '/{lang}/motherboards/index/{letter}', requirements: ['lang' => 'de|en|es|fr|it|nl|ro|ru', 'letter' => '\w'])]
     public function redirectLangMoboIndex(Request $request, string $letter)
     {
         return $this->redirect($this->generateUrl('moboindex', array_merge(
@@ -81,51 +65,37 @@ class RedirectController extends AbstractController
             array("letter" => $letter)
         )));
     }
-    /* -- BIOS -- */
-    /**
-     * @Route("/{lang}/bios/search", requirements={"lang": "de|en|es|fr|it|nl|ro|ru"})
-     */
+    #[Route(path: '/{lang}/bios/search', requirements: ['lang' => 'de|en|es|fr|it|nl|ro|ru'])]
     public function redirectLangBiosSearch()
     {
         return $this->redirect($this->generateUrl('bios_search'));
     }
 
-    /**
-     * @Route("/{lang}/bios/info", requirements={"lang": "de|en|es|fr|it|nl|ro|ru"})
-     */
+    #[Route(path: '/{lang}/bios/info', requirements: ['lang' => 'de|en|es|fr|it|nl|ro|ru'])]
     public function redirectLangBiosInfo()
     {
         return $this->redirect($this->generateUrl('bios_info'));
     }
 
-    /**
-     * @Route("/{lang}/bios/infoadv", requirements={"lang": "de|en|es|fr|it|nl|ro|ru"})
-     */
+    #[Route(path: '/{lang}/bios/infoadv', requirements: ['lang' => 'de|en|es|fr|it|nl|ro|ru'])]
     public function redirectLangBiosInfoadv()
     {
         return $this->redirect($this->generateUrl('bios_infoadv'));
     }
-    /* -- chipsets -- */
-    /**
-     * @Route("/{lang}/chipsets/search", requirements={"lang": "de|en|es|fr|it|nl|ro|ru"})
-     */
+    #[Route(path: '/{lang}/chipsets/search', requirements: ['lang' => 'de|en|es|fr|it|nl|ro|ru'])]
     public function redirectLangChipsetSearch()
     {
         return $this->redirect($this->generateUrl('chipset_search'));
     }
 
-    /**
-     * @Route("/{lang}/chipsets/{id}", requirements={"lang": "de|en|es|fr|it|nl|ro|ru"})
-     */
+    #[Route(path: '/{lang}/chipsets/{id}', requirements: ['lang' => 'de|en|es|fr|it|nl|ro|ru'])]
     public function redirectLangChipsetShow($id)
     {
         return $this->redirect($this->generateUrl('chipset_show', array("id" => $id)));
     }
 
-    /**
-     * @Route("/{lang}/chipsets/index/{letter}", requirements={"lang": "de|en|es|fr|it|nl|ro|ru", "letter"="\w"}), methods={"GET"})
-     * @param Request $request
-     */
+    
+    #[Route(path: '/{lang}/chipsets/index/{letter}', requirements: ['lang' => 'de|en|es|fr|it|nl|ro|ru', 'letter' => '\w'])]
     public function redirectLangChipsetIndex(Request $request, string $letter)
     {
         return $this->redirect($this->generateUrl('chipsetindex', array_merge(

@@ -7,14 +7,10 @@ use DateTime;
 use DateTimeInterface;
 
 trait ImpreciseDateTrait {
-    /**
-     * @ORM\Column(type="date", nullable=true)
-     */
+    #[ORM\Column(type: 'date', nullable: true)]
     private ?DateTime $releaseDate = null;
 
-    /**
-     * @ORM\Column(type="string", length=1, nullable=true)
-     */
+    #[ORM\Column(type: 'string', length: 1, nullable: true)]
     private ?string $datePrecision = null;
 
     public function getReleaseDate(): ?DateTimeInterface

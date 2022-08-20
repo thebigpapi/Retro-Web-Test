@@ -10,10 +10,16 @@ use App\Form\Admin\Edit\LargeFileForm;
 use App\Form\Admin\Edit\MediaTypeFlagForm;
 use App\Form\Admin\Edit\OsFamilyForm;
 use App\Form\Admin\Edit\OsFlagForm;
+use App\Repository\LargeFileRepository;
+use App\Repository\MediaTypeFlagRepository;
+use App\Repository\OsFamilyRepository;
+use App\Repository\OsFlagRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class FileController extends AbstractController
@@ -23,13 +29,10 @@ class FileController extends AbstractController
      * Routing
      */
 
-    /**
-     * @Route("/admin/manage/files", name="admin_manage_files")
-     * @param Request $request
-     */
-    public function manage(Request $request, TranslatorInterface $translator)
+    #[Route('/admin/manage/files', name:'admin_manage_files')]
+    public function manage(Request $request, TranslatorInterface $translator) : Response
     {
-        switch (htmlentities($request->query->get('entity'))) {
+        switch (htmlentities($request->query->get('entity') ?? '')) {
             case "largefile":
                 return $this->manageLargefiles($request, $translator);
                 break;
@@ -47,109 +50,87 @@ class FileController extends AbstractController
         }
     }
 
-    /**
-     * @Route("/admin/manage/files/largefiles/add", name="new_largeFile_add")
-     * @param Request $request
-     */
-    public function largeFileAdd(Request $request)
+    #[Route('/admin/manage/files/largefiles/add', name:'new_largeFile_add')]
+    public function largeFileAdd(Request $request, EntityManagerInterface $entityManager) : Response
     {
-        return $this->renderLargeFileForm($request, new LargeFile(), 'admin/edit/files/largeFile.html.twig');
+        return $this->renderLargeFileForm($request, new LargeFile(), 'admin/edit/files/largeFile.html.twig', $entityManager);
     }
 
-    /**
-     * @Route("/admin/manage/files/largefiles/{id}/edit", name="new_largeFile_edit", requirements={"id"="\d+"})
-     * @param Request $request
-     */
-    public function largeFileEdit(Request $request, int $id)
+    #[Route('/admin/manage/files/largefiles/{id}/edit', name:'new_largeFile_edit', requirements:['id' => '\d+'])]
+    public function largeFileEdit(Request $request, int $id, LargeFileRepository $largeFileRepository, EntityManagerInterface $entityManager) : Response
     {
-        return $this->renderLargeFileForm($request, $this->getDoctrine()
-            ->getRepository(LargeFile::class)
-            ->find($id), 'admin/edit/files/largeFile.html.twig');
+        return $this->renderLargeFileForm($request, $largeFileRepository->find($id), 'admin/edit/files/largeFile.html.twig', $entityManager);
     }
 
-    /**
-     * @Route("/admin/manage/files/osfamilies/add", name="new_osFamily_add")
-     * @param Request $request
-     */
-    public function osFamilyAdd(Request $request)
+    #[Route('/admin/manage/files/osfamilies/add', name:'new_osFamily_add')]
+    public function osFamilyAdd(Request $request, EntityManagerInterface $entityManager) : Response
     {
         return $this->renderEntityForm(
             $request,
             new OsFamily(),
             OsFamilyForm::class,
             'admin/edit/files/osFamily.html.twig',
-            'osfamily'
+            'osfamily',
+            $entityManager
         );
     }
 
-    /**
-     * @Route("/admin/manage/files/osfamilies/{id}/edit", name="new_osFamily_edit", requirements={"id"="\d+"})
-     * @param Request $request
-     */
-    public function osFamilyEdit(Request $request, int $id)
+    #[Route('/admin/manage/files/osfamilies/{id}/edit', name:'new_osFamily_edit', requirements:['id' => '\d+'])]
+    public function osFamilyEdit(Request $request, int $id, OsFamilyRepository $osFamilyRepository, EntityManagerInterface $entityManager) : Response
     {
-        return $this->renderEntityForm($request, $this->getDoctrine()
-            ->getRepository(OsFamily::class)
-            ->find($id), OsFamilyForm::class, 'admin/edit/files/osFamily.html.twig', 'osfamily');
+        return $this->renderEntityForm($request, $osFamilyRepository->find($id), OsFamilyForm::class, 'admin/edit/files/osFamily.html.twig', 'osfamily', $entityManager);
     }
 
-    /**
-     * @Route("/admin/manage/files/osflags/add", name="new_osFlag_add")
-     * @param Request $request
-     */
-    public function osFlagAdd(Request $request)
+    #[Route('/admin/manage/files/osflags/add', name:'new_osFlag_add')]
+    public function osFlagAdd(Request $request, EntityManagerInterface $entityManager) : Response
     {
         return $this->renderEntityForm(
             $request,
             new OsFlag(),
             OsFlagForm::class,
             'admin/edit/files/osFlag.html.twig',
-            'osflag'
+            'osflag',
+            $entityManager
         );
     }
 
-    /**
-     * @Route("/admin/manage/files/osflags/{id}/edit", name="new_osFlag_edit", requirements={"id"="\d+"})
-     * @param Request $request
-     */
-    public function osFlagEdit(Request $request, int $id)
+    #[Route('/admin/manage/files/osflags/{id}/edit', name:'new_osFlag_edit', requirements:['id' => '\d+'])]
+    public function osFlagEdit(Request $request, int $id, OsFlagRepository $osFlagRepository, EntityManagerInterface $entityManager) : Response
     {
-        return $this->renderEntityForm($request, $this->getDoctrine()
-            ->getRepository(OsFlag::class)
-            ->find($id), OsFlagForm::class, 'admin/edit/files/osFlag.html.twig', 'osflag');
+        return $this->renderEntityForm($request, $osFlagRepository->find($id), OsFlagForm::class, 'admin/edit/files/osFlag.html.twig', 'osflag', $entityManager);
     }
 
-    /**
-     * @Route("/admin/manage/files/mediatypes/add", name="new_mediaType_add")
-     * @param Request $request
-     */
-    public function mediaTypeAdd(Request $request)
+    #[Route('/admin/manage/files/mediatypes/add', name:'new_mediaType_add')]
+    public function mediaTypeAdd(Request $request, EntityManagerInterface $entityManager) : Response
     {
         return $this->renderEntityForm(
             $request,
             new MediaTypeFlag(),
             MediaTypeFlagForm::class,
             'admin/edit/files/mediaTypeFlag.html.twig',
-            'mediatype'
+            'mediatype',
+            $entityManager
         );
     }
 
-    /**
-     * @Route("/admin/manage/files/mediatypes/{id}/edit", name="new_mediaType_edit", requirements={"id"="\d+"})
-     * @param Request $request
-     */
-    public function mediaTypeEdit(Request $request, int $id)
+    #[Route('/admin/manage/files/mediatypes/{id}/edit', name:'new_mediaType_edit', requirements:['id' => '\d+'])]
+    public function mediaTypeEdit(Request $request, int $id, MediaTypeFlagRepository $mediaTypeFlagRepository, EntityManagerInterface $entityManager) : Response
     {
-        return $this->renderEntityForm($request, $this->getDoctrine()
-            ->getRepository(MediaTypeFlag::class)
-            ->find($id), MediaTypeFlagForm::class, 'admin/edit/files/mediaTypeFlag.html.twig', 'mediatype');
+        return $this->renderEntityForm(
+            $request,
+            $mediaTypeFlagRepository->find($id),
+            MediaTypeFlagForm::class,
+            'admin/edit/files/mediaTypeFlag.html.twig',
+            'mediatype',
+            $entityManager
+        );
     }
 
     /**
      * Index pages
      */
 
-    private function manageLargefiles(Request $request, TranslatorInterface $translator)
+    private function manageLargefiles(Request $request, TranslatorInterface $translator) : Response
     {
         return $this->render('admin/manage/files/manage.html.twig', [
             "search" => "",
@@ -162,7 +143,7 @@ class FileController extends AbstractController
         ]);
     }
 
-    private function manageOsfamilies(Request $request, TranslatorInterface $translator)
+    private function manageOsfamilies(Request $request, TranslatorInterface $translator) : Response
     {
         return $this->render('admin/manage/files/manage.html.twig', [
             "search" => "",
@@ -175,7 +156,7 @@ class FileController extends AbstractController
         ]);
     }
 
-    private function manageOsflags(Request $request, TranslatorInterface $translator)
+    private function manageOsflags(Request $request, TranslatorInterface $translator) : Response
     {
         return $this->render('admin/manage/files/manage.html.twig', [
             "search" => "",
@@ -188,7 +169,7 @@ class FileController extends AbstractController
         ]);
     }
 
-    private function manageMediatypes(Request $request, TranslatorInterface $translator)
+    private function manageMediatypes(Request $request, TranslatorInterface $translator) : Response
     {
         return $this->render('admin/manage/files/manage.html.twig', [
             "search" => "",
@@ -201,11 +182,9 @@ class FileController extends AbstractController
         ]);
     }
 
-    public function listLargefile(Request $request, PaginatorInterface $paginator, array $criterias)
+    public function listLargefile(Request $request, PaginatorInterface $paginator, array $criterias, LargeFileRepository $largeFileRepository): Response
     {
-        $objects = $this->getDoctrine()
-            ->getRepository(LargeFile::class)
-            ->findBy($criterias, ['name' => 'asc']);
+        $objects = $largeFileRepository->findBy($criterias, ['name' => 'asc']);
 
         $paginatedObjects = $paginator->paginate(
             $objects,
@@ -219,11 +198,9 @@ class FileController extends AbstractController
         ]);
     }
 
-    public function listOsfamily(Request $request, PaginatorInterface $paginator, array $criterias)
+    public function listOsfamily(Request $request, PaginatorInterface $paginator, array $criterias, OsFamilyRepository $osFamilyRepository): Response
     {
-        $objects = $this->getDoctrine()
-            ->getRepository(OsFamily::class)
-            ->findBy($criterias, ['name' => 'asc']);
+        $objects = $osFamilyRepository->findBy($criterias, ['name' => 'asc']);
 
         $paginatedObjects = $paginator->paginate(
             $objects,
@@ -237,11 +214,9 @@ class FileController extends AbstractController
         ]);
     }
 
-    public function listOsflag(Request $request, PaginatorInterface $paginator, array $criterias)
+    public function listOsflag(Request $request, PaginatorInterface $paginator, array $criterias, OsFlagRepository $osFamilyRepository): Response
     {
-        $objects = $this->getDoctrine()
-            ->getRepository(OsFlag::class)
-            ->findBy($criterias, ['name' => 'asc']);
+        $objects = $osFamilyRepository->findBy($criterias, ['name' => 'asc']);
 
         $paginatedObjects = $paginator->paginate(
             $objects,
@@ -255,11 +230,9 @@ class FileController extends AbstractController
         ]);
     }
 
-    public function listMediatype(Request $request, PaginatorInterface $paginator, array $criterias)
+    public function listMediatype(Request $request, PaginatorInterface $paginator, array $criterias, MediaTypeFlagRepository $mediaTypeFlagRepository) : Response
     {
-        $objects = $this->getDoctrine()
-            ->getRepository(MediaTypeFlag::class)
-            ->findBy($criterias, ['name' => 'asc']);
+        $objects = $mediaTypeFlagRepository->findBy($criterias, ['name' => 'asc']);
 
         $paginatedObjects = $paginator->paginate(
             $objects,
@@ -276,10 +249,8 @@ class FileController extends AbstractController
     /**
      * Forms
      */
-    private function renderEntityForm(Request $request, $entity, $class, $template, $entityName)
+    private function renderEntityForm(Request $request, $entity, $class, $template, $entityName, EntityManagerInterface $entityManager) : Response
     {
-        $entityManager = $this->getDoctrine()->getManager();
-
         $form = $this->createForm($class, $entity);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -295,10 +266,8 @@ class FileController extends AbstractController
         ]);
     }
 
-    private function renderLargeFileForm(Request $request, LargeFile $entity, $template)
+    private function renderLargeFileForm(Request $request, LargeFile $entity, $template, EntityManagerInterface $entityManager) : Response
     {
-        $entityManager = $this->getDoctrine()->getManager();
-
         $form = $this->createForm(LargeFileForm::class, $entity);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {

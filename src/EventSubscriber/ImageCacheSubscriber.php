@@ -46,8 +46,6 @@ class ImageCacheSubscriber implements EventSubscriber
         if (!$entity instanceof MotherboardImage && !$entity instanceof ChipImage) {
             return;
         }
-        //dd($entity);
-        //dd($this->uploaderHelper->asset($entity, 'imageFile'));
         $this->cacheManager->remove($this->uploaderHelper->asset($entity, 'imageFile'));
     }
 

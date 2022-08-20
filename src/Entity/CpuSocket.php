@@ -6,41 +6,27 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\CpuSocketRepository")
- */
+#[ORM\Entity(repositoryClass: 'App\Repository\CpuSocketRepository')]
 class CpuSocket
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $name;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\ProcessorPlatformType", inversedBy="cpuSockets")
-     */
+    #[ORM\ManyToMany(targetEntity: 'App\Entity\ProcessorPlatformType', inversedBy: 'cpuSockets')]
     private $platforms;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Motherboard", mappedBy="cpuSockets")
-     */
+    #[ORM\ManyToMany(targetEntity: 'App\Entity\Motherboard', mappedBy: 'cpuSockets')]
     private $motherboards;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    #[ORM\Column(type: 'string', length: 255)]
     private $type;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\ProcessingUnit", mappedBy="sockets")
-     */
+    #[ORM\ManyToMany(targetEntity: 'App\Entity\ProcessingUnit', mappedBy: 'sockets')]
     private $processingUnits;
 
     public function __construct()
@@ -49,24 +35,20 @@ class CpuSocket
         $this->motherboards = new ArrayCollection();
         $this->processingUnits = new ArrayCollection();
     }
-
     public function getId(): ?int
     {
         return $this->id;
     }
-
     public function getName(): ?string
     {
         return $this->name;
     }
-
     public function setName(?string $name): self
     {
         $this->name = $name;
 
         return $this;
     }
-
     /**
      * @return Collection|ProcessorPlatformType[]
      */
@@ -74,7 +56,6 @@ class CpuSocket
     {
         return $this->platforms;
     }
-
     public function addPlatform(ProcessorPlatformType $platform): self
     {
         if (!$this->platforms->contains($platform)) {
@@ -83,7 +64,6 @@ class CpuSocket
 
         return $this;
     }
-
     public function removePlatform(ProcessorPlatformType $platform): self
     {
         if ($this->platforms->contains($platform)) {
@@ -92,7 +72,6 @@ class CpuSocket
 
         return $this;
     }
-
     /**
      * @return Collection|Motherboard[]
      */
@@ -100,7 +79,6 @@ class CpuSocket
     {
         return $this->motherboards;
     }
-
     public function addMotherboard(Motherboard $motherboard): self
     {
         if (!$this->motherboards->contains($motherboard)) {
@@ -109,7 +87,6 @@ class CpuSocket
 
         return $this;
     }
-
     public function removeMotherboard(Motherboard $motherboard): self
     {
         if ($this->motherboards->contains($motherboard)) {
@@ -118,25 +95,21 @@ class CpuSocket
 
         return $this;
     }
-
     public function getType(): ?string
     {
         return $this->type;
     }
-
     public function setType(?string $type): self
     {
         $this->type = $type;
 
         return $this;
     }
-
     public function getNameAndType(): ?string
     {
         if($this->name) return "$this->name ($this->type)";
         else return $this->type;
     }
-
     /**
      * @return Collection|ProcessingUnit[]
      */
@@ -144,7 +117,6 @@ class CpuSocket
     {
         return $this->processingUnits;
     }
-
     public function addProcessingUnit(ProcessingUnit $processingUnit): self
     {
         if (!$this->processingUnits->contains($processingUnit)) {
@@ -154,7 +126,6 @@ class CpuSocket
 
         return $this;
     }
-
     public function removeProcessingUnit(ProcessingUnit $processingUnit): self
     {
         if ($this->processingUnits->contains($processingUnit)) {

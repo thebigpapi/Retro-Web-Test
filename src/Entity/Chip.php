@@ -6,42 +6,31 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\ChipRepository")
- * @ORM\InheritanceType("JOINED")
- */
+#[ORM\Entity(repositoryClass: 'App\Repository\ChipRepository')]
+#[ORM\InheritanceType('JOINED')]
 abstract class Chip
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     protected $id;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     protected $name;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    #[ORM\Column(type: 'string', length: 255)]
     protected $partNumber;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Manufacturer", inversedBy="chips", fetch="EAGER")
-     */
+    #[ORM\ManyToOne(targetEntity: 'App\Entity\Manufacturer', inversedBy: 'chips', fetch: 'EAGER')]
     protected $manufacturer;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\ChipAlias", mappedBy="chip", orphanRemoval=true, cascade={"persist"})
-     */
+    #[ORM\OneToMany(targetEntity: 'App\Entity\ChipDocumentation', mappedBy: 'chip', orphanRemoval: true, cascade: ['persist'])]
+    protected $documentations;
+
+    #[ORM\OneToMany(targetEntity: 'App\Entity\ChipAlias', mappedBy: 'chip', orphanRemoval: true, cascade: ['persist'])]
     private $chipAliases;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\ChipImage", mappedBy="chip", orphanRemoval=true, cascade={"persist"})
-     */
+    #[ORM\OneToMany(targetEntity: 'App\Entity\ChipImage', mappedBy: 'chip', orphanRemoval: true, cascade: ['persist'])]
     private $images;
 
     public function __construct()
@@ -49,48 +38,40 @@ abstract class Chip
         $this->chipAliases = new ArrayCollection();
         $this->images = new ArrayCollection();
     }
-
     public function getId(): ?int
     {
         return $this->id;
     }
-
     public function getName(): ?string
     {
         return $this->name;
     }
-
     public function setName(?string $name): self
     {
         $this->name = $name;
 
         return $this;
     }
-
     public function getPartNumber(): ?string
     {
         return $this->partNumber;
     }
-
     public function setPartNumber(string $partNumber): self
     {
         $this->partNumber = $partNumber;
 
         return $this;
     }
-
     public function getManufacturer(): ?Manufacturer
     {
         return $this->manufacturer;
     }
-
     public function setManufacturer(?Manufacturer $manufacturer): self
     {
         $this->manufacturer = $manufacturer;
 
         return $this;
     }
-
     /**
      * @return Collection|ChipAlias[]
      */
@@ -98,7 +79,6 @@ abstract class Chip
     {
         return $this->chipAliases;
     }
-
     public function addChipAlias(ChipAlias $chipAlias): self
     {
         if (!$this->chipAliases->contains($chipAlias)) {
@@ -108,7 +88,6 @@ abstract class Chip
 
         return $this;
     }
-
     public function removeChipAlias(ChipAlias $chipAlias): self
     {
         if ($this->chipAliases->contains($chipAlias)) {
@@ -121,7 +100,6 @@ abstract class Chip
 
         return $this;
     }
-
     /**
      * @return Collection|ChipImage[]
      */
@@ -129,7 +107,6 @@ abstract class Chip
     {
         return $this->images;
     }
-
     public function addImage(ChipImage $image): self
     {
         if (!$this->images->contains($image)) {
@@ -139,7 +116,6 @@ abstract class Chip
 
         return $this;
     }
-
     public function removeImage(ChipImage $image): self
     {
         if ($this->images->contains($image)) {
@@ -147,6 +123,35 @@ abstract class Chip
             // set the owning side to null (unless already changed)
             if ($image->getChip() === $this) {
                 $image->setChip(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ChipDocumentation[]
+     */
+    public function getDocumentations(): Collection
+    {
+        return $this->documentations;
+    }
+    public function addDocumentation(ChipDocumentation $documentation): self
+    {
+        if (!$this->documentations->contains($documentation)) {
+            $this->documentations[] = $documentation;
+            $documentation->setChip($this);
+        }
+
+        return $this;
+    }
+    public function removeDocumentationl(ChipDocumentation $documentation): self
+    {
+        if ($this->documentations->contains($documentation)) {
+            $this->documentations->removeElement($documentation);
+            // set the owning side to null (unless already changed)
+            if ($documentation->getChip() === $this) {
+                $documentation->setChip(null);
             }
         }
 

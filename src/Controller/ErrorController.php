@@ -9,9 +9,7 @@ use Symfony\Component\ErrorHandler\Exception\FlattenException;
 
 class ErrorController extends AbstractController
 {
-    /**
-     * @Route("/error", name="error")
-     */
+    #[Route('/error', name:'error')]
     public function show(FlattenException $exception): Response
     {
         return $this->render('error/error.html.twig', [

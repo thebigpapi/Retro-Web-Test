@@ -36,12 +36,12 @@ class Search extends AbstractType
     {
         // sorting some fields before adding them to the form
         usort($options['cpuSockets'], function ($a, $b) {
-            if(!$a->getName() && !$b->getName())return strnatcasecmp($a->getType(), $b->getType());
-            else return strnatcasecmp($a->getName(), $b->getName());
+            if(!$a->getName() && !$b->getName())return strnatcasecmp($a->getType() ?? '', $b->getType() ?? '');
+            else return strnatcasecmp($a->getName() ?? '', $b->getName() ?? '');
         });
 
         usort($options['formFactors'], function ($a, $b) {
-            return strnatcasecmp($a->getName(), $b->getName());
+            return strnatcasecmp($a->getName() ?? '', $b->getName() ?? '');
         });
 
         //now the form is being built
@@ -156,7 +156,6 @@ class Search extends AbstractType
                 'placeholder' => $chipTag,
             ]);
         };
-        //dd($builder->get('chipsetManufacturer'));
         $builder->addEventListener(
             FormEvents::PRE_SET_DATA,
             function (FormEvent $event) use ($formModifier) {
@@ -176,7 +175,9 @@ class Search extends AbstractType
         $formSocket1Modifier = function (FormInterface $form, CpuSocket $socket = null) {
             $platforms = null === $socket ? $this->getProcessorPlatformTypeRepository()
                 ->findAll() : $socket->getPlatforms()->toArray();
-            usort($platforms, function ($a, $b) {return strnatcasecmp($a->getName(), $b->getName());});
+            usort($platforms, function ($a, $b) {
+                return strnatcasecmp($a->getName() ?? '', $b->getName() ?? '');
+            });
             $form->add('platform1', ChoiceType::class, [
                 'choice_label' => 'name',
                 'multiple' => false,
@@ -206,7 +207,9 @@ class Search extends AbstractType
         $formSocket2Modifier = function (FormInterface $form, CpuSocket $socket = null) {
             $platforms = null === $socket ? $this->getProcessorPlatformTypeRepository()
                 ->findAll() : $socket->getPlatforms()->toArray();
-            usort($platforms, function ($a, $b) {return strnatcasecmp($a->getName(), $b->getName());});
+            usort($platforms, function ($a, $b) {
+                return strnatcasecmp($a->getName() ?? '', $b->getName() ?? '');}
+            );
             $form->add('platform2', ChoiceType::class, [
                 'choice_label' => 'name',
                 'multiple' => false,

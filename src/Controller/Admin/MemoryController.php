@@ -8,6 +8,10 @@ use App\Entity\MaxRam;
 use App\Form\Admin\Edit\CacheSizeForm;
 use App\Form\Admin\Edit\DramTypeForm;
 use App\Form\Admin\Edit\MaxRamForm;
+use App\Repository\CacheSizeRepository;
+use App\Repository\DramTypeRepository;
+use App\Repository\MaxRamRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\Routing\Annotation\Route;
@@ -21,14 +25,11 @@ class MemoryController extends AbstractController
     /**
      * Routing
      */
-
-    /**
-     * @Route("/admin/manage/memories", name="admin_manage_memories")
-     * @param Request $request
-     */
+    
+    #[Route(path: '/admin/manage/memories', name: 'admin_manage_memories')]
     public function manage(Request $request, TranslatorInterface $translator)
     {
-        switch (htmlentities($request->query->get('entity'))) {
+        switch (htmlentities($request->query->get('entity') ?? '')) {
             case "ramtype":
                 return $this->manageRamTypes($request, $translator);
                 break;
@@ -43,93 +44,87 @@ class MemoryController extends AbstractController
         }
     }
 
-    /**
-     * @Route("/admin/manage/memories/ramtypes/add", name="new_dramType_add")
-     * @param Request $request
-     */
-    public function dramTypeAdd(Request $request)
+    
+    #[Route(path: '/admin/manage/memories/ramtypes/add', name: 'new_dramType_add')]
+    public function dramTypeAdd(Request $request, EntityManagerInterface $entityManager)
     {
         return $this->renderEntityForm(
             $request,
             new DramType(),
             DramTypeForm::class,
             'admin/edit/memories/dramType.html.twig',
-            'ramtype'
+            'ramtype',
+            $entityManager
         );
     }
 
-    /**
-     * @Route("/admin/manage/memories/ramtypes/{id}/edit", name="new_dramType_edit", requirements={"id"="\d+"})
-     * @param Request $request
-     */
-    public function dramTypeEdit(Request $request, int $id)
+    
+    #[Route(path: '/admin/manage/memories/ramtypes/{id}/edit', name: 'new_dramType_edit', requirements: ['id' => '\d+'])]
+    public function dramTypeEdit(Request $request, int $id, DramTypeRepository $dramTypeRepository, EntityManagerInterface $entityManager)
     {
-        return $this->renderEntityForm($request, $this->getDoctrine()
-            ->getRepository(DramType::class)
-            ->find($id), DramTypeForm::class, 'admin/edit/memories/dramType.html.twig', 'ramtype');
+        return $this->renderEntityForm(
+            $request,
+            $dramTypeRepository->find($id),
+            DramTypeForm::class,
+            'admin/edit/memories/dramType.html.twig',
+            'ramtype',
+            $entityManager
+        );
     }
 
-    /**
-     * @Route("/admin/manage/memories/ramsizes/add", name="new_ramSize_add")
-     * @param Request $request
-     */
-    public function ramSizeAdd(Request $request)
+    
+    #[Route(path: '/admin/manage/memories/ramsizes/add', name: 'new_ramSize_add')]
+    public function ramSizeAdd(Request $request, EntityManagerInterface $entityManager)
     {
         return $this->renderEntityForm(
             $request,
             new MaxRam(),
             MaxRamForm::class,
             'admin/edit/memories/maxRam.html.twig',
-            'ramsize'
+            'ramsize',
+            $entityManager
         );
     }
 
-    /**
-     * @Route("/admin/manage/memories/ramsizes/{id}/edit", name="new_ramSize_edit", requirements={"id"="\d+"})
-     * @param Request $request
-     */
-    public function ramSizeEdit(Request $request, int $id)
+    
+    #[Route(path: '/admin/manage/memories/ramsizes/{id}/edit', name: 'new_ramSize_edit', requirements: ['id' => '\d+'])]
+    public function ramSizeEdit(Request $request, int $id, MaxRamRepository $maxRamRepository, EntityManagerInterface $entityManager)
     {
         return $this->renderEntityForm(
             $request,
-            $this->getDoctrine()
-                ->getRepository(MaxRam::class)
-                ->find($id),
+            $maxRamRepository->find($id),
             MaxRamForm::class,
             'admin/edit/memories/maxRam.html.twig',
-            'ramsize'
+            'ramsize',
+            $entityManager
         );
     }
 
-    /**
-     * @Route("/admin/manage/memories/cachesizes/add", name="new_cacheSize_add")
-     * @param Request $request
-     */
-    public function cacheSizeAdd(Request $request)
+    
+    #[Route(path: '/admin/manage/memories/cachesizes/add', name: 'new_cacheSize_add')]
+    public function cacheSizeAdd(Request $request, EntityManagerInterface $entityManager)
     {
         return $this->renderEntityForm(
             $request,
             new CacheSize(),
             CacheSizeForm::class,
             'admin/edit/memories/cacheSize.html.twig',
-            'cachesize'
+            'cachesize',
+            $entityManager
         );
     }
 
-    /**
-     * @Route("/admin/manage/memories/cachesizes/{id}/edit", name="new_cacheSize_edit", requirements={"id"="\d+"})
-     * @param Request $request
-     */
-    public function cacheSizeEdit(Request $request, int $id)
+    
+    #[Route(path: '/admin/manage/memories/cachesizes/{id}/edit', name: 'new_cacheSize_edit', requirements: ['id' => '\d+'])]
+    public function cacheSizeEdit(Request $request, int $id, CacheSizeRepository $cacheSizeRepository, EntityManagerInterface $entityManager)
     {
         return $this->renderEntityForm(
             $request,
-            $this->getDoctrine()
-                ->getRepository(CacheSize::class)
-                ->find($id),
+            $cacheSizeRepository->find($id),
             CacheSizeForm::class,
             'admin/edit/memories/cacheSize.html.twig',
-            'cachesize'
+            'cachesize',
+            $entityManager
         );
     }
 
@@ -176,12 +171,9 @@ class MemoryController extends AbstractController
         ]);
     }
 
-    public function listRamtype(Request $request, PaginatorInterface $paginator, array $criterias)
+    public function listRamtype(Request $request, PaginatorInterface $paginator, array $criterias, DramTypeRepository $dramTypeRepository)
     {
-        $objects = $this->getDoctrine()
-            ->getRepository(DramType::class)
-            ->findBy($criterias);
-
+        $objects = $dramTypeRepository->findBy($criterias);
 
         $paginatedObjects = $paginator->paginate(
             $objects,
@@ -195,12 +187,9 @@ class MemoryController extends AbstractController
         ]);
     }
 
-    public function listMemorysize(Request $request, PaginatorInterface $paginator, array $criterias)
+    public function listMemorysize(Request $request, PaginatorInterface $paginator, array $criterias, MaxRamRepository $maxRamRepository)
     {
-        $objects = $this->getDoctrine()
-            ->getRepository(MaxRam::class)
-            ->findBy($criterias, array("value" => "asc"));
-
+        $objects = $maxRamRepository->findBy($criterias, array("value" => "asc"));
 
         $paginatedObjects = $paginator->paginate(
             $objects,
@@ -214,12 +203,9 @@ class MemoryController extends AbstractController
         ]);
     }
 
-    public function listCachesize(Request $request, PaginatorInterface $paginator, array $criterias)
+    public function listCachesize(Request $request, PaginatorInterface $paginator, array $criterias, CacheSizeRepository $cacheSizeRepository)
     {
-        $objects = $this->getDoctrine()
-            ->getRepository(CacheSize::class)
-            ->findBy($criterias, array("value" => "asc"));
-
+        $objects = $cacheSizeRepository->findBy($criterias, array("value" => "asc"));
 
         $paginatedObjects = $paginator->paginate(
             $objects,
@@ -237,10 +223,8 @@ class MemoryController extends AbstractController
     /**
      * Forms
      */
-    private function renderEntityForm(Request $request, $entity, $class, $template, $entityName)
+    private function renderEntityForm(Request $request, $entity, $class, $template, $entityName, EntityManagerInterface $entityManager)
     {
-        $entityManager = $this->getDoctrine()->getManager();
-
         $form = $this->createForm($class, $entity);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {

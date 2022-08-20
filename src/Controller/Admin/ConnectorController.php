@@ -10,6 +10,12 @@ use App\Form\Admin\Edit\CpuSocketForm;
 use App\Form\Admin\Edit\ExpansionSlotForm;
 use App\Form\Admin\Edit\IoPortForm;
 use App\Form\Admin\Edit\PsuConnectorForm;
+use App\Repository\CpuSocketRepository;
+use App\Repository\CpuSpeedRepository;
+use App\Repository\ExpansionSlotRepository;
+use App\Repository\IoPortRepository;
+use App\Repository\PSUConnectorRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\Routing\Annotation\Route;
@@ -23,14 +29,11 @@ class ConnectorController extends AbstractController
     /**
      * Routing
      */
-
-    /**
-     * @Route("/admin/manage/connectors", name="admin_manage_connectors")
-     * @param Request $request
-     */
+    
+    #[Route(path: '/admin/manage/connectors', name: 'admin_manage_connectors')]
     public function manage(Request $request, TranslatorInterface $translator)
     {
-        switch (htmlentities($request->query->get('entity'))) {
+        switch (htmlentities($request->query->get('entity') ?? '')) {
             case "expansion":
                 return $this->manageExpansion($request, $translator);
                 break;
@@ -48,131 +51,115 @@ class ConnectorController extends AbstractController
         }
     }
 
-    /**
-     * @Route("/admin/manage/connectors/expansions/add", name="new_expansionSlot_add")
-     * @param Request $request
-     */
-    public function expansionSlotAdd(Request $request)
+    
+    #[Route(path: '/admin/manage/connectors/expansions/add', name: 'new_expansionSlot_add')]
+    public function expansionSlotAdd(Request $request, EntityManagerInterface $entityManagerInterface)
     {
         return $this->renderEntityForm(
             $request,
             new ExpansionSlot(),
             ExpansionSlotForm::class,
             'admin/edit/connectors/expansionSlot.html.twig',
-            'expansion'
+            'expansion',
+            $entityManagerInterface
         );
     }
 
-    /**
-     * @Route("/admin/manage/connectors/expansions/{id}/edit", name="new_expansionSlot_edit", requirements={"id"="\d+"})
-     * @param Request $request
-     */
-    public function expansionSlotEdit(Request $request, int $id)
+    
+    #[Route(path: '/admin/manage/connectors/expansions/{id}/edit', name: 'new_expansionSlot_edit', requirements: ['id' => '\d+'])]
+    public function expansionSlotEdit(Request $request, int $id, ExpansionSlotRepository $expansionSlotRepository, EntityManagerInterface $entityManagerInterface)
     {
         return $this->renderEntityForm(
             $request,
-            $this->getDoctrine()
-                ->getRepository(ExpansionSlot::class)
-                ->find($id),
+            $expansionSlotRepository->find($id),
             ExpansionSlotForm::class,
             'admin/edit/connectors/expansionSlot.html.twig',
-            'expansion'
+            'expansion',
+            $entityManagerInterface
         );
     }
 
-    /**
-     * @Route("/admin/manage/connectors/ios/add", name="new_ioPort_add")
-     * @param Request $request
-     */
-    public function ioPortAdd(Request $request)
+    
+    #[Route(path: '/admin/manage/connectors/ios/add', name: 'new_ioPort_add')]
+    public function ioPortAdd(Request $request, EntityManagerInterface $entityManagerInterface)
     {
         return $this->renderEntityForm(
             $request,
             new IoPort(),
             IoPortForm::class,
             'admin/edit/connectors/ioPort.html.twig',
-            'io'
+            'io',
+            $entityManagerInterface
         );
     }
 
-    /**
-     * @Route("/admin/manage/connectors/ios/{id}/edit", name="new_ioPort_edit", requirements={"id"="\d+"})
-     * @param Request $request
-     */
-    public function ioPortEdit(Request $request, int $id)
+    
+    #[Route(path: '/admin/manage/connectors/ios/{id}/edit', name: 'new_ioPort_edit', requirements: ['id' => '\d+'])]
+    public function ioPortEdit(Request $request, int $id, IoPortRepository $ioPortRepository, EntityManagerInterface $entityManagerInterface)
     {
         return $this->renderEntityForm(
             $request,
-            $this->getDoctrine()
-                ->getRepository(IoPort::class)
-                ->find($id),
+            $ioPortRepository->find($id),
             IoPortForm::class,
             'admin/edit/connectors/ioPort.html.twig',
-            'io'
+            'io',
+            $entityManagerInterface
         );
     }
 
-    /**
-     * @Route("/admin/manage/connectors/sockets/add", name="new_cpuSocket_add")
-     * @param Request $request
-     */
-    public function cpuSocketAdd(Request $request)
+    
+    #[Route(path: '/admin/manage/connectors/sockets/add', name: 'new_cpuSocket_add')]
+    public function cpuSocketAdd(Request $request, EntityManagerInterface $entityManagerInterface)
     {
         return $this->renderEntityForm(
             $request,
             new CpuSocket(),
             CpuSocketForm::class,
             'admin/edit/connectors/cpuSocket.html.twig',
-            'socket'
+            'socket',
+            $entityManagerInterface
         );
     }
 
-    /**
-     * @Route("/admin/manage/connectors/sockets/{id}/edit", name="new_cpuSocket_edit", requirements={"id"="\d+"})
-     * @param Request $request
-     */
-    public function cpuSocketEdit(Request $request, int $id)
+    
+    #[Route(path: '/admin/manage/connectors/sockets/{id}/edit', name: 'new_cpuSocket_edit', requirements: ['id' => '\d+'])]
+    public function cpuSocketEdit(Request $request, int $id, CpuSpeedRepository $cpuSpeedRepository, EntityManagerInterface $entityManagerInterface)
     {
         return $this->renderEntityForm(
             $request,
-            $this->getDoctrine()
-                ->getRepository(CpuSocket::class)
-                ->find($id),
+            $cpuSpeedRepository->find($id),
             CpuSocketForm::class,
             'admin/edit/connectors/cpuSocket.html.twig',
-            'socket'
+            'socket',
+            $entityManagerInterface
         );
     }
 
 
-    /**
-     * @Route("/admin/manage/connectors/psuconnectors/add", name="new_psu_add")
-     * @param Request $request
-     */
-    public function psuConnectorAdd(Request $request)
+    
+    #[Route(path: '/admin/manage/connectors/psuconnectors/add', name: 'new_psu_add')]
+    public function psuConnectorAdd(Request $request, EntityManagerInterface $entityManagerInterface)
     {
         return $this->renderEntityForm(
             $request,
             new PSUConnector(),
             PSUConnectorForm::class,
             'admin/edit/connectors/psuconnector.html.twig',
-            'psuconnector'
+            'psuconnector',
+            $entityManagerInterface
         );
     }
-    /**
-     * @Route("/admin/manage/connectors/psuconnectors/{id}/edit", name="new_psu_edit", requirements={"id"="\d+"})
-     * @param Request $request
-     */
-    public function psuConnectorEdit(Request $request, int $id)
+    
+    #[Route(path: '/admin/manage/connectors/psuconnectors/{id}/edit', name: 'new_psu_edit', requirements: ['id' => '\d+'])]
+    public function psuConnectorEdit(Request $request, int $id, PSUConnectorRepository $pSUConnectorRepository, EntityManagerInterface $entityManagerInterface)
     {
         return $this->renderEntityForm(
             $request,
-            $this->getDoctrine()
-                ->getRepository(PSUConnector::class)
-                ->find($id),
+            $pSUConnectorRepository->find($id),
             PsuConnectorForm::class,
             'admin/edit/connectors/psuconnector.html.twig',
-            'psuconnector'
+            'psuconnector',
+            $entityManagerInterface
         );
     }
 
@@ -232,11 +219,9 @@ class ConnectorController extends AbstractController
         ]);
     }
 
-    public function listExpansion(Request $request, PaginatorInterface $paginator, array $criterias)
+    public function listExpansion(Request $request, PaginatorInterface $paginator, array $criterias, ExpansionSlotRepository $expansionSlotRepository)
     {
-        $objects = $this->getDoctrine()
-            ->getRepository(ExpansionSlot::class)
-            ->findBy($criterias);
+        $objects = $expansionSlotRepository->findBy($criterias);
 
 
         $paginatedObjects = $paginator->paginate(
@@ -251,12 +236,9 @@ class ConnectorController extends AbstractController
         ]);
     }
 
-    public function listIo(Request $request, PaginatorInterface $paginator, array $criterias)
+    public function listIo(Request $request, PaginatorInterface $paginator, array $criterias, IoPortRepository $ioPortRepository)
     {
-        $objects = $this->getDoctrine()
-            ->getRepository(IoPort::class)
-            ->findBy($criterias);
-
+        $objects = $ioPortRepository->findBy($criterias);
 
         $paginatedObjects = $paginator->paginate(
             $objects,
@@ -270,12 +252,9 @@ class ConnectorController extends AbstractController
         ]);
     }
 
-    public function listSocket(Request $request, PaginatorInterface $paginator, array $criterias)
+    public function listSocket(Request $request, PaginatorInterface $paginator, array $criterias, CpuSocketRepository $cpuSocketRepository)
     {
-        $objects = $this->getDoctrine()
-            ->getRepository(CpuSocket::class)
-            ->findBy($criterias, ['type' => 'asc']);
-
+        $objects = $cpuSocketRepository->findBy($criterias, ['type' => 'asc']);
 
         $paginatedObjects = $paginator->paginate(
             $objects,
@@ -289,11 +268,9 @@ class ConnectorController extends AbstractController
         ]);
     }
 
-    public function listPsuConnector(Request $request, PaginatorInterface $paginator, array $criterias)
+    public function listPsuConnector(Request $request, PaginatorInterface $paginator, array $criterias, PSUConnectorRepository $pSUConnectorRepository)
     {
-        $objects = $this->getDoctrine()
-            ->getRepository(PSUConnector::class)
-            ->findBy($criterias, ['name' => 'asc']);
+        $objects = $pSUConnectorRepository->findBy($criterias, ['name' => 'asc']);
 
 
         $paginatedObjects = $paginator->paginate(
@@ -311,10 +288,8 @@ class ConnectorController extends AbstractController
     /**
      * Forms
      */
-    private function renderEntityForm(Request $request, $entity, $class, $template, $entityName)
+    private function renderEntityForm(Request $request, $entity, $class, $template, $entityName, EntityManagerInterface $entityManager)
     {
-        $entityManager = $this->getDoctrine()->getManager();
-
         $form = $this->createForm($class, $entity);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {

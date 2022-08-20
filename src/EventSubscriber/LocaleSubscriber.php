@@ -43,7 +43,6 @@ class LocaleSubscriber implements EventSubscriberInterface
 
         // Checking if the locale is given through URL parameter
         if ($locale = $request->query->get('_locale')) {
-            //dd($locale);
             $request->setLocale($locale);
         } else {
             // Get client's favorite supported language
@@ -52,7 +51,6 @@ class LocaleSubscriber implements EventSubscriberInterface
             // Or use the one given through the session
             $request->setLocale($request->getSession()->get('_locale', $locale));
         }
-        //dd($request->query->get('_locale'));
     }
 
     public static function getSubscribedEvents(): array

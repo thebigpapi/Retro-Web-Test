@@ -294,7 +294,6 @@ class MotherboardForm extends AbstractType
             function (FormEvent $event) use ($formSocketModifier) {
                 // this would be your entity, i.e. SportMeetup
                 $data = $event->getData();
-                //dd($data->getCpuSockets());
 
                 $formSocketModifier($event->getForm(), $data->getCpuSockets());
             }
@@ -434,7 +433,6 @@ class MotherboardForm extends AbstractType
                         }
                     }
                 } else {
-                    //dd($sockets);
                     foreach ($sockets as $socketId) {
                         $socket = $this->getCpuSocketsRepository()->find($socketId);
                         foreach ($processorsWithFsb as $processor) {
@@ -453,11 +451,9 @@ class MotherboardForm extends AbstractType
                 $processorsWithSocket = $processorsWithFsb;
                 $coprocessorsWithSocket = $coprocessorsWithFsb;
             }
-            //dd($sockets);
-
             $processorsWithSocket = Processor::sort(new ArrayCollection($processorsWithSocket));
             $coprocessorsWithSocket = Coprocessor::sort(new ArrayCollection($coprocessorsWithSocket));
-            //if($chipsetManufacturer) dd($chipsets[94]->getFullReference()==" Unidentified ");
+
             $form->add('processors', CollectionType::class, [
                 'entry_type' => ProcessorType::class,
                 'allow_add' => true,
@@ -491,7 +487,6 @@ class MotherboardForm extends AbstractType
                 );
             }
         );
-        //dd($builder->get('processorPlatformTypes'));
         try {
             $builder->addEventListener(
                 FormEvents::PRE_SUBMIT,
@@ -535,10 +530,10 @@ class MotherboardForm extends AbstractType
     public function finishView(FormView $view, FormInterface $form, array $options)
     {
         usort($view->children['manufacturer']->vars['choices'], function (ChoiceView $a, ChoiceView $b) {
-            return strnatcasecmp($a->data->getShortNameIfExist(), $b->data->getShortNameIfExist());
+            return strnatcasecmp($a->data->getShortNameIfExist() ?? '', $b->data->getShortNameIfExist() ?? '');
         });
         usort($view->children['formFactor']->vars['choices'], function (ChoiceView $a, ChoiceView $b) {
-            return strnatcasecmp($a->data->getName(), $b->data->getName());
+            return strnatcasecmp($a->data->getName() ?? '', $b->data->getName() ?? '');
         });
 
         usort($view->children["videoChipset"]->vars["choices"], function (ChoiceView $a, ChoiceView $b) {
@@ -576,7 +571,6 @@ class MotherboardForm extends AbstractType
 
     /*   public function buildAfterSubmit(FormBuilderInterface $builder, array $options)
 {
-    dd($builder->getData());
     /*if ($builder->getData()->getBrand() !== null) {
         $builder->add('model', EntityType::class, array(
             'class'       => 'DEERCMS\ModelBundle\Entity\Model',
