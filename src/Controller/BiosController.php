@@ -19,9 +19,7 @@ use App\Repository\MotherboardBiosRepository;
 class BiosController extends AbstractController
 {
 
-    /**
-     * @param Request $request
-     */
+    
     #[Route(path: '/bios/', name: 'bios_result')]
     public function result(Request $request, PaginatorInterface $paginator, MotherboardBiosRepository $motherboardBiosRepository, ManufacturerRepository $manufacturerRepository, ManufacturerBiosManufacturerCodeRepository $manufacturerBiosManufacturerCodeRepository)
     {
@@ -120,9 +118,7 @@ class BiosController extends AbstractController
         ]);
     }
 
-    /**
-     * @param Request $request
-     */
+    
     #[Route(path: '/bios/search/', name: 'bios_search')]
     public function search(Request $request, TranslatorInterface $translator, ManufacturerRepository $manufacturerRepository)
     {

@@ -30,9 +30,7 @@ class MotherboardController extends AbstractController
     /**
      * Routing
      */
-    /**
-     * @param Request $request
-     */
+    
     #[Route(path: '/admin/manage/motherboards', name: 'admin_manage_motherboards')]
     public function manage(Request $request, TranslatorInterface $translator)
     {
@@ -53,9 +51,7 @@ class MotherboardController extends AbstractController
         }
     }
 
-    /**
-     * @param Request $request
-     */
+    
     #[Route(path: '/admin/manage/motherboards/motherboards/add', name: 'new_motherboard_add')]
     public function motherboardAdd(Request $request, ChipsetRepository $chipsetRepository, CpuSocketRepository $cpuSocketRepository, EntityManagerInterface $entityManager)
     {
@@ -68,9 +64,7 @@ class MotherboardController extends AbstractController
         );
     }
 
-    /**
-     * @param Request $request
-     */
+    
     #[Route(path: '/admin/manage/motherboards/motherboards/{id}/edit', name: 'new_motherboard_edit', requirements: ['id' => '\d+'])]
     public function motherboardEdit(Request $request, MotherboardRepository $motherboardRepository, int $id, ChipsetRepository $chipsetRepository, CpuSocketRepository $cpuSocketRepository, EntityManagerInterface $entityManager)
     {
@@ -83,9 +77,7 @@ class MotherboardController extends AbstractController
         );
     }
 
-    /**
-     * @param Request $request
-     */
+    
     #[Route(path: '/admin/manage/motherboards/formfactors/add', name: 'new_formFactor_add')]
     public function formFactorAdd(Request $request, EntityManagerInterface $entityManager)
     {
@@ -99,9 +91,7 @@ class MotherboardController extends AbstractController
         );
     }
 
-    /**
-     * @param Request $request
-     */
+    
     #[Route(path: '/admin/manage/motherboards/formfactors/{id}/edit', name: 'new_formFactor_edit', requirements: ['id' => '\d+'])]
     public function formFactorEdit(Request $request, int $id, FormFactorRepository $formFactorRepository, EntityManagerInterface $entityManager)
     {

@@ -33,9 +33,7 @@ class ChipsetController extends AbstractController
         }
     }
 
-    /**
-     * @param Request $request
-     */
+    
     #[Route(path: '/chipsets/', name: 'chipsetsearch', methods: ['GET'])]
     public function searchResult(Request $request, PaginatorInterface $paginator, ChipsetRepository $chipsetRepository)
     {
@@ -79,9 +77,7 @@ class ChipsetController extends AbstractController
         ]);
     }
 
-    /**
-     * @param Request $request
-     */
+    
     #[Route(path: '/chipsets/search/', name: 'chipset_search')]
     public function search(Request $request, TranslatorInterface $translator, ManufacturerRepository $manufacturerRepository)
     {
@@ -122,9 +118,7 @@ class ChipsetController extends AbstractController
         return $parameters;
     }
 
-    /**
-     * @param Request $request
-     */
+    
     #[Route(path: '/chipsets/index/{letter}', name: 'chipsetindex', requirements: ['letter' => '\w|[?]'])]
     public function index(Request $request, PaginatorInterface $paginator, string $letter, ChipsetRepository $chipsetRepository)
     {

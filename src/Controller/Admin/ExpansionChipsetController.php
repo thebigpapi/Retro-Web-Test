@@ -26,9 +26,7 @@ class ExpansionChipsetController extends AbstractController
     /**
      * Routing
      */
-    /**
-     * @param Request $request
-     */
+    
     #[Route(path: '/admin/manage/expansionchipsets', name: 'admin_manage_expansion_chipsets')]
     public function manage(Request $request, TranslatorInterface $translator)
     {
@@ -46,18 +44,14 @@ class ExpansionChipsetController extends AbstractController
         }
     }
 
-    /**
-     * @param Request $request
-     */
+    
     #[Route(path: '/admin/manage/expansionchipsets/audiochips/add', name: 'new_audioChipset_add')]
     public function audioChipsetAdd(Request $request, EntityManagerInterface $entityManager, ManufacturerRepository $manufacturerRepository)
     {
         return $this->renderAudioChipsetForm($request, new AudioChipset(), $entityManager, $manufacturerRepository);
     }
 
-    /**
-     * @param Request $request
-     */
+    
     #[Route(path: '/admin/manage/expansionchipsets/audiochips/{id}/edit', name: 'new_audioChipset_edit', requirements: ['id' => '\d+'])]
     public function audioChipsetEdit(Request $request, int $id, AudioChipsetRepository $audioChipsetRepository, EntityManagerInterface $entityManager, ManufacturerRepository $manufacturerRepository)
     {
@@ -69,18 +63,14 @@ class ExpansionChipsetController extends AbstractController
         );
     }
 
-    /**
-     * @param Request $request
-     */
+    
     #[Route(path: '/admin/manage/expansionchipsets/videochips/add', name: 'new_videoChipset_add')]
     public function videoChipsetAdd(Request $request, EntityManagerInterface $entityManager, ManufacturerRepository $manufacturerRepository)
     {
         return $this->renderVideoChipsetForm($request, new VideoChipset(), $entityManager, $manufacturerRepository);
     }
 
-    /**
-     * @param Request $request
-     */
+    
     #[Route(path: '/admin/manage/expansionchipsets/videochips/{id}/edit', name: 'new_videoChipset_edit', requirements: ['id' => '\d+'])]
     public function videoChipsetEdit(Request $request, int $id, VideoChipsetRepository $videoChipsetRepository, EntityManagerInterface $entityManager, ManufacturerRepository $manufacturerRepository)
     {
