@@ -14,7 +14,7 @@ abstract class Chip
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
     protected $id;
-    
+
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     protected $name;
 
@@ -23,6 +23,9 @@ abstract class Chip
 
     #[ORM\ManyToOne(targetEntity: 'App\Entity\Manufacturer', inversedBy: 'chips', fetch: 'EAGER')]
     protected $manufacturer;
+
+    #[ORM\OneToMany(targetEntity: 'App\Entity\ChipDocumentation', mappedBy: 'chip', orphanRemoval: true, cascade: ['persist'])]
+    protected $documentations;
 
     #[ORM\OneToMany(targetEntity: 'App\Entity\ChipAlias', mappedBy: 'chip', orphanRemoval: true, cascade: ['persist'])]
     private $chipAliases;
@@ -120,6 +123,35 @@ abstract class Chip
             // set the owning side to null (unless already changed)
             if ($image->getChip() === $this) {
                 $image->setChip(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ChipDocumentation[]
+     */
+    public function getDocumentations(): Collection
+    {
+        return $this->documentations;
+    }
+    public function addDocumentation(ChipDocumentation $documentation): self
+    {
+        if (!$this->documentations->contains($documentation)) {
+            $this->documentations[] = $documentation;
+            $documentation->setChip($this);
+        }
+
+        return $this;
+    }
+    public function removeDocumentationl(ChipDocumentation $documentation): self
+    {
+        if ($this->documentations->contains($documentation)) {
+            $this->documentations->removeElement($documentation);
+            // set the owning side to null (unless already changed)
+            if ($documentation->getChip() === $this) {
+                $documentation->setChip(null);
             }
         }
 

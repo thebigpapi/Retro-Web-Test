@@ -18,7 +18,7 @@ class ChipDocumentation
     #[Vich\UploadableField(mapping:'chipDoc', fileNameProperty:'file_name')]
     private File|null $manualFile;
 
-    #[ORM\ManyToOne(targetEntity: 'App\Entity\Chip', inversedBy: 'manuals')]
+    #[ORM\ManyToOne(targetEntity: 'App\Entity\Chip', inversedBy: 'documentations')]
     private $chip;
 
     public function getChip(): ?Chip
