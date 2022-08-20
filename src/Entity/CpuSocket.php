@@ -13,16 +13,22 @@ class CpuSocket
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
     private $id;
+    
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $name;
+
     #[ORM\ManyToMany(targetEntity: 'App\Entity\ProcessorPlatformType', inversedBy: 'cpuSockets')]
     private $platforms;
+
     #[ORM\ManyToMany(targetEntity: 'App\Entity\Motherboard', mappedBy: 'cpuSockets')]
     private $motherboards;
+
     #[ORM\Column(type: 'string', length: 255)]
     private $type;
+
     #[ORM\ManyToMany(targetEntity: 'App\Entity\ProcessingUnit', mappedBy: 'sockets')]
     private $processingUnits;
+
     public function __construct()
     {
         $this->platforms = new ArrayCollection();

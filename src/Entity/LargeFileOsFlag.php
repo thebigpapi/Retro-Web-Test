@@ -12,14 +12,18 @@ class LargeFileOsFlag
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
     private $id;
+    
     #[ORM\ManyToOne(targetEntity: LargeFile::class, inversedBy: 'osFlags')]
     #[ORM\JoinColumn(nullable: false)]
     private $largeFile;
+
     #[ORM\ManyToOne(targetEntity: OsFlag::class, inversedBy: 'largeFiles')]
     #[ORM\JoinColumn(nullable: false)]
     private $osFlag;
+
     #[ORM\Column(type: 'boolean')]
     private $unsure;
+
     public function getId(): ?int
     {
         return $this->id;

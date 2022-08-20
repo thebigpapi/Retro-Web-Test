@@ -13,14 +13,19 @@ class AudioChipset
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
     private $id;
+    
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $name;
+
     #[ORM\OneToMany(targetEntity: 'App\Entity\Motherboard', mappedBy: 'audioChipset')]
     private $motherboards;
+
     #[ORM\ManyToOne(targetEntity: 'App\Entity\Manufacturer', inversedBy: 'audioChipsets')]
     private $manufacturer;
+
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $chipName;
+
     public function __construct()
     {
         $this->motherboards = new ArrayCollection();

@@ -8,12 +8,9 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Vich\UploaderBundle\Entity\File as EmbeddedFile;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
-/**
- * @Vich\Uploadable
- */
+#[Vich\Uploadable]
 #[ORM\Entity(repositoryClass: MediaTypeFlagRepository::class)]
 class MediaTypeFlag
 {
@@ -21,27 +18,28 @@ class MediaTypeFlag
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
     private $id;
+
     #[ORM\Column(type: 'string', length: 255)]
     private $name;
+
     #[ORM\Column(type: 'string', length: 255)]
     private $tagName;
-    /**
-     * @var string|null
-     */
+
     #[ORM\Column(type: 'string', length: 255)]
-    private $file_name;
+    private string|null $file_name;
+
     /**
      * NOTE: This is not a mapped field of entity metadata, just a simple property.
-     * 
-     * @Vich\UploadableField(mapping="mediatypeicon", fileNameProperty="file_name")
-     * 
-     * @var File|null
      */
-    private $icon;
+    #[Vich\UploadableField(mapping:'mediatypeicon', fileNameProperty:'file_name')]
+    private File|null $icon;
+
     #[ORM\Column(type: 'datetime')]
     private $updated_at;
+
     #[ORM\OneToMany(targetEntity: LargeFileMediaTypeFlag::class, mappedBy: 'mediaTypeFlag', orphanRemoval: true)]
     private $getLargeFiles;
+    
     public function __construct()
     {
         $this->getLargeFiles = new ArrayCollection();

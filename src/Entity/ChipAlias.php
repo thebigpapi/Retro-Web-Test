@@ -11,15 +11,20 @@ class ChipAlias
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
     private $id;
+
     #[ORM\ManyToOne(targetEntity: 'App\Entity\Chip', inversedBy: 'chipAliases')]
     #[ORM\JoinColumn(nullable: false)]
     private $chip;
+
     #[ORM\ManyToOne(targetEntity: 'App\Entity\Manufacturer', inversedBy: 'chipAliases')]
     private $manufacturer;
+
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $name;
+
     #[ORM\Column(type: 'string', length: 255)]
     private $partNumber;
+    
     public function getId(): ?int
     {
         return $this->id;

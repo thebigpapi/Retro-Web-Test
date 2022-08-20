@@ -14,12 +14,16 @@ class DumpQualityFlag
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
     private $id;
+    
     #[ORM\Column(type: 'string', length: 255)]
     private $name;
+
     #[ORM\Column(type: 'string', length: 255)]
     private $tagName;
+
     #[ORM\OneToMany(targetEntity: LargeFile::class, mappedBy: 'dumpQualityFlag')]
     private $largeFiles;
+
     public function __construct()
     {
         $this->largeFiles = new ArrayCollection();

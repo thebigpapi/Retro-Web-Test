@@ -16,14 +16,18 @@ class MaxRam
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
     private $id;
+    
     #[ORM\Column(type: 'bigint')]
     #[Assert\NotBlank]
     #[Assert\PositiveOrZero]
     private $value;
+
     #[ORM\OneToMany(targetEntity: 'App\Entity\MotherboardMaxRam', mappedBy: 'max_ram', orphanRemoval: true)]
     private $motherboardMaxRams;
+
     #[ORM\OneToMany(targetEntity: 'App\Entity\Motherboard', mappedBy: 'maxVideoRam')]
     private $motherboards;
+
     public function __construct()
     {
         $this->motherboardMaxRams = new ArrayCollection();

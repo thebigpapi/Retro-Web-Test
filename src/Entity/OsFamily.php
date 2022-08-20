@@ -11,9 +11,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Vich\UploaderBundle\Entity\File as EmbeddedFile;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
-/**
- * @Vich\Uploadable
- */
+#[Vich\Uploadable()]
 #[ORM\Entity(repositoryClass: OsFamilyRepository::class)]
 class OsFamily
 {
@@ -21,25 +19,25 @@ class OsFamily
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
     private $id;
+
     #[ORM\Column(type: 'string', length: 255)]
     private $name;
+
     #[ORM\ManyToMany(targetEntity: OsFlag::class, mappedBy: 'osFamilies')]
     private $osFlags;
-    /**
-     * @var string|null
-     */
+    
     #[ORM\Column(type: 'string', length: 255)]
-    private $file_name;
+    private string|null $file_name;
+
     /**
      * NOTE: This is not a mapped field of entity metadata, just a simple property.
-     * 
-     * @Vich\UploadableField(mapping="osicon", fileNameProperty="file_name")
-     * 
-     * @var File|null
      */
-    private $osIcon;
+    #[Vich\UploadableField(mapping:'osicon', fileNameProperty:'file_name')]
+    private File|null $osIcon;
+
     #[ORM\Column(type: 'datetime')]
     private $updated_at;
+
     public function __construct()
     {
         $this->osFlags = new ArrayCollection();

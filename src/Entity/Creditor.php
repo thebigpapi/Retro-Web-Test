@@ -13,14 +13,19 @@ class Creditor
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
     private $id;
+    
     #[ORM\Column(type: 'string', length: 255)]
     private $name;
+
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $website;
+
     #[ORM\OneToMany(targetEntity: 'App\Entity\MotherboardImage', mappedBy: 'creditor')]
     private $motherboardImages;
+
     #[ORM\OneToMany(targetEntity: 'App\Entity\ChipImage', mappedBy: 'creditor')]
     private $chipImages;
+
     public function __construct()
     {
         $this->chipImages = new ArrayCollection();

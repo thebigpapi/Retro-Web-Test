@@ -13,18 +13,25 @@ class ProcessorPlatformType
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
     private $id;
+    
     #[ORM\Column(type: 'string', length: 255)]
     private $name;
+
     #[ORM\ManyToMany(targetEntity: 'App\Entity\Motherboard', mappedBy: 'processorPlatformTypes')]
     private $motherboards;
+
     #[ORM\OneToMany(targetEntity: 'App\Entity\ProcessingUnit', mappedBy: 'platform')]
     private $processingUnits;
+
     #[ORM\ManyToMany(targetEntity: 'App\Entity\ProcessorPlatformType', inversedBy: 'ChildProcessorPlatformType')]
     private $compatibleWith;
+
     #[ORM\ManyToMany(targetEntity: 'App\Entity\ProcessorPlatformType', mappedBy: 'compatibleWith')]
     private $ChildProcessorPlatformType;
+
     #[ORM\ManyToMany(targetEntity: 'App\Entity\CpuSocket', mappedBy: 'platforms')]
     private $cpuSockets;
+
     public function __construct()
     {
         $this->processors = new ArrayCollection();

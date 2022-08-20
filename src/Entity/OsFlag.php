@@ -14,19 +14,26 @@ class OsFlag
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
     private $id;
+    
     #[ORM\Column(type: 'string', length: 255)]
     private $name;
+
     #[ORM\Column(type: 'string', length: 255)]
     private $majorVersion;
+
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $minorVersion;
+
     #[ORM\ManyToOne(targetEntity: Manufacturer::class, inversedBy: 'osFlags')]
     #[ORM\JoinColumn(nullable: true)]
     private $manufacturer;
+
     #[ORM\ManyToMany(targetEntity: OsFamily::class, inversedBy: 'osFlags')]
     private $osFamilies;
+
     #[ORM\OneToMany(targetEntity: LargeFileOsFlag::class, mappedBy: 'osFlag', orphanRemoval: true)]
     private $largeFiles;
+
     public function __construct()
     {
         $this->osFamilies = new ArrayCollection();

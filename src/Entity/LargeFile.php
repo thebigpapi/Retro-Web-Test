@@ -9,12 +9,10 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Vich\UploaderBundle\Entity\File as EmbeddedFile;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
-/**
- * @Vich\Uploadable
- */
+
+#[Vich\Uploadable]
 #[ORM\Entity(repositoryClass: LargeFileRepository::class)]
 class LargeFile
 {
@@ -23,6 +21,7 @@ class LargeFile
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
     private $id;
+
     #[ORM\Column(type: 'string', length: 255)]
     private $name;
     /**
@@ -30,41 +29,49 @@ class LargeFile
      */
     #[ORM\Column(type: 'string', length: 255)]
     private $file_name;
-    /**
-     * NOTE: This is not a mapped field of entity metadata, just a simple property.
-     * 
-     * @Vich\UploadableField(mapping="largefile", fileNameProperty="file_name", size="size")
-     * 
-     * @var File|null
-     */
-    private $file;
+    
+    #[Vich\UploadableField(mapping:'largefile', fileNameProperty:'file_name', size:'size')]
+    private File|null $file;
     #[ORM\Column(type: 'datetime')]
     private $updated_at;
+
     #[ORM\ManyToOne(targetEntity: DumpQualityFlag::class, inversedBy: 'largeFiles')]
     #[ORM\JoinColumn(nullable: false)]
     private $dumpQualityFlag;
+
     #[ORM\ManyToMany(targetEntity: Language::class, inversedBy: 'largeFiles')]
     private $languages;
+
     #[ORM\Column(type: 'string', length: 255)]
     private $subdirectory;
+
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $fileVersion;
+
     #[ORM\OneToMany(targetEntity: LargeFileMediaTypeFlag::class, mappedBy: 'largeFile', orphanRemoval: true, cascade: ['persist'])]
     private $mediaTypeFlags;
+
     #[ORM\OneToMany(targetEntity: LargeFileOsFlag::class, mappedBy: 'largeFile', orphanRemoval: true, cascade: ['persist'])]
     private $osFlags;
+
     #[ORM\Column(type: 'boolean')]
     private $hasActivationKey;
+
     #[ORM\Column(type: 'boolean')]
     private $hasCopyProtection;
+
     #[ORM\OneToMany(targetEntity: LargeFileMotherboard::class, mappedBy: 'largeFile', orphanRemoval: true)]
     private $motherboards;
+
     #[ORM\OneToMany(targetEntity: LargeFileChipset::class, mappedBy: 'largeFile', orphanRemoval: true)]
     private $chipsets;
+
     #[ORM\Column(type: 'string', length: 2048, nullable: true)]
     private $note;
+
     #[ORM\Column(type: 'integer', nullable: true)]
     private $size;
+    
     public function __construct()
     {
         $this->languages = new ArrayCollection();

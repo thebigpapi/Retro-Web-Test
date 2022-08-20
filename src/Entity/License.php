@@ -13,12 +13,16 @@ class License
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
     private $id;
+    
     #[ORM\Column(type: 'string', length: 255)]
     private $name;
+
     #[ORM\OneToMany(targetEntity: 'App\Entity\MotherboardImage', mappedBy: 'license')]
     private $motherboardImages;
+    
     #[ORM\OneToMany(targetEntity: 'App\Entity\ChipImage', mappedBy: 'license')]
     private $chipImages;
+
     public function __construct()
     {
         $this->motherboardImages = new ArrayCollection();

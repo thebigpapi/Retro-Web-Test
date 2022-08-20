@@ -13,16 +13,22 @@ class Language
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
     private $id;
+    
     #[ORM\Column(type: 'string', length: 255)]
     private $name;
+
     #[ORM\OneToMany(targetEntity: 'App\Entity\Manual', mappedBy: 'language')]
     private $manuals;
+
     #[ORM\Column(type: 'string', length: 255)]
     private $originalName;
+
     #[ORM\Column(type: 'string', length: 10)]
     private $isoCode;
+
     #[ORM\ManyToMany(targetEntity: LargeFile::class, mappedBy: 'languages')]
     private $largeFiles;
+
     public function __construct()
     {
         $this->manuals = new ArrayCollection();

@@ -11,6 +11,7 @@ class Coprocessor extends ProcessingUnit
 {
     #[ORM\ManyToMany(targetEntity: 'App\Entity\Motherboard', mappedBy: 'coprocessors')]
     private $motherboards;
+    
     public function __construct()
     {
         parent::__construct();

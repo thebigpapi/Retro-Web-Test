@@ -13,10 +13,13 @@ class IoPort
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
     private $id;
+    
     #[ORM\Column(type: 'string', length: 255)]
     private $name;
+    
     #[ORM\OneToMany(targetEntity: 'App\Entity\MotherboardIoPort', mappedBy: 'io_port', orphanRemoval: true)]
     private $motherboardIoPorts;
+
     public function __construct()
     {
         $this->motherboardIoPorts = new ArrayCollection();

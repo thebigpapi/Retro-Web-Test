@@ -12,14 +12,18 @@ class LargeFileMediaTypeFlag
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
     private $id;
+    
     #[ORM\ManyToOne(targetEntity: LargeFile::class, inversedBy: 'mediaTypeFlags')]
     #[ORM\JoinColumn(nullable: false)]
     private $largeFile;
+
     #[ORM\ManyToOne(targetEntity: MediaTypeFlag::class, inversedBy: 'getLargeFiles')]
     #[ORM\JoinColumn(nullable: false)]
     private $mediaTypeFlag;
+
     #[ORM\Column(type: 'integer')]
     private $count;
+
     public function getId(): ?int
     {
         return $this->id;

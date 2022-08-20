@@ -17,31 +17,44 @@ class Manufacturer
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
     private $id;
+    
     #[ORM\Column(type: 'string', length: 255, unique: true)]
     #[Assert\NotBlank]
     private $name;
+
     #[ORM\Column(type: 'string', length: 255, nullable: true, unique: true)]
     private $shortName;
+
     #[ORM\OneToMany(targetEntity: 'App\Entity\Motherboard', mappedBy: 'manufacturer')]
     private $motherboards;
+
     #[ORM\OneToMany(targetEntity: 'App\Entity\Chipset', mappedBy: 'manufacturer')]
     private $chipsets;
+
     #[ORM\OneToMany(targetEntity: 'App\Entity\VideoChipset', mappedBy: 'manufacturer')]
     private $videoChipsets;
+
     #[ORM\OneToMany(targetEntity: 'App\Entity\AudioChipset', mappedBy: 'manufacturer')]
     private $audioChipsets;
+
     #[ORM\OneToMany(targetEntity: 'App\Entity\MotherboardAlias', mappedBy: 'manufacturer')]
     private $motherboardAliases;
+
     #[ORM\OneToMany(targetEntity: 'App\Entity\Chip', mappedBy: 'manufacturer')]
     private $chips;
+
     #[ORM\OneToMany(targetEntity: 'App\Entity\ChipAlias', mappedBy: 'manufacturer')]
     private $chipAliases;
+
     #[ORM\OneToMany(targetEntity: 'App\Entity\ManufacturerBiosManufacturerCode', mappedBy: 'manufacturer', orphanRemoval: true, cascade: ['persist'])]
     private $biosCodes;
+
     #[ORM\OneToMany(targetEntity: 'App\Entity\ChipsetBiosCode', mappedBy: 'biosManufacturer')]
     private $chipsetBiosCodes;
+
     #[ORM\OneToMany(targetEntity: OsFlag::class, mappedBy: 'manufacturer')]
     private $osFlags;
+
     public function __construct()
     {
         $this->motherboards = new ArrayCollection();

@@ -13,12 +13,16 @@ class CacheRatio
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
     private $id;
+    
     #[ORM\Column(type: 'string', length: 255)]
     private $name;
+
     #[ORM\OneToMany(targetEntity: 'App\Entity\Processor', mappedBy: 'L2CacheRatio')]
     private $processorsL2;
+
     #[ORM\OneToMany(targetEntity: 'App\Entity\Processor', mappedBy: 'L3CacheRatio')]
     private $processorsL3;
+
     public function __construct()
     {
         $this->processorsL2 = new ArrayCollection();

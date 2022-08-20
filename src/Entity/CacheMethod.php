@@ -13,10 +13,13 @@ class CacheMethod
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
     private $id;
+    
     #[ORM\Column(type: 'string', length: 255)]
     private $name;
+
     #[ORM\OneToMany(targetEntity: 'App\Entity\Processor', mappedBy: 'L1CacheMethod')]
     private $processors;
+
     public function __construct()
     {
         $this->processors = new ArrayCollection();

@@ -11,14 +11,18 @@ class ManufacturerBiosManufacturerCode
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
     private $id;
+    
     #[ORM\ManyToOne(targetEntity: 'App\Entity\Manufacturer', inversedBy: 'biosCodes', fetch: 'EAGER')]
     #[ORM\JoinColumn(nullable: false)]
     private $manufacturer;
+
     #[ORM\ManyToOne(targetEntity: 'App\Entity\Manufacturer', fetch: 'EAGER')]
     #[ORM\JoinColumn(nullable: false)]
     private $biosManufacturer;
+
     #[ORM\Column(type: 'string', length: 255)]
     private $code;
+    
     public function getId(): ?int
     {
         return $this->id;

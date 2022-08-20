@@ -12,14 +12,18 @@ class LargeFileChipset
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
     private $id;
+    
     #[ORM\ManyToOne(targetEntity: LargeFile::class, inversedBy: 'chipsets')]
     #[ORM\JoinColumn(nullable: false)]
     private $largeFile;
+
     #[ORM\ManyToOne(targetEntity: Chipset::class, inversedBy: 'drivers')]
     #[ORM\JoinColumn(nullable: false)]
     private $chipset;
+
     #[ORM\Column(type: 'boolean')]
     private $isRecommended;
+
     public function getId(): ?int
     {
         return $this->id;

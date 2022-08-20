@@ -5,12 +5,10 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Vich\UploaderBundle\Entity\File as EmbeddedFile;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
-/**
- * @Vich\Uploadable
- */
+
+#[Vich\Uploadable]
 #[ORM\Entity(repositoryClass: 'App\Repository\MotherboardImageRepository')]
 class MotherboardImage
 {
@@ -18,37 +16,37 @@ class MotherboardImage
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
     private $id;
+
     #[ORM\ManyToOne(targetEntity: 'App\Entity\MotherboardImageType', inversedBy: 'motherboardImages')]
     #[ORM\JoinColumn(nullable: false)]
     private $motherboardImageType;
+
     #[ORM\ManyToOne(targetEntity: 'App\Entity\Motherboard', inversedBy: 'images')]
     #[ORM\JoinColumn(nullable: false)]
     private $motherboard;
-    /**
-     * @var string|null
-     */
+
     #[ORM\Column(type: 'string', length: 255)]
-    private $file_name;
+    private string|null $file_name;
+
     /**
      * NOTE: This is not a mapped field of entity metadata, just a simple property.
-     * 
-     * @Vich\UploadableField(mapping="image", fileNameProperty="file_name")
-     * 
-     * @var File|null
      */
-    private $imageFile;
-    /**
-     * @var string|null
-     */
+    #[Vich\UploadableField(mapping:'image', fileNameProperty:'file_name')]
+    private File|null $imageFile;
+
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private $description;
+    private string|null $description;
+
     #[ORM\Column(type: 'datetime')]
     private $updated_at;
+
     #[ORM\ManyToOne(targetEntity: 'App\Entity\Creditor', inversedBy: 'motherboardImages')]
     private $creditor;
+
     #[ORM\ManyToOne(targetEntity: 'App\Entity\License', inversedBy: 'motherboardImages')]
     #[ORM\JoinColumn(nullable: false)]
     private $license;
+
     public function getId(): ?int
     {
         return $this->id;

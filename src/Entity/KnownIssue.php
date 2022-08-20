@@ -13,12 +13,16 @@ class KnownIssue
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
     private $id;
+    
     #[ORM\Column(type: 'string', length: 255)]
     private $name;
+
     #[ORM\ManyToMany(targetEntity: 'App\Entity\Motherboard', mappedBy: 'knownIssues')]
     private $motherboards;
+
     #[ORM\Column(type: 'string', length: 512, nullable: true)]
     private $description;
+
     public function __construct()
     {
         $this->motherboards = new ArrayCollection();

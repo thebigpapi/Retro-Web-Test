@@ -14,16 +14,22 @@ abstract class Chip
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
     protected $id;
+    
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     protected $name;
+
     #[ORM\Column(type: 'string', length: 255)]
     protected $partNumber;
+
     #[ORM\ManyToOne(targetEntity: 'App\Entity\Manufacturer', inversedBy: 'chips', fetch: 'EAGER')]
     protected $manufacturer;
+
     #[ORM\OneToMany(targetEntity: 'App\Entity\ChipAlias', mappedBy: 'chip', orphanRemoval: true, cascade: ['persist'])]
     private $chipAliases;
+
     #[ORM\OneToMany(targetEntity: 'App\Entity\ChipImage', mappedBy: 'chip', orphanRemoval: true, cascade: ['persist'])]
     private $images;
+
     public function __construct()
     {
         $this->chipAliases = new ArrayCollection();

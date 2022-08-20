@@ -13,12 +13,16 @@ class ExpansionSlot
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
     private $id;
+    
     #[ORM\Column(type: 'string', length: 255)]
     private $name;
+
     #[ORM\OneToMany(targetEntity: 'App\Entity\MotherboardExpansionSlot', mappedBy: 'expansion_slot', orphanRemoval: true)]
     private $motherboardExpansionSlots;
+
     #[ORM\Column(type: 'boolean')]
     private $hiddenSearch;
+
     public function __construct()
     {
         $this->motherboardExpansionSlots = new ArrayCollection();

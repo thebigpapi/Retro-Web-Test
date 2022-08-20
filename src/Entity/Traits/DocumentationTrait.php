@@ -6,13 +6,10 @@ use App\Entity\Language;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Vich\UploaderBundle\Entity\File as EmbeddedFile;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\ManualRepository")
- * @Vich\Uploadable
- */
+#[Vich\Uploadable]
+#[ORM\Entity(repositoryClass:'App\Repository\ManualRepository')]
 trait DocumentationTrait
 {
     #[ORM\Id]
@@ -20,11 +17,8 @@ trait DocumentationTrait
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    /**
-     * @var string|null
-     */
     #[ORM\Column(type: 'string', length: 255)]
-    private $file_name;
+    private string|null $file_name;
 
     #[ORM\Column(type: 'string', length: 255)]
     private $link_name;

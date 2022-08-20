@@ -14,18 +14,24 @@ abstract class ProcessingUnit extends Chip
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
     protected $id;
+    
     #[ORM\ManyToOne(targetEntity: 'App\Entity\CpuSpeed', inversedBy: 'processingUnits')]
     #[ORM\OrderBy(['value' => 'ASC'])]
     protected $speed;
+    
     #[ORM\ManyToOne(targetEntity: 'App\Entity\ProcessorPlatformType', inversedBy: 'processingUnits')]
     protected $platform;
+
     #[ORM\ManyToMany(targetEntity: 'App\Entity\InstructionSet', inversedBy: 'processingUnits')]
     protected $instructionSets;
+
     #[ORM\ManyToOne(targetEntity: 'App\Entity\CpuSpeed', inversedBy: 'processingUnitsFsb')]
     #[ORM\OrderBy(['value' => 'ASC'])]
     protected $fsb;
+
     #[ORM\ManyToMany(targetEntity: 'App\Entity\CpuSocket', inversedBy: 'processingUnits')]
     private $sockets;
+
     public function __construct()
     {
         parent::__construct();

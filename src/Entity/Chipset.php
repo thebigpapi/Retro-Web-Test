@@ -13,10 +13,13 @@ class Chipset
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
     private $id;
+
     #[ORM\ManyToOne(targetEntity: 'App\Entity\Manufacturer', inversedBy: 'chipsets')]
     private $manufacturer;
+
     #[ORM\OneToMany(targetEntity: 'App\Entity\Motherboard', mappedBy: 'chipset')]
     private $motherboards;
+
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $name;
     /**
@@ -24,20 +27,28 @@ class Chipset
      */
     #[ORM\ManyToMany(targetEntity: 'App\Entity\ChipsetPart', inversedBy: 'chipsets')]
     private $chipsetParts;
+
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $encyclopedia_link;
+
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $release_date;
+
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $part_no;
+
     #[ORM\OneToMany(targetEntity: 'App\Entity\ChipsetBiosCode', mappedBy: 'chipset', orphanRemoval: true, cascade: ['persist'])]
     private $biosCodes;
+
     #[ORM\OneToMany(targetEntity: LargeFileChipset::class, mappedBy: 'chipset', orphanRemoval: true, cascade: ['persist'])]
     private $drivers;
+
     #[ORM\Column(type: 'string', length: 8192, nullable: true)]
     private $description;
+
     #[ORM\OneToMany(targetEntity: 'App\Entity\ChipsetDocumentation', mappedBy: 'chipset', orphanRemoval: true, cascade: ['persist'])]
     private $documentations;
+    
     public function __construct()
     {
         $this->motherboards = new ArrayCollection();

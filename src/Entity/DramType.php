@@ -13,10 +13,13 @@ class DramType
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
     private $id;
+    
     #[ORM\Column(type: 'string', length: 255)]
     private $name;
+
     #[ORM\ManyToMany(targetEntity: 'App\Entity\Motherboard', mappedBy: 'dramType')]
     private $motherboards;
+
     public function __construct()
     {
         $this->motherboardDramTypes = new ArrayCollection();

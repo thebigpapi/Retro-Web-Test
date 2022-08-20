@@ -11,12 +11,15 @@ class MotherboardMaxRam
     #[ORM\ManyToOne(targetEntity: 'App\Entity\Motherboard', inversedBy: 'motherboardMaxRams')]
     #[ORM\JoinColumn(nullable: false)]
     private $motherboard;
+    
     #[ORM\Id]
     #[ORM\ManyToOne(targetEntity: 'App\Entity\MaxRam', inversedBy: 'motherboardMaxRams')]
     #[ORM\JoinColumn(nullable: false)]
     private $max_ram;
+
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $note;
+
     public function getMotherboard(): ?Motherboard
     {
         return $this->motherboard;

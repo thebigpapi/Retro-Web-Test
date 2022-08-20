@@ -11,12 +11,16 @@ class ChipsetPart extends Chip
 {
     #[ORM\ManyToMany(targetEntity: 'App\Entity\Chipset', mappedBy: 'chipsetParts')]
     private $chipsets;
+    
     #[ORM\OneToMany(targetEntity: 'App\Entity\ChipDocumentation', mappedBy: 'chip', orphanRemoval: true, cascade: ['persist'])]
     private $documentations;
+
     #[ORM\Column(type: 'string', length: 8192, nullable: true)]
     private $description;
+
     #[ORM\Column(type: 'integer')]
     private $rank;
+
     public function __construct()
     {
         parent::__construct();

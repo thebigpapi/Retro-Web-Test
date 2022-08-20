@@ -11,12 +11,15 @@ class MotherboardIoPort
     #[ORM\ManyToOne(targetEntity: 'App\Entity\Motherboard', inversedBy: 'motherboardIoPorts')]
     #[ORM\JoinColumn(nullable: false)]
     private $motherboard;
+    
     #[ORM\Id]
     #[ORM\ManyToOne(targetEntity: 'App\Entity\IoPort', inversedBy: 'motherboardIoPorts')]
     #[ORM\JoinColumn(nullable: false)]
     private $io_port;
+
     #[ORM\Column(type: 'integer')]
     private $count;
+
     public function getMotherboard(): ?Motherboard
     {
         return $this->motherboard;

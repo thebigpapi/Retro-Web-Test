@@ -13,15 +13,20 @@ class VideoChipset
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
     private $id;
+    
     #[ORM\ManyToOne(targetEntity: 'App\Entity\Manufacturer', inversedBy: 'videoChipsets')]
     #[ORM\JoinColumn(nullable: false)]
     private $manufacturer;
+
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $name;
+
     #[ORM\OneToMany(targetEntity: 'App\Entity\Motherboard', mappedBy: 'videoChipset')]
     private $motherboards;
+
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $chipName;
+
     public function __construct()
     {
         $this->motherboards = new ArrayCollection();

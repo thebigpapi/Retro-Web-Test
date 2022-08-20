@@ -14,10 +14,13 @@ class PSUConnector
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
     private $id;
+    
     #[ORM\Column(type: 'string', length: 255)]
     private $name;
+
     #[ORM\ManyToMany(targetEntity: Motherboard::class, mappedBy: 'psuConnectors')]
     private $motherboards;
+    
     public function __construct()
     {
         $this->motherboards = new ArrayCollection();

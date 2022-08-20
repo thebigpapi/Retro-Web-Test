@@ -11,13 +11,17 @@ class MotherboardAlias
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
     private $id;
+    
     #[ORM\ManyToOne(targetEntity: 'App\Entity\Motherboard', inversedBy: 'motherboardAliases')]
     #[ORM\JoinColumn(nullable: false)]
     private $motherboard;
+
     #[ORM\ManyToOne(targetEntity: 'App\Entity\Manufacturer', inversedBy: 'motherboardAliases')]
     private $manufacturer;
+
     #[ORM\Column(type: 'string', length: 255)]
     private $name;
+
     public function getId(): ?int
     {
         return $this->id;

@@ -14,66 +14,97 @@ class Motherboard
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
     private $id;
+
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private ?string $name = null;
+
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private ?string $dimensions = null;
+
     #[ORM\ManyToOne(targetEntity: 'App\Entity\Manufacturer', inversedBy: 'motherboards', fetch: 'EAGER')]
     private $manufacturer;
+
     #[ORM\ManyToOne(targetEntity: 'App\Entity\Chipset', inversedBy: 'motherboards')]
     private $chipset;
+
     #[ORM\OneToMany(targetEntity: 'App\Entity\MotherboardMaxRam', mappedBy: 'motherboard', orphanRemoval: true, cascade: ['persist'])]
     private $motherboardMaxRams;
+
     #[ORM\OneToMany(targetEntity: 'App\Entity\MotherboardBios', mappedBy: 'motherboard', orphanRemoval: true, cascade: ['persist'])]
     private $motherboardBios;
+
     #[ORM\OneToMany(targetEntity: 'App\Entity\MotherboardExpansionSlot', mappedBy: 'motherboard', orphanRemoval: true, cascade: ['persist'])]
     private $motherboardExpansionSlots;
+
     #[ORM\OneToMany(targetEntity: 'App\Entity\MotherboardIoPort', mappedBy: 'motherboard', orphanRemoval: true, cascade: ['persist'])]
     private $motherboardIoPorts;
+
     #[ORM\ManyToMany(targetEntity: 'App\Entity\ProcessorPlatformType', inversedBy: 'motherboards')]
     private $processorPlatformTypes;
+
     #[ORM\ManyToMany(targetEntity: 'App\Entity\Processor', inversedBy: 'motherboards')]
     private $processors;
+
     #[ORM\ManyToMany(targetEntity: 'App\Entity\CpuSpeed', inversedBy: 'motherboards')]
     private $cpuSpeed;
+
     #[ORM\ManyToMany(targetEntity: 'App\Entity\CacheSize', inversedBy: 'motherboards')]
     private $cacheSize;
+
     #[ORM\ManyToMany(targetEntity: 'App\Entity\DramType', inversedBy: 'motherboards')]
     private $dramType;
+
     #[ORM\ManyToOne(targetEntity: 'App\Entity\FormFactor', inversedBy: 'motherboards')]
     private $formFactor;
+
     #[ORM\OneToMany(targetEntity: 'App\Entity\Manual', mappedBy: 'motherboard', orphanRemoval: true, cascade: ['persist'])]
     private $manuals;
+
     #[ORM\ManyToMany(targetEntity: 'App\Entity\Coprocessor', inversedBy: 'motherboards')]
     private $coprocessors;
+
     #[ORM\OneToMany(targetEntity: 'App\Entity\MotherboardImage', mappedBy: 'motherboard', orphanRemoval: true, cascade: ['persist'])]
     private $images;
+
     #[ORM\ManyToMany(targetEntity: 'App\Entity\KnownIssue', inversedBy: 'motherboards')]
     private $knownIssues;
+
     #[ORM\ManyToOne(targetEntity: 'App\Entity\VideoChipset', inversedBy: 'motherboards')]
     private $videoChipset;
+
     #[ORM\ManyToOne(targetEntity: 'App\Entity\MaxRam', inversedBy: 'motherboards')]
     private $maxVideoRam;
+
     #[ORM\ManyToOne(targetEntity: 'App\Entity\AudioChipset', inversedBy: 'motherboards')]
     private $audioChipset;
+
     #[ORM\Column(type: 'string', length: 2048, nullable: true)]
     private ?string $note = null;
+
     #[ORM\Column(type: 'datetime')]
     private $lastEdited;
+
     #[ORM\Column(type: 'integer', nullable: true)]
     private ?int $maxCpu = null;
+
     #[ORM\OneToMany(targetEntity: 'App\Entity\MotherboardAlias', mappedBy: 'motherboard', orphanRemoval: true, cascade: ['persist'])]
     private $motherboardAliases;
+
     #[ORM\ManyToMany(targetEntity: 'App\Entity\CpuSocket', inversedBy: 'motherboards')]
     private $cpuSockets;
+
     #[ORM\OneToMany(targetEntity: LargeFileMotherboard::class, mappedBy: 'motherboard', orphanRemoval: true, cascade: ['persist'])]
     private $drivers;
+
     #[ORM\OneToMany(targetEntity: MotherboardIdRedirection::class, mappedBy: 'destination', orphanRemoval: true, cascade: ['persist'])]
     private $redirections;
+
     #[ORM\ManyToMany(targetEntity: PSUConnector::class, inversedBy: 'motherboards')]
     private $psuConnectors;
+
     #[ORM\Column(type: 'string', length: 80, unique: true)]
     private $slug;
+    
     public function __construct()
     {
         $this->motherboardMaxRams = new ArrayCollection();

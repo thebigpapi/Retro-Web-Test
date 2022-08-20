@@ -5,12 +5,10 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Vich\UploaderBundle\Entity\File as EmbeddedFile;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
-/**
- * @Vich\Uploadable
- */
+
+#[Vich\Uploadable]
 #[ORM\Entity(repositoryClass: 'App\Repository\ChipImageRepository')]
 class ChipImage
 {
@@ -18,31 +16,33 @@ class ChipImage
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
     private $id;
+
     #[ORM\ManyToOne(targetEntity: 'App\Entity\Chip', inversedBy: 'images')]
     #[ORM\JoinColumn(nullable: false)]
     private $chip;
-    /**
-     * @var string|null
-     */
+    
     #[ORM\Column(type: 'string', length: 255)]
-    private $file_name;
+    private string|null $file_name;
+
     /**
      * NOTE: This is not a mapped field of entity metadata, just a simple property.
-     * 
-     * @Vich\UploadableField(mapping="chipimage", fileNameProperty="file_name")
-     * 
-     * @var File|null
      */
-    private $imageFile;
+    #[Vich\UploadableField(mapping:'chipimage', fileNameProperty:'file_name')]
+    private File|null $imageFile;
+
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $description;
+
     #[ORM\Column(type: 'datetime')]
     private $updated_at;
+
     #[ORM\ManyToOne(targetEntity: 'App\Entity\Creditor', inversedBy: 'chipImages')]
     private $creditor;
+
     #[ORM\ManyToOne(targetEntity: 'App\Entity\License', inversedBy: 'chipImages')]
     #[ORM\JoinColumn(nullable: false)]
     private $license;
+    
     public function getId(): ?int
     {
         return $this->id;

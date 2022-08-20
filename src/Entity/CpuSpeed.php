@@ -13,14 +13,19 @@ class CpuSpeed
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
     private $id;
+    
     #[ORM\Column(type: 'float')]
     private $value;
+
     #[ORM\ManyToMany(targetEntity: 'App\Entity\Motherboard', mappedBy: 'cpuSpeed')]
     private $motherboards;
+
     #[ORM\OneToMany(targetEntity: 'App\Entity\ProcessingUnit', mappedBy: 'speed')]
     private $processingUnits;
+
     #[ORM\OneToMany(targetEntity: 'App\Entity\ProcessingUnit', mappedBy: 'fsb')]
     private $processingUnitsFsb;
+
     public function __construct()
     {
         $this->motherboardCpuSpeeds = new ArrayCollection();

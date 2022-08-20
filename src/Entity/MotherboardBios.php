@@ -5,12 +5,9 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Vich\UploaderBundle\Entity\File as EmbeddedFile;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
-/**
- * @Vich\Uploadable
- */
+#[Vich\Uploadable]
 #[ORM\Entity(repositoryClass: 'App\Repository\MotherboardBiosRepository')]
 class MotherboardBios
 {
@@ -18,34 +15,38 @@ class MotherboardBios
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
     private $id;
+
     #[ORM\ManyToOne(targetEntity: 'App\Entity\Motherboard', inversedBy: 'motherboardBios')]
     #[ORM\JoinColumn(nullable: false)]
     private $motherboard;
+
     /**
      * NOTE: This is not a mapped field of entity metadata, just a simple property.
-     * 
-     * @Vich\UploadableField(mapping="bios", fileNameProperty="file_name")
-     * 
-     * @var File|null
      */
-    private $romFile;
-    /**
-     * @var string|null
-     */
+    #[Vich\UploadableField(mapping:'bios', fileNameProperty:'file_name')]
+    private File|null $romFile;
+
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private $file_name;
+    private string|null $file_name;
+
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $postString;
+
     #[ORM\ManyToOne(targetEntity: 'App\Entity\Manufacturer')]
     private $manufacturer;
+
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $boardVersion;
+
     #[ORM\Column(type: 'datetime')]
     private $updated_at;
+
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $coreVersion;
+
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $note;
+    
     public function __construct(){
         $this->updated_at = new \DateTime('now');
     }

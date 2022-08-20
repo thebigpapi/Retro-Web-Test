@@ -13,14 +13,19 @@ class InstructionSet
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
     private $id;
+    
     #[ORM\Column(type: 'string', length: 255)]
     private $name;
+
     #[ORM\ManyToMany(targetEntity: 'App\Entity\ProcessingUnit', mappedBy: 'instructionSets')]
     private $processingUnits;
+
     #[ORM\ManyToMany(targetEntity: 'App\Entity\InstructionSet', inversedBy: 'childInstructionSets')]
     private $compatibleWith;
+
     #[ORM\ManyToMany(targetEntity: 'App\Entity\InstructionSet', mappedBy: 'compatibleWith')]
     private $childInstructionSets;
+
     public function __construct()
     {
         $this->processingUnits = new ArrayCollection();
