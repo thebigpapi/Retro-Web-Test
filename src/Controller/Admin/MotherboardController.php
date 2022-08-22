@@ -321,7 +321,7 @@ class MotherboardController extends AbstractController
                 $val->setMotherboard($mobo);
             }
             foreach ($form['redirections']->getData() as $val) {
-                if ($idRedirectionRepository->checkRedirectionExists($val->getSource(), $mobo->getId())) {
+                if ($idRedirectionRepository->checkRedirectionExists($val->getSource(),$val->getSourceType(), $mobo->getId())) {
                     throw new Exception("Redirection {$val->getSource()} already exists.");
                 }
 
