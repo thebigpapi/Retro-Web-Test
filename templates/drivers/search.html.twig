@@ -24,9 +24,9 @@
 	<div id="hiddenDiv" style="display: none;"></div>
 	{{ form_start(form, {'method': 'POST', 'name': 'search_driver', 'action':path("driver_search"), 'attr':{'data-controller':'search'}}) }}
 	<fieldset id="search-fieldset">
-		<div class="title">Search for a driver</div>
+		<div class="title">Search for: drivers/software</div>
 		<div class="index-title">
-			List drivers whose manufacturer name starts with:<br>
+			List by first letter:<br>
 		</div>
 		<div class="index-list">
 			{% for letter in ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z']%}
@@ -36,28 +36,24 @@
 		<section>
 			<h4 hidden>Search navigation</h4>
 			<div class="toolbar">
-				<button type="button" onclick="document.getElementById('rst-btn').click();return false;">
-					<img src="{{ absolute_url(asset('build/icons/search/reset.svg')) }}" alt="reset" width="24" height="24">
-					<span>Reset fields</span>
-				</button>
-				<button type="button" onclick="document.getElementById('search_search').click();return false;">
-					<img src="{{ absolute_url(asset('build/icons/search/search.svg')) }}" alt="imgsearch" width="24" height="24">
-					<span>Search</span>
-				</button>
-				<input id="rst-btn" type="reset" value="reset" data-action="click->search#reset" data-reset-ids=''>
+				
 				{{ form_row(form.search)|replace({'<div><button': '<input', '</button></div>': '">', '>': ' value="'})|raw }}
 			</div>
 		</section>
 		<section class="search-form-grid">
 			<div class="search-form-entry"></div>
 			<div class="search-form-entry">
-				<label class="search-form-label" for="search_name" title="This is where you enter the driver part number."
+				<label class="search-form-label" for="search_name" title="This is where you enter the driver name, version or file name."
 				>
 					<span>Name</span>
 					<img src="{{ absolute_url(asset('build/icons/search/help.svg')) }}" alt="" width="16" height="16">
 				</label>
-				<div class="search-form-widget">
+				<div class="search-form-widget" style="display: flex;flex-direction: row;">
 					<div>{{ form_widget(form.name) }}</div>
+					<button type="button" onclick="document.getElementById('search_search').click();return false;">
+					<img src="{{ absolute_url(asset('build/icons/search/search.svg')) }}" alt="imgsearch" width="24" height="24">
+					<span>Search</span>
+				</button>
 				</div>
 			</div>
 		</section>

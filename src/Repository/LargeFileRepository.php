@@ -58,8 +58,11 @@ class LargeFileRepository extends ServiceEntityRepository
 
         // Checking values in criteria and creating WHERE statements
         if (array_key_exists('name', $criteria)) {
-            $whereArray[] = "(LOWER(drv.name) LIKE :nameLike OR LOWER(drv.fileVersion) LIKE :nameLike)";
-            $valuesArray["nameLike"] = "%" . strtolower($criteria['name']) . "%";
+            $multicrit = explode(" ", $criteria['name']);
+            foreach ($multicrit as $key => $val){
+                $whereArray[] = "(LOWER(drv.name) LIKE :nameLike$key OR LOWER(drv.fileVersion) LIKE :nameLike$key OR LOWER(drv.file_name) LIKE :nameLike$key)";
+                $valuesArray["nameLike$key"] = "%" . strtolower($val) . "%";
+            }
         }
 
         // Building where statement
@@ -70,7 +73,7 @@ class LargeFileRepository extends ServiceEntityRepository
             "SELECT drv
             FROM App\Entity\LargeFile drv
             WHERE $whereString
-            ORDER BY drv.name ASC"
+            ORDER BY drv.name ASC, drv.file_name ASC"
         );
 
         // Setting values

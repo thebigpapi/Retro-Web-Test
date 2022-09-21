@@ -76,8 +76,8 @@ class MotherboardBiosRepository extends ServiceEntityRepository
         }
 
         if (array_key_exists('core_version', $criterias)) {
-            $query->andWhere('b.coreVersion = :coreVersion')
-                ->setParameter('coreVersion', $criterias['core_version']);
+            $query->andWhere('b.coreVersion LIKE :coreVersion')
+                ->setParameter('coreVersion', "%" . $criterias['core_version'] . "%");
         }
 
         if (
@@ -88,8 +88,7 @@ class MotherboardBiosRepository extends ServiceEntityRepository
             $query->andWhere($query->expr()->like('b.postString', ':postString'))
                 ->setParameter('postString', '%' . $criterias['post_string'] . '%');
         }
-
-        return $query->orderBy('b.postString', 'ASC')
+        return $query->orderBy('b.coreVersion', 'ASC')->addOrderBy('m.manufacturer', 'ASC')
             ->getQuery()
             ->getResult();
     }
