@@ -64,7 +64,8 @@
 					<h1>Documented parts</h1>
 					<ul class="chipset-toc">
 						{% for chipPart in chipset.getChipsetParts()|filter(chipPart => chipPart.getDescription() is not empty) %}
-						<li><a href="#{{ chipPart.getShortNamePN() }}">{{ chipPart.getShortName() }}</a></li>
+						<li><a href="#{{ chipPart.getShortNamePN() }}">{{ chipPart.getShortName() }}{% if chipPart.getChipAliases() is not empty %}&nbsp;(known as:{% for cp in chipPart.getChipAliases() %}
+						{{ cp.getManufacturer().getShortNameIfExist() }}&nbsp;{{ cp.getPartNumber() }} {{ cp.getName() ? '[' ~ cp.getName() ~ ']' }}{% if not loop.last%}, {% endif %}{% endfor %}){% endif %}</a></li>
 						{% endfor %}	
 					</ul>				
 					{% for chipPart in chipset.getChipsetParts()|filter(chipPart => chipPart.getDescription() is not empty) %}
