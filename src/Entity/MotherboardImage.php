@@ -26,7 +26,7 @@ class MotherboardImage
     private $motherboard;
 
     #[ORM\Column(type: 'string', length: 255)]
-    private string|null $file_name;
+    private $file_name;
 
     /**
      * NOTE: This is not a mapped field of entity metadata, just a simple property.

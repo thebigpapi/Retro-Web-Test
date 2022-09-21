@@ -171,7 +171,7 @@
 					<span><b>Drivers: </b></span>
 					{% if motherboard.getAllDrivers() is not empty %}
 					<span>{{ motherboard.getAllDrivers.count() }}{% if motherboard.getAllDrivers.count() == 1 %} entry{% else %} entries{% endif %}</span>
-					<div class="show-table drv" style="display:block;">
+					<div class="show-table drv">
 						<div class="show-downloads-head">{{ driverHeader() }}</div>
 						{% for driver in motherboard.getAllDrivers() %}
 							<div class="show-table-row">{{ driverLink(driver.largeFile) }}</div>

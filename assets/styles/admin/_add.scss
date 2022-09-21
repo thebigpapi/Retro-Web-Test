@@ -19,7 +19,12 @@ div.imgp {
 	display:flex;
 	justify-content: space-between;
 	flex-wrap: wrap;
-	select {width:68%}
+	select,div.ts-wrapper {
+		width:68%;
+		div.ts-control{
+			width:100%;
+		}
+	}
 	input[type=text] {width:65%}
 }
 

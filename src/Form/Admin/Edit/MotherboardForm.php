@@ -109,16 +109,17 @@ class MotherboardForm extends AbstractType
             ->add('manufacturer', EntityType::class, [
                 'class' => Manufacturer::class,
                 'choice_label' => 'shortNameIfExist',
+                'autocomplete' => true,
                 'multiple' => false,
                 'expanded' => false,
                 'required' => false,
+                
             ])
             ->add('chipset', EntityType::class, [
                 'class' => Chipset::class,
                 'choice_label' => 'getFullNameParts',
-                'multiple' => false,
-                'expanded' => false,
                 'choices' => $options['chipsets'],
+                'autocomplete' => true,
                 'required' => false,
             ])
             ->add('cpuSockets', CollectionType::class, [
@@ -206,6 +207,7 @@ class MotherboardForm extends AbstractType
                 'choice_label' => 'getNameWithManufacturer',
                 'multiple' => false,
                 'expanded' => false,
+                'autocomplete' => true,
             ])
             ->add('maxVideoRam', EntityType::class, [
                 'class' => MaxRam::class,
@@ -220,6 +222,7 @@ class MotherboardForm extends AbstractType
                 'choice_label' => 'getNameWithManufacturer',
                 'multiple' => false,
                 'expanded' => false,
+                'autocomplete' => true,
             ])
             ->add('drivers', CollectionType::class, [
                 'entry_type' => LargeFileMotherboardType::class,

@@ -68,6 +68,7 @@ class MotherboardImageTypeForm extends AbstractType
                 'choice_label' => 'name',
                 'multiple' => false,
                 'expanded' => false,
+                'autocomplete' => true,
             ])
             ->add('license', EntityType::class, [
                 'class' => License::class,

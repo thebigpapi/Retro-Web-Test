@@ -233,7 +233,6 @@ div.editor-row {
 	&.drv{
 		display:grid;
 		grid-template-columns:[first] 60% [second] 15% [third] 7% [end];
-		div, a {    margin-left: 10px;}
 	}
 	&.bios{
 		display:grid;
@@ -252,9 +251,20 @@ div.editor-row {
 			display: flex;
 			flex-wrap: wrap;
 			width: 100%;
-
+			div.ts-wrapper {
+				width:max(200px,25vw);
+				div.ts-control{
+					width:100%;
+				}
+			}
 			* {
 				width: 100%;
+			}
+		}
+		&.chip div div.ts-wrapper {
+			width:max(200px,40vw);
+			div.ts-control{
+				width:100%;
 			}
 		}
 	}

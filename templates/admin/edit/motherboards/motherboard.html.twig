@@ -1,7 +1,6 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}Add/Edit motherboard{% endblock %}
-
 {% block body %}
 <form data-controller="motherboard--add" name="add_motherboard" method="post" enctype="multipart/form-data" data-action="submit->motherboard--add#check">
 	<div class="title">Motherboard editor</div>
@@ -112,7 +111,7 @@
 					</div><!-- Chipset -->
 					<div class="quick-spec-table" style="padding:0;">
 						<div class="quick-spec-head editor">Chipset</div>
-						<div class="editor-row nopad"><div class="editor-form-widget">
+						<div class="editor-row nopad"><div class="editor-form-widget chip">
 							<div>{{ form_widget(form.chipset)|replace({'<option value="">': '<option label=" " value="">'})|raw }}</div>
 						</div></div>
 					</div><!-- Dimensions -->
@@ -125,7 +124,7 @@
 					<div class="quick-spec-table" style="padding:0;">
 						<div class="quick-spec-head editor">Video chipset</div>
 						<div class="editor-row nopad"><div class="editor-form-widget">
-							<div>{{ form_widget(form.videoChipset)|replace({'<option value="">': '<option label=" " value="">'})|raw }}</div>
+							<div>{{ form_widget(form.videoChipset, {'attr': {'style': 'display:none;'}})|replace({'<option value="">': '<option label=" " value="">'})|raw }}</div>
 						</div></div>
 					</div><!-- Max video RAM -->
 					<div class="quick-spec-table" style="padding:0;">
@@ -137,7 +136,7 @@
 					<div class="quick-spec-table" style="padding:0;">
 						<div class="quick-spec-head editor">Audio chipset</div>
 						<div class="editor-row nopad"><div class="editor-form-widget">
-							<div>{{ form_widget(form.audioChipset)|replace({'<option value="">': '<option label=" " value="">'})|raw }}</div>
+							<div>{{ form_widget(form.audioChipset, {'attr': {'style': 'display:none;'}})|replace({'<option value="">': '<option label=" " value="">'})|raw }}</div>
 						</div></div>
 					</div><!-- Max system RAM -->
 					<div class="quick-spec-table" data-controller="collection" style="padding:0;">
