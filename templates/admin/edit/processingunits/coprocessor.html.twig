@@ -49,7 +49,7 @@
 		</tr>
 	</table>
 	</div>
-	{% include 'macros/entityListImages.html.twig' with {'entityName':'processingUnit.chip.images', 'entities':form.processingUnit.chip.images} %}
+	{% include 'macros/entityListImages.html.twig' with {'entityName':'processingUnit.chip.images', 'entities':form.processingUnit.chip.images, 'edit':true} %}
 </div>
 <div id="hiddenDiv" style="display: none;">{{form_widget(form.save)}}{{ form_end(form)|replace({'</form>': '</div></form>'})|raw }}
 <div style="clear:left;"></div>
