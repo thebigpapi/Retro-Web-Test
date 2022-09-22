@@ -294,7 +294,7 @@
 								<div><b>Uploaded file</b></div>
 							</div>
 							<div class="append_table" id="motherboardBios-fields-list" data-widget-counter="{{ form.motherboardBios|length }}" data-prototype="
-								<div>{{ form_widget(form.motherboardBios.vars.prototype.manufacturer, {'attr': {'style': 'width:100%'}} )|e }}</div>
+								<div>{{ form_widget(form.motherboardBios.vars.prototype.manufacturer, {'attr': {'style': 'display:none;'}} )|e }}</div>
 								<div>{{ form_widget(form.motherboardBios.vars.prototype.postString, {'attr': {'style': 'width:100%'}} )|e }}</div>
 								<div>{{ form_widget(form.motherboardBios.vars.prototype.note, {'attr': {'style': 'width:100%'}} )|e }}</div>
 								<div>{{ form_widget(form.motherboardBios.vars.prototype.boardVersion, {'attr': {'style': 'width:100%'}} )|e }}</div>
@@ -305,7 +305,7 @@
 								">
 							{% for bios in form.motherboardBios %}
 								<div class="editor-row bios nopad">
-									<div>{{ form_widget(bios.manufacturer, {'attr': {'style': 'width:100%'}}) }}</div>
+									<div>{{ form_widget(bios.manufacturer, {'attr': {'style': 'display:none;'}}) }}</div>
 									<div>{{ form_widget(bios.postString, {'attr': {'style': 'width:100%'}}) }}</div>
 									<div>{{ form_widget(bios.note, {'attr': {'style': 'width:100%'}}) }}</div>
 									<div>{{ form_widget(bios.boardVersion, {'attr': {'style': 'width:100%'}}) }}</div>
