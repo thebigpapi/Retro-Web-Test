@@ -26,9 +26,13 @@ class AudioChipset
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $chipName;
 
+    #[ORM\OneToMany(targetEntity: LargeFileAudioChipset::class, mappedBy: 'audioChipset', orphanRemoval: true, cascade: ['persist'])]
+    private $drivers;
+
     public function __construct()
     {
         $this->motherboards = new ArrayCollection();
+        $this->drivers = new ArrayCollection();
     }
     public function getId(): ?int
     {
@@ -102,6 +106,33 @@ class AudioChipset
     public function setChipName(?string $chipName): self
     {
         $this->chipName = $chipName;
+
+        return $this;
+    }
+     /**
+     * @return Collection|LargeFileAudioChipset[]
+     */
+    public function getDrivers(): Collection
+    {
+        return $this->drivers;
+    }
+    public function addDriver(LargeFileAudioChipset $driver): self
+    {
+        if (!$this->drivers->contains($driver)) {
+            $this->drivers[] = $driver;
+            $driver->setAudiochipsets($this);
+        }
+
+        return $this;
+    }
+    public function removeDriver(LargeFileAudioChipset $driver): self
+    {
+        if ($this->drivers->removeElement($driver)) {
+            // set the owning side to null (unless already changed)
+            if ($driver->getAudiochipsets() === $this) {
+                $driver->setAudiochipsets(null);
+            }
+        }
 
         return $this;
     }

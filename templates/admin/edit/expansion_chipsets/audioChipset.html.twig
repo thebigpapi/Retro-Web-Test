@@ -23,6 +23,34 @@
 			<td>{{form_widget(form.chipName)}}</td>
 		</tr>
 	</table>
+	<div data-controller="collection">
+						<div style="padding-top:5px;">
+							<img src="{{ absolute_url(asset('build/icons/show/hardware.svg')) }}" alt="" width="32" style="vertical-align: middle;padding-bottom: 10px;">
+							<p style="display:inline-block;">Drivers: </p>
+							{% include 'macros/buttons.html.twig' with {'type':'add', 'action': 'drivers'} %}
+						</div>
+						<div class="bios-image">
+							<div class="bios-image-head editor-row drv">
+								<div><b>File</b></div>
+								<div><b>Recommended</b></div>
+							</div>
+							<div id="drivers-fields-list" data-widget-counter="{{ form.drivers|length }}" data-prototype="
+								<div>{{ form_widget(form.drivers.vars.prototype.largeFile, {'attr': {'style': 'width:100%'}} )|e }}</div>
+								<div style=display:flex;justify-content:center;>{{ form_widget(form.drivers.vars.prototype.isRecommended, {'attr': {'style': 'height:18px;width:18px;margin:0;'}} )|e }}</div>
+								{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
+								" data-controller="collection">
+								{% for driver in form.drivers %}
+										<div class="editor-row drv nopad">
+											<div>{{ form_widget(driver.largeFile, {'attr': {'style': 'width:100%'}} )|replace({'<option value="">': '<option label=" " value="">'})|raw }}</div>
+											<div style="display:flex;justify-content:center;">{{ form_widget(driver.isRecommended, {'attr': {'style': 'height:18px;width:18px;margin:0;'}} ) }}</div>
+											{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
+										</div>
+										{{ form_errors(driver) }}
+								{% endfor %}
+							</div>
+							{{ form_errors(form.drivers) }}
+						</div>
+					</div>
 </div>
 <div id="hiddenDiv" style="display: none;">{{form_widget(form.save) }}{{ form_end(form)|replace({'</form>': '</div></form>'})|raw }}
 {% endblock %}

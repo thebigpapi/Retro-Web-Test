@@ -230,7 +230,9 @@ class ExpansionChipsetController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $chipset = $form->getData();
-
+            foreach ($form['drivers']->getData() as $key => $val) {
+                $val->setAudioChipset($chipset);
+            }
             $entityManager->persist($chipset);
             $entityManager->flush();
 

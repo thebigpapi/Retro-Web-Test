@@ -71,6 +71,9 @@ class LargeFile
 
     #[ORM\Column(type: 'integer', nullable: true)]
     private $size;
+
+    #[ORM\OneToMany(targetEntity: LargeFileAudioChipset::class, mappedBy: 'largeFile', orphanRemoval: true)]
+    private $audiochipsets;
     
     public function __construct()
     {
@@ -79,6 +82,7 @@ class LargeFile
         $this->osFlags = new ArrayCollection();
         $this->motherboards = new ArrayCollection();
         $this->chipsets = new ArrayCollection();
+        $this->audiochipsets = new ArrayCollection();
     }
     public function getId(): ?int
     {
@@ -354,6 +358,33 @@ class LargeFile
     public function setSize(?int $size): self
     {
         $this->size = $size;
+
+        return $this;
+    }
+    /**
+     * @return Collection|LargeFileAudioChipset[]
+     */
+    public function getAudioChipsets(): ?Collection
+    {
+        return $this->audiochipsets;
+    }
+    public function addAudioChipset(LargeFileAudioChipset $audioChipset): self
+    {
+        if (!$this->audiochipsets->contains($audioChipset)) {
+            $this->audiochipsets[] = $audioChipset;
+            $audioChipset->setLargeFile($this);
+        }
+
+        return $this;
+    }
+    public function removeAudioChipset(LargeFileAudioChipset $audioChipset): self
+    {
+        if ($this->audiochipsets->removeElement($audioChipset)) {
+            // set the owning side to null (unless already changed)
+            if ($audioChipset->getLargeFile() === $this) {
+                $audioChipset->setLargeFile(null);
+            }
+        }
 
         return $this;
     }

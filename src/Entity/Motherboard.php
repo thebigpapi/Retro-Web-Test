@@ -709,6 +709,7 @@ class Motherboard
         return new ArrayCollection(
             array_merge(
                 $this->getChipset() ? $this->getChipset()->getDrivers()->toArray() : array(),
+                $this->getAudioChipset() ? $this->getAudioChipset()->getDrivers()->toArray() : array(),
                 $this->getDrivers()->toArray()
             )
         );
