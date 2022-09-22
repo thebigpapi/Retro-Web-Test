@@ -23,6 +23,12 @@ class License
     #[ORM\OneToMany(targetEntity: 'App\Entity\ChipImage', mappedBy: 'license')]
     private $chipImages;
 
+    #[ORM\OneToMany(targetEntity: 'App\Entity\ChipImage', mappedBy: 'license')]
+    private $creditors;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $website = null;
+
     public function __construct()
     {
         $this->motherboardImages = new ArrayCollection();
@@ -95,6 +101,18 @@ class License
                 $chipImage->setLicense(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getWebsite(): ?string
+    {
+        return $this->website;
+    }
+
+    public function setWebsite(?string $website): self
+    {
+        $this->website = $website;
 
         return $this;
     }

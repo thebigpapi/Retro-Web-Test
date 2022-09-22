@@ -7,11 +7,9 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use App\Entity\Creditor;
 use App\Entity\License;
 
-class CreditorForm extends AbstractType
+class LicenseForm extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -22,13 +20,6 @@ class CreditorForm extends AbstractType
             ->add('website', TextType::class, [
                 'required' => false,
             ])
-            ->add('license', EntityType::class, [
-                'class' => License::class,
-                'required' => true,
-                'choice_label' => 'name',
-                'multiple' => false,
-                'expanded' => false,
-            ])
             ->add('save', SubmitType::class)
             ;
     }
@@ -36,7 +27,7 @@ class CreditorForm extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => Creditor::class,
+            'data_class' => License::class,
         ]);
     }
 }

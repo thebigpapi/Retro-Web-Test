@@ -1,11 +1,11 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Manage creditors{% endblock %}
+{% block title %}Manage license{% endblock %}
 
 {% block body %}
 <div class="title" style="padding-top:5em;display:flex;justify-content:center;align-items:center;">
-	<b>Edit:&nbsp;Creditor&nbsp;&nbsp;</b>
-	<button type="button" name="tabs" id="tab-nav-save" onclick="document.getElementById('creditor_form_save').click();"><img src="{{ absolute_url(asset('build/icons/edit.svg')) }}" alt="" width="24" height="24"><span>Save</span></button>
+	<b>Edit:&nbsp;License&nbsp;&nbsp;</b>
+	<button type="button" name="tabs" id="tab-nav-save" onclick="document.getElementById('license_form_save').click();"><img src="{{ absolute_url(asset('build/icons/edit.svg')) }}" alt="" width="24" height="24"><span>Save</span></button>
 </div>
 {{ form_start(form, {'method': 'POST'}) }}
 <div style="margin:0 auto;display:table;">
@@ -17,10 +17,6 @@
         <tr>
 			<td>{{form_label(form.website)}}</td>
 			<td>{{form_widget(form.website, {'attr': {'style': 'width:17em'}})}}</td>
-		</tr>
-		<tr>
-			<td>{{form_label(form.license)}}</td>
-			<td>{{form_widget(form.license, {'attr': {'style': 'width:17em'}})}}</td>
 		</tr>
 	</table>
 </div>

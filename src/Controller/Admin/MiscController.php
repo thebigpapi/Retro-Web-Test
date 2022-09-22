@@ -6,12 +6,15 @@ use App\Entity\CpuSpeed;
 use App\Entity\Creditor;
 use App\Entity\KnownIssue;
 use App\Entity\Manufacturer;
+use App\Entity\License;
 use App\Form\Admin\Edit\CpuSpeedForm;
 use App\Form\Admin\Edit\CreditorForm;
+use App\Form\Admin\Edit\LicenseForm;
 use App\Form\Admin\Edit\KnownIssueForm;
 use App\Form\Admin\Edit\ManufacturerForm;
 use App\Repository\CpuSpeedRepository;
 use App\Repository\CreditorRepository;
+use App\Repository\LicenseRepository;
 use App\Repository\KnownIssueRepository;
 use App\Repository\ManufacturerRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -44,6 +47,9 @@ class MiscController extends AbstractController
                 break;
             case "creditor":
                 return $this->manageCreditors($request, $translator);
+                break;
+            case "license":
+                return $this->manageLicenses($request, $translator);
                 break;
             default:
                 return $this->redirect($this->generateUrl('admin_manage_miscs', array("entity" => "manufacturer")));
@@ -153,6 +159,39 @@ class MiscController extends AbstractController
         );
     }
 
+    #[Route(path: '/admin/manage/miscs/licenses/add', name: 'new_license_add')]
+    public function licenseAdd(Request $request, EntityManagerInterface $entityManager)
+    {
+        return $this->renderEntityForm(
+            $request,
+            new License(),
+            LicenseForm::class,
+            'admin/edit/miscs/license.html.twig',
+            'license',
+            $entityManager
+        );
+    }
+
+    #[Route(path: '/admin/manage/miscs/licenses/{id}/edit', name: 'new_license_edit', requirements: ['id' => '\d+'])]
+    public function licenseEdit(Request $request, int $id, LicenseRepository $licenseRepository, EntityManagerInterface $entityManager)
+    {
+        $license = $licenseRepository->find($id);
+        if (!$license) {
+            throw $this->createNotFoundException(
+                'No $license found for id ' . $id
+            );
+        }
+        else{
+            return $this->renderEntityForm(
+                $request,
+                $license,
+                LicenseForm::class,
+                'admin/edit/miscs/license.html.twig',
+                'license',
+                $entityManager
+            );
+        }
+    }
     /**
      * Index pages
      */
@@ -208,6 +247,18 @@ class MiscController extends AbstractController
             "page" => $request->query->getInt('page', 1),
         ]);
     }
+    private function manageLicenses(Request $request, TranslatorInterface $translator)
+    {
+        return $this->render('admin/manage/miscs/manage.html.twig', [
+            "search" => "",
+            "criterias" => [],
+            "controllerList" => "App\\Controller\\Admin\\MiscController::listLicense",
+            "entityName" => $request->query->get('entity'),
+            "entityDisplayName" => $translator->trans("license"),
+            "entityDisplayNamePlural" => $translator->trans("licenses"),
+            "page" => $request->query->getInt('page', 1),
+        ]);
+    }
 
     public function listManufacturer(Request $request, PaginatorInterface $paginator, array $criterias, ManufacturerRepository $manufacturerRepository)
     {
@@ -260,6 +311,22 @@ class MiscController extends AbstractController
     public function listCreditor(Request $request, PaginatorInterface $paginator, array $criterias, CreditorRepository $creditorRepository)
     {
         $objects = $creditorRepository->findBy($criterias, ['name' => 'asc']);
+
+        $paginatedObjects = $paginator->paginate(
+            $objects,
+            $request->query->getInt('page', 1),
+            $this->getParameter('app.pagination.max')
+        );
+
+        return $this->render('admin/manage/miscs/list.html.twig', [
+            "objectList" => $paginatedObjects,
+            "entityName" => $request->query->get('entity'),
+        ]);
+    }
+
+    public function listLicense(Request $request, PaginatorInterface $paginator, array $criterias, LicenseRepository $licenseRepository)
+    {
+        $objects = $licenseRepository->findBy($criterias, ['name' => 'asc']);
 
         $paginatedObjects = $paginator->paginate(
             $objects,

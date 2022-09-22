@@ -26,6 +26,10 @@ class Creditor
     #[ORM\OneToMany(targetEntity: 'App\Entity\ChipImage', mappedBy: 'creditor')]
     private $chipImages;
 
+    #[ORM\ManyToOne(targetEntity: 'App\Entity\License', inversedBy: 'creditors')]
+    #[ORM\JoinColumn(nullable: true)]
+    private $license;
+
     public function __construct()
     {
         $this->chipImages = new ArrayCollection();
@@ -52,6 +56,16 @@ class Creditor
     public function setWebsite(?string $website): self
     {
         $this->website = $website;
+
+        return $this;
+    }
+    public function getLicense(): ?License
+    {
+        return $this->license;
+    }
+    public function setLicense(?License $license): self
+    {
+        $this->license = $license;
 
         return $this;
     }
@@ -86,11 +100,11 @@ class Creditor
     /**
      * @return Collection|ChipImage[]
      */
-    public function getLicense(): Collection
+    public function getChipImage(): Collection
     {
         return $this->chipImages;
     }
-    public function addLicense(ChipImage $chipImage): self
+    public function addChipImage(ChipImage $chipImage): self
     {
         if (!$this->chipImages->contains($chipImage)) {
             $this->chipImages[] = $chipImage;
@@ -99,7 +113,7 @@ class Creditor
 
         return $this;
     }
-    public function removeLicense(ChipImage $chipImage): self
+    public function removeChipImage(ChipImage $chipImage): self
     {
         if ($this->chipImages->contains($chipImage)) {
             $this->chipImages->removeElement($chipImage);
