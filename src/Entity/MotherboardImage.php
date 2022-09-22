@@ -32,7 +32,7 @@ class MotherboardImage
      * NOTE: This is not a mapped field of entity metadata, just a simple property.
      */
     #[Vich\UploadableField(mapping:'image', fileNameProperty:'file_name')]
-    private File|null $imageFile;
+    private $imageFile;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private string|null $description;
@@ -42,10 +42,6 @@ class MotherboardImage
 
     #[ORM\ManyToOne(targetEntity: 'App\Entity\Creditor', inversedBy: 'motherboardImages')]
     private $creditor;
-
-    #[ORM\ManyToOne(targetEntity: 'App\Entity\License', inversedBy: 'motherboardImages')]
-    #[ORM\JoinColumn(nullable: false)]
-    private $license;
 
     public function getId(): ?int
     {
@@ -121,16 +117,6 @@ class MotherboardImage
     public function setCreditor(?Creditor $creditor): self
     {
         $this->creditor = $creditor;
-
-        return $this;
-    }
-    public function getLicense(): ?License
-    {
-        return $this->license;
-    }
-    public function setLicense(?License $license): self
-    {
-        $this->license = $license;
 
         return $this;
     }

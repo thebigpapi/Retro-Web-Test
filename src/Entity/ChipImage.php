@@ -22,13 +22,13 @@ class ChipImage
     private $chip;
     
     #[ORM\Column(type: 'string', length: 255)]
-    private string|null $file_name;
+    private $file_name;
 
     /**
      * NOTE: This is not a mapped field of entity metadata, just a simple property.
      */
     #[Vich\UploadableField(mapping:'chipimage', fileNameProperty:'file_name')]
-    private File|null $imageFile;
+    private $imageFile;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $description;
@@ -38,10 +38,6 @@ class ChipImage
 
     #[ORM\ManyToOne(targetEntity: 'App\Entity\Creditor', inversedBy: 'chipImages')]
     private $creditor;
-
-    #[ORM\ManyToOne(targetEntity: 'App\Entity\License', inversedBy: 'chipImages')]
-    #[ORM\JoinColumn(nullable: false)]
-    private $license;
     
     public function getId(): ?int
     {
@@ -94,16 +90,6 @@ class ChipImage
     public function setCreditor(?Creditor $creditor): self
     {
         $this->creditor = $creditor;
-
-        return $this;
-    }
-    public function getLicense(): ?License
-    {
-        return $this->license;
-    }
-    public function setLicense(?License $license): self
-    {
-        $this->license = $license;
 
         return $this;
     }

@@ -12,7 +12,6 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use App\Entity\MotherboardImage;
 use App\Entity\MotherboardImageType;
 use App\Entity\Creditor;
-use App\Entity\License;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\ChoiceList\View\ChoiceView;
@@ -69,13 +68,6 @@ class MotherboardImageTypeForm extends AbstractType
                 'multiple' => false,
                 'expanded' => false,
                 'autocomplete' => true,
-            ])
-            ->add('license', EntityType::class, [
-                'class' => License::class,
-                'required' => true,
-                'choice_label' => 'name',
-                'multiple' => false,
-                'expanded' => false,
             ]);
     }
 

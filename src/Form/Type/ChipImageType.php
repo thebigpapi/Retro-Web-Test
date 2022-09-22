@@ -11,7 +11,6 @@ use Symfony\Component\Validator\Constraints\File;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use App\Entity\ChipImage;
 use App\Entity\Creditor;
-use App\Entity\License;
 use Symfony\Component\Form\ChoiceList\View\ChoiceView;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
@@ -54,13 +53,6 @@ class ChipImageType extends AbstractType
             ->add('creditor', EntityType::class, [
                 'class' => Creditor::class,
                 'required' => false,
-                'choice_label' => 'name',
-                'multiple' => false,
-                'expanded' => false,
-            ])
-            ->add('license', EntityType::class, [
-                'class' => License::class,
-                'required' => true,
                 'choice_label' => 'name',
                 'multiple' => false,
                 'expanded' => false,
