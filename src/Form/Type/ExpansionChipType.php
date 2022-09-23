@@ -19,6 +19,7 @@ class ExpansionChipType extends AbstractType
             'choice_label' => 'getNameWithManufacturer',
             'multiple' => false,
             'expanded' => false,
+            'autocomplete' => true,
         ]);
     }
 

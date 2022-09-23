@@ -166,7 +166,12 @@ div.quick-spec-table {
         vertical-align: middle;
         align-self: center
     }
-
+    > div > div.editor-row > div.ts-wrapper {
+		width:max(200px,25vw);
+		div.ts-control{
+			width:100%;
+		}
+	}
     div.quick-spec-head {
         //text-align: right;
         font-style: italic;
