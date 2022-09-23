@@ -69,9 +69,6 @@ class Motherboard
     #[ORM\ManyToMany(targetEntity: 'App\Entity\KnownIssue', inversedBy: 'motherboards')]
     private $knownIssues;
 
-    #[ORM\ManyToOne(targetEntity: 'App\Entity\VideoChipset', inversedBy: 'motherboards')]
-    private $videoChipset;
-
     #[ORM\ManyToOne(targetEntity: 'App\Entity\MaxRam', inversedBy: 'motherboards')]
     private $maxVideoRam;
 
@@ -588,16 +585,7 @@ class Motherboard
 
         return $this;
     }
-    public function getVideoChipset(): ?VideoChipset
-    {
-        return $this->videoChipset;
-    }
-    public function setVideoChipset(?VideoChipset $videoChipset): self
-    {
-        $this->videoChipset = $videoChipset;
-
-        return $this;
-    }
+    
     public function getMaxVideoRam(): ?MaxRam
     {
         return $this->maxVideoRam;

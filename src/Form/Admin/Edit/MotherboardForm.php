@@ -17,7 +17,6 @@ use App\Entity\Coprocessor;
 use App\Entity\DramType;
 use App\Entity\FormFactor;
 use App\Entity\ProcessorPlatformType;
-use App\Entity\VideoChipset;
 use App\Entity\ExpansionChip;
 use App\Entity\CpuSocket;
 use App\Entity\CpuSpeed;
@@ -201,14 +200,6 @@ class MotherboardForm extends AbstractType
                 'entry_type' => KnownIssueType::class,
                 'allow_add' => true,
                 'allow_delete' => true,
-            ])
-            ->add('videoChipset', EntityType::class, [
-                'class' => VideoChipset::class,
-                'required' => false,
-                'choice_label' => 'getNameWithManufacturer',
-                'multiple' => false,
-                'expanded' => false,
-                'autocomplete' => true,
             ])
             ->add('maxVideoRam', EntityType::class, [
                 'class' => MaxRam::class,
@@ -535,22 +526,6 @@ class MotherboardForm extends AbstractType
         });
         usort($view->children['formFactor']->vars['choices'], function (ChoiceView $a, ChoiceView $b) {
             return strnatcasecmp($a->data->getName() ?? '', $b->data->getName() ?? '');
-        });
-
-        usort($view->children["videoChipset"]->vars["choices"], function (ChoiceView $a, ChoiceView $b) {
-            if (
-                $a->data->getManufacturer()->getShortNameIfExist()
-                ==
-                $b->data->getManufacturer()->getShortNameIfExist()
-            ) {
-                if ($a->data->getName() == $b->data->getName()) {
-                    return 0;
-                } else {
-                    return $a->data->getName() > $b->data->getName() ? 1 : -1;
-                }
-            } else {
-                return $a->data->getManufacturer()->getShortNameIfExist() > $b->data->getManufacturer()->getShortNameIfExist() ? 1 : -1;
-            }
         });
 
         /*usort($view->children['expansionChip']->vars["choices"], function (ChoiceView $a, ChoiceView $b) {

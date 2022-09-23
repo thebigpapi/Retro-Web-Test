@@ -120,12 +120,6 @@
 						<div class="editor-row nopad"><div class="editor-form-widget">
 							<div>{{ form_widget(form.dimensions) }}</div>
 						</div></div>
-					</div><!-- Video Chipset -->
-					<div class="quick-spec-table" style="padding:0;">
-						<div class="quick-spec-head editor">Video chipset</div>
-						<div class="editor-row nopad"><div class="editor-form-widget">
-							<div>{{ form_widget(form.videoChipset, {'attr': {'style': 'display:none;'}})|replace({'<option value="">': '<option label=" " value="">'})|raw }}</div>
-						</div></div>
 					</div><!-- Max video RAM -->
 					<div class="quick-spec-table" style="padding:0;">
 						<div class="quick-spec-head editor">Max video RAM</div>
@@ -133,13 +127,7 @@
 							<div>{{ form_widget(form.maxVideoRam)|replace({'<option value="">': '<option label=" " value="">'})|raw }}</div>
 						</div></div>
 					</div>
-					<hr><!-- Audio Chipset -->
-					{#<div class="quick-spec-table" style="padding:0;">
-						<div class="quick-spec-head editor">Audio chipset</div>
-						<div class="editor-row nopad"><div class="editor-form-widget">
-							<div>{{ form_widget(form.expansionChip, {'attr': {'style': 'display:none;'}})|replace({'<option value="">': '<option label=" " value="">'})|raw }}</div>
-						</div></div>
-					</div>#}
+					<hr><!-- Expansion Chips -->
 					<div class="quick-spec-table" data-controller="collection" style="padding:0;">
 						<div class="quick-spec-head editor"><div>Expansion chipset</div>
 						{% include 'macros/buttons.html.twig' with {'type':'add', 'action': 'expansionChip'} %}</div>

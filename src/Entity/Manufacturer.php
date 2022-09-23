@@ -31,9 +31,6 @@ class Manufacturer
     #[ORM\OneToMany(targetEntity: 'App\Entity\Chipset', mappedBy: 'manufacturer')]
     private $chipsets;
 
-    #[ORM\OneToMany(targetEntity: 'App\Entity\VideoChipset', mappedBy: 'manufacturer')]
-    private $videoChipsets;
-
     #[ORM\OneToMany(targetEntity: 'App\Entity\ExpansionChip', mappedBy: 'manufacturer')]
     private $expansionChips;
 
@@ -59,7 +56,6 @@ class Manufacturer
     {
         $this->motherboards = new ArrayCollection();
         $this->chipsets = new ArrayCollection();
-        $this->videoChipsets = new ArrayCollection();
         $this->expansionChips = new ArrayCollection();
         $this->motherboardAliases = new ArrayCollection();
         $this->chips = new ArrayCollection();
@@ -161,34 +157,6 @@ class Manufacturer
     public function getProcessors(): Collection
     {
         return $this->processors;
-    }
-    /**
-     * @return Collection|VideoChipset[]
-     */
-    public function getVideoChipsets(): Collection
-    {
-        return $this->videoChipsets;
-    }
-    public function addVideoChipset(VideoChipset $videoChipset): self
-    {
-        if (!$this->videoChipsets->contains($videoChipset)) {
-            $this->videoChipsets[] = $videoChipset;
-            $videoChipset->setManufacturer($this);
-        }
-
-        return $this;
-    }
-    public function removeVideoChipset(VideoChipset $videoChipset): self
-    {
-        if ($this->videoChipsets->contains($videoChipset)) {
-            $this->videoChipsets->removeElement($videoChipset);
-            // set the owning side to null (unless already changed)
-            if ($videoChipset->getManufacturer() === $this) {
-                $videoChipset->setManufacturer(null);
-            }
-        }
-
-        return $this;
     }
     /**
      * @return Collection|ExpansionChip[]
