@@ -116,8 +116,9 @@
 					{% if motherboard.getExpansionChip() is not empty %}
 						{% for type in expansionchiptype %}
 							{% for chip in motherboard.getExpansionChip()|filter(a => a.getType().getName() == type.getName())%}
-							{% if loop.first %}<div class="quick-spec-head">{{chip.getType().getName()}} chips</div><div>{% endif %}{% if not loop.first %}, {% endif %}{{ chip.getNameWithManufacturer() }}
-							{% endfor %}</div>
+								{% if loop.first %}<div class="quick-spec-head">{{chip.getType().getName()}} chips</div><div>{% endif %}{% if not loop.first %}, {% endif %}{{ chip.getNameWithManufacturer() }}
+								{% if loop.index == motherboard.getExpansionChip()|filter(a => a.getType().getName() == type.getName())|length %}</div>{% endif %}
+							{% endfor %}
 						{% endfor %}
 					{% endif %}
 					
