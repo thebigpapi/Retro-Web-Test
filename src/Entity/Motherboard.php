@@ -686,10 +686,16 @@ class Motherboard
     }
     public function getAllDrivers(): Collection
     {
+        $expdrv = [];
+        foreach($this->getExpansionChip() as $iu){
+            if($iu->getDrivers()->toArray())
+                $expdrv = array_merge($expdrv, $iu->getDrivers()->toArray());
+                    
+        }
         return new ArrayCollection(
             array_merge(
                 $this->getChipset() ? $this->getChipset()->getDrivers()->toArray() : array(),
-                //$this->getAudioChipset() ? $this->getAudioChipset()->getDrivers()->toArray() : array(),
+                $expdrv ? $expdrv : array(),
                 $this->getDrivers()->toArray()
             )
         );
@@ -783,7 +789,7 @@ class Motherboard
         return $this;
     }
     /**
-     * @return Collection|ExpansionChip[]
+     * @return Collection|LargeFileExpansionChip[]
      */
     public function getExpansionChip(): Collection
     {

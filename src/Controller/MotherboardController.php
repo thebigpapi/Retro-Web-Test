@@ -16,6 +16,7 @@ use App\Repository\MotherboardIdRedirectionRepository;
 use App\Repository\MotherboardRepository;
 use App\Repository\ProcessorPlatformTypeRepository;
 use App\Repository\ExpansionChipRepository;
+use App\Repository\ExpansionChipTypeRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
@@ -128,9 +129,10 @@ class MotherboardController extends AbstractController
     }
 
     #[Route('/motherboards/s/{slug}', name:'motherboard_show_slug')]
-    public function showSlug(string $slug, MotherboardRepository $motherboardRepository, MotherboardIdRedirectionRepository $motherboardIdRedirectionRepository): Response
+    public function showSlug(string $slug, MotherboardRepository $motherboardRepository, MotherboardIdRedirectionRepository $motherboardIdRedirectionRepository, ExpansionChipTypeRepository $expansionchiptyperep): Response
     {
         $motherboard = $motherboardRepository->findSlug($slug);
+        $expansionchiptype = $expansionchiptyperep->findAll();
 
         if (!$motherboard) {
 
@@ -148,6 +150,7 @@ class MotherboardController extends AbstractController
 
         return $this->render('motherboard/show.html.twig', [
             'motherboard' => $motherboard,
+            'expansionchiptype' => $expansionchiptype,
             'controller_name' => 'MotherboardController',
         ]);
     }

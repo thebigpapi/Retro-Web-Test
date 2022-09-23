@@ -114,9 +114,13 @@
 					<div>{% for dram in motherboard.getDramType() %}{{ dram.getName() }}{% if not loop.last %}, {% endif %}{% endfor %}</div>
 					{% endif %}
 					{% if motherboard.getExpansionChip() is not empty %}
-					<div class="quick-spec-head">Expansion chips</div>
-					<div>{% for chip in motherboard.getExpansionChip() %}{{ chip.getNameWithManufacturer() }}{% endfor %}</div>
+						{% for type in expansionchiptype %}
+							{% for chip in motherboard.getExpansionChip()|filter(a => a.getType().getName() == type.getName())%}
+							{% if loop.first %}<div class="quick-spec-head">{{chip.getType().getName()}} chips</div><div>{% endif %}{% if not loop.first %}, {% endif %}{{ chip.getNameWithManufacturer() }}
+							{% endfor %}</div>
+						{% endfor %}
 					{% endif %}
+					
 					{% if motherboard.getMaxVideoRam()  is not empty %}
 					<div class="quick-spec-head">Max VRAM</div>
 					<div>{{  motherboard.getMaxVideoRam().getValueWithUnit() }}</div>
