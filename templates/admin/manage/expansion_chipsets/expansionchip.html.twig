@@ -5,12 +5,15 @@
     <div class="header-label">Name</div>
     <div>{{object.getName()|length > 0 ? object.getName()}}</div>
 
+    <div class="header-label">Type</div>
+    <div>{{object.getType().getName()}}</div>
+
     <div class="header-label">Part number</div>
-    <div>{{object.getChipName()|length > 0 ? object.getChipName()}}</div>
+    <div>{{object.getName()|length > 0 ? object.getChipName()}}</div>
 
     <div class="header-label">Actions</div>
     <div class="toolbar toolbar-thin">
-        <a class="button" href="./expansionchipsets/videochips/{{ object.getId() }}/edit/">
+        <a class="button" href="./expansionchipsets/expansionchips/{{ object.getId() }}/edit/">
             <img src="{{ absolute_url(asset('build/icons/edit.svg')) }}" alt="" width="20">
             <span>Edit</span>
         </a>

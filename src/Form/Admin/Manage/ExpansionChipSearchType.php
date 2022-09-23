@@ -3,13 +3,14 @@
 namespace App\Form\Admin\Manage;
 
 use App\Entity\Manufacturer;
+use App\Entity\ExpansionChipType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 
-class AudioChipSearchType extends AbstractType
+class ExpansionChipSearchType extends AbstractType
 {
     public function __construct(EntityManagerInterface $entityManager)
     {
@@ -26,8 +27,18 @@ class AudioChipSearchType extends AbstractType
                 'required' => false,
                 'choices' => $this->entityManager
                 ->getRepository(Manufacturer::class)
-                ->findAllAudioChipManufacturer(),
+                ->findAllExpansionChipManufacturer(),
                 'placeholder' => 'Select a manufacturer ...'
+            ])
+            ->add('type', ChoiceType::class, [
+                'choice_label' => 'name',
+                'multiple' => false,
+                'expanded' => false,
+                'required' => false,
+                'choices' => $this->entityManager
+                ->getRepository(ExpansionChipType::class)
+                ->findByType(),
+                'placeholder' => 'Select a type ...'
             ])
             ->add('search', SubmitType::class);
         ;

@@ -15,6 +15,7 @@ use App\Repository\ManufacturerRepository;
 use App\Repository\MotherboardIdRedirectionRepository;
 use App\Repository\MotherboardRepository;
 use App\Repository\ProcessorPlatformTypeRepository;
+use App\Repository\ExpansionChipRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;

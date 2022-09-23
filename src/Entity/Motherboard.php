@@ -75,9 +75,6 @@ class Motherboard
     #[ORM\ManyToOne(targetEntity: 'App\Entity\MaxRam', inversedBy: 'motherboards')]
     private $maxVideoRam;
 
-    #[ORM\ManyToOne(targetEntity: 'App\Entity\AudioChipset', inversedBy: 'motherboards')]
-    private $audioChipset;
-
     #[ORM\Column(type: 'string', length: 2048, nullable: true)]
     private ?string $note = null;
 
@@ -101,6 +98,9 @@ class Motherboard
 
     #[ORM\ManyToMany(targetEntity: PSUConnector::class, inversedBy: 'motherboards')]
     private $psuConnectors;
+
+    #[ORM\ManyToMany(targetEntity: ExpansionChip::class, inversedBy: 'motherboards')]
+    private $expansionChip;
 
     #[ORM\Column(type: 'string', length: 80, unique: true)]
     private $slug;
@@ -130,6 +130,7 @@ class Motherboard
         $this->drivers = new ArrayCollection();
         $this->redirections = new ArrayCollection();
         $this->psuConnectors = new ArrayCollection();
+        $this->expansionChip = new ArrayCollection();
     }
     public function getId(): ?int
     {
@@ -607,16 +608,7 @@ class Motherboard
 
         return $this;
     }
-    public function getAudioChipset(): ?AudioChipset
-    {
-        return $this->audioChipset;
-    }
-    public function setAudioChipset(?AudioChipset $audioChipset): self
-    {
-        $this->audioChipset = $audioChipset;
 
-        return $this;
-    }
     public function getNote(): ?string
     {
         return $this->note;
@@ -709,7 +701,7 @@ class Motherboard
         return new ArrayCollection(
             array_merge(
                 $this->getChipset() ? $this->getChipset()->getDrivers()->toArray() : array(),
-                $this->getAudioChipset() ? $this->getAudioChipset()->getDrivers()->toArray() : array(),
+                //$this->getAudioChipset() ? $this->getAudioChipset()->getDrivers()->toArray() : array(),
                 $this->getDrivers()->toArray()
             )
         );
@@ -799,6 +791,30 @@ class Motherboard
     public function setSlug(string $slug): self
     {
         $this->slug = strtolower($slug);
+
+        return $this;
+    }
+    /**
+     * @return Collection|ExpansionChip[]
+     */
+    public function getExpansionChip(): Collection
+    {
+        return $this->expansionChip;
+    }
+    public function addExpansionChip(ExpansionChip $expansionChip): self
+    {
+        if (!$this->expansionChip->contains($expansionChip)) {
+            $this->expansionChip[] = $expansionChip;
+            $expansionChip->addMotherboard($this);
+        }
+
+        return $this;
+    }
+    public function removeExpansionChip(ExpansionChip $expansionChip): self
+    {
+        if ($this->expansionChip->removeElement($expansionChip)) {
+            $expansionChip->removeMotherboard($this);
+        }
 
         return $this;
     }

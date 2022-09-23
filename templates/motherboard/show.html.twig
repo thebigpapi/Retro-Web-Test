@@ -118,9 +118,9 @@
 					<div>{{ motherboard.getVideoChipset() ? motherboard.getVideoChipset().getNameWithManufacturer() : 'Unknown' }}
 					{% if motherboard.getMaxVideoRam() is not null %}({{  motherboard.getMaxVideoRam().getValueWithUnit() }} max VRAM){% endif %}</div>
 					{% endif %}
-					{% if motherboard.getAudioChipset() is not empty %}
+					{% if motherboard.getExpansionChip() is not empty %}
 					<div class="quick-spec-head">Audio chipset</div>
-					<div>{{ motherboard.getAudioChipset() ? motherboard.getAudioChipset().getNameWithManufacturer() : 'Unknown' }}</div>
+					<div>{% for chip in motherboard.getExpansionChip() %}{{ chip.getNameWithManufacturer() }}{% endfor %}</div>
 					{% endif %}
 				</div>
 				<div class="full-spec">

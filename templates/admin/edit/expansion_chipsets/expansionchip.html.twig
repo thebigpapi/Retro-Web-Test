@@ -5,7 +5,7 @@
 {% block body %}
 <div class="title" style="padding-top:5em;display:flex;justify-content:center;align-items:center;">
 	<b>Edit:&nbsp;Audio chipset&nbsp;&nbsp;</b>
-	<button type="button" name="tabs" id="tab-nav-save" onclick="document.getElementById('audio_chipset_form_save').click();"><img src="{{ absolute_url(asset('build/icons/edit.svg')) }}" alt="" width="24" height="24"><span>Save</span></button>
+	<button type="button" name="tabs" id="tab-nav-save" onclick="document.getElementById('expansion_chip_form_save').click();"><img src="{{ absolute_url(asset('build/icons/edit.svg')) }}" alt="" width="24" height="24"><span>Save</span></button>
 </div>
 {{ form_start(form, {'method': 'POST'}) }}
 <div style="margin:0 auto;display:table;">
@@ -18,8 +18,12 @@
 			<td>{{form_label(form.name)}}</td>
 			<td>{{form_widget(form.name)}}</td>
 		</tr>
+		<tr>
+			<td>{{form_label(form.type)}}</td>
+			<td>{{form_widget(form.type)}}</td>
+		</tr>
         <tr>
-			<td>{{form_label(form.chipName)}}</td>
+			<td>Part Number</td>
 			<td>{{form_widget(form.chipName)}}</td>
 		</tr>
 	</table>
