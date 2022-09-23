@@ -22,6 +22,9 @@ class Search extends AbstractType
             ->add('name', TextType::class, [
                 'required' => false,
             ])
+            ->add('idpci', TextType::class, [
+                'required' => false,
+            ])
 
             ->add('search', SubmitType::class);
     }

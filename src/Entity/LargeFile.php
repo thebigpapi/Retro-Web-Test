@@ -31,7 +31,7 @@ class LargeFile
     private $file_name;
     
     #[Vich\UploadableField(mapping:'largefile', fileNameProperty:'file_name', size:'size')]
-    private File|null $file;
+    private $file;
     #[ORM\Column(type: 'datetime')]
     private $updated_at;
 
@@ -66,7 +66,7 @@ class LargeFile
     #[ORM\OneToMany(targetEntity: LargeFileChipset::class, mappedBy: 'largeFile', orphanRemoval: true)]
     private $chipsets;
 
-    #[ORM\Column(type: 'string', length: 2048, nullable: true)]
+    #[ORM\Column(type: 'string', length: 4096, nullable: true)]
     private $note;
 
     #[ORM\Column(type: 'integer', nullable: true)]
@@ -74,6 +74,9 @@ class LargeFile
 
     #[ORM\OneToMany(targetEntity: LargeFileExpansionChip::class, mappedBy: 'largeFile', orphanRemoval: true)]
     private $expansionchips;
+
+    #[ORM\Column(length: 1023, nullable: true)]
+    private ?string $idpci = null;
     
     public function __construct()
     {
@@ -385,6 +388,18 @@ class LargeFile
                 $expansionChip->setLargeFile(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getIdpci(): ?string
+    {
+        return $this->idpci;
+    }
+
+    public function setIdpci(?string $idpci): self
+    {
+        $this->idpci = $idpci;
 
         return $this;
     }

@@ -85,6 +85,9 @@ class LargeFileForm extends AbstractType
             ->add('note', TextareaType::class, [
                 'required' => false,
             ])
+            ->add('idpci', TextareaType::class, [
+                'required' => false,
+            ])
             ->add('subdirectory', ChoiceType::class, [
                 'choices' => array(
                     'apps' => 'apps',
