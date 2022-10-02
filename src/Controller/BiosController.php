@@ -15,6 +15,7 @@ use App\Entity\ChipsetBiosCode;
 use App\Repository\ManufacturerBiosManufacturerCodeRepository;
 use App\Repository\ManufacturerRepository;
 use App\Repository\MotherboardBiosRepository;
+use App\Repository\ChipsetRepository;
 
 class BiosController extends AbstractController
 {
@@ -141,11 +142,11 @@ class BiosController extends AbstractController
      * @Route("/bios/search/", name="bios_search"), methods={"GET"})
      * @param Request $request
      */
-    public function search(Request $request, TranslatorInterface $translator, ManufacturerRepository $manufacturerRepository)
+    public function search(Request $request, TranslatorInterface $translator, ManufacturerRepository $manufacturerRepository, ChipsetRepository $chipsetRepository)
     {
         $notIdentifiedMessage = $translator->trans("Not identified");
 
-        $chipsetManufacturers = $manufacturerRepository->findAllChipsetManufacturer();
+        $chipsets = $chipsetRepository->findAll();
 
         $biosManufacturers = $manufacturerRepository->findAllBiosManufacturer();
         $unidentifiedMan = new Manufacturer();
@@ -154,7 +155,7 @@ class BiosController extends AbstractController
 
         $form = $this->createForm(Search::class, array(), [
             'biosManufacturers' => $biosManufacturers,
-            'chipsetManufacturers' => $chipsetManufacturers,
+            'chipsets' => $chipsets,
             //'csrf_protection' => false // that code is aimed to remove cookie requirement but it breaks ajax stuff
         ]);
 

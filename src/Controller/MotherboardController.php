@@ -13,6 +13,7 @@ use App\Entity\IdRedirection;
 use App\Entity\MotherboardIdRedirection;
 use App\Form\Motherboard\Search;
 use App\Repository\CpuSocketRepository;
+use App\Repository\ChipsetRepository;
 use App\Repository\ExpansionSlotRepository;
 use App\Repository\FormFactorRepository;
 use App\Repository\IoPortRepository;
@@ -71,17 +72,17 @@ class MotherboardController extends AbstractController
         if ($platform2 && intval($platform2)) $criterias['processor_platform_type2'] = "$platform2";
         elseif ($platform2 === "NULL") $criterias['processor_platform_type2'] = null;
 
-        $chipsetManufacturerId = htmlentities($request->query->get('chipsetManufacturerId'));
+        $chipsetId = htmlentities($request->query->get('chipset'));
         if (
-            $chipsetManufacturerId
+            $chipsetId
             &&
-            intval($chipsetManufacturerId)
+            intval($chipsetId)
             &&
             !array_key_exists('chipset', $criterias)
         ) {
-            $criterias['chipsetManufacturer'] = "$chipsetManufacturerId";
-        } elseif ($chipsetManufacturerId === "NULL" && !array_key_exists('chipset', $criterias)) {
-            $criterias['chipsetManufacturer'] = null;
+            $criterias['chipset'] = "$chipsetId";
+        } elseif ($chipsetId === "NULL" && !array_key_exists('chipset', $criterias)) {
+            $criterias['chipset'] = null;
         }
 
         $showImages = boolval(htmlentities($request->query->get('showImages')));
@@ -269,7 +270,7 @@ class MotherboardController extends AbstractController
      * @Route("/motherboards/search/", name="motherboard_search")
      * @param Request $request
      */
-    public function search(Request $request, TranslatorInterface $translator, ManufacturerRepository $manufacturerRepository,
+    public function search(Request $request, TranslatorInterface $translator, ManufacturerRepository $manufacturerRepository, ChipsetRepository $chipsetRepository,
     ExpansionSlotRepository $expansionSlotRepository, IoPortRepository $ioPortRepository, CpuSocketRepository $cpuSocketRepository,
     FormFactorRepository $formFactorRepository, ProcessorPlatformTypeRepository $processorPlatformTypeRepository)
     {
@@ -279,10 +280,7 @@ class MotherboardController extends AbstractController
         $unidentifiedMan->setName($notIdentifiedMessage);
         array_unshift($moboManufacturers, $unidentifiedMan);
 
-        $chipsetManufacturers = $manufacturerRepository->findAllChipsetManufacturer();
-        $unidentifiedMan = new Manufacturer();
-        $unidentifiedMan->setName($notIdentifiedMessage);
-        array_unshift($chipsetManufacturers, $unidentifiedMan);
+        $chipsets = $chipsetRepository->findAll();
 
         $slots = $expansionSlotRepository->findAll();
 
@@ -312,7 +310,7 @@ class MotherboardController extends AbstractController
 
         $form = $this->createForm(Search::class, array(), [
             'moboManufacturers' => $moboManufacturers,
-            'chipsetManufacturers' => $chipsetManufacturers,
+            'chipsets' => $chipsets,
             'formFactors' => $formFactors,
             'procPlatformTypes' => $procPlatformTypes,
             'bios' => $biosManufacturers,
@@ -406,11 +404,11 @@ class MotherboardController extends AbstractController
         }
         $parameters['ioPortsIds'] = $ioPorts;
 
-        if ($form['chipsetManufacturer']->getData() && !$form['chipset']->getData()) {
-            if ($form['chipsetManufacturer']->getData()->getId() == 0) {
-                $parameters['chipsetManufacturerId']  = "NULL";
+        if ($form['chipset']->getData()) {
+            if ($form['chipset']->getData()->getId() == 0) {
+                $parameters['chipsetId']  = "NULL";
             } else {
-                $parameters['chipsetManufacturerId'] = $form['chipsetManufacturer']->getData()->getId();
+                $parameters['chipsetId'] = $form['chipset']->getData()->getId();
             }
         }
 

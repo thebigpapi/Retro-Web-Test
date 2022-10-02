@@ -44,6 +44,16 @@ class Search extends AbstractType
             return strnatcasecmp($a->getName(), $b->getName());
         });
 
+        usort($options['chipsets'], function ($a, $b) {
+            return strnatcasecmp($a->getFullName(), $b->getFullName());
+        });
+
+        $platforms =  $this->getProcessorPlatformTypeRepository()->findAll();
+        usort($platforms, function ($a, $b) {
+            return strnatcasecmp($a->getName(), $b->getName());
+        });
+        
+
         //now the form is being built
         $builder
             ->add('name', TextType::class, [
@@ -57,13 +67,13 @@ class Search extends AbstractType
                 'choices' => $options['moboManufacturers'],
                 'placeholder' => 'Select a manufacturer ...'
             ])
-            ->add('chipsetManufacturer', ChoiceType::class, [
-                'choice_label' => 'getShortNameIfExist',
+            ->add('chipset', ChoiceType::class, [
+                'choice_label' => 'getFullNameParts',
                 'multiple' => false,
                 'expanded' => false,
                 'required' => false,
-                'choices' => $options['chipsetManufacturers'],
-                'placeholder' => 'Select a chipset manufacturer ...',
+                'choices' => $options['chipsets'],
+                'placeholder' => 'Select a chipset ...',
             ])
             ->add('cpuSocket1', ChoiceType::class, [
                 'choice_label' => 'getNameAndType',
@@ -81,38 +91,22 @@ class Search extends AbstractType
                 'choices' => $options['cpuSockets'],
                 'placeholder' => 'Select a socket ...',
             ])
-            /*->add('processorPlatformType', ChoiceType::class, [
-                //'class' => ProcessorPlatformType::class,
+            ->add('platform1', ChoiceType::class, [
                 'choice_label' => 'name',
                 'multiple' => false,
                 'expanded' => false,
                 'required' => false,
-                'choices' => $options['procPlatformTypes'],
-		        'placeholder' => 'Select a processor platform ...',
-            ])*/
-            /*->add('motherboardExpansionSlots', CollectionType::class, [
-                'entry_type' => SearchMotherboardExpansionSlotType::class,
-                /*'allow_add' => true,
-                'allow_delete' => true,*/
-            /*    'required' => false,
-            ])*/
-            /*->add('motherboardIoPorts', CollectionType::class, [
-                'entry_type' => SearchMotherboardIoPortType::class,
-                'allow_add' => true,
-                'allow_delete' => true,
-                'required' => false,
-            ])*/
-            /*->add('motherboardMaxRam', EntityType::class, [
-                'class' => MaxRam::class,
-
+                'choices' =>  $platforms,
+                'placeholder' => 'Select a processor platform ...',
+            ])
+            ->add('platform2', ChoiceType::class, [
                 'choice_label' => 'name',
-                'multiple' => true,
-                'expanded' => true,
-            ])*/
-            /*->add('searchFormFactor', CheckboxType::class, [
-                'label'    => ' ',
+                'multiple' => false,
+                'expanded' => false,
                 'required' => false,
-            ])*/
+                'choices' => $platforms,
+                'placeholder' => 'Select a processor platform ...',
+            ])
             ->add('formFactor', ChoiceType::class, [
                 'required' => false,
                 'choice_label' => 'name',
@@ -124,121 +118,13 @@ class Search extends AbstractType
             ])
             ->add('search', SubmitType::class)
             ->add('searchWithImages', SubmitType::class);
-
-        $formModifier = function (FormInterface $form, Manufacturer $chipsetManufacturer = null) {
-            $chipsets = (null === $chipsetManufacturer) ? [] : $chipsetManufacturer->getChipsets()->toArray();
-            $unidentified = null;
-
-            foreach ($chipsets as $key => $val) {
-                if ($val->getName() == "unidentified") {
-                    $unidentified = $val;
-                    unset($chipsets[$key]);
-                }
-            }
-
-            usort(
-                $chipsets,
-                function (Chipset $a, Chipset $b) {
-                    return strcmp($a->getFullNameParts(), $b->getFullNameParts());
-                }
-            );
-
-            if ($unidentified) {
-                array_unshift($chipsets, $unidentified);
-            }
-            $chipTag = (null === $chipsetManufacturer) ? "No chipset selected!" : "any " . $chipsetManufacturer->getShortNameIfExist() . " chipset";
-            $form->add('chipset', ChoiceType::class, [
-                'choice_label' => 'getFullNameParts',
-                'multiple' => false,
-                'expanded' => false,
-                'required' => false,
-                'choices' => $chipsets,
-                'placeholder' => $chipTag,
-            ]);
-        };
-        //dd($builder->get('chipsetManufacturer'));
-        $builder->addEventListener(
-            FormEvents::PRE_SET_DATA,
-            function (FormEvent $event) use ($formModifier) {
-                $data = $event->getData();
-                $formModifier($event->getForm(), null);
-            }
-        );
-
-        $builder->get('chipsetManufacturer')->addEventListener(
-            FormEvents::POST_SUBMIT,
-            function (FormEvent $event) use ($formModifier) {
-                $chipsetManufacturer = $event->getForm()->getData();
-                $formModifier($event->getForm()->getParent(), $chipsetManufacturer);
-            }
-        );
-
-        $formSocket1Modifier = function (FormInterface $form, CpuSocket $socket = null) {
-            $platforms = null === $socket ? $this->getProcessorPlatformTypeRepository()
-                ->findAll() : $socket->getPlatforms()->toArray();
-            usort($platforms, function ($a, $b) {return strnatcasecmp($a->getName(), $b->getName());});
-            $form->add('platform1', ChoiceType::class, [
-                'choice_label' => 'name',
-                'multiple' => false,
-                'expanded' => false,
-                'required' => false,
-                'choices' => $platforms,
-                'placeholder' => 'Select a processor platform ...',
-            ]);
-        };
-
-        $builder->addEventListener(
-            FormEvents::PRE_SET_DATA,
-            function (FormEvent $event) use ($formSocket1Modifier) {
-                $data = $event->getData();
-                $formSocket1Modifier($event->getForm(), null);
-            }
-        );
-
-        $builder->get('cpuSocket1')->addEventListener(
-            FormEvents::POST_SUBMIT,
-            function (FormEvent $event) use ($formSocket1Modifier) {
-                $cpuSocket1 = $event->getForm()->getData();
-                $formSocket1Modifier($event->getForm()->getParent(), $cpuSocket1);
-            }
-        );
-
-        $formSocket2Modifier = function (FormInterface $form, CpuSocket $socket = null) {
-            $platforms = null === $socket ? $this->getProcessorPlatformTypeRepository()
-                ->findAll() : $socket->getPlatforms()->toArray();
-            usort($platforms, function ($a, $b) {return strnatcasecmp($a->getName(), $b->getName());});
-            $form->add('platform2', ChoiceType::class, [
-                'choice_label' => 'name',
-                'multiple' => false,
-                'expanded' => false,
-                'required' => false,
-                'choices' => $platforms,
-                'placeholder' => 'Select a processor platform ...',
-            ]);
-        };
-
-        $builder->addEventListener(
-            FormEvents::PRE_SET_DATA,
-            function (FormEvent $event) use ($formSocket2Modifier) {
-                $data = $event->getData();
-                $formSocket2Modifier($event->getForm(), null);
-            }
-        );
-
-        $builder->get('cpuSocket2')->addEventListener(
-            FormEvents::POST_SUBMIT,
-            function (FormEvent $event) use ($formSocket2Modifier) {
-                $cpuSocket2 = $event->getForm()->getData();
-                $formSocket2Modifier($event->getForm()->getParent(), $cpuSocket2);
-            }
-        );
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
             'moboManufacturers' => array(),
-            'chipsetManufacturers' => array(),
+            'chipsets' => array(),
             'bios' => array(),
             'formFactors' => array(),
             'procPlatformTypes' => array(),

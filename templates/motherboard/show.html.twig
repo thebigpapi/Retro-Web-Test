@@ -178,7 +178,7 @@
 </table>
 <!-- DRIVERS -->
 <div class="scroll-div">
-		<img src="{{ absolute_url(asset('assets/images/hardware.gif')) }}" alt="" style="vertical-align: middle;padding-bottom: 10px;">
+		<img src="{{ absolute_url(asset('build/icons/show/hardware.gif')) }}" alt="" style="vertical-align: middle;padding-bottom: 10px;">
 		<b>Drivers:</b>
 		{% if motherboard.getAllDrivers() is not empty %}
 		<table class="stbl"><tr class="stbl-head">{{ driverHeader() }}</tr>
@@ -191,7 +191,7 @@
 <!-- BIOS -->
 
 <div class="scroll-div">
-	<img src="{{ absolute_url(asset('assets/images/chip.gif')) }}" alt="" style="vertical-align: middle;padding-bottom: 10px;">
+	<img src="{{ absolute_url(asset('build/icons/show/chip.gif')) }}" alt="" style="vertical-align: middle;padding-bottom: 10px;">
 	<b>BIOS images:</b>
 	{% if motherboard.getMotherboardBios() is not empty %}
 	<table class="stbl"><tr class="stbl-head">
@@ -201,7 +201,7 @@
 	<th>Core Ver.</th>
 	<th>BIOS Ver.</th></tr>
 	{% for bios in motherboard.getMotherboardBios()|sort((a, b) => b.boardVersion <=> a.boardVersion)|sort((a, b) => a.manufacturer <=> b.manufacturer) %}
-	<tr style="text-align:center;border: 1px solid #e0e0e0;">
+	<tr style="text-align:center;">
 		<td>{{ bios.getManufacturer().getShortNameIfExist() }}</td>
 		<td>
 			<span class="string-bios">{{ bios.getPostString() }}</span>
@@ -213,7 +213,7 @@
 		<td>
 			{% if bios.getFileName() is not null %}
 				<a href="{{ vich_uploader_asset(bios, 'romFile') }}">
-					<img src="{{ absolute_url(asset('assets/images/dw.gif')) }}" alt="" width="16" height="16" style="vertical-align: middle;">
+					<img src="{{ absolute_url(asset('build/icons/dw.gif')) }}" alt="" width="16" height="16" style="vertical-align: middle;">
 					{% if bios.getBoardVersion() is not null %}
 						{{ bios.getBoardVersion() }}
 					{% else %}
@@ -234,12 +234,12 @@
 </div>
 {% if motherboard.getManuals() is not empty %}
 <table class="stbl"><tr>
-	<td><img src="{{ absolute_url(asset('assets/images/manual.gif')) }}" alt="" style="vertical-align: middle;padding-bottom: 10px;"><b>Manuals:</b></td>
+	<td><img src="{{ absolute_url(asset('build/icons/show/manual.gif')) }}" alt="" style="vertical-align: middle;padding-bottom: 10px;"><b>Manuals:</b></td>
 	<td><ul style="list-style-type: none;">
 	{% for manual in motherboard.getManuals()|sort((a, b) => a.getLinkName <=> b.getLinkName) %}
 		<li>
 			<a href="{{ vich_uploader_asset(manual, 'manualFile') }}">
-				<img src="{{ absolute_url(asset('assets/images/dw.gif')) }}" alt="" width="16" height="16" style="vertical-align: middle;">
+				<img src="{{ absolute_url(asset('build/icons/dw.gif')) }}" alt="" width="16" height="16" style="vertical-align: middle;">
 				{{ manual.getLinkName() }}
 			</a>
 			({{ manual.getLanguage().getName()}})</li>

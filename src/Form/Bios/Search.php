@@ -20,6 +20,10 @@ class Search extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        usort($options['chipsets'], function ($a, $b) {
+            return strnatcasecmp($a->getFullName(), $b->getFullName());
+        });
+        
         $builder
             ->add('post_string', TextType::class, [
                 'required' => false,
@@ -27,15 +31,13 @@ class Search extends AbstractType
             ->add('core_version', TextType::class, [
                 'required' => false,
             ])
-            ->add('chipsetManufacturer', ChoiceType::class, [
-                //'class' => Chipset::class,
-
-                'choice_label' => 'getShortNameIfExist',
+            ->add('chipset', ChoiceType::class, [
+                'choice_label' => 'getFullNameParts',
                 'multiple' => false,
                 'expanded' => false,
                 'required' => false,
-                'choices' => $options['chipsetManufacturers'],
-                'placeholder' => 'Select a chipset manufacturer ...',
+                'choices' => $options['chipsets'],
+                'placeholder' => 'Select a chipset ...',
             ])
 
             ->add('manufacturer', EntityType::class, [
@@ -53,56 +55,13 @@ class Search extends AbstractType
                 'required' => false,
             ])
             ->add('search', SubmitType::class);
-
-        $formModifier = function (FormInterface $form, Manufacturer $chipsetManufacturer = null) {
-            $chipsets = null === $chipsetManufacturer ? [] : $chipsetManufacturer->getChipsets()->toArray();
-
-
-            usort($chipsets, function (Chipset $a, Chipset $b) {
-                return strcmp($a->getFullReference(), $b->getFullReference());
-            });
-            $chipTag = null === $chipsetManufacturer ? "No chipset selected!" : "Select any " . $chipsetManufacturer->getShortNameIfExist() . " chipset ...";
-            $form->add('chipset', ChoiceType::class, [
-                'choice_label' => 'getFullReference',
-                'multiple' => false,
-                'expanded' => false,
-                'required' => false,
-                'choices' => $chipsets,
-                'placeholder' => $chipTag,
-            ]);
-        };
-
-        $builder->addEventListener(
-            FormEvents::PRE_SET_DATA,
-            function (FormEvent $event) use ($formModifier) {
-                // this would be your entity, i.e. SportMeetup
-                $data = $event->getData();
-                //dd($data);
-
-                $formModifier($event->getForm(), null);
-            }
-        );
-
-
-        $builder->get('chipsetManufacturer')->addEventListener(
-            FormEvents::POST_SUBMIT,
-            function (FormEvent $event) use ($formModifier) {
-                // It's important here to fetch $event->getForm()->getData(), as
-                // $event->getData() will get you the client data (that is, the ID)
-                $chipsetManufacturer = $event->getForm()->getData();
-
-                // since we've added the listener to the child, we'll have to pass on
-                // the parent to the callback functions!
-                $formModifier($event->getForm()->getParent(), $chipsetManufacturer);
-            }
-        );
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
             'biosManufacturers' => array(),
-            'chipsetManufacturers' => array(),
+            'chipsets' => array(),
         ]);
     }
 }
