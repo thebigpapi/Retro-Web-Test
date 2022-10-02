@@ -1,16 +1,22 @@
-<div class="show-image">
-	<a href="{{ vich_uploader_asset(image, 'imageFile')}}" class="glightbox" data-description="
-	{% if type == "chipset" %}{{ chipPart.getFullName() }}{% endif %}{% if image.creditor %}<div style='float:right;color:black;'><div>{% if image.creditor.website %}<a class=creditor-href href={{ image.creditor.website }}>Image by {{image.creditor.name}}</a>
-	{% else %}Image by {{ image.creditor.name }}{% endif %}</div><div>{% if image.license.getId() == 1 %}<a class=license-href href=https://creativecommons.org/licenses/by-sa/4.0/>
-	<img src={{ absolute_url(asset('build/icons/show/cc.svg')) }} width=16 height=16> CC BY-SA 4.0</a>{% endif %}</div></div>{% endif %}
-	{% if image.description %}<p style='color:black;'>Notes: {{ image.description }}</p>{% endif %}">
+<span class="show-image">
+	<a href="{{ vich_uploader_asset(image, 'imageFile')}}" >
     {% if type == "motherboard" %}
 		<img src="{% if vich_uploader_asset(image, 'imageFile') | ext != "svg" %}{{ vich_uploader_asset(image, 'imageFile') | imagine_filter('motherboard_show_thumb') }}{% else %}{{ vich_uploader_asset(image, 'imageFile')}}{% endif %}"
-		width="640" height="480" alt="image{{index}}" title="{% if image.description %}{{ image.description }}{% endif %}">
+		alt="image{{index}}" title="{% if image.description %}{{ image.description }}{% endif %}">
     {% else %}
         <img src="{{ vich_uploader_asset(image, 'imageFile') | imagine_filter('motherboard_show_thumb') }}"
-        width="640" height="480" alt="image{{index}}" title="{% if image.description %}{{ image.description }}{% endif %}">
+        alt="image{{index}}" title="{% if image.description %}{{ image.description }}{% endif %}">
     {% endif %}
-		Image {{ index }} of {{ length }}
 	</a>
-</div>
+	{% if image.creditor %}
+				<span class="creditor">
+					{% if image.creditor.website %}
+						<a href="{{ image.creditor.website }}">{% trans %}Image by{% endtrans %}
+							{{ image.creditor.name }}</a>
+					{% else %}
+						{% trans %}Image by{% endtrans %}
+						{{ image.creditor.name }}
+					{% endif %}
+				</span>
+	{% endif %}
+</span>

@@ -6,13 +6,5 @@
  */
 
 // any CSS you import will output into a single css file (app.css in this case)
-import './styles/app.scss';
-import GLightbox from './controllers/glightbox.min.js';
-
-const lightbox = GLightbox({
-    touchNavigation: true,
-    loop: true,
-    autoplayVideos: false
-});
-// start the Stimulus application
-import './bootstrap';
+import './styles/main.scss';
+//import './styles/app.scss';

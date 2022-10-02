@@ -5,51 +5,35 @@
 	<link rel="alternate" hreflang="x-default" href="{{ absolute_url(path('app_homepage')) }}"/>
 {% endblock %}
 
-{% block body %}<div class="title">Where do you want to go today?</div>
-	<div class="index-buttons">
-		<a href="{{ path("motherboard_search") }}">
-			<img src="{{ absolute_url(asset('build/icons/index/motherboard.svg')) }}" alt="mobo" width="210" height="180">
-			<div>Motherboards</div><div>({{moboCount}}&nbsp;entries)</div>
-		</a>
-		{# ============= when it's ready
-		<a href="#">
-			<img src="{{ absolute_url(asset('build/images/index/card.webp')) }}" alt="cards" width="210" height="180">
-			<div>Expansion cards</div><div>[WIP]</div>
-		</a>#}
-		<a href="{{ path("bios_search") }}">
-			<img src="{{ absolute_url(asset('build/icons/index/awchip.svg')) }}" alt="bios" width="210" height="180">
-			<div>BIOS images</div><div>({{biosCount}}&nbsp;files)</div>
-		</a>
-		<a href="{{ path("chipset_search") }}">
-			<img src="{{ absolute_url(asset('build/icons/admin/chip.svg')) }}" alt="chipset" width="210" height="180">
-			<div>Chipsets</div><div>({{chipCount}}&nbsp;entries)</div>
-		</a>
-		<a href="{{ path("driver_search") }}">
-			<img src="{{ absolute_url(asset('build/icons/show/hardware.svg')) }}" alt="driver" width="210" height="180">
-			<div>Drivers</div><div>({{driverCount}}&nbsp;files)</div>
-		</a>
-	</div>
-	<div class="perks" data-controller="datetime">
+{% block body %}<h2 class="title">Where do you want to go today?</h2>
+	<div class="index-buttons"><div class="main">
+		<a href="{{ path("motherboard_search") }}" class="index-button0"><span class="image-block"><span>
+			<span class="img"></span>
+			<span>Motherboards</span> <span>({{moboCount}}&nbsp;entries)</span><!--
+		--></span></span></a>
+		<a name="{{ path("bios_search") }}" class="index-button1"><span class="image-block"><span>
+			<span class="img"></span>
+			<span>BIOS images</span> <span>({{biosCount}}&nbsp;files)</span><!--
+		--></span></span></a>
+		<a href="/uh19/bios/search" class="index-button2"><span class="image-block"><span>
+			<span class="img"></span>
+			<span>Chipsets</span> <span>({{chipCount}}&nbsp;entries)</span><!--
+		--></span></span></a>
+		<a href="/uh19/bios/search" class="index-button2"><span class="image-block"><span>
+			<span class="img"></span>
+			<span>Drivers</span> <span>({{driverCount}}&nbsp;files)</span><!--
+		--></span></span></a>
+	</div></div>
+	<div class="perks">
 		<p><b>Recently added and updated boards</b></p>
-		<div id="index-datetime" class="perks-list">
+		<div class="results"><ul>
         {% for motherboard in latestMotherboards %}
-			<div class="perk">
+			<li>
 				<a href="{{ path("motherboard_show", {id:motherboard.getId()}) }}">
-					<div class="perk-image">
-					{% if motherboard.getImages() is not empty %}
-					{% for image in motherboard.getImages()|filter(a => a.motherboardImageType.id in [1, 2])|sort((a, b) => b.motherboardImageType <=> a.motherboardImageType)|slice(0, 1) %}
-						<img src="{% if vich_uploader_asset(image, 'imageFile') | ext != "svg" %}
-							{{ vich_uploader_asset(image, 'imageFile') | imagine_filter('motherboard_show_thumb') }}{% else %}
-							{{ vich_uploader_asset(image, 'imageFile')}}{% endif %}" alt="" loading="lazy" width="250" height="200" title="{% if image.description %}{{ image.description }}{% endif %}">
-					{% endfor %}
-					{% else %}
-						<img src="{{ absolute_url(asset('build/images/motherboard/image-missing.webp')) }}" alt="missing image" loading="lazy" width="250" height="200" title="no images available :(">
-					{% endif %}</div>
-					<div class="perk-name">{{ motherboard.getManufacturerShortNameIfExist() }}&nbsp;{{ motherboard.name }}</div>
-					<div class="perk-date">{{ motherboard.getLastEdited()|date("Y-m-d\\TH:i:s", "GMT") }}Z</div>
+					{{ motherboard.getManufacturerShortNameIfExist() }}&nbsp;{{ motherboard.name }}
 				</a>
-			</div>	
+			</li>	
 		{% endfor %}
-		</div>
+		</ul></div>
 	</div>
 {% endblock %}
