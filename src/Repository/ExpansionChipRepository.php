@@ -2,34 +2,34 @@
 
 namespace App\Repository;
 
-use App\Entity\AudioChipset;
+use App\Entity\ExpansionChip;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @method AudioChipset|null find($id, $lockMode = null, $lockVersion = null)
- * @method AudioChipset|null findOneBy(array $criteria, array $orderBy = null)
- * @method AudioChipset[]    findAll()
- * @method AudioChipset[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
- * @method AudioChipset[]    findAllAudioChipsetManufacturer()
+ * @method ExpansionChip|null find($id, $lockMode = null, $lockVersion = null)
+ * @method ExpansionChip|null findOneBy(array $criteria, array $orderBy = null)
+ * @method ExpansionChip[]    findAll()
+ * @method ExpansionChip[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method ExpansionChip[]    findAllExpansionChipManufacturer()
  */
-class AudioChipsetRepository extends ServiceEntityRepository
+class ExpansionChipRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, AudioChipset::class);
+        parent::__construct($registry, ExpansionChip::class);
     }
 
     /**
-     * @return AudioChipset[]
+     * @return ExpansionChip[]
      */
-    public function findAllAudioChipsetManufacturer(): array
+    public function findAllExpansionChipManufacturer(): array
     {
         $entityManager = $this->getEntityManager();
 
         $query = $entityManager->createQuery(
             'SELECT chip
-            FROM App\Entity\AudioChipset chip, App\Entity\Manufacturer man 
+            FROM App\Entity\ExpansionChip chip, App\Entity\Manufacturer man 
             WHERE chip.manufacturer=man 
             ORDER BY man.name ASC, chip.name ASC'
         );
@@ -38,7 +38,7 @@ class AudioChipsetRepository extends ServiceEntityRepository
     }
 
     // /**
-    //  * @return AudioChipset[] Returns an array of AudioChipset objects
+    //  * @return ExpansionChip[] Returns an array of ExpansionChip objects
     //  */
     /*
     public function findByExampleField($value)
@@ -55,7 +55,7 @@ class AudioChipsetRepository extends ServiceEntityRepository
     */
 
     /*
-    public function findOneBySomeField($value): ?AudioChipset
+    public function findOneBySomeField($value): ?ExpansionChip
     {
         return $this->createQueryBuilder('a')
             ->andWhere('a.exampleField = :val')

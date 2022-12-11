@@ -31,11 +31,8 @@ class Manufacturer
     #[ORM\OneToMany(targetEntity: 'App\Entity\Chipset', mappedBy: 'manufacturer')]
     private $chipsets;
 
-    #[ORM\OneToMany(targetEntity: 'App\Entity\VideoChipset', mappedBy: 'manufacturer')]
-    private $videoChipsets;
-
-    #[ORM\OneToMany(targetEntity: 'App\Entity\AudioChipset', mappedBy: 'manufacturer')]
-    private $audioChipsets;
+    #[ORM\OneToMany(targetEntity: 'App\Entity\ExpansionChip', mappedBy: 'manufacturer')]
+    private $expansionChips;
 
     #[ORM\OneToMany(targetEntity: 'App\Entity\MotherboardAlias', mappedBy: 'manufacturer')]
     private $motherboardAliases;
@@ -59,8 +56,7 @@ class Manufacturer
     {
         $this->motherboards = new ArrayCollection();
         $this->chipsets = new ArrayCollection();
-        $this->videoChipsets = new ArrayCollection();
-        $this->audioChipsets = new ArrayCollection();
+        $this->expansionChips = new ArrayCollection();
         $this->motherboardAliases = new ArrayCollection();
         $this->chips = new ArrayCollection();
         $this->chipAliases = new ArrayCollection();
@@ -163,56 +159,28 @@ class Manufacturer
         return $this->processors;
     }
     /**
-     * @return Collection|VideoChipset[]
+     * @return Collection|ExpansionChip[]
      */
-    public function getVideoChipsets(): Collection
+    public function getExpansionChips(): Collection
     {
-        return $this->videoChipsets;
+        return $this->expansionChips;
     }
-    public function addVideoChipset(VideoChipset $videoChipset): self
+    public function addExpansionChip(ExpansionChip $expansionChip): self
     {
-        if (!$this->videoChipsets->contains($videoChipset)) {
-            $this->videoChipsets[] = $videoChipset;
-            $videoChipset->setManufacturer($this);
+        if (!$this->expansionChips->contains($expansionChip)) {
+            $this->expansionChips[] = $expansionChip;
+            $expansionChip->setManufacturer($this);
         }
 
         return $this;
     }
-    public function removeVideoChipset(VideoChipset $videoChipset): self
+    public function removeExpansionChip(ExpansionChip $expansionChip): self
     {
-        if ($this->videoChipsets->contains($videoChipset)) {
-            $this->videoChipsets->removeElement($videoChipset);
+        if ($this->expansionChips->contains($expansionChip)) {
+            $this->expansionChips->removeElement($expansionChip);
             // set the owning side to null (unless already changed)
-            if ($videoChipset->getManufacturer() === $this) {
-                $videoChipset->setManufacturer(null);
-            }
-        }
-
-        return $this;
-    }
-    /**
-     * @return Collection|AudioChipset[]
-     */
-    public function getAudioChipsets(): Collection
-    {
-        return $this->audioChipsets;
-    }
-    public function addAudioChipset(AudioChipset $audioChipset): self
-    {
-        if (!$this->audioChipsets->contains($audioChipset)) {
-            $this->audioChipsets[] = $audioChipset;
-            $audioChipset->setManufacturer($this);
-        }
-
-        return $this;
-    }
-    public function removeAudioChipset(AudioChipset $audioChipset): self
-    {
-        if ($this->audioChipsets->contains($audioChipset)) {
-            $this->audioChipsets->removeElement($audioChipset);
-            // set the owning side to null (unless already changed)
-            if ($audioChipset->getManufacturer() === $this) {
-                $audioChipset->setManufacturer(null);
+            if ($expansionChip->getManufacturer() === $this) {
+                $expansionChip->setManufacturer(null);
             }
         }
 

@@ -17,8 +17,7 @@ use App\Entity\Coprocessor;
 use App\Entity\DramType;
 use App\Entity\FormFactor;
 use App\Entity\ProcessorPlatformType;
-use App\Entity\VideoChipset;
-use App\Entity\AudioChipset;
+use App\Entity\ExpansionChip;
 use App\Entity\CpuSocket;
 use App\Entity\CpuSpeed;
 use App\Entity\MaxRam;
@@ -41,6 +40,7 @@ use App\Form\Type\LargeFileMotherboardType;
 use App\Form\Type\MotherboardIdRedirectionType;
 use App\Form\Type\ProcessorPlatformTypeForm;
 use App\Form\Type\PSUConnectorType;
+use App\Form\Type\ExpansionChipType;
 use App\Repository\CpuSocketRepository;
 use App\Repository\CpuSpeedRepository;
 use App\Repository\ProcessorPlatformTypeRepository;
@@ -201,14 +201,6 @@ class MotherboardForm extends AbstractType
                 'allow_add' => true,
                 'allow_delete' => true,
             ])
-            ->add('videoChipset', EntityType::class, [
-                'class' => VideoChipset::class,
-                'required' => false,
-                'choice_label' => 'getNameWithManufacturer',
-                'multiple' => false,
-                'expanded' => false,
-                'autocomplete' => true,
-            ])
             ->add('maxVideoRam', EntityType::class, [
                 'class' => MaxRam::class,
                 'required' => false,
@@ -216,13 +208,10 @@ class MotherboardForm extends AbstractType
                 'multiple' => false,
                 'expanded' => false,
             ])
-            ->add('audioChipset', EntityType::class, [
-                'class' => AudioChipset::class,
-                'required' => false,
-                'choice_label' => 'getNameWithManufacturer',
-                'multiple' => false,
-                'expanded' => false,
-                'autocomplete' => true,
+            ->add('expansionChip', CollectionType::class, [
+                'entry_type' => ExpansionChipType::class,
+                'allow_add' => true,
+                'allow_delete' => true,
             ])
             ->add('drivers', CollectionType::class, [
                 'entry_type' => LargeFileMotherboardType::class,
@@ -539,7 +528,7 @@ class MotherboardForm extends AbstractType
             return strnatcasecmp($a->data->getName() ?? '', $b->data->getName() ?? '');
         });
 
-        usort($view->children["videoChipset"]->vars["choices"], function (ChoiceView $a, ChoiceView $b) {
+        /*usort($view->children['expansionChip']->vars["choices"], function (ChoiceView $a, ChoiceView $b) {
             if (
                 $a->data->getManufacturer()->getShortNameIfExist()
                 ==
@@ -553,23 +542,7 @@ class MotherboardForm extends AbstractType
             } else {
                 return $a->data->getManufacturer()->getShortNameIfExist() > $b->data->getManufacturer()->getShortNameIfExist() ? 1 : -1;
             }
-        });
-
-        usort($view->children['audioChipset']->vars["choices"], function (ChoiceView $a, ChoiceView $b) {
-            if (
-                $a->data->getManufacturer()->getShortNameIfExist()
-                ==
-                $b->data->getManufacturer()->getShortNameIfExist()
-            ) {
-                if ($a->data->getName() == $b->data->getName()) {
-                    return 0;
-                } else {
-                    return $a->data->getName() > $b->data->getName() ? 1 : -1;
-                }
-            } else {
-                return $a->data->getManufacturer()->getShortNameIfExist() > $b->data->getManufacturer()->getShortNameIfExist() ? 1 : -1;
-            }
-        });
+        });*/
     }
 
     /*   public function buildAfterSubmit(FormBuilderInterface $builder, array $options)

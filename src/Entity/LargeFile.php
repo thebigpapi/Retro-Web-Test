@@ -31,7 +31,7 @@ class LargeFile
     private $file_name;
     
     #[Vich\UploadableField(mapping:'largefile', fileNameProperty:'file_name', size:'size')]
-    private File|null $file;
+    private $file;
     #[ORM\Column(type: 'datetime')]
     private $updated_at;
 
@@ -66,14 +66,17 @@ class LargeFile
     #[ORM\OneToMany(targetEntity: LargeFileChipset::class, mappedBy: 'largeFile', orphanRemoval: true)]
     private $chipsets;
 
-    #[ORM\Column(type: 'string', length: 2048, nullable: true)]
+    #[ORM\Column(type: 'string', length: 4096, nullable: true)]
     private $note;
 
     #[ORM\Column(type: 'integer', nullable: true)]
     private $size;
 
-    #[ORM\OneToMany(targetEntity: LargeFileAudioChipset::class, mappedBy: 'largeFile', orphanRemoval: true)]
-    private $audiochipsets;
+    #[ORM\OneToMany(targetEntity: LargeFileExpansionChip::class, mappedBy: 'largeFile', orphanRemoval: true)]
+    private $expansionchips;
+
+    #[ORM\Column(length: 1023, nullable: true)]
+    private ?string $idpci = null;
     
     public function __construct()
     {
@@ -82,7 +85,7 @@ class LargeFile
         $this->osFlags = new ArrayCollection();
         $this->motherboards = new ArrayCollection();
         $this->chipsets = new ArrayCollection();
-        $this->audiochipsets = new ArrayCollection();
+        $this->expansionchips = new ArrayCollection();
     }
     public function getId(): ?int
     {
@@ -362,29 +365,41 @@ class LargeFile
         return $this;
     }
     /**
-     * @return Collection|LargeFileAudioChipset[]
+     * @return Collection|LargeFileExpansionChip[]
      */
-    public function getAudioChipsets(): ?Collection
+    public function getExpansionChips(): ?Collection
     {
-        return $this->audiochipsets;
+        return $this->expansionchips;
     }
-    public function addAudioChipset(LargeFileAudioChipset $audioChipset): self
+    public function addExpansionChip(LargeFileExpansionChip $expansionChip): self
     {
-        if (!$this->audiochipsets->contains($audioChipset)) {
-            $this->audiochipsets[] = $audioChipset;
-            $audioChipset->setLargeFile($this);
+        if (!$this->expansionchips->contains($expansionChip)) {
+            $this->expansionchips[] = $expansionChip;
+            $expansionChip->setLargeFile($this);
         }
 
         return $this;
     }
-    public function removeAudioChipset(LargeFileAudioChipset $audioChipset): self
+    public function removeExpansionChip(LargeFileExpansionChip $expansionChip): self
     {
-        if ($this->audiochipsets->removeElement($audioChipset)) {
+        if ($this->expansionchips->removeElement($expansionChip)) {
             // set the owning side to null (unless already changed)
-            if ($audioChipset->getLargeFile() === $this) {
-                $audioChipset->setLargeFile(null);
+            if ($expansionChip->getLargeFile() === $this) {
+                $expansionChip->setLargeFile(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getIdpci(): ?string
+    {
+        return $this->idpci;
+    }
+
+    public function setIdpci(?string $idpci): self
+    {
+        $this->idpci = $idpci;
 
         return $this;
     }

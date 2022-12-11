@@ -153,31 +153,14 @@ class ManufacturerRepository extends ServiceEntityRepository
     /**
      * @return Manufacturer[]
      */
-    public function findAllAudioChipManufacturer(): array
+    public function findAllExpansionChipManufacturer(): array
     {
         $entityManager = $this->getEntityManager();
 
         $query = $entityManager->createQuery(
             'SELECT DISTINCT man
-            FROM App\Entity\AudioChipset ac, App\Entity\Manufacturer man 
+            FROM App\Entity\ExpansionChip ac, App\Entity\Manufacturer man 
             WHERE ac.manufacturer=man 
-            ORDER BY man.name ASC'
-        );
-
-        return $query->getResult();
-    }
-
-    /**
-     * @return Manufacturer[]
-     */
-    public function findAllVideoChipManufacturer(): array
-    {
-        $entityManager = $this->getEntityManager();
-
-        $query = $entityManager->createQuery(
-            'SELECT DISTINCT man
-            FROM App\Entity\VideoChipset vc, App\Entity\Manufacturer man 
-            WHERE vc.manufacturer=man 
             ORDER BY man.name ASC'
         );
 

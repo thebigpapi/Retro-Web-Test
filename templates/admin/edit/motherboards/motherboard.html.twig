@@ -120,24 +120,31 @@
 						<div class="editor-row nopad"><div class="editor-form-widget">
 							<div>{{ form_widget(form.dimensions) }}</div>
 						</div></div>
-					</div><!-- Video Chipset -->
-					<div class="quick-spec-table" style="padding:0;">
-						<div class="quick-spec-head editor">Video chipset</div>
-						<div class="editor-row nopad"><div class="editor-form-widget">
-							<div>{{ form_widget(form.videoChipset, {'attr': {'style': 'display:none;'}})|replace({'<option value="">': '<option label=" " value="">'})|raw }}</div>
-						</div></div>
 					</div><!-- Max video RAM -->
 					<div class="quick-spec-table" style="padding:0;">
 						<div class="quick-spec-head editor">Max video RAM</div>
 						<div class="editor-row nopad"><div class="editor-form-widget">
 							<div>{{ form_widget(form.maxVideoRam)|replace({'<option value="">': '<option label=" " value="">'})|raw }}</div>
 						</div></div>
-					</div><!-- Audio Chipset -->
-					<div class="quick-spec-table" style="padding:0;">
-						<div class="quick-spec-head editor">Audio chipset</div>
-						<div class="editor-row nopad"><div class="editor-form-widget">
-							<div>{{ form_widget(form.audioChipset, {'attr': {'style': 'display:none;'}})|replace({'<option value="">': '<option label=" " value="">'})|raw }}</div>
-						</div></div>
+					</div>
+					<hr><!-- Expansion Chips -->
+					<div class="quick-spec-table expchip" data-controller="collection" style="padding:0;">
+						<div class="quick-spec-head editor"><div>Expansion chipset</div>
+						{% include 'macros/buttons.html.twig' with {'type':'add', 'action': 'expansionChip'} %}</div>
+						<div class="append_table" id="expansionChip-fields-list" data-widget-counter="{{ form.expansionChip|length }}"
+							data-prototype="
+								{{ form_widget(form.expansionChip.vars.prototype)|e }}
+								{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
+							</div>" data-controller="collection">
+							{% for expchip in form.expansionChip %}
+								<div class="editor-row nopad">
+									{{ form_widget(expchip) }}
+									{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
+									{{ form_errors(expchip) }}
+								</div>
+							{% endfor %}
+							{{ form_errors(form.expansionChip) }}
+						</div>
 					</div><!-- Max system RAM -->
 					<div class="quick-spec-table" data-controller="collection" style="padding:0;">
 						<div class="quick-spec-head editor"><div>Max system RAM</div>
@@ -173,8 +180,7 @@
 							{% endfor %}
 							{{ form_errors(form.cacheSize) }}
 						</div>
-					</div>
-					<hr><!-- Supported RAM types -->
+					</div><!-- Supported RAM types -->
 					<div class="quick-spec-table" data-controller="collection">
 						<div class="quick-spec-head editor"><div>Supported RAM types:</div>
 						{% include 'macros/buttons.html.twig' with {'type':'add', 'action': 'dramType'} %}</div>

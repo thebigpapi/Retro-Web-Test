@@ -2,24 +2,24 @@
 
 namespace App\Entity;
 
-use App\Repository\LargeFileAudioChipsetRepository;
+use App\Repository\LargeFileExpansionChipRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: LargeFileAudioChipsetRepository::class)]
-class LargeFileAudioChipset
+#[ORM\Entity(repositoryClass: LargeFileExpansionChipRepository::class)]
+class LargeFileExpansionChip
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
     private $id;
     
-    #[ORM\ManyToOne(targetEntity: LargeFile::class, inversedBy: 'audioChipsets')]
+    #[ORM\ManyToOne(targetEntity: LargeFile::class, inversedBy: 'expansionChips')]
     #[ORM\JoinColumn(nullable: false)]
     private $largeFile;
 
-    #[ORM\ManyToOne(targetEntity: AudioChipset::class, inversedBy: 'drivers')]
+    #[ORM\ManyToOne(targetEntity: ExpansionChip::class, inversedBy: 'drivers')]
     #[ORM\JoinColumn(nullable: false)]
-    private $audioChipset;
+    private $expansionChip;
 
     #[ORM\Column(type: 'boolean')]
     private $isRecommended;
@@ -38,13 +38,13 @@ class LargeFileAudioChipset
 
         return $this;
     }
-    public function getAudioChipset(): ?AudioChipset
+    public function getExpansionChip(): ?ExpansionChip
     {
-        return $this->audioChipset;
+        return $this->expansionChip;
     }
-    public function setAudioChipset(?AudioChipset $audioChipset): self
+    public function setExpansionChip(?ExpansionChip $expansionChip): self
     {
-        $this->audioChipset = $audioChipset;
+        $this->expansionChip = $expansionChip;
 
         return $this;
     }

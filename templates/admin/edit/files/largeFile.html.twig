@@ -13,7 +13,7 @@
 		{% include 'macros/navbar.html.twig' with {'type':'edit', 'entityName': 'drv', 'count':2} %}
 		<div class="internal-content">
 			<!-- Description -->
-			<div class="show-general" id="sh-general">
+			<div class="show-general" id="sh-general" style="display: flex;flex-wrap: wrap;">
 				<div class="show-edit">
 					<progress hidden="true" id="progressBar"></progress>
 					<table>
@@ -85,6 +85,10 @@
 				</div>
 				<div class="show-edit b">
 					<table>
+						<tr>
+							<td>PCI IDs</td>
+							<td>{{form_widget(form.idpci)}}</td>
+						</tr>
 						<tr>
 							<td>OS flags</td>
 							<td>

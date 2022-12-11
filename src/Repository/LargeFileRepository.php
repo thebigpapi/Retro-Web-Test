@@ -64,6 +64,13 @@ class LargeFileRepository extends ServiceEntityRepository
                 $valuesArray["nameLike$key"] = "%" . strtolower($val) . "%";
             }
         }
+        if (array_key_exists('idpci', $criteria)) {
+            $multicrit = explode(" ", $criteria['idpci']);
+            foreach ($multicrit as $key => $val){
+                $whereArray[] = "(LOWER(drv.idpci) LIKE :nameLike$key)";
+                $valuesArray["nameLike$key"] = "%" . strtolower($val) . "%";
+            }
+        }
 
         // Building where statement
         $whereString = implode(" AND ", $whereArray);
