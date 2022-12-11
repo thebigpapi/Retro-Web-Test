@@ -10,6 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use Symfony\Component\Validator\Constraints as Assert;
 
 
 #[Vich\Uploadable]
@@ -23,11 +24,13 @@ class LargeFile
     private $id;
 
     #[ORM\Column(type: 'string', length: 255)]
+    #[Assert\Length(max:255, maxMessage: 'Name is longer than {{ limit }} characters, try to make it shorter.')]
     private $name;
     /**
      * @var string|null
      */
     #[ORM\Column(type: 'string', length: 255)]
+    #[Assert\Length(max:255, maxMessage: 'File name is longer than {{ limit }} characters, try to make it shorter.')]
     private $file_name;
     
     #[Vich\UploadableField(mapping:'largefile', fileNameProperty:'file_name', size:'size')]
@@ -46,6 +49,7 @@ class LargeFile
     private $subdirectory;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[Assert\Length(max:255, maxMessage: 'Version is longer than {{ limit }} characters, try to make it shorter.')]
     private $fileVersion;
 
     #[ORM\OneToMany(targetEntity: LargeFileMediaTypeFlag::class, mappedBy: 'largeFile', orphanRemoval: true, cascade: ['persist'])]
@@ -67,6 +71,7 @@ class LargeFile
     private $chipsets;
 
     #[ORM\Column(type: 'string', length: 4096, nullable: true)]
+    #[Assert\Length(max:4096, maxMessage: 'Note is longer than {{ limit }} characters, try to make it shorter.')]
     private $note;
 
     #[ORM\Column(type: 'integer', nullable: true)]
@@ -76,6 +81,7 @@ class LargeFile
     private $expansionchips;
 
     #[ORM\Column(length: 1023, nullable: true)]
+    #[Assert\Length(max:1023, maxMessage: 'ID PCI is longer than {{ limit }} characters, try to make it shorter.')]
     private ?string $idpci = null;
     
     public function __construct()

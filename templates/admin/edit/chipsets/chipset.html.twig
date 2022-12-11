@@ -4,6 +4,11 @@
 
 {% block body %}
 <form data-controller="chipset--add" name="chipset_form" method="post" enctype="multipart/form-data" data-action="{#submit->chipset--add#check#}">
+<div class="errors-div"><ul>
+    {% for error in form.vars.errors.form.getErrors(true) %}
+    <li>{{ error.message }}</li>
+    {% endfor %}
+</ul></div>
 	<div class="title">Chipset editor</div>
 
 	<!-- MANUF./NAME/PART NO. -->

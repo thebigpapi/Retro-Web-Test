@@ -3,6 +3,11 @@
 {% block title %}Add/Edit motherboard{% endblock %}
 {% block body %}
 <form data-controller="motherboard--add" name="add_motherboard" method="post" enctype="multipart/form-data" data-action="submit->motherboard--add#check">
+<div class="errors-div"><ul>
+    {% for error in form.vars.errors.form.getErrors(true) %}
+    <li>{{ error.message }}</li>
+    {% endfor %}
+</ul></div>
 	<div class="title">Motherboard editor</div>
 
 	<!-- MANUF/TITLE -->

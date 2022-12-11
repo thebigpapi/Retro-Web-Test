@@ -5,6 +5,7 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: 'App\Repository\ChipsetPartRepository')]
 class ChipsetPart extends Chip
@@ -13,6 +14,7 @@ class ChipsetPart extends Chip
     private $chipsets;
 
     #[ORM\Column(type: 'string', length: 8192, nullable: true)]
+    #[Assert\Length(max:8192, maxMessage: 'Description is longer than {{ limit }} characters, try to make it shorter.')]
     private $description;
 
     #[ORM\Column(type: 'integer')]

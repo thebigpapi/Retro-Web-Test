@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: 'App\Repository\MotherboardMaxRamRepository')]
 class MotherboardMaxRam
@@ -18,6 +19,8 @@ class MotherboardMaxRam
     private $max_ram;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[Assert\Length(max:255, maxMessage: 'RAM note is longer than {{ limit }} characters, try to make it shorter.')]
+    
     private $note;
 
     public function getMotherboard(): ?Motherboard

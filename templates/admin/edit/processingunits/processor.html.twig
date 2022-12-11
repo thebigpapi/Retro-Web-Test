@@ -5,6 +5,11 @@
 {% block body %}
 
 <form data-controller="cpu--add" name="processor_form" method="post" enctype="multipart/form-data">
+<div class="errors-div"><ul>
+    {% for error in form.vars.errors.form.getErrors(true) %}
+    <li>{{ error.message }}</li>
+    {% endfor %}
+</ul></div>
 <div class="title" style="padding-top:5em;display:flex;justify-content:center;align-items:center;">
 	<b>Edit:&nbsp;CPU&nbsp;&nbsp;</b>
 	<div class="toolbar" data-controller="show">

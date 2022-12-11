@@ -19,10 +19,11 @@ class Manufacturer
     private $id;
     
     #[ORM\Column(type: 'string', length: 255, unique: true)]
-    #[Assert\NotBlank]
+    #[Assert\Length(max:255, maxMessage: 'Name is longer than {{ limit }} characters, try to make it shorter.')]
     private $name;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true, unique: true)]
+    #[Assert\Length(max:255, maxMessage: 'Short name is longer than {{ limit }} characters, try to make it shorter.')]
     private $shortName;
 
     #[ORM\OneToMany(targetEntity: 'App\Entity\Motherboard', mappedBy: 'manufacturer')]

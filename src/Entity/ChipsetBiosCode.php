@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: 'App\Repository\ChipsetBiosCodeRepository')]
 class ChipsetBiosCode
@@ -21,6 +22,7 @@ class ChipsetBiosCode
     private $biosManufacturer;
 
     #[ORM\Column(type: 'string', length: 255)]
+    #[Assert\Length(max:255, maxMessage: 'BIOS code is longer than {{ limit }} characters, try to make it shorter.')]
     private $code;
 
     public function getId(): ?int

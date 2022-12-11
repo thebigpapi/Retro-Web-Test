@@ -6,6 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Query\Expr\Func;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: 'App\Repository\MotherboardRepository')]
 class Motherboard
@@ -16,9 +17,11 @@ class Motherboard
     private $id;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[Assert\Length(max:255, maxMessage: 'Name is longer than {{ limit }} characters, try to make it shorter.')]
     private ?string $name = null;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[Assert\Length(max:255, maxMessage: 'Dimensions is longer than {{ limit }} characters, try to make it shorter.')]
     private ?string $dimensions = null;
 
     #[ORM\ManyToOne(targetEntity: 'App\Entity\Manufacturer', inversedBy: 'motherboards', fetch: 'EAGER')]
@@ -73,6 +76,7 @@ class Motherboard
     private $maxVideoRam;
 
     #[ORM\Column(type: 'string', length: 2048, nullable: true)]
+    #[Assert\Length(max:2048, maxMessage: 'Notes is longer than {{ limit }} characters, try to make it shorter.')]
     private ?string $note = null;
 
     #[ORM\Column(type: 'datetime')]
@@ -100,6 +104,7 @@ class Motherboard
     private $expansionChip;
 
     #[ORM\Column(type: 'string', length: 80, unique: true)]
+    #[Assert\Length(max:80, maxMessage: 'Slug is longer than {{ limit }} characters, try to make it shorter.')]
     private $slug;
     
     public function __construct()

@@ -4,6 +4,11 @@
 
 {% block body %}
 {{ form_start(form, {'method': 'POST'}) }}
+<div class="errors-div"><ul>
+    {% for error in form.vars.errors.form.getErrors(true) %}
+    <li>{{ error.message }}</li>
+    {% endfor %}
+</ul></div>
 	<div class="title">Chipset part editor</div>
 
 	<!-- MANUF./NAME/PART NO. -->
