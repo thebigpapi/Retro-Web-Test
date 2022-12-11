@@ -3,7 +3,7 @@
 {% from 'macros/largeFile.html.twig' import header as driverHeader %}
 
 {% block title %}
-	{{ chipset.getManufacturer() ? chipset.getManufacturer().getShortNameIfExist() : 'Unknown' }} {{ chipset.getPartNo() }}
+	{{ chipset.getFullName() }}
 {% endblock %}
 {% block metatags %}
 	<meta name="description" content="Chipset:{{ chipset.getFullName() }} {{ chipset.getParts()}} Release date:{% if chipset.getReleaseDate() is not null %}{{ chipset.getReleaseDate() }}{% else %}unknown{% endif %}">
