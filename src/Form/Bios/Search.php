@@ -34,6 +34,7 @@ class Search extends AbstractType
                 'multiple' => false,
                 'expanded' => false,
                 'required' => false,
+                'autocomplete' => true,
                 'choices' => $options['chipsetManufacturers'],
                 'placeholder' => 'Select a chipset manufacturer ...',
             ])

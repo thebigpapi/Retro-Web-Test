@@ -58,7 +58,7 @@
 					<img src="{{ absolute_url(asset('build/icons/search/help.svg')) }}" alt="" width="16" height="16">
 				</label>
 				<div class="search-form-widget">
-					<div>{{ form_widget(form.manufacturer, {'attr': {'aria-label': "Manufacturer"}}) }}</div>
+					<div id="setmanuf">{{ form_widget(form.manufacturer, {'attr': {'aria-label': "Manufacturer"}}) }}</div>
 					<div>{{ form_widget(form.name) }}</div>
 				</div>
 			</div>
@@ -79,7 +79,7 @@
 				</label>
 				<div class="search-form-widget">
 					<div id="setcpu1">{{ form_widget(form.cpuSocket1, {'attr': {'data-action': "change->search#search", 'data-target-id': 'search_platform1'}}) }}</div>
-					<div>{{ form_widget(form.platform1, {'attr': {'aria-label': "CPU platform"}}) }}</div>
+					<div id="setcpup1">{{ form_widget(form.platform1, {'attr': {'aria-label': "CPU platform"}}) }}</div>
 				</div>
 			</div>
 			<div class="search-form-entry">
@@ -88,7 +88,7 @@
 				</label>
 				<div class="search-form-widget">
 					<div id="setcpu3">{{ form_widget(form.cpuSocket2, {'attr': {'data-action': "change->search#search", 'data-target-id': 'search_platform2'}}) }}</div>
-					<div>{{ form_widget(form.platform2, {'attr': {'aria-label': "Secondary CPU platform"}}) }}</div>
+					<div id="setcpup3">{{ form_widget(form.platform2, {'attr': {'aria-label': "Secondary CPU platform"}}) }}</div>
 				</div>
 			</div>
 
@@ -97,7 +97,7 @@
 					<span>Form factor</span>
 				</label>
 				<div class="search-form-widget">
-					<div>{{ form_widget(form.formFactor) }}</div>
+					<div id="setformf">{{ form_widget(form.formFactor) }}</div>
 				</div>
 			</div>
 		</section>

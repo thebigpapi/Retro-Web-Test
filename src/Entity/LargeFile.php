@@ -80,8 +80,8 @@ class LargeFile
     #[ORM\OneToMany(targetEntity: LargeFileExpansionChip::class, mappedBy: 'largeFile', orphanRemoval: true)]
     private $expansionchips;
 
-    #[ORM\Column(length: 1023, nullable: true)]
-    #[Assert\Length(max:1023, maxMessage: 'ID PCI is longer than {{ limit }} characters, try to make it shorter.')]
+    #[ORM\Column(length: 4096, nullable: true)]
+    #[Assert\Length(max:4096, maxMessage: 'ID PCI is longer than {{ limit }} characters, try to make it shorter.')]
     private ?string $idpci = null;
     
     public function __construct()

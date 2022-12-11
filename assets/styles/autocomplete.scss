@@ -153,7 +153,7 @@ div.ts-control{
     padding: 0 !important;
     min-height: 0 !important;
     max-height: none !important;
-    max-width: 5rem !important;
+    max-width: 12rem !important;
     margin: 0 !important;
     text-indent: 0 !important;
     border: 0 none !important;
@@ -165,6 +165,9 @@ div.ts-control{
   }
   input::-ms-clear {
     display: none;
+  }
+  div{
+    max-width: 14rem !important;
   }
 }
 

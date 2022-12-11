@@ -350,6 +350,10 @@ div.plain-list {
 		gap: 5px;
 	}
 }
+
+#setmanuf, #setchip1, #setcpu1, #setcpup1, #setcpu3, #setcpup3, #setformf {
+	select{display:none;}
+}
 // table variant for admin manage lists, toggled via JS
 @media screen and(min-width:651px){
 
