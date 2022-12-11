@@ -166,6 +166,7 @@
 				</div>
 				{% endif %}
 				<div id="index-datetime" data-controller="datetime"><div class="div-datetime">Last updated <span class="perk-date">{{ motherboard.getLastEdited()|date("Y-m-d\\TH:i:s", "GMT") }}Z</span></div></div>
+				<span><small><i>TRW ID: {{motherboard.getId()}}</i></small></span>
 			</div>
 			<!-- DOWNLOADS -->
 			<div class="show-downloads" id="sh-downloads">
