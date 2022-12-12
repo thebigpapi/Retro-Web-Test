@@ -62,11 +62,7 @@ class IdRedirectionRepository extends ServiceEntityRepository
             $query->setParameter('motherboardId', $motherboardId);
         }
 
-        $res = $query->getResult();
-        $count = count($res);
-        $boolval = boolval($count);
-
-        return $boolval;
+        return boolval(count($query->getResult()));
     }
 
        
