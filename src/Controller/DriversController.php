@@ -36,7 +36,9 @@ class DriversController extends AbstractController
     {
         $criterias = array();
         $name = htmlentities($request->query->get('name') ?? '');
+        $idpci = htmlentities($request->query->get('idpci') ?? '');
         if ($name) $criterias['name'] = "$name";
+        if ($idpci) $criterias['idpci'] = "$idpci";
 
         if ($criterias == array()) {
             return $this->redirectToRoute('driver_search');
@@ -67,7 +69,7 @@ class DriversController extends AbstractController
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            return $this->redirect($this->generateUrl('driversearch', ['name' => $form['name']->getData()]));
+            return $this->redirect($this->generateUrl('driversearch', ['name' => $form['name']->getData(), 'idpci' => $form['idpci']->getData()]));
         }
         return $this->render('drivers/search.html.twig', [
             'form' => $form->createView(),

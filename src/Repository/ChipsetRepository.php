@@ -47,8 +47,11 @@ class ChipsetRepository extends ServiceEntityRepository
 
         // Checking values in criteria and creating WHERE statements
         if (array_key_exists('name', $criteria)) {
-            $whereArray[] = "(LOWER(chip.name) LIKE :nameLike OR LOWER(chip.part_no) LIKE :nameLike)";
-            $valuesArray["nameLike"] = "%" . strtolower($criteria['name']) . "%";
+            $multicrit = explode(" ", $criteria['name']);
+            foreach ($multicrit as $key => $val){
+                $whereArray[] = "(LOWER(chip.name) LIKE :nameLike$key OR LOWER(chip.part_no) LIKE :nameLike$key OR LOWER(part.partNumber) LIKE :nameLike$key)";
+                $valuesArray["nameLike$key"] = "%" . strtolower($val) . "%";
+            }
         }
         if (array_key_exists('manufacturer', $criteria)) {
             $whereArray[] = "(man.id = :manufacturerId)";
@@ -61,7 +64,7 @@ class ChipsetRepository extends ServiceEntityRepository
         // Building query
         $query = $entityManager->createQuery(
             "SELECT chip
-            FROM App\Entity\Chipset chip JOIN chip.manufacturer man
+            FROM App\Entity\Chipset chip JOIN chip.manufacturer man JOIN chip.chipsetParts part
             WHERE $whereString
             ORDER BY man.name ASC, chip.release_date ASC, chip.name ASC"
         );
@@ -70,7 +73,7 @@ class ChipsetRepository extends ServiceEntityRepository
         foreach ($valuesArray as $key => $value) {
             $query->setParameter($key, $value);
         }
-
+        //dd($query->getResult());
         return $query->getResult();
     }
     /**

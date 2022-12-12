@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: 'App\Repository\MotherboardAliasRepository')]
 class MotherboardAlias
@@ -20,6 +21,7 @@ class MotherboardAlias
     private $manufacturer;
 
     #[ORM\Column(type: 'string', length: 255)]
+    #[Assert\Length(max:255, maxMessage: 'Alias name is longer than {{ limit }} characters, try to make it shorter.')]
     private $name;
 
     public function getId(): ?int

@@ -233,13 +233,13 @@ div.editor-row {
 	&.drv{
 		display:grid;
 		grid-template-columns:[first] 60% [second] 15% [third] 7% [end];
-		div, a {    margin-left: 10px;}
 	}
 	&.bios{
 		display:grid;
 		grid-template-columns:[first] 9% [second] 22% [third] 10% [fourth] 5% [fifth] 5% [sixth] 21% [seventh] 16% [eight] 7% [end];
-		div:nth-child(n+3), a {    margin-left: 10px;}
+		
 	}
+	&.bios > div:nth-child(n+3), &.bios > a { margin-left: 10px;}
 	&.manual{
 		display:grid;
 		grid-template-columns:[first] 25% [second] 15% [third] 21% [fourth] 25% [fifth] 7% [end];
@@ -252,9 +252,20 @@ div.editor-row {
 			display: flex;
 			flex-wrap: wrap;
 			width: 100%;
-
+			div.ts-wrapper {
+				width:max(200px,25vw);
+				div.ts-control{
+					width:100%;
+				}
+			}
 			* {
 				width: 100%;
+			}
+		}
+		&.chip div div.ts-wrapper {
+			width:max(200px,40vw);
+			div.ts-control{
+				width:100%;
 			}
 		}
 	}
@@ -338,6 +349,10 @@ div.plain-list {
 		align-items: center;
 		gap: 5px;
 	}
+}
+
+#setmanuf, #setchip1, #setcpu1, #setcpup1, #setcpu3, #setcpup3, #setformf {
+	select{display:none;}
 }
 // table variant for admin manage lists, toggled via JS
 @media screen and(min-width:651px){

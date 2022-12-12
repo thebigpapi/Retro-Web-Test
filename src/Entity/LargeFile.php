@@ -10,6 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use Symfony\Component\Validator\Constraints as Assert;
 
 
 #[Vich\Uploadable]
@@ -23,15 +24,17 @@ class LargeFile
     private $id;
 
     #[ORM\Column(type: 'string', length: 255)]
+    #[Assert\Length(max:255, maxMessage: 'Name is longer than {{ limit }} characters, try to make it shorter.')]
     private $name;
     /**
      * @var string|null
      */
     #[ORM\Column(type: 'string', length: 255)]
+    #[Assert\Length(max:255, maxMessage: 'File name is longer than {{ limit }} characters, try to make it shorter.')]
     private $file_name;
     
     #[Vich\UploadableField(mapping:'largefile', fileNameProperty:'file_name', size:'size')]
-    private File|null $file;
+    private $file;
     #[ORM\Column(type: 'datetime')]
     private $updated_at;
 
@@ -46,6 +49,7 @@ class LargeFile
     private $subdirectory;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[Assert\Length(max:255, maxMessage: 'Version is longer than {{ limit }} characters, try to make it shorter.')]
     private $fileVersion;
 
     #[ORM\OneToMany(targetEntity: LargeFileMediaTypeFlag::class, mappedBy: 'largeFile', orphanRemoval: true, cascade: ['persist'])]
@@ -66,11 +70,19 @@ class LargeFile
     #[ORM\OneToMany(targetEntity: LargeFileChipset::class, mappedBy: 'largeFile', orphanRemoval: true)]
     private $chipsets;
 
-    #[ORM\Column(type: 'string', length: 2048, nullable: true)]
+    #[ORM\Column(type: 'string', length: 4096, nullable: true)]
+    #[Assert\Length(max:4096, maxMessage: 'Note is longer than {{ limit }} characters, try to make it shorter.')]
     private $note;
 
     #[ORM\Column(type: 'integer', nullable: true)]
     private $size;
+
+    #[ORM\OneToMany(targetEntity: LargeFileExpansionChip::class, mappedBy: 'largeFile', orphanRemoval: true)]
+    private $expansionchips;
+
+    #[ORM\Column(length: 4096, nullable: true)]
+    #[Assert\Length(max:4096, maxMessage: 'ID PCI is longer than {{ limit }} characters, try to make it shorter.')]
+    private ?string $idpci = null;
     
     public function __construct()
     {
@@ -79,6 +91,7 @@ class LargeFile
         $this->osFlags = new ArrayCollection();
         $this->motherboards = new ArrayCollection();
         $this->chipsets = new ArrayCollection();
+        $this->expansionchips = new ArrayCollection();
     }
     public function getId(): ?int
     {
@@ -354,6 +367,45 @@ class LargeFile
     public function setSize(?int $size): self
     {
         $this->size = $size;
+
+        return $this;
+    }
+    /**
+     * @return Collection|LargeFileExpansionChip[]
+     */
+    public function getExpansionChips(): ?Collection
+    {
+        return $this->expansionchips;
+    }
+    public function addExpansionChip(LargeFileExpansionChip $expansionChip): self
+    {
+        if (!$this->expansionchips->contains($expansionChip)) {
+            $this->expansionchips[] = $expansionChip;
+            $expansionChip->setLargeFile($this);
+        }
+
+        return $this;
+    }
+    public function removeExpansionChip(LargeFileExpansionChip $expansionChip): self
+    {
+        if ($this->expansionchips->removeElement($expansionChip)) {
+            // set the owning side to null (unless already changed)
+            if ($expansionChip->getLargeFile() === $this) {
+                $expansionChip->setLargeFile(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getIdpci(): ?string
+    {
+        return $this->idpci;
+    }
+
+    public function setIdpci(?string $idpci): self
+    {
+        $this->idpci = $idpci;
 
         return $this;
     }

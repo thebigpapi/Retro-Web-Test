@@ -1,16 +1,15 @@
 {% if objectList is not empty %}
     {{ knp_pagination_render(objectList, 'macros/pagination.html.twig') }}
     <div class="plain-list w300p">
-        {% if entityName == "audiochip" %}<div class="list-entry centered" style="font-style:italic;display:none;">
+        {% if entityName == "expansionchip" %}<div class="list-entry centered" style="font-style:italic;display:none;">
             <div>Manufacturer</div>
             <div>Name</div>
+            <div>Type</div>
             <div>Part number</div>
             <div>Actions</div>
         </div>{% endif %}
-        {% if entityName == "videochip" %}<div class="list-entry centered" style="font-style:italic;display:none;">
-            <div>Manufacturer</div>
+        {% if entityName == "expchiptype" %}<div class="list-entry centered" style="font-style:italic;display:none;">
             <div>Name</div>
-            <div>Part number</div>
             <div>Actions</div>
         </div>{% endif %}
         {% for object in objectList %}

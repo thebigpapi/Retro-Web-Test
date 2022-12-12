@@ -109,6 +109,9 @@ export default class extends Controller {
                     window.location.href = xhr.responseURL
                     document.body.innerHTML = xhr.responseText
                 }
+                if (doc.getElementById("errors-message")) {
+                    document.getElementById("errors-message").innerHTML = doc.getElementById("errors-message").innerHTML
+                }
             }
             else {
                 document.getElementById("message").innerHTML = xhr.statusText

@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Vich\UploaderBundle\Entity\File as EmbeddedFile;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[Vich\Uploadable()]
 #[ORM\Entity(repositoryClass: OsFamilyRepository::class)]
@@ -21,12 +22,14 @@ class OsFamily
     private $id;
 
     #[ORM\Column(type: 'string', length: 255)]
+    #[Assert\Length(max:255, maxMessage: 'Name is longer than {{ limit }} characters, try to make it shorter.')]
     private $name;
 
     #[ORM\ManyToMany(targetEntity: OsFlag::class, mappedBy: 'osFamilies')]
     private $osFlags;
     
     #[ORM\Column(type: 'string', length: 255)]
+    #[Assert\Length(max:255, maxMessage: 'File name is longer than {{ limit }} characters, try to make it shorter.')]
     private string|null $file_name;
 
     /**

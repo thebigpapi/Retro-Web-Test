@@ -54,6 +54,7 @@ class Search extends AbstractType
                 'multiple' => false,
                 'expanded' => false,
                 'required' => false,
+                'autocomplete' => true,
                 'choices' => $options['moboManufacturers'],
                 'placeholder' => 'Select a manufacturer ...'
             ])
@@ -62,6 +63,7 @@ class Search extends AbstractType
                 'multiple' => false,
                 'expanded' => false,
                 'required' => false,
+                'autocomplete' => true,
                 'choices' => $options['chipsetManufacturers'],
                 'placeholder' => 'Select a chipset manufacturer ...',
             ])
@@ -70,6 +72,7 @@ class Search extends AbstractType
                 'multiple' => false,
                 'expanded' => false,
                 'required' => false,
+                'autocomplete' => true,
                 'choices' => $options['cpuSockets'],
                 'placeholder' => 'Select a socket ...',
             ])
@@ -78,6 +81,7 @@ class Search extends AbstractType
                 'multiple' => false,
                 'expanded' => false,
                 'required' => false,
+                'autocomplete' => true,
                 'choices' => $options['cpuSockets'],
                 'placeholder' => 'Select a socket ...',
             ])
@@ -119,6 +123,7 @@ class Search extends AbstractType
                 'multiple' => false,
                 'expanded' => false,
                 'required' => false,
+                'autocomplete' => true,
                 'choices' => $options['formFactors'],
                 'placeholder' => 'Select a form factor ...',
             ])
@@ -152,6 +157,7 @@ class Search extends AbstractType
                 'multiple' => false,
                 'expanded' => false,
                 'required' => false,
+                //'autocomplete' => true,
                 'choices' => $chipsets,
                 'placeholder' => $chipTag,
             ]);
@@ -183,6 +189,7 @@ class Search extends AbstractType
                 'multiple' => false,
                 'expanded' => false,
                 'required' => false,
+                'autocomplete' => true,
                 'choices' => $platforms,
                 'placeholder' => 'Select a processor platform ...',
             ]);
@@ -215,6 +222,7 @@ class Search extends AbstractType
                 'multiple' => false,
                 'expanded' => false,
                 'required' => false,
+                'autocomplete' => true,
                 'choices' => $platforms,
                 'placeholder' => 'Select a processor platform ...',
             ]);

@@ -1,9 +1,13 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}Add/Edit motherboard{% endblock %}
-
 {% block body %}
 <form data-controller="motherboard--add" name="add_motherboard" method="post" enctype="multipart/form-data" data-action="submit->motherboard--add#check">
+<div class="errors-div"><ul>
+    {% for error in form.vars.errors.form.getErrors(true) %}
+    <li>{{ error.message }}</li>
+    {% endfor %}
+</ul></div>
 	<div class="title">Motherboard editor</div>
 
 	<!-- MANUF/TITLE -->
@@ -112,7 +116,7 @@
 					</div><!-- Chipset -->
 					<div class="quick-spec-table" style="padding:0;">
 						<div class="quick-spec-head editor">Chipset</div>
-						<div class="editor-row nopad"><div class="editor-form-widget">
+						<div class="editor-row nopad"><div class="editor-form-widget chip">
 							<div>{{ form_widget(form.chipset)|replace({'<option value="">': '<option label=" " value="">'})|raw }}</div>
 						</div></div>
 					</div><!-- Dimensions -->
@@ -121,24 +125,31 @@
 						<div class="editor-row nopad"><div class="editor-form-widget">
 							<div>{{ form_widget(form.dimensions) }}</div>
 						</div></div>
-					</div><!-- Video Chipset -->
-					<div class="quick-spec-table" style="padding:0;">
-						<div class="quick-spec-head editor">Video chipset</div>
-						<div class="editor-row nopad"><div class="editor-form-widget">
-							<div>{{ form_widget(form.videoChipset)|replace({'<option value="">': '<option label=" " value="">'})|raw }}</div>
-						</div></div>
 					</div><!-- Max video RAM -->
 					<div class="quick-spec-table" style="padding:0;">
 						<div class="quick-spec-head editor">Max video RAM</div>
 						<div class="editor-row nopad"><div class="editor-form-widget">
 							<div>{{ form_widget(form.maxVideoRam)|replace({'<option value="">': '<option label=" " value="">'})|raw }}</div>
 						</div></div>
-					</div><!-- Audio Chipset -->
-					<div class="quick-spec-table" style="padding:0;">
-						<div class="quick-spec-head editor">Audio chipset</div>
-						<div class="editor-row nopad"><div class="editor-form-widget">
-							<div>{{ form_widget(form.audioChipset)|replace({'<option value="">': '<option label=" " value="">'})|raw }}</div>
-						</div></div>
+					</div>
+					<hr><!-- Expansion Chips -->
+					<div class="quick-spec-table expchip" data-controller="collection" style="padding:0;">
+						<div class="quick-spec-head editor"><div>Expansion chipset</div>
+						{% include 'macros/buttons.html.twig' with {'type':'add', 'action': 'expansionChip'} %}</div>
+						<div class="append_table" id="expansionChip-fields-list" data-widget-counter="{{ form.expansionChip|length }}"
+							data-prototype="
+								{{ form_widget(form.expansionChip.vars.prototype)|e }}
+								{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
+							</div>" data-controller="collection">
+							{% for expchip in form.expansionChip %}
+								<div class="editor-row nopad">
+									{{ form_widget(expchip) }}
+									{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
+									{{ form_errors(expchip) }}
+								</div>
+							{% endfor %}
+							{{ form_errors(form.expansionChip) }}
+						</div>
 					</div><!-- Max system RAM -->
 					<div class="quick-spec-table" data-controller="collection" style="padding:0;">
 						<div class="quick-spec-head editor"><div>Max system RAM</div>
@@ -174,8 +185,7 @@
 							{% endfor %}
 							{{ form_errors(form.cacheSize) }}
 						</div>
-					</div>
-					<hr><!-- Supported RAM types -->
+					</div><!-- Supported RAM types -->
 					<div class="quick-spec-table" data-controller="collection">
 						<div class="quick-spec-head editor"><div>Supported RAM types:</div>
 						{% include 'macros/buttons.html.twig' with {'type':'add', 'action': 'dramType'} %}</div>
@@ -295,7 +305,7 @@
 								<div><b>Uploaded file</b></div>
 							</div>
 							<div class="append_table" id="motherboardBios-fields-list" data-widget-counter="{{ form.motherboardBios|length }}" data-prototype="
-								<div>{{ form_widget(form.motherboardBios.vars.prototype.manufacturer, {'attr': {'style': 'width:100%'}} )|e }}</div>
+								<div>{{ form_widget(form.motherboardBios.vars.prototype.manufacturer, {'attr': {'style': 'display:none;'}} )|e }}</div>
 								<div>{{ form_widget(form.motherboardBios.vars.prototype.postString, {'attr': {'style': 'width:100%'}} )|e }}</div>
 								<div>{{ form_widget(form.motherboardBios.vars.prototype.note, {'attr': {'style': 'width:100%'}} )|e }}</div>
 								<div>{{ form_widget(form.motherboardBios.vars.prototype.boardVersion, {'attr': {'style': 'width:100%'}} )|e }}</div>
@@ -306,7 +316,7 @@
 								">
 							{% for bios in form.motherboardBios %}
 								<div class="editor-row bios nopad">
-									<div>{{ form_widget(bios.manufacturer, {'attr': {'style': 'width:100%'}}) }}</div>
+									<div>{{ form_widget(bios.manufacturer, {'attr': {'style': 'display:none;'}}) }}</div>
 									<div>{{ form_widget(bios.postString, {'attr': {'style': 'width:100%'}}) }}</div>
 									<div>{{ form_widget(bios.note, {'attr': {'style': 'width:100%'}}) }}</div>
 									<div>{{ form_widget(bios.boardVersion, {'attr': {'style': 'width:100%'}}) }}</div>

@@ -5,9 +5,10 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
-#[ORM\Entity(repositoryClass: 'App\Repository\AudioChipsetRepository')]
-class AudioChipset
+#[ORM\Entity(repositoryClass: 'App\Repository\ExpansionChipRepository')]
+class ExpansionChip
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -15,20 +16,31 @@ class AudioChipset
     private $id;
     
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[Assert\Length(max:255, maxMessage: 'Name is longer than {{ limit }} characters, try to make it shorter.')]
     private $name;
 
-    #[ORM\OneToMany(targetEntity: 'App\Entity\Motherboard', mappedBy: 'audioChipset')]
+    #[ORM\OneToMany(targetEntity: Motherboard::class, mappedBy: 'expansionChip')]
     private $motherboards;
 
-    #[ORM\ManyToOne(targetEntity: 'App\Entity\Manufacturer', inversedBy: 'audioChipsets')]
+    #[ORM\ManyToOne(targetEntity: 'App\Entity\Manufacturer', inversedBy: 'expansionChips')]
     private $manufacturer;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[Assert\Length(max:255, maxMessage: 'Part number is longer than {{ limit }} characters, try to make it shorter.')]
     private $chipName;
+
+    #[ORM\OneToMany(targetEntity: LargeFileExpansionChip::class, mappedBy: 'expansionChip', orphanRemoval: true, cascade: ['persist'])]
+    private $drivers;
+
+    #[ORM\ManyToOne(targetEntity: 'App\Entity\ExpansionChipType', inversedBy: 'expansionChips')]
+    #[ORM\JoinColumn(nullable: false)]
+    private $type;
 
     public function __construct()
     {
         $this->motherboards = new ArrayCollection();
+        $this->drivers = new ArrayCollection();
+        //$this->type = new ArrayCollection();
     }
     public function getId(): ?int
     {
@@ -41,6 +53,16 @@ class AudioChipset
     public function setName(?string $name): self
     {
         $this->name = $name;
+
+        return $this;
+    }
+    public function getType(): ?ExpansionChipType
+    {
+        return $this->type;
+    }
+    public function setType(?ExpansionChipType $type): self
+    {
+        $this->type = $type;
 
         return $this;
     }
@@ -68,7 +90,7 @@ class AudioChipset
     {
         if (!$this->motherboards->contains($motherboard)) {
             $this->motherboards[] = $motherboard;
-            $motherboard->setAudioChipset($this);
+            $motherboard->setExpansionChip($this);
         }
 
         return $this;
@@ -78,8 +100,8 @@ class AudioChipset
         if ($this->motherboards->contains($motherboard)) {
             $this->motherboards->removeElement($motherboard);
             // set the owning side to null (unless already changed)
-            if ($motherboard->getAudioChipset() === $this) {
-                $motherboard->setAudioChipset(null);
+            if ($motherboard->getExpansionChip() === $this) {
+                $motherboard->setExpansionChip(null);
             }
         }
 
@@ -102,6 +124,33 @@ class AudioChipset
     public function setChipName(?string $chipName): self
     {
         $this->chipName = $chipName;
+
+        return $this;
+    }
+     /**
+     * @return Collection|LargeFileExpansionChip[]
+     */
+    public function getDrivers(): Collection
+    {
+        return $this->drivers;
+    }
+    public function addDriver(LargeFileExpansionChip $driver): self
+    {
+        if (!$this->drivers->contains($driver)) {
+            $this->drivers[] = $driver;
+            $driver->setExpansionchipsets($this);
+        }
+
+        return $this;
+    }
+    public function removeDriver(LargeFileExpansionChip $driver): self
+    {
+        if ($this->drivers->removeElement($driver)) {
+            // set the owning side to null (unless already changed)
+            if ($driver->getExpansionchipsets() === $this) {
+                $driver->setExpansionchipsets(null);
+            }
+        }
 
         return $this;
     }

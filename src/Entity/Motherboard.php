@@ -6,6 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Query\Expr\Func;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: 'App\Repository\MotherboardRepository')]
 class Motherboard
@@ -16,9 +17,11 @@ class Motherboard
     private $id;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[Assert\Length(max:255, maxMessage: 'Name is longer than {{ limit }} characters, try to make it shorter.')]
     private ?string $name = null;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[Assert\Length(max:255, maxMessage: 'Dimensions is longer than {{ limit }} characters, try to make it shorter.')]
     private ?string $dimensions = null;
 
     #[ORM\ManyToOne(targetEntity: 'App\Entity\Manufacturer', inversedBy: 'motherboards', fetch: 'EAGER')]
@@ -69,16 +72,11 @@ class Motherboard
     #[ORM\ManyToMany(targetEntity: 'App\Entity\KnownIssue', inversedBy: 'motherboards')]
     private $knownIssues;
 
-    #[ORM\ManyToOne(targetEntity: 'App\Entity\VideoChipset', inversedBy: 'motherboards')]
-    private $videoChipset;
-
     #[ORM\ManyToOne(targetEntity: 'App\Entity\MaxRam', inversedBy: 'motherboards')]
     private $maxVideoRam;
 
-    #[ORM\ManyToOne(targetEntity: 'App\Entity\AudioChipset', inversedBy: 'motherboards')]
-    private $audioChipset;
-
     #[ORM\Column(type: 'string', length: 2048, nullable: true)]
+    #[Assert\Length(max:2048, maxMessage: 'Notes is longer than {{ limit }} characters, try to make it shorter.')]
     private ?string $note = null;
 
     #[ORM\Column(type: 'datetime')]
@@ -102,7 +100,11 @@ class Motherboard
     #[ORM\ManyToMany(targetEntity: PSUConnector::class, inversedBy: 'motherboards')]
     private $psuConnectors;
 
+    #[ORM\ManyToMany(targetEntity: ExpansionChip::class, inversedBy: 'motherboards')]
+    private $expansionChip;
+
     #[ORM\Column(type: 'string', length: 80, unique: true)]
+    #[Assert\Length(max:80, maxMessage: 'Slug is longer than {{ limit }} characters, try to make it shorter.')]
     private $slug;
     
     public function __construct()
@@ -130,6 +132,7 @@ class Motherboard
         $this->drivers = new ArrayCollection();
         $this->redirections = new ArrayCollection();
         $this->psuConnectors = new ArrayCollection();
+        $this->expansionChip = new ArrayCollection();
     }
     public function getId(): ?int
     {
@@ -587,16 +590,7 @@ class Motherboard
 
         return $this;
     }
-    public function getVideoChipset(): ?VideoChipset
-    {
-        return $this->videoChipset;
-    }
-    public function setVideoChipset(?VideoChipset $videoChipset): self
-    {
-        $this->videoChipset = $videoChipset;
-
-        return $this;
-    }
+    
     public function getMaxVideoRam(): ?MaxRam
     {
         return $this->maxVideoRam;
@@ -607,16 +601,7 @@ class Motherboard
 
         return $this;
     }
-    public function getAudioChipset(): ?AudioChipset
-    {
-        return $this->audioChipset;
-    }
-    public function setAudioChipset(?AudioChipset $audioChipset): self
-    {
-        $this->audioChipset = $audioChipset;
 
-        return $this;
-    }
     public function getNote(): ?string
     {
         return $this->note;
@@ -706,9 +691,16 @@ class Motherboard
     }
     public function getAllDrivers(): Collection
     {
+        $expdrv = [];
+        foreach($this->getExpansionChip() as $iu){
+            if($iu->getDrivers()->toArray())
+                $expdrv = array_merge($expdrv, $iu->getDrivers()->toArray());
+                    
+        }
         return new ArrayCollection(
             array_merge(
                 $this->getChipset() ? $this->getChipset()->getDrivers()->toArray() : array(),
+                $expdrv ? $expdrv : array(),
                 $this->getDrivers()->toArray()
             )
         );
@@ -798,6 +790,30 @@ class Motherboard
     public function setSlug(string $slug): self
     {
         $this->slug = strtolower($slug);
+
+        return $this;
+    }
+    /**
+     * @return Collection|LargeFileExpansionChip[]
+     */
+    public function getExpansionChip(): Collection
+    {
+        return $this->expansionChip;
+    }
+    public function addExpansionChip(ExpansionChip $expansionChip): self
+    {
+        if (!$this->expansionChip->contains($expansionChip)) {
+            $this->expansionChip[] = $expansionChip;
+            $expansionChip->addMotherboard($this);
+        }
+
+        return $this;
+    }
+    public function removeExpansionChip(ExpansionChip $expansionChip): self
+    {
+        if ($this->expansionChip->removeElement($expansionChip)) {
+            $expansionChip->removeMotherboard($this);
+        }
 
         return $this;
     }

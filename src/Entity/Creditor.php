@@ -5,6 +5,7 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: 'App\Repository\CreditorRepository')]
 class Creditor
@@ -15,9 +16,11 @@ class Creditor
     private $id;
     
     #[ORM\Column(type: 'string', length: 255)]
+    #[Assert\Length(max:255, maxMessage: 'Name is longer than {{ limit }} characters, try to make it shorter.')]
     private $name;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[Assert\Length(max:255, maxMessage: 'Website link is longer than {{ limit }} characters, try to make it shorter.')]
     private $website;
 
     #[ORM\OneToMany(targetEntity: 'App\Entity\MotherboardImage', mappedBy: 'creditor')]
@@ -25,6 +28,10 @@ class Creditor
 
     #[ORM\OneToMany(targetEntity: 'App\Entity\ChipImage', mappedBy: 'creditor')]
     private $chipImages;
+
+    #[ORM\ManyToOne(targetEntity: 'App\Entity\License', inversedBy: 'creditors')]
+    #[ORM\JoinColumn(nullable: true)]
+    private $license;
 
     public function __construct()
     {
@@ -52,6 +59,16 @@ class Creditor
     public function setWebsite(?string $website): self
     {
         $this->website = $website;
+
+        return $this;
+    }
+    public function getLicense(): ?License
+    {
+        return $this->license;
+    }
+    public function setLicense(?License $license): self
+    {
+        $this->license = $license;
 
         return $this;
     }
@@ -86,11 +103,11 @@ class Creditor
     /**
      * @return Collection|ChipImage[]
      */
-    public function getLicense(): Collection
+    public function getChipImage(): Collection
     {
         return $this->chipImages;
     }
-    public function addLicense(ChipImage $chipImage): self
+    public function addChipImage(ChipImage $chipImage): self
     {
         if (!$this->chipImages->contains($chipImage)) {
             $this->chipImages[] = $chipImage;
@@ -99,7 +116,7 @@ class Creditor
 
         return $this;
     }
-    public function removeLicense(ChipImage $chipImage): self
+    public function removeChipImage(ChipImage $chipImage): self
     {
         if ($this->chipImages->contains($chipImage)) {
             $this->chipImages->removeElement($chipImage);

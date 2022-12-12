@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use Symfony\Component\Validator\Constraints as Assert;
 
 
 #[Vich\Uploadable]
@@ -26,15 +27,17 @@ class MotherboardImage
     private $motherboard;
 
     #[ORM\Column(type: 'string', length: 255)]
-    private string|null $file_name;
+    #[Assert\Length(max:255, maxMessage: 'Image file name is longer than {{ limit }} characters, try to make it shorter.')]
+    private $file_name;
 
     /**
      * NOTE: This is not a mapped field of entity metadata, just a simple property.
      */
     #[Vich\UploadableField(mapping:'image', fileNameProperty:'file_name')]
-    private File|null $imageFile;
+    private $imageFile;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[Assert\Length(max:255, maxMessage: 'Image description is longer than {{ limit }} characters, try to make it shorter.')]
     private string|null $description;
 
     #[ORM\Column(type: 'datetime')]
@@ -42,10 +45,6 @@ class MotherboardImage
 
     #[ORM\ManyToOne(targetEntity: 'App\Entity\Creditor', inversedBy: 'motherboardImages')]
     private $creditor;
-
-    #[ORM\ManyToOne(targetEntity: 'App\Entity\License', inversedBy: 'motherboardImages')]
-    #[ORM\JoinColumn(nullable: false)]
-    private $license;
 
     public function getId(): ?int
     {
@@ -121,16 +120,6 @@ class MotherboardImage
     public function setCreditor(?Creditor $creditor): self
     {
         $this->creditor = $creditor;
-
-        return $this;
-    }
-    public function getLicense(): ?License
-    {
-        return $this->license;
-    }
-    public function setLicense(?License $license): self
-    {
-        $this->license = $license;
 
         return $this;
     }

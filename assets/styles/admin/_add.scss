@@ -19,7 +19,12 @@ div.imgp {
 	display:flex;
 	justify-content: space-between;
 	flex-wrap: wrap;
-	select {width:68%}
+	select,div.ts-wrapper {
+		width:68%;
+		div.ts-control{
+			width:100%;
+		}
+	}
 	input[type=text] {width:65%}
 }
 
@@ -55,13 +60,12 @@ input.num{width:15px;}
 div.notes-field div { padding-bottom: 6px; padding-right: 4px; margin:auto }
 div.notes-field label { display:none }
 div.notes-field div textarea { width:99%; height:150px }
+
 div.show-edit{
-	width:40%;
-	display:inline-block;
-	vertical-align:top;
-}
-div.show-edit.b{
-	width:59%;
+	textarea{
+		width:max(30vw, 320px);
+		height:25vh;
+	}
 }
 
 div.old-cpu-table{

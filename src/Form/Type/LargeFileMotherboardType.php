@@ -27,6 +27,7 @@ class LargeFileMotherboardType extends AbstractType
                 'choice_label' => 'getNameWithTags',
                 'multiple' => false,
                 'expanded' => false,
+                'autocomplete' => true,
             ]);
     }
 

@@ -113,14 +113,18 @@
 					<div class="quick-spec-head">Supported RAM type{% if motherboard.getDramType()|length > 1 %}s{% endif %}</div>
 					<div>{% for dram in motherboard.getDramType() %}{{ dram.getName() }}{% if not loop.last %}, {% endif %}{% endfor %}</div>
 					{% endif %}
-					{% if motherboard.getVideoChipset() is not empty %}
-					<div class="quick-spec-head">Video chipset</div>
-					<div>{{ motherboard.getVideoChipset() ? motherboard.getVideoChipset().getNameWithManufacturer() : 'Unknown' }}
-					{% if motherboard.getMaxVideoRam() is not null %}({{  motherboard.getMaxVideoRam().getValueWithUnit() }} max VRAM){% endif %}</div>
+					{% if motherboard.getExpansionChip() is not empty %}
+						{% for type in expansionchiptype %}
+							{% for chip in motherboard.getExpansionChip()|filter(a => a.getType().getName() == type.getName())%}
+								{% if loop.first %}<div class="quick-spec-head">{{chip.getType().getName()}} chips</div><div>{% endif %}{% if not loop.first %}, {% endif %}{{ chip.getNameWithManufacturer() }}
+								{% if loop.index == motherboard.getExpansionChip()|filter(a => a.getType().getName() == type.getName())|length %}</div>{% endif %}
+							{% endfor %}
+						{% endfor %}
 					{% endif %}
-					{% if motherboard.getAudioChipset() is not empty %}
-					<div class="quick-spec-head">Audio chipset</div>
-					<div>{{ motherboard.getAudioChipset() ? motherboard.getAudioChipset().getNameWithManufacturer() : 'Unknown' }}</div>
+					
+					{% if motherboard.getMaxVideoRam()  is not empty %}
+					<div class="quick-spec-head">Max VRAM</div>
+					<div>{{  motherboard.getMaxVideoRam().getValueWithUnit() }}</div>
 					{% endif %}
 				</div>
 				<div class="full-spec">
@@ -162,6 +166,7 @@
 				</div>
 				{% endif %}
 				<div id="index-datetime" data-controller="datetime"><div class="div-datetime">Last updated <span class="perk-date">{{ motherboard.getLastEdited()|date("Y-m-d\\TH:i:s", "GMT") }}Z</span></div></div>
+				<span><small><i>&nbsp;TRW ID: {{motherboard.getId()}}</i></small></span>
 			</div>
 			<!-- DOWNLOADS -->
 			<div class="show-downloads" id="sh-downloads">
@@ -171,7 +176,7 @@
 					<span><b>Drivers: </b></span>
 					{% if motherboard.getAllDrivers() is not empty %}
 					<span>{{ motherboard.getAllDrivers.count() }}{% if motherboard.getAllDrivers.count() == 1 %} entry{% else %} entries{% endif %}</span>
-					<div class="show-table drv" style="display:block;">
+					<div class="show-table drv">
 						<div class="show-downloads-head">{{ driverHeader() }}</div>
 						{% for driver in motherboard.getAllDrivers() %}
 							<div class="show-table-row">{{ driverLink(driver.largeFile) }}</div>

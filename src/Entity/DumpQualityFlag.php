@@ -6,6 +6,7 @@ use App\Repository\DumpQualityFlagRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: DumpQualityFlagRepository::class)]
 class DumpQualityFlag
@@ -16,9 +17,11 @@ class DumpQualityFlag
     private $id;
     
     #[ORM\Column(type: 'string', length: 255)]
+    #[Assert\Length(max:255, maxMessage: 'Name is longer than {{ limit }} characters, try to make it shorter.')]
     private $name;
 
     #[ORM\Column(type: 'string', length: 255)]
+    #[Assert\Length(max:255, maxMessage: 'Tag name is longer than {{ limit }} characters, try to make it shorter.')]
     private $tagName;
 
     #[ORM\OneToMany(targetEntity: LargeFile::class, mappedBy: 'dumpQualityFlag')]

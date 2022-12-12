@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use Symfony\Component\Validator\Constraints as Assert;
 
 
 #[Vich\Uploadable]
@@ -22,15 +23,17 @@ class ChipImage
     private $chip;
     
     #[ORM\Column(type: 'string', length: 255)]
-    private string|null $file_name;
+    #[Assert\Length(max:255, maxMessage: 'File name is longer than {{ limit }} characters, try to make it shorter.')]
+    private $file_name;
 
     /**
      * NOTE: This is not a mapped field of entity metadata, just a simple property.
      */
     #[Vich\UploadableField(mapping:'chipimage', fileNameProperty:'file_name')]
-    private File|null $imageFile;
+    private $imageFile;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[Assert\Length(max:255, maxMessage: 'Description is longer than {{ limit }} characters, try to make it shorter.')]
     private $description;
 
     #[ORM\Column(type: 'datetime')]
@@ -38,10 +41,6 @@ class ChipImage
 
     #[ORM\ManyToOne(targetEntity: 'App\Entity\Creditor', inversedBy: 'chipImages')]
     private $creditor;
-
-    #[ORM\ManyToOne(targetEntity: 'App\Entity\License', inversedBy: 'chipImages')]
-    #[ORM\JoinColumn(nullable: false)]
-    private $license;
     
     public function getId(): ?int
     {
@@ -94,16 +93,6 @@ class ChipImage
     public function setCreditor(?Creditor $creditor): self
     {
         $this->creditor = $creditor;
-
-        return $this;
-    }
-    public function getLicense(): ?License
-    {
-        return $this->license;
-    }
-    public function setLicense(?License $license): self
-    {
-        $this->license = $license;
 
         return $this;
     }

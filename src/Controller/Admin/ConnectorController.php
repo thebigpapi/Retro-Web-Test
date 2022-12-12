@@ -123,11 +123,11 @@ class ConnectorController extends AbstractController
 
     
     #[Route(path: '/admin/manage/connectors/sockets/{id}/edit', name: 'new_cpuSocket_edit', requirements: ['id' => '\d+'])]
-    public function cpuSocketEdit(Request $request, int $id, CpuSpeedRepository $cpuSpeedRepository, EntityManagerInterface $entityManagerInterface)
+    public function cpuSocketEdit(Request $request, int $id, CpuSocketRepository $cpuSocketRepository, EntityManagerInterface $entityManagerInterface)
     {
         return $this->renderEntityForm(
             $request,
-            $cpuSpeedRepository->find($id),
+            $cpuSocketRepository->find($id),
             CpuSocketForm::class,
             'admin/edit/connectors/cpuSocket.html.twig',
             'socket',
@@ -290,6 +290,7 @@ class ConnectorController extends AbstractController
      */
     private function renderEntityForm(Request $request, $entity, $class, $template, $entityName, EntityManagerInterface $entityManager)
     {
+        //dd($entity);
         $form = $this->createForm($class, $entity);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {

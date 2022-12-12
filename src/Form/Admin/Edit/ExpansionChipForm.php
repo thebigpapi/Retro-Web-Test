@@ -8,10 +8,13 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use App\Entity\VideoChipset;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use App\Entity\ExpansionChip;
 use App\Entity\Manufacturer;
+use App\Entity\ExpansionChipType;
+use App\Form\Type\LargeFileExpansionChipType;
 
-class VideoChipsetForm extends AbstractType
+class ExpansionChipForm extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -29,6 +32,18 @@ class VideoChipsetForm extends AbstractType
             ->add('chipName', TextType::class, [
                 'required' => false,
             ])
+            ->add('type', EntityType::class, [
+                'class' => ExpansionChipType::class,
+                'required' => true,
+                'choice_label' => 'name',
+                'multiple' => false,
+                'expanded' => false,
+            ])
+            ->add('drivers', CollectionType::class, [
+                'entry_type' => LargeFileExpansionChipType::class,
+                'allow_add' => true,
+                'allow_delete' => true,
+            ])
             ->add('save', SubmitType::class)
             ;
     }
@@ -36,7 +51,7 @@ class VideoChipsetForm extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => VideoChipset::class,
+            'data_class' => ExpansionChip::class,
             'chipsetManufacturers' => array(),
         ]);
     }

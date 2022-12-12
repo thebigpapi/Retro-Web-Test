@@ -290,7 +290,7 @@ class ProcessingUnitController extends AbstractController
 
     public function listPlatform(Request $request, PaginatorInterface $paginator, array $criterias, ProcessorPlatformTypeRepository $processorPlatformTypeRepository)
     {
-        $processorPlatformTypeRepository->findAll();
+        $platforms = $processorPlatformTypeRepository->findAll();
             
         usort($platforms, function (ProcessorPlatformType $a, ProcessorPlatformType $b) {
             return strnatcasecmp($a->getName() ?? '', $b->getName() ?? '');
@@ -310,7 +310,7 @@ class ProcessingUnitController extends AbstractController
 
     public function listInstructionset(Request $request, PaginatorInterface $paginator, array $criterias, InstructionSetRepository $instructionSetRepository)
     {
-        $instructionSetRepository->findAll();
+        $instructionsets = $instructionSetRepository->findAll();
 
         usort($instructionsets, function (InstructionSet $a, InstructionSet $b) {
             return strnatcasecmp($a->getName() ?? '', $b->getName() ?? '');

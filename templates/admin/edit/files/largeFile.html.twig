@@ -8,12 +8,17 @@
 	<button type="button" name="tabs" id="tab-nav-save" onclick="document.getElementById('large_file_form_save').click();"><img src="{{ absolute_url(asset('build/icons/edit.svg')) }}" alt="" width="24" height="24"><span>Save</span></button>
 </div>
 {{ form_start(form, {'method': 'POST', 'attr':{'data-controller':'largefile--add'}}) }}
+<div class="errors-div" id="errors-message"><ul>
+    {% for error in form.vars.errors.form.getErrors(true) %}
+    <li>{{ error.message }}</li>
+    {% endfor %}
+</ul></div>
 <div class="main-strip">
 	<div class="internal-container">
 		{% include 'macros/navbar.html.twig' with {'type':'edit', 'entityName': 'drv', 'count':2} %}
 		<div class="internal-content">
 			<!-- Description -->
-			<div class="show-general" id="sh-general">
+			<div class="show-general" id="sh-general" style="display: flex;flex-wrap: wrap;">
 				<div class="show-edit">
 					<progress hidden="true" id="progressBar"></progress>
 					<table>
@@ -22,7 +27,7 @@
 								<label for="message">Message</label>
 							</td>
 							<td>
-								<span id="message">{{ form_errors(form.file) }}</span>
+								<span id="message"></span>
 							</td>
 						</tr>
 						<tr>
@@ -85,6 +90,10 @@
 				</div>
 				<div class="show-edit b">
 					<table>
+						<tr>
+							<td>PCI IDs</td>
+							<td>{{form_widget(form.idpci)}}</td>
+						</tr>
 						<tr>
 							<td>OS flags</td>
 							<td>
