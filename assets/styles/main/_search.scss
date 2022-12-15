@@ -245,6 +245,11 @@ div.editor-row {
 		grid-template-columns:[first] 25% [second] 15% [third] 21% [fourth] 25% [fifth] 7% [end];
 		div:nth-child(2), div:nth-child(n+4), a {    margin-left: 10px;}
 	}
+	&.miscfile{
+		display:grid;
+		grid-template-columns:[first] 25% [second] 30% [third] 25% [fourth] 7% [end];
+		div:nth-child(2), div:nth-child(n+3), a {    margin-left: 10px;}
+	}
 	div.editor-form-widget {
 		padding: 0 !important;
 

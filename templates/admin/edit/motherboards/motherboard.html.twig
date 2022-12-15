@@ -328,6 +328,7 @@
 								</div>
 							{% endfor %}
 							</div>
+							{{ form_errors(form.motherboardBios) }}
 						</div>
 					</div><!-- Manuals -->
 					<div data-controller="collection">
@@ -362,7 +363,36 @@
 							{{ form_errors(form.manuals) }}
 							</div>
 						</div>
-						{{ form_errors(form.manuals) }}
+					</div><!-- Misc files -->
+					<div data-controller="collection">
+						<div style="padding-top:10px;display: flex;align-items: center;">
+							<img src="{{ absolute_url(asset('build/icons/show/manual.svg')) }}" alt="" width="32" style="padding: 5px;">
+							<b>Misc files:</b>
+							{% include 'macros/buttons.html.twig' with {'type':'add', 'action': 'miscfile'} %}
+						</div>
+						<div class="bios-image">
+							<div class="bios-image-head editor-row miscfile">
+								<div><b>Title</b></div>
+								<div><b>File to upload</b></div>
+								<div><b>Uploaded file</b></div>
+							</div>
+							<div id="miscfile-fields-list" data-widget-counter="{{ form.miscFiles|length }}" data-prototype="
+								<div>{{ form_widget(form.miscFiles.vars.prototype.link_name, {'attr': {'style': 'width:100%'}} )|e }}</div>
+								<div>{{ form_widget(form.miscFiles.vars.prototype.miscFile, {'attr': {'style': 'width:100%'}} )|e }}</div>
+								<div>{{ form_widget(form.miscFiles.vars.prototype.file_name, {'attr': {'style': 'width:100%'}} )|e }}</div>
+								{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}">
+							{% for miscfile in form.miscFiles %}
+								<div class="editor-row miscfile nopad">
+									<div>{{ form_widget(miscfile.link_name, {'attr': {'style': 'width:100%'}}) }}</div>
+									<div>{{ form_widget(miscfile.miscFile, {'attr': {'style': 'width:100%'}}) }}</div>
+									<div>{{ form_widget(miscfile.file_name, {'attr': {'style': 'width:100%'}}) }}</div>
+									{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
+									{{ form_errors(miscfile) }}
+								</div>
+							{% endfor %}
+							{{ form_errors(form.miscFiles) }}
+							</div>
+						</div>
 					</div>
 				</div>
 				<!-- CPUs -->

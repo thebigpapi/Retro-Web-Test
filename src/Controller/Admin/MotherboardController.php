@@ -308,6 +308,9 @@ class MotherboardController extends AbstractController
             foreach ($form['manuals']->getData() as $val) {
                 $val->setMotherboard($mobo);
             }
+            foreach ($form['miscFiles']->getData() as $val) {
+                $val->setMotherboard($mobo);
+            }
             foreach ($form['motherboardBios']->getData() as $val) {
                 $val->setMotherboard($mobo);
             }

@@ -106,6 +106,9 @@ class Motherboard
     #[ORM\Column(type: 'string', length: 80, unique: true)]
     #[Assert\Length(max:80, maxMessage: 'Slug is longer than {{ limit }} characters, try to make it shorter.')]
     private $slug;
+
+    #[ORM\OneToMany(mappedBy: 'motherboard', targetEntity: MiscFile::class, orphanRemoval: true, cascade: ['persist'])]
+    private $miscFiles;
     
     public function __construct()
     {
@@ -133,6 +136,7 @@ class Motherboard
         $this->redirections = new ArrayCollection();
         $this->psuConnectors = new ArrayCollection();
         $this->expansionChip = new ArrayCollection();
+        $this->miscFiles = new ArrayCollection();
     }
     public function getId(): ?int
     {
@@ -813,6 +817,36 @@ class Motherboard
     {
         if ($this->expansionChip->removeElement($expansionChip)) {
             $expansionChip->removeMotherboard($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, MiscFile>
+     */
+    public function getMiscFiles(): Collection
+    {
+        return $this->miscFiles;
+    }
+
+    public function addMiscFile(MiscFile $miscFile): self
+    {
+        if (!$this->miscFiles->contains($miscFile)) {
+            $this->miscFiles->add($miscFile);
+            $miscFile->setMotherboard($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMiscFile(MiscFile $miscFile): self
+    {
+        if ($this->miscFiles->removeElement($miscFile)) {
+            // set the owning side to null (unless already changed)
+            if ($miscFile->getMotherboard() === $this) {
+                $miscFile->setMotherboard(null);
+            }
         }
 
         return $this;

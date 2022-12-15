@@ -256,6 +256,24 @@
 					<span>not available</span>
 					{% endif %}
 				</div>
+				<!-- MISC FILES -->
+				<div>
+					<img src="{{ absolute_url(asset('build/icons/show/miscfile.svg')) }}" alt="doc" width="32" height="32">
+					<span><b>Other files: </b></span>
+					{% if motherboard.getMiscFiles() is not empty %}
+					<span>{{ motherboard.getMiscFiles.count() }}{% if motherboard.getMiscFiles.count() == 1 %} entry{% else %} entries{% endif %}</span>
+					<div><div><div>
+						<ul class="docs-list">{% for miscfile in motherboard.getMiscFiles()|sort((a, b) => a.getLinkName <=> b.getLinkName) %}
+							<li><a href="{{ vich_uploader_asset(miscfile, 'miscFile') }}">
+								<img src="{{ absolute_url(asset('build/icons/dw.svg')) }}" alt="" width="16" height="16" style="vertical-align: middle;">
+								{{ miscfile.getLinkName() }}
+							</a></li>
+						{% endfor %}</ul>
+					</div></div></div>
+					{% else %}
+					<span>not available</span>
+					{% endif %}
+				</div>
 			</div>
 			<!-- CPUs -->
 			<div class="show-cpus" id="sh-cpus">
