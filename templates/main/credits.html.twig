@@ -29,7 +29,9 @@
 {% block body %}
 	<div class="title">
 		<b>About The Retro Web</b>
-	</div>
+	
+	<a class="button" href="{{ path('app_info') }}" style="display:inline-block;">
+		<img src="{{ absolute_url(asset('build/icons/back.svg')) }}" alt="" width="24" style="vertical-align: middle;padding-right:2px;">Go back</a></div>
 	<div class="info-text">
 		<p>This is a project aimed at documenting as many pieces of hardware as possible, built entirely by volunteers, who code for the site/add new entries in their free time. All the images that are added on this site should comply with
 			<a class="credits-lnk" href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>

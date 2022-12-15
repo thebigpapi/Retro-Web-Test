@@ -103,4 +103,10 @@ class RedirectController extends AbstractController
             array("letter" => $letter)
         )));
     }
+    /* credits redirect */
+    #[Route(path: '/credits', methods: ['GET'])]
+    public function redirectCredits(Request $request)
+    {
+        return $this->redirect($this->generateUrl('app_credits'));
+    }
 }
