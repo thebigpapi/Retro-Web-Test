@@ -66,7 +66,7 @@
 					<div>{{ motherboard.getFormFactor() ? motherboard.getFormFactor().getName() : 'Unknown' }}</div>
 					<div class="quick-spec-head">PSU connector</div>
 					<div>{% if motherboard.getPsuConnectors() is not empty %}
-					{% for psu in motherboard.getPsuConnectors() %}{{ psu.getName() }}{% if not loop.last %}, {% endif %}{% endfor %}{% else %}Unknown{% endif %}</div>
+					{% for psu in motherboard.getPsuConnectors() %}{% if psu.getWebsite() is not null %}<a href="{{ psu.getWebsite() }}">{{ psu.getName() }}</a>{% else %}{{ psu.getName() }}{% endif %}{% if not loop.last %}, {% endif %}{% endfor %}{% else %}Unknown{% endif %}</div>
 					<div class="quick-spec-head">Chipset</div>
 					{% if motherboard.getChipset() is not empty %}
 						<div><a href="{{ path('app_homepage') }}chipsets/{{ motherboard.getChipset().getId()}}">{{ motherboard.getChipset().getFullName() }}</a></div>

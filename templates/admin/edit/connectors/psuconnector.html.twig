@@ -20,6 +20,10 @@
 			<td>{{form_label(form.name)}}</td>
 			<td>{{form_widget(form.name, {'attr': {'style': 'width:17em'}})}}</td>
 		</tr>
+		<tr>
+			<td>Link</td>
+			<td>{{form_widget(form.website, {'attr': {'style': 'width:17em'}})}}</td>
+		</tr>
 	</table>
 </div>
 <div id="hiddenDiv" style="display: none;">{{form_widget(form.save) }}{{ form_end(form)|replace({'</form>': '</div></form>'})|raw }}
