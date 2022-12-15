@@ -3,12 +3,8 @@
 {% block title %}Contributions{% endblock %}
 
 {% block body %}
-	<div class="title">
-		<b>Contributions</b>
-	
-	<a class="button" href="{{ path('app_info') }}" style="display:inline-block;">
-		<img src="{{ absolute_url(asset('build/icons/back.svg')) }}" alt="" width="24" style="vertical-align: middle;padding-right:2px;">Go back</a></div>
-	<div class="guidelines-content">
+<div class="title"><b>Contributions</b></div>
+<div class="guidelines-content">
 {% apply markdown_to_html %}
 
 #1. How do I submit an improvement on the site?

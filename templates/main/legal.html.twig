@@ -3,12 +3,8 @@
 {% block title %}Legal Disclaimer{% endblock %}
 
 {% block body %}
-	<div class="title">
-		<b>Legal Disclaimer</b>
-	
-	<a class="button" href="{{ path('app_info') }}" style="display:inline-block;">
-		<img src="{{ absolute_url(asset('build/icons/back.svg')) }}" alt="" width="24" style="vertical-align: middle;padding-right:2px;">Go back</a></div>
-	<div class="guidelines-content">
+<div class="title"><b>Legal Disclaimer</b></div>
+<div class="guidelines-content">
 {% apply markdown_to_html %}
 
 # Contents of The Retro Web (TRW)
@@ -52,5 +48,5 @@ You will not be asked to provide personal data on our website.
 You will not be tracked via user cookies or other user behaviour analytics.
 For select staff members with login permissions minimal user identifcation data (email, username, password, IP address and session cookie) is stored and processed.  This data will only be stored and processed if this is necessary for the purpose of your individual support and the sending of the information you have requested. TRW guarantees that your data will be treated confidentially in accordance with the applicable data protection regulations.
 {% endapply %}
-	</div>
+</div>
 {% endblock %}
