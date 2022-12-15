@@ -24,7 +24,7 @@ final class Version20220923122000 extends AbstractMigration
         $this->addSql('DELETE FROM expansion_chip_type');
         $this->addSql('INSERT INTO expansion_chip_type (id, name) VALUES (1, \'Audio\'), (2, \'Video\')');
         $this->addSql('INSERT INTO expansion_chip (id, manufacturer_id, type_id, name, chip_name) SELECT id, manufacturer_id, type_id, name, chip_name FROM audio_chipset');
-        $this->addSql('INSERT INTO expansion_chip (id, manufacturer_id, type_id, name, chip_name) SELECT id+226 AS id, manufacturer_id, 2, name, chip_name FROM video_chipset');
+        $this->addSql('INSERT INTO expansion_chip (id, manufacturer_id, type_id, name, chip_name) SELECT id+(SELECT count(*) FROM audio_chipset) AS id, manufacturer_id, 2, name, chip_name FROM video_chipset');
 
     }
 

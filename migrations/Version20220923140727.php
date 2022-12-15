@@ -21,7 +21,7 @@ final class Version20220923140727 extends AbstractMigration
     {
         // this up() migration is auto-generated, please modify it to your needs
         $this->addSql('INSERT INTO motherboard_expansion_chip (motherboard_id, expansion_chip_id) SELECT id, audio_chipset_id AS audio_chipset_id FROM motherboard WHERE audio_chipset_id IS NOT NULL;');
-        $this->addSql('INSERT INTO motherboard_expansion_chip (motherboard_id, expansion_chip_id) SELECT id, video_chipset_id+226 AS video_chipset_id FROM motherboard WHERE video_chipset_id IS NOT NULL;');
+        $this->addSql('INSERT INTO motherboard_expansion_chip (motherboard_id, expansion_chip_id) SELECT id, video_chipset_id+(SELECT count(*) FROM audio_chipset) AS video_chipset_id FROM motherboard WHERE video_chipset_id IS NOT NULL;');
         $this->addSql('ALTER TABLE motherboard DROP CONSTRAINT fk_7f7a0f2b3cb32b0f');
         $this->addSql('DROP SEQUENCE video_chipset_id_seq CASCADE');
         $this->addSql('ALTER TABLE video_chipset DROP CONSTRAINT fk_c030a4f2a23b42d');
