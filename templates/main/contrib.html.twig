@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Contributions{% endblock %}
+
+{% block body %}
+<div class="title"><b>Contributions</b></div>
+<div class="guidelines-content">
+{% apply markdown_to_html %}
+
+#1. How do I submit an improvement on the site?
+
+Boards on the site are curated by our dedicated team of archivists, thus the editor is not open to the public. If you want to submit an improvement or a new board/chipset/driver, you can do it via:
+    * Discord submission on our [server](https://discord.gg/HWWH7hsk2p), under the [#submissions-feedback](https://discord.com/channels/713112400059957288/1017752800689672224) channel
+    * email submission  
+  
+#2. How should the submission look like ?
+
+The overall idea is to include as much information as you have for the given entry, such as images, manuals and/or BIOS dumps. But there are of course some criterias to follow: 
+* Title (required): this is the first thing we see when we go through entries, so having a clean title is important, it can be one of the following:
+    * Add [entry] - [entry name and/or part number]
+	* Improve [entry] - [entry name and/or part number]  
+
+	where [entry] can be either a motherboard, a chipset or a driver
+* TRW links (required for existing entries): always provide the link of the entry you want to improve, it makes it much easier and faster for us
+* Photos (required): when you attach photos, always provide their source; if the photos are yours, then you must mention your name as the source; photos without a source will not be taken into consideration
+    * license: we use [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/) for all the user submitted photos, so you must agree to that license if you choose to provide images; the only exception to this rule are auction site photos (such as eBay), which fall into a more gray area when it comes to licensing and we will always prioritize images with a clean source/license
+    * quality: down below is a tier list of image quality which should be taken into consideration when submitting images
+	    * A: best - all the text markings are clearly legible, markings on SMD resistors and other small components are also legible, no shadows or white light spots on the PCB
+		
+		<img src="{{ absolute_url(asset('build/images/motherboard/best.jpg')) }}" alt="" width="320" height="200" style="width:auto;" alt="best" title="Best">
+		* B: good - most of the markings on the PCB and the important chips are legible (such as chipset, LAN, audio or clock chips, etc.), minimal shadows or white light spots
+		
+		<img src="{{ absolute_url(asset('build/images/motherboard/good.jpg')) }}" alt="" width="320" height="200" style="width:auto;" alt="good" title="Good">
+		* C: acceptable - markings are barely legible but visible, image shaking/blur, shadows and/or white light spots present  
+		
+		<img src="{{ absolute_url(asset('build/images/motherboard/acceptable.jpg')) }}" alt="" width="320" height="200" style="width:auto;" alt="acceptable" title="Acceptable">
+	we expect images to be at the very least of the acceptable type, anything else that doesn't meet any of the specs listed above will NOT qualify
+* BIOS dumps (optional, boards): these help us a lot to identify who is the manufacturer of the board, so if you have the possibility to provide a BIOS dump, it will be appreciated
+* Manuals/Datasheets (optional): same as above, manuals and datasheets can help identify features of the motherboard or of the chipset, respectively
+* Description (optional): any additional information that doesn't fit the above
+{% endapply %}
+</div>
+{% endblock %}

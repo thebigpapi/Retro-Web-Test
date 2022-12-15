@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Info{% endblock %}
+
+{% block body %}
+	<div class="title">Info</div>
+	<div class="index-buttons">
+		<a href="{{ path('app_credits') }}">
+			<img src="{{ absolute_url(asset('build/icons/nav/about.svg')) }}" alt="about">
+			<div>About us</div>
+		</a>
+		<a href="{{ path('app_contributions') }}">
+			<img src="{{ absolute_url(asset('build/icons/show/manual.svg')) }}" alt="contrib">
+			<div>Contributions</div>
+		</a>
+		<a href="{{ path('app_legal') }}">
+			<img src="{{ absolute_url(asset('build/icons/show/miscfile.svg')) }}" alt="legal">
+			<div>Legal Disclaimer</div>
+		</a>
+	</div>
+{% endblock %}

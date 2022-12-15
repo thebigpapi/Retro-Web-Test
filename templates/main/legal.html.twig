@@ -1,0 +1,52 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Legal Disclaimer{% endblock %}
+
+{% block body %}
+<div class="title"><b>Legal Disclaimer</b></div>
+<div class="guidelines-content">
+{% apply markdown_to_html %}
+
+# Contents of The Retro Web (TRW)
+
+We assume no liability for the topicality, correctness, completeness or quality of the information provided.
+Liability claims against The Retro Web relating to material or immaterial damage caused by the use or non-use of the information provided or by the use of incorrect or incomplete information are excluded, unless there is evidence of wilful intent or gross negligence on the part of the author.
+
+TRW expressly reserves the right to change, supplement or delete parts of the pages or the entire platform without prior notice or to cease publication temporarily or permanently.
+
+# References and Links
+
+The Retro Web staff is not responsible for any contents linked or referred to from TRW pages - unless we have full knowledge of illegal contents and would be able to prevent the visitors of this site from viewing those pages.
+
+TRW therefore expressly declares that at the time the links were created, the linked pages were free of illegal content.
+
+This statement applies to all links and references set within TRW website as well as to entries made by third parties in its records, archives and message boards set up by the TRW staff.
+
+For illegal, incorrect or incomplete contents and in particular for damages arising from the use or non-use of such information, the provider of the page to which reference is made is solely liable, not the party who merely refers to the respective publication via links.
+
+# Copyright and trademark law
+
+TRW endeavours to observe the copyrights of the graphics, documents, texts, software and source code used in all publications, to use graphics, documents, texts, software and source code it has created itself or to make use of  graphics, documents, texts, software and source code that are in the public domain.
+All brands and trademarks mentioned within the TRW and possibly protected by third parties are subject without restriction to the provisions of the applicable trademark law and the ownership rights of the respective registered owners. The mere fact that a trademark is mentioned should not lead to the conclusion that it is not protected by the rights of third parties!
+
+The copyright for published objects created by the TRW itself remain under the Attribution-ShareAlike 4.0 International (CC BY-SA 4.0).
+https://creativecommons.org/licenses/by-sa/4.0/
+
+Any duplication or use of objects on the TRW web platform such as diagrams, graphics and texts in other electronic or printed publications is permitted without the authors express agreement subject to acceptance of the CC BY-SA 4.0 license terms in full.
+
+Any duplication or use of objects such as software code and data required for the purposes of mirroring, backup or rehosting in electronic form is permitted without the authors express agreement subject to the acceptance of the GNU General Public License Version 3, 29 June 2007 and the CC BY-SA 4.0 license terms in full.
+
+
+# Legal validity of this disclaimer
+
+This disclaimer is to be regarded as part of the internet publication which you were referred from.
+If sections or individual terms of this statement are not legal or correct, the content or validity of the other parts remain uninfluenced by this fact.
+
+# Data protection
+
+You will not be asked to provide personal data on our website.
+You will not be tracked via user cookies or other user behaviour analytics.
+For select staff members with login permissions minimal user identifcation data (email, username, password, IP address and session cookie) is stored and processed.  This data will only be stored and processed if this is necessary for the purpose of your individual support and the sending of the information you have requested. TRW guarantees that your data will be treated confidentially in accordance with the applicable data protection regulations.
+{% endapply %}
+</div>
+{% endblock %}

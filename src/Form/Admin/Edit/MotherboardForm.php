@@ -33,6 +33,7 @@ use App\Form\Type\CacheSizeType;
 use App\Form\Type\DramTypeType;
 use App\Form\Type\CpuSocketType;
 use App\Form\Type\ManualType;
+use App\Form\Type\MiscFileType;
 use App\Form\Type\MotherboardBiosType;
 use App\Form\Type\MotherboardImageTypeForm;
 use App\Form\Type\KnownIssueType;
@@ -183,6 +184,11 @@ class MotherboardForm extends AbstractType
             ])
             ->add('manuals', CollectionType::class, [
                 'entry_type' => ManualType::class,
+                'allow_add' => true,
+                'allow_delete' => true,
+            ])
+            ->add('miscFiles', CollectionType::class, [
+                'entry_type' => MiscFileType::class,
                 'allow_add' => true,
                 'allow_delete' => true,
             ])

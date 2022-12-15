@@ -22,6 +22,10 @@ class PSUConnector
 
     #[ORM\ManyToMany(targetEntity: Motherboard::class, mappedBy: 'psuConnectors')]
     private $motherboards;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    #[Assert\Length(max:255, maxMessage: 'Website link is longer than {{ limit }} characters, try to make it shorter.')]
+    private ?string $website = null;
     
     public function __construct()
     {
@@ -59,6 +63,18 @@ class PSUConnector
     public function removeMotherboard(Motherboard $motherboard): self
     {
         $this->motherboards->removeElement($motherboard);
+
+        return $this;
+    }
+
+    public function getWebsite(): ?string
+    {
+        return $this->website;
+    }
+
+    public function setWebsite(?string $website): self
+    {
+        $this->website = $website;
 
         return $this;
     }

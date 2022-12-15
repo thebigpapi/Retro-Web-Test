@@ -26,10 +26,31 @@ class MainController extends AbstractController
         ]);
     }
 
-    #[Route('/credits', name:'app_credits')]
+    #[Route('/info', name:'app_info')]
+    public function info() : Response
+    {
+        return $this->render('main/info.html.twig', [
+            'controller_name' => 'MainController',
+        ]);
+    }
+    #[Route('/info/credits', name:'app_credits')]
     public function credits() : Response
     {
         return $this->render('main/credits.html.twig', [
+            'controller_name' => 'MainController',
+        ]);
+    }
+    #[Route('/info/contributions', name:'app_contributions')]
+    public function contrib() : Response
+    {
+        return $this->render('main/contrib.html.twig', [
+            'controller_name' => 'MainController',
+        ]);
+    }
+    #[Route('/info/legal', name:'app_legal')]
+    public function legal() : Response
+    {
+        return $this->render('main/legal.html.twig', [
             'controller_name' => 'MainController',
         ]);
     }

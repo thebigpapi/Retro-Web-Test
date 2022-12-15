@@ -66,7 +66,7 @@
 					<div>{{ motherboard.getFormFactor() ? motherboard.getFormFactor().getName() : 'Unknown' }}</div>
 					<div class="quick-spec-head">PSU connector</div>
 					<div>{% if motherboard.getPsuConnectors() is not empty %}
-					{% for psu in motherboard.getPsuConnectors() %}{{ psu.getName() }}{% if not loop.last %}, {% endif %}{% endfor %}{% else %}Unknown{% endif %}</div>
+					{% for psu in motherboard.getPsuConnectors() %}{% if psu.getWebsite() is not null %}<a href="{{ psu.getWebsite() }}">{{ psu.getName() }}</a>{% else %}{{ psu.getName() }}{% endif %}{% if not loop.last %}, {% endif %}{% endfor %}{% else %}Unknown{% endif %}</div>
 					<div class="quick-spec-head">Chipset</div>
 					{% if motherboard.getChipset() is not empty %}
 						<div><a href="{{ path('app_homepage') }}chipsets/{{ motherboard.getChipset().getId()}}">{{ motherboard.getChipset().getFullName() }}</a></div>
@@ -153,7 +153,7 @@
 {% apply markdown_to_html %}{% for issue in motherboard.getKnownIssues()|sort %}
 * {{ issue.getName() }}
 
-     {{ issue.getDescription() }}
+{{ issue.getDescription() }}
 
 {% endfor %}{% endapply %}
 					</div>
@@ -256,6 +256,24 @@
 					<span>not available</span>
 					{% endif %}
 				</div>
+				<!-- MISC FILES -->
+				<div>
+					<img src="{{ absolute_url(asset('build/icons/show/miscfile.svg')) }}" alt="doc" width="32" height="32">
+					<span><b>Other files: </b></span>
+					{% if motherboard.getMiscFiles() is not empty %}
+					<span>{{ motherboard.getMiscFiles.count() }}{% if motherboard.getMiscFiles.count() == 1 %} entry{% else %} entries{% endif %}</span>
+					<div><div><div>
+						<ul class="docs-list">{% for miscfile in motherboard.getMiscFiles()|sort((a, b) => a.getLinkName <=> b.getLinkName) %}
+							<li><a href="{{ vich_uploader_asset(miscfile, 'miscFile') }}">
+								<img src="{{ absolute_url(asset('build/icons/dw.svg')) }}" alt="" width="16" height="16" style="vertical-align: middle;">
+								{{ miscfile.getLinkName() }}
+							</a></li>
+						{% endfor %}</ul>
+					</div></div></div>
+					{% else %}
+					<span>not available</span>
+					{% endif %}
+				</div>
 			</div>
 			<!-- CPUs -->
 			<div class="show-cpus" id="sh-cpus">
@@ -325,6 +343,6 @@
 </div>
 <div class="disclaimer">
 	<p><b>Disclaimer</b></p>
-	<p>The info found in this page might not be entirely correct. Feel free to amend this page by contacting us on Discord or via email.</p>
+	<p>The info found in this page might not be entirely correct. Check out <a href="{{ path('app_contributions') }}">this guide</a> to learn how you can improve it.</p>
 </div>
 {% endblock %}

@@ -46,6 +46,8 @@ export default class extends Controller {
             newElem.setAttribute("class", newElem.getAttribute("class") + " bios");
         if (list.id === 'manuals-fields-list' || list.id === 'documentations-fields-list')
             newElem.setAttribute("class", newElem.getAttribute("class") + " manual");
+        if (list.id === 'miscfile-fields-list' || list.id === 'documentations-fields-list')
+            newElem.setAttribute("class", newElem.getAttribute("class") + " miscfile");
         newElem.setAttribute("class", newElem.getAttribute("class") + " nopad");
         if (list.id === 'images-fields-list' || list.id === 'chip.images-fields-list' || list.id === 'processingUnit.chip.images-fields-list')
             newElem.setAttribute("class", "addform");
