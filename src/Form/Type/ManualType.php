@@ -35,7 +35,7 @@ class ManualType extends AbstractType
                 // in the associated entity, so you can use the PHP constraint classes
                 'constraints' => [
                     new File([
-                        'maxSize' => '16Mi',
+                        'maxSize' => '32Mi',
                         'mimeTypes' => [
                             'application/pdf',
                             'application/x-pdf',

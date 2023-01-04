@@ -10,6 +10,6 @@
         <img src="{{ vich_uploader_asset(image, 'imageFile') | imagine_filter('motherboard_show_thumb') }}"
         width="640" height="480" alt="image{{index}}" title="{% if image.description %}{{ image.description }}{% endif %}">
     {% endif %}
-		Image {{ index }} of {{ length }} {{ image.creditor ? 'by: ' ~ image.creditor.name }}
+		Image {{ index }} of {{ length }} {{ image.creditor ? '(' ~ image.creditor.name ~ ')'}}
 	</a>
 </div>
