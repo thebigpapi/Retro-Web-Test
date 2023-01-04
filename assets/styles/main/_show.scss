@@ -367,6 +367,9 @@ span.string-bios {
 .gslide-desc{
     color:#000;
 }
+.gslide-image img{
+    object-fit: contain !important;
+}
 /* media queries used to hide some fields on mobile, to avoid severe overflows */
 @media screen and(max-width:650px){
     div.show-cpus-table div div:nth-child(n+5){display:none;} /* CPUs */
@@ -379,4 +382,4 @@ span.string-bios {
 /* media queries for gslide box size */
 @media (min-width: 770px){.gslide-image img {min-height:66vh;max-height:67vh;}}
 @media (min-width: 1200px){.gslide-image img {min-height:78vh;max-height:91vh;}}
-@media (min-width: 1400px) {.gslide-image img {min-height:75vh;max-height:90vh;}}
+@media (min-width: 1400px) {.gslide-image img {min-height:85vh;max-height:90vh;}}

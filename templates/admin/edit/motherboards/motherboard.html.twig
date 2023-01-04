@@ -272,13 +272,13 @@
 								<div><b>Recommended</b></div>
 							</div>
 							<div id="drivers-fields-list" data-widget-counter="{{ form.drivers|length }}" data-prototype="
-								<div>{{ form_widget(form.drivers.vars.prototype.largeFile, {'attr': {'style': 'width:100%'}} )|e }}</div>
+								<div>{{ form_widget(form.drivers.vars.prototype.largeFile, {'attr': {'style': 'display:none;'}} )|e }}</div>
 								<div style=display:flex;justify-content:center;>{{ form_widget(form.drivers.vars.prototype.isRecommended, {'attr': {'style': 'height:18px;width:18px;margin:0;'}} )|e }}</div>
 								{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
 								" data-controller="collection">
 								{% for driver in form.drivers %}
 										<div class="editor-row drv nopad">
-											<div>{{ form_widget(driver.largeFile, {'attr': {'style': 'width:100%'}} )|replace({'<option value="">': '<option label=" " value="">'})|raw }}</div>
+											<div>{{ form_widget(driver.largeFile, {'attr': {'style': 'display:none;'}} )|replace({'<option value="">': '<option label=" " value="">'})|raw }}</div>
 											<div style="display:flex;justify-content:center;">{{ form_widget(driver.isRecommended, {'attr': {'style': 'height:18px;width:18px;margin:0;'}} ) }}</div>
 											{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
 										</div>
