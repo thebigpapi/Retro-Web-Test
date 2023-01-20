@@ -8,6 +8,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use App\Form\Type\ChipAliasType;
 use App\Form\Type\ChipImageType;
+use App\Form\Type\PciDeviceIdType;
 use App\Entity\Manufacturer;
 use App\Repository\ManufacturerRepository;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
@@ -43,6 +44,11 @@ class ChipType extends AbstractType
             ])
             ->add('partNumber', TextType::class, [
                 'required' => true,
+            ])
+            ->add('pciDevs', CollectionType::class, [
+                'entry_type' => PciDeviceIdType::class,
+                'allow_add' => true,
+                'allow_delete' => true,
             ])
             ->add('chipAliases', CollectionType::class, [
                 'entry_type' => ChipAliasType::class,

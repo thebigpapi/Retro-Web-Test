@@ -266,6 +266,9 @@ class ChipsetController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $chipsetPart = $form->getData();
 
+            foreach ($form['chip']['pciDevs']->getData() as $key => $val) {
+                $val->setChip($chipsetPart);
+            }
             foreach ($form['chip']['chipAliases']->getData() as $key => $val) {
                 $val->setChip($chipsetPart);
             }

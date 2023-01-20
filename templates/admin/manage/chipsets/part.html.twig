@@ -9,7 +9,9 @@
     <div>{{ object.getName() ? object.getName() }}</div>
 
     <div class="header-label">PCI DEV</div>
-    <div>{{object.getPcidev()}}</div>
+    <div>{% if object.getPciDevs() is not empty %}
+        {% for id in object.getPciDevs() %}{{ id.getDev() }}{% if not loop.last %}, {% endif %}{% endfor %}{% endif %}
+    </div>
 
     <div class="header-label">Rank</div>
     <div>{{object.getRank()}}</div>

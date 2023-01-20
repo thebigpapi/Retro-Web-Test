@@ -36,9 +36,6 @@ class ChipsetPartForm extends AbstractType
             ->add('rank', NumberType::class, [
                 'required' => true,
             ])
-            ->add('pcidev', TextType::class, [
-                'required' => false,
-            ])
             ->add('save', SubmitType::class)
             ;
     }

@@ -36,14 +36,15 @@ abstract class Chip
     #[ORM\OneToMany(targetEntity: 'App\Entity\ChipImage', mappedBy: 'chip', orphanRemoval: true, cascade: ['persist'])]
     private $images;
 
-    #[ORM\Column(length: 4, nullable: true)]
-    #[Assert\Length(max:4, maxMessage: 'PCI DEV is longer than {{ limit }} characters, try to make it shorter.')]
-    private ?string $pcidev = null;
+    #[ORM\OneToMany(mappedBy: 'chip', targetEntity: PciDeviceId::class,  orphanRemoval: true, cascade: ['persist'])]
+    private Collection $pciDevs;
+
 
     public function __construct()
     {
         $this->chipAliases = new ArrayCollection();
         $this->images = new ArrayCollection();
+        $this->pciDevs = new ArrayCollection();
     }
     public function getId(): ?int
     {
@@ -167,12 +168,40 @@ abstract class Chip
 
     public function getPcidev(): ?string
     {
-        return $this->pcidev;
+        return "test";
     }
 
     public function setPcidev(?string $pcidev): self
     {
-        $this->pcidev = $pcidev;
+        return "test";
+    }
+
+    /**
+     * @return Collection<int, PciDeviceId>
+     */
+    public function getPciDevs(): Collection
+    {
+        return $this->pciDevs;
+    }
+
+    public function addPciDev(PciDeviceId $pciDev): self
+    {
+        if (!$this->pciDevs->contains($pciDev)) {
+            $this->pciDevs->add($pciDev);
+            $pciDev->setChipsetPart($this);
+        }
+
+        return $this;
+    }
+
+    public function removePciDev(PciDeviceId $pciDev): self
+    {
+        if ($this->pciDevs->removeElement($pciDev)) {
+            // set the owning side to null (unless already changed)
+            if ($pciDev->getChipsetPart() === $this) {
+                $pciDev->setChipsetPart(null);
+            }
+        }
 
         return $this;
     }

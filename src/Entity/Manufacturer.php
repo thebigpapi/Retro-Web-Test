@@ -53,6 +53,9 @@ class Manufacturer
     #[ORM\OneToMany(targetEntity: OsFlag::class, mappedBy: 'manufacturer')]
     private $osFlags;
 
+    #[ORM\Column(type: 'integer', nullable: true)]
+    private $pciven;
+
     public function __construct()
     {
         $this->motherboards = new ArrayCollection();
@@ -353,5 +356,27 @@ class Manufacturer
         }
 
         return $this;
+    }
+
+    public function getPciven(): ?string
+    {
+        return strtoupper(dechex($this->pciven));
+    }
+
+    public function setPciven(?string $pciven): self
+    {
+        $this->pciven = $this->hex2Int($pciven);
+
+        return $this;
+    }
+    public function hex2Int($PCIDEVID) 
+    {
+        //check that characters are in hexadecimal
+        if (!preg_match("/^[\da-fA-F]{4}$/",$PCIDEVID)) {
+            return false;
+        }
+      
+        //convert to integer
+        return hexdec($PCIDEVID);
     }
 }

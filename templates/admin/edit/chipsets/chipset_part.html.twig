@@ -49,13 +49,6 @@
 							<div>{{ form_widget(form.rank) }}</div>
 						</div></div>
 					</div>
-					<!-- PCI DEV -->
-					<div class="quick-spec-table nopad">
-						<div class="quick-spec-head">PCI DEV</div>
-						<div class="editor-row nopad"><div class="editor-form-widget">
-							<div>{{ form_widget(form.pcidev, {'attr': {'style': 'width:20%;'}}) }}</div>
-						</div></div>
-					</div>
 					{{form_widget(form.description, {'attr': {'style': 'width:98%;height:600px;', 'placeholder': 'Describe the chipset (max. 8192 characters) ...'}}) }}
 				</div>
 				<div class="show-downloads" id="sh-downloads">
@@ -75,6 +68,24 @@
 								{% endfor %}
 							{% endif %}
 							{{ form_errors(form.chip.chipAliases) }}
+						</div>
+					</div>
+					<!-- PCI DEV -->
+					<div class="quick-spec-table nopad" data-controller="collection">
+						<div class="quick-spec-head editor">PCI DEV
+						{% include 'macros/buttons.html.twig' with {'type':'add', 'action': 'chip.pciDevs'} %}</div>
+						<div id="chip.pciDevs-fields-list" data-widget-counter="{{ form.chip.pciDevs|length }}" data-prototype="{{ form_widget(form.chip.pciDevs.vars.prototype, {'attr': {'style': 'display:inline-block;'}})|e }} 
+							{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}">
+							{% if form.chip.pciDevs is not empty %}
+								{% for id in form.chip.pciDevs %}
+									<div class="editor-row nopad">
+										{{ form_widget(id, {'attr': {'style': 'display:inline-block;'}})|replace({'<option value="">': '<option label=" " value="">'})|raw }}
+										{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
+									</div>
+									{{ form_errors(id) }}
+								{% endfor %}
+							{% endif %}
+							{{ form_errors(form.chip.pciDevs) }}
 						</div>
 					</div>
 					<!-- DOCS -->

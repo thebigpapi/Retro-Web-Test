@@ -20,6 +20,9 @@ class ManufacturerForm extends AbstractType
             ->add('shortName', TextType::class, [
                 'required' => false,
             ])
+            ->add('pciven', TextType::class, [
+                'required' => false,
+            ])
             ->add('save', SubmitType::class)
             ->add('biosCodes', CollectionType::class, [
                 'entry_type' => ManufacturerBiosManufacturerCodeType::class,
