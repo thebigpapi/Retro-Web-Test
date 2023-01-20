@@ -1,6 +1,6 @@
 {% if objectList is not empty %}
     {{ knp_pagination_render(objectList, 'macros/pagination.html.twig') }}
-    <div class="plain-list">
+    <div class="plain-list table">
         {% if entityName == "expansion" %}<div class="list-entry centered" style="font-style:italic;display:none;">
             <div>Name</div>
             <div>Actions</div>

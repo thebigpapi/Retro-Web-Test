@@ -1,6 +1,6 @@
 {% if objectList is not empty %}
     {{ knp_pagination_render(objectList, 'macros/pagination.html.twig') }}
-    <div class="plain-list {% if entityName == "chipset" or entityName == "part" %}w400p{% endif %}">
+    <div class="plain-list {% if entityName == "chipset" or entityName == "part" %}w400p{% endif %} table">
         {% if entityName == "chipset" %}<div class="list-entry centered" style="font-style:italic;display:none;">
             <div>Manufacturer</div>
             <div>Part number</div>
@@ -14,6 +14,7 @@
             <div>Manufacturer</div>
             <div>Part number</div>
             <div>Name</div>
+            <div>PCI DEV</div>
             <div>Rank</div>
             <div>Documentation</div>
             <div>Images</div>

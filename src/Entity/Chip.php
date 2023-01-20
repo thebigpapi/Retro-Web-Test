@@ -36,6 +36,10 @@ abstract class Chip
     #[ORM\OneToMany(targetEntity: 'App\Entity\ChipImage', mappedBy: 'chip', orphanRemoval: true, cascade: ['persist'])]
     private $images;
 
+    #[ORM\Column(length: 4, nullable: true)]
+    #[Assert\Length(max:4, maxMessage: 'PCI DEV is longer than {{ limit }} characters, try to make it shorter.')]
+    private ?string $pcidev = null;
+
     public function __construct()
     {
         $this->chipAliases = new ArrayCollection();
@@ -157,6 +161,18 @@ abstract class Chip
                 $documentation->setChip(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getPcidev(): ?string
+    {
+        return $this->pcidev;
+    }
+
+    public function setPcidev(?string $pcidev): self
+    {
+        $this->pcidev = $pcidev;
 
         return $this;
     }

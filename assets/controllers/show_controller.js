@@ -70,17 +70,18 @@ export default class extends Controller {
         let item = document.getElementsByClassName("plain-list")[0];
         let item_class = item.getAttribute("class");
         if(document.cookie == "state=1"){
-            item.setAttribute("class", item_class + " table")
+            item_class = item_class.substring(0,item_class.indexOf("table")-1);
+            item.setAttribute("class", item_class)
         }
         if (toggle.checked){
             document.cookie = "state=1";
-            item.setAttribute("class", item_class + " table")
+            item_class = item_class.substring(0,item_class.indexOf("table")-1);
+            item.setAttribute("class", item_class)
         }
         else{
             if(document.cookie != "state=0")
                 document.cookie = "state=0";
-            item_class = item_class.substring(0,item_class.indexOf("table")-1);
-            item.setAttribute("class", item_class)
+            item.setAttribute("class", item_class + " table")
         }
     }
 }

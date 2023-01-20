@@ -49,6 +49,13 @@
 							<div>{{ form_widget(form.rank) }}</div>
 						</div></div>
 					</div>
+					<!-- PCI DEV -->
+					<div class="quick-spec-table nopad">
+						<div class="quick-spec-head">PCI DEV</div>
+						<div class="editor-row nopad"><div class="editor-form-widget">
+							<div>{{ form_widget(form.pcidev, {'attr': {'style': 'width:20%;'}}) }}</div>
+						</div></div>
+					</div>
 					{{form_widget(form.description, {'attr': {'style': 'width:98%;height:600px;', 'placeholder': 'Describe the chipset (max. 8192 characters) ...'}}) }}
 				</div>
 				<div class="show-downloads" id="sh-downloads">

@@ -9,6 +9,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use App\Entity\ChipsetPart;
 use App\Form\Type\ChipType;
 use App\Form\Type\ChipDocumentationType;
@@ -34,6 +35,9 @@ class ChipsetPartForm extends AbstractType
             ])
             ->add('rank', NumberType::class, [
                 'required' => true,
+            ])
+            ->add('pcidev', TextType::class, [
+                'required' => false,
             ])
             ->add('save', SubmitType::class)
             ;
