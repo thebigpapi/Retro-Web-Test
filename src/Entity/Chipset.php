@@ -24,6 +24,10 @@ class Chipset
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     #[Assert\Length(max:255, maxMessage: 'Name is longer than {{ limit }} characters, try to make it shorter.')]
     private $name;
+
+    #[ORM\OneToMany(targetEntity: 'App\Entity\ChipsetAlias', mappedBy: 'chipset', orphanRemoval: true, cascade: ['persist'])]
+    private $chipsetAliases;
+
     /**
      * @var ArrayCollection<ChipsetPart>
      */
@@ -58,6 +62,7 @@ class Chipset
     public function __construct()
     {
         $this->motherboards = new ArrayCollection();
+        $this->chipsetAliases = new ArrayCollection();
         $this->chipsetParts = new ArrayCollection();
         $this->biosCodes = new ArrayCollection();
         $this->drivers = new ArrayCollection();
@@ -327,6 +332,34 @@ class Chipset
             // set the owning side to null (unless already changed)
             if ($documentation->getChipset() === $this) {
                 $documentation->setChipset(null);
+            }
+        }
+
+        return $this;
+    }
+    /**
+     * @return Collection|ChipsetAlias[]
+     */
+    public function getChipsetAliases(): Collection
+    {
+        return $this->chipsetAliases;
+    }
+    public function addChipsetAlias(ChipsetAlias $chipsetAlias): self
+    {
+        if (!$this->chipsetAliases->contains($chipsetAlias)) {
+            $this->chipsetAliases[] = $chipsetAlias;
+            $chipsetAlias->setChipset($this);
+        }
+
+        return $this;
+    }
+    public function removeChipsetAlias(ChipsetAlias $chipsetAlias): self
+    {
+        if ($this->chipsetAliases->contains($chipsetAlias)) {
+            $this->chipsetAliases->removeElement($chipsetAlias);
+            // set the owning side to null (unless already changed)
+            if ($chipsetAlias->getChipset() === $this) {
+                $chipsetAlias->setChipset(null);
             }
         }
 

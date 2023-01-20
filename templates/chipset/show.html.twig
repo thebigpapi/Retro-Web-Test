@@ -29,6 +29,14 @@
 {% block body %}
 <!-- MANUF./NAME/PART NO. -->
 <div class="title">{{ chipset.getFullName() }}</div>
+{% if chipset.getChipsetAliases() is not empty %}
+<div class="tag-container" style="justify-content:center;padding-bottom:15px">
+	<span style="width:100%;text-align:center">Also known as:</span>
+	{% for alias in chipset.getChipsetAliases() %}
+		<span class="text-block" >{{ alias.getFullAliasName() }}</span>
+	{% endfor %}
+</div>
+{% endif %}
 
 <div class="main-strip">
 	<div class="internal-container">

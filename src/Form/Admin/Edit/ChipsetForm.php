@@ -12,6 +12,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use App\Entity\Chipset;
 use App\Entity\Manufacturer;
+use App\Form\Type\ChipsetAliasType;
 use App\Form\Type\ChipsetBiosCodeType;
 use App\Form\Type\ChipsetPartType;
 use App\Form\Type\LargeFileChipsetType;
@@ -43,6 +44,11 @@ class ChipsetForm extends AbstractType
             ])
             ->add('release_date', TextType::class, [
                 'required' => false,
+            ])
+            ->add('chipsetAliases', CollectionType::class, [
+                'entry_type' => ChipsetAliasType::class,
+                'allow_add' => true,
+                'allow_delete' => true,
             ])
             ->add('chipsetParts', CollectionType::class, [
                 'entry_type' => ChipsetPartType::class,

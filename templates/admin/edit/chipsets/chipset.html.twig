@@ -48,6 +48,24 @@
 					{{form_widget(form.description, {'attr': {'style': 'width:98%;height:600px;', 'placeholder': 'Describe the chipset (max. 8192 characters) ...'}}) }}
 				</div>
 				<div class="show-downloads" id="sh-downloads">
+					<!-- CHIP ALIASES -->
+					<div class="quick-spec-table nopad" data-controller="collection">
+						<div class="quick-spec-head editor">Chip Aliases
+						{% include 'macros/buttons.html.twig' with {'type':'add', 'action': 'chip.chipsetAliases'} %}</div>
+						<div id="chip.chipsetAliases-fields-list" data-widget-counter="{{ form.chipsetAliases|length }}" data-prototype="{{ form_widget(form.chipsetAliases.vars.prototype, {'attr': {'style': 'display:inline-block;'}})|e }} 
+							{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}">
+							{% if form.chipsetAliases is not empty %}
+								{% for alias in form.chipsetAliases %}
+									<div class="editor-row nopad">
+										{{ form_widget(alias, {'attr': {'style': 'display:inline-block;'}})|replace({'<option value="">': '<option label=" " value="">'})|raw }}
+										{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
+									</div>
+									{{ form_errors(alias) }}
+								{% endfor %}
+							{% endif %}
+							{{ form_errors(form.chipsetAliases) }}
+						</div>
+					</div>
 					<!-- DRIVERS -->
 					<div data-controller="collection">
 						<div style="padding-top:5px;">
