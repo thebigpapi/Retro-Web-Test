@@ -208,6 +208,9 @@ class ExpansionChipsetController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $chipset = $form->getData();
+            foreach ($form['chip']['pciDevs']->getData() as $key => $val) {
+                $val->setChip($chipset);
+            }
             foreach ($form['drivers']->getData() as $key => $val) {
                 $val->setExpansionChip($chipset);
             }

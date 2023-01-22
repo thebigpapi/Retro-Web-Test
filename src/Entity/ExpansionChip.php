@@ -8,26 +8,11 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: 'App\Repository\ExpansionChipRepository')]
-class ExpansionChip
+class ExpansionChip extends Chip
 {
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
-    private $id;
-    
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    #[Assert\Length(max:255, maxMessage: 'Name is longer than {{ limit }} characters, try to make it shorter.')]
-    private $name;
 
     #[ORM\OneToMany(targetEntity: Motherboard::class, mappedBy: 'expansionChip')]
     private $motherboards;
-
-    #[ORM\ManyToOne(targetEntity: 'App\Entity\Manufacturer', inversedBy: 'expansionChips')]
-    private $manufacturer;
-
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    #[Assert\Length(max:255, maxMessage: 'Part number is longer than {{ limit }} characters, try to make it shorter.')]
-    private $chipName;
 
     #[ORM\OneToMany(targetEntity: LargeFileExpansionChip::class, mappedBy: 'expansionChip', orphanRemoval: true, cascade: ['persist'])]
     private $drivers;
@@ -69,13 +54,13 @@ class ExpansionChip
     public function getNameWithManufacturer()
     {
         if ($this->name) {
-            if($this->chipName) {
-                return $this->getManufacturer()->getShortNameIfExist() . " " . $this->name . " (" . $this->chipName . ")";
+            if($this->partNumber) {
+                return $this->getManufacturer()->getShortNameIfExist() . " " . $this->name . " (" . $this->partNumber . ")";
             }
             return $this->getManufacturer()->getShortNameIfExist() . " " . $this->name;
         }
-        if($this->chipName) {
-            return $this->getManufacturer()->getShortNameIfExist() . " " . $this->chipName;
+        if($this->partNumber) {
+            return $this->getManufacturer()->getShortNameIfExist() . " " . $this->partNumber;
         }
         return $this->getManufacturer()->getShortNameIfExist() . " Unidentified";
     }
@@ -114,16 +99,6 @@ class ExpansionChip
     public function setManufacturer(?Manufacturer $manufacturer): self
     {
         $this->manufacturer = $manufacturer;
-
-        return $this;
-    }
-    public function getChipName(): ?string
-    {
-        return $this->chipName;
-    }
-    public function setChipName(?string $chipName): self
-    {
-        $this->chipName = $chipName;
 
         return $this;
     }

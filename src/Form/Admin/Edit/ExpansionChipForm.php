@@ -13,24 +13,15 @@ use App\Entity\ExpansionChip;
 use App\Entity\Manufacturer;
 use App\Entity\ExpansionChipType;
 use App\Form\Type\LargeFileExpansionChipType;
+use App\Form\Type\ChipType;
 
 class ExpansionChipForm extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('manufacturer', EntityType::class, [
-                'class' => Manufacturer::class,
-                'choice_label' => 'shortNameIfExist',
-                'multiple' => false,
-                'expanded' => false,
-                'choices' => $options['chipsetManufacturers'],
-            ])
-            ->add('name', TextType::class, [
-                'required' => false,
-            ])
-            ->add('chipName', TextType::class, [
-                'required' => false,
+            ->add('chip', ChipType::class, [
+                'data_class' =>ExpansionChip::class,
             ])
             ->add('type', EntityType::class, [
                 'class' => ExpansionChipType::class,
@@ -44,8 +35,7 @@ class ExpansionChipForm extends AbstractType
                 'allow_add' => true,
                 'allow_delete' => true,
             ])
-            ->add('save', SubmitType::class)
-            ;
+            ->add('save', SubmitType::class);
     }
 
     public function configureOptions(OptionsResolver $resolver)

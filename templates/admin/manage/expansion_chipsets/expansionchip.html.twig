@@ -9,7 +9,12 @@
     <div>{{object.getType().getName()}}</div>
 
     <div class="header-label">Part number</div>
-    <div>{{object.getChipName()|length > 0 ? object.getChipName()}}</div>
+    <div>{{object.getPartNumber()|length > 0 ? object.getPartNumber()}}</div>
+
+    <div class="header-label">PCI DEV</div>
+    <div>{% if object.getPciDevs() is not empty %}
+        {% for id in object.getPciDevs() %}{{ id.getDev() }}{% if not loop.last %}, {% endif %}{% endfor %}{% endif %}
+    </div>
 
     <div class="header-label">Actions</div>
     <div class="toolbar toolbar-thin">
