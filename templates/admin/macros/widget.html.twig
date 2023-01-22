@@ -1,0 +1,115 @@
+{% if type == "docs" %}    
+    <div data-controller="collection">
+		<div style="padding-top:5px;display: flex;align-items: center;">
+			<img src="{{ absolute_url(asset('build/icons/show/manual.svg')) }}" alt="" width="32" style="padding: 5px;">
+			Documentation: 
+			{% include 'macros/buttons.html.twig' with {'type':'add', 'action': 'manuals'} %}
+		</div>
+		<div class="bios-image">
+			<div class="bios-image-head editor-row manual">
+				<div><b>Title</b></div>
+				<div><b>Language</b></div>
+				<div><b>File to upload</b></div>
+				<div><b>Uploaded file</b></div>
+			</div>
+			<div id="manuals-fields-list" data-widget-counter="{{ entity|length }}" data-prototype="
+				<div>{{ form_widget(entity.vars.prototype.link_name, {'attr': {'style': 'width:100%'}} )|e }}</div>
+				<div>{{ form_widget(entity.vars.prototype.language, {'attr': {'style': 'width:100%'}} )|e }}</div>
+				<div>{{ form_widget(entity.vars.prototype.manualFile, {'attr': {'style': 'width:100%'}} )|e }}</div>
+				<div>{{ form_widget(entity.vars.prototype.file_name, {'attr': {'style': 'width:100%'}} )|e }}</div>
+				{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}">
+			{% for documentation in entity %}
+				<div class="editor-row manual nopad">
+					<div>{{ form_widget(documentation.link_name, {'attr': {'style': 'width:100%'}}) }}</div>
+					<div>{{ form_widget(documentation.language, {'attr': {'style': 'width:100%'}}) }}</div>
+					<div>{{ form_widget(documentation.manualFile, {'attr': {'style': 'width:100%'}}) }}</div>
+					<div>{{ form_widget(documentation.file_name, {'attr': {'style': 'width:100%'}}) }}</div>
+					{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
+					{{ form_errors(documentation) }}
+				</div>
+			{% endfor %}
+			{{ form_errors(entity) }}
+			</div>
+		</div>
+	</div>
+{% endif %}
+{% if type == "drivers" %}
+    <div data-controller="collection" style="min-width: 35vw;">
+		<div style="padding-top:5px;">
+			<img src="{{ absolute_url(asset('build/icons/show/hardware.svg')) }}" alt="" width="32" style="vertical-align: middle;padding-bottom: 10px;">
+			<p style="display:inline-block;">Drivers: </p>
+			{% include 'macros/buttons.html.twig' with {'type':'add', 'action': 'drivers'} %}
+		</div>
+		<div class="bios-image">
+			<div class="bios-image-head editor-row drv">
+				<div><b>File</b></div>
+				<div><b>Recommended</b></div>
+			</div>
+			<div id="drivers-fields-list" data-widget-counter="{{ entity|length }}" data-prototype="
+				<div>{{ form_widget(entity.vars.prototype.largeFile, {'attr': {'style': 'width:100%'}} )|e }}</div>
+				<div style=display:flex;justify-content:center;>{{ form_widget(entity.vars.prototype.isRecommended, {'attr': {'style': 'height:18px;width:18px;margin:0;'}} )|e }}</div>
+				{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
+				" data-controller="collection">
+				{% for driver in entity %}
+					<div class="editor-row drv nopad">
+						<div>{{ form_widget(driver.largeFile, {'attr': {'style': 'width:100%'}} )|replace({'<option value="">': '<option label=" " value="">'})|raw }}</div>
+						<div style="display:flex;justify-content:center;">{{ form_widget(driver.isRecommended, {'attr': {'style': 'height:18px;width:18px;margin:0;'}} ) }}</div>
+						{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
+					</div>
+					{{ form_errors(driver) }}
+				{% endfor %}
+			</div>
+			{{ form_errors(entity) }}
+		</div>
+	</div>
+{% endif %}
+{% if type == "pcidev" %}
+<div class="quick-spec-table nopad" data-controller="collection">
+		<div class="quick-spec-head editor">PCI DEV
+		{% include 'macros/buttons.html.twig' with {'type':'add', 'action': 'chip.pciDevs'} %}</div>
+		<div id="chip.pciDevs-fields-list" data-widget-counter="{{ entity|length }}" data-prototype="<span>ID: </span>{{ form_widget(entity.vars.prototype, {'attr': {'style': 'display:inline-block;'}})|e }} 
+			{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}">
+			{% if entity is not empty %}
+				{% for id in entity %}
+					<div class="editor-row nopad">
+                        <span>ID: </span>
+						{{ form_widget(id, {'attr': {'style': 'display:inline-block;'}})|replace({'<option value="">': '<option label=" " value="">'})|raw }}
+						{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
+					</div>
+					{{ form_errors(id) }}
+				{% endfor %}
+			{% endif %}
+			{{ form_errors(entity) }}
+		</div>
+	</div>
+{% endif %}
+{% if type == "alias" %}
+    <div class="quick-spec-table nopad" data-controller="collection">
+		<div class="quick-spec-head editor">{{displayname}}
+		{% include 'macros/buttons.html.twig' with {'type':'add', 'action': 'chip.chipAliases'} %}</div>
+		<div id="chip.chipAliases-fields-list" data-widget-counter="{{ entity|length }}" data-prototype="
+            {{ form_widget(entity.vars.prototype.manufacturer, {'attr': {'style': 'width:30%;display:inline-block;'}})|e }}
+            {{ form_widget(entity.vars.prototype.partNumber, {'attr': {'style': 'width:25%;display:inline-block;'}})|e }} 
+            {{ form_widget(entity.vars.prototype.name, {'attr': {'style': 'width:25%;display:inline-block;'}})|e }}  
+			{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}">
+            <div style="display: flex;justify-content: space-evenly;">
+                <div style="width:30%;"><i>Manufacturer</i></div>
+                <div style="width:25%;"><i>Part number</i></div>
+                <div style="width:25%;"><i>Name</i></div>
+            </div>
+			{% if entity is not empty %}
+				{% for alias in entity %}
+					<div class="editor-row nopad">
+						{{ form_widget(alias.manufacturer, {'attr': {'style': 'width:30%;display:inline-block;'}})|replace({'<option value="">': '<option label=" " value="">'})|raw }}
+                        {{ form_widget(alias.partNumber, {'attr': {'style': 'width:25%;display:inline-block;'}})}}
+                        {{ form_widget(alias.name, {'attr': {'style': 'width:25%;display:inline-block;'}}) }}
+						{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
+					</div>
+					{{ form_errors(alias) }}
+				{% endfor %}
+			{% endif %}
+			{{ form_errors(entity) }}
+		</div>
+	</div>
+    <hr>
+{% endif %}

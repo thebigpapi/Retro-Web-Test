@@ -13,6 +13,7 @@ use App\Entity\ExpansionChip;
 use App\Entity\Manufacturer;
 use App\Entity\ExpansionChipType;
 use App\Form\Type\LargeFileExpansionChipType;
+use App\Form\Type\ChipDocumentationType;
 use App\Form\Type\ChipType;
 
 class ExpansionChipForm extends AbstractType
@@ -32,6 +33,11 @@ class ExpansionChipForm extends AbstractType
             ])
             ->add('drivers', CollectionType::class, [
                 'entry_type' => LargeFileExpansionChipType::class,
+                'allow_add' => true,
+                'allow_delete' => true,
+            ])
+            ->add('documentations', CollectionType::class, [
+                'entry_type' => ChipDocumentationType::class,
                 'allow_add' => true,
                 'allow_delete' => true,
             ])

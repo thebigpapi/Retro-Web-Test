@@ -19,6 +19,7 @@ class PciDeviceIdType extends AbstractType
         $builder
             ->add('dev', TextType::class, [
                 'required' => false,
+                'label' => false,
             ]);
     }
 

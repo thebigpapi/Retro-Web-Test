@@ -10,7 +10,6 @@
     {% endfor %}
 </ul></div>
 	<div class="title">Chipset editor</div>
-
 	<!-- MANUF./NAME/PART NO. -->
 	<section class="search-form-grid">
 		<div class="search-form-entry">
@@ -32,11 +31,9 @@
 			</div>
 		</div>
 	</section>
-
 	<div class="toolbar" data-controller="show">
 		<button type="button" name="tabs" id="tab-nav-save" data-action="click->chipset--add#submit"><img src="{{ absolute_url(asset('build/icons/edit.svg')) }}" alt="" width="24" height="24"><span>Save</span></button>		
 	</div>
-	
 	<div class="main-strip">
 		<div class="internal-container">
 			{% include 'macros/navbar.html.twig' with {'type':'edit', 'entityName': 'chipset', 'count':2} %}
@@ -49,86 +46,11 @@
 				</div>
 				<div class="show-downloads" id="sh-downloads">
 					<!-- CHIP ALIASES -->
-					<div class="quick-spec-table nopad" data-controller="collection">
-						<div class="quick-spec-head editor">Chip Aliases
-						{% include 'macros/buttons.html.twig' with {'type':'add', 'action': 'chip.chipsetAliases'} %}</div>
-						<div id="chip.chipsetAliases-fields-list" data-widget-counter="{{ form.chipsetAliases|length }}" data-prototype="{{ form_widget(form.chipsetAliases.vars.prototype, {'attr': {'style': 'display:inline-block;'}})|e }} 
-							{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}">
-							{% if form.chipsetAliases is not empty %}
-								{% for alias in form.chipsetAliases %}
-									<div class="editor-row nopad">
-										{{ form_widget(alias, {'attr': {'style': 'display:inline-block;'}})|replace({'<option value="">': '<option label=" " value="">'})|raw }}
-										{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
-									</div>
-									{{ form_errors(alias) }}
-								{% endfor %}
-							{% endif %}
-							{{ form_errors(form.chipsetAliases) }}
-						</div>
-					</div>
+					{% include 'admin/macros/widget.html.twig' with {'type':'alias','displayname':'Chipset aliases', 'entity':form.chipsetAliases} %}
 					<!-- DRIVERS -->
-					<div data-controller="collection">
-						<div style="padding-top:5px;">
-							<img src="{{ absolute_url(asset('build/icons/show/hardware.svg')) }}" alt="" width="32" style="vertical-align: middle;padding-bottom: 10px;">
-							<p style="display:inline-block;">Drivers: </p>
-							{% include 'macros/buttons.html.twig' with {'type':'add', 'action': 'drivers'} %}
-						</div>
-						<div class="bios-image">
-							<div class="bios-image-head editor-row drv">
-								<div><b>File</b></div>
-								<div><b>Recommended</b></div>
-							</div>
-							<div id="drivers-fields-list" data-widget-counter="{{ form.drivers|length }}" data-prototype="
-								<div>{{ form_widget(form.drivers.vars.prototype.largeFile, {'attr': {'style': 'width:100%'}} )|e }}</div>
-								<div style=display:flex;justify-content:center;>{{ form_widget(form.drivers.vars.prototype.isRecommended, {'attr': {'style': 'height:18px;width:18px;margin:0;'}} )|e }}</div>
-								{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
-								" data-controller="collection">
-								{% for driver in form.drivers %}
-										<div class="editor-row drv nopad">
-											<div>{{ form_widget(driver.largeFile, {'attr': {'style': 'width:100%'}} )|replace({'<option value="">': '<option label=" " value="">'})|raw }}</div>
-											<div style="display:flex;justify-content:center;">{{ form_widget(driver.isRecommended, {'attr': {'style': 'height:18px;width:18px;margin:0;'}} ) }}</div>
-											{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
-										</div>
-										{{ form_errors(driver) }}
-								{% endfor %}
-							</div>
-							{{ form_errors(form.drivers) }}
-						</div>
-					</div>
-					<!-- OTHER FILES -->
-					<div data-controller="collection">
-						<div style="padding-top:5px;">
-							<img src="{{ absolute_url(asset('build/icons/show/manual.svg')) }}" alt="" width="32" style="vertical-align: middle;padding-bottom: 10px;">
-							<p style="display:inline-block;">Other files: </p>
-							{% include 'macros/buttons.html.twig' with {'type':'add', 'action': 'documentations'} %}
-						</div>
-						<div class="bios-image">
-							<div class="bios-image-head editor-row manual">
-								<div><b>Title</b></div>
-								<div><b>Language</b></div>
-								<div><b>File to upload</b></div>
-								<div><b>Uploaded file</b></div>
-							</div>
-							<div id="documentations-fields-list" data-widget-counter="{{ form.documentations|length }}" data-prototype="
-								<div>{{ form_widget(form.documentations.vars.prototype.link_name, {'attr': {'style': 'width:100%'}} )|e }}</div>
-								<div>{{ form_widget(form.documentations.vars.prototype.language, {'attr': {'style': 'width:100%'}} )|e }}</div>
-								<div>{{ form_widget(form.documentations.vars.prototype.manualFile, {'attr': {'style': 'width:100%'}} )|e }}</div>
-								<div>{{ form_widget(form.documentations.vars.prototype.file_name, {'attr': {'style': 'width:100%'}} )|e }}</div>
-								{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}">
-							{% for documentation in form.documentations %}
-								<div class="editor-row manual nopad">
-									<div>{{ form_widget(documentation.link_name, {'attr': {'style': 'width:100%'}}) }}</div>
-									<div>{{ form_widget(documentation.language, {'attr': {'style': 'width:100%'}}) }}</div>
-									<div>{{ form_widget(documentation.manualFile, {'attr': {'style': 'width:100%'}}) }}</div>
-									<div>{{ form_widget(documentation.file_name, {'attr': {'style': 'width:100%'}}) }}</div>
-									{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
-									{{ form_errors(documentation) }}
-								</div>
-							{% endfor %}
-							{{ form_errors(form.documentations) }}
-							</div>
-						</div>
-					</div>
+					{% include 'admin/macros/widget.html.twig' with {'type':'drivers', 'entity':form.drivers} %}
+					<!-- DOCS -->
+					{% include 'admin/macros/widget.html.twig' with {'type':'docs', 'entity':form.documentations} %}
 				</div>
 			</div>
 		</div>
@@ -153,7 +75,8 @@
 						{% endfor %}
 					{% endif %}
 					{{ form_errors(form.chipsetParts) }}
-			</div><br><!-- BIOS CODES -->
+			</div><br>
+			<!-- BIOS CODES -->
 			<div class="bar" style="margin-bottom:5px;">
 				<span style="display:flex;align-items: center;">
 					<b style="padding-right:5px;">BIOS codes</b>

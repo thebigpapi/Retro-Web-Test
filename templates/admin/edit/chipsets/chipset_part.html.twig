@@ -53,79 +53,15 @@
 				</div>
 				<div class="show-downloads" id="sh-downloads">
 					<!-- CHIP ALIASES -->
-					<div class="quick-spec-table nopad" data-controller="collection">
-						<div class="quick-spec-head editor">Chip Aliases
-						{% include 'macros/buttons.html.twig' with {'type':'add', 'action': 'chip.chipAliases'} %}</div>
-						<div id="chip.chipAliases-fields-list" data-widget-counter="{{ form.chip.chipAliases|length }}" data-prototype="{{ form_widget(form.chip.chipAliases.vars.prototype, {'attr': {'style': 'display:inline-block;'}})|e }} 
-							{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}">
-							{% if form.chip.chipAliases is not empty %}
-								{% for alias in form.chip.chipAliases %}
-									<div class="editor-row nopad">
-										{{ form_widget(alias, {'attr': {'style': 'display:inline-block;'}})|replace({'<option value="">': '<option label=" " value="">'})|raw }}
-										{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
-									</div>
-									{{ form_errors(alias) }}
-								{% endfor %}
-							{% endif %}
-							{{ form_errors(form.chip.chipAliases) }}
-						</div>
-					</div>
+					{% include 'admin/macros/widget.html.twig' with {'type':'alias','displayname':'Chip aliases', 'entity':form.chip.chipAliases} %}
 					<!-- PCI DEV -->
-					<div class="quick-spec-table nopad" data-controller="collection">
-						<div class="quick-spec-head editor">PCI DEV
-						{% include 'macros/buttons.html.twig' with {'type':'add', 'action': 'chip.pciDevs'} %}</div>
-						<div id="chip.pciDevs-fields-list" data-widget-counter="{{ form.chip.pciDevs|length }}" data-prototype="{{ form_widget(form.chip.pciDevs.vars.prototype, {'attr': {'style': 'display:inline-block;'}})|e }} 
-							{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}">
-							{% if form.chip.pciDevs is not empty %}
-								{% for id in form.chip.pciDevs %}
-									<div class="editor-row nopad">
-										{{ form_widget(id, {'attr': {'style': 'display:inline-block;'}})|replace({'<option value="">': '<option label=" " value="">'})|raw }}
-										{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
-									</div>
-									{{ form_errors(id) }}
-								{% endfor %}
-							{% endif %}
-							{{ form_errors(form.chip.pciDevs) }}
-						</div>
-					</div>
+					{% include 'admin/macros/widget.html.twig' with {'type':'pcidev', 'entity':form.chip.pciDevs} %}
 					<!-- DOCS -->
-					<div data-controller="collection">
-						<div style="padding-top:5px;display: flex;align-items: center;">
-							<img src="{{ absolute_url(asset('build/icons/show/manual.svg')) }}" alt="" width="32" style="padding: 5px;">
-							<b>Documentation: </b>
-							{% include 'macros/buttons.html.twig' with {'type':'add', 'action': 'documentations'} %}
-						</div>
-						<div class="bios-image">
-							<div class="bios-image-head editor-row manual">
-								<div><b>Title</b></div>
-								<div><b>Language</b></div>
-								<div><b>File to upload</b></div>
-								<div><b>Uploaded file</b></div>
-							</div>
-							<div id="documentations-fields-list" data-widget-counter="{{ form.documentations|length }}" data-prototype="
-								<div>{{ form_widget(form.documentations.vars.prototype.link_name, {'attr': {'style': 'width:100%'}} )|e }}</div>
-								<div>{{ form_widget(form.documentations.vars.prototype.language, {'attr': {'style': 'width:100%'}} )|e }}</div>
-								<div>{{ form_widget(form.documentations.vars.prototype.manualFile, {'attr': {'style': 'width:100%'}} )|e }}</div>
-								<div>{{ form_widget(form.documentations.vars.prototype.file_name, {'attr': {'style': 'width:100%'}} )|e }}</div>
-								{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}">
-							{% for documentation in form.documentations %}
-								<div class="editor-row manual nopad">
-									<div>{{ form_widget(documentation.link_name, {'attr': {'style': 'width:100%'}}) }}</div>
-									<div>{{ form_widget(documentation.language, {'attr': {'style': 'width:100%'}}) }}</div>
-									<div>{{ form_widget(documentation.manualFile, {'attr': {'style': 'width:100%'}}) }}</div>
-									<div>{{ form_widget(documentation.file_name, {'attr': {'style': 'width:100%'}}) }}</div>
-									{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
-									{{ form_errors(documentation) }}
-								</div>
-							{% endfor %}
-							{{ form_errors(form.documentations) }}
-							</div>
-						</div>
-					</div>
+					{% include 'admin/macros/widget.html.twig' with {'type':'docs', 'entity':form.documentations} %}
 				</div>
 			</div>
 		</div>
-		<!-- IMAGES AND NAVBAR -->
+		<!-- IMAGES -->
 		{% include 'macros/entityListImages.html.twig' with {'entityName':'chip.images', 'entities':form.chip.images, 'edit':true} %}
 	</div>
 	<div id="hiddenDiv" style="display: none;">{{form_widget(form.save) }}{{ form_end(form)|replace({'</form>': '</div></form>'})|raw }}

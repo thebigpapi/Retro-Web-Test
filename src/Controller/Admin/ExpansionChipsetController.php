@@ -214,6 +214,9 @@ class ExpansionChipsetController extends AbstractController
             foreach ($form['drivers']->getData() as $key => $val) {
                 $val->setExpansionChip($chipset);
             }
+            foreach ($form['documentations']->getData() as $key => $val) {
+                $val->setChip($chipset);
+            }
             $entityManager->persist($chipset);
             $entityManager->flush();
 
