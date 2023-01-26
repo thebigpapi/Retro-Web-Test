@@ -23,9 +23,10 @@ class ExpansionChip extends Chip
 
     public function __construct()
     {
+        parent::__construct();
         $this->motherboards = new ArrayCollection();
         $this->drivers = new ArrayCollection();
-        //$this->type = new ArrayCollection();
+        $this->documentations = new ArrayCollection();
     }
     public function getId(): ?int
     {

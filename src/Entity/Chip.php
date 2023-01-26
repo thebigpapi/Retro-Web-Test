@@ -85,6 +85,7 @@ abstract class Chip
      */
     public function getChipAliases(): Collection
     {
+        
         return $this->chipAliases;
     }
     public function addChipAlias(ChipAlias $chipAlias): self
@@ -164,16 +165,6 @@ abstract class Chip
         }
 
         return $this;
-    }
-
-    public function getPcidev(): ?string
-    {
-        return "test";
-    }
-
-    public function setPcidev(?string $pcidev): self
-    {
-        return "test";
     }
 
     /**
