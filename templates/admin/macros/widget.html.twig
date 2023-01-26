@@ -83,6 +83,26 @@
 		</div>
 	</div>
 {% endif %}
+{% if type == "pciven" %}
+<div class="quick-spec-table nopad" data-controller="collection">
+		<div class="quick-spec-head editor">PCI VEN
+		{% include 'macros/buttons.html.twig' with {'type':'add', 'action': 'pciVendorIds'} %}</div>
+		<div id="pciVendorIds-fields-list" data-widget-counter="{{ entity|length }}" data-prototype="<span>ID: </span>{{ form_widget(entity.vars.prototype, {'attr': {'style': 'display:inline-block;'}})|e }} 
+			{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}">
+			{% if entity is not empty %}
+				{% for id in entity %}
+					<div class="editor-row nopad">
+                        <span>ID: </span>
+						{{ form_widget(id, {'attr': {'style': 'display:inline-block;'}})|replace({'<option value="">': '<option label=" " value="">'})|raw }}
+						{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
+					</div>
+					{{ form_errors(id) }}
+				{% endfor %}
+			{% endif %}
+			{{ form_errors(entity) }}
+		</div>
+	</div>
+{% endif %}
 {% if type == "alias" %}
     <div class="quick-spec-table nopad" data-controller="collection">
 		<div class="quick-spec-head editor">{{displayname}}

@@ -53,8 +53,8 @@ class Manufacturer
     #[ORM\OneToMany(targetEntity: OsFlag::class, mappedBy: 'manufacturer')]
     private $osFlags;
 
-    #[ORM\Column(type: 'integer', nullable: true)]
-    private $pciven;
+    #[ORM\OneToMany(mappedBy: 'manufacturer', targetEntity: PciVendorId::class,  orphanRemoval: true, cascade: ['persist'])]
+    private Collection $pciVendorIds;
 
     public function __construct()
     {
@@ -67,6 +67,7 @@ class Manufacturer
         $this->biosCodes = new ArrayCollection();
         $this->chipsetBiosCodes = new ArrayCollection();
         $this->osFlags = new ArrayCollection();
+        $this->pciVendorIds = new ArrayCollection();
     }
     public function getId(): ?int
     {
@@ -358,25 +359,33 @@ class Manufacturer
         return $this;
     }
 
-    public function getPciven(): ?string
+    /**
+     * @return Collection<int, PciVendorId>
+     */
+    public function getPciVendorIds(): Collection
     {
-        return strtoupper(dechex($this->pciven));
+        return $this->pciVendorIds;
     }
 
-    public function setPciven(?string $pciven): self
+    public function addPciVendorId(PciVendorId $pciVendorId): self
     {
-        $this->pciven = $this->hex2Int($pciven);
+        if (!$this->pciVendorIds->contains($pciVendorId)) {
+            $this->pciVendorIds->add($pciVendorId);
+            $pciVendorId->setManufacturer($this);
+        }
 
         return $this;
     }
-    public function hex2Int($PCIDEVID) 
+
+    public function removePciVendorId(PciVendorId $pciVendorId): self
     {
-        //check that characters are in hexadecimal
-        if (!preg_match("/^[\da-fA-F]{4}$/",$PCIDEVID)) {
-            return false;
+        if ($this->pciVendorIds->removeElement($pciVendorId)) {
+            // set the owning side to null (unless already changed)
+            if ($pciVendorId->getManufacturer() === $this) {
+                $pciVendorId->setManufacturer(null);
+            }
         }
-      
-        //convert to integer
-        return hexdec($PCIDEVID);
+
+        return $this;
     }
 }

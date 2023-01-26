@@ -354,6 +354,9 @@ class MiscController extends AbstractController
             foreach ($form['biosCodes']->getData() as $key => $val) {
                 $val->setManufacturer($entity);
             }
+            foreach ($form['pciVendorIds']->getData() as $key => $val) {
+                $val->setManufacturer($entity);
+            }
 
             $entityManager->persist($entity);
             $entityManager->flush();

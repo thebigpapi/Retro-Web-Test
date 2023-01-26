@@ -9,6 +9,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use App\Entity\Manufacturer;
 use App\Form\Type\ManufacturerBiosManufacturerCodeType;
+use App\Form\Type\PciVendorIdType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 
 class ManufacturerForm extends AbstractType
@@ -20,8 +21,10 @@ class ManufacturerForm extends AbstractType
             ->add('shortName', TextType::class, [
                 'required' => false,
             ])
-            ->add('pciven', TextType::class, [
-                'required' => false,
+            ->add('pciVendorIds', CollectionType::class, [
+                'entry_type' => PciVendorIdType::class,
+                'allow_add' => true,
+                'allow_delete' => true,
             ])
             ->add('save', SubmitType::class)
             ->add('biosCodes', CollectionType::class, [
