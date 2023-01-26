@@ -85,23 +85,11 @@ class LargeFileForm extends AbstractType
             ->add('note', TextareaType::class, [
                 'required' => false,
             ])
-            ->add('idpci', TextareaType::class, [
-                'required' => false,
-            ])
             ->add('subdirectory', ChoiceType::class, [
                 'choices' => array(
                     'apps' => 'apps',
-                    'docs' => 'docs',
-                    'oswin' => 'oswin',
-                    'vm' => 'vm',
-                    'bootdisks' => 'bootdisks',
                     'drivers' => 'drivers',
-                    'games' => 'games',
-                    'osdos' => 'osdos',
-                    'dev' => 'dev',
-                    'osmisc' => 'osmisc'
                 ),
-                'placeholder' => 'Please select a directory',
                 'required' => true,
             ])
             ->add('releaseDate', DateType::class, [

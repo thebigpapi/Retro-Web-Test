@@ -15,11 +15,9 @@
 </ul></div>
 <div class="main-strip">
 	<div class="internal-container">
-		{% include 'macros/navbar.html.twig' with {'type':'edit', 'entityName': 'drv', 'count':2} %}
 		<div class="internal-content">
-			<!-- Description -->
-			<div class="show-general" id="sh-general" style="display: flex;flex-wrap: wrap;">
-				<div class="show-edit">
+			<div style="display:flex;flex-wrap: wrap;padding:5px 10px 5px 5px;">
+				<div style="flex-grow:2;">
 					<progress hidden="true" id="progressBar"></progress>
 					<table>
 						<tr id="messageRow" hidden="true">
@@ -78,7 +76,7 @@
 							</td>
 							<td>
 								<div class="quick-spec-table" data-controller="collection">
-									<div id="languages-fields-list" style="min-width:18em;" data-widget-counter="{{ form.languages|length }}" data-prototype="{{ form_widget(form.languages.vars.prototype, {'attr': {'style': 'display:inline-block;'}})|e }} 
+									<div id="languages-fields-list" style="min-width:18em;" data-widget-counter="{{ form.languages|length }}" data-prototype="{{ form_widget(form.languages.vars.prototype, {'attr': {'style': 'display:inline-block;'}})|replace({'<option value="1">': '<option selected="selected" value="1">'})|raw|e }} 
 										{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}">
 										{% if form.languages is not empty %}
 											{% for language in form.languages %}
@@ -103,7 +101,7 @@
 							<td>
 								<div class="quick-spec-table" data-controller="collection">
 									<div id="mediaTypeFlags-fields-list" style="min-width:24em;" data-widget-counter="{{ form.mediaTypeFlags|length }}" data-prototype="
-									{{ form_widget(form.mediaTypeFlags.vars.prototype.count, {'attr': {'style': 'display:inline-block;width:1em;'}})|e }}x{{ form_widget(form.mediaTypeFlags.vars.prototype.mediaTypeFlag, {'attr': {'style': 'display:inline-block;'}})|e }}
+									{{ form_widget(form.mediaTypeFlags.vars.prototype.count, {'attr': {'style': 'display:inline-block;width:1em;'}})|e }}x{{ form_widget(form.mediaTypeFlags.vars.prototype.mediaTypeFlag, {'attr': {'style': 'display:inline-block;'}})|replace({'<option value="11">': '<option selected="selected" value="11">'})|raw|e }}
 										{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}">
 										{% if form.mediaTypeFlags is not empty %}
 											{% for flag in form.mediaTypeFlags %}
@@ -119,14 +117,6 @@
 								</div>
 							</td>
 						</tr>
-					</table>
-				</div>
-				<div class="show-edit b">
-					<table>
-						<tr>
-							<td>PCI IDs</td>
-							<td>{{form_widget(form.idpci)}}</td>
-						</tr>
 						<tr>
 							<td style="vertical-align:top;">OS flags:
 								<div data-controller="collection">
@@ -139,7 +129,7 @@
 								</div>
 								<div class="quick-spec-table" data-controller="collection">
 									<div id="osFlags-fields-list" style="min-width:28em;" data-widget-counter="{{ form.osFlags|length }}" data-prototype="
-									{{ form_widget(form.osFlags.vars.prototype.unsure, {'attr': {'style': 'display:inline-block;width:1em;'}})|e }}{{ form_widget(form.osFlags.vars.prototype.osFlag, {'attr': {'style': 'display:inline-block;'}})|e }}
+									{{ form_widget(form.osFlags.vars.prototype.unsure, {'attr': {'style': 'display:inline-block;width:1em;'}})|e }}{{ form_widget(form.osFlags.vars.prototype.osFlag, {'attr': {'style': 'display:inline-block;'}})|replace({'<option value="49">': '<option selected="selected" value="49">'})|raw|e }}
 										{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}">
 										{% if form.osFlags is not empty %}
 											{% for flag in form.osFlags %}
@@ -157,9 +147,9 @@
 						</tr>
 					</table>
 				</div>
-			</div>
-			<div class="show-downloads" id="sh-downloads">
-				{{form_widget(form.note, {'attr': {'style': 'width:98%;height:600px;', 'placeholder': 'Describe the driver (max. 2048 characters) ...'}}) }}
+				<div style="flex-grow:10;">
+					{{form_widget(form.note, {'attr': {'style': 'height:max(300px,60vh);width:100%;', 'placeholder': 'Describe the driver (max. 2048 characters) ...'}}) }}
+				</div>
 			</div>
 		</div>
 	</div>
