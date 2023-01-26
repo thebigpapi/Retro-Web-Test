@@ -73,6 +73,7 @@ div.old-cpu-table{
 	width: 100%;
 	grid-template-columns:[first] 50% [second] 50% [end];
 }
+#large_file_form_releaseDate > input{width:3em;}
 @media (max-width: 500px) {
 	div.old-cpu-table{
 		grid-template-columns:auto;

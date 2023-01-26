@@ -105,7 +105,8 @@ class LargeFileForm extends AbstractType
                 'required' => true,
             ])
             ->add('releaseDate', DateType::class, [
-                'widget' => 'single_text',
+                'widget' => 'text',
+                'format' => 'yyyy-MM-dd',
                 'required' => true,
             ])
             ->add('datePrecision', ChoiceType::class, [

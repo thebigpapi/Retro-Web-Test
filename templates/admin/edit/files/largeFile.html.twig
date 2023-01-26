@@ -31,58 +31,91 @@
 							</td>
 						</tr>
 						<tr>
-							<td>{{form_label(form.name)}}</td>
+							<td>Name</td>
 							<td>{{form_widget(form.name)}}</td>
 						</tr>
 						<tr>
-							<td>{{form_label(form.fileVersion)}}</td>
+							<td>Version</td>
 							<td>{{form_widget(form.fileVersion)}}</td>
 						</tr>
 						<tr>
-							<td>{{form_label(form.file_name)}}</td>
+							<td>File name</td>
 							<td>{{form_widget(form.file_name)}}</td>
 						</tr>
 						<tr>
-							<td>{{form_label(form.file)}}</td>
+							<td>File</td>
 							<td>{{form_widget(form.file)}}</td>
 						</tr>
 						<tr>
-							<td>{{form_label(form.subdirectory)}}</td>
+							<td>Subdirectory</td>
 							<td>{{form_widget(form.subdirectory)|replace({'<option value="drivers">': '<option selected="selected" value="drivers">'})|raw }}</td>
 						</tr>
 						<tr>
-							<td>{{form_label(form.dumpQualityFlag)}}</td>
+							<td>File quality flag</td>
 							<td>{{form_widget(form.dumpQualityFlag)|replace({'<option value="5">': '<option selected="selected" value="5">'})|raw }}</td>
 						</tr>
 						<tr>
-							<td>{{form_label(form.hasActivationKey)}}</td>
+							<td>Activation key</td>
 							<td>{{form_widget(form.hasActivationKey)}}</td>
 						</tr>
 						<tr>
-							<td>{{form_label(form.hasCopyProtection)}}</td>
+							<td>Copy protection</td>
 							<td>{{form_widget(form.hasCopyProtection)}}</td>
 						</tr>
 						<tr>
-							<td>{{form_label(form.releaseDate)}}</td>
+							<td>Release date</td>
 							<td>{{form_widget(form.releaseDate)}}</td>
 						</tr>
 						<tr>
-							<td>{{form_label(form.datePrecision)}}</td>
+							<td>Date precision</td>
 							<td>{{form_widget(form.datePrecision)}}</td>
 						</tr>
 						<tr>
-							<td>Languages</td>
+							<td style="vertical-align:top;">Languages:
+								<div data-controller="collection">
+									{% include 'macros/buttons.html.twig' with {'type':'add', 'action': 'languages'} %}
+								</div>
+							</td>
 							<td>
-								<div>
-									{% include 'macros/entityList.html.twig' with {'entityName':'languages', 'entityDisplayName': 'language', 'entities':form.languages} %}
+								<div class="quick-spec-table" data-controller="collection">
+									<div id="languages-fields-list" style="min-width:18em;" data-widget-counter="{{ form.languages|length }}" data-prototype="{{ form_widget(form.languages.vars.prototype, {'attr': {'style': 'display:inline-block;'}})|e }} 
+										{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}">
+										{% if form.languages is not empty %}
+											{% for language in form.languages %}
+												<div class="editor-row nopad">
+													{{ form_widget(language, {'attr': {'style': 'display:inline-block;'}})|replace({'<option value="">': '<option label=" " value="">'})|raw }}
+													{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
+												</div>
+												{{ form_errors(language) }}
+											{% endfor %}
+										{% endif %}
+										{{ form_errors(form.languages) }}
+									</div>
 								</div>
 							</td>
 						</tr>
 						<tr>
-							<td>Media type flags</td>
+							<td style="vertical-align:top;">Media type flags:
+								<div data-controller="collection">
+									{% include 'macros/buttons.html.twig' with {'type':'add', 'action': 'mediaTypeFlags'} %}
+								</div>
+							</td>
 							<td>
-								<div>
-									{% include 'macros/entityList.html.twig' with {'entityName':'mediaTypeFlags', 'entityDisplayName': 'media type flag', 'entities':form.mediaTypeFlags} %}
+								<div class="quick-spec-table" data-controller="collection">
+									<div id="mediaTypeFlags-fields-list" style="min-width:24em;" data-widget-counter="{{ form.mediaTypeFlags|length }}" data-prototype="
+									{{ form_widget(form.mediaTypeFlags.vars.prototype.count, {'attr': {'style': 'display:inline-block;width:1em;'}})|e }}x{{ form_widget(form.mediaTypeFlags.vars.prototype.mediaTypeFlag, {'attr': {'style': 'display:inline-block;'}})|e }}
+										{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}">
+										{% if form.mediaTypeFlags is not empty %}
+											{% for flag in form.mediaTypeFlags %}
+												<div class="editor-row nopad">
+													{{ form_widget(flag.count, {'attr': {'style': 'display:inline-block;width:1em;'}}) }}x{{ form_widget(flag.mediaTypeFlag, {'attr': {'style': 'display:inline-block;'}}) }}
+													{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
+												</div>
+												{{ form_errors(flag) }}
+											{% endfor %}
+										{% endif %}
+										{{ form_errors(form.mediaTypeFlags) }}
+									</div>
 								</div>
 							</td>
 						</tr>
@@ -95,10 +128,30 @@
 							<td>{{form_widget(form.idpci)}}</td>
 						</tr>
 						<tr>
-							<td>OS flags</td>
+							<td style="vertical-align:top;">OS flags:
+								<div data-controller="collection">
+									{% include 'macros/buttons.html.twig' with {'type':'add', 'action': 'osFlags'} %}
+								</div>
+							</td>
 							<td>
 								<div>
-									{% include 'macros/entityList.html.twig' with {'entityName':'osFlags', 'entityDisplayName': 'os flag', 'entities':form.osFlags} %}
+									{#% include 'macros/entityList.html.twig' with {'entityName':'osFlags', 'entityDisplayName': 'os flag', 'entities':form.osFlags} %#}
+								</div>
+								<div class="quick-spec-table" data-controller="collection">
+									<div id="osFlags-fields-list" style="min-width:28em;" data-widget-counter="{{ form.osFlags|length }}" data-prototype="
+									{{ form_widget(form.osFlags.vars.prototype.unsure, {'attr': {'style': 'display:inline-block;width:1em;'}})|e }}{{ form_widget(form.osFlags.vars.prototype.osFlag, {'attr': {'style': 'display:inline-block;'}})|e }}
+										{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}">
+										{% if form.osFlags is not empty %}
+											{% for flag in form.osFlags %}
+												<div class="editor-row nopad">
+													{{ form_widget(flag.unsure, {'attr': {'style': 'display:inline-block;width:1em;'}}) }}{{ form_widget(flag.osFlag, {'attr': {'style': 'display:inline-block;'}}) }}
+													{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
+												</div>
+												{{ form_errors(flag) }}
+											{% endfor %}
+										{% endif %}
+										{{ form_errors(form.osFlags) }}
+									</div>
 								</div>
 							</td>
 						</tr>
