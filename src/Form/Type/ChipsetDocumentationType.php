@@ -22,17 +22,17 @@ class ChipsetDocumentationType extends AbstractType
                 'disabled' => true,
             ])
             ->add('manualFile', FileType::class, [
-                'label' => 'Manual (PDF file)',
+                'label' => 'Manual (pdf/zip file)',
                 'required' => false,
                 'constraints' => [
                     new File([
-                        'maxSize' => '16m',
+                        'maxSize' => '32m',
                         'mimeTypes' => [
                             'application/pdf',
                             'application/x-pdf',
                             'application/zip',
                         ],
-                        'mimeTypesMessage' => 'Please upload a valid PDF document or ZIP file',
+                        'mimeTypesMessage' => 'Please upload a valid PDF or ZIP file',
                     ])
                 ],
             ])
