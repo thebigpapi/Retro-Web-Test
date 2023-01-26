@@ -217,6 +217,9 @@ class ExpansionChipsetController extends AbstractController
             foreach ($form['documentations']->getData() as $key => $val) {
                 $val->setChip($chipset);
             }
+            foreach ($form['chip']['images']->getData() as $key => $val) {
+                $val->setChip($chipset);
+            }
             $entityManager->persist($chipset);
             $entityManager->flush();
 

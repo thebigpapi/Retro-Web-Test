@@ -13,33 +13,39 @@
     <li>{{ error.message }}</li>
     {% endfor %}
 </ul></div>
-<div style="margin:0 auto;display:table;">
-	<table>
-        <tr>
-			<td>{{form_label(form.chip.manufacturer)}}</td>
-			<td>{{form_widget(form.chip.manufacturer)}}</td>
-		</tr>
-        <tr>
-			<td>{{form_label(form.chip.name)}}</td>
-			<td>{{form_widget(form.chip.name)}}</td>
-		</tr>
-		<tr>
-			<td>{{form_label(form.type)}}</td>
-			<td>{{form_widget(form.type)}}</td>
-		</tr>
-        <tr>
-			<td>Part Number</td>
-			<td>{{form_widget(form.chip.partNumber)}}</td>
-		</tr>
-	</table>
-	<!-- PCI DEV -->
-	{% include 'admin/macros/widget.html.twig' with {'type':'pcidev', 'entity':form.chip.pciDevs} %}
-</div>
-<div style="margin:0 auto;display:table;">
-	<!-- Drivers -->
-	{% include 'admin/macros/widget.html.twig' with {'type':'drivers', 'entity':form.drivers} %}
-	<!-- DOCS -->
-	{% include 'admin/macros/widget.html.twig' with {'type':'docs', 'entity':form.documentations} %}
+<div class="main-strip">
+	<div class="internal-container">
+		<div style="margin:0 auto;display:table;">
+			<table>
+				<tr>
+					<td>{{form_label(form.chip.manufacturer)}}</td>
+					<td>{{form_widget(form.chip.manufacturer)}}</td>
+				</tr>
+				<tr>
+					<td>{{form_label(form.chip.name)}}</td>
+					<td>{{form_widget(form.chip.name)}}</td>
+				</tr>
+				<tr>
+					<td>{{form_label(form.type)}}</td>
+					<td>{{form_widget(form.type)}}</td>
+				</tr>
+				<tr>
+					<td>Part Number</td>
+					<td>{{form_widget(form.chip.partNumber)}}</td>
+				</tr>
+			</table>
+			<!-- PCI DEV -->
+			{% include 'admin/macros/widget.html.twig' with {'type':'pcidev', 'entity':form.chip.pciDevs} %}
+		</div>
+		<div style="margin:0 auto;display:table;">
+			<!-- Drivers -->
+			{% include 'admin/macros/widget.html.twig' with {'type':'drivers', 'entity':form.drivers} %}
+			<!-- DOCS -->
+			{% include 'admin/macros/widget.html.twig' with {'type':'docs', 'entity':form.documentations} %}
+		</div>
+	</div>
+	<!-- IMAGES -->
+	{% include 'macros/entityListImages.html.twig' with {'entityName':'chip.images', 'entities':form.chip.images, 'edit':true} %}
 </div>
 <div id="hiddenDiv" style="display: none;">{{form_widget(form.save) }}{{ form_end(form)|replace({'</form>': '</div></form>'})|raw }}
 {% endblock %}
