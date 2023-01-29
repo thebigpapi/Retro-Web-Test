@@ -54,16 +54,6 @@
 					<div>{{ form_widget(form.name) }}</div>
 				</div>
 			</div>
-			<div class="search-form-entry">
-				<label class="search-form-label" for="search_name" title="This is where you enter the PCI ID (e.g. PCI\VEN_1022&amp;lDEV_1486)"
-				>
-					<span>PCI ID</span>
-					<img src="{{ absolute_url(asset('build/icons/search/help.svg')) }}" alt="" width="16" height="16">
-				</label>
-				<div class="search-form-widget" style="display: flex;flex-direction: row;">
-					<div>{{ form_widget(form.idpci) }}</div>
-				</div>
-			</div>
 		</section>
 	</fieldset>
 	<div>{{ form_rest(form)}}</div>
