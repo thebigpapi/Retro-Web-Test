@@ -67,10 +67,6 @@
 					<div class="quick-spec-head">Quality</div>	
 					<div><img src="{{ asset('build/icons/quality/' ~ driver.dumpQualityFlag().getTagName() ~ '.svg') }}" alt="{{driver.dumpQualityFlag().getName()}}" title="{{driver.dumpQualityFlag().getName()}}" width="32"></div>
 					
-					{% if driver.getIdpci() is not empty %}
-					<div class="quick-spec-head">PCI IDs</div>	
-					<div>{% apply markdown_to_html %}{{ driver.getIdpci() }}{% endapply %}</div>
-					{% endif %}
 					<div class="quick-spec-head">File</div>
 					<div><a href="{{ vich_uploader_asset(driver, 'file')}}">
 						<img src="{{ absolute_url(asset('build/icons/dw.svg')) }}" alt="" width="16" style="vertical-align: middle;">

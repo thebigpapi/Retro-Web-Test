@@ -68,7 +68,8 @@ table.results {
 	border:1px solid $footer-link-color;
 	border-collapse: collapse;
 	border-radius: 0.2rem;
-	tr td{ border-top:1px solid $footer-link-color;padding:3px;}
+	tr td{padding:3px;}
+	tr.logs-border-top{border-top:1px solid $footer-link-color;}
 }
 pre { padding: 5px; margin: 5px;color:black; }
 .string { color: green; }
