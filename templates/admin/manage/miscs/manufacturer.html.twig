@@ -5,6 +5,9 @@
     <div class="header-label">Short name</div>
     <div>{{object.getShortName()}}</div>
 
+    <div class="header-label">FCC ID</div>
+    <div>{{object.getFccid()}}</div>
+
     <div class="header-label">PCI VEN</div>
     <div>{% if object.getPciVendorIds() is not empty %}
         {% for id in object.getPciVendorIds() %}{{ id.getVen() }}{% if not loop.last %}, {% endif %}{% endfor %}{% endif %}

@@ -21,6 +21,9 @@ class ManufacturerForm extends AbstractType
             ->add('shortName', TextType::class, [
                 'required' => false,
             ])
+            ->add('fccid', TextType::class, [
+                'required' => false,
+            ])
             ->add('pciVendorIds', CollectionType::class, [
                 'entry_type' => PciVendorIdType::class,
                 'allow_add' => true,

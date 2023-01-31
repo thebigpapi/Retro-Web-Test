@@ -56,6 +56,9 @@ class Manufacturer
     #[ORM\OneToMany(mappedBy: 'manufacturer', targetEntity: PciVendorId::class,  orphanRemoval: true, cascade: ['persist'])]
     private Collection $pciVendorIds;
 
+    #[ORM\Column(length: 7, nullable: true)]
+    private ?string $fccid = null;
+
     public function __construct()
     {
         $this->motherboards = new ArrayCollection();
@@ -385,6 +388,18 @@ class Manufacturer
                 $pciVendorId->setManufacturer(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getFccid(): ?string
+    {
+        return $this->fccid;
+    }
+
+    public function setFccid(?string $fccid): self
+    {
+        $this->fccid = $fccid;
 
         return $this;
     }
