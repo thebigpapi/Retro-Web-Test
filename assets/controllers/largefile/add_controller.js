@@ -91,7 +91,7 @@ export default class extends Controller {
             messageRow.hidden = false
         }
         xhr.onloadend = function (e) {
-            document.getElementById('tab-nav-save').setAttribute('disabled', false);
+            document.getElementById('tab-nav-save').removeAttribute('disabled');
             bar = document.getElementById('progressBar')
             bar.hidden = true
             if (xhr.status == 200) {
