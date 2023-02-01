@@ -12,7 +12,9 @@ export default class extends Controller {
         let file = document.getElementById('large_file_form_file');
         let existingFile = document.getElementById('large_file_form_file_name');
         let subdir = document.getElementById('large_file_form_subdirectory');
-        this.dateListener();
+        if (!this.dateCheckAndUpdate()) {
+            this.appendError('Invalid date');
+        } 
         if(!name.value){
             this.appendError('The name field is empty!');
         }
@@ -114,13 +116,19 @@ export default class extends Controller {
 
     }
 
-    dateListener(event) {
-        this.clearErrors();
-
+    dateCheckAndUpdate() {
         // Getting values from the mock forms
         let year = document.getElementById('large_file_form_releaseDate_year_mock').value;
         let month = document.getElementById('large_file_form_releaseDate_month_mock').value;
         let day = document.getElementById('large_file_form_releaseDate_day_mock').value;
+
+        if (isNaN(year) || (month !== '' && isNaN(month)) || (day !== '' && isNaN(day))) {
+            return false;
+        }
+
+        if (year > new Date().getFullYear()) {
+            return false;
+        }
 
         let datePrecision = null;
 
@@ -140,9 +148,7 @@ export default class extends Controller {
 
             datePrecision = 'y';
         } else {
-            this.appendError('Invalid date');
-
-            return;
+            return false;
         }
 
         //Updating the real form that's hidden
@@ -154,15 +160,15 @@ export default class extends Controller {
         let fullDate = `${year}-${month}-${day}`;
         let dateParsed = new Date(Date.parse(fullDate));
 
-        if (!(dateParsed instanceof Date) || isNaN(dateParsed)) {
-            this.appendError('Invalid date');
-            
-            return;
+        if (!(dateParsed instanceof Date) || isNaN(dateParsed)) {           
+            return false;
         }
         
         // Updating date precision
         document.getElementById('large_file_form_datePrecision').value = datePrecision;
-        
+
+        // Succeeded
+        return true
     }
 
 
