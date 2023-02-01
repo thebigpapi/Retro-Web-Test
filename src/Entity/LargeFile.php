@@ -24,6 +24,11 @@ class LargeFile
     private $id;
 
     #[ORM\Column(type: 'string', length: 255)]
+    #[Assert\Regex(
+        pattern: '/^[\w\s,\/\-_#\$%&\*!\?:;\.\+\=\\\[\]\{\}\(\)]+$/',
+        match: true,
+        message: 'The name uses invalid characters',
+    )]
     #[Assert\Length(max:255, maxMessage: 'Name is longer than {{ limit }} characters, try to make it shorter.')]
     private $name;
     /**
