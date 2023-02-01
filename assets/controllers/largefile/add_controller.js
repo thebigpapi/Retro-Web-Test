@@ -126,6 +126,10 @@ export default class extends Controller {
             return false;
         }
 
+        year = parseInt(year);
+        month = parseInt(month);
+        day = parseInt(day);
+
         if (year > new Date().getFullYear()) {
             return false;
         }
