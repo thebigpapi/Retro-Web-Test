@@ -24,6 +24,7 @@ class MotherboardAliasType extends AbstractType
                 'multiple' => false,
                 'expanded' => false,
                 'required' => false,
+                'autocomplete' => true,
             ])
             ->add('name', TextType::class, [
                 'required' => true,

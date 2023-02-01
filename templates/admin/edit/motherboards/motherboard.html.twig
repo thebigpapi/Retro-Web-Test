@@ -5,7 +5,19 @@
 <form data-controller="motherboard--add" name="add_motherboard" method="post" enctype="multipart/form-data" data-action="submit->motherboard--add#check">
 <div class="errors-div"><ul>
     {% for error in form.vars.errors.form.getErrors(true) %}
-    <li>{{ error.message }}</li>
+		{% set emsg = error.cause|split('children') %}
+		{% if emsg|length > 1 %}
+			{% set emsg1 = emsg[1]|slice(0, error.cause|split('children')[1]|length - 1) %}
+			{% if emsg1 == "[processorPlatformTypes]" %}
+				<li>{{ emsg1 }} A platform was incompatible with one of the sockets, reselect</li>
+			{% elseif emsg1 == "[processors]" %}
+				<li>{{ emsg1 }} This CPU is incompatible with the selected socket/platform/speed, reselect</li>
+			{% elseif emsg1 == "[coprocessors]" %}
+				<li>{{ emsg1 }} This NPU is incompatible with the selected socket/platform/speed, reselect</li>
+			{% else %}
+				<li>{{ emsg1 }} {{ error.message }}</li>
+			{% endif %}
+		{% endif %}
     {% endfor %}
 </ul></div>
 	<div class="title">Motherboard editor</div>
@@ -64,7 +76,6 @@
 									{{ form_errors(alias) }}
 								</div>
 							{% endfor %}
-							{{ form_errors(form.motherboardAliases) }}
 						</div>
 					</div>
 					<hr><!-- Redirections -->
@@ -85,7 +96,6 @@
 									{{ form_errors(redirection) }}
 								</div>
 							{% endfor %}
-							{{ form_errors(form.redirections) }}
 						</div>
 					</div>
 					<hr><!-- PSU connectors -->
@@ -104,7 +114,6 @@
 									{{ form_errors(psuconn) }}
 								</div>
 							{% endfor %}
-							{{ form_errors(form.psuConnectors) }}
 						</div>
 					</div>
 					<hr><!-- Form factor -->
@@ -117,7 +126,7 @@
 					<div class="quick-spec-table" style="padding:0;">
 						<div class="quick-spec-head editor">Chipset</div>
 						<div class="editor-row nopad"><div class="editor-form-widget chip">
-							<div>{{ form_widget(form.chipset)|replace({'<option value="">': '<option label=" " value="">'})|raw }}</div>
+							<div id="mobo-chipset-select">{{ form_widget(form.chipset)|replace({'<option value="">': '<option label=" " value="">'})|raw }}</div>
 						</div></div>
 					</div><!-- Dimensions -->
 					<div class="quick-spec-table" style="padding:0;">
@@ -129,7 +138,7 @@
 					<div class="quick-spec-table" style="padding:0;">
 						<div class="quick-spec-head editor">Max video RAM</div>
 						<div class="editor-row nopad"><div class="editor-form-widget">
-							<div>{{ form_widget(form.maxVideoRam)|replace({'<option value="">': '<option label=" " value="">'})|raw }}</div>
+							<div>{{ form_widget(form.maxVideoRam, {'attr': {'style': 'width:15em'}})|replace({'<option value="">': '<option label=" " value="">'})|raw }}</div>
 						</div></div>
 					</div>
 					<hr><!-- Expansion Chips -->
@@ -148,25 +157,23 @@
 									{{ form_errors(expchip) }}
 								</div>
 							{% endfor %}
-							{{ form_errors(form.expansionChip) }}
 						</div>
 					</div><!-- Max system RAM -->
 					<div class="quick-spec-table" data-controller="collection" style="padding:0;">
 						<div class="quick-spec-head editor"><div>Max system RAM</div>
 						{% include 'macros/buttons.html.twig' with {'type':'add', 'action': 'motherboardMaxRams'} %}</div>
 						<div class="append_table" id="motherboardMaxRams-fields-list" data-controller="collection" data-widget-counter="{{ form.motherboardMaxRams|length }}" data-prototype="
-								{{ form_widget(form.motherboardMaxRams.vars.prototype.max_ram)|e }}
+								{{ form_widget(form.motherboardMaxRams.vars.prototype.max_ram, {'attr': {'style': 'width:20%'}})|e }}
 								{{ form_widget(form.motherboardMaxRams.vars.prototype.note)|e }}
 								{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}">
 							{% for maxRam in form.motherboardMaxRams %}
 								<div class="editor-row nopad">
-									{{ form_widget(maxRam.max_ram) }}
+									{{ form_widget(maxRam.max_ram, {'attr': {'style': 'width:20%'}}) }}
 									{{ form_widget(maxRam.note) }}
 									{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
 									{{ form_errors(maxRam) }}
 								</div>
 							{% endfor %}
-							{{ form_errors(form.motherboardMaxRams) }}
 						</div>
 					</div>
 					<hr><!-- Cache -->					
@@ -174,51 +181,48 @@
 						<div class="quick-spec-head editor"><div>Cache</div>
 						{% include 'macros/buttons.html.twig' with {'type':'add', 'action': 'cacheSize'} %}</div>
 						<div class="append_table" id="cacheSize-fields-list" data-controller="collection" data-widget-counter="{{ form.cacheSize|length }}" data-prototype="
-								{{ form_widget(form.cacheSize.vars.prototype)|e }}
+								{{ form_widget(form.cacheSize.vars.prototype, {'attr': {'style': 'width:20%'}})|e }}
 								{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}">
 							{% for size in form.cacheSize %}
 								<div class="editor-row nopad">
-									{{ form_widget(size) }}
+									{{ form_widget(size, {'attr': {'style': 'width:20%'}}) }}
 									{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
 									{{ form_errors(size) }}
 								</div>
 							{% endfor %}
-							{{ form_errors(form.cacheSize) }}
 						</div>
 					</div><!-- Supported RAM types -->
 					<div class="quick-spec-table" data-controller="collection">
 						<div class="quick-spec-head editor"><div>Supported RAM types:</div>
 						{% include 'macros/buttons.html.twig' with {'type':'add', 'action': 'dramType'} %}</div>
 						<div class="append_table" id="dramType-fields-list" data-controller="collection" data-widget-counter="{{ form.dramType|length }}" data-prototype="
-								{{ form_widget(form.dramType.vars.prototype)|e }}
+								{{ form_widget(form.dramType.vars.prototype, {'attr': {'style': 'width:30%'}})|e }}
 								{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}">
 
 							{% for ramtype in form.dramType %}
 								<div class="editor-row nopad">
-									{{ form_widget(ramtype) }}
+									{{ form_widget(ramtype, {'attr': {'style': 'width:30%'}}) }}
 									{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
 									{{ form_errors(ramtype) }}
 								</div>
 							{% endfor %}
-							{{ form_errors(form.dramType) }}
 						</div>
 					</div><!-- Exp. slots and I/O ports -->
 					<div class="full-spec edit">
 						<div class="full-spec-head" data-controller="collection"><b>I/O ports: </b>{% include 'macros/buttons.html.twig' with {'type':'add', 'action': 'motherboardIoPorts'} %}</div>
 						<div id="motherboardIoPorts-fields-list" data-widget-counter="{{ form.motherboardIoPorts|length }}" data-prototype="
 							{{ form_widget(form.motherboardIoPorts.vars.prototype.count, {'attr': {'class': 'num'}} )|e }} x
-							{{ form_widget(form.motherboardIoPorts.vars.prototype.io_port, {'attr': {'style': 'width:50%'}} )|e }}
+							{{ form_widget(form.motherboardIoPorts.vars.prototype.io_port, {'attr': {'style': 'width:60%'}} )|e }}
 							{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
 							" data-controller="collection">
 							{% for port in form.motherboardIoPorts %}
 								<div class="editor-row nopad">
 									{{ form_widget(port.count, {'attr': {'class': 'num'}}) }} x
-									{{ form_widget(port.io_port, {'attr': {'style': 'width:50%'}}) }}
+									{{ form_widget(port.io_port, {'attr': {'style': 'width:60%'}}) }}
 									{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
 								</div>
 								{{ form_errors(port) }}
 							{% endfor %}
-							{{ form_errors(form.motherboardIoPorts) }}
 						</div>
 						<div class="full-spec-head" data-controller="collection"><b>Expansion slots: </b>{% include 'macros/buttons.html.twig' with {'type':'add', 'action': 'motherboardExpansionSlots'} %}</div>
 						<div id="motherboardExpansionSlots-fields-list" data-widget-counter="{{ form.motherboardExpansionSlots|length }}" data-prototype="
@@ -234,7 +238,6 @@
 								</div>
 								{{ form_errors(slot) }}
 							{% endfor %}
-							{{ form_errors(form.motherboardExpansionSlots) }}
 						</div>
 					</div><hr><!-- Known issues -->
 					<div class="quick-spec-table" data-controller="collection">
@@ -251,7 +254,6 @@
 								</div>
 								{{ form_errors(issue) }}
 							{% endfor %}
-							{{ form_errors(form.knownIssues) }}
 						</div>
 					</div><!-- Notes -->
 					<span style="padding-left:10px;"><b>Notes</b></span>
@@ -285,7 +287,6 @@
 										{{ form_errors(driver) }}
 								{% endfor %}
 							</div>
-							{{ form_errors(form.drivers) }}
 						</div>
 					</div><!-- BIOSes -->
 					<div data-controller="collection">
@@ -328,7 +329,6 @@
 								</div>
 							{% endfor %}
 							</div>
-							{{ form_errors(form.motherboardBios) }}
 						</div>
 					</div>
 					<!-- Manuals -->
@@ -360,7 +360,6 @@
 									{{ form_errors(miscfile) }}
 								</div>
 							{% endfor %}
-							{{ form_errors(form.miscFiles) }}
 							</div>
 						</div>
 					</div>
@@ -368,22 +367,21 @@
 				<!-- CPUs -->
 				<div class="show-cpus" id="sh-cpus"><!-- CPU sockets -->
 					<div class="quick-spec-table" data-controller="collection">
-						<div class="quick-spec-head editor"><div>CPU sockets</div>
+						<div class="quick-spec-head editor"><div>CPU sockets (1st)</div>
 						{% include 'macros/buttons.html.twig' with {'type':'add', 'action': 'cpuSockets'} %}</div>
 						<div id="cpuSockets-fields-list" data-widget-counter="{{ form.cpuSockets|length }}" data-prototype="
-							{{ form_widget(form.cpuSockets.vars.prototype, {'attr': {'style': 'width:100%;max-width:220px'}})|e }}
+							{{ form_widget(form.cpuSockets.vars.prototype, {'attr': {'style': 'width:50%;max-width:220px'}})|e }}
 							{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}">
 								{% for cpuSocket in form.cpuSockets %}
-									<div class="editor-row nopad">{{ form_widget(cpuSocket, {'attr': {'style': 'width:100%;max-width:220px'}}) }}
+									<div class="editor-row nopad">{{ form_widget(cpuSocket, {'attr': {'style': 'width:50%;max-width:220px'}}) }}
 										{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
 										{{ form_errors(cpuSocket) }}
 									</div>
 								{% endfor %}
 						</div>
-						{{ form_errors(form.cpuSockets) }}
 					</div><hr><!-- CPU platforms -->
 					<div class="quick-spec-table" data-controller="collection">
-						<div class="quick-spec-head editor"><div>CPU platforms</div>
+						<div class="quick-spec-head editor"><div>CPU platforms (2nd)</div>
 						{% include 'macros/buttons.html.twig' with {'type':'add', 'action': 'processorPlatformTypes'} %}</div>
 						<div id="processorPlatformTypes-fields-list" data-widget-counter="{{ form.processorPlatformTypes|length }}" data-prototype="
 							{{ form_widget(form.processorPlatformTypes.vars.prototype)|e }}
@@ -391,25 +389,25 @@
 								{% for platform in form.processorPlatformTypes %}
 									<div class="editor-row nopad">{{ form_widget(platform) }}
 										{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
-										{{ form_errors(platform) }}
+										{{ form_errors(platform)|replace({'This value is not valid': 'A platform was incompatible with one of the sockets, reselect'})|raw }}
 									</div>
+									
 								{% endfor %}
+								
 						</div>
-						{{ form_errors(form.processorPlatformTypes) }}
 					</div><hr><!-- FSB speeds -->
 					<div class="quick-spec-table" data-controller="collection">
-						<div class="quick-spec-head editor"><div>FSB speed</div>
+						<div class="quick-spec-head editor"><div>FSB speed (3rd)</div>
 						{% include 'macros/buttons.html.twig' with {'type':'add', 'action': 'cpuSpeed'} %}</div>
 						<div style="width:100%" id="cpuSpeed-fields-list" data-widget-counter="{{ form.cpuSpeed|length }}" data-prototype="
-							{{ form_widget(form.cpuSpeed.vars.prototype)|e }} {% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}">
+							{{ form_widget(form.cpuSpeed.vars.prototype, {'attr': {'style': 'width:30%'}})|e }} {% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}">
 								{% for speed in form.cpuSpeed %}
-									<div class="editor-row nopad">{{ form_widget(speed) }}
+									<div class="editor-row nopad">{{ form_widget(speed, {'attr': {'style': 'width:30%'}}) }}
 										{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
 									</div>
 									{{ form_errors(speed) }}
 							{% endfor %}
 						</div>
-						{{ form_errors(form.cpuSpeed) }}
 					</div><hr><!-- Max CPUs -->
 					<div class="quick-spec-table" style="padding:0;">
 						<div class="quick-spec-head editor">Max CPUs</div>
@@ -438,24 +436,22 @@
 						</div>
 
 						<div>
-							{{ form_errors(form.processors) }}
 							<div style="width:100%" id="processors-fields-list" data-widget-counter="{{ form.processors|length }}" data-prototype="{{ form_widget(form.processors.vars.prototype, {'attr': {'style': 'width:80%'}} )|e }} {% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}">
 								{% for processor in form.processors %}
 									<div class="editor-row" style="padding:0;">{{ form_widget(processor, {'attr': {'style': 'width:80%'}}) }}
 										{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
 									</div>
-									{{ form_errors(processor) }}
+									{{ form_errors(processor)|replace({'This value is not valid': 'This CPU is incompatible with the selected socket/platform/speed, reselect'})|raw }}
 								{% endfor %}
 							</div>
 						</div>
 						<div>
-							{{ form_errors(form.coprocessors) }}
 							<div style="width:100%" id="coprocessors-fields-list" data-widget-counter="{{ form.coprocessors|length }}" data-prototype="{{ form_widget(form.coprocessors.vars.prototype, {'attr': {'style': 'width:70%'}} )|e }} {% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}">
 								{% for coprocessor in form.coprocessors %}
 									<div class="editor-row" style="padding:0;">{{ form_widget(coprocessor, {'attr': {'style': 'width:70%'}}) }}
 										{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
 									</div>
-									{{ form_errors(coprocessor) }}
+									{{ form_errors(coprocessor)|replace({'This value is not valid': 'This NPU is incompatible with the selected socket/platform/speed, reselect'})|raw }}
 								{% endfor %}
 							</div>
 						</div>

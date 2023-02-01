@@ -14,6 +14,7 @@ use App\Entity\ManufacturerBiosManufacturerCode;
 use App\Entity\ChipsetBiosCode;
 use App\Repository\ManufacturerBiosManufacturerCodeRepository;
 use App\Repository\ManufacturerRepository;
+use App\Repository\ExpansionChipRepository;
 use App\Repository\MotherboardBiosRepository;
 
 class BiosController extends AbstractController
@@ -38,6 +39,12 @@ class BiosController extends AbstractController
         } elseif ($biosManufacturerId == "NULL") {
             $criterias['manufacturer_id'] = null;
         }
+        /*$expansionChipId = htmlentities($request->query->get('expansionChipId') ?? '');
+        if ($expansionChipId && intval($expansionChipId)) {
+            $criterias['expansionchip_id'] = intval($expansionChipId);
+        } elseif ($expansionChipId == "NULL") {
+            $criterias['expansionchip_id'] = null;
+        }*/
         $filePresent = htmlentities($request->query->get('filePresent') ?? '');
         if ($filePresent && boolval($filePresent)) {
             $criterias['file_present'] = boolval($filePresent);
@@ -52,12 +59,13 @@ class BiosController extends AbstractController
             return $this->redirectToRoute("bios_search");
         }
         $data = $motherboardBiosRepository->findBios($criterias);
+        // this doesn't really work as it should, disabled :))
+        /*
         $postStringAnalysis = false;
         if (empty($data)) {
             try {
                 if ($postString && $biosManufacturerId && intval($biosManufacturerId)) {
                     $biosManufacturer = $manufacturerRepository->find($biosManufacturerId);
-
                     if ($biosManufacturer->getShortNameIfExist() == "AMI") {
                         $subStr = explode("-", $postString);
                         if (substr_count($postString, "-") == 3) { //Old AMI
@@ -67,11 +75,12 @@ class BiosController extends AbstractController
                         }
                     } elseif ($biosManufacturer->getShortNameIfExist() == "Award") {
                         $subStr = explode("-", $postString);
+                        dd($subStr);
                         $mfgCode = substr($subStr[count($subStr) - 2], 5, 2);
+                        
                     }
-
+                    
                     $biosCodes = $manufacturerBiosManufacturerCodeRepository->findBy(array("biosManufacturer" => $biosManufacturer));
-
                     $manufacturers = array();
                     foreach ($biosCodes as $biosCode) {
                         if ($mfgCode == $biosCode->getCode()) {
@@ -86,7 +95,7 @@ class BiosController extends AbstractController
                 }
             } catch (\Exception $e) {
             }
-        }
+        }*/
         $bios = $paginator->paginate(
             $data,
             $request->query->getInt('page', 1),
@@ -95,7 +104,7 @@ class BiosController extends AbstractController
         return $this->render('bios/result.html.twig', [
             'bios' => $bios,
             'bios_count' => count($data),
-            'postStringAnalysis' => $postStringAnalysis,
+            'postStringAnalysis' => false,
         ]);
     }
     #[Route(path: '/bios/info', name: 'bios_info')]
@@ -120,18 +129,21 @@ class BiosController extends AbstractController
 
     
     #[Route(path: '/bios/search/', name: 'bios_search')]
-    public function search(Request $request, TranslatorInterface $translator, ManufacturerRepository $manufacturerRepository)
+    public function search(Request $request, TranslatorInterface $translator, ManufacturerRepository $manufacturerRepository, ExpansionChipRepository $expansionChipRepository)
     {
         $notIdentifiedMessage = $translator->trans("Not identified");
         $chipsetManufacturers = $manufacturerRepository->findAllChipsetManufacturer();
         $biosManufacturers = $manufacturerRepository->findAllBiosManufacturer();
+        $expansionChip = $expansionChipRepository->findAll();
         $unidentifiedMan = new Manufacturer();
         $unidentifiedMan->setName($notIdentifiedMessage);
         $form = $this->createForm(Search::class, array(), [
             'biosManufacturers' => $biosManufacturers,
+            'expansionChips' => $expansionChip,
             'chipsetManufacturers' => $chipsetManufacturers,
             //'csrf_protection' => false // that code is aimed to remove cookie requirement but it breaks ajax stuff
         ]);
+        //dd($expansionChip);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $parameters = array();
@@ -145,6 +157,9 @@ class BiosController extends AbstractController
             if ($biosManufacturer = $form['manufacturer']->getData()) {
                 $parameters['biosManufacturerId'] = $biosManufacturer->getId();
             }
+            /*if ($expansionChip = $form['expansionChip']->getData()) {
+                $parameters['expansionChipId'] = $expansionChip->getId();
+            }*/
             if ($filePresent = $form['file_present']->getData()) {
                 $parameters['filePresent'] = $filePresent;
             }

@@ -23,6 +23,7 @@ class MotherboardIoPortType extends AbstractType
                 'choice_label' => 'name',
                 'multiple' => false,
                 'expanded' => false,
+                'autocomplete' => true,
                 ])
             ->add('count', NumberType::class);
     }

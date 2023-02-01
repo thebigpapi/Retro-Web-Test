@@ -19,6 +19,7 @@ class CpuSocketType extends AbstractType
             'choice_label' => 'getNameAndType',
             'multiple' => false,
             'expanded' => false,
+            'autocomplete' => true,
         ]);
     }
 

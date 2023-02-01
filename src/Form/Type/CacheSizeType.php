@@ -19,6 +19,7 @@ class CacheSizeType extends AbstractType
             'choice_label' => 'getValueWithUnit',
             'multiple' => false,
             'expanded' => false,
+            'autocomplete' => true,
         ]);
     }
 

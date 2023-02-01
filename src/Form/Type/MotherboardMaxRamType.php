@@ -23,6 +23,7 @@ class MotherboardMaxRamType extends AbstractType
                 'choice_label' => 'getValueWithUnit',
                 'multiple' => false,
                 'expanded' => false,
+                'autocomplete' => true,
                 ])
             ->add('note', TextType::class, ['required' => false]);
     }

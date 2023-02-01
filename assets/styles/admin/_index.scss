@@ -100,7 +100,7 @@ pre { padding: 5px; margin: 5px;color:black; }
 	margin-left: 5px;
 } 
 .active:after {
-	content: "\2212";
+	content: "\20\20\3C\2212";
 	color:black;
 }
 .log-content {

@@ -54,12 +54,12 @@
 
 			<div class="search-form-entry">
 				<label class="search-form-label" for="search_name" title="This is where you enter the board part number, do not write the manufacturer name here!">
-					<span>Name</span>
+					<span>Manufacturer and Name</span>
 					<img src="{{ absolute_url(asset('build/icons/search/help.svg')) }}" alt="" width="16" height="16">
 				</label>
 				<div class="search-form-widget">
 					<div id="setmanuf">{{ form_widget(form.manufacturer, {'attr': {'aria-label': "Manufacturer"}}) }}</div>
-					<div>{{ form_widget(form.name) }}</div>
+					<div>{{ form_widget(form.name, {'attr': {'placeholder': 'Name or Part number (without manufacturer) ...'}}) }}</div>
 				</div>
 			</div>
 			<div class="search-form-entry">
@@ -84,7 +84,7 @@
 			</div>
 			<div class="search-form-entry">
 				<label class="search-form-label" for="search_cpuSocket2">
-					<span>2nd CPU socket</span>
+					<span>2nd CPU socket (different type)</span>
 				</label>
 				<div class="search-form-widget">
 					<div id="setcpu3">{{ form_widget(form.cpuSocket2, {'attr': {'data-action': "change->search#search", 'data-target-id': 'search_platform2'}}) }}</div>

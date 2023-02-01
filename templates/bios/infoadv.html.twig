@@ -8,7 +8,7 @@
 {% endblock %}
 
 {% block body %}
-	<div class="title">Where can I find the POST string?</div>
+	<div class="title">List of BIOS manufacturer and chipset codes</div>
 	{% for manufacturer, codes in biosCodes %}
 	<div class="grid-list">
 		<p><b>{{manufacturer}} BIOS manufacturer IDs</b></p>
@@ -29,7 +29,7 @@
 			{% for code in codes %}
 				<li>
 					{{ code[1] }}:
-					{{ code[0] }}
+					{% if manufacturer != "Other" %}{{manufacturer}}{% endif %} {{ code[0] }}
 				</li>
 			{% endfor %}
 		</ul>

@@ -171,6 +171,11 @@ div.ts-control{
     padding-bottom: 0px !important;
   }
 }
+#mobo-chipset-select div.ts-control div {max-width: 40rem !important;}
+#expansionChip-fields-list div.ts-control div {max-width: 22rem !important;}
+#knownIssues-fields-list div.ts-control div {max-width: 28rem !important;}
+#motherboardAliases-fields-list div.ts-control div {max-width: 28rem !important;}
+#psuConnectors-fields-list div.ts-control div {max-width: 24rem !important;}
 
 div.editor-row.bios{
   .ts-control > div.item {

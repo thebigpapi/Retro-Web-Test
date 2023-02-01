@@ -16,7 +16,7 @@ class ProcessorSpeedType extends AbstractType
     {
         $resolver->setDefaults([
             'class' => CpuSpeed::class,
-
+            'autocomplete' => true,
             'choice_label' => 'getValueWithUnit',
             'multiple' => false,
             'expanded' => false,

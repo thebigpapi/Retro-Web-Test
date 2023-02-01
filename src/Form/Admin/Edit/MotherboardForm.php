@@ -213,6 +213,7 @@ class MotherboardForm extends AbstractType
                 'choice_label' => 'getValueWithUnit',
                 'multiple' => false,
                 'expanded' => false,
+                'autocomplete' => true,
             ])
             ->add('expansionChip', CollectionType::class, [
                 'entry_type' => ExpansionChipType::class,

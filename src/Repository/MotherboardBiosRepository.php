@@ -39,86 +39,46 @@ class MotherboardBiosRepository extends ServiceEntityRepository
 
     public function findBios(array $criterias)
     {
-        $query = $this->createQueryBuilder('b');
-        $query->join('b.motherboard', 'm');
+        $entityManager = $this->getEntityManager();
+
+        $whereArray = array();
+        $valuesArray = array();
 
         if (array_key_exists('file_present', $criterias)) {
-            $query->andWhere($query->expr()->isNotNull('b.file_name'));
+            $whereArray[] = "bios.file_name IS NOT NULL";   
         }
-
         if (array_key_exists('manufacturer_id', $criterias)) {
-            $query->andWhere('b.manufacturer = :manufacturer_id')
-                ->setParameter('manufacturer_id', $criterias['manufacturer_id']);
+            $whereArray[] = "(bios.manufacturer = :manufacturer_id)";
+            $valuesArray["manufacturer_id"] = (int)$criterias['manufacturer_id'];
         }
-
-        if (array_key_exists('motherboard_manufacturer_ids', $criterias)) {
-            $cpt = 0;
-            $str = "";
-            foreach ($criterias['motherboard_manufacturer_ids'] as $key => $id) {
-                if (array_key_last($criterias['motherboard_manufacturer_ids']) == $key) {
-                    $str = "$str m.manufacturer = :manufacturer_id$cpt";
-                } else {
-                    $str = "$str m.manufacturer = :manufacturer_id$cpt OR ";
-                }
-                $cpt++;
-            }
-
-            $query->andWhere("($str)");
-            $cpt = 0;
-            foreach ($criterias['motherboard_manufacturer_ids'] as $key => $id) {
-                $query->setParameter("manufacturer_id$cpt", $id);
-            }
-        }
-
         if (array_key_exists('chipset_id', $criterias)) {
-            $query->andWhere('m.chipset = :chipset_id')
-                ->setParameter('chipset_id', $criterias['chipset_id']);
+            $whereArray[] = "(m.chipset = :chipset_id)";
+            $valuesArray["chipset_id"] = (int)$criterias['chipset_id'];
         }
-
         if (array_key_exists('core_version', $criterias)) {
-            $query->andWhere('b.coreVersion LIKE :coreVersion')
-                ->setParameter('coreVersion', "%" . $criterias['core_version'] . "%");
+            $whereArray[] = "(LOWER(bios.coreVersion) LIKE LOWER(:coreVersion))";
+            $valuesArray["coreVersion"] = "%" . $criterias['core_version'] . "%";
+        }
+        if (array_key_exists('post_string', $criterias)) {
+            $whereArray[] = "(LOWER(bios.postString) LIKE LOWER(:postString))";
+            $valuesArray["postString"] = "%" . $criterias['post_string'] . "%";
         }
 
-        if (
-            array_key_exists('post_string', $criterias)
-            &&
-            !array_key_exists('motherboard_manufacturer_ids', $criterias)
-        ) {
-            $query->andWhere($query->expr()->like('b.postString', ':postString'))
-                ->setParameter('postString', '%' . $criterias['post_string'] . '%');
+        // Building where statement
+        $whereString = implode(" AND ", $whereArray);
+
+        // Building query
+        $query = $entityManager->createQuery(
+            "SELECT bios
+            FROM App\Entity\MotherboardBios bios JOIN bios.motherboard m 
+            WHERE $whereString
+            ORDER BY bios.coreVersion ASC, m.manufacturer ASC"
+        );
+
+        // Setting values
+        foreach ($valuesArray as $key => $value) {
+            $query->setParameter($key, $value);
         }
-        return $query->orderBy('b.coreVersion', 'ASC')->addOrderBy('m.manufacturer', 'ASC')
-            ->getQuery()
-            ->getResult();
+        return $query->getResult();
     }
-
-    // /**
-    //  * @return MotherboardBios[] Returns an array of MotherboardBios objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('m')
-            ->andWhere('m.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('m.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?MotherboardBios
-    {
-        return $this->createQueryBuilder('m')
-            ->andWhere('m.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

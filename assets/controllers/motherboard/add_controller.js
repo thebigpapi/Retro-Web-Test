@@ -8,21 +8,25 @@ export default class extends Controller {
      * @returns bool
      */
     checkList(id) {
-        let list = document.getElementById(id).children;
+        let list = document.getElementById(id);
         let tp = 0;
         if (id === 'motherboardIoPorts-fields-list' || id === 'motherboardExpansionSlots-fields-list') {
             tp = 1;
         }
-        let array = Array();
-        for (let element of list) {
-            for (let j = 0; j < element.children[tp].options.length; j++) {
-                if (!array[j]) {
-                    array[j] = 0;
+        if(Object.keys(list.children).length == 0)
+            return false;
+        let array = Array().fill(0);
+        
+        for (let i=0; i< Object.keys(list.children).length; i++) {
+            for (let j = 0; j < list.children[i].children[tp].options.length; j++) {
+                let itm = list.children[i].children[tp].options[j];
+                if (!array[itm.value]) {
+                    array[itm.value] = 0;
                 }
-                if (element.children[tp].options[j].selected) {
-                    array[j] += 1;
+                if (itm.selected) {
+                    array[itm.value] += 1;
                 }
-                if (array[j] > 1) {
+                if (array[itm.value] > 1) {
                     return true;
                 }
             }
@@ -125,7 +129,6 @@ export default class extends Controller {
             errorMessage += "NPU has duplicate entries!\n";
             error = true;
         }
-
         if (error) {
             alert(errorMessage);
             event.preventDefault();

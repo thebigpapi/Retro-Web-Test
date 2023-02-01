@@ -11,6 +11,7 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use App\Entity\Manufacturer;
+use App\Entity\ExpansionChip;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormEvent;
@@ -49,6 +50,16 @@ class Search extends AbstractType
                 'choices' => $options['biosManufacturers'],
                 'placeholder' => 'Select a manufacturer ...',
             ])
+            /*->add('expansionChip', EntityType::class, [
+                'class' => ExpansionChip::class,
+                'autocomplete' => true,
+                'choice_label' => 'getNameWithManufacturer',
+                'multiple' => false,
+                'expanded' => false,
+                'required' => false,
+                'choices' => $options['expansionChips'],
+                'placeholder' => 'Select an expansion chip  ...',
+            ])*/
             ->add('file_present', CheckboxType::class, [
                 'label'    => 'File is present ?',
                 'required' => false,
@@ -102,6 +113,7 @@ class Search extends AbstractType
     {
         $resolver->setDefaults([
             'biosManufacturers' => array(),
+            'expansionChips' => array(),
             'chipsetManufacturers' => array(),
         ]);
     }
