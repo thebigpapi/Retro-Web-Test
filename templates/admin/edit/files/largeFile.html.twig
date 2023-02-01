@@ -62,9 +62,26 @@
 						</tr>
 						<tr>
 							<td>Release date</td>
-							<td>{{form_widget(form.releaseDate)}}</td>
+							<td>
+								<div id="large_file_form_releaseDate" data-action="change->largefile--add#dateListener">
+								{% if form.vars.value.releaseDate is null  %}
+									<input type="number" style='width:15%;' id="large_file_form_releaseDate_year_mock" required="required" min=1970 max=9999 placeholder='YYYY' >
+									-
+									<input type="number" id="large_file_form_releaseDate_month_mock" min=1 max=12 placeholder='MM'>
+									-
+									<input type="number" id="large_file_form_releaseDate_day_mock" min=1 max=31 placeholder='DD'>
+								{% else %}
+									<input type="number" style='width:15%;' id="large_file_form_releaseDate_year_mock" required="required" min=1970 max=9999 placeholder='YYYY' value={{form.vars.value.releaseDate | date('Y')}} >
+									-
+									<input type="number" id="large_file_form_releaseDate_month_mock" min=1 max=12 placeholder='MM' value={{(form.vars.value.datePrecision == 'm' or form.vars.value.datePrecision == 'd') ? (form.vars.value.releaseDate | date('m')): ''}}>
+									-
+									<input type="number" id="large_file_form_releaseDate_day_mock" min=1 max=31 placeholder='DD' value={{(form.vars.value.datePrecision == 'd') ? (form.vars.value.releaseDate | date('d')) :''}}>
+								{% endif %}
+								</div>
+							</td>
+							<td hidden>{{form_widget(form.releaseDate)}}</td>
 						</tr>
-						<tr>
+						<tr hidden>
 							<td>Date precision</td>
 							<td>{{form_widget(form.datePrecision)}}</td>
 						</tr>

@@ -6,26 +6,23 @@ export default class extends Controller {
      * @param {*} event 
      */
     check(event) {
-        let error = false;
-        let errorMessage = "";
+        this.clearErrors();
+
         let name = document.getElementById('large_file_form_name');
         let file = document.getElementById('large_file_form_file');
         let existingFile = document.getElementById('large_file_form_file_name');
         let subdir = document.getElementById('large_file_form_subdirectory');
+        this.dateListener();
         if(!name.value){
-            error = true;
-            errorMessage += "The name field is empty!\n";
+            this.appendError('The name field is empty!');
         }
         if(!file.files[0] && existingFile.value == ""){
-            error = true;
-            errorMessage += "No file is uploaded!\n";
+            this.appendError('No file is uploaded!');
         }
         if(subdir.value == ""){
-            error = true;
-            errorMessage += "Subdirectory not selected!\n";
+            this.appendError('Subdirectory not selected!');
         }
-        if (error) {
-            alert(errorMessage);
+        if (this.errorCount()) { //Errors found
             return false;
         }
         return true;
@@ -35,8 +32,9 @@ export default class extends Controller {
      * @param {*} event 
      */
      submit_try(event) {
-         if (this.check())
+         if (this.check()) {
             this.submit(event);
+         }
      }
     /**
      * Submit the form
@@ -57,7 +55,6 @@ export default class extends Controller {
         let bar;
         xhr.upload.addEventListener("progress", function (evt) {
             if (evt.lengthComputable) {
-                //console.log("add upload event-listener" + evt.loaded + "/" + evt.total);
                 bar = document.getElementById('progressBar')
                 bar.value = evt.loaded
                 bar.max = evt.total
@@ -76,7 +73,6 @@ export default class extends Controller {
                             speedText = Number.parseFloat(speed / 1024).toFixed(1) + "KiB/s"
                     else
                         speedText = Math.round(speed) + "B/s"
-                    //console.log(((evt.loaded - bytesLoaded) * (1000/(newdate.getTime() - date.getTime()))/1024/1024))
                     document.getElementById("message").innerHTML = "<ul><li>Upload in progress ...</li><li>" + speedText + "</li></ul>"
                     date = newdate
                     bytesLoaded = evt.loaded
@@ -84,19 +80,16 @@ export default class extends Controller {
             }
         }, false);
 
-        let button;
         let messageRow;
         xhr.onloadstart = function (e) {
             bar = document.getElementById('progressBar')
             bar.hidden = false
-            button = document.getElementById('large_file_form_save')
-            button.hidden = true
+            document.getElementById('tab-nav-save').setAttribute('disabled', true);
             messageRow = document.getElementById("messageRow") 
             messageRow.hidden = false
         }
         xhr.onloadend = function (e) {
-            button = document.getElementById('large_file_form_save')
-            button.hidden = false
+            document.getElementById('tab-nav-save').setAttribute('disabled', false);
             bar = document.getElementById('progressBar')
             bar.hidden = true
             if (xhr.status == 200) {
@@ -119,5 +112,71 @@ export default class extends Controller {
         }
         xhr.send(new FormData(document.getElementsByName('large_file_form')[0]));
 
+    }
+
+    dateListener(event) {
+        this.clearErrors();
+
+        // Getting values from the mock forms
+        let year = document.getElementById('large_file_form_releaseDate_year_mock').value;
+        let month = document.getElementById('large_file_form_releaseDate_month_mock').value;
+        let day = document.getElementById('large_file_form_releaseDate_day_mock').value;
+
+        let datePrecision = null;
+
+        if (year !== '' && month !== '' && day !== '') {
+            //full date
+            datePrecision = 'd';
+        } else if (year !== '' && month !== '' && day === '') {
+            //year + month
+            day = '01';
+
+            datePrecision = 'm';
+        }
+        else if (year !== '' && month === '' && day === '') {
+            //year only
+            day = '01';
+            month = '01';
+
+            datePrecision = 'y';
+        } else {
+            this.appendError('Invalid date');
+
+            return;
+        }
+
+        //Updating the real form that's hidden
+        document.getElementById('large_file_form_releaseDate_year').value = year;
+        document.getElementById('large_file_form_releaseDate_month').value = month;
+        document.getElementById('large_file_form_releaseDate_day').value = day;
+
+        // Checking date format
+        let fullDate = `${year}-${month}-${day}`;
+        let dateParsed = new Date(Date.parse(fullDate));
+
+        if (!(dateParsed instanceof Date) || isNaN(dateParsed)) {
+            this.appendError('Invalid date');
+            
+            return;
+        }
+        
+        // Updating date precision
+        document.getElementById('large_file_form_datePrecision').value = datePrecision;
+        
+    }
+
+
+    appendError(errorMessage) {
+        let errorNode = document.createElement('li');
+        errorNode.textContent = errorMessage;
+        document.getElementById('errors-message').firstChild.appendChild(errorNode);
+    }
+
+    clearErrors() {
+        document.getElementById('errors-message').firstChild.innerHTML = '';
+    }
+
+    errorCount() {
+        return document.getElementById('errors-message').firstChild.getElementsByTagName("li").length
     }
 }

@@ -79,3 +79,12 @@ div.old-cpu-table{
 		grid-template-columns:auto;
 	}
 }
+
+#tab-nav-save:disabled {
+	color: gray;	
+	background-color: darkgrey;
+	box-shadow: none;
+	img {
+		filter: grayscale(100%);
+	}
+}
