@@ -18,6 +18,7 @@ use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use App\BranchLoader\GitLoader;
 
 class AdminController extends AbstractController
 {
@@ -29,14 +30,14 @@ class AdminController extends AbstractController
     }
 
     #[Route('/admin/stats', name:'admin_stats')]
-    public function stats(MotherboardRepository $motherboardRepository) : Response
+    public function stats(MotherboardRepository $motherboardRepository, GitLoader $git) : Response
     {
         $manufBoardCount = $motherboardRepository->getManufCount();
-        
         return $this->render('admin/stats.html.twig', [
             'controller_name' => 'MainController',
             'manufBoardCount' => $manufBoardCount,
             'moboCount' => $motherboardRepository->getCount(),
+            'collector' => $git,
         ]);
     }
 

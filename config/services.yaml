@@ -30,6 +30,17 @@ services:
         calls:
             - method: setContainer
               arguments: ['@service_container']
+    App\BranchLoader\GitLoader:
+        arguments:
+            ['%kernel.project_dir%']
+    App\DataCollector\GitDataCollector:
+        tags:
+            -
+                name:     data_collector
+                template: 'admin/macros/git.html.twig'
+                # must match the value returned by the getName() method
+                id: 'app.git_data_collector'
+        public: false
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

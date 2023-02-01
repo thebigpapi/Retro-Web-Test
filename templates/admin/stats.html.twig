@@ -6,6 +6,14 @@
 	<div class="title">
 		<b>Statistics</b>
 	</div>
+	<div>
+        <b>Branch: </b>
+        <span>{{ collector.getBranchName() }} </span>
+    </div>
+	<div>
+        <b>Version: </b>
+        <span>{{ collector.getLastCommitDetail()['date'] }} </span>
+    </div>
 	<p><b>Board count: {{moboCount}}</b></p>
 	<dl>
 		<dt>Top 15 board manufacturers:</dt>
