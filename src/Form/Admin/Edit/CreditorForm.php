@@ -24,10 +24,11 @@ class CreditorForm extends AbstractType
             ])
             ->add('license', EntityType::class, [
                 'class' => License::class,
-                'required' => true,
+                'required' => false,
                 'choice_label' => 'name',
                 'multiple' => false,
                 'expanded' => false,
+                'placeholder' => 'Select a license ...',
             ])
             ->add('save', SubmitType::class)
             ;
