@@ -38,7 +38,8 @@ class ManufacturerRepository extends ServiceEntityRepository
 
         $query = $entityManager->createNativeQuery(
             'SELECT distinct man.id, man.name, man.short_name, upper(coalesce(man.short_name, man.name)) as realname
-            FROM (SELECT distinct man.* FROM manufacturer man JOIN motherboard mobo ON mobo.manufacturer_id = man.id UNION SELECT distinct man.* FROM manufacturer man JOIN motherboard_alias alias ON alias.manufacturer_id = man.id) as man
+            FROM (SELECT distinct man.* FROM manufacturer man JOIN motherboard mobo ON mobo.manufacturer_id = man.id
+            UNION SELECT distinct man.* FROM manufacturer man JOIN motherboard_alias alias ON alias.manufacturer_id = man.id) as man
             ORDER BY realname;',
             $rsm
         );
@@ -95,8 +96,8 @@ class ManufacturerRepository extends ServiceEntityRepository
     {
         $conn = $this->getEntityManager()
             ->getConnection();
-        $sql = 'SELECT COALESCE(m.short_name, m.name) as biosMan, COALESCE(m2.short_name, m2.name) as moboMan, mbmc.code from manufacturer m 
-        JOIN manufacturer_bios_manufacturer_code mbmc on m.id = mbmc.bios_manufacturer_id
+        $sql = 'SELECT COALESCE(m.short_name, m.name) as biosMan, COALESCE(m2.short_name, m2.name) as moboMan, mbmc.code
+        FROM manufacturer m JOIN manufacturer_bios_manufacturer_code mbmc on m.id = mbmc.bios_manufacturer_id
         JOIN manufacturer m2 on mbmc.manufacturer_id = m2.id
         ORDER BY biosMan, code;';
         $stmt = $conn->prepare($sql);
@@ -117,8 +118,8 @@ class ManufacturerRepository extends ServiceEntityRepository
     {
         $conn = $this->getEntityManager()
             ->getConnection();
-        $sql = 'SELECT COALESCE(m.short_name, m.name) as chipsetMan, concat(c.part_no, concat(\' \', c.name)) as chipsetName, cbc.code from manufacturer m 
-        JOIN chipset_bios_code cbc on m.id = cbc.bios_manufacturer_id
+        $sql = 'SELECT COALESCE(m.short_name, m.name) as chipsetMan, concat(c.part_no, concat(\' \', c.name)) as chipsetName, cbc.code
+        FROM manufacturer m JOIN chipset_bios_code cbc on m.id = cbc.bios_manufacturer_id
         JOIN chipset c on cbc.chipset_id = c.id
         ORDER BY chipsetMan, code;';
         $stmt = $conn->prepare($sql);

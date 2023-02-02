@@ -36,8 +36,7 @@ class ChipsetPartForm extends AbstractType
             ->add('rank', NumberType::class, [
                 'required' => true,
             ])
-            ->add('save', SubmitType::class)
-            ;
+            ->add('save', SubmitType::class);
     }
 
     public function configureOptions(OptionsResolver $resolver)
@@ -46,10 +45,13 @@ class ChipsetPartForm extends AbstractType
             'data_class' => ChipsetPart::class,
         ]);
     }
-	public function finishView(FormView $view, FormInterface $form, array $options)
+    public function finishView(FormView $view, FormInterface $form, array $options)
     {
         usort($view->children['chip']->children['manufacturer']->vars['choices'], function (ChoiceView $a, ChoiceView $b) {
-            return strnatcasecmp($a->data->getShortNameIfExist(), $b->data->getShortNameIfExist());
+            return strnatcasecmp(
+                $a->data->getShortNameIfExist(),
+                $b->data->getShortNameIfExist()
+            );
         });
-	}
+    }
 }

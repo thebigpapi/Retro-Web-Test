@@ -14,11 +14,11 @@ abstract class ProcessingUnit extends Chip
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
     protected $id;
-    
+
     #[ORM\ManyToOne(targetEntity: CpuSpeed::class, inversedBy: 'processingUnits')]
     #[ORM\OrderBy(['value' => 'ASC'])]
     protected $speed;
-    
+
     #[ORM\ManyToOne(targetEntity: ProcessorPlatformType::class, inversedBy: 'processingUnits')]
     protected $platform;
 
@@ -100,34 +100,32 @@ abstract class ProcessingUnit extends Chip
 
         return $this;
     }
-    public function getNameWithSpecs() {
-        $speed = $speed = $this->speed->getValueWithUnit() . ($this->fsb != $this->speed ? '/'.$this->fsb->getValueWithUnit():'');
+    public function getNameWithSpecs()
+    {
+        $speed = $speed = $this->speed->getValueWithUnit() . ($this->fsb != $this->speed ? '/' . $this->fsb->getValueWithUnit() : '');
 
         $partno = "[$this->partNumber]";
-        
+
         $pType = '(' . ($this->getPlatform() ? $this->getPlatform()->getName() : "Unidentified") . ')';
 
-        return implode(" ", array($this->getManufacturer()->getShortNameIfExist(),$this->name, $speed, $partno, $pType ));
+        return implode(" ", array($this->getManufacturer()->getShortNameIfExist(), $this->name, $speed, $partno, $pType));
     }
     public static function sort(Collection $processingUnits): Collection
     {
         $array = $processingUnits->toArray();
-        usort($array, function ($a, $b)
-            {
-                if($a->getManufacturer()->getShortNameIfExist() == $b->getManufacturer()->getShortNameIfExist())
-                {
-                    if($a->getName() == $b->getName())
-                    {
+        usort(
+            $array,
+            function ($a, $b) {
+                if ($a->getManufacturer()->getShortNameIfExist() == $b->getManufacturer()->getShortNameIfExist()) {
+                    if ($a->getName() == $b->getName()) {
                         return strnatcasecmp($a->getSpeed()->getValue(), $b->getSpeed()->getValue());
-                    }
-                    else
+                    } else
                         return strnatcasecmp($a->getName(), $b->getName());
-                }
-                else
+                } else
                     return strnatcasecmp($a->getManufacturer()->getShortNameIfExist(), $b->getManufacturer()->getShortNameIfExist());
             }
         );
-        
+
         return new ArrayCollection($array);
     }
     /**

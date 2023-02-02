@@ -11,7 +11,7 @@ class MotherboardExpansionSlot
     #[ORM\ManyToOne(targetEntity: Motherboard::class, inversedBy: 'motherboardExpansionSlots')]
     #[ORM\JoinColumn(nullable: false)]
     private $motherboard;
-    
+
     #[ORM\Id]
     #[ORM\ManyToOne(targetEntity: ExpansionSlot::class, inversedBy: 'motherboardExpansionSlots')]
     #[ORM\JoinColumn(nullable: false)]

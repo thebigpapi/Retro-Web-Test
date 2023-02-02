@@ -31,7 +31,7 @@ class IdRedirectionRepository extends ServiceEntityRepository
                 FROM App\Entity\MotherboardIdRedirection redirection
                 WHERE :id=redirection.source AND :sourceType=redirection.sourceType'
             )->setParameter('sourceType', $sourceType)
-            ->setParameter('id', $id);
+                ->setParameter('id', $id);
 
             return $query->getSingleScalarResult();
         } catch (Exception $e) {
@@ -56,8 +56,8 @@ class IdRedirectionRepository extends ServiceEntityRepository
             FROM App\Entity\MotherboardIdRedirection redirection
             WHERE redirection.sourceType=:sourceType AND redirection.source=:identifier  ' . $andWhere
         )->setParameter('identifier', $identifier)
-        ->setParameter('sourceType', $sourceType);
-        
+            ->setParameter('sourceType', $sourceType);
+
         if ($motherboardId !== null) {
             $query->setParameter('motherboardId', $motherboardId);
         }

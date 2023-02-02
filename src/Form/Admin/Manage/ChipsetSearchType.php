@@ -12,7 +12,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 class ChipsetSearchType extends AbstractType
 {
     private EntityManagerInterface $entityManager;
-    
+
     public function __construct(EntityManagerInterface $entityManager)
     {
         $this->entityManager = $entityManager;
@@ -27,11 +27,10 @@ class ChipsetSearchType extends AbstractType
                 'expanded' => false,
                 'required' => false,
                 'choices' => $this->entityManager
-                ->getRepository(Manufacturer::class)
-                ->findAllChipsetManufacturer(),
+                    ->getRepository(Manufacturer::class)
+                    ->findAllChipsetManufacturer(),
                 'placeholder' => 'Select a manufacturer ...'
             ])
             ->add('search', SubmitType::class);
-        ;
     }
 }

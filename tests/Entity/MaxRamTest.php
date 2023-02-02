@@ -8,7 +8,7 @@ use Liip\TestFixturesBundle\Services\AbstractDatabaseTool;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-class MaxRamTest extends KernelTestCase 
+class MaxRamTest extends KernelTestCase
 {
     /** @var AbstractDatabaseTool */
     protected $databaseTool;
@@ -22,12 +22,14 @@ class MaxRamTest extends KernelTestCase
         $this->databaseTool = self::$container->get(DatabaseToolCollection::class)->get();
     }
 
-    public function getEntity(): MaxRam {
+    public function getEntity(): MaxRam
+    {
         return (new MaxRam())
-        ->setValue(1024);
+            ->setValue(1024);
     }
 
-    public function getValidator():ValidatorInterface {
+    public function getValidator(): ValidatorInterface
+    {
         /*return Validation::createValidatorBuilder()
         ->enableAnnotationMapping(true)
         ->addDefaultDoctrineAnnotationReader()
@@ -35,22 +37,26 @@ class MaxRamTest extends KernelTestCase
         return self::$container->get("validator");
     }
 
-    public function assertHasErrors(MaxRam $maxRam, int $number = 0) {
+    public function assertHasErrors(MaxRam $maxRam, int $number = 0)
+    {
         $validator = $this->getValidator();
         $error = $validator->validate($maxRam);
         $this->assertCount($number, $error);
     }
 
-    public function testValidEntity() {
+    public function testValidEntity()
+    {
         $this->assertHasErrors($this->getEntity(), 0);
     }
 
-    public function testInvalidEntity() {
+    public function testInvalidEntity()
+    {
         $this->assertHasErrors($this->getEntity()->setValue(-100), 1);
         $this->assertHasErrors(new MaxRam(), 1);
     }
 
-    public function testInvalidUsedMaxRam() {
+    public function testInvalidUsedMaxRam()
+    {
         $this->databaseTool->loadAliceFixture([
             dirname(__DIR__) . "/fixtures/maxrams.yaml",
         ]);

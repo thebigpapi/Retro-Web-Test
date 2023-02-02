@@ -43,5 +43,4 @@ class LargeFileType extends AbstractType
     {
         return EntityType::class;
     }
-    
 }

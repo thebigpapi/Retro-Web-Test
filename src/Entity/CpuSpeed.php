@@ -13,7 +13,7 @@ class CpuSpeed
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
     private $id;
-    
+
     #[ORM\Column(type: 'float')]
     private $value;
 
@@ -38,10 +38,9 @@ class CpuSpeed
     }
     public function getValueWithUnit(): ?string
     {
-        if($this->value > 1000){
-            return ($this->value/1000) . 'GHz';
-        }
-        else{
+        if ($this->value > 1000) {
+            return ($this->value / 1000) . 'GHz';
+        } else {
             return $this->value . 'MHz';
         }
     }

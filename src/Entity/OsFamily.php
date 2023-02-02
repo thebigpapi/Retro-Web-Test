@@ -22,20 +22,20 @@ class OsFamily
     private $id;
 
     #[ORM\Column(type: 'string', length: 255)]
-    #[Assert\Length(max:255, maxMessage: 'Name is longer than {{ limit }} characters, try to make it shorter.')]
+    #[Assert\Length(max: 255, maxMessage: 'Name is longer than {{ limit }} characters, try to make it shorter.')]
     private $name;
 
     #[ORM\ManyToMany(targetEntity: OsFlag::class, mappedBy: 'osFamilies')]
     private $osFlags;
-    
+
     #[ORM\Column(type: 'string', length: 255)]
-    #[Assert\Length(max:255, maxMessage: 'File name is longer than {{ limit }} characters, try to make it shorter.')]
+    #[Assert\Length(max: 255, maxMessage: 'File name is longer than {{ limit }} characters, try to make it shorter.')]
     private string|null $file_name;
 
     /**
      * NOTE: This is not a mapped field of entity metadata, just a simple property.
      */
-    #[Vich\UploadableField(mapping:'osicon', fileNameProperty:'file_name')]
+    #[Vich\UploadableField(mapping: 'osicon', fileNameProperty: 'file_name')]
     private File|null $osIcon;
 
     #[ORM\Column(type: 'datetime')]

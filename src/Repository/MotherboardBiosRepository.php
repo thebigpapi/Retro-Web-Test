@@ -45,7 +45,7 @@ class MotherboardBiosRepository extends ServiceEntityRepository
         $valuesArray = array();
 
         if (array_key_exists('file_present', $criterias)) {
-            $whereArray[] = "bios.file_name IS NOT NULL";   
+            $whereArray[] = "bios.file_name IS NOT NULL";
         }
         if (array_key_exists('manufacturer_id', $criterias)) {
             $whereArray[] = "(bios.manufacturer = :manufacturer_id)";

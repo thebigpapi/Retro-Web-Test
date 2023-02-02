@@ -117,7 +117,7 @@ class MotherboardForm extends AbstractType
                 'multiple' => false,
                 'expanded' => false,
                 'required' => false,
-                
+
             ])
             ->add('chipset', EntityType::class, [
                 'class' => Chipset::class,
@@ -537,22 +537,6 @@ class MotherboardForm extends AbstractType
         usort($view->children['formFactor']->vars['choices'], function (ChoiceView $a, ChoiceView $b) {
             return strnatcasecmp($a->data->getName() ?? '', $b->data->getName() ?? '');
         });
-
-        /*usort($view->children['expansionChip']->vars["choices"], function (ChoiceView $a, ChoiceView $b) {
-            if (
-                $a->data->getManufacturer()->getShortNameIfExist()
-                ==
-                $b->data->getManufacturer()->getShortNameIfExist()
-            ) {
-                if ($a->data->getName() == $b->data->getName()) {
-                    return 0;
-                } else {
-                    return $a->data->getName() > $b->data->getName() ? 1 : -1;
-                }
-            } else {
-                return $a->data->getManufacturer()->getShortNameIfExist() > $b->data->getManufacturer()->getShortNameIfExist() ? 1 : -1;
-            }
-        });*/
     }
 
     /*   public function buildAfterSubmit(FormBuilderInterface $builder, array $options)

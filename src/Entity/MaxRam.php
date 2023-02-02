@@ -16,7 +16,7 @@ class MaxRam
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
     private $id;
-    
+
     #[ORM\Column(type: 'bigint')]
     #[Assert\NotBlank]
     #[Assert\PositiveOrZero]

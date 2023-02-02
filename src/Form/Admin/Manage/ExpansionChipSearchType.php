@@ -13,7 +13,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 class ExpansionChipSearchType extends AbstractType
 {
     private EntityManagerInterface $entityManager;
-    
+
     public function __construct(EntityManagerInterface $entityManager)
     {
         $this->entityManager = $entityManager;
@@ -28,8 +28,8 @@ class ExpansionChipSearchType extends AbstractType
                 'expanded' => false,
                 'required' => false,
                 'choices' => $this->entityManager
-                ->getRepository(Manufacturer::class)
-                ->findAllExpansionChipManufacturer(),
+                    ->getRepository(Manufacturer::class)
+                    ->findAllExpansionChipManufacturer(),
                 'placeholder' => 'Select a manufacturer ...'
             ])
             ->add('type', ChoiceType::class, [
@@ -38,11 +38,10 @@ class ExpansionChipSearchType extends AbstractType
                 'expanded' => false,
                 'required' => false,
                 'choices' => $this->entityManager
-                ->getRepository(ExpansionChipType::class)
-                ->findByType(),
+                    ->getRepository(ExpansionChipType::class)
+                    ->findByType(),
                 'placeholder' => 'Select a type ...'
             ])
             ->add('search', SubmitType::class);
-        ;
     }
 }

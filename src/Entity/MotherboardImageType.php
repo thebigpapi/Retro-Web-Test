@@ -14,9 +14,9 @@ class MotherboardImageType
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
     private $id;
-    
+
     #[ORM\Column(type: 'string', length: 255)]
-    #[Assert\Length(max:255, maxMessage: 'Name is longer than {{ limit }} characters, try to make it shorter.')]
+    #[Assert\Length(max: 255, maxMessage: 'Name is longer than {{ limit }} characters, try to make it shorter.')]
     private $name;
 
     #[ORM\OneToMany(targetEntity: MotherboardImage::class, mappedBy: 'motherboardImageType')]

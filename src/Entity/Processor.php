@@ -12,7 +12,7 @@ class Processor extends ProcessingUnit
 {
     #[ORM\ManyToMany(targetEntity: Motherboard::class, mappedBy: 'processors')]
     private $motherboards;
-    
+
     #[ORM\ManyToOne(targetEntity: CacheSize::class, inversedBy: 'getProcessorsL1')]
     private $L1;
 
@@ -32,7 +32,7 @@ class Processor extends ProcessingUnit
     private $L3CacheRatio;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    #[Assert\Length(max:255, maxMessage: 'Core is longer than {{ limit }} characters, try to make it shorter.')]
+    #[Assert\Length(max: 255, maxMessage: 'Core is longer than {{ limit }} characters, try to make it shorter.')]
     private $core;
 
     #[ORM\Column(type: 'float', nullable: true)]
@@ -40,7 +40,7 @@ class Processor extends ProcessingUnit
 
     #[ORM\Column(type: 'integer', nullable: true)]
     private $ProcessNode;
-    
+
     #[ORM\OneToMany(targetEntity: ProcessorVoltage::class, mappedBy: 'processor', orphanRemoval: true, cascade: ['persist'])]
     private $voltages;
 
@@ -82,7 +82,7 @@ class Processor extends ProcessingUnit
     }
     public function getNameWithSpecs()
     {
-        
+
         $cache = $this->getCachesWithValue();
 
         $core = $this->getCore() ? "($this->core)" : '';

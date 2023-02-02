@@ -40,11 +40,11 @@ class LargeFileRepository extends ServiceEntityRepository
         $entityManager = $this->getEntityManager();
         $likematch = "$letter%";
         $query = $entityManager->createQuery(
-                "SELECT drv
+            "SELECT drv
                 FROM App\Entity\LargeFile drv 
                 WHERE drv.name like :likeMatch
                 ORDER BY drv.name ASC"
-            )->setParameter('likeMatch', $likematch);
+        )->setParameter('likeMatch', $likematch);
 
         return $query->getResult();
     }
@@ -59,7 +59,7 @@ class LargeFileRepository extends ServiceEntityRepository
         // Checking values in criteria and creating WHERE statements
         if (array_key_exists('name', $criteria)) {
             $multicrit = explode(" ", $criteria['name']);
-            foreach ($multicrit as $key => $val){
+            foreach ($multicrit as $key => $val) {
                 $whereArray[] = "(LOWER(drv.name) LIKE :nameLike$key OR LOWER(drv.fileVersion) LIKE :nameLike$key OR LOWER(drv.file_name) LIKE :nameLike$key)";
                 $valuesArray["nameLike$key"] = "%" . strtolower($val) . "%";
             }

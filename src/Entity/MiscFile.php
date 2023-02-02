@@ -17,7 +17,7 @@ class MiscFile
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[Vich\UploadableField(mapping:'miscfile', fileNameProperty:'file_name')]
+    #[Vich\UploadableField(mapping: 'miscfile', fileNameProperty: 'file_name')]
     private File|null $miscFile;
 
     #[ORM\Column(type: 'string', length: 255)]
@@ -81,7 +81,7 @@ class MiscFile
     public function setMiscFile(?File $miscFile): self
     {
         $this->miscFile = $miscFile;
-        
+
         if ($this->miscFile instanceof UploadedFile) {
             $this->updated_at = new \DateTime('now');
         }

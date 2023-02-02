@@ -12,15 +12,15 @@ class MotherboardMaxRam
     #[ORM\ManyToOne(targetEntity: Motherboard::class, inversedBy: 'motherboardMaxRams')]
     #[ORM\JoinColumn(nullable: false)]
     private $motherboard;
-    
+
     #[ORM\Id]
     #[ORM\ManyToOne(targetEntity: MaxRam::class, inversedBy: 'motherboardMaxRams')]
     #[ORM\JoinColumn(nullable: false)]
     private $max_ram;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    #[Assert\Length(max:255, maxMessage: 'RAM note is longer than {{ limit }} characters, try to make it shorter.')]
-    
+    #[Assert\Length(max: 255, maxMessage: 'RAM note is longer than {{ limit }} characters, try to make it shorter.')]
+
     private $note;
 
     public function getMotherboard(): ?Motherboard

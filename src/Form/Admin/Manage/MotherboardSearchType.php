@@ -16,7 +16,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 class MotherboardSearchType extends AbstractType
 {
     private EntityManagerInterface $entityManager;
-    
+
     public function __construct(EntityManagerInterface $entityManager)
     {
         $this->entityManager = $entityManager;
@@ -32,7 +32,7 @@ class MotherboardSearchType extends AbstractType
                     if ($a->getFullReference() == $b->getFullReference())
                         return 0;
                     if ($a->getFullReference() == " Unidentified ") return -1;
-                    return ($a->getFullReference() < $b->getFullReference()) ? -1 : 1;   
+                    return ($a->getFullReference() < $b->getFullReference()) ? -1 : 1;
                 }
                 return ($a->getManufacturer()->getName() < $b->getManufacturer()->getName()) ? -1 : 1;
             }
@@ -45,8 +45,8 @@ class MotherboardSearchType extends AbstractType
                 'expanded' => false,
                 'required' => false,
                 'choices' => $this->entityManager
-                ->getRepository(Manufacturer::class)
-                ->findAll(),
+                    ->getRepository(Manufacturer::class)
+                    ->findAll(),
                 'placeholder' => 'Select a manufacturer ...'
             ])
             ->add('formFactor', EntityType::class, [
@@ -66,6 +66,5 @@ class MotherboardSearchType extends AbstractType
                 'required' => false,
             ])
             ->add('search', SubmitType::class);
-        ;
     }
 }

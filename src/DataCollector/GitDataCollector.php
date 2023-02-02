@@ -20,14 +20,14 @@ class GitDataCollector extends DataCollector
 
     public function collect(Request $request, Response $response, \Throwable $exception = null)
     {
-       // We add the git informations in $data[]
-       $this->data = [
+        // We add the git informations in $data[]
+        $this->data = [
             'git_branch' => $this->gitLoader->getBranchName(),
             'last_commit_message' => $this->gitLoader->getLastCommitMessage(),
             'logs' => $this->gitLoader->getLastCommitDetail(),
         ];
     }
-    
+
     // we will use this name in the config later
     public function getName()
     {

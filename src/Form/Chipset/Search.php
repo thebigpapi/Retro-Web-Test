@@ -17,13 +17,6 @@ use Doctrine\ORM\EntityManagerInterface;
 
 class Search extends AbstractType
 {
-    private EntityManagerInterface $entityManager;
-
-    public function __construct(EntityManagerInterface $entityManager)
-    {
-        $this->entityManager = $entityManager;
-    }
-
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -42,7 +35,7 @@ class Search extends AbstractType
             ->add('search', SubmitType::class)
             ->add('searchWithImages', SubmitType::class);
 
-            $formModifier = function (FormInterface $form, Manufacturer $chipsetManufacturer = null) {
+        $formModifier = function (FormInterface $form, Manufacturer $chipsetManufacturer = null) {
             $chipsets = null === $chipsetManufacturer ? [] : $chipsetManufacturer->getChipsets()->toArray();
 
             usort(

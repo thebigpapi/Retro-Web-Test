@@ -10,13 +10,6 @@ use Doctrine\ORM\EntityManagerInterface;
 
 class Search extends AbstractType
 {
-    private EntityManagerInterface $entityManager;
-    
-    public function __construct(EntityManagerInterface $entityManager)
-    {
-        $this->entityManager = $entityManager;
-    }
-
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder

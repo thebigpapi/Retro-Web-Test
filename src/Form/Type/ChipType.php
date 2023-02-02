@@ -21,15 +21,10 @@ use Symfony\Component\Form\FormView;
 class ChipType extends AbstractType
 {
     private EntityManagerInterface $entityManager;
-    
+
     public function __construct(EntityManagerInterface $entityManager)
     {
         $this->entityManager = $entityManager;
-    }
-
-    private function getManufacturerRepository(): ManufacturerRepository
-    {
-        return $this->entityManager->getRepository(Manufacturer::class);
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void

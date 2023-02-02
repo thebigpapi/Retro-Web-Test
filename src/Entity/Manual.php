@@ -15,9 +15,9 @@ class Manual
     /**
      * NOTE: This is not a mapped field of entity metadata, just a simple property.
      */
-    #[Vich\UploadableField(mapping:'manual', fileNameProperty:'file_name')]
+    #[Vich\UploadableField(mapping: 'manual', fileNameProperty: 'file_name')]
     private File|null $manualFile;
-    
+
     #[ORM\ManyToOne(targetEntity: Motherboard::class, inversedBy: 'manuals')]
     private $motherboard;
 

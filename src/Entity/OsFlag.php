@@ -15,17 +15,17 @@ class OsFlag
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
     private $id;
-    
+
     #[ORM\Column(type: 'string', length: 255)]
-    #[Assert\Length(max:255, maxMessage: 'Name is longer than {{ limit }} characters, try to make it shorter.')]
+    #[Assert\Length(max: 255, maxMessage: 'Name is longer than {{ limit }} characters, try to make it shorter.')]
     private $name;
 
     #[ORM\Column(type: 'string', length: 255)]
-    #[Assert\Length(max:255, maxMessage: 'Major version is longer than {{ limit }} characters, try to make it shorter.')]
+    #[Assert\Length(max: 255, maxMessage: 'Major version is longer than {{ limit }} characters, try to make it shorter.')]
     private $majorVersion;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    #[Assert\Length(max:255, maxMessage: 'Minor version is longer than {{ limit }} characters, try to make it shorter.')]
+    #[Assert\Length(max: 255, maxMessage: 'Minor version is longer than {{ limit }} characters, try to make it shorter.')]
     private $minorVersion;
 
     #[ORM\ManyToOne(targetEntity: Manufacturer::class, inversedBy: 'osFlags')]

@@ -17,10 +17,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
     private int $id;
-    
+
     #[ORM\Column(type: 'string', length: 180, unique: true)]
     #[Assert\NotBlank]
-    #[Assert\Length(min: 2, max: 50, minMessage: 'Your username must be at least {{ limit }} characters long.', maxMessage: 'Your username cannot be longer than {{ limit }} characters.')]
+    #[Assert\Length(
+        min: 2,
+        max: 50,
+        minMessage: 'Your username must be at least {{ limit }} characters long.',
+        maxMessage: 'Your username cannot be longer than {{ limit }} characters.'
+        )
+    ]
     private string $username;
 
     #[ORM\Column(type: 'json')]

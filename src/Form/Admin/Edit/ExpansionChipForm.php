@@ -22,7 +22,7 @@ class ExpansionChipForm extends AbstractType
     {
         $builder
             ->add('chip', ChipType::class, [
-                'data_class' =>ExpansionChip::class,
+                'data_class' => ExpansionChip::class,
             ])
             ->add('type', EntityType::class, [
                 'class' => ExpansionChipType::class,

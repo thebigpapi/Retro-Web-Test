@@ -14,7 +14,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 class ProcessorSearchType extends AbstractType
 {
     private EntityManagerInterface $entityManager;
-    
+
     public function __construct(EntityManagerInterface $entityManager)
     {
         $this->entityManager = $entityManager;
@@ -29,8 +29,8 @@ class ProcessorSearchType extends AbstractType
                 'expanded' => false,
                 'required' => false,
                 'choices' => $this->entityManager
-                ->getRepository(Manufacturer::class)
-                ->findAllProcessorManufacturer(),
+                    ->getRepository(Manufacturer::class)
+                    ->findAllProcessorManufacturer(),
                 'placeholder' => 'Select a manufacturer ...'
             ])
             ->add('platform', EntityType::class, [
@@ -42,6 +42,5 @@ class ProcessorSearchType extends AbstractType
                 'placeholder' => 'Select a platform ...'
             ])
             ->add('search', SubmitType::class);
-        ;
     }
 }

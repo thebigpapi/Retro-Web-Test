@@ -77,8 +77,7 @@ class ChipsetForm extends AbstractType
                 'required' => false,
             ])
 
-            ->add('save', SubmitType::class)
-            ;
+            ->add('save', SubmitType::class);
     }
 
     public function configureOptions(OptionsResolver $resolver)
@@ -89,10 +88,10 @@ class ChipsetForm extends AbstractType
             'chipsetParts' => array(),
         ]);
     }
-	public function finishView(FormView $view, FormInterface $form, array $options)
+    public function finishView(FormView $view, FormInterface $form, array $options)
     {
         usort($view->children['manufacturer']->vars['choices'], function (ChoiceView $a, ChoiceView $b) {
             return strnatcasecmp($a->data->getShortNameIfExist(), $b->data->getShortNameIfExist());
         });
-	}
+    }
 }

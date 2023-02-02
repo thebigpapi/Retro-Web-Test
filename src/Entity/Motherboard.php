@@ -17,11 +17,11 @@ class Motherboard
     private $id;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    #[Assert\Length(max:255, maxMessage: 'Name is longer than {{ limit }} characters, try to make it shorter.')]
+    #[Assert\Length(max: 255, maxMessage: 'Name is longer than {{ limit }} characters, try to make it shorter.')]
     private ?string $name = null;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    #[Assert\Length(max:255, maxMessage: 'Dimensions is longer than {{ limit }} characters, try to make it shorter.')]
+    #[Assert\Length(max: 255, maxMessage: 'Dimensions is longer than {{ limit }} characters, try to make it shorter.')]
     private ?string $dimensions = null;
 
     #[ORM\ManyToOne(targetEntity: Manufacturer::class, inversedBy: 'motherboards', fetch: 'EAGER')]
@@ -76,7 +76,7 @@ class Motherboard
     private $maxVideoRam;
 
     #[ORM\Column(type: 'string', length: 2048, nullable: true)]
-    #[Assert\Length(max:2048, maxMessage: 'Notes is longer than {{ limit }} characters, try to make it shorter.')]
+    #[Assert\Length(max: 2048, maxMessage: 'Notes is longer than {{ limit }} characters, try to make it shorter.')]
     private ?string $note = null;
 
     #[ORM\Column(type: 'datetime')]
@@ -104,12 +104,12 @@ class Motherboard
     private $expansionChips;
 
     #[ORM\Column(type: 'string', length: 80, unique: true)]
-    #[Assert\Length(max:80, maxMessage: 'Slug is longer than {{ limit }} characters, try to make it shorter.')]
+    #[Assert\Length(max: 80, maxMessage: 'Slug is longer than {{ limit }} characters, try to make it shorter.')]
     private $slug;
 
     #[ORM\OneToMany(mappedBy: 'motherboard', targetEntity: MiscFile::class, orphanRemoval: true, cascade: ['persist'])]
     private $miscFiles;
-    
+
     public function __construct()
     {
         $this->motherboardMaxRams = new ArrayCollection();
@@ -590,7 +590,7 @@ class Motherboard
 
         return $this;
     }
-    
+
     public function getMaxVideoRam(): ?MaxRam
     {
         return $this->maxVideoRam;
@@ -695,10 +695,9 @@ class Motherboard
     public function getAllDrivers(): Collection
     {
         $expdrv = [];
-        foreach($this->getExpansionChips() as $iu){
-            if($iu->getDrivers()->toArray())
+        foreach ($this->getExpansionChips() as $iu) {
+            if ($iu->getDrivers()->toArray())
                 $expdrv = array_merge($expdrv, $iu->getDrivers()->toArray());
-                    
         }
         return new ArrayCollection(
             array_merge(

@@ -21,21 +21,21 @@ class MediaTypeFlag
     private $id;
 
     #[ORM\Column(type: 'string', length: 255)]
-    #[Assert\Length(max:255, maxMessage: 'Name is longer than {{ limit }} characters, try to make it shorter.')]
+    #[Assert\Length(max: 255, maxMessage: 'Name is longer than {{ limit }} characters, try to make it shorter.')]
     private $name;
 
     #[ORM\Column(type: 'string', length: 255)]
-    #[Assert\Length(max:255, maxMessage: 'Tag name is longer than {{ limit }} characters, try to make it shorter.')]
+    #[Assert\Length(max: 255, maxMessage: 'Tag name is longer than {{ limit }} characters, try to make it shorter.')]
     private $tagName;
 
     #[ORM\Column(type: 'string', length: 255)]
-    #[Assert\Length(max:255, maxMessage: 'File name is longer than {{ limit }} characters, try to make it shorter.')]
+    #[Assert\Length(max: 255, maxMessage: 'File name is longer than {{ limit }} characters, try to make it shorter.')]
     private string|null $file_name;
 
     /**
      * NOTE: This is not a mapped field of entity metadata, just a simple property.
      */
-    #[Vich\UploadableField(mapping:'mediatypeicon', fileNameProperty:'file_name')]
+    #[Vich\UploadableField(mapping: 'mediatypeicon', fileNameProperty: 'file_name')]
     private File|null $icon;
 
     #[ORM\Column(type: 'datetime')]
@@ -43,7 +43,7 @@ class MediaTypeFlag
 
     #[ORM\OneToMany(targetEntity: LargeFileMediaTypeFlag::class, mappedBy: 'mediaTypeFlag', orphanRemoval: true)]
     private $getLargeFiles;
-    
+
     public function __construct()
     {
         $this->getLargeFiles = new ArrayCollection();

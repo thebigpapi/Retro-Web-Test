@@ -11,14 +11,14 @@ class ProcessorVoltage
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
     private $id;
-    
+
     #[ORM\Column(type: 'float')]
     private $value;
 
     #[ORM\ManyToOne(targetEntity: Processor::class, inversedBy: 'voltages')]
     #[ORM\JoinColumn(nullable: false)]
     private $processor;
-    
+
     public function getId(): ?int
     {
         return $this->id;

@@ -11,7 +11,7 @@ class MotherboardIoPort
     #[ORM\ManyToOne(targetEntity: Motherboard::class, inversedBy: 'motherboardIoPorts')]
     #[ORM\JoinColumn(nullable: false)]
     private $motherboard;
-    
+
     #[ORM\Id]
     #[ORM\ManyToOne(targetEntity: IoPort::class, inversedBy: 'motherboardIoPorts')]
     #[ORM\JoinColumn(nullable: false)]

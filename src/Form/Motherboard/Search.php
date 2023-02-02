@@ -22,7 +22,7 @@ use Doctrine\ORM\EntityManagerInterface;
 class Search extends AbstractType
 {
     private EntityManagerInterface $entityManager;
-    
+
     public function __construct(EntityManagerInterface $entityManager)
     {
         $this->entityManager = $entityManager;
@@ -37,7 +37,7 @@ class Search extends AbstractType
     {
         // sorting some fields before adding them to the form
         usort($options['cpuSockets'], function ($a, $b) {
-            if(!$a->getName() && !$b->getName())return strnatcasecmp($a->getType() ?? '', $b->getType() ?? '');
+            if (!$a->getName() && !$b->getName()) return strnatcasecmp($a->getType() ?? '', $b->getType() ?? '');
             else return strnatcasecmp($a->getName() ?? '', $b->getName() ?? '');
         });
 
@@ -213,8 +213,11 @@ class Search extends AbstractType
         $formSocket2Modifier = function (FormInterface $form, CpuSocket $socket = null) {
             $platforms = null === $socket ? $this->getProcessorPlatformTypeRepository()
                 ->findAll() : $socket->getPlatforms()->toArray();
-            usort($platforms, function ($a, $b) {
-                return strnatcasecmp($a->getName() ?? '', $b->getName() ?? '');}
+            usort(
+                $platforms,
+                function ($a, $b) {
+                    return strnatcasecmp($a->getName() ?? '', $b->getName() ?? '');
+                }
             );
             $form->add('platform2', ChoiceType::class, [
                 'choice_label' => 'name',

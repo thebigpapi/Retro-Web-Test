@@ -55,12 +55,12 @@ class ExpansionChip extends Chip
     public function getNameWithManufacturer()
     {
         if ($this->name) {
-            if($this->partNumber) {
+            if ($this->partNumber) {
                 return $this->getManufacturer()->getShortNameIfExist() . " " . $this->name . " (" . $this->partNumber . ")";
             }
             return $this->getManufacturer()->getShortNameIfExist() . " " . $this->name;
         }
-        if($this->partNumber) {
+        if ($this->partNumber) {
             return $this->getManufacturer()->getShortNameIfExist() . " " . $this->partNumber;
         }
         return $this->getManufacturer()->getShortNameIfExist() . " Unidentified";
@@ -99,7 +99,7 @@ class ExpansionChip extends Chip
 
         return $this;
     }
-     /**
+    /**
      * @return Collection|LargeFileExpansionChip[]
      */
     public function getDrivers(): Collection

@@ -12,7 +12,7 @@ class MotherboardAlias
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
     private $id;
-    
+
     #[ORM\ManyToOne(targetEntity: Motherboard::class, inversedBy: 'motherboardAliases')]
     #[ORM\JoinColumn(nullable: false)]
     private $motherboard;
@@ -21,7 +21,7 @@ class MotherboardAlias
     private $manufacturer;
 
     #[ORM\Column(type: 'string', length: 255)]
-    #[Assert\Length(max:255, maxMessage: 'Alias name is longer than {{ limit }} characters, try to make it shorter.')]
+    #[Assert\Length(max: 255, maxMessage: 'Alias name is longer than {{ limit }} characters, try to make it shorter.')]
     private $name;
 
     public function getId(): ?int

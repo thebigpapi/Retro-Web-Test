@@ -12,7 +12,7 @@ class LargeFileMediaTypeFlag
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
     private $id;
-    
+
     #[ORM\ManyToOne(targetEntity: LargeFile::class, inversedBy: 'mediaTypeFlags')]
     #[ORM\JoinColumn(nullable: false)]
     private $largeFile;

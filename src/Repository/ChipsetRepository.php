@@ -48,7 +48,7 @@ class ChipsetRepository extends ServiceEntityRepository
         // Checking values in criteria and creating WHERE statements
         if (array_key_exists('name', $criteria)) {
             $multicrit = explode(" ", $criteria['name']);
-            foreach ($multicrit as $key => $val){
+            foreach ($multicrit as $key => $val) {
                 $whereArray[] = "(LOWER(chip.name) LIKE :nameLike$key 
                     OR LOWER(chip.part_no) LIKE :nameLike$key 
                     OR LOWER(part.partNumber) LIKE :nameLike$key
@@ -115,10 +115,9 @@ class ChipsetRepository extends ServiceEntityRepository
             ->andWhere('c.manufacturer = :man')
             ->setParameter('man', $man)
             ->getQuery()
-            ->getResult()
-        ;
+            ->getResult();
     }
-    
+
     public function getCount(): int
     {
         return $this->createQueryBuilder('m')

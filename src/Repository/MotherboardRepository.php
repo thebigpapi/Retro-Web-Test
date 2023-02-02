@@ -26,7 +26,8 @@ class MotherboardRepository extends ServiceEntityRepository
         parent::__construct($registry, Motherboard::class);
     }
 
-    public function findSlug(string $slug): Motherboard|null {
+    public function findSlug(string $slug): Motherboard|null
+    {
         $entityManager = $this->getEntityManager();
 
         $query = $entityManager->createQuery(
@@ -38,7 +39,8 @@ class MotherboardRepository extends ServiceEntityRepository
         return $query->getOneOrNullResult();
     }
 
-    public function checkIdentifierExists(string|int $identifier): bool {
+    public function checkIdentifierExists(string|int $identifier): bool
+    {
         $entityManager = $this->getEntityManager();
 
         if (is_int($identifier) && is_numeric($identifier)) {
@@ -1020,11 +1022,11 @@ class MotherboardRepository extends ServiceEntityRepository
             GROUP BY man
             ORDER BY count DESC'
         )
-        ->getResult();
+            ->getResult();
 
         $finalArray = array();
 
-        foreach($result as $subArray) {
+        foreach ($result as $subArray) {
             $finalArray[$subArray['name']] = $subArray['count'];
         };
 
