@@ -24,16 +24,16 @@ abstract class Chip
     #[Assert\Length(max:255, maxMessage: 'Part number is longer than {{ limit }} characters, try to make it shorter.')]
     protected $partNumber;
 
-    #[ORM\ManyToOne(targetEntity: 'App\Entity\Manufacturer', inversedBy: 'chips', fetch: 'EAGER')]
+    #[ORM\ManyToOne(targetEntity: Manufacturer::class, inversedBy: 'chips', fetch: 'EAGER')]
     protected $manufacturer;
 
-    #[ORM\OneToMany(targetEntity: 'App\Entity\ChipDocumentation', mappedBy: 'chip', orphanRemoval: true, cascade: ['persist'])]
+    #[ORM\OneToMany(targetEntity: ChipDocumentation::class, mappedBy: 'chip', orphanRemoval: true, cascade: ['persist'])]
     protected $documentations;
 
-    #[ORM\OneToMany(targetEntity: 'App\Entity\ChipAlias', mappedBy: 'chip', orphanRemoval: true, cascade: ['persist'])]
+    #[ORM\OneToMany(targetEntity: ChipAlias::class, mappedBy: 'chip', orphanRemoval: true, cascade: ['persist'])]
     private $chipAliases;
 
-    #[ORM\OneToMany(targetEntity: 'App\Entity\ChipImage', mappedBy: 'chip', orphanRemoval: true, cascade: ['persist'])]
+    #[ORM\OneToMany(targetEntity: ChipImage::class, mappedBy: 'chip', orphanRemoval: true, cascade: ['persist'])]
     private $images;
 
     #[ORM\OneToMany(mappedBy: 'chip', targetEntity: PciDeviceId::class,  orphanRemoval: true, cascade: ['persist'])]
@@ -179,7 +179,7 @@ abstract class Chip
     {
         if (!$this->pciDevs->contains($pciDev)) {
             $this->pciDevs->add($pciDev);
-            $pciDev->setChipsetPart($this);
+            $pciDev->setChip($this);
         }
 
         return $this;
@@ -189,8 +189,8 @@ abstract class Chip
     {
         if ($this->pciDevs->removeElement($pciDev)) {
             // set the owning side to null (unless already changed)
-            if ($pciDev->getChipsetPart() === $this) {
-                $pciDev->setChipsetPart(null);
+            if ($pciDev->getChip() === $this) {
+                $pciDev->setChip(null);
             }
         }
 

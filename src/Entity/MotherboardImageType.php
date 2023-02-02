@@ -19,7 +19,7 @@ class MotherboardImageType
     #[Assert\Length(max:255, maxMessage: 'Name is longer than {{ limit }} characters, try to make it shorter.')]
     private $name;
 
-    #[ORM\OneToMany(targetEntity: 'App\Entity\MotherboardImage', mappedBy: 'motherboardImageType')]
+    #[ORM\OneToMany(targetEntity: MotherboardImage::class, mappedBy: 'motherboardImageType')]
     private $motherboardImages;
 
     public function __construct()

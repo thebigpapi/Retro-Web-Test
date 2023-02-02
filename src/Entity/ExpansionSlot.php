@@ -19,7 +19,7 @@ class ExpansionSlot
     #[Assert\Length(max:255, maxMessage: 'Name is longer than {{ limit }} characters, try to make it shorter.')]
     private $name;
 
-    #[ORM\OneToMany(targetEntity: 'App\Entity\MotherboardExpansionSlot', mappedBy: 'expansion_slot', orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: MotherboardExpansionSlot::class, mappedBy: 'expansion_slot', orphanRemoval: true)]
     private $motherboardExpansionSlots;
 
     #[ORM\Column(type: 'boolean')]

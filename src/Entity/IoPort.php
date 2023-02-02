@@ -19,7 +19,7 @@ class IoPort
     #[Assert\Length(max:255, maxMessage: 'Name is longer than {{ limit }} characters, try to make it shorter.')]
     private $name;
     
-    #[ORM\OneToMany(targetEntity: 'App\Entity\MotherboardIoPort', mappedBy: 'io_port', orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: MotherboardIoPort::class, mappedBy: 'io_port', orphanRemoval: true)]
     private $motherboardIoPorts;
 
     public function __construct()

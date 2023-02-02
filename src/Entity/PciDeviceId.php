@@ -16,7 +16,7 @@ class PciDeviceId
     #[ORM\Column]
     private ?int $dev = null;
 
-    #[ORM\ManyToOne(targetEntity: 'App\Entity\Chip', inversedBy: 'pciDevs')]
+    #[ORM\ManyToOne(targetEntity: Chip::class, inversedBy: 'pciDevs')]
     private $chip;
 
     public function getId(): ?int

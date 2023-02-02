@@ -15,10 +15,10 @@ class Chipset
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\ManyToOne(targetEntity: 'App\Entity\Manufacturer', inversedBy: 'chipsets')]
+    #[ORM\ManyToOne(targetEntity: Manufacturer::class, inversedBy: 'chipsets')]
     private $manufacturer;
 
-    #[ORM\OneToMany(targetEntity: 'App\Entity\Motherboard', mappedBy: 'chipset')]
+    #[ORM\OneToMany(targetEntity: Motherboard::class, mappedBy: 'chipset')]
     private $motherboards;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
@@ -31,7 +31,7 @@ class Chipset
     /**
      * @var ArrayCollection<ChipsetPart>
      */
-    #[ORM\ManyToMany(targetEntity: 'App\Entity\ChipsetPart', inversedBy: 'chipsets')]
+    #[ORM\ManyToMany(targetEntity: ChipsetPart::class, inversedBy: 'chipsets')]
     private $chipsetParts;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
@@ -46,7 +46,7 @@ class Chipset
     #[Assert\Length(max:255, maxMessage: 'Part number is longer than {{ limit }} characters, try to make it shorter.')]
     private $part_no;
 
-    #[ORM\OneToMany(targetEntity: 'App\Entity\ChipsetBiosCode', mappedBy: 'chipset', orphanRemoval: true, cascade: ['persist'])]
+    #[ORM\OneToMany(targetEntity: ChipsetBiosCode::class, mappedBy: 'chipset', orphanRemoval: true, cascade: ['persist'])]
     private $biosCodes;
 
     #[ORM\OneToMany(targetEntity: LargeFileChipset::class, mappedBy: 'chipset', orphanRemoval: true, cascade: ['persist'])]
@@ -56,7 +56,7 @@ class Chipset
     #[Assert\Length(max:8192, maxMessage: 'Description is longer than {{ limit }} characters, try to make it shorter.')]
     private $description;
 
-    #[ORM\OneToMany(targetEntity: 'App\Entity\ChipsetDocumentation', mappedBy: 'chipset', orphanRemoval: true, cascade: ['persist'])]
+    #[ORM\OneToMany(targetEntity: ChipsetDocumentation::class, mappedBy: 'chipset', orphanRemoval: true, cascade: ['persist'])]
     private $documentations;
     
     public function __construct()

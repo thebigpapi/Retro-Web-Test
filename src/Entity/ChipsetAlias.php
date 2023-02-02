@@ -13,7 +13,7 @@ class ChipsetAlias
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\ManyToOne(targetEntity: 'App\Entity\Chipset', inversedBy: 'chipsetAliases')]
+    #[ORM\ManyToOne(targetEntity: Chipset::class, inversedBy: 'chipsetAliases')]
     #[ORM\JoinColumn(nullable: false)]
     private $chipset;
 

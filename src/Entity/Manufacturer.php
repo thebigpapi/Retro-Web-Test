@@ -26,28 +26,28 @@ class Manufacturer
     #[Assert\Length(max:255, maxMessage: 'Short name is longer than {{ limit }} characters, try to make it shorter.')]
     private $shortName;
 
-    #[ORM\OneToMany(targetEntity: 'App\Entity\Motherboard', mappedBy: 'manufacturer')]
+    #[ORM\OneToMany(targetEntity: Motherboard::class, mappedBy: 'manufacturer')]
     private $motherboards;
 
-    #[ORM\OneToMany(targetEntity: 'App\Entity\Chipset', mappedBy: 'manufacturer')]
+    #[ORM\OneToMany(targetEntity: Chipset::class, mappedBy: 'manufacturer')]
     private $chipsets;
 
     #[ORM\OneToMany(targetEntity: ChipsetAlias::class, mappedBy: 'manufacturer')]
     private $chipsetAliases;
 
-    #[ORM\OneToMany(targetEntity: 'App\Entity\MotherboardAlias', mappedBy: 'manufacturer')]
+    #[ORM\OneToMany(targetEntity: MotherboardAlias::class, mappedBy: 'manufacturer')]
     private $motherboardAliases;
 
-    #[ORM\OneToMany(targetEntity: 'App\Entity\Chip', mappedBy: 'manufacturer')]
+    #[ORM\OneToMany(targetEntity: Chip::class, mappedBy: 'manufacturer')]
     private $chips;
 
-    #[ORM\OneToMany(targetEntity: 'App\Entity\ChipAlias', mappedBy: 'manufacturer')]
+    #[ORM\OneToMany(targetEntity: ChipAlias::class, mappedBy: 'manufacturer')]
     private $chipAliases;
 
-    #[ORM\OneToMany(targetEntity: 'App\Entity\ManufacturerBiosManufacturerCode', mappedBy: 'manufacturer', orphanRemoval: true, cascade: ['persist'])]
+    #[ORM\OneToMany(targetEntity: ManufacturerBiosManufacturerCode::class, mappedBy: 'manufacturer', orphanRemoval: true, cascade: ['persist'])]
     private $biosCodes;
 
-    #[ORM\OneToMany(targetEntity: 'App\Entity\ChipsetBiosCode', mappedBy: 'biosManufacturer')]
+    #[ORM\OneToMany(targetEntity: ChipsetBiosCode::class, mappedBy: 'biosManufacturer')]
     private $chipsetBiosCodes;
 
     #[ORM\OneToMany(targetEntity: OsFlag::class, mappedBy: 'manufacturer')]

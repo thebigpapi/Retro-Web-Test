@@ -13,11 +13,11 @@ class ChipAlias
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\ManyToOne(targetEntity: 'App\Entity\Chip', inversedBy: 'chipAliases')]
+    #[ORM\ManyToOne(targetEntity: Chip::class, inversedBy: 'chipAliases')]
     #[ORM\JoinColumn(nullable: false)]
     private $chip;
 
-    #[ORM\ManyToOne(targetEntity: 'App\Entity\Manufacturer', inversedBy: 'chipAliases')]
+    #[ORM\ManyToOne(targetEntity: Manufacturer::class, inversedBy: 'chipAliases')]
     private $manufacturer;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]

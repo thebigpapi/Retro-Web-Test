@@ -18,7 +18,7 @@ class ChipImage
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\ManyToOne(targetEntity: 'App\Entity\Chip', inversedBy: 'images')]
+    #[ORM\ManyToOne(targetEntity: Chip::class, inversedBy: 'images')]
     #[ORM\JoinColumn(nullable: false)]
     private $chip;
     
@@ -39,7 +39,7 @@ class ChipImage
     #[ORM\Column(type: 'datetime')]
     private $updated_at;
 
-    #[ORM\ManyToOne(targetEntity: 'App\Entity\Creditor', inversedBy: 'chipImages')]
+    #[ORM\ManyToOne(targetEntity: Creditor::class, inversedBy: 'chipImages')]
     private $creditor;
     
     public function getId(): ?int

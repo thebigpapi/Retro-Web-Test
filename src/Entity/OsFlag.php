@@ -87,12 +87,6 @@ class OsFlag
 
         return $this;
     }
-    public function addFamily(?OsFamily $family): self
-    {
-        $this->family = $family;
-
-        return $this;
-    }
     /**
      * @return Collection|OsFamily[]
      */

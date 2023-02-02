@@ -17,7 +17,7 @@ class Language
     #[ORM\Column(type: 'string', length: 255)]
     private $name;
 
-    #[ORM\OneToMany(targetEntity: 'App\Entity\Manual', mappedBy: 'language')]
+    #[ORM\OneToMany(targetEntity: Manual::class, mappedBy: 'language')]
     private $manuals;
 
     #[ORM\Column(type: 'string', length: 255)]

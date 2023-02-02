@@ -9,12 +9,12 @@ use Symfony\Component\Validator\Constraints as Assert;
 class MotherboardMaxRam
 {
     #[ORM\Id]
-    #[ORM\ManyToOne(targetEntity: 'App\Entity\Motherboard', inversedBy: 'motherboardMaxRams')]
+    #[ORM\ManyToOne(targetEntity: Motherboard::class, inversedBy: 'motherboardMaxRams')]
     #[ORM\JoinColumn(nullable: false)]
     private $motherboard;
     
     #[ORM\Id]
-    #[ORM\ManyToOne(targetEntity: 'App\Entity\MaxRam', inversedBy: 'motherboardMaxRams')]
+    #[ORM\ManyToOne(targetEntity: MaxRam::class, inversedBy: 'motherboardMaxRams')]
     #[ORM\JoinColumn(nullable: false)]
     private $max_ram;
 

@@ -18,7 +18,7 @@ class Manual
     #[Vich\UploadableField(mapping:'manual', fileNameProperty:'file_name')]
     private File|null $manualFile;
     
-    #[ORM\ManyToOne(targetEntity: 'App\Entity\Motherboard', inversedBy: 'manuals')]
+    #[ORM\ManyToOne(targetEntity: Motherboard::class, inversedBy: 'manuals')]
     private $motherboard;
 
     public function getMotherboard(): ?Motherboard

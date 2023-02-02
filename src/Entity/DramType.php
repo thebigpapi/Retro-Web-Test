@@ -19,12 +19,11 @@ class DramType
     #[Assert\Length(max:255, maxMessage: 'Name is longer than {{ limit }} characters, try to make it shorter.')]
     private $name;
 
-    #[ORM\ManyToMany(targetEntity: 'App\Entity\Motherboard', mappedBy: 'dramType')]
+    #[ORM\ManyToMany(targetEntity: Motherboard::class, mappedBy: 'dramType')]
     private $motherboards;
 
     public function __construct()
     {
-        $this->motherboardDramTypes = new ArrayCollection();
         $this->motherboards = new ArrayCollection();
     }
     public function getId(): ?int

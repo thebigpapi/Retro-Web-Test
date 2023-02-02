@@ -17,7 +17,7 @@ class MotherboardBios
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\ManyToOne(targetEntity: 'App\Entity\Motherboard', inversedBy: 'motherboardBios')]
+    #[ORM\ManyToOne(targetEntity: Motherboard::class, inversedBy: 'motherboardBios')]
     #[ORM\JoinColumn(nullable: false)]
     private $motherboard;
 
@@ -35,7 +35,7 @@ class MotherboardBios
     #[Assert\Length(max:255, maxMessage: 'BIOS POST string is longer than {{ limit }} characters, try to make it shorter.')]
     private $postString;
 
-    #[ORM\ManyToOne(targetEntity: 'App\Entity\Manufacturer')]
+    #[ORM\ManyToOne(targetEntity: Manufacturer::class)]
     private $manufacturer;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]

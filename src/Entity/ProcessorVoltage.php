@@ -15,7 +15,7 @@ class ProcessorVoltage
     #[ORM\Column(type: 'float')]
     private $value;
 
-    #[ORM\ManyToOne(targetEntity: 'App\Entity\Processor', inversedBy: 'voltages')]
+    #[ORM\ManyToOne(targetEntity: Processor::class, inversedBy: 'voltages')]
     #[ORM\JoinColumn(nullable: false)]
     private $processor;
     

@@ -13,11 +13,11 @@ class MotherboardAlias
     #[ORM\Column(type: 'integer')]
     private $id;
     
-    #[ORM\ManyToOne(targetEntity: 'App\Entity\Motherboard', inversedBy: 'motherboardAliases')]
+    #[ORM\ManyToOne(targetEntity: Motherboard::class, inversedBy: 'motherboardAliases')]
     #[ORM\JoinColumn(nullable: false)]
     private $motherboard;
 
-    #[ORM\ManyToOne(targetEntity: 'App\Entity\Manufacturer', inversedBy: 'motherboardAliases')]
+    #[ORM\ManyToOne(targetEntity: Manufacturer::class, inversedBy: 'motherboardAliases')]
     private $manufacturer;
 
     #[ORM\Column(type: 'string', length: 255)]

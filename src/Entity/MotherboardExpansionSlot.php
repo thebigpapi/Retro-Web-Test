@@ -8,12 +8,12 @@ use Doctrine\ORM\Mapping as ORM;
 class MotherboardExpansionSlot
 {
     #[ORM\Id]
-    #[ORM\ManyToOne(targetEntity: 'App\Entity\Motherboard', inversedBy: 'motherboardExpansionSlots')]
+    #[ORM\ManyToOne(targetEntity: Motherboard::class, inversedBy: 'motherboardExpansionSlots')]
     #[ORM\JoinColumn(nullable: false)]
     private $motherboard;
     
     #[ORM\Id]
-    #[ORM\ManyToOne(targetEntity: 'App\Entity\ExpansionSlot', inversedBy: 'motherboardExpansionSlots')]
+    #[ORM\ManyToOne(targetEntity: ExpansionSlot::class, inversedBy: 'motherboardExpansionSlots')]
     #[ORM\JoinColumn(nullable: false)]
     private $expansion_slot;
 

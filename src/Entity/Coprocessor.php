@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: 'App\Repository\CoprocessorRepository')]
 class Coprocessor extends ProcessingUnit
 {
-    #[ORM\ManyToMany(targetEntity: 'App\Entity\Motherboard', mappedBy: 'coprocessors')]
+    #[ORM\ManyToMany(targetEntity: Motherboard::class, mappedBy: 'coprocessors')]
     private $motherboards;
     
     public function __construct()

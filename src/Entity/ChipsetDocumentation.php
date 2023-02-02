@@ -19,7 +19,7 @@ class ChipsetDocumentation
     #[Vich\UploadableField(mapping:'chipsetDoc', fileNameProperty:'file_name')]
     private File|null $manualFile;
 
-    #[ORM\ManyToOne(targetEntity: 'App\Entity\Chipset', inversedBy: 'documentations')]
+    #[ORM\ManyToOne(targetEntity: Chipset::class, inversedBy: 'documentations')]
     private $chipset;
     
     public function getChipset(): ?Chipset

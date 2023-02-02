@@ -16,7 +16,7 @@ class PciVendorId
     #[ORM\Column]
     private ?int $ven = null;
 
-    #[ORM\ManyToOne(targetEntity: 'App\Entity\Manufacturer', inversedBy: 'pciVendorIds')]
+    #[ORM\ManyToOne(targetEntity: Manufacturer::class, inversedBy: 'pciVendorIds')]
     private $manufacturer = null;
 
     public function getId(): ?int

@@ -19,13 +19,13 @@ class InstructionSet
     #[Assert\Length(max:255, maxMessage: 'Name is longer than {{ limit }} characters, try to make it shorter.')]
     private $name;
 
-    #[ORM\ManyToMany(targetEntity: 'App\Entity\ProcessingUnit', mappedBy: 'instructionSets')]
+    #[ORM\ManyToMany(targetEntity: ProcessingUnit::class, mappedBy: 'instructionSets')]
     private $processingUnits;
 
-    #[ORM\ManyToMany(targetEntity: 'App\Entity\InstructionSet', inversedBy: 'childInstructionSets')]
+    #[ORM\ManyToMany(targetEntity: InstructionSet::class, inversedBy: 'childInstructionSets')]
     private $compatibleWith;
 
-    #[ORM\ManyToMany(targetEntity: 'App\Entity\InstructionSet', mappedBy: 'compatibleWith')]
+    #[ORM\ManyToMany(targetEntity: InstructionSet::class, mappedBy: 'compatibleWith')]
     private $childInstructionSets;
 
     public function __construct()

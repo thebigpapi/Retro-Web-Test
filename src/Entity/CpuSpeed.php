@@ -17,18 +17,17 @@ class CpuSpeed
     #[ORM\Column(type: 'float')]
     private $value;
 
-    #[ORM\ManyToMany(targetEntity: 'App\Entity\Motherboard', mappedBy: 'cpuSpeed')]
+    #[ORM\ManyToMany(targetEntity: Motherboard::class, mappedBy: 'cpuSpeed')]
     private $motherboards;
 
-    #[ORM\OneToMany(targetEntity: 'App\Entity\ProcessingUnit', mappedBy: 'speed')]
+    #[ORM\OneToMany(targetEntity: ProcessingUnit::class, mappedBy: 'speed')]
     private $processingUnits;
 
-    #[ORM\OneToMany(targetEntity: 'App\Entity\ProcessingUnit', mappedBy: 'fsb')]
+    #[ORM\OneToMany(targetEntity: ProcessingUnit::class, mappedBy: 'fsb')]
     private $processingUnitsFsb;
 
     public function __construct()
     {
-        $this->motherboardCpuSpeeds = new ArrayCollection();
         $this->motherboards = new ArrayCollection();
         $this->processingUnits = new ArrayCollection();
         $this->processingUnitsFsb = new ArrayCollection();

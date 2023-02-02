@@ -17,21 +17,20 @@ class CacheSize
     #[ORM\Column(type: 'integer')]
     private $value;
 
-    #[ORM\ManyToMany(targetEntity: 'App\Entity\Motherboard', mappedBy: 'cacheSize')]
+    #[ORM\ManyToMany(targetEntity: Motherboard::class, mappedBy: 'cacheSize')]
     private $motherboards;
 
-    #[ORM\OneToMany(targetEntity: 'App\Entity\Processor', mappedBy: 'L1')]
+    #[ORM\OneToMany(targetEntity: Processor::class, mappedBy: 'L1')]
     private $getProcessorsL1;
 
-    #[ORM\OneToMany(targetEntity: 'App\Entity\Processor', mappedBy: 'L2')]
+    #[ORM\OneToMany(targetEntity: Processor::class, mappedBy: 'L2')]
     private $getProcessorsL2;
 
-    #[ORM\OneToMany(targetEntity: 'App\Entity\Processor', mappedBy: 'L3')]
+    #[ORM\OneToMany(targetEntity: Processor::class, mappedBy: 'L3')]
     private $getProcessorsL3;
 
     public function __construct()
     {
-        $this->motherboardCacheSizes = new ArrayCollection();
         $this->motherboards = new ArrayCollection();
         $this->getProcessorsL1 = new ArrayCollection();
         $this->getProcessorsL2 = new ArrayCollection();

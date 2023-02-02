@@ -19,26 +19,24 @@ class ProcessorPlatformType
     #[Assert\Length(max:255, maxMessage: 'Name is longer than {{ limit }} characters, try to make it shorter.')]
     private $name;
 
-    #[ORM\ManyToMany(targetEntity: 'App\Entity\Motherboard', mappedBy: 'processorPlatformTypes')]
+    #[ORM\ManyToMany(targetEntity: Motherboard::class, mappedBy: 'processorPlatformTypes')]
     private $motherboards;
 
-    #[ORM\OneToMany(targetEntity: 'App\Entity\ProcessingUnit', mappedBy: 'platform')]
+    #[ORM\OneToMany(targetEntity: ProcessingUnit::class, mappedBy: 'platform')]
     private $processingUnits;
 
-    #[ORM\ManyToMany(targetEntity: 'App\Entity\ProcessorPlatformType', inversedBy: 'ChildProcessorPlatformType')]
+    #[ORM\ManyToMany(targetEntity: ProcessorPlatformType::class, inversedBy: 'ChildProcessorPlatformType')]
     private $compatibleWith;
 
-    #[ORM\ManyToMany(targetEntity: 'App\Entity\ProcessorPlatformType', mappedBy: 'compatibleWith')]
+    #[ORM\ManyToMany(targetEntity: ProcessorPlatformType::class, mappedBy: 'compatibleWith')]
     private $ChildProcessorPlatformType;
 
-    #[ORM\ManyToMany(targetEntity: 'App\Entity\CpuSocket', mappedBy: 'platforms')]
+    #[ORM\ManyToMany(targetEntity: CpuSocket::class, mappedBy: 'platforms')]
     private $cpuSockets;
 
     public function __construct()
     {
-        $this->processors = new ArrayCollection();
         $this->motherboards = new ArrayCollection();
-        $this->coprocessors = new ArrayCollection();
         $this->processingUnits = new ArrayCollection();
         $this->compatibleWith = new ArrayCollection();
         $this->ChildProcessorPlatformType = new ArrayCollection();

@@ -19,17 +19,17 @@ class CpuSocket
     #[Assert\Length(max:255, maxMessage: 'Name is longer than {{ limit }} characters, try to make it shorter.')]
     private $name;
 
-    #[ORM\ManyToMany(targetEntity: 'App\Entity\ProcessorPlatformType', inversedBy: 'cpuSockets')]
+    #[ORM\ManyToMany(targetEntity: ProcessorPlatformType::class, inversedBy: 'cpuSockets')]
     private $platforms;
 
-    #[ORM\ManyToMany(targetEntity: 'App\Entity\Motherboard', mappedBy: 'cpuSockets')]
+    #[ORM\ManyToMany(targetEntity: Motherboard::class, mappedBy: 'cpuSockets')]
     private $motherboards;
 
     #[ORM\Column(type: 'string', length: 255)]
     #[Assert\Length(max:255, maxMessage: 'Type is longer than {{ limit }} characters, try to make it shorter.')]
     private $type;
 
-    #[ORM\ManyToMany(targetEntity: 'App\Entity\ProcessingUnit', mappedBy: 'sockets')]
+    #[ORM\ManyToMany(targetEntity: ProcessingUnit::class, mappedBy: 'sockets')]
     private $processingUnits;
 
     public function __construct()

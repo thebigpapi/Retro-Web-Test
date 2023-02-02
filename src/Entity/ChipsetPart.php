@@ -10,7 +10,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: 'App\Repository\ChipsetPartRepository')]
 class ChipsetPart extends Chip
 {
-    #[ORM\ManyToMany(targetEntity: 'App\Entity\Chipset', mappedBy: 'chipsetParts')]
+    #[ORM\ManyToMany(targetEntity: Chipset::class, mappedBy: 'chipsetParts')]
     private $chipsets;
 
     #[ORM\Column(type: 'string', length: 8192, nullable: true)]
@@ -23,7 +23,7 @@ class ChipsetPart extends Chip
     public function __construct()
     {
         parent::__construct();
-        $this->chipsetParts = new ArrayCollection();
+        $this->chipsets = new ArrayCollection();
         $this->documentations = new ArrayCollection();
     }
     /**

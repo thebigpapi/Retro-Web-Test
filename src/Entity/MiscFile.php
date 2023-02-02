@@ -26,7 +26,7 @@ class MiscFile
     #[ORM\Column(type: 'string', length: 255)]
     private $link_name;
 
-    #[ORM\ManyToOne(targetEntity: 'App\Entity\Motherboard', inversedBy: 'miscFiles')]
+    #[ORM\ManyToOne(targetEntity: Motherboard::class, inversedBy: 'miscFiles')]
     private $motherboard;
 
     #[ORM\Column(type: 'datetime')]

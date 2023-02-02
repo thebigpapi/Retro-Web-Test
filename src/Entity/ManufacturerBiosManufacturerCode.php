@@ -12,11 +12,11 @@ class ManufacturerBiosManufacturerCode
     #[ORM\Column(type: 'integer')]
     private $id;
     
-    #[ORM\ManyToOne(targetEntity: 'App\Entity\Manufacturer', inversedBy: 'biosCodes', fetch: 'EAGER')]
+    #[ORM\ManyToOne(targetEntity: Manufacturer::class, inversedBy: 'biosCodes', fetch: 'EAGER')]
     #[ORM\JoinColumn(nullable: false)]
     private $manufacturer;
 
-    #[ORM\ManyToOne(targetEntity: 'App\Entity\Manufacturer', fetch: 'EAGER')]
+    #[ORM\ManyToOne(targetEntity: Manufacturer::class, fetch: 'EAGER')]
     #[ORM\JoinColumn(nullable: false)]
     private $biosManufacturer;
 

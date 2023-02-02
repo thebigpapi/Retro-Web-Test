@@ -23,20 +23,20 @@ class Creditor
     #[Assert\Length(max:255, maxMessage: 'Website link is longer than {{ limit }} characters, try to make it shorter.')]
     private $website;
 
-    #[ORM\OneToMany(targetEntity: 'App\Entity\MotherboardImage', mappedBy: 'creditor')]
+    #[ORM\OneToMany(targetEntity: MotherboardImage::class, mappedBy: 'creditor')]
     private $motherboardImages;
 
-    #[ORM\OneToMany(targetEntity: 'App\Entity\ChipImage', mappedBy: 'creditor')]
+    #[ORM\OneToMany(targetEntity: ChipImage::class, mappedBy: 'creditor')]
     private $chipImages;
 
-    #[ORM\ManyToOne(targetEntity: 'App\Entity\License', inversedBy: 'creditors')]
+    #[ORM\ManyToOne(targetEntity: License::class, inversedBy: 'creditors')]
     #[ORM\JoinColumn(nullable: true)]
     private $license;
 
     public function __construct()
     {
         $this->chipImages = new ArrayCollection();
-        $this->license = new ArrayCollection();
+        $this->motherboardImages = new ArrayCollection();
     }
     public function getId(): ?int
     {

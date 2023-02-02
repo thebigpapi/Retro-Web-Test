@@ -15,21 +15,21 @@ abstract class ProcessingUnit extends Chip
     #[ORM\Column(type: 'integer')]
     protected $id;
     
-    #[ORM\ManyToOne(targetEntity: 'App\Entity\CpuSpeed', inversedBy: 'processingUnits')]
+    #[ORM\ManyToOne(targetEntity: CpuSpeed::class, inversedBy: 'processingUnits')]
     #[ORM\OrderBy(['value' => 'ASC'])]
     protected $speed;
     
-    #[ORM\ManyToOne(targetEntity: 'App\Entity\ProcessorPlatformType', inversedBy: 'processingUnits')]
+    #[ORM\ManyToOne(targetEntity: ProcessorPlatformType::class, inversedBy: 'processingUnits')]
     protected $platform;
 
-    #[ORM\ManyToMany(targetEntity: 'App\Entity\InstructionSet', inversedBy: 'processingUnits')]
+    #[ORM\ManyToMany(targetEntity: InstructionSet::class, inversedBy: 'processingUnits')]
     protected $instructionSets;
 
-    #[ORM\ManyToOne(targetEntity: 'App\Entity\CpuSpeed', inversedBy: 'processingUnitsFsb')]
+    #[ORM\ManyToOne(targetEntity: CpuSpeed::class, inversedBy: 'processingUnitsFsb')]
     #[ORM\OrderBy(['value' => 'ASC'])]
     protected $fsb;
 
-    #[ORM\ManyToMany(targetEntity: 'App\Entity\CpuSocket', inversedBy: 'processingUnits')]
+    #[ORM\ManyToMany(targetEntity: CpuSocket::class, inversedBy: 'processingUnits')]
     private $sockets;
 
     public function __construct()

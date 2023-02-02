@@ -19,7 +19,7 @@ class FormFactor
     #[Assert\Length(max:255, maxMessage: 'Name is longer than {{ limit }} characters, try to make it shorter.')]
     private $name;
 
-    #[ORM\OneToMany(targetEntity: 'App\Entity\Motherboard', mappedBy: 'formFactor')]
+    #[ORM\OneToMany(targetEntity: Motherboard::class, mappedBy: 'formFactor')]
     private $motherboards;
 
     public function __construct()

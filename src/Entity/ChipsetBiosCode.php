@@ -13,11 +13,11 @@ class ChipsetBiosCode
     #[ORM\Column(type: 'integer')]
     private $id;
     
-    #[ORM\ManyToOne(targetEntity: 'App\Entity\Chipset', inversedBy: 'biosCodes', fetch: 'EAGER')]
+    #[ORM\ManyToOne(targetEntity: Chipset::class, inversedBy: 'biosCodes', fetch: 'EAGER')]
     #[ORM\JoinColumn(nullable: false)]
     private $chipset;
 
-    #[ORM\ManyToOne(targetEntity: 'App\Entity\Manufacturer', inversedBy: 'chipsetBiosCodes', fetch: 'EAGER')]
+    #[ORM\ManyToOne(targetEntity: Manufacturer::class, inversedBy: 'chipsetBiosCodes', fetch: 'EAGER')]
     #[ORM\JoinColumn(nullable: false)]
     private $biosManufacturer;
 

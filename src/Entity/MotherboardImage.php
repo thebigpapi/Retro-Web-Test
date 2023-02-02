@@ -18,11 +18,11 @@ class MotherboardImage
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\ManyToOne(targetEntity: 'App\Entity\MotherboardImageType', inversedBy: 'motherboardImages')]
+    #[ORM\ManyToOne(targetEntity: MotherboardImageType::class, inversedBy: 'motherboardImages')]
     #[ORM\JoinColumn(nullable: false)]
     private $motherboardImageType;
 
-    #[ORM\ManyToOne(targetEntity: 'App\Entity\Motherboard', inversedBy: 'images')]
+    #[ORM\ManyToOne(targetEntity: Motherboard::class, inversedBy: 'images')]
     #[ORM\JoinColumn(nullable: false)]
     private $motherboard;
 
@@ -43,7 +43,7 @@ class MotherboardImage
     #[ORM\Column(type: 'datetime')]
     private $updated_at;
 
-    #[ORM\ManyToOne(targetEntity: 'App\Entity\Creditor', inversedBy: 'motherboardImages')]
+    #[ORM\ManyToOne(targetEntity: Creditor::class, inversedBy: 'motherboardImages')]
     private $creditor;
 
     public function getId(): ?int

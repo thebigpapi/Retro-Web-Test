@@ -8,12 +8,12 @@ use Doctrine\ORM\Mapping as ORM;
 class MotherboardIoPort
 {
     #[ORM\Id]
-    #[ORM\ManyToOne(targetEntity: 'App\Entity\Motherboard', inversedBy: 'motherboardIoPorts')]
+    #[ORM\ManyToOne(targetEntity: Motherboard::class, inversedBy: 'motherboardIoPorts')]
     #[ORM\JoinColumn(nullable: false)]
     private $motherboard;
     
     #[ORM\Id]
-    #[ORM\ManyToOne(targetEntity: 'App\Entity\IoPort', inversedBy: 'motherboardIoPorts')]
+    #[ORM\ManyToOne(targetEntity: IoPort::class, inversedBy: 'motherboardIoPorts')]
     #[ORM\JoinColumn(nullable: false)]
     private $io_port;
 

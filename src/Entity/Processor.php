@@ -10,25 +10,25 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: 'App\Repository\ProcessorRepository')]
 class Processor extends ProcessingUnit
 {
-    #[ORM\ManyToMany(targetEntity: 'App\Entity\Motherboard', mappedBy: 'processors')]
+    #[ORM\ManyToMany(targetEntity: Motherboard::class, mappedBy: 'processors')]
     private $motherboards;
     
-    #[ORM\ManyToOne(targetEntity: 'App\Entity\CacheSize', inversedBy: 'getProcessorsL1')]
+    #[ORM\ManyToOne(targetEntity: CacheSize::class, inversedBy: 'getProcessorsL1')]
     private $L1;
 
-    #[ORM\ManyToOne(targetEntity: 'App\Entity\CacheSize', inversedBy: 'getProcessorsL2')]
+    #[ORM\ManyToOne(targetEntity: CacheSize::class, inversedBy: 'getProcessorsL2')]
     private $L2;
 
-    #[ORM\ManyToOne(targetEntity: 'App\Entity\CacheSize', inversedBy: 'getProcessorsL3')]
+    #[ORM\ManyToOne(targetEntity: CacheSize::class, inversedBy: 'getProcessorsL3')]
     private $L3;
 
-    #[ORM\ManyToOne(targetEntity: 'App\Entity\CacheMethod', inversedBy: 'processors')]
+    #[ORM\ManyToOne(targetEntity: CacheMethod::class, inversedBy: 'processors')]
     private $L1CacheMethod;
 
-    #[ORM\ManyToOne(targetEntity: 'App\Entity\CacheRatio', inversedBy: 'processorsL2')]
+    #[ORM\ManyToOne(targetEntity: CacheRatio::class, inversedBy: 'processorsL2')]
     private $L2CacheRatio;
 
-    #[ORM\ManyToOne(targetEntity: 'App\Entity\CacheRatio', inversedBy: 'processorsL3')]
+    #[ORM\ManyToOne(targetEntity: CacheRatio::class, inversedBy: 'processorsL3')]
     private $L3CacheRatio;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
@@ -41,7 +41,7 @@ class Processor extends ProcessingUnit
     #[ORM\Column(type: 'integer', nullable: true)]
     private $ProcessNode;
     
-    #[ORM\OneToMany(targetEntity: 'App\Entity\ProcessorVoltage', mappedBy: 'processor', orphanRemoval: true, cascade: ['persist'])]
+    #[ORM\OneToMany(targetEntity: ProcessorVoltage::class, mappedBy: 'processor', orphanRemoval: true, cascade: ['persist'])]
     private $voltages;
 
     public function __construct()

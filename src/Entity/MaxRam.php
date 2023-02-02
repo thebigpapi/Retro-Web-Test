@@ -22,10 +22,10 @@ class MaxRam
     #[Assert\PositiveOrZero]
     private $value;
 
-    #[ORM\OneToMany(targetEntity: 'App\Entity\MotherboardMaxRam', mappedBy: 'max_ram', orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: MotherboardMaxRam::class, mappedBy: 'max_ram', orphanRemoval: true)]
     private $motherboardMaxRams;
 
-    #[ORM\OneToMany(targetEntity: 'App\Entity\Motherboard', mappedBy: 'maxVideoRam')]
+    #[ORM\OneToMany(targetEntity: Motherboard::class, mappedBy: 'maxVideoRam')]
     private $motherboards;
 
     public function __construct()

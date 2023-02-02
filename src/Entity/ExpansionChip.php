@@ -17,7 +17,7 @@ class ExpansionChip extends Chip
     #[ORM\OneToMany(targetEntity: LargeFileExpansionChip::class, mappedBy: 'expansionChip', orphanRemoval: true, cascade: ['persist'])]
     private $drivers;
 
-    #[ORM\ManyToOne(targetEntity: 'App\Entity\ExpansionChipType', inversedBy: 'expansionChips')]
+    #[ORM\ManyToOne(targetEntity: ExpansionChipType::class, inversedBy: 'expansionChips')]
     #[ORM\JoinColumn(nullable: false)]
     private $type;
 

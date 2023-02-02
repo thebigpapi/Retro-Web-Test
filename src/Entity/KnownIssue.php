@@ -19,7 +19,7 @@ class KnownIssue
     #[Assert\Length(max:255, maxMessage: 'Name is longer than {{ limit }} characters, try to make it shorter.')]
     private $name;
 
-    #[ORM\ManyToMany(targetEntity: 'App\Entity\Motherboard', mappedBy: 'knownIssues')]
+    #[ORM\ManyToMany(targetEntity: Motherboard::class, mappedBy: 'knownIssues')]
     private $motherboards;
 
     #[ORM\Column(type: 'string', length: 512, nullable: true)]
