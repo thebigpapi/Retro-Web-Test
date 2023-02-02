@@ -25,7 +25,7 @@ class Chipset
     #[Assert\Length(max:255, maxMessage: 'Name is longer than {{ limit }} characters, try to make it shorter.')]
     private $name;
 
-    #[ORM\OneToMany(targetEntity: 'App\Entity\ChipsetAlias', mappedBy: 'chipset', orphanRemoval: true, cascade: ['persist'])]
+    #[ORM\OneToMany(targetEntity: ChipsetAlias::class, mappedBy: 'chipset', orphanRemoval: true, cascade: ['persist'])]
     private $chipsetAliases;
 
     /**

@@ -13,7 +13,7 @@ class LargeFileExpansionChip
     #[ORM\Column(type: 'integer')]
     private $id;
     
-    #[ORM\ManyToOne(targetEntity: LargeFile::class, inversedBy: 'expansionChips')]
+    #[ORM\ManyToOne(targetEntity: LargeFile::class, inversedBy: 'expansionchips')]
     #[ORM\JoinColumn(nullable: false)]
     private $largeFile;
 

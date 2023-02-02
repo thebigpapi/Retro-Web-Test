@@ -29,7 +29,7 @@ class MotherboardImage
     #[ORM\Column(type: 'string', length: 255)]
     #[Assert\Length(max:255, maxMessage: 'Image file name is longer than {{ limit }} characters, try to make it shorter.')]
     private $file_name;
-
+    
     /**
      * NOTE: This is not a mapped field of entity metadata, just a simple property.
      */

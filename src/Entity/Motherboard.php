@@ -101,7 +101,7 @@ class Motherboard
     private $psuConnectors;
 
     #[ORM\ManyToMany(targetEntity: ExpansionChip::class, inversedBy: 'motherboards')]
-    private $expansionChip;
+    private $expansionChips;
 
     #[ORM\Column(type: 'string', length: 80, unique: true)]
     #[Assert\Length(max:80, maxMessage: 'Slug is longer than {{ limit }} characters, try to make it shorter.')]
@@ -113,13 +113,9 @@ class Motherboard
     public function __construct()
     {
         $this->motherboardMaxRams = new ArrayCollection();
-        $this->motherboardCpuSpeeds = new ArrayCollection();
         $this->motherboardBios = new ArrayCollection();
-        $this->motherboardCacheSizes = new ArrayCollection();
-        $this->motherboardDramTypes = new ArrayCollection();
         $this->motherboardExpansionSlots = new ArrayCollection();
         $this->motherboardIoPorts = new ArrayCollection();
-        $this->motherboardProcessor = new ArrayCollection();
         $this->cpuSpeed = new ArrayCollection();
         $this->cacheSize = new ArrayCollection();
         $this->dramType = new ArrayCollection();
@@ -135,7 +131,7 @@ class Motherboard
         $this->drivers = new ArrayCollection();
         $this->redirections = new ArrayCollection();
         $this->psuConnectors = new ArrayCollection();
-        $this->expansionChip = new ArrayCollection();
+        $this->expansionChips = new ArrayCollection();
         $this->miscFiles = new ArrayCollection();
     }
     public function getId(): ?int
@@ -693,10 +689,13 @@ class Motherboard
 
         return $this;
     }
+    /**
+     * @return Collection|LargeFileExpansionChip[]
+     */
     public function getAllDrivers(): Collection
     {
         $expdrv = [];
-        foreach($this->getExpansionChip() as $iu){
+        foreach($this->getExpansionChips() as $iu){
             if($iu->getDrivers()->toArray())
                 $expdrv = array_merge($expdrv, $iu->getDrivers()->toArray());
                     
@@ -798,16 +797,16 @@ class Motherboard
         return $this;
     }
     /**
-     * @return Collection|LargeFileExpansionChip[]
+     * @return Collection|ExpansionChip[]
      */
-    public function getExpansionChip(): Collection
+    public function getExpansionChips(): Collection
     {
-        return $this->expansionChip;
+        return $this->expansionChips;
     }
     public function addExpansionChip(ExpansionChip $expansionChip): self
     {
-        if (!$this->expansionChip->contains($expansionChip)) {
-            $this->expansionChip[] = $expansionChip;
+        if (!$this->expansionChips->contains($expansionChip)) {
+            $this->expansionChips[] = $expansionChip;
             $expansionChip->addMotherboard($this);
         }
 
@@ -815,7 +814,7 @@ class Motherboard
     }
     public function removeExpansionChip(ExpansionChip $expansionChip): self
     {
-        if ($this->expansionChip->removeElement($expansionChip)) {
+        if ($this->expansionChips->removeElement($expansionChip)) {
             $expansionChip->removeMotherboard($this);
         }
 

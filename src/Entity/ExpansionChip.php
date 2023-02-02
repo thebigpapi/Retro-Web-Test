@@ -11,7 +11,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 class ExpansionChip extends Chip
 {
 
-    #[ORM\OneToMany(targetEntity: Motherboard::class, mappedBy: 'expansionChip')]
+    #[ORM\ManyToMany(targetEntity: Motherboard::class, mappedBy: 'expansionChips')]
     private $motherboards;
 
     #[ORM\OneToMany(targetEntity: LargeFileExpansionChip::class, mappedBy: 'expansionChip', orphanRemoval: true, cascade: ['persist'])]
@@ -76,19 +76,15 @@ class ExpansionChip extends Chip
     {
         if (!$this->motherboards->contains($motherboard)) {
             $this->motherboards[] = $motherboard;
-            $motherboard->setExpansionChip($this);
+            $motherboard->addExpansionChip($this);
         }
 
         return $this;
     }
     public function removeMotherboard(Motherboard $motherboard): self
     {
-        if ($this->motherboards->contains($motherboard)) {
-            $this->motherboards->removeElement($motherboard);
-            // set the owning side to null (unless already changed)
-            if ($motherboard->getExpansionChip() === $this) {
-                $motherboard->setExpansionChip(null);
-            }
+        if ($this->motherboards->removeElement($motherboard)) {
+            $motherboard->removeExpansionChip($this);
         }
 
         return $this;
@@ -114,7 +110,7 @@ class ExpansionChip extends Chip
     {
         if (!$this->drivers->contains($driver)) {
             $this->drivers[] = $driver;
-            $driver->setExpansionchipsets($this);
+            $driver->setExpansionChip($this);
         }
 
         return $this;
@@ -123,11 +119,23 @@ class ExpansionChip extends Chip
     {
         if ($this->drivers->removeElement($driver)) {
             // set the owning side to null (unless already changed)
-            if ($driver->getExpansionchipsets() === $this) {
-                $driver->setExpansionchipsets(null);
+            if ($driver->getExpansionChip() === $this) {
+                $driver->setExpansionChip(null);
             }
         }
 
         return $this;
+    }
+
+    public function setExpansionChipType(?ExpansionChipType $type): self
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+    public function getExpansionChipType(): ?ExpansionChipType
+    {
+        return $this->type;
     }
 }

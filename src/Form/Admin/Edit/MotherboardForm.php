@@ -215,7 +215,7 @@ class MotherboardForm extends AbstractType
                 'expanded' => false,
                 'autocomplete' => true,
             ])
-            ->add('expansionChip', CollectionType::class, [
+            ->add('expansionChips', CollectionType::class, [
                 'entry_type' => ExpansionChipType::class,
                 'allow_add' => true,
                 'allow_delete' => true,

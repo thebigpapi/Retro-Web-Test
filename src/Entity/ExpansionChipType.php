@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ExpansionChipTypeRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -18,6 +20,14 @@ class ExpansionChipType
     #[Assert\Length(max:255, maxMessage: 'Name is longer than {{ limit }} characters, try to make it shorter.')]
     private ?string $name = null;
 
+    #[ORM\OneToMany(targetEntity: ExpansionChip::class, mappedBy: 'type', orphanRemoval: true, cascade: ['persist'])]
+    private $expansionChips;
+
+    public function __construct()
+    {
+        $this->expansionChips = new ArrayCollection();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -31,6 +41,35 @@ class ExpansionChipType
     public function setName(string $name): self
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ExpansionChip[]
+     */
+    public function getExpansionChips(): Collection
+    {
+        return $this->expansionChips;
+    }
+    public function addExpansionChip(ExpansionChip $expansionChip): self
+    {
+        if (!$this->expansionChips->contains($expansionChip)) {
+            $this->expansionChips[] = $expansionChip;
+            $expansionChip->setExpansionChipType($this);
+        }
+
+        return $this;
+    }
+    public function removeExpansionChip(ExpansionChip $expansionChip): self
+    {
+        if ($this->expansionChips->contains($expansionChip)) {
+            $this->expansionChips->removeElement($expansionChip);
+            // set the owning side to null (unless already changed)
+            if ($expansionChip->getExpansionChipType() === $this) {
+                $expansionChip->setExpansionChipType(null);
+            }
+        }
 
         return $this;
     }

@@ -19,13 +19,7 @@ class License
     #[Assert\Length(max:255, maxMessage: 'Name is longer than {{ limit }} characters, try to make it shorter.')]
     private $name;
 
-    #[ORM\OneToMany(targetEntity: 'App\Entity\MotherboardImage', mappedBy: 'license')]
-    private $motherboardImages;
-    
-    #[ORM\OneToMany(targetEntity: 'App\Entity\ChipImage', mappedBy: 'license')]
-    private $chipImages;
-
-    #[ORM\OneToMany(targetEntity: 'App\Entity\ChipImage', mappedBy: 'license')]
+    #[ORM\OneToMany(targetEntity: Creditor::class, mappedBy: 'license')]
     private $creditors;
 
     #[ORM\Column(length: 255, nullable: true)]
@@ -36,6 +30,7 @@ class License
     {
         $this->motherboardImages = new ArrayCollection();
         $this->chipImages = new ArrayCollection();
+        $this->creditors = new ArrayCollection();
     }
     public function getId(): ?int
     {
@@ -51,57 +46,30 @@ class License
 
         return $this;
     }
+
     /**
-     * @return Collection|MotherboardImage[]
+     * @return Collection|Creditor[]
      */
-    public function getMotherboardImages(): Collection
+    public function getCreditors(): Collection
     {
-        return $this->motherboardImages;
+        return $this->creditors;
     }
-    public function addMotherboardImage(MotherboardImage $motherboardImage): self
+    public function addCreditor(Creditor $creditor): self
     {
-        if (!$this->motherboardImages->contains($motherboardImage)) {
-            $this->motherboardImages[] = $motherboardImage;
-            $motherboardImage->setLicense($this);
+        if (!$this->creditors->contains($creditor)) {
+            $this->creditors[] = $creditor;
+            $creditor->setLicense($this);
         }
 
         return $this;
     }
-    public function removeMotherboardImage(MotherboardImage $motherboardImage): self
+    public function removeCreditor(Creditor $creditor): self
     {
-        if ($this->motherboardImages->contains($motherboardImage)) {
-            $this->motherboardImages->removeElement($motherboardImage);
+        if ($this->creditors->contains($creditor)) {
+            $this->creditors->removeElement($creditor);
             // set the owning side to null (unless already changed)
-            if ($motherboardImage->getLicense() === $this) {
-                $motherboardImage->setLicense(null);
-            }
-        }
-
-        return $this;
-    }
-    /**
-     * @return Collection|ChipImage[]
-     */
-    public function getChipImages(): Collection
-    {
-        return $this->chipImages;
-    }
-    public function addChipImage(ChipImage $chipImage): self
-    {
-        if (!$this->chipImages->contains($chipImage)) {
-            $this->chipImages[] = $chipImage;
-            $chipImage->setLicense($this);
-        }
-
-        return $this;
-    }
-    public function removeChipImage(ChipImage $chipImage): self
-    {
-        if ($this->chipImages->contains($chipImage)) {
-            $this->chipImages->removeElement($chipImage);
-            // set the owning side to null (unless already changed)
-            if ($chipImage->getLicense() === $this) {
-                $chipImage->setLicense(null);
+            if ($creditor->getLicense() === $this) {
+                $creditor->setLicense(null);
             }
         }
 

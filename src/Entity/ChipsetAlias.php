@@ -17,7 +17,7 @@ class ChipsetAlias
     #[ORM\JoinColumn(nullable: false)]
     private $chipset;
 
-    #[ORM\ManyToOne(targetEntity: 'App\Entity\Manufacturer', inversedBy: 'chipsetAliases')]
+    #[ORM\ManyToOne(targetEntity: Manufacturer::class, inversedBy: 'chipsetAliases')]
     private $manufacturer;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]

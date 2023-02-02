@@ -32,8 +32,8 @@ class Manufacturer
     #[ORM\OneToMany(targetEntity: 'App\Entity\Chipset', mappedBy: 'manufacturer')]
     private $chipsets;
 
-    #[ORM\OneToMany(targetEntity: 'App\Entity\ExpansionChip', mappedBy: 'manufacturer')]
-    private $expansionChips;
+    #[ORM\OneToMany(targetEntity: ChipsetAlias::class, mappedBy: 'manufacturer')]
+    private $chipsetAliases;
 
     #[ORM\OneToMany(targetEntity: 'App\Entity\MotherboardAlias', mappedBy: 'manufacturer')]
     private $motherboardAliases;
@@ -63,7 +63,7 @@ class Manufacturer
     {
         $this->motherboards = new ArrayCollection();
         $this->chipsets = new ArrayCollection();
-        $this->expansionChips = new ArrayCollection();
+        $this->chipsetAliases = new ArrayCollection();
         $this->motherboardAliases = new ArrayCollection();
         $this->chips = new ArrayCollection();
         $this->chipAliases = new ArrayCollection();
@@ -159,41 +159,36 @@ class Manufacturer
 
         return $this;
     }
+
     /**
-     * @return Collection|Processor[]
+     * @return Collection|ChipsetAlias[]
      */
-    public function getProcessors(): Collection
+    public function getChipsetAlias(): Collection
     {
-        return $this->processors;
+        return $this->motherboardAliases;
     }
-    /**
-     * @return Collection|ExpansionChip[]
-     */
-    public function getExpansionChips(): Collection
+    public function addChipsetAlias(ChipsetAlias $chipsetAlias): self
     {
-        return $this->expansionChips;
-    }
-    public function addExpansionChip(ExpansionChip $expansionChip): self
-    {
-        if (!$this->expansionChips->contains($expansionChip)) {
-            $this->expansionChips[] = $expansionChip;
-            $expansionChip->setManufacturer($this);
+        if (!$this->chipsetAliases->contains($chipsetAlias)) {
+            $this->chipsetAliases[] = $chipsetAlias;
+            $chipsetAlias->setManufacturer($this);
         }
 
         return $this;
     }
-    public function removeExpansionChip(ExpansionChip $expansionChip): self
+    public function removeChipsetAlias(ChipsetAlias $chipsetAlias): self
     {
-        if ($this->expansionChips->contains($expansionChip)) {
-            $this->expansionChips->removeElement($expansionChip);
+        if ($this->chipsetAliases->contains($chipsetAlias)) {
+            $this->chipsetAliases->removeElement($chipsetAlias);
             // set the owning side to null (unless already changed)
-            if ($expansionChip->getManufacturer() === $this) {
-                $expansionChip->setManufacturer(null);
+            if ($chipsetAlias->getManufacturer() === $this) {
+                $chipsetAlias->setManufacturer(null);
             }
         }
 
         return $this;
     }
+    
     /**
      * @return Collection|MotherboardAlias[]
      */

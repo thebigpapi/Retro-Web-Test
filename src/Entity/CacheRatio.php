@@ -19,10 +19,10 @@ class CacheRatio
     #[Assert\Length(max:255, maxMessage: 'Name is longer than {{ limit }} characters, try to make it shorter.')]
     private $name;
 
-    #[ORM\OneToMany(targetEntity: 'App\Entity\Processor', mappedBy: 'L2CacheRatio')]
+    #[ORM\OneToMany(targetEntity: Processor::class, mappedBy: 'L2CacheRatio')]
     private $processorsL2;
 
-    #[ORM\OneToMany(targetEntity: 'App\Entity\Processor', mappedBy: 'L3CacheRatio')]
+    #[ORM\OneToMany(targetEntity: Processor::class, mappedBy: 'L3CacheRatio')]
     private $processorsL3;
 
     public function __construct()

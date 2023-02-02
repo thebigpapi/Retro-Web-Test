@@ -144,13 +144,13 @@
 					<hr><!-- Expansion Chips -->
 					<div class="quick-spec-table expchip" data-controller="collection" style="padding:0;">
 						<div class="quick-spec-head editor"><div>Expansion chipset</div>
-						{% include 'macros/buttons.html.twig' with {'type':'add', 'action': 'expansionChip'} %}</div>
-						<div class="append_table" id="expansionChip-fields-list" data-widget-counter="{{ form.expansionChip|length }}"
+						{% include 'macros/buttons.html.twig' with {'type':'add', 'action': 'expansionChips'} %}</div>
+						<div class="append_table" id="expansionChips-fields-list" data-widget-counter="{{ form.expansionChips|length }}"
 							data-prototype="
-								{{ form_widget(form.expansionChip.vars.prototype)|e }}
+								{{ form_widget(form.expansionChips.vars.prototype)|e }}
 								{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
 							</div>" data-controller="collection">
-							{% for expchip in form.expansionChip %}
+							{% for expchip in form.expansionChips %}
 								<div class="editor-row nopad">
 									{{ form_widget(expchip) }}
 									{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
