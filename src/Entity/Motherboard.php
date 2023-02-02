@@ -696,8 +696,9 @@ class Motherboard
     {
         $expdrv = [];
         foreach ($this->getExpansionChips() as $iu) {
-            if ($iu->getDrivers()->toArray())
+            if ($iu->getDrivers()->toArray()) {
                 $expdrv = array_merge($expdrv, $iu->getDrivers()->toArray());
+            }
         }
         return new ArrayCollection(
             array_merge(

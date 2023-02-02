@@ -24,8 +24,7 @@ class ChipsetController extends AbstractController
             throw $this->createNotFoundException(
                 'No $chipset found for id ' . $id
             );
-        }
-        else{
+        } else {
             return $this->render('chipset/show.html.twig', [
                 'chipset' => $chipset,
                 'controller_name' => 'ChipsetController',
@@ -33,16 +32,21 @@ class ChipsetController extends AbstractController
         }
     }
 
-    
+
     #[Route(path: '/chipsets/', name: 'chipsetsearch', methods: ['GET'])]
     public function searchResult(Request $request, PaginatorInterface $paginator, ChipsetRepository $chipsetRepository)
     {
         $criterias = array();
         $name = htmlentities($request->query->get('name') ?? '');
-        if ($name) $criterias['name'] = "$name";
+        if ($name) {
+            $criterias['name'] = "$name";
+        }
         $chipsetId = htmlentities($request->query->get('chipsetId') ?? '');
-        if ($chipsetId && intval($chipsetId)) $criterias['chipset'] = "$chipsetId";
-        elseif ($chipsetId === "NULL") $criterias['chipset'] = null;
+        if ($chipsetId && intval($chipsetId)) {
+            $criterias['chipset'] = "$chipsetId";
+        } elseif ($chipsetId === "NULL") {
+            $criterias['chipset'] = null;
+        }
         $chipsetManufacturerId = htmlentities($request->query->get('chipsetManufacturerId') ?? '');
         if (
             $chipsetManufacturerId
@@ -77,7 +81,7 @@ class ChipsetController extends AbstractController
         ]);
     }
 
-    
+
     #[Route(path: '/chipsets/search/', name: 'chipset_search')]
     public function search(Request $request, TranslatorInterface $translator, ManufacturerRepository $manufacturerRepository)
     {
@@ -118,11 +122,13 @@ class ChipsetController extends AbstractController
         return $parameters;
     }
 
-    
+
     #[Route(path: '/chipsets/index/{letter}', name: 'chipsetindex', requirements: ['letter' => '\w|[?]'])]
     public function index(Request $request, PaginatorInterface $paginator, string $letter, ChipsetRepository $chipsetRepository)
     {
-        if ($letter == "?") $letter = "";
+        if ($letter == "?") {
+            $letter = "";
+        }
         $data = $chipsetRepository->findAllAlphabetic($letter);
         usort(
             $data,

@@ -14,7 +14,7 @@ use Knp\Component\Pager\PaginatorInterface;
 
 class DriversController extends AbstractController
 {
-    #[Route('/drivers/{id}', name:'driver_show', requirements:['id'=>'\d+'])]
+    #[Route('/drivers/{id}', name:'driver_show', requirements:['id' => '\d+'])]
     public function show(int $id, LargeFileRepository $driverRepository): Response
     {
         $driver = $driverRepository->find($id);
@@ -22,8 +22,7 @@ class DriversController extends AbstractController
             throw $this->createNotFoundException(
                 'No $driver found for id ' . $id
             );
-        }
-        else{
+        } else {
             return $this->render('drivers/show.html.twig', [
                 'driver' => $driver,
                 'controller_name' => 'DriversController',
@@ -36,7 +35,9 @@ class DriversController extends AbstractController
     {
         $criterias = array();
         $name = htmlentities($request->query->get('name') ?? '');
-        if ($name) $criterias['name'] = "$name";
+        if ($name) {
+            $criterias['name'] = "$name";
+        }
 
         if ($criterias == array()) {
             return $this->redirectToRoute('driver_search');
@@ -61,7 +62,7 @@ class DriversController extends AbstractController
     }
 
     #[Route('/drivers/search/', name:'driver_search')]
-    public function search(Request $request):Response
+    public function search(Request $request): Response
     {
         $form = $this->createForm(Search::class, array());
 
@@ -74,10 +75,12 @@ class DriversController extends AbstractController
         ]);
     }
 
-    #[Route('/drivers/index/{letter}', name:'driverindex', requirements:['letter'=>'\w|[?]'], methods:["GET"])]
+    #[Route('/drivers/index/{letter}', name:'driverindex', requirements:['letter' => '\w|[?]'], methods:["GET"])]
     public function index(Request $request, PaginatorInterface $paginator, string $letter, LargeFileRepository $driverRepository): Response
     {
-        if ($letter === "?") $letter = "";
+        if ($letter === "?") {
+            $letter = "";
+        }
         $data = $driverRepository->findAllAlphabetic($letter);
 
         usort(

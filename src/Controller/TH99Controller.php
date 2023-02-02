@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class TH99Controller extends AbstractController
 {
-    #[Route('/th99/m/{id}', name:'th99_motherboard', requirements:['id'=>'\d+'])]
+    #[Route('/th99/m/{id}', name:'th99_motherboard', requirements:['id' => '\d+'])]
     public function motherboard(int $id, MotherboardIdRedirectionRepository $motherboardIdRedirectionRepository): Response
     {
         $idRedirection = $motherboardIdRedirectionRepository->findRedirection($id, 'th99');

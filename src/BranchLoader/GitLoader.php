@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\BranchLoader;
-
 
 class GitLoader
 {

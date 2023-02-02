@@ -25,7 +25,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         max: 50,
         minMessage: 'Your username must be at least {{ limit }} characters long.',
         maxMessage: 'Your username cannot be longer than {{ limit }} characters.'
-        )
+    )
     ]
     private string $username;
 

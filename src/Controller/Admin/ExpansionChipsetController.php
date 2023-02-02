@@ -19,12 +19,10 @@ use Symfony\Component\HttpFoundation\Request;
 
 class ExpansionChipsetController extends AbstractController
 {
-
-
     /**
      * Routing
      */
-    
+
     #[Route(path: '/admin/manage/expansionchipsets', name: 'admin_manage_expansion_chipsets')]
     public function manage(Request $request)
     {
@@ -42,14 +40,14 @@ class ExpansionChipsetController extends AbstractController
         }
     }
 
-    
+
     #[Route(path: '/admin/manage/expansionchipsets/expansionchips/add', name: 'new_expansionChip_add')]
     public function expansionChipAdd(Request $request, EntityManagerInterface $entityManager, ManufacturerRepository $manufacturerRepository)
     {
         return $this->renderExpansionChipForm($request, new ExpansionChip(), $entityManager, $manufacturerRepository);
     }
 
-    
+
     #[Route(path: '/admin/manage/expansionchipsets/expansionchips/{id}/edit', name: 'new_expansionChip_edit', requirements: ['id' => '\d+'])]
     public function expansionChipEdit(Request $request, int $id, ExpansionChipRepository $expansionChipRepository, EntityManagerInterface $entityManager, ManufacturerRepository $manufacturerRepository)
     {
@@ -61,14 +59,14 @@ class ExpansionChipsetController extends AbstractController
         );
     }
 
-    
+
     #[Route(path: '/admin/manage/expansionchipsets/expchiptypes/add', name: 'new_expansionChipType_add')]
     public function expansionChipTypeAdd(Request $request, EntityManagerInterface $entityManager, ManufacturerRepository $manufacturerRepository)
     {
         return $this->renderExpansionChipTypeForm($request, new ExpansionChipType(), $entityManager, $manufacturerRepository);
     }
 
-    
+
     #[Route(path: '/admin/manage/expansionchipsets/expchiptypes/{id}/edit', name: 'new_expansionChipType_edit', requirements: ['id' => '\d+'])]
     public function expansionChipTypeEdit(Request $request, int $id, ExpansionChipTypeRepository $expansionChipTypeRepository, EntityManagerInterface $entityManager, ManufacturerRepository $manufacturerRepository)
     {

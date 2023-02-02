@@ -13,7 +13,7 @@ class CacheSize
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
     private $id;
-    
+
     #[ORM\Column(type: 'integer')]
     private $value;
 
@@ -53,18 +53,15 @@ class CacheSize
     public function getValueWithUnit(): ?string
     {
         $val = $this->value;
-        if ($val >= 1024){
-            $val = round($val/1024, 2);
-            if ($val >= 1024)
-            {
-                return (round($val/1024, 2).'MB');
+        if ($val >= 1024) {
+            $val = round($val / 1024, 2);
+            if ($val >= 1024) {
+                return (round($val / 1024, 2) . 'MB');
+            } else {
+                return $val . 'KB';
             }
-            else {
-                return $val.'KB';
-            }
-        }
-        else{
-            return $val.'B';
+        } else {
+            return $val . 'B';
         }
     }
     /**

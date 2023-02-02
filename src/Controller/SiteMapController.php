@@ -12,7 +12,7 @@ use Symfony\Contracts\Cache\CacheInterface;
 class SiteMapController extends AbstractController
 {
     #[Route(path: '/sitemap.xml', name: 'sitemap', defaults: ['_format' => 'xml'])]
-    public function index(Request $request, MotherboardRepository $motherboardRepository, CacheInterface $cache) : Response
+    public function index(Request $request, MotherboardRepository $motherboardRepository, CacheInterface $cache): Response
     {
         $hostname = $request->getSchemeAndHttpHost();
         $urls = $cache->get("sitemapUrls" . $request->getLocale(), function () use ($motherboardRepository) {

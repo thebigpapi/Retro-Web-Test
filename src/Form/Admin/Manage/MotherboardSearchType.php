@@ -29,9 +29,12 @@ class MotherboardSearchType extends AbstractType
             $chipsets,
             function ($a, $b) {
                 if ($a->getManufacturer()->getName() == $b->getManufacturer()->getName()) {
-                    if ($a->getFullReference() == $b->getFullReference())
+                    if ($a->getFullReference() == $b->getFullReference()) {
                         return 0;
-                    if ($a->getFullReference() == " Unidentified ") return -1;
+                    }
+                    if ($a->getFullReference() == " Unidentified ") {
+                        return -1;
+                    }
                     return ($a->getFullReference() < $b->getFullReference()) ? -1 : 1;
                 }
                 return ($a->getManufacturer()->getName() < $b->getManufacturer()->getName()) ? -1 : 1;

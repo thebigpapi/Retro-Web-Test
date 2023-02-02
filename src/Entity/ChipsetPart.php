@@ -70,7 +70,7 @@ class ChipsetPart extends Chip
     {
         return "$this->partNumber";
     }
-    
+
     public function getDescription(): ?string
     {
         return $this->description;

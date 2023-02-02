@@ -53,7 +53,7 @@ class Manufacturer
     #[ORM\OneToMany(targetEntity: OsFlag::class, mappedBy: 'manufacturer')]
     private $osFlags;
 
-    #[ORM\OneToMany(mappedBy: 'manufacturer', targetEntity: PciVendorId::class,  orphanRemoval: true, cascade: ['persist'])]
+    #[ORM\OneToMany(mappedBy: 'manufacturer', targetEntity: PciVendorId::class, orphanRemoval: true, cascade: ['persist'])]
     private Collection $pciVendorIds;
 
     #[ORM\Column(length: 7, nullable: true)]

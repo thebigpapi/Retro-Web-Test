@@ -12,7 +12,7 @@ class ChipsetBiosCode
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
     private $id;
-    
+
     #[ORM\ManyToOne(targetEntity: Chipset::class, inversedBy: 'biosCodes', fetch: 'EAGER')]
     #[ORM\JoinColumn(nullable: false)]
     private $chipset;

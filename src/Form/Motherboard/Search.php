@@ -37,8 +37,11 @@ class Search extends AbstractType
     {
         // sorting some fields before adding them to the form
         usort($options['cpuSockets'], function ($a, $b) {
-            if (!$a->getName() && !$b->getName()) return strnatcasecmp($a->getType() ?? '', $b->getType() ?? '');
-            else return strnatcasecmp($a->getName() ?? '', $b->getName() ?? '');
+            if (!$a->getName() && !$b->getName()) {
+                return strnatcasecmp($a->getType() ?? '', $b->getType() ?? '');
+            } else {
+                return strnatcasecmp($a->getName() ?? '', $b->getName() ?? '');
+            }
         });
 
         usort($options['formFactors'], function ($a, $b) {
@@ -92,7 +95,7 @@ class Search extends AbstractType
                 'expanded' => false,
                 'required' => false,
                 'choices' => $options['procPlatformTypes'],
-		        'placeholder' => 'Select a processor platform ...',
+                'placeholder' => 'Select a processor platform ...',
             ])*/
             /*->add('motherboardExpansionSlots', CollectionType::class, [
                 'entry_type' => SearchMotherboardExpansionSlotType::class,

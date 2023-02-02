@@ -12,6 +12,7 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
 class ChipDocumentation
 {
     use DocumentationTrait;
+
     /**
      * NOTE: This is not a mapped field of entity metadata, just a simple property.
      */

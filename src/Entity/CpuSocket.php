@@ -110,8 +110,11 @@ class CpuSocket
     }
     public function getNameAndType(): ?string
     {
-        if ($this->name) return "$this->name ($this->type)";
-        else return $this->type;
+        if ($this->name) {
+            return "$this->name ($this->type)";
+        } else {
+            return $this->type;
+        }
     }
     /**
      * @return Collection|ProcessingUnit[]

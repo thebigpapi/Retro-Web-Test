@@ -271,28 +271,31 @@ class LargeFile
         $tmp = $this->getLanguages();
         $langs = "";
         foreach ($tmp as $key => $language) {
-            if (array_key_last($tmp->toArray()) == $key)
+            if (array_key_last($tmp->toArray()) == $key) {
                 $langs .= $language->getIsoCode();
-            else
+            } else {
                 $langs .= $language->getIsoCode() . ", ";
+            }
         }
 
         $tmp = $this->getOsFlags();
         $osTags = "";
         foreach ($tmp as $key => $os) {
-            if (array_key_last($tmp->toArray()) == $key)
+            if (array_key_last($tmp->toArray()) == $key) {
                 $osTags .=  $os->getOsFlag()->getFullVersion();
-            else
+            } else {
                 $osTags .=  $os->getOsFlag()->getFullVersion() . ", ";
+            }
         }
 
         $tmp = $this->getMediaTypeFlags();
         $mediaTypeTags = "";
         foreach ($tmp as $key => $media) {
-            if (array_key_last($tmp->toArray()) == $key)
+            if (array_key_last($tmp->toArray()) == $key) {
                 $mediaTypeTags .=  $media->getMediaTypeFlag()->getTagName();
-            else
+            } else {
                 $mediaTypeTags .=  $media->getMediaTypeFlag()->getTagName() . ", ";
+            }
         }
 
         return $this->getName() . " " . $this->getFileVersion() ?? "" . " [" . $langs . "] [" . $mediaTypeTags . "] [" . $osTags . "]";

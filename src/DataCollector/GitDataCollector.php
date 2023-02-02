@@ -3,7 +3,6 @@
 //src/DataCollector/GitDataCollector.php
 namespace App\DataCollector;
 
-
 use App\BranchLoader\GitLoader;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

@@ -21,12 +21,10 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class ChipsetController extends AbstractController
 {
-
-
     /**
      * Routing
      */
-    
+
     #[Route(path: '/admin/manage/chipsets', name: 'admin_manage_chipsets')]
     public function manage(Request $request, TranslatorInterface $translator)
     {
@@ -42,14 +40,14 @@ class ChipsetController extends AbstractController
         }
     }
 
-    
+
     #[Route(path: '/admin/manage/chipsets/chipsets/add', name: 'new_chipset_add')]
     public function chipsetAdd(Request $request, EntityManagerInterface $entityManager, ManufacturerRepository $manufacturerRepository, ChipsetPartRepository $chipsetPartRepository)
     {
         return $this->renderChipsetForm($request, new Chipset(), $entityManager, $manufacturerRepository, $chipsetPartRepository);
     }
 
-    
+
     #[Route(path: '/admin/manage/chipsets/chipsets/{id}/edit', name: 'new_chipset_edit', requirements: ['id' => '\d+'])]
     public function chipsetEdit(Request $request, int $id, ChipsetRepository $chipsetRepository, EntityManagerInterface $entityManager, ManufacturerRepository $manufacturerRepository, ChipsetPartRepository $chipsetPartRepository)
     {
@@ -62,14 +60,14 @@ class ChipsetController extends AbstractController
         );
     }
 
-    
+
     #[Route(path: '/admin/manage/chipsets/parts/add', name: 'new_chipset_part_add')]
     public function chipsetPartAdd(Request $request, EntityManagerInterface $entityManager)
     {
         return $this->renderChipsetPartForm($request, new ChipsetPart(), $entityManager);
     }
 
-    
+
     #[Route(path: '/admin/manage/chipsets/parts/{id}/edit', name: 'new_chipset_part_edit', requirements: ['id' => '\d+'])]
     public function chipsetPartEdit(Request $request, int $id, ChipsetPartRepository $chipsetPartRepository, EntityManagerInterface $entityManager)
     {

@@ -7,12 +7,12 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
-
 #[Vich\Uploadable]
 #[ORM\Entity(repositoryClass: 'App\Repository\ChipsetDocumentationRepository')]
 class ChipsetDocumentation
 {
     use DocumentationTrait;
+
     /**
      * NOTE: This is not a mapped field of entity metadata, just a simple property.
      */
@@ -21,7 +21,7 @@ class ChipsetDocumentation
 
     #[ORM\ManyToOne(targetEntity: Chipset::class, inversedBy: 'documentations')]
     private $chipset;
-    
+
     public function getChipset(): ?Chipset
     {
         return $this->chipset;

@@ -8,7 +8,6 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Symfony\Component\Validator\Constraints as Assert;
 
-
 #[Vich\Uploadable]
 #[ORM\Entity(repositoryClass: 'App\Repository\ChipImageRepository')]
 class ChipImage
@@ -21,7 +20,7 @@ class ChipImage
     #[ORM\ManyToOne(targetEntity: Chip::class, inversedBy: 'images')]
     #[ORM\JoinColumn(nullable: false)]
     private $chip;
-    
+
     #[ORM\Column(type: 'string', length: 255)]
     #[Assert\Length(max:255, maxMessage: 'File name is longer than {{ limit }} characters, try to make it shorter.')]
     private $file_name;
@@ -41,7 +40,7 @@ class ChipImage
 
     #[ORM\ManyToOne(targetEntity: Creditor::class, inversedBy: 'chipImages')]
     private $creditor;
-    
+
     public function getId(): ?int
     {
         return $this->id;

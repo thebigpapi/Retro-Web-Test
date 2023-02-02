@@ -44,7 +44,9 @@ class Search extends AbstractType
                     if ($a->getFullReference() == $b->getFullReference()) {
                         return 0;
                     }
-                    if ($a->getFullReference() == " Unidentified ") return -1;
+                    if ($a->getFullReference() == " Unidentified ") {
+                        return -1;
+                    }
                     return ($a->getFullReference() < $b->getFullReference()) ? -1 : 1;
                 }
             );

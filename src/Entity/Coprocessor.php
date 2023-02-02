@@ -11,13 +11,13 @@ class Coprocessor extends ProcessingUnit
 {
     #[ORM\ManyToMany(targetEntity: Motherboard::class, mappedBy: 'coprocessors')]
     private $motherboards;
-    
+
     public function __construct()
     {
         parent::__construct();
         $this->motherboards = new ArrayCollection();
     }
-    public function getNameWithManufacturer() 
+    public function getNameWithManufacturer()
     {
         return $this->getManufacturer()->getShortNameIfExist() . " " . $this->name;
     }
@@ -46,7 +46,8 @@ class Coprocessor extends ProcessingUnit
 
         return $this;
     }
-    public function getNameWithPlatform() {
+    public function getNameWithPlatform()
+    {
         $this->getPlatform() ? $name = $this->getPlatform()->getName() : $name = "Unidentified";
         return $this->getManufacturer()->getShortNameIfExist() . " " . $this->name . " (" . $name . ")";
     }

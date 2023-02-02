@@ -20,12 +20,10 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class MemoryController extends AbstractController
 {
-
-
     /**
      * Routing
      */
-    
+
     #[Route(path: '/admin/manage/memories', name: 'admin_manage_memories')]
     public function manage(Request $request, TranslatorInterface $translator)
     {
@@ -44,7 +42,7 @@ class MemoryController extends AbstractController
         }
     }
 
-    
+
     #[Route(path: '/admin/manage/memories/ramtypes/add', name: 'new_dramType_add')]
     public function dramTypeAdd(Request $request, EntityManagerInterface $entityManager)
     {
@@ -58,7 +56,7 @@ class MemoryController extends AbstractController
         );
     }
 
-    
+
     #[Route(path: '/admin/manage/memories/ramtypes/{id}/edit', name: 'new_dramType_edit', requirements: ['id' => '\d+'])]
     public function dramTypeEdit(Request $request, int $id, DramTypeRepository $dramTypeRepository, EntityManagerInterface $entityManager)
     {
@@ -72,7 +70,7 @@ class MemoryController extends AbstractController
         );
     }
 
-    
+
     #[Route(path: '/admin/manage/memories/ramsizes/add', name: 'new_ramSize_add')]
     public function ramSizeAdd(Request $request, EntityManagerInterface $entityManager)
     {
@@ -86,7 +84,7 @@ class MemoryController extends AbstractController
         );
     }
 
-    
+
     #[Route(path: '/admin/manage/memories/ramsizes/{id}/edit', name: 'new_ramSize_edit', requirements: ['id' => '\d+'])]
     public function ramSizeEdit(Request $request, int $id, MaxRamRepository $maxRamRepository, EntityManagerInterface $entityManager)
     {
@@ -100,7 +98,7 @@ class MemoryController extends AbstractController
         );
     }
 
-    
+
     #[Route(path: '/admin/manage/memories/cachesizes/add', name: 'new_cacheSize_add')]
     public function cacheSizeAdd(Request $request, EntityManagerInterface $entityManager)
     {
@@ -114,7 +112,7 @@ class MemoryController extends AbstractController
         );
     }
 
-    
+
     #[Route(path: '/admin/manage/memories/cachesizes/{id}/edit', name: 'new_cacheSize_edit', requirements: ['id' => '\d+'])]
     public function cacheSizeEdit(Request $request, int $id, CacheSizeRepository $cacheSizeRepository, EntityManagerInterface $entityManager)
     {

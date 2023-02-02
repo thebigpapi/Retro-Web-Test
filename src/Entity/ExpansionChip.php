@@ -10,7 +10,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: 'App\Repository\ExpansionChipRepository')]
 class ExpansionChip extends Chip
 {
-
     #[ORM\ManyToMany(targetEntity: Motherboard::class, mappedBy: 'expansionChips')]
     private $motherboards;
 

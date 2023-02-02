@@ -119,10 +119,12 @@ abstract class ProcessingUnit extends Chip
                 if ($a->getManufacturer()->getShortNameIfExist() == $b->getManufacturer()->getShortNameIfExist()) {
                     if ($a->getName() == $b->getName()) {
                         return strnatcasecmp($a->getSpeed()->getValue(), $b->getSpeed()->getValue());
-                    } else
+                    } else {
                         return strnatcasecmp($a->getName(), $b->getName());
-                } else
+                    }
+                } else {
                     return strnatcasecmp($a->getManufacturer()->getShortNameIfExist(), $b->getManufacturer()->getShortNameIfExist());
+                }
             }
         );
 

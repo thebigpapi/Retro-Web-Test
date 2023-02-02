@@ -14,7 +14,7 @@ class RedirectController extends AbstractController
         return $this->redirectToRoute('app_homepage');
     }
     /* ==== WIN3X REDIRECTS ==== */
-    
+
     #[Route(path: '/hardware/motherboard/result/', methods: ['GET'])]
     public function redirectSearch(Request $request)
     {
@@ -27,14 +27,14 @@ class RedirectController extends AbstractController
         return $this->redirect($this->generateUrl('motherboard_show', array("id" => $id)));
     }
 
-    
+
     #[Route(path: '/motherboard/search/')]
     public function redirectNewSearch()
     {
         return $this->redirect($this->generateUrl('motherboard_search'));
     }
 
-    
+
     #[Route(path: '/motherboard/index/{letter}', requirements: ['letter' => '\w'])]
     public function redirectIndex(Request $request, string $letter)
     {
@@ -56,7 +56,7 @@ class RedirectController extends AbstractController
         return $this->redirect($this->generateUrl('motherboard_show', array("id" => $id)));
     }
 
-    
+
     #[Route(path: '/{lang}/motherboards/index/{letter}', requirements: ['lang' => 'de|en|es|fr|it|nl|ro|ru', 'letter' => '\w'])]
     public function redirectLangMoboIndex(Request $request, string $letter)
     {
@@ -94,7 +94,7 @@ class RedirectController extends AbstractController
         return $this->redirect($this->generateUrl('chipset_show', array("id" => $id)));
     }
 
-    
+
     #[Route(path: '/{lang}/chipsets/index/{letter}', requirements: ['lang' => 'de|en|es|fr|it|nl|ro|ru', 'letter' => '\w'])]
     public function redirectLangChipsetIndex(Request $request, string $letter)
     {

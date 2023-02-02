@@ -36,7 +36,7 @@ abstract class Chip
     #[ORM\OneToMany(targetEntity: ChipImage::class, mappedBy: 'chip', orphanRemoval: true, cascade: ['persist'])]
     private $images;
 
-    #[ORM\OneToMany(mappedBy: 'chip', targetEntity: PciDeviceId::class,  orphanRemoval: true, cascade: ['persist'])]
+    #[ORM\OneToMany(mappedBy: 'chip', targetEntity: PciDeviceId::class, orphanRemoval: true, cascade: ['persist'])]
     private Collection $pciDevs;
 
 

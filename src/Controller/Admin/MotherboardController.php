@@ -28,12 +28,10 @@ use Exception;
 
 class MotherboardController extends AbstractController
 {
-
-
     /**
      * Routing
      */
-    
+
     #[Route(path: '/admin/manage/motherboards', name: 'admin_manage_motherboards')]
     public function manage(Request $request, TranslatorInterface $translator)
     {
@@ -54,33 +52,33 @@ class MotherboardController extends AbstractController
         }
     }
 
-    
+
     #[Route(path: '/admin/manage/motherboards/motherboards/add', name: 'new_motherboard_add')]
     public function motherboardAdd(Request $request, ChipsetRepository $chipsetRepository, CpuSocketRepository $cpuSocketRepository, EntityManagerInterface $entityManager)
     {
         return $this->renderMotherboardForm(
             $request,
-            new Motherboard(), 
-            $chipsetRepository, 
-            $cpuSocketRepository, 
+            new Motherboard(),
+            $chipsetRepository,
+            $cpuSocketRepository,
             $entityManager
         );
     }
 
-    
+
     #[Route(path: '/admin/manage/motherboards/motherboards/{id}/edit', name: 'new_motherboard_edit', requirements: ['id' => '\d+'])]
     public function motherboardEdit(Request $request, MotherboardRepository $motherboardRepository, int $id, ChipsetRepository $chipsetRepository, CpuSocketRepository $cpuSocketRepository, EntityManagerInterface $entityManager)
     {
         return $this->renderMotherboardForm(
             $request,
             $motherboardRepository->find($id),
-            $chipsetRepository, 
-            $cpuSocketRepository, 
+            $chipsetRepository,
+            $cpuSocketRepository,
             $entityManager
         );
     }
 
-    
+
     #[Route(path: '/admin/manage/motherboards/formfactors/add', name: 'new_formFactor_add')]
     public function formFactorAdd(Request $request, EntityManagerInterface $entityManager)
     {
@@ -94,7 +92,7 @@ class MotherboardController extends AbstractController
         );
     }
 
-    
+
     #[Route(path: '/admin/manage/motherboards/formfactors/{id}/edit', name: 'new_formFactor_edit', requirements: ['id' => '\d+'])]
     public function formFactorEdit(Request $request, int $id, FormFactorRepository $formFactorRepository, EntityManagerInterface $entityManager)
     {
@@ -130,7 +128,7 @@ class MotherboardController extends AbstractController
                 $getParams["name"] = $data['name'];
             }
             if ($data['chipset'])
-                $getParams["chipset"] = $data['chipset']->getId(); 
+                $getParams["chipset"] = $data['chipset']->getId();
             $getParams["entity"] = "motherboard";
             return $this->redirect($this->generateUrl('admin_manage_motherboards', $getParams));
         } else {
@@ -263,7 +261,6 @@ class MotherboardController extends AbstractController
 
         usort(
             $chipsets,
-
             function (Chipset $a, Chipset $b) {
                 return strcmp($a->getFullName(), $b->getFullName());
             }
@@ -286,7 +283,7 @@ class MotherboardController extends AbstractController
          * @var MotherboardRepository
          */
         $motherboardRepository = $entityManager->getRepository(Motherboard::class);
-        
+
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             if ($form->get('updateProcessors')->isClicked()) {
@@ -337,7 +334,7 @@ class MotherboardController extends AbstractController
             if ($mobo->getManufacturer() != null && $mobo->getManufacturer()->getId() == 0) {
                 $mobo->setManufacturer(null);
             }
-            
+
             $entityManager->persist($mobo);
 
             $entityManager->flush();
@@ -346,7 +343,7 @@ class MotherboardController extends AbstractController
         }
         return $this->render('admin/edit/motherboards/motherboard.html.twig', [
             'form' => $form->createView(),
-            'moboid' =>$mobo->getId(),
+            'moboid' => $mobo->getId(),
         ]);
     }
 

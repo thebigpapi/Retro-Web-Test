@@ -22,7 +22,6 @@ use App\BranchLoader\GitLoader;
 
 class AdminController extends AbstractController
 {
-
     #[Route('/admin', name:'admin_index')]
     public function index(): Response
     {
@@ -30,7 +29,7 @@ class AdminController extends AbstractController
     }
 
     #[Route('/admin/stats', name:'admin_stats')]
-    public function stats(MotherboardRepository $motherboardRepository, GitLoader $git) : Response
+    public function stats(MotherboardRepository $motherboardRepository, GitLoader $git): Response
     {
         $manufBoardCount = $motherboardRepository->getManufCount();
         return $this->render('admin/stats.html.twig', [
@@ -66,19 +65,19 @@ class AdminController extends AbstractController
     }
 
     #[Route('/admin/guidelines', name:'admin_guidelines')]
-    public function guidelines() : Response
+    public function guidelines(): Response
     {
         return $this->render('admin/guidelines.html.twig');
     }
 
     #[Route('/admin/users', name:'admin_user_settings')]
-    public function userIndex() : Response
+    public function userIndex(): Response
     {
         return $this->render('admin/users/index.html.twig');
     }
 
     #[Route('/admin/users/manage', name:'admin_user_manage')]
-    public function manageUsers(Request $request, UserPasswordHasherInterface $passwordHasher, EntityManagerInterface $entityManager, UserRepository $userRepository) : Response
+    public function manageUsers(Request $request, UserPasswordHasherInterface $passwordHasher, EntityManagerInterface $entityManager, UserRepository $userRepository): Response
     {
         $userForm = $this->createForm(ManageUser::class);
         $message = "";
@@ -117,7 +116,7 @@ class AdminController extends AbstractController
     }
 
     #[Route('/admin/users/manage/add', name:'admin_user_add')]
-    public function addUser(Request $request, UserPasswordHasherInterface $passwordHasher, EntityManagerInterface $entityManager) : Response
+    public function addUser(Request $request, UserPasswordHasherInterface $passwordHasher, EntityManagerInterface $entityManager): Response
     {
         $form = $this->createFormBuilder()
             ->add('name', TextType::class)
@@ -157,7 +156,7 @@ class AdminController extends AbstractController
     private function randomStr(
         int $length,
         string $keyspace = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
-    ) : string {
+    ): string {
         $str = '';
         $max = mb_strlen($keyspace, '8bit') - 1;
         if ($max < 1) {
@@ -170,7 +169,7 @@ class AdminController extends AbstractController
     }
 
     #[Route('/admin/users/password', name:'admin_user_changepwd')]
-    public function changeUserPassword(Request $request, UserPasswordHasherInterface $passwordHasher, EntityManagerInterface $entityManager, UserRepository $userRepository) : Response
+    public function changeUserPassword(Request $request, UserPasswordHasherInterface $passwordHasher, EntityManagerInterface $entityManager, UserRepository $userRepository): Response
     {
         $form = $this->createFormBuilder()
             ->add('old_password', PasswordType::class)
@@ -184,7 +183,7 @@ class AdminController extends AbstractController
             $data = $form->getData();
 
             $user = $userRepository->findOneBy(["username" => $this->getUser()->getUserIdentifier()]);
-            
+
             $checkPass = $passwordHasher->isPasswordValid($user, $data['old_password']);
             if ($checkPass === true) {
                 if ($data['new_password'] === $data['new_password_confirm']) {
@@ -213,9 +212,9 @@ class AdminController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
-    
+
     #[Route('/admin/users/username', name:'admin_user_changename')]
-    public function changeUserName(Request $request, EntityManagerInterface $entityManager, UserRepository $userRepository) : Response
+    public function changeUserName(Request $request, EntityManagerInterface $entityManager, UserRepository $userRepository): Response
     {
         $form = $this->createFormBuilder()
             ->add('new_username', TextType::class)
