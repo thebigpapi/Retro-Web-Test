@@ -7,12 +7,16 @@ export default class extends Controller {
         this.expand(list);
     }
     addLink(){
+        let URL = window.location.href;
+        let url_diff = "";
+        if (URL.indexOf("/add") != -1){
+            url_diff = "/chipsets";
+        }
         if(document.getElementById('chipsetParts-fields-list')){
             let list = document.getElementById('chipsetParts-fields-list').childNodes;
             for (let item of list) {
-                if(item.nodeName == "DIV"){
-                    if(item.children[2].href.substring(item.children[2].href.length -1) == "#")
-                        item.children[2].href = "../../parts/" + item.children[0].value + "/edit";
+                if((item.nodeName == "DIV") && (item.children[2].href.substring(item.children[2].href.length -1) == "#")){
+                        item.children[2].href = "../.."+ url_diff + "/parts/" + item.children[0].value + "/edit";
                 }
             }
         }
