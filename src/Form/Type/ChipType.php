@@ -20,6 +20,8 @@ use Symfony\Component\Form\FormView;
 
 class ChipType extends AbstractType
 {
+    private EntityManagerInterface $entityManager;
+    
     public function __construct(EntityManagerInterface $entityManager)
     {
         $this->entityManager = $entityManager;

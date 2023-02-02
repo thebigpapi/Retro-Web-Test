@@ -12,6 +12,8 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 class ExpansionChipSearchType extends AbstractType
 {
+    private EntityManagerInterface $entityManager;
+    
     public function __construct(EntityManagerInterface $entityManager)
     {
         $this->entityManager = $entityManager;

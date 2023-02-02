@@ -16,6 +16,7 @@ use Doctrine\ORM\EntityManagerInterface;
 
 class CpuSocketForm extends AbstractType
 {
+    private EntityManagerInterface $entityManager;
 
     public function __construct(EntityManagerInterface $entityManager)
     {
