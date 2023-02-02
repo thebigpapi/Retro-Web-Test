@@ -694,19 +694,11 @@ class Motherboard
      */
     public function getAllDrivers(): Collection
     {
-        $expdrv = [];
-        foreach ($this->getExpansionChips() as $iu) {
-            if ($iu->getDrivers()->toArray()) {
-                $expdrv = array_merge($expdrv, $iu->getDrivers()->toArray());
-            }
+        $drivers = array_merge($this->getDrivers()->toArray(), $this->getChipset()?->getDrivers()->toArray());
+        foreach ($this->getExpansionChips() as $expansionChip) {
+            $drivers = array_merge($drivers, $expansionChip->getDrivers()->toArray());
         }
-        return new ArrayCollection(
-            array_merge(
-                $this->getChipset() ? $this->getChipset()->getDrivers()->toArray() : array(),
-                $expdrv ? $expdrv : array(),
-                $this->getDrivers()->toArray()
-            )
-        );
+        return new ArrayCollection($drivers);
     }
     /**
      * @return Collection|LargeFileMotherboard[]

@@ -32,8 +32,11 @@ use Symfony\Component\HttpFoundation\Response;
 class MotherboardController extends AbstractController
 {
     #[Route('/motherboards/', name: 'mobosearch', methods: ['GET'])]
-    public function searchResult(Request $request, PaginatorInterface $paginator, MotherboardRepository $motherboardRepository): Response
-    {
+    public function searchResult(
+        Request $request,
+        PaginatorInterface $paginator,
+        MotherboardRepository $motherboardRepository
+    ): Response {
         $criterias = array();
         $name = htmlentities($request->query->get('name') ?? '');
         if ($name) $criterias['name'] = "$name";
@@ -129,8 +132,12 @@ class MotherboardController extends AbstractController
     }
 
     #[Route('/motherboards/s/{slug}', name: 'motherboard_show_slug')]
-    public function showSlug(string $slug, MotherboardRepository $motherboardRepository, MotherboardIdRedirectionRepository $motherboardIdRedirectionRepository, ExpansionChipTypeRepository $expansionchiptyperep): Response
-    {
+    public function showSlug(
+        string $slug,
+        MotherboardRepository $motherboardRepository,
+        MotherboardIdRedirectionRepository $motherboardIdRedirectionRepository,
+        ExpansionChipTypeRepository $expansionchiptyperep
+    ): Response {
         $motherboard = $motherboardRepository->findSlug($slug);
         $expansionchiptype = $expansionchiptyperep->findAll();
 
@@ -154,8 +161,11 @@ class MotherboardController extends AbstractController
     }
 
     #[Route('/motherboards/{id}', name: 'motherboard_show', requirements: ['id' => '\d+'])]
-    public function show(int $id, MotherboardRepository $motherboardRepository, MotherboardIdRedirectionRepository $motherboardIdRedirectionRepository): Response
-    {
+    public function show(
+        int $id,
+        MotherboardRepository $motherboardRepository,
+        MotherboardIdRedirectionRepository $motherboardIdRedirectionRepository
+    ): Response {
         $motherboard = $motherboardRepository->find($id);
 
         if (!$motherboard) {
@@ -174,8 +184,12 @@ class MotherboardController extends AbstractController
     }
 
     #[Route('/motherboards/{id}/delete/', name: 'motherboard_delete', requirements: ["id" => "\d+"])]
-    public function delete(Request $request, int $id, MotherboardRepository $motherboardRepository, EntityManagerInterface $entityManager): Response
-    {
+    public function delete(
+        Request $request,
+        int $id,
+        MotherboardRepository $motherboardRepository,
+        EntityManagerInterface $entityManager
+    ): Response {
         $motherboard = $motherboardRepository->find($id);
 
         if (!$motherboard) {
@@ -304,7 +318,6 @@ class MotherboardController extends AbstractController
             'procPlatformTypes' => $procPlatformTypes,
             'bios' => $biosManufacturers,
             'cpuSockets' => $cpuSockets,
-            //    'csrf_protection' => false,   // that code is aimed to remove cookie requirement but it breaks ajax stuff
         ]);
 
         $form->handleRequest($request);
@@ -405,9 +418,13 @@ class MotherboardController extends AbstractController
     }
 
     #[Route('/motherboards/index/{letter}', name: "moboindex", requirements: ['letter' => '\w|[?]'], methods: ['GET'])]
-    public function index(Request $request, PaginatorInterface $paginator, string $letter, MotherboardRepository $motherboardRepository): Response
-    {
-        if ($letter === "?") $letter = "";
+    public function index(
+        Request $request,
+        PaginatorInterface $paginator,
+        string $letter,
+        MotherboardRepository $motherboardRepository
+    ): Response {
+        $letter === "?" ? $letter = "" : "";
         $data = $motherboardRepository->findAllAlphabetic($letter);
 
         usort(
