@@ -3,7 +3,10 @@
 {% block title %}Add/Edit motherboard{% endblock %}
 {% block body %}
 <form data-controller="motherboard--add" name="add_motherboard" method="post" enctype="multipart/form-data" data-action="submit->motherboard--add#check">
-	<div class="title">Motherboard editor</div>
+	<div class="title">Motherboard editor
+	{% if form.vars.errors.form.getErrors(true) is not empty %}
+		<img src="{{ absolute_url(asset('build/icons/warning.svg')) }}" alt="warning" title="Some errors have occurred, check and try again." width="40" height="40" style="margin-top: -10px;vertical-align: bottom;">
+	{% endif %}</div>
 	<!-- MANUF/TITLE -->
 	<section class="search-form-grid">
 		<div class="search-form-entry">

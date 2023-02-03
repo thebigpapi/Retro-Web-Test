@@ -331,7 +331,7 @@
 	<!-- IMAGES -->
 	<div class="show-images" id="sh-images">
 	{% if motherboard.getImages() is not empty %}
-		{% for image in motherboard.getImages()|sort((a, b) => a.motherboardImageType <=> b.motherboardImageType) %}
+		{% for image in motherboard.getImages()|sort((a, b) => a.getFileName() <=> b.getFileName())|sort((a, b) => a.motherboardImageType <=> b.motherboardImageType) %}
 			{% include 'macros/images.html.twig' with {'type':'motherboard', 'entity': image, 'index': loop.index, 'length': loop.length} %}
 		{% endfor %}
 	{% else %}
