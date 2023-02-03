@@ -30,6 +30,7 @@ class ChipsetPartType extends AbstractType
             'choice_label' => 'getFullName',
             'multiple' => false,
             'expanded' => false,
+            'autocomplete' => true,
         ]);
     }
 

@@ -39,7 +39,7 @@ class Chipset
     private $encyclopedia_link;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    #[Assert\Length(max: 255, maxMessage: 'Release date is longer than {{ limit }} characters, try to make it shorter.')]
+    #[Assert\Length(max: 16, maxMessage: 'Release date is longer than {{ limit }} characters, try to make it shorter.')]
     private $release_date;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]

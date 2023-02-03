@@ -1,5 +1,5 @@
 {% if type == "docs" %}    
-    <div data-controller="collection">
+    <div data-controller="collection" style="padding-bottom: 20px;">
 		<div style="padding-top:5px;display: flex;align-items: center;">
 			<img src="{{ absolute_url(asset('build/icons/show/manual.svg')) }}" alt="" width="32" style="padding: 5px;">
 			Documentation: 
@@ -34,10 +34,10 @@
 	</div>
 {% endif %}
 {% if type == "drivers" %}
-    <div data-controller="collection" style="min-width: 35vw;">
+    <div data-controller="collection" style="min-width:35vw;padding-bottom: 20px;">
 		<div style="padding-top:5px;">
 			<img src="{{ absolute_url(asset('build/icons/show/hardware.svg')) }}" alt="" width="32" style="vertical-align: middle;padding-bottom: 10px;">
-			<p style="display:inline-block;">Drivers: </p>
+			<p style="display:inline-block;"><i>Drivers: </i></p>
 			{% include 'macros/buttons.html.twig' with {'type':'add', 'action': 'drivers'} %}
 		</div>
 		<div class="bios-image">
@@ -65,15 +65,14 @@
 {% endif %}
 {% if type == "pcidev" %}
 <div class="quick-spec-table nopad" data-controller="collection">
-		<div class="quick-spec-head editor">PCI DEV
+		<div class="quick-spec-head editor"><div>PCI DEV</div>
 		{% include 'macros/buttons.html.twig' with {'type':'add', 'action': 'chip.pciDevs'} %}</div>
-		<div id="chip.pciDevs-fields-list" data-widget-counter="{{ entity|length }}" data-prototype="<span>ID: </span>{{ form_widget(entity.vars.prototype, {'attr': {'style': 'display:inline-block;'}})|e }} 
+		<div id="chip.pciDevs-fields-list" data-widget-counter="{{ entity|length }}" data-prototype="{{ form_widget(entity.vars.prototype.dev, {'attr': {'placeholder': 'Type an ID (HEX) ...'}})|e }} 
 			{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}">
 			{% if entity is not empty %}
 				{% for id in entity %}
 					<div class="editor-row nopad">
-                        <span>ID: </span>
-						{{ form_widget(id, {'attr': {'style': 'display:inline-block;'}})|replace({'<option value="">': '<option label=" " value="">'})|raw }}
+						{{ form_widget(id.dev, {'attr': {'placeholder': 'Type an ID (HEX) ...'}}) }}
 						{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
 					</div>
 					{{ form_errors(id) }}
@@ -84,16 +83,15 @@
 	</div>
 {% endif %}
 {% if type == "pciven" %}
-<div class="quick-spec-table nopad" data-controller="collection">
-		<div class="quick-spec-head editor">PCI VEN
+	<div class="quick-spec-table nopad" data-controller="collection">
+		<div class="quick-spec-head editor"><div>PCI VEN</div>
 		{% include 'macros/buttons.html.twig' with {'type':'add', 'action': 'pciVendorIds'} %}</div>
-		<div id="pciVendorIds-fields-list" data-widget-counter="{{ entity|length }}" data-prototype="<span>ID: </span>{{ form_widget(entity.vars.prototype, {'attr': {'style': 'display:inline-block;'}})|e }} 
+		<div id="pciVendorIds-fields-list" data-widget-counter="{{ entity|length }}" data-prototype="{{ form_widget(entity.vars.prototype.ven, {'attr': {'placeholder': 'Type an ID (HEX) ...'}})|e }} 
 			{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}">
 			{% if entity is not empty %}
 				{% for id in entity %}
 					<div class="editor-row nopad">
-                        <span>ID: </span>
-						{{ form_widget(id, {'attr': {'style': 'display:inline-block;'}})|replace({'<option value="">': '<option label=" " value="">'})|raw }}
+						{{ form_widget(id.ven, {'attr': {'placeholder': 'Type an ID (HEX) ...'}}) }}
 						{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
 					</div>
 					{{ form_errors(id) }}
@@ -105,17 +103,17 @@
 {% endif %}
 {% if type == "alias" %}
     <div class="quick-spec-table nopad" data-controller="collection">
-		<div class="quick-spec-head editor">{{displayname}}
+		<div class="quick-spec-head editor"><div>{{displayname}}</div>
 		{% include 'macros/buttons.html.twig' with {'type':'add', 'action': 'chip.chipAliases'} %}</div>
 		<div id="chip.chipAliases-fields-list" data-widget-counter="{{ entity|length }}" data-prototype="
             {{ form_widget(entity.vars.prototype.manufacturer, {'attr': {'style': 'width:30%;display:inline-block;'}})|e }}
             {{ form_widget(entity.vars.prototype.partNumber, {'attr': {'style': 'width:25%;display:inline-block;'}})|e }} 
             {{ form_widget(entity.vars.prototype.name, {'attr': {'style': 'width:25%;display:inline-block;'}})|e }}  
 			{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}">
-            <div style="display: flex;justify-content: space-evenly;">
+            <div style="display:flex;text-align:center;">
                 <div style="width:30%;"><i>Manufacturer</i></div>
-                <div style="width:25%;"><i>Part number</i></div>
-                <div style="width:25%;"><i>Name</i></div>
+                <div style="width:27%;"><i>Part number</i></div>
+                <div style="width:27%;"><i>Name</i></div>
             </div>
 			{% if entity is not empty %}
 				{% for alias in entity %}
@@ -131,5 +129,4 @@
 			{{ form_errors(entity) }}
 		</div>
 	</div>
-    <hr>
 {% endif %}

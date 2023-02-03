@@ -24,6 +24,7 @@ class ChipAliasType extends AbstractType
                 'multiple' => false,
                 'expanded' => false,
                 'required' => false,
+                'autocomplete' => true,
             ])
             ->add('name', TextType::class)
             ->add('partNumber', TextType::class, [
@@ -41,7 +42,7 @@ class ChipAliasType extends AbstractType
     public function finishView(FormView $view, FormInterface $form, array $options)
     {
         usort($view->vars['form']['manufacturer']->vars['choices'], function (ChoiceView $a, ChoiceView $b) {
-            return ($a->data->getShortNameIfExist() <=> $b->data->getShortNameIfExist());
+            return strnatcasecmp($a->data->getShortNameIfExist() ?? '', $b->data->getShortNameIfExist() ?? '');
         });
     }
 }

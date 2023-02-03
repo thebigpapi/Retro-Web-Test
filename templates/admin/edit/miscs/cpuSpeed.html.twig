@@ -8,11 +8,6 @@
 	<button type="button" name="tabs" id="tab-nav-save" onclick="document.getElementById('cpu_speed_form_save').click();"><img src="{{ absolute_url(asset('build/icons/edit.svg')) }}" alt="" width="24" height="24"><span>Save</span></button>
 </div>
 {{ form_start(form, {'method': 'POST'}) }}
-<div class="errors-div"><ul>
-    {% for error in form.vars.errors.form.getErrors(true) %}
-    <li>{{ error.message }}</li>
-    {% endfor %}
-</ul></div>
 <div style="margin:0 auto;display:table;">
 	<table>
 		<tr>
@@ -21,5 +16,10 @@
 		</tr>
 	</table>
 </div>
+<div class="errors-div"><ul>
+	{% for error in form.vars.errors.form.getErrors(true) %}
+	<li>{{ error.message }}</li>
+	{% endfor %}
+</ul></div>
 <div id="hiddenDiv" style="display: none;">{{form_widget(form.save) }}{{ form_end(form)|replace({'</form>': '</div></form>'})|raw }}
 {% endblock %}

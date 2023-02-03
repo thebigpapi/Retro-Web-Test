@@ -4,11 +4,6 @@
 
 {% block body %}
 <form data-controller="chipset--add" name="chipset_form" method="post" enctype="multipart/form-data" data-action="{#submit->chipset--add#check#}">
-<div class="errors-div"><ul>
-    {% for error in form.vars.errors.form.getErrors(true) %}
-    <li>{{ error.message }}</li>
-    {% endfor %}
-</ul></div>
 	<div class="title">Chipset editor</div>
 	<!-- MANUF./NAME/PART NO. -->
 	<section class="search-form-grid">
@@ -38,68 +33,76 @@
 		<div class="internal-container">
 			{% include 'macros/navbar.html.twig' with {'type':'edit', 'entityName': 'chipset', 'count':2} %}
 			<div class="internal-content">
-				<!-- DESCRIPTION -->
 				<div class="show-general" id="sh-general">
-					<div style="display:inline-block;">Release date:&nbsp;{{form_widget(form.release_date, {'attr': {'placeholder': 'Template: YYYY-MM-DD'}})}}</div>
-					<div style="display:inline-block;">Encyclopedia link:&nbsp;{{form_widget(form.encyclopedia_link, {'attr': {'placeholder': 'Insert HTTP link here...'}})}}</div>
-					{{form_widget(form.description, {'attr': {'style': 'width:98%;height:600px;', 'placeholder': 'Describe the chipset (max. 8192 characters) ...'}}) }}
-				</div>
-				<div class="show-downloads" id="sh-downloads">
+					<!-- Release Date -->
+					<div class="quick-spec-table nopad">
+						<div class="quick-spec-head">Release date</div>
+						<div class="editor-row nopad"><div class="editor-form-widget" style="width:30%;">
+							<div>{{form_widget(form.release_date, {'attr': {'placeholder': 'Template: YYYY-MM-DD'}})}}</div>
+						</div></div>
+					</div>
+					<!-- Encyclopedia link -->
+					<div class="quick-spec-table nopad">
+						<div class="quick-spec-head">Encyclopedia link</div>
+						<div class="editor-row nopad"><div class="editor-form-widget" style="width:30%;">
+							<div>{{form_widget(form.encyclopedia_link, {'attr': {'placeholder': 'Insert link here...'}})}}</div>
+						</div></div>
+					</div>
+					<!-- CHIPSET PARTS -->
+					<div class="quick-spec-table nopad" data-controller="collection">
+						<div class="quick-spec-head editor"><div>Chipset parts</div>
+						{% include 'macros/buttons.html.twig' with {'type':'add', 'action': 'chipsetParts'} %}</div>
+						<div id="chipsetParts-fields-list" data-widget-counter="{{ form.chipsetParts|length }}" data-prototype="
+							{{ form_widget(form.chipsetParts.vars.prototype, {'attr': {'style': 'width:35%;margin-top:4px;', 'data-action': 'change->collection#addLinkOverride'}})|e }}
+							{% include 'macros/buttons.html.twig' with {'type':'del', 'count':2} %}">
+							{% if form.chipsetParts is not empty %}
+								{% for part in form.chipsetParts %}
+									<div class="editor-row nopad">
+										{{ form_widget(part, {'attr': {'style': 'width:35%;margin-top:4px;', 'data-action': 'change->collection#addLinkOverride'}}) }}
+										{% include 'macros/buttons.html.twig' with {'type':'del', 'count':2} %}
+									</div>
+									{{ form_errors(part) }}
+								{% endfor %}
+							{% endif %}
+						</div>
+					</div>
 					<!-- CHIP ALIASES -->
 					{% include 'admin/macros/widget.html.twig' with {'type':'alias','displayname':'Chipset aliases', 'entity':form.chipsetAliases} %}
-					<!-- DRIVERS -->
+					<!-- BIOS CODES -->
+					<div class="quick-spec-table nopad" data-controller="collection">
+						<div class="quick-spec-head editor"><div>BIOS codes</div>
+						{% include 'macros/buttons.html.twig' with {'type':'add', 'action': 'biosCodes'} %}</div>
+						<div id="biosCodes-fields-list" data-widget-counter="{{ form.biosCodes|length }}" data-prototype="
+							{{ form_widget(form.biosCodes.vars.prototype.biosManufacturer, {'attr': {'style': 'display:inline-block;width:30%;'}})|e }}
+							{{ form_widget(form.biosCodes.vars.prototype.code, {'attr': {'style': 'display:inline-block;width:25%;', 'placeholder': 'Enter code ..'}})|e }}
+							{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}">
+							{% if form.biosCodes is not empty %}
+								{% for code in form.biosCodes %}
+									<div class="editor-row nopad">
+										{{ form_widget(code.biosManufacturer, {'attr': {'style': 'display:inline-block;width:30%;'}}) }}
+										{{ form_widget(code.code, {'attr': {'style': 'display:inline-block;width:25%;'}}) }}
+										{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
+									</div>
+									{{ form_errors(code) }}
+								{% endfor %}
+							{% endif %}
+						</div>
+					</div>
+					<!-- Description -->
+					{{form_widget(form.description, {'attr': {'style': 'width:100%;height:300px;', 'placeholder': 'Describe the chipset (max. 8192 characters) ...'}}) }}
+				</div>
+				<div class="show-downloads" id="sh-downloads">
+					<!-- Drivers -->
 					{% include 'admin/macros/widget.html.twig' with {'type':'drivers', 'entity':form.drivers} %}
-					<!-- DOCS -->
+					<!-- Docs -->
 					{% include 'admin/macros/widget.html.twig' with {'type':'docs', 'entity':form.documentations} %}
 				</div>
 			</div>
 		</div>
-		<!-- CHIPSET PARTS -->
-		<div class="show-images" style="min-height:200px;" data-controller="collection">
-			<div class="bar">
-				<span style="padding-left:10px;display:flex;align-items: center;">
-					<b style="padding-right:5px;">Chipset parts</b>
-					{% include 'macros/buttons.html.twig' with {'type':'add', 'action': 'chipsetParts'} %}
-				</span>
-			</div>
-			<div id="chipsetParts-fields-list" data-widget-counter="{{ form.chipsetParts|length }}" data-prototype="
-					{{ form_widget(form.chipsetParts.vars.prototype, {'attr': {'style': 'width:100%;margin-top:4px;', 'data-action': 'change->collection#addLinkOverride'}})|e }}
-					{% include 'macros/buttons.html.twig' with {'type':'del', 'count':2} %}">
-					{% if form.chipsetParts is not empty %}
-						{% for part in form.chipsetParts %}
-							<div class="editor-row nopad">
-								{{ form_widget(part, {'attr': {'style': 'width:100%;margin-top:4px;', 'data-action': 'change->collection#addLinkOverride'}}) }}
-								{% include 'macros/buttons.html.twig' with {'type':'del', 'count':2} %}
-							</div>
-							{{ form_errors(part) }}
-						{% endfor %}
-					{% endif %}
-					{{ form_errors(form.chipsetParts) }}
-			</div><br>
-			<!-- BIOS CODES -->
-			<div class="bar" style="margin-bottom:5px;">
-				<span style="display:flex;align-items: center;">
-					<b style="padding-right:5px;">BIOS codes</b>
-					{% include 'macros/buttons.html.twig' with {'type':'add', 'action': 'biosCodes'} %}
-				</span>
-			</div>
-			<div id="biosCodes-fields-list" data-widget-counter="{{ form.biosCodes|length }}" data-prototype="
-					{{ form_widget(form.biosCodes.vars.prototype.biosManufacturer, {'attr': {'style': 'display:inline-block;width:30%;'}})|e }}
-					{{ form_widget(form.biosCodes.vars.prototype.code, {'attr': {'style': 'display:inline-block;width:30%;', 'placeholder': 'Enter code ..'}})|e }}
-					{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}">
-					{% if form.biosCodes is not empty %}
-						{% for part in form.biosCodes %}
-							<div class="editor-row nopad">
-								{{ form_widget(part.biosManufacturer, {'attr': {'style': 'display:inline-block;width:30%;'}}) }}
-								{{ form_widget(part.code, {'attr': {'style': 'display:inline-block;width:30%;'}}) }}
-								{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
-							</div>
-							{{ form_errors(part) }}
-						{% endfor %}
-					{% endif %}
-					{{ form_errors(form.biosCodes) }}
-			</div>
-		</div>
-	</div>
+	<div class="errors-div"><ul>
+		{% for error in form.vars.errors.form.getErrors(true) %}
+		<li>{{ error.message }}</li>
+		{% endfor %}
+	</ul></div>
 	<div id="hiddenDiv" style="display: none;">{{ form_end(form)|replace({'</form>': '</div></form>'})|raw }}
 {% endblock %}

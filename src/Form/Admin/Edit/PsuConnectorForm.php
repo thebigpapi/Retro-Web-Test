@@ -15,7 +15,9 @@ class PsuConnectorForm extends AbstractType
     {
         $builder
             ->add('name', TextType::class)
-            ->add('website', TextType::class)
+            ->add('website', TextType::class, [
+                'required' => false,
+            ])
             ->add('save', SubmitType::class);
     }
 

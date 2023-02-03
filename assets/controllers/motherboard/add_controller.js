@@ -65,8 +65,8 @@ export default class extends Controller {
         }
         let imageList = document.getElementById('images-fields-list').children;
         for (let image of imageList) {
-            if (image.children[1].children[0].files[0] == null) {
-                if (image.children[5].children[0].value == '') {
+            if (image.children[2].children[1].files[0] == null) {
+                if (image.children[5].children[1].value == '') {
                     errorMessage += "One of the image file upload fields is empty!\n";
                     error = true;
                 }

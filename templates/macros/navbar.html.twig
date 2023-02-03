@@ -4,7 +4,7 @@
     <input type="radio" name="tabs" id="tab-nav-1" checked data-action='click->show#show_general'>
     <label for="tab-nav-1"><img src="{{ absolute_url(asset('build/icons/show/data.svg')) }}" alt="" width="24" height="24">Description</label>
     <input type="radio" name="tabs" id="tab-nav-2" data-action='click->show#show_downloads'>
-    <label for="tab-nav-2"><img src="{{ absolute_url(asset('build/icons/dw.svg')) }}" alt="" width="24" height="24">Downloads</label>
+    <label for="tab-nav-2"><img src="{{ absolute_url(asset('build/icons/dw.svg')) }}" alt="" width="24" height="24">{% if type == "edit" %}Attachments{% else %}Downloads{% endif %}</label>
     {% if count > 2 %}
     <input type="radio" name="tabs" id="tab-nav-3" data-action='click->show#show_cpus'>
     <label for="tab-nav-3"><img src="{{ absolute_url(asset('build/icons/show/cpu.svg')) }}" alt="" width="24" height="24">CPUs</label>

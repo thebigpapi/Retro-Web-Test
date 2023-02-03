@@ -8,11 +8,6 @@
 	<button type="button" name="tabs" id="tab-nav-save" onclick="document.getElementById('coprocessor_form_save').click();"><img src="{{ absolute_url(asset('build/icons/edit.svg')) }}" alt="" width="24" height="24"><span>Save</span></button>
 </div>
 {{ form_start(form, {'method': 'POST'}) }}
-<div class="errors-div"><ul>
-    {% for error in form.vars.errors.form.getErrors(true) %}
-    <li>{{ error.message }}</li>
-    {% endfor %}
-</ul></div>
 <div class="main-strip">
 	<div class="internal-container">
 	<table>
@@ -54,8 +49,13 @@
 		</tr>
 	</table>
 	</div>
-	{% include 'macros/entityListImages.html.twig' with {'entityName':'processingUnit.chip.images', 'entities':form.processingUnit.chip.images, 'edit':true} %}
+	{% include 'macros/entityListImages.html.twig' with {'entityName':'processingUnit.chip.images', 'entities':form.processingUnit.chip.images, 'imgpath':'chip', 'edit':true} %}
 </div>
+<div class="errors-div"><ul>
+	{% for error in form.vars.errors.form.getErrors(true) %}
+	<li>{{ error.message }}</li>
+	{% endfor %}
+</ul></div>
 <div id="hiddenDiv" style="display: none;">{{form_widget(form.save)}}{{ form_end(form)|replace({'</form>': '</div></form>'})|raw }}
 <div style="clear:left;"></div>
 {% endblock %}

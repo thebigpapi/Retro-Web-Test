@@ -3,25 +3,7 @@
 {% block title %}Add/Edit motherboard{% endblock %}
 {% block body %}
 <form data-controller="motherboard--add" name="add_motherboard" method="post" enctype="multipart/form-data" data-action="submit->motherboard--add#check">
-<div class="errors-div"><ul>
-    {% for error in form.vars.errors.form.getErrors(true) %}
-		{% set emsg = error.cause|split('children') %}
-		{% if emsg|length > 1 %}
-			{% set emsg1 = emsg[1]|slice(0, error.cause|split('children')[1]|length - 1) %}
-			{% if emsg1 == "[processorPlatformTypes]" %}
-				<li>{{ emsg1 }} A platform was incompatible with one of the sockets, reselect</li>
-			{% elseif emsg1 == "[processors]" %}
-				<li>{{ emsg1 }} This CPU is incompatible with the selected socket/platform/speed, reselect</li>
-			{% elseif emsg1 == "[coprocessors]" %}
-				<li>{{ emsg1 }} This NPU is incompatible with the selected socket/platform/speed, reselect</li>
-			{% else %}
-				<li>{{ emsg1 }} {{ error.message }}</li>
-			{% endif %}
-		{% endif %}
-    {% endfor %}
-</ul></div>
 	<div class="title">Motherboard editor</div>
-
 	<!-- MANUF/TITLE -->
 	<section class="search-form-grid">
 		<div class="search-form-entry">
@@ -262,37 +244,12 @@
 				<!-- DOWNLOADS -->
 				<div class="show-downloads" id="sh-downloads">
 					<!-- Drivers -->
-					<div data-controller="collection">
-						<div style="padding-top:5px;display: flex;align-items: center;">
-							<img src="{{ absolute_url(asset('build/icons/show/hardware.svg')) }}" alt="" width="32" style="padding: 5px;">
-							<b>Drivers: </b>
-							{% include 'macros/buttons.html.twig' with {'type':'add', 'action': 'drivers'} %}
-						</div>
-						<div class="bios-image">
-							<div class="bios-image-head editor-row drv">
-								<div><b>File</b></div>
-								<div><b>Recommended</b></div>
-							</div>
-							<div id="drivers-fields-list" data-widget-counter="{{ form.drivers|length }}" data-prototype="
-								<div>{{ form_widget(form.drivers.vars.prototype.largeFile, {'attr': {'style': 'display:none;'}} )|e }}</div>
-								<div style=display:flex;justify-content:center;>{{ form_widget(form.drivers.vars.prototype.isRecommended, {'attr': {'style': 'height:18px;width:18px;margin:0;'}} )|e }}</div>
-								{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
-								" data-controller="collection">
-								{% for driver in form.drivers %}
-										<div class="editor-row drv nopad">
-											<div>{{ form_widget(driver.largeFile, {'attr': {'style': 'display:none;'}} )|replace({'<option value="">': '<option label=" " value="">'})|raw }}</div>
-											<div style="display:flex;justify-content:center;">{{ form_widget(driver.isRecommended, {'attr': {'style': 'height:18px;width:18px;margin:0;'}} ) }}</div>
-											{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
-										</div>
-										{{ form_errors(driver) }}
-								{% endfor %}
-							</div>
-						</div>
-					</div><!-- BIOSes -->
-					<div data-controller="collection">
+					{% include 'admin/macros/widget.html.twig' with {'type':'drivers', 'entity':form.drivers} %}
+					<!-- BIOSes -->
+					<div data-controller="collection" style="padding-bottom: 20px;">
 						<div style="padding-top:10px;display: flex;align-items: center;">
 							<img src="{{ absolute_url(asset('build/icons/show/chip.svg')) }}" alt="" width="32" style="padding: 5px;">
-							<b>BIOS images: </b>
+							<i>BIOS images: </i>
 							{% include 'macros/buttons.html.twig' with {'type':'add', 'action': 'motherboardBios'} %}
 						</div>
 						<div class="bios-image">
@@ -334,10 +291,10 @@
 					<!-- Manuals -->
 					{% include 'admin/macros/widget.html.twig' with {'type':'docs', 'entity':form.manuals} %}
 					<!-- Misc files -->
-					<div data-controller="collection">
+					<div data-controller="collection" style="padding-bottom: 20px;">
 						<div style="padding-top:10px;display: flex;align-items: center;">
 							<img src="{{ absolute_url(asset('build/icons/show/manual.svg')) }}" alt="" width="32" style="padding: 5px;">
-							<b>Misc files:</b>
+							<i>Misc files:</i>
 							{% include 'macros/buttons.html.twig' with {'type':'add', 'action': 'miscfile'} %}
 						</div>
 						<div class="bios-image">
@@ -460,8 +417,25 @@
 			</div>
 		</div>
 		<!-- IMAGES -->
-		{% include 'macros/entityListImages.html.twig' with {'entityName':'images', 'entities':form.images, 'edit':true} %}
+		{% include 'macros/entityListImages.html.twig' with {'entityName':'images', 'entities':form.images, 'imgpath':'motherboard', 'edit':true} %}
 	</div>
 	<div style="width:100%;clear:left;"></div>
+<div class="errors-div"><ul>
+    {% for error in form.vars.errors.form.getErrors(true) %}
+		{% set emsg = error.cause|split('children') %}
+		{% if emsg|length > 1 %}
+			{% set emsg1 = emsg[1]|slice(0, error.cause|split('children')[1]|length - 1) %}
+			{% if emsg1 == "[processorPlatformTypes]" %}
+				<li>{{ emsg1 }} A platform was incompatible with one of the sockets, reselect</li>
+			{% elseif emsg1 == "[processors]" %}
+				<li>{{ emsg1 }} This CPU is incompatible with the selected socket/platform/speed, reselect</li>
+			{% elseif emsg1 == "[coprocessors]" %}
+				<li>{{ emsg1 }} This NPU is incompatible with the selected socket/platform/speed, reselect</li>
+			{% else %}
+				<li>{{ emsg1 }} {{ error.message }}</li>
+			{% endif %}
+		{% endif %}
+    {% endfor %}
+</ul></div>
 <div id="hiddenDiv" style="display: none;">{{ form_end(form)|replace({'</form>': '</div></form>'})|raw }}
 {% endblock %}
