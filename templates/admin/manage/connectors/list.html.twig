@@ -21,6 +21,6 @@
         {% for object in objectList %}
             {% include 'admin/manage/connectors/' ~ entityName ~ '.html.twig' with {'object':object} %}	
         {% endfor %}
-    </table>
+    </div>
     {{ knp_pagination_render(objectList, 'macros/pagination.html.twig') }}
 {% endif %}
