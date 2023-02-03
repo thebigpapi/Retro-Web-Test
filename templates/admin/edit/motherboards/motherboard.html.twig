@@ -378,14 +378,14 @@
 						<span>Please wait :)</span><img src="{{ absolute_url(asset('build/images/cursor.gif')) }}" alt="" height="24" style="vertical-align: middle;">
 					</div>
 					<div class="old-cpu-table" data-controller="collection">
-						<div style="display:flex;" style="text-align:left">
+						<div style="display:flex;text-align:left;">
 							<div>CPU</div>
 							<button type="button" data-action="click->collection#expandButton" data-list-id="processors-fields-list">Add</button>
 							<button type="button" data-action="click->collection#addAllButton" data-list-id="processors-fields-list">Add all CPUs</button>
 							<button type="button" data-action="click->collection#clearAllButton" data-list-id="processors-fields-list">Delete all CPUs</button>
 							<span id="status-label" style="font-size:0.8em"></span>
 						</div>
-						<div style="display:flex;" style="text-align:left">
+						<div style="display:flex;text-align:left;">
 							<div>NPU:</div>
 							<button type="button" data-action="click->collection#expandButton" data-list-id="coprocessors-fields-list">Add</button>
 							<button type="button" data-action="click->collection#addAllButton" data-list-id="coprocessors-fields-list">Add all NPUs</button>
