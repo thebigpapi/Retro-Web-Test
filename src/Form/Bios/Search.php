@@ -42,7 +42,7 @@ class Search extends AbstractType
 
             ->add('manufacturer', EntityType::class, [
                 'class' => Manufacturer::class,
-
+                'autocomplete' => true,
                 'choice_label' => 'shortNameIfExist',
                 'multiple' => false,
                 'expanded' => false,

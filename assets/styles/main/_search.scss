@@ -156,7 +156,8 @@ section.search-form-grid {
 			flex-wrap: wrap;
 			width: 100%;
 			padding-bottom: 5px;
-
+			&.ts-control{padding:0;}
+			&.ts-wrapper{padding-bottom: 0px;}
 			* {
 				width: 100%;
 				flex-grow: 1;
@@ -225,6 +226,9 @@ div.editor-row {
 	flex-wrap: wrap;
 	gap: 5px;
 	padding: 0 !important;
+	&.bios-image-head{
+		padding:5px 0px !important;
+	}
 	align-items: center;
 	&.addform{ padding:10px!important; }
 	@media (max-width: 500px) {
@@ -250,6 +254,7 @@ div.editor-row {
 		grid-template-columns:[first] 25% [second] 30% [third] 25% [fourth] 7% [end];
 		div:nth-child(2), div:nth-child(n+3), a {    margin-left: 10px;}
 	}
+	> div { padding-left: 2px;}
 	div.editor-form-widget {
 		padding: 0 !important;
 
@@ -356,7 +361,7 @@ div.plain-list {
 	}
 }
 
-#setmanuf, #setcpu1, #setcpup1, #setcpu3, #setcpup3 {
+#setmanuf, #setchip1, #setcpu1, #setcpup1, #setcpu3, #setcpup3 {
 	select{display:none;}
 }
 // table variant for admin manage lists, toggled via JS

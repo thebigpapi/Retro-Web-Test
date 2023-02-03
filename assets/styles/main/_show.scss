@@ -166,6 +166,7 @@ div.quick-spec-table {
         vertical-align: middle;
         align-self: center;
         &.ts-wrapper{  padding: 2px 0px 2px;}
+        &.ts-control{padding:0;}
     }
     > div > div.editor-row > div.ts-wrapper {
 		width:max(200px,25vw);

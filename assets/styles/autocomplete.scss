@@ -60,7 +60,7 @@ div.item{
 /* WRAPPER */
 .ts-wrapper{
   display: flex;
-  min-height: 36px;
+  min-height: 30px;
   position: relative;
   &.single{
     >.ts-control{
@@ -168,6 +168,7 @@ div.ts-control{
     display: none;
   }
   div{
+    line-height: 30px;
     max-width: 14rem !important;
     padding-bottom: 0px !important;
     padding-top: 0px !important;
