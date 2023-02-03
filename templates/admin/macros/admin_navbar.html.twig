@@ -46,7 +46,7 @@
 			{{ form_row(search.search)|replace({'<div><button': '<input', '</button></div>': '">', '>': ' value="'})|raw }}
 		</div>
 	</fieldset>
-	<div>{{ form_rest(search) }}</div>
+	{{ form_rest(search) }}{{ form_end(search)}}
 {% endif %}
 
 <div class="show-nav admin">
