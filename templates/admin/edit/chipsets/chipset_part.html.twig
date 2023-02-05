@@ -4,11 +4,6 @@
 
 {% block body %}
 {{ form_start(form, {'method': 'POST'}) }}
-<div class="errors-div"><ul>
-    {% for error in form.vars.errors.form.getErrors(true) %}
-    <li>{{ error.message }}</li>
-    {% endfor %}
-</ul></div>
 	<div class="title">Chipset part editor</div>
 
 	<!-- MANUF./NAME/PART NO. -->
@@ -40,7 +35,6 @@
 		<div class="internal-container">
 			{% include 'macros/navbar.html.twig' with {'type':'edit', 'entityName': 'chip', 'count':2} %}
 			<div class="internal-content">
-				<!-- Description -->
 				<div class="show-general" id="sh-general">
 					<!-- Rank -->
 					<div class="quick-spec-table nopad">
@@ -49,20 +43,26 @@
 							<div>{{ form_widget(form.rank) }}</div>
 						</div></div>
 					</div>
-					{{form_widget(form.description, {'attr': {'style': 'width:98%;height:600px;', 'placeholder': 'Describe the chipset (max. 8192 characters) ...'}}) }}
-				</div>
-				<div class="show-downloads" id="sh-downloads">
 					<!-- CHIP ALIASES -->
 					{% include 'admin/macros/widget.html.twig' with {'type':'alias','displayname':'Chip aliases', 'entity':form.chip.chipAliases} %}
 					<!-- PCI DEV -->
 					{% include 'admin/macros/widget.html.twig' with {'type':'pcidev', 'entity':form.chip.pciDevs} %}
+					<!-- Description -->
+					{{form_widget(form.description, {'attr': {'style': 'width:98%;height:300px;', 'placeholder': 'Describe the chipset (max. 8192 characters) ...'}}) }}
+				</div>
+				<div class="show-downloads" id="sh-downloads">
 					<!-- DOCS -->
 					{% include 'admin/macros/widget.html.twig' with {'type':'docs', 'entity':form.documentations} %}
 				</div>
 			</div>
 		</div>
 		<!-- IMAGES -->
-		{% include 'macros/entityListImages.html.twig' with {'entityName':'chip.images', 'entities':form.chip.images, 'edit':true} %}
+		{% include 'macros/entityListImages.html.twig' with {'entityName':'chip.images', 'entities':form.chip.images, 'imgpath':'chip', 'edit':true} %}
 	</div>
+	<div class="errors-div"><ul>
+		{% for error in form.vars.errors.form.getErrors(true) %}
+		<li>{{ error.message }}</li>
+		{% endfor %}
+	</ul></div>
 	<div id="hiddenDiv" style="display: none;">{{form_widget(form.save) }}{{ form_end(form)|replace({'</form>': '</div></form>'})|raw }}
 {% endblock %}

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- made by computerguy096 -->
+
+<svg
+   height="453.66681"
+   width="454.20566"
+   version="1.1"
+   id="Layer_1"
+   viewBox="0 0 290.69162 290.34676"
+   xml:space="preserve"
+   sodipodi:docname="warning.svg"
+   inkscape:version="1.2 (dc2aedaf03, 2022-05-15)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"><defs
+   id="defs157">
+</defs><sodipodi:namedview
+   id="namedview155"
+   pagecolor="#ffffff"
+   bordercolor="#000000"
+   borderopacity="0.25"
+   inkscape:showpageshadow="2"
+   inkscape:pageopacity="0.0"
+   inkscape:pagecheckerboard="0"
+   inkscape:deskcolor="#d1d1d1"
+   showgrid="false"
+   inkscape:zoom="1.03875"
+   inkscape:cx="132.85199"
+   inkscape:cy="258.00241"
+   inkscape:window-width="1920"
+   inkscape:window-height="1017"
+   inkscape:window-x="1672"
+   inkscape:window-y="-8"
+   inkscape:window-maximized="1"
+   inkscape:current-layer="Layer_1" />
+<polygon
+   style="fill:#ffdd09"
+   points="391.533,361.667 118.467,361.667 255,88.6 "
+   id="polygon132"
+   transform="translate(-109.50675,-79.85325)" >
+   <animate
+   attributeType="XML"
+   attributeName="fill"
+   values="#ffdd0900;#ffdd09ff;#ffdd0900"
+   dur="1.2s"
+   repeatCount="indefinite" /></polygon><path
+   d="M 282.02625,290.34675 H 8.96025 c -2.56,0 -5.973,-1.707 -7.68,-4.267 -1.707,-2.56 -1.707,-5.973 0,-8.533 L 137.81325,4.4797502 c 2.56,-5.9730003 11.947,-5.9730003 15.36,0 l 136.533,273.0669998 c 1.707,2.56 0.853,5.973 0,8.533 -0.853,2.56 -5.12,4.267 -7.68,4.267 z m -259.413,-17.067 h 245.76 l -122.88,-245.76 z"
+   id="path142"/><path
+   d="m 145.49325,213.54675 c -5.12,0 -8.533,-3.413 -8.533,-8.533 v -93.867 c 0,-5.12 3.413,-8.533 8.533,-8.533 5.12,0 8.533,3.413 8.533,8.533 v 93.867 c 0,5.12 -3.413,8.533 -8.533,8.533 z"
+   id="path144"/><path
+   d="m 154.02625,239.14675 c 0,5.12 -3.413,8.533 -8.533,8.533 -5.12,0 -8.533,-3.413 -8.533,-8.533 0,-5.12 3.413,-8.533 8.533,-8.533 5.12,0 8.533,3.413 8.533,8.533"
+   id="path146"/><animate
+   attributeType="XML"
+   attributeName="fill"
+   values="#00000000;#000000ff;#00000000"
+   dur="1.2s"
+   repeatCount="indefinite" />
+</svg>

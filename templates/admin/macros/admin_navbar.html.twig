@@ -22,7 +22,7 @@
 			{% for key, child in search %}
 				{% if key != "_token" and key != "search" %}
 					<div class="search-form-entry">
-						<label class="search-form-label" for="search_name">
+						<label class="search-form-label">
 							<span>{{ key|capitalize }}</span>
 						</label>
 						<div class="search-form-widget">
@@ -46,27 +46,23 @@
 			{{ form_row(search.search)|replace({'<div><button': '<input', '</button></div>': '">', '>': ' value="'})|raw }}
 		</div>
 	</fieldset>
-	<div>{{ form_rest(search) }}</div>
+	{{ form_rest(search) }}{{ form_end(search)}}
 {% endif %}
 
-<div class="show-nav">
-	<a href="{{ path('admin_index') }}">
-		<label>		
-			<img src="{{ absolute_url(asset('build/icons/back.svg')) }}" alt="back" width="24" height="24">
-			Go back		
-		</label>
-	</a>
+<div class="show-nav admin">
+	<a href="{{ path('admin_index') }}"><span>		
+		<img src="{{ absolute_url(asset('build/icons/back.svg')) }}" alt="back" width="24" height="24">
+		Go back		
+	</span></a>
 	{% for key, value in set %}
 		<a href="{{ path('admin_manage_' ~ category, {entity:key})}}">
-			<label {% if entityName == key %}checked{% endif %}>{{value}}</label>
+			<span {% if entityName == key %}id="nav-checked"{% endif %}>{{value}}</span>
 		</a>
 	{% endfor %}
-	<a href="./{{path}}/{% if entityName == "osfamily" %}osfamilie{% else %}{{entityName}}{% endif %}s/add/">
-		<label>
-			<img src="{{ absolute_url(asset('build/icons/add.svg')) }}" alt="back" width="24" height="24">
-			Add {{ entityDisplayName }}
-		</label>
-	</a>
+	<a href="./{{path}}/{% if entityName == "osfamily" %}osfamilie{% else %}{{entityName}}{% endif %}s/add/"><span>
+		<img src="{{ absolute_url(asset('build/icons/add.svg')) }}" alt="back" width="24" height="24">
+		Add {{ entityDisplayName }}
+	</span></a>
 	<div style="display:flex;align-items:center;" data-controller="show">
 		<input type="checkbox" id="table-switch" value="Table view" style="display: block;width:1.5em;height:1.5em;" data-action='click->show#show_table'>
     	<span> Grid view</span>

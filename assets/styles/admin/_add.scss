@@ -3,7 +3,7 @@ div.addform{
 	box-shadow:inset -1px -1px $dark-color,inset 1px 1px $footer-link-color,inset -2px -2px $medium-color,inset 2px 2px $lightbg-color;
 	background-color: $footer-link-color;
 	padding:10px; 
-	font-size:18px; 
+	font-size:11pt; 
 	margin-top: 5px;
 	color:$dark-color;
 	@media (prefers-color-scheme: dark) {
@@ -12,7 +12,13 @@ div.addform{
 		color:$light-color;
 	}
 }
-img.imgp-img { max-height:170px;max-width: 100%; }
+img.imgp-img { 
+	display:flex;
+	margin: auto;
+	padding-bottom:5px;
+	max-height:170px;
+	max-width: 100%;
+}
 div.imgp {
 	font-size:16px;
 	padding-top:1px;
@@ -20,12 +26,14 @@ div.imgp {
 	justify-content: space-between;
 	flex-wrap: wrap;
 	select,div.ts-wrapper {
-		width:68%;
+		width:75%;
 		div.ts-control{
 			width:100%;
 		}
 	}
-	input[type=text] {width:65%}
+	input { width:71%; }
+	.ts-control input { width:auto; }
+	.ts-dropdown-content{max-height: 130px;}
 }
 
 div.full-spec.edit{

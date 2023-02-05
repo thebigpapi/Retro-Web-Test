@@ -9,50 +9,44 @@ div.show-nav {
 	input {
 		display: none;
 	}
-
-	label {
+	&.admin a{
 		display: flex;
 		align-items: center;
-		padding: 8px 10px;
 		height: 24px;
 		cursor: pointer;
 		transition: ease-in-out background-color $anim-duration, ease-in-out color $anim-duration;
-
-		img {
-			margin-right: 5px;
-		}
-
-		border-radius: 5px 5px 0px 0px;
-		border: thin solid transparent;
-
 		&:hover {
 			transition: ease-in-out background-color $anim-duration, ease-in-out color $anim-duration;
 			color: $active-link-light;
-
 			@media (prefers-color-scheme: dark) {
 				color: $active-link-dark;
 			}
 		}
-	}
-
-	label:hover,
-	label[checked] {
-		transition: ease-in-out background-color $anim-duration, ease-in-out color $anim-duration;
-		background: $container-bkg-light;
-        border: thin solid $content-frg-light;
-        border-bottom: thin solid $active-link-light;//background-color: $body-bkg-light;
-
-        @media (prefers-color-scheme: dark) {
-            background: $container-bkg-dark;
-            border: thin solid $border-dark;
-            border-bottom: thin solid $active-link-dark;
-        }
-	}
-	a label{ // admin buttons
-		color:$content-bkg-dark;
-		@media (prefers-color-scheme: dark) {
-			color:$content-bkg-light;
+		> span{
+			line-height: 24px;
+			padding: 8px 10px;
+			border-radius: 5px 5px 0px 0px;
+			border: thin solid transparent;
+			color:$content-bkg-dark;
+			@media (prefers-color-scheme: dark) {
+				color:$content-bkg-light;
+			}
 		}
+		> span:hover,#nav-checked {
+			transition: ease-in-out background-color $anim-duration, ease-in-out color $anim-duration;
+			background: $container-bkg-light;
+			border: thin solid $content-frg-light;
+			border-bottom: thin solid $active-link-light;//background-color: $body-bkg-light;
+			@media (prefers-color-scheme: dark) {
+				background: $container-bkg-dark;
+				border: thin solid $border-dark;
+				border-bottom: thin solid $active-link-dark;
+			}
+		}
+		img {
+			vertical-align: middle;
+			margin-right: 5px;
+		}	
 	}
 }
 

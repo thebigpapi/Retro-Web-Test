@@ -11,8 +11,12 @@
         <span>{{ collector.getBranchName() }} </span>
     </div>
 	<div>
-        <b>Version: </b>
+        <b>Version date:</b>
         <span>{{ collector.getLastCommitDetail()['date'] }} </span>
+    </div>
+	<div>
+        <b>Version message:</b>
+        <span>{{ collector.getLastCommitMessage()}} </span>
     </div>
 	<p><b>Board count: {{moboCount}}</b></p>
 	<dl>

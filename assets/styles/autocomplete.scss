@@ -60,7 +60,7 @@ div.item{
 /* WRAPPER */
 .ts-wrapper{
   display: flex;
-  min-height: 36px;
+  min-height: 30px;
   position: relative;
   &.single{
     >.ts-control{
@@ -128,12 +128,13 @@ div.item{
 .full .ts-control {
   background-color: #fff;
 }
+.ts-wrapper.single .ts-control {box-shadow:none;}
 /* MAIN SELECTOR (CONTAINER) */
 div.ts-control{
   display: flex;
   flex-direction: row;
   border: 1px solid #d0d0d0;
-  padding: 8px 8px !important;
+  padding-left: 8px !important;
   width: 100%;
   overflow: hidden;
   position: relative;
@@ -151,7 +152,7 @@ div.ts-control{
     min-width: 4rem;
     display: inline-block !important;
     padding: 0 !important;
-    min-height: 0 !important;
+    min-height: 25px !important;
     max-height: none !important;
     max-width: 12rem !important;
     margin: 0 !important;
@@ -167,8 +168,10 @@ div.ts-control{
     display: none;
   }
   div{
+    line-height: 30px;
     max-width: 14rem !important;
     padding-bottom: 0px !important;
+    padding-top: 0px !important;
   }
 }
 #mobo-chipset-select div.ts-control div {max-width: 40rem !important;}
@@ -176,6 +179,7 @@ div.ts-control{
 #knownIssues-fields-list div.ts-control div {max-width: 28rem !important;}
 #motherboardAliases-fields-list div.ts-control div {max-width: 28rem !important;}
 #psuConnectors-fields-list div.ts-control div {max-width: 24rem !important;}
+#chipsetParts-fields-list div.ts-control div {max-width: 24rem !important;}
 
 div.editor-row.bios{
   .ts-control > div.item {
@@ -267,7 +271,7 @@ div.editor-row.bios{
 .ts-dropdown-content {
   overflow-y: auto;
   overflow-x: hidden;
-  max-height: 200px;
+  max-height: 250px;
   scroll-behavior: smooth;
 }
 

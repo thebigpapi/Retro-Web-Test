@@ -28,6 +28,10 @@ class GitDataCollector extends DataCollector
     }
 
     // we will use this name in the config later
+    /** 
+     *
+     * @return string
+     */
     public function getName()
     {
         return 'app.git_data_collector';

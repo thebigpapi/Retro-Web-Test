@@ -2,32 +2,30 @@
 <div class="show-images{{ edit == true ? ' edit'}}" style="min-height:200px;" data-controller="collection">
 	<div class="bar">
 		<span style="padding-left:10px;display:flex;align-items: center;">
-			<b>Images</b>
+			<i>Images:</i>
 			{% include 'macros/buttons.html.twig' with {'type':'add', 'action': entityName} %}
 		</span>
 	</div>
 	<div id="{{entityName}}-fields-list" data-widget-counter="{{ entities|length }}" data-prototype="
 		<div></div>
-		<div class=imgp>{{ form_widget(entities.vars.prototype.imageFile)|e }}</div>{% if entityName == 'images' %}
-		<div class=imgp>Type:{{ form_widget(form.images.vars.prototype.motherboardImageType)|e }}</div>{% endif %}
-		<div class=imgp>Creditor: {{ form_widget(entities.vars.prototype.creditor)|e }}</div>
-		<div class=imgp>Notes: {{ form_widget(entities.vars.prototype.description)|e }}</div>
-		<div class=imgp>File:{{ form_widget(entities.vars.prototype.file_name)|e }}</div>
+		<div class=imgp><span><i>Creditor:</i></span>{{ form_widget(entities.vars.prototype.creditor)|e }}</div>
+		<div class=imgp><span><i>Upload:</i></span>{{ form_widget(entities.vars.prototype.imageFile)|e }}</div>{% if entityName == 'images' %}
+		<div class=imgp><span><i>Type:</i></span>{{ form_widget(form.images.vars.prototype.motherboardImageType)|e }}</div>{% endif %}
+		<div class=imgp><span><i>Notes:</i></span>{{ form_widget(entities.vars.prototype.description)|e }}</div>
+		<div class=imgp><span><i>File name:</i></span>{{ form_widget(entities.vars.prototype.file_name)|e }}</div>
 		{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}">
 		{% for image in entities %}
 			<div class="addform">
+				{% set path = '/' ~ imgpath ~ '/image/' ~ image.vars.value.getFileName() %}
+				<img class="imgp-img" src={{path}} alt="failed to load">
+				<div class="imgp"><span><i>Creditor:</i></span>{{ form_widget(image.creditor)|replace({'<option value="">': '<option label=" " value="">'})|raw}}</div>
+				<div class="imgp"><span><i>Upload:</i></span>{{ form_widget(image.imageFile) }}</div>
 				{% if entityName == 'images' %}
-					<img class="imgp-img" src="/motherboard/image/{{ image.vars.value.getFileName() }}" alt="f">
-				{% else %}
-					<img class="imgp-img" src="/chip/image/{{ image.vars.value.getFileName() }}" alt="f">
+					<div class="imgp"><span><i>Type:</i></span>{{ form_widget(image.motherboardImageType)}}</div>
 				{% endif %}
-				<div class="imgp">{{ form_widget(image.imageFile) }}</div>
-				{% if entityName == 'images' %}
-					<div class="imgp">Type:{{ form_widget(image.motherboardImageType)}}</div>
-				{% endif %}
-				<div class="imgp"><span>Creditor:</span>{{ form_widget(image.creditor)|replace({'<option value="">': '<option label=" " value="">'})|raw}}</div>
-				<div class="imgp"><span>Notes:</span>{{ form_widget(image.description)}}</div>
-				<div class="imgp">File:{{ form_widget(image.file_name) }}</div>
+				
+				<div class="imgp"><span><i>Notes:</i></span>{{ form_widget(image.description)}}</div>
+				<div class="imgp"><span><i>File name:</i></span>{{ form_widget(image.file_name) }}</div>
 				{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
 			</div>
 		{% endfor %}
