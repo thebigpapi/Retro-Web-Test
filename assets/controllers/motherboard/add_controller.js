@@ -63,6 +63,15 @@ export default class extends Controller {
                 }
             }
         }
+        let miscList = document.getElementById('miscfile-fields-list').children;
+        for (let misc of miscList) {
+            if (misc.children[1].children[0].files[0] == null) {
+                if (misc.children[2].children[0].value == '') {
+                    errorMessage += "One of the misc file upload fields is empty!\n";
+                    error = true;
+                }
+            }
+        }
         let imageList = document.getElementById('images-fields-list').children;
         for (let image of imageList) {
             if (image.children[2].children[1].files[0] == null) {
