@@ -36,7 +36,7 @@ class MediaTypeFlag
      * NOTE: This is not a mapped field of entity metadata, just a simple property.
      */
     #[Vich\UploadableField(mapping: 'mediatypeicon', fileNameProperty: 'file_name')]
-    private File|null $icon;
+    private File|null $icon = null;
 
     #[ORM\Column(type: 'datetime')]
     private $updated_at;

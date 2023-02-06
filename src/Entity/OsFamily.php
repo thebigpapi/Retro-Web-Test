@@ -36,7 +36,7 @@ class OsFamily
      * NOTE: This is not a mapped field of entity metadata, just a simple property.
      */
     #[Vich\UploadableField(mapping: 'osicon', fileNameProperty: 'file_name')]
-    private File|null $osIcon;
+    private File|null $osIcon = null;
 
     #[ORM\Column(type: 'datetime')]
     private $updated_at;

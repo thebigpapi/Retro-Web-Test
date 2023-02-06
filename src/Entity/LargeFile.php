@@ -39,7 +39,7 @@ class LargeFile
     private $file_name;
 
     #[Vich\UploadableField(mapping: 'largefile', fileNameProperty: 'file_name', size: 'size')]
-    private File|null $file;
+    private File|null $file = null;
     
     #[ORM\Column(type: 'datetime')]
     private $updated_at;

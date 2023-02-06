@@ -26,7 +26,7 @@ class MotherboardBios
      * @var File|null
      */
     #[Vich\UploadableField(mapping: 'bios', fileNameProperty: 'file_name')]
-    private File|null $romFile;
+    private File|null $romFile = null;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     #[Assert\Length(max: 255, maxMessage: 'BIOS file name is longer than {{ limit }} characters, try to make it shorter.')]

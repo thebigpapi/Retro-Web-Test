@@ -18,7 +18,7 @@ class MiscFile
     private $id;
 
     #[Vich\UploadableField(mapping: 'miscfile', fileNameProperty: 'file_name')]
-    private File|null $miscFile;
+    private File|null $miscFile = null;
 
     #[ORM\Column(type: 'string', length: 255)]
     private string|null $file_name;
