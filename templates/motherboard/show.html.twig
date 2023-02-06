@@ -62,11 +62,7 @@
 		<div class="internal-content">
 			<div class="show-general" id="sh-general">
 				<div class="quick-spec-table">
-					<div class="quick-spec-head">Form factor</div>
-					<div>{{ motherboard.getFormFactor() ? motherboard.getFormFactor().getName() : 'Unknown' }}</div>
-					<div class="quick-spec-head">PSU connector</div>
-					<div>{% if motherboard.getPsuConnectors() is not empty %}
-					{% for psu in motherboard.getPsuConnectors() %}{% if psu.getWebsite() is not null %}<a href="{{ psu.getWebsite() }}">{{ psu.getName() }}</a>{% else %}{{ psu.getName() }}{% endif %}{% if not loop.last %}, {% endif %}{% endfor %}{% else %}Unknown{% endif %}</div>
+					<!-- Chipset -->
 					<div class="quick-spec-head">Chipset</div>
 					{% if motherboard.getChipset() is not empty %}
 						<div><a href="{{ path('app_homepage') }}chipsets/{{ motherboard.getChipset().getId()}}">{{ motherboard.getChipset().getFullName() }}</a></div>
@@ -79,40 +75,7 @@
 						</div>
 						{% endif %}
 					{% else %}<div>Unknown</div>{% endif %}
-					<div class="quick-spec-head">Dimensions</div>
-					<div>{{ motherboard.getDimensions() ?: 'Unknown' }}</div>
-					{% if motherboard.getCpuSockets() is not empty %}
-					<div class="quick-spec-head">CPU socket{% if motherboard.getCpuSockets()|length > 1 %}s{% endif %}</div>
-					<div class="tag-container">{% for socket in motherboard.getCpuSockets() %}<span class="text-block">{{ socket.getNameAndType}}</span>{% endfor %}</div>
-					{% endif %}
-					{% if motherboard.getProcessorPlatformTypes() is not empty %}
-					<div class="quick-spec-head">CPU platform{% if motherboard.getProcessorPlatformTypes()|length > 1 %}s{% endif %}</div>
-					<div class="tag-container">{% for platform in motherboard.getProcessorPlatformTypes() %}<span class="text-block">{{ platform.getName() }}</span>{% endfor %}</div>
-					{% endif %}
-					{% if motherboard.getCpuSpeed() is not empty %}
-					<div class="quick-spec-head">Supported FSB speed{% if motherboard.getCpuSpeed()|length > 1 %}s{% endif %}</div>
-					<div>{% for frequency in motherboard.getCpuSpeed()|sort((a, b) => a.value <=> b.value) %}{{ frequency.getValueWithUnit() }}{% if not loop.last %}, {% endif %}{% endfor %}</div>
-					{% endif %}
-					{% if motherboard.getCacheSize() is not empty %}
-					<div class="quick-spec-head">Cache</div>
-					<div>{% for cache in motherboard.getCacheSize()|sort((a, b) => a.value <=> b.value) %}
-						{% if cache.getValue() > 1048575 %}{{ cache.getValue() / 1048576 }}&nbsp;MB
-						{% elseif cache.getValue() > 1023 %}{{ cache.getValue() / 1024}}&nbsp;KB
-						{% else %}{{ cache.getValue()}}&nbsp;B{% endif %}{% if not loop.last %}, {% endif %}
-					{% endfor %}</div>
-					{% endif %}
-					{% if motherboard.getMotherboardMaxRams() is not empty %}
-					<div class="quick-spec-head">Supported RAM size</div>
-					<div>{% for maxRam in motherboard.getMotherboardMaxRams() %}
-						{% if maxRam.getMaxRam().getValue() > 1048575 %}{{ maxRam.getMaxRam().getValue() / 1048576 }}&nbsp;GB
-						{% elseif maxRam.getMaxRam().getValue() > 1023 %}{{ maxRam.getMaxRam().getValue() / 1024}}&nbsp;MB
-						{% else %}{{ maxRam.getMaxRam().getValue()}}&nbsp;KB{% endif %}{% if maxRam.getNote() is not null %}<i>({{ maxRam.getNote()}})</i>{% endif %}{% if not loop.last %} / {% endif %}
-					{% endfor %}</div>
-					{% endif %}
-					{% if motherboard.getDramType() is not empty %}
-					<div class="quick-spec-head">Supported RAM type{% if motherboard.getDramType()|length > 1 %}s{% endif %}</div>
-					<div>{% for dram in motherboard.getDramType() %}{{ dram.getName() }}{% if not loop.last %}, {% endif %}{% endfor %}</div>
-					{% endif %}
+					<!-- Expansion Chips -->
 					{% if motherboard.getExpansionChips() is not empty %}
 						{% for type in expansionchiptype %}
 							{% for chip in motherboard.getExpansionChips()|filter(a => a.getType().getName() == type.getName())%}
@@ -121,11 +84,59 @@
 							{% endfor %}
 						{% endfor %}
 					{% endif %}
-					
+					<!-- Max video RAM -->
 					{% if motherboard.getMaxVideoRam()  is not empty %}
 					<div class="quick-spec-head">Max VRAM</div>
 					<div>{{  motherboard.getMaxVideoRam().getValueWithUnit() }}</div>
 					{% endif %}
+					<!-- Max system RAM -->
+					{% if motherboard.getMotherboardMaxRams() is not empty %}
+					<div class="quick-spec-head">Supported RAM size</div>
+					<div>{% for maxRam in motherboard.getMotherboardMaxRams() %}
+						{% if maxRam.getMaxRam().getValue() > 1048575 %}{{ maxRam.getMaxRam().getValue() / 1048576 }}&nbsp;GB
+						{% elseif maxRam.getMaxRam().getValue() > 1023 %}{{ maxRam.getMaxRam().getValue() / 1024}}&nbsp;MB
+						{% else %}{{ maxRam.getMaxRam().getValue()}}&nbsp;KB{% endif %}{% if maxRam.getNote() is not null %}<i>({{ maxRam.getNote()}})</i>{% endif %}{% if not loop.last %} / {% endif %}
+					{% endfor %}</div>
+					{% endif %}
+					<!-- Supported RAM types -->
+					{% if motherboard.getDramType() is not empty %}
+					<div class="quick-spec-head">Supported RAM type{% if motherboard.getDramType()|length > 1 %}s{% endif %}</div>
+					<div>{% for dram in motherboard.getDramType() %}{{ dram.getName() }}{% if not loop.last %}, {% endif %}{% endfor %}</div>
+					{% endif %}
+					<!-- CPU socket -->
+					{% if motherboard.getCpuSockets() is not empty %}
+					<div class="quick-spec-head">CPU socket{% if motherboard.getCpuSockets()|length > 1 %}s{% endif %}</div>
+					<div class="tag-container">{% for socket in motherboard.getCpuSockets() %}<span class="text-block">{{ socket.getNameAndType}}</span>{% endfor %}</div>
+					{% endif %}
+					<!-- CPU platform -->
+					{% if motherboard.getProcessorPlatformTypes() is not empty %}
+					<div class="quick-spec-head">CPU platform{% if motherboard.getProcessorPlatformTypes()|length > 1 %}s{% endif %}</div>
+					<div class="tag-container">{% for platform in motherboard.getProcessorPlatformTypes() %}<span class="text-block">{{ platform.getName() }}</span>{% endfor %}</div>
+					{% endif %}
+					<!-- FSB speed -->
+					{% if motherboard.getCpuSpeed() is not empty %}
+					<div class="quick-spec-head">Supported FSB speed{% if motherboard.getCpuSpeed()|length > 1 %}s{% endif %}</div>
+					<div>{% for frequency in motherboard.getCpuSpeed()|sort((a, b) => a.value <=> b.value) %}{{ frequency.getValueWithUnit() }}{% if not loop.last %}, {% endif %}{% endfor %}</div>
+					{% endif %}
+					<!-- Cache -->	
+					{% if motherboard.getCacheSize() is not empty %}
+					<div class="quick-spec-head">Cache</div>
+					<div>{% for cache in motherboard.getCacheSize()|sort((a, b) => a.value <=> b.value) %}
+						{% if cache.getValue() > 1048575 %}{{ cache.getValue() / 1048576 }}&nbsp;MB
+						{% elseif cache.getValue() > 1023 %}{{ cache.getValue() / 1024}}&nbsp;KB
+						{% else %}{{ cache.getValue()}}&nbsp;B{% endif %}{% if not loop.last %}, {% endif %}
+					{% endfor %}</div>
+					{% endif %}
+					<!-- PSU connectors -->
+					<div class="quick-spec-head">PSU connector</div>
+					<div>{% if motherboard.getPsuConnectors() is not empty %}
+					{% for psu in motherboard.getPsuConnectors() %}{% if psu.getWebsite() is not null %}<a href="{{ psu.getWebsite() }}">{{ psu.getName() }}</a>{% else %}{{ psu.getName() }}{% endif %}{% if not loop.last %}, {% endif %}{% endfor %}{% else %}Unknown{% endif %}</div>
+					<!-- Form factor -->
+					<div class="quick-spec-head">Form factor</div>
+					<div>{{ motherboard.getFormFactor() ? motherboard.getFormFactor().getName() : 'Unknown' }}</div>
+					<!-- Dimensions -->
+					<div class="quick-spec-head">Dimensions</div>
+					<div>{{ motherboard.getDimensions() ?: 'Unknown' }}</div>
 				</div>
 				<div class="full-spec">
 					<div class="full-spec-head"><b>I/O ports</b></div>
