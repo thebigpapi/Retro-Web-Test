@@ -62,8 +62,7 @@
 								</div>
 							{% endfor %}
 						</div>
-					</div>
-					<hr><!-- Redirections -->
+					</div><!-- Redirections -->
 					<div class="quick-spec-table" data-controller="collection" style="padding:0;">
 						<div class="quick-spec-head editor"><div>Redirections</div>
 						{% include 'macros/buttons.html.twig' with {'type':'add', 'action': 'redirections'} %}</div>
@@ -82,51 +81,13 @@
 								</div>
 							{% endfor %}
 						</div>
-					</div>
-					<hr><!-- PSU connectors -->
-					<div class="quick-spec-table" data-controller="collection" style="padding:0;">
-						<div class="quick-spec-head editor"><div>PSU connectors</div>
-						{% include 'macros/buttons.html.twig' with {'type':'add', 'action': 'psuConnectors'} %}</div>
-						<div class="append_table" id="psuConnectors-fields-list" data-widget-counter="{{ form.psuConnectors|length }}"
-							data-prototype="
-								{{ form_widget(form.psuConnectors.vars.prototype)|e }}
-								{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
-							</div>" data-controller="collection">
-							{% for psuconn in form.psuConnectors %}
-								<div class="editor-row nopad">
-									{{ form_widget(psuconn) }}
-									{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
-									{{ form_errors(psuconn) }}
-								</div>
-							{% endfor %}
-						</div>
-					</div>
-					<hr><!-- Form factor -->
-					<div class="quick-spec-table" style="padding:0;">
-						<div class="quick-spec-head editor">Form factor</div>
-						<div class="editor-row nopad"><div class="editor-form-widget">
-							<div>{{ form_widget(form.formFactor)|replace({'<option value="">': '<option label=" " value="">'})|raw }}</div>
-						</div></div>
-					</div><!-- Chipset -->
+					</div><hr><!-- Chipset -->
 					<div class="quick-spec-table" style="padding:0;">
 						<div class="quick-spec-head editor">Chipset</div>
 						<div class="editor-row nopad"><div class="editor-form-widget chip">
 							<div id="mobo-chipset-select">{{ form_widget(form.chipset)|replace({'<option value="">': '<option label=" " value="">'})|raw }}</div>
 						</div></div>
-					</div><!-- Dimensions -->
-					<div class="quick-spec-table" style="padding:0;">
-						<div class="quick-spec-head editor">Dimensions</div>
-						<div class="editor-row nopad"><div class="editor-form-widget">
-							<div>{{ form_widget(form.dimensions) }}</div>
-						</div></div>
-					</div><!-- Max video RAM -->
-					<div class="quick-spec-table" style="padding:0;">
-						<div class="quick-spec-head editor">Max video RAM</div>
-						<div class="editor-row nopad"><div class="editor-form-widget">
-							<div>{{ form_widget(form.maxVideoRam, {'attr': {'style': 'width:15em'}})|replace({'<option value="">': '<option label=" " value="">'})|raw }}</div>
-						</div></div>
-					</div>
-					<hr><!-- Expansion Chips -->
+					</div><!-- Expansion Chips -->
 					<div class="quick-spec-table expchip" data-controller="collection" style="padding:0;">
 						<div class="quick-spec-head editor"><div>Expansion chipset</div>
 						{% include 'macros/buttons.html.twig' with {'type':'add', 'action': 'expansionChips'} %}</div>
@@ -143,7 +104,14 @@
 								</div>
 							{% endfor %}
 						</div>
-					</div><!-- Max system RAM -->
+					</div><!-- Max video RAM -->
+					<div class="quick-spec-table" style="padding:0;">
+						<div class="quick-spec-head editor">Max video RAM</div>
+						<div class="editor-row nopad"><div class="editor-form-widget">
+							<div>{{ form_widget(form.maxVideoRam, {'attr': {'style': 'width:15em'}})|replace({'<option value="">': '<option label=" " value="">'})|raw }}</div>
+						</div></div>
+					</div>
+					<hr><!-- Max system RAM -->
 					<div class="quick-spec-table" data-controller="collection" style="padding:0;">
 						<div class="quick-spec-head editor"><div>Max system RAM</div>
 						{% include 'macros/buttons.html.twig' with {'type':'add', 'action': 'motherboardMaxRams'} %}</div>
@@ -157,22 +125,6 @@
 									{{ form_widget(maxRam.note) }}
 									{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
 									{{ form_errors(maxRam) }}
-								</div>
-							{% endfor %}
-						</div>
-					</div>
-					<hr><!-- Cache -->					
-					<div class="quick-spec-table nopad" data-controller="collection">
-						<div class="quick-spec-head editor"><div>Cache</div>
-						{% include 'macros/buttons.html.twig' with {'type':'add', 'action': 'cacheSize'} %}</div>
-						<div class="append_table" id="cacheSize-fields-list" data-controller="collection" data-widget-counter="{{ form.cacheSize|length }}" data-prototype="
-								{{ form_widget(form.cacheSize.vars.prototype, {'attr': {'style': 'width:20%'}})|e }}
-								{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}">
-							{% for size in form.cacheSize %}
-								<div class="editor-row nopad">
-									{{ form_widget(size, {'attr': {'style': 'width:20%'}}) }}
-									{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
-									{{ form_errors(size) }}
 								</div>
 							{% endfor %}
 						</div>
@@ -192,6 +144,50 @@
 								</div>
 							{% endfor %}
 						</div>
+					</div><!-- Cache -->					
+					<div class="quick-spec-table nopad" data-controller="collection">
+						<div class="quick-spec-head editor"><div>Cache</div>
+						{% include 'macros/buttons.html.twig' with {'type':'add', 'action': 'cacheSize'} %}</div>
+						<div class="append_table" id="cacheSize-fields-list" data-controller="collection" data-widget-counter="{{ form.cacheSize|length }}" data-prototype="
+								{{ form_widget(form.cacheSize.vars.prototype, {'attr': {'style': 'width:20%'}})|e }}
+								{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}">
+							{% for size in form.cacheSize %}
+								<div class="editor-row nopad">
+									{{ form_widget(size, {'attr': {'style': 'width:20%'}}) }}
+									{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
+									{{ form_errors(size) }}
+								</div>
+							{% endfor %}
+						</div>
+					</div><hr><!-- PSU connectors -->
+					<div class="quick-spec-table" data-controller="collection" style="padding:0;">
+						<div class="quick-spec-head editor"><div>PSU connectors</div>
+						{% include 'macros/buttons.html.twig' with {'type':'add', 'action': 'psuConnectors'} %}</div>
+						<div class="append_table" id="psuConnectors-fields-list" data-widget-counter="{{ form.psuConnectors|length }}"
+							data-prototype="
+								{{ form_widget(form.psuConnectors.vars.prototype)|e }}
+								{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
+							</div>" data-controller="collection">
+							{% for psuconn in form.psuConnectors %}
+								<div class="editor-row nopad">
+									{{ form_widget(psuconn) }}
+									{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
+									{{ form_errors(psuconn) }}
+								</div>
+							{% endfor %}
+						</div>
+					</div><!-- Form factor -->
+					<div class="quick-spec-table" style="padding:0;">
+						<div class="quick-spec-head editor">Form factor</div>
+						<div class="editor-row nopad"><div class="editor-form-widget">
+							<div>{{ form_widget(form.formFactor)|replace({'<option value="">': '<option label=" " value="">'})|raw }}</div>
+						</div></div>
+					</div><!-- Dimensions -->
+					<div class="quick-spec-table" style="padding:0;">
+						<div class="quick-spec-head editor">Dimensions</div>
+						<div class="editor-row nopad"><div class="editor-form-widget">
+							<div>{{ form_widget(form.dimensions) }}</div>
+						</div></div>
 					</div><!-- Exp. slots and I/O ports -->
 					<div class="full-spec edit">
 						<div class="full-spec-head" data-controller="collection"><b>I/O ports: </b>{% include 'macros/buttons.html.twig' with {'type':'add', 'action': 'motherboardIoPorts'} %}</div>
