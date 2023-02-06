@@ -11,8 +11,8 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use App\Entity\Manufacturer;
 use App\Entity\CpuSocket;
+use App\Entity\FormFactor;
 use App\Entity\ProcessorPlatformType;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormInterface;
@@ -36,7 +36,7 @@ class Search extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         // sorting some fields before adding them to the form
-        usort($options['cpuSockets'], function ($a, $b) {
+        usort($options['cpuSockets'], function (CpuSocket $a, CpuSocket  $b) {
             if (!$a->getName() && !$b->getName()) {
                 return strnatcasecmp($a->getType() ?? '', $b->getType() ?? '');
             } else {
@@ -44,7 +44,7 @@ class Search extends AbstractType
             }
         });
 
-        usort($options['formFactors'], function ($a, $b) {
+        usort($options['formFactors'], function (FormFactor $a, FormFactor $b) {
             return strnatcasecmp($a->getName() ?? '', $b->getName() ?? '');
         });
 
@@ -89,38 +89,6 @@ class Search extends AbstractType
                 'choices' => $options['cpuSockets'],
                 'placeholder' => 'Select a socket ...',
             ])
-            /*->add('processorPlatformType', ChoiceType::class, [
-                //'class' => ProcessorPlatformType::class,
-                'choice_label' => 'name',
-                'multiple' => false,
-                'expanded' => false,
-                'required' => false,
-                'choices' => $options['procPlatformTypes'],
-                'placeholder' => 'Select a processor platform ...',
-            ])*/
-            /*->add('motherboardExpansionSlots', CollectionType::class, [
-                'entry_type' => SearchMotherboardExpansionSlotType::class,
-                /*'allow_add' => true,
-                'allow_delete' => true,*/
-            /*    'required' => false,
-            ])*/
-            /*->add('motherboardIoPorts', CollectionType::class, [
-                'entry_type' => SearchMotherboardIoPortType::class,
-                'allow_add' => true,
-                'allow_delete' => true,
-                'required' => false,
-            ])*/
-            /*->add('motherboardMaxRam', EntityType::class, [
-                'class' => MaxRam::class,
-
-                'choice_label' => 'name',
-                'multiple' => true,
-                'expanded' => true,
-            ])*/
-            /*->add('searchFormFactor', CheckboxType::class, [
-                'label'    => ' ',
-                'required' => false,
-            ])*/
             ->add('formFactor', ChoiceType::class, [
                 'required' => false,
                 'choice_label' => 'name',
@@ -135,7 +103,10 @@ class Search extends AbstractType
             ->add('searchWithImages', SubmitType::class);
 
         $formModifier = function (FormInterface $form, Manufacturer $chipsetManufacturer = null) {
-            $chipsets = (null === $chipsetManufacturer) ? [] : $chipsetManufacturer->getChipsets()->toArray();
+            /**
+             * @var Chipset[]
+             */
+            $chipsets = $chipsetManufacturer?->getChipsets()->toArray() ?? [];
             $unidentified = null;
 
             foreach ($chipsets as $key => $val) {
@@ -185,7 +156,7 @@ class Search extends AbstractType
         $formSocket1Modifier = function (FormInterface $form, CpuSocket $socket = null) {
             $platforms = null === $socket ? $this->getProcessorPlatformTypeRepository()
                 ->findAll() : $socket->getPlatforms()->toArray();
-            usort($platforms, function ($a, $b) {
+            usort($platforms, function (ProcessorPlatformType $a, ProcessorPlatformType $b) {
                 return strnatcasecmp($a->getName() ?? '', $b->getName() ?? '');
             });
             $form->add('platform1', ChoiceType::class, [
@@ -220,7 +191,7 @@ class Search extends AbstractType
                 ->findAll() : $socket->getPlatforms()->toArray();
             usort(
                 $platforms,
-                function ($a, $b) {
+                function (ProcessorPlatformType $a, ProcessorPlatformType $b) {
                     return strnatcasecmp($a->getName() ?? '', $b->getName() ?? '');
                 }
             );

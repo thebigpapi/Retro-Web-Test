@@ -24,10 +24,13 @@ class MotherboardSearchType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        /**
+         * @var Chipset[]
+         */
         $chipsets = $this->entityManager->getRepository(Chipset::class)->findAll();
         usort(
             $chipsets,
-            function ($a, $b) {
+            function (Chipset $a, Chipset $b) {
                 if ($a->getManufacturer()->getName() == $b->getManufacturer()->getName()) {
                     if ($a->getFullReference() == $b->getFullReference()) {
                         return 0;

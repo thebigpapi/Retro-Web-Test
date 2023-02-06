@@ -50,16 +50,6 @@ class Search extends AbstractType
                 'choices' => $options['biosManufacturers'],
                 'placeholder' => 'Select a manufacturer ...',
             ])
-            /*->add('expansionChip', EntityType::class, [
-                'class' => ExpansionChip::class,
-                'autocomplete' => true,
-                'choice_label' => 'getNameWithManufacturer',
-                'multiple' => false,
-                'expanded' => false,
-                'required' => false,
-                'choices' => $options['expansionChips'],
-                'placeholder' => 'Select an expansion chip  ...',
-            ])*/
             ->add('file_present', CheckboxType::class, [
                 'label'    => 'File is present ?',
                 'required' => false,
@@ -67,8 +57,10 @@ class Search extends AbstractType
             ->add('search', SubmitType::class);
 
         $formModifier = function (FormInterface $form, Manufacturer $chipsetManufacturer = null) {
-            $chipsets = null === $chipsetManufacturer ? [] : $chipsetManufacturer->getChipsets()->toArray();
-
+            /**
+             * @var Chipset[]
+             */
+            $chipsets = $chipsetManufacturer?->getChipsets()->toArray() ?? [];
 
             usort($chipsets, function (Chipset $a, Chipset $b) {
                 return strcmp($a->getFullReference(), $b->getFullReference());

@@ -14,14 +14,11 @@ use App\Entity\Manufacturer;
 use App\Entity\Chipset;
 use App\Entity\Processor;
 use App\Entity\Coprocessor;
-use App\Entity\DramType;
 use App\Entity\FormFactor;
 use App\Entity\ProcessorPlatformType;
-use App\Entity\ExpansionChip;
 use App\Entity\CpuSocket;
 use App\Entity\CpuSpeed;
 use App\Entity\MaxRam;
-use App\Entity\PSUConnector;
 use App\Form\Type\ProcessorType;
 use App\Form\Type\CoprocessorType;
 use App\Form\Type\ProcessorSpeedType;
@@ -86,20 +83,6 @@ class MotherboardForm extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        /*$sockets = $options['sockets'] ?? null;
-        $platforms = null;
-        if($sockets) {
-            if($sockets->isEmpty()) {
-                $platforms = $this->getProcessorPlatformTypeRepository()
-                ->findAll();
-            }
-            else {
-                $platforms = array();
-                foreach ($sockets as $socket) {
-                    $platforms = array_merge($platforms,$socket->getPlatforms()->toArray());
-                }
-            }
-        }*/
         $builder
             ->add('name', TextType::class)
             ->add('dimensions', TextType::class, [
@@ -136,18 +119,6 @@ class MotherboardForm extends AbstractType
                 ]
             ])
             ->add('slug', TextType::class)
-            /*->add('processorPlatformType', EntityType::class, [
-                'class' => ProcessorPlatformType::class,
-                'choice_label' => 'name',
-                'multiple' => false,
-                'expanded' => false,
-                'choices' => $options['procPlatformTypes'],
-            ])*/
-            /*->add('coprocessors', CollectionType::class, [
-                'entry_type' => CoprocessorType::class,
-                'allow_add' => true,
-                'allow_delete' => true,
-            ])*/
             ->add('cpuSpeed', CollectionType::class, [
                 'entry_type' => ProcessorSpeedType::class,
                 'allow_add' => true,
@@ -239,20 +210,6 @@ class MotherboardForm extends AbstractType
                 'allow_add' => true,
                 'allow_delete' => true,
             ])
-            /*->add('processorPlatformTypes', CollectionType::class, [
-                'entry_type' => ProcessorPlatformTypeForm::class,
-                'allow_add' => true,
-                'allow_delete' => true,
-                'entry_options'  => [
-                    'choices' => $this->getProcessorPlatformTypeRepository()
-                    ->findAll(),
-                ],
-            ])
-            ->add('processors', CollectionType::class, [
-                'entry_type' => ProcessorType::class,
-                'allow_add' => true,
-                'allow_delete' => true,
-            ])*/
             ->add('psuConnectors', CollectionType::class, [
                 'entry_type' => PSUConnectorType::class,
                 'allow_add' => true,
@@ -262,12 +219,14 @@ class MotherboardForm extends AbstractType
             ->add('updateProcessors', SubmitType::class, ['label' => 'Update processors']);
 
         $formSocketModifier = function (FormInterface $form, Collection $cpuSockets = null) {
+            /**
+             * @var ProcessoPlatformType[]
+             */
+            $platforms = array();
             if ($cpuSockets->isEmpty()) {
-                //dd("test");
                 $platforms = $this->getProcessorPlatformTypeRepository()
                     ->findAll();
             } else {
-                $platforms = array();
                 if ($cpuSockets[0] instanceof CpuSocket) {
                     foreach ($cpuSockets as $socket) {
                         $platforms = array_merge($platforms, $socket->getPlatforms()->toArray());
@@ -322,7 +281,13 @@ class MotherboardForm extends AbstractType
             Collection $fsbs,
             Collection $sockets
         ) {
+            /**
+             * @var Processor[]
+             */
             $processorsWithPlatform = array();
+            /**
+             * @var Coprocessor[]
+             */
             $coprocessorsWithPlatform = array();
             if (!$processorPlatformTypes->isEmpty()) {
                 if (
@@ -334,6 +299,9 @@ class MotherboardForm extends AbstractType
                     ==
                     "App\Entity\ProcessorPlatformType"
                 ) {
+                    /**
+                     * @var ProcessorPlatformType $platform
+                     */
                     foreach ($processorPlatformTypes as $platform) {
                         $processorsWithPlatform = array_merge(
                             $processorsWithPlatform,
@@ -358,7 +326,13 @@ class MotherboardForm extends AbstractType
                     }
                 }
             }
+            /**
+             * @var Processor[]
+             */
             $processorsWithFsb = array();
+            /**
+             * @var Coprocessor[]
+             */
             $coprocessorsWithFsb = array();
             if (!$fsbs->isEmpty()) {
                 if (
@@ -368,6 +342,9 @@ class MotherboardForm extends AbstractType
                     ==
                     "App\Entity\CpuSpeed"
                 ) {
+                    /**
+                     * @var CpuSpeed $fsb
+                     */
                     foreach ($fsbs as $fsb) {
                         foreach ($processorsWithPlatform as $processor) {
                             if (
@@ -389,6 +366,9 @@ class MotherboardForm extends AbstractType
                         }
                     }
                 } else {
+                    /**
+                     * @var CpuSpeed $fsb
+                     */
                     foreach ($fsbs as $fsbId) {
                         $fsb = $this->getCpuSpeedRepository()->find($fsbId);
                         foreach ($processorsWithPlatform as $processor) {
@@ -412,7 +392,13 @@ class MotherboardForm extends AbstractType
                     }
                 }
             }
+            /**
+             * @var Processor[]
+             */
             $processorsWithSocket = array();
+            /**
+             * @var Coprocessor[]
+             */
             $coprocessorsWithSocket = array();
             if (!$sockets->isEmpty()) {
                 if (
@@ -422,6 +408,9 @@ class MotherboardForm extends AbstractType
                     ==
                     "App\Entity\CpuSocket"
                 ) {
+                    /**
+                     * @var CpuSocket $socket
+                     */
                     foreach ($sockets as $socket) {
                         foreach ($processorsWithFsb as $processor) {
                             if ($processor->getSockets()->contains($socket)) {
@@ -538,31 +527,4 @@ class MotherboardForm extends AbstractType
             return strnatcasecmp($a->data->getName() ?? '', $b->data->getName() ?? '');
         });
     }
-
-    /*   public function buildAfterSubmit(FormBuilderInterface $builder, array $options)
-{
-    /*if ($builder->getData()->getBrand() !== null) {
-        $builder->add('model', EntityType::class, array(
-            'class'       => 'DEERCMS\ModelBundle\Entity\Model',
-            'choices'     => $models,
-            'multiple' => false,
-            'expanded' => false,
-        ));
-    }
-}*/
-
-    /*public function finishView(FormView $view, FormInterface $form, array $options)
-    {
-        $view->children['processors']->vars['data'] = Processor::sort($view->children['processors']->vars['data']);
-        foreach ($view->children['images']->children as $image)
-        {
-            usort($image->children['creditor']->vars['choices'], function(ChoiceView $a, ChoiceView $b) {
-                return ($a->data->getName() <=> $b->data->getName());
-            });
-        }
-
-        usort($view->children['cpuSpeed']->vars['choices'], function(ChoiceView $a, ChoiceView $b) {
-            return ($a->data->getValue() <=> $b->data->getValue());
-        });
-    }*/
 }

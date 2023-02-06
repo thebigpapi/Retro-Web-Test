@@ -2,6 +2,7 @@
 
 namespace App\Form\Chipset;
 
+use App\Entity\Chipset;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -9,11 +10,9 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use App\Entity\Manufacturer;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormInterface;
-use Doctrine\ORM\EntityManagerInterface;
 
 class Search extends AbstractType
 {
@@ -36,11 +35,14 @@ class Search extends AbstractType
             ->add('searchWithImages', SubmitType::class);
 
         $formModifier = function (FormInterface $form, Manufacturer $chipsetManufacturer = null) {
-            $chipsets = null === $chipsetManufacturer ? [] : $chipsetManufacturer->getChipsets()->toArray();
+            /**
+             * @var Chipset[]
+             */
+            $chipsets = $chipsetManufacturer?->getChipsets()->toArray() ?? [];
 
             usort(
                 $chipsets,
-                function ($a, $b) {
+                function (Chipset $a, Chipset $b) {
                     if ($a->getFullReference() == $b->getFullReference()) {
                         return 0;
                     }
