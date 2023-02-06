@@ -53,6 +53,7 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\ChoiceList\View\ChoiceView;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Contracts\Cache\CacheInterface;
 
 class MotherboardForm extends AbstractType
@@ -445,22 +446,20 @@ class MotherboardForm extends AbstractType
             $processorsWithSocket = Processor::sort(new ArrayCollection($processorsWithSocket));
             $coprocessorsWithSocket = Coprocessor::sort(new ArrayCollection($coprocessorsWithSocket));
 
-            $form->add('processors', CollectionType::class, [
-                'entry_type' => ProcessorType::class,
-                'allow_add' => true,
-                'allow_delete' => true,
-                'entry_options'  => [
-                    'choices' => $processorsWithSocket,
-                ],
+            $form->add('processors', EntityType::class, [
+                'class' => Processor::class,
+                'choice_label' => 'getNameWithPlatform',
+                'multiple' => true,
+                'expanded' => true,
+                'choices' => $processorsWithSocket
             ])
-                ->add('coprocessors', CollectionType::class, [
-                    'entry_type' => CoprocessorType::class,
-                    'allow_add' => true,
-                    'allow_delete' => true,
-                    'entry_options'  => [
-                        'choices' => $coprocessorsWithSocket,
-                    ],
-                ]);
+            ->add('coprocessors', EntityType::class, [
+                'class' => Processor::class,
+                'choice_label' => 'getNameWithPlatform',
+                'multiple' => true,
+                'expanded' => true,
+                'choices' => $coprocessorsWithSocket
+            ]);
         };
 
 

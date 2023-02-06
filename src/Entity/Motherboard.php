@@ -389,9 +389,9 @@ class Motherboard
     /**
      * @return Collection|Processor[]
      */
-    public function getProcessors(): Collection
+    public function getProcessors(): array
     {
-        return $this->processors;
+        return $this->processors->toArray();
     }
     public function addProcessor(Processor $processor): self
     {
