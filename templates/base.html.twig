@@ -12,12 +12,17 @@
 		<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
 		<meta name="msapplication-TileColor" content="#da532c">
 		<meta name="theme-color" content="#ffffff">
-		<meta property="og:type" content="website">
-		<meta property="og:url" content="http://www.ultimateretro.net/">
 		{% block opengraph %}
+			<meta property="og:site_name" content="The Retro Web">
+			<meta property="og:type" content="website">
 			<meta property="og:title" content="The Retro Web">
 			<meta property="og:description" content="The Retro Web hardware database">
+			<meta property="og:url" content="http://theretroweb.com/">
 			<meta property="og:image" content="{{ absolute_url(asset('build/images/logo.webp')) }}">
+			<meta name="twitter:card" content="summary">
+			<meta name="twitter:title" content="The Retro Web">
+            <meta name="twitter:description" content="The Retro Web hardware database">
+            <meta name="twitter:image" content="{{ absolute_url(asset('build/images/logo.webp')) }}">
 		{% endblock %}
 		{% block stylesheets %}
 		{% if is_granted('ROLE_USER') %}
