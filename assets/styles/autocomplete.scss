@@ -26,6 +26,11 @@ $border-dark: #cdcdcd;
   line-height: 18px;
 }
 
+.active:after {
+	content: "\20\20\3C\2212";
+	color:black;
+}
+
 .ts-control,
 .ts-wrapper.single.input-active .ts-control {
   background: $accent-bkg-light;
