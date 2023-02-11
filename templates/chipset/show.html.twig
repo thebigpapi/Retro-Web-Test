@@ -82,6 +82,7 @@
 					{% endfor %}
 				{% endif %}
 				</div>
+				<div id="index-datetime" data-controller="datetime"><div class="div-datetime">Last updated <span class="perk-date">{{ chipset.getLastEdited()|date("Y-m-d\\TH:i:s", "GMT") }}Z</span></div></div>
 			</div>
 			<div class="show-downloads" id="sh-downloads">
 				<!-- DRIVERS -->

@@ -89,15 +89,12 @@ class LargeFileRepository extends ServiceEntityRepository
             ->getQuery()
             ->getSingleScalarResult();
     }
-    /*
-    public function findOneBySomeField($value): ?LargeFile
+    public function findLatest()
     {
         return $this->createQueryBuilder('l')
-            ->andWhere('l.exampleField = :val')
-            ->setParameter('val', $value)
+            ->orderBy('l.lastEdited', 'DESC')
+            ->setMaxResults(25)
             ->getQuery()
-            ->getOneOrNullResult()
-        ;
+            ->getResult();
     }
-    */
 }

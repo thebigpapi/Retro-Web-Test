@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -59,6 +60,9 @@ class Chipset
     #[ORM\OneToMany(targetEntity: ChipsetDocumentation::class, mappedBy: 'chipset', orphanRemoval: true, cascade: ['persist'])]
     private $documentations;
 
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    private ?\DateTimeInterface $lastEdited = null;
+
     public function __construct()
     {
         $this->motherboards = new ArrayCollection();
@@ -67,6 +71,7 @@ class Chipset
         $this->biosCodes = new ArrayCollection();
         $this->drivers = new ArrayCollection();
         $this->documentations = new ArrayCollection();
+        $this->lastEdited = new \DateTime('now');
     }
     public function getId(): ?int
     {
@@ -364,5 +369,21 @@ class Chipset
         }
 
         return $this;
+    }
+
+    public function getLastEdited(): ?\DateTimeInterface
+    {
+        return $this->lastEdited;
+    }
+
+    public function setLastEdited(\DateTimeInterface $lastEdited): self
+    {
+        $this->lastEdited = $lastEdited;
+
+        return $this;
+    }
+    public function updateLastEdited()
+    {
+        $this->lastEdited = new \DateTime('now');
     }
 }

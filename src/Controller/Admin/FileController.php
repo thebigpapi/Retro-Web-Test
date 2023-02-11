@@ -271,6 +271,7 @@ class FileController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $entity = $form->getData();
+            $entity->updateLastEdited();
 
             foreach ($form['mediaTypeFlags']->getData() as $key => $val) {
                 $val->setLargeFile($entity);

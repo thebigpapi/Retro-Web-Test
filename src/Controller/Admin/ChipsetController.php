@@ -233,7 +233,7 @@ class ChipsetController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $chipset = $form->getData();
-
+            $chipset->updateLastEdited();
             foreach ($form['chipsetAliases']->getData() as $key => $val) {
                 $val->setChipset($chipset);
             }
