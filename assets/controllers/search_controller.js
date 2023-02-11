@@ -1,4 +1,5 @@
 import { Controller } from 'stimulus';
+import TomSelect from "tom-select"
 
 export default class extends Controller {
     connect() {
@@ -31,12 +32,25 @@ export default class extends Controller {
     reset(event) {
         let _this = this;
         let searchs = event.target.dataset.resetIds.split(' ');
-
         searchs.forEach(selectId => {
             let search = document.getElementById(selectId);
             let targetId = search.dataset.targetId;
             _this.setResult(search.name, "", targetId);
         });
+        let select_ids = [
+            "search_manufacturer", 
+            "search_chipsetManufacturer",
+            "search_cpuSocket1",
+            "search_cpuSocket2",
+            "search_platform1",
+            "search_platform2",
+            "search_formFactor"
+        ];
+        for(let id of select_ids){
+            var select = document.getElementById(id);
+            var control = select.tomselect; 
+            control.clear();
+        }
     }
 
     /**
@@ -72,8 +86,15 @@ export default class extends Controller {
             });
             let parser = new DOMParser();
             let parsedResponse = parser.parseFromString(await rawResponse.text(), "text/html");
-
+            console.log(targetId);
             document.getElementById(targetId).innerHTML = parsedResponse.getElementById(targetId).innerHTML;
+            if(targetId != "search_chipset"){
+                var select = document.getElementById(targetId);
+                var control = select.tomselect;
+                control.clear();
+                control.clearOptions(); 
+                control.sync();
+            }
         })();
     }
 }
