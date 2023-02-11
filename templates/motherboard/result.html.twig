@@ -17,7 +17,7 @@
 		<div class="results{% if not show_images %} lst{% endif %}">
 			{{ knp_pagination_render(motherboards, 'macros/pagination.html.twig') }}
 			{% if show_images %}
-			<div class="perks">
+			<div class="perks" data-controller="close-glight">
 				<div id="index-datetime" class="perks-list">
 				{% for motherboard in motherboards %}
 					<div class="perk">
