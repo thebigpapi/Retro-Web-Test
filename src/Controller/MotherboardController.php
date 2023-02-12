@@ -419,27 +419,17 @@ class MotherboardController extends AbstractController
 
     #[Route('/motherboards/index/{letter}', name: "moboindex", requirements: ['letter' => '\w|[?]'], methods: ['GET'])]
     public function index(
-        Request $request,
         PaginatorInterface $paginator,
         string $letter,
-        MotherboardRepository $motherboardRepository
+        MotherboardRepository $motherboardRepository,
+        int $page = 1
     ): Response {
         $letter === "?" ? $letter = "" : "";
         $data = $motherboardRepository->findAllAlphabetic($letter);
 
-        usort(
-            $data,
-            function (Motherboard $a, Motherboard $b) {
-                if ($a->getManufacturerShortNameIfExist() == $b->getManufacturerShortNameIfExist()) {
-                    return 0;
-                }
-                return ($a->getManufacturerShortNameIfExist() < $b->getManufacturerShortNameIfExist()) ? -1 : 1;
-            }
-        );
-
         $motherboards = $paginator->paginate(
             $data,
-            $request->query->getInt('page', 1),
+            $page,
             $this->getParameter('app.pagination.max')
         );
 

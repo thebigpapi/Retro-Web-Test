@@ -34,32 +34,32 @@
 			<div class="list-entry centered bios {% if loop.index is divisible by(2) %}alt{% endif %}">
 				<div class="header-label">Motherboard</div>
 				<div>
-					<a class="result-link" href="{{ path("motherboard_show", {id: b.getMotherboard().getId()}) }}">
-						{{ b.getMotherboard().getManufacturerShortNameIfExist() }}&nbsp;{{ b.getMotherboard().name }}
+					<a class="result-link" href="{{ path("motherboard_show", {id: b["id"]}) }}">
+						{{ b["manName"]}}&nbsp;{{ b["name"] }}
 					</a>
 				</div>
 
 				<div class="header-label">POST string</div>
-				<div class="monospace">{{ b.getPostString() }}</div>
+				<div class="monospace">{{ b[0].getPostString() }}</div>
 
 				<div class="header-label">Type</div>
-				<div>{{ b.getManufacturer().getShortNameIfExist() }} {{ b.getCoreVersion() }}</div>
+				<div>{{ b["manName"] }} {{ b[0].getCoreVersion() }}</div>
 
 				<div class="header-label">File</div>
 				<div>
-					{% if b.getFileName() is not null %}
-						<a class="combo" href="{{ vich_uploader_asset(b, 'romFile') }}">
+					{% if b[0].getFileName() is not null %}
+						<a class="combo" href="{{ vich_uploader_asset(b[0], 'romFile') }}">
 							<img src="{{ absolute_url(asset('build/icons/dw.svg')) }}" alt="" width="16" height="16">
 							<span>
-								{% if b.getBoardVersion() is not null %}
-									{{ b.getBoardVersion() }}
+								{% if b[0].getBoardVersion() is not null %}
+									{{ b[0].getBoardVersion() }}
 								{% else %}
 									???
 								{% endif %}
 							</span>
 						</a>
 					{% else %}
-						{{ b.getBoardVersion() }}
+						{{ b[0].getBoardVersion() }}
 					{% endif %}
 				</div>
 			</div>

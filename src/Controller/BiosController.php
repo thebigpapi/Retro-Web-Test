@@ -20,7 +20,7 @@ use App\Repository\MotherboardBiosRepository;
 class BiosController extends AbstractController
 {
     #[Route(path: '/bios/', name: 'bios_result')]
-    public function result(Request $request, PaginatorInterface $paginator, MotherboardBiosRepository $motherboardBiosRepository, ManufacturerRepository $manufacturerRepository, ManufacturerBiosManufacturerCodeRepository $manufacturerBiosManufacturerCodeRepository)
+    public function result(Request $request, PaginatorInterface $paginator, MotherboardBiosRepository $motherboardBiosRepository)
     {
         $criterias = array();
         $postString = $request->query->get('postString');

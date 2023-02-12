@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Chipset;
 use App\Entity\Manufacturer;
 use App\Form\Chipset\Search;
 use App\Repository\ChipsetRepository;
@@ -124,16 +125,14 @@ class ChipsetController extends AbstractController
 
 
     #[Route(path: '/chipsets/index/{letter}', name: 'chipsetindex', requirements: ['letter' => '\w|[?]'])]
-    public function index(Request $request, PaginatorInterface $paginator, string $letter, ChipsetRepository $chipsetRepository)
+    public function index(PaginatorInterface $paginator, string $letter, ChipsetRepository $chipsetRepository, int $page = 1)
     {
-        if ($letter == "?") {
-            $letter = "";
-        }
+        $letter === "?" ? $letter = '':'';
         $data = $chipsetRepository->findAllAlphabetic($letter);
         usort(
             $data,
-            function ($a, $b) {
-                if ($a->getManufacturer() == $b->getManufacturer()) {
+            function (Chipset $a, Chipset $b) {
+                if ($a->getManufacturer() === $b->getManufacturer()) {
                     return 0;
                 }
                 return ($a->getManufacturer() < $b->getManufacturer()) ? -1 : 1;
@@ -141,7 +140,7 @@ class ChipsetController extends AbstractController
         );
         $chipsets = $paginator->paginate(
             $data,
-            $request->query->getInt('page', 1),
+            $page,
             $this->getParameter('app.pagination.max')
         );
         return $this->render('chipset/index.html.twig', [
