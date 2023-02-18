@@ -47,3 +47,4 @@
 /public/build/
 yarn-error.log
 ###<<< symfony/webpack-encore-bundle ###
+rector.php
