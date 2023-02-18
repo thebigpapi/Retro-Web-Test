@@ -12,7 +12,7 @@
 		<div class="search-form-entry">
 			<div class="search-form-widget">
 				<label class="search-form-label">Manufacturer</label>
-				<div>{{ form_widget(form.manufacturer, {'attr': {'style': 'display:none;'}}) }}</div>
+				<div id="manufacturer-select">{{ form_widget(form.manufacturer, {'attr': {'style': 'display:none;'}}) }}</div>
 			</div>
 		</div>
 		<div class="search-form-entry">
@@ -252,37 +252,44 @@
 							{% include 'macros/buttons.html.twig' with {'type':'add', 'action': 'motherboardBios'} %}
 						</div>
 						<div class="bios-image">
-							<div class="bios-image-head editor-row bios">
+							<div class="bios-image-head editor-row bios-main">
 								<div><b>Manuf.</b></div>
 								<div><b>POST String</b></div>
 								<div><b>Note</b></div>
 								<div><b>BIOS Ver.</b></div>
 								<div><b>Core Ver.</b></div>
-								<div><b>File to upload</b></div>
-								<div><b>Uploaded file</b></div>
 							</div>
 							<div class="append_table" id="motherboardBios-fields-list" data-widget-counter="{{ form.motherboardBios|length }}" data-prototype="
+								<div class='editor-row bios-main nopad'>
 								<div>{{ form_widget(form.motherboardBios.vars.prototype.manufacturer, {'attr': {'style': 'display:none;'}} )|e }}</div>
-								<div>{{ form_widget(form.motherboardBios.vars.prototype.postString, {'attr': {'style': 'width:100%'}} )|e }}</div>
-								<div>{{ form_widget(form.motherboardBios.vars.prototype.note, {'attr': {'style': 'width:100%'}} )|e }}</div>
-								<div>{{ form_widget(form.motherboardBios.vars.prototype.boardVersion, {'attr': {'style': 'width:100%'}} )|e }}</div>
-								<div>{{ form_widget(form.motherboardBios.vars.prototype.coreVersion, {'attr': {'style': 'width:100%'}} )|e }}</div>
+								<div>{{ form_widget(form.motherboardBios.vars.prototype.postString, {'attr': {'style': 'width:100%', 'placeholder': 'POST string ...'}} )|e }}</div>
+								<div>{{ form_widget(form.motherboardBios.vars.prototype.note, {'attr': {'style': 'width:100%', 'placeholder': 'Note ...'}} )|e }}</div>
+								<div>{{ form_widget(form.motherboardBios.vars.prototype.boardVersion, {'attr': {'style': 'width:100%', 'placeholder': 'BIOS ver ...'}} )|e }}</div>
+								<div>{{ form_widget(form.motherboardBios.vars.prototype.coreVersion, {'attr': {'style': 'width:100%', 'placeholder': 'Core ver ...'}} )|e }}</div>
+								</div><div class='editor-row bios-file nopad'>
+								<div>Files:</div>
 								<div>{{ form_widget(form.motherboardBios.vars.prototype.romFile, {'attr': {'style': 'width:100%'}} )|e }}</div>
-								<div>{{ form_widget(form.motherboardBios.vars.prototype.file_name, {'attr': {'style': 'width:100%'}} )|e }}</div>
-								{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
+								<div>{{ form_widget(form.motherboardBios.vars.prototype.file_name, {'attr': {'style': 'width:100%', 'placeholder': 'No file uploaded!'}} )|e }}</div>
+								<div></div>{% include 'macros/buttons.html.twig' with {'type':'del', 'count':- 1} %}</div>
 								">
 							{% for bios in form.motherboardBios %}
-								<div class="editor-row bios nopad">
+							<div class="bios-image-container">
+								<div class="editor-row bios-main nopad">
 									<div>{{ form_widget(bios.manufacturer, {'attr': {'style': 'display:none;'}}) }}</div>
-									<div>{{ form_widget(bios.postString, {'attr': {'style': 'width:100%'}}) }}</div>
-									<div>{{ form_widget(bios.note, {'attr': {'style': 'width:100%'}}) }}</div>
-									<div>{{ form_widget(bios.boardVersion, {'attr': {'style': 'width:100%'}}) }}</div>
-									<div>{{ form_widget(bios.coreVersion, {'attr': {'style': 'width:100%'}}) }}</div>
-									<div>{{ form_widget(bios.romFile, {'attr': {'style': 'width:100%'}}) }}</div>
-									<div>{{ form_widget(bios.file_name, {'attr': {'style': 'width:100%'}}) }}</div>
-									{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
-									{{ form_errors(bios) }}
+									<div>{{ form_widget(bios.postString, {'attr': {'style': 'width:100%', 'placeholder': 'POST string ...'}}) }}</div>
+									<div>{{ form_widget(bios.note, {'attr': {'style': 'width:100%', 'placeholder': 'Note ...'}}) }}</div>
+									<div>{{ form_widget(bios.boardVersion, {'attr': {'style': 'width:100%', 'placeholder': 'BIOS ver ...'}}) }}</div>
+									<div>{{ form_widget(bios.coreVersion, {'attr': {'style': 'width:100%', 'placeholder': 'Core ver ...'}}) }}</div>
 								</div>
+								<div class="editor-row bios-file nopad">
+									<div>Files:</div>
+									<div>{{ form_widget(bios.romFile, {'attr': {'style': 'width:100%'}}) }}</div>
+									<div>{{ form_widget(bios.file_name, {'attr': {'style': 'width:100%', 'placeholder': 'No file uploaded!'}}) }}</div>
+									<div></div>
+									{% include 'macros/buttons.html.twig' with {'type':'del', 'count':- 1} %}
+								</div>
+								{{ form_errors(bios) }}
+							</div>
 							{% endfor %}
 							</div>
 						</div>

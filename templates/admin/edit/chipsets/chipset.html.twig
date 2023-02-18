@@ -10,7 +10,7 @@
 		<div class="search-form-entry">
 			<div class="search-form-widget">
 				<label class="search-form-label">Manufacturer</label>
-				<div>{{ form_widget(form.manufacturer)|replace({'<option value="">': '<option label=" " value="">'})|raw }}</div>
+				<div id="manufacturer-select">{{ form_widget(form.manufacturer, {'attr': {'style': 'display:none;'}})|replace({'<option value="">': '<option label=" " value="">'})|raw }}</div>
 			</div>
 		</div>
 		<div class="search-form-entry">

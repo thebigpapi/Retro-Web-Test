@@ -11,8 +11,8 @@
 		<div class=imgp><span><i>Creditor:</i></span>{{ form_widget(entities.vars.prototype.creditor)|e }}</div>
 		<div class=imgp><span><i>Upload:</i></span>{{ form_widget(entities.vars.prototype.imageFile)|e }}</div>{% if entityName == 'images' %}
 		<div class=imgp><span><i>Type:</i></span>{{ form_widget(form.images.vars.prototype.motherboardImageType)|e }}</div>{% endif %}
-		<div class=imgp><span><i>Notes:</i></span>{{ form_widget(entities.vars.prototype.description)|e }}</div>
-		<div class=imgp><span><i>File name:</i></span>{{ form_widget(entities.vars.prototype.file_name)|e }}</div>
+		<div class=imgp><span><i>Notes:</i></span>{{ form_widget(entities.vars.prototype.description, {'attr': {'placeholder': 'Empty'}})|e }}</div>
+		<div class=imgp><span><i>File name:</i></span>{{ form_widget(entities.vars.prototype.file_name, {'attr': {'placeholder': 'No file uploaded!'}})|e }}</div>
 		{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}">
 		{% for image in entities %}
 			<div class="addform">
@@ -24,8 +24,8 @@
 					<div class="imgp"><span><i>Type:</i></span>{{ form_widget(image.motherboardImageType)}}</div>
 				{% endif %}
 				
-				<div class="imgp"><span><i>Notes:</i></span>{{ form_widget(image.description)}}</div>
-				<div class="imgp"><span><i>File name:</i></span>{{ form_widget(image.file_name) }}</div>
+				<div class="imgp"><span><i>Notes:</i></span>{{ form_widget(image.description, {'attr': {'placeholder': 'Empty'}})}}</div>
+				<div class="imgp"><span><i>File name:</i></span>{{ form_widget(image.file_name, {'attr': {'placeholder': 'No file uploaded!'}}) }}</div>
 				{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
 			</div>
 		{% endfor %}

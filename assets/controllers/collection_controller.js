@@ -43,16 +43,18 @@ export default class extends Controller {
         //set the new increment, create the new widget and concatenate after list
         list.setAttribute("data-widget-counter", counter);
         let newElem = document.createElement('div');
-        newElem.setAttribute("class", "editor-row");
+        if (list.id === 'motherboardBios-fields-list')
+            newElem.setAttribute("class", "bios-image-container");
+        else
+            newElem.setAttribute("class", "editor-row");
         if (list.id === 'drivers-fields-list')
             newElem.setAttribute("class", newElem.getAttribute("class") + " drv");
-        if (list.id === 'motherboardBios-fields-list')
-            newElem.setAttribute("class", newElem.getAttribute("class") + " bios");
         if (list.id === 'manuals-fields-list' || list.id === 'documentations-fields-list')
             newElem.setAttribute("class", newElem.getAttribute("class") + " manual");
         if (list.id === 'miscfile-fields-list' || list.id === 'documentations-fields-list')
             newElem.setAttribute("class", newElem.getAttribute("class") + " miscfile");
-        newElem.setAttribute("class", newElem.getAttribute("class") + " nopad");
+        if (list.id != 'motherboardBios-fields-list')
+            newElem.setAttribute("class", newElem.getAttribute("class") + " nopad");
         if (list.id === 'images-fields-list' || list.id === 'chip.images-fields-list' || list.id === 'processingUnit.chip.images-fields-list')
             newElem.setAttribute("class", "addform");
         newElem.innerHTML = newWidget;
