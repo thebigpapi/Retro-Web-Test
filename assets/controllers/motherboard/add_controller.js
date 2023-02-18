@@ -185,8 +185,9 @@ export default class extends Controller {
         let sockets = document.getElementById("cpuSockets-fields-list").children;
         let platforms = document.getElementById("processorPlatformTypes-fields-list").children;
         let frequencies = document.getElementById("cpuSpeed-fields-list").children;
-        let processors = document.getElementById("processors-fields-list").children;
-        let coprocessors = document.getElementById("coprocessors-fields-list").children;
+        _this.checkAllCheckBoxes();
+        let processors = document.getElementById("motherboard_form_processors").children;
+        let coprocessors = document.getElementById("motherboard_form_coprocessors").children;
         let slug = document.getElementById("motherboard_form_slug");
         
         let form = _this.element;
@@ -206,12 +207,14 @@ export default class extends Controller {
             params.set(element.name, element.value);
         }
         for (let processor of processors) {
-            let element = processor.children[0];
-            params.set(element.name, element.value);
+            if (processor.checked) {
+                params.append(processor.name, processor.value);
+            }
         }
         for (let coprocessor of coprocessors) {
-            let element = coprocessor.children[0];
-            params.set(element.name, element.value);
+            if (coprocessor.checked) {
+                params.append(coprocessor.name, coprocessor.value);
+            }
         }
         let cursor = document.getElementById("cpu-wait");
         cursor.style.display = "";
@@ -228,25 +231,17 @@ export default class extends Controller {
             document.getElementById("processorPlatformTypes-fields-list").innerHTML = parsedResponse.getElementById("processorPlatformTypes-fields-list").innerHTML;
             document.getElementById("cpuSpeed-fields-list").outerHTML = parsedResponse.getElementById("cpuSpeed-fields-list").outerHTML;
             document.getElementById("cpuSpeed-fields-list").innerHTML = parsedResponse.getElementById("cpuSpeed-fields-list").innerHTML;
-            document.getElementById("processors-fields-list").outerHTML = parsedResponse.getElementById("processors-fields-list").outerHTML;
-            document.getElementById("processors-fields-list").innerHTML = parsedResponse.getElementById("processors-fields-list").innerHTML;
-            document.getElementById("coprocessors-fields-list").outerHTML = parsedResponse.getElementById("coprocessors-fields-list").outerHTML;
-            document.getElementById("coprocessors-fields-list").innerHTML = parsedResponse.getElementById("coprocessors-fields-list").innerHTML;
+            document.getElementById("motherboard_form_processors").outerHTML = parsedResponse.getElementById("motherboard_form_processors").outerHTML;
+            document.getElementById("motherboard_form_processors").innerHTML = parsedResponse.getElementById("motherboard_form_processors").innerHTML;
+            document.getElementById("motherboard_form_coprocessors").outerHTML = parsedResponse.getElementById("motherboard_form_coprocessors").outerHTML;
+            document.getElementById("motherboard_form_coprocessors").innerHTML = parsedResponse.getElementById("motherboard_form_coprocessors").innerHTML;
             let new_platforms = document.getElementById("processorPlatformTypes-fields-list");
             for (let new_platform of new_platforms.children) {
                 if (new_platform.children[2])
                     if (new_platform.children[2].nodeName == "UL")
                         new_platform.children[2].outerHTML = "";
             }
-            let new_cpus = document.getElementById("processors-fields-list");
-            for (let i = new_cpus.children.length - 1; i > 0; i -= 1) {
-                if (new_cpus.children[i])
-                    if (new_cpus.children[i].nodeName == "UL") {
-                        new_cpus.children[i].outerHTML = "";
-                        i -= 1;
-                        new_cpus.children[i].outerHTML = "";
-                    }
-            }
+            this.initProcessorsFromDom(document);
             cursor.style.display = "none";
 
 
@@ -267,6 +262,14 @@ export default class extends Controller {
     }
 
     initProcessorsFromDom(dom) {
+        //Processors
+        this.uncheckedProcessors = new Array();
+        this.checkedProcessors = new Array();
+
+        //Coprocessors
+        this.uncheckedCoprocessors = new Array();
+        this.checkedCoprocessors = new Array();
+
         let cpusTags = dom.getElementById('motherboard_form_processors');
         let npusTags = dom.getElementById('motherboard_form_coprocessors');
 
