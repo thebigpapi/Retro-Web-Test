@@ -441,17 +441,17 @@ export default class extends Controller {
 
     checkAllCheckBoxes() {
         this.checkedProcessors.forEach(processor => {
-            processor.tag.setAttribute('checked', null);
+            processor.tag.checked=true;
         });
         this.uncheckedProcessors.forEach(processor => {
-            processor.tag.removeAttribute('checked', null);
+            processor.tag.checked=false;
         });
 
         this.checkedCoprocessors.forEach(coprocessor => {
-            coprocessor.tag.setAttribute('checked', null);
+            coprocessor.tag.checked=true;
         });
         this.uncheckedCoprocessors.forEach(coprocessor => {
-            coprocessor.tag.removeAttribute('checked', null);
+            coprocessor.tag.checked=false;
         });
     }
 }
