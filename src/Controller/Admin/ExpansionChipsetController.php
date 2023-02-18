@@ -146,10 +146,10 @@ class ExpansionChipsetController extends AbstractController
                 $aManufacturer = $a->getManufacturer();
                 $bManufacturer = $b->getManufacturer();
                 if ($aManufacturer->getShortNameIfExist() == $bManufacturer->getShortNameIfExist()) {
-                    if ($a->getName() == $b->getName()) {
+                    if ($a->getPartNumber() == $b->getPartNumber()) {
                         return 0;
                     }
-                    return ($a->getName() < $b->getName()) ? -1 : 1;
+                    return ($a->getPartNumber() < $b->getPartNumber()) ? -1 : 1;
                 }
                 return ($aManufacturer->getShortNameIfExist() < $bManufacturer->getShortNameIfExist()) ? -1 : 1;
             }
