@@ -13,7 +13,9 @@
     <input type="radio" name="tabs" id="tab-nav-4" data-action='click->show#show_cpus'>
     <label for="tab-nav-4"><img src="{{ absolute_url(asset('build/icons/show/cpu.svg')) }}" alt="" width="24" height="24">CPUs</label>
     {% endif %}
-    {% if entityName == "motherboard" %}
+    {% if entityName == "expansionChip" %}
+        {% set name = "expansion chip" %}
+    {% elseif entityName == "motherboard" %}
         {% set name = entityName|slice(6, 5) %}
     {% else %}
         {% set name = entityName %}

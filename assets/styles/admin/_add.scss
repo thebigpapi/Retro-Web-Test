@@ -63,6 +63,25 @@ div.bios-image-head {
 	padding-bottom:5px;
 	text-align: center;
 }
+div.cpu-head{
+	background-color:$footer-link-color;
+	color:$dark-color;
+	@media (prefers-color-scheme: dark) {
+		background-color: $btn-darkbg-color;
+		color:$light-color;
+	}
+	padding: 15px;
+	display:flex;
+    justify-content: space-around;
+	> div{
+		display:flex;
+		justify-content: center;
+		flex-grow:4;
+		&:nth-child(2){
+			flex-grow:1;
+		}
+	}
+}
 input.num{width:15px;}
 /* notes section */
 div.notes-field div { padding-bottom: 6px; padding-right: 4px; margin:auto }
@@ -79,7 +98,7 @@ div.show-edit{
 div.dual-list-container {
 	display: flex;
 	grid-template-columns: 1fr 1fr;
-	column-gap: 25px;
+	column-gap: 10px;
 }
 
 div.dual-list-list {
@@ -97,9 +116,11 @@ div.dual-list-buttons {
 	flex-direction: column;
 	align-self: center;
 	button {
-		width: 40px;
+		width: 50px;
 		height: 40px;
 		text-align: center;
+		align-items: center;
+		justify-content: center;
 	}
 }
 

@@ -77,8 +77,18 @@ class Processor extends ProcessingUnit
     }
     public function getNameWithPlatform()
     {
-        $this->getPlatform() ? $pType = $this->getPlatform()->getName() : $pType = "Unidentified";
-        return $this->getManufacturer()->getShortNameIfExist() . " " . $this->name . ' ' . $this->speed->getValueWithUnit() . ' [' . $this->partNumber . ']' . " (" . $pType . ")";
+        $inner = array();
+        if($this->core != "")
+            array_push($inner, $this->core);
+        if($this->fsb != "")
+            array_push($inner, $this->fsb->getValueWithUnit());
+        if($this->getVoltagesWithValue() != "")
+            array_push($inner, $this->getVoltagesWithValue());
+        if($this->ProcessNode != "")
+            array_push($inner, ($this->ProcessNode ? $this->ProcessNode . 'nm' : ''));
+        if($this->tdp != "")
+            array_push($inner, ($this->tdp ? $this->tdp . 'W' : ''));
+        return implode(" ", array($this->getManufacturer()->getShortNameIfExist(), $this->name, "[" . implode(", ", $inner) . "]"));
     }
     public function getNameWithSpecs()
     {
