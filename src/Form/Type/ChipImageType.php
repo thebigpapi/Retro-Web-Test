@@ -21,7 +21,7 @@ class ChipImageType extends AbstractType
     {
         $builder
             ->add('file_name', TextType::class, [
-                'required' => false,
+                'required' => true,
                 'disabled' => true,
             ])
             ->add('imageFile', FileType::class, [

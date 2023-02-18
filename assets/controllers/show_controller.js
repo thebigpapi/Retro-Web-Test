@@ -3,7 +3,7 @@ import { Controller } from 'stimulus';
 export default class extends Controller {
     connect() {
         let URL = window.location.href;
-        if (URL.indexOf("#downloads") != -1)
+        if (URL.indexOf("#downloads") != -1 && URL.indexOf("entity=") == -1)
             this.show_downloads();
         if (URL.indexOf("#cpus") != -1)
             this.show_cpus();

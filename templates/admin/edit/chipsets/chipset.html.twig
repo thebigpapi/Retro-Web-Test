@@ -3,7 +3,7 @@
 {% block title %}Add/Edit chipset{% endblock %}
 
 {% block body %}
-<form data-controller="chipset--add" name="chipset_form" method="post" enctype="multipart/form-data" data-action="{#submit->chipset--add#check#}">
+<form data-controller="chipset--add" name="chipset_form" method="post" enctype="multipart/form-data" data-action="submit->chipset--add#check">
 	<div class="title">Chipset editor</div>
 	<!-- MANUF./NAME/PART NO. -->
 	<section class="search-form-grid">
