@@ -286,7 +286,11 @@ class MotherboardController extends AbstractController
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            if ($form->get('updateProcessors')->isClicked()) {
+            /**
+             * @var ClickableInterface
+             */
+            $updateProcessorsButton = $form->get('updateProcessors');
+            if ($updateProcessorsButton->isClicked()) {
                 return $this->render('admin/edit/motherboards/motherboard.html.twig', [
                     'form' => $form->createView(),
                 ]);

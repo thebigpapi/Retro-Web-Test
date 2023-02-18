@@ -84,7 +84,19 @@ class AdminController extends AbstractController
 
         $userForm->handleRequest($request);
         if ($userForm->isSubmitted() && $userForm->isValid()) {
-            if ($userForm->get('reset')->isClicked()) {
+            /**
+             * @var ClickableInterface
+             */
+            $resetButton = $userForm->get('reset');
+            /**
+             * @var ClickableInterface
+             */
+            $deleteButton = $userForm->get('delete');
+            /**
+             * @var ClickableInterface
+             */
+            $addButton = $userForm->get('add');
+            if ($resetButton->isClicked()) {
                 $user = $userRepository->find($userForm->getData()['users']->getId());
 
                 $password = $this->randomStr(16);
@@ -98,14 +110,14 @@ class AdminController extends AbstractController
                     'password' => $password,
                 ]);
             }
-            if ($userForm->get('delete')->isClicked()) {
+            if ($deleteButton->isClicked()) {
                 $user = $userRepository->find($userForm->getData()['users']->getId());
 
                 $message = "Successfully removed user " . $user->getUsername();
                 $entityManager->remove($user);
                 $entityManager->flush();
             }
-            if ($userForm->get('add')->isClicked()) {
+            if ($addButton->isClicked()) {
                 return $this->redirect('./manage/add');
             }
         }

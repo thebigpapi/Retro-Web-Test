@@ -209,10 +209,18 @@ class MotherboardController extends AbstractController
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            if ($form->get('No')->isClicked()) {
+            /**
+             * @var ClickableInterface
+             */
+            $noButton = $form->get('No');
+            /**
+             * @var ClickableInterface
+             */
+            $yesButton = $form->get('Yes');
+            if ($noButton->isClicked()) {
                 return $this->redirect($this->generateUrl('motherboard_show', array("id" => $id)));
             }
-            if ($form->get('Yes')->isClicked()) {
+            if ($yesButton->isClicked()) {
                 //If user selected a motherboard where the current id will redirect to
                 if ($form->get('Redirection') && !is_null($form->get('Redirection')->getData())) {
                     $idRedirection = $form->get('Redirection')->getData();
@@ -343,7 +351,12 @@ class MotherboardController extends AbstractController
             }
         }
 
-        if ($form['searchWithImages']->isClicked()) {
+        /**
+         * @var ClickableInterface
+         */
+        $searchWithImagesButton = $form['searchWithImages'];
+
+        if ($searchWithImagesButton->isClicked()) {
             $parameters['showImages'] = true;
         }
 
