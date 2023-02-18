@@ -124,10 +124,9 @@ class ChipsetController extends AbstractController
     }
 
 
-    #[Route(path: '/chipsets/index/{letter}', name: 'chipsetindex', requirements: ['letter' => '\w|[?]'])]
+    #[Route(path: '/chipsets/index/{letter}', name: 'chipsetindex', requirements: ['letter' => '\w'])]
     public function index(PaginatorInterface $paginator, string $letter, ChipsetRepository $chipsetRepository, int $page = 1)
     {
-        $letter === "?" ? $letter = '':'';
         $data = $chipsetRepository->findAllAlphabetic($letter);
         usort(
             $data,

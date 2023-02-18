@@ -86,22 +86,17 @@ class ChipsetRepository extends ServiceEntityRepository
     public function findAllAlphabetic(string $letter): array
     {
         $entityManager = $this->getEntityManager();
-        if (empty($letter)) {
-            $query = $entityManager->createQuery(
-                "SELECT chip
-                FROM App\Entity\Chipset chip, App\Entity\Manufacturer man 
-                WHERE chip.manufacturer=man IS NULL
-                ORDER BY man.name ASC, chip.name ASC"
-            );
-        } else {
-            $likematch = "$letter%";
-            $query = $entityManager->createQuery(
-                "SELECT chip
-                FROM App\Entity\Chipset chip, App\Entity\Manufacturer man 
-                WHERE chip.manufacturer=man AND COALESCE(man.shortName, man.name) like :likeMatch
-                ORDER BY man.name ASC, chip.name ASC"
-            )->setParameter('likeMatch', $likematch);
-        }
+        $likematch = "$letter%";
+        $query = $entityManager->createQuery(
+            "SELECT chip, chipPart, chipPartMan, cal
+            FROM App\Entity\Chipset chip
+            LEFT JOIN chip.chipsetParts chipPart
+            LEFT JOIN chipPart.manufacturer chipPartMan
+            LEFT JOIN chip.chipsetAliases cal,
+            App\Entity\Manufacturer man 
+            WHERE chip.manufacturer=man AND COALESCE(man.shortName, man.name) like :likeMatch
+            ORDER BY man.name ASC, chip.name ASC"
+        )->setParameter('likeMatch', $likematch);
 
         return $query->getResult();
     }
