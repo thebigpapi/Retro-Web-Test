@@ -69,8 +69,8 @@ class MotherboardBiosRepository extends ServiceEntityRepository
 
         // Building query
         $query = $entityManager->createQuery(
-            "SELECT COALESCE(man.shortName, man.name) as manName, m.id, m.name, bios
-            FROM App\Entity\MotherboardBios bios JOIN bios.motherboard m JOIN m.manufacturer man
+            "SELECT COALESCE(man.shortName, man.name) as manName, m.id, m.name, bios, COALESCE(bman.shortName, bman.name) as bmanName
+            FROM App\Entity\MotherboardBios bios JOIN bios.manufacturer bman JOIN bios.motherboard m JOIN m.manufacturer man
             WHERE $whereString
             ORDER BY bios.coreVersion ASC, manName ASC, m.name ASC"
         );
