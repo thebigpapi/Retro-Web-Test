@@ -259,7 +259,7 @@ class MiscController extends AbstractController
 
     public function listManufacturer(Request $request, PaginatorInterface $paginator, array $criterias, ManufacturerRepository $manufacturerRepository)
     {
-        $objects = $manufacturerRepository->findBy($criterias, ['name' => 'asc']);
+        $objects = $manufacturerRepository->findAllManufacturerCaseInsensitiveSorted();
 
         $paginatedObjects = $paginator->paginate(
             $objects,
