@@ -29,7 +29,7 @@ class ChipImage
      * NOTE: This is not a mapped field of entity metadata, just a simple property.
      */
     #[Vich\UploadableField(mapping:'chipimage', fileNameProperty:'file_name')]
-    private File|null $imageFile;
+    private File|null $imageFile = null;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     #[Assert\Length(max:255, maxMessage: 'Description is longer than {{ limit }} characters, try to make it shorter.')]

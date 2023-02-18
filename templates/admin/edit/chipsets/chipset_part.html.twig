@@ -3,7 +3,7 @@
 {% block title %}Manage chipset part{% endblock %}
 
 {% block body %}
-{{ form_start(form, {'method': 'POST'}) }}
+<form data-controller="chipset--add" name="chipset_part_form" method="post" enctype="multipart/form-data" data-action="submit->chipset--add#checkpart">
 	<div class="title">Chipset part editor</div>
 
 	<!-- MANUF./NAME/PART NO. -->

@@ -2,7 +2,9 @@ import { Controller } from 'stimulus';
 
 export default class extends Controller {
     connect() {
-        this.addLink();
+        let URL = window.location.href;
+        if (URL.indexOf("chipsets/parts") == -1)
+            this.addLink();
     }
     addLink(){
         let list = document.getElementById('chipsetParts-fields-list').childNodes;
@@ -41,12 +43,10 @@ export default class extends Controller {
     }
 
     /**
-     * Check that everything is fine before submiting the board
+     * Check that everything is fine before submiting the chipset
      * @param {*} event 
      */
     check(event) {
-        let _this = this;
-
         let error = false;
         let errorMessage = "";
 
@@ -59,16 +59,6 @@ export default class extends Controller {
                 }
             }
         }
-
-        let imageList = document.getElementById('images-fields-list').children;
-        for (let i = 0; i < imageList.length; i++) {
-            if (imageList[i].children[1].children[0].files[0] == null) {
-                if (imageList[i].children[7].children[0].value == '') {
-                    errorMessage += "One of the file upload fields is empty! (image entry no." + (i + 1) + ")\n";
-                    error = true;
-                }
-            }
-        }
         let driverList = document.getElementById('drivers-fields-list').children;
         for (let i = 0; i < driverList.length; i++) {
             if (!driverList[i].children[0].children[0].value) {
@@ -76,47 +66,38 @@ export default class extends Controller {
                 error = true;
             }
         }
-        if (_this.checkList('cpuSockets-fields-list')) {
-            errorMessage += "CPU sockets has duplicate entries!\n";
-            error = true;
-        }
-        if (_this.checkList('processorPlatformTypes-fields-list')) {
-            errorMessage += "CPU platform has duplicate entries!\n";
-            error = true;
-        }
-        if (_this.checkList('motherboardMaxRams-fields-list')) {
-            errorMessage += "Max system RAM has duplicate entries!\n";
-            error = true;
-        }
-        if (_this.checkList('cacheSize-fields-list')) {
-            errorMessage += "Cache has duplicate entries!\n";
-            error = true;
-        }
-        if (_this.checkList('motherboardIoPorts-fields-list')) {
-            errorMessage += "I/O ports has duplicate entries!\n";
-            error = true;
-        }
-        if (_this.checkList('motherboardExpansionSlots-fields-list')) {
-            errorMessage += "Expansion slots has duplicate entries!\n";
-            error = true;
-        }
-        if (_this.checkList('knownIssues-fields-list')) {
-            errorMessage += "Known issues has duplicate entries!\n";
-            error = true;
-        }
-        if (_this.checkList('processors-fields-list')) {
-            errorMessage += "CPU has duplicate entries!\n";
-            error = true;
-        }
-        if (_this.checkList('cpuSpeed-fields-list')) {
-            errorMessage += "FSB speed has duplicate entries!\n";
-            error = true;
-        }
-        if (_this.checkList('coprocessors-fields-list')) {
-            errorMessage += "NPU has duplicate entries!\n";
-            error = true;
-        }
 
+        if (error) {
+            alert(errorMessage);
+            event.preventDefault();
+        }
+    }
+    /**
+     * Check that everything is fine before submiting the chipset part
+     * @param {*} event 
+     */
+    checkpart(event) {
+        let error = false;
+        let errorMessage = "";
+
+        let manualList = document.getElementById('manuals-fields-list').children;
+        for (let i = 0; i < manualList.length; i++) {
+            if (manualList[i].children[2].children[0].files[0] == null) {
+                if (manualList[i].children[3].children[0].value == '') {
+                    errorMessage += "One of the file upload fields is empty! (manual entry no." + (i + 1) + ")\n";
+                    error = true;
+                }
+            }
+        }
+        let imageList = document.getElementById('chip.images-fields-list').children;
+        for (let i = 0; i < imageList.length; i++) {
+            if (imageList[i].children[2].children[1].files[0] == null) {
+                if (imageList[i].children[4].children[1].value == '') {
+                    errorMessage += "One of the file upload fields is empty! (image entry no." + (i + 1) + ")\n";
+                    error = true;
+                }
+            }
+        }
         if (error) {
             alert(errorMessage);
             event.preventDefault();
