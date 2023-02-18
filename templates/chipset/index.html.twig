@@ -15,22 +15,7 @@
 	<div class="results lst">
 		{{ knp_pagination_render(chipsets, 'macros/pagination.html.twig') }}
 		<div class="plain-list w300p table">
-			<div class="list-entry centered head" style="font-style:italic;">
-				<div>Name</div>
-				<div>Parts</div>
-			</div>
-			{% for chipset in chipsets %}
-			<div class="list-entry centered bios {% if loop.index is divisible by(2) %}alt{% endif %}{% if chipset.getChipsetParts() is empty %} nows{% endif %}">
-				<div class="header-label">Name</div>
-				<div><a class="result-link" href="{{ path("chipset_show", {id: chipset.getId()}) }}">{{ chipset.getFullName() }}</a></div>
-				<div class="header-label">Parts</div>
-				<div>
-					{% for chipPart in chipset.getChipsetParts() %}
-						<span class="text-block" style="margin-right: 5px;">{{ chipPart.getFullName() }}</span>
-					{% endfor %}
-				</div>
-			</div>
-			{% endfor %}
+			{% include 'macros/widget.html.twig' with {'type':'chipset-results', 'entity': chipsets} %}
 		</div>
 		{{ knp_pagination_render(chipsets, 'macros/pagination.html.twig') }}
 	</div>

@@ -1,0 +1,112 @@
+{% extends 'base.html.twig' %}
+{% from 'macros/largeFile.html.twig' import link as driverLink %}
+{% from 'macros/largeFile.html.twig' import header as driverHeader %}
+
+{% block title %}
+	{{ expansion_chip.getNameWithManufacturer() }}
+{% endblock %}
+{% block metatags %}
+	<meta name="description" content="Expansion chip:{{ expansion_chip.getNameWithManufacturer() }}">
+{% endblock %}
+
+{% block opengraph %}
+	{% apply spaceless %}
+	<meta property="og:title" content="{{ expansion_chip.getNameWithManufacturer() }}">
+	<meta property="og:description" content="Get expansion chip info, images and drivers for {{ expansion_chip.getNameWithManufacturer() }}!">
+	{% endapply %}
+	<link rel="alternate" hreflang="x-default" href="{{ absolute_url(path('expansion_chip_show', {id: expansion_chip.getId()})) }}"/>
+{% endblock %}
+
+{% block body %}
+<!-- MANUF./NAME/PART NO. -->
+<div class="title">{{ expansion_chip.getNameWithManufacturer() }}</div>
+{% if expansion_chip.getChipAliases() is not empty %}
+<div class="tag-container" style="justify-content:center;padding-bottom:15px">
+	<span style="width:100%;text-align:center">Also known as:</span>
+	{% for alias in expansion_chip.getChipAliases() %}
+		<span class="text-block" >{{ alias.getFullAliasName() }}</span>
+	{% endfor %}
+</div>
+{% endif %}
+
+<div class="main-strip">
+	<div class="internal-container">
+		{% include 'macros/navbar.html.twig' with {'type':'show', 'entity': expansion_chip, 'entityName': 'expansionChip', 'count':2} %}
+		<div class="internal-content">
+			<!-- DESCRIPRION -->
+			<div class="show-general" id="sh-general">
+				<div>
+					<span>Type: {{expansion_chip.getType().getName()}}</span>
+				</div>
+			</div>
+			<div class="show-downloads" id="sh-downloads">
+				<!-- DRIVERS -->
+				<div>
+					<img src="{{ absolute_url(asset('build/icons/show/hardware.svg')) }}" alt="" width="32" style="vertical-align: middle;padding-bottom: 10px;">
+					<span><b>Drivers: </b></span>
+					{% if expansion_chip.getDrivers() is not empty %}
+					<span>{{ expansion_chip.getDrivers.count() }}{% if expansion_chip.getDrivers.count() == 1 %} entry{% else %} entries{% endif %}</span>
+					<div class="show-table drv">
+						<div class="show-downloads-head">{{ driverHeader() }}</div>
+						{% for driver in expansion_chip.getDrivers() %}
+							<div class="show-table-row">{{ driverLink(driver.largeFile) }}</div>
+						{% endfor %}
+					</div>
+					{% else %}
+					<span>not available</span>
+					{% endif %}
+				</div>
+				<!-- CHIPSET PART DOCS -->
+				<div>
+					<img src="{{ absolute_url(asset('build/icons/show/manual.svg')) }}" alt="" width="32" style="vertical-align: middle;padding-bottom: 10px;">
+					<span><b>Documentation: </b></span>
+					{% set docCount = 0 %}
+					{% if expansion_chip.getDocumentations() is not empty %}
+						{% set moreDocCount = expansion_chip.getDocumentations.count() %}
+					{% else %}
+						{% set moreDocCount = 0 %}
+					{% endif %}
+					{% set moreDocCount = docCount + moreDocCount %}
+					{% if moreDocCount > 0 %}
+						<span>{{ moreDocCount }}&nbsp;{% if moreDocCount == 1 %}file{% else %}files{% endif %}</span>
+					{% else %}
+							<span>not available</span>
+					{% endif %}
+					{% if moreDocCount > 0 %}
+						<div><div><div>
+							<ul style="list-style-type: none;">
+							<!-- MORE CHIPSET DOCS -->
+							{% if expansion_chip.getDocumentations() is not empty %}
+								{% for documentation in expansion_chip.getDocumentations()|sort((a, b) => a.getLinkName <=> b.getLinkName) %}
+									<li><a href="{{ vich_uploader_asset(documentation, 'manualFile') }}">
+										<img src="{{ absolute_url(asset('build/icons/dw.svg')) }}" alt="" width="16" height="16" style="vertical-align: middle;">
+										{{ documentation.getLinkName() }}</a>({{ documentation.getLanguage().getName()}})</li>
+								{% endfor %}
+							{% endif %}
+							</ul>
+						</div></div></div>
+					{% endif %}
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- IMAGES -->
+	{% if expansion_chip.getImages() is not empty %}
+		{% set lpindex = 0 %}
+		<div class="show-images" id="sh-images">
+			{% for image in expansion_chip.getImages() %}
+				{% set lpindex = lpindex + 1 %}
+				{% include 'macros/images.html.twig' with {'type':'expansionchip', 'entity': image, 'index': lpindex, 'length': expansion_chip.getImages()|length} %}
+			{% endfor %}
+		</div>
+	{#{% else %}
+		<div class="show-image"><p style="font-size:20px;height:100px;">no images available :(</p></div>#}
+	{% endif %}
+
+</div>
+<div class="disclaimer">
+	<p><b>Disclaimer</b></p>
+	<p>The info found in this page might not be entirely correct. Check out <a href="{{ path('app_contributions') }}">this guide</a> to learn how you can improve it.</p>
+</div>
+{% endblock %}

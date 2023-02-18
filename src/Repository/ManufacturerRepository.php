@@ -25,6 +25,34 @@ class ManufacturerRepository extends ServiceEntityRepository
     /**
      * @return Manufacturer[]
      */
+    public function findAllManufacturerCaseInsensitiveSorted(): array
+    {
+        $entityManager = $this->getEntityManager();
+
+        $rsm = new ResultSetMapping();
+
+        $rsm->addEntityResult('App\Entity\Manufacturer', 'man');
+        $rsm->addFieldResult('man', 'id', 'id');
+        $rsm->addFieldResult('man', 'name', 'name');
+        $rsm->addFieldResult('man', 'short_name', 'shortName');
+        $rsm->addFieldResult('man', 'fccid', 'fccid');
+        $rsm->addJoinedEntityResult('App\Entity\PciVendorId', 'pv', 'man', 'pciVendorIds');
+        $rsm->addFieldResult('pv', 'pvid', 'id');
+        $rsm->addFieldResult('pv', 'ven', 'ven');
+
+        $query = $entityManager->createNativeQuery(
+            'SELECT distinct man.id, man.name, man.short_name, man.fccid, pv.id as pvid, pv.ven, upper(coalesce(man.short_name, man.name)) as realname
+            FROM manufacturer man LEFT JOIN pci_vendor_id pv ON pv.manufacturer_id=man.id
+            ORDER BY realname;',
+            $rsm
+        );
+
+        return $query->getResult();
+    }
+
+    /**
+     * @return Manufacturer[]
+     */
     public function findAllMotherboardManufacturer(): array
     {
         $entityManager = $this->getEntityManager();

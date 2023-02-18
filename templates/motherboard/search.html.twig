@@ -58,7 +58,7 @@
 					<img src="{{ absolute_url(asset('build/icons/search/help.svg')) }}" alt="" width="16" height="16">
 				</label>
 				<div class="search-form-widget">
-					<div id="setmanuf">{{ form_widget(form.manufacturer, {'attr': {'aria-label': "Manufacturer"}}) }}</div>
+					<div id="setmanuf">{{ form_widget(form.manufacturer, {'attr': {'aria-label': "Manufacturer", 'data-target-id': 'search_manufacturer'}}) }}</div>
 					<div>{{ form_widget(form.name, {'attr': {'placeholder': 'Name or Part number (without manufacturer) ...'}}) }}</div>
 				</div>
 			</div>

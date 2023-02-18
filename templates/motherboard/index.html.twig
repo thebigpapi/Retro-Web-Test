@@ -14,7 +14,7 @@
 		<div class="plain-list">
 			{% for motherboard in motherboards %}
 				<div class="list-entry">
-					<a href='{{ path("motherboard_show", {id: motherboard.getId()}) }}'>{{ motherboard.getManufacturerShortNameIfExist()}}&nbsp;{{motherboard.name}}</a>
+					<a href='{{ path("motherboard_show", {id: motherboard["id"]}) }}'>{{ motherboard["manName"]}}&nbsp;{{motherboard["name"]}}</a>
 				</div>
 			{% endfor %}
 		</div>

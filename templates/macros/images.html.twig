@@ -1,8 +1,26 @@
 <div class="show-image">
 	<a href="{{ vich_uploader_asset(image, 'imageFile')}}" class="glightbox" data-description="
-	{% if type == "chipset" %}{{ chipPart.getFullName() }}{% endif %}{% if image.creditor %}<div style='float:right;color:black;'><div>{% if image.creditor.website %}<a class=creditor-href href={{ image.creditor.website }}>Image by {{image.creditor.name}}</a>
-	{% else %}Image by {{ image.creditor.name }}{% endif %}</div><div>{% if image.creditor.license %}<a class=license-href href={{ image.creditor.license.website }}> {{ image.creditor.license.name }}</a>{% endif %}</div></div>{% endif %}
-	{% if image.description %}<p style='color:black;'>Notes: {{ image.description }}</p>{% endif %}">
+	{% if type == "chipset" %}
+		{{ chipPart.getFullName() }}
+	{% endif %}
+	{% if image.creditor %}
+		<div style='float:right;color:black;'>
+			<div>
+			{% if image.creditor.website %}
+				<a class=creditor-href href={{ image.creditor.website }}>Image by {{image.creditor.name}}</a>
+			{% else %}Image by {{ image.creditor.name }}
+			</div>
+		</div>
+	{% endif %}
+		<div>
+			{% if image.creditor.license %}
+				<a class=license-href href={{ image.creditor.license.website }}> {{ image.creditor.license.name }}</a>
+			{% endif %}
+		</div>
+	{% endif %}
+	{% if image.description %}
+		<p style='color:black;'>Notes: {{ image.description }}</p>
+	{% endif %}">
     {% if type == "motherboard" %}
 		<img src="{% if vich_uploader_asset(image, 'imageFile') | ext != "svg" %}{{ vich_uploader_asset(image, 'imageFile') | imagine_filter('motherboard_show_thumb') }}{% else %}{{ vich_uploader_asset(image, 'imageFile')}}{% endif %}"
 		width="640" height="480" alt="image{{index}}" title="{% if image.description %}{{ image.description }}{% endif %}">

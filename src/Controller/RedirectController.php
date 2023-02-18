@@ -109,4 +109,16 @@ class RedirectController extends AbstractController
     {
         return $this->redirect($this->generateUrl('app_credits'));
     }
+    /* bios info redirect */
+    #[Route(path: '/bios/info', methods: ['GET'])]
+    public function redirectBiosInfo(Request $request)
+    {
+        return $this->redirect($this->generateUrl('bios_list'));
+    }
+    #[Route(path: '/bios/infoadv', methods: ['GET'])]
+    public function redirectBiosInfoAdv(Request $request)
+    {
+        return $this->redirect($this->generateUrl('bios_list'));
+    }
+    
 }

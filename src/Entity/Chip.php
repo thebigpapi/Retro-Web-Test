@@ -154,7 +154,7 @@ abstract class Chip
 
         return $this;
     }
-    public function removeDocumentationl(ChipDocumentation $documentation): self
+    public function removeDocumentation(ChipDocumentation $documentation): self
     {
         if ($this->documentations->contains($documentation)) {
             $this->documentations->removeElement($documentation);

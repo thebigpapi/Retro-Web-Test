@@ -20,7 +20,7 @@ use App\Repository\MotherboardBiosRepository;
 class BiosController extends AbstractController
 {
     #[Route(path: '/bios/', name: 'bios_result')]
-    public function result(Request $request, PaginatorInterface $paginator, MotherboardBiosRepository $motherboardBiosRepository, ManufacturerRepository $manufacturerRepository, ManufacturerBiosManufacturerCodeRepository $manufacturerBiosManufacturerCodeRepository)
+    public function result(Request $request, PaginatorInterface $paginator, MotherboardBiosRepository $motherboardBiosRepository)
     {
         $criterias = array();
         $postString = $request->query->get('postString');
@@ -105,20 +105,13 @@ class BiosController extends AbstractController
             'postStringAnalysis' => false,
         ]);
     }
-    #[Route(path: '/bios/info', name: 'bios_info')]
-    public function binfo()
-    {
-        return $this->render('bios/info.html.twig', [
-            'controller_name' => 'MainController',
-        ]);
-    }
 
-    #[Route(path: '/bios/infoadv', name: 'bios_infoadv')]
-    public function binfoadv(ManufacturerRepository $manufacturerRepository)
+    #[Route(path: '/bios/list', name: 'bios_list')]
+    public function biosList(ManufacturerRepository $manufacturerRepository)
     {
         $biosCodes = $manufacturerRepository->findAllBiosManufacturer2();
         $chipdata = $manufacturerRepository->findAllChipsetBiosManufacturer();
-        return $this->render('bios/infoadv.html.twig', [
+        return $this->render('bios/list.html.twig', [
             'controller_name' => 'MainController',
             'biosCodes' => $biosCodes,
             'chipCodes' => $chipdata,

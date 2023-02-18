@@ -4,48 +4,67 @@
 
 {% block body %}
 {{ form_start(form, {'method': 'POST'}) }}
-<div class="title" style="padding-top:3em;display:flex;justify-content:center;align-items:center;">
-	<b>Edit:&nbsp;Expansion chipset&nbsp;&nbsp;</b>
-	<button type="button" name="tabs" id="tab-nav-save" onclick="document.getElementById('expansion_chip_form_save').click();"><img src="{{ absolute_url(asset('build/icons/edit.svg')) }}" alt="" width="24" height="24"><span>Save</span></button>
-</div>
-<div class="main-strip">
-	<div class="internal-container">
-		<div style="margin:0 auto;display:table;">
-			<table>
-				<tr>
-					<td>{{form_label(form.chip.manufacturer)}}</td>
-					<td>{{form_widget(form.chip.manufacturer)}}</td>
-				</tr>
-				<tr>
-					<td>{{form_label(form.chip.name)}}</td>
-					<td>{{form_widget(form.chip.name)}}</td>
-				</tr>
-				<tr>
-					<td>{{form_label(form.type)}}</td>
-					<td>{{form_widget(form.type)}}</td>
-				</tr>
-				<tr>
-					<td>Part Number</td>
-					<td>{{form_widget(form.chip.partNumber)}}</td>
-				</tr>
-			</table>
-			<!-- PCI DEV -->
-			{% include 'admin/macros/widget.html.twig' with {'type':'pcidev', 'entity':form.chip.pciDevs} %}
+	<div class="title">Expansion chip editor</div>
+
+	<!-- MANUF./NAME/PART NO. -->
+	<section class="search-form-grid">
+		<div class="search-form-entry">
+			<div class="search-form-widget">
+				<label class="search-form-label">Manufacturer</label>
+				<div>{{ form_widget(form.chip.manufacturer)|replace({'<option value="">': '<option label=" " value="">'})|raw }}</div>
+			</div>
 		</div>
-		<div style="margin:0 auto;display:table;">
-			<!-- Drivers -->
-			{% include 'admin/macros/widget.html.twig' with {'type':'drivers', 'entity':form.drivers} %}
-			<!-- DOCS -->
-			{% include 'admin/macros/widget.html.twig' with {'type':'docs', 'entity':form.documentations} %}
+		<div class="search-form-entry">
+			<div class="search-form-widget">
+				<label class="search-form-label">Part Number</label>
+				<div>{{ form_widget(form.chip.partNumber, {'attr': {'placeholder': 'Part Number ...'}}) }}</div>
+			</div>
 		</div>
+		<div class="search-form-entry">
+			<div class="search-form-widget">
+				<label class="search-form-label">Name</label>
+				<div>{{ form_widget(form.chip.name, {'attr': {'placeholder': 'Name ...'}}) }}</div>
+			</div>
+		</div>
+	</section>
+
+	<div class="toolbar" data-controller="show">
+		<button type="button" name="tabs" id="tab-nav-save" onclick="document.getElementById('expansion_chip_form_save').click();"><img src="{{ absolute_url(asset('build/icons/edit.svg')) }}" alt="" width="24" height="24"><span>Save</span></button>		
 	</div>
-	<!-- IMAGES -->
-	{% include 'macros/entityListImages.html.twig' with {'entityName':'chip.images', 'entities':form.chip.images, 'imgpath':'chip', 'edit':true} %}
-</div>
-<div class="errors-div"><ul>
-    {% for error in form.vars.errors.form.getErrors(true) %}
-    <li>{{ error.message }}</li>
-    {% endfor %}
-</ul></div>
+	<div class="main-strip">
+		<div class="internal-container">
+			{% include 'macros/navbar.html.twig' with {'type':'edit', 'entityName': 'chip', 'count':2} %}
+			<div class="internal-content">
+				<div class="show-general" id="sh-general">
+					<!-- Type -->
+					<div class="quick-spec-table nopad">
+						<div class="quick-spec-head">{{form_label(form.type)}}</div>
+						<div class="editor-row nopad"><div class="editor-form-widget">
+							<div>{{ form_widget(form.type) }}</div>
+						</div></div>
+					</div>
+					<!-- CHIP ALIASES -->
+					{% include 'admin/macros/widget.html.twig' with {'type':'alias','displayname':'Chip aliases', 'entity':form.chip.chipAliases} %}
+					<!-- PCI DEV -->
+					{% include 'admin/macros/widget.html.twig' with {'type':'pcidev', 'entity':form.chip.pciDevs} %}
+				</div>
+				<div class="show-downloads" id="sh-downloads">
+					<!-- Drivers -->
+					{% include 'admin/macros/widget.html.twig' with {'type':'drivers', 'entity':form.drivers} %}
+					<!-- DOCS -->
+					{% include 'admin/macros/widget.html.twig' with {'type':'docs', 'entity':form.documentations} %}
+				</div>
+			</div>
+		</div>
+		<!-- IMAGES -->
+		{% include 'macros/entityListImages.html.twig' with {'entityName':'chip.images', 'entities':form.chip.images, 'imgpath':'chip', 'edit':true} %}
+	</div>
+	<div class="errors-div">
+		<ul>
+			{% for error in form.vars.errors.form.getErrors(true) %}
+			<li>{{ error.message }}</li>
+			{% endfor %}
+		</ul>
+	</div>
 <div id="hiddenDiv" style="display: none;">{{form_widget(form.save) }}{{ form_end(form)|replace({'</form>': '</div></form>'})|raw }}
 {% endblock %}
