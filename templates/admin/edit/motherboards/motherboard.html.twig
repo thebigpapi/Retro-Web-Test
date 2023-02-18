@@ -376,26 +376,44 @@
 					<div id="cpu-wait" style="display:none;">
 						<span>Please wait :)</span><img src="{{ absolute_url(asset('build/images/cursor.gif')) }}" alt="" height="24" style="vertical-align: middle;">
 					</div>
-					<div class="old-cpu-table" data-controller="collection">
-						<div style="display:flex;text-align:left;">
-							<div>CPU</div>
-							<button type="button" data-action="click->collection#expandButton" data-list-id="processors-fields-list">Add</button>
-							<button type="button" data-action="click->collection#addAllButton" data-list-id="processors-fields-list">Add all CPUs</button>
-							<button type="button" data-action="click->collection#clearAllButton" data-list-id="processors-fields-list">Delete all CPUs</button>
-							<span id="status-label" style="font-size:0.8em"></span>
-						</div>
-						<div style="display:flex;text-align:left;">
-							<div>NPU:</div>
-							<button type="button" data-action="click->collection#expandButton" data-list-id="coprocessors-fields-list">Add</button>
-							<button type="button" data-action="click->collection#addAllButton" data-list-id="coprocessors-fields-list">Add all NPUs</button>
-							<button type="button" data-action="click->collection#clearAllButton" data-list-id="coprocessors-fields-list">Delete all NPUs</button>
-						</div>
-
-						<div>
+					<div style="display: none;" >
 						{{ form_widget(form.processors) }}
-						</div>
-						<div>
 						{{ form_widget(form.coprocessors) }}
+					</div>
+					<div>
+						<div>CPU</div>
+						<div class="dual-list-container">
+							<div class="dual-list-list">
+								<select id="unchecked_processors" multiple>
+								</select>
+							</div>
+							<div class="dual-list-buttons">
+								<button id="add-all-cpus" data-action="click->motherboard--add#addAllProcessors">>></button>
+								<button id="add-all-selected-cpus" data-action="click->motherboard--add#addAllSelectedProcessors">></button>
+								<button id="remove-all-selected-cpus" data-action="click->motherboard--add#removeAllSelectedProcessors"><</button>
+								<button id="remove-all-cpus" data-action="click->motherboard--add#removeAllProcessors"><<</button>
+							</div>
+							<div class="dual-list-list">
+								<select id="checked_processors" multiple>
+								</select>
+							</div>
+						</div>
+						<div>NPU</div>
+						<div class="dual-list-container">
+							<div class="dual-list-list">
+								<select id="unchecked_coprocessors" multiple>
+								</select>
+							</div>
+							<div class="dual-list-buttons">
+								<button id="add-all-npus" data-action="click->motherboard--add#addAllCoprocessors">>></button>
+								<button id="add-all-selected-npus" data-action="click->motherboard--add#addAllSelectedCoprocessors">></button>
+								<button id="remove-all-selected-npus" data-action="click->motherboard--add#removeAllSelectedCoprocessors"><</button>
+								<button id="remove-all-npus" data-action="click->motherboard--add#removeAllCoprocessors"><<</button>
+							</div>
+							<div class="dual-list-list">
+								<select id="checked_coprocessors" multiple>
+								</select>
+							</div>
 						</div>
 					</div>
 				</div>

@@ -148,6 +148,7 @@ export default class extends Controller {
      */
     submit() {
         let submit_btn = document.getElementById("motherboard_form_save");
+        this.checkAllCheckBoxes();
         submit_btn.click();
     }
     /**
@@ -251,5 +252,203 @@ export default class extends Controller {
 
         })();
 
+    }
+
+    //Processors
+    uncheckedProcessors = new Array();
+    checkedProcessors = new Array();
+
+    //Coprocessors
+    uncheckedCoprocessors = new Array();
+    checkedCoprocessors = new Array();
+
+    connect() {
+        this.initProcessorsFromDom(document);
+    }
+
+    initProcessorsFromDom(dom) {
+        let cpusTags = dom.getElementById('motherboard_form_processors');
+        let npusTags = dom.getElementById('motherboard_form_coprocessors');
+
+        cpusTags.childNodes.forEach(tag => {
+            if (tag.tagName==="INPUT") {
+                if (tag.checked) {
+                    this.checkedProcessors.push({name:tag.labels[0].textContent, value:tag.value, tag});
+                } else {
+                    this.uncheckedProcessors.push({name:tag.labels[0].textContent, value:tag.value, tag});
+                }
+            }
+        });
+
+        npusTags.childNodes.forEach(tag => {
+            if (tag.tagName==="INPUT") {
+                if (tag.checked) {
+                    this.checkedCoprocessors.push({name:tag.labels[0].textContent, value:tag.value, tag});
+                } else {
+                    this.uncheckedCoprocessors.push({name:tag.labels[0].textContent, value:tag.value, tag});
+                }
+            }
+        });
+
+        this.applyListsToSelects();
+    }
+
+    sortProcessors() {
+        this.uncheckedProcessors.sort((a, b) => {
+            return a.name >= b.name;
+        });
+        this.checkedProcessors.sort((a, b) => {
+            return a.name >= b.name;
+        });
+    }
+
+    sortCoprocessors() {
+        this.uncheckedCoprocessors.sort((a, b) => {
+            return a.name >= b.name;
+        });
+        this.checkedCoprocessors.sort((a, b) => {
+            return a.name >= b.name;
+        });
+    }
+
+
+    /**
+     * Add all processors to the motherboard
+     * @param {*} event 
+     */
+    addAllProcessors(event) {
+        event.preventDefault();
+        this.moveAllValuesToList(this.uncheckedProcessors, this.checkedProcessors);
+    }
+
+    /**
+     * Add all selected processors to the motherboard
+     * @param {*} event 
+     */
+    addAllSelectedProcessors(event) {
+        event.preventDefault();
+        this.moveSelectedValuesToList(document.getElementById('unchecked_processors'), this.uncheckedProcessors, this.checkedProcessors);
+    }
+
+    /**
+     * Remove all selected processors from the motherboard
+     * @param {*} event 
+     */
+    removeAllSelectedProcessors(event) {
+        event.preventDefault();
+        this.moveSelectedValuesToList(document.getElementById('checked_processors'), this.checkedProcessors, this.uncheckedProcessors);
+    }
+
+    /**
+     * Remove processors from the motherboard
+     * @param {*} event 
+     */
+    removeAllProcessors(event) {
+        event.preventDefault();
+        this.moveAllValuesToList(this.checkedProcessors, this.uncheckedProcessors);
+    }
+
+    /**
+     * Add all coprocessors to the motherboard
+     * @param {*} event 
+     */
+    addAllCoprocessors(event) {
+        event.preventDefault();
+        this.moveAllValuesToList(this.uncheckedCoprocessors, this.checkedCoprocessors);
+    }
+
+    /**
+     * Add all selected coprocessors to the motherboard
+     * @param {*} event 
+     */
+    addAllSelectedCoprocessors(event) {
+        event.preventDefault();
+        this.moveSelectedValuesToList(document.getElementById('unchecked_coprocessors'), this.uncheckedCoprocessors, this.checkedCoprocessors);
+    }
+
+    /**
+     * Remove all selected coprocessors from the motherboard
+     * @param {*} event 
+     */
+    removeAllSelectedCoprocessors(event) {
+        event.preventDefault();
+        this.moveSelectedValuesToList(document.getElementById('checked_coprocessors'), this.checkedCoprocessors, this.uncheckedCoprocessors);
+    }
+
+    /**
+     * Remove coprocessors from the motherboard
+     * @param {*} event 
+     */
+    removeAllCoprocessors(event) {
+        event.preventDefault();
+        this.moveAllValuesToList(this.checkedCoprocessors, this.uncheckedCoprocessors);
+    }
+
+    moveSelectedValuesToList(sourceSelect, source, destination) {
+        [...sourceSelect.options]
+        .filter(option => option.selected)
+        .forEach(option => {
+            let processor = source.filter(elt => elt.value === option.value)[0];
+            source.splice(source.indexOf(processor), 1);
+            destination.push(processor);
+            option.remove();
+        });
+        this.applyListsToSelects();
+    }
+
+    moveAllValuesToList(source, destination) {
+        destination.push(...source);
+        source.splice(0, source.length);
+        this.applyListsToSelects();
+    }
+
+    /**
+     * Set the content of uncheckedProcessors[] and checkedProcessors[] to the two select lists
+     */
+    applyListsToSelects() {
+        // Sort processors
+        this.sortProcessors();
+        this.sortCoprocessors();
+
+        // Calculating max size of processor selects
+        let cpuSize = this.uncheckedProcessors.length + this.checkedProcessors.length;
+        let npuSize = this.uncheckedCoprocessors.length + this.checkedCoprocessors.length;
+
+        this.applyListsToSelect(document.getElementById('unchecked_processors'), this.uncheckedProcessors, cpuSize);
+        this.applyListsToSelect(document.getElementById('checked_processors'), this.checkedProcessors, cpuSize);
+        this.applyListsToSelect(document.getElementById('unchecked_coprocessors'), this.uncheckedCoprocessors, npuSize);
+        this.applyListsToSelect(document.getElementById('checked_coprocessors'), this.checkedCoprocessors, npuSize);
+    }
+
+    applyListsToSelect(select, list, size) {
+        //Clearing select
+        select.innerHTML = "";
+
+        //Adding the processors from list to the list
+        list.forEach(proc => {
+            let option = document.createElement("option");
+            option.value = proc.value;
+            option.text = proc.name;
+            select.add(option, null);
+        });
+
+        //Setting size to the select
+        select.setAttribute('size', size);
+    }
+
+    checkAllCheckBoxes() {
+        this.checkedProcessors.forEach(processor => {
+            processor.tag.setAttribute('checked', null);
+        });
+        this.uncheckedProcessors.forEach(processor => {
+            processor.tag.removeAttribute('checked', null);
+        });
+
+        this.checkedCoprocessors.forEach(coprocessor => {
+            coprocessor.tag.setAttribute('checked', null);
+        });
+        this.uncheckedCoprocessors.forEach(coprocessor => {
+            coprocessor.tag.removeAttribute('checked', null);
+        });
     }
 }
