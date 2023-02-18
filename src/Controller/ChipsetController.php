@@ -23,7 +23,7 @@ class ChipsetController extends AbstractController
         $chipset = $chipsetRepository->find($id);
         if (!$chipset) {
             throw $this->createNotFoundException(
-                'No $chipset found for id ' . $id
+                'No chipset found for id ' . $id
             );
         } else {
             return $this->render('chipset/show.html.twig', [
