@@ -26,7 +26,7 @@ class PciDeviceId
 
     public function getDev(): ?string
     {
-        return strtoupper(dechex($this->dev));
+        return strtoupper(str_pad(dechex($this->dev), 4, "0", STR_PAD_LEFT));
     }
 
     public function setDev(string $dev): self

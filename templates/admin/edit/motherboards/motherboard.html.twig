@@ -12,7 +12,7 @@
 		<div class="search-form-entry">
 			<div class="search-form-widget">
 				<label class="search-form-label">Manufacturer</label>
-				<div>{{ form_widget(form.manufacturer, {'attr': {'style': 'display:none;'}}) }}</div>
+				<div id="manufacturer-select">{{ form_widget(form.manufacturer, {'attr': {'style': 'display:none;'}}) }}</div>
 			</div>
 		</div>
 		<div class="search-form-entry">
@@ -39,7 +39,7 @@
 	</div>
 	<div class="main-strip">
 		<div class="internal-container">
-			{% include 'macros/navbar.html.twig' with {'type':'edit', 'entityName': 'motherboard', 'count':3, 'moboid':moboid} %}
+			{% include 'macros/navbar.html.twig' with {'type':'edit', 'entityName': 'motherboard', 'count':4, 'moboid':moboid} %}
 			<!-- GENERAL -->
 			<div class="internal-content">
 				<div class="show-general" id="sh-general">
@@ -81,37 +81,13 @@
 								</div>
 							{% endfor %}
 						</div>
-					</div><hr><!-- Chipset -->
-					<div class="quick-spec-table" style="padding:0;">
-						<div class="quick-spec-head editor">Chipset</div>
-						<div class="editor-row nopad"><div class="editor-form-widget chip">
-							<div id="mobo-chipset-select">{{ form_widget(form.chipset)|replace({'<option value="">': '<option label=" " value="">'})|raw }}</div>
-						</div></div>
-					</div><!-- Expansion Chips -->
-					<div class="quick-spec-table expchip" data-controller="collection" style="padding:0;">
-						<div class="quick-spec-head editor"><div>Expansion chipset</div>
-						{% include 'macros/buttons.html.twig' with {'type':'add', 'action': 'expansionChips'} %}</div>
-						<div class="append_table" id="expansionChips-fields-list" data-widget-counter="{{ form.expansionChips|length }}"
-							data-prototype="
-								{{ form_widget(form.expansionChips.vars.prototype)|e }}
-								{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
-							</div>" data-controller="collection">
-							{% for expchip in form.expansionChips %}
-								<div class="editor-row nopad">
-									{{ form_widget(expchip) }}
-									{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
-									{{ form_errors(expchip) }}
-								</div>
-							{% endfor %}
-						</div>
-					</div><!-- Max video RAM -->
+					</div><hr><!-- Max video RAM -->
 					<div class="quick-spec-table" style="padding:0;">
 						<div class="quick-spec-head editor">Max video RAM</div>
 						<div class="editor-row nopad"><div class="editor-form-widget">
 							<div>{{ form_widget(form.maxVideoRam, {'attr': {'style': 'width:15em'}})|replace({'<option value="">': '<option label=" " value="">'})|raw }}</div>
 						</div></div>
-					</div>
-					<hr><!-- Max system RAM -->
+					</div><!-- Max system RAM -->
 					<div class="quick-spec-table" data-controller="collection" style="padding:0;">
 						<div class="quick-spec-head editor"><div>Max system RAM</div>
 						{% include 'macros/buttons.html.twig' with {'type':'add', 'action': 'motherboardMaxRams'} %}</div>
@@ -240,6 +216,33 @@
 					<span style="padding-left:10px;"><b>Notes</b></span>
 					<div class="notes-field">{{ form_row(form.note) }}</div>		
 				</div>
+				<!-- Chips -->
+				<div class="show-expchips" id="sh-expchips">
+					<!-- Chipset -->
+					<div class="quick-spec-table" style="padding:0;">
+						<div class="quick-spec-head editor">Chipset</div>
+						<div class="editor-row nopad"><div class="editor-form-widget chip">
+							<div id="mobo-chipset-select">{{ form_widget(form.chipset)|replace({'<option value="">': '<option label=" " value="">'})|raw }}</div>
+						</div></div>
+					</div><hr><!-- Expansion chips -->
+					<div class="quick-spec-table expchip" data-controller="collection" style="padding:0;">
+						<div class="quick-spec-head editor"><div>Expansion chipset</div>
+						{% include 'macros/buttons.html.twig' with {'type':'add', 'action': 'expansionChips'} %}</div>
+						<div class="append_table" id="expansionChips-fields-list" data-widget-counter="{{ form.expansionChips|length }}"
+							data-prototype="
+								{{ form_widget(form.expansionChips.vars.prototype)|e }}
+								{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
+							</div>" data-controller="collection">
+							{% for expchip in form.expansionChips %}
+								<div class="editor-row nopad">
+									{{ form_widget(expchip) }}
+									{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
+									{{ form_errors(expchip) }}
+								</div>
+							{% endfor %}
+						</div>
+					</div>
+				</div>
 				<!-- DOWNLOADS -->
 				<div class="show-downloads" id="sh-downloads">
 					<!-- Drivers -->
@@ -252,37 +255,44 @@
 							{% include 'macros/buttons.html.twig' with {'type':'add', 'action': 'motherboardBios'} %}
 						</div>
 						<div class="bios-image">
-							<div class="bios-image-head editor-row bios">
+							<div class="bios-image-head editor-row bios-main">
 								<div><b>Manuf.</b></div>
 								<div><b>POST String</b></div>
 								<div><b>Note</b></div>
 								<div><b>BIOS Ver.</b></div>
 								<div><b>Core Ver.</b></div>
-								<div><b>File to upload</b></div>
-								<div><b>Uploaded file</b></div>
 							</div>
 							<div class="append_table" id="motherboardBios-fields-list" data-widget-counter="{{ form.motherboardBios|length }}" data-prototype="
+								<div class='editor-row bios-main nopad'>
 								<div>{{ form_widget(form.motherboardBios.vars.prototype.manufacturer, {'attr': {'style': 'display:none;'}} )|e }}</div>
-								<div>{{ form_widget(form.motherboardBios.vars.prototype.postString, {'attr': {'style': 'width:100%'}} )|e }}</div>
-								<div>{{ form_widget(form.motherboardBios.vars.prototype.note, {'attr': {'style': 'width:100%'}} )|e }}</div>
-								<div>{{ form_widget(form.motherboardBios.vars.prototype.boardVersion, {'attr': {'style': 'width:100%'}} )|e }}</div>
-								<div>{{ form_widget(form.motherboardBios.vars.prototype.coreVersion, {'attr': {'style': 'width:100%'}} )|e }}</div>
+								<div>{{ form_widget(form.motherboardBios.vars.prototype.postString, {'attr': {'style': 'width:100%', 'placeholder': 'POST string ...'}} )|e }}</div>
+								<div>{{ form_widget(form.motherboardBios.vars.prototype.note, {'attr': {'style': 'width:100%', 'placeholder': 'Note ...'}} )|e }}</div>
+								<div>{{ form_widget(form.motherboardBios.vars.prototype.boardVersion, {'attr': {'style': 'width:100%', 'placeholder': 'BIOS ver ...'}} )|e }}</div>
+								<div>{{ form_widget(form.motherboardBios.vars.prototype.coreVersion, {'attr': {'style': 'width:100%', 'placeholder': 'Core ver ...'}} )|e }}</div>
+								</div><div class='editor-row bios-file nopad'>
+								<div>Files:</div>
 								<div>{{ form_widget(form.motherboardBios.vars.prototype.romFile, {'attr': {'style': 'width:100%'}} )|e }}</div>
-								<div>{{ form_widget(form.motherboardBios.vars.prototype.file_name, {'attr': {'style': 'width:100%'}} )|e }}</div>
-								{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
+								<div>{{ form_widget(form.motherboardBios.vars.prototype.file_name, {'attr': {'style': 'width:100%', 'placeholder': 'No file uploaded!'}} )|e }}</div>
+								<div></div>{% include 'macros/buttons.html.twig' with {'type':'del', 'count':- 1} %}</div>
 								">
 							{% for bios in form.motherboardBios %}
-								<div class="editor-row bios nopad">
+							<div class="bios-image-container">
+								<div class="editor-row bios-main nopad">
 									<div>{{ form_widget(bios.manufacturer, {'attr': {'style': 'display:none;'}}) }}</div>
-									<div>{{ form_widget(bios.postString, {'attr': {'style': 'width:100%'}}) }}</div>
-									<div>{{ form_widget(bios.note, {'attr': {'style': 'width:100%'}}) }}</div>
-									<div>{{ form_widget(bios.boardVersion, {'attr': {'style': 'width:100%'}}) }}</div>
-									<div>{{ form_widget(bios.coreVersion, {'attr': {'style': 'width:100%'}}) }}</div>
-									<div>{{ form_widget(bios.romFile, {'attr': {'style': 'width:100%'}}) }}</div>
-									<div>{{ form_widget(bios.file_name, {'attr': {'style': 'width:100%'}}) }}</div>
-									{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
-									{{ form_errors(bios) }}
+									<div>{{ form_widget(bios.postString, {'attr': {'style': 'width:100%', 'placeholder': 'POST string ...'}}) }}</div>
+									<div>{{ form_widget(bios.note, {'attr': {'style': 'width:100%', 'placeholder': 'Note ...'}}) }}</div>
+									<div>{{ form_widget(bios.boardVersion, {'attr': {'style': 'width:100%', 'placeholder': 'BIOS ver ...'}}) }}</div>
+									<div>{{ form_widget(bios.coreVersion, {'attr': {'style': 'width:100%', 'placeholder': 'Core ver ...'}}) }}</div>
 								</div>
+								<div class="editor-row bios-file nopad">
+									<div>Files:</div>
+									<div>{{ form_widget(bios.romFile, {'attr': {'style': 'width:100%'}}) }}</div>
+									<div>{{ form_widget(bios.file_name, {'attr': {'style': 'width:100%', 'placeholder': 'No file uploaded!'}}) }}</div>
+									<div></div>
+									{% include 'macros/buttons.html.twig' with {'type':'del', 'count':- 1} %}
+								</div>
+								{{ form_errors(bios) }}
+							</div>
 							{% endfor %}
 							</div>
 						</div>

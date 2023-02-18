@@ -154,7 +154,7 @@ div.ts-control{
   }
   input {
     flex: 1 1 auto;
-    min-width: 4rem;
+    min-width: 1rem;
     display: inline-block !important;
     padding: 0 !important;
     min-height: 25px !important;
@@ -179,12 +179,19 @@ div.ts-control{
     padding-top: 0px !important;
   }
 }
+#manufacturer-select div.ts-control div {max-width: 21rem !important;}
 #mobo-chipset-select div.ts-control div {max-width: 40rem !important;}
 #expansionChip-fields-list div.ts-control div {max-width: 22rem !important;}
 #knownIssues-fields-list div.ts-control div {max-width: 28rem !important;}
 #motherboardAliases-fields-list div.ts-control div {max-width: 28rem !important;}
 #psuConnectors-fields-list div.ts-control div {max-width: 24rem !important;}
 #chipsetParts-fields-list div.ts-control div {max-width: 24rem !important;}
+#drivers-fields-list div.ts-control div {max-width: 30rem !important;}
+#motherboardBios-fields-list div.ts-control input {
+  position: absolute;
+  margin-left:5rem !important;
+}
+
 
 div.editor-row.bios{
   .ts-control > div.item {

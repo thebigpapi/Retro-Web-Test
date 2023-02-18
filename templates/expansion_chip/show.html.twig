@@ -35,8 +35,23 @@
 		<div class="internal-content">
 			<!-- DESCRIPRION -->
 			<div class="show-general" id="sh-general">
-				<div>
-					<span>Type: {{expansion_chip.getType().getName()}}</span>
+				<div class="quick-spec-table">
+					<!-- Type -->
+					<div class="quick-spec-head">Type</div>
+					<div>{{expansion_chip.getType().getName()}}</div>
+					<!-- PCI DEV -->
+					<div class="quick-spec-head">PCI ID</div>
+					<div>
+					{% if expansion_chip.getPciDevs() is not empty %}
+						{% if expansion_chip.getManufacturer().getPciVendorIds() is not empty %}
+							{% for vendor in expansion_chip.getManufacturer().getPciVendorIds()%}
+								{% for device in expansion_chip.getPciDevs() %}
+								<div>PCI\VEN_{{vendor.getVen()}}&amp;DEV_{{device.getDev()}}</div>
+								{% endfor %}
+							{% endfor %}
+						{% endif %}
+					{% else %}unknown{% endif %}
+					</div>
 				</div>
 			</div>
 			<div class="show-downloads" id="sh-downloads">

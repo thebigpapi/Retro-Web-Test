@@ -24,6 +24,7 @@ class LargeFileExpansionChipType extends AbstractType
             ])
             ->add('largeFile', EntityType::class, [
                 'class' => LargeFile::class,
+                'autocomplete' => true,
                 'required' => false,
                 'choice_label' => 'getNameWithTags',
                 'multiple' => false,
