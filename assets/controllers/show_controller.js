@@ -5,6 +5,8 @@ export default class extends Controller {
         let URL = window.location.href;
         if (URL.indexOf("#downloads") != -1 && URL.indexOf("entity=") == -1)
             this.show_downloads();
+        if (URL.indexOf("#expchips") != -1)
+            this.show_expchips();
         if (URL.indexOf("#cpus") != -1)
             this.show_cpus();
         let toggle = document.getElementById('table-switch');
@@ -20,22 +22,35 @@ export default class extends Controller {
     }
     show_general(){
         document.getElementById('sh-general').style.display = 'block';
+        if(document.getElementById('sh-expchips'))
+            document.getElementById('sh-expchips').style.display = 'none';
         document.getElementById('sh-downloads').style.display = 'none';
         if(document.getElementById('sh-cpus'))
             document.getElementById('sh-cpus').style.display = 'none';
         this.change_tag("0");
 	}
-	show_downloads(){
+    show_expchips(){
         document.getElementById('tab-nav-2').checked = true;
         document.getElementById('sh-general').style.display = 'none';
+        document.getElementById('sh-expchips').style.display = 'block';
+        document.getElementById('sh-downloads').style.display = 'none';
+        document.getElementById('sh-cpus').style.display = 'none';
+        this.change_tag("#expchips");
+	}
+	show_downloads(){
+        document.getElementById('tab-nav-3').checked = true;
+        document.getElementById('sh-general').style.display = 'none';
+        if(document.getElementById('sh-expchips'))
+            document.getElementById('sh-expchips').style.display = 'none';
         document.getElementById('sh-downloads').style.display = 'block';
         if(document.getElementById('sh-cpus'))
             document.getElementById('sh-cpus').style.display = 'none';
         this.change_tag("#downloads");
 	}
 	show_cpus(){
-        document.getElementById('tab-nav-3').checked = true;
+        document.getElementById('tab-nav-4').checked = true;
         document.getElementById('sh-general').style.display = 'none';
+        document.getElementById('sh-expchips').style.display = 'none';
         document.getElementById('sh-downloads').style.display = 'none';
         document.getElementById('sh-cpus').style.display = 'block';
         this.change_tag("#cpus");

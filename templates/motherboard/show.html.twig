@@ -57,33 +57,12 @@
 {% endif %}
 <div class="main-strip">	
 	<div class="internal-container">
-		{% include 'macros/navbar.html.twig' with {'type':'show', 'entity': motherboard, 'entityName': 'motherboard', 'count':3} %}
+		{% include 'macros/navbar.html.twig' with {'type':'show', 'entity': motherboard, 'entityName': 'motherboard', 'count':4} %}
 		<!-- GENERAL -->
 		<div class="internal-content">
 			<div class="show-general" id="sh-general">
 				<div class="quick-spec-table">
-					<!-- Chipset -->
-					<div class="quick-spec-head">Chipset</div>
-					{% if motherboard.getChipset() is not empty %}
-						<div><a href="{{ path('app_homepage') }}chipsets/{{ motherboard.getChipset().getId()}}">{{ motherboard.getChipset().getFullName() }}</a></div>
-						{% if motherboard.getChipset().getChipsetParts() is not empty %}
-						<div class="quick-spec-head">Chipset parts</div>
-						<div class="tag-container">
-						{% for chipPart in motherboard.getChipset().getChipsetParts() %}
-							<span class="text-block">{{ chipPart.getFullName() }}</span>
-						{% endfor %}
-						</div>
-						{% endif %}
-					{% else %}<div>Unknown</div>{% endif %}
-					<!-- Expansion Chips -->
-					{% if motherboard.getExpansionChips() is not empty %}
-						{% for type in expansionchiptype %}
-							{% for chip in motherboard.getExpansionChips()|filter(a => a.getType().getName() == type.getName())%}
-								{% if loop.first %}<div class="quick-spec-head">{{chip.getType().getName()}} chips</div><div>{% endif %}{% if not loop.first %}, {% endif %}{{ chip.getNameWithManufacturer() }}
-								{% if loop.index == motherboard.getExpansionChips()|filter(a => a.getType().getName() == type.getName())|length %}</div>{% endif %}
-							{% endfor %}
-						{% endfor %}
-					{% endif %}
+					
 					<!-- Max video RAM -->
 					{% if motherboard.getMaxVideoRam()  is not empty %}
 					<div class="quick-spec-head">Max VRAM</div>
@@ -178,6 +157,34 @@
 				{% endif %}
 				<div id="index-datetime" data-controller="datetime"><div class="div-datetime">Last updated <span class="perk-date">{{ motherboard.getLastEdited()|date("Y-m-d\\TH:i:s", "GMT") }}Z</span></div></div>
 				<span><small><i>&nbsp;TRW ID: {{motherboard.getId()}}</i></small></span>
+			</div>
+			<!-- Chips -->
+			<div class="show-expchips" id="sh-expchips">
+				<div class="quick-spec-table">
+					<!-- Chipset -->
+					<div class="quick-spec-head">Chipset</div>
+					{% if motherboard.getChipset() is not empty %}
+						<div><a href="{{ path('app_homepage') }}chipsets/{{ motherboard.getChipset().getId()}}">{{ motherboard.getChipset().getFullName() }}</a></div>
+						{% if motherboard.getChipset().getChipsetParts() is not empty %}
+						<div class="quick-spec-head">Chipset parts</div>
+						<div class="tag-container">
+						{% for chipPart in motherboard.getChipset().getChipsetParts() %}
+							<span class="text-block">{{ chipPart.getFullName() }}</span>
+						{% endfor %}
+						</div>
+						{% endif %}
+					{% else %}<div>Unknown</div>{% endif %}
+					<!-- Expansion Chips -->
+					{% if motherboard.getExpansionChips() is not empty %}
+						{% for type in expansionchiptype %}
+							{% for chip in motherboard.getExpansionChips()|filter(a => a.getType().getName() == type.getName())%}
+								{% if loop.first %}<div class="quick-spec-head">{{chip.getType().getName()}} chips</div><div>{% endif %}
+								<a href="{{ path('expansion_chip_show', {id: chip.getId()}) }}"><span class="text-block">{{ chip.getNameWithManufacturer() }}</span></a>
+								{% if loop.index == motherboard.getExpansionChips()|filter(a => a.getType().getName() == type.getName())|length %}</div>{% endif %}
+							{% endfor %}
+						{% endfor %}
+					{% endif %}
+				</div>
 			</div>
 			<!-- DOWNLOADS -->
 			<div class="show-downloads" id="sh-downloads">

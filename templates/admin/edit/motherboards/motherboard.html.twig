@@ -39,7 +39,7 @@
 	</div>
 	<div class="main-strip">
 		<div class="internal-container">
-			{% include 'macros/navbar.html.twig' with {'type':'edit', 'entityName': 'motherboard', 'count':3, 'moboid':moboid} %}
+			{% include 'macros/navbar.html.twig' with {'type':'edit', 'entityName': 'motherboard', 'count':4, 'moboid':moboid} %}
 			<!-- GENERAL -->
 			<div class="internal-content">
 				<div class="show-general" id="sh-general">
@@ -81,37 +81,13 @@
 								</div>
 							{% endfor %}
 						</div>
-					</div><hr><!-- Chipset -->
-					<div class="quick-spec-table" style="padding:0;">
-						<div class="quick-spec-head editor">Chipset</div>
-						<div class="editor-row nopad"><div class="editor-form-widget chip">
-							<div id="mobo-chipset-select">{{ form_widget(form.chipset)|replace({'<option value="">': '<option label=" " value="">'})|raw }}</div>
-						</div></div>
-					</div><!-- Expansion Chips -->
-					<div class="quick-spec-table expchip" data-controller="collection" style="padding:0;">
-						<div class="quick-spec-head editor"><div>Expansion chipset</div>
-						{% include 'macros/buttons.html.twig' with {'type':'add', 'action': 'expansionChips'} %}</div>
-						<div class="append_table" id="expansionChips-fields-list" data-widget-counter="{{ form.expansionChips|length }}"
-							data-prototype="
-								{{ form_widget(form.expansionChips.vars.prototype)|e }}
-								{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
-							</div>" data-controller="collection">
-							{% for expchip in form.expansionChips %}
-								<div class="editor-row nopad">
-									{{ form_widget(expchip) }}
-									{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
-									{{ form_errors(expchip) }}
-								</div>
-							{% endfor %}
-						</div>
-					</div><!-- Max video RAM -->
+					</div><hr><!-- Max video RAM -->
 					<div class="quick-spec-table" style="padding:0;">
 						<div class="quick-spec-head editor">Max video RAM</div>
 						<div class="editor-row nopad"><div class="editor-form-widget">
 							<div>{{ form_widget(form.maxVideoRam, {'attr': {'style': 'width:15em'}})|replace({'<option value="">': '<option label=" " value="">'})|raw }}</div>
 						</div></div>
-					</div>
-					<hr><!-- Max system RAM -->
+					</div><!-- Max system RAM -->
 					<div class="quick-spec-table" data-controller="collection" style="padding:0;">
 						<div class="quick-spec-head editor"><div>Max system RAM</div>
 						{% include 'macros/buttons.html.twig' with {'type':'add', 'action': 'motherboardMaxRams'} %}</div>
@@ -239,6 +215,33 @@
 					</div><!-- Notes -->
 					<span style="padding-left:10px;"><b>Notes</b></span>
 					<div class="notes-field">{{ form_row(form.note) }}</div>		
+				</div>
+				<!-- Chips -->
+				<div class="show-expchips" id="sh-expchips">
+					<!-- Chipset -->
+					<div class="quick-spec-table" style="padding:0;">
+						<div class="quick-spec-head editor">Chipset</div>
+						<div class="editor-row nopad"><div class="editor-form-widget chip">
+							<div id="mobo-chipset-select">{{ form_widget(form.chipset)|replace({'<option value="">': '<option label=" " value="">'})|raw }}</div>
+						</div></div>
+					</div><hr><!-- Expansion chips -->
+					<div class="quick-spec-table expchip" data-controller="collection" style="padding:0;">
+						<div class="quick-spec-head editor"><div>Expansion chipset</div>
+						{% include 'macros/buttons.html.twig' with {'type':'add', 'action': 'expansionChips'} %}</div>
+						<div class="append_table" id="expansionChips-fields-list" data-widget-counter="{{ form.expansionChips|length }}"
+							data-prototype="
+								{{ form_widget(form.expansionChips.vars.prototype)|e }}
+								{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
+							</div>" data-controller="collection">
+							{% for expchip in form.expansionChips %}
+								<div class="editor-row nopad">
+									{{ form_widget(expchip) }}
+									{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
+									{{ form_errors(expchip) }}
+								</div>
+							{% endfor %}
+						</div>
+					</div>
 				</div>
 				<!-- DOWNLOADS -->
 				<div class="show-downloads" id="sh-downloads">
