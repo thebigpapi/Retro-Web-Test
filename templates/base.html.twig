@@ -41,13 +41,13 @@
 					</a>
 				</nav>
 				<nav class="navbar-links">
-					<a href="{{ path('app_homepage') }}" class="nav-link">
-						<img src="{{ absolute_url(asset('build/icons/nav/chip.svg')) }}" width="24" height="24" alt="login">
-						<span class="navbar-label">Hardware</span>
-					</a>
 					<a href="https://blog.theretroweb.com" class="nav-link">
 						<img src="{{ absolute_url(asset('build/icons/nav/articles.svg')) }}" width="24" height="24" alt="art">
 						<span class="navbar-label">Articles</span>
+					</a>
+					<a href="https://wiki.theretroweb.com" class="nav-link">
+						<img src="{{ absolute_url(asset('build/icons/nav/book.svg')) }}" width="24" height="24" alt="wiki">
+						<span class="navbar-label">Wiki</span>
 					</a>
 					{% if is_granted('ROLE_ADMIN') %}
 						<a href="{{ path('admin_index') }}" class="nav-link">
@@ -56,7 +56,7 @@
 						</a>
 						<a href="{{ path('app_logout') }}" class="nav-link">
 							<img src="{{ absolute_url(asset('build/icons/nav/power.svg')) }}" width="24" height="24" alt="logout">
-							<span class="navbar-label">Logout</span>
+							<span class="navbar-label"></span>
 						</a>
 					{% else %}
 						<a href="{{ path('app_login') }}" class="nav-link">
