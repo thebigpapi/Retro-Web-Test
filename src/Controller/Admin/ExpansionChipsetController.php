@@ -221,9 +221,7 @@ class ExpansionChipsetController extends AbstractController
             $entityManager->persist($chipset);
             $entityManager->flush();
 
-            return $this->redirect(
-                $this->generateUrl('admin_manage_expansion_chipsets', array("entity" => "expansionchip"))
-            );
+            return $this->redirect($this->generateUrl('expansion_chip_show', array('id' => $chipset->getId())));
         }
         return $this->render('admin/edit/expansion_chipsets/expansionchip.html.twig', [
             'form' => $form->createView(),

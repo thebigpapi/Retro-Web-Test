@@ -26,40 +26,31 @@
 			<!-- DESCRIPRION -->
 			<div class="show-general" id="sh-general">
 				<div class="quick-spec-table">
+					<!-- Release Date -->
 					<div class="quick-spec-head">Release Date</div>
 					<div>{{ driver.getReleaseDateString() ? driver.getReleaseDateString() : 'Unknown' }}</div>
+					<!-- Version -->
 					<div class="quick-spec-head">Version</div>
 					<div>{{ driver.getFileVersion() ? driver.getFileVersion() : 'Unknown' }}</div>
+					<!-- Supported OS -->
 					<div class="quick-spec-head">Supported OS</div>
-					<div>
-					{% set prevIcon = "" %}
-					{% set prevIcon2 = "" %}
-					{% for relation in driver.getOsFlags() %}
-						{#% if prevIcon != (relation.getOsFlag().getOsFamilies()|sort)[0].getFileName() %}
-							{% set prevIcon2 = (relation.getOsFlag().getOsFamilies()|sort)[0].getFileName() %}
-							<span style="display:inline-block;">
-								{% if not loop.first %}, {% endif %}
-								<img src="{{ vich_uploader_asset((relation.getOsFlag().getOsFamilies()|sort)[0], 'osIcon')}}" alt="{{(relation.getOsFlag().getOsFamilies()|sort)[0].getName()}}" title="{% for rel in driver.getOsFlags() %}{% if prevIcon2 == (rel.getOsFlag().getOsFamilies()|sort)[0].getFileName() %}{{ rel.getOsFlag().getName()}}{% if not loop.last %},{% endif %} {% endif %}{% endfor %}" width="16">
-								{{relation.getOsFlag().getName()}}
-								{{ relation.getUnsure() ? ' ?'}}
-							</span>
-						{% endif %}
-						{% set prevIcon = (relation.getOsFlag().getOsFamilies()|sort)[0].getFileName() %#}
+					<div>{% for os in driver.getOsFlags()|sort((a, b) => a.getName <=> b.getName)|sort((a, b) => a.getVersion <=> b.getVersion) %}
+						<span style="display:inline-block;"><img src="{{ asset('build/icons/os/' ~ os.getVersion ~ '.svg') }}" alt="{{os.getVersion}}" width="16">{{ os.getName()}}{% if not loop.last %}, {% endif %}</span>
 					{% endfor %}</div>
+					<!-- Language -->
 					<div class="quick-spec-head">Language</div>
 					<div>{% for lang in driver.getLanguages() %}{{lang.getOriginalName()}}{% if not loop.last %}, {% endif %}
 					{% endfor %}</div>
-
+					<!-- Media type -->
 					<div class="quick-spec-head">Media type</div>
 					<div style="display: flex;align-items: center;">{% for relation in driver.getMediaTypeFlags() %}
 						<i style="vertical-align:super;">{{relation.getCount()}}x&nbsp;</i>
 						{{relation.getMediaTypeFlag().getName()}}<img src="{{ vich_uploader_asset(relation.getMediaTypeFlag(), 'icon')}}" style="padding-left: 5px;" alt="{{relation.getMediaTypeFlag().getName()}}" title="{{relation.getMediaTypeFlag().getName()}}" width="32">{% if not loop.last %}, {% endif %}
 					{% endfor %}</div>
-					</div>{% endif %}
-
+					<!-- Quality -->
 					<div class="quick-spec-head">Quality</div>	
 					<div><img src="{{ asset('build/icons/quality/' ~ driver.dumpQualityFlag().getTagName() ~ '.svg') }}" alt="{{driver.dumpQualityFlag().getName()}}" title="{{driver.dumpQualityFlag().getName()}}" width="32"></div>
-					
+					<!-- Size -->
 					<div class="quick-spec-head">Size</div>
 					<div>
 					{% if driver.getSize() %}
@@ -68,6 +59,7 @@
 					{% else %}{{ driver.getSize()}}&nbsp;Bytes{% endif %}
 					{% else %}<i>unknown</i>{% endif %}
 					</div>
+					<!-- File -->
 					<div class="quick-spec-head">File</div>
 					<div><a href="{{ vich_uploader_asset(driver, 'file')}}">
 						<img src="{{ absolute_url(asset('build/icons/dw.svg')) }}" alt="" width="16" style="vertical-align: middle;">

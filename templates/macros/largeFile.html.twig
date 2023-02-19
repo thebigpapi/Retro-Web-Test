@@ -14,7 +14,9 @@
 		<b style="vertical-align:super;">{{relation.getCount()}}x</b>
 		<img src="{{ vich_uploader_asset(relation.getMediaTypeFlag(), 'icon')}}" alt="{{relation.getMediaTypeFlag().getName()}}" title="{{relation.getMediaTypeFlag().getName()}}" width="32">
 	{% endfor %}</div>
-	<div></div>
+	<div>{% for os in file.getOsFlags() %}
+		<span style="display:inline-block;"><img src="{{ asset('build/icons/os/' ~ os.getVersion ~ '.svg') }}" alt="{{os.getVersion}}"  width="16">{{os.getName()}}</span>
+	{% endfor %}</div>
 	<div><a href="{{ path("driver_show", {id: file.getId()}) }}">{{file.getName()}}</a>
 	</div>
 	<div><a href="{{ vich_uploader_asset(file, 'file')}}">

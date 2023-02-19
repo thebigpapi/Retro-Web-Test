@@ -223,13 +223,13 @@ class FileController extends AbstractController
                 $val->setLargeFile($entity);
             }
             foreach ($form['osFlags']->getData() as $key => $val) {
-                $val->setLargeFile($entity);
+                $val->addLargeFile($entity);
             }
 
             $entityManager->persist($entity);
             $entityManager->flush();
 
-            return $this->redirect($this->generateUrl('admin_manage_files', array("entity" => 'largefile')));
+            return $this->redirect($this->generateUrl('driver_show', array('id' => $entity->getId())));
         }
         return $this->render($template, [
             'form' => $form->createView(),

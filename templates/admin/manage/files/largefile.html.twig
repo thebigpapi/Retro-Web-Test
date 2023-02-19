@@ -21,7 +21,9 @@
 
 	<div class="header-label">OS support</div>
 	<div class="tag-container">
-
+	{% for os in object.getOsFlags()|sort((a, b) => a.getName <=> b.getName)|sort((a, b) => a.getVersion <=> b.getVersion) %}
+		<span style="display:inline-block;">{{ os.getName()}}{% if not loop.last %}, {% endif %}</span>
+	{% endfor %}
 	</div>
 	
 	<div class="header-label">Language</div>
