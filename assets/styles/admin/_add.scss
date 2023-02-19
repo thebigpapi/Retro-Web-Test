@@ -98,12 +98,11 @@ div.show-edit{
 div.dual-list-container {
 	display: flex;
 	grid-template-columns: 1fr 1fr;
-	column-gap: 10px;
+	column-gap: 1px;
 }
 
 div.dual-list-list {
 	flex: 1 1 auto;
-	width: 45%;
 	select {
 		overflow:auto;
 		width:100%;
@@ -116,7 +115,7 @@ div.dual-list-buttons {
 	flex-direction: column;
 	align-self: center;
 	button {
-		width: 50px;
+		width: 60px;
 		height: 40px;
 		text-align: center;
 		align-items: center;
