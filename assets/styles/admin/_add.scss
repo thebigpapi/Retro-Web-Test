@@ -122,7 +122,14 @@ div.dual-list-buttons {
 		justify-content: center;
 	}
 }
-
+@media (prefers-color-scheme:dark){
+	#add-all-selected-cpus, #remove-all-selected-cpus, #add-all-selected-npus, #remove-all-selected-npus {
+		img{
+			-webkit-filter: invert(100%);
+			filter: invert(100%);
+		}
+	}
+}
 #tab-nav-save:disabled {
 	color: gray;	
 	background-color: darkgrey;
