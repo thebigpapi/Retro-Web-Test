@@ -91,6 +91,7 @@ const defaults = {
 
 var closed = true;
 var trw_clicked = false;
+var trw_btn_clicked = false;
 window.addEventListener('popstate', event => {
     event.preventDefault();
     let closeBtn = document.getElementsByClassName('gclose')[0];
@@ -861,10 +862,15 @@ class GlightboxInit {
                 onElement: closeButton,
                 withCallback: (e, target) => {
                     e.preventDefault();
-                    console.log(closed);
-                    console.log(trw_clicked);
-                    if(!closed)
+                    if(!closed){
+                        // if you click the X button, but outside it, trw_btn_clicked becomes true, to prevent double go back
+                        trw_btn_clicked = true;
                         window.history.go(-1);
+                    }
+                    else{
+                        trw_btn_clicked = false;
+                    }
+                        
                     this.close();
                 }
             });
@@ -899,12 +905,11 @@ class GlightboxInit {
                     if (!this.preventOutsideClick && !_.hasClass(document.body, 'glightbox-mobile') && !_.closest(e.target, '.ginner-container')) {
                         if (!_.closest(e.target, '.gbtn') && !_.hasClass(e.target, 'gnext') && !_.hasClass(e.target, 'gprev')) {
                             this.close();
-                            // handle lightbox closing with window history, for back button
-                            if(!closed){
+                            //if you click outside the window and X button outer was not triggered
+                            if(!closed && !trw_btn_clicked){
                                 window.history.go(-1);
                                 closed = true;
-                            }
-                            
+                            }     
                         }
                     }
                 }

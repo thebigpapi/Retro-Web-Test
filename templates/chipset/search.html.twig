@@ -53,11 +53,9 @@
 				{{ form_row(form.searchWithImages)|replace({'<div><button': '<input', '</button></div>': '">', '>': ' value="'})|raw }}
 			</div>
 		</section>
-		<section class="search-form-grid">
-			<div class="search-form-entry"></div>
-			<div class="search-form-entry">
-				<label class="search-form-label" for="search_chipsetManufacturer" title="This is where you select the manufacturer name and enter the chipset part number."
-				>
+		<section class="search-form-grid" style="display:flex;justify-content:center;flex-wrap:wrap;">
+			<div class="search-form-entry" style="min-width:min(27em,50vw);">
+				<label class="search-form-label" for="search_chipsetManufacturer" title="This is where you select the manufacturer name and enter the chipset part number.">
 					<span>Name</span>
 					<img src="{{ absolute_url(asset('build/icons/search/help.svg')) }}" alt="" width="16" height="16">
 				</label>
