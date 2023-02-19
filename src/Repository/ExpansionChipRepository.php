@@ -56,7 +56,7 @@ class ExpansionChipRepository extends ServiceEntityRepository
         }
 
         // Building where statement
-        $andWhere = implode(' AND ', $where);
+        $whereString = count($where) ? "WHERE " . implode(' AND ', $where): "";
 
         // Building query
         $query = $entityManager->createQuery(
@@ -68,13 +68,9 @@ class ExpansionChipRepository extends ServiceEntityRepository
             LEFT JOIN chip.drivers drv
             LEFT JOIN chip.documentations doc
             JOIN chip.type typ
-            $andWhere
+            $whereString 
             ORDER BY man.name ASC, chip.name ASC"
         );
-        if (array_key_exists('manufacturer', $criterias)) {
-            $query->
-            $where[] = "man.id=:manId";
-        }
 
         // Setting values
         foreach ($valuesArray as $key => $value) {

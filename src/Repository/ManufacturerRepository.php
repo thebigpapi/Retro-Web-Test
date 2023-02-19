@@ -25,11 +25,16 @@ class ManufacturerRepository extends ServiceEntityRepository
     /**
      * @return Manufacturer[]
      */
-    public function findAllManufacturerCaseInsensitiveSorted(): array
+    public function findAllManufacturerCaseInsensitiveSorted(array $criterias = []): array
     {
         $entityManager = $this->getEntityManager();
 
         $rsm = new ResultSetMapping();
+
+        $whereString = "";
+        if (array_key_exists('name', $criterias)) {
+            $whereString = "WHERE realname ILIKE :name";
+        }
 
         $rsm->addEntityResult('App\Entity\Manufacturer', 'man');
         $rsm->addFieldResult('man', 'id', 'id');
@@ -41,11 +46,16 @@ class ManufacturerRepository extends ServiceEntityRepository
         $rsm->addFieldResult('pv', 'ven', 'ven');
 
         $query = $entityManager->createNativeQuery(
-            'SELECT distinct man.id, man.name, man.short_name, man.fccid, pv.id as pvid, pv.ven, upper(coalesce(man.short_name, man.name)) as realname
-            FROM manufacturer man LEFT JOIN pci_vendor_id pv ON pv.manufacturer_id=man.id
-            ORDER BY realname;',
+            "SELECT * FROM (SELECT distinct man.id, man.name, man.short_name, man.fccid, pv.id as pvid, pv.ven, upper(coalesce(man.short_name, man.name)) as realname
+            FROM manufacturer man LEFT JOIN pci_vendor_id pv ON pv.manufacturer_id=man.id) as req
+            $whereString 
+            ORDER BY realname;",
             $rsm
         );
+
+        if (array_key_exists('name', $criterias)) {
+            $query->setParameter(':name', '%' . $criterias['name'] . '%');
+        }
 
         return $query->getResult();
     }
