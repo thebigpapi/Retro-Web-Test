@@ -14,14 +14,7 @@
 		<b style="vertical-align:super;">{{relation.getCount()}}x</b>
 		<img src="{{ vich_uploader_asset(relation.getMediaTypeFlag(), 'icon')}}" alt="{{relation.getMediaTypeFlag().getName()}}" title="{{relation.getMediaTypeFlag().getName()}}" width="32">
 	{% endfor %}</div>
-	<div>{% set prevIcon = "" %}{% set prevIcon2 = "" %}{% for relation in file.getOsFlags() %}
-			{% if prevIcon != (relation.getOsFlag().getOsFamilies()|sort)[0].getFileName() %}
-				{% set prevIcon2 = (relation.getOsFlag().getOsFamilies()|sort)[0].getFileName() %}
-				<span style="display:inline-block;"><img src="{{ vich_uploader_asset((relation.getOsFlag().getOsFamilies()|sort)[0], 'osIcon')}}" alt="{{(relation.getOsFlag().getOsFamilies()|sort)[0].getName()}}" title="{% for rel in file.getOsFlags() %}{% if prevIcon2 == (rel.getOsFlag().getOsFamilies()|sort)[0].getFileName() %}{{ rel.getOsFlag().getName()}}{% if not loop.last %},{% endif %} {% endif %}{% endfor %}" width="16">
-					{{relation.getOsFlag().getName()}}{{ relation.getUnsure() ? ' ?'}}</span>
-				{% endif %}
-				{% set prevIcon = (relation.getOsFlag().getOsFamilies()|sort)[0].getFileName() %}
-	{% endfor %}</div>
+	<div></div>
 	<div><a href="{{ path("driver_show", {id: file.getId()}) }}">{{file.getName()}}</a>
 	</div>
 	<div><a href="{{ vich_uploader_asset(file, 'file')}}">

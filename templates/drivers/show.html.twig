@@ -35,7 +35,7 @@
 					{% set prevIcon = "" %}
 					{% set prevIcon2 = "" %}
 					{% for relation in driver.getOsFlags() %}
-						{% if prevIcon != (relation.getOsFlag().getOsFamilies()|sort)[0].getFileName() %}
+						{#% if prevIcon != (relation.getOsFlag().getOsFamilies()|sort)[0].getFileName() %}
 							{% set prevIcon2 = (relation.getOsFlag().getOsFamilies()|sort)[0].getFileName() %}
 							<span style="display:inline-block;">
 								{% if not loop.first %}, {% endif %}
@@ -44,7 +44,7 @@
 								{{ relation.getUnsure() ? ' ?'}}
 							</span>
 						{% endif %}
-						{% set prevIcon = (relation.getOsFlag().getOsFamilies()|sort)[0].getFileName() %}
+						{% set prevIcon = (relation.getOsFlag().getOsFamilies()|sort)[0].getFileName() %#}
 					{% endfor %}</div>
 					<div class="quick-spec-head">Language</div>
 					<div>{% for lang in driver.getLanguages() %}{{lang.getOriginalName()}}{% if not loop.last %}, {% endif %}

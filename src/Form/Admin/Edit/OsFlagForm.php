@@ -9,7 +9,6 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use App\Entity\Manufacturer;
-use App\Entity\OsFamily;
 use App\Entity\OsFlag;
 
 class OsFlagForm extends AbstractType
@@ -28,13 +27,6 @@ class OsFlagForm extends AbstractType
                 'multiple' => false,
                 'expanded' => false,
                 'required' => true,
-            ])
-            ->add('osFamilies', EntityType::class, [
-                'class' => OsFamily::class,
-                'choice_label' => 'name',
-                'multiple' => true,
-                'expanded' => true,
-                'required' => false,
             ])
             ->add('save', SubmitType::class)
             ;

@@ -21,19 +21,7 @@
 
 	<div class="header-label">OS support</div>
 	<div class="tag-container">
-		{% set prevIcon = "" %}
-		{% for relation in object.getOsFlags() %}
-			<span class="text-block">
-				{% if prevIcon != (relation.getOsFlag().getOsFamilies()|sort)[0].getFileName() %}
-					<img src="{{ vich_uploader_asset((relation.getOsFlag().getOsFamilies()|sort)[0], 'osIcon')}}" alt="" height="24">
-				{% endif %}
-				{% set prevIcon = (relation.getOsFlag().getOsFamilies()|sort)[0].getFileName() %}
-				<span>{{ relation.getOsFlag().getFullVersion()}}
-				{% if relation.getUnsure() %}
-					?
-				{% endif %}</span>
-			</span>
-		{% endfor %}
+
 	</div>
 	
 	<div class="header-label">Language</div>
