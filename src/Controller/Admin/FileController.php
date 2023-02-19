@@ -4,15 +4,12 @@ namespace App\Controller\Admin;
 
 use App\Entity\LargeFile;
 use App\Entity\MediaTypeFlag;
-use App\Entity\OsFamily;
 use App\Entity\OsFlag;
 use App\Form\Admin\Edit\LargeFileForm;
 use App\Form\Admin\Edit\MediaTypeFlagForm;
-use App\Form\Admin\Edit\OsFamilyForm;
 use App\Form\Admin\Edit\OsFlagForm;
 use App\Repository\LargeFileRepository;
 use App\Repository\MediaTypeFlagRepository;
-use App\Repository\OsFamilyRepository;
 use App\Repository\OsFlagRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -35,9 +32,6 @@ class FileController extends AbstractController
             case "largefile":
                 return $this->manageLargefiles($request, $translator);
                 break;
-            case "osfamily":
-                return $this->manageOsfamilies($request, $translator);
-                break;
             case "osflag":
                 return $this->manageOsflags($request, $translator);
                 break;
@@ -59,25 +53,6 @@ class FileController extends AbstractController
     public function largeFileEdit(Request $request, int $id, LargeFileRepository $largeFileRepository, EntityManagerInterface $entityManager): Response
     {
         return $this->renderLargeFileForm($request, $largeFileRepository->find($id), 'admin/edit/files/largeFile.html.twig', $entityManager);
-    }
-
-    #[Route('/admin/manage/files/osfamilies/add', name:'new_osFamily_add')]
-    public function osFamilyAdd(Request $request, EntityManagerInterface $entityManager): Response
-    {
-        return $this->renderEntityForm(
-            $request,
-            new OsFamily(),
-            OsFamilyForm::class,
-            'admin/edit/files/osFamily.html.twig',
-            'osfamily',
-            $entityManager
-        );
-    }
-
-    #[Route('/admin/manage/files/osfamilies/{id}/edit', name:'new_osFamily_edit', requirements:['id' => '\d+'])]
-    public function osFamilyEdit(Request $request, int $id, OsFamilyRepository $osFamilyRepository, EntityManagerInterface $entityManager): Response
-    {
-        return $this->renderEntityForm($request, $osFamilyRepository->find($id), OsFamilyForm::class, 'admin/edit/files/osFamily.html.twig', 'osfamily', $entityManager);
     }
 
     #[Route('/admin/manage/files/osflags/add', name:'new_osFlag_add')]
@@ -142,19 +117,6 @@ class FileController extends AbstractController
         ]);
     }
 
-    private function manageOsfamilies(Request $request, TranslatorInterface $translator): Response
-    {
-        return $this->render('admin/manage/files/manage.html.twig', [
-            "search" => "",
-            "criterias" => [],
-            "controllerList" => "App\\Controller\\Admin\\FileController::listOsfamily",
-            "entityName" => $request->query->get('entity'),
-            "entityDisplayName" => $translator->trans("os family"),
-            "entityDisplayNamePlural" => $translator->trans("os families"),
-            "page" => $request->query->getInt('page', 1),
-        ]);
-    }
-
     private function manageOsflags(Request $request, TranslatorInterface $translator): Response
     {
         return $this->render('admin/manage/files/manage.html.twig', [
@@ -197,25 +159,9 @@ class FileController extends AbstractController
         ]);
     }
 
-    public function listOsfamily(Request $request, PaginatorInterface $paginator, array $criterias, OsFamilyRepository $osFamilyRepository): Response
+    public function listOsflag(Request $request, PaginatorInterface $paginator, array $criterias, OsFlagRepository $osFlagRepository): Response
     {
-        $objects = $osFamilyRepository->findBy($criterias, ['name' => 'asc']);
-
-        $paginatedObjects = $paginator->paginate(
-            $objects,
-            $request->query->getInt('page', 1),
-            $this->getParameter('app.pagination.max')
-        );
-
-        return $this->render('admin/manage/files/list.html.twig', [
-            "objectList" => $paginatedObjects,
-            "entityName" => $request->query->get('entity'),
-        ]);
-    }
-
-    public function listOsflag(Request $request, PaginatorInterface $paginator, array $criterias, OsFlagRepository $osFamilyRepository): Response
-    {
-        $objects = $osFamilyRepository->findBy($criterias, ['name' => 'asc']);
+        $objects = $osFlagRepository->findBy($criterias, ['name' => 'asc']);
 
         $paginatedObjects = $paginator->paginate(
             $objects,

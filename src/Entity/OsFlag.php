@@ -32,15 +32,11 @@ class OsFlag
     #[ORM\JoinColumn(nullable: true)]
     private $manufacturer;
 
-    #[ORM\ManyToMany(targetEntity: OsFamily::class, inversedBy: 'osFlags')]
-    private $osFamilies;
-
     #[ORM\OneToMany(targetEntity: LargeFileOsFlag::class, mappedBy: 'osFlag', orphanRemoval: true)]
     private $largeFiles;
 
     public function __construct()
     {
-        $this->osFamilies = new ArrayCollection();
         $this->largeFiles = new ArrayCollection();
     }
     public function getId(): ?int
@@ -84,27 +80,6 @@ class OsFlag
     public function setManufacturer(?Manufacturer $manufacturer): self
     {
         $this->manufacturer = $manufacturer;
-
-        return $this;
-    }
-    /**
-     * @return Collection|OsFamily[]
-     */
-    public function getOsFamilies(): Collection
-    {
-        return $this->osFamilies;
-    }
-    public function addOsFamily(OsFamily $osFamily): self
-    {
-        if (!$this->osFamilies->contains($osFamily)) {
-            $this->osFamilies[] = $osFamily;
-        }
-
-        return $this;
-    }
-    public function removeOsFamily(OsFamily $osFamily): self
-    {
-        $this->osFamilies->removeElement($osFamily);
 
         return $this;
     }
