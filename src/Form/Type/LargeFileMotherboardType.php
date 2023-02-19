@@ -7,6 +7,8 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use App\Entity\LargeFileMotherboard;
+use App\Repository\LargeFileRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\FormInterface;
@@ -15,8 +17,21 @@ use Symfony\Component\Form\ChoiceList\View\ChoiceView;
 
 class LargeFileMotherboardType extends AbstractType
 {
+    private EntityManagerInterface $entityManager;
+    public function __construct(EntityManagerInterface $entityManager)
+    {
+        $this->entityManager = $entityManager;
+    }
+
+    private function getLargeFileRepository(): LargeFileRepository
+    {
+        return $this->entityManager->getRepository(LargeFile::class);
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+
+        $largeFiles = $this->getLargeFileRepository()->findAllOptimized();
         $builder
             ->add('isRecommended', CheckboxType::class, [
                 'required' => false,
@@ -28,6 +43,7 @@ class LargeFileMotherboardType extends AbstractType
                 'multiple' => false,
                 'expanded' => false,
                 'autocomplete' => true,
+                'choices' => $largeFiles
             ]);
     }
 

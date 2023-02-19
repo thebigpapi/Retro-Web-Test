@@ -19,6 +19,24 @@ class LargeFileRepository extends ServiceEntityRepository
         parent::__construct($registry, LargeFile::class);
     }
 
+    /**
+      * @return LargeFile[] Returns an array of LargeFile objects
+      */
+    public function findAllOptimized(): array 
+    {
+        $entityManager = $this->getEntityManager();
+        $query = $entityManager->createQuery(
+            "SELECT lf, lang, mtf, ofgs
+            FROM App\Entity\LargeFile lf
+            JOIN lf.languages as lang
+            JOIN lf.mediaTypeFlags as mtf
+            JOIN lf.osFlags as ofgs
+            ORDER BY lf.name ASC"
+        );
+
+        return $query->getResult();
+    }
+
     // /**
     //  * @return LargeFile[] Returns an array of LargeFile objects
     //  */
