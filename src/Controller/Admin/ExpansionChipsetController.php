@@ -136,7 +136,7 @@ class ExpansionChipsetController extends AbstractController
 
     public function listExpansionChip(Request $request, PaginatorInterface $paginator, array $criterias, ExpansionChipRepository $expansionChipRepository)
     {
-        $objects = $expansionChipRepository->findBy($criterias);
+        $objects = $expansionChipRepository->findAllExpansionChipsAdminList($criterias);
 
         usort(
             $objects,

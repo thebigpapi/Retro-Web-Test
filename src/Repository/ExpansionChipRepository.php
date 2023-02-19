@@ -37,6 +37,54 @@ class ExpansionChipRepository extends ServiceEntityRepository
         return $query->getResult();
     }
 
+    /**
+     * @return ExpansionChip[]
+     */
+    public function findAllExpansionChipsAdminList(array $criterias = []): array
+    {
+        $entityManager = $this->getEntityManager();
+
+        $where = [];
+        $valuesArray = [];
+        if (array_key_exists('manufacturer', $criterias)) {
+            $valuesArray['manId'] = $criterias['manufacturer'];
+            $where[] = "man.id=:manId";
+        }
+        if (array_key_exists('type', $criterias)) {
+            $valuesArray['typeId'] = $criterias['type'];
+            $where[] = "typ.id=:typeId";
+        }
+
+        // Building where statement
+        $andWhere = implode(' AND ', $where);
+
+        // Building query
+        $query = $entityManager->createQuery(
+            "SELECT chip, man, pd, img, drv, typ, doc
+            FROM App\Entity\ExpansionChip chip
+            JOIN chip.manufacturer man 
+            LEFT JOIN chip.pciDevs pd
+            LEFT JOIN chip.images img
+            LEFT JOIN chip.drivers drv
+            LEFT JOIN chip.documentations doc
+            JOIN chip.type typ
+            $andWhere
+            ORDER BY man.name ASC, chip.name ASC"
+        );
+        if (array_key_exists('manufacturer', $criterias)) {
+            $query->
+            $where[] = "man.id=:manId";
+        }
+
+        // Setting values
+        foreach ($valuesArray as $key => $value) {
+            $query->setParameter($key, $value);
+        }
+
+
+        return $query->getResult();
+    }
+
     // /**
     //  * @return ExpansionChip[] Returns an array of ExpansionChip objects
     //  */
