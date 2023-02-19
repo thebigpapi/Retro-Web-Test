@@ -10,9 +10,10 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\File;
 use App\Entity\LargeFile;
+use App\Entity\OsFlag;
 use App\Form\Type\LanguageType;
 use App\Form\Type\LargeFileMediaTypeFlagType;
-use App\Form\Type\LargeFileOsFlagType;
+use App\Form\Type\OsFlagType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -69,15 +70,9 @@ class LargeFileForm extends AbstractType
                 'allow_delete' => true,
             ])
             ->add('osFlags', CollectionType::class, [
-                'entry_type' => LargeFileOsFlagType::class,
+                'entry_type' => OsFlagType::class,
                 'allow_add' => true,
                 'allow_delete' => true,
-            ])
-            ->add('hasActivationKey', CheckboxType::class, [
-                'required' => false,
-            ])
-            ->add('hasCopyProtection', CheckboxType::class, [
-                'required' => false,
             ])
             ->add('fileVersion', TextType::class, [
                 'required' => false,

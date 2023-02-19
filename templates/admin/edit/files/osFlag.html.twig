@@ -15,29 +15,14 @@
 			<td>{{form_widget(form.name)}}</td>
 		</tr>
         <tr>
-			<td>{{form_label(form.majorVersion)}}</td>
-			<td>{{form_widget(form.majorVersion)}}</td>
-		</tr>
-        <tr>
-			<td>{{form_label(form.minorVersion)}}</td>
-			<td>{{form_widget(form.minorVersion)}}</td>
+			<td>{{form_label(form.version)}}</td>
+			<td>{{form_widget(form.version)}}</td>
 		</tr>
         <tr>
 			<td>{{form_label(form.manufacturer)}}</td>
 			<td>{{form_widget(form.manufacturer)}}</td>
 		</tr>
 	</table>
-</div>
-<div class="show-edit">
-    <div>{{form_label(form.osFamilies)}}</div>
-    <div>
-    {% for family in form.osFamilies %}
-        <div style="display:inline-block;width:155px;">
-            {{form_widget(family)}}
-            {{form_label(family)}}
-        </div>
-    {% endfor %}
-    </div>
 </div>
 <div class="errors-div"><ul>
 	{% for error in form.vars.errors.form.getErrors(true) %}

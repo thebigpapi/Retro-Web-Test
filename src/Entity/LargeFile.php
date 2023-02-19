@@ -62,14 +62,8 @@ class LargeFile
     #[ORM\OneToMany(targetEntity: LargeFileMediaTypeFlag::class, mappedBy: 'largeFile', orphanRemoval: true, cascade: ['persist'])]
     private $mediaTypeFlags;
 
-    #[ORM\OneToMany(targetEntity: LargeFileOsFlag::class, mappedBy: 'largeFile', orphanRemoval: true, cascade: ['persist'])]
+    #[ORM\ManyToMany(targetEntity: OsFlag::class, inversedBy: 'largeFiles')]
     private $osFlags;
-
-    #[ORM\Column(type: 'boolean')]
-    private $hasActivationKey;
-
-    #[ORM\Column(type: 'boolean')]
-    private $hasCopyProtection;
 
     #[ORM\OneToMany(targetEntity: LargeFileMotherboard::class, mappedBy: 'largeFile', orphanRemoval: true)]
     private $motherboards;
@@ -226,49 +220,26 @@ class LargeFile
         return $this;
     }
     /**
-     * @return Collection|LargeFileOsFlag[]
+     * @return Collection|OsFlag[]
      */
     public function getOsFlags(): Collection
     {
         return $this->osFlags;
     }
-    public function addOsFlag(LargeFileOsFlag $osFlag): self
+    public function addOsFlag(OsFlag $osFlag): self
     {
         if (!$this->osFlags->contains($osFlag)) {
             $this->osFlags[] = $osFlag;
-            $osFlag->setLargeFile($this);
+            $osFlag->addLargeFile($this);
         }
 
         return $this;
     }
-    public function removeOsFlag(LargeFileOsFlag $osFlag): self
+    public function removeOsFlag(OsFlag $osFlag): self
     {
         if ($this->osFlags->removeElement($osFlag)) {
-            // set the owning side to null (unless already changed)
-            if ($osFlag->getLargeFile() === $this) {
-                $osFlag->setLargeFile(null);
-            }
+            $osFlag->removeLargeFile($this);
         }
-
-        return $this;
-    }
-    public function getHasActivationKey(): ?bool
-    {
-        return $this->hasActivationKey;
-    }
-    public function setHasActivationKey(bool $hasActivationKey): self
-    {
-        $this->hasActivationKey = $hasActivationKey;
-
-        return $this;
-    }
-    public function getHasCopyProtection(): ?bool
-    {
-        return $this->hasCopyProtection;
-    }
-    public function setHasCopyProtection(bool $hasCopyProtection): self
-    {
-        $this->hasCopyProtection = $hasCopyProtection;
 
         return $this;
     }
@@ -288,9 +259,9 @@ class LargeFile
         $osTags = "";
         foreach ($tmp as $key => $os) {
             if (array_key_last($tmp->toArray()) == $key) {
-                $osTags .=  $os->getOsFlag()->getFullVersion();
+                $osTags .=  $os->getVersion();
             } else {
-                $osTags .=  $os->getOsFlag()->getFullVersion() . ", ";
+                $osTags .=  $os->getVersion() . ", ";
             }
         }
 

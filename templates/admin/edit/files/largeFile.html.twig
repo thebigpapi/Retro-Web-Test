@@ -48,14 +48,6 @@
 							<td>{{form_widget(form.dumpQualityFlag)|replace({'<option value="5">': '<option selected="selected" value="5">'})|raw }}</td>
 						</tr>
 						<tr>
-							<td>Activation key</td>
-							<td>{{form_widget(form.hasActivationKey)}}</td>
-						</tr>
-						<tr>
-							<td>Copy protection</td>
-							<td>{{form_widget(form.hasCopyProtection)}}</td>
-						</tr>
-						<tr>
 							<td>Release date</td>
 							<td>
 								<div id="large_file_form_releaseDate">
@@ -141,12 +133,12 @@
 								</div>
 								<div class="quick-spec-table" data-controller="collection">
 									<div id="osFlags-fields-list" style="min-width:28em;" data-widget-counter="{{ form.osFlags|length }}" data-prototype="
-									{{ form_widget(form.osFlags.vars.prototype.unsure, {'attr': {'style': 'display:inline-block;width:1em;'}})|e }}{{ form_widget(form.osFlags.vars.prototype.osFlag, {'attr': {'style': 'display:inline-block;'}})|replace({'<option value="49">': '<option selected="selected" value="49">'})|raw|e }}
+									{{ form_widget(form.osFlags.vars.prototype, {'attr': {'style': 'display:inline-block;'}})|replace({'<option value="49">': '<option selected="selected" value="49">'})|raw|e }}
 										{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}">
 										{% if form.osFlags is not empty %}
 											{% for flag in form.osFlags %}
 												<div class="editor-row nopad">
-													{{ form_widget(flag.unsure, {'attr': {'style': 'display:inline-block;width:1em;'}}) }}{{ form_widget(flag.osFlag, {'attr': {'style': 'display:inline-block;'}}) }}
+													{{ form_widget(flag, {'attr': {'style': 'display:inline-block;'}}) }}
 													{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
 												</div>
 												{{ form_errors(flag) }}

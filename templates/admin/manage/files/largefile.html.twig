@@ -44,30 +44,6 @@
 		</span>
 	</div>
 
-	<div class="header-label">Copy protection</div>
-	<div class="tag-container">
-		{% set protLvl = 0 %}
-		{% if object.hasActivationKey() %}
-			<span class="text-block">
-				<img src="{{ asset('build/icons/protection/activation_key.svg') }}" alt="" height="24">
-				<span>Activation key</span>
-			</span>
-			{% set protLvl = 1 %}
-		{% endif %}
-		{% if object.hasCopyProtection() %}
-			<span class="text-block">
-				<img src="{{ asset('build/icons/protection/copy_protected.svg') }}" alt="" height="24">
-				<span>Copy protection</span>
-			</span>
-			{% set protLvl = 2 %}
-		{% endif %}
-		{% if protLvl == 0 %}
-			<span class="text-block">
-				None or unknown
-			</span>
-		{% endif %}
-	</div>
-
 	<div class="header-label">Actions</div>
     <div class="toolbar toolbar-thin">
         <a class="button" href="./files/largefiles/{{ object.getId() }}/edit/">

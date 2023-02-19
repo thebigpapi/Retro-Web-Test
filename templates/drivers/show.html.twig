@@ -55,14 +55,6 @@
 						<i style="vertical-align:super;">{{relation.getCount()}}x&nbsp;</i>
 						{{relation.getMediaTypeFlag().getName()}}<img src="{{ vich_uploader_asset(relation.getMediaTypeFlag(), 'icon')}}" style="padding-left: 5px;" alt="{{relation.getMediaTypeFlag().getName()}}" title="{{relation.getMediaTypeFlag().getName()}}" width="32">{% if not loop.last %}, {% endif %}
 					{% endfor %}</div>
-					{% if driver.hasActivationKey() or driver.hasCopyProtection() %}
-					<div class="quick-spec-head">Copy protection</div>
-					<div>{% if driver.hasActivationKey() %}
-						<img src="{{ asset('build/icons/protection/activation_key.svg') }}" alt="activation key" title="The program needs an activation key" width="32">
-					{% endif %}
-					{% if driver.hasCopyProtection() %}
-						<img src="{{ asset('build/icons/protection/copy_protected.svg') }}" alt="copy protected" title="The program is copy protected" width="32">
-					{% endif %}
 					</div>{% endif %}
 
 					<div class="quick-spec-head">Quality</div>	

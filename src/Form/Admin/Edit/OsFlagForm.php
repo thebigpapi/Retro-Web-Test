@@ -17,10 +17,7 @@ class OsFlagForm extends AbstractType
     {
         $builder
             ->add('name', TextType::class)
-            ->add('majorVersion', TextType::class)
-            ->add('minorVersion', TextType::class, [
-                'required' => false,
-            ])
+            ->add('version', TextType::class)
             ->add('manufacturer', EntityType::class, [
                 'class' => Manufacturer::class,
                 'choice_label' => 'shortNameIfExist',

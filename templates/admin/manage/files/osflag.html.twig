@@ -5,12 +5,8 @@
     <div class="header-label">Name</div>
     <div>{{object.getName()}}</div>
 
-    <div class="header-label">Major version</div>
-    <div>{{object.getMajorVersion()|length > 0 ? object.getMajorVersion()}}</div>
-
-
-    <div class="header-label">Minor version</div>
-    <div>{{object.getMinorVersion()|length > 0 ? object.getMinorVersion()}}</div>
+    <div class="header-label">Version</div>
+    <div>{{object.getVersion()}}</div>
 
     <div class="header-label">Actions</div>
     <div class="toolbar toolbar-thin">

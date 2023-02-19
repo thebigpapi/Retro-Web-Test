@@ -21,18 +21,14 @@ class OsFlag
     private $name;
 
     #[ORM\Column(type: 'string', length: 255)]
-    #[Assert\Length(max: 255, maxMessage: 'Major version is longer than {{ limit }} characters, try to make it shorter.')]
-    private $majorVersion;
-
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    #[Assert\Length(max: 255, maxMessage: 'Minor version is longer than {{ limit }} characters, try to make it shorter.')]
-    private $minorVersion;
+    #[Assert\Length(max: 255, maxMessage: 'Version is longer than {{ limit }} characters, try to make it shorter.')]
+    private $version;
 
     #[ORM\ManyToOne(targetEntity: Manufacturer::class, inversedBy: 'osFlags')]
     #[ORM\JoinColumn(nullable: true)]
     private $manufacturer;
 
-    #[ORM\OneToMany(targetEntity: LargeFileOsFlag::class, mappedBy: 'osFlag', orphanRemoval: true)]
+    #[ORM\ManyToMany(targetEntity: LargeFile::class, mappedBy: 'osFlags')]
     private $largeFiles;
 
     public function __construct()
@@ -53,23 +49,13 @@ class OsFlag
 
         return $this;
     }
-    public function getMajorVersion(): ?string
+    public function getVersion(): ?string
     {
-        return $this->majorVersion;
+        return $this->version;
     }
-    public function setMajorVersion(string $majorVersion): self
+    public function setVersion(string $version): self
     {
-        $this->majorVersion = $majorVersion;
-
-        return $this;
-    }
-    public function getMinorVersion(): ?string
-    {
-        return $this->minorVersion;
-    }
-    public function setMinorVersion(?string $minorVersion): self
-    {
-        $this->minorVersion = $minorVersion;
+        $this->version = $version;
 
         return $this;
     }
@@ -84,34 +70,27 @@ class OsFlag
         return $this;
     }
     /**
-     * @return Collection|LargeFileOsFlag[]
+     * @return Collection|LargeFile[]
      */
     public function getLargeFiles(): Collection
     {
         return $this->largeFiles;
     }
-    public function addLargeFile(LargeFileOsFlag $largeFile): self
+    public function addLargeFile(LargeFile $largeFile): self
     {
         if (!$this->largeFiles->contains($largeFile)) {
             $this->largeFiles[] = $largeFile;
-            $largeFile->setOsFlag($this);
+            $largeFile->addOsFlag($this);
         }
 
         return $this;
     }
-    public function removeLargeFile(LargeFileOsFlag $largeFile): self
+    public function removeLargeFile(LargeFile $largeFile): self
     {
         if ($this->largeFiles->removeElement($largeFile)) {
-            // set the owning side to null (unless already changed)
-            if ($largeFile->getOsFlag() === $this) {
-                $largeFile->setOsFlag(null);
-            }
+            $largeFile->removeOsFlag($this);
         }
 
         return $this;
-    }
-    public function getFullVersion(): string
-    {
-        return $this->minorVersion ? "$this->majorVersion.$this->minorVersion" : "$this->majorVersion";
     }
 }
