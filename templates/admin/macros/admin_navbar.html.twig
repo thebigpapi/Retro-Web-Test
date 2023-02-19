@@ -59,9 +59,13 @@
 			<span {% if entityName == key %}id="nav-checked"{% endif %}>{{value}}</span>
 		</a>
 	{% endfor %}
+	<a href="./{{path}}/{{entityName}}s/add/"><span>
+		<img src="{{ absolute_url(asset('build/icons/add.svg')) }}" alt="back" width="24" height="24">
+		Add {{ entityDisplayName }}
+	</span></a>
 	<div style="display:flex;align-items:center;" data-controller="show">
 		<input type="checkbox" id="table-switch" value="Table view" style="display: block;width:1.5em;height:1.5em;" data-action='click->show#show_table'>
-    	<span> Grid view</span>
+		<span> Grid view</span>
 	</div>
 </div>
 
