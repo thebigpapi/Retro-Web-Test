@@ -7,6 +7,7 @@ use App\Entity\CpuSocket;
 use App\Entity\FormFactor;
 use App\Entity\IdRedirection;
 use App\Entity\Motherboard;
+use App\Entity\MotherboardIdRedirection;
 use App\Repository\IdRedirectionRepository;
 use App\Entity\Processor;
 use App\Entity\ProcessorPlatformType;
@@ -284,6 +285,8 @@ class MotherboardController extends AbstractController
          */
         $motherboardRepository = $entityManager->getRepository(Motherboard::class);
 
+        $slugError = "";
+
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             /**
@@ -295,6 +298,10 @@ class MotherboardController extends AbstractController
                     'form' => $form->createView(),
                 ]);
             }
+
+            /**
+             * @var Motherboard
+             */
             $mobo = $form->getData();
             $mobo->updateLastEdited();
             foreach ($form['motherboardAliases']->getData() as $val) {
@@ -339,15 +346,21 @@ class MotherboardController extends AbstractController
                 $mobo->setManufacturer(null);
             }
 
-            $entityManager->persist($mobo);
+            // If slug doesn't exist yet we can create the board
+            if (!$motherboardRepository->findSlug($mobo->getSlug()) && !$idRedirectionRepository->checkRedirectionExists($mobo->getSlug(), 'uh19_slug')) {
+                $entityManager->persist($mobo);
 
-            $entityManager->flush();
+                $entityManager->flush();
 
-            return $this->redirectToRoute('motherboard_show', array('id' => $mobo->getId()));
+                return $this->redirectToRoute('motherboard_show', array('id' => $mobo->getId()));
+            } else {
+                $slugError = "Slug " . $mobo->getSlug() . " already exists.";
+            }
         }
         return $this->render('admin/edit/motherboards/motherboard.html.twig', [
             'form' => $form->createView(),
             'moboid' => $mobo->getId(),
+            'slugError' => $slugError,
         ]);
     }
 

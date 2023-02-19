@@ -4,7 +4,7 @@
 {% block body %}
 <form data-controller="motherboard--add" name="add_motherboard" method="post" enctype="multipart/form-data" data-action="submit->motherboard--add#check">
 	<div class="title">Motherboard editor
-	{% if form.vars.errors.form.getErrors(true) is not empty %}
+	{% if form.vars.errors.form.getErrors(true) is not empty or slugError is not empty %}
 		<img src="{{ absolute_url(asset('build/icons/warning.svg')) }}" alt="warning" title="Some errors have occurred, check and try again." width="40" height="40" style="margin-top: -10px;vertical-align: bottom;">
 	{% endif %}</div>
 	<!-- MANUF/TITLE -->
@@ -25,6 +25,9 @@
 			<div class="search-form-widget">
 				<label class="search-form-label">Slug</label>
 				<div>{{ form_widget(form.slug, {'attr': {'placeholder': 'Slug ...'}}) }}</div>
+				{% if slugError is not empty %}
+					<div>{{slugError}}</div>
+				{% endif %}
 			</div>
 		</div>
 	</section>

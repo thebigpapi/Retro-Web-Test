@@ -42,7 +42,7 @@ class IdRedirectionRepository extends ServiceEntityRepository
     /**
      * Check if the redirection exists for $identifier for a given motherboard
      */
-    public function checkRedirectionExists(int|string $identifier, string $sourceType, ?int $motherboardId): bool
+    public function checkRedirectionExists(int|string $identifier, string $sourceType, ?int $motherboardId = null): bool
     {
         $entityManager = $this->getEntityManager();
 
