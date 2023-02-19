@@ -12,7 +12,7 @@ use App\Form\Admin\Edit\CreditorForm;
 use App\Form\Admin\Edit\LicenseForm;
 use App\Form\Admin\Edit\KnownIssueForm;
 use App\Form\Admin\Edit\ManufacturerForm;
-use App\Form\Admin\Manage\ManufacturerSearchType;
+use App\Form\Admin\Manage\NameSearchType;
 use App\Repository\CpuSpeedRepository;
 use App\Repository\CreditorRepository;
 use App\Repository\LicenseRepository;
@@ -196,7 +196,7 @@ class MiscController extends AbstractController
 
     private function manageManufacturers(Request $request, TranslatorInterface $translator)
     {
-        $search = $this->createForm(ManufacturerSearchType::class);
+        $search = $this->createForm(NameSearchType::class);
 
         $getParams = array();
         $search->handleRequest($request);
@@ -254,9 +254,28 @@ class MiscController extends AbstractController
 
     private function manageCreditors(Request $request, TranslatorInterface $translator)
     {
+        $search = $this->createForm(NameSearchType::class);
+
+        $getParams = array();
+        $search->handleRequest($request);
+        if ($search->isSubmitted() && $search->isValid()) {
+            $data = $search->getData();
+            if ($data['name']) {
+                $getParams["name"] = $data['name'];
+            }
+            $getParams["entity"] = "creditor";
+            return $this->redirect($this->generateUrl('admin_manage_miscs', $getParams));
+        } else {
+            $criterias = array();
+            $name = htmlentities($request->query->get('name') ?? '');
+            if ($name) {
+                $criterias["name"] = $name;
+            }
+        }
+
         return $this->render('admin/manage/miscs/manage.html.twig', [
-            "search" => "",
-            "criterias" => [],
+            "search" => $search->createView(),
+            "criterias" => $criterias,
             "controllerList" => "App\\Controller\\Admin\\MiscController::listCreditor",
             "entityName" => $request->query->get('entity'),
             "entityDisplayName" => $translator->trans("creditor"),
@@ -327,7 +346,7 @@ class MiscController extends AbstractController
 
     public function listCreditor(Request $request, PaginatorInterface $paginator, array $criterias, CreditorRepository $creditorRepository)
     {
-        $objects = $creditorRepository->findBy($criterias, ['name' => 'asc']);
+        $objects = $creditorRepository->findAllCreditorsCaseInsensitiveSorted($criterias);
 
         $paginatedObjects = $paginator->paginate(
             $objects,

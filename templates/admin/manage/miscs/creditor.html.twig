@@ -5,6 +5,12 @@
     <div class="header-label">Website</div>
     <div>{% if object.getWebsite()|length > 0 %}<a href="{{object.getWebsite()}}">{{object.getWebsite()}}</a>{% endif %}</div>
 
+    <div class="header-label">Images</div>
+    <div>{{ object.getMotherboardImages()|length + object.getChipImages()|length }}</div>
+
+    <div class="header-label">License</div>
+    <div>{% if object.getLicense() is not null %}{{ object.getLicense().getName() }}{% endif %}</div>
+
     <div class="header-label">Actions</div>
     <div class="toolbar toolbar-thin">
         <a class="button" href="./miscs/creditors/{{ object.getId() }}/edit/">

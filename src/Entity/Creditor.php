@@ -103,7 +103,7 @@ class Creditor
     /**
      * @return Collection|ChipImage[]
      */
-    public function getChipImage(): Collection
+    public function getChipImages(): Collection
     {
         return $this->chipImages;
     }

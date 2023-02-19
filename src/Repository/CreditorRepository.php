@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Creditor;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query\ResultSetMapping;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -17,6 +18,51 @@ class CreditorRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Creditor::class);
+    }
+
+    /**
+     * @return Creditor[]
+     */
+    public function findAllCreditorsCaseInsensitiveSorted(array $criterias = []): array
+    {
+        $entityManager = $this->getEntityManager();
+
+        $rsm = new ResultSetMapping();
+
+        $whereString = "";
+        if (array_key_exists('name', $criterias)) {
+            $whereString = "WHERE cre.name ILIKE :name";
+        }
+
+        $rsm->addEntityResult('App\Entity\Creditor', 'cre');
+        $rsm->addFieldResult('cre', 'id', 'id');
+        $rsm->addFieldResult('cre', 'name', 'name');
+        $rsm->addFieldResult('cre', 'website', 'website');
+        $rsm->addJoinedEntityResult('App\Entity\MotherboardImage', 'mi', 'cre', 'motherboardImages');
+        $rsm->addFieldResult('mi', 'mi_id', 'id');
+        $rsm->addJoinedEntityResult('App\Entity\ChipImage', 'ci', 'cre', 'chipImages');
+        $rsm->addFieldResult('ci', 'ci_id', 'id');
+        $rsm->addJoinedEntityResult('App\Entity\License', 'li', 'cre', 'license');
+        $rsm->addFieldResult('li', 'li_id', 'id');
+        $rsm->addFieldResult('li', 'li_name', 'name');
+
+        $query = $entityManager->createNativeQuery(
+            "SELECT distinct cre.id, cre.name, cre.website, cre.license_id,
+            mi.id as mi_id, ci.id as ci_id, li.id as li_id, li.name as li_name, upper(cre.name) as uppername
+            FROM creditor cre
+            LEFT JOIN motherboard_image mi ON cre.id=mi.creditor_id
+            LEFT JOIN chip_image ci ON cre.id=ci.creditor_id
+            LEFT JOIN license li ON cre.license_id=li.id
+            $whereString 
+            ORDER BY uppername;",
+            $rsm
+        );
+
+        if (array_key_exists('name', $criterias)) {
+            $query->setParameter(':name', '%' . $criterias['name'] . '%');
+        }
+
+        return $query->getResult();
     }
 
     // /**
