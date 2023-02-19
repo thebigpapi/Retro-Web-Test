@@ -192,7 +192,7 @@ div.full-spec {
     display: grid;
     //text-align: center;
     grid-template-rows: [first] 40px [second] auto [end];
-    grid-template-columns: [first] max(220px, 20vw) [second] auto [end];
+    grid-template-columns: [first] 50% [second] 50% [end];
 
     div {
         padding: 5px 0px 5px;

@@ -4,7 +4,7 @@
 	    <img src="{{ absolute_url(asset('build/icons/add.svg')) }}" data-list-id="{{action}}-fields-list" alt="" width="22" style="vertical-align: middle;padding-right:2px;">Add</a>
 {% endif %}
 {% if type == "del" %}
-    <a style='min-width:3.5em;' class='button-widget' data-action='click->collection#removeButton{% if count < 0 %}Ex{% endif %}'>
+    <a style='min-width:2.5em;' class='button-widget' data-action='click->collection#removeButton{% if count < 0 %}Ex{% endif %}'>
 	    <img data-action='click->collection#removeButton{% if count < 0 %}Xtd{% else %}Ex{% endif %}' src='{{ absolute_url(asset('build/icons/delete.svg')) }}' alt='' width='16' style='vertical-align:middle;padding:3px;'>Del</a>
     {% if count > 1 %}
         <a class='button-widget' href='#'>

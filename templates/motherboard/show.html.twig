@@ -62,26 +62,11 @@
 		<div class="internal-content">
 			<div class="show-general" id="sh-general">
 				<div class="quick-spec-table">
-					
-					<!-- Max video RAM -->
-					{% if motherboard.getMaxVideoRam()  is not empty %}
-					<div class="quick-spec-head">Max VRAM</div>
-					<div>{{  motherboard.getMaxVideoRam().getValueWithUnit() }}</div>
-					{% endif %}
-					<!-- Max system RAM -->
-					{% if motherboard.getMotherboardMaxRams() is not empty %}
-					<div class="quick-spec-head">Supported RAM size</div>
-					<div>{% for maxRam in motherboard.getMotherboardMaxRams() %}
-						{% if maxRam.getMaxRam().getValue() > 1048575 %}{{ maxRam.getMaxRam().getValue() / 1048576 }}&nbsp;GB
-						{% elseif maxRam.getMaxRam().getValue() > 1023 %}{{ maxRam.getMaxRam().getValue() / 1024}}&nbsp;MB
-						{% else %}{{ maxRam.getMaxRam().getValue()}}&nbsp;KB{% endif %}{% if maxRam.getNote() is not null %}<i>({{ maxRam.getNote()}})</i>{% endif %}{% if not loop.last %} / {% endif %}
-					{% endfor %}</div>
-					{% endif %}
-					<!-- Supported RAM types -->
-					{% if motherboard.getDramType() is not empty %}
-					<div class="quick-spec-head">Supported RAM type{% if motherboard.getDramType()|length > 1 %}s{% endif %}</div>
-					<div>{% for dram in motherboard.getDramType() %}{{ dram.getName() }}{% if not loop.last %}, {% endif %}{% endfor %}</div>
-					{% endif %}
+					<!-- Chipset -->
+					<div class="quick-spec-head">Chipset</div>
+					{% if motherboard.getChipset() is not empty %}
+						<div><a href="{{ path('chipset_show', {id: motherboard.getChipset().getId()}) }}">{{ motherboard.getChipset().getFullName() }}</a></div>
+					{% else %}<div>Unknown</div>{% endif %}
 					<!-- CPU socket -->
 					{% if motherboard.getCpuSockets() is not empty %}
 					<div class="quick-spec-head">CPU socket{% if motherboard.getCpuSockets()|length > 1 %}s{% endif %}</div>
@@ -96,6 +81,25 @@
 					{% if motherboard.getCpuSpeed() is not empty %}
 					<div class="quick-spec-head">Supported FSB speed{% if motherboard.getCpuSpeed()|length > 1 %}s{% endif %}</div>
 					<div>{% for frequency in motherboard.getCpuSpeed()|sort((a, b) => a.value <=> b.value) %}{{ frequency.getValueWithUnit() }}{% if not loop.last %}, {% endif %}{% endfor %}</div>
+					{% endif %}
+					<!-- Max system RAM -->
+					{% if motherboard.getMotherboardMaxRams() is not empty %}
+					<div class="quick-spec-head">Supported RAM size</div>
+					<div>{% for maxRam in motherboard.getMotherboardMaxRams() %}
+						{% if maxRam.getMaxRam().getValue() > 1048575 %}{{ maxRam.getMaxRam().getValue() / 1048576 }}&nbsp;GB
+						{% elseif maxRam.getMaxRam().getValue() > 1023 %}{{ maxRam.getMaxRam().getValue() / 1024}}&nbsp;MB
+						{% else %}{{ maxRam.getMaxRam().getValue()}}&nbsp;KB{% endif %}{% if maxRam.getNote() is not null %}<i>({{ maxRam.getNote()}})</i>{% endif %}{% if not loop.last %} / {% endif %}
+					{% endfor %}</div>
+					{% endif %}
+					<!-- Max video RAM -->
+					{% if motherboard.getMaxVideoRam()  is not empty %}
+					<div class="quick-spec-head">Max VRAM</div>
+					<div>{{  motherboard.getMaxVideoRam().getValueWithUnit() }}</div>
+					{% endif %}
+					<!-- Supported RAM types -->
+					{% if motherboard.getDramType() is not empty %}
+					<div class="quick-spec-head">Supported RAM type{% if motherboard.getDramType()|length > 1 %}s{% endif %}</div>
+					<div>{% for dram in motherboard.getDramType() %}{{ dram.getName() }}{% if not loop.last %}, {% endif %}{% endfor %}</div>
 					{% endif %}
 					<!-- Cache -->	
 					{% if motherboard.getCacheSize() is not empty %}
@@ -161,7 +165,7 @@
 			<!-- Chips -->
 			<div class="show-expchips" id="sh-expchips">
 				<div class="quick-spec-table">
-					<!-- Chipset -->
+					<!-- Chipset w/parts -->
 					<div class="quick-spec-head">Chipset</div>
 					{% if motherboard.getChipset() is not empty %}
 						<div><a href="{{ path('app_homepage') }}chipsets/{{ motherboard.getChipset().getId()}}">{{ motherboard.getChipset().getFullName() }}</a></div>

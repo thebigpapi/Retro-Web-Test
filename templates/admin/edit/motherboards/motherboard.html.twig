@@ -169,13 +169,13 @@
 						<div class="full-spec-head" data-controller="collection"><b>I/O ports: </b>{% include 'macros/buttons.html.twig' with {'type':'add', 'action': 'motherboardIoPorts'} %}</div>
 						<div id="motherboardIoPorts-fields-list" data-widget-counter="{{ form.motherboardIoPorts|length }}" data-prototype="
 							{{ form_widget(form.motherboardIoPorts.vars.prototype.count, {'attr': {'class': 'num'}} )|e }} x
-							{{ form_widget(form.motherboardIoPorts.vars.prototype.io_port, {'attr': {'style': 'width:60%'}} )|e }}
+							{{ form_widget(form.motherboardIoPorts.vars.prototype.io_port, {'attr': {'style': 'width:50%'}} )|e }}
 							{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
 							" data-controller="collection">
 							{% for port in form.motherboardIoPorts %}
 								<div class="editor-row nopad">
 									{{ form_widget(port.count, {'attr': {'class': 'num'}}) }} x
-									{{ form_widget(port.io_port, {'attr': {'style': 'width:60%'}}) }}
+									{{ form_widget(port.io_port, {'attr': {'style': 'width:50%'}}) }}
 									{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
 								</div>
 								{{ form_errors(port) }}
