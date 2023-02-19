@@ -47,7 +47,7 @@ class CreditorRepository extends ServiceEntityRepository
         $rsm->addFieldResult('li', 'li_name', 'name');
 
         $query = $entityManager->createNativeQuery(
-            "SELECT distinct cre.id, cre.name, cre.website, cre.license_id,
+            "SELECT cre.id, cre.name, cre.website, cre.license_id,
             mi.id as mi_id, ci.id as ci_id, li.id as li_id, li.name as li_name, upper(cre.name) as uppername
             FROM creditor cre
             LEFT JOIN motherboard_image mi ON cre.id=mi.creditor_id
