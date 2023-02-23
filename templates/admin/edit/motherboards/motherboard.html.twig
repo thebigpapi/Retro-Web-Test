@@ -25,13 +25,29 @@
 			<div class="search-form-widget">
 				<label class="search-form-label">Slug</label>
 				<div>{{ form_widget(form.slug, {'attr': {'placeholder': 'Slug ...'}}) }}</div>
-				{% if slugError is not empty %}
-					<div>{{slugError}}</div>
-				{% endif %}
 			</div>
 		</div>
 	</section>
-
+	<div class="errors-div"><ul>
+		{% if slugError is not empty %}
+			<li>{{slugError}}</li>
+		{% endif %}
+		{% for error in form.vars.errors.form.getErrors(true) %}
+			{% set emsg = error.cause|split('children') %}
+			{% if emsg|length > 1 %}
+				{% set emsg1 = emsg[1]|slice(0, error.cause|split('children')[1]|length - 1) %}
+				{% if emsg1 == "[processorPlatformTypes]" %}
+					<li>{{ emsg1 }} A platform was incompatible with one of the sockets, reselect</li>
+				{% elseif emsg1 == "[processors]" %}
+					<li>{{ emsg1 }} This CPU is incompatible with the selected socket/platform/speed, reselect</li>
+				{% elseif emsg1 == "[coprocessors]" %}
+					<li>{{ emsg1 }} This NPU is incompatible with the selected socket/platform/speed, reselect</li>
+				{% else %}
+					<li>{{ emsg1 }} {{ error.message }}</li>
+				{% endif %}
+			{% endif %}
+		{% endfor %}
+	</ul></div>
 	<div class="toolbar" data-controller="show">
 		<button type="button" name="tabs" id="tab-nav-save" data-action="click->motherboard--add#submit"><img src="{{ absolute_url(asset('build/icons/edit.svg')) }}" alt="" width="24" height="24"><span>Save</span></button>
 		{% if is_granted('ROLE_ADMIN') and moboid is not null %}
@@ -251,7 +267,7 @@
 					<!-- Drivers -->
 					{% include 'admin/macros/widget.html.twig' with {'type':'drivers', 'entity':form.drivers} %}
 					<!-- BIOSes -->
-					<div data-controller="collection" style="padding-bottom: 20px;">
+					<div data-controller="collection" style="padding-bottom: 20px;max-width: 1300px;">
 						<div style="padding-top:10px;display: flex;align-items: center;">
 							<img src="{{ absolute_url(asset('build/icons/show/chip.svg')) }}" alt="" width="32" style="padding: 5px;">
 							<i>BIOS images: </i>
@@ -303,7 +319,7 @@
 					<!-- Manuals -->
 					{% include 'admin/macros/widget.html.twig' with {'type':'docs', 'entity':form.manuals} %}
 					<!-- Misc files -->
-					<div data-controller="collection" style="padding-bottom: 20px;">
+					<div data-controller="collection" style="padding-bottom: 20px;max-width: 1300px;">
 						<div style="padding-top:10px;display: flex;align-items: center;">
 							<img src="{{ absolute_url(asset('build/icons/show/manual.svg')) }}" alt="" width="32" style="padding: 5px;">
 							<i>Misc files:</i>
@@ -444,22 +460,5 @@
 		{% include 'macros/entityListImages.html.twig' with {'entityName':'images', 'entities':form.images, 'imgpath':'motherboard', 'edit':true} %}
 	</div>
 	<div style="width:100%;clear:left;"></div>
-<div class="errors-div"><ul>
-    {% for error in form.vars.errors.form.getErrors(true) %}
-		{% set emsg = error.cause|split('children') %}
-		{% if emsg|length > 1 %}
-			{% set emsg1 = emsg[1]|slice(0, error.cause|split('children')[1]|length - 1) %}
-			{% if emsg1 == "[processorPlatformTypes]" %}
-				<li>{{ emsg1 }} A platform was incompatible with one of the sockets, reselect</li>
-			{% elseif emsg1 == "[processors]" %}
-				<li>{{ emsg1 }} This CPU is incompatible with the selected socket/platform/speed, reselect</li>
-			{% elseif emsg1 == "[coprocessors]" %}
-				<li>{{ emsg1 }} This NPU is incompatible with the selected socket/platform/speed, reselect</li>
-			{% else %}
-				<li>{{ emsg1 }} {{ error.message }}</li>
-			{% endif %}
-		{% endif %}
-    {% endfor %}
-</ul></div>
 <div id="hiddenDiv" style="display: none;">{{ form_end(form)|replace({'</form>': '</div></form>'})|raw }}
 {% endblock %}

@@ -1,5 +1,5 @@
 {% if type == "docs" %}    
-    <div data-controller="collection" style="padding-bottom: 20px;">
+    <div data-controller="collection" style="padding-bottom: 20px;max-width: 1300px;">
 		<div style="padding-top:5px;display: flex;align-items: center;">
 			<img src="{{ absolute_url(asset('build/icons/show/manual.svg')) }}" alt="" width="32" style="padding: 5px;">
 			Documentation: 
@@ -34,7 +34,7 @@
 	</div>
 {% endif %}
 {% if type == "drivers" %}
-    <div data-controller="collection" style="min-width:35vw;padding-bottom: 20px;">
+    <div data-controller="collection" style="padding-bottom: 20px;max-width: 1300px;">
 		<div style="padding-top:5px;">
 			<img src="{{ absolute_url(asset('build/icons/show/hardware.svg')) }}" alt="" width="32" style="vertical-align: middle;padding-bottom: 10px;">
 			<p style="display:inline-block;"><i>Drivers: </i></p>

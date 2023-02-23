@@ -71,35 +71,45 @@
 					{% if motherboard.getCpuSockets() is not empty %}
 					<div class="quick-spec-head">CPU socket{% if motherboard.getCpuSockets()|length > 1 %}s{% endif %}</div>
 					<div class="tag-container">{% for socket in motherboard.getCpuSockets() %}<span class="text-block">{{ socket.getNameAndType}}</span>{% endfor %}</div>
+					{% else %}
+					<div class="quick-spec-head">CPU socket</div><div>Unknown</div>
 					{% endif %}
 					<!-- CPU platform -->
 					{% if motherboard.getProcessorPlatformTypes() is not empty %}
 					<div class="quick-spec-head">CPU platform{% if motherboard.getProcessorPlatformTypes()|length > 1 %}s{% endif %}</div>
 					<div class="tag-container">{% for platform in motherboard.getProcessorPlatformTypes() %}<span class="text-block">{{ platform.getName() }}</span>{% endfor %}</div>
+					{% else %}
+					<div class="quick-spec-head">CPU platform</div><div>Unknown</div>
 					{% endif %}
 					<!-- FSB speed -->
 					{% if motherboard.getCpuSpeed() is not empty %}
 					<div class="quick-spec-head">Supported FSB speed{% if motherboard.getCpuSpeed()|length > 1 %}s{% endif %}</div>
 					<div>{% for frequency in motherboard.getCpuSpeed()|sort((a, b) => a.value <=> b.value) %}{{ frequency.getValueWithUnit() }}{% if not loop.last %}, {% endif %}{% endfor %}</div>
-					{% endif %}
-					<!-- Max system RAM -->
-					{% if motherboard.getMotherboardMaxRams() is not empty %}
-					<div class="quick-spec-head">Supported RAM size</div>
-					<div>{% for maxRam in motherboard.getMotherboardMaxRams() %}
-						{% if maxRam.getMaxRam().getValue() > 1048575 %}{{ maxRam.getMaxRam().getValue() / 1048576 }}&nbsp;GB
-						{% elseif maxRam.getMaxRam().getValue() > 1023 %}{{ maxRam.getMaxRam().getValue() / 1024}}&nbsp;MB
-						{% else %}{{ maxRam.getMaxRam().getValue()}}&nbsp;KB{% endif %}{% if maxRam.getNote() is not null %}<i>({{ maxRam.getNote()}})</i>{% endif %}{% if not loop.last %} / {% endif %}
-					{% endfor %}</div>
-					{% endif %}
-					<!-- Max video RAM -->
-					{% if motherboard.getMaxVideoRam()  is not empty %}
-					<div class="quick-spec-head">Max VRAM</div>
-					<div>{{  motherboard.getMaxVideoRam().getValueWithUnit() }}</div>
+					{% else %}
+					<div class="quick-spec-head">Supported FSB speed</div><div>Unknown</div>
 					{% endif %}
 					<!-- Supported RAM types -->
 					{% if motherboard.getDramType() is not empty %}
 					<div class="quick-spec-head">Supported RAM type{% if motherboard.getDramType()|length > 1 %}s{% endif %}</div>
 					<div>{% for dram in motherboard.getDramType() %}{{ dram.getName() }}{% if not loop.last %}, {% endif %}{% endfor %}</div>
+					{% else %}
+					<div class="quick-spec-head">Supported RAM type</div><div>Unknown</div>
+					{% endif %}
+					<!-- Max system RAM -->
+					<div class="quick-spec-head">Max RAM size</div>
+					{% if motherboard.getMotherboardMaxRams() is not empty %}
+					<div>{% for maxRam in motherboard.getMotherboardMaxRams() %}
+						{% if maxRam.getMaxRam().getValue() > 1048575 %}{{ maxRam.getMaxRam().getValue() / 1048576 }}&nbsp;GB
+						{% elseif maxRam.getMaxRam().getValue() > 1023 %}{{ maxRam.getMaxRam().getValue() / 1024}}&nbsp;MB
+						{% else %}{{ maxRam.getMaxRam().getValue()}}&nbsp;KB{% endif %}{% if maxRam.getNote() is not null %}<i>({{ maxRam.getNote()}})</i>{% endif %}{% if not loop.last %} / {% endif %}
+					{% endfor %}</div>
+					{% else %}
+					<div>Unknown</div>
+					{% endif %}
+					<!-- Max video RAM -->
+					{% if motherboard.getMaxVideoRam()  is not empty %}
+					<div class="quick-spec-head">Max VRAM size</div>
+					<div>{{  motherboard.getMaxVideoRam().getValueWithUnit() }}</div>
 					{% endif %}
 					<!-- Cache -->	
 					{% if motherboard.getCacheSize() is not empty %}
@@ -109,6 +119,8 @@
 						{% elseif cache.getValue() > 1023 %}{{ cache.getValue() / 1024}}&nbsp;KB
 						{% else %}{{ cache.getValue()}}&nbsp;B{% endif %}{% if not loop.last %}, {% endif %}
 					{% endfor %}</div>
+					{% else %}
+					<div class="quick-spec-head">Cache</div><div>None/Integrated in the CPU</div>
 					{% endif %}
 					<!-- PSU connectors -->
 					<div class="quick-spec-head">PSU connector</div>

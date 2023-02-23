@@ -288,6 +288,9 @@ div.editor-row {
 		}
 		&.chip div div.ts-wrapper {
 			width:max(200px,40vw);
+			@media screen and (min-width: 2500px) {
+				max-width: 700px;
+			}
 			div.ts-control{
 				width:100%;
 			}
