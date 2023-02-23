@@ -174,11 +174,16 @@ main {
 	}
 
 	div.title {
+		display: flex;
+		justify-content: center;
 		text-align: center;
 		font-size: 24px;
 		padding: 20px;
 		font-family: $header-font;
 		font-weight: bold;
+		img:hover + div.errors-div{
+			display:block;
+		}
 	}
 
 	a {

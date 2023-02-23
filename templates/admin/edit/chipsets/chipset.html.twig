@@ -4,7 +4,11 @@
 
 {% block body %}
 <form data-controller="chipset--add" name="chipset_form" method="post" enctype="multipart/form-data" data-action="submit->chipset--add#check">
-	<div class="title">Chipset editor</div>
+	<div class="title">Chipset editor
+		{% if form.vars.errors.form.getErrors(true) is not empty %}
+			{% include 'admin/macros/error.html.twig' with {'entity':form.vars.errors.form} %}
+		{% endif %}
+	</div>
 	<!-- MANUF./NAME/PART NO. -->
 	<section class="search-form-grid">
 		<div class="search-form-entry">
@@ -100,10 +104,5 @@
 			</div>
 		</div>
 	</div>
-	<div class="errors-div"><ul>
-		{% for error in form.vars.errors.form.getErrors(true) %}
-		<li>{{ error.message }}</li>
-		{% endfor %}
-	</ul></div>
 	<div id="hiddenDiv" style="display: none;">{{ form_end(form)|replace({'</form>': '</div></form>'})|raw }}
 {% endblock %}

@@ -51,10 +51,15 @@ div.show-nav {
 }
 
 div.errors-div{
-	ul {
-		list-style-type: none;
-		li {border:1px solid yellow;padding:5px;}
-	}
+	display:none;
+	position:absolute;
+	background-color:#640000;
+	border:1px solid #e50000;
+	z-index:2;
+	font-size:16px;
+	margin-top:2.5em;
+	ul{padding-right:20px;}
+	p{padding:0px 10px;}
 }
 
 /* === logging stuf === */

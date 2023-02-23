@@ -5,8 +5,9 @@
 <form data-controller="motherboard--add" name="add_motherboard" method="post" enctype="multipart/form-data" data-action="submit->motherboard--add#check">
 	<div class="title">Motherboard editor
 	{% if form.vars.errors.form.getErrors(true) is not empty or slugError is not empty %}
-		<img src="{{ absolute_url(asset('build/icons/warning.svg')) }}" alt="warning" title="Some errors have occurred, check and try again." width="40" height="40" style="margin-top: -10px;vertical-align: bottom;">
-	{% endif %}</div>
+		{% include 'admin/macros/error.html.twig' with {'entity':form.vars.errors.form} %}
+	{% endif %}
+	</div>
 	<!-- MANUF/TITLE -->
 	<section class="search-form-grid">
 		<div class="search-form-entry">
@@ -28,26 +29,6 @@
 			</div>
 		</div>
 	</section>
-	<div class="errors-div"><ul>
-		{% if slugError is not empty %}
-			<li>{{slugError}}</li>
-		{% endif %}
-		{% for error in form.vars.errors.form.getErrors(true) %}
-			{% set emsg = error.cause|split('children') %}
-			{% if emsg|length > 1 %}
-				{% set emsg1 = emsg[1]|slice(0, error.cause|split('children')[1]|length - 1) %}
-				{% if emsg1 == "[processorPlatformTypes]" %}
-					<li>{{ emsg1 }} A platform was incompatible with one of the sockets, reselect</li>
-				{% elseif emsg1 == "[processors]" %}
-					<li>{{ emsg1 }} This CPU is incompatible with the selected socket/platform/speed, reselect</li>
-				{% elseif emsg1 == "[coprocessors]" %}
-					<li>{{ emsg1 }} This NPU is incompatible with the selected socket/platform/speed, reselect</li>
-				{% else %}
-					<li>{{ emsg1 }} {{ error.message }}</li>
-				{% endif %}
-			{% endif %}
-		{% endfor %}
-	</ul></div>
 	<div class="toolbar" data-controller="show">
 		<button type="button" name="tabs" id="tab-nav-save" data-action="click->motherboard--add#submit"><img src="{{ absolute_url(asset('build/icons/edit.svg')) }}" alt="" width="24" height="24"><span>Save</span></button>
 		{% if is_granted('ROLE_ADMIN') and moboid is not null %}
