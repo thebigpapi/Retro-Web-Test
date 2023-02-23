@@ -58,7 +58,7 @@
 				<!-- DRIVERS -->
 				<div>
 					<img src="{{ absolute_url(asset('build/icons/show/hardware.svg')) }}" alt="" width="32" style="vertical-align: middle;padding-bottom: 10px;">
-					<span><b>Drivers: </b></span>
+					<span><i>Drivers: </i></span>
 					{% if expansion_chip.getDrivers() is not empty %}
 					<span>{{ expansion_chip.getDrivers.count() }}{% if expansion_chip.getDrivers.count() == 1 %} entry{% else %} entries{% endif %}</span>
 					<div class="show-table drv">
@@ -74,7 +74,7 @@
 				<!-- CHIPSET PART DOCS -->
 				<div>
 					<img src="{{ absolute_url(asset('build/icons/show/manual.svg')) }}" alt="" width="32" style="vertical-align: middle;padding-bottom: 10px;">
-					<span><b>Documentation: </b></span>
+					<span><i>Documentation: </i></span>
 					{% set docCount = 0 %}
 					{% if expansion_chip.getDocumentations() is not empty %}
 						{% set moreDocCount = expansion_chip.getDocumentations.count() %}
