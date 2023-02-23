@@ -110,7 +110,7 @@
 	{% if expansion_chip.getImages() is not empty %}
 		{% set lpindex = 0 %}
 		<div class="show-images" id="sh-images">
-			{% for image in expansion_chip.getImages() %}
+			{% for image in expansion_chip.getImages()|sort((a, b) => a.getFileName() <=> b.getFileName()) %}
 				{% set lpindex = lpindex + 1 %}
 				{% include 'macros/images.html.twig' with {'type':'expansionchip', 'entity': image, 'index': lpindex, 'length': expansion_chip.getImages()|length} %}
 			{% endfor %}

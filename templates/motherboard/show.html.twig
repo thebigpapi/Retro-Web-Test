@@ -14,7 +14,7 @@
 {% block opengraph %}
 	{% apply spaceless %}
 	{% if motherboard.getImages() is not empty %}
-		{% for image in motherboard.getImages()|sort((a, b) => b.motherboardImageType <=> a.motherboardImageType) %}
+		{% for image in motherboard.getImages() %}
 			{% if image.motherboardImageType.id in [1, 2] %}
 				<meta property="og:image" content="{{ vich_uploader_asset(image, 'imageFile')}}">
 			{% endif %}

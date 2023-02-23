@@ -162,7 +162,7 @@
 		{% if lplen > 0 %}
 			<div class="show-images" id="sh-images">
 				{% for chipPart in chipset.getChipsetParts()|filter(chipPart => chipPart.getImages() is not empty) %}
-					{% for image in chipPart.getImages() %}
+					{% for image in chipPart.getImages()|sort((a, b) => a.getFileName() <=> b.getFileName()) %}
 						{% set lpindex = lpindex + 1 %}
 						{% include 'macros/images.html.twig' with {'type':'chipset', 'entity': image, 'index': lpindex, 'length': lplen} %}
 					{% endfor %}
