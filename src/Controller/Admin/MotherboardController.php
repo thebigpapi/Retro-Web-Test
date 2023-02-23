@@ -255,6 +255,11 @@ class MotherboardController extends AbstractController
 
     private function renderMotherboardForm(Request $request, Motherboard $mobo, ChipsetRepository $chipsetRepository, CpuSocketRepository $cpuSocketRepository, EntityManagerInterface $entityManager)
     {
+        // if mobo exists, grab current slug for a later check
+        $currentSlug = "";
+        if($mobo->getId()){
+            $currentSlug = $mobo->getSlug();
+        }
         /**
          * @var array<Chipset>
          */
@@ -346,16 +351,40 @@ class MotherboardController extends AbstractController
                 $mobo->setManufacturer(null);
             }
 
-            // If slug doesn't exist yet we can create the board
-            if (!$motherboardRepository->findSlug($mobo->getSlug()) && !$idRedirectionRepository->checkRedirectionExists($mobo->getSlug(), 'uh19_slug')) {
-                $entityManager->persist($mobo);
-
-                $entityManager->flush();
-
-                return $this->redirectToRoute('motherboard_show', array('id' => $mobo->getId()));
-            } else {
-                $slugError = "Slug " . $mobo->getSlug() . " already exists.";
+            // slug duplicate checker
+            if(!$mobo->getId()){
+                // mobo doesn't exist, check if slug already exists
+                if (!$motherboardRepository->findSlug($mobo->getSlug()) && !$idRedirectionRepository->checkRedirectionExists($mobo->getSlug(), 'uh19_slug')) {
+                    // slug doesn't exist
+                    $entityManager->persist($mobo);
+                    $entityManager->flush();
+                    return $this->redirectToRoute('motherboard_show', array('id' => $mobo->getId()));
+                } else {
+                    //slug already exists, throw an error
+                    $slugError = "Slug " . $mobo->getSlug() . " already exists.";
+                }
             }
+            else{
+                // mobo exists, checking for duplicate slug
+                if($currentSlug == $mobo->getSlug()){
+                    // slug did not change since last edit
+                    $entityManager->persist($mobo);
+                    $entityManager->flush();
+                    return $this->redirectToRoute('motherboard_show', array('id' => $mobo->getId()));
+                }
+                else{
+                    // slug changed since last edit, checking for duplicates
+                    if (!$motherboardRepository->findSlug($mobo->getSlug()) && !$idRedirectionRepository->checkRedirectionExists($mobo->getSlug(), 'uh19_slug')) {
+                        // new slug doesn't exist
+                        $entityManager->persist($mobo);
+                        $entityManager->flush();
+                        return $this->redirectToRoute('motherboard_show', array('id' => $mobo->getId()));
+                    } else {
+                        // new slug already exists, throw an error
+                        $slugError = "Slug " . $mobo->getSlug() . " already exists.";
+                    }
+                }
+            }   
         }
         return $this->render('admin/edit/motherboards/motherboard.html.twig', [
             'form' => $form->createView(),
