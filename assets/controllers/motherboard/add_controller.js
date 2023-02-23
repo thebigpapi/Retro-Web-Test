@@ -54,6 +54,7 @@ export default class extends Controller {
 
         let error = false;
         let errorMessage = "";
+        
         let manualList = document.getElementById('manuals-fields-list').children;
         for (let manual of manualList) {
             if (manual.children[2].children[0].files[0] == null) {
@@ -126,16 +127,8 @@ export default class extends Controller {
             errorMessage += "Known issues has duplicate entries!\n";
             error = true;
         }
-        if (_this.checkList('processors-fields-list')) {
-            errorMessage += "CPU has duplicate entries!\n";
-            error = true;
-        }
         if (_this.checkList('cpuSpeed-fields-list')) {
             errorMessage += "FSB speed has duplicate entries!\n";
-            error = true;
-        }
-        if (_this.checkList('coprocessors-fields-list')) {
-            errorMessage += "NPU has duplicate entries!\n";
             error = true;
         }
         if (error) {
