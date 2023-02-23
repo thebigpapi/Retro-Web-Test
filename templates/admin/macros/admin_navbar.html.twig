@@ -4,11 +4,13 @@
 
 {% if path == "processingunits" %}
 	{% set name = "processor" %}
+{% elseif path == "miscs" %}
+	{% set name = "name" %}
 {% else %}
 	{% if entityName == "expansionchip" %}
 		{% set name = "expansion_chip" %}
 	{% elseif entityName == "videochip" %}
-		{% set name = "video_chip" %}
+		{% set name = "video_chip" %}	
 	{% else %}
 		{% set name = path|slice(0, path|length -1) %}
 	{% endif %}
