@@ -6,6 +6,7 @@ use App\Entity\Chipset;
 use App\Entity\Manufacturer;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Generator;
 
 /**
  * @method Chipset|null find($id, $lockMode = null, $lockVersion = null)
@@ -88,17 +89,21 @@ class ChipsetRepository extends ServiceEntityRepository
         $entityManager = $this->getEntityManager();
         $likematch = "$letter%";
         $query = $entityManager->createQuery(
-            "SELECT chip, chipPart, chipPartMan, cal
+            "SELECT chip, chipPart, chipPartMan, cal, UPPER(COALESCE(man.shortName, man.name)) manNameSort, UPPER(chip.name) chipNameSort
             FROM App\Entity\Chipset chip
             LEFT JOIN chip.chipsetParts chipPart
             LEFT JOIN chipPart.manufacturer chipPartMan
             LEFT JOIN chip.chipsetAliases cal,
             App\Entity\Manufacturer man 
-            WHERE chip.manufacturer=man AND COALESCE(man.shortName, man.name) like :likeMatch
-            ORDER BY man.name ASC, chip.name ASC"
+            WHERE chip.manufacturer=man AND UPPER(COALESCE(man.shortName, man.name)) like :likeMatch
+            ORDER BY manNameSort ASC, chipNameSort ASC"
         )->setParameter('likeMatch', $likematch);
 
-        return $query->getResult();
+        $outputArray = [];
+        foreach ($query->getResult() as $res) {
+            $outputArray[] = $res[0];
+        };
+        return $outputArray;
     }
 
     /**

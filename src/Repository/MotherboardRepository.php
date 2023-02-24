@@ -76,7 +76,7 @@ class MotherboardRepository extends ServiceEntityRepository
             $query = $entityManager->createQuery(
                 "SELECT COALESCE(man.shortName, man.name) as manName, mobo.name, mobo.id, UPPER(COALESCE(man.shortName, man.name)) as manNameSort, UPPER(mobo.name) as moboNameSort
                 FROM App\Entity\Motherboard mobo, App\Entity\Manufacturer man 
-                WHERE mobo.manufacturer=man AND COALESCE(man.shortName, man.name) like :likeMatch
+                WHERE mobo.manufacturer=man AND UPPER(COALESCE(man.shortName, man.name)) like :likeMatch
                 ORDER BY manNameSort ASC, moboNameSort ASC"
             )->setParameter('likeMatch', $likematch);
         }

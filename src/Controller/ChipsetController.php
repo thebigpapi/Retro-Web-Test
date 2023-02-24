@@ -125,21 +125,12 @@ class ChipsetController extends AbstractController
 
 
     #[Route(path: '/chipsets/index/{letter}', name: 'chipsetindex', requirements: ['letter' => '\w'])]
-    public function index(PaginatorInterface $paginator, string $letter, ChipsetRepository $chipsetRepository, int $page = 1)
+    public function index(PaginatorInterface $paginator, string $letter, ChipsetRepository $chipsetRepository, Request $request)
     {
         $data = $chipsetRepository->findAllAlphabetic($letter);
-        usort(
-            $data,
-            function (Chipset $a, Chipset $b) {
-                if ($a->getManufacturer() === $b->getManufacturer()) {
-                    return 0;
-                }
-                return ($a->getManufacturer() < $b->getManufacturer()) ? -1 : 1;
-            }
-        );
         $chipsets = $paginator->paginate(
             $data,
-            $page,
+            $request->query->getInt('page', 1),
             $this->getParameter('app.pagination.max')
         );
         return $this->render('chipset/index.html.twig', [
