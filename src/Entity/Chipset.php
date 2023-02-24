@@ -395,7 +395,7 @@ class Chipset
         } else {
             $strBuilder .= "[Unknown]";
         }
-        $strBuilder .= " " . $this->getName();
+        $strBuilder .= " " . $this->getFullReference();
         return $strBuilder;
     }
 
