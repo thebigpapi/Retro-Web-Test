@@ -54,7 +54,9 @@
 			<div class="show-general" id="sh-general">
 				<div class="quick-spec-table">
 					<!-- Chipset parts -->
-					<div class="quick-spec-head">Chipset parts</div>
+					<div class="quick-spec-head">
+						<img src="{{ absolute_url(asset('build/icons/show/chipset.svg')) }}" alt="chip" width="24" height="24">Chipset parts
+					</div>
 					{% if chipset.getChipsetParts() is not empty %}
 					<div class="tag-container">
 						{% for part in chipset.getChipsetParts() %}
@@ -63,10 +65,14 @@
 					</div>
 					{% else %}<div>Unknown</div>{% endif %}
 					<!-- Release date -->
-					<div class="quick-spec-head">Release date</div>
+					<div class="quick-spec-head">
+						<img src="{{ absolute_url(asset('build/icons/show/calendar.svg')) }}" alt="date" width="24" height="24">Release date
+					</div>
 					<div>{{ chipset.getReleaseDate() ? chipset.getReleaseDate() : 'Unknown' }}</div>
 					<!-- Actions -->
-					<div class="quick-spec-head">Actions</div>
+					<div class="quick-spec-head">
+						<img src="{{ absolute_url(asset('build/icons/show/cursor.svg')) }}" alt="act" width="24" height="24">Actions
+					</div>
 					<div>
 					{% if chipset.getEncyclopediaLink() is not null %}
 					<a class='button-widget' href="{{ chipset.getEncyclopediaLink() }}">

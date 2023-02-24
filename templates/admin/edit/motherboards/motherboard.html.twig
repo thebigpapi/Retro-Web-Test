@@ -81,13 +81,7 @@
 								</div>
 							{% endfor %}
 						</div>
-					</div><hr><!-- Max video RAM -->
-					<div class="quick-spec-table" style="padding:0;">
-						<div class="quick-spec-head editor">Max video RAM</div>
-						<div class="editor-row nopad"><div class="editor-form-widget">
-							<div>{{ form_widget(form.maxVideoRam, {'attr': {'style': 'width:15em'}})|replace({'<option value="">': '<option label=" " value="">'})|raw }}</div>
-						</div></div>
-					</div><!-- Max system RAM -->
+					</div><hr><!-- Max system RAM -->
 					<div class="quick-spec-table" data-controller="collection" style="padding:0;">
 						<div class="quick-spec-head editor"><div>Max system RAM</div>
 						{% include 'macros/buttons.html.twig' with {'type':'add', 'action': 'motherboardMaxRams'} %}</div>
@@ -241,6 +235,13 @@
 								</div>
 							{% endfor %}
 						</div>
+					</div>
+					<hr><!-- Max video RAM -->
+					<div class="quick-spec-table" style="padding:0;">
+						<div class="quick-spec-head editor">Max video RAM</div>
+						<div class="editor-row nopad"><div class="editor-form-widget">
+							<div>{{ form_widget(form.maxVideoRam, {'attr': {'style': 'width:15em'}})|replace({'<option value="">': '<option label=" " value="">'})|raw }}</div>
+						</div></div>
 					</div>
 				</div>
 				<!-- DOWNLOADS -->

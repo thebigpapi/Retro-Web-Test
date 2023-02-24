@@ -69,7 +69,7 @@
 					{% endif %}
 					<!-- CPU socket -->
 					<div class="quick-spec-head">
-						<img src="{{ absolute_url(asset('build/icons/show/486.svg')) }}" alt="cpu" width="24" height="24">CPU socket{% if motherboard.getCpuSockets()|length > 1 %}s{% endif %}
+						<img src="{{ absolute_url(asset('build/icons/show/cpu_pins.svg')) }}" alt="cpu" width="24" height="24">CPU socket{% if motherboard.getCpuSockets()|length > 1 %}s{% endif %}
 					</div>
 					{% if motherboard.getCpuSockets() is not empty %}
 					<div class="tag-container">{% for socket in motherboard.getCpuSockets() %}<span class="text-block">{{ socket.getNameAndType}}</span>{% endfor %}</div>
@@ -78,7 +78,7 @@
 					{% endif %}
 					<!-- CPU platform -->
 					<div class="quick-spec-head">
-						<img src="{{ absolute_url(asset('build/icons/show/cpu_pins.svg')) }}" alt="cpu" width="24" height="24">CPU platform{% if motherboard.getProcessorPlatformTypes()|length > 1 %}s{% endif %}
+						<img src="{{ absolute_url(asset('build/icons/show/486.svg')) }}" alt="cpu" width="24" height="24">CPU platform{% if motherboard.getProcessorPlatformTypes()|length > 1 %}s{% endif %}
 					</div>
 					{% if motherboard.getProcessorPlatformTypes() is not empty %}
 					<div class="tag-container">{% for platform in motherboard.getProcessorPlatformTypes() %}<span class="text-block">{{ platform.getName() }}</span>{% endfor %}</div>
@@ -116,21 +116,16 @@
 					{% endif %}
 					<!-- Max system RAM -->
 					<div class="quick-spec-head">
-						<img src="{{ absolute_url(asset('build/icons/admin/ram.svg')) }}" alt="chip" width="24" height="24">Max RAM size
+						<img src="{{ absolute_url(asset('build/icons/show/ram_multi.svg')) }}" alt="ram" width="24" height="24">Max RAM size
 					</div>
 					{% if motherboard.getMotherboardMaxRams() is not empty %}
 					<div class="tag-container">{% for maxRam in motherboard.getMotherboardMaxRams() %}<span class="text-block">{{ maxRam.getMaxRam().getValueWithUnit()}}{% if maxRam.getNote() is not null %}<i>({{ maxRam.getNote()}})</i>{% endif %}</span>{% endfor %}</div>
 					{% else %}
 					<div>Unknown</div>
 					{% endif %}
-					<!-- Max video RAM -->
-					{% if motherboard.getMaxVideoRam()  is not empty %}
-					<div class="quick-spec-head">Max VRAM size</div>
-					<div>{{  motherboard.getMaxVideoRam().getValueWithUnit() }}</div>
-					{% endif %}
 					<!-- PSU connectors -->
 					<div class="quick-spec-head">
-						<img src="{{ absolute_url(asset('build/icons/show/power.svg')) }}" alt="chip" width="24" height="24">PSU connector
+						<img src="{{ absolute_url(asset('build/icons/show/power.svg')) }}" alt="pwr" width="24" height="24">PSU connector
 					</div>
 					{% if motherboard.getPsuConnectors() is not empty %}
 					<div class="tag-container">{% for psu in motherboard.getPsuConnectors() %}<span class="text-block">{% if psu.getWebsite() is not null %}<a href="{{ psu.getWebsite() }}">{{ psu.getName() }}</a>{% else %}{{ psu.getName() }}{% endif %}</span>{% endfor %}</div>
@@ -138,15 +133,15 @@
 					<div>Unknown</div>
 					{% endif %}
 					<!-- Form factor -->
-					<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/show/dimension.svg')) }}" alt="chip" width="24" height="24">Form factor</div>
+					<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/show/motherboard.svg')) }}" alt="mobo" width="24" height="24">Form factor</div>
 					<div>{{ motherboard.getFormFactor() ? motherboard.getFormFactor().getName() : 'Unknown' }}</div>
 					<!-- Dimensions -->
-					<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/show/dimension.svg')) }}" alt="chip" width="24" height="24">Dimensions</div>
+					<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/show/dimension.svg')) }}" alt="dim" width="24" height="24">Dimensions</div>
 					<div>{{ motherboard.getDimensions() ?: 'Unknown' }}</div>
 				</div>
 			</div>
 				<div class="full-spec">
-					<div class="full-spec-head"><img src="{{ absolute_url(asset('build/icons/admin/connector.svg')) }}" alt="chip" width="24" height="24"><b>I/O ports</b></div>
+					<div class="full-spec-head"><img src="{{ absolute_url(asset('build/icons/admin/connector.svg')) }}" alt="conn" width="24" height="24"><b>I/O ports</b></div>
 					<div class="list-table">			
 						{% if motherboard.getMotherboardIoPorts() is not empty %}				
 							{% for port in motherboard.getMotherboardIoPorts()|sort %}
@@ -155,7 +150,7 @@
 						{% else %}<div class="list-table-head"></div><div>N/A</div>{% endif %}
 					</div>
 
-					<div class="full-spec-head"><img src="{{ absolute_url(asset('build/icons/show/card.svg')) }}" alt="chip" width="24" height="24"><b>Expansion slots</b></div>
+					<div class="full-spec-head"><img src="{{ absolute_url(asset('build/icons/show/card.svg')) }}" alt="card" width="24" height="24"><b>Expansion slots</b></div>
 					<div class="list-table">			
 						{% if motherboard.getMotherboardExpansionSlots() is not empty %}				
 							{% for slot in motherboard.getMotherboardExpansionSlots()|sort %}
@@ -196,7 +191,7 @@
 					{% if motherboard.getChipset() is not empty %}
 						<div><a href="{{ path('app_homepage') }}chipsets/{{ motherboard.getChipset().getId()}}">{{ motherboard.getChipset().getFullName() }}</a></div>
 						{% if motherboard.getChipset().getChipsetParts() is not empty %}
-						<div class="quick-spec-head">Chipset parts</div>
+						<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/show/chipset.svg')) }}" alt="chipset" width="24" height="24">Chipset parts</div>
 						<div class="tag-container">
 						{% for chipPart in motherboard.getChipset().getChipsetParts() %}
 							<span class="text-block">{{ chipPart.getFullName() }}</span>
@@ -213,6 +208,11 @@
 								{% if loop.index == motherboard.getExpansionChips()|filter(a => a.getType().getName() == type.getName())|length %}</div>{% endif %}
 							{% endfor %}
 						{% endfor %}
+					{% endif %}
+					<!-- Max video RAM -->
+					{% if motherboard.getMaxVideoRam()  is not empty %}
+					<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/show/ram_multi.svg')) }}" alt="ram" width="24" height="24">Max VRAM size</div>
+					<div>{{  motherboard.getMaxVideoRam().getValueWithUnit() }}</div>
 					{% endif %}
 				</div>
 			</div>
