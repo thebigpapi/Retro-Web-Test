@@ -3,27 +3,35 @@
 {% from 'macros/largeFile.html.twig' import header as driverHeader %}
 
 {% block title %}
-	{{ chipset.getFullName() }}
+	{{ chipset.getPrettyTitle() }} - The Retro Web
 {% endblock %}
 {% block metatags %}
-	<meta name="description" content="Chipset:{{ chipset.getFullName() }} {{ chipset.getParts()}} Release date:{% if chipset.getReleaseDate() is not null %}{{ chipset.getReleaseDate() }}{% else %}unknown{% endif %}">
+	<meta name="description" content="{{ chipset.getMetaDescription() }}">
+	<link rel="canonical" hreflang="x-default" href="{{ absolute_url(path('chipset_show', {id: chipset.getId()})) }}"/>
 {% endblock %}
 
 {% block opengraph %}
 	{% apply spaceless %}
-	{% if chipset.getChipsetParts() is not empty %}
-		{% for chipPart in chipset.getChipsetParts()|filter(chipPart => chipPart.getImages() is not empty)|slice(0,1) %}
-			{% for image in chipPart.getImages()|slice(0,1) %}
-				<meta property="og:image" content="{{ vich_uploader_asset(image, 'imageFile')}}">
+		<meta name="twitter:card" content="summary">
+		<meta property="og:site_name" content="The Retro Web">
+		<meta property="og:type" content="website">
+		<meta name="twitter:title" content="{{ chipset.getPrettyTitle() }}">
+		<meta property="og:title" content="{{ chipset.getPrettyTitle() }}">
+		<meta name="twitter:description" content="{{ chipset.getMetaDescription() }}">
+		<meta property="og:description" content="{{ chipset.getMetaDescription() }}">
+		<meta property="og:url" content="{{ absolute_url(path('chipset_show', {id: chipset.getId()})) }}">
+		{% if chipset.getChipsetParts() is not empty %}
+			{% for chipPart in chipset.getChipsetParts()|filter(chipPart => chipPart.getImages() is not empty)|slice(0,1) %}
+				{% for image in chipPart.getImages()|slice(0,1) %}
+					<meta property="og:image" content="{{ vich_uploader_asset(image, 'imageFile')}}">
+					<meta name="twitter:image" content="{{ vich_uploader_asset(image, 'imageFile')}}">
+				{% endfor %}
 			{% endfor %}
-		{% endfor %}
-	{% else %}
-		<meta property="og:image" content="{{ absolute_url(asset('build/images/logo.webp')) }}">
-	{% endif %}
-	<meta property="og:title" content="{{ chipset.getFullName() }}">
-	<meta property="og:description" content="Get chipset info, images and drivers for {{ chipset.getFullName() }}!">
+		{% else %}
+			<meta name="twitter:image" content="{{ absolute_url(asset('build/images/motherboard/image-missing.webp')) }}">
+			<meta property="og:image" content="{{ absolute_url(asset('build/images/motherboard/image-missing.webp')) }}">
+		{% endif %}
 	{% endapply %}
-	<link rel="alternate" hreflang="x-default" href="{{ absolute_url(path('chipset_show', {id: chipset.getId()})) }}"/>
 {% endblock %}
 
 {% block body %}

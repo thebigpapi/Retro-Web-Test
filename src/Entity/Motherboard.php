@@ -862,23 +862,11 @@ class Motherboard
         $strBuilder .= " is a motherboard based on the ";
         $chipData = $this->getChipset();
         if ($chipData != null) {
-            $chipMfgData = $chipData->getManufacturer();
-            if ($chipMfgData != null) {
-                $strBuilder .= $chipMfgData->getShortNameIfExist() . " ";
-            }
-            $chipMdlData = $chipData->getPartNo();
-            if ($chipMdlData != null) {
-
-            } else {
-                $strBuilder .= "[Unidentified]";
-            }
-            $strBuilder .= $chipData->getShortNameIfExist();
+            $strBuilder .= $chipData->getPrettyTitle();
         } else {
             $strBuilder .= "[Unidentified]";
         }
-        $strBuilder .= " chipset.";
-        $strBuilder .= " Get specs, BIOS, documentation and more!"
-
+        $strBuilder .= " chipset. Get specs, BIOS, documentation and more!";
         return $strBuilder;
     }
 }
