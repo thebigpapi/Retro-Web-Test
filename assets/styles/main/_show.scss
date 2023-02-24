@@ -155,6 +155,14 @@ div.main-strip {
 }
 div.nopad{ padding:0; }
 
+div.quick-spec-split{
+    display: grid;
+    grid-template-columns: [first] 50% [second] 50% [end];
+    @media (max-width: 1200px) {
+		display: block;
+	}
+}
+
 div.quick-spec-table {
     display: grid;
     grid-template-columns: [first] 180px [second] auto [end];
@@ -167,7 +175,7 @@ div.quick-spec-table {
         padding: 5px 0px 5px;
         vertical-align: middle;
         align-self: center;
-        &.ts-wrapper{  padding: 2px 0px 2px;}
+        &.ts-wrapper{padding: 2px 0px 2px;}
         &.ts-control{padding:0;}
     }
     > div > div.editor-row > div.ts-wrapper {
@@ -180,10 +188,13 @@ div.quick-spec-table {
 		}
 	}
     div.quick-spec-head {
-        //text-align: right;
         font-style: italic;
-        a {font-style: normal;}
         padding-right: 10px;
+        a {font-style: normal;}
+        img{
+            vertical-align: middle;
+            padding-right: 5px;
+        }
     }
     div.quick-spec-head.editor {
         align-self: initial;
@@ -208,6 +219,9 @@ div.full-spec {
         justify-content: left;
         padding-left: 50px;
         align-items: center;
+        img{
+            padding-right: 5px;;
+        }
 
         @media (prefers-color-scheme: dark) {
             background-color: $accent-bkg-dark;

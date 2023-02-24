@@ -61,48 +61,70 @@
 		<!-- GENERAL -->
 		<div class="internal-content">
 			<div class="show-general" id="sh-general">
+			<div class="quick-spec-split">
 				<div class="quick-spec-table">
 					<!-- Chipset -->
-					<div class="quick-spec-head">Chipset</div>
+					<div class="quick-spec-head">
+						<img src="{{ absolute_url(asset('build/icons/show/chipset.svg')) }}" alt="chip" width="24" height="24">Chipset
+					</div>
 					{% if motherboard.getChipset() is not empty %}
 						<div><a href="{{ path('chipset_show', {id: motherboard.getChipset().getId()}) }}">{{ motherboard.getChipset().getFullName() }}</a></div>
-					{% else %}<div>Unknown</div>{% endif %}
+					{% else %}
+					<div>Unknown</div>
+					{% endif %}
 					<!-- CPU socket -->
+					<div class="quick-spec-head">
+						<img src="{{ absolute_url(asset('build/icons/show/486.svg')) }}" alt="cpu" width="24" height="24">CPU socket{% if motherboard.getCpuSockets()|length > 1 %}s{% endif %}
+					</div>
 					{% if motherboard.getCpuSockets() is not empty %}
-					<div class="quick-spec-head">CPU socket{% if motherboard.getCpuSockets()|length > 1 %}s{% endif %}</div>
 					<div class="tag-container">{% for socket in motherboard.getCpuSockets() %}<span class="text-block">{{ socket.getNameAndType}}</span>{% endfor %}</div>
 					{% else %}
-					<div class="quick-spec-head">CPU socket</div><div>Unknown</div>
+					<div>Unknown</div>
 					{% endif %}
 					<!-- CPU platform -->
+					<div class="quick-spec-head">
+						<img src="{{ absolute_url(asset('build/icons/show/cpu_pins.svg')) }}" alt="cpu" width="24" height="24">CPU platform{% if motherboard.getProcessorPlatformTypes()|length > 1 %}s{% endif %}
+					</div>
 					{% if motherboard.getProcessorPlatformTypes() is not empty %}
-					<div class="quick-spec-head">CPU platform{% if motherboard.getProcessorPlatformTypes()|length > 1 %}s{% endif %}</div>
 					<div class="tag-container">{% for platform in motherboard.getProcessorPlatformTypes() %}<span class="text-block">{{ platform.getName() }}</span>{% endfor %}</div>
 					{% else %}
-					<div class="quick-spec-head">CPU platform</div><div>Unknown</div>
+					<div>Unknown</div>
 					{% endif %}
 					<!-- FSB speed -->
+					<div class="quick-spec-head">
+						<img src="{{ absolute_url(asset('build/icons/show/speed.svg')) }}" alt="speed" width="24" height="24">FSB speed{% if motherboard.getCpuSpeed()|length > 1 %}s{% endif %}
+					</div>
 					{% if motherboard.getCpuSpeed() is not empty %}
-					<div class="quick-spec-head">Supported FSB speed{% if motherboard.getCpuSpeed()|length > 1 %}s{% endif %}</div>
-					<div>{% for frequency in motherboard.getCpuSpeed()|sort((a, b) => a.value <=> b.value) %}{{ frequency.getValueWithUnit() }}{% if not loop.last %}, {% endif %}{% endfor %}</div>
+					<div class="tag-container">{% for frequency in motherboard.getCpuSpeed()|sort((a, b) => a.value <=> b.value) %}<span class="text-block">{{ frequency.getValueWithUnit() }}</span>{% endfor %}</div>
 					{% else %}
-					<div class="quick-spec-head">Supported FSB speed</div><div>Unknown</div>
+					<div>Unknown</div>
 					{% endif %}
-					<!-- Supported RAM types -->
-					{% if motherboard.getDramType() is not empty %}
-					<div class="quick-spec-head">Supported RAM type{% if motherboard.getDramType()|length > 1 %}s{% endif %}</div>
-					<div>{% for dram in motherboard.getDramType() %}{{ dram.getName() }}{% if not loop.last %}, {% endif %}{% endfor %}</div>
+					<!-- Cache -->	
+					<div class="quick-spec-head">
+						<img src="{{ absolute_url(asset('build/icons/show/chip.svg')) }}" alt="chip" width="24" height="24">Cache
+					</div>
+					{% if motherboard.getCacheSize() is not empty %}
+					<div class="tag-container">{% for cache in motherboard.getCacheSize()|sort((a, b) => a.value <=> b.value) %}<span class="text-block">{{ cache.getValueWithUnit()}}</span>{% endfor %}</div>
 					{% else %}
-					<div class="quick-spec-head">Supported RAM type</div><div>Unknown</div>
+					<div>None/Integrated in the CPU</div>
+					{% endif %}
+				</div>
+				<div class="quick-spec-table">
+					<!-- Supported RAM types -->
+					<div class="quick-spec-head">
+						<img src="{{ absolute_url(asset('build/icons/admin/ram.svg')) }}" alt="ram" width="24" height="24">RAM type{% if motherboard.getDramType()|length > 1 %}s{% endif %}
+					</div>
+					{% if motherboard.getDramType() is not empty %}
+					<div>{% for dram in motherboard.getDramType() %}<span class="text-block">{{ dram.getName() }}</span>{% endfor %}</div>
+					{% else %}
+					<div>Unknown</div>
 					{% endif %}
 					<!-- Max system RAM -->
-					<div class="quick-spec-head">Max RAM size</div>
+					<div class="quick-spec-head">
+						<img src="{{ absolute_url(asset('build/icons/admin/ram.svg')) }}" alt="chip" width="24" height="24">Max RAM size
+					</div>
 					{% if motherboard.getMotherboardMaxRams() is not empty %}
-					<div>{% for maxRam in motherboard.getMotherboardMaxRams() %}
-						{% if maxRam.getMaxRam().getValue() > 1048575 %}{{ maxRam.getMaxRam().getValue() / 1048576 }}&nbsp;GB
-						{% elseif maxRam.getMaxRam().getValue() > 1023 %}{{ maxRam.getMaxRam().getValue() / 1024}}&nbsp;MB
-						{% else %}{{ maxRam.getMaxRam().getValue()}}&nbsp;KB{% endif %}{% if maxRam.getNote() is not null %}<i>({{ maxRam.getNote()}})</i>{% endif %}{% if not loop.last %} / {% endif %}
-					{% endfor %}</div>
+					<div class="tag-container">{% for maxRam in motherboard.getMotherboardMaxRams() %}<span class="text-block">{{ maxRam.getMaxRam().getValueWithUnit()}}{% if maxRam.getNote() is not null %}<i>({{ maxRam.getNote()}})</i>{% endif %}</span>{% endfor %}</div>
 					{% else %}
 					<div>Unknown</div>
 					{% endif %}
@@ -111,30 +133,25 @@
 					<div class="quick-spec-head">Max VRAM size</div>
 					<div>{{  motherboard.getMaxVideoRam().getValueWithUnit() }}</div>
 					{% endif %}
-					<!-- Cache -->	
-					{% if motherboard.getCacheSize() is not empty %}
-					<div class="quick-spec-head">Cache</div>
-					<div>{% for cache in motherboard.getCacheSize()|sort((a, b) => a.value <=> b.value) %}
-						{% if cache.getValue() > 1048575 %}{{ cache.getValue() / 1048576 }}&nbsp;MB
-						{% elseif cache.getValue() > 1023 %}{{ cache.getValue() / 1024}}&nbsp;KB
-						{% else %}{{ cache.getValue()}}&nbsp;B{% endif %}{% if not loop.last %}, {% endif %}
-					{% endfor %}</div>
-					{% else %}
-					<div class="quick-spec-head">Cache</div><div>None/Integrated in the CPU</div>
-					{% endif %}
 					<!-- PSU connectors -->
-					<div class="quick-spec-head">PSU connector</div>
-					<div>{% if motherboard.getPsuConnectors() is not empty %}
-					{% for psu in motherboard.getPsuConnectors() %}{% if psu.getWebsite() is not null %}<a href="{{ psu.getWebsite() }}">{{ psu.getName() }}</a>{% else %}{{ psu.getName() }}{% endif %}{% if not loop.last %}, {% endif %}{% endfor %}{% else %}Unknown{% endif %}</div>
+					<div class="quick-spec-head">
+						<img src="{{ absolute_url(asset('build/icons/show/power.svg')) }}" alt="chip" width="24" height="24">PSU connector
+					</div>
+					{% if motherboard.getPsuConnectors() is not empty %}
+					<div class="tag-container">{% for psu in motherboard.getPsuConnectors() %}<span class="text-block">{% if psu.getWebsite() is not null %}<a href="{{ psu.getWebsite() }}">{{ psu.getName() }}</a>{% else %}{{ psu.getName() }}{% endif %}</span>{% endfor %}</div>
+					{% else %}
+					<div>Unknown</div>
+					{% endif %}
 					<!-- Form factor -->
-					<div class="quick-spec-head">Form factor</div>
+					<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/show/dimension.svg')) }}" alt="chip" width="24" height="24">Form factor</div>
 					<div>{{ motherboard.getFormFactor() ? motherboard.getFormFactor().getName() : 'Unknown' }}</div>
 					<!-- Dimensions -->
-					<div class="quick-spec-head">Dimensions</div>
+					<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/show/dimension.svg')) }}" alt="chip" width="24" height="24">Dimensions</div>
 					<div>{{ motherboard.getDimensions() ?: 'Unknown' }}</div>
 				</div>
+			</div>
 				<div class="full-spec">
-					<div class="full-spec-head"><b>I/O ports</b></div>
+					<div class="full-spec-head"><img src="{{ absolute_url(asset('build/icons/admin/connector.svg')) }}" alt="chip" width="24" height="24"><b>I/O ports</b></div>
 					<div class="list-table">			
 						{% if motherboard.getMotherboardIoPorts() is not empty %}				
 							{% for port in motherboard.getMotherboardIoPorts()|sort %}
@@ -143,7 +160,7 @@
 						{% else %}<div class="list-table-head"></div><div>N/A</div>{% endif %}
 					</div>
 
-					<div class="full-spec-head"><b>Expansion slots</b></div>
+					<div class="full-spec-head"><img src="{{ absolute_url(asset('build/icons/show/card.svg')) }}" alt="chip" width="24" height="24"><b>Expansion slots</b></div>
 					<div class="list-table">			
 						{% if motherboard.getMotherboardExpansionSlots() is not empty %}				
 							{% for slot in motherboard.getMotherboardExpansionSlots()|sort %}
@@ -178,7 +195,9 @@
 			<div class="show-expchips" id="sh-expchips">
 				<div class="quick-spec-table">
 					<!-- Chipset w/parts -->
-					<div class="quick-spec-head">Chipset</div>
+					<div class="quick-spec-head">
+						<img src="{{ absolute_url(asset('build/icons/show/chipset.svg')) }}" alt="chipset" width="24" height="24">Chipset
+					</div>
 					{% if motherboard.getChipset() is not empty %}
 						<div><a href="{{ path('app_homepage') }}chipsets/{{ motherboard.getChipset().getId()}}">{{ motherboard.getChipset().getFullName() }}</a></div>
 						{% if motherboard.getChipset().getChipsetParts() is not empty %}
@@ -194,7 +213,7 @@
 					{% if motherboard.getExpansionChips() is not empty %}
 						{% for type in expansionchiptype %}
 							{% for chip in motherboard.getExpansionChips()|filter(a => a.getType().getName() == type.getName())%}
-								{% if loop.first %}<div class="quick-spec-head">{{chip.getType().getName()}} chips</div><div>{% endif %}
+								{% if loop.first %}<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/show/chip.svg')) }}" alt="chip" width="24" height="24">{{chip.getType().getName()}} chips</div><div>{% endif %}
 								<a href="{{ path('expansion_chip_show', {id: chip.getId()}) }}"><span class="text-block">{{ chip.getNameWithManufacturer() }}</span></a>
 								{% if loop.index == motherboard.getExpansionChips()|filter(a => a.getType().getName() == type.getName())|length %}</div>{% endif %}
 							{% endfor %}

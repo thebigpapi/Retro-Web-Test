@@ -40,11 +40,7 @@ class CpuSpeed
     }
     public function getValueWithUnit(): ?string
     {
-        if ($this->value > 1000) {
-            return ($this->value / 1000) . 'GHz';
-        } else {
-            return $this->value . 'MHz';
-        }
+        return $this->value . 'MHz';
     }
     public function getValue(): ?float
     {
