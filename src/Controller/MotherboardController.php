@@ -435,14 +435,14 @@ class MotherboardController extends AbstractController
         PaginatorInterface $paginator,
         string $letter,
         MotherboardRepository $motherboardRepository,
-        int $page = 1
+        Request $request
     ): Response {
         $letter === "?" ? $letter = "" : "";
         $data = $motherboardRepository->findAllAlphabetic($letter);
 
         $motherboards = $paginator->paginate(
             $data,
-            $page,
+            $request->query->getInt('page', 1),
             $this->getParameter('app.pagination.max')
         );
 

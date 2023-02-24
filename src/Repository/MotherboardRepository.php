@@ -65,19 +65,19 @@ class MotherboardRepository extends ServiceEntityRepository
         $entityManager = $this->getEntityManager();
         if (empty($letter)) {
             $query = $entityManager->createQuery(
-                "SELECT 'Unknown' as manName, mobo.name, mobo.id
+                "SELECT 'Unknown' as manName, mobo.name, mobo.id, UPPER(mobo.name) as moboNameSort
                 FROM App\Entity\Motherboard mobo
                 WHERE mobo.manufacturer IS NULL
-                ORDER BY mobo.name ASC"
+                ORDER BY moboNameSort ASC"
             );
         } else {
             $likematch = "$letter%";
 
             $query = $entityManager->createQuery(
-                "SELECT COALESCE(man.shortName, man.name) as manName, mobo.name, mobo.id
+                "SELECT COALESCE(man.shortName, man.name) as manName, mobo.name, mobo.id, UPPER(COALESCE(man.shortName, man.name)) as manNameSort, UPPER(mobo.name) as moboNameSort
                 FROM App\Entity\Motherboard mobo, App\Entity\Manufacturer man 
                 WHERE mobo.manufacturer=man AND COALESCE(man.shortName, man.name) like :likeMatch
-                ORDER BY manName ASC, mobo.name ASC"
+                ORDER BY manNameSort ASC, moboNameSort ASC"
             )->setParameter('likeMatch', $likematch);
         }
 
