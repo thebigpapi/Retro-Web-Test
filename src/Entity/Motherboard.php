@@ -842,4 +842,31 @@ class Motherboard
 
         return $this;
     }
+
+    public function getPrettyTitle(): string
+    {
+        $strBuilder = "";
+        $mfgData = $this->getManufacturer();
+        if ($mfgData != null) {
+            $strBuilder .= $mfgData->getShortNameIfExist();
+        } else {
+            $strBuilder .= "[Unknown]";
+        }
+        $strBuilder .= " " . $this->getName();
+        return $strBuilder;
+    }
+
+    public function getMetaDescription(): string
+    {
+        $strBuilder = $this->getPrettyTitle();
+        $strBuilder .= " is a motherboard based on the ";
+        $chipData = $this->getChipset();
+        if ($chipData != null) {
+            $strBuilder .= $chipData->getPrettyTitle();
+        } else {
+            $strBuilder .= "[Unidentified]";
+        }
+        $strBuilder .= " chipset. Get specs, BIOS, documentation and more!";
+        return $strBuilder;
+    }
 }

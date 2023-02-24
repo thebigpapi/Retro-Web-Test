@@ -379,11 +379,37 @@ class Chipset
     public function setLastEdited(\DateTimeInterface $lastEdited): self
     {
         $this->lastEdited = $lastEdited;
-
         return $this;
     }
     public function updateLastEdited()
     {
         $this->lastEdited = new \DateTime('now');
+    }
+
+    public function getPrettyTitle(): string
+    {
+        $strBuilder = "";
+        $mfgData = $this->getManufacturer();
+        if ($mfgData != null) {
+            $strBuilder .= $mfgData->getShortNameIfExist();
+        } else {
+            $strBuilder .= "[Unknown]";
+        }
+        $strBuilder .= " " . $this->getName();
+        return $strBuilder;
+    }
+
+    public function getMetaDescription(): string
+    {
+        $strBuilder = "Get info, documentation and more about the ";
+        $strBuilder .= $this->getPrettyTitle();
+        $strBuilder .= " chipset";
+        $relDate = $this->getReleaseDate();
+        if (strlen($relDate) > 0) {
+            $strBuilder .= ", released " . $relDate;
+        }
+        $strBuilder .= ".";
+
+        return $strBuilder;
     }
 }

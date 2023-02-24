@@ -387,11 +387,31 @@ class LargeFile
     public function setLastEdited(\DateTimeInterface $lastEdited): self
     {
         $this->lastEdited = $lastEdited;
-
         return $this;
     }
+
     public function updateLastEdited()
     {
         $this->lastEdited = new \DateTime('now');
+    }
+
+    public function getMetaDescription(): string
+    {
+        $strBuilder = "Download ";
+        if ($this->getName()) {
+            $strBuilder .= $this->getName();
+        }
+
+        $fileVer = $this->getFileVersion();
+        if (is_string($fileVer) && strlen($fileVer)) {
+            $strBuilder .= ", version " . $fileVer;
+        }
+
+        $relDate = $this->getReleaseDateString();
+        if (is_string($relDate) && strlen($relDate)) {
+            $strBuilder .= ", released " . $relDate;
+        }
+
+        return $strBuilder;
     }
 }

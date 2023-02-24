@@ -4,42 +4,37 @@
 
 
 {% block title %}
-	{{ motherboard.getManufacturer() ? motherboard.getManufacturer().getShortNameIfExist() : 'Unknown' }} {{ motherboard.getName() }}
+	{{ motherboard.getPrettyTitle() }} - The Retro Web
 {% endblock %}
 
 {% block metatags %}
-	<meta name="description" content="{% if motherboard.getManufacturer() is not null %}{{ motherboard.getManufacturer().getShortNameIfExist() }}{% else %}Unknown{% endif %} {{ motherboard.getName() }} BIOS/manuals/jumper settings{% if motherboard.getChipset() is not null %} , {% if motherboard.getChipset().getManufacturer() is not null %}{{ motherboard.getChipset().getManufacturer().getShortNameIfExist() }}{% endif %} {% if motherboard.getChipset().getPartNo() is not null %} {{ motherboard.getChipset().getPartNo() }}{% else %}Unidentified{% endif %}{% endif %} {% if motherboard.getCpuSockets() is not empty %}, {% for socket in motherboard.getCpuSockets() %}{% if socket.getName() is null %}{{ socket.getNameAndType}}{% else %}{{ socket.getName}}{% endif %}{% if not loop.last %}/{% endif %}{% endfor %} {% elseif motherboard.getProcessorPlatformTypes() is not empty %}, {% for platform in motherboard.getProcessorPlatformTypes() %}{{ platform.getName() }}{% if not loop.last %}/{% endif %}{% endfor %}{% endif %} {% if motherboard.getMotherboardBios() is not empty %} {% for bios in motherboard.getMotherboardBios()|sort((a, b) => b.postString <=> a.postString)|sort((a, b) => b.boardVersion <=> a.boardVersion) %} {% if bios.postString() is not empty %} {% if loop.first %}, {{ bios.getPostString() }}{% endif %}{% if loop.index == 2 %},{{ bios.getPostString() }}{% endif %}{% endif %}{% endfor %} {% elseif motherboard.getFormFactor() is not null %}, {{ motherboard.getFormFactor().getName() }} {% else %}, Form factor: Unknown{% endif %}">
+	<meta name="description" content="{{ motherboard.getMetaDescription() }}">
+	<link rel="canonical" hreflang="x-default" href="{{ absolute_url(path('motherboard_show_slug', {slug: motherboard.getSlug()})) }}"/>
+	<link rel="alternate" hreflang="x-default" href="{{ absolute_url(path('motherboard_show', {id: motherboard.getId()})) }}"/>
 {% endblock %}
 
 {% block opengraph %}
 	{% apply spaceless %}
+	<meta name="twitter:card" content="summary">
+	<meta property="og:site_name" content="The Retro Web">
+	<meta property="og:type" content="website">
+	<meta name="twitter:title" content="{{ motherboard.getPrettyTitle() }}">
+	<meta property="og:title" content="{{ motherboard.getPrettyTitle() }}">
+	<meta name="twitter:description" content="{{ motherboard.getMetaDescription() }}">
+	<meta property="og:description" content="{{ motherboard.getMetaDescription() }}">
+	<meta property="og:url" content="{{ absolute_url(path('motherboard_show_slug', {slug: motherboard.getSlug()})) }}">
 	{% if motherboard.getImages() is not empty %}
 		{% for image in motherboard.getImages() %}
 			{% if image.motherboardImageType.id in [1, 2] %}
+				<meta name="twitter:image" content="{{ vich_uploader_asset(image, 'imageFile')}}">
 				<meta property="og:image" content="{{ vich_uploader_asset(image, 'imageFile')}}">
 			{% endif %}
 		{% endfor %}
 	{% else %}
+		<meta name="twitter:image" content="{{ absolute_url(asset('build/images/motherboard/image-missing.webp')) }}">
 		<meta property="og:image" content="{{ absolute_url(asset('build/images/motherboard/image-missing.webp')) }}">
 	{% endif %}
-	{% if motherboard.getManufacturer() is not null %}
-		<meta property="og:title" content="{{ motherboard.getManufacturer().getShortNameIfExist() }} {{ motherboard.getName() }}">
-	{% else %}
-		<meta property="og:title" content="Unknown {{ motherboard.getName() }}">
-	{% endif %}
-	{% if motherboard.getManuals() is not null %}
-		{% if motherboard.getMotherboardBios() is not null %}
-			<meta property="og:description" content="Get manual, bios and more for: {{ motherboard.name }}!">
-		{% else %}
-			<meta property="og:description" content="Get manual and more for: {{ motherboard.name }}!">
-		{% endif %}
-	{% else %}
-		{% if motherboard.getMotherboardBios() %}
-			<meta property="og:description" content="Get bios and more for: {{ motherboard.name }}!">
-		{% endif %}
-	{% endif %}
 	{% endapply %}
-	<link rel="alternate" hreflang="x-default" href="{{ absolute_url(path('motherboard_show', {id: motherboard.getId()})) }}"/>
 {% endblock %}
 
 {% block body %}

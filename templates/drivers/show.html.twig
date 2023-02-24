@@ -3,18 +3,24 @@
 {% from 'macros/largeFile.html.twig' import header as driverHeader %}
 
 {% block title %}
-	{{ driver.getName() }}
+	{{ driver.getName() }} - The Retro Web
 {% endblock %}
 {% block metatags %}
-	<meta name="description" content="Driver:{{ driver.getName() }} Release date:unknown">
+	<meta name="description" content="{{ driver.getMetaDescription() }}">
+	<link rel="canonical" hreflang="x-default" href="{{ absolute_url(path('driver_show', {id: driver.getId()})) }}"/>
 {% endblock %}
 
 {% block opengraph %}
 	{% apply spaceless %}
-	<meta property="og:title" content="{{ driver.getName() }}">
-	<meta property="og:description" content="Get driver info for {{ driver.getName() }}!">
+		<meta name="twitter:card" content="summary">
+		<meta property="og:site_name" content="The Retro Web">
+		<meta property="og:type" content="website">
+		<meta name="twitter:title" content="{{ driver.getName() }}">
+		<meta property="og:title" content="{{ driver.getName() }}">
+		<meta name="twitter:description" content="{{ driver.getMetaDescription() }}">
+		<meta property="og:description" content="{{ driver.getMetaDescription() }}">
+		<meta property="og:url" content="{{ absolute_url(path('driver_show', {id: driver.getId()})) }}">
 	{% endapply %}
-	<link rel="alternate" hreflang="x-default" href="{{ absolute_url(path('driver_show', {id: driver.getId()})) }}"/>
 {% endblock %}
 
 {% block body %}
