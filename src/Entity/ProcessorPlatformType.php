@@ -2,21 +2,40 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
+use App\Repository\ProcessorPlatformTypeRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[ORM\Entity(repositoryClass: 'App\Repository\ProcessorPlatformTypeRepository')]
+#[ORM\Entity(repositoryClass: ProcessorPlatformTypeRepository::class)]
+#[ApiResource(
+    normalizationContext: ['groups' => 'read:ProcessorPlatformType:item'],
+    collectionOperations: [
+        'get' => ['normalization_context' => ['groups' => 'read:ProcessorPlatformType:list']], 
+        'post' => ['denormalization_context' => ['groups' => 'write:ProcessorPlatformType']]
+    ],
+    itemOperations: [
+        'get' => ['normalization_context' => ['groups' => 'read:ProcessorPlatformType:item']],
+        'put' => ['denormalization_context' => ['groups' => 'write:ProcessorPlatformType']],
+        'delete'
+    ],
+    order: ['name' => 'ASC'],
+    paginationEnabled: false,
+)]
 class ProcessorPlatformType
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
+    #[Groups(['read:ProcessorPlatformType:list', 'read:ProcessorPlatformType:item'])]
     private $id;
 
     #[ORM\Column(type: 'string', length: 255)]
     #[Assert\Length(max: 255, maxMessage: 'Name is longer than {{ limit }} characters, try to make it shorter.')]
+    #[Groups(['read:ProcessorPlatformType:list', 'read:ProcessorPlatformType:item', 'write:ProcessorPlatformType'])]
     private $name;
 
     #[ORM\ManyToMany(targetEntity: Motherboard::class, mappedBy: 'processorPlatformTypes')]
@@ -26,6 +45,7 @@ class ProcessorPlatformType
     private $processingUnits;
 
     #[ORM\ManyToMany(targetEntity: ProcessorPlatformType::class, inversedBy: 'ChildProcessorPlatformType')]
+    #[Groups(['read:ProcessorPlatformType:item', 'write:ProcessorPlatformType'])]
     private $compatibleWith;
 
     #[ORM\ManyToMany(targetEntity: ProcessorPlatformType::class, mappedBy: 'compatibleWith')]

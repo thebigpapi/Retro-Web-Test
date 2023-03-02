@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: 'App\Repository\ProcessorVoltageRepository')]
 class ProcessorVoltage
@@ -10,9 +11,11 @@ class ProcessorVoltage
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
+    #[Groups(['read:ProcessorVoltage:list', 'read:ProcessorVoltage:item'])]
     private $id;
-
+    
     #[ORM\Column(type: 'float')]
+    #[Groups(['read:ProcessorVoltage:list', 'read:ProcessorVoltage:item'])]
     private $value;
 
     #[ORM\ManyToOne(targetEntity: Processor::class, inversedBy: 'voltages')]

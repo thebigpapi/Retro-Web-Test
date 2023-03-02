@@ -2,28 +2,48 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
+use App\Repository\ManufacturerRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Serializer\Annotation\Groups;
 
-#[ORM\Entity(repositoryClass: 'App\Repository\ManufacturerRepository')]
+#[ORM\Entity(repositoryClass: ManufacturerRepository::class)]
 #[UniqueEntity(fields: ['name', 'shortName'])]
 #[ORM\ChangeTrackingPolicy('DEFERRED_EXPLICIT')]
+#[ApiResource(
+    normalizationContext: ['groups' => 'read:Manufacturer:item'],
+    collectionOperations: [
+        'get' => ['normalization_context' => ['groups' => 'read:Manufacturer:list']], 
+        'post' => ['denormalization_context' => ['groups' => 'write:Manufacturer']]
+    ],
+    itemOperations: [
+        'get' => ['normalization_context' => ['groups' => 'read:Manufacturer:item']],
+        'put' => ['denormalization_context' => ['groups' => 'write:Manufacturer']],
+        'delete'
+    ],
+    order: ['name' => 'ASC'],
+    paginationEnabled: true,
+)]
 class Manufacturer
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
+    #[Groups(['read:Manufacturer:list', 'read:Manufacturer:item'])]
     private $id;
 
     #[ORM\Column(type: 'string', length: 255, unique: true)]
     #[Assert\Length(max: 255, maxMessage: 'Name is longer than {{ limit }} characters, try to make it shorter.')]
+    #[Groups(['read:Manufacturer:item', 'write:Manufacturer'])]
     private $name;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true, unique: true)]
     #[Assert\Length(max: 255, maxMessage: 'Short name is longer than {{ limit }} characters, try to make it shorter.')]
+    #[Groups(['read:Manufacturer:item', 'write:Manufacturer'])]
     private $shortName;
 
     #[ORM\OneToMany(targetEntity: Motherboard::class, mappedBy: 'manufacturer')]
@@ -57,6 +77,7 @@ class Manufacturer
     private Collection $pciVendorIds;
 
     #[ORM\Column(length: 7, nullable: true)]
+    #[Groups(['read:Manufacturer:item', 'write:Manufacturer'])]
     private ?string $fccid = null;
 
     public function __construct()
@@ -96,6 +117,8 @@ class Manufacturer
 
         return $this;
     }
+
+    #[Groups(['read:Manufacturer:list'])]
     public function getShortNameIfExist(): ?string
     {
         if ($this->shortName) {

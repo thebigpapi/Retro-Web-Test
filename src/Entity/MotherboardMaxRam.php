@@ -2,10 +2,13 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
+use App\Repository\MotherboardMaxRamRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[ORM\Entity(repositoryClass: 'App\Repository\MotherboardMaxRamRepository')]
+#[ORM\Entity(repositoryClass: MotherboardMaxRamRepository::class)]
 class MotherboardMaxRam
 {
     #[ORM\Id]
@@ -20,7 +23,6 @@ class MotherboardMaxRam
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     #[Assert\Length(max: 255, maxMessage: 'RAM note is longer than {{ limit }} characters, try to make it shorter.')]
-
     private $note;
 
     public function getMotherboard(): ?Motherboard

@@ -25,6 +25,30 @@ class ManufacturerRepository extends ServiceEntityRepository
     /**
      * @return Manufacturer[]
      */
+    public function findAll(): array {
+        $entityManager = $this->getEntityManager();
+
+        $rsm = new ResultSetMapping();
+
+        $rsm->addEntityResult('App\Entity\Manufacturer', 'man');
+        $rsm->addFieldResult('man', 'id', 'id');
+        $rsm->addFieldResult('man', 'name', 'name');
+        $rsm->addFieldResult('man', 'short_name', 'shortName');
+
+        $query = $entityManager->createNativeQuery(
+            'SELECT distinct man.id, man.name, man.short_name, upper(coalesce(man.short_name, man.name)) as realname
+            FROM manufacturer as man
+            ORDER BY realname;',
+            $rsm
+        );
+
+        return $query->setCacheable(true)
+            ->getResult();
+    }
+
+    /**
+     * @return Manufacturer[]
+     */
     public function findAllManufacturerCaseInsensitiveSorted(array $criterias = []): array
     {
         $entityManager = $this->getEntityManager();

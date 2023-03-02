@@ -2,21 +2,40 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
+use App\Repository\MotherboardImageTypeRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[ORM\Entity(repositoryClass: 'App\Repository\MotherboardImageTypeRepository')]
+#[ORM\Entity(repositoryClass: MotherboardImageTypeRepository::class)]
+#[ApiResource(
+    normalizationContext: ['groups' => 'read:MotherboardImageType:item'],
+    collectionOperations: [
+        'get' => ['normalization_context' => ['groups' => 'read:MotherboardImageType:list']], 
+        'post' => ['denormalization_context' => ['groups' => 'write:MotherboardImageType']]
+    ],
+    itemOperations: [
+        'get' => ['normalization_context' => ['groups' => 'read:MotherboardImageType:item']],
+        'put' => ['denormalization_context' => ['groups' => 'write:MotherboardImageType']],
+        'delete'
+    ],
+    order: ['name' => 'ASC'],
+    paginationEnabled: false,
+)]
 class MotherboardImageType
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
+    #[Groups(['read:MotherboardImageType:list', 'read:MotherboardImageType:item'])]
     private $id;
 
     #[ORM\Column(type: 'string', length: 255)]
     #[Assert\Length(max: 255, maxMessage: 'Name is longer than {{ limit }} characters, try to make it shorter.')]
+    #[Groups(['read:MotherboardImageType:list', 'read:MotherboardImageType:item', 'write:MotherboardImageType'])]
     private $name;
 
     #[ORM\OneToMany(targetEntity: MotherboardImage::class, mappedBy: 'motherboardImageType')]
