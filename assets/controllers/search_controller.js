@@ -5,23 +5,38 @@ export default class extends Controller {
     connect() {
         window.onload = () => {
             if(document.getElementById('search_chipsetManufacturer')){
-                var select = document.getElementById('search_chipsetManufacturer');
-                var idx = select.options[select.selectedIndex].value;
-                if(idx)
-                    this.setResult('search[chipsetManufacturer]', idx, 'search_chipset');
+                var select_chipmanuf = document.getElementById('search_chipsetManufacturer');
+                var idx_chipmanuf = select_chipmanuf.options[select_chipmanuf.selectedIndex].value;
+                if(idx_chipmanuf)
+                    this.setResult('search[chipsetManufacturer]', idx_chipmanuf, 'search_chipset');
+                //tom-select sync
+                select_chipmanuf.tomselect.sync();
             }
             if(document.getElementById('search_cpuSocket1')){
-                var select1 = document.getElementById('search_cpuSocket1');
-                var idx1 = select1.options[select1.selectedIndex].value;
-                if(idx1)
-                    this.setResult('search[cpuSocket1]', idx1, 'search_platform1');
+                var select_cpuskt1 = document.getElementById('search_cpuSocket1');
+                var idx_cpuskt1 = select_cpuskt1.options[select_cpuskt1.selectedIndex].value;
+                if(idx_cpuskt1)
+                    this.setResult('search[cpuSocket1]', idx_cpuskt1, 'search_platform1');
+                //tom-select sync
+                select_cpuskt1.tomselect.sync();
             }
             if(document.getElementById('search_cpuSocket2')){
-                var select2 = document.getElementById('search_cpuSocket2');
-                var idx2 = select2.options[select2.selectedIndex].value;
-                if(idx2)
-                    this.setResult('search[cpuSocket2]', idx2, 'search_platform2');
+                var select_cpuskt2 = document.getElementById('search_cpuSocket2');
+                var idx_cpuskt2 = select_cpuskt2.options[select_cpuskt2.selectedIndex].value;
+                if(idx_cpuskt2)
+                    this.setResult('search[cpuSocket2]', idx_cpuskt2, 'search_platform2');
+                //tom-select sync
+                select_cpuskt2.tomselect.sync();
             }
+            // tom-select sync for non ajax elements
+            if(document.getElementById('search_manufacturer'))
+                document.getElementById('search_manufacturer').tomselect.sync();
+            if(document.getElementById('search_platform1'))
+                document.getElementById('search_platform1').tomselect.sync();
+            if(document.getElementById('search_platform2'))
+                document.getElementById('search_platform2').tomselect.sync();
+            if(document.getElementById('search_formFactor'))
+                document.getElementById('search_formFactor').tomselect.sync();
         }
     }
 

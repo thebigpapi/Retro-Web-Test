@@ -27,22 +27,13 @@
 	</div>
 	
 	<div class="header-label">Language</div>
-	<div class="tag-container">
-		{% for lang in object.getLanguages() %}
-			<span class="text-block">
-				<img src="{{ asset('build/icons/language/' ~ lang.getIsoCode ~ '.svg') }}" height="20"
-					alt="{{ lang.getIsoCode }}" class="lang-flag{% if loop.length > 4 %}-lrg{% endif %}">
-				<span>{{ lang.getIsoCode|upper }}</span>
-			</span>
-		{% endfor %}
-	</div>
+	<div class="tag-container">{% for lang in object.getLanguages() %}{{ lang.getIsoCode|upper }}{% if not loop.last %}, {% endif %}{% endfor %}</div>
 
 	<div class="header-label">Dump quality</div>
 	<div class="tag-container">
 		<span class="text-block">
 			<img src="{{ asset('build/icons/quality/' ~ object.dumpQualityFlag().getTagName() ~ '.svg') }}"
-				alt="{{ object.dumpQualityFlag().getTagName() }}" height="24">
-			<span>{{ object.dumpQualityFlag().getTagName()|capitalize }}</span>
+				alt="{{ object.dumpQualityFlag().getTagName() }}" height="24" title="{{ object.dumpQualityFlag().getTagName()|capitalize }}">
 		</span>
 	</div>
 

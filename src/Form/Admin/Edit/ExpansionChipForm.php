@@ -30,6 +30,7 @@ class ExpansionChipForm extends AbstractType
                 'choice_label' => 'name',
                 'multiple' => false,
                 'expanded' => false,
+                'placeholder' => 'Select a chip type ...',
             ])
             ->add('drivers', CollectionType::class, [
                 'entry_type' => LargeFileExpansionChipType::class,

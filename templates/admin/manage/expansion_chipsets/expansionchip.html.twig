@@ -26,7 +26,11 @@
     <div>{% if object.getDrivers() is not empty %}[✓]{% endif %}</div>
 
     <div class="header-label">Actions</div>
-    <div class="toolbar toolbar-thin">
+    <div class="toolbar toolbar-thin" style="display:flex;flex-wrap: nowrap;">
+        <a class="button" href="{{ path("expansion_chip_show", {id: object.getId()}) }}">
+            <img src="{{ absolute_url(asset('build/icons/search/search_image.svg')) }}" alt="" width="20">
+            <span>View</span>
+        </a>
         <a class="button" href="./expansionchipsets/expansionchips/{{ object.getId() }}/edit/">
             <img src="{{ absolute_url(asset('build/icons/edit.svg')) }}" alt="" width="20">
             <span>Edit</span>
