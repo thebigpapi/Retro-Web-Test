@@ -15,14 +15,14 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[UniqueEntity(fields: ['name', 'shortName'])]
 #[ORM\ChangeTrackingPolicy('DEFERRED_EXPLICIT')]
 #[ApiResource(
-    normalizationContext: ['groups' => 'read:Manufacturer:item'],
+    normalizationContext: ['groups' => ['read:Manufacturer:item', 'read:ManufacturerBiosManufacturerCode:item']],
     collectionOperations: [
         'get' => ['normalization_context' => ['groups' => 'read:Manufacturer:list']], 
-        'post' => ['denormalization_context' => ['groups' => 'write:Manufacturer']]
+        'post' => ['denormalization_context' => ['groups' => ['write:Manufacturer', 'write:ManufacturerBiosManufacturerCode']]]
     ],
     itemOperations: [
-        'get' => ['normalization_context' => ['groups' => 'read:Manufacturer:item']],
-        'put' => ['denormalization_context' => ['groups' => 'write:Manufacturer']],
+        'get' => ['normalization_context' => ['groups' => ['read:Manufacturer:item', 'read:ManufacturerBiosManufacturerCode:item']]],
+        'put' => ['denormalization_context' => ['groups' => ['write:Manufacturer', 'write:ManufacturerBiosManufacturerCode']]],
         'delete'
     ],
     order: ['name' => 'ASC'],
@@ -64,6 +64,7 @@ class Manufacturer
     #[ORM\OneToMany(targetEntity: ChipAlias::class, mappedBy: 'manufacturer')]
     private $chipAliases;
 
+    #[Groups(['read:Manufacturer:item', 'write:Manufacturer:item'])]
     #[ORM\OneToMany(targetEntity: ManufacturerBiosManufacturerCode::class, mappedBy: 'manufacturer', orphanRemoval: true, cascade: ['persist'])]
     private $biosCodes;
 

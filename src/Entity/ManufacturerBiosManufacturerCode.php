@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: 'App\Repository\ManufacturerBiosManufacturerCodeRepository')]
 class ManufacturerBiosManufacturerCode
@@ -14,13 +15,16 @@ class ManufacturerBiosManufacturerCode
 
     #[ORM\ManyToOne(targetEntity: Manufacturer::class, inversedBy: 'biosCodes', fetch: 'EAGER')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['read:ManufacturerBiosManufacturerCode:item', 'write:ManufacturerBiosManufacturerCode'])]
     private $manufacturer;
 
     #[ORM\ManyToOne(targetEntity: Manufacturer::class, fetch: 'EAGER')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['read:ManufacturerBiosManufacturerCode:item', 'write:ManufacturerBiosManufacturerCode'])]
     private $biosManufacturer;
 
     #[ORM\Column(type: 'string', length: 255)]
+    #[Groups(['read:ManufacturerBiosManufacturerCode:item', 'write:ManufacturerBiosManufacturerCode'])]
     private $code;
 
     public function getId(): ?int
