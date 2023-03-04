@@ -37,11 +37,16 @@
 				<a href="{{ path("motherboard_show", {id:motherboard.getId()}) }}">
 					<div class="perk-image">
 					{% if motherboard.getImages() is not empty %}
-					{% for image in motherboard.getImages()|filter(a => a.motherboardImageType.id in [1, 2])|sort((a, b) => a.getFileName() <=> b.getFileName())|sort((a, b) => b.motherboardImageType <=> a.motherboardImageType)|slice(0, 1) %}
-						<img src="{% if vich_uploader_asset(image, 'imageFile') | ext != "svg" %}
-							{{ vich_uploader_asset(image, 'imageFile') | imagine_filter('motherboard_show_thumb') }}{% else %}
-							{{ vich_uploader_asset(image, 'imageFile')}}{% endif %}" alt="" loading="lazy" width="250" height="200" title="{% if image.description %}{{ image.description }}{% endif %}">
-					{% endfor %}
+						{% set imgtype_count = 0 %}
+						{% for image in motherboard.getImages()|filter(a => a.motherboardImageType.id in [1, 2])|sort((a, b) => a.getFileName() <=> b.getFileName())|sort((a, b) => b.motherboardImageType <=> a.motherboardImageType)|slice(0, 1) %}
+							<img src="{% if vich_uploader_asset(image, 'imageFile') | ext != "svg" %}
+								{{ vich_uploader_asset(image, 'imageFile') | imagine_filter('motherboard_show_thumb') }}{% else %}
+								{{ vich_uploader_asset(image, 'imageFile')}}{% endif %}" alt="" loading="lazy" width="250" height="200" title="{% if image.description %}{{ image.description }}{% endif %}">
+								{% set imgtype_count = imgtype_count + 1 %}
+						{% endfor %}
+						{% if imgtype_count == 0 %}
+							<img src="{{ absolute_url(asset('build/images/motherboard/image-missing.webp')) }}" loading="lazy" width="250" height="200" title="no images available :(">
+						{% endif %}
 					{% else %}
 						<img src="{{ absolute_url(asset('build/images/motherboard/image-missing.webp')) }}" alt="missing image" loading="lazy" width="250" height="200" title="no images available :(">
 					{% endif %}</div>
