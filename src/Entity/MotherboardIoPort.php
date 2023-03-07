@@ -3,8 +3,9 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
-#[ORM\Entity(repositoryClass: 'App\Repository\MotherboardIoPortRepository')]
+#[ORM\Entity(repositoryClass: MotherboardIoPortRepository::class)]
 class MotherboardIoPort
 {
     #[ORM\Id]
@@ -17,6 +18,8 @@ class MotherboardIoPort
     #[ORM\JoinColumn(nullable: false)]
     private $io_port;
 
+    #[Assert\Positive]
+    #[Assert\LessThan(100)]
     #[ORM\Column(type: 'integer')]
     private $count;
 

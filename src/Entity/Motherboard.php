@@ -31,15 +31,19 @@ class Motherboard
     private $chipset;
 
     #[ORM\OneToMany(targetEntity: MotherboardMaxRam::class, mappedBy: 'motherboard', orphanRemoval: true, cascade: ['persist'])]
+    #[Assert\Valid()]
     private $motherboardMaxRams;
 
     #[ORM\OneToMany(targetEntity: MotherboardBios::class, mappedBy: 'motherboard', orphanRemoval: true, cascade: ['persist'])]
+    #[Assert\Valid()]
     private $motherboardBios;
 
     #[ORM\OneToMany(targetEntity: MotherboardExpansionSlot::class, mappedBy: 'motherboard', orphanRemoval: true, cascade: ['persist'])]
+    #[Assert\Valid()]
     private $motherboardExpansionSlots;
 
     #[ORM\OneToMany(targetEntity: MotherboardIoPort::class, mappedBy: 'motherboard', orphanRemoval: true, cascade: ['persist'])]
+    #[Assert\Valid()]
     private $motherboardIoPorts;
 
     #[ORM\ManyToMany(targetEntity: ProcessorPlatformType::class, inversedBy: 'motherboards')]
@@ -61,12 +65,14 @@ class Motherboard
     private $formFactor;
 
     #[ORM\OneToMany(targetEntity: Manual::class, mappedBy: 'motherboard', orphanRemoval: true, cascade: ['persist'])]
+    #[Assert\Valid()]
     private $manuals;
 
     #[ORM\ManyToMany(targetEntity: Coprocessor::class, inversedBy: 'motherboards')]
     private $coprocessors;
 
     #[ORM\OneToMany(targetEntity: MotherboardImage::class, mappedBy: 'motherboard', orphanRemoval: true, cascade: ['persist'])]
+    #[Assert\Valid()]
     private $images;
 
     #[ORM\ManyToMany(targetEntity: KnownIssue::class, inversedBy: 'motherboards')]
@@ -83,9 +89,12 @@ class Motherboard
     private $lastEdited;
 
     #[ORM\Column(type: 'integer', nullable: true)]
+    #[Assert\PositiveOrZero()]
+    #[Assert\LessThan(20)]
     private ?int $maxCpu = null;
 
     #[ORM\OneToMany(targetEntity: MotherboardAlias::class, mappedBy: 'motherboard', orphanRemoval: true, cascade: ['persist'])]
+    #[Assert\Valid()]
     private $motherboardAliases;
 
     #[ORM\ManyToMany(targetEntity: CpuSocket::class, inversedBy: 'motherboards')]
@@ -105,6 +114,7 @@ class Motherboard
 
     #[ORM\Column(type: 'string', length: 80, unique: true)]
     #[Assert\Length(max: 80, maxMessage: 'Slug is longer than {{ limit }} characters, try to make it shorter.')]
+    #[Assert\Regex('/^[a-z0-9-_.,]+$/i', message: 'Slug uses problematic characters. Only alphanumeric, ".", ",", "-" and "_" are allowed.')]
     private $slug;
 
     #[ORM\OneToMany(mappedBy: 'motherboard', targetEntity: MiscFile::class, orphanRemoval: true, cascade: ['persist'])]

@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: 'App\Repository\MotherboardExpansionSlotRepository')]
 class MotherboardExpansionSlot
@@ -17,6 +18,8 @@ class MotherboardExpansionSlot
     #[ORM\JoinColumn(nullable: false)]
     private $expansion_slot;
 
+    #[Assert\Positive]
+    #[Assert\LessThan(100)]
     #[ORM\Column(type: 'integer')]
     private $count;
 
