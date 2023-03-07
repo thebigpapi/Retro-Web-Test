@@ -18,6 +18,8 @@ class ChipsetPart extends Chip
     private $description;
 
     #[ORM\Column(type: 'integer')]
+    #[Assert\PositiveOrZero(message:'Rank should always be positive or zero')]
+    #[Assert\LessThan(15, message:'Rank should be under 15')]
     private $rank;
 
     public function __construct()

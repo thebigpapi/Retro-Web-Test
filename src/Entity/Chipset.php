@@ -27,6 +27,7 @@ class Chipset
     private $name;
 
     #[ORM\OneToMany(targetEntity: ChipsetAlias::class, mappedBy: 'chipset', orphanRemoval: true, cascade: ['persist'])]
+    #[Assert\Valid()]
     private $chipsetAliases;
 
     /**
@@ -48,6 +49,7 @@ class Chipset
     private $part_no;
 
     #[ORM\OneToMany(targetEntity: ChipsetBiosCode::class, mappedBy: 'chipset', orphanRemoval: true, cascade: ['persist'])]
+    #[Assert\Valid()]
     private $biosCodes;
 
     #[ORM\OneToMany(targetEntity: LargeFileChipset::class, mappedBy: 'chipset', orphanRemoval: true, cascade: ['persist'])]
@@ -58,6 +60,7 @@ class Chipset
     private $description;
 
     #[ORM\OneToMany(targetEntity: ChipsetDocumentation::class, mappedBy: 'chipset', orphanRemoval: true, cascade: ['persist'])]
+    #[Assert\Valid()]
     private $documentations;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]

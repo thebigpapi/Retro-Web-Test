@@ -194,6 +194,10 @@ class MotherboardForm extends AbstractType
                 'entry_type' => ExpansionChipType::class,
                 'allow_add' => true,
                 'allow_delete' => true,
+                'prototype' => true,
+                'entry_options' => [
+                    'placeholder' => 'Expansion chip',
+                ]
             ])
             ->add('drivers', CollectionType::class, [
                 'entry_type' => LargeFileMotherboardType::class,

@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\LargeFileMediaTypeFlagRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: LargeFileMediaTypeFlagRepository::class)]
 class LargeFileMediaTypeFlag
@@ -22,6 +23,8 @@ class LargeFileMediaTypeFlag
     private $mediaTypeFlag;
 
     #[ORM\Column(type: 'integer')]
+    #[Assert\LessThan(50, message: 'Count should be below 50')]
+    #[Assert\Positive(message: 'Count should be positive only')]
     private $count;
 
     public function getId(): ?int

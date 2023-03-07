@@ -60,6 +60,7 @@ class LargeFile
     private $fileVersion;
 
     #[ORM\OneToMany(targetEntity: LargeFileMediaTypeFlag::class, mappedBy: 'largeFile', orphanRemoval: true, cascade: ['persist'])]
+    #[Assert\Valid()]
     private $mediaTypeFlags;
 
     #[ORM\ManyToMany(targetEntity: OsFlag::class, inversedBy: 'largeFiles')]
