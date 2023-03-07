@@ -7,6 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[Vich\Uploadable]
 #[ORM\Entity(repositoryClass: MiscFileRepository::class)]
@@ -21,9 +22,16 @@ class MiscFile
     private File|null $miscFile = null;
 
     #[ORM\Column(type: 'string', length: 255)]
+    #[Assert\Regex(
+        pattern: '/^[\w\s,\/\-_#\$%&\*!\?:;\.\+\=\\\[\]\{\}\(\)]+$/',
+        match: true,
+        message: 'The FileName uses invalid characters',
+    )]
+    #[Assert\Length(max: 255, maxMessage: 'File name is longer than {{ limit }} characters, try to make it shorter.')]
     private string|null $file_name;
 
     #[ORM\Column(type: 'string', length: 255)]
+    #[Assert\Length(max: 255, maxMessage: 'Link bame is longer than {{ limit }} characters, try to make it shorter.')]
     private $link_name;
 
     #[ORM\ManyToOne(targetEntity: Motherboard::class, inversedBy: 'miscFiles')]
