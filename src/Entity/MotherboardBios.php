@@ -23,7 +23,6 @@ class MotherboardBios
 
     /**
      * NOTE: This is not a mapped field of entity metadata, just a simple property.
-     * @var File|null
      */
     #[Vich\UploadableField(mapping: 'bios', fileNameProperty: 'file_name')]
     private File|null $romFile = null;

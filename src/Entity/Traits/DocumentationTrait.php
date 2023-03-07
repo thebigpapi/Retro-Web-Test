@@ -7,6 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[Vich\Uploadable]
 #[ORM\Entity(repositoryClass:'App\Repository\ManualRepository')]
@@ -18,9 +19,16 @@ trait DocumentationTrait
     private $id;
 
     #[ORM\Column(type: 'string', length: 255)]
+    #[Assert\Length(max:255, maxMessage: 'File name is longer than {{ limit }} characters, try to make it shorter.')]
+    #[Assert\Regex(
+        pattern: '/^[\w\s,\/\-_#\$%&\*!\?:;\.\+\=\\\[\]\{\}\(\)]+$/',
+        match: true,
+        message: 'The name uses invalid characters',
+    )]
     private string|null $file_name;
 
     #[ORM\Column(type: 'string', length: 255)]
+    #[Assert\Length(max:255, maxMessage: 'Link name is longer than {{ limit }} characters, try to make it shorter.')]
     private $link_name;
 
     #[ORM\ManyToOne(targetEntity: 'App\Entity\Language', inversedBy: 'manuals')]

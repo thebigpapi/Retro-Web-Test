@@ -17,7 +17,7 @@ class ChipsetDocumentation
      * NOTE: This is not a mapped field of entity metadata, just a simple property.
      */
     #[Vich\UploadableField(mapping:'chipsetDoc', fileNameProperty:'file_name')]
-    private File|null $manualFile;
+    private File|null $manualFile = null;
 
     #[ORM\ManyToOne(targetEntity: Chipset::class, inversedBy: 'documentations')]
     private $chipset;

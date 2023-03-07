@@ -36,6 +36,7 @@ abstract class Chip
     private $chipAliases;
 
     #[ORM\OneToMany(targetEntity: ChipImage::class, mappedBy: 'chip', orphanRemoval: true, cascade: ['persist'])]
+    #[Assert\Valid()]
     private $images;
 
     #[ORM\OneToMany(mappedBy: 'chip', targetEntity: PciDeviceId::class, orphanRemoval: true, cascade: ['persist'])]
