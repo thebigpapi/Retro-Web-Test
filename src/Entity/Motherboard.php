@@ -89,8 +89,8 @@ class Motherboard
     private $lastEdited;
 
     #[ORM\Column(type: 'integer', nullable: true)]
-    #[Assert\PositiveOrZero()]
-    #[Assert\LessThan(20)]
+    #[Assert\PositiveOrZero(message: 'Max CPU should be positive or zero')]
+    #[Assert\LessThan(20, message: 'Max CPU should be below 20')]
     private ?int $maxCpu = null;
 
     #[ORM\OneToMany(targetEntity: MotherboardAlias::class, mappedBy: 'motherboard', orphanRemoval: true, cascade: ['persist'])]

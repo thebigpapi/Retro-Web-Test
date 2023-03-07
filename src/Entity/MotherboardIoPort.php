@@ -18,8 +18,8 @@ class MotherboardIoPort
     #[ORM\JoinColumn(nullable: false)]
     private $io_port;
 
-    #[Assert\Positive]
-    #[Assert\LessThan(100)]
+    #[Assert\Positive(message: "Io port count should be above 0")]
+    #[Assert\LessThan(100, message: "Io port count should be below 100")]
     #[ORM\Column(type: 'integer')]
     private $count;
 
