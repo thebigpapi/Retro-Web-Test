@@ -20,6 +20,8 @@
                 {% else %}
                     <li>{{ emsg1 }} {{ error.message }}</li>
                 {% endif %}
+            {% else %}
+                <li>{{ error.message }}</li>
             {% endif %}
         {% endfor %}
     {% else %}
