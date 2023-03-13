@@ -9,6 +9,7 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use App\Entity\ExpansionChip;
 use App\Entity\Manufacturer;
 use App\Entity\ExpansionChipType;
@@ -31,6 +32,9 @@ class ExpansionChipForm extends AbstractType
                 'multiple' => false,
                 'expanded' => false,
                 'placeholder' => 'Select a chip type ...',
+            ])
+            ->add('description', TextareaType::class, [
+                'required' => false,
             ])
             ->add('drivers', CollectionType::class, [
                 'entry_type' => LargeFileExpansionChipType::class,

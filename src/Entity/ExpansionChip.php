@@ -20,6 +20,9 @@ class ExpansionChip extends Chip
     #[ORM\JoinColumn(nullable: false)]
     private $type;
 
+    #[ORM\Column(length: 4096, nullable: true)]
+    private ?string $description = null;
+
     public function __construct()
     {
         parent::__construct();
@@ -130,5 +133,17 @@ class ExpansionChip extends Chip
     public function getExpansionChipType(): ?ExpansionChipType
     {
         return $this->type;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(?string $description): self
+    {
+        $this->description = $description;
+
+        return $this;
     }
 }

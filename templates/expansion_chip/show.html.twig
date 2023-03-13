@@ -52,6 +52,10 @@
 						{% endif %}
 					{% else %}unknown{% endif %}
 					</div>
+					<!-- Description -->
+					{% if expansion_chip.getDescription() is not empty %}
+						{% apply markdown_to_html %}{{ expansion_chip.getDescription() }}{% endapply %}
+					{% endif %}
 				</div>
 			</div>
 			<div class="show-downloads" id="sh-downloads">

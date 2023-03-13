@@ -50,6 +50,8 @@
 					{% include 'admin/macros/widget.html.twig' with {'type':'alias','displayname':'Chip aliases', 'entity':form.chip.chipAliases} %}
 					<!-- PCI DEV -->
 					{% include 'admin/macros/widget.html.twig' with {'type':'pcidev', 'entity':form.chip.pciDevs} %}
+					<!-- Description -->
+					{{form_widget(form.description, {'attr': {'style': 'width:98%;height:300px;', 'placeholder': 'Describe the chip (max. 4096 characters) ...'}}) }}
 				</div>
 				<div class="show-downloads" id="sh-downloads">
 					<!-- Drivers -->
