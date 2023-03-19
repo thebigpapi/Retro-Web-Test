@@ -9,6 +9,8 @@
 		{% include 'admin/macros/error.html.twig' with {'entity':form.vars.errors.form} %}
 	{% endif %}
 </div>
+<div class="errors-div" id="errors-message"><ul>
+</ul></div>
 <div class="toolbar">
 	<button type="button" name="tabs" id="tab-nav-save" onclick="document.getElementById('large_file_form_save').click();"><img src="{{ absolute_url(asset('build/icons/edit.svg')) }}" alt="" width="24" height="24"><span>Save</span></button>
 </div>
