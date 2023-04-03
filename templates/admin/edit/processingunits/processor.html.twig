@@ -5,95 +5,112 @@
 {% block body %}
 
 <form data-controller="cpu--add" name="processor_form" method="post" enctype="multipart/form-data">
-<div class="title">Edit:&nbsp;CPU
-	{% if form.vars.errors.form.getErrors(true) is not empty %}
-		{% include 'admin/macros/error.html.twig' with {'entity':form.vars.errors.form} %}
-	{% endif %}
-</div>
+	<div class="title">CPU editor
+		{% if form.vars.errors.form.getErrors(true) is not empty %}
+			{% include 'admin/macros/error.html.twig' with {'entity':form.vars.errors.form} %}
+		{% endif %}
+	</div>
+	<!-- MANUF./NAME/PART NO. -->
+	<section class="search-form-grid">
+		<div class="search-form-entry">
+			<div class="search-form-widget">
+				<label class="search-form-label">Manufacturer</label>
+				<div>{{ form_widget(form.processingUnit.chip.manufacturer, {'attr': {'style': 'display:none;'}})}}</div>
+			</div>
+		</div>
+		<div class="search-form-entry">
+			<div class="search-form-widget">
+				<label class="search-form-label">Part Number</label>
+				<div>{{ form_widget(form.processingUnit.chip.partNumber, {'attr': {'placeholder': 'Part Number ...'}}) }}</div>
+			</div>
+		</div>
+		<div class="search-form-entry">
+			<div class="search-form-widget">
+				<label class="search-form-label">Name</label>
+				<div>{{ form_widget(form.processingUnit.chip.name, {'attr': {'placeholder': 'Name ...'}}) }}</div>
+			</div>
+		</div>
+	</section>
 <div class="toolbar" data-controller="show">
 	<button type="button" name="tabs" id="tab-nav-save" data-action="click->cpu--add#submit"><img src="{{ absolute_url(asset('build/icons/edit.svg')) }}" alt="" width="24" height="24"><span>Save</span></button>
 	<button type="button" name="tabs" id="tab-nav-clone" data-action="click->cpu--add#clone"><img src="{{ absolute_url(asset('build/icons/clone.svg')) }}" alt="" width="24" height="24"><span>Clone</span></button>	
 </div>
+
 <div class="main-strip">
 	<div class="internal-container">
-		<table>
-		<tr>
-			<td>{{form_label(form.processingUnit.chip.manufacturer)}}</td>
-			<td>{{form_widget(form.processingUnit.chip.manufacturer, {'attr': {'style': 'width:90%'}})}}</td>
-		</tr>
-		<tr>
-			<td>{{form_label(form.processingUnit.chip.name)}}</td>
-			<td>{{form_widget(form.processingUnit.chip.name)}}</td>
-		</tr>
-		<tr>
-			<td>{{form_label(form.core)}}</td>
-			<td>{{form_widget(form.core)}}</td>
-		</tr>
-		<tr>
-			<td>Part number</td>
-			<td>{{form_widget(form.processingUnit.chip.partNumber)}}</td>
-		</tr>
-		<tr>
-			<td>{{form_label(form.processingUnit.speed)}}</td>
-			<td>{{form_widget(form.processingUnit.speed)}}</td>
-		</tr>
-		<tr>
-			<td>{{form_label(form.processingUnit.fsb)}}</td>
-			<td>{{form_widget(form.processingUnit.fsb)}}</td>
-		</tr>
-		<tr>
-			<td>{{form_label(form.processingUnit.platform)}}</td>
-			<td>{{form_widget(form.processingUnit.platform)}}</td>
-		</tr>
-		<tr>
-			<td>{{form_label(form.voltages)}}</td>
-			<td>{% include 'macros/entityList.html.twig' with {'entityName':'voltages', 'entityDisplayName': 'voltage', 'entities':form.voltages} %}</td>
-		</tr>
-		<tr>
-			<td>{{form_label(form.tdp)}}</td>
-			<td>{{form_widget(form.tdp)}}&nbsp;W</td>
-		</tr>
-		<tr>
-			<td>{{form_label(form.processNode)}}</td>
-			<td>{{form_widget(form.processNode)}}&nbsp;nm</td>
-		</tr>
-		<tr>
-			<td>{{form_label(form.L1)}}</td>
-			<td>{{form_widget(form.L1)}}</td>
-		</tr>
-		<tr>
-			<td>{{form_label(form.L2)}}</td>
-			<td>{{form_widget(form.L2)}}</td>
-		</tr>
-		<tr>
-			<td>{{form_label(form.L3)}}</td>
-			<td>{{form_widget(form.L3)}}</td>
-		</tr>
-		<tr>
-			<td>{{form_label(form.L1CacheMethod)}}</td>
-			<td>{{form_widget(form.L1CacheMethod)}}</td>
-		</tr>
-		<tr>
-			<td>{{form_label(form.L2CacheRatio)}}</td>
-			<td>{{form_widget(form.L2CacheRatio)}}</td>
-		</tr>
-		<tr>
-			<td>{{form_label(form.L3CacheRatio)}}</td>
-			<td>{{form_widget(form.L3CacheRatio)}}</td>
-		</tr>
-		<tr>
-			<td>{{form_label(form.processingUnit.chip.chipAliases)}}</td>
-			<td>{% include 'macros/entityList.html.twig' with {'entityName':'processingUnit.chip.chipAliases', 'entityDisplayName': 'chip alias', 'entities':form.processingUnit.chip.chipAliases} %}</td>
-		</tr>
-		<tr>
-			<td>Instruction sets:</td>
-			<td>{% include 'macros/entityList.html.twig' with {'entityName':'processingUnit.instructionSets', 'entityDisplayName': 'instruction set', 'entities':form.processingUnit.instructionSets} %}</td>
-		</tr>
-		<tr>
-			<td>Sockets:</td>
-			<td>{% include 'macros/entityList.html.twig' with {'entityName':'processingUnit.sockets', 'entityDisplayName': 'socket', 'entities':form.processingUnit.sockets} %}</td>
-		</tr>
-		</table>
+		<div class="internal-content">
+			<!-- Aliases -->
+			{% include 'admin/macros/widget.html.twig' with {'type':'alias','displayname':'CPU aliases', 'entity':form.processingUnit.chip.chipAliases} %}
+			<!-- Socket -->
+			{% include 'macros/entityList.html.twig' with {'entityName':'processingUnit.sockets', 'label': 'Socket', 'entities':form.processingUnit.sockets} %}
+			<!-- Platform -->
+			<div class="quick-spec-table" style="padding:0;">
+				<div class="quick-spec-head editor">Platform</div>
+				<div class="editor-row nopad"><div class="editor-form-widget">
+					<div>{{ form_widget(form.processingUnit.platform) }}</div>
+				</div></div>
+			</div>
+			<!-- Core -->
+			<div class="quick-spec-table" style="padding:0;">
+				<div class="quick-spec-head editor">Core</div>
+				<div class="editor-row nopad"><div class="editor-form-widget">
+					<div>{{ form_widget(form.core) }}</div>
+				</div></div>
+			</div>
+			<!-- Speed -->
+			<div class="quick-spec-table" style="padding:0;">
+				<div class="quick-spec-head editor">Speed</div>
+				<div class="editor-row nopad"><div class="editor-form-widget">
+					<div>{{ form_widget(form.processingUnit.speed) }}</div>
+				</div></div>
+			</div>
+			<!-- FSB -->
+			<div class="quick-spec-table" style="padding:0;">
+				<div class="quick-spec-head editor">FSB</div>
+				<div class="editor-row nopad"><div class="editor-form-widget">
+					<div>{{ form_widget(form.processingUnit.fsb) }}</div>
+				</div></div>
+			</div>
+			<!-- TDP -->
+			<div class="quick-spec-table" style="padding:0;">
+				<div class="quick-spec-head editor">TDP</div>
+				<div class="editor-row nopad"><div class="editor-form-widget" style="display:flex;">
+					<div style="width:auto;">{{ form_widget(form.tdp) }}</div><div>&nbsp;W</div>
+				</div></div>
+			</div>
+			<!-- Voltages -->
+			{% include 'macros/entityList.html.twig' with {'entityName':'processingUnit.sockets', 'label': 'Voltage', 'entities':form.voltages} %}
+			<!-- Process node -->
+			<div class="quick-spec-table" style="padding:0;">
+				<div class="quick-spec-head editor">Process node</div>
+				<div class="editor-row nopad"><div class="editor-form-widget" style="display:flex;">
+					<div style="width:auto;">{{ form_widget(form.processNode) }}</div><div>&nbsp;nm</div>
+				</div></div>
+			</div>
+			<!-- L1 cache -->
+			<div class="quick-spec-table" style="padding:0;">
+				<div class="quick-spec-head editor">L1 size and method</div>
+				<div class="editor-row nopad"><div class="editor-form-widget" style="display:flex;">
+					<div style="width:auto;padding-right:5px;">{{ form_widget(form.L1) }}</div><div style="width:auto;">{{form_widget(form.L1CacheMethod)}}</div>
+				</div></div>
+			</div>
+			<!-- L2 cache -->
+			<div class="quick-spec-table" style="padding:0;">
+				<div class="quick-spec-head editor">L2 size and ratio</div>
+				<div class="editor-row nopad"><div class="editor-form-widget" style="display:flex;">
+					<div style="width:auto;padding-right:5px;">{{ form_widget(form.L2) }}</div><div style="width:auto;">{{form_widget(form.L2CacheRatio)}}</div>
+				</div></div>
+			</div>
+			<!-- L3 cache -->
+			<div class="quick-spec-table" style="padding:0;">
+				<div class="quick-spec-head editor">L3 size and ratio</div>
+				<div class="editor-row nopad"><div class="editor-form-widget" style="display:flex;">
+					<div style="width:auto;padding-right:5px;">{{ form_widget(form.L3) }}</div><div style="width:auto;">{{form_widget(form.L3CacheRatio)}}</div>
+				</div></div>
+			</div>
+			<!-- Instruction set -->
+			{% include 'macros/entityList.html.twig' with {'entityName':'processingUnit.instructionSets', 'label': 'Instruction set', 'entities':form.processingUnit.instructionSets} %}
+		</div>
 	</div>
 	{% include 'macros/entityListImages.html.twig' with {'entityName':'processingUnit.chip.images', 'entities':form.processingUnit.chip.images, 'imgpath':'chip', 'edit':true} %}
 </div>

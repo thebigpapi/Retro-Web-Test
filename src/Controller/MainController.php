@@ -7,13 +7,14 @@ use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\MotherboardRepository;
 use App\Repository\MotherboardBiosRepository;
 use App\Repository\ChipsetRepository;
+use App\Repository\ProcessorRepository;
 use App\Repository\LargeFileRepository;
 use Symfony\Component\HttpFoundation\Response;
 
 class MainController extends AbstractController
 {
     #[Route('/', name:'app_homepage')]
-    public function index(MotherboardRepository $motherboardRepository, MotherboardBiosRepository $motherboardBiosRepository, ChipsetRepository $chipsetRepository, LargeFileRepository $largeFileRepository): Response
+    public function index(MotherboardRepository $motherboardRepository, MotherboardBiosRepository $motherboardBiosRepository, ChipsetRepository $chipsetRepository, ProcessorRepository $cpuRepository, LargeFileRepository $largeFileRepository): Response
     {
         $latestMotherboards = $motherboardRepository->findLatest();
         return $this->render('main/index.html.twig', [
@@ -21,6 +22,7 @@ class MainController extends AbstractController
             'latestMotherboards' => $latestMotherboards,
             'moboCount' => $motherboardRepository->getCount(),
             'chipCount' => $chipsetRepository->getCount(),
+            'cpuCount' => $cpuRepository->getCount(),
             'biosCount' => $motherboardBiosRepository->getCount(),
             'driverCount' => $largeFileRepository->getCount(),
         ]);

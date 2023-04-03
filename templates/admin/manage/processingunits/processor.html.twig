@@ -5,18 +5,18 @@
     <div class="header-label">Name</div>
     <div>{{object.getName()}}</div>
 
+    <div class="header-label">Part number</div>
+    <div>{{object.getPartNumber()}}</div>
+
     <div class="header-label">Core</div>
     <div>{{ object.getCore()|length > 0 ? object.getCore()}}</div>
 
-    <div class="header-label">Speed</div>
+    <div class="header-label">Speed/FSB</div>
     {% if object.getSpeed != object.getFsb() %}
         <div>{{ object.getSpeed().getValueWithUnit() }}/{{ object.getFsb().getValueWithUnit() }}</div>
     {% else %}
         <div>{{ object.getSpeed().getValueWithUnit() }}</div>
     {% endif %}
-
-    <div class="header-label">Cache</div>
-    <div>{{ object.getCachesWithValue()|length > 0 ? object.getCachesWithValue() }}</div>
 
     <div class="header-label">Other specs</div>
     <div class="tag-container">

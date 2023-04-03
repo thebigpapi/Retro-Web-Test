@@ -37,10 +37,10 @@
 			<div class="show-general" id="sh-general">
 				<div class="quick-spec-table">
 					<!-- Type -->
-					<div class="quick-spec-head">Type</div>
+					<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/show/chip.svg')) }}" alt="date" width="24" height="24">Type</div>
 					<div>{{expansion_chip.getType().getName()}}</div>
 					<!-- PCI DEV -->
-					<div class="quick-spec-head">PCI ID</div>
+					<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/show/tag.svg')) }}" alt="date" width="24" height="24">PCI ID</div>
 					<div>
 					{% if expansion_chip.getPciDevs() is not empty %}
 						{% if expansion_chip.getManufacturer().getPciVendorIds() is not empty %}
@@ -49,13 +49,15 @@
 								<div>PCI\VEN_{{vendor.getVen()}}&amp;DEV_{{device.getDev()}}</div>
 								{% endfor %}
 							{% endfor %}
-						{% endif %}
+						{% else %}PCI VEN missing!{% endif %}
 					{% else %}unknown{% endif %}
 					</div>
-					<!-- Description -->
-					{% if expansion_chip.getDescription() is not empty %}
-						{% apply markdown_to_html %}{{ expansion_chip.getDescription() }}{% endapply %}
-					{% endif %}
+				</div>
+				<div class="chipset-textarea">
+				<!-- Description -->
+				{% if expansion_chip.getDescription() is not empty %}
+					{% apply markdown_to_html %}{{ expansion_chip.getDescription() }}{% endapply %}
+				{% endif %}
 				</div>
 			</div>
 			<div class="show-downloads" id="sh-downloads">

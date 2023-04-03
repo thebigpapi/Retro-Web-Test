@@ -1,0 +1,60 @@
+{% extends 'base.html.twig' %}
+
+{% form_theme form _self %}
+
+{% block checkbox_widget %}
+	{% set type = type|default('checkbox') %}
+	<input type="{{ type }}" {{ block('widget_attributes') }} {% if value is not empty %} value="{{ value }}" {% endif %}>
+{% endblock %}
+
+{% block hidden_widget %}
+	{% set type = type|default('hidden') %}
+	<input type="{{ type }}" {{ block('widget_attributes') }} {% if value is not empty %} value="{{ value }}" {% endif %}>
+{% endblock %}
+
+{% block title %}Search CPUs - TRW{% endblock %}
+
+
+{% block metatags %}
+	<meta name="description" content="Search for a CPU by name, manufacturer and part number.">
+	<link rel="alternate" hreflang="x-default" href="{{ absolute_url(path('processor_search')) }}"/>
+{% endblock %}
+{% block body %}
+
+	<div id="hiddenDiv" style="display: none;"></div>
+	{{ form_start(form, {'method': 'POST', 'name': 'search_processor', 'action':path("processor_search"), 'attr':{'data-controller':'search'}}) }}
+	<fieldset id="search-fieldset">
+		<div class="title">Search for: CPUs</div>
+		<div class="index-title">
+			List by first letter:<br>
+		</div>
+		<div class="index-list">
+			{% for letter in ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z']%}
+				<a class="index-letter" href="{{path("processorindex", {"letter":letter})}}">{{letter}}</a>
+			{% endfor %}
+		</div>
+		<section>
+			<h4 hidden>Search navigation</h4>
+			<div class="toolbar">
+				<button type="button" onclick="document.getElementById('search_search').click();return false;">
+					<img src="{{ absolute_url(asset('build/icons/search/search.svg')) }}" alt="search" width="24" height="24">
+					<span>Search</span>
+				</button>
+				{{ form_row(form.search)|replace({'<div><button': '<input', '</button></div>': '">', '>': ' value="'})|raw }}
+			</div>
+		</section>
+		<section class="search-form-grid" style="display:flex;justify-content:center;flex-wrap:wrap;">
+			<div class="search-form-entry" style="min-width:min(27em,50vw);">
+				<label class="search-form-label" for="search_cpuManufacturer" title="This is where you select the manufacturer name and enter the CPU name/part number.">
+					<span>Manufacturer and Name</span>
+					<img src="{{ absolute_url(asset('build/icons/search/help.svg')) }}" alt="" width="16" height="16">
+				</label>
+				<div class="search-form-widget">
+					<div id="setchip1">{{ form_widget(form.cpuManufacturer) }}</div>
+					<div>{{ form_widget(form.name, {'attr': {'placeholder': 'Name or Part number (without manufacturer) ...'}}) }}</div>
+				</div>
+			</div>
+		</section>
+	</fieldset>
+	<div>{{ form_rest(form)}}</div>
+</form>{% endblock %}

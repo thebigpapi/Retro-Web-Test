@@ -39,6 +39,7 @@ class Search extends AbstractType
              * @var Chipset[]
              */
             $chipsets = $chipsetManufacturer?->getChipsets()->toArray() ?? [];
+            dd($chipsets);
 
             usort(
                 $chipsets,
