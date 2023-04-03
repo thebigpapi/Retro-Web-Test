@@ -104,7 +104,7 @@ export default class extends Controller {
             error = true;
         }
         if (_this.checkList('processorPlatformTypes-fields-list')) {
-            errorMessage += "CPU platform has duplicate entries!\n";
+            errorMessage += "CPU family has duplicate entries!\n";
             error = true;
         }
         if (_this.checkList('motherboardMaxRams-fields-list')) {

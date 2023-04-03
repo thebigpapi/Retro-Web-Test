@@ -15,7 +15,7 @@
 {% block title %}Search boards - TRW{% endblock %}
 
 {% block metatags %}
-	<meta name="description" content="Search for a motherboard by name, chipset, manufacturer, CPU platform, form factor, expansion slot count and more.">
+	<meta name="description" content="Search for a motherboard by name, chipset, manufacturer, CPU family, form factor, expansion slot count and more.">
 	<link rel="alternate" hreflang="x-default" href="{{ absolute_url(path('motherboard_search')) }}"/>
 {% endblock %}
 {% block body %}
@@ -73,13 +73,13 @@
 				</div>
 			</div>
 			<div class="search-form-entry">
-				<label class="search-form-label" for="search_cpuSocket1" title="Select a CPU socket from the first field and/or pick the CPU platform from the second field">
+				<label class="search-form-label" for="search_cpuSocket1" title="Select a CPU socket from the first field and/or pick the CPU family from the second field">
 					<span>CPU socket</span>
 					<img src="{{ absolute_url(asset('build/icons/search/help.svg')) }}" alt="" width="16" height="16">
 				</label>
 				<div class="search-form-widget">
 					<div id="setcpu1">{{ form_widget(form.cpuSocket1, {'attr': {'data-action': "change->search#search", 'data-target-id': 'search_platform1'}}) }}</div>
-					<div id="setcpup1">{{ form_widget(form.platform1, {'attr': {'aria-label': "CPU platform"}}) }}</div>
+					<div id="setcpup1">{{ form_widget(form.platform1, {'attr': {'aria-label': "CPU family"}}) }}</div>
 				</div>
 			</div>
 			<div class="search-form-entry">
@@ -88,7 +88,7 @@
 				</label>
 				<div class="search-form-widget">
 					<div id="setcpu3">{{ form_widget(form.cpuSocket2, {'attr': {'data-action': "change->search#search", 'data-target-id': 'search_platform2'}}) }}</div>
-					<div id="setcpup3">{{ form_widget(form.platform2, {'attr': {'aria-label': "Secondary CPU platform"}}) }}</div>
+					<div id="setcpup3">{{ form_widget(form.platform2, {'attr': {'aria-label': "Secondary CPU family"}}) }}</div>
 				</div>
 			</div>
 

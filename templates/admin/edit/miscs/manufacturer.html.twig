@@ -30,8 +30,8 @@
 	<div style="display:table;margin:0 auto;text-align:center;">
 		<!-- PCI VEN -->
 		{% include 'admin/macros/widget.html.twig' with {'type':'pciven', 'entity':form.pciVendorIds} %}
-		<p>BIOS codes:</p>
-		{% include 'macros/entityList.html.twig' with {'entityName':'biosCodes', 'entityDisplayName': 'BIOS code', 'entities':form.biosCodes} %}
+		<!-- BIOS codes -->
+		{% include 'macros/entityList.html.twig' with {'entityName':'biosCodes', 'label': 'BIOS codes:', 'entities':form.biosCodes} %}
 	</div>
 </div>
 <div id="hiddenDiv" style="display: none;">{{form_widget(form.save) }}{{ form_end(form)|replace({'</form>': '</div></form>'})|raw }}

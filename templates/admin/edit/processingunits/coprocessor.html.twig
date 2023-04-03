@@ -4,54 +4,66 @@
 
 {% block body %}
 {{ form_start(form, {'method': 'POST'}) }}
-<div class="title">Edit:&nbsp;NPU
-	{% if form.vars.errors.form.getErrors(true) is not empty %}
-		{% include 'admin/macros/error.html.twig' with {'entity':form.vars.errors.form} %}
-	{% endif %}
-</div>
+	<div class="title">NPU editor
+		{% if form.vars.errors.form.getErrors(true) is not empty %}
+			{% include 'admin/macros/error.html.twig' with {'entity':form.vars.errors.form} %}
+		{% endif %}
+	</div>
+	<!-- MANUF./NAME/PART NO. -->
+	<section class="search-form-grid">
+		<div class="search-form-entry">
+			<div class="search-form-widget">
+				<label class="search-form-label">Manufacturer</label>
+				<div>{{ form_widget(form.processingUnit.chip.manufacturer, {'attr': {'style': 'display:none;'}})}}</div>
+			</div>
+		</div>
+		<div class="search-form-entry">
+			<div class="search-form-widget">
+				<label class="search-form-label">Part Number</label>
+				<div>{{ form_widget(form.processingUnit.chip.partNumber, {'attr': {'placeholder': 'Part Number ...'}}) }}</div>
+			</div>
+		</div>
+		<div class="search-form-entry">
+			<div class="search-form-widget">
+				<label class="search-form-label">Name</label>
+				<div>{{ form_widget(form.processingUnit.chip.name, {'attr': {'placeholder': 'Name ...'}}) }}</div>
+			</div>
+		</div>
+	</section>
 <div class="toolbar">
 	<button type="button" name="tabs" id="tab-nav-save" onclick="document.getElementById('coprocessor_form_save').click();"><img src="{{ absolute_url(asset('build/icons/edit.svg')) }}" alt="" width="24" height="24"><span>Save</span></button>
 </div>
 <div class="main-strip">
 	<div class="internal-container">
-	<table>
-		<tr>
-			<td>{{form_label(form.processingUnit.chip.manufacturer)}}</td>
-			<td>{{form_widget(form.processingUnit.chip.manufacturer)}}</td>
-		</tr>
-		<tr>
-			<td>{{form_label(form.processingUnit.chip.name)}}</td>
-			<td>{{form_widget(form.processingUnit.chip.name)}}</td>
-		</tr>
-		<tr>
-			<td>Part number</td>
-			<td>{{form_widget(form.processingUnit.chip.partNumber)}}</td>
-		</tr>
-		<tr>
-			<td>{{form_label(form.processingUnit.speed)}}</td>
-			<td>{{form_widget(form.processingUnit.speed)}}</td>
-		</tr>
-		<tr>
-			<td>{{form_label(form.processingUnit.fsb)}}</td>
-			<td>{{form_widget(form.processingUnit.fsb)}}</td>
-		</tr>
-		<tr>
-			<td>{{form_label(form.processingUnit.platform)}}</td>
-			<td>{{form_widget(form.processingUnit.platform)}}</td>
-		</tr>
-		<tr>
-			<td>Instruction sets:</td>
-			<td>{% include 'macros/entityList.html.twig' with {'entityName':'processingUnit.instructionSets', 'entityDisplayName': 'instruction set', 'entities':form.processingUnit.instructionSets} %}</td>
-		</tr>
-		<tr>
-			<td>Sockets:</td>
-			<td>{% include 'macros/entityList.html.twig' with {'entityName':'processingUnit.sockets', 'entityDisplayName': 'socket', 'entities':form.processingUnit.sockets} %}</td>
-		</tr>
-		<tr>
-			<td>{{form_label(form.processingUnit.chip.chipAliases)}}</td>
-			<td>{% include 'macros/entityList.html.twig' with {'entityName':'processingUnit.chip.chipAliases', 'entityDisplayName': 'chip alias', 'entities':form.processingUnit.chip.chipAliases} %}</td>
-		</tr>
-	</table>
+		<div class="internal-content">
+			<!-- Aliases -->
+			{% include 'admin/macros/widget.html.twig' with {'type':'alias','displayname':'CPU aliases', 'entity':form.processingUnit.chip.chipAliases} %}
+			<!-- Socket -->
+			{% include 'macros/entityList.html.twig' with {'entityName':'processingUnit.sockets', 'label': 'Socket', 'entities':form.processingUnit.sockets} %}
+			<!-- Platform -->
+			<div class="quick-spec-table" style="padding:0;">
+				<div class="quick-spec-head editor">Platform</div>
+				<div class="editor-row nopad"><div class="editor-form-widget">
+					<div>{{ form_widget(form.processingUnit.platform, {'attr': {'style': 'display:none;'}} ) }}</div>
+				</div></div>
+			</div>
+			<!-- Speed -->
+			<div class="quick-spec-table" style="padding:0;">
+				<div class="quick-spec-head editor">Speed</div>
+				<div class="editor-row nopad"><div class="editor-form-widget">
+					<div>{{ form_widget(form.processingUnit.speed) }}</div>
+				</div></div>
+			</div>
+			<!-- FSB -->
+			<div class="quick-spec-table" style="padding:0;">
+				<div class="quick-spec-head editor">FSB</div>
+				<div class="editor-row nopad"><div class="editor-form-widget">
+					<div>{{ form_widget(form.processingUnit.fsb) }}</div>
+				</div></div>
+			</div>
+			<!-- Instruction set -->
+			{% include 'macros/entityList.html.twig' with {'entityName':'processingUnit.instructionSets', 'label': 'Instruction set', 'entities':form.processingUnit.instructionSets} %}
+		</div>
 	</div>
 	{% include 'macros/entityListImages.html.twig' with {'entityName':'processingUnit.chip.images', 'entities':form.processingUnit.chip.images, 'imgpath':'chip', 'edit':true} %}
 </div>

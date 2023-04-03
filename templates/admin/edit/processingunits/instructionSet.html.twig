@@ -18,8 +18,7 @@
 		<span>{{form_widget(form.name, {'attr': {'style': 'width:17em'}})}}</span>
 	</div>
 	<div style="display:table;margin:0 auto;text-align:center;">
-		<p>Compatible with instruction sets:</p>
-		{% include 'macros/entityList.html.twig' with {'entityName':'compatibleWith', 'entityDisplayName': 'instruction set', 'entities':form.compatibleWith} %}
+		{% include 'macros/entityList.html.twig' with {'entityName':'compatibleWith', 'label': 'Compatible with instruction sets:', 'entities':form.compatibleWith} %}
 	</div>
 </div>
 <div id="hiddenDiv" style="display: none;">{{form_widget(form.save)}}{{ form_end(form)|replace({'</form>': '</div></form>'})|raw }}

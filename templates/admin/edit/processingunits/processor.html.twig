@@ -47,7 +47,7 @@
 			<div class="quick-spec-table" style="padding:0;">
 				<div class="quick-spec-head editor">Platform</div>
 				<div class="editor-row nopad"><div class="editor-form-widget">
-					<div>{{ form_widget(form.processingUnit.platform) }}</div>
+					<div>{{ form_widget(form.processingUnit.platform, {'attr': {'style': 'display:none;'}} ) }}</div>
 				</div></div>
 			</div>
 			<!-- Core -->
@@ -79,7 +79,7 @@
 				</div></div>
 			</div>
 			<!-- Voltages -->
-			{% include 'macros/entityList.html.twig' with {'entityName':'processingUnit.sockets', 'label': 'Voltage', 'entities':form.voltages} %}
+			{% include 'macros/entityList.html.twig' with {'entityName':'processingUnit.sockets', 'label': 'Voltage (in V)', 'entities':form.voltages} %}
 			<!-- Process node -->
 			<div class="quick-spec-table" style="padding:0;">
 				<div class="quick-spec-head editor">Process node</div>

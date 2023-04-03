@@ -76,9 +76,9 @@
 					{% else %}
 					<div>Unknown</div>
 					{% endif %}
-					<!-- CPU platform -->
+					<!-- CPU family -->
 					<div class="quick-spec-head">
-						<img src="{{ absolute_url(asset('build/icons/show/486.svg')) }}" alt="cpu" width="24" height="24">CPU platform{% if motherboard.getProcessorPlatformTypes()|length > 1 %}s{% endif %}
+						<img src="{{ absolute_url(asset('build/icons/show/486.svg')) }}" alt="cpu" width="24" height="24">CPU family
 					</div>
 					{% if motherboard.getProcessorPlatformTypes() is not empty %}
 					<div class="tag-container">{% for platform in motherboard.getProcessorPlatformTypes() %}<span class="text-block">{{ platform.getName() }}</span>{% endfor %}</div>
