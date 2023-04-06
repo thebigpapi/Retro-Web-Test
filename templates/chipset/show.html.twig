@@ -95,8 +95,8 @@
 						{% for chipPart in chipset.getChipsetParts()|filter(chipPart => chipPart.getDescription() is not empty) %}
 						<li><a href="#{{ chipPart.getShortNamePN() }}">{{ chipPart.getShortName() }}{% if chipPart.getChipAliases() is not empty %}&nbsp;(known as:{% for cp in chipPart.getChipAliases() %}
 						{{ cp.getManufacturer().getShortNameIfExist() }}&nbsp;{{ cp.getPartNumber() }} {{ cp.getName() ? '[' ~ cp.getName() ~ ']' }}{% if not loop.last%}, {% endif %}{% endfor %}){% endif %}</a></li>
-						{% endfor %}	
-					</ul>				
+						{% endfor %}
+					</ul>
 					{% for chipPart in chipset.getChipsetParts()|filter(chipPart => chipPart.getDescription() is not empty) %}
 						<hr><a name="{{ chipPart.getShortNamePN() }}"></a>
 						{% apply markdown_to_html %}{{ chipPart.getDescription() }}{% endapply %}

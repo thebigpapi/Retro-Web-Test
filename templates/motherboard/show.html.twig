@@ -24,11 +24,9 @@
 	<meta property="og:description" content="{{ motherboard.getMetaDescription() }}">
 	<meta property="og:url" content="{{ absolute_url(path('motherboard_show_slug', {slug: motherboard.getSlug()})) }}">
 	{% if motherboard.getImages() is not empty %}
-		{% for image in motherboard.getImages() %}
-			{% if image.motherboardImageType.id in [1, 2] %}
-				<meta name="twitter:image" content="{{ vich_uploader_asset(image, 'imageFile')}}">
-				<meta property="og:image" content="{{ vich_uploader_asset(image, 'imageFile')}}">
-			{% endif %}
+		{% for image in motherboard.getImages()|filter(a => a.motherboardImageType.id in [1, 2])|sort((a, b) => a.getFileName() <=> b.getFileName())|sort((a, b) => b.motherboardImageType <=> a.motherboardImageType)|slice(0, 1) %}
+			<meta name="twitter:image" content="{{ vich_uploader_asset(image, 'imageFile')}}">
+			<meta property="og:image" content="{{ vich_uploader_asset(image, 'imageFile')}}">
 		{% endfor %}
 	{% else %}
 		<meta name="twitter:image" content="{{ absolute_url(asset('build/images/motherboard/image-missing.webp')) }}">

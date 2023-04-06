@@ -11,6 +11,12 @@
 	{% apply spaceless %}
 	<meta property="og:title" content="{{ cpu.getNameWithManufacturer() }}">
 	<meta property="og:description" content="Get CPU info and images for {{ cpu.getNameWithManufacturer() }}!">
+	{% if cpu.getImages() is not empty %}
+		{% for image in cpu.getImages()|sort((a, b) => a.getFileName() <=> b.getFileName())|slice(0, 1) %}
+			<meta name="twitter:image" content="{{ vich_uploader_asset(image, 'imageFile')}}">
+			<meta property="og:image" content="{{ vich_uploader_asset(image, 'imageFile')}}">
+		{% endfor %}
+	{% endif %}
 	{% endapply %}
 	<link rel="alternate" hreflang="x-default" href="{{ absolute_url(path('processor_show', {id: cpu.getId()})) }}"/>
 {% endblock %}

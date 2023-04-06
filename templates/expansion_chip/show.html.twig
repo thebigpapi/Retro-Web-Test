@@ -13,6 +13,12 @@
 	{% apply spaceless %}
 	<meta property="og:title" content="{{ expansion_chip.getNameWithManufacturer() }}">
 	<meta property="og:description" content="Get expansion chip info, images and drivers for {{ expansion_chip.getNameWithManufacturer() }}!">
+	{% if expansion_chip.getImages() is not empty %}
+		{% for image in expansion_chip.getImages()|sort((a, b) => a.getFileName() <=> b.getFileName())|slice(0, 1) %}
+			<meta name="twitter:image" content="{{ vich_uploader_asset(image, 'imageFile')}}">
+			<meta property="og:image" content="{{ vich_uploader_asset(image, 'imageFile')}}">
+		{% endfor %}
+	{% endif %}
 	{% endapply %}
 	<link rel="alternate" hreflang="x-default" href="{{ absolute_url(path('expansion_chip_show', {id: expansion_chip.getId()})) }}"/>
 {% endblock %}
