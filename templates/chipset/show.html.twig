@@ -2,9 +2,7 @@
 {% from 'macros/largeFile.html.twig' import link as driverLink %}
 {% from 'macros/largeFile.html.twig' import header as driverHeader %}
 
-{% block title %}
-	{{ chipset.getPrettyTitle() }} - The Retro Web
-{% endblock %}
+{% block title %}{{ chipset.getPrettyTitle() }} - The Retro Web{% endblock %}
 {% block metatags %}
 	<meta name="description" content="{{ chipset.getMetaDescription() }}">
 	<link rel="canonical" hreflang="x-default" href="{{ absolute_url(path('chipset_show', {id: chipset.getId()})) }}"/>
