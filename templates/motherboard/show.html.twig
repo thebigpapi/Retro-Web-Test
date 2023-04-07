@@ -267,7 +267,7 @@
 							<div><b>BIOS Ver.</b></div>
 						</div>
 						{% for bios in motherboard.getMotherboardBios()|sort((a, b) => b.boardVersion <=> a.boardVersion)|sort((a, b) => a.manufacturer <=> b.manufacturer) %}
-						<div class="show-table-row">
+						<div class="show-table-row" style="word-break:break-all;">
 							<div>{{ bios.getManufacturer().getShortNameIfExist() }}</div>
 							<div><span class="string-bios">{{ bios.getPostString() }}</span></div>
 							<div><span>{{ bios.getNote() }}</span></div>
