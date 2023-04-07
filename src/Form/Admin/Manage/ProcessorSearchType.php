@@ -39,6 +39,9 @@ class ProcessorSearchType extends AbstractType
                 'expanded' => false,
                 'multiple' => false,
                 'required' => false,
+                'choices' => $this->entityManager
+                    ->getRepository(ProcessorPlatformType::class)
+                    ->findAllSorted(),
                 'placeholder' => 'Select a platform ...'
             ])
             ->add('search', SubmitType::class);

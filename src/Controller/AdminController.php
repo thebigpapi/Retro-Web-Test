@@ -64,6 +64,35 @@ class AdminController extends AbstractController
         ]);
     }
 
+    #[Route('/admin/logs/{id}', name:'admin_logs_filtered', requirements: ['id' => '\d+'])]
+    public function logs_filtered(int $id, Request $request, TraceRepository $traceRepository, PaginatorInterface $paginator): Response
+    {
+        $logs = $traceRepository->findAllById($id);
+        if (!$logs) {
+            throw $this->createNotFoundException(
+                'No logs found which contain an object with ID = ' . $id
+            );
+        } else {
+            usort(
+                $logs,
+                function (Trace $a, Trace $b) {
+                    if ($a->getDate() == $b->getDate()) {
+                        return 0;
+                    }
+                    return ($a->getDate() > $b->getDate()) ? -1 : 1;
+                }
+            );
+            $paginatedObjects = $paginator->paginate(
+                $logs,
+                $request->query->getInt('page', 1),
+                $this->getParameter('app.pagination.max')
+            );
+            return $this->render('admin/logs.html.twig', [
+                'objectList' => $paginatedObjects,
+            ]);
+        }
+    }
+
     #[Route('/admin/guidelines', name:'admin_guidelines')]
     public function guidelines(): Response
     {
