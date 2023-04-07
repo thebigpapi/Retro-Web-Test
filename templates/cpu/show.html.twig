@@ -121,8 +121,11 @@
 			</div>
 		</div>
 		{% if is_granted('ROLE_ADMIN') %}
+		<div style="display:flex">
 		<a class="button-widget" style="margin:5px;max-width:100px;" href="../../admin/manage/processingunits/processors/{{ cpu.getId() }}/edit/">
 			<img src="{{ absolute_url(asset('build/icons/edit.svg')) }}" alt="" width="24" height="24">Edit CPU</a>
+		<a class="button-widget" style="margin:5px;max-width:100px;" href="{{ path('admin_logs_filter_id_entity', {id: cpu.getId(), entity: 'Processor'}) }}">
+			<img src="{{ absolute_url(asset('build/icons/show/calendar.svg')) }}" alt="" width="24" height="24">History</a></div>
 		{% endif %}
 	</div>
 
