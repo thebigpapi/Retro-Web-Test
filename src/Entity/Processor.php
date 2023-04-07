@@ -49,6 +49,7 @@ class Processor extends ProcessingUnit
         parent::__construct();
         $this->motherboards = new ArrayCollection();
         $this->voltages = new ArrayCollection();
+        $this->documentations = new ArrayCollection();
     }
     /**
      * @return Collection|Motherboard[]
@@ -336,5 +337,12 @@ class Processor extends ProcessingUnit
     public function getTdpWithValue(): string
     {
         return $this->tdp ? $this->tdp . "W" : "";
+    }
+    public function getNameWithManufacturer()
+    {
+        if ($this->name) {
+            return $this->getManufacturer()->getShortNameIfExist() . " " . $this->name . " (" . $this->partNumber . ")";
+        }
+        return $this->getManufacturer()->getShortNameIfExist() . " " . $this->partNumber;
     }
 }

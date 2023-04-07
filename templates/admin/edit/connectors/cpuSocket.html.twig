@@ -24,8 +24,7 @@
 		</tr>
 	</table>
 	<div style="display:table;margin:0 auto;text-align:center;">
-		<p>Platforms:</p>
-		{% include 'macros/entityList.html.twig' with {'entityName':'platforms', 'entityDisplayName': 'platform', 'entities':form.platforms} %}
+		{% include 'macros/entityList.html.twig' with {'entityName':'platforms', 'label': 'Platforms:', 'entities':form.platforms} %}
 	</div>
 </div>
 <div id="hiddenDiv" style="display: none;">{{form_widget(form.save) }}{{ form_end(form)|replace({'</form>': '</div></form>'})|raw }}

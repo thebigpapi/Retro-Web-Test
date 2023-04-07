@@ -166,7 +166,7 @@ class Search extends AbstractType
                 'required' => false,
                 'autocomplete' => true,
                 'choices' => $platforms,
-                'placeholder' => 'Select a processor platform ...',
+                'placeholder' => 'Select a processor family ...',
             ]);
         };
 
@@ -202,7 +202,7 @@ class Search extends AbstractType
                 'required' => false,
                 'autocomplete' => true,
                 'choices' => $platforms,
-                'placeholder' => 'Select a processor platform ...',
+                'placeholder' => 'Select a processor family ...',
             ]);
         };
 

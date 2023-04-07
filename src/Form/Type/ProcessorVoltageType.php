@@ -16,6 +16,7 @@ class ProcessorVoltageType extends AbstractType
         $builder
             ->add('value', NumberType::class, [
                 'required' => true,
+                'label' => false,
             ]);
     }
 

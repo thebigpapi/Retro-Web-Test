@@ -379,6 +379,11 @@ class MotherboardRepository extends ServiceEntityRepository
             FROM motherboard_cpu_socket as socket1 
             JOIN motherboard_cpu_socket as socket2 on socket1.motherboard_id = socket2.motherboard_id 
             WHERE socket1.cpu_socket_id=:socket1 AND socket2.cpu_socket_id=:socket2)";
+        } 
+        else if ($socket1 && $socket2 && $socket1 == $socket2) {
+            $where = "$where mot0.id IN (SELECT id FROM motherboard
+            WHERE max_cpu=2 AND id IN (SELECT motherboard_id FROM motherboard_cpu_socket 
+            WHERE cpu_socket_id=:socket))";
         } else // One socket
         {
             $where = "$where mot0.id IN (SELECT motherboard_id FROM motherboard_cpu_socket 
@@ -396,6 +401,9 @@ class MotherboardRepository extends ServiceEntityRepository
             FROM motherboard_cpu_socket as socket1 
             JOIN motherboard_cpu_socket as socket2 on socket1.motherboard_id = socket2.motherboard_id 
             WHERE socket1.cpu_socket_id=:socket1 AND socket2.cpu_socket_id=:socket2)";
+        } else if ($socket1 && $socket2 && $socket1 == $socket2) {
+            $where[] = "mot0.id IN (SELECT id FROM motherboard WHERE max_cpu=2 AND id IN 
+            (SELECT motherboard_id FROM motherboard_cpu_socket WHERE cpu_socket_id=:socket))";
         } else { // One socket
             $where[] = "mot0.id IN (SELECT motherboard_id FROM motherboard_cpu_socket WHERE cpu_socket_id=:socket)";
         }

@@ -1,0 +1,150 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	{{ cpu.getNameWithManufacturer() }}
+{% endblock %}
+{% block metatags %}
+	<meta name="description" content="CPU:{{ cpu.getNameWithManufacturer() }}">
+{% endblock %}
+
+{% block opengraph %}
+	{% apply spaceless %}
+	<meta property="og:title" content="{{ cpu.getNameWithManufacturer() }}">
+	<meta property="og:description" content="Get CPU info and images for {{ cpu.getNameWithManufacturer() }}!">
+	{% if cpu.getImages() is not empty %}
+		{% for image in cpu.getImages()|sort((a, b) => a.getFileName() <=> b.getFileName())|slice(0, 1) %}
+			<meta name="twitter:image" content="{{ vich_uploader_asset(image, 'imageFile')}}">
+			<meta property="og:image" content="{{ vich_uploader_asset(image, 'imageFile')}}">
+		{% endfor %}
+	{% endif %}
+	{% endapply %}
+	<link rel="alternate" hreflang="x-default" href="{{ absolute_url(path('processor_show', {id: cpu.getId()})) }}"/>
+{% endblock %}
+
+{% block body %}
+<!-- MANUF./NAME/PART NO. -->
+<div class="title">{{ cpu.getNameWithManufacturer() }}</div>
+{% if cpu.getChipAliases() is not empty %}
+<div class="tag-container" style="justify-content:center;padding-bottom:15px">
+	<span style="width:100%;text-align:center">Also known as:</span>
+	{% for alias in cpu.getChipAliases() %}
+		<span class="text-block" >{{ alias.getFullAliasName() }}</span>
+	{% endfor %}
+</div>
+{% endif %}
+
+<div class="main-strip">
+	<div class="internal-container">
+		<div class="internal-content">
+			<div class="quick-spec-split">
+				<div class="quick-spec-table">
+					<!-- Socket -->
+					<div class="quick-spec-head">
+						<img src="{{ absolute_url(asset('build/icons/show/cpu_pins.svg')) }}" alt="cpu" width="24" height="24">Socket
+					</div>
+					{% if cpu.getSockets() is not empty %}
+					<div class="tag-container">
+						{% for socket in cpu.getSockets() %}<span class="text-block">{{ socket.getNameAndType}}</span>{% endfor %}
+					</div>
+					{% else %}
+					<div>Unknown</div>
+					{% endif %}
+					<!-- Family (platform) -->
+					<div class="quick-spec-head">
+						<img src="{{ absolute_url(asset('build/icons/show/486.svg')) }}" alt="486" width="24" height="24">Family
+					</div>
+					<div>{{ cpu.getPlatform() ? cpu.getPlatform().getName() : 'Unknown' }}</div>
+					<!-- Core -->
+					<div class="quick-spec-head">
+						<img src="{{ absolute_url(asset('build/icons/show/486.svg')) }}" alt="486" width="24" height="24">Core
+					</div>
+					<div>{{ cpu.getCore() ? cpu.getCore() : 'Unknown' }}</div>
+					<!-- Speed -->
+					<div class="quick-spec-head">
+						<img src="{{ absolute_url(asset('build/icons/show/speed.svg')) }}" alt="speed" width="24" height="24">Speed
+					</div>
+					<div>{{ cpu.getSpeed() ? cpu.getSpeed().getValueWithUnit() : 'Unknown' }}</div>
+					<!-- FSB -->
+					<div class="quick-spec-head">
+						<img src="{{ absolute_url(asset('build/icons/show/speed.svg')) }}" alt="speed" width="24" height="24">FSB
+					</div>
+					<div>{{ cpu.getFsb() ? cpu.getFsb().getValueWithUnit() : 'Unknown' }}</div>
+					<!-- Process node -->
+					<div class="quick-spec-head">
+						<img src="{{ absolute_url(asset('build/icons/show/dimension.svg')) }}" alt="dimension" width="24" height="24">Process node
+					</div>
+					<div>{{ cpu.getProcessNodeWithValue() ? cpu.getProcessNodeWithValue() : 'Unknown' }}</div>
+				</div><div class="quick-spec-table">
+					<!-- TDP -->
+					<div class="quick-spec-head">
+						<img src="{{ absolute_url(asset('build/icons/show/power.svg')) }}" alt="power" width="24" height="24">TDP
+					</div>
+					<div>{{ cpu.getTdpWithValue() ? cpu.getTdpWithValue() : 'Unknown' }}</div>
+					<!-- Voltage -->
+					<div class="quick-spec-head">
+						<img src="{{ absolute_url(asset('build/icons/show/power.svg')) }}" alt="power" width="24" height="24">Voltage
+					</div>
+					{% if cpu.getVoltages() is not empty %}
+					<div class="tag-container">
+						{% for voltage in cpu.getVoltages() %}<span class="text-block">{{ voltage.getValueWithUnit()}}</span>{% endfor %}
+					</div>
+					{% else %}
+					<div>Unknown</div>
+					{% endif %}
+					<!-- L1 cache -->
+					<div class="quick-spec-head">
+						<img src="{{ absolute_url(asset('build/icons/admin/ram.svg')) }}" alt="ram" width="24" height="24">L1 cache
+					</div>
+					<div>{{ cpu.getL1() ? cpu.getL1().getValueWithUnit() ~ (cpu.getL1CacheMethod() ? ' (' ~ cpu.getL1CacheMethod().getName() ~ ')') : 'None' }}</div>
+					<!-- L2 cache -->
+					<div class="quick-spec-head">
+						<img src="{{ absolute_url(asset('build/icons/admin/ram.svg')) }}" alt="ram" width="24" height="24">L2 cache
+					</div>
+					<div>{{ cpu.getL2() ? cpu.getL2().getValueWithUnit() ~ (cpu.getL2CacheRatio() ? ' (' ~ cpu.getL2CacheRatio().getName() ~ ' speed)') : 'None' }}</div>
+					<!-- L3 cache -->
+					<div class="quick-spec-head">
+						<img src="{{ absolute_url(asset('build/icons/admin/ram.svg')) }}" alt="ram" width="24" height="24">L3 cache
+					</div>
+					<div>{{ cpu.getL3() ? cpu.getL3().getValueWithUnit() ~ (cpu.getL3CacheRatio() ? ' (' ~ cpu.getL3CacheRatio().getName() ~ ' speed)') : 'None' }}</div>
+					<!-- Instruction set -->
+					<div class="quick-spec-head">
+						<img src="{{ absolute_url(asset('build/icons/show/cpu_pins.svg')) }}" alt="cpu" width="24" height="24">Instruction set
+					</div>
+					{% if cpu.getInstructionSets() is not empty %}
+					<div class="tag-container">
+						{% for instruction in cpu.getInstructionSets() %}<span class="text-block">{{ instruction.getName()}}</span>{% endfor %}
+					</div>
+					{% else %}
+					<div>Unknown</div>
+					{% endif %}
+				</div>
+			</div>
+		</div>
+		{% if is_granted('ROLE_ADMIN') %}
+		<div style="display:flex">
+		<a class="button-widget" style="margin:5px;max-width:100px;" href="../../admin/manage/processingunits/processors/{{ cpu.getId() }}/edit/">
+			<img src="{{ absolute_url(asset('build/icons/edit.svg')) }}" alt="" width="24" height="24">Edit CPU</a>
+		<a class="button-widget" style="margin:5px;max-width:100px;" href="{{ path('admin_logs_filter_id_entity', {id: cpu.getId(), entity: 'Processor'}) }}">
+			<img src="{{ absolute_url(asset('build/icons/show/calendar.svg')) }}" alt="" width="24" height="24">History</a></div>
+		{% endif %}
+	</div>
+
+	<!-- IMAGES -->
+	{% if cpu.getImages() is not empty %}
+		{% set lpindex = 0 %}
+		<div class="show-images" id="sh-images">
+			{% for image in cpu.getImages()|sort((a, b) => a.getFileName() <=> b.getFileName()) %}
+				{% set lpindex = lpindex + 1 %}
+				{% include 'macros/images.html.twig' with {'type':'expansionchip', 'entity': image, 'index': lpindex, 'length': cpu.getImages()|length} %}
+			{% endfor %}
+		</div>
+	{#{% else %}
+		<div class="show-image"><p style="font-size:20px;height:100px;">no images available :(</p></div>#}
+	{% endif %}
+
+</div>
+<div class="disclaimer">
+	<p><b>Disclaimer</b></p>
+	<p>The info found in this page might not be entirely correct. Check out <a href="{{ path('app_contributions') }}">this guide</a> to learn how you can improve it.</p>
+</div>
+{% endblock %}

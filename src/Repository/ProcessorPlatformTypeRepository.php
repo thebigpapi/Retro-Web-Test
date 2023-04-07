@@ -11,6 +11,7 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method ProcessorPlatformType|null findOneBy(array $criteria, array $orderBy = null)
  * @method ProcessorPlatformType[]    findAll()
  * @method ProcessorPlatformType[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method ProcessorPlatformType[]    findAllSorted()
  */
 class ProcessorPlatformTypeRepository extends ServiceEntityRepository
 {
@@ -19,32 +20,17 @@ class ProcessorPlatformTypeRepository extends ServiceEntityRepository
         parent::__construct($registry, ProcessorPlatformType::class);
     }
 
-    // /**
-    //  * @return ProcessorPlatformType[] Returns an array of ProcessorPlatformType objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    /**
+     * @return ProcessorPlatformType[] Returns an array of ProcessorPlatformType objects
+     */
+    public function findAllSorted()
     {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('p.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
+        $entityManager = $this->getEntityManager();
+        $query = $entityManager->createQuery(
+            "SELECT p
+            FROM App\Entity\ProcessorPlatformType p
+            ORDER BY p.name ASC"
+        );
+        return $query->getResult();
     }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?ProcessorPlatformType
-    {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

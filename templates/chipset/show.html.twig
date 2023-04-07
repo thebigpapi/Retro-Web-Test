@@ -2,9 +2,7 @@
 {% from 'macros/largeFile.html.twig' import link as driverLink %}
 {% from 'macros/largeFile.html.twig' import header as driverHeader %}
 
-{% block title %}
-	{{ chipset.getPrettyTitle() }} - The Retro Web
-{% endblock %}
+{% block title %}{{ chipset.getPrettyTitle() }} - The Retro Web{% endblock %}
 {% block metatags %}
 	<meta name="description" content="{{ chipset.getMetaDescription() }}">
 	<link rel="canonical" hreflang="x-default" href="{{ absolute_url(path('chipset_show', {id: chipset.getId()})) }}"/>
@@ -84,6 +82,11 @@
 						<img src='{{ absolute_url(asset('build/icons/dw.svg')) }}' alt='' width='16' height='16' style='vertical-align:middle;padding:3px;'>See all BIOSes for this chipset</a>
 					</div>
 				</div>
+				{% if is_granted('ROLE_ADMIN') %}
+				<div style="display:flex">
+				<a class="button-widget" style="margin:5px;max-width:100px;" href="{{ path('admin_logs_filter_id_entity', {id: chipset.getId(), entity: 'Chipset'}) }}">
+					<img src="{{ absolute_url(asset('build/icons/show/calendar.svg')) }}" alt="" width="24" height="24">History</a></div>
+				{% endif %}
 				<div class="chipset-textarea">
 				{% if chipset.getDescription() is not empty %}
 					{% apply markdown_to_html %}{{ chipset.getDescription() }}{% endapply %}
@@ -95,8 +98,8 @@
 						{% for chipPart in chipset.getChipsetParts()|filter(chipPart => chipPart.getDescription() is not empty) %}
 						<li><a href="#{{ chipPart.getShortNamePN() }}">{{ chipPart.getShortName() }}{% if chipPart.getChipAliases() is not empty %}&nbsp;(known as:{% for cp in chipPart.getChipAliases() %}
 						{{ cp.getManufacturer().getShortNameIfExist() }}&nbsp;{{ cp.getPartNumber() }} {{ cp.getName() ? '[' ~ cp.getName() ~ ']' }}{% if not loop.last%}, {% endif %}{% endfor %}){% endif %}</a></li>
-						{% endfor %}	
-					</ul>				
+						{% endfor %}
+					</ul>
 					{% for chipPart in chipset.getChipsetParts()|filter(chipPart => chipPart.getDescription() is not empty) %}
 						<hr><a name="{{ chipPart.getShortNamePN() }}"></a>
 						{% apply markdown_to_html %}{{ chipPart.getDescription() }}{% endapply %}

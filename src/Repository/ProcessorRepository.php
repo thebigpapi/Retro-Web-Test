@@ -29,40 +29,79 @@ class ProcessorRepository extends ServiceEntityRepository
 
         $query = $entityManager->createQuery(
             'SELECT DISTINCT cpu
-            FROM App\Entity\Processor cpu, App\Entity\Manufacturer man 
-            WHERE cpu.manufacturer=man 
+            FROM App\Entity\Processor cpu, App\Entity\Manufacturer man
+            WHERE cpu.manufacturer=man
             ORDER BY cpu.name ASC'
         );
 
         return $query->getResult();
     }
-
-    // /**
-    //  * @return Processor[] Returns an array of Processor objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    /**
+     * @return Processor[]
+     */
+    public function findAllAlphabetic(string $letter): array
     {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('p.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
+        $entityManager = $this->getEntityManager();
+        $likematch = "$letter%";
+        $query = $entityManager->createQuery(
+            "SELECT UPPER(COALESCE(man.shortName, man.name)) manNameSort, cpu
+            FROM App\Entity\Processor cpu, App\Entity\Manufacturer man
+            WHERE cpu.manufacturer=man AND UPPER(COALESCE(man.shortName, man.name)) like :likeMatch
+            ORDER BY manNameSort ASC, cpu.name ASC"
+        )->setParameter('likeMatch', $likematch);
 
-    /*
-    public function findOneBySomeField($value): ?Processor
-    {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        $outputArray = [];
+        foreach ($query->getResult() as $res) {
+            $outputArray[] = $res[0];
+        };
+        return $outputArray;
     }
-    */
+    /**
+     * @return Processor[]
+     */
+    public function findByCPU(array $criteria): array
+    {
+
+        $entityManager = $this->getEntityManager();
+
+        $whereArray = array();
+        $valuesArray = array();
+
+        // Checking values in criteria and creating WHERE statements
+        if (array_key_exists('manufacturer', $criteria)) {
+            $whereArray[] = "(man.id = :manufacturerId)";
+            $valuesArray["manufacturerId"] = (int)$criteria['manufacturer'];
+        }
+        if (array_key_exists('name', $criteria)) {
+            $multicrit = explode(" ", $criteria['name']);
+            foreach ($multicrit as $key => $val) {
+                $whereArray[] = "(LOWER(cpu.name) LIKE :nameLike$key OR LOWER(cpu.partNumber) LIKE :nameLike$key)";
+                $valuesArray["nameLike$key"] = "%" . strtolower($val) . "%";
+            }
+        }
+
+        // Building where statement
+        $whereString = implode(" AND ", $whereArray);
+
+        // Building query
+        $query = $entityManager->createQuery(
+            "SELECT cpu
+            FROM App\Entity\Processor cpu JOIN cpu.manufacturer man
+            WHERE $whereString
+            ORDER BY man.name ASC, cpu.name ASC, cpu.partNumber ASC"
+        );
+
+        // Setting values
+        foreach ($valuesArray as $key => $value) {
+            $query->setParameter($key, $value);
+        }
+        return $query->getResult();
+    }
+    public function getCount(): int
+    {
+        return $this->createQueryBuilder('m')
+            ->select('count(m.id)')
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
 }

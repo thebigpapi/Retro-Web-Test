@@ -36,6 +36,7 @@ class ProcessingUnitType extends AbstractType
                 'choice_label' => 'name',
                 'multiple' => false,
                 'expanded' => false,
+                'autocomplete' => true,
             ])
             ->add('fsb', EntityType::class, [
                 'class' => CpuSpeed::class,

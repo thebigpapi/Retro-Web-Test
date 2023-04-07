@@ -72,4 +72,32 @@ class ChipAlias
 
         return $this;
     }
+    public function getFullAliasRef(): string
+    {
+        $fullName = "";
+        if ($this->partNumber) {
+            $fullName = $fullName . " $this->partNumber";
+            if ($this->name) {
+                $fullName = $fullName . " ($this->name)";
+            }
+        } else {
+            if ($this->name) {
+                $fullName = $fullName . " $this->name";
+            } else {
+                $fullName = $fullName . " Unidentified";
+            }
+        }
+        return "$fullName";
+    }
+    public function getFullAliasName(): string
+    {
+        if ($this->getManufacturer()) {
+            $manuf = $this->getManufacturer()->getShortNameIfExist();
+        } else {
+            $manuf = "";
+        }
+
+        $fullName = $manuf . $this->getFullAliasRef();
+        return "$fullName";
+    }
 }

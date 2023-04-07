@@ -44,24 +44,92 @@ class AdminController extends AbstractController
     public function logs(Request $request, TraceRepository $traceRepository, PaginatorInterface $paginator): Response
     {
         $logs = $traceRepository->findAll();
-        usort(
-            $logs,
-            function (Trace $a, Trace $b) {
-                if ($a->getDate() == $b->getDate()) {
-                    return 0;
+        if (!$logs) {
+            return $this->render('admin/logs.html.twig', [
+                'objectList' => [],
+                'exist' => false,
+            ]);
+        } else {
+            usort(
+                $logs,
+                function (Trace $a, Trace $b) {
+                    if ($a->getDate() == $b->getDate()) {
+                        return 0;
+                    }
+                    return ($a->getDate() > $b->getDate()) ? -1 : 1;
                 }
-                return ($a->getDate() > $b->getDate()) ? -1 : 1;
-            }
-        );
-        $paginatedObjects = $paginator->paginate(
-            $logs,
-            $request->query->getInt('page', 1),
-            $this->getParameter('app.pagination.max')
-        );
+            );
+            $paginatedObjects = $paginator->paginate(
+                $logs,
+                $request->query->getInt('page', 1),
+                $this->getParameter('app.pagination.max')
+            );
+            return $this->render('admin/logs.html.twig', [
+                'objectList' => $paginatedObjects,
+                'exist' => true,
+            ]);
+        }
+    }
 
-        return $this->render('admin/logs.html.twig', [
-            'objectList' => $paginatedObjects,
-        ]);
+    #[Route('/admin/logs/{id}', name:'admin_logs_filter_id', requirements: ['id' => '\d+'])]
+    public function logs_filter_id(int $id, Request $request, TraceRepository $traceRepository, PaginatorInterface $paginator): Response
+    {
+        $logs = $traceRepository->findAllById($id);
+        if (!$logs) {
+            return $this->render('admin/logs.html.twig', [
+                'objectList' => [],
+                'exist' => false,
+            ]);
+        } else {
+            usort(
+                $logs,
+                function (Trace $a, Trace $b) {
+                    if ($a->getDate() == $b->getDate()) {
+                        return 0;
+                    }
+                    return ($a->getDate() > $b->getDate()) ? -1 : 1;
+                }
+            );
+            $paginatedObjects = $paginator->paginate(
+                $logs,
+                $request->query->getInt('page', 1),
+                $this->getParameter('app.pagination.max')
+            );
+            return $this->render('admin/logs.html.twig', [
+                'objectList' => $paginatedObjects,
+                'exist' => true,
+            ]);
+        }
+    }
+    #[Route('/admin/logs/{id}/{entity}', name:'admin_logs_filter_id_entity', requirements: ['id' => '\d+'])]
+    public function logs_filter_id_entity(int $id, string $entity, Request $request, TraceRepository $traceRepository, PaginatorInterface $paginator): Response
+    {
+        $logs = $traceRepository->findAllByIdAndEntity($id, "App\\\\Entity\\\\" . $entity);
+        if (!$logs) {
+            return $this->render('admin/logs.html.twig', [
+                'objectList' => [],
+                'exist' => false,
+            ]);
+        } else {
+            usort(
+                $logs,
+                function (Trace $a, Trace $b) {
+                    if ($a->getDate() == $b->getDate()) {
+                        return 0;
+                    }
+                    return ($a->getDate() > $b->getDate()) ? -1 : 1;
+                }
+            );
+            $paginatedObjects = $paginator->paginate(
+                $logs,
+                $request->query->getInt('page', 1),
+                $this->getParameter('app.pagination.max')
+            );
+            return $this->render('admin/logs.html.twig', [
+                'objectList' => $paginatedObjects,
+                'exist' => true,
+            ]);
+        }
     }
 
     #[Route('/admin/guidelines', name:'admin_guidelines')]

@@ -7,6 +7,7 @@
     <div class="title">
 		<b>Logs</b>
 	</div>
+    {% if exist == true %}
     {{ knp_pagination_render(objectList, 'macros/pagination.html.twig') }}
     <div class="div-logs-table">
     <table id="logs-table" class="results" data-controller="logs">
@@ -21,7 +22,6 @@
         </thead>
         <tbody>
         {% set prevDate = "" %}
-            
             {% for object in objectList %}
                 <tr {% if prevDate != object.date |date("Y-m-d, H:i:s", "GMT") %}class="logs-border-top"{% endif %}>
                     <td style="padding:5px 10px 5px;">{{object.username}}</td>
@@ -30,7 +30,7 @@
                     {% if object.objectType == "App\\Entity\\Motherboard" %}<a href="{{ path("motherboard_show", {id:object.objectId}) }}">[ID:{{object.objectId}}]</a>
                     {% elseif object.objectType == "App\\Entity\\Chipset" %}<a href="{{ path("chipset_show", {id:object.objectId}) }}">[ID:{{object.objectId}}]</a>
                     {% elseif object.objectType == "App\\Entity\\LargeFile" %}<a href="{{ path("driver_show", {id:object.objectId}) }}">[ID:{{object.objectId}}]</a>
-                     {% elseif object.objectType == "App\\Entity\\ChipsetPart" %}<a href="{{ path("new_chipset_part_edit", {id:object.objectId}) }}">[ID:{{object.objectId}}]</a>
+                    {% elseif object.objectType == "App\\Entity\\ChipsetPart" %}<a href="{{ path("new_chipset_part_edit", {id:object.objectId}) }}">[ID:{{object.objectId}}]</a>
                     {% elseif object.objectType == "App\\Entity\\ExpansionChip" %}<a href="{{ path("new_expansionChip_edit", {id:object.objectId}) }}">[ID:{{object.objectId}}]</a>
                     {% else %}[ID:{{object.objectId}}]{% endif %}
                     {% endif %}</td>
@@ -39,11 +39,13 @@
                 </tr>
                 {% set prevDate = object.date |date("Y-m-d, H:i:s", "GMT") %}
             {% endfor %}
-            
         </tbody>
     </table>
     </div>
     {% if objectList.count > 25 %}
         {{ knp_pagination_render(objectList, 'macros/pagination.html.twig') }}
+    {% endif %}
+    {% else %}
+    <div style="text-align: center;">No logs were found :/</div>
     {% endif %}
 {% endblock %}

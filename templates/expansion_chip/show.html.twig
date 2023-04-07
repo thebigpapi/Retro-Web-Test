@@ -13,6 +13,12 @@
 	{% apply spaceless %}
 	<meta property="og:title" content="{{ expansion_chip.getNameWithManufacturer() }}">
 	<meta property="og:description" content="Get expansion chip info, images and drivers for {{ expansion_chip.getNameWithManufacturer() }}!">
+	{% if expansion_chip.getImages() is not empty %}
+		{% for image in expansion_chip.getImages()|sort((a, b) => a.getFileName() <=> b.getFileName())|slice(0, 1) %}
+			<meta name="twitter:image" content="{{ vich_uploader_asset(image, 'imageFile')}}">
+			<meta property="og:image" content="{{ vich_uploader_asset(image, 'imageFile')}}">
+		{% endfor %}
+	{% endif %}
 	{% endapply %}
 	<link rel="alternate" hreflang="x-default" href="{{ absolute_url(path('expansion_chip_show', {id: expansion_chip.getId()})) }}"/>
 {% endblock %}
@@ -37,10 +43,10 @@
 			<div class="show-general" id="sh-general">
 				<div class="quick-spec-table">
 					<!-- Type -->
-					<div class="quick-spec-head">Type</div>
+					<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/show/chip.svg')) }}" alt="date" width="24" height="24">Type</div>
 					<div>{{expansion_chip.getType().getName()}}</div>
 					<!-- PCI DEV -->
-					<div class="quick-spec-head">PCI ID</div>
+					<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/show/tag.svg')) }}" alt="date" width="24" height="24">PCI ID</div>
 					<div>
 					{% if expansion_chip.getPciDevs() is not empty %}
 						{% if expansion_chip.getManufacturer().getPciVendorIds() is not empty %}
@@ -49,9 +55,20 @@
 								<div>PCI\VEN_{{vendor.getVen()}}&amp;DEV_{{device.getDev()}}</div>
 								{% endfor %}
 							{% endfor %}
-						{% endif %}
+						{% else %}PCI VEN missing!{% endif %}
 					{% else %}unknown{% endif %}
 					</div>
+				</div>
+				{% if is_granted('ROLE_ADMIN') %}
+				<div style="display:flex">
+				<a class="button-widget" style="margin:5px;max-width:100px;" href="{{ path('admin_logs_filter_id_entity', {id: expansion_chip.getId(), entity: 'ExpansionChip'}) }}">
+					<img src="{{ absolute_url(asset('build/icons/show/calendar.svg')) }}" alt="" width="24" height="24">History</a></div>
+				{% endif %}
+				<div class="chipset-textarea">
+				<!-- Description -->
+				{% if expansion_chip.getDescription() is not empty %}
+					{% apply markdown_to_html %}{{ expansion_chip.getDescription() }}{% endapply %}
+				{% endif %}
 				</div>
 			</div>
 			<div class="show-downloads" id="sh-downloads">
