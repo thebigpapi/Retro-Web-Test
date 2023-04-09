@@ -66,7 +66,7 @@
 		<div>Name</div>
 		<div>Family</div>
         <div>Speed/FSB</div>
-        <div>Socket</div>
+        <div>Package</div>
 		<div>Voltage</div>
         <div>TDP</div>
         <div>Process node</div>
@@ -93,7 +93,7 @@
         {% else %}
             <div>{{ cpu.getSpeed().getValueWithUnit() }}</div>
         {% endif %}
-        <div class="header-label">Socket</div>
+        <div class="header-label">Package</div>
         {% if cpu.getSockets() is not empty %}
 		<div class="tag-container">
 			{% for socket in cpu.getSockets() %}<span class="text-block">{{ socket.getNameAndType}}</span>{% endfor %}

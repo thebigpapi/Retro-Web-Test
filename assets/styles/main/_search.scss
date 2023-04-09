@@ -393,10 +393,9 @@ button.alias-collapsible {
 	padding: 18px;
 	border: none;
 	text-align: left;
-	outline: none;
 	font-size: 15px;
 }
-.active, button.alias-collapsible:hover {
+button.alias-collapsible:hover {
 	background-color: $link-hover-color;
 	color:black;
 }
@@ -406,6 +405,9 @@ button.alias-collapsible:after {
 	font-weight: bold;
 	float: right;
 	margin-left: 5px;
+}
+button.alias-collapsible.active::after {
+    content: " −";
 }
 #setmanuf, #setchip1, #setcpu1, #setcpup1, #setcpu3, #setcpup3 {
 	select{display:none;}
