@@ -345,4 +345,11 @@ class Processor extends ProcessingUnit
         }
         return $this->getManufacturer()->getShortNameIfExist() . " " . $this->partNumber;
     }
+    public function getNameOrPartNumber()
+    {
+        if ($this->name) {
+            return $this->getManufacturer()->getShortNameIfExist() . " " . $this->name;
+        }
+        return $this->getManufacturer()->getShortNameIfExist() . " " . $this->partNumber;
+    }
 }

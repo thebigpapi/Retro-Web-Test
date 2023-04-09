@@ -75,7 +75,10 @@ class ProcessorRepository extends ServiceEntityRepository
         if (array_key_exists('name', $criteria)) {
             $multicrit = explode(" ", $criteria['name']);
             foreach ($multicrit as $key => $val) {
-                $whereArray[] = "(LOWER(cpu.name) LIKE :nameLike$key OR LOWER(cpu.partNumber) LIKE :nameLike$key)";
+                $whereArray[] = "(LOWER(cpu.name) LIKE :nameLike$key 
+                    OR LOWER(cpu.partNumber) LIKE :nameLike$key 
+                    OR LOWER(alias.name) LIKE :nameLike$key 
+                    OR LOWER(alias.partNumber) LIKE :nameLike$key)";
                 $valuesArray["nameLike$key"] = "%" . strtolower($val) . "%";
             }
         }
@@ -86,7 +89,7 @@ class ProcessorRepository extends ServiceEntityRepository
         // Building query
         $query = $entityManager->createQuery(
             "SELECT cpu
-            FROM App\Entity\Processor cpu JOIN cpu.manufacturer man
+            FROM App\Entity\Processor cpu JOIN cpu.manufacturer man LEFT OUTER JOIN cpu.chipAliases alias
             WHERE $whereString
             ORDER BY man.name ASC, cpu.name ASC, cpu.partNumber ASC"
         );

@@ -26,7 +26,9 @@ class ChipAliasType extends AbstractType
                 'required' => false,
                 'autocomplete' => true,
             ])
-            ->add('name', TextType::class)
+            ->add('name', TextType::class, [
+                'required' => false,
+            ])
             ->add('partNumber', TextType::class, [
                 'required' => true,
             ]);

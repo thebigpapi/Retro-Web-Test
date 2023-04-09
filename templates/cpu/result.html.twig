@@ -1,5 +1,5 @@
 {% extends 'base.html.twig' %}
-{% block title %}Search results (cpu) - TRW{% endblock %}
+{% block title %}Search results CPU - TRW{% endblock %}
 
 {% block metatags %}
 	<meta name="description" content="Search for a cpu by name, manufacturer, part number and more.">
@@ -13,9 +13,9 @@
 		<i>{{ cpu_count > 0 ? cpu_count : 'No' }}{{ cpu_count == 1 ? ' result' : ' results' }}</i>
 	</p>
 	{% if cpus is not empty %}
-		<div class="results lst">
+		<div class="results lst" data-controller="cpu--results">
 			{{ knp_pagination_render(cpus, 'macros/pagination.html.twig') }}
-			<div class="plain-list w300p table">
+			<div  id="cpu-results-table" class="plain-list w300p table">
 				{% include 'macros/widget.html.twig' with {'type':'cpu-results', 'entity': cpus} %}
 			</div>
 			{{ knp_pagination_render(cpus, 'macros/pagination.html.twig') }}

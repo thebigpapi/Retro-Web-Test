@@ -74,7 +74,17 @@
 	{% for cpu in entity %}
 	<div class="list-entry centered bios {% if loop.index is divisible by(2) %}alt{% endif %}">
 		<div class="header-label">Name</div>
-		<div><a class="result-link" href="{{ path("processor_show", {id: cpu.getId()}) }}">{{ cpu.getNameWithManufacturer() }}</a></div>
+		<div>
+			<a class="result-link" href="{{ path("processor_show", {id: cpu.getId()}) }}">{{ cpu.getNameWithManufacturer() }}</a>
+			{% if cpu.getChipAliases() is not empty %}
+				<button class='alias-collapsible'>View aliases</button>
+				<div class="cpu-aliases-box">
+				{% for alias in cpu.getChipAliases() %}
+					<div style="padding:4px 4px;">{{ alias.getFullAliasName() }}</div>
+				{% endfor %}
+				</div>
+			{% endif %}
+		</div>
 		<div class="header-label">Family</div>
 		<div>{{ cpu.getPlatform() ? cpu.getPlatform().getName() : 'Unknown' }}</div>
         <div class="header-label">Speed/FSB</div>
