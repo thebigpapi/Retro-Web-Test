@@ -28,7 +28,7 @@
 <div class="tag-container" style="justify-content:center;padding-bottom:15px">
 	<span style="width:100%;text-align:center">Also known as:</span>
 	{% for alias in cpu.getChipAliases() %}
-		<span class="text-block" >{{ alias.getFullAliasName() }}</span>
+		<span class="text-block" >{{ alias.getFullAliasNameRev() }}</span>
 	{% endfor %}
 </div>
 {% endif %}

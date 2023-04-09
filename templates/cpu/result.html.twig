@@ -15,7 +15,7 @@
 	{% if cpus is not empty %}
 		<div class="results lst" data-controller="cpu--results">
 			{{ knp_pagination_render(cpus, 'macros/pagination.html.twig') }}
-			<div  id="cpu-results-table" class="plain-list w300p table">
+			<div id="cpu-results-table" class="plain-list w300p table">
 				{% include 'macros/widget.html.twig' with {'type':'cpu-results', 'entity': cpus} %}
 			</div>
 			{{ knp_pagination_render(cpus, 'macros/pagination.html.twig') }}

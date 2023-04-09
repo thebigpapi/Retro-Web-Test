@@ -8,7 +8,6 @@ export default class extends Controller {
             if(button){
                 button.addEventListener("click", function() {
                     let content = this.children[2];
-                    console.log(content);
                     if (content.getAttribute("class") == "cpu-aliases-box"){
                         content.setAttribute("class", "cpu-aliases-box visible");
                     } else {

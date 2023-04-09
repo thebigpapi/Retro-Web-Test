@@ -100,4 +100,26 @@ class ChipAlias
         $fullName = $manuf . $this->getFullAliasRef();
         return "$fullName";
     }
+    public function getFullAliasRefRev(): string
+    {
+        $fullName = "";
+        if ($this->name) {
+            $fullName =" " . $this->name . " ($this->partNumber)";
+        }
+        else{
+            $fullName =" $this->partNumber";
+        }
+        return "$fullName";
+    }
+    public function getFullAliasNameRev(): string
+    {
+        if ($this->getManufacturer()) {
+            $manuf = $this->getManufacturer()->getShortNameIfExist();
+        } else {
+            $manuf = "";
+        }
+
+        $fullName = $manuf . $this->getFullAliasRefRev();
+        return "$fullName";
+    }
 }
