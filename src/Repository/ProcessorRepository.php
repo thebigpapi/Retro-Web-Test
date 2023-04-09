@@ -72,6 +72,12 @@ class ProcessorRepository extends ServiceEntityRepository
             $whereArray[] = "(man.id = :manufacturerId)";
             $valuesArray["manufacturerId"] = (int)$criteria['manufacturer'];
         }
+
+        if (array_key_exists('platform', $criteria)) {
+            $whereArray[] = "(cpu.platform = :platformId)";
+            $valuesArray["platformId"] = (int)$criteria['platform'];
+        }
+
         if (array_key_exists('name', $criteria)) {
             $multicrit = explode(" ", $criteria['name']);
             foreach ($multicrit as $key => $val) {
@@ -82,22 +88,21 @@ class ProcessorRepository extends ServiceEntityRepository
                 $valuesArray["nameLike$key"] = "%" . strtolower($val) . "%";
             }
         }
-
         // Building where statement
         $whereString = implode(" AND ", $whereArray);
 
         // Building query
         $query = $entityManager->createQuery(
             "SELECT cpu
-            FROM App\Entity\Processor cpu JOIN cpu.manufacturer man LEFT OUTER JOIN cpu.chipAliases alias
+            FROM App\Entity\Processor cpu JOIN cpu.manufacturer man LEFT OUTER JOIN cpu.chipAliases alias LEFT JOIN App\Entity\ProcessingUnit p WITH p.platform = cpu.platform
             WHERE $whereString
             ORDER BY man.name ASC, cpu.name ASC, cpu.partNumber ASC"
         );
-
         // Setting values
         foreach ($valuesArray as $key => $value) {
             $query->setParameter($key, $value);
         }
+
         return $query->getResult();
     }
     public function getCount(): int

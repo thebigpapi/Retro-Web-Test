@@ -9,6 +9,7 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 class ProcessorSearchType extends AbstractType
@@ -44,6 +45,7 @@ class ProcessorSearchType extends AbstractType
                     ->findAllSorted(),
                 'placeholder' => 'Select a platform ...'
             ])
+            ->add('name', TextType::class, ['required' => false,])
             ->add('search', SubmitType::class);
     }
 }

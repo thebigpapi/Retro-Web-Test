@@ -31,6 +31,12 @@
         {% endif %}
     </div>
 
+    <div class="header-label">Img</div>
+    <div>{% if object.getImages() is not empty %}[✓]{% endif %}</div>
+
+    <div class="header-label">Alias</div>
+    <div>{% if object.getChipAliases() is not empty %}[✓]{% endif %}</div>
+
     <div class="header-label">Actions</div>
     <div class="toolbar toolbar-thin" style="display:flex;flex-wrap: nowrap;">
         <a class="button" href="{{ path("processor_show", {id: object.getId()}) }}">
