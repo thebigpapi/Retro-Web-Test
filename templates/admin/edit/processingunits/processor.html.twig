@@ -91,26 +91,27 @@
 			<div class="quick-spec-table" style="padding:0;">
 				<div class="quick-spec-head editor">L1 size and method</div>
 				<div class="editor-row nopad"><div class="editor-form-widget" style="display:flex;">
-					<div style="width:auto;padding-right:5px;">{{ form_widget(form.L1) }}</div><div style="width:auto;">{{form_widget(form.L1CacheMethod)}}</div>
+					<div style="width:auto;padding-right:5px;">{{ form_widget(form.L1, {'attr': {'style': 'display:none;'}}) }}</div><div style="width:auto;">{{form_widget(form.L1CacheMethod)}}</div>
 				</div></div>
 			</div>
 			<!-- L2 cache -->
 			<div class="quick-spec-table" style="padding:0;">
 				<div class="quick-spec-head editor">L2 size and ratio</div>
 				<div class="editor-row nopad"><div class="editor-form-widget" style="display:flex;">
-					<div style="width:auto;padding-right:5px;">{{ form_widget(form.L2) }}</div><div style="width:auto;">{{form_widget(form.L2CacheRatio)}}</div>
+					<div style="width:auto;padding-right:5px;">{{ form_widget(form.L2, {'attr': {'style': 'display:none;'}}) }}</div><div style="width:auto;">{{form_widget(form.L2CacheRatio)}}</div>
 				</div></div>
 			</div>
 			<!-- L3 cache -->
 			<div class="quick-spec-table" style="padding:0;">
 				<div class="quick-spec-head editor">L3 size and ratio</div>
 				<div class="editor-row nopad"><div class="editor-form-widget" style="display:flex;">
-					<div style="width:auto;padding-right:5px;">{{ form_widget(form.L3) }}</div><div style="width:auto;">{{form_widget(form.L3CacheRatio)}}</div>
+					<div style="width:auto;padding-right:5px;">{{ form_widget(form.L3, {'attr': {'style': 'display:none;'}}) }}</div><div style="width:auto;">{{form_widget(form.L3CacheRatio)}}</div>
 				</div></div>
 			</div>
 			<!-- Instruction set -->
 			{% include 'macros/entityList.html.twig' with {'entityName':'processingUnit.instructionSets', 'label': 'Instruction set', 'entities':form.processingUnit.instructionSets} %}
 		</div>
+		<div style="height:150px;"></div>
 	</div>
 	{% include 'macros/entityListImages.html.twig' with {'entityName':'processingUnit.chip.images', 'entities':form.processingUnit.chip.images, 'imgpath':'chip', 'edit':true} %}
 </div>
