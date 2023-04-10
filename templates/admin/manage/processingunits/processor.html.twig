@@ -3,10 +3,10 @@
     <div>{{object.getManufacturer().getShortNameIfExist()}}</div>
 
     <div class="header-label">Name</div>
-    <div>{{object.getName()}}</div>
-
-    <div class="header-label">Part number</div>
     <div>{{object.getPartNumber()}}</div>
+
+    <div class="header-label">Aux name</div>
+    <div>{{object.getName()}}</div>
 
     <div class="header-label">Core</div>
     <div>{{ object.getCore()|length > 0 ? object.getCore()}}</div>

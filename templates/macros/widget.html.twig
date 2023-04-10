@@ -80,7 +80,7 @@
 				<button class='alias-collapsible'>View aliases</button>
 				<div class="cpu-aliases-box">
 				{% for alias in cpu.getChipAliases() %}
-					<div style="padding:4px 4px;">{{ alias.getFullAliasNameRev() }}</div>
+					<div style="padding:4px 4px;">{{ alias.getFullAliasName() }}</div>
 				{% endfor %}
 				</div>
 			{% endif %}

@@ -340,16 +340,20 @@ class Processor extends ProcessingUnit
     }
     public function getNameWithManufacturer()
     {
+        $fullName = $this->getNameOnlyPartNumber();
         if ($this->name) {
-            return $this->getManufacturer()->getShortNameIfExist() . " " . $this->name . " (" . $this->partNumber . ")";
+            $fullName = $fullName . " ($this->name)";
         }
-        return $this->getManufacturer()->getShortNameIfExist() . " " . $this->partNumber;
+        return "$fullName";
     }
-    public function getNameOrPartNumber()
+    public function getNameOnlyPartNumber()
     {
-        if ($this->name) {
-            return $this->getManufacturer()->getShortNameIfExist() . " " . $this->name;
+        $fullName = $this->partNumber;
+        if ($this->getManufacturer()) {
+            $fullName = $this->getManufacturer()->getShortNameIfExist() . " " . $fullName;
+        } else {
+            $fullName = "Unknown " . $fullName;
         }
-        return $this->getManufacturer()->getShortNameIfExist() . " " . $this->partNumber;
+        return "$fullName";
     }
 }
