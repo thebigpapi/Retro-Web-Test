@@ -115,16 +115,14 @@ abstract class ProcessingUnit extends Chip
         $array = $processingUnits->toArray();
         usort(
             $array,
-            function ($a, $b) {
-                if ($a->getManufacturer()->getShortNameIfExist() == $b->getManufacturer()->getShortNameIfExist()) {
-                    if ($a->getName() == $b->getName()) {
-                        return strnatcasecmp($a->getSpeed()->getValue(), $b->getSpeed()->getValue());
-                    } else {
-                        return strnatcasecmp($a->getName(), $b->getName());
-                    }
-                } else {
+            function (ProcessingUnit $a, ProcessingUnit $b) {
+                if ($a->getManufacturer()->getShortNameIfExist() != $b->getManufacturer()->getShortNameIfExist()) {
                     return strnatcasecmp($a->getManufacturer()->getShortNameIfExist(), $b->getManufacturer()->getShortNameIfExist());
-                }
+                } 
+                if ($a->getName() != $b->getName()) {
+                    return strnatcasecmp($a->getName(), $b->getName());
+                } 
+                return strnatcasecmp($a->getSpeed()->getValue(), $b->getSpeed()->getValue());
             }
         );
 
