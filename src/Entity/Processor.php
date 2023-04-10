@@ -208,19 +208,19 @@ class Processor extends ProcessingUnit
         usort(
             $array,
             function (Processor $a, Processor $b) {
-                if ($a->getFsb() == $b->getFsb()) {
-                    if ($a->getProcessNode() == $b->getProcessNode()) {
-                        if ($a->getSpeed() == $b->getSpeed()) {
-                            if ($a->getManufacturer() == $b->getManufacturer()) {
-                                return 0;
-                            }
-                            return ($a->getManufacturer() < $b->getManufacturer()) ? -1 : 1;
-                        }
-                        return ($a->getSpeed()->getValue() > $b->getSpeed()->getValue()) ? -1 : 1;
-                    }
+                if ($a->getFsb() != $b->getFsb()) {
+                    return ($a->getFsb()->getValue() > $b->getFsb()->getValue()) ? -1 : 1;
+                }
+                if ($a->getProcessNode() != $b->getProcessNode()) {
                     return ($a->getProcessNode() < $b->getProcessNode()) ? -1 : 1;
                 }
-                return ($a->getFsb()->getValue() > $b->getFsb()->getValue()) ? -1 : 1;
+                if ($a->getSpeed() != $b->getSpeed()) {
+                    return ($a->getSpeed()->getValue() > $b->getSpeed()->getValue()) ? -1 : 1;
+                }
+                if ($a->getManufacturer() != $b->getManufacturer()) {
+                    return ($a->getManufacturer() < $b->getManufacturer()) ? -1 : 1;
+                }
+                return 0;
             }
         );
 
