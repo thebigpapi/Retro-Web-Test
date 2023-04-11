@@ -265,7 +265,7 @@
 							</div>
 							<div class="append_table" id="motherboardBios-fields-list" data-widget-counter="{{ form.motherboardBios|length }}" data-prototype="
 								<div class='editor-row bios-main nopad'>
-								<div>{{ form_widget(form.motherboardBios.vars.prototype.manufacturer, {'attr': {'style': 'display:none;'}} )|e }}</div>
+								<div>{{ form_widget(form.motherboardBios.vars.prototype.manufacturer, {'attr': {'style': 'position:absolute;clip:rect(0 0 0 0);'}} )|e }}</div>
 								<div>{{ form_widget(form.motherboardBios.vars.prototype.postString, {'attr': {'style': 'width:100%', 'placeholder': 'POST string ...'}} )|e }}</div>
 								<div>{{ form_widget(form.motherboardBios.vars.prototype.note, {'attr': {'style': 'width:100%', 'placeholder': 'Note ...'}} )|e }}</div>
 								<div>{{ form_widget(form.motherboardBios.vars.prototype.boardVersion, {'attr': {'style': 'width:100%', 'placeholder': 'BIOS ver ...'}} )|e }}</div>
@@ -279,7 +279,7 @@
 							{% for bios in form.motherboardBios %}
 							<div class="bios-image-container">
 								<div class="editor-row bios-main nopad">
-									<div>{{ form_widget(bios.manufacturer, {'attr': {'style': 'display:none;'}}) }}</div>
+									<div>{{ form_widget(bios.manufacturer, {'attr': {'style': 'position:absolute;clip:rect(0 0 0 0);'}}) }}</div>
 									<div>{{ form_widget(bios.postString, {'attr': {'style': 'width:100%', 'placeholder': 'POST string ...'}}) }}</div>
 									<div>{{ form_widget(bios.note, {'attr': {'style': 'width:100%', 'placeholder': 'Note ...'}}) }}</div>
 									<div>{{ form_widget(bios.boardVersion, {'attr': {'style': 'width:100%', 'placeholder': 'BIOS ver ...'}}) }}</div>
