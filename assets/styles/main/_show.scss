@@ -19,7 +19,7 @@ div.main-strip {
         padding-right: 5px;
         &.edit{
             overflow: initial;
-            #images-fields-list, #chip\.images-fields-list{
+            #images-fields-list, #chip\.images-fields-list, #processingUnit\.chip\.images-fields-list{
                 overflow: auto;
                 min-height: 150px;
                 height: auto;
