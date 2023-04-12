@@ -89,7 +89,7 @@ class Processor extends ProcessingUnit
             array_push($inner, ($this->ProcessNode ? $this->ProcessNode . 'nm' : ''));
         if($this->tdp != "")
             array_push($inner, ($this->tdp ? $this->tdp . 'W' : ''));
-        return implode(" ", array($this->getManufacturer()->getShortNameIfExist(), $this->name, "[" . implode(", ", $inner) . "]"));
+        return implode(" ", array($this->getManufacturer()->getShortNameIfExist(), $this->partNumber, "[" . implode(", ", $inner) . "]"));
     }
     public function getNameWithSpecs()
     {
