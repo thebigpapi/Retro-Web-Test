@@ -76,7 +76,15 @@ header {
 		}
 	}
 }
-
+/* Maintenance banner */
+div.maintenance-notification-bar{
+	width: 100%;
+	padding: 10px 5%;
+	color: #31708f;
+	background: #d9edf7;
+	box-sizing: border-box;
+	font-size: 14px;
+}
 /* Footer */
 footer {
 	background-color: $head-bkg-light;

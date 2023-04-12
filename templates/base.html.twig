@@ -74,6 +74,25 @@
 		</header>
 		<main>
 			<div class="page">
+				{% set maintenance = get_env("MAINTENANCE_MODE")%}
+				{% set time = get_env("MAINTENANCE_TIME")%}
+				{% if maintenance == "planned" %}
+					<div class="maintenance-notification-bar">
+						<div>
+							<strong>Scheduled Maintenance </strong>-
+							TRW will be undergoing scheduled maintenance on {{ time }}. We apologize for any inconvenience.
+						</div>
+					</div>
+				{% endif %}
+				{% if maintenance == "active" %}
+					<div class="maintenance-notification-bar">
+						<div>
+							<img src="{{ absolute_url(asset('build/icons/warning.svg')) }}" alt="warning" width="24" height="24" style="margin-top: -10px;vertical-align: bottom;">
+							<strong>Scheduled Maintenance </strong>-
+							TRW is undergoing scheduled maintenance for approximately {{ time }}. We apologize for any inconvenience.
+						</div>
+					</div>
+				{% endif %}
 				{% block body %}{% endblock %}
 			</div>
 		</main>
