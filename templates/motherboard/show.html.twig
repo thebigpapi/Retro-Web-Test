@@ -346,7 +346,7 @@
 						</div>
 						{% for processor in motherboard.getSortedProcessors() %}
 						<div>
-							<div><a href="{{ path("processor_show", {id: processor.getId()}) }}">{{ processor.manufacturer.getShortNameIfExist() }}&nbsp;{{ processor.getName() }}</a></div>
+							<div><a href="{{ path("processor_show", {id: processor.getId()}) }}">{{ processor.getNameOnlyPartNumber }}</a></div>
 							<div>{{ processor.speed.getValueWithUnit() }}</div>
 							<div>{{ processor.fsb.getValueWithUnit() }}</div>
 							<div>{{ processor.getVoltagesWithValue() }}</div>

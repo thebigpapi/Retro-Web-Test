@@ -357,7 +357,13 @@ div.plain-list {
 			flex-grow: 1;
 			padding-left: 5px;
 		}
-
+		div.cpu-aliases-box{
+			display:none;
+			&.visible{
+				display:grid;
+				//grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+			}
+		}
 		&.entry-centered {
 			align-items: center;
 		}
@@ -379,7 +385,30 @@ div.plain-list {
 		gap: 5px;
 	}
 }
-
+button.alias-collapsible {
+	background-color: $btn-darkbg-color-hover;
+	color: white;
+	cursor: pointer;
+	line-height: 4px;
+	padding: 18px;
+	border: none;
+	text-align: left;
+	font-size: 15px;
+}
+button.alias-collapsible:hover {
+	background-color: $link-hover-color;
+	color:black;
+}
+button.alias-collapsible:after {
+	content: '\002B';
+	color: white;
+	font-weight: bold;
+	float: right;
+	margin-left: 5px;
+}
+button.alias-collapsible.active::after {
+    content: " −";
+}
 #setmanuf, #setchip1, #setcpu1, #setcpup1, #setcpu3, #setcpup3 {
 	select{display:none;}
 }
@@ -407,6 +436,13 @@ div.plain-list.table {
 		&.bios.nows{line-height:30px}
 		&.largefile div{ padding:0px 2px;}
 		div.header-label{display:none;} // hide labels used in the grid view
+		div.cpu-aliases-box{
+			display:none;
+			&.visible{
+				display:grid;
+				//grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+			}
+		}
 	}
 
 }}

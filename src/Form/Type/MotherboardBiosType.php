@@ -27,6 +27,7 @@ class MotherboardBiosType extends AbstractType
                 'multiple' => false,
                 'expanded' => false,
                 'autocomplete' => true,
+                'placeholder' => 'n/a'
             ])
             ->add('romFile', FileType::class, [
                 'label' => 'BIOS (bin, zip or exe file)',

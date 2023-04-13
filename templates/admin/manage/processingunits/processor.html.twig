@@ -3,10 +3,10 @@
     <div>{{object.getManufacturer().getShortNameIfExist()}}</div>
 
     <div class="header-label">Name</div>
-    <div>{{object.getName()}}</div>
-
-    <div class="header-label">Part number</div>
     <div>{{object.getPartNumber()}}</div>
+
+    <div class="header-label">Aux name</div>
+    <div>{{object.getName()}}</div>
 
     <div class="header-label">Core</div>
     <div>{{ object.getCore()|length > 0 ? object.getCore()}}</div>
@@ -30,6 +30,12 @@
             <span class="text-block">Process: {{ object.getProcessNodeWithValue()}}</span>
         {% endif %}
     </div>
+
+    <div class="header-label">Img</div>
+    <div>{% if object.getImages() is not empty %}[✓]{% endif %}</div>
+
+    <div class="header-label">Alias</div>
+    <div>{% if object.getChipAliases() is not empty %}[✓]{% endif %}</div>
 
     <div class="header-label">Actions</div>
     <div class="toolbar toolbar-thin" style="display:flex;flex-wrap: nowrap;">

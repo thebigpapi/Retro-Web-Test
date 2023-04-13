@@ -49,6 +49,7 @@ class ProcessorForm extends AbstractType
                 'expanded' => false,
                 'placeholder' => 'Select a cache size ...',
                 'required' => false,
+                'autocomplete' => true,
             ])
             ->add('L2', EntityType::class, [
                 'class' => CacheSize::class,
@@ -57,6 +58,7 @@ class ProcessorForm extends AbstractType
                 'expanded' => false,
                 'placeholder' => 'Select a cache size ...',
                 'required' => false,
+                'autocomplete' => true,
             ])
             ->add('L3', EntityType::class, [
                 'class' => CacheSize::class,
@@ -65,6 +67,7 @@ class ProcessorForm extends AbstractType
                 'expanded' => false,
                 'placeholder' => 'Select a cache size ...',
                 'required' => false,
+                'autocomplete' => true,
             ])
             ->add('L1CacheMethod', EntityType::class, [
                 'class' => CacheMethod::class,

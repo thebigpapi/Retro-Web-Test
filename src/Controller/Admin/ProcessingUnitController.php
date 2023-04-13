@@ -162,10 +162,17 @@ class ProcessingUnitController extends AbstractController
             if ($data['platform']) {
                 $getParams["platform"] = $data['platform']->getId();
             }
+            if ($data['name']) {
+                $getParams["name"] = $data['name'];
+            }
             $getParams["entity"] = "processor";
             return $this->redirect($this->generateUrl('admin_manage_processing_units', $getParams));
         } else {
             $criterias = array();
+            $name = htmlentities($request->query->get('name') ?? '');
+            if ($name) {
+                $criterias['name'] = "$name";
+            }
             $manufacturerId = htmlentities($request->query->get('manufacturer') ?? '');
             if ($manufacturerId && intval($manufacturerId)) {
                 $criterias["manufacturer"] = $manufacturerId;
@@ -175,7 +182,6 @@ class ProcessingUnitController extends AbstractController
                 $criterias["platform"] = $platformId;
             }
         }
-
         return $this->render('admin/manage/processingunits/manage.html.twig', [
             "search" => $search->createView(),
             "criterias" => $criterias,
@@ -254,7 +260,10 @@ class ProcessingUnitController extends AbstractController
 
     public function listProcessor(Request $request, PaginatorInterface $paginator, array $criterias, ProcessorRepository $processorRepository)
     {
-        $processors = $processorRepository->findBy($criterias);
+        if(!$criterias)
+            $processors = $processorRepository->findBy($criterias);
+        else
+            $processors = $processorRepository->findByCPU($criterias);
         $processors = Processor::sort(new ArrayCollection($processors));
 
         $paginatedProcessors = $paginator->paginate(

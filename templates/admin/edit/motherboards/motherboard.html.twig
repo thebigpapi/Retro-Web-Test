@@ -114,7 +114,7 @@
 								</div>
 							{% endfor %}
 						</div>
-					</div><!-- Cache -->					
+					</div><!-- Cache -->
 					<div class="quick-spec-table nopad" data-controller="collection">
 						<div class="quick-spec-head editor"><div>Cache</div>
 						{% include 'macros/buttons.html.twig' with {'type':'add', 'action': 'cacheSize'} %}</div>
@@ -265,7 +265,7 @@
 							</div>
 							<div class="append_table" id="motherboardBios-fields-list" data-widget-counter="{{ form.motherboardBios|length }}" data-prototype="
 								<div class='editor-row bios-main nopad'>
-								<div>{{ form_widget(form.motherboardBios.vars.prototype.manufacturer, {'attr': {'style': 'display:none;'}} )|e }}</div>
+								<div>{{ form_widget(form.motherboardBios.vars.prototype.manufacturer, {'attr': {'style': 'position:absolute;clip:rect(0 0 0 0);'}} )|e }}</div>
 								<div>{{ form_widget(form.motherboardBios.vars.prototype.postString, {'attr': {'style': 'width:100%', 'placeholder': 'POST string ...'}} )|e }}</div>
 								<div>{{ form_widget(form.motherboardBios.vars.prototype.note, {'attr': {'style': 'width:100%', 'placeholder': 'Note ...'}} )|e }}</div>
 								<div>{{ form_widget(form.motherboardBios.vars.prototype.boardVersion, {'attr': {'style': 'width:100%', 'placeholder': 'BIOS ver ...'}} )|e }}</div>
@@ -279,7 +279,7 @@
 							{% for bios in form.motherboardBios %}
 							<div class="bios-image-container">
 								<div class="editor-row bios-main nopad">
-									<div>{{ form_widget(bios.manufacturer, {'attr': {'style': 'display:none;'}}) }}</div>
+									<div>{{ form_widget(bios.manufacturer, {'attr': {'style': 'position:absolute;clip:rect(0 0 0 0);'}}) }}</div>
 									<div>{{ form_widget(bios.postString, {'attr': {'style': 'width:100%', 'placeholder': 'POST string ...'}}) }}</div>
 									<div>{{ form_widget(bios.note, {'attr': {'style': 'width:100%', 'placeholder': 'Note ...'}}) }}</div>
 									<div>{{ form_widget(bios.boardVersion, {'attr': {'style': 'width:100%', 'placeholder': 'BIOS ver ...'}}) }}</div>
@@ -358,9 +358,7 @@
 										{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
 										{{ form_errors(platform)|replace({'This value is not valid': 'A platform was incompatible with one of the sockets, reselect'})|raw }}
 									</div>
-									
 								{% endfor %}
-								
 						</div>
 					</div><hr><!-- FSB speeds -->
 					<div class="quick-spec-table" data-controller="collection">
@@ -377,11 +375,10 @@
 						</div>
 					</div><hr><!-- Max CPUs -->
 					<div class="quick-spec-table" style="padding:0;">
-						<div class="quick-spec-head editor">Max CPUs</div>
+						<div class="quick-spec-head editor">Socket count</div>
 						<div class="editor-row" style="padding:0;display:flex">
 							{{ form_widget(form.maxCpu, {'attr': {'style': 'width:25px'}}) }}
 								{{ form_widget(form.updateProcessors, {'attr': {'data-action':'click->motherboard--add#updateProcessors', 'style': 'display:inline-block;'}}) }}
-							
 						</div>
 					</div>
 					<div id="cpu-wait" style="display:none;">

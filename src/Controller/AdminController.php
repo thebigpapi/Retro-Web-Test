@@ -164,12 +164,15 @@ class AdminController extends AbstractController
              * @var ClickableInterface
              */
             $addButton = $userForm->get('add');
+            
             if ($resetButton->isClicked()) {
+                
                 $user = $userRepository->find($userForm->getData()['users']->getId());
 
                 $password = $this->randomStr(16);
                 $hashedPassword = $passwordHasher->hashPassword($user, $password);
                 $user->setPassword($hashedPassword);
+                
                 $entityManager->persist($user);
                 $entityManager->flush();
 
@@ -305,7 +308,7 @@ class AdminController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
             $user = $userRepository->findOneBy(["username" => $this->getUser()->getUserIdentifier()]);
-            if (strlen($data['new_username']) > 4 && strlen($data['new_username']) < 32) {
+            if (strlen($data['new_username']) > 1 && strlen($data['new_username']) < 51) {
                 if ($data['new_username'] === $user->getUsername()) {
                     return $this->render('admin/users/message.html.twig', [
                         'message' => 'Username is identical! Try again.',

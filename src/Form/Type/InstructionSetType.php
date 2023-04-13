@@ -33,6 +33,7 @@ class InstructionSetType extends AbstractType
             'choice_label' => 'getName',
             'multiple' => false,
             'expanded' => false,
+            'autocomplete' => true,
         ]);
     }
 
