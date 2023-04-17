@@ -2,26 +2,46 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
+use App\Repository\MotherboardRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Query\Expr\Func;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[ORM\Entity(repositoryClass: 'App\Repository\MotherboardRepository')]
+#[ORM\Entity(repositoryClass: MotherboardRepository::class)]
+#[ApiResource(
+    normalizationContext: ['groups' => 'read:Motherboard:item'],
+    collectionOperations: [
+        'get' => ['normalization_context' => ['groups' => ['read:Motherboard:list', 'related']]],
+        'post' => ['denormalization_context' => ['groups' => 'write:Motherboard']]
+    ],
+    itemOperations: [
+        'get' => ['normalization_context' => ['groups' => 'read:Motherboard:item']],
+        'put' => ['denormalization_context' => ['groups' => 'write:Motherboard']],
+        'delete'
+    ],
+    order: ['name' => 'ASC'],
+    paginationEnabled: true,
+)]
 class Motherboard
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
+    #[Groups(['read:Motherboard:list', 'read:Motherboard:item'])]
     private $id;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     #[Assert\Length(max: 255, maxMessage: 'Name is longer than {{ limit }} characters, try to make it shorter.')]
+    #[Groups(['read:Motherboard:list', 'read:Motherboard:item', 'write:Motherboard'])]
     private ?string $name = null;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     #[Assert\Length(max: 255, maxMessage: 'Dimensions is longer than {{ limit }} characters, try to make it shorter.')]
+    #[Groups(['read:Motherboard:list', 'read:Motherboard:item', 'write:Motherboard'])]
     private ?string $dimensions = null;
 
     #[ORM\ManyToOne(targetEntity: Manufacturer::class, inversedBy: 'motherboards', fetch: 'EAGER')]
@@ -77,12 +97,15 @@ class Motherboard
 
     #[ORM\Column(type: 'string', length: 2048, nullable: true)]
     #[Assert\Length(max: 2048, maxMessage: 'Notes is longer than {{ limit }} characters, try to make it shorter.')]
+    #[Groups(['read:Motherboard:list', 'read:Motherboard:item', 'write:Motherboard'])]
     private ?string $note = null;
 
     #[ORM\Column(type: 'datetime')]
+    #[Groups(['read:Motherboard:list', 'read:Motherboard:item', 'write:Motherboard'])]
     private $lastEdited;
 
     #[ORM\Column(type: 'integer', nullable: true)]
+    #[Groups(['read:Motherboard:list', 'read:Motherboard:item', 'write:Motherboard'])]
     private ?int $maxCpu = null;
 
     #[ORM\OneToMany(targetEntity: MotherboardAlias::class, mappedBy: 'motherboard', orphanRemoval: true, cascade: ['persist'])]
@@ -105,6 +128,7 @@ class Motherboard
 
     #[ORM\Column(type: 'string', length: 80, unique: true)]
     #[Assert\Length(max: 80, maxMessage: 'Slug is longer than {{ limit }} characters, try to make it shorter.')]
+    #[Groups(['read:Motherboard:list', 'read:Motherboard:item', 'write:Motherboard'])]
     private $slug;
 
     #[ORM\OneToMany(mappedBy: 'motherboard', targetEntity: MiscFile::class, orphanRemoval: true, cascade: ['persist'])]
@@ -166,20 +190,24 @@ class Motherboard
             return 'Unknown';
         }
     }
+    #[Groups(['read:Motherboard:list', 'read:Motherboard:item'])]
     public function getManufacturer(): ?Manufacturer
     {
         return $this->manufacturer;
     }
+    #[Groups(['write:Motherboard'])]
     public function setManufacturer(?Manufacturer $manufacturer): self
     {
         $this->manufacturer = $manufacturer;
 
         return $this;
     }
+    #[Groups(['read:Motherboard:list', 'read:Motherboard:item'])]
     public function getChipset(): ?Chipset
     {
         return $this->chipset;
     }
+    #[Groups(['write:Motherboard'])]
     public function setChipset(?Chipset $chipset): self
     {
         $this->chipset = $chipset;

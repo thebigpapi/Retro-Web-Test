@@ -15,14 +15,9 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ApiResource(
     normalizationContext: ['groups' => 'read:Chip:item'],
     collectionOperations: [
-        'get' => ['normalization_context' => ['groups' => 'read:Chip:list']],
-        'post' => ['denormalization_context' => ['groups' => 'write:Chip']]
+        'get' => ['normalization_context' => ['groups' => ['read:Chip:list', 'related']]]
     ],
-    itemOperations: [
-        'get' => ['normalization_context' => ['groups' => 'read:Chip:item']],
-        'put' => ['denormalization_context' => ['groups' => 'write:Chip']],
-        'delete'
-    ],
+    itemOperations: [],
     order: ['name' => 'ASC'],
     paginationEnabled: false,
 )]

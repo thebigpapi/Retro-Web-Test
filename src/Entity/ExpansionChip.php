@@ -14,7 +14,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ApiResource(
     normalizationContext: ['groups' => 'read:ExpansionChip:item'],
     collectionOperations: [
-        'get' => ['normalization_context' => ['groups' => 'read:ExpansionChip:list']],
+        'get' => ['normalization_context' => ['groups' => ['read:ExpansionChip:list', 'related']]],
         'post' => ['denormalization_context' => ['groups' => 'write:ExpansionChip']]
     ],
     itemOperations: [
@@ -48,24 +48,41 @@ class ExpansionChip extends Chip
         $this->drivers = new ArrayCollection();
         $this->documentations = new ArrayCollection();
     }
+    #[Groups(['read:ExpansionChip:list', 'read:ExpansionChip:item'])]
     public function getId(): ?int
     {
         return $this->id;
     }
+    #[Groups(['read:ExpansionChip:list', 'read:ExpansionChip:item'])]
     public function getName(): ?string
     {
         return $this->name;
     }
+    #[Groups(['write:ExpansionChip'])]
     public function setName(?string $name): self
     {
         $this->name = $name;
 
         return $this;
     }
+    #[Groups(['read:ExpansionChip:list', 'read:ExpansionChip:item'])]
+    public function getPartNumber(): ?string
+    {
+        return $this->partNumber;
+    }
+    #[Groups(['write:ExpansionChip'])]
+    public function setPartNumber(?string $partNumber): self
+    {
+        $this->partNumber = $partNumber;
+
+        return $this;
+    }
+    #[Groups(['read:ExpansionChip:list', 'read:ExpansionChip:item'])]
     public function getType(): ?ExpansionChipType
     {
         return $this->type;
     }
+    #[Groups(['write:ExpansionChip'])]
     public function setType(?ExpansionChipType $type): self
     {
         $this->type = $type;
@@ -88,6 +105,7 @@ class ExpansionChip extends Chip
     /**
      * @return Collection|Motherboard[]
      */
+    #[Groups(['read:ExpansionChip:list', 'read:ExpansionChip:item'])]
     public function getMotherboards(): Collection
     {
         return $this->motherboards;
@@ -109,10 +127,12 @@ class ExpansionChip extends Chip
 
         return $this;
     }
+    #[Groups(['read:ExpansionChip:list', 'read:ExpansionChip:item'])]
     public function getManufacturer(): ?Manufacturer
     {
         return $this->manufacturer;
     }
+    #[Groups(['write:ExpansionChip'])]
     public function setManufacturer(?Manufacturer $manufacturer): self
     {
         $this->manufacturer = $manufacturer;
@@ -122,6 +142,7 @@ class ExpansionChip extends Chip
     /**
      * @return Collection|LargeFileExpansionChip[]
      */
+    #[Groups(['read:ExpansionChip:list', 'read:ExpansionChip:item'])]
     public function getDrivers(): Collection
     {
         return $this->drivers;
@@ -147,6 +168,10 @@ class ExpansionChip extends Chip
         return $this;
     }
 
+    public function getExpansionChipType(): ?ExpansionChipType
+    {
+        return $this->type;
+    }
     public function setExpansionChipType(?ExpansionChipType $type): self
     {
         $this->type = $type;
@@ -154,16 +179,12 @@ class ExpansionChip extends Chip
         return $this;
     }
 
-    public function getExpansionChipType(): ?ExpansionChipType
-    {
-        return $this->type;
-    }
-
+    #[Groups(['read:ExpansionChip:list', 'read:ExpansionChip:item'])]
     public function getDescription(): ?string
     {
         return $this->description;
     }
-
+    #[Groups(['write:ExpansionChip'])]
     public function setDescription(?string $description): self
     {
         $this->description = $description;
