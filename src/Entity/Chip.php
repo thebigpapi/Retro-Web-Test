@@ -2,26 +2,46 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
+use App\Repository\ChipRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[ORM\Entity(repositoryClass: 'App\Repository\ChipRepository')]
+#[ORM\Entity(repositoryClass: ChipRepository::class)]
 #[ORM\InheritanceType('JOINED')]
+#[ApiResource(
+    normalizationContext: ['groups' => 'read:Chip:item'],
+    collectionOperations: [
+        'get' => ['normalization_context' => ['groups' => 'read:Chip:list']],
+        'post' => ['denormalization_context' => ['groups' => 'write:Chip']]
+    ],
+    itemOperations: [
+        'get' => ['normalization_context' => ['groups' => 'read:Chip:item']],
+        'put' => ['denormalization_context' => ['groups' => 'write:Chip']],
+        'delete'
+    ],
+    order: ['name' => 'ASC'],
+    paginationEnabled: false,
+)]
 abstract class Chip
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
+    #[Groups(['read:Chip:list', 'read:Chip:item'])]
     protected $id;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     #[Assert\Length(max: 255, maxMessage: 'Name is longer than {{ limit }} characters, try to make it shorter.')]
+    #[Groups(['read:Chip:list', 'read:Chip:item', 'write:Chip'])]
     protected $name;
 
     #[ORM\Column(type: 'string', length: 255)]
     #[Assert\Length(max: 255, maxMessage: 'Part number is longer than {{ limit }} characters, try to make it shorter.')]
+    #[Groups(['read:Chip:list', 'read:Chip:item', 'write:Chip'])]
     protected $partNumber;
 
     #[ORM\ManyToOne(targetEntity: Manufacturer::class, inversedBy: 'chips', fetch: 'EAGER')]

@@ -24,7 +24,7 @@ use Symfony\Component\Validator\Constraints as Assert;
     ],
     order: ['name' => 'ASC'],
     paginationEnabled: false,
-    shortName:'psu_connectors'
+    shortName:'PowerConnectors'
 )]
 class PSUConnector
 {

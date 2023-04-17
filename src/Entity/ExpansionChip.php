@@ -2,12 +2,29 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
+use App\Repository\ExpansionChipRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[ORM\Entity(repositoryClass: 'App\Repository\ExpansionChipRepository')]
+#[ORM\Entity(repositoryClass: ExpansionChipRepository::class)]
+#[ApiResource(
+    normalizationContext: ['groups' => 'read:ExpansionChip:item'],
+    collectionOperations: [
+        'get' => ['normalization_context' => ['groups' => 'read:ExpansionChip:list']],
+        'post' => ['denormalization_context' => ['groups' => 'write:ExpansionChip']]
+    ],
+    itemOperations: [
+        'get' => ['normalization_context' => ['groups' => 'read:ExpansionChip:item']],
+        'put' => ['denormalization_context' => ['groups' => 'write:ExpansionChip']],
+        'delete'
+    ],
+    order: ['name' => 'ASC'],
+    paginationEnabled: false,
+)]
 class ExpansionChip extends Chip
 {
     #[ORM\ManyToMany(targetEntity: Motherboard::class, mappedBy: 'expansionChips')]
@@ -19,6 +36,10 @@ class ExpansionChip extends Chip
     #[ORM\ManyToOne(targetEntity: ExpansionChipType::class, inversedBy: 'expansionChips')]
     #[ORM\JoinColumn(nullable: false)]
     private $type;
+
+    #[ORM\Column(length: 4096, nullable: true)]
+    #[Groups(['read:ExpansionChip:list', 'read:ExpansionChip:item', 'write:ExpansionChip'])]
+    private ?string $description = null;
 
     public function __construct()
     {
@@ -136,5 +157,17 @@ class ExpansionChip extends Chip
     public function getExpansionChipType(): ?ExpansionChipType
     {
         return $this->type;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(?string $description): self
+    {
+        $this->description = $description;
+
+        return $this;
     }
 }
