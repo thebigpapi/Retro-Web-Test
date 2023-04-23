@@ -2,12 +2,29 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
+use App\Repository\ProcessorRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Serializer\Annotation\Groups;
 
-#[ORM\Entity(repositoryClass: 'App\Repository\ProcessorRepository')]
+#[ORM\Entity(repositoryClass: ProcessorRepository::class)]
+#[ApiResource(
+    normalizationContext: ['groups' => 'read:Processor:item'],
+    collectionOperations: [
+        'get' => ['normalization_context' => ['groups' => ['read:Processor:list', 'related']]],
+        'post' => ['denormalization_context' => ['groups' => 'write:Processor']]
+    ],
+    itemOperations: [
+        'get' => ['normalization_context' => ['groups' => 'read:Processor:item']],
+        'put' => ['denormalization_context' => ['groups' => 'write:Processor']],
+        'delete'
+    ],
+    order: ['name' => 'ASC'],
+    paginationEnabled: true,
+)]
 class Processor extends ProcessingUnit
 {
     #[ORM\ManyToMany(targetEntity: Motherboard::class, mappedBy: 'processors')]
@@ -33,12 +50,15 @@ class Processor extends ProcessingUnit
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     #[Assert\Length(max: 255, maxMessage: 'Core is longer than {{ limit }} characters, try to make it shorter.')]
+    #[Groups(['read:Processor:list', 'read:Processor:item', 'write:Processor'])]
     private $core;
 
     #[ORM\Column(type: 'float', nullable: true)]
+    #[Groups(['read:Processor:list', 'read:Processor:item', 'write:Processor'])]
     private $tdp;
 
     #[ORM\Column(type: 'integer', nullable: true)]
+    #[Groups(['read:Processor:list', 'read:Processor:item', 'write:Processor'])]
     private $ProcessNode;
 
     #[ORM\OneToMany(targetEntity: ProcessorVoltage::class, mappedBy: 'processor', orphanRemoval: true, cascade: ['persist'])]
@@ -49,6 +69,7 @@ class Processor extends ProcessingUnit
         parent::__construct();
         $this->motherboards = new ArrayCollection();
         $this->voltages = new ArrayCollection();
+        $this->documentations = new ArrayCollection();
     }
     /**
      * @return Collection|Motherboard[]
@@ -75,6 +96,42 @@ class Processor extends ProcessingUnit
 
         return $this;
     }
+    #[Groups(['read:Processor:list', 'read:Processor:item'])]
+    public function getPlatform(): ?ProcessorPlatformType
+    {
+        return $this->platform;
+    }
+    #[Groups(['write:Processor'])]
+    public function setPlatform(?ProcessorPlatformType $platform): self
+    {
+        $this->platform = $platform;
+
+        return $this;
+    }
+    #[Groups(['read:Processor:list', 'read:Processor:item'])]
+    public function getSpeed(): ?CpuSpeed
+    {
+        return $this->speed;
+    }
+    #[Groups(['write:Processor'])]
+    public function setSpeed(?CpuSpeed $speed): self
+    {
+        $this->speed = $speed;
+
+        return $this;
+    }
+    #[Groups(['read:Processor:list', 'read:Processor:item'])]
+    public function getFsb(): ?CpuSpeed
+    {
+        return $this->fsb;
+    }
+    #[Groups(['write:Processor'])]
+    public function setFsb(?CpuSpeed $fsb): self
+    {
+        $this->fsb = $fsb;
+
+        return $this;
+    }
     public function getNameWithPlatform()
     {
         $inner = array();
@@ -88,7 +145,7 @@ class Processor extends ProcessingUnit
             array_push($inner, ($this->ProcessNode ? $this->ProcessNode . 'nm' : ''));
         if($this->tdp != "")
             array_push($inner, ($this->tdp ? $this->tdp . 'W' : ''));
-        return implode(" ", array($this->getManufacturer()->getShortNameIfExist(), $this->name, "[" . implode(", ", $inner) . "]"));
+        return implode(" ", array($this->getManufacturer()->getShortNameIfExist(), $this->partNumber, "[" . implode(", ", $inner) . "]"));
     }
     public function getNameWithSpecs()
     {
@@ -111,30 +168,36 @@ class Processor extends ProcessingUnit
 
         return implode(" ", array($this->getManufacturer()->getShortNameIfExist(), $this->name, $core, $speed, $voltages, $cache, $partno, $pType, $processNode, $tdp));
     }
+    #[Groups(['read:Processor:list', 'read:Processor:item'])]
     public function getL1(): ?CacheSize
     {
         return $this->L1;
     }
+    #[Groups(['write:Processor'])]
     public function setL1(?CacheSize $L1): self
     {
         $this->L1 = $L1;
 
         return $this;
     }
+    #[Groups(['read:Processor:list', 'read:Processor:item'])]
     public function getL2(): ?CacheSize
     {
         return $this->L2;
     }
+    #[Groups(['write:Processor'])]
     public function setL2(?CacheSize $L2): self
     {
         $this->L2 = $L2;
 
         return $this;
     }
+    #[Groups(['read:Processor:list', 'read:Processor:item'])]
     public function getL3(): ?CacheSize
     {
         return $this->L3;
     }
+    #[Groups(['write:Processor'])]
     public function setL3(?CacheSize $L3): self
     {
         $this->L3 = $L3;
@@ -207,57 +270,19 @@ class Processor extends ProcessingUnit
         usort(
             $array,
             function (Processor $a, Processor $b) {
-                if ($a->getManufacturer() == $b->getManufacturer()) {
-                    if ($a->getPlatform() == $b->getPlatform()) {
-                        //if($a->getName() == $b->getName())
-                        //{
-                        if ($a->getFsb() == $b->getFsb()) {
-                            if ($a->getSpeed() == $b->getSpeed()) {
-                                if ($a->getProcessNode() == $b->getProcessNode()) {
-                                    if ($a->getL1() && $b->getL1()) {
-                                        if ($a->getL1() == $b->getL1()) {
-                                            if ($a->getL1CacheMethod() && $b->getL1CacheMethod()) {
-                                                if ($a->getL1CacheMethod() == $b->getL1CacheMethod()) {
-                                                    if ($a->getL2() && $b->getL2()) {
-                                                        if ($a->getL2CacheRatio() && $b->getL2CacheRatio()) {
-                                                            if ($a->getL2CacheRatio() == $b->getL2CacheRatio()) {
-                                                                if ($a->getL3() && $b->getL3()) {
-                                                                    if ($a->getL3CacheRatio() && $b->getL3CacheRatio()) {
-                                                                        if ($a->getL3CacheRatio() == $b->getL3CacheRatio()) {
-                                                                            return 0;
-                                                                        }
-                                                                        return ($a->getL3CacheRatio()->getName() > $b->getL3CacheRatio()->getName()) ? -1 : 1;
-                                                                    }
-                                                                    return ($a->getL3()->getValue() > $b->getL3()->getValue()) ? -1 : 1;
-                                                                }
-                                                            }
-                                                            return ($a->getL2CacheRatio()->getName() > $b->getL2CacheRatio()->getName()) ? -1 : 1;
-                                                        }
-                                                        return ($a->getL2()->getValue() > $b->getL2()->getValue()) ? -1 : 1;
-                                                    }
-                                                    return ($a->getL2() && !$b->getL2()) ? -1 : 1;
-                                                }
-                                                return ($a->getL1CacheMethod()->getName() > $b->getL1CacheMethod()->getName()) ? -1 : 1;
-                                            }
-                                        }
-                                        return ($a->getL1()->getValue() > $b->getL1()->getValue()) ? -1 : 1;
-                                    }
-                                    return ($a->getL1() && !$b->getL1()) ? -1 : 1;
-                                }
-                                return ($a->getProcessNode() < $b->getProcessNode()) ? -1 : 1;
-                            }
-                            return ($a->getSpeed()->getValue() > $b->getSpeed()->getValue()) ? -1 : 1;
-                        }
-                        return ($a->getFsb()->getValue() > $b->getFsb()->getValue()) ? -1 : 1;
-
-                        //}
-                        //return ($a->getName() < $b->getName()) ? -1 : 1;
-                    } else {
-                        return ($a->getPlatform() < $b->getPlatform()) ? -1 : 1;
-                    }
-                } else {
+                if ($a->getFsb() != $b->getFsb()) {
+                    return ($a->getFsb()->getValue() > $b->getFsb()->getValue()) ? -1 : 1;
+                }
+                if ($a->getProcessNode() != $b->getProcessNode()) {
+                    return ($a->getProcessNode() < $b->getProcessNode()) ? -1 : 1;
+                }
+                if ($a->getSpeed() != $b->getSpeed()) {
+                    return ($a->getSpeed()->getValue() > $b->getSpeed()->getValue()) ? -1 : 1;
+                }
+                if ($a->getManufacturer() != $b->getManufacturer()) {
                     return ($a->getManufacturer() < $b->getManufacturer()) ? -1 : 1;
                 }
+                return 0;
             }
         );
 
@@ -266,6 +291,7 @@ class Processor extends ProcessingUnit
     /**
      * @return Collection|ProcessorVoltage[]
      */
+    #[Groups(['read:Processor:list', 'read:Processor:item'])]
     public function getVoltages(): Collection
     {
         return $this->voltages;
@@ -336,5 +362,23 @@ class Processor extends ProcessingUnit
     public function getTdpWithValue(): string
     {
         return $this->tdp ? $this->tdp . "W" : "";
+    }
+    public function getNameWithManufacturer()
+    {
+        $fullName = $this->getNameOnlyPartNumber();
+        if ($this->name) {
+            $fullName = $fullName . " ($this->name)";
+        }
+        return "$fullName";
+    }
+    public function getNameOnlyPartNumber()
+    {
+        $fullName = $this->partNumber;
+        if ($this->getManufacturer()) {
+            $fullName = $this->getManufacturer()->getShortNameIfExist() . " " . $fullName;
+        } else {
+            $fullName = "Unknown " . $fullName;
+        }
+        return "$fullName";
     }
 }

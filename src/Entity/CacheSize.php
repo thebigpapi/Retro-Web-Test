@@ -2,21 +2,40 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
+use App\Repository\CacheSizeRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Serializer\Annotation\Groups;
 
-#[ORM\Entity(repositoryClass: 'App\Repository\CacheSizeRepository')]
+#[ORM\Entity(repositoryClass: CacheSizeRepository::class)]
+#[ApiResource(
+    normalizationContext: ['groups' => 'read:CacheSize:item'],
+    collectionOperations: [
+        'get' => ['normalization_context' => ['groups' => ['read:CacheSize:list', 'related']]],
+        'post' => ['denormalization_context' => ['groups' => 'write:CacheSize']]
+    ],
+    itemOperations: [
+        'get' => ['normalization_context' => ['groups' => 'read:CacheSize:item']],
+        'put' => ['denormalization_context' => ['groups' => 'write:CacheSize']],
+        'delete'
+    ],
+    order: ['name' => 'ASC'],
+    paginationEnabled: true,
+)]
 class CacheSize
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
+    #[Groups(['read:CacheSize:list', 'read:CacheSize:item'])]
     private $id;
 
     #[ORM\Column(type: 'integer')]
     #[Assert\PositiveOrZero]
+    #[Groups(['read:CacheSize:list', 'read:CacheSize:item', 'write:CacheSize'])]
     private $value;
 
     #[ORM\ManyToMany(targetEntity: Motherboard::class, mappedBy: 'cacheSize')]

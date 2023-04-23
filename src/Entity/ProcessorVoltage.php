@@ -2,10 +2,26 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
+use App\Repository\CacheSizeRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: 'App\Repository\ProcessorVoltageRepository')]
+#[ApiResource(
+    normalizationContext: ['groups' => 'read:ProcessorVoltage:item'],
+    collectionOperations: [
+        'get' => ['normalization_context' => ['groups' => ['read:ProcessorVoltage:list', 'related']]],
+        'post' => ['denormalization_context' => ['groups' => 'write:ProcessorVoltage']]
+    ],
+    itemOperations: [
+        'get' => ['normalization_context' => ['groups' => 'read:ProcessorVoltage:item']],
+        'put' => ['denormalization_context' => ['groups' => 'write:ProcessorVoltage']],
+        'delete'
+    ],
+    order: ['name' => 'ASC'],
+    paginationEnabled: true,
+)]
 class ProcessorVoltage
 {
     #[ORM\Id]
@@ -15,7 +31,7 @@ class ProcessorVoltage
     private $id;
     
     #[ORM\Column(type: 'float')]
-    #[Groups(['read:ProcessorVoltage:list', 'read:ProcessorVoltage:item'])]
+    #[Groups(['read:ProcessorVoltage:list', 'read:ProcessorVoltage:item', 'write:ProcessorVoltage'])]
     private $value;
 
     #[ORM\ManyToOne(targetEntity: Processor::class, inversedBy: 'voltages')]

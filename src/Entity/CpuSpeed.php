@@ -2,21 +2,40 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
+use App\Repository\CacheSizeRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Serializer\Annotation\Groups;
 
-#[ORM\Entity(repositoryClass: 'App\Repository\CpuSpeedRepository')]
+#[ORM\Entity(repositoryClass: CacheSizeRepository::class)]
+#[ApiResource(
+    normalizationContext: ['groups' => 'read:CpuSpeed:item'],
+    collectionOperations: [
+        'get' => ['normalization_context' => ['groups' => ['read:CpuSpeed:list', 'related']]],
+        'post' => ['denormalization_context' => ['groups' => 'write:CpuSpeed']]
+    ],
+    itemOperations: [
+        'get' => ['normalization_context' => ['groups' => 'read:CpuSpeed:item']],
+        'put' => ['denormalization_context' => ['groups' => 'write:CpuSpeed']],
+        'delete'
+    ],
+    order: ['name' => 'ASC'],
+    paginationEnabled: true,
+)]
 class CpuSpeed
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
+    #[Groups(['read:CpuSpeed:list', 'read:CpuSpeed:item'])]
     private $id;
 
     #[ORM\Column(type: 'float')]
     #[Assert\PositiveOrZero]
+    #[Groups(['read:CpuSpeed:list', 'read:CpuSpeed:item', 'write:CpuSpeed'])]
     private $value;
 
     #[ORM\ManyToMany(targetEntity: Motherboard::class, mappedBy: 'cpuSpeed')]
