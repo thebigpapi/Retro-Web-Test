@@ -15,7 +15,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ApiResource(
     normalizationContext: ['groups' => 'read:Motherboard:item'],
     collectionOperations: [
-        'get' => ['normalization_context' => ['groups' => ['read:Motherboard:list', 'related']]],
+        'get' => ['normalization_context' => ['groups' => ['read:Motherboard:list']]],
         'post' => ['denormalization_context' => ['groups' => 'write:Motherboard']]
     ],
     itemOperations: [

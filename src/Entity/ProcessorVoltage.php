@@ -11,7 +11,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[ApiResource(
     normalizationContext: ['groups' => 'read:ProcessorVoltage:item'],
     collectionOperations: [
-        'get' => ['normalization_context' => ['groups' => ['read:ProcessorVoltage:list', 'related']]],
+        'get' => ['normalization_context' => ['groups' => ['read:ProcessorVoltage:list']]],
         'post' => ['denormalization_context' => ['groups' => 'write:ProcessorVoltage']]
     ],
     itemOperations: [

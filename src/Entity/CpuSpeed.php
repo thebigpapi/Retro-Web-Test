@@ -14,7 +14,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[ApiResource(
     normalizationContext: ['groups' => 'read:CpuSpeed:item'],
     collectionOperations: [
-        'get' => ['normalization_context' => ['groups' => ['read:CpuSpeed:list', 'related']]],
+        'get' => ['normalization_context' => ['groups' => ['read:CpuSpeed:list']]],
         'post' => ['denormalization_context' => ['groups' => 'write:CpuSpeed']]
     ],
     itemOperations: [

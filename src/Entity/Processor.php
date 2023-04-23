@@ -14,11 +14,11 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[ApiResource(
     normalizationContext: ['groups' => 'read:Processor:item'],
     collectionOperations: [
-        'get' => ['normalization_context' => ['groups' => ['read:Processor:list', 'related']]],
+        'get' => ['normalization_context' => ['groups' => ['read:Processor:list', 'read:Chip:list']]],
         'post' => ['denormalization_context' => ['groups' => 'write:Processor']]
     ],
     itemOperations: [
-        'get' => ['normalization_context' => ['groups' => 'read:Processor:item']],
+        'get' => ['normalization_context' => ['groups' => ['read:Processor:item', 'read:Chip:item']]],
         'put' => ['denormalization_context' => ['groups' => 'write:Processor']],
         'delete'
     ],

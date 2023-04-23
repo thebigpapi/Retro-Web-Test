@@ -14,7 +14,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[ApiResource(
     normalizationContext: ['groups' => 'read:CacheSize:item'],
     collectionOperations: [
-        'get' => ['normalization_context' => ['groups' => ['read:CacheSize:list', 'related']]],
+        'get' => ['normalization_context' => ['groups' => ['read:CacheSize:list']]],
         'post' => ['denormalization_context' => ['groups' => 'write:CacheSize']]
     ],
     itemOperations: [
