@@ -42,10 +42,13 @@
 					<a href="{{ path('app_homepage') }}" title="Go to homepage">
 						<img src="{{ absolute_url(asset('build/images/icon.png')) }}" width="40" height="40" alt="logo">
 						<span class="navbar-icon-label">The Retro Web</span>
-						{#<img src="{{ absolute_url(asset('build/images/beta.png')) }}" width="" height="40" alt="beta">#}
 					</a>
 				</nav>
 				<nav class="navbar-links">
+					<a href="{{ path('app_support') }}" class="nav-link">
+						<img src="{{ absolute_url(asset('build/icons/nav/support.svg')) }}" width="24" height="24" alt="art">
+						<span class="navbar-label">Support Us</span>
+					</a>
 					<a href="https://blog.theretroweb.com" class="nav-link">
 						<img src="{{ absolute_url(asset('build/icons/nav/articles.svg')) }}" width="24" height="24" alt="art">
 						<span class="navbar-label">Articles</span>

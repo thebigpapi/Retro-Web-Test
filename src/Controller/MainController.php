@@ -56,4 +56,11 @@ class MainController extends AbstractController
             'controller_name' => 'MainController',
         ]);
     }
+    #[Route('/support', name:'app_support')]
+    public function support(): Response
+    {
+        return $this->render('main/support.html.twig', [
+            'controller_name' => 'MainController',
+        ]);
+    }
 }
