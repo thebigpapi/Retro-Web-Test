@@ -2,28 +2,31 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Core\Annotation\ApiResource;
-use App\Repository\LanguageRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\Put;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\ApiResource;
+use App\Repository\LanguageRepository;
+use ApiPlatform\Metadata\GetCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Annotation\Groups;
 
-#[ORM\Entity(repositoryClass: LanguageRepository::class)]
 #[ApiResource(
+    operations: [
+        new Get(normalizationContext: ['groups' => 'read:Language:item']),
+        new Put(denormalizationContext: ['groups' => 'write:Language']),
+        new Delete(),
+        new GetCollection(normalizationContext: ['groups' => 'read:Language:list']),
+        new Post(denormalizationContext: ['groups' => 'write:Language'])
+    ],
     normalizationContext: ['groups' => 'read:Language:item'],
-    collectionOperations: [
-        'get' => ['normalization_context' => ['groups' => 'read:Language:list']], 
-        'post' => ['denormalization_context' => ['groups' => 'write:Language']]
-    ],
-    itemOperations: [
-        'get' => ['normalization_context' => ['groups' => 'read:Language:item']],
-        'put' => ['denormalization_context' => ['groups' => 'write:Language']],
-        'delete'
-    ],
     order: ['name' => 'ASC'],
-    paginationEnabled: false,
+    paginationEnabled: false
 )]
+#[ORM\Entity(repositoryClass: LanguageRepository::class)]
 class Language
 {
     #[ORM\Id]

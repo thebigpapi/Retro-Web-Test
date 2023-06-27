@@ -2,29 +2,32 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Core\Annotation\ApiResource;
-use App\Repository\ProcessorPlatformTypeRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Serializer\Annotation\Groups;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\Put;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\GetCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
+use App\Repository\ProcessorPlatformTypeRepository;
+use Symfony\Component\Serializer\Annotation\Groups;
 
-#[ORM\Entity(repositoryClass: ProcessorPlatformTypeRepository::class)]
 #[ApiResource(
+    operations: [
+        new Get(normalizationContext: ['groups' => 'read:ProcessorPlatformType:item']),
+        new Put(denormalizationContext: ['groups' => 'write:ProcessorPlatformType']),
+        new Delete(),
+        new GetCollection(normalizationContext: ['groups' => 'read:ProcessorPlatformType:list']),
+        new Post(denormalizationContext: ['groups' => 'write:ProcessorPlatformType'])
+    ],
     normalizationContext: ['groups' => 'read:ProcessorPlatformType:item'],
-    collectionOperations: [
-        'get' => ['normalization_context' => ['groups' => 'read:ProcessorPlatformType:list']], 
-        'post' => ['denormalization_context' => ['groups' => 'write:ProcessorPlatformType']]
-    ],
-    itemOperations: [
-        'get' => ['normalization_context' => ['groups' => 'read:ProcessorPlatformType:item']],
-        'put' => ['denormalization_context' => ['groups' => 'write:ProcessorPlatformType']],
-        'delete'
-    ],
     order: ['name' => 'ASC'],
-    paginationEnabled: false,
+    paginationEnabled: false
 )]
+#[ORM\Entity(repositoryClass: ProcessorPlatformTypeRepository::class)]
 class ProcessorPlatformType
 {
     #[ORM\Id]

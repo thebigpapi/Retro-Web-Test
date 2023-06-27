@@ -2,26 +2,29 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Core\Annotation\ApiResource;
-use App\Repository\CacheSizeRepository;
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\Put;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\GetCollection;
+use App\Repository\ProcessorVoltageRepository;
 use Symfony\Component\Serializer\Annotation\Groups;
 
-#[ORM\Entity(repositoryClass: 'App\Repository\ProcessorVoltageRepository')]
 #[ApiResource(
+    operations: [
+        new Get(normalizationContext: ['groups' => 'read:ProcessorVoltage:item']),
+        new Put(denormalizationContext: ['groups' => 'write:ProcessorVoltage']),
+        new Delete(),
+        new GetCollection(normalizationContext: ['groups' => ['read:ProcessorVoltage:list']]),
+        new Post(denormalizationContext: ['groups' => 'write:ProcessorVoltage'])
+    ],
     normalizationContext: ['groups' => 'read:ProcessorVoltage:item'],
-    collectionOperations: [
-        'get' => ['normalization_context' => ['groups' => ['read:ProcessorVoltage:list']]],
-        'post' => ['denormalization_context' => ['groups' => 'write:ProcessorVoltage']]
-    ],
-    itemOperations: [
-        'get' => ['normalization_context' => ['groups' => 'read:ProcessorVoltage:item']],
-        'put' => ['denormalization_context' => ['groups' => 'write:ProcessorVoltage']],
-        'delete'
-    ],
     order: ['name' => 'ASC'],
-    paginationEnabled: true,
+    paginationEnabled: true
 )]
+#[ORM\Entity(repositoryClass: ProcessorVoltageRepository::class)]
 class ProcessorVoltage
 {
     #[ORM\Id]
@@ -29,7 +32,7 @@ class ProcessorVoltage
     #[ORM\Column(type: 'integer')]
     #[Groups(['read:ProcessorVoltage:list', 'read:ProcessorVoltage:item'])]
     private $id;
-    
+
     #[ORM\Column(type: 'float')]
     #[Groups(['read:ProcessorVoltage:list', 'read:ProcessorVoltage:item', 'write:ProcessorVoltage'])]
     private $value;

@@ -2,29 +2,32 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Core\Annotation\ApiResource;
-use App\Repository\KnownIssueRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Serializer\Annotation\Groups;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\Put;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\GetCollection;
+use App\Repository\KnownIssueRepository;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Serializer\Annotation\Groups;
 
-#[ORM\Entity(repositoryClass: KnownIssueRepository::class)]
 #[ApiResource(
+    operations: [
+        new Get(normalizationContext: ['groups' => 'read:KnownIssue:item']),
+        new Put(denormalizationContext: ['groups' => 'write:KnownIssue']),
+        new Delete(),
+        new GetCollection(normalizationContext: ['groups' => 'read:KnownIssue:list']),
+        new Post(denormalizationContext: ['groups' => 'write:KnownIssue'])
+    ],
     normalizationContext: ['groups' => 'read:KnownIssue:item'],
-    collectionOperations: [
-        'get' => ['normalization_context' => ['groups' => 'read:KnownIssue:list']],
-        'post' => ['denormalization_context' => ['groups' => 'write:KnownIssue']]
-    ],
-    itemOperations: [
-        'get' => ['normalization_context' => ['groups' => 'read:KnownIssue:item']],
-        'put' => ['denormalization_context' => ['groups' => 'write:KnownIssue']],
-        'delete'
-    ],
     order: ['name' => 'ASC'],
-    paginationEnabled: false,
+    paginationEnabled: false
 )]
+#[ORM\Entity(repositoryClass: KnownIssueRepository::class)]
 class KnownIssue
 {
     #[ORM\Id]

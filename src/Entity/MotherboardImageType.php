@@ -2,29 +2,32 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Core\Annotation\ApiResource;
-use App\Repository\MotherboardImageTypeRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Serializer\Annotation\Groups;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\Put;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\GetCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
+use App\Repository\MotherboardImageTypeRepository;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Serializer\Annotation\Groups;
 
-#[ORM\Entity(repositoryClass: MotherboardImageTypeRepository::class)]
 #[ApiResource(
+    operations: [
+        new Get(normalizationContext: ['groups' => 'read:MotherboardImageType:item']),
+        new Put(denormalizationContext: ['groups' => 'write:MotherboardImageType']),
+        new Delete(),
+        new GetCollection(normalizationContext: ['groups' => 'read:MotherboardImageType:list']),
+        new Post(denormalizationContext: ['groups' => 'write:MotherboardImageType'])
+    ],
     normalizationContext: ['groups' => 'read:MotherboardImageType:item'],
-    collectionOperations: [
-        'get' => ['normalization_context' => ['groups' => 'read:MotherboardImageType:list']], 
-        'post' => ['denormalization_context' => ['groups' => 'write:MotherboardImageType']]
-    ],
-    itemOperations: [
-        'get' => ['normalization_context' => ['groups' => 'read:MotherboardImageType:item']],
-        'put' => ['denormalization_context' => ['groups' => 'write:MotherboardImageType']],
-        'delete'
-    ],
     order: ['name' => 'ASC'],
-    paginationEnabled: false,
+    paginationEnabled: false
 )]
+#[ORM\Entity(repositoryClass: MotherboardImageTypeRepository::class)]
 class MotherboardImageType
 {
     #[ORM\Id]

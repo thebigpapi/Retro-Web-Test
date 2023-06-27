@@ -2,29 +2,32 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Core\Annotation\ApiResource;
+use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\Put;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\GetCollection;
+use Doctrine\Common\Collections\Collection;
 use App\Repository\ExpansionChipTypeRepository;
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Serializer\Annotation\Groups;
 
-#[ORM\Entity(repositoryClass: ExpansionChipTypeRepository::class)]
 #[ApiResource(
+    operations: [
+        new Get(normalizationContext: ['groups' => 'read:ExpansionChipType:item']),
+        new Put(denormalizationContext: ['groups' => 'write:ExpansionChipType']),
+        new Delete(),
+        new GetCollection(normalizationContext: ['groups' => ['read:ExpansionChipType:list']]),
+        new Post(denormalizationContext: ['groups' => 'write:ExpansionChipType'])
+    ],
     normalizationContext: ['groups' => 'read:ExpansionChip:item'],
-    collectionOperations: [
-        'get' => ['normalization_context' => ['groups' => ['read:ExpansionChipType:list']]],
-        'post' => ['denormalization_context' => ['groups' => 'write:ExpansionChipType']]
-    ],
-    itemOperations: [
-        'get' => ['normalization_context' => ['groups' => 'read:ExpansionChipType:item']],
-        'put' => ['denormalization_context' => ['groups' => 'write:ExpansionChipType']],
-        'delete'
-    ],
     order: ['name' => 'ASC'],
-    paginationEnabled: false,
+    paginationEnabled: false
 )]
+#[ORM\Entity(repositoryClass: ExpansionChipTypeRepository::class)]
 class ExpansionChipType
 {
     #[ORM\Id]
@@ -34,7 +37,7 @@ class ExpansionChipType
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Assert\Length(max:255, maxMessage: 'Name is longer than {{ limit }} characters, try to make it shorter.')]
+    #[Assert\Length(max: 255, maxMessage: 'Name is longer than {{ limit }} characters, try to make it shorter.')]
     #[Groups(['read:ExpansionChipType:list', 'read:ExpansionChipType:item', 'write:ExpansionChipType'])]
     private ?string $name = null;
 

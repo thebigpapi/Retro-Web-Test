@@ -2,29 +2,34 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Core\Annotation\ApiResource;
-use App\Repository\LicenseRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Serializer\Annotation\Groups;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\Put;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\ApiResource;
+use App\Repository\LicenseRepository;
+use ApiPlatform\Metadata\GetCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Serializer\Annotation\Groups;
 
+#[
+    ApiResource(
+        operations: [
+            new Get(normalizationContext: ['groups' => 'read:License:item']),
+            new Put(denormalizationContext: ['groups' => 'write:License']),
+            new Delete(),
+            new GetCollection(normalizationContext: ['groups' => 'read:License:list']),
+            new Post(denormalizationContext: ['groups' => 'write:License'])
+        ],
+        normalizationContext: ['groups' => 'read:License:item'],
+        order: ['name' => 'ASC'],
+        paginationEnabled: false
+    )
+]
 #[ORM\Entity(repositoryClass: LicenseRepository::class)]
-#[ApiResource(
-    normalizationContext: ['groups' => 'read:License:item'],
-    collectionOperations: [
-        'get' => ['normalization_context' => ['groups' => 'read:License:list']], 
-        'post' => ['denormalization_context' => ['groups' => 'write:License']]
-    ],
-    itemOperations: [
-        'get' => ['normalization_context' => ['groups' => 'read:License:item']],
-        'put' => ['denormalization_context' => ['groups' => 'write:License']],
-        'delete'
-    ],
-    order: ['name' => 'ASC'],
-    paginationEnabled: false,
-)]
 class License
 {
     #[ORM\Id]

@@ -2,33 +2,36 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Core\Annotation\ApiFilter;
-use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
-use ApiPlatform\Core\Annotation\ApiResource;
-use App\Repository\MaxRamRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\Put;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Delete;
+use App\Repository\MaxRamRepository;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\GetCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
+#[
+    ApiResource(
+        operations: [
+            new Get(normalizationContext: ['groups' => 'read:MaxRam:item']),
+            new Put(denormalizationContext: ['groups' => 'write:MaxRam']),
+            new Delete(),
+            new GetCollection(normalizationContext: ['groups' => 'read:MaxRam:list']),
+            new Post(denormalizationContext: ['groups' => 'write:MaxRam'])
+        ],
+        normalizationContext: ['groups' => 'read:MaxRam:item'],
+        order: ['value' => 'ASC'],
+        paginationEnabled: false
+    )
+]
 #[ORM\Entity(repositoryClass: MaxRamRepository::class)]
 #[UniqueEntity('value')]
-#[ApiResource(
-    normalizationContext: ['groups' => 'read:MaxRam:item'],
-    collectionOperations: [
-        'get' => ['normalization_context' => ['groups' => 'read:MaxRam:list']], 
-        'post' => ['denormalization_context' => ['groups' => 'write:MaxRam']]
-    ],
-    itemOperations: [
-        'get' => ['normalization_context' => ['groups' => 'read:MaxRam:item']],
-        'put' => ['denormalization_context' => ['groups' => 'write:MaxRam']],
-        'delete'
-    ],
-    order: ['value' => 'ASC'],
-    paginationEnabled: false,
-)]
 class MaxRam
 {
     #[ORM\Id]

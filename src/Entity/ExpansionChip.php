@@ -2,29 +2,31 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Core\Annotation\ApiResource;
-use App\Repository\ExpansionChipRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\Put;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\GetCollection;
+use App\Repository\ExpansionChipRepository;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Annotation\Groups;
-use Symfony\Component\Validator\Constraints as Assert;
 
-#[ORM\Entity(repositoryClass: ExpansionChipRepository::class)]
 #[ApiResource(
+    operations: [
+        new Get(normalizationContext: ['groups' => 'read:ExpansionChip:item']),
+        new Put(denormalizationContext: ['groups' => 'write:ExpansionChip']),
+        new Delete(),
+        new GetCollection(normalizationContext: ['groups' => ['read:ExpansionChip:list']]),
+        new Post(denormalizationContext: ['groups' => 'write:ExpansionChip'])
+    ],
     normalizationContext: ['groups' => 'read:ExpansionChip:item'],
-    collectionOperations: [
-        'get' => ['normalization_context' => ['groups' => ['read:ExpansionChip:list']]],
-        'post' => ['denormalization_context' => ['groups' => 'write:ExpansionChip']]
-    ],
-    itemOperations: [
-        'get' => ['normalization_context' => ['groups' => 'read:ExpansionChip:item']],
-        'put' => ['denormalization_context' => ['groups' => 'write:ExpansionChip']],
-        'delete'
-    ],
     order: ['name' => 'ASC'],
-    paginationEnabled: false,
+    paginationEnabled: false
 )]
+#[ORM\Entity(repositoryClass: ExpansionChipRepository::class)]
 class ExpansionChip extends Chip
 {
     #[ORM\ManyToMany(targetEntity: Motherboard::class, mappedBy: 'expansionChips')]

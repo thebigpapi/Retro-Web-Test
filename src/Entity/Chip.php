@@ -2,25 +2,25 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Core\Annotation\ApiResource;
-use App\Repository\ChipRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Serializer\Annotation\Groups;
+use App\Repository\ChipRepository;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\GetCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Serializer\Annotation\Groups;
 
+#[ApiResource(
+    operations: [
+        new GetCollection(normalizationContext: ['groups' => ['read:Chip:list']])
+    ],
+    normalizationContext: ['groups' => 'read:Chip:item'],
+    order: ['name' => 'ASC'],
+    paginationEnabled: false
+)]
 #[ORM\Entity(repositoryClass: ChipRepository::class)]
 #[ORM\InheritanceType('JOINED')]
-#[ApiResource(
-    normalizationContext: ['groups' => 'read:Chip:item'],
-    collectionOperations: [
-        'get' => ['normalization_context' => ['groups' => ['read:Chip:list']]]
-    ],
-    itemOperations: [],
-    order: ['name' => 'ASC'],
-    paginationEnabled: false,
-)]
 abstract class Chip
 {
     #[ORM\Id]

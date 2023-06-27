@@ -2,32 +2,37 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Core\Annotation\ApiResource;
-use App\Repository\ManufacturerRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\Put;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\GetCollection;
+use App\Repository\ManufacturerRepository;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
+#[
+    ApiResource(
+        operations: [
+            new Get(normalizationContext: ['groups' => ['read:Manufacturer:item', 'read:ManufacturerBiosManufacturerCode:item']]),
+            new Put(denormalizationContext: ['groups' => ['write:Manufacturer', 'write:ManufacturerBiosManufacturerCode']]),
+            new Delete(),
+            new GetCollection(normalizationContext: ['groups' => 'read:Manufacturer:list']),
+            new Post(denormalizationContext: ['groups' => ['write:Manufacturer', 'write:ManufacturerBiosManufacturerCode']])
+        ],
+        normalizationContext: ['groups' => ['read:Manufacturer:item', 'read:ManufacturerBiosManufacturerCode:item']],
+        order: ['name' => 'ASC'],
+        paginationEnabled: true
+    )
+]
 #[ORM\Entity(repositoryClass: ManufacturerRepository::class)]
 #[UniqueEntity(fields: ['name', 'shortName'])]
 #[ORM\ChangeTrackingPolicy('DEFERRED_EXPLICIT')]
-#[ApiResource(
-    normalizationContext: ['groups' => ['read:Manufacturer:item', 'read:ManufacturerBiosManufacturerCode:item']],
-    collectionOperations: [
-        'get' => ['normalization_context' => ['groups' => 'read:Manufacturer:list']], 
-        'post' => ['denormalization_context' => ['groups' => ['write:Manufacturer', 'write:ManufacturerBiosManufacturerCode']]]
-    ],
-    itemOperations: [
-        'get' => ['normalization_context' => ['groups' => ['read:Manufacturer:item', 'read:ManufacturerBiosManufacturerCode:item']]],
-        'put' => ['denormalization_context' => ['groups' => ['write:Manufacturer', 'write:ManufacturerBiosManufacturerCode']]],
-        'delete'
-    ],
-    order: ['name' => 'ASC'],
-    paginationEnabled: true,
-)]
 class Manufacturer
 {
     #[ORM\Id]

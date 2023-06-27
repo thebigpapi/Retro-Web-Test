@@ -2,30 +2,34 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Core\Annotation\ApiResource;
-use App\Repository\MotherboardRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\ORM\Query\Expr\Func;
-use Symfony\Component\Serializer\Annotation\Groups;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\Put;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\GetCollection;
+use App\Repository\MotherboardRepository;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Serializer\Annotation\Groups;
 
+#[
+    ApiResource(
+        operations: [
+            new Get(normalizationContext: ['groups' => 'read:Motherboard:item']),
+            new Put(denormalizationContext: ['groups' => 'write:Motherboard']),
+            new Delete(),
+            new GetCollection(normalizationContext: ['groups' => ['read:Motherboard:list']]),
+            new Post(denormalizationContext: ['groups' => 'write:Motherboard'])
+        ],
+        normalizationContext: ['groups' => 'read:Motherboard:item'],
+        order: ['name' => 'ASC'],
+        paginationEnabled: true
+    )
+]
 #[ORM\Entity(repositoryClass: MotherboardRepository::class)]
-#[ApiResource(
-    normalizationContext: ['groups' => 'read:Motherboard:item'],
-    collectionOperations: [
-        'get' => ['normalization_context' => ['groups' => ['read:Motherboard:list']]],
-        'post' => ['denormalization_context' => ['groups' => 'write:Motherboard']]
-    ],
-    itemOperations: [
-        'get' => ['normalization_context' => ['groups' => 'read:Motherboard:item']],
-        'put' => ['denormalization_context' => ['groups' => 'write:Motherboard']],
-        'delete'
-    ],
-    order: ['name' => 'ASC'],
-    paginationEnabled: true,
-)]
 class Motherboard
 {
     #[ORM\Id]

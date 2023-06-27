@@ -2,29 +2,32 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Core\Annotation\ApiResource;
-use App\Repository\CacheSizeRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\Put;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\GetCollection;
+use App\Repository\CacheSizeRepository;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Serializer\Annotation\Groups;
 
-#[ORM\Entity(repositoryClass: CacheSizeRepository::class)]
 #[ApiResource(
+    operations: [
+        new Get(normalizationContext: ['groups' => 'read:CpuSpeed:item']),
+        new Put(denormalizationContext: ['groups' => 'write:CpuSpeed']),
+        new Delete(),
+        new GetCollection(normalizationContext: ['groups' => ['read:CpuSpeed:list']]),
+        new Post(denormalizationContext: ['groups' => 'write:CpuSpeed'])
+    ],
     normalizationContext: ['groups' => 'read:CpuSpeed:item'],
-    collectionOperations: [
-        'get' => ['normalization_context' => ['groups' => ['read:CpuSpeed:list']]],
-        'post' => ['denormalization_context' => ['groups' => 'write:CpuSpeed']]
-    ],
-    itemOperations: [
-        'get' => ['normalization_context' => ['groups' => 'read:CpuSpeed:item']],
-        'put' => ['denormalization_context' => ['groups' => 'write:CpuSpeed']],
-        'delete'
-    ],
     order: ['name' => 'ASC'],
-    paginationEnabled: true,
+    paginationEnabled: true
 )]
+#[ORM\Entity(repositoryClass: CacheSizeRepository::class)]
 class CpuSpeed
 {
     #[ORM\Id]

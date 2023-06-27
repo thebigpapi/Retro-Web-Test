@@ -2,29 +2,32 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Core\Annotation\ApiResource;
-use App\Repository\CacheSizeRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\Put;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\GetCollection;
+use App\Repository\CacheSizeRepository;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Serializer\Annotation\Groups;
 
-#[ORM\Entity(repositoryClass: CacheSizeRepository::class)]
 #[ApiResource(
+    operations: [
+        new Get(normalizationContext: ['groups' => 'read:CacheSize:item']),
+        new Put(denormalizationContext: ['groups' => 'write:CacheSize']),
+        new Delete(),
+        new GetCollection(normalizationContext: ['groups' => ['read:CacheSize:list']]),
+        new Post(denormalizationContext: ['groups' => 'write:CacheSize'])
+    ],
     normalizationContext: ['groups' => 'read:CacheSize:item'],
-    collectionOperations: [
-        'get' => ['normalization_context' => ['groups' => ['read:CacheSize:list']]],
-        'post' => ['denormalization_context' => ['groups' => 'write:CacheSize']]
-    ],
-    itemOperations: [
-        'get' => ['normalization_context' => ['groups' => 'read:CacheSize:item']],
-        'put' => ['denormalization_context' => ['groups' => 'write:CacheSize']],
-        'delete'
-    ],
     order: ['name' => 'ASC'],
-    paginationEnabled: true,
+    paginationEnabled: true
 )]
+#[ORM\Entity(repositoryClass: CacheSizeRepository::class)]
 class CacheSize
 {
     #[ORM\Id]

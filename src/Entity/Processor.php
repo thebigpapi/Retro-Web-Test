@@ -2,29 +2,32 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Core\Annotation\ApiResource;
-use App\Repository\ProcessorRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\Put;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\GetCollection;
+use App\Repository\ProcessorRepository;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Serializer\Annotation\Groups;
 
-#[ORM\Entity(repositoryClass: ProcessorRepository::class)]
 #[ApiResource(
+    operations: [
+        new Get(normalizationContext: ['groups' => ['read:Processor:item', 'read:Chip:item']]),
+        new Put(denormalizationContext: ['groups' => 'write:Processor']),
+        new Delete(),
+        new GetCollection(normalizationContext: ['groups' => ['read:Processor:list', 'read:Chip:list']]),
+        new Post(denormalizationContext: ['groups' => 'write:Processor'])
+    ],
     normalizationContext: ['groups' => 'read:Processor:item'],
-    collectionOperations: [
-        'get' => ['normalization_context' => ['groups' => ['read:Processor:list', 'read:Chip:list']]],
-        'post' => ['denormalization_context' => ['groups' => 'write:Processor']]
-    ],
-    itemOperations: [
-        'get' => ['normalization_context' => ['groups' => ['read:Processor:item', 'read:Chip:item']]],
-        'put' => ['denormalization_context' => ['groups' => 'write:Processor']],
-        'delete'
-    ],
     order: ['name' => 'ASC'],
-    paginationEnabled: true,
+    paginationEnabled: true
 )]
+#[ORM\Entity(repositoryClass: ProcessorRepository::class)]
 class Processor extends ProcessingUnit
 {
     #[ORM\ManyToMany(targetEntity: Motherboard::class, mappedBy: 'processors')]
@@ -135,15 +138,15 @@ class Processor extends ProcessingUnit
     public function getNameWithPlatform()
     {
         $inner = array();
-        if($this->core != "")
+        if ($this->core != "")
             array_push($inner, $this->core);
-        if($this->fsb != "")
+        if ($this->fsb != "")
             array_push($inner, $this->fsb->getValueWithUnit());
-        if($this->getVoltagesWithValue() != "")
+        if ($this->getVoltagesWithValue() != "")
             array_push($inner, $this->getVoltagesWithValue());
-        if($this->ProcessNode != "")
+        if ($this->ProcessNode != "")
             array_push($inner, ($this->ProcessNode ? $this->ProcessNode . 'nm' : ''));
-        if($this->tdp != "")
+        if ($this->tdp != "")
             array_push($inner, ($this->tdp ? $this->tdp . 'W' : ''));
         return implode(" ", array($this->getManufacturer()->getShortNameIfExist(), $this->partNumber, "[" . implode(", ", $inner) . "]"));
     }
