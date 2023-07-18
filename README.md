@@ -20,16 +20,14 @@ Begin by making sure you have the latest updates with `sudo apt update`, then pr
 
 # PHP install 
 
-Here are the commands to install [PHP 8.0](https://computingforgeeks.com/how-to-install-latest-php-on-debian/) and it's required extensions for Symfony
+Here are the commands to install [PHP 8.1] and extensions required to run Symfony on Ubuntu Jammy.
 ```
-sudo apt -y install lsb-release apt-transport-https ca-certificates 
-sudo wget -O /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg
-echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" | sudo tee /etc/apt/sources.list.d/php.list
-sudo apt update
-sudo apt install php8.0 php8.0-mbstring php8.0-dom php8.0-gd php8.0-intl php8.0-pgsql php8.0-xsl
-```
-Install this as well, to let Composer run faster:`sudo apt install zip unzip php-zip`
+apt update
+apt -y install lsb-release apt-transport-https ca-certificates 
+apt install zip unzip php8.1-zip php8.1 php8.1-mbstring php8.1-dom php8.1-gd php8.1-intl php8.1-pgsql php8.1-xsl
+apt install 
 
+```
 # Symfony install
 To install [CLI](https://symfony.com/download), run these:
 ```
