@@ -25,7 +25,6 @@ Here are the commands to install [PHP 8.1] and extensions required to run Symfon
 apt update
 apt -y install lsb-release apt-transport-https ca-certificates 
 apt install zip unzip php8.1-zip php8.1 php8.1-mbstring php8.1-dom php8.1-gd php8.1-intl php8.1-pgsql php8.1-xsl
-apt install 
 
 ```
 # Symfony install
