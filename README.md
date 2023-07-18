@@ -75,9 +75,9 @@ sudo apt install git
 git config --global user.name [name]
 git config --global user.email [email]
 cd /var/www
-git clone https://gitlab.com/deksor/ultimateretro.git
+git clone https://gitlab.com/ultimateretro/ultimateretro.git
 cd ultimateretro
-git checkout [branch]
+git checkout [branch] # usually master
 ```
 
 ## npm/yarn install:
