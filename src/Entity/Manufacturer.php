@@ -72,6 +72,13 @@ class Manufacturer
         $this->osFlags = new ArrayCollection();
         $this->pciVendorIds = new ArrayCollection();
     }
+    public function __toString(): string
+    {
+        if ($this->shortName) {
+            return $this->shortName;
+        }
+        return $this->name;
+    }
     public function getId(): ?int
     {
         return $this->id;

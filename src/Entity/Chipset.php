@@ -76,6 +76,10 @@ class Chipset
         $this->documentations = new ArrayCollection();
         $this->lastEdited = new \DateTime('now');
     }
+    public function __toString(): string
+    {
+        return $this->getFullNameParts();
+    }
     public function getId(): ?int
     {
         return $this->id;

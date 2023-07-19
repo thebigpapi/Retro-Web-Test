@@ -24,6 +24,17 @@ class MotherboardAlias
     #[Assert\Length(max: 255, maxMessage: 'Alias name is longer than {{ limit }} characters, try to make it shorter.')]
     private $name;
 
+    public function __toString(): string
+    {
+        $name = "";
+        if ($this->manufacturer) {
+            $name = $this->manufacturer->getShortNameIfExist();
+        }
+        else{
+            $name = "Unknown ";
+        }
+        return $name . " " . $this->name;
+    }
     public function getId(): ?int
     {
         return $this->id;

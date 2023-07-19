@@ -25,6 +25,7 @@ class MotherboardAliasType extends AbstractType
                 'expanded' => false,
                 'required' => false,
                 'autocomplete' => true,
+                'attr' => ['data-ea-widget' => 'ea-autocomplete'],
             ])
             ->add('name', TextType::class, [
                 'required' => true,

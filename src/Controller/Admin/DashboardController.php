@@ -25,6 +25,7 @@ use App\Entity\FormFactor;
 use App\Entity\Manufacturer;
 use App\Entity\Creditor;
 use App\Entity\License;
+use App\Entity\User;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
@@ -34,7 +35,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class DashboardController extends AbstractDashboardController
 {
-    #[Route('/nextgen', name: 'nextgen_admin')]
+    #[Route('/dashboard', name: 'dashboard')]
     public function index(): Response
     {
         //return parent::index();
@@ -93,9 +94,10 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Media types', 'admin/file.svg', MediaTypeFlag::class);
         yield MenuItem::linkToCrud('Form factors', 'show/dimension.svg', FormFactor::class);
         yield MenuItem::linkToCrud('Manufacturers', 'show/motherboard.svg', Manufacturer::class);
-        yield MenuItem::linkToCrud('Creditors', 'admin/user.svg', Creditor::class);
-        yield MenuItem::linkToCrud('Licenses', 'admin/user.svg', License::class);
-        yield MenuItem::section('User');
+        yield MenuItem::linkToCrud('Creditors', 'search/search_image.svg', Creditor::class);
+        yield MenuItem::linkToCrud('Licenses', 'nav/book.svg', License::class);
+        yield MenuItem::section('Administrative');
+        yield MenuItem::linkToCrud('Users', 'admin/user.svg', User::class);
 
 
     }

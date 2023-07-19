@@ -34,6 +34,10 @@ class CpuSpeed
         $this->processingUnits = new ArrayCollection();
         $this->processingUnitsFsb = new ArrayCollection();
     }
+    public function __toString(): string
+    {
+        return $this->getValueWithUnit();
+    }
     public function getId(): ?int
     {
         return $this->id;
