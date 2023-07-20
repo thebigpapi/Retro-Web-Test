@@ -11,6 +11,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ArrayField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
@@ -32,7 +33,7 @@ class ChipsetPartCrudController extends AbstractCrudController
             ->onlyOnForms();
         yield TextField::new('partNumber', 'Part number');
         yield TextField::new('name', 'Name');
-        //yield TextField::new('rank','Rank');
+        yield NumberField::new('rank','Rank');
         // index
         yield ArrayField::new('pciDevs', 'PCI DEV')
             ->hideOnForm();

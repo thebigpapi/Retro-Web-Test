@@ -30,6 +30,10 @@ class ExpansionChip extends Chip
         $this->drivers = new ArrayCollection();
         $this->documentations = new ArrayCollection();
     }
+    public function __toString(): string
+    {
+        return $this->getNameWithManufacturer();
+    }
     public function getId(): ?int
     {
         return $this->id;

@@ -27,7 +27,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ArrayField;
@@ -78,6 +78,12 @@ class MotherboardCrudController extends AbstractCrudController
             ->onlyOnDetail();
         yield TextField::new('formFactor','Form Factor')
             ->onlyOnDetail();
+        yield ArrayField::new('getChipsetParts', 'Chipset parts')
+            ->onlyOnDetail();
+        yield ArrayField::new('expansionChips', 'Expansion chips')
+            ->onlyOnDetail();
+        /*yield ArrayField::new('knownIssues', 'Known issues')
+            ->onlyOnDetail();*/
 
         // show and indes
         yield DateField::new('lastEdited')->hideOnForm();
@@ -124,9 +130,9 @@ class MotherboardCrudController extends AbstractCrudController
         yield CollectionField::new('drivers', 'Drivers')
             ->setEntryType(LargeFileMotherboardType::class)
             ->onlyOnForms();
-        yield CollectionField::new('motherboardBios', 'BIOS images')
+        /*yield CollectionField::new('motherboardBios', 'BIOS images')
             ->setEntryType(MotherboardBiosType::class)
-            ->onlyOnForms();
+            ->onlyOnForms();*/
         yield CollectionField::new('manuals', 'Documentation')
             ->setEntryType(ManualType::class)
             ->onlyOnForms();
@@ -148,7 +154,7 @@ class MotherboardCrudController extends AbstractCrudController
         yield AssociationField::new('formFactor','Form Factor')
             ->onlyOnForms();
         yield TextField::new('dimensions');
-        yield TextEditorField::new('note')->onlyOnForms();
+        yield TextareaField::new('note')->onlyOnForms();
 
     }
     public function configureActions(Actions $actions): Actions

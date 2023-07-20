@@ -28,7 +28,7 @@ class DramType
     }
     public function __toString(): string
     {
-        return "wtf";
+        return $this->name;
     }
     public function getId(): ?int
     {
