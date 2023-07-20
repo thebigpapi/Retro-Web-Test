@@ -15,6 +15,10 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ArrayField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\CodeEditorField;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 
 class ExpansionChipCrudController extends AbstractCrudController
@@ -66,7 +70,17 @@ class ExpansionChipCrudController extends AbstractCrudController
         yield CollectionField::new('images', 'Images')
             ->setEntryType(ChipImageType::class)
             ->onlyOnForms();
-        yield TextareaField::new('description')->onlyOnForms();
+        yield CodeEditorField::new('description')
+            ->setLanguage('markdown')
+            ->onlyOnForms();
     }
-
+    public function configureCrud(Crud $crud): Crud
+    {
+        return $crud->showEntityActionsInlined();
+    }
+    public function configureActions(Actions $actions): Actions
+    {
+        return $actions
+            ->setPermission(Action::DELETE, 'ROLE_ADMIN');
+    }
 }

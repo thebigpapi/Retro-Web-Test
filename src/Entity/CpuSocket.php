@@ -40,6 +40,8 @@ class CpuSocket
     }
     public function __toString(): string
     {
+        if(!$this->name)
+            return $this->type;
         return $this->name;
     }
     public function getId(): ?int

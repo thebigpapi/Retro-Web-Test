@@ -28,6 +28,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\CodeEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ArrayField;
@@ -154,14 +155,15 @@ class MotherboardCrudController extends AbstractCrudController
         yield AssociationField::new('formFactor','Form Factor')
             ->onlyOnForms();
         yield TextField::new('dimensions');
-        yield TextareaField::new('note')->onlyOnForms();
+        yield CodeEditorField::new('note')
+            ->setLanguage('markdown')
+            ->onlyOnForms();
 
     }
     public function configureActions(Actions $actions): Actions
     {
-
         return $actions
-            ->add(Crud::PAGE_INDEX, Action::DETAIL);
+            ->add(Crud::PAGE_INDEX, Action::DETAIL)
+            ->setPermission(Action::DELETE, 'ROLE_ADMIN');
     }
-
 }

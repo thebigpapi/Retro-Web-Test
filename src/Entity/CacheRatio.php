@@ -30,6 +30,10 @@ class CacheRatio
         $this->processorsL2 = new ArrayCollection();
         $this->processorsL3 = new ArrayCollection();
     }
+    public function __toString(): string
+    {
+        return $this->name;
+    }
     public function getId(): ?int
     {
         return $this->id;

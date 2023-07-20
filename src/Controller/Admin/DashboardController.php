@@ -23,6 +23,7 @@ use App\Entity\OsFlag;
 use App\Entity\MediaTypeFlag;
 use App\Entity\FormFactor;
 use App\Entity\Manufacturer;
+use App\Entity\KnownIssue;
 use App\Entity\Creditor;
 use App\Entity\License;
 use App\Entity\User;
@@ -65,7 +66,7 @@ class DashboardController extends AbstractDashboardController
     public function configureMenuItems(): iterable
     {
         yield MenuItem::linkToDashboard('Dashboard', 'home.svg');
-        yield MenuItem::linkToUrl('Legacy page', 'edit.svg', $this->generateUrl('admin_index'));
+        yield MenuItem::linkToUrl('Legacy page', 'edit.svg', $this->generateUrl('admin_index'))->setPermission('ROLE_ADMIN');
         yield MenuItem::section('Main items');
         yield MenuItem::linkToCrud('Motherboards', 'show/motherboard.svg', Motherboard::class)->setDefaultSort(['lastEdited' => 'DESC']);
         yield MenuItem::linkToCrud('Chipsets', 'show/chipset.svg', Chipset::class);
@@ -73,32 +74,31 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::section('Processors');
         yield MenuItem::linkToCrud('CPUs', 'show/cpu.svg', Processor::class);
         yield MenuItem::linkToCrud('NPUs', 'show/cpu.svg', Coprocessor::class);
-        yield MenuItem::linkToCrud('Processor families', 'show/486.svg', ProcessorPlatformType::class);
-        yield MenuItem::linkToCrud('Instruction sets', 'show/486.svg', InstructionSet::class);
-        yield MenuItem::linkToCrud('Speeds', 'show/speed.svg', CpuSpeed::class);
+        yield MenuItem::linkToCrud('Processor families', 'show/486.svg', ProcessorPlatformType::class)->setPermission('ROLE_ADMIN');
+        yield MenuItem::linkToCrud('Instruction sets', 'show/486.svg', InstructionSet::class)->setPermission('ROLE_ADMIN');
+        yield MenuItem::linkToCrud('Speeds', 'show/speed.svg', CpuSpeed::class)->setPermission('ROLE_ADMIN');
         yield MenuItem::section('Chips');
         yield MenuItem::linkToCrud('Chipset parts', 'show/chip.svg', ChipsetPart::class);
         yield MenuItem::linkToCrud('Expansion chips', 'show/chip.svg', ExpansionChip::class);
-        yield MenuItem::linkToCrud('Expansion chip types', 'show/chip.svg', ExpansionChipType::class);
-        yield MenuItem::section('Memory');
-        yield MenuItem::linkToCrud('Cache size', 'show/chip.svg', CacheSize::class);
-        yield MenuItem::linkToCrud('RAM size', 'show/ram_multi.svg', MaxRam::class);
-        yield MenuItem::linkToCrud('RAM type', 'admin/ram.svg', DramType::class);
-        yield MenuItem::section('Connectors');
-        yield MenuItem::linkToCrud('Sockets', 'show/cpu_pins.svg', CpuSocket::class);
-        yield MenuItem::linkToCrud('Expansion slots', 'show/card.svg', ExpansionSlot::class);
-        yield MenuItem::linkToCrud('I/O ports', 'admin/connector.svg', IoPort::class);
-        yield MenuItem::linkToCrud('PSU connectors', 'show/power.svg', PSUConnector::class);
+        yield MenuItem::linkToCrud('Expansion chip types', 'show/chip.svg', ExpansionChipType::class)->setPermission('ROLE_ADMIN');
+        yield MenuItem::section('Memory')->setPermission('ROLE_ADMIN');
+        yield MenuItem::linkToCrud('Cache size', 'show/chip.svg', CacheSize::class)->setPermission('ROLE_ADMIN');
+        yield MenuItem::linkToCrud('RAM size', 'show/ram_multi.svg', MaxRam::class)->setPermission('ROLE_ADMIN');
+        yield MenuItem::linkToCrud('RAM type', 'admin/ram.svg', DramType::class)->setPermission('ROLE_ADMIN');
+        yield MenuItem::section('Connectors')->setPermission('ROLE_ADMIN');
+        yield MenuItem::linkToCrud('Sockets', 'show/cpu_pins.svg', CpuSocket::class)->setPermission('ROLE_ADMIN');
+        yield MenuItem::linkToCrud('Expansion slots', 'show/card.svg', ExpansionSlot::class)->setPermission('ROLE_ADMIN');
+        yield MenuItem::linkToCrud('I/O ports', 'admin/connector.svg', IoPort::class)->setPermission('ROLE_ADMIN');
+        yield MenuItem::linkToCrud('PSU connectors', 'show/power.svg', PSUConnector::class)->setPermission('ROLE_ADMIN');
         yield MenuItem::section('Misc');
-        yield MenuItem::linkToCrud('OS flags', 'os/1998win.svg', OsFlag::class);
-        yield MenuItem::linkToCrud('Media types', 'admin/file.svg', MediaTypeFlag::class);
-        yield MenuItem::linkToCrud('Form factors', 'show/dimension.svg', FormFactor::class);
+        yield MenuItem::linkToCrud('OS flags', 'os/1998win.svg', OsFlag::class)->setPermission('ROLE_ADMIN');
+        yield MenuItem::linkToCrud('Media types', 'admin/file.svg', MediaTypeFlag::class)->setPermission('ROLE_ADMIN');
+        yield MenuItem::linkToCrud('Form factors', 'show/dimension.svg', FormFactor::class)->setPermission('ROLE_ADMIN');
+        yield MenuItem::linkToCrud('Known Issues', 'admin/misc.svg', KnownIssue::class);
         yield MenuItem::linkToCrud('Manufacturers', 'show/motherboard.svg', Manufacturer::class);
         yield MenuItem::linkToCrud('Creditors', 'search/search_image.svg', Creditor::class);
-        yield MenuItem::linkToCrud('Licenses', 'nav/book.svg', License::class);
+        yield MenuItem::linkToCrud('Licenses', 'nav/book.svg', License::class)->setPermission('ROLE_ADMIN');
         yield MenuItem::section('Administrative');
-        yield MenuItem::linkToCrud('Users', 'admin/user.svg', User::class);
-
-
+        yield MenuItem::linkToCrud('Users', 'admin/user.svg', User::class)->setPermission('ROLE_SUPER_ADMIN');
     }
 }

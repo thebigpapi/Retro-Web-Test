@@ -128,4 +128,12 @@ class Creditor
 
         return $this;
     }
+    public function getMoboImg(): int
+    {
+        return count($this->motherboardImages);
+    }
+    public function getChipImg(): int
+    {
+        return count($this->chipImages);
+    }
 }

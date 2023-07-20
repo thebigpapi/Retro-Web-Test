@@ -51,4 +51,8 @@ class Coprocessor extends ProcessingUnit
         $this->getPlatform() ? $name = $this->getPlatform()->getName() : $name = "Unidentified";
         return $this->getManufacturer()->getShortNameIfExist() . " " . $this->name . " (" . $name . ")";
     }
+    public function getSpeedFSB(){
+        return $this->speed->getValueWithUnit() . ($this->fsb != $this->speed ? '/' . $this->fsb->getValueWithUnit() : '');
+
+    }
 }

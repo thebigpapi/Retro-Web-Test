@@ -318,4 +318,8 @@ class Processor extends ProcessingUnit
         }
         return "$fullName";
     }
+    public function getSpeedFSB(){
+        return $this->speed->getValueWithUnit() . ($this->fsb != $this->speed ? '/' . $this->fsb->getValueWithUnit() : '');
+
+    }
 }

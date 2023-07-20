@@ -27,7 +27,10 @@ class ChipAlias
     #[ORM\Column(type: 'string', length: 255)]
     #[Assert\Length(max:255, maxMessage: 'Part number is longer than {{ limit }} characters, try to make it shorter.')]
     private $partNumber;
-
+    public function __toString(): string
+    {
+        return $this->getFullAliasName();
+    }
     public function getId(): ?int
     {
         return $this->id;
