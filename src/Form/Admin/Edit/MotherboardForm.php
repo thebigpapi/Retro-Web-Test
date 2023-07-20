@@ -171,6 +171,7 @@ class MotherboardForm extends AbstractType
                 'entry_type' => MotherboardBiosType::class,
                 'allow_add' => true,
                 'allow_delete' => true,
+                'mapped' => false,
             ])
             ->add('images', CollectionType::class, [
                 'entry_type' => MotherboardImageTypeForm::class,

@@ -20,6 +20,7 @@ class PSUConnectorType extends AbstractType
             'choice_label' => 'name',
             'multiple' => false,
             'expanded' => false,
+            'attr' => ['data-ea-widget' => 'ea-autocomplete'],
         ]);
     }
 

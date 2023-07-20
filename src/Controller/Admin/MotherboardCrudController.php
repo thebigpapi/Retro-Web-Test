@@ -92,7 +92,7 @@ class MotherboardCrudController extends AbstractCrudController
         yield CollectionField::new('motherboardAliases', 'Alternative names')
             ->setEntryType(MotherboardAliasType::class)
             ->onlyOnForms();
-        yield CollectionField::new('redirections', 'Alternative names')
+        yield CollectionField::new('redirections', 'Redirections')
             ->setEntryType(MotherboardIdRedirectionType::class)
             ->onlyOnForms();
         /*yield CollectionField::new('motherboardMaxRams', 'Supported RAM size')
