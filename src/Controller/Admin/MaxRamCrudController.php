@@ -32,6 +32,7 @@ class MaxRamCrudController extends AbstractCrudController
     {
         return $actions
             ->setPermission(Action::DELETE, 'ROLE_ADMIN')
+            ->setPermission(Action::EDIT, 'ROLE_ADMIN')
             ->setPermission(Action::INDEX, 'ROLE_ADMIN');
     }
 }
