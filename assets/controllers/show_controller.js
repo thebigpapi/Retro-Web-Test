@@ -2,6 +2,7 @@ import { Controller } from 'stimulus';
 
 export default class extends Controller {
     connect() {
+        alert("YOO");
         let URL = window.location.href;
         if (URL.indexOf("#downloads") != -1 && URL.indexOf("entity=") == -1)
             this.show_downloads();

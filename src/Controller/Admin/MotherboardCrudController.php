@@ -150,12 +150,12 @@ class MotherboardCrudController extends AbstractCrudController
             ->setEntryType(PSUConnectorType::class)
             ->renderExpanded()
             ->onlyOnForms();
-        /*yield CollectionField::new('motherboardIoPorts', 'I/O ports')
+        yield CollectionField::new('motherboardIoPorts', 'I/O ports')
             ->setEntryType(MotherboardIoPortType::class)
             ->onlyOnForms();
         yield CollectionField::new('motherboardExpansionSlots', 'Expansion slots')
             ->setEntryType(MotherboardExpansionSlotType::class)
-            ->onlyOnForms();*/
+            ->onlyOnForms();
         yield FormField::addPanel('Chips')
             ->onlyOnForms();
         yield AssociationField::new('chipset')

@@ -9,11 +9,14 @@ use Symfony\Component\Validator\Constraints as Assert;
 class MotherboardIoPort
 {
     #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
+    private $id;
+
     #[ORM\ManyToOne(targetEntity: Motherboard::class, inversedBy: 'motherboardIoPorts')]
     #[ORM\JoinColumn(nullable: false)]
     private $motherboard;
 
-    #[ORM\Id]
     #[ORM\ManyToOne(targetEntity: IoPort::class, inversedBy: 'motherboardIoPorts')]
     #[ORM\JoinColumn(nullable: false)]
     private $io_port;
@@ -22,6 +25,11 @@ class MotherboardIoPort
     #[Assert\LessThan(100, message: "Io port count should be below 100")]
     #[ORM\Column(type: 'integer')]
     private $count;
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
 
     public function getMotherboard(): ?Motherboard
     {
