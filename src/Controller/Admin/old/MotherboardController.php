@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller\Admin;
+namespace App\Controller\Admin\old;
 
 use App\Entity\Chipset;
 use App\Entity\CpuSocket;
@@ -157,7 +157,7 @@ class MotherboardController extends AbstractController
             "criterias" => $criterias,*/
             "search" => "",
             "criterias" => [],
-            "controllerList" => "App\\Controller\\Admin\\MotherboardController::listMotherboard",
+            "controllerList" => "App\\Controller\\Admin\\old\\MotherboardController::listMotherboard",
             "entityName" => $request->query->get('entity'),
             "entityDisplayName" => $translator->trans("motherboard"),
             "entityDisplayNamePlural" => $translator->trans("motherboards"),
@@ -171,7 +171,7 @@ class MotherboardController extends AbstractController
         return $this->render('admin/manage/motherboards/manage.html.twig', [
             "search" => "",
             "criterias" => [],
-            "controllerList" => "App\\Controller\\Admin\\MotherboardController::listFormfactor",
+            "controllerList" => "App\\Controller\\Admin\\old\\MotherboardController::listFormfactor",
             "entityName" => $request->query->get('entity'),
             "entityDisplayName" => $translator->trans("form factor"),
             "entityDisplayNamePlural" => $translator->trans("form factors"),

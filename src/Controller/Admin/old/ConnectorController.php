@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller\Admin;
+namespace App\Controller\Admin\old;
 
 use App\Entity\CpuSocket;
 use App\Entity\ExpansionSlot;
@@ -170,7 +170,7 @@ class ConnectorController extends AbstractController
         return $this->render('admin/manage/connectors/manage.html.twig', [
             "search" => "",
             "criterias" => [],
-            "controllerList" => "App\\Controller\\Admin\\ConnectorController::listExpansion",
+            "controllerList" => "App\\Controller\\Admin\\old\\ConnectorController::listExpansion",
             "entityName" => $request->query->get('entity'),
             "entityDisplayName" => $translator->trans("expansion slot"),
             "entityDisplayNamePlural" => $translator->trans("expansion slots"),
@@ -183,7 +183,7 @@ class ConnectorController extends AbstractController
         return $this->render('admin/manage/connectors/manage.html.twig', [
             "search" => "",
             "criterias" => [],
-            "controllerList" => "App\\Controller\\Admin\\ConnectorController::listIo",
+            "controllerList" => "App\\Controller\\Admin\\old\\ConnectorController::listIo",
             "entityName" => $request->query->get('entity'),
             "entityDisplayName" => $translator->trans("i/o connector"),
             "entityDisplayNamePlural" => $translator->trans("i/o connectors"),
@@ -196,7 +196,7 @@ class ConnectorController extends AbstractController
         return $this->render('admin/manage/connectors/manage.html.twig', [
             "search" => "",
             "criterias" => [],
-            "controllerList" => "App\\Controller\\Admin\\ConnectorController::listSocket",
+            "controllerList" => "App\\Controller\\Admin\\old\\ConnectorController::listSocket",
             "entityName" => $request->query->get('entity'),
             "entityDisplayName" => $translator->trans("socket"),
             "entityDisplayNamePlural" => $translator->trans("sockets"),
@@ -209,7 +209,7 @@ class ConnectorController extends AbstractController
         return $this->render('admin/manage/connectors/manage.html.twig', [
             "search" => "",
             "criterias" => [],
-            "controllerList" => "App\\Controller\\Admin\\ConnectorController::listPsuConnector",
+            "controllerList" => "App\\Controller\\Admin\\old\\ConnectorController::listPsuConnector",
             "entityName" => $request->query->get('entity'),
             "entityDisplayName" => $translator->trans("psu connector"),
             "entityDisplayNamePlural" => $translator->trans("psu connectors"),

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller\Admin;
+namespace App\Controller\Admin\old;
 
 use App\Entity\LargeFile;
 use App\Entity\MediaTypeFlag;
@@ -109,7 +109,7 @@ class FileController extends AbstractController
         return $this->render('admin/manage/files/manage.html.twig', [
             "search" => "",
             "criterias" => [],
-            "controllerList" => "App\\Controller\\Admin\\FileController::listLargefile",
+            "controllerList" => "App\\Controller\\Admin\\old\\FileController::listLargefile",
             "entityName" => $request->query->get('entity'),
             "entityDisplayName" => $translator->trans("file"),
             "entityDisplayNamePlural" => $translator->trans("files"),
@@ -122,7 +122,7 @@ class FileController extends AbstractController
         return $this->render('admin/manage/files/manage.html.twig', [
             "search" => "",
             "criterias" => [],
-            "controllerList" => "App\\Controller\\Admin\\FileController::listOsflag",
+            "controllerList" => "App\\Controller\\Admin\\old\\FileController::listOsflag",
             "entityName" => $request->query->get('entity'),
             "entityDisplayName" => $translator->trans("os flag"),
             "entityDisplayNamePlural" => $translator->trans("os flags"),
@@ -135,7 +135,7 @@ class FileController extends AbstractController
         return $this->render('admin/manage/files/manage.html.twig', [
             "search" => "",
             "criterias" => [],
-            "controllerList" => "App\\Controller\\Admin\\FileController::listMediatype",
+            "controllerList" => "App\\Controller\\Admin\\old\\FileController::listMediatype",
             "entityName" => $request->query->get('entity'),
             "entityDisplayName" => $translator->trans("media type"),
             "entityDisplayNamePlural" => $translator->trans("media types"),

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller\Admin;
+namespace App\Controller\Admin\old;
 
 use App\Entity\CacheSize;
 use App\Entity\DramType;
@@ -135,7 +135,7 @@ class MemoryController extends AbstractController
         return $this->render('admin/manage/memories/manage.html.twig', [
             "search" => "",
             "criterias" => [],
-            "controllerList" => "App\\Controller\\Admin\\MemoryController::listRamtype",
+            "controllerList" => "App\\Controller\\Admin\\old\\MemoryController::listRamtype",
             "entityName" => $request->query->get('entity'),
             "entityDisplayName" => $translator->trans("memory type"),
             "entityDisplayNamePlural" => $translator->trans("memory types"),
@@ -148,7 +148,7 @@ class MemoryController extends AbstractController
         return $this->render('admin/manage/memories/manage.html.twig', [
             "search" => "",
             "criterias" => [],
-            "controllerList" => "App\\Controller\\Admin\\MemoryController::listMemorysize",
+            "controllerList" => "App\\Controller\\Admin\\old\\MemoryController::listMemorysize",
             "entityName" => $request->query->get('entity'),
             "entityDisplayName" => $translator->trans("memory size"),
             "entityDisplayNamePlural" => $translator->trans("memory sizes"),
@@ -161,7 +161,7 @@ class MemoryController extends AbstractController
         return $this->render('admin/manage/memories/manage.html.twig', [
             "search" => "",
             "criterias" => [],
-            "controllerList" => "App\\Controller\\Admin\\MemoryController::listCachesize",
+            "controllerList" => "App\\Controller\\Admin\\old\\MemoryController::listCachesize",
             "entityName" => $request->query->get('entity'),
             "entityDisplayName" => $translator->trans("cache size"),
             "entityDisplayNamePlural" => $translator->trans("cache sizes"),

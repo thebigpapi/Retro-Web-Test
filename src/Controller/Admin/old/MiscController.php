@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller\Admin;
+namespace App\Controller\Admin\old;
 
 use App\Entity\CpuSpeed;
 use App\Entity\Creditor;
@@ -218,7 +218,7 @@ class MiscController extends AbstractController
         return $this->render('admin/manage/miscs/manage.html.twig', [
             "search" => $search->createView(),
             "criterias" => $criterias,
-            "controllerList" => "App\\Controller\\Admin\\MiscController::listManufacturer",
+            "controllerList" => "App\\Controller\\Admin\\old\\MiscController::listManufacturer",
             "entityName" => $request->query->get('entity'),
             "entityDisplayName" => $translator->trans("manufacturer"),
             "entityDisplayNamePlural" => $translator->trans("manufacturers"),
@@ -231,7 +231,7 @@ class MiscController extends AbstractController
         return $this->render('admin/manage/miscs/manage.html.twig', [
             "search" => "",
             "criterias" => [],
-            "controllerList" => "App\\Controller\\Admin\\MiscController::listIssue",
+            "controllerList" => "App\\Controller\\Admin\\old\\MiscController::listIssue",
             "entityName" => $request->query->get('entity'),
             "entityDisplayName" => $translator->trans("known issue"),
             "entityDisplayNamePlural" => $translator->trans("known issues"),
@@ -244,7 +244,7 @@ class MiscController extends AbstractController
         return $this->render('admin/manage/miscs/manage.html.twig', [
             "search" => "",
             "criterias" => [],
-            "controllerList" => "App\\Controller\\Admin\\MiscController::listFreq",
+            "controllerList" => "App\\Controller\\Admin\\old\\MiscController::listFreq",
             "entityName" => $request->query->get('entity'),
             "entityDisplayName" => $translator->trans("frequency"),
             "entityDisplayNamePlural" => $translator->trans("frequencies"),
@@ -276,7 +276,7 @@ class MiscController extends AbstractController
         return $this->render('admin/manage/miscs/manage.html.twig', [
             "search" => $search->createView(),
             "criterias" => $criterias,
-            "controllerList" => "App\\Controller\\Admin\\MiscController::listCreditor",
+            "controllerList" => "App\\Controller\\Admin\\old\\MiscController::listCreditor",
             "entityName" => $request->query->get('entity'),
             "entityDisplayName" => $translator->trans("creditor"),
             "entityDisplayNamePlural" => $translator->trans("creditors"),
@@ -288,7 +288,7 @@ class MiscController extends AbstractController
         return $this->render('admin/manage/miscs/manage.html.twig', [
             "search" => "",
             "criterias" => [],
-            "controllerList" => "App\\Controller\\Admin\\MiscController::listLicense",
+            "controllerList" => "App\\Controller\\Admin\\old\\MiscController::listLicense",
             "entityName" => $request->query->get('entity'),
             "entityDisplayName" => $translator->trans("license"),
             "entityDisplayNamePlural" => $translator->trans("licenses"),

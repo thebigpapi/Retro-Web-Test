@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller\Admin;
+namespace App\Controller\Admin\old;
 
 use App\Entity\Chipset;
 use App\Entity\ChipsetPart;
@@ -106,7 +106,7 @@ class ChipsetController extends AbstractController
         return $this->render('admin/manage/chipsets/manage.html.twig', [
             "search" => $search->createView(),
             "criterias" => $criterias,
-            "controllerList" => "App\\Controller\\Admin\\ChipsetController::listChipset",
+            "controllerList" => "App\\Controller\\Admin\\old\\ChipsetController::listChipset",
             "entityName" => $request->query->get('entity'),
             "entityDisplayName" => $translator->trans("chipset"),
             "entityDisplayNamePlural" => $translator->trans("chipsets"),
@@ -138,7 +138,7 @@ class ChipsetController extends AbstractController
         return $this->render('admin/manage/chipsets/manage.html.twig', [
             "search" => $search->createView(),
             "criterias" => $criterias,
-            "controllerList" => "App\\Controller\\Admin\\ChipsetController::listPart",
+            "controllerList" => "App\\Controller\\Admin\\old\\ChipsetController::listPart",
             "entityName" => $request->query->get('entity'),
             "entityDisplayName" => $translator->trans("chipset part"),
             "entityDisplayNamePlural" => $translator->trans("chipset parts"),

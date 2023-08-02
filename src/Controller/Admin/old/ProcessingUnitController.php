@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller\Admin;
+namespace App\Controller\Admin\old;
 
 use App\Entity\Coprocessor;
 use App\Entity\InstructionSet;
@@ -185,7 +185,7 @@ class ProcessingUnitController extends AbstractController
         return $this->render('admin/manage/processingunits/manage.html.twig', [
             "search" => $search->createView(),
             "criterias" => $criterias,
-            "controllerList" => "App\\Controller\\Admin\\ProcessingUnitController::listProcessor",
+            "controllerList" => "App\\Controller\\Admin\\old\\ProcessingUnitController::listProcessor",
             "entityName" => $request->query->get('entity'),
             "entityDisplayName" => $translator->trans("processor"),
             "entityDisplayNamePlural" => $translator->trans("processors"),
@@ -224,7 +224,7 @@ class ProcessingUnitController extends AbstractController
         return $this->render('admin/manage/processingunits/manage.html.twig', [
             "search" => $search->createView(),
             "criterias" => $criterias,
-            "controllerList" => "App\\Controller\\Admin\\ProcessingUnitController::listCoprocessor",
+            "controllerList" => "App\\Controller\\Admin\\old\\ProcessingUnitController::listCoprocessor",
             "entityName" => $request->query->get('entity'),
             "entityDisplayName" => $translator->trans("math coprocessor"),
             "entityDisplayNamePlural" => $translator->trans("math coprocessors"),
@@ -237,7 +237,7 @@ class ProcessingUnitController extends AbstractController
         return $this->render('admin/manage/processingunits/manage.html.twig', [
             "search" => "",
             "criterias" => array(),
-            "controllerList" => "App\\Controller\\Admin\\ProcessingUnitController::listPlatform",
+            "controllerList" => "App\\Controller\\Admin\\old\\ProcessingUnitController::listPlatform",
             "entityName" => $request->query->get('entity'),
             "entityDisplayName" => $translator->trans("platform"),
             "entityDisplayNamePlural" => $translator->trans("platforms"),
@@ -250,7 +250,7 @@ class ProcessingUnitController extends AbstractController
         return $this->render('admin/manage/processingunits/manage.html.twig', [
             "search" => "",
             "criterias" => array(),
-            "controllerList" => "App\\Controller\\Admin\\ProcessingUnitController::listInstructionset",
+            "controllerList" => "App\\Controller\\Admin\\old\\ProcessingUnitController::listInstructionset",
             "entityName" => $request->query->get('entity'),
             "entityDisplayName" => $translator->trans("instruction set"),
             "entityDisplayNamePlural" => $translator->trans("instruction sets"),

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller\Admin;
+namespace App\Controller\Admin\old;
 
 use App\Entity\ExpansionChip;
 use App\Entity\Manufacturer;
@@ -113,7 +113,7 @@ class ExpansionChipsetController extends AbstractController
         return $this->render('admin/manage/expansion_chipsets/manage.html.twig', [
             "search" => $search->createView(),
             "criterias" => $criterias,
-            "controllerList" => "App\\Controller\\Admin\\ExpansionChipsetController::listExpansionChip",
+            "controllerList" => "App\\Controller\\Admin\\old\\ExpansionChipsetController::listExpansionChip",
             "entityName" => $request->query->get('entity'),
             "entityDisplayName" => "expansion chip",
             "entityDisplayNamePlural" => "expansion chips",
@@ -126,7 +126,7 @@ class ExpansionChipsetController extends AbstractController
         return $this->render('admin/manage/expansion_chipsets/manage.html.twig', [
             "search" => "",
             "criterias" => [],
-            "controllerList" => "App\\Controller\\Admin\\ExpansionChipsetController::listExpansionChipType",
+            "controllerList" => "App\\Controller\\Admin\\old\\ExpansionChipsetController::listExpansionChipType",
             "entityName" => $request->query->get('entity'),
             "entityDisplayName" => "expansion chip type",
             "entityDisplayNamePlural" => "expansion chip types",
