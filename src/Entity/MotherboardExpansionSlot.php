@@ -9,11 +9,14 @@ use Symfony\Component\Validator\Constraints as Assert;
 class MotherboardExpansionSlot
 {
     #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
+    private $id;
+
     #[ORM\ManyToOne(targetEntity: Motherboard::class, inversedBy: 'motherboardExpansionSlots')]
     #[ORM\JoinColumn(nullable: false)]
     private $motherboard;
 
-    #[ORM\Id]
     #[ORM\ManyToOne(targetEntity: ExpansionSlot::class, inversedBy: 'motherboardExpansionSlots')]
     #[ORM\JoinColumn(nullable: false)]
     private $expansion_slot;
@@ -22,6 +25,11 @@ class MotherboardExpansionSlot
     #[Assert\LessThan(100, message: "Expansion slot count should be below 100")]
     #[ORM\Column(type: 'integer')]
     private $count;
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
 
     public function getMotherboard(): ?Motherboard
     {
