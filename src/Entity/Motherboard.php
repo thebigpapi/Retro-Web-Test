@@ -240,7 +240,7 @@ class Motherboard
     {
         return $this->motherboardBios;
     }
-    public function addMotherboardBios(MotherboardBios $motherboardBios): self
+    public function addMotherboardBio(MotherboardBios $motherboardBios): self
     {
         if (!$this->motherboardBios->contains($motherboardBios)) {
             $this->motherboardBios[] = $motherboardBios;
@@ -249,7 +249,7 @@ class Motherboard
 
         return $this;
     }
-    public function removeMotherboardBios(MotherboardBios $motherboardBios): self
+    public function removeMotherboardBio(MotherboardBios $motherboardBios): self
     {
         if ($this->motherboardBios->contains($motherboardBios)) {
             $this->motherboardBios->removeElement($motherboardBios);

@@ -39,6 +39,8 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\SlugField;
+
 class MotherboardCrudController extends AbstractCrudController
 {
     public static function getEntityFqcn(): string
@@ -79,8 +81,8 @@ class MotherboardCrudController extends AbstractCrudController
             ->onlyOnDetail();
         yield ArrayField::new('dramType', 'RAM type')
             ->onlyOnDetail();
-        /*yield ArrayField::new('motherboardMaxRams', 'RAM size')
-            ->onlyOnDetail();*/
+        yield ArrayField::new('motherboardMaxRams', 'RAM size')
+            ->onlyOnDetail();
         yield ArrayField::new('psuConnectors', 'PSU connectors')
             ->onlyOnDetail();
         yield TextField::new('formFactor','Form Factor')
@@ -89,8 +91,8 @@ class MotherboardCrudController extends AbstractCrudController
             ->onlyOnDetail();
         yield ArrayField::new('expansionChips', 'Expansion chips')
             ->onlyOnDetail();
-        /*yield ArrayField::new('knownIssues', 'Known issues')
-            ->onlyOnDetail();*/
+        yield ArrayField::new('knownIssues', 'Known issues')
+            ->onlyOnDetail();
 
         // show and indes
         yield DateField::new('lastEdited')
@@ -103,7 +105,8 @@ class MotherboardCrudController extends AbstractCrudController
         yield TextField::new('name')
         ->setColumns(4)
             ->onlyOnForms();
-        yield TextField::new('slug')
+        yield SlugField::new('slug')
+        ->setTargetFieldName(['manufacturer', 'name'])
         ->setColumns(4)
             ->onlyOnForms();
         yield CollectionField::new('motherboardAliases', 'Alternative names')
@@ -133,28 +136,37 @@ class MotherboardCrudController extends AbstractCrudController
             ->setIcon('database')
             ->onlyOnForms();
         yield FormField::addPanel('Memory')->onlyOnForms();
-        /*yield CollectionField::new('motherboardMaxRams', 'Supported RAM size')
+        yield CollectionField::new('motherboardMaxRams', 'Supported RAM size')
             ->setEntryType(MotherboardMaxRamType::class)
-            ->onlyOnForms();  broken*/
+            ->setColumns(4)
+            ->renderExpanded()
+            ->onlyOnForms();
         yield CollectionField::new('dramType', 'Supported RAM types')
             ->setEntryType(DramTypeType::class)
+            ->setColumns(4)
             ->renderExpanded()
             ->onlyOnForms();
         yield CollectionField::new('cacheSize', 'Cache')
             ->setEntryType(CacheSizeType::class)
+            ->setColumns(4)
             ->renderExpanded()
             ->onlyOnForms();
         yield FormField::addPanel('Connections')
             ->onlyOnForms();
-        yield CollectionField::new('psuConnectors', 'PSU connectors')
-            ->setEntryType(PSUConnectorType::class)
-            ->renderExpanded()
-            ->onlyOnForms();
         yield CollectionField::new('motherboardIoPorts', 'I/O ports')
             ->setEntryType(MotherboardIoPortType::class)
+            ->setColumns(4)
+            ->renderExpanded()
             ->onlyOnForms();
         yield CollectionField::new('motherboardExpansionSlots', 'Expansion slots')
             ->setEntryType(MotherboardExpansionSlotType::class)
+            ->setColumns(4)
+            ->renderExpanded()
+            ->onlyOnForms();
+        yield CollectionField::new('psuConnectors', 'PSU connectors')
+            ->setEntryType(PSUConnectorType::class)
+            ->setColumns(4)
+            ->renderExpanded()
             ->onlyOnForms();
         yield FormField::addPanel('Chips')
             ->onlyOnForms();
@@ -190,10 +202,10 @@ class MotherboardCrudController extends AbstractCrudController
             ->setEntryType(LargeFileMotherboardType::class)
             ->renderExpanded()
             ->onlyOnForms();
-        /*yield CollectionField::new('motherboardBios', 'BIOS images')
+        yield CollectionField::new('motherboardBios', 'BIOS images')
             ->setEntryType(MotherboardBiosType::class)
             ->renderExpanded()
-            ->onlyOnForms();*/
+            ->onlyOnForms();
         yield CollectionField::new('manuals', 'Documentation')
             ->setEntryType(ManualType::class)
             ->renderExpanded()
