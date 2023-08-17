@@ -713,6 +713,10 @@
         <source>Reset</source>
         <target>Reset</target>
       </trans-unit>
+      <trans-unit id="6bj7ung">
+        <source>View</source>
+        <target>View</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

@@ -72,7 +72,8 @@ class DashboardController extends AbstractDashboardController
     public function configureDashboard(): Dashboard
     {
         return Dashboard::new()
-            ->setTitle('The Retro Web');
+            ->setTitle('The Retro Web')
+            ->setFaviconPath('build/icons/favicon.ico');
     }
 
     /**
