@@ -47,7 +47,7 @@ $shadow-dark: #303030;
 $btn-darkbg-color-hover:#5f5f5f;
 $link-hover-color: #7ce5ff;
 
-html {
+html.html {
     height: 100%;
     font-family: $standard-font;
     color: $body-frg-light;
@@ -59,7 +59,7 @@ html {
     }
 }
 
-body {
+body.body {
     font-family: $standard-font;
     color: $body-frg-light;
     background: $body-bkg-light;

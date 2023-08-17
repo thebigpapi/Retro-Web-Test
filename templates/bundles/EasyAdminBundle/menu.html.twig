@@ -43,7 +43,7 @@
     {% else %}
         <a href="{{ item.linkUrl }}" class="menu-item-contents {{ item.hasSubItems ? 'submenu-toggle' }} {{ item.cssClass }}" target="{{ item.linkTarget }}" rel="{{ item.linkRel }}" referrerpolicy="origin-when-cross-origin">
             {% if item.icon is not empty %}<img src="{{ absolute_url(asset('build/icons/' ~ item.icon)) }}" alt="" width="22" height="22" style="vertical-align: middle;">{% endif %}
-            <span style="padding: 1px 3px 1px;" class="menu-item-label position-relative">
+            <span style="padding: 1px 3px 1px;" class="menu-item-label position-relative navbar-icon-trw-ea">
                 {{ item.label|trans|raw }}
             </span>
             {% if item.hasSubItems %}<i class="fa fa-fw fa-angle-right submenu-toggle-icon"></i>{% endif %}

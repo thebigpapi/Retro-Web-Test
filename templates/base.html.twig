@@ -1,6 +1,6 @@
 {# templates/base.html.twig #}
 <!DOCTYPE HTML>
-<html dir="auto" lang="en">
+<html dir="auto" lang="en" class="html">
 	<head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1"> {% block metatags %}{% endblock %}
@@ -35,8 +35,8 @@
 			{{ encore_entry_script_tags('app') }}
 		{% endblock %}
 	</head>
-	<body class="content">
-		<header>
+	<body class="content body">
+		<header class="trw-header">
 			<div>
 				<nav class="navbar-logo">
 					<a href="{{ path('app_homepage') }}" title="Go to homepage">

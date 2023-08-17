@@ -6,7 +6,7 @@
                 {% block header_logo %}
                     <a style="display:flex;align-items:center;" class="logo" title="{{ ea.dashboardTitle|striptags }}" href="{{ path('app_homepage') }}">
                         <img src="{{ absolute_url(asset('build/images/icon.png')) }}" width="40" height="40" alt="logo">
-                        <span style="padding:5px;" class="logo-custom">{{ ea.dashboardTitle|raw }}</span>
+                        <span style="padding:5px;font-weight:bold;" class="navbar-icon-trw-ea logo-custom">{{ ea.dashboardTitle|raw }}</span>
                     </a>
                 {% endblock header_logo %}
             </div>

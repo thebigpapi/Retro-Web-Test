@@ -29,6 +29,7 @@ Encore
      * and one CSS file (e.g. app.css) if your JavaScript imports CSS.
      */
     .addEntry('app', './assets/app.js')
+    .addEntry('app_ea', './assets/app_ea.js')
     .addEntry('admin_app', './assets/admin_app.js')
     .addEntry('glightbox', './assets/glightbox.js')
     //.addEntry('motherboards/search', './assets/search.js')

@@ -1042,6 +1042,27 @@ class MotherboardRepository extends ServiceEntityRepository
     }
 
     /**
+     * @return Motherboard[] Returns an array of sockets and count of board for each socket
+     */
+    public function getSocketCount(): array
+    {
+        $entityManager = $this->getEntityManager();
+        $rsm = new ResultSetMapping();
+        $rsm->addScalarResult('name', 'name');
+        $rsm->addScalarResult('cnt', 'cnt');
+
+        $result = $entityManager->createNativeQuery(
+            "SELECT c.id, coalesce(c.name, c.type) AS name, s.cnt
+            FROM cpu_socket c INNER JOIN (SELECT cpu_socket_id, count(cpu_socket_id) AS cnt FROM motherboard_cpu_socket mc GROUP BY cpu_socket_id) s ON c.id = s.cpu_socket_id
+            ORDER BY cnt DESC",$rsm)->getResult();
+        $finalArray = array();
+        foreach ($result as $subArray) {
+            $finalArray[$subArray['name']] = $subArray['cnt'];
+        };
+        return $finalArray;
+    }
+
+    /**
      * @return array Returns an array of motherboard ids
      */
     public function findAllIds()

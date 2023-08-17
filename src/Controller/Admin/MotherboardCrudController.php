@@ -20,6 +20,8 @@ use App\Form\Type\MiscFileType;
 use App\Form\Type\CpuSocketType;
 use App\Form\Type\ProcessorPlatformTypeForm;
 use App\Form\Type\ProcessorSpeedType;
+use App\Form\Type\ProcessorType;
+use App\Form\Type\CoprocessorType;
 use App\Form\Type\MotherboardImageTypeForm;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
@@ -30,16 +32,14 @@ use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CodeEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ArrayField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\SlugField;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class MotherboardCrudController extends AbstractCrudController
 {
@@ -181,14 +181,25 @@ class MotherboardCrudController extends AbstractCrudController
             ->onlyOnForms();
         yield CollectionField::new('cpuSockets', 'CPU sockets')
             ->setEntryType(CpuSocketType::class)
+            ->setColumns(4)
             ->renderExpanded()
             ->onlyOnForms();
         yield CollectionField::new('processorPlatformTypes', 'CPU families')
             ->setEntryType(ProcessorPlatformTypeForm::class)
+            ->setColumns(4)
             ->renderExpanded()
             ->onlyOnForms();
         yield CollectionField::new('cpuSpeed', 'FSB speed')
             ->setEntryType(ProcessorSpeedType::class)
+            ->setColumns(4)
+            ->renderExpanded()
+            ->onlyOnForms();
+        yield CollectionField::new('processors', 'CPUs')
+            ->setEntryType(ProcessorType::class)
+            ->renderExpanded()
+            ->onlyOnForms();
+        yield CollectionField::new('coprocessors', 'NPUs')
+            ->setEntryType(CoprocessorType::class)
             ->renderExpanded()
             ->onlyOnForms();
         yield FormField::addTab('Attachments')
@@ -227,9 +238,16 @@ class MotherboardCrudController extends AbstractCrudController
                 ->set('duplicate', '1')
                 ->generateUrl()
         );
+        $savelist = Action::new('saveshow', 'Save and view board')
+        ->setIcon('fa fa-save')
+        ->linkToCrudAction(Action::SAVE_AND_RETURN);
+        $view = Action::new('view', 'View')
+            ->linkToCrudAction('viewBoard');
         return $actions
             ->add(Crud::PAGE_EDIT, $duplicate)
-            ->add(Crud::PAGE_INDEX, Action::DETAIL)
+            ->add(Crud::PAGE_EDIT, $savelist)
+            ->add(Crud::PAGE_INDEX, $view)
+            ->reorder(Crud::PAGE_EDIT, ['duplicate', Action::SAVE_AND_CONTINUE, 'saveshow', Action::SAVE_AND_RETURN])
             ->setPermission(Action::DELETE, 'ROLE_ADMIN');
     }
     public function edit(AdminContext $context)
@@ -244,4 +262,26 @@ class MotherboardCrudController extends AbstractCrudController
 
         return parent::edit($context);
     }
+
+    public function viewBoard(AdminContext $context)
+    {
+        $bid = $context->getEntity()->getInstance()->getId();
+        return $this->redirectToRoute('motherboard_show', array('id'=>$bid));
+    }
+    protected function getRedirectResponseAfterSave(AdminContext $context, string $action): RedirectResponse
+{
+    $submitButtonName = $context->getRequest()->request->all()['ea']['newForm']['btn'];
+
+    if ('saveshow' === $submitButtonName) {
+        $url = $this->container->get(AdminUrlGenerator::class)
+            ->setAction(Action::DETAIL)
+            ->setEntityId($context->getEntity()->getPrimaryKeyValue())
+            ->generateUrl();
+
+        return $this->redirect($url);
+    }
+
+    return parent::getRedirectResponseAfterSave($context, $action);
+}
+
 }

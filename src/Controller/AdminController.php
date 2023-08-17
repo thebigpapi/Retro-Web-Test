@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Trace;
 use App\Entity\User;
 use App\Form\ManageUser;
+use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -20,24 +21,12 @@ use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use App\BranchLoader\GitLoader;
 
-class AdminController extends AbstractController
+class AdminController extends AbstractDashboardController
 {
     #[Route('/admin', name:'admin_index')]
     public function index(): Response
     {
         return $this->render('admin/index.html.twig');
-    }
-
-    #[Route('/admin/stats', name:'admin_stats')]
-    public function stats(MotherboardRepository $motherboardRepository, GitLoader $git): Response
-    {
-        $manufBoardCount = $motherboardRepository->getManufCount();
-        return $this->render('admin/stats.html.twig', [
-            'controller_name' => 'MainController',
-            'manufBoardCount' => $manufBoardCount,
-            'moboCount' => $motherboardRepository->getCount(),
-            'collector' => $git,
-        ]);
     }
 
     #[Route('/logs', name:'admin_logs')]
@@ -132,101 +121,25 @@ class AdminController extends AbstractController
         }
     }
 
-    #[Route('/admin/guidelines', name:'admin_guidelines')]
-    public function guidelines(): Response
-    {
-        return $this->render('admin/guidelines.html.twig');
-    }
-
-    #[Route('/admin/users', name:'admin_user_settings')]
+    #[Route('/dashboard/settings', name:'admin_user_settings')]
     public function userIndex(): Response
     {
         return $this->render('admin/users/index.html.twig');
     }
-
-    #[Route('/admin/users/manage', name:'admin_user_manage')]
-    public function manageUsers(Request $request, UserPasswordHasherInterface $passwordHasher, EntityManagerInterface $entityManager, UserRepository $userRepository): Response
+    #[Route('/dashboard/settings/resetpass/{id}', name: 'admin_reset_pass', requirements: ['id' => '\d+'])]
+    public function resetPasswd(int $id, Request $request, UserPasswordHasherInterface $passwordHasher, EntityManagerInterface $entityManager, UserRepository $userRepository): Response
     {
-        $userForm = $this->createForm(ManageUser::class);
-        $message = "";
+        $user = $userRepository->find($id);
+        $password = $this->randomStr(16);
+        $hashedPassword = $passwordHasher->hashPassword($user, $password);
+        $user->setPassword($hashedPassword);
 
-        $userForm->handleRequest($request);
-        if ($userForm->isSubmitted() && $userForm->isValid()) {
-            /**
-             * @var ClickableInterface
-             */
-            $resetButton = $userForm->get('reset');
-            /**
-             * @var ClickableInterface
-             */
-            $deleteButton = $userForm->get('delete');
-            /**
-             * @var ClickableInterface
-             */
-            $addButton = $userForm->get('add');
-            
-            if ($resetButton->isClicked()) {
-                
-                $user = $userRepository->find($userForm->getData()['users']->getId());
+        $entityManager->persist($user);
+        $entityManager->flush();
 
-                $password = $this->randomStr(16);
-                $hashedPassword = $passwordHasher->hashPassword($user, $password);
-                $user->setPassword($hashedPassword);
-                
-                $entityManager->persist($user);
-                $entityManager->flush();
-
-                return $this->render('admin/users/user_created.html.twig', [
-                    'username' => $user->getUsername(),
-                    'password' => $password,
-                ]);
-            }
-            if ($deleteButton->isClicked()) {
-                $user = $userRepository->find($userForm->getData()['users']->getId());
-
-                $message = "Successfully removed user " . $user->getUsername();
-                $entityManager->remove($user);
-                $entityManager->flush();
-            }
-            if ($addButton->isClicked()) {
-                return $this->redirect('./manage/add');
-            }
-        }
-        return $this->render('admin/users/manage.html.twig', [
-            'userForm' => $userForm->createView(),
-            'message' => $message,
-        ]);
-    }
-
-    #[Route('/admin/users/manage/add', name:'admin_user_add')]
-    public function addUser(Request $request, UserPasswordHasherInterface $passwordHasher, EntityManagerInterface $entityManager): Response
-    {
-        $form = $this->createFormBuilder()
-            ->add('name', TextType::class)
-            ->add('add', SubmitType::class)
-            ->getForm();
-
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $data = $form->getData();
-
-            $user = new User();
-            $user->setRoles(array('ROLE_ADMIN'));
-            $user->setUsername($data['name']);
-            $password = $this->randomStr(16);
-            $hashedPassword = $passwordHasher->hashPassword($user, $password);
-            $user->setPassword($hashedPassword);
-
-            $entityManager->persist($user);
-            $entityManager->flush();
-
-            return $this->render('admin/users/user_created.html.twig', [
-                'username' => $user->getUsername(),
-                'password' => $password,
-            ]);
-        }
-        return $this->render('admin/users/add.html.twig', [
-            'form' => $form->createView(),
+        return $this->render('admin/users/password_reset.html.twig', [
+            'username' => $user->getUsername(),
+            'password' => $password,
         ]);
     }
 
@@ -251,7 +164,7 @@ class AdminController extends AbstractController
         return $str;
     }
 
-    #[Route('/admin/users/password', name:'admin_user_changepwd')]
+    #[Route('/dashboard/settings/password', name:'admin_user_changepwd')]
     public function changeUserPassword(Request $request, UserPasswordHasherInterface $passwordHasher, EntityManagerInterface $entityManager, UserRepository $userRepository): Response
     {
         $form = $this->createFormBuilder()
@@ -296,7 +209,7 @@ class AdminController extends AbstractController
         ]);
     }
 
-    #[Route('/admin/users/username', name:'admin_user_changename')]
+    #[Route('/dashboard/settings/username', name:'admin_user_changename')]
     public function changeUserName(Request $request, EntityManagerInterface $entityManager, UserRepository $userRepository): Response
     {
         $form = $this->createFormBuilder()

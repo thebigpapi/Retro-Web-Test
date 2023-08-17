@@ -1,5 +1,8 @@
 /* Main navbar */
 header {
+	font-family: $header-font;
+}
+header.trw-header {
 	background-color: $head-bkg-light;
 	color: $head-frg-light;
 	font-size: 14pt;
@@ -75,6 +78,15 @@ header {
 			}
 		}
 	}
+}
+nav.navbar{padding:0!important;}
+span.navbar-icon-trw-ea:hover{
+	color: $active-link-light;
+				transition: ease-in-out $anim-duration color;
+
+				@media (prefers-color-scheme: dark) {
+					color: $active-link-dark;
+				}
 }
 /* Maintenance banner */
 div.maintenance-notification-bar{
