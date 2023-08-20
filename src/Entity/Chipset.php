@@ -2,13 +2,14 @@
 
 namespace App\Entity;
 
+use App\Repository\ChipsetRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[ORM\Entity(repositoryClass: 'App\Repository\ChipsetRepository')]
+#[ORM\Entity(repositoryClass: ChipsetRepository::class)]
 class Chipset
 {
     #[ORM\Id]
@@ -66,6 +67,9 @@ class Chipset
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $lastEdited = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $cachedName = null;
+
     public function __construct()
     {
         $this->motherboards = new ArrayCollection();
@@ -78,7 +82,7 @@ class Chipset
     }
     public function __toString(): string
     {
-        return $this->getFullNameParts();
+        return $this->getCachedName();
     }
     public function getId(): ?int
     {
@@ -418,5 +422,17 @@ class Chipset
         $strBuilder .= ".";
 
         return $strBuilder;
+    }
+
+    public function getCachedName(): ?string
+    {
+        return $this->cachedName;
+    }
+
+    public function updateCachedName(): self
+    {
+        $this->cachedName = $this->getFullNameParts();
+
+        return $this;
     }
 }
