@@ -43,7 +43,7 @@ class ChipsetNameCacheSubscriber implements EventSubscriberInterface
         }
     }
 
-    private function chipsetChanged(Chipset $chispet) {
-        $chispet->updateCachedName();
+    private function chipsetChanged(Chipset $chipset) {
+        $chipset->updateCachedName();
     }
 }
