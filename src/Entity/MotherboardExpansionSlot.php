@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use App\Repository\MotherboardExpansionSlotRepository;
 
 #[ORM\Entity(repositoryClass: MotherboardExpansionSlotRepository::class)]
 class MotherboardExpansionSlot
@@ -26,6 +27,10 @@ class MotherboardExpansionSlot
     #[ORM\Column(type: 'integer')]
     private $count;
 
+    public function __toString(): string
+    {
+        return $this->getExpansionSlot()->getName();
+    }
     public function getId(): ?int
     {
         return $this->id;

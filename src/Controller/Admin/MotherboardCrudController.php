@@ -23,11 +23,13 @@ use App\Form\Type\ProcessorSpeedType;
 use App\Form\Type\ProcessorType;
 use App\Form\Type\CoprocessorType;
 use App\Form\Type\MotherboardImageTypeForm;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
+use EasyCorp\Bundle\EasyAdminBundle\Filter\BooleanFilter;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
@@ -47,6 +49,29 @@ class MotherboardCrudController extends AbstractCrudController
     {
         return Motherboard::class;
     }
+    public function configureFilters(Filters $filters): Filters
+    {
+        return parent::configureFilters($filters)
+            ->add('manufacturer')
+            ->add('name')
+            ->add('motherboardAliases')
+            ->add('chipset')
+            ->add('expansionChips')
+            //->add('motherboardMaxRams')
+            ->add('cacheSize')
+            ->add('dramType')
+            //->add('motherboardExpansionSlots')
+            //->add('motherboardIoPorts')
+            ->add('processorPlatformTypes')
+            ->add('cpuSockets')
+            ->add('cpuSpeed')
+            ->add('formFactor')
+            ->add('knownIssues')
+            ->add('psuConnectors')
+            ->add('dimensions')
+            //->add(BooleanFilter::new('images'))
+            ->add('lastEdited');
+    }
     public function configureFields(string $pageName): iterable
     {
         yield FormField::addTab('Basic Data')
@@ -65,34 +90,6 @@ class MotherboardCrudController extends AbstractCrudController
         yield BooleanField::new('getMotherboardBios','BIOS?')
             ->renderAsSwitch(false)
             ->onlyOnIndex();
-
-        // show items
-        yield ArrayField::new('motherboardAliases', 'Alternative names')
-            ->onlyOnDetail();
-        yield TextField::new('chipset', 'Chipset')
-            ->onlyOnDetail();
-        yield ArrayField::new('cpuSockets', 'CPU socket')
-            ->onlyOnDetail();
-        yield ArrayField::new('processorPlatformTypes', 'CPU family')
-            ->onlyOnDetail();
-        yield ArrayField::new('cpuSpeed', 'FSB speed')
-            ->onlyOnDetail();
-        yield ArrayField::new('cacheSize', 'Cache')
-            ->onlyOnDetail();
-        yield ArrayField::new('dramType', 'RAM type')
-            ->onlyOnDetail();
-        yield ArrayField::new('motherboardMaxRams', 'RAM size')
-            ->onlyOnDetail();
-        yield ArrayField::new('psuConnectors', 'PSU connectors')
-            ->onlyOnDetail();
-        yield TextField::new('formFactor','Form Factor')
-            ->onlyOnDetail();
-        yield ArrayField::new('getChipsetParts', 'Chipset parts')
-            ->onlyOnDetail();
-        yield ArrayField::new('expansionChips', 'Expansion chips')
-            ->onlyOnDetail();
-        yield ArrayField::new('knownIssues', 'Known issues')
-            ->onlyOnDetail();
 
         // show and indes
         yield DateField::new('lastEdited')
