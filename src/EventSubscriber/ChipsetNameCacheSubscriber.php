@@ -4,6 +4,7 @@ namespace App\EventSubscriber;
 
 use App\Entity\Chipset;
 use App\Entity\ChipsetPart;
+use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Event\AbstractLifecycleEvent;
 use EasyCorp\Bundle\EasyAdminBundle\Event\BeforeEntityDeletedEvent;
 use EasyCorp\Bundle\EasyAdminBundle\Event\BeforeEntityPersistedEvent;
@@ -12,16 +13,20 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class ChipsetNameCacheSubscriber implements EventSubscriberInterface
 {
+    public function __construct(private EntityManagerInterface $entityManager)
+    {
+    }
+
     public static function getSubscribedEvents()
     {
         return [
-            BeforeEntityPersistedEvent::class => ['setChipsetCacheNameSlug'],
-            BeforeEntityUpdatedEvent::class => ['setChipsetCacheNameSlug'],
-            BeforeEntityDeletedEvent::class => ['setChipsetCacheNameSlug'],
+            BeforeEntityPersistedEvent::class => ['setChipsetCachedName'],
+            BeforeEntityUpdatedEvent::class => ['setChipsetCachedName'],
+            BeforeEntityDeletedEvent::class => ['setChipsetCachedName'],
         ];
     }
 
-    public function setChipsetCacheNameSlug(AbstractLifecycleEvent $event)
+    public function setChipsetCachedName(AbstractLifecycleEvent $event)
     {
         $entity = $event->getEntityInstance();
 
@@ -33,8 +38,8 @@ class ChipsetNameCacheSubscriber implements EventSubscriberInterface
     }
 
     private function chipsetPartChanged(ChipsetPart $chipsetPart) {
-        foreach($chipsetPart->getChipsets() as $chispet) {
-            $chispet->updateCachedName();
+        foreach($chipsetPart->getChipsets() as $chipset) {
+            $this->entityManager->persist($chipset);
         }
     }
 
