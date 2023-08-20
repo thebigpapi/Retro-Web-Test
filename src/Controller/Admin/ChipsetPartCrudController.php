@@ -50,15 +50,19 @@ class ChipsetPartCrudController extends AbstractCrudController
 
         yield CollectionField::new('chipAliases', 'Chip aliases')
             ->setEntryType(ChipAliasType::class)
+            ->renderExpanded()
             ->onlyOnForms();
         yield CollectionField::new('pciDevs', 'PCI DEV')
             ->setEntryType(PciDeviceIdType::class)
+            ->renderExpanded()
             ->onlyOnForms();
         yield CollectionField::new('documentations', 'Documentation')
             ->setEntryType(ChipDocumentationType::class)
+            ->renderExpanded()
             ->onlyOnForms();
         yield CollectionField::new('images', 'Images')
             ->setEntryType(ChipImageType::class)
+            ->renderExpanded()
             ->onlyOnForms();
         yield TextareaField::new('description')->onlyOnForms();
     }

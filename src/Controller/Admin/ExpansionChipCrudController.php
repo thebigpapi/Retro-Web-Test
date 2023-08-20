@@ -55,20 +55,25 @@ class ExpansionChipCrudController extends AbstractCrudController
 
         yield CollectionField::new('chipAliases', 'Chip aliases')
             ->setEntryType(ChipAliasType::class)
+            ->renderExpanded()
             ->onlyOnForms();
         yield AssociationField::new('type','Type')
             ->onlyOnForms();
         yield CollectionField::new('pciDevs', 'PCI DEV')
             ->setEntryType(PciDeviceIdType::class)
+            ->renderExpanded()
             ->onlyOnForms();
         yield CollectionField::new('drivers', 'Drivers')
             ->setEntryType(LargeFileExpansionChipType::class)
+            ->renderExpanded()
             ->onlyOnForms();
         yield CollectionField::new('documentations', 'Documentation')
             ->setEntryType(ChipDocumentationType::class)
+            ->renderExpanded()
             ->onlyOnForms();
         yield CollectionField::new('images', 'Images')
             ->setEntryType(ChipImageType::class)
+            ->renderExpanded()
             ->onlyOnForms();
         yield CodeEditorField::new('description')
             ->setLanguage('markdown')

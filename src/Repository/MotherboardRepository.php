@@ -1063,6 +1063,86 @@ class MotherboardRepository extends ServiceEntityRepository
     }
 
     /**
+     * @return Motherboard[] Returns an array of sockets and count of board for each socket
+     */
+    public function getChipsetCount(): array
+    {
+        $entityManager = $this->getEntityManager();
+        $rsm = new ResultSetMapping();
+        $rsm->addScalarResult('manuf', 'manuf');
+        $rsm->addScalarResult('name', 'name');
+        $rsm->addScalarResult('part_no', 'part_no');
+        $rsm->addScalarResult('cnt', 'cnt');
+
+        $result = $entityManager->createNativeQuery(
+            "SELECT c.id, coalesce(man.short_name, man.name) AS manuf, c.name, c.part_no, ch.cnt FROM chipset c
+            LEFT JOIN manufacturer man ON man.id = c.manufacturer_id
+            INNER JOIN (SELECT chipset_id, count(chipset_id) AS cnt FROM motherboard GROUP BY chipset_id) AS ch ON ch.chipset_id = c.id
+            ORDER BY ch.cnt DESC",$rsm)->getResult();
+        $finalArray = array();
+        //dd($result);
+        foreach ($result as $subArray) {
+            $k = $subArray['manuf'] . ' ' . $subArray['part_no'];
+            if($subArray['name'] != "")
+                $k .= ' (' . $subArray['name'] . ')';
+            if(array_key_exists($k, $finalArray))
+                $finalArray[$k] += $subArray['cnt'];
+            else
+                $finalArray[$k] = $subArray['cnt'];
+        };
+        arsort($finalArray);
+        return $finalArray;
+    }
+
+    /**
+     * @return Motherboard[] Returns an array of sockets and count of board for each socket
+     */
+    public function getExpChipCount(): array
+    {
+        $entityManager = $this->getEntityManager();
+        $rsm = new ResultSetMapping();
+        $rsm->addScalarResult('manuf', 'manuf');
+        $rsm->addScalarResult('name', 'name');
+        $rsm->addScalarResult('part_number', 'part_number');
+        $rsm->addScalarResult('cnt', 'cnt');
+
+        $result = $entityManager->createNativeQuery(
+            "SELECT c.id, coalesce(man.short_name, man.name) as manuf, c.name, c.part_number, ch.cnt FROM chip c
+            LEFT JOIN manufacturer man ON man.id = c.manufacturer_id
+            INNER JOIN (SELECT expansion_chip_id, count(expansion_chip_id) AS cnt FROM motherboard_expansion_chip GROUP BY expansion_chip_id) AS ch ON ch.expansion_chip_id = c.id
+            ORDER BY ch.cnt DESC",$rsm)->getResult();
+        $finalArray = array();
+        foreach ($result as $subArray) {
+            $k = $subArray['manuf'] . ' ' . $subArray['part_number'];
+            if($subArray['name'] != "")
+                $k .= ' (' . $subArray['name'] . ')';
+            $finalArray[$k] = $subArray['cnt'];
+        };
+        return $finalArray;
+    }
+
+    /**
+     * @return Motherboard[] Returns an array of sockets and count of board for each socket
+     */
+    public function getFormFactorCount(): array
+    {
+        $entityManager = $this->getEntityManager();
+        $rsm = new ResultSetMapping();
+        $rsm->addScalarResult('name', 'name');
+        $rsm->addScalarResult('cnt', 'cnt');
+
+        $result = $entityManager->createNativeQuery(
+            "SELECT f.id, f.name, ch.cnt
+            FROM form_factor f INNER JOIN (SELECT form_factor_id, count(form_factor_id) AS cnt FROM motherboard GROUP BY form_factor_id) ch ON ch.form_factor_id = f.id
+            ORDER BY ch.cnt DESC",$rsm)->getResult();
+        $finalArray = array();
+        foreach ($result as $subArray) {
+            $finalArray[$subArray['name']] = $subArray['cnt'];
+        };
+        return $finalArray;
+    }
+
+    /**
      * @return array Returns an array of motherboard ids
      */
     public function findAllIds()

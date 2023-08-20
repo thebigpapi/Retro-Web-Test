@@ -6,6 +6,7 @@ use App\Entity\Chipset;
 use App\Entity\Manufacturer;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\ORM\Query\ResultSetMapping;
 use Generator;
 
 /**
@@ -124,5 +125,19 @@ class ChipsetRepository extends ServiceEntityRepository
             ->select('count(m.id)')
             ->getQuery()
             ->getSingleScalarResult();
+    }
+    /**
+     * @return Chipset[] Returns an array of sockets and count of board for each socket
+     */
+    public function getChipsetDocCount(): array
+    {
+        $entityManager = $this->getEntityManager();
+        $rsm = new ResultSetMapping();
+        $rsm->addScalarResult('count', 'count');
+
+        $result = $entityManager->createNativeQuery(
+            "SELECT count(DISTINCT chipset_id) FROM chipset_chipset_part WHERE chipset_part_id IN
+            (SELECT id FROM chip WHERE id NOT IN (SELECT chip_id FROM chip_documentation) AND dtype='chipsetpart')",$rsm)->getResult();
+        return $result;
     }
 }

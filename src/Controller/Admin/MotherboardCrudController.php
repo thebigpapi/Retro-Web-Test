@@ -111,10 +111,12 @@ class MotherboardCrudController extends AbstractCrudController
             ->onlyOnForms();
         yield CollectionField::new('motherboardAliases', 'Alternative names')
             ->setEntryType(MotherboardAliasType::class)
+            ->renderExpanded()
             ->setColumns(6)
             ->onlyOnForms();
         yield CollectionField::new('redirections', 'Redirections')
             ->setEntryType(MotherboardIdRedirectionType::class)
+            ->renderExpanded()
             ->setColumns(6)
             ->onlyOnForms();
         yield FormField::addPanel('Misc')
@@ -206,6 +208,7 @@ class MotherboardCrudController extends AbstractCrudController
             ->setIcon('download')
             ->onlyOnForms();
         yield CollectionField::new('images', 'Images')
+            //->useEntryCrudForm(MotherboardImageCrudController::class)
             ->setEntryType(MotherboardImageTypeForm::class)
             ->renderExpanded()
             ->onlyOnForms();

@@ -4,6 +4,7 @@ namespace App\Controller\Admin;
 
 use App\Entity\Chipset;
 use App\Form\Type\ChipsetPartType;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\UrlField;
@@ -24,7 +25,12 @@ class ChipsetCrudController extends AbstractCrudController
     {
         return Chipset::class;
     }
-
+    public function configureFilters(Filters $filters): Filters
+    {
+        return parent::configureFilters($filters)
+            ->add('part_no')
+            ->add('chipsetParts');
+    }
     public function configureFields(string $pageName): iterable
     {
         yield IdField::new('id')->onlyOnIndex();
@@ -38,6 +44,7 @@ class ChipsetCrudController extends AbstractCrudController
             ->hideOnForm();
         yield CollectionField::new('chipsetParts', 'Parts')
             ->setEntryType(ChipsetPartType::class)
+            ->renderExpanded()
             ->onlyOnForms();
         yield UrlField::new('encyclopedia_link', 'Link')
             ->hideOnIndex();

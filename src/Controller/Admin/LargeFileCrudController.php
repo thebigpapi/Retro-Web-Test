@@ -51,12 +51,15 @@ class LargeFileCrudController extends AbstractCrudController
             ->onlyOnForms();
         yield CollectionField::new('languages', 'Language')
             ->setEntryType(LanguageType::class)
+            ->renderExpanded()
             ->onlyOnForms();
         yield CollectionField::new('mediaTypeFlags', 'Media type flags')
             ->setEntryType(LargeFileMediaTypeFlagType::class)
+            ->renderExpanded()
             ->onlyOnForms();
         yield CollectionField::new('osFlags', 'OS flags')
             ->setEntryType(OsFlagType::class)
+            ->renderExpanded()
             ->onlyOnForms();
         yield CodeEditorField::new('note')
             ->setLanguage('markdown')

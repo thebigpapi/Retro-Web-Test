@@ -41,9 +41,11 @@ class CoprocessorCrudController extends AbstractCrudController
             ->onlyOnForms();
         yield CollectionField::new('chipAliases', 'Chip aliases')
             ->setEntryType(ChipAliasType::class)
+            ->renderExpanded()
             ->onlyOnForms();
         yield CollectionField::new('sockets', 'Socket')
             ->setEntryType(CpuSocketType::class)
+            ->renderExpanded()
             ->onlyOnForms();
         yield AssociationField::new('platform', 'Family')
             ->onlyOnForms();
@@ -53,9 +55,11 @@ class CoprocessorCrudController extends AbstractCrudController
             ->onlyOnForms();
         yield CollectionField::new('instructionSets', 'Instruction set')
             ->setEntryType(InstructionSetType::class)
+            ->renderExpanded()
             ->onlyOnForms();
         yield CollectionField::new('images', 'Images')
             ->setEntryType(ChipImageType::class)
+            ->renderExpanded()
             ->onlyOnForms();
     }
     public function configureCrud(Crud $crud): Crud

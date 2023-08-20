@@ -28,6 +28,11 @@ class ChipsetPart extends Chip
         $this->chipsets = new ArrayCollection();
         $this->documentations = new ArrayCollection();
     }
+
+    public function __toString(): string
+    {
+        return $this->getFullName();
+    }
     /**
      * @return Collection|Chipset[]
      */

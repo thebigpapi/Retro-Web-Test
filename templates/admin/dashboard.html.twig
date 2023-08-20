@@ -4,9 +4,11 @@
 <div class="title"><h1><b>Dashboard</b></h1></div>
     <div class="row">
         <div class="col-md-6">
+            <div class="col-md-12"><h4><i>Board count by manufacturer (first 25)</i></h4></div>
             {{ render_chart(boardChart) }}
         </div>
         <div class="col-md-6">
+            <div class="col-md-12"><h4><i>Board count by socket (first 25)</i></h4></div>
             {{ render_chart(socketChart) }}
         </div>
     </div>

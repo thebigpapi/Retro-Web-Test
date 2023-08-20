@@ -59,8 +59,8 @@ class DashboardController extends AbstractDashboardController
         return $this->render('admin/dashboard.html.twig', [
             'collector' => $this->git,
             'mobocount' => $this->motherboardRepository->getCount(),
-            'boardChart' => $this->createBoardChart(),
-            'socketChart' => $this->createSocketChart(),
+            'boardChart' => $this->createBoardDashChart(),
+            'socketChart' => $this->createSocketDashChart(),
         ]);
     }
     public function configureAssets(): Assets
@@ -90,6 +90,7 @@ class DashboardController extends AbstractDashboardController
     public function configureMenuItems(): iterable
     {
         yield MenuItem::linkToDashboard('Dashboard', 'home.svg');
+        yield MenuItem::linkToRoute('Statistics', 'show/data.svg', 'dashboard_stats');
         yield MenuItem::linkToUrl('Legacy page', 'edit.svg', $this->generateUrl('admin_index'))->setPermission('ROLE_ADMIN');
         yield MenuItem::section('Main items');
         yield MenuItem::linkToCrud('Motherboards', 'show/motherboard.svg', Motherboard::class)->setDefaultSort(['lastEdited' => 'DESC']);
@@ -128,12 +129,21 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Users', 'admin/user.svg', User::class)->setPermission('ROLE_SUPER_ADMIN');
     }
 
-    private function createBoardChart(): Chart
+    private function createBoardDashChart(): Chart
     {
         $manufBoardCount = $this->motherboardRepository->getManufCount();
+        return $this->makeChart(array_slice($manufBoardCount, 0, 25), 1);
+    }
+    private function createSocketDashChart(): Chart
+    {
+        $boardSockCount = $this->motherboardRepository->getSocketCount();
+        return $this->makeChart(array_slice($boardSockCount, 0, 25), 1);
+    }
+    private function makeChart($array, $r): Chart
+    {
         $chart = $this->chartBuilder->createChart(Chart::TYPE_BAR);
         $chart->setData([
-            'labels'=> array_keys(array_slice($manufBoardCount, 0, 30)),
+            'labels'=> array_keys($array),
             'datasets' => [
                 [
                     'label' => 'Board count',
@@ -155,48 +165,13 @@ class DashboardController extends AbstractDashboardController
                         'rgb(153, 102, 255)',
                         'rgb(201, 203, 207)'
                     ],
-                    'data' => array_values(array_slice($manufBoardCount, 0, 30)),
+                    'data' => array_values($array),
                 ],
             ],
         ]);
         $chart->setOptions([
-            'indexAxis'=> 'x',
-        ]);
-        return $chart;
-    }
-    private function createSocketChart(): Chart
-    {
-        $manufBoardCount = $this->motherboardRepository->getSocketCount();
-        $chart = $this->chartBuilder->createChart(Chart::TYPE_BAR);
-        $chart->setData([
-            'labels'=> array_keys(array_slice($manufBoardCount, 0, 30)),
-            'datasets' => [
-                [
-                    'label' => 'Socket count',
-                    'backgroundColor' => [
-                        'rgba(255, 99, 132, 0.9)',
-                        'rgba(255, 159, 64, 0.9)',
-                        'rgba(255, 205, 86, 0.9)',
-                        'rgba(75, 192, 192, 0.9)',
-                        'rgba(54, 162, 235, 0.9)',
-                        'rgba(153, 102, 255, 0.9)',
-                        'rgba(201, 203, 207, 0.9)'
-                    ],
-                    'borderColor' => [
-                        'rgb(255, 99, 132)',
-                        'rgb(255, 159, 64)',
-                        'rgb(255, 205, 86)',
-                        'rgb(75, 192, 192)',
-                        'rgb(54, 162, 235)',
-                        'rgb(153, 102, 255)',
-                        'rgb(201, 203, 207)'
-                    ],
-                    'data' => array_values(array_slice($manufBoardCount, 0, 30)),
-                ],
-            ],
-        ]);
-        $chart->setOptions([
-            'indexAxis'=> 'x',
+            'indexAxis'=> 'y',
+            'aspectRatio' => $r,
         ]);
         return $chart;
     }

@@ -1,0 +1,31 @@
+{% extends '@EasyAdmin/page/content.html.twig' %}
+
+{% block main %}
+<div class="title"><h1><b>Statistics</b></h1></div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="col-md-12"><h4><i>Board count by manufacturer</i></h4></div>
+            {{ render_chart(boardChart) }}
+        </div>
+        <div class="col-md-6">
+            <div class="col-md-12"><h4><i>Board count by socket</i></h4></div>
+            {{ render_chart(socketChart) }}
+        </div>
+        <div class="col-md-6">
+            <div class="col-md-12"><h4><i>Board count by chipset</i></h4></div>
+            {{ render_chart(chipsetChart) }}
+        </div>
+        <div class="col-md-6">
+            <div class="col-md-12"><h4><i>Board count by expansion chip</i></h4></div>
+            {{ render_chart(expansionChipChart) }}
+        </div>
+        <div class="col-md-6">
+            <div class="col-md-12"><h4><i>Board count by form factor</i></h4></div>
+            {{ render_chart(formFactorChart) }}
+        </div>
+        <div class="col-md-6">
+            <div class="col-md-12"><h4><i>Chipset documentation presence</i></h4></div>
+            {{ render_chart(chipsetDocCountChart) }}
+        </div>
+    </div>
+{% endblock %}
