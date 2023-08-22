@@ -161,6 +161,7 @@ class MotherboardForm extends AbstractType
                 'entry_type' => ManualType::class,
                 'allow_add' => true,
                 'allow_delete' => true,
+                'attr' => ['id' => 'mobo-manualz']
             ])
             ->add('miscFiles', CollectionType::class, [
                 'entry_type' => MiscFileType::class,

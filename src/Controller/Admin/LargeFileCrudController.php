@@ -6,6 +6,7 @@ use App\Entity\LargeFile;
 use App\Form\Type\LanguageType;
 use App\Form\Type\OsFlagType;
 use App\Form\Type\LargeFileMediaTypeFlagType;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\UrlField;
@@ -28,7 +29,17 @@ class LargeFileCrudController extends AbstractCrudController
         return LargeFile::class;
     }
 
-
+    public function configureFilters(Filters $filters): Filters
+    {
+        return parent::configureFilters($filters)
+            ->add('name')
+            ->add('fileVersion')
+            ->add('file_name')
+            ->add('subdirectory')
+            ->add('mediaTypeFlags')
+            ->add('osFlags');
+            //->add('release_date');
+    }
     public function configureFields(string $pageName): iterable
     {
         yield IdField::new('id')->onlyOnIndex();

@@ -23,13 +23,14 @@ use App\Form\Type\ProcessorSpeedType;
 use App\Form\Type\ProcessorType;
 use App\Form\Type\CoprocessorType;
 use App\Form\Type\MotherboardImageTypeForm;
+use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
-use EasyCorp\Bundle\EasyAdminBundle\Filter\BooleanFilter;
+use EasyCorp\Bundle\EasyAdminBundle\Filter\ArrayFilter;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
@@ -37,10 +38,8 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CodeEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\ArrayField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\SlugField;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class MotherboardCrudController extends AbstractCrudController
@@ -69,7 +68,7 @@ class MotherboardCrudController extends AbstractCrudController
             ->add('knownIssues')
             ->add('psuConnectors')
             ->add('dimensions')
-            //->add(BooleanFilter::new('images'))
+            ->add(ArrayFilter::new('motherboardBios'))
             ->add('lastEdited');
     }
     public function configureFields(string $pageName): iterable
@@ -100,11 +99,11 @@ class MotherboardCrudController extends AbstractCrudController
             ->setColumns(4)
             ->onlyOnForms();
         yield TextField::new('name')
-        ->setColumns(4)
+            ->setColumns(4)
             ->onlyOnForms();
-        yield SlugField::new('slug')
-        ->setTargetFieldName(['manufacturer', 'name'])
-        ->setColumns(4)
+        yield TextField::new('slug')
+            //->setTargetFieldName(['manufacturer', 'name'])
+            ->setColumns(4)
             ->onlyOnForms();
         yield CollectionField::new('motherboardAliases', 'Alternative names')
             ->setEntryType(MotherboardAliasType::class)
@@ -193,14 +192,14 @@ class MotherboardCrudController extends AbstractCrudController
             ->setColumns(4)
             ->renderExpanded()
             ->onlyOnForms();
-        yield CollectionField::new('processors', 'CPUs')
+        /*yield CollectionField::new('processors', 'CPUs')
             ->setEntryType(ProcessorType::class)
             ->renderExpanded()
-            ->onlyOnForms();
-        yield CollectionField::new('coprocessors', 'NPUs')
+            ->onlyOnForms();*/
+        /*yield CollectionField::new('coprocessors', 'NPUs')
             ->setEntryType(CoprocessorType::class)
             ->renderExpanded()
-            ->onlyOnForms();
+            ->onlyOnForms();*/
         yield FormField::addTab('Attachments')
             ->setIcon('download')
             ->onlyOnForms();
@@ -227,6 +226,10 @@ class MotherboardCrudController extends AbstractCrudController
             ->onlyOnForms();
 
     }
+    public function configureCrud(Crud $crud): Crud
+    {
+        return $crud;
+    }
     public function configureActions(Actions $actions): Actions
     {
         $duplicate = Action::new('duplicate', 'Clone')
@@ -238,16 +241,11 @@ class MotherboardCrudController extends AbstractCrudController
                 ->set('duplicate', '1')
                 ->generateUrl()
         );
-        $savelist = Action::new('saveshow', 'Save and view board')
-        ->setIcon('fa fa-save')
-        ->linkToCrudAction(Action::SAVE_AND_RETURN);
         $view = Action::new('view', 'View')
             ->linkToCrudAction('viewBoard');
         return $actions
             ->add(Crud::PAGE_EDIT, $duplicate)
-            ->add(Crud::PAGE_EDIT, $savelist)
             ->add(Crud::PAGE_INDEX, $view)
-            ->reorder(Crud::PAGE_EDIT, ['duplicate', Action::SAVE_AND_CONTINUE, 'saveshow', Action::SAVE_AND_RETURN])
             ->setPermission(Action::DELETE, 'ROLE_ADMIN');
     }
     public function edit(AdminContext $context)
@@ -269,19 +267,22 @@ class MotherboardCrudController extends AbstractCrudController
         return $this->redirectToRoute('motherboard_show', array('id'=>$bid));
     }
     protected function getRedirectResponseAfterSave(AdminContext $context, string $action): RedirectResponse
-{
-    $submitButtonName = $context->getRequest()->request->all()['ea']['newForm']['btn'];
+    {
+        $submitButtonName = $context->getRequest()->request->all()['ea']['newForm']['btn'];
 
-    if ('saveshow' === $submitButtonName) {
-        $url = $this->container->get(AdminUrlGenerator::class)
-            ->setAction(Action::DETAIL)
-            ->setEntityId($context->getEntity()->getPrimaryKeyValue())
-            ->generateUrl();
+        if ('saveAndReturn' === $submitButtonName) {
+            return $this->redirectToRoute('motherboard_show', array('id' => $context->getEntity()->getPrimaryKeyValue()));
+        }
 
-        return $this->redirect($url);
+        return parent::getRedirectResponseAfterSave($context, $action);
     }
-
-    return parent::getRedirectResponseAfterSave($context, $action);
-}
+    /**
+     * @param Motherboard $entityInstance
+     */
+    public function updateEntity(EntityManagerInterface $entityManager, $entityInstance): void
+    {
+        $entityInstance->updateLastEdited();
+        parent::updateEntity($entityManager, $entityInstance);
+    }
 
 }

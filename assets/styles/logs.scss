@@ -49,3 +49,14 @@ pre { padding: 5px; margin: 5px;color:black; }
 	transition: max-height 0.15s ease-out;
 	background-color: #f1f1f1;
 }
+button.action-saveAndReturn, button.action-saveAndContinue, button.action-saveAndAddAnother{
+    display:none;
+}
+div.mobo-buttons{
+	display: flex;
+    flex-wrap: wrap;
+    justify-content: right;
+    row-gap: 1em;
+    flex-direction: row;
+    padding-left: 8px;
+}

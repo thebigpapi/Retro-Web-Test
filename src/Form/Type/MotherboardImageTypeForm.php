@@ -15,6 +15,7 @@ use App\Entity\Creditor;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\ChoiceList\View\ChoiceView;
+use Vich\UploaderBundle\Form\Type\VichImageType;
 
 class MotherboardImageTypeForm extends AbstractType
 {
@@ -22,11 +23,10 @@ class MotherboardImageTypeForm extends AbstractType
     {
         $builder
             ->add('file_name', TextType::class, [
-                'required' => false,
                 'disabled' => true,
             ])
             ->add('imageFile', FileType::class, [
-                'label' => 'Image (png, svg, jpg or gif file)',
+                'label' => 'Image (JPG/PNG/GIF/SVG)',
 
                 // unmapped means that this field is not associated to any entity property
                 //'mapped' => false,
@@ -52,10 +52,12 @@ class MotherboardImageTypeForm extends AbstractType
                 ],
             ])
             ->add('description', TextType::class, [
+                'label' => 'Note',
                 'required' => false,
             ])
             ->add('motherboardImageType', EntityType::class, [
                 'class' => MotherboardImageType::class,
+                'label' => 'Image type',
                 'required' => true,
                 'choice_label' => 'name',
                 'multiple' => false,

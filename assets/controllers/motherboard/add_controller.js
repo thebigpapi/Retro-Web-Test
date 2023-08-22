@@ -35,9 +35,9 @@ export default class extends Controller {
     }
 
     getslug() {
-        let manuf = document.getElementById('motherboard_form_manufacturer');
-        let name = document.getElementById('motherboard_form_name');
-        let slug = document.getElementById('motherboard_form_slug');
+        let manuf = document.getElementById('Motherboard_manufacturer');
+        let name = document.getElementById('Motherboard_name');
+        let slug = document.getElementById('Motherboard_slug');
         let string = manuf.options[manuf.selectedIndex].text;
         if(string == '')
             string = 'unknown ' + name.value;
@@ -51,37 +51,39 @@ export default class extends Controller {
      */
     check(event) {
         let _this = this;
-
         let error = false;
         let errorMessage = "";
-        
-        let manualList = document.getElementById('manuals-fields-list').children;
-        for (let manual of manualList) {
-            if (manual.children[2].children[0].files[0] == null) {
-                if (manual.children[3].children[0].value == '') {
-                    errorMessage += "One of the manual file upload fields is empty!\n";
-                    error = true;
-                }
-            }
+
+        let slug = document.getElementById('Motherboard_slug');
+        if(slug.value == '')
+            this.getslug();
+
+        if (this.checkCollection("Motherboard_manuals_", "_manualFile")) {
+            errorMessage += "One of the manual file upload fields is empty!\n";
+            error = true;
         }
-        let miscList = document.getElementById('miscfile-fields-list').children;
-        for (let misc of miscList) {
-            if (misc.children[1].children[0].files[0] == null) {
-                if (misc.children[2].children[0].value == '') {
-                    errorMessage += "One of the misc file upload fields is empty!\n";
-                    error = true;
-                }
-            }
+        if (this.checkCollection("Motherboard_motherboardBios_", "_romFile")) {
+            errorMessage += "One of the BIOS file upload fields is empty!\n";
+            error = true;
         }
-        let imageList = document.getElementById('images-fields-list').children;
-        for (let image of imageList) {
-            if (image.children[2].children[1].files[0] == null) {
-                if (image.children[5].children[1].value == '') {
-                    errorMessage += "One of the image file upload fields is empty!\n";
-                    error = true;
-                }
-            }
+        if (this.checkCollection("Motherboard_miscFiles_", "_miscFile")) {
+            errorMessage += "One of the misc file upload fields is empty!\n";
+            error = true;
         }
+        if (this.checkCollection("Motherboard_images_", "_imageFile")) {
+            errorMessage += "One of the image file upload fields is empty!\n";
+            error = true;
+        }
+        if (this.checkNull("Motherboard_motherboardIoPorts_", "_count")) {
+            errorMessage += "One of the I/O ports is missing the count!\n";
+            error = true;
+        }
+        if (this.checkNull("Motherboard_motherboardExpansionSlots_", "_count")) {
+            errorMessage += "One of the expansion slots is missing the count!\n";
+            error = true;
+        }
+
+        /*
         let driverList = document.getElementById('drivers-fields-list').children;
         for (let driver of driverList) {
             if (!driver.children[0].children[0].value) {
@@ -96,9 +98,6 @@ export default class extends Controller {
                 error = true;
             }
         }
-        let slug = document.getElementById('motherboard_form_slug');
-        if(slug.value == '')
-            this.getslug();
         if (_this.checkList('cpuSockets-fields-list')) {
             errorMessage += "CPU sockets has duplicate entries!\n";
             error = true;
@@ -115,14 +114,7 @@ export default class extends Controller {
             errorMessage += "Cache has duplicate entries!\n";
             error = true;
         }
-        if (_this.checkList('motherboardIoPorts-fields-list')) {
-            errorMessage += "I/O ports has duplicate entries!\n";
-            error = true;
-        }
-        if (_this.checkList('motherboardExpansionSlots-fields-list')) {
-            errorMessage += "Expansion slots has duplicate entries!\n";
-            error = true;
-        }
+
         if (_this.checkList('knownIssues-fields-list')) {
             errorMessage += "Known issues has duplicate entries!\n";
             error = true;
@@ -130,18 +122,61 @@ export default class extends Controller {
         if (_this.checkList('cpuSpeed-fields-list')) {
             errorMessage += "FSB speed has duplicate entries!\n";
             error = true;
-        }
+        }*/
         if (error) {
             alert(errorMessage);
             event.preventDefault();
         }
     }
+
+    checkCollection(id, attr) {
+        let cnt = 1;
+        let error = false;
+        while(document.getElementById(id + cnt)){
+            //alert(document.getElementById(id + cnt).outerHTML);
+            if (document.getElementById(id + cnt + attr).files[0] == null) {
+                if (document.getElementById(id + cnt + "_file_name").value == '') {
+                    error = true;
+                }
+            }
+            cnt++;
+        }
+        return error;
+    }
+    checkNull(id, attr) {
+        let cnt = 1;
+        let error = false;
+        while(document.getElementById(id + cnt)){
+            //alert(document.getElementById(id + cnt).outerHTML);
+            if (document.getElementById(id + cnt + attr).value == '') {
+                error = true;
+            }
+            cnt++;
+        }
+        return error;
+    }
     /**
      * Save the motherboard
      */
     submit() {
-        let submit_btn = document.getElementById("motherboard_form_save");
-        this.checkAllCheckBoxes();
+        let submit_btn = document.getElementsByClassName('action-saveAndReturn btn btn-primary action-save')[0];
+        if (submit_btn.disabled)
+            submit_btn.disabled=false;
+        //this.checkAllCheckBoxes();
+        submit_btn.click();
+    }
+    submitcontinue() {
+        let submit_btn = document.getElementsByClassName('action-saveAndContinue btn btn-secondary action-save')[0];
+        if (submit_btn.disabled)
+            submit_btn.disabled=false;
+        //this.checkAllCheckBoxes();
+        submit_btn.click();
+    }
+    submitnewadd() {
+        let submit_btn = document.getElementsByClassName('action-saveAndAddAnother btn btn-secondary action-save')[0];
+        if (submit_btn.disabled)
+            submit_btn.disabled=false;
+        //this.checkAllCheckBoxes();
         submit_btn.click();
     }
     /**
@@ -249,9 +284,8 @@ export default class extends Controller {
     //Coprocessors
     uncheckedCoprocessors = new Array();
     checkedCoprocessors = new Array();
-
     connect() {
-        this.initProcessorsFromDom(document);
+        //this.initProcessorsFromDom(document);
     }
 
     initProcessorsFromDom(dom) {
@@ -306,7 +340,6 @@ export default class extends Controller {
             return a.name >= b.name;
         });
     }
-
 
     /**
      * Add all processors to the motherboard
