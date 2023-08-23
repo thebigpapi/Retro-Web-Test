@@ -4,6 +4,7 @@ namespace App\Controller\Admin;
 
 use App\Entity\Chipset;
 use App\Form\Type\ChipsetPartType;
+use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
@@ -64,5 +65,13 @@ class ChipsetCrudController extends AbstractCrudController
         return $actions
             ->add(Crud::PAGE_INDEX, Action::DETAIL)
             ->setPermission(Action::DELETE, 'ROLE_ADMIN');
+    }
+        /**
+     * @param Chipset $entityInstance
+     */
+    public function updateEntity(EntityManagerInterface $entityManager, $entityInstance): void
+    {
+        $entityInstance->updateLastEdited();
+        parent::updateEntity($entityManager, $entityInstance);
     }
 }

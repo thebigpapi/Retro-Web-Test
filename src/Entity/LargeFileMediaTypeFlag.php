@@ -27,6 +27,10 @@ class LargeFileMediaTypeFlag
     #[Assert\Positive(message: 'Count should be positive only')]
     private $count;
 
+    public function __toString(): string
+    {
+        return $this->getMediaTypeFlag()->getName();
+    }
     public function getId(): ?int
     {
         return $this->id;

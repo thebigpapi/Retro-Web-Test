@@ -91,7 +91,6 @@ class DashboardController extends AbstractDashboardController
     {
         yield MenuItem::linkToDashboard('Dashboard', 'home.svg');
         yield MenuItem::linkToRoute('Statistics', 'show/data.svg', 'dashboard_stats');
-        yield MenuItem::linkToUrl('Legacy page', 'edit.svg', $this->generateUrl('admin_index'))->setPermission('ROLE_ADMIN');
         yield MenuItem::section('Main items');
         yield MenuItem::linkToCrud('Motherboards', 'show/motherboard.svg', Motherboard::class)->setDefaultSort(['lastEdited' => 'DESC']);
         yield MenuItem::linkToCrud('Chipsets', 'show/chipset.svg', Chipset::class);
@@ -124,7 +123,7 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Creditors', 'search/search_image.svg', Creditor::class);
         yield MenuItem::linkToCrud('Licenses', 'nav/book.svg', License::class)->setPermission('ROLE_ADMIN');
         yield MenuItem::section('Administrative');
-        yield MenuItem::linkToRoute('Logs', 'show/data.svg','admin_logs');
+        yield MenuItem::linkToRoute('Logs', 'show/data.svg','logs');
         yield MenuItem::linkToCrud('Logs (experimental)', 'show/data.svg', Trace::class)->setPermission('ROLE_ADMIN');
         yield MenuItem::linkToCrud('Users', 'admin/user.svg', User::class)->setPermission('ROLE_SUPER_ADMIN');
     }

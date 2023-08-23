@@ -23,13 +23,8 @@ use App\BranchLoader\GitLoader;
 
 class AdminController extends AbstractDashboardController
 {
-    #[Route('/admin', name:'admin_index')]
-    public function index(): Response
-    {
-        return $this->render('admin/index.html.twig');
-    }
 
-    #[Route('/logs', name:'admin_logs')]
+    #[Route('/logs', name:'logs')]
     public function logs(Request $request, TraceRepository $traceRepository, PaginatorInterface $paginator): Response
     {
         $logs = $traceRepository->findAll();
@@ -60,7 +55,7 @@ class AdminController extends AbstractDashboardController
         }
     }
 
-    #[Route('/logs/{id}', name:'admin_logs_filter_id', requirements: ['id' => '\d+'])]
+    #[Route('/logs/{id}', name:'logs_filter_id', requirements: ['id' => '\d+'])]
     public function logs_filter_id(int $id, Request $request, TraceRepository $traceRepository, PaginatorInterface $paginator): Response
     {
         $logs = $traceRepository->findAllById($id);
@@ -90,7 +85,7 @@ class AdminController extends AbstractDashboardController
             ]);
         }
     }
-    #[Route('/logs/{id}/{entity}', name:'admin_logs_filter_id_entity', requirements: ['id' => '\d+'])]
+    #[Route('/logs/{id}/{entity}', name:'logs_filter_id_entity', requirements: ['id' => '\d+'])]
     public function logs_filter_id_entity(int $id, string $entity, Request $request, TraceRepository $traceRepository, PaginatorInterface $paginator): Response
     {
         $logs = $traceRepository->findAllByIdAndEntity($id, "App\\\\Entity\\\\" . $entity);

@@ -48,7 +48,7 @@
 	{% endfor %}
 </div>
 {% endif %}
-<div class="main-strip">	
+<div class="main-strip">s
 	<div class="internal-container">
 		{% include 'macros/navbar.html.twig' with {'type':'show', 'entity': motherboard, 'entityName': 'motherboard', 'count':4} %}
 		<!-- GENERAL -->
@@ -92,7 +92,7 @@
 					{% else %}
 					<div>Unknown</div>
 					{% endif %}
-					<!-- Cache -->	
+					<!-- Cache -->
 					<div class="quick-spec-head">
 						<img src="{{ absolute_url(asset('build/icons/show/chip.svg')) }}" alt="chip" width="24" height="24">Cache
 					</div>
@@ -140,8 +140,8 @@
 			</div>
 				<div class="full-spec">
 					<div class="full-spec-head"><img src="{{ absolute_url(asset('build/icons/admin/connector.svg')) }}" alt="conn" width="24" height="24"><b>I/O ports</b></div>
-					<div class="list-table">			
-						{% if motherboard.getMotherboardIoPorts() is not empty %}				
+					<div class="list-table">
+						{% if motherboard.getMotherboardIoPorts() is not empty %}
 							{% for port in motherboard.getMotherboardIoPorts()|sort %}
 								<div class="list-table-head"><b>{{ port.getCount() }}x&nbsp;</b></div><div>{{ port.getIoPort().getName() }}</div>
 							{% endfor %}
@@ -149,8 +149,8 @@
 					</div>
 
 					<div class="full-spec-head"><img src="{{ absolute_url(asset('build/icons/show/card.svg')) }}" alt="card" width="24" height="24"><b>Expansion slots</b></div>
-					<div class="list-table">			
-						{% if motherboard.getMotherboardExpansionSlots() is not empty %}				
+					<div class="list-table">
+						{% if motherboard.getMotherboardExpansionSlots() is not empty %}
 							{% for slot in motherboard.getMotherboardExpansionSlots()|sort %}
 								<div class="list-table-head"><b>{{ slot.getCount() }}x&nbsp;</b></div><div>{{ slot.getExpansionSlot().getName() }}</div>
 							{% endfor %}
@@ -181,8 +181,8 @@
 				{% if is_granted('ROLE_ADMIN') %}
 				<div style="display:flex">
 				<a class="button-widget" style="margin:5px;max-width:100px;" href="{{ ea_url()
-            .setDashboard('App\\Controller\\Admin\\DashboardController')
-            .setRoute('admin_logs_filter_id_entity', {id: motherboard.getId(), entity: 'Motherboard'})}}">
+					.setDashboard('App\\Controller\\Admin\\DashboardController')
+					.setRoute('logs_filter_id_entity', {id: motherboard.getId(), entity: 'Motherboard'})}}">
 					<img src="{{ absolute_url(asset('build/icons/show/calendar.svg')) }}" alt="" width="24" height="24">History</a></div>
 				{% endif %}
 			</div>

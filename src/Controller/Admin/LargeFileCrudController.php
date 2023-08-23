@@ -6,6 +6,7 @@ use App\Entity\LargeFile;
 use App\Form\Type\LanguageType;
 use App\Form\Type\OsFlagType;
 use App\Form\Type\LargeFileMediaTypeFlagType;
+use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
@@ -35,10 +36,7 @@ class LargeFileCrudController extends AbstractCrudController
             ->add('name')
             ->add('fileVersion')
             ->add('file_name')
-            ->add('subdirectory')
-            ->add('mediaTypeFlags')
-            ->add('osFlags');
-            //->add('release_date');
+            ->add('subdirectory');
     }
     public function configureFields(string $pageName): iterable
     {
@@ -68,6 +66,10 @@ class LargeFileCrudController extends AbstractCrudController
             ->setEntryType(LargeFileMediaTypeFlagType::class)
             ->renderExpanded()
             ->onlyOnForms();
+        yield ArrayField::new('mediaTypeFlags', 'Media type flags')
+            ->onlyOnIndex();
+        yield ArrayField::new('osFlags', 'OS flags')
+            ->onlyOnIndex();
         yield CollectionField::new('osFlags', 'OS flags')
             ->setEntryType(OsFlagType::class)
             ->renderExpanded()
@@ -75,6 +77,8 @@ class LargeFileCrudController extends AbstractCrudController
         yield CodeEditorField::new('note')
             ->setLanguage('markdown')
             ->onlyOnForms();
+        yield DateField::new('lastEdited')
+            ->hideOnForm();
     }
 
     public function configureActions(Actions $actions): Actions
@@ -82,5 +86,13 @@ class LargeFileCrudController extends AbstractCrudController
         return $actions
             ->add(Crud::PAGE_INDEX, Action::DETAIL)
             ->setPermission(Action::DELETE, 'ROLE_ADMIN');
+    }
+    /**
+     * @param LargeFile $entityInstance
+     */
+    public function updateEntity(EntityManagerInterface $entityManager, $entityInstance): void
+    {
+        $entityInstance->updateLastEdited();
+        parent::updateEntity($entityManager, $entityInstance);
     }
 }
