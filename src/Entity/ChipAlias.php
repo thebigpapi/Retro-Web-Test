@@ -26,6 +26,9 @@ class ChipAlias
 
     #[ORM\Column(type: 'string', length: 255)]
     #[Assert\Length(max:255, maxMessage: 'Part number is longer than {{ limit }} characters, try to make it shorter.')]
+    #[Assert\NotBlank(
+        message: 'Chip alias part number cannot be blank'
+    )]
     private $partNumber;
     public function __toString(): string
     {

@@ -103,6 +103,7 @@ class Motherboard
     private $drivers;
 
     #[ORM\OneToMany(targetEntity: MotherboardIdRedirection::class, mappedBy: 'destination', orphanRemoval: true, cascade: ['persist'])]
+    #[Assert\Valid()]
     private $redirections;
 
     #[ORM\ManyToMany(targetEntity: PSUConnector::class, inversedBy: 'motherboards')]

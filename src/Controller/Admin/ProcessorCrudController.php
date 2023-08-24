@@ -8,6 +8,7 @@ use App\Form\Type\ChipImageType;
 use App\Form\Type\CpuSocketType;
 use App\Form\Type\ProcessorVoltageType;
 use App\Form\Type\InstructionSetType;
+use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
@@ -33,8 +34,13 @@ class ProcessorCrudController extends AbstractCrudController
             ->onlyOnIndex();
         yield TextField::new('getManufacturer','Manufacturer')
             ->hideOnForm();
-        yield TextField::new('partNumber', 'Name');
-        yield TextField::new('name', 'Aux Name');
+        yield AssociationField::new('manufacturer','Manufacturer')
+            ->setColumns(4)
+            ->onlyOnForms();
+        yield TextField::new('partNumber', 'Name')
+            ->setColumns(4);
+        yield TextField::new('name', 'Aux Name')
+            ->setColumns(4);
         yield ArrayField::new('chipAliases', 'Aliases')
             ->hideOnForm();
         yield TextField::new('core', 'Core')
@@ -45,51 +51,66 @@ class ProcessorCrudController extends AbstractCrudController
             ->hideOnForm();
         yield ArrayField::new('getTdpWithValue', 'TDP')
             ->hideOnForm();
-        // editor
-        yield AssociationField::new('manufacturer','Manufacturer')
+        yield AssociationField::new('platform', 'Family')
+            ->setColumns(2)
             ->onlyOnForms();
-        yield CollectionField::new('chipAliases', 'Chip aliases')
-            ->setEntryType(ChipAliasType::class)
-            ->renderExpanded()
+        yield TextField::new('core', 'Core')
+            ->setColumns(2)
+            ->onlyOnForms();
+        yield AssociationField::new('speed','Speed')
+            ->setColumns(2)
+            ->onlyOnForms();
+        yield AssociationField::new('fsb','FSB')
+            ->setColumns(2)
+            ->onlyOnForms();
+        yield NumberField::new('tdp', 'TDP (in W)')
+            ->setColumns(2)
+            ->onlyOnForms();
+        yield NumberField::new('processNode', 'Process (in nm)')
+            ->setColumns(2)
             ->onlyOnForms();
         yield CollectionField::new('sockets', 'Socket')
             ->setEntryType(CpuSocketType::class)
+            ->setColumns(6)
             ->renderExpanded()
-            ->onlyOnForms();
-        yield AssociationField::new('platform', 'Family')
-            ->onlyOnForms();
-        yield TextField::new('core', 'Core')
-            ->onlyOnForms();
-        yield AssociationField::new('speed','Speed')
-            ->onlyOnForms();
-        yield AssociationField::new('fsb','FSB')
-            ->onlyOnForms();
-        yield NumberField::new('tdp', 'TDP (in W)')
-            ->onlyOnForms();
-        yield NumberField::new('processNode', 'Process (in nm)')
             ->onlyOnForms();
         yield CollectionField::new('voltages', 'Voltage (in V)')
             ->setEntryType(ProcessorVoltageType::class)
+            ->setColumns(6)
             ->renderExpanded()
             ->onlyOnForms();
+        yield FormField::addPanel('Cache')->onlyOnForms();
         yield AssociationField::new('L1','L1 size')
+            ->setColumns(2)
             ->onlyOnForms();
         yield AssociationField::new('L1CacheMethod','L1 method')
+            ->setColumns(2)
             ->onlyOnForms();
         yield AssociationField::new('L2','L2 size')
+            ->setColumns(2)
             ->onlyOnForms();
         yield AssociationField::new('L2CacheRatio','L2 ratio')
+            ->setColumns(2)
             ->onlyOnForms();
         yield AssociationField::new('L3','L3 size')
+            ->setColumns(2)
             ->onlyOnForms();
         yield AssociationField::new('L3CacheRatio','L3 ratio')
+            ->setColumns(2)
             ->onlyOnForms();
+        yield FormField::addPanel('Other')->onlyOnForms();
         yield CollectionField::new('instructionSets', 'Instruction set')
             ->setEntryType(InstructionSetType::class)
+            ->setColumns(6)
             ->renderExpanded()
             ->onlyOnForms();
         yield CollectionField::new('images', 'Images')
             ->setEntryType(ChipImageType::class)
+            ->setColumns(6)
+            ->renderExpanded()
+            ->onlyOnForms();
+        yield CollectionField::new('chipAliases', 'Chip aliases')
+            ->setEntryType(ChipAliasType::class)
             ->renderExpanded()
             ->onlyOnForms();
     }

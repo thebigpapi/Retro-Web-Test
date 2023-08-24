@@ -24,6 +24,7 @@ class MotherboardExpansionSlot
 
     #[Assert\Positive(message: "Expansion slot count should be above 0")]
     #[Assert\LessThan(100, message: "Expansion slot count should be below 100")]
+    #[Assert\NotBlank(message:'Expansion slot count cannot be blank')]
     #[ORM\Column(type: 'integer')]
     private $count;
 

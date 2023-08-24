@@ -7,6 +7,7 @@ use App\Form\Type\ChipAliasType;
 use App\Form\Type\ChipImageType;
 use App\Form\Type\CpuSocketType;
 use App\Form\Type\InstructionSetType;
+use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
@@ -30,35 +31,43 @@ class CoprocessorCrudController extends AbstractCrudController
             ->onlyOnIndex();
         yield TextField::new('getManufacturer','Manufacturer')
             ->hideOnForm();
-        yield TextField::new('partNumber', 'Name');
-        yield TextField::new('name', 'Aux Name');
+        yield AssociationField::new('manufacturer','Manufacturer')
+            ->setColumns(4)
+            ->onlyOnForms();
+        yield TextField::new('partNumber', 'Name')
+            ->setColumns(4);
+        yield TextField::new('name', 'Aux Name')
+            ->setColumns(4);
         yield ArrayField::new('chipAliases', 'Aliases')
             ->hideOnForm();
         yield TextField::new('getSpeedFSB', 'Speed/FSB')
             ->hideOnForm();
-        // editor
-        yield AssociationField::new('manufacturer','Manufacturer')
+        yield AssociationField::new('platform', 'Family')
+            ->setColumns(4)
             ->onlyOnForms();
-        yield CollectionField::new('chipAliases', 'Chip aliases')
-            ->setEntryType(ChipAliasType::class)
-            ->renderExpanded()
+        yield AssociationField::new('speed','Speed')
+            ->setColumns(4)
+            ->onlyOnForms();
+        yield AssociationField::new('fsb','FSB')
+            ->setColumns(4)
             ->onlyOnForms();
         yield CollectionField::new('sockets', 'Socket')
             ->setEntryType(CpuSocketType::class)
             ->renderExpanded()
             ->onlyOnForms();
-        yield AssociationField::new('platform', 'Family')
-            ->onlyOnForms();
-        yield AssociationField::new('speed','Speed')
-            ->onlyOnForms();
-        yield AssociationField::new('fsb','FSB')
-            ->onlyOnForms();
+        yield FormField::addPanel('Other')->onlyOnForms();
         yield CollectionField::new('instructionSets', 'Instruction set')
             ->setEntryType(InstructionSetType::class)
+            ->setColumns(6)
             ->renderExpanded()
             ->onlyOnForms();
         yield CollectionField::new('images', 'Images')
             ->setEntryType(ChipImageType::class)
+            ->setColumns(6)
+            ->renderExpanded()
+            ->onlyOnForms();
+        yield CollectionField::new('chipAliases', 'Chip aliases')
+            ->setEntryType(ChipAliasType::class)
             ->renderExpanded()
             ->onlyOnForms();
     }

@@ -2,36 +2,8 @@ import { Controller } from 'stimulus';
 
 export default class extends Controller {
 
-    /**
-     * Check a specific list for duplicates
-     * @param {*} id 
-     * @returns bool
-     */
-    checkList(id) {
-        let list = document.getElementById(id);
-        let tp = 0;
-        if (id === 'motherboardIoPorts-fields-list' || id === 'motherboardExpansionSlots-fields-list') {
-            tp = 1;
-        }
-        if(Object.keys(list.children).length == 0)
-            return false;
-        let array = Array().fill(0);
-        
-        for (let i=0; i< Object.keys(list.children).length; i++) {
-            for (let j = 0; j < list.children[i].children[tp].options.length; j++) {
-                let itm = list.children[i].children[tp].options[j];
-                if (!array[itm.value]) {
-                    array[itm.value] = 0;
-                }
-                if (itm.selected) {
-                    array[itm.value] += 1;
-                }
-                if (array[itm.value] > 1) {
-                    return true;
-                }
-            }
-        }
-        return false;
+    connect() {
+        //this.initProcessorsFromDom(document);
     }
 
     getslug() {
@@ -53,74 +25,43 @@ export default class extends Controller {
         let _this = this;
         let error = false;
         let errorMessage = "";
-
         let slug = document.getElementById('Motherboard_slug');
         if(slug.value == '')
             this.getslug();
 
-        if (this.checkCollection("Motherboard_manuals_", "_manualFile")) {
-            errorMessage += "One of the manual file upload fields is empty!\n";
+        for (let msgId of this.checkFile("Motherboard_manuals_", "_manualFile")){
+            errorMessage += "Manual with title \"" + document.getElementById("Motherboard_manuals_" + msgId + "_link_name").value + "\" is missing the file!\n";
             error = true;
         }
-        if (this.checkCollection("Motherboard_motherboardBios_", "_romFile")) {
-            errorMessage += "One of the BIOS file upload fields is empty!\n";
+        for (let msgId of this.checkFile("Motherboard_motherboardBios_", "_romFile")){
+            if(document.getElementById("Motherboard_motherboardBios_" + msgId + "_boardVersion").value=="")
+                errorMessage += "BIOS with POST string \"" + document.getElementById("Motherboard_motherboardBios_" + msgId + "_postString").value + "\" is missing the file!\n";
+            else
+                errorMessage += "BIOS with version \"" + document.getElementById("Motherboard_motherboardBios_" + msgId + "_postString").value + "\" is missing the file!\n";
             error = true;
         }
-        if (this.checkCollection("Motherboard_miscFiles_", "_miscFile")) {
-            errorMessage += "One of the misc file upload fields is empty!\n";
+        for (let msgId of this.checkFile("Motherboard_miscFiles_", "_miscFile")){
+            errorMessage += "Misc file with title \"" + document.getElementById("Motherboard_miscFiles_" + msgId + "_link_name").value + "\" is missing the file!\n";
             error = true;
         }
-        if (this.checkCollection("Motherboard_images_", "_imageFile")) {
-            errorMessage += "One of the image file upload fields is empty!\n";
+        for (let msgId of this.checkImageFile("Motherboard_images_", "_imageFile")){
+            let creditor = document.getElementById("Motherboard_images_" + msgId + "_creditor")
+            let type = document.getElementById("Motherboard_images_" + msgId + "_motherboardImageType")
+
+            if(creditor.options[creditor.selectedIndex].text=="")
+                errorMessage += "Image with type \"" + type.options[type.selectedIndex].text + "\" is missing the file!\n";
+            else
+                errorMessage += "Image with creditor \"" + creditor.options[creditor.selectedIndex].text + "\" is missing the file!\n";
+
             error = true;
         }
+        /*
         if (this.checkNull("Motherboard_motherboardIoPorts_", "_count")) {
             errorMessage += "One of the I/O ports is missing the count!\n";
             error = true;
         }
         if (this.checkNull("Motherboard_motherboardExpansionSlots_", "_count")) {
             errorMessage += "One of the expansion slots is missing the count!\n";
-            error = true;
-        }
-
-        /*
-        let driverList = document.getElementById('drivers-fields-list').children;
-        for (let driver of driverList) {
-            if (!driver.children[0].children[0].value) {
-                errorMessage += "One of the drivers is empty!\n";
-                error = true;
-            }
-        }
-        let aliasesList = document.getElementById('motherboardAliases-fields-list').children;
-        for (let alias of aliasesList) {
-            if (alias.children[0].children[0].value == "EMPTY") {
-                errorMessage += "One of the aliases is empty!\n";
-                error = true;
-            }
-        }
-        if (_this.checkList('cpuSockets-fields-list')) {
-            errorMessage += "CPU sockets has duplicate entries!\n";
-            error = true;
-        }
-        if (_this.checkList('processorPlatformTypes-fields-list')) {
-            errorMessage += "CPU family has duplicate entries!\n";
-            error = true;
-        }
-        if (_this.checkList('motherboardMaxRams-fields-list')) {
-            errorMessage += "Max system RAM has duplicate entries!\n";
-            error = true;
-        }
-        if (_this.checkList('cacheSize-fields-list')) {
-            errorMessage += "Cache has duplicate entries!\n";
-            error = true;
-        }
-
-        if (_this.checkList('knownIssues-fields-list')) {
-            errorMessage += "Known issues has duplicate entries!\n";
-            error = true;
-        }
-        if (_this.checkList('cpuSpeed-fields-list')) {
-            errorMessage += "FSB speed has duplicate entries!\n";
             error = true;
         }*/
         if (error) {
@@ -129,21 +70,27 @@ export default class extends Controller {
         }
     }
 
-    checkCollection(id, attr) {
-        let cnt = 1;
-        let error = false;
+    checkFile(id, attribute) {
+        let cnt = 0;
+        let errorIDs = [];
         while(document.getElementById(id + cnt)){
-            //alert(document.getElementById(id + cnt).outerHTML);
-            if (document.getElementById(id + cnt + attr).files[0] == null) {
-                if (document.getElementById(id + cnt + "_file_name").value == '') {
-                    error = true;
-                }
-            }
+            if (document.getElementById(id + cnt + attribute + "_file_link")==null && document.getElementById(id + cnt + attribute + "_file_new_file_name").innerHTML=="")
+                errorIDs.push(cnt);
             cnt++;
         }
-        return error;
+        return errorIDs;
     }
-    checkNull(id, attr) {
+    checkImageFile(id, attribute) {
+        let cnt = 0;
+        let errorIDs = [];
+        while(document.getElementById(id + cnt)){
+            if (document.getElementById("ea-lightbox-" + id + cnt + attribute)==null && document.getElementById(id + cnt + attribute + "_file_new_file_name").innerHTML=="")
+                errorIDs.push(cnt);
+            cnt++;
+        }
+        return errorIDs;
+    }
+    /*checkNull(id, attr) {
         let cnt = 1;
         let error = false;
         while(document.getElementById(id + cnt)){
@@ -154,7 +101,7 @@ export default class extends Controller {
             cnt++;
         }
         return error;
-    }
+    }*/
     /**
      * Save the motherboard
      */
@@ -179,29 +126,6 @@ export default class extends Controller {
         //this.checkAllCheckBoxes();
         submit_btn.click();
     }
-    /**
-     * Clone the motherboard
-     */
-    clone() {
-        if (confirm('Are you sure you want to clone this board ?')) {
-            //replace the form URL
-            let str = window.location.href;
-            let form = document.getElementsByName("add_motherboard")[0];
-            form.action = str.substring(0, str.search("admin")) + 'admin/manage/motherboards/motherboards/add';
-            // remove all files
-            let images = document.getElementById("images-fields-list");
-            images.innerHTML = '';
-            let bioses = document.getElementById("motherboardBios-fields-list");
-            bioses.innerHTML = '';
-            let manuals = document.getElementById("manuals-fields-list");
-            manuals.innerHTML = '';
-            let redirections = document.getElementById("redirections-fields-list");
-            redirections.innerHTML = '';
-			let slug = document.getElementById('motherboard_form_slug');
-			slug.value = "";
-			window.history.replaceState({},'', window.location.origin + '/admin/manage/motherboards/motherboards/add');
-        }
-    }
 
     /**
      * Fetch CPU/NPU lists based on the parameters given by the user
@@ -210,31 +134,33 @@ export default class extends Controller {
     updateProcessors(event) {
         event.preventDefault();
         let _this = this;
-        let sockets = document.getElementById("cpuSockets-fields-list").children;
-        let platforms = document.getElementById("processorPlatformTypes-fields-list").children;
-        let frequencies = document.getElementById("cpuSpeed-fields-list").children;
         _this.checkAllCheckBoxes();
-        let processors = document.getElementById("motherboard_form_processors").children;
-        let coprocessors = document.getElementById("motherboard_form_coprocessors").children;
-        let slug = document.getElementById("motherboard_form_slug");
-        
+        //let processors = document.getElementById("motherboard_form_processors").children;
+        //let coprocessors = document.getElementById("motherboard_form_coprocessors").children;
+        let slug = document.getElementById('Motherboard_slug');
         let form = _this.element;
 
         let params = new FormData();
         params.set(slug.name, slug.value);
-        for (let socket of sockets) {
-            let element = socket.children[0];
+        let cnt = 0;
+        while(document.getElementById("Motherboard_cpuSockets_" + cnt)){
+            let element = document.getElementById("Motherboard_cpuSockets_" + cnt);
             params.set(element.name, element.value);
+            cnt++;
         }
-        for (let platform of platforms) {
-            let element = platform.children[0];
+        cnt = 0;
+        while(document.getElementById("Motherboard_processorPlatformTypes_" + cnt)){
+            let element = document.getElementById("Motherboard_processorPlatformTypes_" + cnt);
             params.set(element.name, element.value);
+            cnt++;
         }
-        for (let frequency of frequencies) {
-            let element = frequency.children[0];
+        cnt = 0;
+        while(document.getElementById("Motherboard_cpuSpeed_" + cnt)){
+            let element = document.getElementById("Motherboard_cpuSpeed_" + cnt);
             params.set(element.name, element.value);
+            cnt++;
         }
-        for (let processor of processors) {
+        /*for (let processor of processors) {
             if (processor.checked) {
                 params.append(processor.name, processor.value);
             }
@@ -243,7 +169,7 @@ export default class extends Controller {
             if (coprocessor.checked) {
                 params.append(coprocessor.name, coprocessor.value);
             }
-        }
+        }*/
         let cursor = document.getElementById("cpu-wait");
         cursor.style.display = "";
         (async () => {
@@ -254,6 +180,7 @@ export default class extends Controller {
             let parser = new DOMParser();
             //console.log(await rawResponse.text());
             let parsedResponse = parser.parseFromString(await rawResponse.text(), "text/html");
+            console.log(parsedResponse);
             document.getElementById("cpuSockets-fields-list").innerHTML = parsedResponse.getElementById("cpuSockets-fields-list").innerHTML;
             document.getElementById("processorPlatformTypes-fields-list").outerHTML = parsedResponse.getElementById("processorPlatformTypes-fields-list").outerHTML;
             document.getElementById("processorPlatformTypes-fields-list").innerHTML = parsedResponse.getElementById("processorPlatformTypes-fields-list").innerHTML;
@@ -284,9 +211,6 @@ export default class extends Controller {
     //Coprocessors
     uncheckedCoprocessors = new Array();
     checkedCoprocessors = new Array();
-    connect() {
-        //this.initProcessorsFromDom(document);
-    }
 
     initProcessorsFromDom(dom) {
         //Processors

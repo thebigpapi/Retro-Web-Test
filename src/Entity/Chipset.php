@@ -332,7 +332,7 @@ class Chipset
     {
         return $this->documentations;
     }
-    public function addManual(ChipsetDocumentation $documentation): self
+    public function addDocumentation(ChipsetDocumentation $documentation): self
     {
         if (!$this->documentations->contains($documentation)) {
             $this->documentations[] = $documentation;
@@ -341,7 +341,7 @@ class Chipset
 
         return $this;
     }
-    public function removeManual(ChipsetDocumentation $documentation): self
+    public function removeDocumentation(ChipsetDocumentation $documentation): self
     {
         if ($this->documentations->contains($documentation)) {
             $this->documentations->removeElement($documentation);

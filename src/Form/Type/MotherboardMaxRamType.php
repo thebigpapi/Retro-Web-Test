@@ -21,10 +21,10 @@ class MotherboardMaxRamType extends AbstractType
             ->add('max_ram', EntityType::class, [
                 'class' => MaxRam::class,
                 'choice_label' => 'getValueWithUnit',
+                'label' => 'Size',
                 'multiple' => false,
                 'expanded' => false,
                 'autocomplete' => true,
-                'attr' => ['data-ea-widget' => 'ea-autocomplete'],
                 ])
             ->add('note', TextType::class, ['required' => false]);
     }

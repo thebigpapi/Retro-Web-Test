@@ -1,0 +1,36 @@
+.form-group.field-collection .field-collection-delete-button {
+    right: 0;
+}
+.btn-link-danger {
+    transition: font-size 0.1s 0.1s, ease-in-out 0.1s color;
+	padding:0;
+	&:active, &:active:focus, &:focus, &:hover{
+		color: rgb(247, 207, 62);
+		&>i{font-size:24px;}
+	}
+}
+.field-collection-add-button{
+	transition: font-size 0.1s 0.15s, ease-in-out 0.15s color;
+	&:active, &:active:focus, &:hover{
+		color: rgb(247, 207, 62);
+		font-size:24px;
+	}
+}
+.accordion-body.trw{
+	display: flex;
+	column-gap: 5px;
+	padding:10px;
+	div.accordion-body-widget{
+		flex-grow:1;
+	}
+	div.accordion-body-delete-btn{
+		flex-grow:0;
+		align-self: center;
+	}
+}
+.editor-errors{
+	display:flex;
+	flex-direction:row;
+	column-gap: 5px;
+	align-items: center;
+}

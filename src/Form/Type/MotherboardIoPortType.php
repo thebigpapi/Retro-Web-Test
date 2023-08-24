@@ -21,11 +21,14 @@ class MotherboardIoPortType extends AbstractType
             ->add('io_port', EntityType::class, [
                 'class' => IoPort::class,
                 'choice_label' => 'name',
+                'label' => 'Type',
                 'multiple' => false,
                 'expanded' => false,
                 'autocomplete' => true,
                 ])
-            ->add('count', NumberType::class);
+            ->add('count', NumberType::class,[
+                'error_bubbling' => true,
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)

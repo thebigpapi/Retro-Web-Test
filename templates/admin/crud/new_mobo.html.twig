@@ -51,9 +51,10 @@
 {% endblock %}
 
 {% block page_actions %}
+    <div class="mobo-ea-btn">
     {% for action in entity.actions %}
         {{ include(action.templatePath, { action: action }, with_context = false) }}
-    {% endfor %}
+    {% endfor %}</div>
     <div class="mobo-buttons" data-controller="motherboard--add">
         <button class="btn btn-secondary" type="button"data-action="click->motherboard--add#getslug">
             <span class="btn-label"><i class="fa fa-external-link"></i> <span class="action-label">Get slug</span></span>
@@ -69,6 +70,6 @@
 
 {% block main %}
     {% block new_form %}
-        {{ form(new_form) }}
+        {{ form(new_form, {'attr': {'data-controller': 'motherboard--add', 'data-action': 'submit->motherboard--add#check'}}) }}
     {% endblock new_form %}
 {% endblock %}

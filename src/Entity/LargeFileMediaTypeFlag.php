@@ -25,6 +25,9 @@ class LargeFileMediaTypeFlag
     #[ORM\Column(type: 'integer')]
     #[Assert\LessThan(50, message: 'Count should be below 50')]
     #[Assert\Positive(message: 'Count should be positive only')]
+    #[Assert\NotBlank(
+        message: 'Count cannot be blank'
+    )]
     private $count;
 
     public function __toString(): string

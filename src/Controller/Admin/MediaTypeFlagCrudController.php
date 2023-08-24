@@ -28,7 +28,10 @@ class MediaTypeFlagCrudController extends AbstractCrudController
         yield TextField::new('tagName');
         yield TextField::new('file_name')
             ->setFormTypeOption('disabled','disabled');
-        yield TextareaField::new('icon')->setFormType(VichImageType::class)->onlyOnForms();
+        yield TextareaField::new('icon')
+            ->setFormType(VichImageType::class)
+            ->setFormTypeOption('allow_delete', false)
+            ->onlyOnForms();
     }
     public function configureCrud(Crud $crud): Crud
     {

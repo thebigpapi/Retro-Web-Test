@@ -3,7 +3,6 @@
 namespace App\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -14,24 +13,16 @@ use App\Entity\Creditor;
 use Symfony\Component\Form\ChoiceList\View\ChoiceView;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
+use Vich\UploaderBundle\Form\Type\VichFileType;
 
 class ChipImageType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('file_name', TextType::class, [
-                'required' => true,
-                'disabled' => true,
-            ])
-            ->add('imageFile', FileType::class, [
+            ->add('imageFile', VichFileType::class, [
                 'label' => 'Image (jpg file)',
-
-                // unmapped means that this field is not associated to any entity property
-                //'mapped' => false,
-
-                // make it optional so you don't have to re-upload the PDF file
-                // every time you edit the Product details
+                'allow_delete' => false,
                 'required' => false,
 
                 // unmapped fields can't define their validation using annotations
@@ -47,9 +38,6 @@ class ChipImageType extends AbstractType
                     ])
                 ],
             ])
-            ->add('description', TextType::class, [
-                'required' => false,
-            ])
             ->add('creditor', EntityType::class, [
                 'class' => Creditor::class,
                 'required' => false,
@@ -57,7 +45,10 @@ class ChipImageType extends AbstractType
                 'multiple' => false,
                 'expanded' => false,
                 'autocomplete' => true,
-                'attr' => ['data-ea-widget' => 'ea-autocomplete'],
+            ])
+            ->add('description', TextType::class, [
+                'required' => false,
+                'label' => 'Note',
             ]);
     }
 

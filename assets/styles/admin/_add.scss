@@ -1,68 +1,4 @@
-/*image section*/
-div.addform{
-	box-shadow:inset -1px -1px $dark-color,inset 1px 1px $footer-link-color,inset -2px -2px $medium-color,inset 2px 2px $lightbg-color;
-	background-color: $footer-link-color;
-	padding:10px; 
-	font-size:11pt; 
-	margin-top: 5px;
-	color:$dark-color;
-	@media (prefers-color-scheme: dark) {
-		box-shadow:inset -1px -1px $medium-color,inset 1px 1px $accent-bkg-dark,inset -2px -2px $darkbg-color,inset 2px 2px $medium-color;
-		background-color: $accent-bkg-dark;
-		color:$light-color;
-	}
-}
-img.imgp-img { 
-	display:flex;
-	margin: auto;
-	padding-bottom:5px;
-	max-height:170px;
-	max-width: 100%;
-}
-div.imgp {
-	font-size:16px;
-	padding-top:1px;
-	display:flex;
-	justify-content: space-between;
-	flex-wrap: wrap;
-	select,div.ts-wrapper {
-		width:75%;
-		div.ts-control{
-			width:100%;
-		}
-	}
-	input { width:71%; }
-	.ts-control input { width:auto; }
-	.ts-dropdown-content{max-height: 130px;}
-}
 
-div.full-spec.edit{
-    div div{padding:0;}
-	div.full-spec-head{margin:5px 0px 5px;}
-}
-/*drivers, bios images, manuals*/
-div.bios-image { 
-	background-color: $lightbg-color;
-	color: $dark-color;
-	@media (prefers-color-scheme: dark) {
-		background-color: #484848;
-		color:$light-color;
-	}
-	padding: 0;
-	font-size:16px;
- }
-div.bios-image-head {
-	background-color:$footer-link-color;
-	color:$dark-color;
-	@media (prefers-color-scheme: dark) {
-		background-color: $btn-darkbg-color;
-		color:$light-color;
-	}
-	width:100%;
-	clear:left;
-	padding-bottom:5px;
-	text-align: center;
-}
 div.cpu-head{
 	background-color:$footer-link-color;
 	color:$dark-color;
@@ -82,23 +18,10 @@ div.cpu-head{
 		}
 	}
 }
-input.num{width:15px;}
-/* notes section */
-div.notes-field div { padding-bottom: 6px; padding-right: 4px; margin:auto }
-div.notes-field label { display:none }
-div.notes-field div textarea { width:99%; height:150px }
-
-div.show-edit{
-	textarea{
-		width:max(30vw, 320px);
-		height:25vh;
-	}
-}
 
 div.dual-list-container {
 	display: flex;
-	grid-template-columns: 1fr 1fr;
-	column-gap: 1px;
+	column-gap: 25px;
 }
 
 div.dual-list-list {
@@ -131,11 +54,17 @@ div.dual-list-buttons {
 		}
 	}
 }
-#tab-nav-save:disabled {
-	color: gray;	
-	background-color: darkgrey;
-	box-shadow: none;
-	img {
-		filter: grayscale(100%);
+div.mobo-ea-btn{
+	& > button.action-saveAndReturn, & > button.action-saveAndContinue, & > button.action-saveAndAddAnother{
+		display:none;
 	}
+}
+
+div.mobo-buttons{
+	display: flex;
+    flex-wrap: wrap;
+    justify-content: right;
+    row-gap: 1em;
+    flex-direction: row;
+    padding-left: 8px;
 }

@@ -9,6 +9,7 @@ use App\Form\Type\LargeFileExpansionChipType;
 use App\Form\Type\ChipDocumentationType;
 use App\Form\Type\ChipImageType;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
@@ -35,9 +36,12 @@ class ExpansionChipCrudController extends AbstractCrudController
         yield TextField::new('getManufacturer','Manufacturer')
             ->hideOnForm();
         yield AssociationField::new('manufacturer','Manufacturer')
+            ->setColumns(4)
             ->onlyOnForms();
-        yield TextField::new('partNumber', 'Part number');
-        yield TextField::new('name', 'Name');
+        yield TextField::new('partNumber', 'Part number')
+            ->setColumns(4);
+        yield TextField::new('name', 'Name')
+            ->setColumns(4);
         yield TextField::new('type','Type')->onlyOnIndex();
         // index
         yield ArrayField::new('pciDevs', 'PCI DEV')
@@ -52,31 +56,37 @@ class ExpansionChipCrudController extends AbstractCrudController
             ->renderAsSwitch(false)
             ->onlyOnIndex();
         // editor
-
-        yield CollectionField::new('chipAliases', 'Chip aliases')
-            ->setEntryType(ChipAliasType::class)
-            ->renderExpanded()
-            ->onlyOnForms();
         yield AssociationField::new('type','Type')
+            ->setColumns(6)
             ->onlyOnForms();
         yield CollectionField::new('pciDevs', 'PCI DEV')
             ->setEntryType(PciDeviceIdType::class)
-            ->renderExpanded()
-            ->onlyOnForms();
-        yield CollectionField::new('drivers', 'Drivers')
-            ->setEntryType(LargeFileExpansionChipType::class)
-            ->renderExpanded()
-            ->onlyOnForms();
-        yield CollectionField::new('documentations', 'Documentation')
-            ->setEntryType(ChipDocumentationType::class)
-            ->renderExpanded()
-            ->onlyOnForms();
-        yield CollectionField::new('images', 'Images')
-            ->setEntryType(ChipImageType::class)
+            ->setColumns(6)
             ->renderExpanded()
             ->onlyOnForms();
         yield CodeEditorField::new('description')
             ->setLanguage('markdown')
+            ->onlyOnForms();
+        yield FormField::addPanel('Other')->onlyOnForms();
+        yield CollectionField::new('documentations', 'Documentation')
+            ->setEntryType(ChipDocumentationType::class)
+            ->setColumns(6)
+            ->renderExpanded()
+            ->onlyOnForms();
+        yield CollectionField::new('images', 'Images')
+            ->setEntryType(ChipImageType::class)
+            ->setColumns(6)
+            ->renderExpanded()
+            ->onlyOnForms();
+        yield CollectionField::new('chipAliases', 'Chip aliases')
+            ->setEntryType(ChipAliasType::class)
+            ->setColumns(6)
+            ->renderExpanded()
+            ->onlyOnForms();
+        yield CollectionField::new('drivers', 'Drivers')
+            ->setEntryType(LargeFileExpansionChipType::class)
+            ->setColumns(6)
+            ->renderExpanded()
             ->onlyOnForms();
     }
     public function configureCrud(Crud $crud): Crud

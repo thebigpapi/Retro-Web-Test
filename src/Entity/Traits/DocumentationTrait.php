@@ -25,10 +25,13 @@ trait DocumentationTrait
         match: true,
         message: 'The name uses invalid characters',
     )]
-    private string|null $file_name;
+    private $file_name;
 
     #[ORM\Column(type: 'string', length: 255)]
-    #[Assert\Length(max:255, maxMessage: 'Link name is longer than {{ limit }} characters, try to make it shorter.')]
+    #[Assert\Length(max:255, maxMessage: 'Documentation title is longer than {{ limit }} characters.')]
+    #[Assert\NotBlank(
+        message: 'Documentation title cannot be blank'
+    )]
     private $link_name;
 
     #[ORM\ManyToOne(targetEntity: 'App\Entity\Language', inversedBy: 'manuals')]

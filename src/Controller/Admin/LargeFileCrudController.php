@@ -7,8 +7,10 @@ use App\Form\Type\LanguageType;
 use App\Form\Type\OsFlagType;
 use App\Form\Type\LargeFileMediaTypeFlagType;
 use Doctrine\ORM\EntityManagerInterface;
+use Vich\UploaderBundle\Form\Type\VichFileType;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\UrlField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
@@ -36,34 +38,51 @@ class LargeFileCrudController extends AbstractCrudController
             ->add('name')
             ->add('fileVersion')
             ->add('file_name')
-            ->add('subdirectory');
+            ->add('subdirectory')
+            ->add('lastEdited');
     }
     public function configureFields(string $pageName): iterable
     {
         yield IdField::new('id')->onlyOnIndex();
 
-        yield TextField::new('name', 'Name');
-        yield TextField::new('fileVersion', 'Version');
-        yield TextField::new('file_name', 'File name')
-            ->setFormTypeOption('disabled','disabled')
-            ->onlyOnForms();
-        yield DateField::new('release_date', 'Release Date');
-        yield TextField::new('subdirectory', 'Type')
-            ->onlyOnIndex();
-        yield AssociationField::new('dumpQualityFlag','Quality')
-            ->onlyOnForms();
+        yield TextField::new('name', 'Name')
+            ->setColumns(4);
+        yield TextField::new('fileVersion', 'Version')
+            ->setColumns(4);
         yield ChoiceField::new('subdirectory', 'Type')
             ->setChoices([
                 'apps' => 'apps',
                 'drivers' => 'drivers',
             ])
+            ->setFormTypeOption('empty_data', 'drivers')
+            ->setFormTypeOption('autocomplete', 'disabled')
+            ->setColumns(4)
+            ->onlyOnForms();
+        /*yield TextField::new('file_name', 'File name')
+            ->setColumns(4)
+            ->setFormTypeOption('disabled','disabled')
+            ->onlyOnForms();*/
+        yield TextField::new('subdirectory', 'Type')
+            ->onlyOnIndex();
+        yield AssociationField::new('dumpQualityFlag','Quality')
+            ->setColumns(4)
+            ->onlyOnForms();
+        yield DateField::new('release_date', 'Release Date')
+            ->setColumns(4);
+        yield TextareaField::new('file', 'File')
+            ->setFormType(VichFileType::class)
+            ->setFormTypeOption('allow_delete', false)
+            //->setFormTypeOption('download_label', false)
+            ->setColumns(4)
             ->onlyOnForms();
         yield CollectionField::new('languages', 'Language')
             ->setEntryType(LanguageType::class)
+            ->setColumns(4)
             ->renderExpanded()
             ->onlyOnForms();
         yield CollectionField::new('mediaTypeFlags', 'Media type flags')
             ->setEntryType(LargeFileMediaTypeFlagType::class)
+            ->setColumns(4)
             ->renderExpanded()
             ->onlyOnForms();
         yield ArrayField::new('mediaTypeFlags', 'Media type flags')
@@ -72,6 +91,7 @@ class LargeFileCrudController extends AbstractCrudController
             ->onlyOnIndex();
         yield CollectionField::new('osFlags', 'OS flags')
             ->setEntryType(OsFlagType::class)
+            ->setColumns(4)
             ->renderExpanded()
             ->onlyOnForms();
         yield CodeEditorField::new('note')

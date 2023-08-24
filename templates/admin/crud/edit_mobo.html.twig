@@ -51,9 +51,10 @@
 {% endblock %}
 
 {% block page_actions %}
+    <div class="mobo-ea-btn">
     {% for action in entity.actions %}
         {{ include(action.templatePath, { action: action }, with_context = false) }}
-    {% endfor %}
+    {% endfor %}</div>
 
     <div class="mobo-buttons" data-controller="motherboard--add">
         <button class="btn btn-secondary" type="button"data-action="click->motherboard--add#getslug">

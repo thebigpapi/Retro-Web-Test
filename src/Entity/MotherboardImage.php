@@ -27,7 +27,6 @@ class MotherboardImage
 
     #[ORM\Column(type: 'string', length: 255)]
     #[Assert\Length(max: 255, maxMessage: 'Image file name is longer than {{ limit }} characters, try to make it shorter.')]
-    #[Assert\NotBlank(message:'An image entry has the file name = {{ value }}')]
     private $file_name;
 
     /**

@@ -30,7 +30,8 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
-use EasyCorp\Bundle\EasyAdminBundle\Filter\ArrayFilter;
+use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
+use EasyCorp\Bundle\EasyAdminBundle\Filter\EntityFilter;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
@@ -56,11 +57,8 @@ class MotherboardCrudController extends AbstractCrudController
             ->add('motherboardAliases')
             ->add('chipset')
             ->add('expansionChips')
-            //->add('motherboardMaxRams')
             ->add('cacheSize')
             ->add('dramType')
-            //->add('motherboardExpansionSlots')
-            //->add('motherboardIoPorts')
             ->add('processorPlatformTypes')
             ->add('cpuSockets')
             ->add('cpuSpeed')
@@ -68,7 +66,6 @@ class MotherboardCrudController extends AbstractCrudController
             ->add('knownIssues')
             ->add('psuConnectors')
             ->add('dimensions')
-            ->add(ArrayFilter::new('motherboardBios'))
             ->add('lastEdited');
     }
     public function configureFields(string $pageName): iterable
@@ -89,9 +86,12 @@ class MotherboardCrudController extends AbstractCrudController
         yield BooleanField::new('getMotherboardBios','BIOS?')
             ->renderAsSwitch(false)
             ->onlyOnIndex();
+        yield BooleanField::new('getImages','Images?')
+            ->renderAsSwitch(false)
+            ->onlyOnIndex();
 
         // show and indes
-        yield DateField::new('lastEdited')
+        yield DateField::new('lastEdited', 'Last edit')
             ->hideOnForm();
 
         // editor items
@@ -102,7 +102,6 @@ class MotherboardCrudController extends AbstractCrudController
             ->setColumns(4)
             ->onlyOnForms();
         yield TextField::new('slug')
-            //->setTargetFieldName(['manufacturer', 'name'])
             ->setColumns(4)
             ->onlyOnForms();
         yield CollectionField::new('motherboardAliases', 'Alternative names')
@@ -132,6 +131,16 @@ class MotherboardCrudController extends AbstractCrudController
             ->onlyOnForms();
         yield FormField::addTab('Advanced Data')
             ->setIcon('database')
+            ->onlyOnForms();
+        yield FormField::addPanel('Chips')
+            ->onlyOnForms();
+        yield CollectionField::new('expansionChips', 'Expansion chips')
+            ->setEntryType(ExpansionChipType::class)
+            ->renderExpanded()
+            ->setColumns(6)
+            ->onlyOnForms();
+        yield AssociationField::new('chipset')
+            ->setColumns(6)
             ->onlyOnForms();
         yield FormField::addPanel('Memory')->onlyOnForms();
         yield CollectionField::new('motherboardMaxRams', 'Supported RAM size')
@@ -166,14 +175,6 @@ class MotherboardCrudController extends AbstractCrudController
             ->setColumns(4)
             ->renderExpanded()
             ->onlyOnForms();
-        yield FormField::addPanel('Chips')
-            ->onlyOnForms();
-        yield AssociationField::new('chipset')
-            ->onlyOnForms();
-        yield CollectionField::new('expansionChips', 'Expansion chipset')
-            ->setEntryType(ExpansionChipType::class)
-            ->renderExpanded()
-            ->onlyOnForms();
         yield FormField::addTab('CPU stuff')
             ->setIcon('microchip')
             ->onlyOnForms();
@@ -192,6 +193,8 @@ class MotherboardCrudController extends AbstractCrudController
             ->setColumns(4)
             ->renderExpanded()
             ->onlyOnForms();
+        yield IntegerField::new('maxcpu', 'CPU socket count')
+            ->onlyOnForms();
         /*yield CollectionField::new('processors', 'CPUs')
             ->setEntryType(ProcessorType::class)
             ->renderExpanded()
@@ -206,29 +209,37 @@ class MotherboardCrudController extends AbstractCrudController
         yield CollectionField::new('images', 'Images')
             //->useEntryCrudForm(MotherboardImageCrudController::class)
             ->setEntryType(MotherboardImageTypeForm::class)
+            ->setColumns(6)
+            ->renderExpanded()
+            ->onlyOnForms();
+        yield CollectionField::new('motherboardBios', 'BIOS images')
+            ->setEntryType(MotherboardBiosType::class)
+            ->setColumns(6)
+            ->renderExpanded()
+            ->onlyOnForms();
+        yield CollectionField::new('manuals', 'Documentation')
+            ->setEntryType(ManualType::class)
+            ->setColumns(6)
+            ->renderExpanded()
+            ->onlyOnForms();
+        yield CollectionField::new('miscFiles', 'Misc files')
+            ->setEntryType(MiscFileType::class)
+            ->setColumns(6)
             ->renderExpanded()
             ->onlyOnForms();
         yield CollectionField::new('drivers', 'Drivers')
             ->setEntryType(LargeFileMotherboardType::class)
             ->renderExpanded()
             ->onlyOnForms();
-        yield CollectionField::new('motherboardBios', 'BIOS images')
-            ->setEntryType(MotherboardBiosType::class)
-            ->renderExpanded()
-            ->onlyOnForms();
-        yield CollectionField::new('manuals', 'Documentation')
-            ->setEntryType(ManualType::class)
-            ->renderExpanded()
-            ->onlyOnForms();
-        yield CollectionField::new('miscFiles', 'Misc files')
-            ->setEntryType(MiscFileType::class)
-            ->renderExpanded()
-            ->onlyOnForms();
 
     }
     public function configureCrud(Crud $crud): Crud
     {
-        return $crud;
+        return parent::configureCrud($crud)
+            ->overrideTemplate('crud/edit', 'admin/crud/edit_mobo.html.twig')
+            ->overrideTemplate('crud/new', 'admin/crud/new_mobo.html.twig')
+            ->setDefaultSort(['lastEdited' => 'DESC']);
+            //->overrideTemplate('form_theme', 'admin/crud/form_theme.html.twig');
     }
     public function configureActions(Actions $actions): Actions
     {

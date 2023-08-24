@@ -21,11 +21,14 @@ class MotherboardExpansionSlotType extends AbstractType
             ->add('expansion_slot', EntityType::class, [
                 'class' => ExpansionSlot::class,
                 'choice_label' => 'name',
+                'label' => 'Type',
                 'multiple' => false,
                 'expanded' => false,
                 'autocomplete' => true,
                 ])
-            ->add('count', NumberType::class);
+            ->add('count', NumberType::class,[
+                'error_bubbling' => true,
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)
