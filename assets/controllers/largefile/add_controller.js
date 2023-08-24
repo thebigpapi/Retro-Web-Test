@@ -1,14 +1,17 @@
 import { Controller } from 'stimulus';
 
 export default class extends Controller {
+
+    connect() {
+    }
     /**
      * Check that everything is fine before submiting the board
      * @param {*} event 
      */
     check(event) {
-        this.clearErrors();
+        //this.clearErrors();
 
-        let name = document.getElementById('large_file_form_name');
+        /*let name = document.getElementById('large_file_form_name');
         let file = document.getElementById('large_file_form_file');
         let existingFile = document.getElementById('large_file_form_file_name');
         let subdir = document.getElementById('large_file_form_subdirectory');
@@ -26,7 +29,7 @@ export default class extends Controller {
         }
         if (this.errorCount()) { //Errors found
             return false;
-        }
+        }*/
         return true;
     }
     /**
@@ -38,6 +41,28 @@ export default class extends Controller {
             this.submit(event);
          }
      }
+
+    /*submit() {
+        let submit_btn = document.getElementsByClassName('action-saveAndReturn btn btn-primary action-save')[0];
+        if (submit_btn.disabled)
+            submit_btn.disabled=false;
+        //this.checkAllCheckBoxes();
+        submit_btn.click();
+    }*/
+    submitcontinue() {
+        let submit_btn = document.getElementsByClassName('action-saveAndContinue btn btn-secondary action-save')[0];
+        if (submit_btn.disabled)
+            submit_btn.disabled=false;
+        //this.checkAllCheckBoxes();
+        submit_btn.click();
+    }
+    submitnewadd() {
+        let submit_btn = document.getElementsByClassName('action-saveAndAddAnother btn btn-secondary action-save')[0];
+        if (submit_btn.disabled)
+            submit_btn.disabled=false;
+        //this.checkAllCheckBoxes();
+        submit_btn.click();
+    }
     /**
      * Submit the form
      * @param {*} event 
@@ -53,6 +78,7 @@ export default class extends Controller {
                 console.log(e.loaded + " / " + e.total)
             }
         }
+        alert("submit?");
         let speedText;
         let bar;
         xhr.upload.addEventListener("progress", function (evt) {
@@ -86,12 +112,12 @@ export default class extends Controller {
         xhr.onloadstart = function (e) {
             bar = document.getElementById('progressBar')
             bar.hidden = false
-            document.getElementById('tab-nav-save').setAttribute('disabled', true);
-            messageRow = document.getElementById("messageRow") 
-            messageRow.hidden = false
+            document.getElementsByClassName('action-saveAndReturn btn btn-primary action-save')[0].setAttribute('disabled', true);
+            //messageRow = document.getElementById("messageRow")
+            //messageRow.hidden = false
         }
         xhr.onloadend = function (e) {
-            document.getElementById('tab-nav-save').removeAttribute('disabled');
+            document.getElementsByClassName('action-saveAndReturn btn btn-primary action-save')[0].removeAttribute('disabled');
             bar = document.getElementById('progressBar')
             bar.hidden = true
             if (xhr.status == 200) {
@@ -112,7 +138,7 @@ export default class extends Controller {
                 document.getElementById("message").innerHTML = xhr.statusText
             }
         }
-        xhr.send(new FormData(document.getElementsByName('large_file_form')[0]));
+        xhr.send(new FormData(document.getElementById('edit-LargeFile-form')));
 
     }
 

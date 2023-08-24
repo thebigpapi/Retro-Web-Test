@@ -55,15 +55,6 @@ export default class extends Controller {
 
             error = true;
         }
-        /*
-        if (this.checkNull("Motherboard_motherboardIoPorts_", "_count")) {
-            errorMessage += "One of the I/O ports is missing the count!\n";
-            error = true;
-        }
-        if (this.checkNull("Motherboard_motherboardExpansionSlots_", "_count")) {
-            errorMessage += "One of the expansion slots is missing the count!\n";
-            error = true;
-        }*/
         if (error) {
             alert(errorMessage);
             event.preventDefault();
@@ -90,21 +81,6 @@ export default class extends Controller {
         }
         return errorIDs;
     }
-    /*checkNull(id, attr) {
-        let cnt = 1;
-        let error = false;
-        while(document.getElementById(id + cnt)){
-            //alert(document.getElementById(id + cnt).outerHTML);
-            if (document.getElementById(id + cnt + attr).value == '') {
-                error = true;
-            }
-            cnt++;
-        }
-        return error;
-    }*/
-    /**
-     * Save the motherboard
-     */
     submit() {
         let submit_btn = document.getElementsByClassName('action-saveAndReturn btn btn-primary action-save')[0];
         if (submit_btn.disabled)

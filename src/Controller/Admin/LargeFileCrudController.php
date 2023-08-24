@@ -115,4 +115,11 @@ class LargeFileCrudController extends AbstractCrudController
         $entityInstance->updateLastEdited();
         parent::updateEntity($entityManager, $entityInstance);
     }
+    public function configureCrud(Crud $crud): Crud
+    {
+        return parent::configureCrud($crud)
+            ->overrideTemplate('crud/edit', 'admin/crud/edit_driver.html.twig')
+            ->overrideTemplate('crud/new', 'admin/crud/new_driver.html.twig')
+            ->setDefaultSort(['lastEdited' => 'DESC']);
+    }
 }
