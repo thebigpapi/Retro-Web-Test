@@ -18,16 +18,17 @@ class MotherboardIoPortType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+            ->add('count', NumberType::class,[
+                'label' => false,
+            ])
             ->add('io_port', EntityType::class, [
                 'class' => IoPort::class,
                 'choice_label' => 'name',
-                'label' => 'Type',
+                'label' => false,
                 'multiple' => false,
                 'expanded' => false,
                 'autocomplete' => true,
-                ])
-            ->add('count', NumberType::class,[
-                'error_bubbling' => true,
+                'placeholder' => 'Select type...',
             ]);
     }
 

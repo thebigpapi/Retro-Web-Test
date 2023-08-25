@@ -33,6 +33,10 @@ class MaxRam
         $this->motherboardMaxRams = new ArrayCollection();
         $this->motherboards = new ArrayCollection();
     }
+    public function __toString(): string
+    {
+        return $this->getValueWithUnit();
+    }
     public function getId(): ?int
     {
         return $this->id;

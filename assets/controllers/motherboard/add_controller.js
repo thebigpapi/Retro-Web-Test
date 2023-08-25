@@ -33,13 +33,6 @@ export default class extends Controller {
             errorMessage += "Manual with title \"" + document.getElementById("Motherboard_manuals_" + msgId + "_link_name").value + "\" is missing the file!\n";
             error = true;
         }
-        for (let msgId of this.checkFile("Motherboard_motherboardBios_", "_romFile")){
-            if(document.getElementById("Motherboard_motherboardBios_" + msgId + "_boardVersion").value=="")
-                errorMessage += "BIOS with POST string \"" + document.getElementById("Motherboard_motherboardBios_" + msgId + "_postString").value + "\" is missing the file!\n";
-            else
-                errorMessage += "BIOS with version \"" + document.getElementById("Motherboard_motherboardBios_" + msgId + "_postString").value + "\" is missing the file!\n";
-            error = true;
-        }
         for (let msgId of this.checkFile("Motherboard_miscFiles_", "_miscFile")){
             errorMessage += "Misc file with title \"" + document.getElementById("Motherboard_miscFiles_" + msgId + "_link_name").value + "\" is missing the file!\n";
             error = true;
@@ -64,6 +57,8 @@ export default class extends Controller {
     checkFile(id, attribute) {
         let cnt = 0;
         let errorIDs = [];
+        if(document.getElementById(id + 0)==null)
+            cnt = 1;
         while(document.getElementById(id + cnt)){
             if (document.getElementById(id + cnt + attribute + "_file_link")==null && document.getElementById(id + cnt + attribute + "_file_new_file_name").innerHTML=="")
                 errorIDs.push(cnt);

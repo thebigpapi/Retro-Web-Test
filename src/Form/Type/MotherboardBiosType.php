@@ -20,27 +20,37 @@ class MotherboardBiosType extends AbstractType
             ->add('manufacturer', EntityType::class, [
                 'class' => Manufacturer::class,
                 'choice_label' => 'shortNameIfExist',
+                'label' => false,
                 'multiple' => false,
                 'expanded' => false,
                 'autocomplete' => true,
-                'placeholder' => 'n/a'
+                'placeholder' => 'No manufacturer selected.',
             ])
             ->add('postString', TextType::class, [
+                'label' => false,
                 'required' => false,
+                'attr' => ['placeholder' => 'POST string:'],
             ])
             ->add('note', TextType::class, [
+                'label' => false,
                 'required' => false,
+                'attr' => ['placeholder' => 'Note:'],
             ])
             ->add('boardVersion', TextType::class, [
+                'label' => false,
                 'required' => false,
+                'attr' => ['placeholder' => 'BIOS version:'],
             ])
             ->add('coreVersion', TextType::class, [
+                'label' => false,
                 'required' => false,
+                'attr' => ['placeholder' => 'Core version:'],
             ])
             ->add('romFile', VichFileType::class, [
-                'label' => 'BIN/ZIP/EXE file',
+                'label' => false,
                 'required' => false,
                 'allow_delete' => false,
+                'download_label' => false,
                 'constraints' => [
                     new File([
                         'maxSize' => '16m',

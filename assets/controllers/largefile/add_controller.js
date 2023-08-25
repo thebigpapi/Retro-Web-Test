@@ -107,7 +107,7 @@ export default class extends Controller {
                 }
             }
         }, false);
-
+        alert("uploaded?");
         let messageRow;
         xhr.onloadstart = function (e) {
             bar = document.getElementById('progressBar')
@@ -116,6 +116,7 @@ export default class extends Controller {
             //messageRow = document.getElementById("messageRow")
             //messageRow.hidden = false
         }
+        alert("uploaded?");
         xhr.onloadend = function (e) {
             document.getElementsByClassName('action-saveAndReturn btn btn-primary action-save')[0].removeAttribute('disabled');
             bar = document.getElementById('progressBar')
@@ -138,7 +139,8 @@ export default class extends Controller {
                 document.getElementById("message").innerHTML = xhr.statusText
             }
         }
-        xhr.send(new FormData(document.getElementById('edit-LargeFile-form')));
+        alert("uploaded?");
+        //xhr.send(new FormData(document.getElementById('edit-LargeFile-form')));
 
     }
 

@@ -38,7 +38,7 @@ class CoprocessorCrudController extends AbstractCrudController
             ->setColumns(4);
         yield TextField::new('name', 'Aux Name')
             ->setColumns(4);
-        yield ArrayField::new('chipAliases', 'Aliases')
+        yield ArrayField::new('getChipAliases', 'Aliases')
             ->hideOnForm();
         yield TextField::new('getSpeedFSB', 'Speed/FSB')
             ->hideOnForm();
@@ -73,7 +73,7 @@ class CoprocessorCrudController extends AbstractCrudController
     }
     public function configureCrud(Crud $crud): Crud
     {
-        return $crud->showEntityActionsInlined();
+        return $crud->showEntityActionsInlined()->setPaginatorPageSize(100);
     }
     public function configureActions(Actions $actions): Actions
     {

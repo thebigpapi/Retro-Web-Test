@@ -8,8 +8,10 @@ use App\Form\Type\ChipImageType;
 use App\Form\Type\CpuSocketType;
 use App\Form\Type\ProcessorVoltageType;
 use App\Form\Type\InstructionSetType;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
@@ -26,6 +28,19 @@ class ProcessorCrudController extends AbstractCrudController
     {
         return Processor::class;
     }
+    public function configureFilters(Filters $filters): Filters
+    {
+        return parent::configureFilters($filters)
+            ->add('manufacturer')
+            ->add('name')
+            ->add('partNumber')
+            ->add('sockets')
+            ->add('core')
+            ->add('speed')
+            ->add('fsb')
+            ->add('tdp')
+            ->add('ProcessNode');
+    }
 
 
     public function configureFields(string $pageName): iterable
@@ -41,15 +56,19 @@ class ProcessorCrudController extends AbstractCrudController
             ->setColumns(4);
         yield TextField::new('name', 'Aux Name')
             ->setColumns(4);
-        yield ArrayField::new('chipAliases', 'Aliases')
+        yield ArrayField::new('getChipAliases', 'Aliases')
             ->hideOnForm();
         yield TextField::new('core', 'Core')
             ->hideOnForm();
-        yield TextField::new('getSpeedFSB', 'Speed/FSB')
+        yield TextField::new('speed', 'Speed')
+            ->hideOnForm();
+        yield TextField::new('fsb', 'FSB')
+            ->hideOnForm();
+        yield IntegerField::new('tdp', 'TDP')
+            ->hideOnForm();
+        yield IntegerField::new('ProcessNode', 'Process')
             ->hideOnForm();
         yield ArrayField::new('getVoltages', 'Voltage')
-            ->hideOnForm();
-        yield ArrayField::new('getTdpWithValue', 'TDP')
             ->hideOnForm();
         yield AssociationField::new('platform', 'Family')
             ->setColumns(2)
@@ -66,7 +85,7 @@ class ProcessorCrudController extends AbstractCrudController
         yield NumberField::new('tdp', 'TDP (in W)')
             ->setColumns(2)
             ->onlyOnForms();
-        yield NumberField::new('processNode', 'Process (in nm)')
+        yield NumberField::new('ProcessNode', 'Process (in nm)')
             ->setColumns(2)
             ->onlyOnForms();
         yield CollectionField::new('sockets', 'Socket')
@@ -116,7 +135,7 @@ class ProcessorCrudController extends AbstractCrudController
     }
     public function configureCrud(Crud $crud): Crud
     {
-        return $crud->showEntityActionsInlined();
+        return $crud->showEntityActionsInlined()->setPaginatorPageSize(100);
     }
     public function configureActions(Actions $actions): Actions
     {

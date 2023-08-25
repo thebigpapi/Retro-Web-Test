@@ -34,3 +34,38 @@
 	column-gap: 5px;
 	align-items: center;
 }
+#Motherboard_motherboardBios{
+	display:block;
+	div.form-widget-compound > div{
+		display:flex;
+		flex-direction: row;
+		> div:nth-child(1){flex-grow:10;width:13%;}
+		> div:nth-child(3){flex-grow:20;}
+		> div:nth-child(5){flex-grow:20;}
+		> div:nth-child(7){flex-grow:1;width:8%;}
+		> div:nth-child(9){flex-grow:1;width:8%;}
+		> div:nth-child(11){flex-grow:3;}
+	}
+}
+#Motherboard_motherboardIoPorts, #Motherboard_motherboardExpansionSlots{
+	display:block;
+	div.invalid-feedback{width:10px;}
+	div.accordion-body.trw{padding:0px 10px;}
+	div.form-widget-compound > div{
+		display:flex;
+		flex-direction: row;
+		> div:nth-child(1){
+			flex-grow:1;
+			width:8%;
+			input{max-width:45px;}
+			> div{overflow: visible;white-space: nowrap;}
+		}
+		> div:nth-child(2):before{
+			color: var(--form-input-text-color);
+			line-height: 50px;
+			content:'x';
+			padding-left:3px;
+		}
+		> div:nth-child(3){flex-grow:10;width:50%;}
+	}
+}

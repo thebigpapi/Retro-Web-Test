@@ -118,6 +118,7 @@ class LargeFileCrudController extends AbstractCrudController
     public function configureCrud(Crud $crud): Crud
     {
         return parent::configureCrud($crud)
+            ->setPaginatorPageSize(100)
             ->overrideTemplate('crud/edit', 'admin/crud/edit_driver.html.twig')
             ->overrideTemplate('crud/new', 'admin/crud/new_driver.html.twig')
             ->setDefaultSort(['lastEdited' => 'DESC']);

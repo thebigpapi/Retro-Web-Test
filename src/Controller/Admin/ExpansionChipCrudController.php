@@ -8,6 +8,7 @@ use App\Form\Type\PciDeviceIdType;
 use App\Form\Type\LargeFileExpansionChipType;
 use App\Form\Type\ChipDocumentationType;
 use App\Form\Type\ChipImageType;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
@@ -28,7 +29,14 @@ class ExpansionChipCrudController extends AbstractCrudController
     {
         return ExpansionChip::class;
     }
-
+    public function configureFilters(Filters $filters): Filters
+    {
+        return parent::configureFilters($filters)
+            ->add('manufacturer')
+            ->add('name')
+            ->add('partNumber')
+            ->add('type');
+    }
 
     public function configureFields(string $pageName): iterable
     {
@@ -44,7 +52,7 @@ class ExpansionChipCrudController extends AbstractCrudController
             ->setColumns(4);
         yield TextField::new('type','Type')->onlyOnIndex();
         // index
-        yield ArrayField::new('pciDevs', 'PCI DEV')
+        yield ArrayField::new('getPciDevs', 'PCI DEV')
             ->hideOnForm();
         yield BooleanField::new('getImages','Images')
             ->renderAsSwitch(false)
@@ -91,7 +99,7 @@ class ExpansionChipCrudController extends AbstractCrudController
     }
     public function configureCrud(Crud $crud): Crud
     {
-        return $crud->showEntityActionsInlined();
+        return $crud->showEntityActionsInlined()->setPaginatorPageSize(100);
     }
     public function configureActions(Actions $actions): Actions
     {

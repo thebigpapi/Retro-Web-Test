@@ -22,7 +22,7 @@ class MotherboardMaxRam
     private $max_ram;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    #[Assert\Length(max: 255, maxMessage: 'RAM note is longer than {{ limit }} characters, try to make it shorter.')]
+    #[Assert\Length(max: 40, maxMessage: 'RAM note is longer than {{ limit }} characters.')]
 
     private $note;
 

@@ -109,6 +109,7 @@ class ChipsetCrudController extends AbstractCrudController
     public function configureCrud(Crud $crud): Crud
     {
         return parent::configureCrud($crud)
+            ->setPaginatorPageSize(100)
             ->setDefaultSort(['lastEdited' => 'DESC']);
     }
 }

@@ -18,17 +18,19 @@ class MotherboardExpansionSlotType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+            ->add('count', NumberType::class,[
+                'label' => false,
+            ])
             ->add('expansion_slot', EntityType::class, [
                 'class' => ExpansionSlot::class,
                 'choice_label' => 'name',
-                'label' => 'Type',
+                'label' => false,
                 'multiple' => false,
                 'expanded' => false,
                 'autocomplete' => true,
-                ])
-            ->add('count', NumberType::class,[
-                'error_bubbling' => true,
-            ]);
+                'placeholder' => 'Select type...',
+            ])
+;
     }
 
     public function configureOptions(OptionsResolver $resolver)

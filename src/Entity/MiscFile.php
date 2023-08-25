@@ -27,11 +27,11 @@ class MiscFile
         match: true,
         message: 'The FileName uses invalid characters',
     )]
-    #[Assert\Length(max: 255, maxMessage: 'File name is longer than {{ limit }} characters, try to make it shorter.')]
-    private string|null $file_name;
+    #[Assert\Length(max: 255, maxMessage: 'File name is longer than {{ limit }} characters.')]
+    private $file_name;
 
     #[ORM\Column(type: 'string', length: 255)]
-    #[Assert\Length(max: 255, maxMessage: 'Link bame is longer than {{ limit }} characters, try to make it shorter.')]
+    #[Assert\Length(max: 255, maxMessage: 'Misc file title is longer than {{ limit }} characters.')]
     private $link_name;
 
     #[ORM\ManyToOne(targetEntity: Motherboard::class, inversedBy: 'miscFiles')]

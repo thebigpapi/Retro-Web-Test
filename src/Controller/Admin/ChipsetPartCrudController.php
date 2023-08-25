@@ -7,6 +7,7 @@ use App\Form\Type\ChipAliasType;
 use App\Form\Type\PciDeviceIdType;
 use App\Form\Type\ChipDocumentationType;
 use App\Form\Type\ChipImageType;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
@@ -27,6 +28,15 @@ class ChipsetPartCrudController extends AbstractCrudController
     {
         return ChipsetPart::class;
     }
+    public function configureFilters(Filters $filters): Filters
+    {
+        return parent::configureFilters($filters)
+            ->add('manufacturer')
+            ->add('name')
+            ->add('partNumber')
+            ->add('rank');
+    }
+
 
     public function configureFields(string $pageName): iterable
     {
@@ -47,7 +57,7 @@ class ChipsetPartCrudController extends AbstractCrudController
             ->setColumns(6)
             ->renderExpanded()
             ->onlyOnForms();
-        yield ArrayField::new('pciDevs', 'PCI DEV')
+        yield ArrayField::new('getPciDevs', 'PCI DEV')
             ->hideOnForm();
         yield TextareaField::new('description')->onlyOnForms();
         yield FormField::addPanel('Other')->onlyOnForms();
@@ -74,7 +84,9 @@ class ChipsetPartCrudController extends AbstractCrudController
     }
     public function configureCrud(Crud $crud): Crud
     {
-        return $crud->showEntityActionsInlined();
+        return $crud
+            ->setPaginatorPageSize(100)
+            ->showEntityActionsInlined();
     }
     public function configureActions(Actions $actions): Actions
     {

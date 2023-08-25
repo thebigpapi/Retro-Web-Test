@@ -43,11 +43,8 @@ class UserCrudController extends AbstractCrudController
     }
     public function configureActions(Actions $actions): Actions
     {
-        //dd($this->getContext());
         $reset = Action::new('reset', 'Reset', 'fa fa-reset')
-            //->linkToUrl($this->generateUrl('admin_reset_pass', array('id' => $this->getContext())))
             ->linkToCrudAction('resetPass');
-            //->askConfirmation('Are you very very sure? This will destroy the world!');
         return $actions
             ->add(Crud::PAGE_INDEX, $reset)
             ->setPermission(Action::DELETE, 'ROLE_ADMIN')

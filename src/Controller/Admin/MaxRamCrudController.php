@@ -26,7 +26,7 @@ class MaxRamCrudController extends AbstractCrudController
     }
     public function configureCrud(Crud $crud): Crud
     {
-        return $crud->showEntityActionsInlined();
+        return $crud->showEntityActionsInlined()->setPaginatorPageSize(100);
     }
     public function configureActions(Actions $actions): Actions
     {

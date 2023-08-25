@@ -1,13 +1,5 @@
 {% extends '@!EasyAdmin/crud/form_theme.html.twig' %}
 
-{% block form_end %}
-            {% if not render_rest is defined or render_rest %}
-                {{ form_rest(form) }}
-            {% endif %}
-        </div> {# this closes the '<div class="row">' of form_start #}
-        dddd
-    </form>
-{% endblock %}
 {# added the flashy triangle #}
 {% block form_errors %}
 {% if attr.class|default('') == 'global-invalid-feedback'%}
@@ -94,116 +86,7 @@
         {% endif %}
     </div>
 {% endblock collection_entry_row %}
-{% block ea_crud_widget %}
-    {% if ea_crud_form.form_tabs|length > 0 %}
-        <div class="col-12">
-            <div class="nav-tabs-custom form-tabs">
-                <ul class="nav nav-tabs">
-                    {% for tab_name, tab_config in ea_crud_form.form_tabs %}
-                        <li class="nav-item">
-                            <a class="nav-link {% if tab_config.active %}active{% endif %}" href="#{{ tab_config['id'] }}" id="{{ tab_config['id'] }}-tab" data-bs-toggle="tab">
-                                {%- if tab_config.icon|default(false) -%}
-                                    <i class="fa-fw {{ tab_config.icon }}"></i>
-                                {%- endif -%}
-                                {{ tab_config['label']|trans(domain = ea.i18n.translationDomain) }}
-                                {%- if tab_config.errors > 0 -%}
-                                    <span class="badge badge-danger" title="{{ 'form.tab.error_badge_title'|trans({'%count%': tab_config.errors}, 'EasyAdminBundle') }}">
-                                        {{- tab_config.errors -}}
-                                    </span>
-                                {%- endif -%}
-                            </a>
-                        </li>
-                    {% endfor %}
-                </ul>
-                <div class="tab-content">
-                    {% for tab_name, tab_config in ea_crud_form.form_tabs %}
-                        <div id="{{ tab_config['id'] }}" class="tab-pane {% if tab_config.active %}active{% endif %} {{ tab_config['css_class']|default('') }}">
-                            {% if tab_config['help']|default(false) %}
-                                <div class="content-header-help tab-help">
-                                    {{ tab_config['help']|trans(domain = ea.i18n.translationDomain)|raw }}
-                                </div>
-                            {% endif %}
-
-                            <div class="row">
-                                {% if tab_name is defined and tab_name %}
-                                    {% macro recursiveTabForm(form, ea_crud_form, tab_name) %}
-                                        {% for field in form|filter(field => not ea_crud_form.form_panels|filter((panel_config, form_panel) => form_panel == field.vars.ea_crud_form.form_panel) and ((field.vars.ea_crud_form.form_tab is defined and field.vars.ea_crud_form.form_tab == tab_name) or field.vars.ea_crud_form.form_tabs is defined)) %}
-                                            {% if field.vars.ea_crud_form.form_tabs is defined %}
-                                                {# If the field is a nested CRUD form then only render its children #}
-                                                {{ _self.recursiveTabForm(field, ea_crud_form, tab_name) }}
-                                            {% else %}
-                                                {# Render all other fields #}
-                                                {{ form_row(field) }}
-                                            {% endif %}
-                                        {% endfor %}
-                                    {% endmacro %}
-                                    {{ _self.recursiveTabForm(form, ea_crud_form, tab_name) }}
-                                    {% if tab_name == 'CPU stuff' %}
-                                    <div class="mobo-buttons" data-controller="motherboard--add">
-                                        <button class="btn btn-secondary" type="button"data-action="click->motherboard--add#updateProcessors">
-                                            <span class="btn-label"><i class="fa fa-external-link"></i> <span class="action-label">Update cpu</span></span>
-                                        </button>
-                                    </div>
-                                    <div id="cpu-wait" style="display:none;">
-                                        <span>Please wait :)</span><img src="https://dev.theretroweb.com/build/images/cursor.gif" alt="" height="24" style="vertical-align: middle;">
-                                    </div>
-                                    <div class="show-cpus"><div>
-                                        <div class="cpu-head">
-                                            <div><i>Available CPUs</i></div>
-                                            <div></div>
-                                            <div><i>Selected CPUs</i></div>
-                                        </div>
-                                        <div class="dual-list-container">
-                                            <div class="dual-list-list">
-                                                <select id="unchecked_processors" multiple>
-                                                </select>
-                                            </div>
-                                            <div class="dual-list-buttons">
-                                                <button id="add-all-cpus" data-action="click->motherboard--add#addAllProcessors"><img src="{{absolute_url(asset('build/icons/add.svg'))}}" alt="+" style="vertical-align: middle;padding-right:2px;" width="20"> All</button>
-                                                <button id="add-all-selected-cpus" data-action="click->motherboard--add#addAllSelectedProcessors"><img src="{{absolute_url(asset('build/icons/arrow.svg'))}}" alt=">" style="vertical-align: middle;" width="20"></button>
-                                                <button id="remove-all-selected-cpus" data-action="click->motherboard--add#removeAllSelectedProcessors"><img src="{{absolute_url(asset('build/icons/arrow.svg'))}}" alt="<" style="transform: rotate(180deg);vertical-align: middle;" width="20"></button>
-                                                <button id="remove-all-cpus" data-action="click->motherboard--add#removeAllProcessors"><img src="{{absolute_url(asset('build/icons/remove.svg'))}}" alt="-" style="vertical-align: middle;padding-right:2px;" width="20"> All</button>
-                                            </div>
-                                            <div class="dual-list-list">
-                                                <select id="checked_processors" multiple>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="cpu-head">
-                                            <div><i>Available NPUs</i></div>
-                                            <div></div>
-                                            <div><i>Selected NPUs</i></div>
-                                        </div>
-                                        <div class="dual-list-container">
-                                            <div class="dual-list-list">
-                                                <select id="unchecked_coprocessors" multiple>
-                                                </select>
-                                            </div>
-                                            <div class="dual-list-buttons">
-                                                <button id="add-all-npus" data-action="click->motherboard--add#addAllCoprocessors"><img src="{{absolute_url(asset('build/icons/add.svg'))}}" alt="+" style="vertical-align: middle;padding-right:2px;" width="20"> All</button>
-                                                <button id="add-all-selected-npus" data-action="click->motherboard--add#addAllSelectedCoprocessors"><img src="{{absolute_url(asset('build/icons/arrow.svg'))}}" alt=">" style="vertical-align: middle;" width="20"></button>
-                                                <button id="remove-all-selected-npus" data-action="click->motherboard--add#removeAllSelectedCoprocessors"><img src="{{absolute_url(asset('build/icons/arrow.svg'))}}" alt="<" style="transform: rotate(180deg);vertical-align: middle;" width="20"></button>
-                                                <button id="remove-all-npus" data-action="click->motherboard--add#removeAllCoprocessors"><img src="{{absolute_url(asset('build/icons/remove.svg'))}}" alt="-" style="vertical-align: middle;padding-right:2px;" width="20"> All</button>
-                                            </div>
-                                            <div class="dual-list-list">
-                                                <select id="checked_coprocessors" multiple>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div></div>
-                                    {% endif %}
-                                {% endif %}
-                                {{ block('ea_crud_widget_panels') }}
-                            </div>
-                        </div>
-                    {% endfor %}
-                </div>
-            </div>
-        </div>
-    {% else %}
-        {{ block('ea_crud_widget_panels') }}
-    {% endif %}
-{% endblock ea_crud_widget %}
+{# some customizations for the upload field #}
 {% block vich_file_widget %}
     <div class="ea-vich-file">
         {% if download_uri|default('') is not empty %}
@@ -215,12 +98,12 @@
                 'png': 'fa-file-image-o',
                 'zip': 'fa-file-archive-o'
             } %}
-            <a id="{{ form.file.vars.id }}_link" class="ea-vich-file-name" href="{{ asset_helper is same as(true) ? asset(download_uri) : download_uri }}">
+            <a id="{{ form.file.vars.id }}_link" class="ea-vich-file-name" href="{{ asset_helper is same as(true) ? asset(download_uri) : download_uri }}" title="{{ download_uri|split('/')|last ?: 'download'|trans({}, 'VichUploaderBundle') }}">
                 <i class="fa fa-fw {{ extension_icons[file_extension] ?? 'fa-file-o' }}"></i>
                 {%- if download_label|default(false) -%}
-                    {{download_uri}}
-                {%- else -%}
                     {{ download_uri|split('/')|last ?: 'download'|trans({}, 'VichUploaderBundle') }}
+                {%- else -%}
+                    {{ 'Download'|trans }}
                 {%- endif -%}
             </a>
         {% endif %}
