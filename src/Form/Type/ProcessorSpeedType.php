@@ -20,6 +20,7 @@ class ProcessorSpeedType extends AbstractType
             'choice_label' => 'getValueWithUnit',
             'multiple' => false,
             'expanded' => false,
+            'placeholder'=> 'Select a speed ...',
         ]);
     }
 

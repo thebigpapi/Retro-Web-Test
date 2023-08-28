@@ -20,6 +20,7 @@ class CacheSizeType extends AbstractType
             'multiple' => false,
             'expanded' => false,
             'autocomplete' => true,
+            'placeholder'=> 'Select a cache size ...',
         ]);
     }
 

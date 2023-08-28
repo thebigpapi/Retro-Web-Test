@@ -6,52 +6,36 @@ use App\Entity\LargeFile;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use App\Entity\LargeFileMotherboard;
-use App\Repository\LargeFileRepository;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Entity\LargeFileChipsetPart;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\ChoiceList\View\ChoiceView;
 
-class LargeFileMotherboardType extends AbstractType
+class LargeFileChipsetPartType extends AbstractType
 {
-    private EntityManagerInterface $entityManager;
-    public function __construct(EntityManagerInterface $entityManager)
-    {
-        $this->entityManager = $entityManager;
-    }
-
-    private function getLargeFileRepository(): LargeFileRepository
-    {
-        return $this->entityManager->getRepository(LargeFile::class);
-    }
-
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-
-        $largeFiles = $this->getLargeFileRepository()->findAllOptimized();
         $builder
             ->add('isRecommended', CheckboxType::class, [
                 'required' => false,
             ])
             ->add('largeFile', EntityType::class, [
                 'class' => LargeFile::class,
+                'autocomplete' => true,
                 'required' => false,
                 'choice_label' => 'getNameWithTags',
                 'multiple' => false,
                 'expanded' => false,
-                'autocomplete' => true,
-                'choices' => $largeFiles,
-                'placeholder'=> 'Select a driver ...',
             ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => LargeFileMotherboard::class,
+            'data_class' => LargeFileChipsetPart::class,
         ]);
     }
     public function finishView(FormView $view, FormInterface $form, array $options)

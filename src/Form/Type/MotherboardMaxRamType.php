@@ -25,6 +25,7 @@ class MotherboardMaxRamType extends AbstractType
                 'multiple' => false,
                 'expanded' => false,
                 'autocomplete' => true,
+                'placeholder'=> 'Select a RAM size ...',
                 ])
             ->add('note', TextType::class, ['required' => false]);
     }

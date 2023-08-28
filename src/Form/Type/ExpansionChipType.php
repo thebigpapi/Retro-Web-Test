@@ -20,6 +20,7 @@ class ExpansionChipType extends AbstractType
             'multiple' => false,
             'expanded' => false,
             'autocomplete' => true,
+            'placeholder'=> 'Select a chip ...',
         ]);
     }
 

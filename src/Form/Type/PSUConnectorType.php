@@ -20,6 +20,7 @@ class PSUConnectorType extends AbstractType
             'multiple' => false,
             'expanded' => false,
             'autocomplete' => true,
+            'placeholder'=> 'Select a PSU connector ...',
         ]);
     }
 

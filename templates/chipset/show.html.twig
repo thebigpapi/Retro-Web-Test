@@ -85,16 +85,36 @@
 				<div>
 					<img src="{{ absolute_url(asset('build/icons/show/hardware.svg')) }}" alt="" width="32" style="vertical-align: middle;padding-bottom: 10px;">
 					<span><i>Drivers: </i></span>
+					{% set drvCount = 0 %}
 					{% if chipset.getDrivers() is not empty %}
-					<span>{{ chipset.getDrivers.count() }}{% if chipset.getDrivers.count() == 1 %} entry{% else %} entries{% endif %}</span>
-					<div class="show-table drv">
-						<div class="show-downloads-head">{{ driverHeader() }}</div>
-						{% for driver in chipset.getDrivers() %}
-							<div class="show-table-row">{{ driverLink(driver.largeFile) }}</div>
-						{% endfor %}
-					</div>
+						{% set moreDrvCount = chipset.getDrivers.count() %}
 					{% else %}
-					<span>not available</span>
+						{% set moreDrvCount = 0 %}
+					{% endif %}
+					{% if chipset.getChipsetParts() is not empty %}
+						<!-- CHIPSET PART DRIVER COUNT -->
+						{% for chipPart in chipset.getChipsetParts()|filter(chipPart => chipPart.getDrivers() is not empty) %}
+							{% set drvCount = drvCount + chipPart.getDrivers().count() %}
+						{% endfor %}
+					{% endif %}
+					{% set moreDrvCount = drvCount + moreDrvCount %}
+					{% if moreDrvCount > 0 %}
+						<span>{{ moreDrvCount }}&nbsp;{% if moreDrvCount == 1 %}entry{% else %}entries{% endif %}</span>
+					{% else %}
+							<span>not available</span>
+					{% endif %}
+					{% if moreDrvCount > 0 %}
+						<div class="show-table drv">
+							<div class="show-downloads-head">{{ driverHeader() }}</div>
+							{% for driver in chipset.getDrivers() %}
+								<div class="show-table-row">{{ driverLink(driver.largeFile) }}</div>
+							{% endfor %}
+							{% for chipPart in chipset.getChipsetParts()|filter(chipPart => chipPart.getDrivers() is not empty) %}
+								{% for driver in chipPart.getDrivers() %}
+									<div class="show-table-row">{{ driverLink(driver.largeFile) }}</div>
+								{% endfor %}
+							{% endfor %}
+						</div>
 					{% endif %}
 				</div>
 				<!-- CHIPSET PART DOCS -->

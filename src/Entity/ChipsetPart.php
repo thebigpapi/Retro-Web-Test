@@ -22,11 +22,15 @@ class ChipsetPart extends Chip
     #[Assert\LessThan(15, message:'Rank should be under 15')]
     private $rank;
 
+    #[ORM\OneToMany(mappedBy: 'chipsetPart', targetEntity: LargeFileChipsetPart::class, orphanRemoval: true, cascade: ['persist'])]
+    private $drivers;
+
     public function __construct()
     {
         parent::__construct();
         $this->chipsets = new ArrayCollection();
         $this->documentations = new ArrayCollection();
+        $this->drivers = new ArrayCollection();
     }
 
     public function __toString(): string
@@ -95,6 +99,36 @@ class ChipsetPart extends Chip
     public function setRank(int $rank): self
     {
         $this->rank = $rank;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|LargeFileChipsetPart[]
+     */
+    public function getDrivers(): Collection
+    {
+        return $this->drivers;
+    }
+
+    public function addDriver(LargeFileChipsetPart $driver): self
+    {
+        if (!$this->drivers->contains($driver)) {
+            $this->drivers->add($driver);
+            $driver->setChipsetPart($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDriver(LargeFileChipsetPart $driver): self
+    {
+        if ($this->drivers->removeElement($driver)) {
+            // set the owning side to null (unless already changed)
+            if ($driver->getChipsetPart() === $this) {
+                $driver->setChipsetPart(null);
+            }
+        }
 
         return $this;
     }

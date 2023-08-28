@@ -43,6 +43,9 @@ class ChipsetCrudController extends AbstractCrudController
     }
     public function configureFields(string $pageName): iterable
     {
+        yield FormField::addTab('Basic Data')
+            ->setIcon('info')
+            ->onlyOnForms();
         yield IdField::new('id')->onlyOnIndex();
         yield TextField::new('getManufacturer','Manufacturer')
             ->hideOnForm();
@@ -80,6 +83,9 @@ class ChipsetCrudController extends AbstractCrudController
             ->setEntryType(ChipsetBiosCodeType::class)
             ->setColumns(4)
             ->renderExpanded()
+            ->onlyOnForms();
+        yield FormField::addTab('Attachments')
+            ->setIcon('download')
             ->onlyOnForms();
         yield CollectionField::new('documentations', 'Documentation')
             ->setEntryType(ChipsetDocumentationType::class)

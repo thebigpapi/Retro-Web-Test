@@ -46,6 +46,7 @@ class MotherboardImageTypeForm extends AbstractType
                 'multiple' => false,
                 'expanded' => false,
                 'autocomplete' => true,
+                'placeholder'=> 'Select a creditor ...',
             ])
             ->add('motherboardImageType', EntityType::class, [
                 'class' => MotherboardImageType::class,
@@ -54,6 +55,7 @@ class MotherboardImageTypeForm extends AbstractType
                 'choice_label' => 'name',
                 'multiple' => false,
                 'expanded' => false,
+                'placeholder'=> 'Select a type ...',
             ])
             ->add('description', TextType::class, [
                 'label' => 'Note',

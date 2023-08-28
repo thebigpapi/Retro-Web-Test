@@ -24,7 +24,7 @@ class MotherboardBiosType extends AbstractType
                 'multiple' => false,
                 'expanded' => false,
                 'autocomplete' => true,
-                'placeholder' => 'No manufacturer selected.',
+                'placeholder' => 'Select a manufacturer ...',
             ])
             ->add('postString', TextType::class, [
                 'label' => false,

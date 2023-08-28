@@ -4,6 +4,7 @@ namespace App\Controller\Admin;
 
 use App\Entity\ChipsetPart;
 use App\Form\Type\ChipAliasType;
+use App\Form\Type\LargeFileChipsetPartType;
 use App\Form\Type\PciDeviceIdType;
 use App\Form\Type\ChipDocumentationType;
 use App\Form\Type\ChipImageType;
@@ -40,6 +41,9 @@ class ChipsetPartCrudController extends AbstractCrudController
 
     public function configureFields(string $pageName): iterable
     {
+        yield FormField::addTab('Basic Data')
+            ->setIcon('info')
+            ->onlyOnForms();
         yield IdField::new('id')->onlyOnIndex();
         yield TextField::new('getManufacturer','Manufacturer')
             ->hideOnForm();
@@ -60,13 +64,24 @@ class ChipsetPartCrudController extends AbstractCrudController
         yield ArrayField::new('getPciDevs', 'PCI DEV')
             ->hideOnForm();
         yield TextareaField::new('description')->onlyOnForms();
-        yield FormField::addPanel('Other')->onlyOnForms();
         yield BooleanField::new('getImages','Images')
             ->renderAsSwitch(false)
             ->onlyOnIndex();
         yield BooleanField::new('getDocumentations','Docs')
             ->renderAsSwitch(false)
             ->onlyOnIndex();
+        yield CollectionField::new('chipAliases', 'Chip aliases')
+            ->setEntryType(ChipAliasType::class)
+            ->renderExpanded()
+            ->onlyOnForms();
+        yield FormField::addTab('Attachments')
+            ->setIcon('download')
+            ->onlyOnForms();
+        yield CollectionField::new('drivers', 'Drivers')
+            ->setEntryType(LargeFileChipsetPartType::class)
+            ->setColumns(6)
+            ->renderExpanded()
+            ->onlyOnForms();
         yield CollectionField::new('documentations', 'Documentation')
             ->setEntryType(ChipDocumentationType::class)
             ->setColumns(6)
@@ -75,10 +90,6 @@ class ChipsetPartCrudController extends AbstractCrudController
         yield CollectionField::new('images', 'Images')
             ->setEntryType(ChipImageType::class)
             ->setColumns(6)
-            ->renderExpanded()
-            ->onlyOnForms();
-        yield CollectionField::new('chipAliases', 'Chip aliases')
-            ->setEntryType(ChipAliasType::class)
             ->renderExpanded()
             ->onlyOnForms();
     }

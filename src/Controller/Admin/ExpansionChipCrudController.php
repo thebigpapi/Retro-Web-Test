@@ -40,6 +40,9 @@ class ExpansionChipCrudController extends AbstractCrudController
 
     public function configureFields(string $pageName): iterable
     {
+        yield FormField::addTab('Basic Data')
+            ->setIcon('info')
+            ->onlyOnForms();
         yield IdField::new('id')->onlyOnIndex();
         yield TextField::new('getManufacturer','Manufacturer')
             ->hideOnForm();
@@ -75,7 +78,14 @@ class ExpansionChipCrudController extends AbstractCrudController
         yield CodeEditorField::new('description')
             ->setLanguage('markdown')
             ->onlyOnForms();
-        yield FormField::addPanel('Other')->onlyOnForms();
+        yield CollectionField::new('chipAliases', 'Chip aliases')
+            ->setEntryType(ChipAliasType::class)
+            ->setColumns(6)
+            ->renderExpanded()
+            ->onlyOnForms();
+        yield FormField::addTab('Attachments')
+            ->setIcon('download')
+            ->onlyOnForms();
         yield CollectionField::new('documentations', 'Documentation')
             ->setEntryType(ChipDocumentationType::class)
             ->setColumns(6)
@@ -83,11 +93,6 @@ class ExpansionChipCrudController extends AbstractCrudController
             ->onlyOnForms();
         yield CollectionField::new('images', 'Images')
             ->setEntryType(ChipImageType::class)
-            ->setColumns(6)
-            ->renderExpanded()
-            ->onlyOnForms();
-        yield CollectionField::new('chipAliases', 'Chip aliases')
-            ->setEntryType(ChipAliasType::class)
             ->setColumns(6)
             ->renderExpanded()
             ->onlyOnForms();

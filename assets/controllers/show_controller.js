@@ -7,8 +7,6 @@ export default class extends Controller {
             this.show_downloads();
         if (URL.indexOf("#expchips") != -1)
             this.show_expchips();
-        if (URL.indexOf("#cpus") != -1)
-            this.show_cpus();
         let toggle = document.getElementById('table-switch');
         if(toggle){
             let item = document.getElementsByClassName("plain-list")[0];
@@ -25,8 +23,6 @@ export default class extends Controller {
         if(document.getElementById('sh-expchips'))
             document.getElementById('sh-expchips').style.display = 'none';
         document.getElementById('sh-downloads').style.display = 'none';
-        if(document.getElementById('sh-cpus'))
-            document.getElementById('sh-cpus').style.display = 'none';
         this.change_tag("0");
 	}
     show_expchips(){
@@ -34,7 +30,6 @@ export default class extends Controller {
         document.getElementById('sh-general').style.display = 'none';
         document.getElementById('sh-expchips').style.display = 'block';
         document.getElementById('sh-downloads').style.display = 'none';
-        document.getElementById('sh-cpus').style.display = 'none';
         this.change_tag("#expchips");
 	}
 	show_downloads(){
@@ -43,17 +38,7 @@ export default class extends Controller {
         if(document.getElementById('sh-expchips'))
             document.getElementById('sh-expchips').style.display = 'none';
         document.getElementById('sh-downloads').style.display = 'block';
-        if(document.getElementById('sh-cpus'))
-            document.getElementById('sh-cpus').style.display = 'none';
         this.change_tag("#downloads");
-	}
-	show_cpus(){
-        document.getElementById('tab-nav-4').checked = true;
-        document.getElementById('sh-general').style.display = 'none';
-        document.getElementById('sh-expchips').style.display = 'none';
-        document.getElementById('sh-downloads').style.display = 'none';
-        document.getElementById('sh-cpus').style.display = 'block';
-        this.change_tag("#cpus");
 	}
     /**
      * @param {*} event 
