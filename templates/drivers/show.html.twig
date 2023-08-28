@@ -28,9 +28,9 @@
 <div class="title">{{ driver.getName() }}</div>	
 <div class="main-strip">
 	<div class="internal-container">
+		{% include 'macros/navbar.html.twig' with {'entity': driver, 'entityName': 'LargeFile', 'name': 'driver'} %}
 		<div class="internal-content">
 			<!-- DESCRIPRION -->
-			<div class="show-general" id="sh-general">
 				<div class="quick-spec-table">
 					<!-- Release Date -->
 					<div class="quick-spec-head">Release Date</div>
@@ -73,19 +73,8 @@
 						</a>
 					</div>
 				</div>
-			</div>
 			<div id="index-datetime" data-controller="datetime"><div class="div-datetime">Last updated <span class="perk-date">{{ driver.getLastEdited()|date("Y-m-d\\TH:i:s", "GMT") }}Z</span></div></div>
 		</div>
-		{% if is_granted('ROLE_ADMIN') %}
-		<div style="display:flex">
-			<a class="button-widget" style="margin:5px;max-width:100px;" href="{{ ea_url().setDashboard('App\\Controller\\Admin\\DashboardController').setController('App\\Controller\\Admin\\LargeFileCrudController').setAction('edit').setEntityId(driver.getId())}}">
-				<img src="{{ absolute_url(asset('build/icons/edit.svg')) }}" alt="" width="24" height="24">Edit driver</a>
-			<a class="button-widget" style="margin:5px;max-width:100px;" href="{{ ea_url()
-				.setDashboard('App\\Controller\\Admin\\DashboardController')
-				.setRoute('logs_filter_id_entity', {id: driver.getId(), entity: 'LargeFile'})}}">
-				<img src="{{ absolute_url(asset('build/icons/show/calendar.svg')) }}" alt="" width="24" height="24">History</a>
-		</div>
-		{% endif %}
 		{% if driver.getNote() is not empty %}
 			{% apply markdown_to_html %}{{ driver.getNote() }}{% endapply %}
 		{% endif %}

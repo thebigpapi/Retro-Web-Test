@@ -46,10 +46,9 @@
 
 <div class="main-strip">
 	<div class="internal-container">
-		{% include 'macros/navbar.html.twig' with {'type':'show', 'entity': chipset, 'entityName': 'chipset', 'count':2} %}
+		{% include 'macros/navbar.html.twig' with {'entity': chipset, 'entityName': 'Chipset', 'name': 'chipset'} %}
 		<div class="internal-content">
 			<!-- DESCRIPRION -->
-			<div class="show-general" id="sh-general">
 				<div class="quick-spec-table">
 					<!-- Chipset parts -->
 					<div class="quick-spec-head">
@@ -82,35 +81,6 @@
 						<img src='{{ absolute_url(asset('build/icons/dw.svg')) }}' alt='' width='16' height='16' style='vertical-align:middle;padding:3px;'>See all BIOSes for this chipset</a>
 					</div>
 				</div>
-				{% if is_granted('ROLE_ADMIN') %}
-				<div style="display:flex">
-				<a class="button-widget" style="margin:5px;max-width:100px;" href="{{ ea_url()
-					.setDashboard('App\\Controller\\Admin\\DashboardController')
-					.setRoute('logs_filter_id_entity', {id: chipset.getId(), entity: 'Chipset'})}} ">
-					<img src="{{ absolute_url(asset('build/icons/show/calendar.svg')) }}" alt="" width="24" height="24">History</a></div>
-				{% endif %}
-				<div class="chipset-textarea">
-				{% if chipset.getDescription() is not empty %}
-					{% apply markdown_to_html %}{{ chipset.getDescription() }}{% endapply %}
-				{% endif %}
-				{% if chipset.getChipsetParts() is not empty %}
-					<hr>
-					<h1>Documented parts</h1>
-					<ul class="chipset-toc">
-						{% for chipPart in chipset.getChipsetParts()|filter(chipPart => chipPart.getDescription() is not empty) %}
-						<li><a href="#{{ chipPart.getShortNamePN() }}">{{ chipPart.getShortName() }}{% if chipPart.getChipAliases() is not empty %}&nbsp;(known as:{% for cp in chipPart.getChipAliases() %}
-						{{ cp.getManufacturer().getShortNameIfExist() }}&nbsp;{{ cp.getPartNumber() }} {{ cp.getName() ? '[' ~ cp.getName() ~ ']' }}{% if not loop.last%}, {% endif %}{% endfor %}){% endif %}</a></li>
-						{% endfor %}
-					</ul>
-					{% for chipPart in chipset.getChipsetParts()|filter(chipPart => chipPart.getDescription() is not empty) %}
-						<hr><a name="{{ chipPart.getShortNamePN() }}"></a>
-						{% apply markdown_to_html %}{{ chipPart.getDescription() }}{% endapply %}
-					{% endfor %}
-				{% endif %}
-				</div>
-				<div id="index-datetime" data-controller="datetime"><div class="div-datetime">Last updated <span class="perk-date">{{ chipset.getLastEdited()|date("Y-m-d\\TH:i:s", "GMT") }}Z</span></div></div>
-			</div>
-			<div class="show-downloads" id="sh-downloads">
 				<!-- DRIVERS -->
 				<div>
 					<img src="{{ absolute_url(asset('build/icons/show/hardware.svg')) }}" alt="" width="32" style="vertical-align: middle;padding-bottom: 10px;">
@@ -172,7 +142,26 @@
 						</div></div></div>
 					{% endif %}
 				</div>
-			</div>
+				<div class="chipset-textarea">
+				{% if chipset.getDescription() is not empty %}
+					{% apply markdown_to_html %}{{ chipset.getDescription() }}{% endapply %}
+				{% endif %}
+				{% if chipset.getChipsetParts() is not empty %}
+					<hr>
+					<h1>Documented parts</h1>
+					<ul class="chipset-toc">
+						{% for chipPart in chipset.getChipsetParts()|filter(chipPart => chipPart.getDescription() is not empty) %}
+						<li><a href="#{{ chipPart.getShortNamePN() }}">{{ chipPart.getShortName() }}{% if chipPart.getChipAliases() is not empty %}&nbsp;(known as:{% for cp in chipPart.getChipAliases() %}
+						{{ cp.getManufacturer().getShortNameIfExist() }}&nbsp;{{ cp.getPartNumber() }} {{ cp.getName() ? '[' ~ cp.getName() ~ ']' }}{% if not loop.last%}, {% endif %}{% endfor %}){% endif %}</a></li>
+						{% endfor %}
+					</ul>
+					{% for chipPart in chipset.getChipsetParts()|filter(chipPart => chipPart.getDescription() is not empty) %}
+						<hr><a name="{{ chipPart.getShortNamePN() }}"></a>
+						{% apply markdown_to_html %}{{ chipPart.getDescription() }}{% endapply %}
+					{% endfor %}
+				{% endif %}
+				</div>
+				<div id="index-datetime" data-controller="datetime"><div class="div-datetime">Last updated <span class="perk-date">{{ chipset.getLastEdited()|date("Y-m-d\\TH:i:s", "GMT") }}Z</span></div></div>
 		</div>
 	</div>
 

@@ -35,6 +35,7 @@
 
 <div class="main-strip">
 	<div class="internal-container">
+		{% include 'macros/navbar.html.twig' with {'entity': cpu, 'entityName': 'Processor', 'name': 'CPU'} %}
 		<div class="internal-content">
 			<div class="quick-spec-split">
 				<div class="quick-spec-table">
@@ -120,18 +121,7 @@
 				</div>
 			</div>
 		</div>
-		{% if is_granted('ROLE_ADMIN') %}
-		<div style="display:flex">
-			<a class="button-widget" style="margin:5px;max-width:100px;" href="{{ ea_url().setDashboard('App\\Controller\\Admin\\DashboardController').setController('App\\Controller\\Admin\\ProcessorCrudController').setAction('edit').setEntityId(cpu.getId())}}">
-				<img src="{{ absolute_url(asset('build/icons/edit.svg')) }}" alt="" width="24" height="24">Edit CPU</a>
-			<a class="button-widget" style="margin:5px;max-width:100px;" href="{{ ea_url()
-				.setDashboard('App\\Controller\\Admin\\DashboardController')
-				.setRoute('logs_filter_id_entity', {id: cpu.getId(), entity: 'Processor'})}}">
-				<img src="{{ absolute_url(asset('build/icons/show/calendar.svg')) }}" alt="" width="24" height="24">History</a>
-		</div>
-		{% endif %}
 	</div>
-
 	<!-- IMAGES -->
 	{% if cpu.getImages() is not empty %}
 		{% set lpindex = 0 %}

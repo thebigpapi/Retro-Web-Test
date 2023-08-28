@@ -1,35 +1,20 @@
 {% apply spaceless %}
-{% if entityName != "drv" %}
 <div class="show-nav" id="sh-nav" data-controller="show">
+    {% if entityName == "Motherboard" %}
     <input type="radio" name="tabs" id="tab-nav-1" checked data-action='click->show#show_general'>
     <label for="tab-nav-1"><img src="{{ absolute_url(asset('build/icons/show/data.svg')) }}" alt="" width="24" height="24">Description</label>
-    {% if count > 3 %}
     <input type="radio" name="tabs" id="tab-nav-2" data-action='click->show#show_expchips'>
     <label for="tab-nav-2"><img src="{{ absolute_url(asset('build/icons/show/chip.svg')) }}" alt="" width="24" height="24">Chips</label>
-    {% endif %}
     <input type="radio" name="tabs" id="tab-nav-3" data-action='click->show#show_downloads'>
-    <label for="tab-nav-3"><img src="{{ absolute_url(asset('build/icons/dw.svg')) }}" alt="" width="24" height="24">{% if type == "edit" %}Attachments{% else %}Downloads{% endif %}</label>
-    {% if count > 2 %}
-    <input type="radio" name="tabs" id="tab-nav-4" data-action='click->show#show_cpus'>
-    <label for="tab-nav-4"><img src="{{ absolute_url(asset('build/icons/show/cpu.svg')) }}" alt="" width="24" height="24">CPUs</label>
+    <label for="tab-nav-3"><img src="{{ absolute_url(asset('build/icons/dw.svg')) }}" alt="" width="24" height="24">Downloads</label>
     {% endif %}
-    {% if entityName == "expansionChip" %}
-        {% set name = "expansion chip" %}
-    {% elseif entityName == "motherboard" %}
-        {% set name = entityName|slice(6, 5) %}
-    {% else %}
-        {% set name = entityName %}
-    {% endif %}
-    {% if type == "show" and is_granted('ROLE_USER') %}
+    {% if is_granted('ROLE_USER') %}
+        <input type="radio" name="tabsh" id="tab-nav-h" data-action='click->show#goToURL' data-URL="
+        {{ ea_url().setDashboard('App\\Controller\\Admin\\DashboardController').setRoute('logs_filter_id_entity', {id: entity.getId(), entity: entityName})}}">
+        <label for="tab-nav-h"><img src="{{ absolute_url(asset('build/icons/show/calendar.svg')) }}" alt="" width="24" height="24">Logs</label>
         <input type="radio" name="tabs0" id="tab-nav-0" data-action='click->show#goToURL' data-URL="
-        {{ ea_url().setDashboard('App\\Controller\\Admin\\DashboardController').setController('App\\Controller\\Admin\\' ~ entityName|capitalize ~ 'CrudController').setAction('edit').setEntityId(entity.getId())}}">
+        {{ ea_url().setDashboard('App\\Controller\\Admin\\DashboardController').setController('App\\Controller\\Admin\\' ~ entityName ~ 'CrudController').setAction('edit').setEntityId(entity.getId())}}">
         <label for="tab-nav-0"><img src="{{ absolute_url(asset('build/icons/edit.svg')) }}" alt="" width="24" height="24">Edit {{name}}</label>
-    {% endif %}    
+    {% endif %}
 </div>
-{% else %}
-<div class="show-nav" id="sh-nav" data-controller="show">
-    <input type="radio" name="tabs" id="tab-nav-1" checked data-action='click->show#show_general'>
-    <label for="tab-nav-1"><img src="{{ absolute_url(asset('build/icons/show/data.svg')) }}" alt="" width="24" height="24">General</label>
-    <input type="radio" name="tabs" id="tab-nav-3" data-action='click->show#show_downloads'>
-    <label for="tab-nav-3"><img src="{{ absolute_url(asset('build/icons/show/data.svg')) }}" alt="" width="24" height="24">Description</label> 
-</div>{% endif %}{% endapply %}
+{% endapply %}
