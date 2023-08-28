@@ -90,13 +90,13 @@ class ChipsetRepository extends ServiceEntityRepository
         $entityManager = $this->getEntityManager();
         $likematch = "$letter%";
         $query = $entityManager->createQuery(
-            "SELECT chip, chipPart, chipPartMan, cal, UPPER(COALESCE(man.shortName, man.name)) manNameSort, UPPER(chip.name) chipNameSort
+            "SELECT chip, chipPart, chipPartMan, cal, UPPER(man.name) manNameSort, UPPER(chip.name) chipNameSort
             FROM App\Entity\Chipset chip
             LEFT JOIN chip.chipsetParts chipPart
             LEFT JOIN chipPart.manufacturer chipPartMan
             LEFT JOIN chip.chipsetAliases cal,
             App\Entity\Manufacturer man 
-            WHERE chip.manufacturer=man AND UPPER(COALESCE(man.shortName, man.name)) like :likeMatch
+            WHERE chip.manufacturer=man AND UPPER(man.name) like :likeMatch
             ORDER BY manNameSort ASC, chipNameSort ASC"
         )->setParameter('likeMatch', $likematch);
 

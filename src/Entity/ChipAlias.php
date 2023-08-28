@@ -82,7 +82,7 @@ class ChipAlias
     {
         $fullName = $this->partNumber;
         if ($this->getManufacturer()) {
-            $fullName = $this->getManufacturer()->getShortNameIfExist() . " " . $fullName;
+            $fullName = $this->getManufacturer()->getName() . " " . $fullName;
         } else {
             $fullName = "Unknown " . $fullName;
         }

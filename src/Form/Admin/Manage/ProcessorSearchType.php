@@ -25,7 +25,7 @@ class ProcessorSearchType extends AbstractType
     {
         $builder
             ->add('manufacturer', ChoiceType::class, [
-                'choice_label' => 'shortNameIfExist',
+                'choice_label' => 'name',
                 'multiple' => false,
                 'expanded' => false,
                 'required' => false,

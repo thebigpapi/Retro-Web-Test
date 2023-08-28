@@ -49,8 +49,8 @@ class ChipsetPartForm extends AbstractType
     {
         usort($view->children['chip']->children['manufacturer']->vars['choices'], function (ChoiceView $a, ChoiceView $b) {
             return strnatcasecmp(
-                $a->data->getShortNameIfExist(),
-                $b->data->getShortNameIfExist()
+                $a->data->getName(),
+                $b->data->getName()
             );
         });
     }

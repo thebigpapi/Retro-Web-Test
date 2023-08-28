@@ -54,7 +54,7 @@
 					{% else %}
 						<img src="{{ absolute_url(asset('build/images/motherboard/image-missing.webp')) }}" alt="missing image" loading="lazy" width="250" height="200" title="no images available :(">
 					{% endif %}</div>
-					<div class="perk-name">{{ motherboard.getManufacturerShortNameIfExist() }}&nbsp;{{ motherboard.name }}</div>
+					<div class="perk-name">{{ motherboard.getManufacturerName() }}&nbsp;{{ motherboard.name }}</div>
 					<div class="perk-date">{{ motherboard.getLastEdited()|date("Y-m-d\\TH:i:s", "GMT") }}Z</div>
 				</a>
 			</div>	

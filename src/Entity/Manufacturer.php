@@ -9,7 +9,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: 'App\Repository\ManufacturerRepository')]
-#[UniqueEntity(fields: ['name', 'shortName'])]
+#[UniqueEntity(fields: ['name', 'fullName'])]
 #[ORM\ChangeTrackingPolicy('DEFERRED_EXPLICIT')]
 class Manufacturer
 {
@@ -18,13 +18,13 @@ class Manufacturer
     #[ORM\Column(type: 'integer')]
     private $id;
 
+    #[ORM\Column(type: 'string', length: 255, nullable: true, unique: true)]
+    #[Assert\Length(max: 255, maxMessage: 'Full name is longer than {{ limit }} characters, try to make it shorter.')]
+    private $fullName;
+
     #[ORM\Column(type: 'string', length: 255, unique: true)]
     #[Assert\Length(max: 255, maxMessage: 'Name is longer than {{ limit }} characters, try to make it shorter.')]
     private $name;
-
-    #[ORM\Column(type: 'string', length: 255, nullable: true, unique: true)]
-    #[Assert\Length(max: 255, maxMessage: 'Short name is longer than {{ limit }} characters, try to make it shorter.')]
-    private $shortName;
 
     #[ORM\OneToMany(targetEntity: Motherboard::class, mappedBy: 'manufacturer')]
     private $motherboards;
@@ -74,9 +74,6 @@ class Manufacturer
     }
     public function __toString(): string
     {
-        if ($this->shortName) {
-            return $this->shortName;
-        }
         return $this->name;
     }
     public function getId(): ?int
@@ -93,22 +90,15 @@ class Manufacturer
 
         return $this;
     }
-    public function getShortName(): ?string
+    public function getFullName(): ?string
     {
-        return $this->shortName;
+        return $this->fullName;
     }
-    public function setShortName(?string $shortName): self
+    public function setFullName(?string $fullName): self
     {
-        $this->shortName = $shortName;
+        $this->fullName = $fullName;
 
         return $this;
-    }
-    public function getShortNameIfExist(): ?string
-    {
-        if ($this->shortName) {
-            return $this->shortName;
-        }
-        return $this->name;
     }
     /**
      * @return Collection|Motherboard[]

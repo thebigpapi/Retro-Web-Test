@@ -54,7 +54,7 @@ class Search extends AbstractType
                 'required' => false,
             ])
             ->add('manufacturer', ChoiceType::class, [
-                'choice_label' => 'shortNameIfExist',
+                'choice_label' => 'name',
                 'multiple' => false,
                 'expanded' => false,
                 'required' => false,
@@ -63,7 +63,7 @@ class Search extends AbstractType
                 'placeholder' => 'Select a manufacturer ...'
             ])
             ->add('chipsetManufacturer', ChoiceType::class, [
-                'choice_label' => 'getShortNameIfExist',
+                'choice_label' => 'getName',
                 'multiple' => false,
                 'expanded' => false,
                 'required' => false,
@@ -126,7 +126,7 @@ class Search extends AbstractType
             if ($unidentified) {
                 array_unshift($chipsets, $unidentified);
             }
-            $chipTag = (null === $chipsetManufacturer) ? "No chipset selected!" : "any " . $chipsetManufacturer->getShortNameIfExist() . " chipset";
+            $chipTag = (null === $chipsetManufacturer) ? "No chipset selected!" : "any " . $chipsetManufacturer->getName() . " chipset";
             $form->add('chipset', ChoiceType::class, [
                 'choice_label' => 'getFullNameParts',
                 'multiple' => false,

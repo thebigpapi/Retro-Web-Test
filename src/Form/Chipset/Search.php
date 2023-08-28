@@ -23,7 +23,7 @@ class Search extends AbstractType
                 'required' => false,
             ])
             ->add('chipsetManufacturer', ChoiceType::class, [
-                'choice_label' => 'getShortNameIfExist',
+                'choice_label' => 'getName',
                 'multiple' => false,
                 'expanded' => false,
                 'required' => false,

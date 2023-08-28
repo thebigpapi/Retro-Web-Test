@@ -20,7 +20,7 @@ class OsFlagForm extends AbstractType
             ->add('version', TextType::class)
             ->add('manufacturer', EntityType::class, [
                 'class' => Manufacturer::class,
-                'choice_label' => 'shortNameIfExist',
+                'choice_label' => 'name',
                 'multiple' => false,
                 'expanded' => false,
                 'required' => true,

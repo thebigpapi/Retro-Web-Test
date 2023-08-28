@@ -38,13 +38,13 @@
 {% block body %}
 <!-- TITLE/ALIASES -->
 <div class="title">
-	{{ motherboard.getManufacturer() ? motherboard.getManufacturer().getShortNameIfExist() : 'Unknown' }} {{ motherboard.getName() }}
+	{{ motherboard.getManufacturer() ? motherboard.getManufacturer().getName() : 'Unknown' }} {{ motherboard.getName() }}
 </div>
 {% if motherboard.getMotherboardAliases() is not empty %}
 <div class="tag-container" style="justify-content:center;padding-bottom:15px">
 	<span style="width:100%;text-align:center">Also known as:</span>
 	{% for alias in motherboard.getMotherboardAliases() %}
-		<span class="text-block" >{% if alias.getManufacturer() is not null %}{{ alias.getManufacturer().getShortNameIfExist() }}{% else %}Unknown{% endif %}&nbsp;{{ alias.getName() }}</span>
+		<span class="text-block" >{% if alias.getManufacturer() is not null %}{{ alias.getManufacturer().getName() }}{% else %}Unknown{% endif %}&nbsp;{{ alias.getName() }}</span>
 	{% endfor %}
 </div>
 {% endif %}
@@ -220,6 +220,10 @@
 					<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/show/ram_multi.svg')) }}" alt="ram" width="24" height="24">Max VRAM size</div>
 					<div>{{  motherboard.getMaxVideoRam().getValueWithUnit() }}</div>
 					{% endif %}
+					{% if motherboard.getMaxCpu() > 1 %}
+					<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/show/ram_multi.svg')) }}" alt="ram" width="24" height="24">Multi CPU support</div>
+					<div>yes ({{ motherboard.getMaxCpu()}} CPUs)</div>
+					{% endif %}
 				</div>
 			</div>
 			<!-- DOWNLOADS -->
@@ -270,7 +274,7 @@
 						</div>
 						{% for bios in motherboard.getMotherboardBios()|sort((a, b) => b.boardVersion <=> a.boardVersion)|sort((a, b) => a.manufacturer <=> b.manufacturer) %}
 						<div class="show-table-row" style="word-break:break-all;">
-							<div>{{ bios.getManufacturer().getShortNameIfExist() }}</div>
+							<div>{{ bios.getManufacturer().getName() }}</div>
 							<div><span class="string-bios">{{ bios.getPostString() }}</span></div>
 							<div><span>{{ bios.getNote() }}</span></div>
 							<div>{{ bios.getCoreVersion() }}</div>
@@ -328,57 +332,6 @@
 					<span>not available</span>
 					{% endif %}
 				</div>
-			</div>
-			<!-- CPUs -->
-			<div class="show-cpus" id="sh-cpus">
-				{% if motherboard.getProcessors() is not empty %}
-					{% if motherboard.getMaxCpu() > 1 %}<b>Multi CPU support: </b>yes ({{ motherboard.getMaxCpu()}} CPUs){% endif %}
-					<div class="show-cpus-table">
-						<div class="show-cpus-head">
-							<div><b>Model</b></div>
-							<div><b>Speed</b></div>
-							<div><b>FSB</b></div>
-							<div><b>Voltages</b></div>
-							<div><b>L1 Cache</b></div>
-							<div><b>L2 Cache</b></div>
-							<div><b>L3 Cache</b></div>
-							<div><b>Core</b></div>
-							<div><b>Process</b></div>
-							<div><b>TDP</b></div>
-						</div>
-						{% for processor in motherboard.getSortedProcessors() %}
-						<div>
-							<div><a href="{{ path("processor_show", {id: processor.getId()}) }}">{{ processor.getNameOnlyPartNumber }}</a></div>
-							<div>{{ processor.speed.getValueWithUnit() }}</div>
-							<div>{{ processor.fsb.getValueWithUnit() }}</div>
-							<div>{{ processor.getVoltagesWithValue() }}</div>
-							<div>{% if processor.l1 is not null %}{{ processor.l1.getValueWithUnit()}}{% else %}-{% endif %}</div>
-							<div>{% if processor.l2 is not null %}{{ processor.l2.getValueWithUnit()}}{% else %}-{% endif %}</div>
-							<div>{% if processor.l3 is not null %}{{ processor.l3.getValueWithUnit()}}{% else %}-{% endif %}</div>
-							<div>{% if processor.core is not null %}{{ processor.core }}{% else %}-{% endif %}</div>
-							<div>{% if processor.processNode is not null %}{{ processor.processNode }}nm{% else %}-{% endif %}</div>
-							<div>{% if processor.tdp is not null %}{{ processor.tdp }}W{% else %}-{% endif %}</div>
-						</div>
-						{% endfor %}
-					</div>
-					{% else %}
-					<div style="padding:5px;">No CPUs listed.</div>	
-				{% endif %}
-				<!-- NPUs -->
-				{% if motherboard.getCoprocessors() is not empty %}<b>Supported NPUs:</b>
-					<div class="show-cpus-table">
-						<div class="show-cpus-head"><div><b>Model</b></div><div><b>Speed</b></div><div><b>FSB</b></div><div><b>Part Number</b></div></div>
-						{% for copro in motherboard.getCoprocessors()|sort((a, b) => a.getPartNumber() <=> b.getPartNumber()) %}<div>
-							<div>{{ copro.manufacturer.getShortNameIfExist() }}&nbsp;{{ copro.getName() }}</div>
-							<div>{{ copro.speed.getValueWithUnit() }}</div>
-							<div>{{ copro.fsb.getValueWithUnit() }}</div>
-							<div>{{ copro.partNumber}}</div>
-						</div>
-						{% endfor %}
-					</div>
-				{% else %}
-					<div style="padding:5px;">No NPUs listed.</div>	
-				{% endif %}
 			</div>
 		</div>
 	</div>

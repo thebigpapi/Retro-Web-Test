@@ -61,9 +61,9 @@ class ExpansionChip extends Chip
     public function getNameWithManufacturer()
     {
         if ($this->name) {
-            return $this->getManufacturer()->getShortNameIfExist() . " " . $this->partNumber . " (" . $this->name . ")";
+            return $this->getManufacturer()->getName() . " " . $this->partNumber . " (" . $this->name . ")";
         }
-        return $this->getManufacturer()->getShortNameIfExist() . " " . $this->partNumber;
+        return $this->getManufacturer()->getName() . " " . $this->partNumber;
     }
     /**
      * @return Collection|Motherboard[]

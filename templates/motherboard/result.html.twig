@@ -37,11 +37,11 @@
 							<img src="{{ absolute_url(asset('build/images/motherboard/image-missing.webp')) }}" loading="lazy" width="250" height="200" title="no images available :(">
 						{% endif %}</div>
 						<a href="{{ path("motherboard_show", {id:motherboard.getId()}) }}" title="Click to visit page">
-							<div class="perk-name">{{ motherboard.getManufacturerShortNameIfExist() }}&nbsp;{{ motherboard.name }}</div>
+							<div class="perk-name">{{ motherboard.getManufacturerName() }}&nbsp;{{ motherboard.name }}</div>
 							<div class="perk-date">
 							{% if motherboard.getMotherboardAliases() is not empty %}{% for alias in motherboard.getMotherboardAliases() %}
 								<span class="results-alias">
-									<small>{% if alias.getManufacturer() is not null %}{{ alias.getManufacturer().getShortNameIfExist() }}{% else %}Unknown{% endif %}&nbsp;{{ alias.name }}{% if not loop.last %} |{% endif %}</small>
+									<small>{% if alias.getManufacturer() is not null %}{{ alias.getManufacturer().getName() }}{% else %}Unknown{% endif %}&nbsp;{{ alias.name }}{% if not loop.last %} |{% endif %}</small>
 								</span>
 							{% endfor %}{% endif %}</div>
 						</a>
@@ -57,11 +57,11 @@
 					</div>
 					{% for motherboard in motherboards %}
 					<div class="list-entry centered bios {% if loop.index is divisible by(2) %}alt{% endif %}">
-						<div><a class="result-link" href="{{ path("motherboard_show", {id: motherboard.getId()}) }}">{{ motherboard.getManufacturerShortNameIfExist() }}&nbsp;{{ motherboard.name }}</a></div>
+						<div><a class="result-link" href="{{ path("motherboard_show", {id: motherboard.getId()}) }}">{{ motherboard.getManufacturerName() }}&nbsp;{{ motherboard.name }}</a></div>
 						<div>
 							{% if motherboard.getMotherboardAliases() is not empty %}
 								{% for alias in motherboard.getMotherboardAliases() %}
-									<span>{{ alias.getManufacturer() ? alias.getManufacturer().getShortNameIfExist() : 'Unknown'}}&nbsp;{{ alias.name }}{% if not loop.last %} |{% endif %}</span>
+									<span>{{ alias.getManufacturer() ? alias.getManufacturer().getName() : 'Unknown'}}&nbsp;{{ alias.name }}{% if not loop.last %} |{% endif %}</span>
 								{% endfor %}
 							{% endif %}
 						</div>

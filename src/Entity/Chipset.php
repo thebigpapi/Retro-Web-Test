@@ -118,7 +118,7 @@ class Chipset
     public function getFullNameParts(): string
     {
         if ($this->getManufacturer()) {
-            $manufacturer = $this->getManufacturer()->getShortNameIfExist();
+            $manufacturer = $this->getManufacturer()->getName();
         } else {
             $manufacturer = "";
         }
@@ -129,7 +129,7 @@ class Chipset
     public function getFullName(): string
     {
         if ($this->getManufacturer()) {
-            $manufacturer = $this->getManufacturer()->getShortNameIfExist();
+            $manufacturer = $this->getManufacturer()->getName();
         } else {
             $manufacturer = "";
         }
@@ -402,7 +402,7 @@ class Chipset
         $strBuilder = "";
         $mfgData = $this->getManufacturer();
         if ($mfgData != null) {
-            $strBuilder .= $mfgData->getShortNameIfExist();
+            $strBuilder .= $mfgData->getName();
         } else {
             $strBuilder .= "[Unknown]";
         }

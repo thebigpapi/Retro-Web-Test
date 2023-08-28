@@ -28,7 +28,7 @@ class MotherboardAlias
     {
         $name = "";
         if ($this->manufacturer) {
-            $name = $this->manufacturer->getShortNameIfExist();
+            $name = $this->manufacturer->getName();
         }
         else{
             $name = "Unknown ";

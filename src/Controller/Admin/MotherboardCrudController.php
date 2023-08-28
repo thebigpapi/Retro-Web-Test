@@ -74,7 +74,7 @@ class MotherboardCrudController extends AbstractCrudController
         // index items
         yield IdField::new('id')
             ->onlyOnIndex();
-        yield TextField::new('manufacturer.short_name','Manufacturer')
+        yield TextField::new('manufacturer.name','Manufacturer')
             ->hideOnForm();
         yield TextField::new('name')
             ->hideOnForm();

@@ -63,7 +63,7 @@ class ChipsetPart extends Chip
     }
     public function getFullName(): ?string
     {
-        return $this->manufacturer->getShortNameIfExist() . " " . $this->getShortName();
+        return $this->manufacturer->getName() . " " . $this->getShortName();
     }
     public function getShortName(): ?string
     {

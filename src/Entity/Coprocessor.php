@@ -9,47 +9,18 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: 'App\Repository\CoprocessorRepository')]
 class Coprocessor extends ProcessingUnit
 {
-    #[ORM\ManyToMany(targetEntity: Motherboard::class, mappedBy: 'coprocessors')]
-    private $motherboards;
-
     public function __construct()
     {
         parent::__construct();
-        $this->motherboards = new ArrayCollection();
     }
     public function getNameWithManufacturer()
     {
-        return $this->getManufacturer()->getShortNameIfExist() . " " . $this->name;
-    }
-    /**
-     * @return Collection|Motherboard[]
-     */
-    public function getMotherboards(): Collection
-    {
-        return $this->motherboards;
-    }
-    public function addMotherboard(Motherboard $motherboard): self
-    {
-        if (!$this->motherboards->contains($motherboard)) {
-            $this->motherboards[] = $motherboard;
-            $motherboard->addCoprocessor($this);
-        }
-
-        return $this;
-    }
-    public function removeMotherboard(Motherboard $motherboard): self
-    {
-        if ($this->motherboards->contains($motherboard)) {
-            $this->motherboards->removeElement($motherboard);
-            $motherboard->removeCoprocessor($this);
-        }
-
-        return $this;
+        return $this->getManufacturer()->getName() . " " . $this->name;
     }
     public function getNameWithPlatform()
     {
         $this->getPlatform() ? $name = $this->getPlatform()->getName() : $name = "Unidentified";
-        return $this->getManufacturer()->getShortNameIfExist() . " " . $this->name . " (" . $name . ")";
+        return $this->getManufacturer()->getName() . " " . $this->name . " (" . $name . ")";
     }
     public function getSpeedFSB(){
         return $this->speed->getValueWithUnit() . ($this->fsb != $this->speed ? '/' . $this->fsb->getValueWithUnit() : '');

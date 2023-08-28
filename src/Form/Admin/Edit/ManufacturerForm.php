@@ -18,7 +18,7 @@ class ManufacturerForm extends AbstractType
     {
         $builder
             ->add('name', TextType::class)
-            ->add('shortName', TextType::class, [
+            ->add('fullName', TextType::class, [
                 'required' => false,
             ])
             ->add('fccid', TextType::class, [

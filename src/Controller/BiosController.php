@@ -64,14 +64,14 @@ class BiosController extends AbstractController
             try {
                 if ($postString && $biosManufacturerId && intval($biosManufacturerId)) {
                     $biosManufacturer = $manufacturerRepository->find($biosManufacturerId);
-                    if ($biosManufacturer->getShortNameIfExist() == "AMI") {
+                    if ($biosManufacturer->getName() == "AMI") {
                         $subStr = explode("-", $postString);
                         if (substr_count($postString, "-") == 3) { //Old AMI
                             $mfgCode = $subStr[1];
                         } else { //New AMI
                             $mfgCode = substr($subStr[2], 2);
                         }
-                    } elseif ($biosManufacturer->getShortNameIfExist() == "Award") {
+                    } elseif ($biosManufacturer->getName() == "Award") {
                         $subStr = explode("-", $postString);
                         dd($subStr);
                         $mfgCode = substr($subStr[count($subStr) - 2], 5, 2);

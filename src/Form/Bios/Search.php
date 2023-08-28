@@ -31,7 +31,7 @@ class Search extends AbstractType
             ->add('chipsetManufacturer', ChoiceType::class, [
                 //'class' => Chipset::class,
 
-                'choice_label' => 'getShortNameIfExist',
+                'choice_label' => 'getName',
                 'multiple' => false,
                 'expanded' => false,
                 'required' => false,
@@ -43,7 +43,7 @@ class Search extends AbstractType
             ->add('manufacturer', EntityType::class, [
                 'class' => Manufacturer::class,
                 'autocomplete' => true,
-                'choice_label' => 'shortNameIfExist',
+                'choice_label' => 'name',
                 'multiple' => false,
                 'expanded' => false,
                 'required' => false,
@@ -65,7 +65,7 @@ class Search extends AbstractType
             usort($chipsets, function (Chipset $a, Chipset $b) {
                 return strcmp($a->getFullReference(), $b->getFullReference());
             });
-            $chipTag = null === $chipsetManufacturer ? "No chipset selected!" : "Select any " . $chipsetManufacturer->getShortNameIfExist() . " chipset ...";
+            $chipTag = null === $chipsetManufacturer ? "No chipset selected!" : "Select any " . $chipsetManufacturer->getName() . " chipset ...";
             $form->add('chipset', ChoiceType::class, [
                 'choice_label' => 'getFullReference',
                 'multiple' => false,

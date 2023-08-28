@@ -44,9 +44,9 @@ class ProcessorRepository extends ServiceEntityRepository
         $entityManager = $this->getEntityManager();
         $likematch = "$letter%";
         $query = $entityManager->createQuery(
-            "SELECT UPPER(COALESCE(man.shortName, man.name)) manNameSort, cpu
+            "SELECT UPPER(man.name) manNameSort, cpu
             FROM App\Entity\Processor cpu, App\Entity\Manufacturer man
-            WHERE cpu.manufacturer=man AND UPPER(COALESCE(man.shortName, man.name)) like :likeMatch
+            WHERE cpu.manufacturer=man AND UPPER(man.name) like :likeMatch
             ORDER BY manNameSort ASC, cpu.name ASC"
         )->setParameter('likeMatch', $likematch);
 

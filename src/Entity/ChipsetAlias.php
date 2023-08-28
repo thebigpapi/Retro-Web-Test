@@ -95,7 +95,7 @@ class ChipsetAlias
     public function getFullAliasName(): string
     {
         if ($this->getManufacturer()) {
-            $manuf = $this->getManufacturer()->getShortNameIfExist();
+            $manuf = $this->getManufacturer()->getName();
         } else {
             $manuf = "";
         }

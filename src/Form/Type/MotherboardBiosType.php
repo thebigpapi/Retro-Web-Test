@@ -19,7 +19,7 @@ class MotherboardBiosType extends AbstractType
         $builder
             ->add('manufacturer', EntityType::class, [
                 'class' => Manufacturer::class,
-                'choice_label' => 'shortNameIfExist',
+                'choice_label' => 'name',
                 'label' => false,
                 'multiple' => false,
                 'expanded' => false,

@@ -96,7 +96,7 @@ class MotherboardForm extends AbstractType
             ])
             ->add('manufacturer', EntityType::class, [
                 'class' => Manufacturer::class,
-                'choice_label' => 'shortNameIfExist',
+                'choice_label' => 'name',
                 'autocomplete' => true,
                 'multiple' => false,
                 'expanded' => false,
@@ -529,7 +529,7 @@ class MotherboardForm extends AbstractType
     public function finishView(FormView $view, FormInterface $form, array $options)
     {
         usort($view->children['manufacturer']->vars['choices'], function (ChoiceView $a, ChoiceView $b) {
-            return strnatcasecmp($a->data->getShortNameIfExist() ?? '', $b->data->getShortNameIfExist() ?? '');
+            return strnatcasecmp($a->data->getName() ?? '', $b->data->getName() ?? '');
         });
         usort($view->children['formFactor']->vars['choices'], function (ChoiceView $a, ChoiceView $b) {
             return strnatcasecmp($a->data->getName() ?? '', $b->data->getName() ?? '');

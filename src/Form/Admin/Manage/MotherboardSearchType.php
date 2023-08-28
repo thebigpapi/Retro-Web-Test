@@ -46,7 +46,7 @@ class MotherboardSearchType extends AbstractType
         $builder
             ->add('name', TextType::class, ['required' => false,])
             ->add('manufacturer', ChoiceType::class, [
-                'choice_label' => 'shortNameIfExist',
+                'choice_label' => 'name',
                 'multiple' => false,
                 'expanded' => false,
                 'required' => false,

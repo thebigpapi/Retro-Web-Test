@@ -74,9 +74,9 @@ class MotherboardRepository extends ServiceEntityRepository
             $likematch = "$letter%";
 
             $query = $entityManager->createQuery(
-                "SELECT COALESCE(man.shortName, man.name) as manName, mobo.name, mobo.id, UPPER(COALESCE(man.shortName, man.name)) as manNameSort, UPPER(mobo.name) as moboNameSort
+                "SELECT man.name as manName, mobo.name, mobo.id, UPPER(man.name) as manNameSort, UPPER(mobo.name) as moboNameSort
                 FROM App\Entity\Motherboard mobo, App\Entity\Manufacturer man 
-                WHERE mobo.manufacturer=man AND UPPER(COALESCE(man.shortName, man.name)) like :likeMatch
+                WHERE mobo.manufacturer=man AND UPPER(man.name) like :likeMatch
                 ORDER BY manNameSort ASC, moboNameSort ASC"
             )->setParameter('likeMatch', $likematch);
         }
@@ -460,7 +460,6 @@ class MotherboardRepository extends ServiceEntityRepository
         $rsm->addJoinedEntityResult('App\Entity\Manufacturer', 'man1', 'mot0', 'manufacturer');
         $rsm->addFieldResult('man1', 'man1_id', 'id');
         $rsm->addFieldResult('man1', 'man1_name', 'name');
-        $rsm->addFieldResult('man1', 'man1_short_name', 'shortName');
 
         $rsm->addJoinedEntityResult('App\Entity\Chipset', 'chp', 'mot0', 'chipset');
         $rsm->addFieldResult('chp', 'chp_id', 'id');
@@ -468,7 +467,6 @@ class MotherboardRepository extends ServiceEntityRepository
         $rsm->addJoinedEntityResult('App\Entity\Manufacturer', 'man2', 'chp', 'manufacturer');
         $rsm->addFieldResult('man2', 'man2_id', 'id');
         $rsm->addFieldResult('man2', 'man2_name', 'name');
-        $rsm->addFieldResult('man2', 'man2_short_name', 'shortName');
 
         return $rsm;
     }
@@ -632,9 +630,9 @@ class MotherboardRepository extends ServiceEntityRepository
 
         $sql = "
             SELECT mot0.*, mot0.name as mot0_name,
-            man1.id as man1_id, man1.name as man1_name, man1.short_name as man1_short_name,
+            man1.id as man1_id, man1.name as man1_name,
             chp.id as chp_id, chp.manufacturer_id as chp_man_id,
-            man2.id as man2_id, man2.name as man2_name, man2.short_name as man2_short_name
+            man2.id as man2_id, man2.name as man2_name
             $from 
             LEFT JOIN manufacturer man1 ON mot0.manufacturer_id = man1.id 
             JOIN chipset chp ON mot0.chipset_id = chp.id 
@@ -644,8 +642,7 @@ class MotherboardRepository extends ServiceEntityRepository
         ";
 
         $noChipset = " SELECT mot0.*, mot0.name as mot0_name, 
-        man1.id as man1_id, man1.name as man1_name, man1.short_name as man1_short_name,
-        NULL, NULL, NULL, NULL,
+        man1.id as man1_id, man1.name as man1_name, NULL, NULL, NULL,
         NULL
         $from 
         LEFT JOIN manufacturer man1 ON mot0.manufacturer_id = man1.id 
@@ -784,9 +781,9 @@ class MotherboardRepository extends ServiceEntityRepository
         // Building SQL query
         $sql = "
             SELECT mot0.*, mot0.name as mot0_name,
-            man1.id as man1_id, man1.name as man1_name, man1.short_name as man1_short_name,
+            man1.id as man1_id, man1.name as man1_name,
             chp.id as chp_id, chp.manufacturer_id as chp_man_id,
-            man2.id as man2_id, man2.name as man2_name, man2.short_name as man2_short_name
+            man2.id as man2_id, man2.name as man2_name
             $fromSql 
             JOIN chipset chp ON mot0.chipset_id = chp.id 
             JOIN manufacturer man2 ON chp.manufacturer_id = man2.id 
@@ -795,8 +792,8 @@ class MotherboardRepository extends ServiceEntityRepository
         ";
 
         $noChipset = " SELECT mot0.*, mot0.name as mot0_name, 
-        man1.id as man1_id, man1.name as man1_name, man1.short_name as man1_short_name,
-        NULL, NULL, NULL, NULL,
+        man1.id as man1_id, man1.name as man1_name,
+        NULL, NULL, NULL,
         NULL
         $fromSql 
         $whereNoChipsetSQL 
@@ -1025,7 +1022,7 @@ class MotherboardRepository extends ServiceEntityRepository
     {
         $entityManager = $this->getEntityManager();
         $result = $entityManager->createQuery(
-            'SELECT COALESCE(COALESCE(man.shortName, man.name), \'Unidentified\') as name, COUNT(m.id) as count
+            'SELECT COALESCE(man.name, \'Unidentified\') as name, COUNT(m.id) as count
             FROM App\Entity\Motherboard m LEFT JOIN m.manufacturer man 
             GROUP BY man
             ORDER BY count DESC'
@@ -1075,7 +1072,7 @@ class MotherboardRepository extends ServiceEntityRepository
         $rsm->addScalarResult('cnt', 'cnt');
 
         $result = $entityManager->createNativeQuery(
-            "SELECT c.id, coalesce(man.short_name, man.name) AS manuf, c.name, c.part_no, ch.cnt FROM chipset c
+            "SELECT c.id, man.name AS manuf, c.name, c.part_no, ch.cnt FROM chipset c
             LEFT JOIN manufacturer man ON man.id = c.manufacturer_id
             INNER JOIN (SELECT chipset_id, count(chipset_id) AS cnt FROM motherboard GROUP BY chipset_id) AS ch ON ch.chipset_id = c.id
             ORDER BY ch.cnt DESC",$rsm)->getResult();
@@ -1107,7 +1104,7 @@ class MotherboardRepository extends ServiceEntityRepository
         $rsm->addScalarResult('cnt', 'cnt');
 
         $result = $entityManager->createNativeQuery(
-            "SELECT c.id, coalesce(man.short_name, man.name) as manuf, c.name, c.part_number, ch.cnt FROM chip c
+            "SELECT c.id, man.name as manuf, c.name, c.part_number, ch.cnt FROM chip c
             LEFT JOIN manufacturer man ON man.id = c.manufacturer_id
             INNER JOIN (SELECT expansion_chip_id, count(expansion_chip_id) AS cnt FROM motherboard_expansion_chip GROUP BY expansion_chip_id) AS ch ON ch.expansion_chip_id = c.id
             ORDER BY ch.cnt DESC",$rsm)->getResult();

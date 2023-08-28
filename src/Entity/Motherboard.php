@@ -48,9 +48,6 @@ class Motherboard
     #[ORM\ManyToMany(targetEntity: ProcessorPlatformType::class, inversedBy: 'motherboards')]
     private $processorPlatformTypes;
 
-    #[ORM\ManyToMany(targetEntity: Processor::class, inversedBy: 'motherboards')]
-    private $processors;
-
     #[ORM\ManyToMany(targetEntity: CpuSpeed::class, inversedBy: 'motherboards')]
     private $cpuSpeed;
 
@@ -66,9 +63,6 @@ class Motherboard
     #[ORM\OneToMany(targetEntity: Manual::class, mappedBy: 'motherboard', orphanRemoval: true, cascade: ['persist'])]
     #[Assert\Valid()]
     private $manuals;
-
-    #[ORM\ManyToMany(targetEntity: Coprocessor::class, inversedBy: 'motherboards')]
-    private $coprocessors;
 
     #[ORM\OneToMany(targetEntity: MotherboardImage::class, mappedBy: 'motherboard', orphanRemoval: true, cascade: ['persist'])]
     #[Assert\Valid()]
@@ -131,8 +125,6 @@ class Motherboard
         $this->cacheSize = new ArrayCollection();
         $this->dramType = new ArrayCollection();
         $this->manuals = new ArrayCollection();
-        $this->processors = new ArrayCollection();
-        $this->coprocessors = new ArrayCollection();
         $this->images = new ArrayCollection();
         $this->knownIssues = new ArrayCollection();
         $this->lastEdited = new \DateTime('now');
@@ -169,10 +161,10 @@ class Motherboard
 
         return $this;
     }
-    public function getManufacturerShortNameIfExist(): ?string
+    public function getManufacturerName(): ?string
     {
         if ($this->manufacturer) {
-            return $this->manufacturer->getShortNameIfExist();
+            return $this->manufacturer->getName();
         } else {
             return 'Unknown';
         }
@@ -360,67 +352,6 @@ class Motherboard
         return $this;
     }
     /**
-     * @return Collection|Processor[]
-     */
-    public function getSortedProcessors(): Collection
-    {
-        $processors = array();
-        foreach ($this->processors as $processor) {
-            $processorsTmp = array();
-            foreach ($processor->getChipAliases() as $alias) {
-                if (
-                    ($alias->getManufacturer() != $processor->getManufacturer())
-                    &&
-                    $alias->getName() != $processor->getName()
-                ) {
-                    $alreadyAdded = false;
-                    foreach ($processorsTmp as $processorTmp) {
-                        if (
-                            ($alias->getManufacturer() == $processorTmp->getManufacturer())
-                            &&
-                            $alias->getName() == $processorTmp->getName()
-                        ) {
-                            $alreadyAdded = true;
-                        }
-                    }
-                    if (!$alreadyAdded) {
-                        $fakeCPU = clone $processor;
-                        $fakeCPU->setName($alias->getName());
-                        $fakeCPU->setManufacturer($alias->getManufacturer());
-                        $fakeCPU->setPartNumber($alias->getPartNumber());
-                        $processorsTmp[] = $fakeCPU;
-                    }
-                }
-            }
-            $processors = array_merge($processors, $processorsTmp);
-        }
-        $processors = array_merge($processors, $this->processors->toArray());
-        return Processor::sort(new ArrayCollection($processors));
-    }
-    /**
-     * @return Collection|Processor[]
-     */
-    public function getProcessors(): array
-    {
-        return $this->processors->toArray();
-    }
-    public function addProcessor(Processor $processor): self
-    {
-        if (!$this->processors->contains($processor)) {
-            $this->processors[] = $processor;
-        }
-
-        return $this;
-    }
-    public function removeProcessor(Processor $processor): self
-    {
-        if ($this->processors->contains($processor)) {
-            $this->processors->removeElement($processor);
-        }
-
-        return $this;
-    }
-    /**
      * @return Collection|CpuSpeed[]
      */
     public function getCpuSpeed(): Collection
@@ -523,29 +454,6 @@ class Motherboard
             if ($manual->getMotherboard() === $this) {
                 $manual->setMotherboard(null);
             }
-        }
-
-        return $this;
-    }
-    /**
-     * @return Collection|Coprocessor[]
-     */
-    public function getCoprocessors(): Collection
-    {
-        return $this->coprocessors;
-    }
-    public function addCoprocessor(Coprocessor $coprocessor): self
-    {
-        if (!$this->coprocessors->contains($coprocessor)) {
-            $this->coprocessors[] = $coprocessor;
-        }
-
-        return $this;
-    }
-    public function removeCoprocessor(Coprocessor $coprocessor): self
-    {
-        if ($this->coprocessors->contains($coprocessor)) {
-            $this->coprocessors->removeElement($coprocessor);
         }
 
         return $this;
@@ -859,7 +767,7 @@ class Motherboard
         $strBuilder = "";
         $mfgData = $this->getManufacturer();
         if ($mfgData != null) {
-            $strBuilder .= $mfgData->getShortNameIfExist();
+            $strBuilder .= $mfgData->getName();
         } else {
             $strBuilder .= "[Unknown]";
         }
