@@ -99,280 +99,54 @@ export default class extends Controller {
     }
 
     /**
-     * Fetch CPU/NPU lists based on the parameters given by the user
-     * @param {*} event 
+     * Fetch CPU family list based on the parameters given by the user
      */
-    updateProcessors(event) {
-        event.preventDefault();
-        let _this = this;
-        _this.checkAllCheckBoxes();
-        //let processors = document.getElementById("motherboard_form_processors").children;
-        //let coprocessors = document.getElementById("motherboard_form_coprocessors").children;
-        let slug = document.getElementById('Motherboard_slug');
-        let form = _this.element;
-
-        let params = new FormData();
-        params.set(slug.name, slug.value);
+    updateFamilies() {
+        let params = [];
         let cnt = 0;
+        if(document.getElementById("Motherboard_cpuSockets_0")==null)
+            cnt = 1;
+        // read CPU sockets
         while(document.getElementById("Motherboard_cpuSockets_" + cnt)){
             let element = document.getElementById("Motherboard_cpuSockets_" + cnt);
-            params.set(element.name, element.value);
+            params.push(element.value);
             cnt++;
         }
         cnt = 0;
-        while(document.getElementById("Motherboard_processorPlatformTypes_" + cnt)){
-            let element = document.getElementById("Motherboard_processorPlatformTypes_" + cnt);
-            params.set(element.name, element.value);
-            cnt++;
-        }
-        cnt = 0;
-        while(document.getElementById("Motherboard_cpuSpeed_" + cnt)){
-            let element = document.getElementById("Motherboard_cpuSpeed_" + cnt);
-            params.set(element.name, element.value);
-            cnt++;
-        }
-        /*for (let processor of processors) {
-            if (processor.checked) {
-                params.append(processor.name, processor.value);
-            }
-        }
-        for (let coprocessor of coprocessors) {
-            if (coprocessor.checked) {
-                params.append(coprocessor.name, coprocessor.value);
-            }
-        }*/
-        let cursor = document.getElementById("cpu-wait");
-        cursor.style.display = "";
-        (async () => {
-            const rawResponse = await fetch(form.action, {
-                method: 'POST',
-                body: params
-            });
-            let parser = new DOMParser();
-            //console.log(await rawResponse.text());
-            let parsedResponse = parser.parseFromString(await rawResponse.text(), "text/html");
-            console.log(parsedResponse);
-            document.getElementById("cpuSockets-fields-list").innerHTML = parsedResponse.getElementById("cpuSockets-fields-list").innerHTML;
-            document.getElementById("processorPlatformTypes-fields-list").outerHTML = parsedResponse.getElementById("processorPlatformTypes-fields-list").outerHTML;
-            document.getElementById("processorPlatformTypes-fields-list").innerHTML = parsedResponse.getElementById("processorPlatformTypes-fields-list").innerHTML;
-            document.getElementById("cpuSpeed-fields-list").outerHTML = parsedResponse.getElementById("cpuSpeed-fields-list").outerHTML;
-            document.getElementById("cpuSpeed-fields-list").innerHTML = parsedResponse.getElementById("cpuSpeed-fields-list").innerHTML;
-            document.getElementById("motherboard_form_processors").outerHTML = parsedResponse.getElementById("motherboard_form_processors").outerHTML;
-            document.getElementById("motherboard_form_processors").innerHTML = parsedResponse.getElementById("motherboard_form_processors").innerHTML;
-            document.getElementById("motherboard_form_coprocessors").outerHTML = parsedResponse.getElementById("motherboard_form_coprocessors").outerHTML;
-            document.getElementById("motherboard_form_coprocessors").innerHTML = parsedResponse.getElementById("motherboard_form_coprocessors").innerHTML;
-            let new_platforms = document.getElementById("processorPlatformTypes-fields-list");
-            for (let new_platform of new_platforms.children) {
-                if (new_platform.children[2])
-                    if (new_platform.children[2].nodeName == "UL")
-                        new_platform.children[2].outerHTML = "";
-            }
-            this.initProcessorsFromDom(document);
-            cursor.style.display = "none";
-
-
-        })();
-
-    }
-
-    //Processors
-    uncheckedProcessors = new Array();
-    checkedProcessors = new Array();
-
-    //Coprocessors
-    uncheckedCoprocessors = new Array();
-    checkedCoprocessors = new Array();
-
-    initProcessorsFromDom(dom) {
-        //Processors
-        this.uncheckedProcessors = new Array();
-        this.checkedProcessors = new Array();
-
-        //Coprocessors
-        this.uncheckedCoprocessors = new Array();
-        this.checkedCoprocessors = new Array();
-
-        let cpusTags = dom.getElementById('motherboard_form_processors');
-        let npusTags = dom.getElementById('motherboard_form_coprocessors');
-
-        cpusTags.childNodes.forEach(tag => {
-            if (tag.tagName==="INPUT") {
-                if (tag.checked) {
-                    this.checkedProcessors.push({name:tag.labels[0].textContent, value:tag.value, tag});
-                } else {
-                    this.uncheckedProcessors.push({name:tag.labels[0].textContent, value:tag.value, tag});
+        // fetch new platforms based on sockets
+        let post = JSON.stringify(params)
+        let platformArray = {};
+        let url = window.location.origin + "/dashboard/getcpufamilies";
+        let xhr = new XMLHttpRequest()
+        xhr.open('POST', url, true)
+        xhr.setRequestHeader('Content-type', 'application/json; charset=UTF-8')
+        xhr.send(post);
+        xhr.onload = function () {
+            if(xhr.status === 200) {
+                platformArray = JSON.parse(xhr.responseText);
+                 // update existing selects
+                while(document.getElementById("Motherboard_processorPlatformTypes_" + cnt)){
+                    let element = document.getElementById("Motherboard_processorPlatformTypes_" + cnt);
+                    let selectedValue = element.options[element.selectedIndex].value;
+                    let selected = false;
+                    let invalidOp = new Option("Invalid CPU family, reselect!",'');
+                    invalidOp.setAttribute("selected", "selected");
+                    element.innerHTML = "";
+                    for(const key in platformArray){
+                        let option = new Option(platformArray[key],key.slice(1));
+                        if(key == selectedValue){
+                            option.setAttribute("selected", "selected");
+                            selected = true;
+                        }
+                        element.add(option);
+                    }
+                    /*if(!selected){
+                        element.add(invalidOp);
+                    }*/
+                    cnt++;
                 }
+                // update data prototype selects
             }
-        });
-
-        npusTags.childNodes.forEach(tag => {
-            if (tag.tagName==="INPUT") {
-                if (tag.checked) {
-                    this.checkedCoprocessors.push({name:tag.labels[0].textContent, value:tag.value, tag});
-                } else {
-                    this.uncheckedCoprocessors.push({name:tag.labels[0].textContent, value:tag.value, tag});
-                }
-            }
-        });
-
-        this.applyListsToSelects();
-    }
-
-    sortProcessors() {
-        this.uncheckedProcessors.sort((a, b) => {
-            return a.name >= b.name;
-        });
-        this.checkedProcessors.sort((a, b) => {
-            return a.name >= b.name;
-        });
-    }
-
-    sortCoprocessors() {
-        this.uncheckedCoprocessors.sort((a, b) => {
-            return a.name >= b.name;
-        });
-        this.checkedCoprocessors.sort((a, b) => {
-            return a.name >= b.name;
-        });
-    }
-
-    /**
-     * Add all processors to the motherboard
-     * @param {*} event 
-     */
-    addAllProcessors(event) {
-        event.preventDefault();
-        this.moveAllValuesToList(this.uncheckedProcessors, this.checkedProcessors);
-    }
-
-    /**
-     * Add all selected processors to the motherboard
-     * @param {*} event 
-     */
-    addAllSelectedProcessors(event) {
-        event.preventDefault();
-        this.moveSelectedValuesToList(document.getElementById('unchecked_processors'), this.uncheckedProcessors, this.checkedProcessors);
-    }
-
-    /**
-     * Remove all selected processors from the motherboard
-     * @param {*} event 
-     */
-    removeAllSelectedProcessors(event) {
-        event.preventDefault();
-        this.moveSelectedValuesToList(document.getElementById('checked_processors'), this.checkedProcessors, this.uncheckedProcessors);
-    }
-
-    /**
-     * Remove processors from the motherboard
-     * @param {*} event 
-     */
-    removeAllProcessors(event) {
-        event.preventDefault();
-        this.moveAllValuesToList(this.checkedProcessors, this.uncheckedProcessors);
-    }
-
-    /**
-     * Add all coprocessors to the motherboard
-     * @param {*} event 
-     */
-    addAllCoprocessors(event) {
-        event.preventDefault();
-        this.moveAllValuesToList(this.uncheckedCoprocessors, this.checkedCoprocessors);
-    }
-
-    /**
-     * Add all selected coprocessors to the motherboard
-     * @param {*} event 
-     */
-    addAllSelectedCoprocessors(event) {
-        event.preventDefault();
-        this.moveSelectedValuesToList(document.getElementById('unchecked_coprocessors'), this.uncheckedCoprocessors, this.checkedCoprocessors);
-    }
-
-    /**
-     * Remove all selected coprocessors from the motherboard
-     * @param {*} event 
-     */
-    removeAllSelectedCoprocessors(event) {
-        event.preventDefault();
-        this.moveSelectedValuesToList(document.getElementById('checked_coprocessors'), this.checkedCoprocessors, this.uncheckedCoprocessors);
-    }
-
-    /**
-     * Remove coprocessors from the motherboard
-     * @param {*} event 
-     */
-    removeAllCoprocessors(event) {
-        event.preventDefault();
-        this.moveAllValuesToList(this.checkedCoprocessors, this.uncheckedCoprocessors);
-    }
-
-    moveSelectedValuesToList(sourceSelect, source, destination) {
-        [...sourceSelect.options]
-        .filter(option => option.selected)
-        .forEach(option => {
-            let processor = source.filter(elt => elt.value === option.value)[0];
-            source.splice(source.indexOf(processor), 1);
-            destination.push(processor);
-            option.remove();
-        });
-        this.applyListsToSelects();
-    }
-
-    moveAllValuesToList(source, destination) {
-        destination.push(...source);
-        source.splice(0, source.length);
-        this.applyListsToSelects();
-    }
-
-    /**
-     * Set the content of uncheckedProcessors[] and checkedProcessors[] to the two select lists
-     */
-    applyListsToSelects() {
-        // Sort processors
-        this.sortProcessors();
-        this.sortCoprocessors();
-
-        // Calculating max size of processor selects
-        let cpuSize = this.uncheckedProcessors.length + this.checkedProcessors.length;
-        let npuSize = this.uncheckedCoprocessors.length + this.checkedCoprocessors.length;
-
-        this.applyListsToSelect(document.getElementById('unchecked_processors'), this.uncheckedProcessors, cpuSize);
-        this.applyListsToSelect(document.getElementById('checked_processors'), this.checkedProcessors, cpuSize);
-        this.applyListsToSelect(document.getElementById('unchecked_coprocessors'), this.uncheckedCoprocessors, npuSize);
-        this.applyListsToSelect(document.getElementById('checked_coprocessors'), this.checkedCoprocessors, npuSize);
-    }
-
-    applyListsToSelect(select, list, size) {
-        //Clearing select
-        select.innerHTML = "";
-
-        //Adding the processors from list to the list
-        list.forEach(proc => {
-            let option = document.createElement("option");
-            option.value = proc.value;
-            option.text = proc.name;
-            select.add(option, null);
-        });
-
-        //Setting size to the select
-        select.setAttribute('size', size);
-    }
-
-    checkAllCheckBoxes() {
-        this.checkedProcessors.forEach(processor => {
-            processor.tag.checked=true;
-        });
-        this.uncheckedProcessors.forEach(processor => {
-            processor.tag.checked=false;
-        });
-
-        this.checkedCoprocessors.forEach(coprocessor => {
-            coprocessor.tag.checked=true;
-        });
-        this.uncheckedCoprocessors.forEach(coprocessor => {
-            coprocessor.tag.checked=false;
-        });
+        }
     }
 }

@@ -129,3 +129,15 @@
         <div class="small" id="{{ form.file.vars.id }}_new_file_name"></div>
     </div>
 {% endblock %}
+{% block _Motherboard_maxcpu_widget %}
+{{ form_widget(form)}}
+<div style="padding-top:10px;" data-controller="motherboard--add">
+    <button class="btn btn-secondary" type="button" data-action="click->motherboard--add#updateFamilies">
+        <span class="btn-label"><i class="fa fa-external-link"></i> <span class="action-label">Update cpu</span></span>
+    </button>
+</div>
+<div id="cpu-wait" style="display:none;">
+    <span>Please wait :)</span><img src="https://dev.theretroweb.com/build/images/cursor.gif" alt="" height="24" style="vertical-align: middle;">
+</div>
+
+{% endblock _Motherboard_maxcpu_widget %}

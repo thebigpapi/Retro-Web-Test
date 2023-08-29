@@ -2,14 +2,18 @@
 
 namespace App\Controller;
 
+use App\Entity\CpuSocket;
+use App\Entity\ProcessorPlatformType;
 use App\Entity\Trace;
 use App\Entity\User;
 use App\Form\ManageUser;
+use App\Repository\CpuSocketRepository;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -115,7 +119,31 @@ class AdminController extends AbstractDashboardController
             ]);
         }
     }
-
+    #[Route('/dashboard/getcpufamilies', name:'mobo_get_cpu_families', methods:['POST'])]
+    public function getCPUFamilies(Request $request, CpuSocketRepository $cpuSocketRepository): JsonResponse
+    {
+        //dd($request->query);
+        $platforms = array();
+        $cpuSockets = json_decode($request->getContent());
+        if ($cpuSockets[0] instanceof CpuSocket) {
+            foreach ($cpuSockets as $socket) {
+                $platforms = array_merge($platforms, $socket->getPlatforms()->toArray());
+            }
+        } else {
+            foreach ($cpuSockets as $socketId) {
+                $socket = $cpuSocketRepository->find($socketId);
+                $platforms = array_merge($platforms, $socket->getPlatforms()->toArray());
+            }
+        }
+        usort($platforms, function (ProcessorPlatformType $a, ProcessorPlatformType $b) {
+            return strnatcasecmp($a->getName() ?? '', $b->getName() ?? '');
+        });
+        $cpuPlatforms = array();
+        foreach($platforms as $platform){
+            $cpuPlatforms["e" . (string)$platform->getId()] = $platform->getName();
+        }
+        return new JsonResponse($cpuPlatforms);
+    }
     #[Route('/dashboard/settings', name:'admin_user_settings')]
     public function userIndex(): Response
     {
