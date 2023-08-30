@@ -41,9 +41,8 @@ class Chipset
     #[Assert\Length(max: 255, maxMessage: 'Encyclopedia link is longer than {{ limit }} characters, try to make it shorter.')]
     private $encyclopedia_link;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    #[Assert\Length(max: 16, maxMessage: 'Release date is longer than {{ limit }} characters, try to make it shorter.')]
-    private $release_date;
+    #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $release_date = null;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     #[Assert\Length(max: 255, maxMessage: 'Part number is longer than {{ limit }} characters, try to make it shorter.')]
@@ -240,11 +239,11 @@ class Chipset
 
         return $this;
     }
-    public function getReleaseDate(): ?string
+    public function getReleaseDate(): ?\DateTimeInterface
     {
         return $this->release_date;
     }
-    public function setReleaseDate(?string $release_date): self
+    public function setReleaseDate(?\DateTimeInterface $release_date): self
     {
         $this->release_date = $release_date;
 
@@ -415,10 +414,10 @@ class Chipset
         $strBuilder = "Get info, documentation and more about the ";
         $strBuilder .= $this->getPrettyTitle();
         $strBuilder .= " chipset";
-        $relDate = $this->getReleaseDate();
+        /*$relDate = $this->getReleaseDate();
         if (strlen($relDate) > 0) {
             $strBuilder .= ", released " . $relDate;
-        }
+        }*/
         $strBuilder .= ".";
 
         return $strBuilder;

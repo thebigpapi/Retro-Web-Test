@@ -65,7 +65,7 @@
 					<div class="quick-spec-head">
 						<img src="{{ absolute_url(asset('build/icons/show/calendar.svg')) }}" alt="date" width="24" height="24">Release date
 					</div>
-					<div>{{ chipset.getReleaseDate() ? chipset.getReleaseDate() : 'Unknown' }}</div>
+					<div>{{ chipset.getReleaseDate() ? chipset.getReleaseDate()|date("Y-m-d") : 'Unknown' }}</div>
 					<!-- Actions -->
 					<div class="quick-spec-head">
 						<img src="{{ absolute_url(asset('build/icons/show/cursor.svg')) }}" alt="act" width="24" height="24">Actions
