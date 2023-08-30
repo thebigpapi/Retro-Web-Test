@@ -147,6 +147,7 @@ class MotherboardCrudController extends AbstractCrudController
         yield CollectionField::new('processorPlatformTypes', 'CPU families')
             ->setEntryType(ProcessorPlatformTypeForm::class)
             ->setColumns(4)
+            ->setFormTypeOption('row_attr', ['id'=> 'mobo-cpu-families-form'])
             ->renderExpanded()
             ->onlyOnForms();
         yield CollectionField::new('cpuSpeed', 'FSB speed')

@@ -102,17 +102,21 @@ export default class extends Controller {
      * Fetch CPU family list based on the parameters given by the user
      */
     updateFamilies() {
+        let _this=this;
         let params = [];
         let cnt = 0;
-        if(document.getElementById("Motherboard_cpuSockets_0")==null)
-            cnt = 1;
         // read CPU sockets
-        while(document.getElementById("Motherboard_cpuSockets_" + cnt)){
-            let element = document.getElementById("Motherboard_cpuSockets_" + cnt);
-            params.push(element.value);
+        let sockets = document.getElementById('Motherboard_cpuSockets');
+        let socket_cnt = sockets.childElementCount;
+        while(socket_cnt > 0){
+            if(document.getElementById("Motherboard_cpuSockets_" + cnt)){
+                let element = document.getElementById("Motherboard_cpuSockets_" + cnt);
+                if(element.value)
+                    params.push(element.value);
+                socket_cnt--;
+            }
             cnt++;
         }
-        cnt = 0;
         // fetch new platforms based on sockets
         let post = JSON.stringify(params)
         let platformArray = {};
@@ -125,28 +129,55 @@ export default class extends Controller {
             if(xhr.status === 200) {
                 platformArray = JSON.parse(xhr.responseText);
                  // update existing selects
-                while(document.getElementById("Motherboard_processorPlatformTypes_" + cnt)){
-                    let element = document.getElementById("Motherboard_processorPlatformTypes_" + cnt);
-                    let selectedValue = element.options[element.selectedIndex].value;
-                    let selected = false;
-                    let invalidOp = new Option("Invalid CPU family, reselect!",'');
-                    invalidOp.setAttribute("selected", "selected");
-                    element.innerHTML = "";
-                    for(const key in platformArray){
-                        let option = new Option(platformArray[key],key.slice(1));
-                        if(key == selectedValue){
-                            option.setAttribute("selected", "selected");
-                            selected = true;
-                        }
-                        element.add(option);
-                    }
-                    /*if(!selected){
-                        element.add(invalidOp);
-                    }*/
-                    cnt++;
-                }
+                _this.updateWidget(platformArray);
                 // update data prototype selects
+                _this.updatePrototype(platformArray);
             }
         }
+    }
+    updateWidget(platformArray){
+        let cnt = 0;
+        let platforms = document.getElementById('Motherboard_processorPlatformTypes');
+        let platform_cnt = platforms.childElementCount;
+        while(platform_cnt > 0){
+            if(document.getElementById("Motherboard_processorPlatformTypes_" + cnt)){
+                let element = document.getElementById("Motherboard_processorPlatformTypes_" + cnt);
+                let selectedValue = element.value;
+                let selected = false;
+                let invalidOp = new Option("Invalid CPU family, reselect!",'');
+                invalidOp.setAttribute("selected", "selected");
+                element.innerHTML = "";
+                for(const key in platformArray){
+                    let option = new Option(platformArray[key],key.slice(1));
+                    if(key.slice(1) == selectedValue){
+                        option.setAttribute("selected", "selected");
+                        selected = true;
+                    }
+                    element.add(option);
+                }
+                if(!selected){
+                    element.add(invalidOp);
+                }
+                platform_cnt--;
+            }
+            cnt++;
+        }
+    }
+    updatePrototype(platformArray){
+        let widget = document.getElementById('mobo-cpu-families-form');
+        let doc = document.createRange().createContextualFragment(widget.getAttribute('data-prototype'));
+        let prototypeSelect = doc.getElementById('Motherboard_processorPlatformTypes___processorPlatformTypesname__');
+        console.log(doc.outerHTML);
+        //console.log(prototypeSelect.outerHTML);
+        prototypeSelect.innerHTML = "";
+        for(const key in platformArray){
+            let option = new Option(platformArray[key],key.slice(1));
+            prototypeSelect.add(option);
+        }
+        const serializer = new XMLSerializer();
+        const document_fragment_string = serializer.serializeToString(doc);
+        //console.log(prototypeSelect.outerHTML);
+        //console.log(document_fragment_string);
+        widget.setAttribute('data-prototype', document_fragment_string)
     }
 }
