@@ -28,6 +28,16 @@ class ProcessorCrudController extends AbstractCrudController
     {
         return Processor::class;
     }
+    public function configureActions(Actions $actions): Actions
+    {
+        return $actions->setPermission(Action::DELETE, 'ROLE_ADMIN');
+    }
+    public function configureCrud(Crud $crud): Crud
+    {
+        return $crud
+            ->showEntityActionsInlined()
+            ->setPaginatorPageSize(100);
+    }
     public function configureFilters(Filters $filters): Filters
     {
         return parent::configureFilters($filters)
@@ -41,8 +51,6 @@ class ProcessorCrudController extends AbstractCrudController
             ->add('tdp')
             ->add('ProcessNode');
     }
-
-
     public function configureFields(string $pageName): iterable
     {
         yield FormField::addTab('Basic Data')
@@ -151,14 +159,5 @@ class ProcessorCrudController extends AbstractCrudController
             ->renderExpanded()
             ->onlyOnForms();
 
-    }
-    public function configureCrud(Crud $crud): Crud
-    {
-        return $crud->showEntityActionsInlined()->setPaginatorPageSize(100);
-    }
-    public function configureActions(Actions $actions): Actions
-    {
-        return $actions
-            ->setPermission(Action::DELETE, 'ROLE_ADMIN');
     }
 }

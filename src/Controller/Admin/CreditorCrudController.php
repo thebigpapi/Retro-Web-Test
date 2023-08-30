@@ -3,15 +3,16 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Creditor;
+use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\ArrayField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
+use EasyCorp\Bundle\EasyAdminBundle\Field\UrlField;
 
 class CreditorCrudController extends AbstractCrudController
 {
@@ -19,29 +20,34 @@ class CreditorCrudController extends AbstractCrudController
     {
         return Creditor::class;
     }
-
-    public function configureFields(string $pageName): iterable
+    public function configureActions(Actions $actions): Actions
     {
-        yield IdField::new('id')
-            ->onlyOnIndex();
-        yield TextField::new('name', 'Name');
-        yield TextField::new('website', 'Website');
-        /*yield ArrayField::new('license', 'License')
-            ->onlyOnIndex();
-        yield AssociationField::new('license', 'License')
-            ->onlyOnForms(); broken */
-        yield NumberField::new('getMoboImg', 'Mobo img')
-            ->onlyOnIndex();
-        yield NumberField::new('getChipImg', 'Chip img')
-            ->onlyOnIndex();
+        return $actions
+            ->setPermission(Action::DELETE, 'ROLE_ADMIN');
     }
     public function configureCrud(Crud $crud): Crud
     {
         return $crud->showEntityActionsInlined()->setPaginatorPageSize(100);
     }
-    public function configureActions(Actions $actions): Actions
+    public function configureFields(string $pageName): iterable
     {
-        return $actions
-            ->setPermission(Action::DELETE, 'ROLE_ADMIN');
+        yield IdField::new('id')
+            ->onlyOnIndex();
+        yield TextField::new('name', 'Name')
+            ->setColumns(6);
+        yield FormField::addRow();
+        yield UrlField::new('website', 'Website')
+            ->setColumns(6);
+        yield FormField::addRow();
+        yield TextField::new('license.name', 'License')
+            ->onlyOnIndex();
+        yield AssociationField::new('license', 'License')
+            ->setFormTypeOption('required', false)
+            ->setColumns(6)
+            ->onlyOnForms();
+        yield NumberField::new('getMoboImg', 'Mobo img')
+            ->onlyOnIndex();
+        yield NumberField::new('getChipImg', 'Chip img')
+            ->onlyOnIndex();
     }
 }

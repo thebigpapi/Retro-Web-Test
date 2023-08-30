@@ -167,3 +167,14 @@ $btn-hover-dark: rgb(247, 207, 62);
 		}
 	}
 }
+div.mobo-buttons{
+	display: flex;
+    flex-wrap: wrap;
+    justify-content: right;
+    row-gap: 1em;
+    flex-direction: row;
+    padding-right: 10px;
+}
+body:not(.ea-content-width-full) .content-wrapper {
+    max-width: none;
+}

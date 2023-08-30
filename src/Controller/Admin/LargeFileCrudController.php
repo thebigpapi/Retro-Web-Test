@@ -13,8 +13,6 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\UrlField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ArrayField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
@@ -32,7 +30,22 @@ class LargeFileCrudController extends AbstractCrudController
     {
         return LargeFile::class;
     }
-
+    public function configureActions(Actions $actions): Actions
+    {
+        $view = Action::new('view', 'View')->linkToCrudAction('viewDriver');
+        return $actions
+            ->add(Crud::PAGE_INDEX, $view)
+            ->setPermission(Action::DELETE, 'ROLE_ADMIN');
+    }
+    public function configureCrud(Crud $crud): Crud
+    {
+        return parent::configureCrud($crud)
+            ->showEntityActionsInlined()
+            ->setPaginatorPageSize(100)
+            ->overrideTemplate('crud/edit', 'admin/crud/edit_driver.html.twig')
+            ->overrideTemplate('crud/new', 'admin/crud/new_driver.html.twig')
+            ->setDefaultSort(['lastEdited' => 'DESC']);
+    }
     public function configureFilters(Filters $filters): Filters
     {
         return parent::configureFilters($filters)
@@ -45,7 +58,6 @@ class LargeFileCrudController extends AbstractCrudController
     public function configureFields(string $pageName): iterable
     {
         yield IdField::new('id')->onlyOnIndex();
-
         yield TextField::new('name', 'Name')
             ->setColumns(4);
         yield TextField::new('fileVersion', 'Version')
@@ -59,10 +71,6 @@ class LargeFileCrudController extends AbstractCrudController
             ->setFormTypeOption('autocomplete', 'disabled')
             ->setColumns(4)
             ->onlyOnForms();
-        /*yield TextField::new('file_name', 'File name')
-            ->setColumns(4)
-            ->setFormTypeOption('disabled','disabled')
-            ->onlyOnForms();*/
         yield TextField::new('subdirectory', 'Type')
             ->onlyOnIndex();
         yield AssociationField::new('dumpQualityFlag','Quality')
@@ -101,15 +109,6 @@ class LargeFileCrudController extends AbstractCrudController
         yield DateField::new('lastEdited')
             ->hideOnForm();
     }
-
-    public function configureActions(Actions $actions): Actions
-    {
-        $view = Action::new('view', 'View')
-            ->linkToCrudAction('viewDriver');
-        return $actions
-            ->add(Crud::PAGE_INDEX, $view)
-            ->setPermission(Action::DELETE, 'ROLE_ADMIN');
-    }
     public function viewDriver(AdminContext $context)
     {
         $driverId = $context->getEntity()->getInstance()->getId();
@@ -122,13 +121,5 @@ class LargeFileCrudController extends AbstractCrudController
     {
         $entityInstance->updateLastEdited();
         parent::updateEntity($entityManager, $entityInstance);
-    }
-    public function configureCrud(Crud $crud): Crud
-    {
-        return parent::configureCrud($crud)
-            ->setPaginatorPageSize(100)
-            ->overrideTemplate('crud/edit', 'admin/crud/edit_driver.html.twig')
-            ->overrideTemplate('crud/new', 'admin/crud/new_driver.html.twig')
-            ->setDefaultSort(['lastEdited' => 'DESC']);
     }
 }

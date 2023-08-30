@@ -14,21 +14,6 @@ class PSUConnectorCrudController extends AbstractCrudController
     {
         return PSUConnector::class;
     }
-
-    /*
-    public function configureFields(string $pageName): iterable
-    {
-        return [
-            IdField::new('id'),
-            TextField::new('title'),
-            TextEditorField::new('description'),
-        ];
-    }
-    */
-    public function configureCrud(Crud $crud): Crud
-    {
-        return $crud->showEntityActionsInlined()->setPaginatorPageSize(100);
-    }
     public function configureActions(Actions $actions): Actions
     {
         return $actions
@@ -36,4 +21,15 @@ class PSUConnectorCrudController extends AbstractCrudController
             ->setPermission(Action::EDIT, 'ROLE_ADMIN')
             ->setPermission(Action::INDEX, 'ROLE_ADMIN');
     }
+    public function configureCrud(Crud $crud): Crud
+    {
+        return $crud
+            ->showEntityActionsInlined()
+            ->setPaginatorPageSize(100);
+    }
+    /*
+    public function configureFields(string $pageName): iterable
+    {
+    }
+    */
 }

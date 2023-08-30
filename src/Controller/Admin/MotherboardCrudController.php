@@ -38,13 +38,36 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class MotherboardCrudController extends AbstractCrudController
 {
     public static function getEntityFqcn(): string
     {
         return Motherboard::class;
+    }
+    public function configureActions(Actions $actions): Actions
+    {
+        $duplicate = Action::new('duplicate', 'Clone')->setIcon('fa fa-copy')->linkToUrl(
+            fn (Motherboard $entity) => $this->container->get(AdminUrlGenerator::class)
+                ->setAction(Action::EDIT)
+                ->setEntityId($entity->getId())
+                ->set('duplicate', '1')
+                ->generateUrl()
+        );
+        $view = Action::new('view', 'View')->linkToCrudAction('viewBoard');
+        return $actions
+            ->add(Crud::PAGE_EDIT, $duplicate)
+            ->add(Crud::PAGE_INDEX, $view)
+            ->setPermission(Action::DELETE, 'ROLE_ADMIN');
+    }
+    public function configureCrud(Crud $crud): Crud
+    {
+        return parent::configureCrud($crud)
+            ->showEntityActionsInlined()
+            ->setPaginatorPageSize(100)
+            ->overrideTemplate('crud/edit', 'admin/crud/edit_mobo.html.twig')
+            ->overrideTemplate('crud/new', 'admin/crud/new_mobo.html.twig')
+            ->setDefaultSort(['lastEdited' => 'DESC']);
     }
     public function configureFilters(Filters $filters): Filters
     {
@@ -94,7 +117,7 @@ class MotherboardCrudController extends AbstractCrudController
             ->renderAsSwitch(false)
             ->onlyOnIndex();
 
-        // show and indes
+        // show and index
         yield DateField::new('lastEdited', 'Last edit')
             ->hideOnForm();
 
@@ -238,33 +261,6 @@ class MotherboardCrudController extends AbstractCrudController
             ->setColumns(6)
             ->onlyOnForms();
     }
-    public function configureCrud(Crud $crud): Crud
-    {
-        return parent::configureCrud($crud)
-            ->setPaginatorPageSize(100)
-            ->overrideTemplate('crud/edit', 'admin/crud/edit_mobo.html.twig')
-            ->overrideTemplate('crud/new', 'admin/crud/new_mobo.html.twig')
-            ->setDefaultSort(['lastEdited' => 'DESC']);
-            //->overrideTemplate('form_theme', 'admin/crud/form_theme.html.twig');
-    }
-    public function configureActions(Actions $actions): Actions
-    {
-        $duplicate = Action::new('duplicate', 'Clone')
-        ->setIcon('fa fa-copy')
-        ->linkToUrl(
-            fn (Motherboard $entity) => $this->container->get(AdminUrlGenerator::class)
-                ->setAction(Action::EDIT)
-                ->setEntityId($entity->getId())
-                ->set('duplicate', '1')
-                ->generateUrl()
-        );
-        $view = Action::new('view', 'View')
-            ->linkToCrudAction('viewBoard');
-        return $actions
-            ->add(Crud::PAGE_EDIT, $duplicate)
-            ->add(Crud::PAGE_INDEX, $view)
-            ->setPermission(Action::DELETE, 'ROLE_ADMIN');
-    }
     public function edit(AdminContext $context)
     {
         if ($context->getRequest()->query->has('duplicate')) {
@@ -283,16 +279,6 @@ class MotherboardCrudController extends AbstractCrudController
         $boardId = $context->getEntity()->getInstance()->getId();
         return $this->redirectToRoute('motherboard_show', array('id'=>$boardId));
     }
-    protected function getRedirectResponseAfterSave(AdminContext $context, string $action): RedirectResponse
-    {
-        $submitButtonName = $context->getRequest()->request->all()['ea']['newForm']['btn'];
-
-        if ('saveAndReturn' === $submitButtonName) {
-            return $this->redirectToRoute('motherboard_show', array('id' => $context->getEntity()->getPrimaryKeyValue()));
-        }
-
-        return parent::getRedirectResponseAfterSave($context, $action);
-    }
     /**
      * @param Motherboard $entityInstance
      */
@@ -301,5 +287,4 @@ class MotherboardCrudController extends AbstractCrudController
         $entityInstance->updateLastEdited();
         parent::updateEntity($entityManager, $entityInstance);
     }
-
 }

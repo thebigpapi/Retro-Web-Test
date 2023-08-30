@@ -29,6 +29,17 @@ class ChipsetPartCrudController extends AbstractCrudController
     {
         return ChipsetPart::class;
     }
+    public function configureActions(Actions $actions): Actions
+    {
+        return $actions
+            ->setPermission(Action::DELETE, 'ROLE_ADMIN');
+    }
+    public function configureCrud(Crud $crud): Crud
+    {
+        return $crud
+            ->setPaginatorPageSize(100)
+            ->showEntityActionsInlined();
+    }
     public function configureFilters(Filters $filters): Filters
     {
         return parent::configureFilters($filters)
@@ -37,8 +48,6 @@ class ChipsetPartCrudController extends AbstractCrudController
             ->add('partNumber')
             ->add('rank');
     }
-
-
     public function configureFields(string $pageName): iterable
     {
         yield FormField::addTab('Basic Data')
@@ -97,16 +106,5 @@ class ChipsetPartCrudController extends AbstractCrudController
             ->setColumns(6)
             ->renderExpanded()
             ->onlyOnForms();
-    }
-    public function configureCrud(Crud $crud): Crud
-    {
-        return $crud
-            ->setPaginatorPageSize(100)
-            ->showEntityActionsInlined();
-    }
-    public function configureActions(Actions $actions): Actions
-    {
-        return $actions
-            ->setPermission(Action::DELETE, 'ROLE_ADMIN');
     }
 }

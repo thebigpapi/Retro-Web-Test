@@ -6,8 +6,6 @@ use App\Entity\MediaTypeFlag;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
 use Vich\UploaderBundle\Form\Type\VichImageType;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
@@ -27,7 +25,8 @@ class MediaTypeFlagCrudController extends AbstractCrudController
         yield TextField::new('name');
         yield TextField::new('tagName');
         yield TextField::new('file_name')
-            ->setFormTypeOption('disabled','disabled');
+            ->setFormTypeOption('disabled','disabled')
+            ->onlyOnForms();
         yield TextareaField::new('icon')
             ->setFormType(VichImageType::class)
             ->setFormTypeOption('allow_delete', false)

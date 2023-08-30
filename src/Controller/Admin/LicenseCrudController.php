@@ -14,11 +14,6 @@ class LicenseCrudController extends AbstractCrudController
     {
         return License::class;
     }
-
-    public function configureCrud(Crud $crud): Crud
-    {
-        return $crud->showEntityActionsInlined();
-    }
     public function configureActions(Actions $actions): Actions
     {
         return $actions
@@ -26,4 +21,14 @@ class LicenseCrudController extends AbstractCrudController
             ->setPermission(Action::EDIT, 'ROLE_ADMIN')
             ->setPermission(Action::INDEX, 'ROLE_ADMIN');
     }
+    public function configureCrud(Crud $crud): Crud
+    {
+        return $crud
+            ->showEntityActionsInlined();
+    }
+    /*
+    public function configureFields(string $pageName): iterable
+    {
+    }
+    */
 }

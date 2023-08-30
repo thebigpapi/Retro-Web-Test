@@ -14,24 +14,20 @@ class ManufacturerCrudController extends AbstractCrudController
     {
         return Manufacturer::class;
     }
-
-    /*
-    public function configureFields(string $pageName): iterable
-    {
-        return [
-            IdField::new('id'),
-            TextField::new('title'),
-            TextEditorField::new('description'),
-        ];
-    }
-    */
-    public function configureCrud(Crud $crud): Crud
-    {
-        return $crud->showEntityActionsInlined()->setPaginatorPageSize(100);
-    }
     public function configureActions(Actions $actions): Actions
     {
         return $actions
             ->setPermission(Action::DELETE, 'ROLE_ADMIN');
     }
+    public function configureCrud(Crud $crud): Crud
+    {
+        return $crud
+            ->showEntityActionsInlined()
+            ->setPaginatorPageSize(100);
+    }
+    /*
+    public function configureFields(string $pageName): iterable
+    {
+    }
+    */
 }

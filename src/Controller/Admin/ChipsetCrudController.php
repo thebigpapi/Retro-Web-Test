@@ -32,6 +32,20 @@ class ChipsetCrudController extends AbstractCrudController
     {
         return Chipset::class;
     }
+    public function configureActions(Actions $actions): Actions
+    {
+        $view = Action::new('view', 'View')->linkToCrudAction('viewChipset');
+        return $actions
+            ->add(Crud::PAGE_INDEX, $view)
+            ->setPermission(Action::DELETE, 'ROLE_ADMIN');
+    }
+    public function configureCrud(Crud $crud): Crud
+    {
+        return parent::configureCrud($crud)
+            ->showEntityActionsInlined()
+            ->setPaginatorPageSize(100)
+            ->setDefaultSort(['lastEdited' => 'DESC']);
+    }
     public function configureFilters(Filters $filters): Filters
     {
         return parent::configureFilters($filters)
@@ -100,14 +114,6 @@ class ChipsetCrudController extends AbstractCrudController
             ->setColumns(6)
             ->onlyOnForms();
     }
-    public function configureActions(Actions $actions): Actions
-    {
-        $view = Action::new('view', 'View')
-            ->linkToCrudAction('viewChipset');
-        return $actions
-            ->add(Crud::PAGE_INDEX, $view)
-            ->setPermission(Action::DELETE, 'ROLE_ADMIN');
-    }
     public function viewChipset(AdminContext $context)
     {
         $chipsetId = $context->getEntity()->getInstance()->getId();
@@ -120,11 +126,5 @@ class ChipsetCrudController extends AbstractCrudController
     {
         $entityInstance->updateLastEdited();
         parent::updateEntity($entityManager, $entityInstance);
-    }
-    public function configureCrud(Crud $crud): Crud
-    {
-        return parent::configureCrud($crud)
-            ->setPaginatorPageSize(100)
-            ->setDefaultSort(['lastEdited' => 'DESC']);
     }
 }

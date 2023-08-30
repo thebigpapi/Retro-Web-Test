@@ -16,23 +16,22 @@ class MaxRamCrudController extends AbstractCrudController
     {
         return MaxRam::class;
     }
-
-
-    public function configureFields(string $pageName): iterable
-    {
-        yield IdField::new('id')
-            ->onlyOnIndex();
-        yield NumberField::new('value');
-    }
-    public function configureCrud(Crud $crud): Crud
-    {
-        return $crud->showEntityActionsInlined()->setPaginatorPageSize(100);
-    }
     public function configureActions(Actions $actions): Actions
     {
         return $actions
             ->setPermission(Action::DELETE, 'ROLE_ADMIN')
             ->setPermission(Action::EDIT, 'ROLE_ADMIN')
             ->setPermission(Action::INDEX, 'ROLE_ADMIN');
+    }
+    public function configureCrud(Crud $crud): Crud
+    {
+        return $crud
+            ->showEntityActionsInlined()
+            ->setPaginatorPageSize(100);
+    }
+    public function configureFields(string $pageName): iterable
+    {
+        yield IdField::new('id')->onlyOnIndex();
+        yield NumberField::new('value', 'Value in KB');
     }
 }

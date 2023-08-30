@@ -21,7 +21,8 @@
     {% endif %}
 {% endif %}
 {% endblock form_errors %}
-{# relocated add widget button #}
+
+{# relocated add widget button, added IDs for sockets #}
 {% block collection_widget %}
     {# the "is iterable" check is needed because if an object implements __toString() and
                returns an empty string, "is empty" returns true even if it's not a collection #}
@@ -33,7 +34,7 @@
             {{ 'action.add_new_item'|trans({}, 'EasyAdminBundle') }}
         </button>
     {% endif %}
-    <div class="ea-form-collection-items">
+    <div class="ea-form-collection-items" id="{{id}}_collection">
         {% if isEmptyCollection %}
             {{ block('empty_collection') }}
         {% elseif is_array_field %}
@@ -49,6 +50,7 @@
         {% set attr = attr|merge({'data-empty-collection': block('empty_collection') }) %}
     {% endif %}
 {% endblock collection_widget %}
+
 {# delete button tweaks, removed accordion #}
 {% block collection_entry_row %}
     {% set is_array_field = 'EasyCorp\\Bundle\\EasyAdminBundle\\Field\\ArrayField' == form_parent(form).vars.ea_crud_form.ea_field.fieldFqcn ?? false %}
@@ -86,6 +88,7 @@
         {% endif %}
     </div>
 {% endblock collection_entry_row %}
+
 {# some customizations for the upload field #}
 {% block vich_file_widget %}
     <div class="ea-vich-file">
@@ -129,6 +132,8 @@
         <div class="small" id="{{ form.file.vars.id }}_new_file_name"></div>
     </div>
 {% endblock %}
+
+{# added update CPU button #}
 {% block _Motherboard_maxcpu_widget %}
 {{ form_widget(form)}}
 <div style="padding-top:10px;" data-controller="motherboard--add">
@@ -137,6 +142,3 @@
     </button>
 </div>
 {% endblock _Motherboard_maxcpu_widget %}
-{% block _Motherboard_processorPlatformTypes_widget %}
-{{ form_widget(form)}}
-{% endblock _Motherboard_processorPlatformTypes_widget %}

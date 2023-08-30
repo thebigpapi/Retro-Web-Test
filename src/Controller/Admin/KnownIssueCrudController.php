@@ -17,6 +17,19 @@ class KnownIssueCrudController extends AbstractCrudController
     {
         return KnownIssue::class;
     }
+    public function configureActions(Actions $actions): Actions
+    {
+        return $actions
+            ->setPermission(Action::DELETE, 'ROLE_ADMIN')
+            ->setPermission(Action::EDIT, 'ROLE_ADMIN')
+            ->setPermission(Action::INDEX, 'ROLE_ADMIN');
+    }
+    public function configureCrud(Crud $crud): Crud
+    {
+        return $crud
+            ->showEntityActionsInlined()
+            ->setPaginatorPageSize(100);
+    }
     public function configureFields(string $pageName): iterable
     {
         yield IdField::new('id')
@@ -27,14 +40,5 @@ class KnownIssueCrudController extends AbstractCrudController
         yield CodeEditorField::new('description', 'Description')
             ->setLanguage('markdown')
             ->onlyOnForms();
-    }
-    public function configureCrud(Crud $crud): Crud
-    {
-        return $crud->showEntityActionsInlined()->setPaginatorPageSize(100);
-    }
-    public function configureActions(Actions $actions): Actions
-    {
-        return $actions
-            ->setPermission(Action::DELETE, 'ROLE_ADMIN');
     }
 }

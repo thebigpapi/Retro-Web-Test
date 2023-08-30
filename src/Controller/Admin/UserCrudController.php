@@ -25,7 +25,20 @@ class UserCrudController extends AbstractCrudController
     {
         return User::class;
     }
-
+    public function configureActions(Actions $actions): Actions
+    {
+        $reset = Action::new('reset', 'Reset', 'fa fa-reset')
+            ->linkToCrudAction('resetPass');
+        return $actions
+            ->add(Crud::PAGE_INDEX, $reset)
+            ->setPermission(Action::DELETE, 'ROLE_ADMIN')
+            ->setPermission(Action::EDIT, 'ROLE_ADMIN')
+            ->setPermission(Action::INDEX, 'ROLE_ADMIN');
+    }
+    public function configureCrud(Crud $crud): Crud
+    {
+        return $crud->showEntityActionsInlined();
+    }
     public function configureFields(string $pageName): iterable
     {
         yield IdField::new('id')
@@ -36,20 +49,6 @@ class UserCrudController extends AbstractCrudController
             ->hideWhenUpdating();
         yield ArrayField::new('roles', 'Roles');
 
-    }
-    public function configureCrud(Crud $crud): Crud
-    {
-        return $crud->showEntityActionsInlined();
-    }
-    public function configureActions(Actions $actions): Actions
-    {
-        $reset = Action::new('reset', 'Reset', 'fa fa-reset')
-            ->linkToCrudAction('resetPass');
-        return $actions
-            ->add(Crud::PAGE_INDEX, $reset)
-            ->setPermission(Action::DELETE, 'ROLE_ADMIN')
-            ->setPermission(Action::EDIT, 'ROLE_ADMIN')
-            ->setPermission(Action::INDEX, 'ROLE_ADMIN');
     }
     public function resetPass(AdminContext $context)
     {

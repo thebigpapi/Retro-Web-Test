@@ -35,8 +35,10 @@ export default class extends Controller {
         let params = [];
         let cnt = 0;
         // read CPU sockets
-        let sockets = document.getElementById('Motherboard_cpuSockets');
-        let socket_cnt = sockets.childElementCount;
+        let sockets = document.getElementById('Motherboard_cpuSockets_collection').children[0].children[0];
+        if(sockets.childElementCount == 0)
+            return;
+        let socket_cnt = sockets.children[0].children[0].childElementCount;
         while(socket_cnt > 0){
             if(document.getElementById("Motherboard_cpuSockets_" + cnt)){
                 let element = document.getElementById("Motherboard_cpuSockets_" + cnt);
@@ -46,6 +48,8 @@ export default class extends Controller {
             }
             cnt++;
         }
+        if(params.length == 0)
+            return;
         // fetch new platforms based on sockets
         let post = JSON.stringify(params)
         let platformArray = {};
@@ -66,8 +70,10 @@ export default class extends Controller {
     }
     updateWidget(platformArray){
         let cnt = 0;
-        let platforms = document.getElementById('Motherboard_processorPlatformTypes');
-        let platform_cnt = platforms.childElementCount;
+        let platforms = document.getElementById('Motherboard_processorPlatformTypes_collection').children[0].children[0];
+        if(platforms.childElementCount == 0)
+            return;
+        let platform_cnt = platforms.children[0].children[0].childElementCount;
         while(platform_cnt > 0){
             if(document.getElementById("Motherboard_processorPlatformTypes_" + cnt)){
                 let element = document.getElementById("Motherboard_processorPlatformTypes_" + cnt);

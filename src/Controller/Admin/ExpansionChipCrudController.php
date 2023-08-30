@@ -14,7 +14,6 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ArrayField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
@@ -30,6 +29,19 @@ class ExpansionChipCrudController extends AbstractCrudController
     {
         return ExpansionChip::class;
     }
+    public function configureActions(Actions $actions): Actions
+    {
+        $view = Action::new('view', 'View')->linkToCrudAction('viewExpChip');
+        return $actions
+            ->add(Crud::PAGE_INDEX, $view)
+            ->setPermission(Action::DELETE, 'ROLE_ADMIN');
+    }
+    public function configureCrud(Crud $crud): Crud
+    {
+        return $crud
+            ->showEntityActionsInlined()
+            ->setPaginatorPageSize(100);
+    }
     public function configureFilters(Filters $filters): Filters
     {
         return parent::configureFilters($filters)
@@ -38,7 +50,6 @@ class ExpansionChipCrudController extends AbstractCrudController
             ->add('partNumber')
             ->add('type');
     }
-
     public function configureFields(string $pageName): iterable
     {
         yield FormField::addTab('Basic Data')
@@ -106,18 +117,6 @@ class ExpansionChipCrudController extends AbstractCrudController
             ->setColumns(6)
             ->renderExpanded()
             ->onlyOnForms();
-    }
-    public function configureCrud(Crud $crud): Crud
-    {
-        return $crud->showEntityActionsInlined()->setPaginatorPageSize(100);
-    }
-    public function configureActions(Actions $actions): Actions
-    {
-        $view = Action::new('view', 'View')
-            ->linkToCrudAction('viewExpChip');
-        return $actions
-            ->add(Crud::PAGE_INDEX, $view)
-            ->setPermission(Action::DELETE, 'ROLE_ADMIN');
     }
     public function viewExpChip(AdminContext $context)
     {
