@@ -22,8 +22,8 @@ final class Version20230830135905 extends AbstractMigration
         // this up() migration is auto-generated, please modify it to your needs
         $this->addSql('ALTER TABLE chipset ADD test date');
         $this->addSql('UPDATE chipset SET test=to_date(release_date, \'yyyy-mm-dd\')');
-        $this->addSql('UPDATE chipset SET release_date=\'1969\'');
-        $this->addSql('ALTER TABLE chipset ALTER release_date TYPE DATE');
+        $this->addSql('ALTER TABLE chipset DROP release_date');
+        $this->addSql('ALTER TABLE chipset ADD release_date date');
         $this->addSql('UPDATE chipset SET release_date=test');
         $this->addSql('ALTER TABLE chipset DROP test');
     }
