@@ -6,6 +6,7 @@ use App\Repository\MiscFileRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -32,6 +33,9 @@ class MiscFile
 
     #[ORM\Column(type: 'string', length: 255)]
     #[Assert\Length(max: 255, maxMessage: 'Misc file title is longer than {{ limit }} characters.')]
+    #[Assert\NotBlank(
+        message: 'Title cannot be blank'
+    )]
     private $link_name;
 
     #[ORM\ManyToOne(targetEntity: Motherboard::class, inversedBy: 'miscFiles')]
@@ -107,5 +111,14 @@ class MiscFile
         $this->updated_at = $updated_at;
 
         return $this;
+    }
+    #[Assert\Callback]
+    public function validate(ExecutionContextInterface $context, mixed $payload): void
+    {
+        if(null === $this->miscFile && null === $this->file_name) {
+            $context->buildViolation('File is not uploaded!')
+                ->atPath('miscFile')
+                ->addViolation();
+        }
     }
 }

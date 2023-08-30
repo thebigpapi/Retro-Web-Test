@@ -9,6 +9,7 @@ use App\Form\Type\LargeFileExpansionChipType;
 use App\Form\Type\ChipDocumentationType;
 use App\Form\Type\ChipImageType;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
+use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
@@ -47,6 +48,7 @@ class ExpansionChipCrudController extends AbstractCrudController
         yield TextField::new('getManufacturer','Manufacturer')
             ->hideOnForm();
         yield AssociationField::new('manufacturer','Manufacturer')
+            ->setFormTypeOption('placeholder', 'Select a manufacturer ...')
             ->setColumns(4)
             ->onlyOnForms();
         yield TextField::new('partNumber', 'Part number')
@@ -68,6 +70,7 @@ class ExpansionChipCrudController extends AbstractCrudController
             ->onlyOnIndex();
         // editor
         yield AssociationField::new('type','Type')
+            ->setFormTypeOption('placeholder', 'Select a type ...')
             ->setColumns(6)
             ->onlyOnForms();
         yield CollectionField::new('pciDevs', 'PCI DEV')
@@ -80,6 +83,7 @@ class ExpansionChipCrudController extends AbstractCrudController
             ->onlyOnForms();
         yield CollectionField::new('chipAliases', 'Chip aliases')
             ->setEntryType(ChipAliasType::class)
+            ->setFormTypeOption('error_bubbling', false)
             ->setColumns(6)
             ->renderExpanded()
             ->onlyOnForms();
@@ -88,6 +92,7 @@ class ExpansionChipCrudController extends AbstractCrudController
             ->onlyOnForms();
         yield CollectionField::new('documentations', 'Documentation')
             ->setEntryType(ChipDocumentationType::class)
+            ->setFormTypeOption('error_bubbling', false)
             ->setColumns(6)
             ->renderExpanded()
             ->onlyOnForms();
@@ -108,7 +113,15 @@ class ExpansionChipCrudController extends AbstractCrudController
     }
     public function configureActions(Actions $actions): Actions
     {
+        $view = Action::new('view', 'View')
+            ->linkToCrudAction('viewExpChip');
         return $actions
+            ->add(Crud::PAGE_INDEX, $view)
             ->setPermission(Action::DELETE, 'ROLE_ADMIN');
+    }
+    public function viewExpChip(AdminContext $context)
+    {
+        $chipsetId = $context->getEntity()->getInstance()->getId();
+        return $this->redirectToRoute('expansion_chip_show', array('id'=>$chipsetId));
     }
 }

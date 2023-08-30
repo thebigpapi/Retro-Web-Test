@@ -280,8 +280,8 @@ class MotherboardCrudController extends AbstractCrudController
 
     public function viewBoard(AdminContext $context)
     {
-        $bid = $context->getEntity()->getInstance()->getId();
-        return $this->redirectToRoute('motherboard_show', array('id'=>$bid));
+        $boardId = $context->getEntity()->getInstance()->getId();
+        return $this->redirectToRoute('motherboard_show', array('id'=>$boardId));
     }
     protected function getRedirectResponseAfterSave(AdminContext $context, string $action): RedirectResponse
     {

@@ -7,6 +7,7 @@ use App\Form\Type\LanguageType;
 use App\Form\Type\OsFlagType;
 use App\Form\Type\LargeFileMediaTypeFlagType;
 use Doctrine\ORM\EntityManagerInterface;
+use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use Vich\UploaderBundle\Form\Type\VichFileType;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
@@ -85,9 +86,9 @@ class LargeFileCrudController extends AbstractCrudController
             ->setColumns(4)
             ->renderExpanded()
             ->onlyOnForms();
-        yield ArrayField::new('mediaTypeFlags', 'Media type flags')
+        yield ArrayField::new('getMediaTypeFlags', 'Media type flags')
             ->onlyOnIndex();
-        yield ArrayField::new('osFlags', 'OS flags')
+        yield ArrayField::new('getOsFlags', 'OS flags')
             ->onlyOnIndex();
         yield CollectionField::new('osFlags', 'OS flags')
             ->setEntryType(OsFlagType::class)
@@ -103,9 +104,16 @@ class LargeFileCrudController extends AbstractCrudController
 
     public function configureActions(Actions $actions): Actions
     {
+        $view = Action::new('view', 'View')
+            ->linkToCrudAction('viewDriver');
         return $actions
-            ->add(Crud::PAGE_INDEX, Action::DETAIL)
+            ->add(Crud::PAGE_INDEX, $view)
             ->setPermission(Action::DELETE, 'ROLE_ADMIN');
+    }
+    public function viewDriver(AdminContext $context)
+    {
+        $driverId = $context->getEntity()->getInstance()->getId();
+        return $this->redirectToRoute('driver_show', array('id'=>$driverId));
     }
     /**
      * @param LargeFile $entityInstance

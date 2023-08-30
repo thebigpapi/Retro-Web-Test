@@ -10,6 +10,7 @@ use App\Form\Type\ChipsetPartType;
 use App\Form\Type\LargeFileChipsetType;
 use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
+use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
@@ -90,6 +91,7 @@ class ChipsetCrudController extends AbstractCrudController
         yield CollectionField::new('documentations', 'Documentation')
             ->setEntryType(ChipsetDocumentationType::class)
             ->renderExpanded()
+            ->setFormTypeOption('error_bubbling', false)
             ->setColumns(6)
             ->onlyOnForms();
         yield CollectionField::new('drivers', 'Drivers')
@@ -100,9 +102,16 @@ class ChipsetCrudController extends AbstractCrudController
     }
     public function configureActions(Actions $actions): Actions
     {
+        $view = Action::new('view', 'View')
+            ->linkToCrudAction('viewChipset');
         return $actions
-            ->add(Crud::PAGE_INDEX, Action::DETAIL)
+            ->add(Crud::PAGE_INDEX, $view)
             ->setPermission(Action::DELETE, 'ROLE_ADMIN');
+    }
+    public function viewChipset(AdminContext $context)
+    {
+        $chipsetId = $context->getEntity()->getInstance()->getId();
+        return $this->redirectToRoute('chipset_show', array('id'=>$chipsetId));
     }
     /**
      * @param Chipset $entityInstance

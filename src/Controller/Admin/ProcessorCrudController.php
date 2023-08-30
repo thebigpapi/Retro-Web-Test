@@ -45,11 +45,15 @@ class ProcessorCrudController extends AbstractCrudController
 
     public function configureFields(string $pageName): iterable
     {
+        yield FormField::addTab('Basic Data')
+            ->setIcon('info')
+            ->onlyOnForms();
         yield IdField::new('id')
             ->onlyOnIndex();
         yield TextField::new('getManufacturer','Manufacturer')
             ->hideOnForm();
         yield AssociationField::new('manufacturer','Manufacturer')
+            ->setFormTypeOption('placeholder', 'Select a manufacturer ...')
             ->setColumns(4)
             ->onlyOnForms();
         yield TextField::new('partNumber', 'Name')
@@ -71,15 +75,18 @@ class ProcessorCrudController extends AbstractCrudController
         yield ArrayField::new('getVoltages', 'Voltage')
             ->hideOnForm();
         yield AssociationField::new('platform', 'Family')
+            ->setFormTypeOption('placeholder', 'Select a family ...')
             ->setColumns(2)
             ->onlyOnForms();
         yield TextField::new('core', 'Core')
             ->setColumns(2)
             ->onlyOnForms();
         yield AssociationField::new('speed','Speed')
+            ->setFormTypeOption('placeholder', 'Select a speed ...')
             ->setColumns(2)
             ->onlyOnForms();
         yield AssociationField::new('fsb','FSB')
+            ->setFormTypeOption('placeholder', 'Select a speed ...')
             ->setColumns(2)
             ->onlyOnForms();
         yield NumberField::new('tdp', 'TDP (in W)')
@@ -100,21 +107,27 @@ class ProcessorCrudController extends AbstractCrudController
             ->onlyOnForms();
         yield FormField::addPanel('Cache')->onlyOnForms();
         yield AssociationField::new('L1','L1 size')
+            ->setFormTypeOption('placeholder', 'Select a size ...')
             ->setColumns(2)
             ->onlyOnForms();
         yield AssociationField::new('L1CacheMethod','L1 method')
+            ->setFormTypeOption('autocomplete', 'disabled')
             ->setColumns(2)
             ->onlyOnForms();
         yield AssociationField::new('L2','L2 size')
+            ->setFormTypeOption('placeholder', 'Select a size ...')
             ->setColumns(2)
             ->onlyOnForms();
         yield AssociationField::new('L2CacheRatio','L2 ratio')
+            ->setFormTypeOption('autocomplete', 'disabled')
             ->setColumns(2)
             ->onlyOnForms();
         yield AssociationField::new('L3','L3 size')
+            ->setFormTypeOption('placeholder', 'Select a size ...')
             ->setColumns(2)
             ->onlyOnForms();
         yield AssociationField::new('L3CacheRatio','L3 ratio')
+            ->setFormTypeOption('autocomplete', 'disabled')
             ->setColumns(2)
             ->onlyOnForms();
         yield FormField::addPanel('Other')->onlyOnForms();
@@ -123,15 +136,21 @@ class ProcessorCrudController extends AbstractCrudController
             ->setColumns(6)
             ->renderExpanded()
             ->onlyOnForms();
-        yield CollectionField::new('images', 'Images')
-            ->setEntryType(ChipImageType::class)
+        yield CollectionField::new('chipAliases', 'Chip aliases')
+            ->setEntryType(ChipAliasType::class)
+            ->setFormTypeOption('error_bubbling', false)
             ->setColumns(6)
             ->renderExpanded()
             ->onlyOnForms();
-        yield CollectionField::new('chipAliases', 'Chip aliases')
-            ->setEntryType(ChipAliasType::class)
+        yield FormField::addTab('Attachments')
+            ->setIcon('download')
+            ->onlyOnForms();
+        yield CollectionField::new('images', 'Images')
+            ->setEntryType(ChipImageType::class)
+            ->setColumns(12)
             ->renderExpanded()
             ->onlyOnForms();
+
     }
     public function configureCrud(Crud $crud): Crud
     {

@@ -6,11 +6,12 @@ use App\Entity\Language;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[Vich\Uploadable]
-#[ORM\Entity(repositoryClass:'App\Repository\ManualRepository')]
+#[ORM\Entity(repositoryClass: ManualRepository::class)]
 trait DocumentationTrait
 {
     #[ORM\Id]
@@ -19,7 +20,7 @@ trait DocumentationTrait
     private $id;
 
     #[ORM\Column(type: 'string', length: 255)]
-    #[Assert\Length(max:255, maxMessage: 'File name is longer than {{ limit }} characters, try to make it shorter.')]
+    #[Assert\Length(max:255, maxMessage: 'File name is longer than {{ limit }} characters.')]
     #[Assert\Regex(
         pattern: '/^[\w\s,\/\-_#\$%&\*!\?:;\.\+\=\\\[\]\{\}\(\)]+$/',
         match: true,
@@ -107,5 +108,14 @@ trait DocumentationTrait
         $this->updated_at = $updated_at;
 
         return $this;
+    }
+    #[Assert\Callback]
+    public function validate(ExecutionContextInterface $context, mixed $payload): void
+    {
+        if(null === $this->manualFile && null === $this->file_name) {
+            $context->buildViolation('File is not uploaded!')
+                ->atPath('manualFile')
+                ->addViolation();
+        }
     }
 }

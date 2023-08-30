@@ -10,10 +10,10 @@ use App\Form\Type\ChipDocumentationType;
 use App\Form\Type\ChipImageType;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\CodeEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ArrayField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
@@ -48,6 +48,7 @@ class ChipsetPartCrudController extends AbstractCrudController
         yield TextField::new('getManufacturer','Manufacturer')
             ->hideOnForm();
         yield AssociationField::new('manufacturer','Manufacturer')
+            ->setFormTypeOption('placeholder', 'Select a manufacturer ...')
             ->setColumns(4)
             ->onlyOnForms();
         yield TextField::new('partNumber', 'Part number')
@@ -63,7 +64,9 @@ class ChipsetPartCrudController extends AbstractCrudController
             ->onlyOnForms();
         yield ArrayField::new('getPciDevs', 'PCI DEV')
             ->hideOnForm();
-        yield TextareaField::new('description')->onlyOnForms();
+        yield CodeEditorField::new('description')
+            ->setLanguage('markdown')
+            ->onlyOnForms();
         yield BooleanField::new('getImages','Images')
             ->renderAsSwitch(false)
             ->onlyOnIndex();
@@ -72,6 +75,7 @@ class ChipsetPartCrudController extends AbstractCrudController
             ->onlyOnIndex();
         yield CollectionField::new('chipAliases', 'Chip aliases')
             ->setEntryType(ChipAliasType::class)
+            ->setFormTypeOption('error_bubbling', false)
             ->renderExpanded()
             ->onlyOnForms();
         yield FormField::addTab('Attachments')
@@ -84,6 +88,7 @@ class ChipsetPartCrudController extends AbstractCrudController
             ->onlyOnForms();
         yield CollectionField::new('documentations', 'Documentation')
             ->setEntryType(ChipDocumentationType::class)
+            ->setFormTypeOption('error_bubbling', false)
             ->setColumns(6)
             ->renderExpanded()
             ->onlyOnForms();
