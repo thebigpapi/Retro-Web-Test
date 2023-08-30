@@ -89,7 +89,7 @@ $btn-hover-dark: rgb(247, 207, 62);
 		> div:nth-child(11){flex-grow:3;}
 	}
 }
-#Motherboard_motherboardIoPorts, #Motherboard_motherboardExpansionSlots{
+#Motherboard_motherboardIoPorts_collection > div > div > div, #Motherboard_motherboardExpansionSlots_collection > div > div > div{
 	display:block;
 	div.invalid-feedback{width:10px;}
 	div.accordion-body.trw{padding:0px 10px;}
