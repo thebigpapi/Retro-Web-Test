@@ -189,6 +189,12 @@ class Motherboard
 
         return $this;
     }
+    public function isChipset(): bool
+    {
+        if(isset($this->chipset))
+            return true;
+        return false;
+    }
     /**
      * @return Collection|MotherboardMaxRam[]
      */
@@ -253,6 +259,12 @@ class Motherboard
         }
 
         return $this;
+    }
+    public function isMotherboardBios(): bool
+    {
+        if(isset($this->motherboardBios))
+            return true;
+        return false;
     }
     /**
      * @return Collection|MotherboardExpansionSlot[]
@@ -458,6 +470,12 @@ class Motherboard
 
         return $this;
     }
+    public function isManuals(): bool
+    {
+        if(isset($this->manuals))
+            return true;
+        return false;
+    }
     /**
      * @return Collection|MotherboardImage[]
      */
@@ -485,6 +503,12 @@ class Motherboard
         }
 
         return $this;
+    }
+    public function isImages(): bool
+    {
+        if(isset($this->images))
+            return true;
+        return false;
     }
     /**
      * @return Collection|KnownIssue[]
@@ -735,6 +759,12 @@ class Motherboard
         }
 
         return $this;
+    }
+    public function isExpansionChips(): bool
+    {
+        if(isset($this->expansionChips))
+            return true;
+        return false;
     }
 
     /**

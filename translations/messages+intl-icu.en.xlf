@@ -310,8 +310,8 @@
         <target>File name</target>
       </trans-unit>
       <trans-unit id="Vz2gGuC">
-        <source>Image (png, svg, jpg or gif file)</source>
-        <target>Image (png, svg, jpg or gif file)</target>
+        <source>JPG or SVG file</source>
+        <target>JPG or SVG file</target>
       </trans-unit>
       <trans-unit id="RAfg4q9">
         <source>Description</source>
@@ -362,8 +362,8 @@
         <target>BIOS images</target>
       </trans-unit>
       <trans-unit id="Ha8rCEB">
-        <source>Manual (PDF file)</source>
-        <target>Manual (PDF file)</target>
+        <source>PDF file</source>
+        <target>PDF file</target>
       </trans-unit>
       <trans-unit id="2WSedgU">
         <source>Language</source>
@@ -434,12 +434,12 @@
         <target>Last edit</target>
       </trans-unit>
       <trans-unit id="7QFcAqx">
-        <source>Manual?</source>
-        <target>Manual?</target>
+        <source>Manual</source>
+        <target>Manual</target>
       </trans-unit>
       <trans-unit id="Sm3jJyr">
-        <source>BIOS?</source>
-        <target>BIOS?</target>
+        <source>BIOS</source>
+        <target>BIOS</target>
       </trans-unit>
       <trans-unit id="E7wDc7G">
         <source>Last Edited</source>
@@ -716,6 +716,154 @@
       <trans-unit id="6bj7ung">
         <source>View</source>
         <target>View</target>
+      </trans-unit>
+      <trans-unit id="67gvnm5">
+        <source>Statistics</source>
+        <target>Statistics</target>
+      </trans-unit>
+      <trans-unit id="34un9d5">
+        <source>Exp.chips</source>
+        <target>Exp.chips</target>
+      </trans-unit>
+      <trans-unit id="45jhb8y">
+        <source>Process</source>
+        <target>Process (nm)</target>
+      </trans-unit>
+      <trans-unit id="23u9ym9">
+        <source>Value in KB</source>
+        <target>Value in KB</target>
+      </trans-unit>
+      <trans-unit id="67ujnmm">
+        <source>Full Name</source>
+        <target>Full Name</target>
+      </trans-unit>
+      <trans-unit id="56gnwyr">
+        <source>Select a CPU socket ...</source>
+        <target>Select a CPU socket ...</target>
+      </trans-unit>
+      <trans-unit id="r4tg834">
+        <source>Select a family ...</source>
+        <target>Select a family ...</target>
+      </trans-unit>
+      <trans-unit id="47gb3289">
+        <source>Select a speed ...</source>
+        <target>Select a speed ...</target>
+      </trans-unit>
+      <trans-unit id="78fdbd83">
+        <source>CPU socket count</source>
+        <target>CPU socket count</target>
+      </trans-unit>
+      <trans-unit id="de7834vd">
+        <source>Select a chip ...</source>
+        <target>Select a chip ...</target>
+      </trans-unit>
+      <trans-unit id="7bhb3w9">
+        <source>elect a chipset ...</source>
+        <target>elect a chipset ...</target>
+      </trans-unit>
+      <trans-unit id="dhw2gd2">
+        <source>Size</source>
+        <target>Size</target>
+      </trans-unit>
+      <trans-unit id="89bbq28">
+        <source>Select a RAM size ...</source>
+        <target>Select a RAM size ...</target>
+      </trans-unit>
+      <trans-unit id="v7w8ehf">
+        <source>Select a RAM type ...</source>
+        <target>Select a RAM type ...</target>
+      </trans-unit>
+      <trans-unit id="38jfvwf">
+        <source>Select a cache size ...</source>
+        <target>Select a cache size ...</target>
+      </trans-unit>
+      <trans-unit id="weifhcb">
+        <source>Max VRAM (onboard GPU)</source>
+        <target>Max VRAM (onboard GPU)</target>
+      </trans-unit>
+      <trans-unit id="w9ifbw3">
+        <source>Select type...</source>
+        <target>Select type...</target>
+      </trans-unit>
+      <trans-unit id="r5hm2ky">
+        <source>Select a PSU connector ...</source>
+        <target>Select a PSU connector ...</target>
+      </trans-unit>
+      <trans-unit id="35u8ygb">
+        <source>Select a creditor ...</source>
+        <target>Select a creditor ...</target>
+      </trans-unit>
+      <trans-unit id="w2wegrf">
+        <source>Select a type ...</source>
+        <target>Select a type ...</target>
+      </trans-unit>
+      <trans-unit id="4yfb3tf">
+        <source>Title</source>
+        <target>Title</target>
+      </trans-unit>
+      <trans-unit id="187dqwd">
+        <source>Select a manufacturer ...</source>
+        <target>Select a manufacturer ...</target>
+      </trans-unit>
+      <trans-unit id="132evb2">
+        <source>Select a driver ...</source>
+        <target>Select a driver ...</target>
+      </trans-unit>
+      <trans-unit id="123v2wf">
+        <source>File</source>
+        <target>File</target>
+      </trans-unit>
+      <trans-unit id="4569y8h">
+        <source>POST string:</source>
+        <target>POST string:</target>
+      </trans-unit>
+      <trans-unit id="wyvjh3f">
+        <source>Note:</source>
+        <target>Note:</target>
+      </trans-unit>
+      <trans-unit id="2r89f7b">
+        <source>BIOS version:</source>
+        <target>BIOS version:</target>
+      </trans-unit>
+      <trans-unit id="59tu8jn">
+        <source>Core version:</source>
+        <target>Core version:</target>
+      </trans-unit>
+      <trans-unit id="347g34g">
+        <source> Download</source>
+        <target> Download</target>
+      </trans-unit>
+      <trans-unit id="56uh67m">
+        <source>Bios manufacturer</source>
+        <target>BIOS manufacturer</target>
+      </trans-unit>
+      <trans-unit id="9856b4n">
+        <source>BIOS codes</source>
+        <target>BIOS codes</target>
+      </trans-unit>
+      <trans-unit id="45yvtym">
+        <source>PDF or ZIP file</source>
+        <target>PDF or ZIP file</target>
+      </trans-unit>
+      <trans-unit id="456nwna">
+        <source>Code</source>
+        <target>Code</target>
+      </trans-unit>
+      <trans-unit id="tu7dfh4">
+        <source>Chipset aliases</source>
+        <target>Chipset aliases</target>
+      </trans-unit>
+      <trans-unit id="6598jhg">
+        <source>Select a chipset ...</source>
+        <target>Select a chipset ...</target>
+      </trans-unit>
+      <trans-unit id="9875ynh">
+        <source>Select a size ...</source>
+        <target>Select a size ...</target>
+      </trans-unit>
+      <trans-unit id="9wb8v7r">
+        <source>Other</source>
+        <target>Other</target>
       </trans-unit>
     </body>
   </file>

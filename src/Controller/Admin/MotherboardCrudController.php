@@ -101,19 +101,19 @@ class MotherboardCrudController extends AbstractCrudController
             ->hideOnForm();
         yield TextField::new('name')
             ->hideOnForm();
-        yield BooleanField::new('getChipset','Chipset?')
+        yield BooleanField::new('isChipset','Chipset')
             ->renderAsSwitch(false)
             ->onlyOnIndex();
-        yield BooleanField::new('getExpansionChips','Exp.chips?')
+        yield BooleanField::new('isExpansionChips','Exp.chips')
             ->renderAsSwitch(false)
             ->onlyOnIndex();
-        yield BooleanField::new('getManuals','Manual?')
+        yield BooleanField::new('isManuals','Manual')
             ->renderAsSwitch(false)
             ->onlyOnIndex();
-        yield BooleanField::new('getMotherboardBios','BIOS?')
+        yield BooleanField::new('isMotherboardBios','BIOS')
             ->renderAsSwitch(false)
             ->onlyOnIndex();
-        yield BooleanField::new('getImages','Images?')
+        yield BooleanField::new('isImages','Images')
             ->renderAsSwitch(false)
             ->onlyOnIndex();
 
