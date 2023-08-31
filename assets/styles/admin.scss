@@ -178,3 +178,27 @@ div.mobo-buttons{
 body:not(.ea-content-width-full) .content-wrapper {
     max-width: none;
 }
+.actions{
+	display: flex;
+    justify-content: center;
+	padding:8px 0px!important;
+	a {
+		border:1px solid var(--button-secondary-bg);
+		padding: 3px 5px;
+		border-radius: 3px;
+		background-color: var(--button-secondary-bg);
+		color: var(--button-secondary-color);
+		transition: ease-in-out 0.15s all;
+		&:hover{
+			//color: var(--blue-400);
+			border-color: var(--blue-400);
+		}
+		&.text-danger:hover {
+			border-color: $btn-hover-dark;
+			span{
+				color: $btn-hover-dark;
+			}
+		}
+
+	}
+}

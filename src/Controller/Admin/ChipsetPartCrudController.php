@@ -46,6 +46,7 @@ class ChipsetPartCrudController extends AbstractCrudController
             ->add('manufacturer')
             ->add('name')
             ->add('partNumber')
+            ->add('chipAliases')
             ->add('rank');
     }
     public function configureFields(string $pageName): iterable
@@ -80,6 +81,9 @@ class ChipsetPartCrudController extends AbstractCrudController
             ->renderAsSwitch(false)
             ->onlyOnIndex();
         yield BooleanField::new('getDocumentations','Docs')
+            ->renderAsSwitch(false)
+            ->onlyOnIndex();
+        yield BooleanField::new('getDrivers','Drivers')
             ->renderAsSwitch(false)
             ->onlyOnIndex();
         yield CollectionField::new('chipAliases', 'Chip aliases')
