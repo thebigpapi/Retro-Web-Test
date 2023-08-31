@@ -7,6 +7,7 @@ use App\Entity\ProcessorPlatformType;
 use App\Entity\Trace;
 use App\Entity\User;
 use App\Form\ManageUser;
+use App\Repository\ChipsetRepository;
 use App\Repository\CpuSocketRepository;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -27,6 +28,12 @@ use App\BranchLoader\GitLoader;
 
 class AdminController extends AbstractDashboardController
 {
+    //private $entityManager
+    public function __construct(private EntityManagerInterface $entityManager)
+    {
+        $this->entityManager = $entityManager;
+    }
+
 
     #[Route('/logs', name:'logs')]
     public function logs(Request $request, TraceRepository $traceRepository, PaginatorInterface $paginator): Response
@@ -143,6 +150,19 @@ class AdminController extends AbstractDashboardController
             $cpuPlatforms["e" . (string)$platform->getId()] = $platform->getName();
         }
         return new JsonResponse($cpuPlatforms);
+    }
+    #[Route('/admin/updatechipset/{a}/{b}', name:'update_chipsets_cached_name', requirements: ['a' => '\d+', 'b' => '\d+'])]
+    public function updateChipsetsCachedName(ChipsetRepository $chipsetRepository, int $a, int $b, EntityManagerInterface $entityManager): JsonResponse
+    {
+        $cp = $chipsetRepository->findAll();
+        foreach($cp as $chip){
+            if($chip->getId() >= $a && $chip->getId() <= $b){
+                $chip->updateCachedName();
+                $entityManager->persist($chip);
+                $entityManager->flush();
+            }
+        }
+        return new JsonResponse("finished " . $a . " " . $b);
     }
     #[Route('/dashboard/settings', name:'admin_user_settings')]
     public function userIndex(): Response
