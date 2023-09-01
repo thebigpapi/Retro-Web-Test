@@ -107,14 +107,14 @@ class MotherboardRepository extends ServiceEntityRepository
                 $slotVals['slotCount' . $cpt] = $slot['count'];
                 if ($cpt == 0) {
                     $from = " ( 
-                        SELECT * 
+                        SELECT mb.* 
                         FROM motherboard mb 
                         JOIN motherboard_expansion_slot mex ON mb.id=mex.motherboard_id 
                         WHERE mex.expansion_slot_id=:id" . $cpt . $slotCount . " 
                         ) as mot" . $cpt . " ";
                 } else {
                     $from = $from . " INNER JOIN ( 
-                        SELECT * 
+                        SELECT mb.* 
                         FROM motherboard mb 
                         JOIN motherboard_expansion_slot mex ON mb.id = mex.motherboard_id 
                         WHERE mex.expansion_slot_id = :id" . $cpt . $slotCount . " 
@@ -123,14 +123,14 @@ class MotherboardRepository extends ServiceEntityRepository
             } else {
                 if ($cpt == 0) {
                     $from = " ( 
-                        SELECT * 
+                        SELECT mb.* 
                         FROM motherboard mb 
                         WHERE mb.id NOT IN (SELECT motherboard_id FROM motherboard_expansion_slot mex 
                         WHERE mex.expansion_slot_id = :id" . $cpt . $slotCount . " 
                         )) as mot" . $cpt . " ";
                 } else {
                     $from = $from . " INNER JOIN ( 
-                        SELECT * 
+                        SELECT mb.* 
                         FROM motherboard mb 
                         WHERE mb.id NOT IN (SELECT motherboard_id FROM motherboard_expansion_slot mex 
                         WHERE mex.expansion_slot_id = :id" . $cpt . $slotCount . " 
@@ -151,14 +151,14 @@ class MotherboardRepository extends ServiceEntityRepository
             if (isset($slot['count'])) {
                 if ($fromLength == 0) {
                     $from[] = " ( 
-                        SELECT * 
+                        SELECT mb.* 
                         FROM motherboard mb 
                         JOIN motherboard_expansion_slot mex ON mb.id=mex.motherboard_id 
                         WHERE mex.expansion_slot_id=:idSlot" . $key . " AND mex.count=:slotCount" . $key . " 
                         ) as mot" . $fromLength . " ";
                 } else {
                     $from[] = " INNER JOIN ( 
-                        SELECT * 
+                        SELECT mb.* 
                         FROM motherboard mb 
                         JOIN motherboard_expansion_slot mex ON mb.id = mex.motherboard_id 
                         WHERE mex.expansion_slot_id = :idSlot" . $key . " AND mex.count=:slotCount" . $key . " 
@@ -167,14 +167,14 @@ class MotherboardRepository extends ServiceEntityRepository
             } else {
                 if ($fromLength == 0) {
                     $from[] = " ( 
-                        SELECT * 
+                        SELECT mb.* 
                         FROM motherboard mb 
                         WHERE mb.id NOT IN (SELECT motherboard_id FROM motherboard_expansion_slot mex 
                         WHERE mex.expansion_slot_id = :idSlot" . $key . " 
                         )) as mot" . $fromLength . " ";
                 } else {
                     $from[] = " INNER JOIN ( 
-                        SELECT * 
+                        SELECT mb.* 
                         FROM motherboard mb 
                         WHERE mb.id NOT IN (SELECT motherboard_id FROM motherboard_expansion_slot mex 
                         WHERE mex.expansion_slot_id = :idSlot" . $key . " 
@@ -242,14 +242,14 @@ class MotherboardRepository extends ServiceEntityRepository
             if (isset($port['count'])) {
                 if ($fromLength == 0) {
                     $from[] = " ( 
-                        SELECT * 
+                        SELECT mb.* 
                         FROM motherboard mb 
                         JOIN motherboard_io_port mip ON mb.id = mip.motherboard_id 
                         WHERE mip.io_port_id = :idPort" . $key . " AND mip.count= :portCount" . $key . " 
                         ) as mot" . $fromLength . " ";
                 } else {
                     $from[] = " INNER JOIN ( 
-                        SELECT * 
+                        SELECT mb.* 
                         FROM motherboard mb 
                         JOIN motherboard_io_port mip ON mb.id = mip.motherboard_id 
                         WHERE mip.io_port_id = :idPort" . $key . " AND mip.count= :portCount" . $key . " 
@@ -258,14 +258,14 @@ class MotherboardRepository extends ServiceEntityRepository
             } else {
                 if ($fromLength == 0) {
                     $from[] = " ( 
-                        SELECT * 
+                        SELECT mb.* 
                         FROM motherboard mb 
                         WHERE mb.id NOT IN (SELECT motherboard_id FROM motherboard_io_port mip 
                         WHERE mip.io_port_id = :idPort" . $key . " 
                         )) as mot" . $fromLength . " ";
                 } else {
                     $from[] = " INNER JOIN ( 
-                        SELECT * 
+                        SELECT mb.* 
                         FROM motherboard mb 
                         WHERE mb.id NOT IN (SELECT motherboard_id FROM motherboard_io_port mip 
                         WHERE mip.io_port_id = :idPort" . $key . " 
@@ -990,7 +990,7 @@ class MotherboardRepository extends ServiceEntityRepository
         $query = $em->createNativeQuery($sql, $rsm);
 
         $this->putDataInQuery2($query, $values, $arrays);
-
+        
         return $query->setCacheable(true)
             ->getResult();
     }
