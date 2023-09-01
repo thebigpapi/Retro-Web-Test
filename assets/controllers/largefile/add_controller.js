@@ -140,7 +140,10 @@ export default class extends Controller {
             }
         }
         alert("uploaded?");
-        //xhr.send(new FormData(document.getElementById('edit-LargeFile-form')));
+
+        let formData = new FormData(document.getElementById('edit-LargeFile-form'));
+        formData.append("ea[newForm][btn]", "saveAndReturn"); // To be improved
+        xhr.send(formData);
 
     }
 
