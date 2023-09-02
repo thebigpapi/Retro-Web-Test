@@ -865,6 +865,22 @@
         <source>Other</source>
         <target>Other</target>
       </trans-unit>
+      <trans-unit id="67h5gie">
+        <source>Date precision</source>
+        <target>Date precision</target>
+      </trans-unit>
+      <trans-unit id="9rtnr7f">
+        <source>Year, month and day</source>
+        <target>Year, month and day</target>
+      </trans-unit>
+      <trans-unit id="0eg4ygv">
+        <source>Year and month</source>
+        <target>Year and month</target>
+      </trans-unit>
+      <trans-unit id="2tf64g6">
+        <source>Year only</source>
+        <target>Year only</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

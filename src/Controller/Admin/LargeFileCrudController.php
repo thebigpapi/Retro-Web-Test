@@ -77,11 +77,20 @@ class LargeFileCrudController extends AbstractCrudController
             ->setColumns(4)
             ->onlyOnForms();
         yield DateField::new('release_date', 'Release Date')
-            ->setColumns(4);
+            ->setFormTypeOption('attr', ['style'=>'width:100%;'])
+            ->setColumns(2);
+        yield ChoiceField::new('datePrecision', 'Date precision')
+            ->setChoices([
+                'Year, month and day' => 'd',
+                'Year and month' => 'm',
+                'Year only' => 'y',
+            ])
+            ->setFormTypeOption('autocomplete', false)
+            ->setColumns(2)
+            ->onlyOnForms();
         yield TextareaField::new('file', 'File')
             ->setFormType(VichFileType::class)
             ->setFormTypeOption('allow_delete', false)
-            //->setFormTypeOption('download_label', false)
             ->setColumns(4)
             ->onlyOnForms();
         yield CollectionField::new('languages', 'Language')

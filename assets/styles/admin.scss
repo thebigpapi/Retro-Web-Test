@@ -202,3 +202,9 @@ body:not(.ea-content-width-full) .content-wrapper {
 
 	}
 }
+div.driver-messages{
+	padding-right: 10px;
+	span{vertical-align: top;}
+	progress{height: 25px;}
+	img{display: none;}
+}
