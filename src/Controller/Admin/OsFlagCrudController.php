@@ -7,6 +7,9 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
+use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 
 class OsFlagCrudController extends AbstractCrudController
 {
@@ -27,9 +30,16 @@ class OsFlagCrudController extends AbstractCrudController
             ->showEntityActionsInlined()
             ->setPaginatorPageSize(100);
     }
-    /*
     public function configureFields(string $pageName): iterable
     {
+        yield IdField::new('id')
+            ->onlyOnIndex();
+        yield TextField::new('getManufacturer','Manufacturer')
+            ->hideOnForm();
+        yield AssociationField::new('manufacturer','Manufacturer')
+            ->setFormTypeOption('placeholder', 'Select a manufacturer ...')
+            ->onlyOnForms();
+        yield TextField::new('name', 'Name');
+        yield TextField::new('version', 'Version');
     }
-    */
 }

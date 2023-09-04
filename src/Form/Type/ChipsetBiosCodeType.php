@@ -21,6 +21,7 @@ class ChipsetBiosCodeType extends AbstractType
             ->add('biosManufacturer', EntityType::class, [
                 'class' => Manufacturer::class,
                 'choice_label' => 'name',
+                'label' => 'Chipset manufacturer',
                 'multiple' => false,
                 'expanded' => false,
                 ])

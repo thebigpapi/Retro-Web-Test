@@ -20,6 +20,7 @@ class MotherboardExpansionSlot
 
     #[ORM\ManyToOne(targetEntity: ExpansionSlot::class, inversedBy: 'motherboardExpansionSlots')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Assert\NotBlank(message:'Expansion slot type cannot be blank')]
     private $expansion_slot;
 
     #[Assert\Positive(message: "Expansion slot count should be above 0")]
@@ -30,7 +31,10 @@ class MotherboardExpansionSlot
 
     public function __toString(): string
     {
-        return $this->getExpansionSlot()->getName();
+        $expname = $this->getExpansionSlot();
+        if(isset($expname))
+            return $this->getExpansionSlot()->getName();
+        else return "";
     }
     public function getId(): ?int
     {
@@ -54,7 +58,6 @@ class MotherboardExpansionSlot
     public function setExpansionSlot(?ExpansionSlot $expansion_slot): self
     {
         $this->expansion_slot = $expansion_slot;
-
         return $this;
     }
     public function getCount(): ?int

@@ -834,8 +834,8 @@
         <target> Download</target>
       </trans-unit>
       <trans-unit id="56uh67m">
-        <source>Bios manufacturer</source>
-        <target>BIOS manufacturer</target>
+        <source>Chipset manufacturer</source>
+        <target>Chipset manufacturer</target>
       </trans-unit>
       <trans-unit id="9856b4n">
         <source>BIOS codes</source>
@@ -880,6 +880,38 @@
       <trans-unit id="2tf64g6">
         <source>Year only</source>
         <target>Year only</target>
+      </trans-unit>
+      <trans-unit id="65u7v56">
+        <source>Compatible with families</source>
+        <target>Compatible with families</target>
+      </trans-unit>
+      <trans-unit id="9rf56ur">
+        <source>Compatible with instruction sets</source>
+        <target>Compatible with instruction sets</target>
+      </trans-unit>
+      <trans-unit id="8rhj7t0">
+        <source>Speed in MHz</source>
+        <target>Speed in MHz</target>
+      </trans-unit>
+      <trans-unit id="hg8egb8">
+        <source>Value in bytes</source>
+        <target>Value in bytes</target>
+      </trans-unit>
+      <trans-unit id="567hgrt">
+        <source>Full name</source>
+        <target>Full name</target>
+      </trans-unit>
+      <trans-unit id="78erth4">
+        <source>PCI Vendor</source>
+        <target>PCI Vendor</target>
+      </trans-unit>
+      <trans-unit id="456b2nh">
+        <source>BIOS manufacturer</source>
+        <target>BIOS manufacturer</target>
+      </trans-unit>
+      <trans-unit id="8rtj6rh">
+        <source>Select a VRAM size ...</source>
+        <target>Select a VRAM size ...</target>
       </trans-unit>
     </body>
   </file>

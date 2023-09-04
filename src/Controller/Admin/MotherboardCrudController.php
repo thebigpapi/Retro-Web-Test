@@ -56,6 +56,8 @@ class MotherboardCrudController extends AbstractCrudController
         );
         $view = Action::new('view', 'View')->linkToCrudAction('viewBoard');
         return $actions
+            ->add(Crud::PAGE_NEW, Action::SAVE_AND_CONTINUE)
+            ->remove(Crud::PAGE_NEW, Action::SAVE_AND_ADD_ANOTHER)
             ->add(Crud::PAGE_EDIT, $duplicate)
             ->add(Crud::PAGE_INDEX, $view)
             ->setPermission(Action::DELETE, 'ROLE_ADMIN');
@@ -196,6 +198,7 @@ class MotherboardCrudController extends AbstractCrudController
         yield FormField::addPanel('Memory')->onlyOnForms();
         yield CollectionField::new('motherboardMaxRams', 'Supported RAM size')
             ->setEntryType(MotherboardMaxRamType::class)
+            ->setFormTypeOption('error_bubbling', false)
             ->setColumns(4)
             ->renderExpanded()
             ->onlyOnForms();
@@ -210,6 +213,7 @@ class MotherboardCrudController extends AbstractCrudController
             ->renderExpanded()
             ->onlyOnForms();
         yield AssociationField::new('maxVideoRam', 'Max VRAM (onboard GPU)')
+            ->setFormTypeOption('placeholder', 'Select a VRAM size ...')
             ->onlyOnForms();
         yield FormField::addPanel('Connections')
             ->onlyOnForms();

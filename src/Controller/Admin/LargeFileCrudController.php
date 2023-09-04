@@ -35,6 +35,8 @@ class LargeFileCrudController extends AbstractCrudController
         $view = Action::new('view', 'View')->linkToCrudAction('viewDriver');
         return $actions
             ->add(Crud::PAGE_INDEX, $view)
+            ->add(Crud::PAGE_NEW, Action::SAVE_AND_CONTINUE)
+            ->remove(Crud::PAGE_NEW, Action::SAVE_AND_ADD_ANOTHER)
             ->setPermission(Action::DELETE, 'ROLE_ADMIN');
     }
     public function configureCrud(Crud $crud): Crud

@@ -19,6 +19,7 @@ class MotherboardIoPort
 
     #[ORM\ManyToOne(targetEntity: IoPort::class, inversedBy: 'motherboardIoPorts')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Assert\NotBlank(message:'I/O port type cannot be blank')]
     private $io_port;
 
     #[Assert\Positive(message: "I/O port count should be above 0")]

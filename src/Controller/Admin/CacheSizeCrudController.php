@@ -7,6 +7,8 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
+use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
 
 class CacheSizeCrudController extends AbstractCrudController
 {
@@ -27,9 +29,9 @@ class CacheSizeCrudController extends AbstractCrudController
             ->showEntityActionsInlined()
             ->setPaginatorPageSize(100);
     }
-    /*
     public function configureFields(string $pageName): iterable
     {
+        yield IdField::new('id')->onlyOnIndex();
+        yield NumberField::new('value', 'Value in bytes');
     }
-    */
 }

@@ -6,6 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 #[ORM\Entity(repositoryClass: 'App\Repository\MotherboardRepository')]
 class Motherboard
@@ -263,7 +264,8 @@ class Motherboard
     public function isMotherboardBios(): bool
     {
         if(isset($this->motherboardBios))
-            return true;
+            if(count($this->motherboardBios) > 0)
+                return true;
         return false;
     }
     /**
@@ -282,7 +284,7 @@ class Motherboard
 
         return $this;
     }
-    public function addExpansionSlot(ExpansionSlot $expansionSlot, int $count): self
+    public function addExpansionSlt(ExpansionSlot $expansionSlot, int $count): self
     {
         $mes = new MotherboardExpansionSlot();
         $mes->setExpansionSlot($expansionSlot);
@@ -473,7 +475,8 @@ class Motherboard
     public function isManuals(): bool
     {
         if(isset($this->manuals))
-            return true;
+            if(count($this->manuals) > 0)
+                return true;
         return false;
     }
     /**
@@ -507,7 +510,8 @@ class Motherboard
     public function isImages(): bool
     {
         if(isset($this->images))
-            return true;
+            if(count($this->images) > 0)
+                return true;
         return false;
     }
     /**
@@ -567,6 +571,7 @@ class Motherboard
     }
     public function updateLastEdited()
     {
+        //$this->verifyStoltsPorts();
         $this->lastEdited = new \DateTime('now');
     }
     public function getMaxCpu(): ?int
@@ -763,7 +768,8 @@ class Motherboard
     public function isExpansionChips(): bool
     {
         if(isset($this->expansionChips))
-            return true;
+            if(count($this->expansionChips) > 0)
+                return true;
         return false;
     }
 
@@ -822,5 +828,47 @@ class Motherboard
         }
         $strBuilder .= " chipset. Get specs, BIOS, documentation and more!";
         return $strBuilder;
+    }
+    #[Assert\Callback]
+    public function verifyIoPorts(ExecutionContextInterface $context): void
+    {
+        $arr = array();
+        foreach($this->motherboardIoPorts as $item){
+            $port = $item->getIoPort();
+            if(in_array($port, $arr)){
+                $context->buildViolation('Duplicate I/O port types are not allowed!')
+                    ->atPath('motherboardIoPorts')
+                    ->addViolation();
+            }
+            array_push($arr, $port);
+        }
+    }
+    #[Assert\Callback]
+    public function verifyExpansionSlots(ExecutionContextInterface $context): void
+    {
+        $arr = array();
+        foreach($this->motherboardExpansionSlots as $item){
+            $slot = $item->getExpansionSlot();
+            if(in_array($slot, $arr)){
+                $context->buildViolation('Duplicate expansion slot types are not allowed!')
+                    ->atPath('motherboardExpansionSlots')
+                    ->addViolation();
+            }
+            array_push($arr, $slot);
+        }
+    }
+    #[Assert\Callback]
+    public function verifyMaxRams(ExecutionContextInterface $context): void
+    {
+        $arr = array();
+        foreach($this->motherboardMaxRams as $item){
+            $val = $item->getMaxram();
+            if(in_array($val, $arr)){
+                $context->buildViolation('Duplicate RAM sizes are not allowed!')
+                    ->atPath('motherboardMaxRams')
+                    ->addViolation();
+            }
+            array_push($arr, $val);
+        }
     }
 }

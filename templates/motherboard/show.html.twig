@@ -178,13 +178,6 @@
 				{% endif %}
 				<div id="index-datetime" data-controller="datetime"><div class="div-datetime">Last updated <span class="perk-date">{{ motherboard.getLastEdited()|date("Y-m-d\\TH:i:s", "GMT") }}Z</span></div></div>
 				<span><small><i>&nbsp;TRW ID: {{motherboard.getId()}}</i></small></span>
-				{% if is_granted('ROLE_ADMIN') %}
-				<div style="display:flex">
-				<a class="button-widget" style="margin:5px;max-width:100px;" href="{{ ea_url()
-					.setDashboard('App\\Controller\\Admin\\DashboardController')
-					.setRoute('logs_filter_id_entity', {id: motherboard.getId(), entity: 'Motherboard'})}}">
-					<img src="{{ absolute_url(asset('build/icons/show/calendar.svg')) }}" alt="" width="24" height="24">History</a></div>
-				{% endif %}
 			</div>
 
 			<!-- Chips -->

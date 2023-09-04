@@ -19,6 +19,10 @@ class PciVendorId
     #[ORM\ManyToOne(targetEntity: Manufacturer::class, inversedBy: 'pciVendorIds')]
     private $manufacturer = null;
 
+    public function __toString(): string
+    {
+        return $this->getVen();
+    }
     public function getId(): ?int
     {
         return $this->id;

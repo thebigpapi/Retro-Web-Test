@@ -17,6 +17,7 @@ class ManufacturerBiosManufacturerCodeType extends AbstractType
         $builder
             ->add('biosManufacturer', EntityType::class, [
                 'class' => Manufacturer::class,
+                'label' => 'BIOS manufacturer',
                 'choice_label' => 'name',
                 'multiple' => false,
                 'expanded' => false,
