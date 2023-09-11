@@ -76,17 +76,92 @@ $btn-hover-dark: rgb(247, 207, 62);
 	column-gap: 5px;
 	align-items: center;
 }
-#Motherboard_motherboardBios_collection > div > div > div{
-	display:block;
-	div.form-widget-compound > div{
-		display:flex;
-		flex-direction: row;
-		> div:nth-child(1){flex-grow:10;width:13%;}
-		> div:nth-child(3){flex-grow:20;}
-		> div:nth-child(5){flex-grow:20;}
-		> div:nth-child(7){flex-grow:1;width:8%;}
-		> div:nth-child(9){flex-grow:1;width:8%;}
-		> div:nth-child(11){flex-grow:3;}
+@media screen and (min-width: 768px) {
+	#Motherboard_motherboardBios_collection > div > div > div{
+		.ea-vich-file{
+			display: flex;
+		}
+		display:block;
+		div.form-widget-compound > div{
+			display:grid;
+			grid-template-columns: [first] 21% [second] 5px [third] 21% [fourth] 5px [fifth] 21% [sixth] 5px [seventh] 9% [eight] 5px [ninth] 7% [tenth] 5px [eleventh] 200px [end];
+			> div {display: grid;}
+			@media screen and (max-width: 1400px) {
+				grid-template-columns: [first] 30% [second] 5px [third] 50% [fourth] 5px [fifth] 20% [sixth] 5px [end];
+				> div:nth-child(1){
+					grid-column-start: 1;
+					grid-column-end: 2;
+					grid-row-start: 1;
+					grid-row-end: 1;
+				}
+				> div:nth-child(2){
+					grid-column-start: 2;
+					grid-column-end: 3;
+					grid-row-start: 1;
+					grid-row-end: 1;
+				}
+				> div:nth-child(3){
+					grid-column-start: 3;
+					grid-column-end: 4;
+					grid-row-start: 1;
+					grid-row-end: 1;
+				}
+				> div:nth-child(4){
+					grid-column-start: 4;
+					grid-column-end: 5;
+					grid-row-start: 1;
+					grid-row-end: 1;
+				}
+				> div:nth-child(7){
+					grid-column-start: 5;
+					grid-column-end: 6;
+					grid-row-start: 1;
+					grid-row-end: 1;
+				}
+				> div:nth-child(8){
+					grid-column-start: 6;
+					grid-column-end: 7;
+					grid-row-start: 1;
+					grid-row-end: 1;
+				}
+				> div:nth-child(11){
+					grid-column-start: 1;
+					grid-column-end: 2;
+					grid-row-start: 2;
+					grid-row-end: 2;
+				}
+				> div:nth-child(12){
+					grid-column-start: 2;
+					grid-column-end: 3;
+					grid-row-start: 2;
+					grid-row-end: 2;
+				}
+				> div:nth-child(5){
+					grid-column-start: 3;
+					grid-column-end: 4;
+					grid-row-start: 2;
+					grid-row-end: 2;
+				}
+				> div:nth-child(6){
+					grid-column-start: 4;
+					grid-column-end: 5;
+					grid-row-start: 2;
+					grid-row-end: 2;
+				}
+				> div:nth-child(9){
+					grid-column-start: 5;
+					grid-column-end: 6;
+					grid-row-start: 2;
+					grid-row-end: 2;
+				}
+				> div:nth-child(10){
+					grid-column-start: 6;
+					grid-column-end: 7;
+					grid-row-start: 2;
+					grid-row-end: 2;
+				}
+			}
+		}
 	}
 }
 #Motherboard_motherboardIoPorts_collection > div > div > div, #Motherboard_motherboardExpansionSlots_collection > div > div > div{
@@ -216,4 +291,12 @@ div.driver-messages{
 }
 .ea-vich-image{
 	padding-right: 10px;
+}
+.shide{
+	margin: 0px 5px;
+	transition: ease-in-out 0.1s background-color;
+	box-shadow: none !important;
+	&:hover{
+		background-color: $btn-hover-dark;
+	}
 }

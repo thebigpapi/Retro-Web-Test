@@ -7,8 +7,10 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: 'App\Repository\MotherboardRepository')]
+#[UniqueEntity('slug')]
 class Motherboard
 {
     #[ORM\Id]
@@ -115,7 +117,6 @@ class Motherboard
     #[ORM\OneToMany(mappedBy: 'motherboard', targetEntity: MiscFile::class, orphanRemoval: true, cascade: ['persist'])]
     #[Assert\Valid()]
     private $miscFiles;
-
     public function __construct()
     {
         $this->motherboardMaxRams = new ArrayCollection();

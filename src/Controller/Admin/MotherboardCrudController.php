@@ -242,6 +242,7 @@ class MotherboardCrudController extends AbstractCrudController
         yield CollectionField::new('images', 'Images')
             ->setEntryType(MotherboardImageTypeForm::class)
             ->setColumns('col-sm-12 col-lg-8 col-xxl-6')
+            ->setFormTypeOption('error_bubbling', false)
             ->renderExpanded()
             ->onlyOnForms();
         yield CollectionField::new('manuals', 'Documentation')
