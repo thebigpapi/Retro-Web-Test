@@ -3,7 +3,10 @@
 namespace App\Form\Motherboard;
 
 use App\Entity\Chipset;
+use App\Form\Type\MotherboardExpansionSlotType;
+use App\Form\Type\MotherboardIoPortType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -94,10 +97,21 @@ class Search extends AbstractType
                 'choice_label' => 'name',
                 'multiple' => false,
                 'expanded' => false,
-                'required' => false,
                 'autocomplete' => true,
                 'choices' => $options['formFactors'],
                 'placeholder' => 'Select a form factor ...',
+            ])
+            ->add('motherboardExpansionSlots', CollectionType::class, [
+                'entry_type' => MotherboardExpansionSlotType::class,
+                'allow_add' => true,
+                'allow_delete' => true,
+                'label' => false,
+            ])
+            ->add('motherboardIoPorts', CollectionType::class, [
+                'entry_type' => MotherboardIoPortType::class,
+                'allow_add' => true,
+                'allow_delete' => true,
+                'label' => false,
             ])
             ->add('search', SubmitType::class)
             ->add('searchWithImages', SubmitType::class);

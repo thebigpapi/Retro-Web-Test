@@ -31,6 +31,25 @@ use Symfony\Component\HttpFoundation\Response;
 
 class MotherboardController extends AbstractController
 {
+    public function addCriteriaById(Request $request, array &$criterias, string $htmlId, string $sqlId): void
+    {
+        $entityId = htmlentities($request->query->get($htmlId) ?? '');
+        if ($entityId && intval($entityId)) $criterias[$sqlId] = "$entityId";
+        elseif ($entityId === "NULL") $criterias[$sqlId] = null;
+    }
+    public function addArrayCriteria(Request $request, array &$criterias, string $htmlId, string $sqlId): void
+    {
+        $entityIds = $request->query->get($htmlId);
+        $entityArray = null;
+        if ($entityIds) {
+            if (is_array($entityIds)) {
+                $entityArray = $entityIds;
+            } else {
+                $entityArray = json_decode($entityIds);
+            }
+            $criterias[$sqlId] = $entityArray;
+        }
+    }
     #[Route('/motherboards/', name: 'mobosearch', methods: ['GET'])]
     public function searchResult(
         Request $request,
@@ -40,83 +59,26 @@ class MotherboardController extends AbstractController
         $criterias = array();
         $name = htmlentities($request->query->get('name') ?? '');
         if ($name) $criterias['name'] = "$name";
-
-        $manufacturerId = htmlentities($request->query->get('manufacturerId') ?? '');
-        if ($manufacturerId && intval($manufacturerId)) $criterias['manufacturer'] = "$manufacturerId";
-        elseif ($manufacturerId === "NULL") $criterias['manufacturer'] = null;
-
-        $formFactorId = htmlentities($request->query->get('formFactorId') ?? '');
-        if ($formFactorId && intval($formFactorId)) $criterias['form_factor'] = "$formFactorId";
-        elseif ($formFactorId === "NULL") $criterias['form_factor'] = null;
-
-        $chipsetId = htmlentities($request->query->get('chipsetId') ?? '');
-        if ($chipsetId && intval($chipsetId)) $criterias['chipset'] = "$chipsetId";
-        elseif ($chipsetId === "NULL") $criterias['chipset'] = null;
-
-        $cpuSocket1 = htmlentities($request->query->get('cpuSocket1') ?? '');
-        if ($cpuSocket1 && intval($cpuSocket1)) $criterias['cpu_socket1'] = "$cpuSocket1";
-        elseif ($cpuSocket1 === "NULL") $criterias['cpu_socket1'] = null;
-
-        $platform1 = htmlentities($request->query->get('platform1') ?? '');
-        if ($platform1 && intval($platform1)) $criterias['processor_platform_type1'] = "$platform1";
-        elseif ($platform1 === "NULL") $criterias['processor_platform_type1'] = null;
-
-        $cpuSocket2 = htmlentities($request->query->get('cpuSocket2') ?? '');
-        if ($cpuSocket2 && intval($cpuSocket2)) $criterias['cpu_socket2'] = "$cpuSocket2";
-        elseif ($cpuSocket2 === "NULL") $criterias['cpu_socket2'] = null;
-
-        $platform2 = htmlentities($request->query->get('platform2') ?? '');
-        if ($platform2 && intval($platform2)) $criterias['processor_platform_type2'] = "$platform2";
-        elseif ($platform2 === "NULL") $criterias['processor_platform_type2'] = null;
-
-        $chipsetManufacturerId = htmlentities($request->query->get('chipsetManufacturerId') ?? '');
-        if (
-            $chipsetManufacturerId
-            &&
-            intval($chipsetManufacturerId)
-            &&
-            !array_key_exists('chipset', $criterias)
-        ) {
-            $criterias['chipsetManufacturer'] = "$chipsetManufacturerId";
-        } elseif ($chipsetManufacturerId === "NULL" && !array_key_exists('chipset', $criterias)) {
-            $criterias['chipsetManufacturer'] = null;
+        $this->addCriteriaById($request, $criterias, 'manufacturerId', 'manufacturer');
+        $this->addCriteriaById($request, $criterias, 'formFactorId', 'form_factor');
+        $this->addCriteriaById($request, $criterias, 'chipsetId', 'chipset');
+        if(!array_key_exists('chipset', $criterias)){
+            $this->addCriteriaById($request, $criterias, 'chipsetManufacturerId', 'chipsetManufacturer');
         }
+        $this->addCriteriaById($request, $criterias, 'cpuSocket1', 'cpu_socket1');
+        $this->addCriteriaById($request, $criterias, 'cpuSocket2', 'cpu_socket2');
+        $this->addCriteriaById($request, $criterias, 'platform1', 'processor_platform_type1');
+        $this->addCriteriaById($request, $criterias, 'platform2', 'processor_platform_type2');
+        $this->addArrayCriteria($request, $criterias, 'expansionSlotsIds', 'expansionSlots');
+        $this->addArrayCriteria($request, $criterias, 'ioPortsIds', 'ioPorts');
 
         $showImages = boolval(htmlentities($request->query->get('showImages') ?? ''));
-
-        //[{"id":1, "count":2}]
-        $expansionSlotsIds = $request->query->get('expansionSlotsIds');
-        $expansionSlotsArray = null;
-        if ($expansionSlotsIds) {
-            if (is_array($expansionSlotsIds)) {
-                $expansionSlotsArray = $expansionSlotsIds;
-            } else {
-                $expansionSlotsArray = json_decode($expansionSlotsIds);
-            }
-            $criterias['expansionSlots'] = $expansionSlotsArray;
-        }
-
-        //[{"id":1, "count":2}]
-        $ioPortsIds = $request->query->get('ioPortsIds');
-        $ioPortsArray = null;
-        if ($ioPortsIds) {
-            if (is_array($ioPortsIds)) {
-                $ioPortsArray = $ioPortsIds;
-            } else {
-                $ioPortsArray = json_decode($ioPortsIds);
-            }
-            $criterias['ioPorts'] = $ioPortsArray;
-        }
 
         if ($criterias == array()) {
             return $this->redirectToRoute('motherboard_search');
         }
 
-        //try {
-            $data = $motherboardRepository->findByWithJoin($criterias, array('man1_name' => 'ASC', 'mot0_name' => 'ASC'));
-        //} catch (Exception $e) {
-        //    return $this->redirectToRoute('motherboard_search');
-        //}
+        $data = $motherboardRepository->findByWithJoin($criterias, array('man1_name' => 'ASC', 'mot0_name' => 'ASC'));
         $motherboards = $paginator->paginate(
             $data,
             $request->query->getInt('page', 1),
@@ -308,17 +270,6 @@ class MotherboardController extends AbstractController
 
         $biosManufacturers = $manufacturerRepository->findAllBiosManufacturer();
 
-        $slotsForm = array();
-        foreach ($slots as $k => $slotForm) {
-            $expSlot = array("expansion_slot" => $slotForm, "count" => 0);
-            array_push($slotsForm, $expSlot);
-        }
-        $portsForm = array();
-        foreach ($ports as $k => $portForm) {
-            $ioPort = array("io_port" => $portForm, "count" => 0);
-            array_push($portsForm, $ioPort);
-        }
-
         $form = $this->createForm(Search::class, array(), [
             'moboManufacturers' => $moboManufacturers,
             'chipsetManufacturers' => $chipsetManufacturers,
@@ -330,17 +281,15 @@ class MotherboardController extends AbstractController
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            return $this->redirect($this->generateUrl('mobosearch', $this->searchFormToParam($request, $form, $slots, $ports)));
+            return $this->redirect($this->generateUrl('mobosearch', $this->searchFormToParam($request, $form)));
         }
         return $this->render('motherboard/search.html.twig', [
             'form' => $form->createView(),
-            'slots' => $slots,
-            'ports' => $ports,
         ]);
     }
 
 
-    private function searchFormToParam(Request $request, FormInterface $form, array $slots, array $ports): array
+    private function searchFormToParam(Request $request, FormInterface $form): array
     {
         $parameters = array();
         if ($form['manufacturer']->getData()) {
@@ -394,30 +343,35 @@ class MotherboardController extends AbstractController
             $parameters['platform2'] = $form['platform2']->getData()->getId();
         }
 
-        $parameters['expansionSlotsIds'] = array();
-        foreach ($slots as $slot) {
-            $count = $request->request->get('slot' . $slot->getId());
-            if ((int)$count !== 0) {
-                $sloCount = array('id' => $slot->getId(), 'count' => (int)$count);
-                array_push($parameters['expansionSlotsIds'], $sloCount);
-            } elseif ($count === '0') {
-                $sloCount = array('id' => $slot->getId(), 'count' => null);
-                array_push($parameters['expansionSlotsIds'], $sloCount);
+        $slots = $form['motherboardExpansionSlots']->getData();
+        if ($slots) {
+            $parameters['expansionSlotsIds'] = array();
+            foreach ($slots as $slot) {
+                $count = $slot->getCount();
+                if ((int)$count !== 0) {
+                    $slotCount = array('id' => $slot->getExpansionSlot()->getId(), 'count' => (int)$count);
+                    array_push($parameters['expansionSlotsIds'], $slotCount);
+                } elseif ($count === '0') {
+                    $slotCount = array('id' => $slot->getExpansionSlot()->getId(), 'count' => null);
+                    array_push($parameters['expansionSlotsIds'], $slotCount);
+                }
             }
         }
 
-        $ioPorts = array();
-        foreach ($ports as $port) {
-            $count = $request->request->get('port' . $port->getId());
-            if ((int)$count && $count !== 0) {
-                $porCount = array('id' => $port->getId(), 'count' => (int)$count);
-                array_push($ioPorts, $porCount);
-            } elseif ($count === '0') {
-                $porCount = array('id' => $port->getId(), 'count' => null);
-                array_push($ioPorts, $porCount);
+        $ports = $form['motherboardIoPorts']->getData();
+        if ($ports) {
+            $parameters['ioPortsIds'] = array();
+            foreach ($ports as $port) {
+                $count = $port->getCount();
+                if ((int)$count && $count !== 0) {
+                    $portCount = array('id' => $port->getIoPort()->getId(), 'count' => (int)$count);
+                    array_push($parameters['ioPortsIds'], $portCount);
+                } elseif ($count === '0') {
+                    $portCount = array('id' => $port->getIoPort()->getId(), 'count' => null);
+                    array_push($parameters['ioPortsIds'], $portCount);
+                }
             }
         }
-        $parameters['ioPortsIds'] = $ioPorts;
 
         if ($form['chipsetManufacturer']->getData() && !$form['chipset']->getData()) {
             if ($form['chipsetManufacturer']->getData()->getId() == 0) {

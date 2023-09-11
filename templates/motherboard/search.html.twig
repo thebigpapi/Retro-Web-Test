@@ -102,35 +102,40 @@
 			</div>
 		</section>
 		<div class="search-form-entry">
-			<label class="search-form-label" title="0 - all boards without that slot will be shown">
-				<span>Expansion slots</span>
-				<img src="{{ absolute_url(asset('build/icons/search/help.svg')) }}" alt="" width="16" height="16">
-			</label>
-			<div class="search-form-many" id="search_expansion_slots">
-				{% for slot in slots %}
-					{% if slot.hiddenSearch == false %}
-						<div class="search-many-item">
-							<input type="text" size="2" name="slot{{slot.id}}" id="id_slot{{slot.id}}">
-							<label for="id_slot{{slot.id}}">x&nbsp;{{ slot.name }}</label>
+		
+		</div>
+		<div class="full-spec edit">
+						<div class="full-spec-head" data-controller="collection"><b>I/O ports: </b>{% include 'macros/buttons.html.twig' with {'type':'add', 'action': 'motherboardIoPorts'} %}</div>
+						<div id="motherboardIoPorts-fields-list" data-widget-counter="{{ form.motherboardIoPorts|length }}" data-prototype="
+							{{ form_widget(form.motherboardIoPorts.vars.prototype.count, {'attr': {'class': 'num'}} )|e }} x
+							{{ form_widget(form.motherboardIoPorts.vars.prototype.io_port, {'attr': {'style': 'width:50%'}} )|e }}
+							{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
+							" data-controller="collection">
+							{% for port in form.motherboardIoPorts %}
+								<div class="editor-row nopad">
+									{{ form_widget(port.count, {'attr': {'class': 'num'}}) }} x
+									{{ form_widget(port.io_port, {'attr': {'style': 'width:50%'}}) }}
+									{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
+								</div>
+								{{ form_errors(port) }}
+							{% endfor %}
 						</div>
-					{% endif %}
-				{% endfor %}
-			</div>
-		</div>
-		<div class="search-form-entry">
-			<label class="search-form-label" title="0 - all boards without that port will be shown">
-				<span>I/O ports</span>
-				<img src="{{ absolute_url(asset('build/icons/search/help.svg')) }}" alt="" width="16" height="16">
-			</label>
-			<div class="search-form-many" id="search_io_ports">
-				{% for port in ports %}
-					<div class="search-many-item">
-						<input type="text" size="2" name="port{{port.id}}" id="id_port{{port.id}}">
-						<label for="id_port{{port.id}}">x&nbsp;{{ port.name }}</label>
+						<div class="full-spec-head" data-controller="collection"><b>Expansion slots: </b>{% include 'macros/buttons.html.twig' with {'type':'add', 'action': 'motherboardExpansionSlots'} %}</div>
+						<div id="motherboardExpansionSlots-fields-list" data-widget-counter="{{ form.motherboardExpansionSlots|length }}" data-prototype="
+							{{ form_widget(form.motherboardExpansionSlots.vars.prototype.count, {'attr': {'class': 'num'}} )|e }} x
+							{{ form_widget(form.motherboardExpansionSlots.vars.prototype.expansion_slot, {'attr': {'style': 'width:50%;display:inline'}} )|e  }}
+							{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
+							" data-controller="collection">
+							{% for slot in form.motherboardExpansionSlots %}
+								<div class="editor-row nopad">
+									{{ form_widget(slot.count, {'attr': {'class': 'num'}}) }} x
+									{{ form_widget(slot.expansion_slot, {'attr': {'style': 'width:50%'}}) }}
+									{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
+								</div>
+								{{ form_errors(slot) }}
+							{% endfor %}
+						</div>
 					</div>
-				{% endfor %}
-			</div>
-		</div>
 	</fieldset>
 	<div>{{ form_rest(form) }}</div>
 </form>{% endblock %}
