@@ -327,12 +327,13 @@ a.button-widget {
 			}
 	}
     @include noselect();
-    img { padding-right:5px;vertical-align: middle; }
+    img { padding-right:5px; vertical-align: middle; }
+	span { vertical-align: middle; }
 }
+
 .monospace {
 	font-family: $monospace-font;
 }
-
 
 /* webkit scrollbar */
 ::-webkit-scrollbar {
