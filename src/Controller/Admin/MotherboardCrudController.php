@@ -41,6 +41,12 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 
 class MotherboardCrudController extends AbstractCrudController
 {
+    private $adminUrlGenerator;
+
+    public function __construct(AdminUrlGenerator $adminUrlGenerator)
+    {
+        $this->adminUrlGenerator = $adminUrlGenerator;
+    }
     public static function getEntityFqcn(): string
     {
         return Motherboard::class;
@@ -55,11 +61,14 @@ class MotherboardCrudController extends AbstractCrudController
                 ->generateUrl()
         );
         $view = Action::new('view', 'View')->linkToCrudAction('viewBoard');
+        $del = Action::new('delet1', 'Delete')->addCssClass('text-danger')->linkToCrudAction('deleteBoard');
         return $actions
             ->add(Crud::PAGE_NEW, Action::SAVE_AND_CONTINUE)
             ->remove(Crud::PAGE_NEW, Action::SAVE_AND_ADD_ANOTHER)
+            ->remove(Crud::PAGE_INDEX, Action::DELETE)
             ->add(Crud::PAGE_EDIT, $duplicate)
             ->add(Crud::PAGE_INDEX, $view)
+            ->add(Crud::PAGE_INDEX, $del)
             ->setPermission(Action::DELETE, 'ROLE_ADMIN');
     }
     public function configureCrud(Crud $crud): Crud
@@ -285,6 +294,19 @@ class MotherboardCrudController extends AbstractCrudController
     {
         $boardId = $context->getEntity()->getInstance()->getId();
         return $this->redirectToRoute('motherboard_show', array('id'=>$boardId));
+    }
+
+    public function deleteBoard(AdminContext $context)
+    {
+        $boardId = $context->getEntity()->getInstance()->getId();
+        $url = $this->adminUrlGenerator
+        ->setController(ProductCrudController::class)
+        ->setRoute('motherboard_delete', array('id'=>$boardId))
+        //->setAction(Action::EDIT)
+        ->setEntityId($boardId)
+        ->generateUrl();
+        return $this->redirect($url);
+        //return $this->redirectToRoute('motherboard_delete', array('id'=>$boardId));
     }
     /**
      * @param Motherboard $entityInstance

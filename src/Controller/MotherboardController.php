@@ -145,7 +145,7 @@ class MotherboardController extends AbstractController
         return $this->redirect($this->generateUrl('motherboard_show_slug', array("slug" => $motherboard->getSlug())));
     }
 
-    #[Route('/motherboards/{id}/delete/', name: 'motherboard_delete', requirements: ["id" => "\d+"])]
+    #[Route('/dashboard/motherboard-delete/{id}', name: 'motherboard_delete', requirements: ["id" => "\d+"])]
     public function delete(
         Request $request,
         int $id,
