@@ -16,11 +16,7 @@ class ExpansionSlotForm extends AbstractType
     {
         $builder
             ->add('name', TextType::class)
-            ->add('save', SubmitType::class)
-            ->add('hiddenSearch', CheckboxType::class, [
-                'label' => 'Hide in the search page ?',
-                'required' => false,
-            ]);
+            ->add('save', SubmitType::class);
     }
 
     public function configureOptions(OptionsResolver $resolver)

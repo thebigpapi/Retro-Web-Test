@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Entity\Traits\ImpreciseDateTrait;
 use App\Repository\ChipsetRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -12,6 +13,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: ChipsetRepository::class)]
 class Chipset
 {
+    use ImpreciseDateTrait;
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
@@ -40,9 +43,6 @@ class Chipset
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     #[Assert\Length(max: 255, maxMessage: 'Encyclopedia link is longer than {{ limit }} characters, try to make it shorter.')]
     private $encyclopedia_link;
-
-    #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
-    private ?\DateTimeInterface $release_date = null;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     #[Assert\Length(max: 255, maxMessage: 'Part number is longer than {{ limit }} characters, try to make it shorter.')]
@@ -236,16 +236,6 @@ class Chipset
     public function setEncyclopediaLink(?string $encyclopedia_link): self
     {
         $this->encyclopedia_link = $encyclopedia_link;
-
-        return $this;
-    }
-    public function getReleaseDate(): ?\DateTimeInterface
-    {
-        return $this->release_date;
-    }
-    public function setReleaseDate(?\DateTimeInterface $release_date): self
-    {
-        $this->release_date = $release_date;
 
         return $this;
     }
