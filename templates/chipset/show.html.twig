@@ -18,8 +18,8 @@
 		<meta name="twitter:description" content="{{ chipset.getMetaDescription() }}">
 		<meta property="og:description" content="{{ chipset.getMetaDescription() }}">
 		<meta property="og:url" content="{{ absolute_url(path('chipset_show', {id: chipset.getId()})) }}">
-		{% if chipset.getChipsetParts() is not empty %}
-			{% for chipPart in chipset.getChipsetParts()|filter(chipPart => chipPart.getImages() is not empty)|slice(0,1) %}
+		{% if chipset.getExpansionChips() is not empty %}
+			{% for chipPart in chipset.getExpansionChips()|filter(chipPart => chipPart.getImages() is not empty)|slice(0,1) %}
 				{% for image in chipPart.getImages()|slice(0,1) %}
 					<meta property="og:image" content="{{ vich_uploader_asset(image, 'imageFile')}}">
 					<meta name="twitter:image" content="{{ vich_uploader_asset(image, 'imageFile')}}">
@@ -54,10 +54,10 @@
 					<div class="quick-spec-head">
 						<img src="{{ absolute_url(asset('build/icons/show/chipset.svg')) }}" alt="chip" width="24" height="24">Chipset parts
 					</div>
-					{% if chipset.getChipsetParts() is not empty %}
+					{% if chipset.getExpansionChips() is not empty %}
 					<div class="tag-container">
-						{% for part in chipset.getChipsetParts() %}
-							<span class="text-block">{{ part.getFullName() }}</span>
+						{% for part in chipset.getExpansionChips() %}
+							<span class="text-block">{{ part.getNameWithManufacturer() }}</span>
 						{% endfor %}
 					</div>
 					{% else %}<div>Unknown</div>{% endif %}
@@ -65,7 +65,7 @@
 					<div class="quick-spec-head">
 						<img src="{{ absolute_url(asset('build/icons/show/calendar.svg')) }}" alt="date" width="24" height="24">Release date
 					</div>
-					<div>{{ chipset.getReleaseDate() ? chipset.getReleaseDate()|date("Y-m-d") : 'Unknown' }}</div>
+					<div>{{ chipset.getReleaseDate() ? chipset.getReleaseDateString() : 'Unknown' }}</div>
 					<!-- Actions -->
 					<div class="quick-spec-head">
 						<img src="{{ absolute_url(asset('build/icons/show/cursor.svg')) }}" alt="act" width="24" height="24">Actions
@@ -91,9 +91,9 @@
 					{% else %}
 						{% set moreDrvCount = 0 %}
 					{% endif %}
-					{% if chipset.getChipsetParts() is not empty %}
+					{% if chipset.getExpansionChips() is not empty %}
 						<!-- CHIPSET PART DRIVER COUNT -->
-						{% for chipPart in chipset.getChipsetParts()|filter(chipPart => chipPart.getDrivers() is not empty) %}
+						{% for chipPart in chipset.getExpansionChips()|filter(chipPart => chipPart.getDrivers() is not empty) %}
 							{% set drvCount = drvCount + chipPart.getDrivers().count() %}
 						{% endfor %}
 					{% endif %}
@@ -109,7 +109,7 @@
 							{% for driver in chipset.getDrivers() %}
 								<div class="show-table-row">{{ driverLink(driver.largeFile) }}</div>
 							{% endfor %}
-							{% for chipPart in chipset.getChipsetParts()|filter(chipPart => chipPart.getDrivers() is not empty) %}
+							{% for chipPart in chipset.getExpansionChips()|filter(chipPart => chipPart.getDrivers() is not empty) %}
 								{% for driver in chipPart.getDrivers() %}
 									<div class="show-table-row">{{ driverLink(driver.largeFile) }}</div>
 								{% endfor %}
@@ -127,9 +127,9 @@
 					{% else %}
 						{% set moreDocCount = 0 %}
 					{% endif %}
-					{% if chipset.getChipsetParts() is not empty %}
+					{% if chipset.getExpansionChips() is not empty %}
 						<!-- CHIPSET PART DOC COUNT -->
-						{% for chipPart in chipset.getChipsetParts()|filter(chipPart => chipPart.getDocumentations() is not empty) %}
+						{% for chipPart in chipset.getExpansionChips()|filter(chipPart => chipPart.getDocumentations() is not empty) %}
 							{% set docCount = docCount + chipPart.getDocumentations().count() %}
 						{% endfor %}
 					{% endif %}
@@ -143,7 +143,7 @@
 						<div><div><div>
 							<ul style="list-style-type: none;">
 							<!-- CHIPSET PART DOCS -->
-							{% if  chipset.getChipsetParts() is not empty %}{% for chipPart in chipset.getChipsetParts()|filter(chipPart => chipPart.getDocumentations() is not empty) %}
+							{% if  chipset.getExpansionChips() is not empty %}{% for chipPart in chipset.getExpansionChips()|filter(chipPart => chipPart.getDocumentations() is not empty) %}
 								{% for documentation in chipPart.getDocumentations()|sort((a, b) => a.getLinkName <=> b.getLinkName) %}
 								<li><a href="{{ vich_uploader_asset(documentation, 'manualFile') }}">
 									<img src="{{ absolute_url(asset('build/icons/dw.svg')) }}" alt="" width="16" height="16" style="vertical-align: middle;">
@@ -166,19 +166,19 @@
 				{% if chipset.getDescription() is not empty %}
 					{% apply markdown_to_html %}{{ chipset.getDescription() }}{% endapply %}
 				{% endif %}
-				{% if chipset.getChipsetParts() is not empty %}
-					<hr>
-					<h1>Documented parts</h1>
-					<ul class="chipset-toc">
-						{% for chipPart in chipset.getChipsetParts()|filter(chipPart => chipPart.getDescription() is not empty) %}
-						<li><a href="#{{ chipPart.getShortNamePN() }}">{{ chipPart.getShortName() }}{% if chipPart.getChipAliases() is not empty %}&nbsp;(known as:{% for cp in chipPart.getChipAliases() %}
-						{{ cp.getManufacturer().getName() }}&nbsp;{{ cp.getPartNumber() }} {{ cp.getName() ? '[' ~ cp.getName() ~ ']' }}{% if not loop.last%}, {% endif %}{% endfor %}){% endif %}</a></li>
-						{% endfor %}
-					</ul>
-					{% for chipPart in chipset.getChipsetParts()|filter(chipPart => chipPart.getDescription() is not empty) %}
-						<hr><a name="{{ chipPart.getShortNamePN() }}"></a>
-						{% apply markdown_to_html %}{{ chipPart.getDescription() }}{% endapply %}
-					{% endfor %}
+				{% if chipset.getExpansionChips() is not empty %}
+					{% set dcount = false %}
+					{% for chipPart in chipset.getExpansionChips()|filter(chipPart => chipPart.getDescription() is not empty) %}{% set dcount = true %}{% endfor %}
+					{% if dcount == true %}
+						<hr>
+						<h1>Documented parts</h1>
+						<ul class="chipset-toc">
+							{% for chipPart in chipset.getExpansionChips()|filter(chipPart => chipPart.getDescription() is not empty) %}
+							<li><a href="{{ path("expansion_chip_show", {id:chipPart.getId()}) }}">{{ chipPart.getNameWithManufacturer() }}{% if chipPart.getChipAliases() is not empty %}&nbsp;(known as:{% for cp in chipPart.getChipAliases() %}
+							{{ cp.getManufacturer().getName() }}&nbsp;{{ cp.getPartNumber() }} {{ cp.getName() ? '[' ~ cp.getName() ~ ']' }}{% if not loop.last%}, {% endif %}{% endfor %}){% endif %}</a></li>
+							{% endfor %}
+						</ul>
+					{% endif %}
 				{% endif %}
 				</div>
 				<div id="index-datetime" data-controller="datetime"><div class="div-datetime">Last updated <span class="perk-date">{{ chipset.getLastEdited()|date("Y-m-d\\TH:i:s", "GMT") }}Z</span></div></div>
@@ -186,17 +186,17 @@
 	</div>
 
 	<!-- IMAGES -->
-	{% if chipset.getChipsetParts() is not empty %}
+	{% if chipset.getExpansionChips() is not empty %}
 		{% set lpindex = 0 %}
 		{% set lplen = 0 %}
-		{% for chipPart in chipset.getChipsetParts()|filter(chipPart => chipPart.getImages() is not empty) %}
+		{% for chipPart in chipset.getExpansionChips()|filter(chipPart => chipPart.getImages() is not empty) %}
 			{% for image in chipPart.getImages() %}
 				{% set lplen = lplen + 1 %}
 			{% endfor %}
 		{% endfor %}
 		{% if lplen > 0 %}
 			<div class="show-images" id="sh-images">
-				{% for chipPart in chipset.getChipsetParts()|filter(chipPart => chipPart.getImages() is not empty) %}
+				{% for chipPart in chipset.getExpansionChips()|filter(chipPart => chipPart.getImages() is not empty) %}
 					{% for image in chipPart.getImages()|sort((a, b) => a.getFileName() <=> b.getFileName()) %}
 						{% set lpindex = lpindex + 1 %}
 						{% include 'macros/images.html.twig' with {'type':'chipset', 'entity': image, 'index': lpindex, 'length': lplen} %}

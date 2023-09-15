@@ -189,11 +189,11 @@
 					</div>
 					{% if motherboard.getChipset() is not empty %}
 						<div><a href="{{ path('app_homepage') }}chipsets/{{ motherboard.getChipset().getId()}}">{{ motherboard.getChipset().getFullName() }}</a></div>
-						{% if motherboard.getChipset().getChipsetParts() is not empty %}
+						{% if motherboard.getChipset().getExpansionChips() is not empty %}
 						<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/show/chipset.svg')) }}" alt="chipset" width="24" height="24">Chipset parts</div>
 						<div class="tag-container">
-						{% for chipPart in motherboard.getChipset().getChipsetParts() %}
-							<span class="text-block">{{ chipPart.getFullName() }}</span>
+						{% for chipPart in motherboard.getChipset().getExpansionChips() %}
+							<span class="text-block">{{ chipPart.getNameWithManufacturer() }}</span>
 						{% endfor %}
 						</div>
 						{% endif %}

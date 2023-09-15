@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Entity\Chipset;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -13,6 +14,9 @@ class ExpansionChip extends Chip
     #[ORM\ManyToMany(targetEntity: Motherboard::class, mappedBy: 'expansionChips')]
     private $motherboards;
 
+    #[ORM\ManyToMany(targetEntity: Chipset::class, mappedBy: 'expansionChips')]
+    private $chipsets;
+
     #[ORM\OneToMany(targetEntity: LargeFileExpansionChip::class, mappedBy: 'expansionChip', orphanRemoval: true, cascade: ['persist'])]
     private $drivers;
 
@@ -20,13 +24,14 @@ class ExpansionChip extends Chip
     #[ORM\JoinColumn(nullable: false)]
     private $type;
 
-    #[ORM\Column(length: 4096, nullable: true)]
+    #[ORM\Column(length: 8192, nullable: true)]
     private ?string $description = null;
 
     public function __construct()
     {
         parent::__construct();
         $this->motherboards = new ArrayCollection();
+        $this->chipsets = new ArrayCollection();
         $this->drivers = new ArrayCollection();
         $this->documentations = new ArrayCollection();
     }
@@ -85,6 +90,34 @@ class ExpansionChip extends Chip
     {
         if ($this->motherboards->removeElement($motherboard)) {
             $motherboard->removeExpansionChip($this);
+        }
+
+        return $this;
+    }
+        /**
+     * @return Collection|Chipset[]
+     */
+    public function getChipsets(): Collection
+    {
+        return $this->chipsets;
+    }
+    public function addChipset(Chipset $chipset): self
+    {
+        if (!$this->chipsets->contains($chipset)) {
+            $this->chipsets[] = $chipset;
+            $chipset->addExpansionChip($this);
+        }
+
+        return $this;
+    }
+    public function removeChipset(Chipset $chipset): self
+    {
+        if ($this->chipsets->contains($chipset)) {
+            $this->chipsets->removeElement($chipset);
+            // set the owning side to null (unless already changed)
+            if ($chipset->getExpansionChips()->contains($this)) {
+                $chipset->removeExpansionChip($this);
+            }
         }
 
         return $this;

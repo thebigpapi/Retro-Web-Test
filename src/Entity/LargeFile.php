@@ -41,7 +41,7 @@ class LargeFile
 
     #[Vich\UploadableField(mapping: 'largefile', fileNameProperty: 'file_name', size: 'size')]
     private File|null $file = null;
-    
+
     #[ORM\Column(type: 'datetime')]
     private $updated_at;
 
@@ -85,9 +85,6 @@ class LargeFile
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $lastEdited = null;
 
-    #[ORM\OneToMany(mappedBy: 'largeFile', targetEntity: LargeFileChipsetPart::class, orphanRemoval: true)]
-    private $chipsetparts;
-
     public function __construct()
     {
         $this->languages = new ArrayCollection();
@@ -97,7 +94,6 @@ class LargeFile
         $this->chipsets = new ArrayCollection();
         $this->expansionchips = new ArrayCollection();
         $this->lastEdited = new \DateTime('now');
-        $this->chipsetparts = new ArrayCollection();
     }
     public function getId(): ?int
     {
@@ -418,35 +414,5 @@ class LargeFile
         }
 
         return $strBuilder;
-    }
-
-    /**
-     * @return Collection<int, LargeFileChipsetPart>
-     */
-    public function getChipsetparts(): Collection
-    {
-        return $this->chipsetparts;
-    }
-
-    public function addChipsetpart(LargeFileChipsetPart $chipsetpart): self
-    {
-        if (!$this->chipsetparts->contains($chipsetpart)) {
-            $this->chipsetparts->add($chipsetpart);
-            $chipsetpart->setLargeFile($this);
-        }
-
-        return $this;
-    }
-
-    public function removeChipsetpart(LargeFileChipsetPart $chipsetpart): self
-    {
-        if ($this->chipsetparts->removeElement($chipsetpart)) {
-            // set the owning side to null (unless already changed)
-            if ($chipsetpart->getLargeFile() === $this) {
-                $chipsetpart->setLargeFile(null);
-            }
-        }
-
-        return $this;
     }
 }

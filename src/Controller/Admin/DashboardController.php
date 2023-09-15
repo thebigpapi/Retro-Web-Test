@@ -96,7 +96,6 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Drivers', 'show/hardware.svg', LargeFile::class);
         yield MenuItem::linkToCrud('Chipsets', 'show/chipset.svg', Chipset::class);
         yield MenuItem::section('Chips');
-        yield MenuItem::linkToCrud('Chipset parts', 'show/chip.svg', ChipsetPart::class);
         yield MenuItem::linkToCrud('Expansion chips', 'show/chip.svg', ExpansionChip::class);
         yield MenuItem::linkToCrud('Expansion chip types', 'show/chip.svg', ExpansionChipType::class)->setPermission('ROLE_ADMIN');
         yield MenuItem::section('Processors');

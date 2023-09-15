@@ -16,14 +16,13 @@
 		<div class="results{% if not show_images %} lst{% endif %}">
 			{{ knp_pagination_render(chipsets, 'macros/pagination.html.twig') }}
 			{% if show_images %}
-				
 			<div class="perks">
 				<div id="index-datetime" class="perks-list">
 				{% for chipset in chipsets %}
 					<div class="perk">
 						<div class="perk-image">
-						{% if chipset.getChipsetParts() is not empty %}
-							{% for chipPart in chipset.getChipsetParts()|slice(0, 1) %}
+						{% if chipset.getExpansionChips() is not empty %}
+							{% for chipPart in chipset.getExpansionChips()|slice(0, 1) %}
 							{% if chipPart.getImages() is not empty %}
 								{% for image in chipPart.getImages()|sort((a, b) => a.getFileName() <=> b.getFileName())|slice(0, 1) %}
 								<a href="{{ vich_uploader_asset(image, 'imageFile')}}" class="glightbox">
@@ -40,7 +39,7 @@
 							<div class="perk-name">{{ chipset.getFullName() }}</div>
 							<div class="perk-date">
 								{% if chipset.getParts() is not empty %}<span class="results-alias">
-									<small>Parts: {% for chipPart in chipset.getChipsetParts() %}{{ chipPart.getFullName() }}{% if not loop.last %}, {% endif %}{% endfor %}</small>
+									<small>Parts: {% for chipPart in chipset.getExpansionChips() %}{{ chipPart.getNameWithManufacturer() }}{% if not loop.last %}, {% endif %}{% endfor %}</small>
 								</span>{% endif %}
 							</div>
 							<div class="perk-date">

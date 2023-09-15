@@ -64,11 +64,11 @@ class ChipsetController extends AbstractController
         if ($criterias == array()) {
             return $this->redirectToRoute('chipset_search');
         }
-        try {
+        //try {
             $data = $chipsetRepository->findByChipset($criterias);
-        } catch (Exception $e) {
-            return $this->redirectToRoute('chipset_search');
-        }
+        //} catch (Exception $e) {
+        //    return $this->redirectToRoute('chipset_search');
+        //}
         $chipsets = $paginator->paginate(
             $data,
             $request->query->getInt('page', 1),

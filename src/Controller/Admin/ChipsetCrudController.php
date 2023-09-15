@@ -6,7 +6,7 @@ use App\Entity\Chipset;
 use App\Form\Type\ChipsetAliasType;
 use App\Form\Type\ChipsetBiosCodeType;
 use App\Form\Type\ChipsetDocumentationType;
-use App\Form\Type\ChipsetPartType;
+use App\Form\Type\ExpansionChipType;
 use App\Form\Type\LargeFileChipsetType;
 use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
@@ -54,7 +54,7 @@ class ChipsetCrudController extends AbstractCrudController
             ->add('manufacturer')
             ->add('name')
             ->add('part_no')
-            ->add('chipsetParts')
+            ->add('expansionChips')
             //->add('release_date')
             ->add('lastEdited');
     }
@@ -86,8 +86,8 @@ class ChipsetCrudController extends AbstractCrudController
         yield CodeEditorField::new('description')
             ->setLanguage('markdown')
             ->onlyOnForms();
-        yield CollectionField::new('chipsetParts', 'Parts')
-            ->setEntryType(ChipsetPartType::class)
+        yield CollectionField::new('expansionChips', 'Parts')
+            ->setEntryType(ExpansionChipType::class)
             ->setColumns(4)
             ->renderExpanded()
             ->onlyOnForms();

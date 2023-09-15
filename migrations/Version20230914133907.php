@@ -22,7 +22,7 @@ final class Version20230914133907 extends AbstractMigration
         // this up() migration is auto-generated, please modify it to your needs
         $this->addSql('ALTER TABLE chipset ALTER release_date DROP DEFAULT');
         $this->addSql('ALTER TABLE chipset ALTER release_date TYPE DATE USING release_date::date');
-        $this->addSql('ALTER TABLE chipset ALTER date_precision DROP DEFAULT');
+        $this->addSql('ALTER TABLE chipset ADD date_precision VARCHAR(1) DEFAULT NULL');
         $this->addSql('ALTER TABLE expansion_slot DROP hidden_search');
     }
 

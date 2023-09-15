@@ -1,7 +1,7 @@
 <div class="show-image">
 	<a href="{{ vich_uploader_asset(image, 'imageFile')}}" class="glightbox" data-description="
 	{% if type == "chipset" %}
-		{{ chipPart.getFullName() }}
+		{{ chipPart.getNameWithManufacturer() }}
 	{% endif %}
 	{% if image.creditor %}
 		<div style='float:right;color:black;'>

@@ -648,7 +648,7 @@ class Motherboard
             $drivers = array_merge($drivers, $expansionChip->getDrivers()->toArray());
         }
         if($this->getChipset()){
-            foreach ($this->getChipset()->getChipsetParts() as $chipsetParts) {
+            foreach ($this->getChipset()->getExpansionChips() as $chipsetParts) {
                 $drivers = array_merge($drivers, $chipsetParts->getDrivers()->toArray());
             }
         }

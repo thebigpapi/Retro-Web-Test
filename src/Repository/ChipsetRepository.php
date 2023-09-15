@@ -31,7 +31,7 @@ class ChipsetRepository extends ServiceEntityRepository
 
         $dql   = "SELECT c, cp 
         FROM App:Chipset c 
-        JOIN c.manufacturer m LEFT JOIN c.chipsetParts cp
+        JOIN c.manufacturer m LEFT JOIN c.expansionChips cp
         ORDER BY m.name ASC, c.name ASC";
         $query = $entityManager->createQuery($dql);
 
@@ -53,6 +53,7 @@ class ChipsetRepository extends ServiceEntityRepository
             foreach ($multicrit as $key => $val) {
                 $whereArray[] = "(LOWER(chip.name) LIKE :nameLike$key 
                     OR LOWER(chip.part_no) LIKE :nameLike$key 
+                    OR LOWER(part.name) LIKE :nameLike$key
                     OR LOWER(part.partNumber) LIKE :nameLike$key
                     OR LOWER(alias.name) LIKE :nameLike$key 
                     OR LOWER(alias.partNumber) LIKE :nameLike$key)";
@@ -70,9 +71,9 @@ class ChipsetRepository extends ServiceEntityRepository
         // Building query
         $query = $entityManager->createQuery(
             "SELECT chip
-            FROM App\Entity\Chipset chip JOIN chip.manufacturer man JOIN chip.chipsetParts part LEFT OUTER JOIN chip.chipsetAliases alias
+            FROM App\Entity\Chipset chip JOIN chip.manufacturer man JOIN chip.expansionChips part LEFT OUTER JOIN chip.chipsetAliases alias
             WHERE $whereString
-            ORDER BY man.name ASC, chip.release_date ASC, chip.name ASC"
+            ORDER BY man.name ASC, chip.name ASC"/*, chip.release_date ASC*/
         );
 
         // Setting values
@@ -92,7 +93,7 @@ class ChipsetRepository extends ServiceEntityRepository
         $query = $entityManager->createQuery(
             "SELECT chip, chipPart, chipPartMan, cal, UPPER(man.name) manNameSort, UPPER(chip.name) chipNameSort
             FROM App\Entity\Chipset chip
-            LEFT JOIN chip.chipsetParts chipPart
+            LEFT JOIN chip.expansionChips chipPart
             LEFT JOIN chipPart.manufacturer chipPartMan
             LEFT JOIN chip.chipsetAliases cal,
             App\Entity\Manufacturer man 

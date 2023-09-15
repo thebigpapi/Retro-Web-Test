@@ -35,10 +35,10 @@ class Chipset
     private $chipsetAliases;
 
     /**
-     * @var ArrayCollection<ChipsetPart>
+     * @var ArrayCollection<ExpansionChip>
      */
-    #[ORM\ManyToMany(targetEntity: ChipsetPart::class, inversedBy: 'chipsets')]
-    private $chipsetParts;
+    #[ORM\ManyToMany(targetEntity: ExpansionChip::class, inversedBy: 'chipsets')]
+    private $expansionChips;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     #[Assert\Length(max: 255, maxMessage: 'Encyclopedia link is longer than {{ limit }} characters, try to make it shorter.')]
@@ -73,7 +73,7 @@ class Chipset
     {
         $this->motherboards = new ArrayCollection();
         $this->chipsetAliases = new ArrayCollection();
-        $this->chipsetParts = new ArrayCollection();
+        $this->expansionChips = new ArrayCollection();
         $this->biosCodes = new ArrayCollection();
         $this->drivers = new ArrayCollection();
         $this->documentations = new ArrayCollection();
@@ -139,11 +139,11 @@ class Chipset
     public function getParts(): string
     {
         $chipset = "";
-        foreach ($this->chipsetParts as $key => $part) {
-            if ($key === array_key_last($this->chipsetParts->getValues())) {
-                $chipset = $chipset . $part->getShortNamePN();
+        foreach ($this->expansionChips as $key => $part) {
+            if ($key === array_key_last($this->expansionChips->getValues())) {
+                $chipset = $chipset . $part->getNameWithManufacturer();
             } else {
-                $chipset = $chipset . $part->getShortNamePN() . ", ";
+                $chipset = $chipset . $part->getNameWithManufacturer() . ", ";
             }
         }
         if ($chipset) {
@@ -192,38 +192,38 @@ class Chipset
         return $this;
     }
     /**
-     * @return Collection|ChipsetPart[]
+     * @return Collection|ExpansionChip[]
      */
-    public function getChipsetParts(): Collection
+    public function getExpansionChips(): Collection
     {
-        $sortedChips = $this->chipsetParts->toArray();
+        $sortedChips = $this->expansionChips->toArray();
 
         $res = usort($sortedChips, function ($a, $b) {
-            return ($a->getRank() <=> $b->getRank());
+            return ($a->getNameWithManufacturer() <=> $b->getNameWithManufacturer());
         });
 
         if ($res) {
             return new ArrayCollection($sortedChips);
         } else {
-            return $this->chipsetParts;
+            return $this->expansionChips;
         }
     }
-    public function addChipsetPart(ChipsetPart $chipsetPart): self
+    public function addExpansionChip(ExpansionChip $expansionChip): self
     {
-        if (!$this->chipsetParts->contains($chipsetPart)) {
-            $this->chipsetParts[] = $chipsetPart;
-            $chipsetPart->addChipset($this);
+        if (!$this->expansionChips->contains($expansionChip)) {
+            $this->expansionChips[] = $expansionChip;
+            $expansionChip->addChipset($this);
         }
 
         return $this;
     }
-    public function removeChipsetPart(ChipsetPart $chipsetPart): self
+    public function removeExpansionChip(ExpansionChip $expansionChip): self
     {
-        if ($this->chipsetParts->contains($chipsetPart)) {
-            $this->chipsetParts->removeElement($chipsetPart);
+        if ($this->expansionChips->contains($expansionChip)) {
+            $this->expansionChips->removeElement($expansionChip);
             // set the owning side to null (unless already changed)
-            if ($chipsetPart->getChipsets()->contains($this)) {
-                $chipsetPart->removeChipset($this);
+            if ($expansionChip->getChipsets()->contains($this)) {
+                $expansionChip->removeChipset($this);
             }
         }
 
