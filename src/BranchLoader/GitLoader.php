@@ -53,7 +53,7 @@ class GitLoader
 
     public function getCurrentCommitHash()
     {
-        $gitHeadRefFile = $this->projectDir . '/.git/refs/heads/' . getBranchName();
+        $gitHeadRefFile = $this->projectDir . '/.git/refs/heads/' . $this->getBranchName();
         $commitHash = "unknown";
         
         $stringFromFile = file_exists($gitHeadRefFile) ? file($gitHeadRefFile, FILE_USE_INCLUDE_PATH) : "";
