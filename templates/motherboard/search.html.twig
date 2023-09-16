@@ -50,8 +50,8 @@
 				{{ form_row(form.search)|replace({'<div><button': '<input', '</button></div>': '">', '>': ' value="'})|raw }}
 			</div>
 		</section>
-		<section class="search-form-grid">
 
+		<section class="search-form-grid">
 			<div class="search-form-entry">
 				<label class="search-form-label" for="search_name" title="This is where you enter the board part number, do not write the manufacturer name here!">
 					<span>Manufacturer and Name</span>
@@ -101,41 +101,43 @@
 				</div>
 			</div>
 		</section>
+
 		<div class="search-form-entry">
 		
 		</div>
+
 		<div class="full-spec edit">
-						<div class="full-spec-head" data-controller="collection"><b>I/O ports: </b>{% include 'macros/buttons.html.twig' with {'type':'add', 'action': 'motherboardIoPorts'} %}</div>
-						<div id="motherboardIoPorts-fields-list" data-widget-counter="{{ form.motherboardIoPorts|length }}" data-prototype="
-							{{ form_widget(form.motherboardIoPorts.vars.prototype.count, {'attr': {'class': 'num'}} )|e }} x
-							{{ form_widget(form.motherboardIoPorts.vars.prototype.io_port, {'attr': {'style': 'width:50%'}} )|e }}
-							{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
-							" data-controller="collection">
-							{% for port in form.motherboardIoPorts %}
-								<div class="editor-row nopad">
-									{{ form_widget(port.count, {'attr': {'class': 'num'}}) }} x
-									{{ form_widget(port.io_port, {'attr': {'style': 'width:50%'}}) }}
-									{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
-								</div>
-								{{ form_errors(port) }}
-							{% endfor %}
-						</div>
-						<div class="full-spec-head" data-controller="collection"><b>Expansion slots: </b>{% include 'macros/buttons.html.twig' with {'type':'add', 'action': 'motherboardExpansionSlots'} %}</div>
-						<div id="motherboardExpansionSlots-fields-list" data-widget-counter="{{ form.motherboardExpansionSlots|length }}" data-prototype="
-							{{ form_widget(form.motherboardExpansionSlots.vars.prototype.count, {'attr': {'class': 'num'}} )|e }} x
-							{{ form_widget(form.motherboardExpansionSlots.vars.prototype.expansion_slot, {'attr': {'style': 'width:50%;display:inline'}} )|e  }}
-							{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
-							" data-controller="collection">
-							{% for slot in form.motherboardExpansionSlots %}
-								<div class="editor-row nopad">
-									{{ form_widget(slot.count, {'attr': {'class': 'num'}}) }} x
-									{{ form_widget(slot.expansion_slot, {'attr': {'style': 'width:50%'}}) }}
-									{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
-								</div>
-								{{ form_errors(slot) }}
-							{% endfor %}
-						</div>
+			<div class="full-spec-head" data-controller="collection"><span><b>I/O ports</b></span>{% include 'macros/buttons.html.twig' with {'type':'add', 'action': 'motherboardIoPorts'} %}</div>
+			<div id="motherboardIoPorts-fields-list" data-widget-counter="{{ form.motherboardIoPorts|length }}" data-prototype="
+				{{ form_widget(form.motherboardIoPorts.vars.prototype.count, {'attr': {'class': 'num'}} )|e }} x
+				{{ form_widget(form.motherboardIoPorts.vars.prototype.io_port, {'attr': {'style': 'width:50%'}} )|e }}
+				{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
+				" data-controller="collection">
+				{% for port in form.motherboardIoPorts %}
+					<div class="editor-row">
+						{{ form_widget(port.count, {'attr': {'class': 'num'}}) }} x
+						{{ form_widget(port.io_port, {'attr': {'style': 'width:50%'}}) }}
+						{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
 					</div>
+					{{ form_errors(port) }}
+				{% endfor %}
+			</div>
+			<div class="full-spec-head" data-controller="collection"><span><b>Expansion slots</b></span>{% include 'macros/buttons.html.twig' with {'type':'add', 'action': 'motherboardExpansionSlots'} %}</div>
+			<div id="motherboardExpansionSlots-fields-list" data-widget-counter="{{ form.motherboardExpansionSlots|length }}" data-prototype="
+				{{ form_widget(form.motherboardExpansionSlots.vars.prototype.count, {'attr': {'class': 'num'}} )|e }} x
+				{{ form_widget(form.motherboardExpansionSlots.vars.prototype.expansion_slot, {'attr': {'style': 'width:50%;display:inline'}} )|e  }}
+				{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
+				" data-controller="collection">
+				{% for slot in form.motherboardExpansionSlots %}
+					<div class="editor-row">
+						{{ form_widget(slot.count, {'attr': {'class': 'num'}}) }} x
+						{{ form_widget(slot.expansion_slot, {'attr': {'style': 'width:50%'}}) }}
+						{% include 'macros/buttons.html.twig' with {'type':'del', 'count':1} %}
+					</div>
+					{{ form_errors(slot) }}
+				{% endfor %}
+			</div>
+		</div>
 	</fieldset>
 	<div>{{ form_rest(form) }}</div>
 </form>{% endblock %}

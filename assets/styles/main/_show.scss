@@ -17,9 +17,13 @@ div.main-strip {
         height: auto;
         max-height: 68vh;
         padding-right: 5px;
-        &.edit{
+
+        &.edit {
             overflow: initial;
-            #images-fields-list, #chip\.images-fields-list, #processingUnit\.chip\.images-fields-list{
+
+            #images-fields-list,
+            #chip\.images-fields-list,
+            #processingUnit\.chip\.images-fields-list {
                 overflow: auto;
                 min-height: 150px;
                 height: auto;
@@ -75,8 +79,8 @@ div.main-strip {
     div.internal-container {
         flex: 2 1 70%;
         display: flex;
-        flex-direction: column;        
-        
+        flex-direction: column;
+
         div.show-nav {
             @include noselect();
             flex-grow: 1;
@@ -103,6 +107,7 @@ div.main-strip {
 
                 border-radius: 5px 5px 0px 0px;
                 border: thin solid transparent;
+
                 &:hover {
                     transition: ease-in-out background-color $anim-duration, ease-in-out color $anim-duration;
                     color: $active-link-light;
@@ -118,7 +123,7 @@ div.main-strip {
                 transition: ease-in-out background-color $anim-duration, ease-in-out color $anim-duration;
                 background: $container-bkg-light;
                 border: thin solid $content-frg-light;
-                border-bottom: thin solid $active-link-light;//background-color: $body-bkg-light;
+                border-bottom: thin solid $active-link-light;
 
                 @media (prefers-color-scheme: dark) {
                     background: $container-bkg-dark;
@@ -133,9 +138,11 @@ div.main-strip {
         div.internal-content {
             padding: 5px;
             background-color: $container-bkg-light;
+
             @media (prefers-color-scheme: dark) {
                 background-color: $container-bkg-dark;
             }
+
             /* === General page elements === */
             div.show-general,
             div.show-expchips,
@@ -153,58 +160,78 @@ div.main-strip {
     }
 
 }
-div.nopad{ padding:0; }
 
-div.quick-spec-split{
+div.nopad {
+    padding: 0;
+}
+
+div.quick-spec-split {
     display: grid;
     grid-template-columns: [first] 50% [second] 50% [end];
+
     @media (max-width: 1200px) {
-		display: block;
-	}
+        display: block;
+    }
 }
 
 div.quick-spec-table {
     display: grid;
     grid-template-columns: [first] 180px [second] auto [end];
+
     @media (max-width: 500px) {
-		grid-template-columns: [first] 100px [second] auto [end];
-	}
+        grid-template-columns: [first] 100px [second] auto [end];
+    }
+
     padding: 5px;
-    
+
     div {
         padding: 5px 0px 5px;
         vertical-align: middle;
         align-self: center;
-        &.ts-wrapper{padding: 2px 0px 2px;}
-        &.ts-control{padding:0;}
+
+        &.ts-wrapper {
+            padding: 2px 0px 2px;
+        }
+
+        &.ts-control {
+            padding: 0;
+        }
     }
-    > div > div.editor-row > div.ts-wrapper {
-		width:max(200px,25vw);
+
+    >div>div.editor-row>div.ts-wrapper {
+        width: max(200px, 25vw);
+
         @media screen and (min-width: 2500px) {
             max-width: 700px;
         }
-		div.ts-control{
-			width:100%;
-		}
-	}
+
+        div.ts-control {
+            width: 100%;
+        }
+    }
+
     div.quick-spec-head {
         font-style: italic;
         padding-right: 10px;
-        a {font-style: normal;}
-        img{
+
+        a {
+            font-style: normal;
+        }
+
+        img {
             vertical-align: middle;
             padding-right: 5px;
         }
     }
+
     div.quick-spec-head.editor {
         align-self: initial;
     }
-    
+
 }
 
 div.full-spec {
     display: grid;
-    //text-align: center;
     grid-template-rows: [first] 40px [second] auto [end];
     grid-template-columns: [first] 50% [second] 50% [end];
 
@@ -219,8 +246,13 @@ div.full-spec {
         justify-content: left;
         padding-left: 50px;
         align-items: center;
-        img{
-            padding-right: 5px;;
+
+        img {
+            padding-right: 5px;
+        }
+
+        span {
+            padding-right: 10px; 
         }
 
         @media (prefers-color-scheme: dark) {
@@ -316,13 +348,16 @@ div.show-table {
         text-align: center;
 
         div {
-            
+
             display: table-cell;
             padding: 5px 5px 5px;
             vertical-align: middle;
         }
     }
-    &.drv>div.show-table-row>div { border-bottom: 1px solid gray; }
+
+    &.drv>div.show-table-row>div {
+        border-bottom: 1px solid gray;
+    }
 }
 
 div.show-downloads>div>img {
@@ -338,6 +373,7 @@ div.show-cpus-table {
 
     div.show-cpus-head {
         background-color: $accent-bkg-light;
+
         @media (prefers-color-scheme: dark) {
             background-color: $accent-bkg-dark;
         }
@@ -361,12 +397,6 @@ div.chipset-textarea {
     padding: 5px;
 }
 
-/*div.chipset-textarea p {
-    font-family: monospace;
-    font-weight: 100;
-    font-size: 16px;
-}*/
-
 p.string-alias {
     text-align: center;
     font-size: 14px;
@@ -385,22 +415,68 @@ span.string-bios {
 .glightbox-clean .gdesc-inner {
     padding: 5px 20px;
 }
-.gslide-desc{
-    color:#000;
+
+.gslide-desc {
+    color: #000;
 }
-.gslide-image img{
+
+.gslide-image img {
     object-fit: contain !important;
 }
+
 /* media queries used to hide some fields on mobile, to avoid severe overflows */
-@media screen and(max-width:650px){
-    div.show-cpus-table div div:nth-child(n+5){display:none;} /* CPUs */
-    div.show-table.bios div {div:nth-child(3){display:none;}} /* BIOSes */ 
+@media screen and(max-width:650px) {
+    div.show-cpus-table div div:nth-child(n+5) {
+        display: none;
+    }
+
+    /* CPUs */
+    div.show-table.bios div {
+        div:nth-child(3) {
+            display: none;
+        }
+    }
+
+    /* BIOSes */
 }
-@media screen and(max-width:500px){
-    div.show-table.drv div {div:nth-child(1), div:nth-child(2){display:none;}} /* drivers */
-    div.show-table.bios div {div:nth-child(4){display:none;}} /* BIOSes */ 
+
+@media screen and(max-width:500px) {
+    div.show-table.drv div {
+
+        div:nth-child(1),
+        div:nth-child(2) {
+            display: none;
+        }
+    }
+
+    /* drivers */
+    div.show-table.bios div {
+        div:nth-child(4) {
+            display: none;
+        }
+    }
+
+    /* BIOSes */
 }
+
 /* media queries for gslide box size */
-@media (min-width: 770px){.gslide-image img {min-height:66vh;max-height:67vh;}}
-@media (min-width: 1200px){.gslide-image img {min-height:78vh;max-height:91vh;}}
-@media (min-width: 1400px) {.gslide-image img {min-height:85vh;max-height:90vh;}}
+@media (min-width: 770px) {
+    .gslide-image img {
+        min-height: 66vh;
+        max-height: 67vh;
+    }
+}
+
+@media (min-width: 1200px) {
+    .gslide-image img {
+        min-height: 78vh;
+        max-height: 91vh;
+    }
+}
+
+@media (min-width: 1400px) {
+    .gslide-image img {
+        min-height: 85vh;
+        max-height: 90vh;
+    }
+}

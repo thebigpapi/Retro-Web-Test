@@ -2,6 +2,7 @@
 header {
 	font-family: $header-font;
 }
+
 header.trw-header {
 	background-color: $head-bkg-light;
 	color: $head-frg-light;
@@ -79,19 +80,26 @@ header.trw-header {
 		}
 	}
 }
-nav.navbar{padding:0!important;}
-span.navbar-icon-trw-ea.trw-admin{
+
+nav.navbar {
+	padding: 0 !important;
+}
+
+span.navbar-icon-trw-ea.trw-admin {
 	font-family: $header-font;
-	&:hover{
+
+	&:hover {
 		color: $active-link-light;
 		transition: ease-in-out $anim-duration color;
+
 		@media (prefers-color-scheme: dark) {
 			color: $active-link-dark;
 		}
+	}
 }
-}
+
 /* Maintenance banner */
-div.maintenance-notification-bar{
+div.maintenance-notification-bar {
 	width: 100%;
 	padding: 10px 5%;
 	color: #31708f;
@@ -99,6 +107,7 @@ div.maintenance-notification-bar{
 	box-sizing: border-box;
 	font-size: 14px;
 }
+
 /* Footer */
 footer {
 	background-color: $head-bkg-light;
@@ -124,7 +133,10 @@ footer {
 		justify-content: center;
 		align-content: center;
 
-		div.footer-info { padding-bottom:10px; }
+		div.footer-info {
+			padding-bottom: 10px;
+		}
+
 		a {
 			display: flex;
 			align-items: center;
@@ -203,8 +215,9 @@ main {
 		padding: 20px;
 		font-family: $header-font;
 		font-weight: bold;
-		img:hover + div.errors-div{
-			display:block;
+
+		img:hover+div.errors-div {
+			display: block;
 		}
 	}
 
@@ -238,10 +251,38 @@ main {
 		}
 	}
 
-	input,
 	button,
+	a.button {
+		font-family: $standard-font;
+		font-size: 11pt;
+		transition: ease-in-out $anim-duration box-shadow, ease-in-out $anim-duration background-color;
+		padding: 5px;
+		border: solid thin $border-light;
+		border-radius: 5px;
+		box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.3);
+		background: $body-bkg-light;
+		color: $accent-frg-light;
+
+		&:hover,
+		&:active {
+			transition: ease-in-out $anim-duration box-shadow, ease-in-out $anim-duration background-color;
+			box-shadow: 0px 0px 2px $shadow-light;
+			background-color: $button-hover-light;
+
+			@media (prefers-color-scheme: dark) {
+				background-color: $button-hover-dark;
+			}
+		}
+
+		@media (prefers-color-scheme: dark) {
+			background: $accent-bkg-dark;
+			color: $accent-frg-dark;
+			border-color: $border-dark;
+		}
+	}
+
+	input,
 	select,
-	a.button,
 	text-area {
 		font-family: $standard-font;
 		font-size: 11pt;
@@ -297,38 +338,52 @@ main {
 }
 
 a.button-widget {
-    font-size:11pt;
-    border: 1px solid $border-light;
-	border-radius:4px;
-    box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.3);
-    display: -moz-inline-box; 
-    display: inline-block; 
-    padding: 3px;
-    margin-top:2px;
+	font-family: $standard-font;
+	font-size: 11pt;
+	transition: ease-in-out $anim-duration box-shadow, ease-in-out $anim-duration background-color;
+	padding: 3px 5px;
+	border: solid thin $border-light;
+	border-radius: 5px;
+	box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.3);
 	background: $body-bkg-light;
 	color: $accent-frg-light;
-	transition: ease-in-out $anim-duration color;
+	display: flex;
+	height: 24px;
+	display: flex;
+	align-items: center;
+	column-gap: 5px;
+
+	&:visited {
+		color: $accent-frg-light;
+
+		@media (prefers-color-scheme: dark) {
+			color: $accent-frg-dark;
+		}
+	}
+
+	&:hover,
+	&:active {
+		transition: ease-in-out $anim-duration box-shadow, ease-in-out $anim-duration background-color;
+		box-shadow: 0px 0px 2px $shadow-light;
+		background-color: $button-hover-light;
+
+		@media (prefers-color-scheme: dark) {
+			background-color: $button-hover-dark;
+		}
+	}
+
 	@media (prefers-color-scheme: dark) {
 		background: $accent-bkg-dark;
 		color: $accent-frg-dark;
 		border-color: $border-dark;
 	}
-	&:visited{
-		color: $accent-frg-light;
-		@media (prefers-color-scheme: dark) {
-			color: $accent-frg-dark;
-		}
+
+	@include noselect();
+
+	img {
+		max-height: 22px;
+		padding-right: 3px;
 	}
-	&:hover {
-		color: $active-link-light;
-		transition: ease-in-out $anim-duration color;
-		@media (prefers-color-scheme: dark) {
-			color: $active-link-dark;
-			}
-	}
-    @include noselect();
-    img { padding-right:5px; vertical-align: middle; }
-	span { vertical-align: middle; }
 }
 
 .monospace {
@@ -355,4 +410,3 @@ a.button-widget {
 	background-color: #555;
 	transition: ease-in-out $anim-duration background-color;
 }
-
