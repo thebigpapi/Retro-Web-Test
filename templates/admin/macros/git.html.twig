@@ -23,18 +23,16 @@
         {# this is the content displayed when hovering the mouse over
         the toolbar panel #}
         <div class="sf-toolbar-info-piece">
-
-                <b>Last commit : </b>
+            <b>Last commit: </b>
+            <span>{{ collector.gitCommit }} </span>
+        </div>
+        <div class="sf-toolbar-info-piece">
+            <b>Author: </b>
+            <span>{{ collector.lastCommitAuthor }} </span>
+        </div>
+        <div class="sf-toolbar-info-piece">
+            <b>Date: </b>
             <span>{{ collector.lastCommitDate }} </span>
-
-        </div>
-        <div class="sf-toolbar-info-piece">
-                <b>Author : </b>
-                <span>{{ collector.lastCommitAuthor }} </span>
-        </div>
-        <div class="sf-toolbar-info-piece">
-                <b>Message : </b>
-                <span>{{ collector.lastCommitMessage }} </span>
         </div>
 
     {% endset %}
