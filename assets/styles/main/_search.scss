@@ -193,7 +193,7 @@ section.search-form-grid {
 
 		input,
 		select {
-			padding-left: 8px !important;
+			padding-left: 8px;
 		}
 	}
 
@@ -275,7 +275,7 @@ div.editor-row {
 	flex-wrap: wrap;
 	gap: 5px;
 	padding: 5px;
-	border: solid thin $border-dark;
+	border-bottom: solid thin $border-dark;
 	align-items: center;
 
 	@media (prefers-color-scheme: dark) {

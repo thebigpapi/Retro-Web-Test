@@ -235,10 +235,6 @@ div.full-spec {
     grid-template-rows: [first] 40px [second] auto [end];
     grid-template-columns: [first] 50% [second] 50% [end];
 
-    div {
-        padding: 5px 0px 5px;
-    }
-
     div.full-spec-head {
         background-color: $accent-bkg-light;
         grid-row-start: 1;
@@ -251,7 +247,7 @@ div.full-spec {
             padding-right: 5px;
         }
 
-        span {
+        >span {
             padding-right: 10px; 
         }
 
