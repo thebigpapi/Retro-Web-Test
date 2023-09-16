@@ -242,7 +242,7 @@ main {
 		}
 	}
 
-	a:hover {
+	a:not('.button-widget'):hover {
 		color: $active-link-light;
 		transition: ease-in-out $anim-duration color;
 

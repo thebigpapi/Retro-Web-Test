@@ -29,7 +29,7 @@ $border-dark: #cdcdcd;
 
 .active:after {
 	content: "\20\20\3C\2212";
-	color: black;
+	color: inherit;
 }
 
 .ts-control,
@@ -45,11 +45,6 @@ $border-dark: #cdcdcd;
 
 .plugin-dropdown_input.focus.dropdown-active .ts-control {
 	box-shadow: none;
-	border: solid thin $border-light;
-
-	@media (prefers-color-scheme: dark) {
-		border-color: $border-dark;
-	}
 }
 
 /* MISC SETTINGS */
@@ -77,19 +72,19 @@ div.item {
 	display: flex;
 	min-height: 30px;
 	position: relative;
-
 	&.single {
 		>.ts-control {
 			background: $accent-bkg-light;
 			color: $accent-frg-light;
+			border: solid thin $border-light;
+			padding-right: 2rem;
+			cursor: pointer;
 
 			@media (prefers-color-scheme: dark) {
 				background-color: $accent-bkg-dark;
 				color: $accent-frg-dark;
+				border-color: $border-dark;
 			}
-
-			padding-right: 2rem;
-			cursor: pointer;
 
 			input {
 				cursor: pointer;
@@ -115,7 +110,7 @@ div.item {
 		}
 
 		&.ts-control,
-		&.ts-dropdown.single {
+		&.ts-dropdown {
 			border-color: $content-bkg-dark;
 
 			@media (prefers-color-scheme: dark) {
@@ -314,8 +309,7 @@ div.editor-row.bios {
 	width: 100%;
 	z-index: 10;
 	border: solid thin $border-light;
-	background: #fff;
-	margin: 0.25rem 0 0 0;
+	background: $content-bkg-light;
 	border-top: 0 none;
 	box-sizing: border-box;
 	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
@@ -323,6 +317,7 @@ div.editor-row.bios {
 
 	@media (prefers-color-scheme: dark) {
 		border-color: $border-dark;
+		background: $content-bkg-dark;
 	}
 }
 
