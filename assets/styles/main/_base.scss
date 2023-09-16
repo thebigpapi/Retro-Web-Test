@@ -242,7 +242,7 @@ main {
 		}
 	}
 
-	a:not('.button-widget'):hover {
+	a:not(.button-widget):hover {
 		color: $active-link-light;
 		transition: ease-in-out $anim-duration color;
 
@@ -256,12 +256,22 @@ main {
 		font-family: $standard-font;
 		font-size: 11pt;
 		transition: ease-in-out $anim-duration box-shadow, ease-in-out $anim-duration background-color;
-		padding: 5px;
 		border: solid thin $border-light;
 		border-radius: 5px;
 		box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.3);
 		background: $body-bkg-light;
 		color: $accent-frg-light;
+		display: flex;
+		align-items: center;
+		margin: 5px;
+		gap: 10px;
+		padding: 5px 10px;
+
+		@media (prefers-color-scheme: dark) {
+			background: $accent-bkg-dark;
+			color: $accent-frg-dark;
+			border-color: $border-dark;
+		}
 
 		&:hover,
 		&:active {
@@ -272,12 +282,6 @@ main {
 			@media (prefers-color-scheme: dark) {
 				background-color: $button-hover-dark;
 			}
-		}
-
-		@media (prefers-color-scheme: dark) {
-			background: $accent-bkg-dark;
-			color: $accent-frg-dark;
-			border-color: $border-dark;
 		}
 	}
 
@@ -308,32 +312,6 @@ main {
 
 	text-area {
 		font-family: $monospace-font;
-	}
-
-	button,
-	a.button {
-		display: flex;
-		align-items: center;
-		transition: ease-in-out $anim-duration color;
-		//color: $normal-link-light;
-		margin: 5px;
-
-		&:hover {
-			color: $active-link-light;
-			transition: ease-in-out $anim-duration color;
-
-			@media (prefers-color-scheme: dark) {
-				color: $active-link-dark;
-			}
-		}
-
-		span {
-			padding: 0px 6px;
-		}
-
-		img {
-			padding: 0px 6px;
-		}
 	}
 }
 

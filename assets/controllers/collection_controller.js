@@ -53,8 +53,8 @@ export default class extends Controller {
             newElem.setAttribute("class", newElem.getAttribute("class") + " manual");
         if (list.id === 'miscfile-fields-list' || list.id === 'documentations-fields-list')
             newElem.setAttribute("class", newElem.getAttribute("class") + " miscfile");
-        if (list.id != 'motherboardBios-fields-list')
-            newElem.setAttribute("class", newElem.getAttribute("class") + " nopad");
+        // if (list.id != 'motherboardBios-fields-list')
+        //     newElem.setAttribute("class", newElem.getAttribute("class") + " nopad");
         if (list.id === 'images-fields-list' || list.id === 'chip.images-fields-list' || list.id === 'processingUnit.chip.images-fields-list')
             newElem.setAttribute("class", "addform");
         newElem.innerHTML = newWidget;
