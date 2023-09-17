@@ -342,7 +342,8 @@ div.editor-row.bios {
 	opacity: 1;
 	cursor: pointer;
 	display: block;
-	color: $content-bkg-light;
+	color: $accent-frg-light;
+	background-color: $content-bkg-light;
 	padding-left: 8px;
 
 	@media (prefers-color-scheme: dark) {
