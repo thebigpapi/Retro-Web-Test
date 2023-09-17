@@ -17,6 +17,7 @@ $accent-bkg-dark: #303030;
 $accent-frg-dark: #EEEEEE;
 $content-bkg-dark: #303030;
 $border-dark: #cdcdcd;
+$body-bkg-dark: #1B1B1B;
 
 /* COLORS */
 .ts-dropdown,
@@ -25,11 +26,6 @@ $border-dark: #cdcdcd;
 	font-family: inherit;
 	font-size: 13px;
 	line-height: 18px;
-}
-
-.active:after {
-	content: "\20\20\3C\2212";
-	color: inherit;
 }
 
 .ts-control,
@@ -72,6 +68,7 @@ div.item {
 	display: flex;
 	min-height: 30px;
 	position: relative;
+
 	&.single {
 		>.ts-control {
 			background: $accent-bkg-light;
@@ -345,12 +342,26 @@ div.editor-row.bios {
 	opacity: 1;
 	cursor: pointer;
 	display: block;
-	color: $head-bkg-light;
+	color: $content-bkg-light;
+	padding-left: 8px;
 
 	@media (prefers-color-scheme: dark) {
 		color: $accent-frg-dark;
-		background-color: $content-bkg-dark;
+		background-color: $body-bkg-dark;
 	}
+
+	&.active { // tom-select contorted way to ::hover
+		background-color: $border-dark;
+
+		@media (prefers-color-scheme: dark) {
+			background-color: $content-bkg-dark;
+		}
+	}
+
+	/*&.selected::after {
+		content: "\20\20\3C\2212";
+		color: inherit;
+	}*/
 }
 
 .ts-dropdown .optgroup:first-child .optgroup-header {
@@ -361,15 +372,6 @@ div.editor-row.bios {
 	color: #303030;
 	background: #fff;
 	cursor: default;
-}
-
-.ts-dropdown .active {
-	background-color: $border-dark;
-	color: #495c68;
-}
-
-.ts-dropdown .active.create {
-	color: #495c68;
 }
 
 .ts-dropdown .create {
@@ -385,6 +387,16 @@ div.editor-row.bios {
 
 .dropdown-active .ts-control {
 	border-radius: 5px 5px 0 0;
+}
+
+.ts-wrapper.dropdown-active {
+	div.ts-control {
+		border-bottom-color: $border-dark;
+
+		@media (prefers-color-scheme: dark) {
+			border-bottom-color: $shadow-light;
+		}
+	}
 }
 
 .ts-dropdown .optgroup-header {
