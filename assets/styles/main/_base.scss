@@ -289,13 +289,15 @@ main {
 	select,
 	text-area {
 		font-family: $standard-font;
-		font-size: 11pt;
+		font-size: 13px;
+		line-height: 25px;
+		min-height: 30px;
 		transition: ease-in-out $anim-duration box-shadow;
-		padding: 5px;
 		border: solid thin $border-light;
 		border-radius: 5px;
 		background: $accent-bkg-light;
 		color: $accent-frg-light;
+		box-sizing: border-box;
 
 		&:hover,
 		&:active {
