@@ -93,8 +93,8 @@ div.pagination {
 div.toolbar {
 	padding-bottom: 10px;
 	display: flex;
-	justify-content: center;
 	flex-wrap: wrap;
+	gap: 10px;
 
 	input {
 		display: none;
@@ -109,6 +109,10 @@ div.toolbar {
 			margin: 3px;
 			width: auto;
 		}
+	}
+
+	&.toolbar-main {
+		justify-content: center;
 	}
 }
 

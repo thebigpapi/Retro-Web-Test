@@ -35,7 +35,7 @@
 		</div>
 		<section>
 			<h4 hidden>Search navigation</h4>
-			<div class="toolbar">
+			<div class="toolbar toolbar-main">
 				<button type="button" onclick="document.getElementById('rst-btn').click();return false;">
 					<img src="{{ absolute_url(asset('build/icons/search/reset.svg')) }}" alt="reset" width="24" height="24">
 					<span>Reset fields</span>
@@ -56,7 +56,7 @@
 		<section class="search-form-grid" style="display:flex;justify-content:center;flex-wrap:wrap;">
 			<div class="search-form-entry" style="min-width:min(27em,50vw);">
 				<label class="search-form-label" for="search_chipsetManufacturer" title="This is where you select the manufacturer name and enter the chipset part number.">
-					<span>Name</span>
+					<span>Manufacturer and name</span>
 					<img src="{{ absolute_url(asset('build/icons/search/help.svg')) }}" alt="" width="16" height="16">
 				</label>
 				<div class="search-form-widget">

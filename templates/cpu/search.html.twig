@@ -26,7 +26,7 @@
 	<fieldset id="search-fieldset">
 		<div class="title">Search for: CPUs</div>
 		<div class="index-title">
-			List by first letter:<br>
+			List by first letter<br>
 		</div>
 		<div class="index-list">
 			{% for letter in ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z']%}
@@ -35,7 +35,7 @@
 		</div>
 		<section>
 			<h4 hidden>Search navigation</h4>
-			<div class="toolbar">
+			<div class="toolbar toolbar-main">
 				<button type="button" onclick="document.getElementById('search_search').click();return false;">
 					<img src="{{ absolute_url(asset('build/icons/search/search.svg')) }}" alt="search" width="24" height="24">
 					<span>Search</span>
@@ -46,7 +46,7 @@
 		<section class="search-form-grid" style="display:flex;justify-content:center;flex-wrap:wrap;">
 			<div class="search-form-entry" style="min-width:min(27em,50vw);">
 				<label class="search-form-label" for="search_cpuManufacturer" title="This is where you select the manufacturer name and enter the CPU name/part number.">
-					<span>Manufacturer and Name</span>
+					<span>Manufacturer and name</span>
 					<img src="{{ absolute_url(asset('build/icons/search/help.svg')) }}" alt="" width="16" height="16">
 				</label>
 				<div class="search-form-widget">

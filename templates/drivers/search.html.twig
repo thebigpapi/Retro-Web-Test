@@ -26,7 +26,7 @@
 	<fieldset id="search-fieldset">
 		<div class="title">Search for: drivers/software</div>
 		<div class="index-title">
-			List by first letter:<br>
+			List by first letter<br>
 		</div>
 		<div class="index-list">
 			{% for letter in ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z']%}
@@ -35,7 +35,7 @@
 		</div>
 		<section>
 			<h4 hidden>Search navigation</h4>
-			<div class="toolbar">
+			<div class="toolbar toolbar-main">
 				<button type="button" onclick="document.getElementById('search_search').click();return false;">
 					<img src="{{ absolute_url(asset('build/icons/search/search.svg')) }}" alt="imgsearch" width="24" height="24">
 					<span>Search</span>

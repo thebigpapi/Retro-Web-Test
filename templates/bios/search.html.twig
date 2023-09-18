@@ -26,7 +26,7 @@
 	<fieldset id="search-fieldset">
 		<div class="title">Search for a BIOS</div>
 		<section>
-			<div class="toolbar">
+			<div class="toolbar toolbar-main">
 				<button type="button" onclick="document.getElementById('rst-btn').click();return false;">
 					<img src="{{ absolute_url(asset('build/icons/search/reset.svg')) }}" alt="reset" width="24" height="24">
 					<span>Reset fields</span>
@@ -105,7 +105,7 @@
 		</section>
 	</fieldset>
 	<br><div style="margin:12px;">
-		<div><i>Other actions:</i></div>
+		<div><i>Other actions</i></div>
 		<a class='button-widget' href="{{path("bios_list")}}">
 			<img src='{{ absolute_url(asset('build/icons/search/search.svg')) }}' alt='' width='16' height='16' style='vertical-align:middle;padding:3px;'>See the list of BIOS chipset and manufacturer IDs</a>
 	</div>
