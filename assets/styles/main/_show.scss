@@ -156,6 +156,22 @@ div.main-strip {
             div.show-cpus {
                 display: none;
             }
+
+            div.show-downloads-group {
+                padding: 10px;
+                border-bottom: solid thin $border-dark;
+
+                @media (prefers-color-scheme: dark) {
+                    border-color: $shadow-light;
+                }
+
+                div.show-downloads-group-header {
+                    display: flex;
+                    align-items: center;
+                    gap: 10px;
+                    padding-bottom: 10px;
+                }
+            }
         }
     }
 
@@ -248,7 +264,7 @@ div.full-spec {
         }
 
         >span {
-            padding-right: 10px; 
+            padding-right: 10px;
         }
 
         @media (prefers-color-scheme: dark) {
@@ -281,19 +297,16 @@ div.list-table {
 }
 
 div.tag-container {
-    display: flex;
+    display: flex !important;
     gap: 3px;
     flex-wrap: wrap;
     align-items: center;
-    margin-top: 3px;
-    margin-bottom: 3px;
 }
 
 span.text-block {
     border: 1px solid #b5b5b5;
     border-radius: 4px;
-    display: inline-block;
-    margin: 2px;
+    display: flex;
     padding: 3px 5px 3px;
     align-items: center;
     gap: 4px;
@@ -323,37 +336,6 @@ div.notes {
     overflow: auto;
     overflow-y: hidden;
     margin: auto;
-}
-
-div.show-table {
-    margin-bottom: 10px;
-    display: table;
-    width: -webkit-fill-available;
-
-    div.show-downloads-head {
-        background-color: $accent-bkg-light;
-
-        @media (prefers-color-scheme: dark) {
-            background-color: $accent-bkg-dark;
-        }
-    }
-
-    div.show-downloads-head,
-    div.show-table-row {
-        display: table-row;
-        text-align: center;
-
-        div {
-
-            display: table-cell;
-            padding: 5px 5px 5px;
-            vertical-align: middle;
-        }
-    }
-
-    &.drv>div.show-table-row>div {
-        border-bottom: 1px solid gray;
-    }
 }
 
 div.show-downloads>div>img {
@@ -391,6 +373,11 @@ div.chipset-textarea {
     overflow: auto;
     overflow-y: hidden;
     padding: 5px;
+    border-top: solid thin $border-dark;
+
+    @media (prefers-color-scheme: dark) {
+        border-color: $shadow-light;
+    }
 }
 
 p.string-alias {
@@ -421,38 +408,10 @@ span.string-bios {
 }
 
 /* media queries used to hide some fields on mobile, to avoid severe overflows */
-@media screen and(max-width:650px) {
+@media screen and (max-width:650px) {
     div.show-cpus-table div div:nth-child(n+5) {
         display: none;
     }
-
-    /* CPUs */
-    div.show-table.bios div {
-        div:nth-child(3) {
-            display: none;
-        }
-    }
-
-    /* BIOSes */
-}
-
-@media screen and(max-width:500px) {
-    div.show-table.drv div {
-
-        div:nth-child(1),
-        div:nth-child(2) {
-            display: none;
-        }
-    }
-
-    /* drivers */
-    div.show-table.bios div {
-        div:nth-child(4) {
-            display: none;
-        }
-    }
-
-    /* BIOSes */
 }
 
 /* media queries for gslide box size */

@@ -11,6 +11,8 @@ $wide-max-width: 1600px;
 $max-width: 1400px;
 $thin-max-width: 1000px;
 $form-breakpoint: 460px;
+$maxw-table-breakpoint: 740px;
+$minw-table-breakpoint: calc($maxw-table-breakpoint + 1px);
 
 /* Light mode colors */
 $head-bkg-light: #303030;

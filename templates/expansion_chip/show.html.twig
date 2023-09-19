@@ -40,13 +40,14 @@
 		{% include 'macros/navbar.html.twig' with {'entity': expansion_chip, 'entityName': 'ExpansionChip', 'name': 'chip'} %}
 		<div class="internal-content">
 			<!-- DESCRIPRION -->
+			<div class="show-general" id="sh-general">
 				<div class="quick-spec-table">
 					<!-- Type -->
 					<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/show/chip.svg')) }}" alt="date" width="24" height="24">Type</div>
 					<div>{{expansion_chip.getType().getName()}}</div>
 					<!-- PCI DEV -->
 					<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/show/tag.svg')) }}" alt="date" width="24" height="24">PCI ID</div>
-					<div>
+					<div class="monospace">
 					{% if expansion_chip.getPciDevs() is not empty %}
 						{% if expansion_chip.getManufacturer().getPciVendorIds() is not empty %}
 							{% for vendor in expansion_chip.getManufacturer().getPciVendorIds()%}
@@ -64,53 +65,102 @@
 					{% apply markdown_to_html %}{{ expansion_chip.getDescription() }}{% endapply %}
 				{% endif %}
 				</div>
+			</div>
+
+			<div class="show-downloads" id="sh-downloads">
 				<!-- DRIVERS -->
-				<div>
-					<img src="{{ absolute_url(asset('build/icons/show/hardware.svg')) }}" alt="" width="32" style="vertical-align: middle;padding-bottom: 10px;">
-					<span><i>Drivers: </i></span>
+				<div class="show-downloads-group">
+					<div class="show-downloads-group-header">
+						<img src="{{ absolute_url(asset('build/icons/show/hardware.svg')) }}" alt="drv" width="32" height="32">
+						<span>{{ expansion_chip.getDrivers.count() }} driver{% if expansion_chip.getDrivers.count() != 1 %}s{% endif %} available</span>
+					</div>
 					{% if expansion_chip.getDrivers() is not empty %}
-					<span>{{ expansion_chip.getDrivers.count() }}{% if expansion_chip.getDrivers.count() == 1 %} entry{% else %} entries{% endif %}</span>
-					<div class="show-table drv">
-						<div class="show-downloads-head">{{ driverHeader() }}</div>
+					<div class="plain-list w300p table">
+						<div class="list-entry centered head">
+							<div>Language</div>
+							<div>Media type</div>
+							<div>OS support</div>
+							<div>Name</div>
+							<div>Version</div>
+						</div>
 						{% for driver in expansion_chip.getDrivers() %}
-							<div class="show-table-row">{{ driverLink(driver.largeFile) }}</div>
+						<div class="list-entry centered {% if loop.index is divisible by(2) %}alt{% endif %}">
+							<div class="header-label">Language</div>
+							<div>
+								<div class="tag-container">
+								{% for lang in driver.largeFile.getLanguages() %}
+								<span class="combo">
+									<img src="{{ asset('build/icons/language/' ~ lang.getIsoCode ~ '.svg') }}" alt="{{lang.getOriginalName()}}" title="{{lang.getOriginalName()}}" class="lang-flag{% if loop.length > 4 %}-lrg{% endif %}">
+								</span>
+								{% endfor %}
+								</div>
+							</div>
+							<div class="header-label">Media type</div>
+							<div>
+								{% for relation in driver.largeFile.getMediaTypeFlags() %}
+								<span class="combo">
+									<b>{{relation.getCount()}}x</b>
+									<img src="{{ vich_uploader_asset(relation.getMediaTypeFlag(), 'icon')}}" alt="{{relation.getMediaTypeFlag().getName()}}" title="{{relation.getMediaTypeFlag().getName()}}" width="32">
+								</span>
+								{% endfor %}
+							</div>
+							<div class="header-label">OS support</div>
+							<div>
+								<div class="tag-container">
+								{% for os in driver.largeFile.getOsFlags()|sort((a, b) => a.getName <=> b.getName)|sort((a, b) => a.getVersion <=> b.getVersion) %}
+								<span class="text-block">
+									<img src="{{ asset('build/icons/os/' ~ os.getVersion ~ '.svg') }}" alt="{{os.getVersion}}"  width="16">
+									<span>{{os.getName()}}</span>
+								</span>
+								{% endfor %}
+								</div>
+							</div>
+							<div class="header-label">Name</div>
+							<div><a href="{{ path("driver_show", {id: driver.largeFile.getId()}) }}">{{driver.largeFile.getName()}}</a></div>
+							<div class="header-label">Version</div>
+							<div>
+								<a class="combo" href="{{ vich_uploader_asset(driver.largeFile, 'file')}}">
+									<img src="{{ absolute_url(asset('build/icons/dw.svg')) }}" alt="" width="16">
+									<span>{{ driver.largeFile.getFileVersion() ? driver.largeFile.getFileVersion() : 'Unknown' }}</span>
+								</a>
+							</div>
+						</div>
 						{% endfor %}
 					</div>
 					{% else %}
-					<span>not available</span>
 					{% endif %}
 				</div>
-				<!-- CHIPSET PART DOCS -->
-				<div>
-					<img src="{{ absolute_url(asset('build/icons/show/manual.svg')) }}" alt="" width="32" style="vertical-align: middle;padding-bottom: 10px;">
-					<span><i>Documentation: </i></span>
-					{% set docCount = 0 %}
-					{% if expansion_chip.getDocumentations() is not empty %}
-						{% set moreDocCount = expansion_chip.getDocumentations.count() %}
-					{% else %}
-						{% set moreDocCount = 0 %}
-					{% endif %}
-					{% set moreDocCount = docCount + moreDocCount %}
-					{% if moreDocCount > 0 %}
-						<span>{{ moreDocCount }}&nbsp;{% if moreDocCount == 1 %}file{% else %}files{% endif %}</span>
-					{% else %}
-							<span>not available</span>
-					{% endif %}
-					{% if moreDocCount > 0 %}
-						<div><div><div>
-							<ul style="list-style-type: none;">
-							<!-- MORE CHIPSET DOCS -->
-							{% if expansion_chip.getDocumentations() is not empty %}
-								{% for documentation in expansion_chip.getDocumentations()|sort((a, b) => a.getLinkName <=> b.getLinkName) %}
-									<li><a href="{{ vich_uploader_asset(documentation, 'manualFile') }}">
-										<img src="{{ absolute_url(asset('build/icons/dw.svg')) }}" alt="" width="16" height="16" style="vertical-align: middle;">
-										{{ documentation.getLinkName() }}</a>({{ documentation.getLanguage().getName()}})</li>
-								{% endfor %}
-							{% endif %}
-							</ul>
-						</div></div></div>
+
+				<!-- MANUALS -->
+				<div class="show-downloads-group">
+					{% set allDocs = expansion_chip.getDocumentations() %}
+					<div class="show-downloads-group-header">
+						<img src="{{ absolute_url(asset('build/icons/show/manual.svg')) }}" alt="doc" width="32" height="32">
+						<span>{{ allDocs|length }} document{% if allDocs|length != 1 %}s{% endif %} available</span>
+					</div>
+					{% if allDocs is not empty %}
+					<div class="plain-list w300p table">
+						<div class="list-entry centered head">
+							<div>Language</div>
+							<div>File</div>
+						</div>
+						{% for manual in allDocs|sort((a, b) => a.getLinkName <=> b.getLinkName) %}
+						<div class="list-entry centered {% if loop.index is divisible by(2) %}alt{% endif %}">
+							<div class="header-label">Language</div>
+							<div>{{ manual.getLanguage().getName()}}</div>
+							<div class="header-label">File</div>
+							<div>
+								<a class="combo" href="{{ vich_uploader_asset(manual, 'manualFile') }}">
+									<img src="{{ absolute_url(asset('build/icons/dw.svg')) }}" alt="" width="16" height="16">
+									<span>{{ manual.getLinkName() }}</span>
+								</a>
+							</div>
+						</div>
+						{% endfor %}
+					</div>
 					{% endif %}
 				</div>
+			</div>
 		</div>
 	</div>
 

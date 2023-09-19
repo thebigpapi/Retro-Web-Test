@@ -107,7 +107,10 @@
 		</div>
 
 		<div class="full-spec edit">
-			<div class="full-spec-head" data-controller="collection"><span><b>Expansion slots</b></span>{% include 'macros/buttons.html.twig' with {'type':'add', 'action': 'motherboardExpansionSlots'} %}</div>
+			<div class="full-spec-head" data-controller="collection">
+				<span><b>Expansion slots</b></span>
+				{% include 'macros/buttons.html.twig' with {'type':'add', 'action': 'motherboardExpansionSlots'} %}
+			</div>
 			<div id="motherboardExpansionSlots-fields-list" data-widget-counter="{{ form.motherboardExpansionSlots|length }}" data-prototype="
 				{{ form_widget(form.motherboardExpansionSlots.vars.prototype.count, {'attr': {'class': 'num'}} )|e }} x
 				{{ form_widget(form.motherboardExpansionSlots.vars.prototype.expansion_slot)|e  }}
@@ -122,7 +125,10 @@
 					{{ form_errors(slot) }}
 				{% endfor %}
 			</div>			
-			<div class="full-spec-head" data-controller="collection"><span><b>I/O ports</b></span>{% include 'macros/buttons.html.twig' with {'type':'add', 'action': 'motherboardIoPorts'} %}</div>
+			<div class="full-spec-head" data-controller="collection">
+				<span><b>I/O ports</b></span>
+				{% include 'macros/buttons.html.twig' with {'type':'add', 'action': 'motherboardIoPorts'} %}
+			</div>
 			<div id="motherboardIoPorts-fields-list" data-widget-counter="{{ form.motherboardIoPorts|length }}" data-prototype="
 				{{ form_widget(form.motherboardIoPorts.vars.prototype.count, {'attr': {'class': 'num'}} )|e }} x
 				{{ form_widget(form.motherboardIoPorts.vars.prototype.io_port)|e }}

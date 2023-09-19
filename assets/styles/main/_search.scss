@@ -42,30 +42,9 @@ div.pagination {
 	flex-wrap: wrap;
 	justify-content: center;
 	padding-bottom: 10px;
-	margin: 0 auto;
 
 	a,
 	span {
-		background: $accent-bkg-light;
-		color: $accent-frg-light;
-		border: solid thin $border-light;
-		border-radius: 5px;
-		padding: 8px;
-		display: flex;
-		justify-content: center;
-		margin: 3px;
-		transition: ease-in-out $anim-duration box-shadow, ease-in-out $anim-duration color;
-
-		&:hover {
-			color: $active-link-light;
-			box-shadow: 0px 0px 2px $shadow-light;
-			transition: ease-in-out $anim-duration box-shadow, ease-in-out $anim-duration color;
-
-			@media (prefers-color-scheme: dark) {
-				color: $active-link-dark;
-			}
-		}
-
 		&.current {
 			background-color: $active-link-light;
 			color: $body-frg-light;
@@ -81,17 +60,12 @@ div.pagination {
 		&.last {
 			width: 5.3rem;
 		}
-
-		@media (prefers-color-scheme: dark) {
-			background: $accent-bkg-dark;
-			color: $accent-frg-dark;
-			border-color: $border-dark;
-		}
 	}
 }
 
 div.toolbar {
 	padding-bottom: 10px;
+	padding-top: 10px;
 	display: flex;
 	flex-wrap: wrap;
 	gap: 10px;
@@ -102,6 +76,7 @@ div.toolbar {
 
 	&.toolbar-thin {
 		padding-bottom: 5px;
+		padding-top: 5px;
 
 		button,
 		a.button {
@@ -420,79 +395,6 @@ div.toolbar-title {
 	text-align: center;
 }
 
-div.plain-list {
-	padding: 15px;
-	display: grid;
-	grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-	gap: 5px;
-
-	&.w300p {
-		grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-	}
-
-	&.w400p {
-		grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
-	}
-
-	div.list-entry {
-		display: flex;
-		flex-wrap: wrap;
-		align-items: start;
-		align-content: start;
-		border-bottom: solid thin $border-light;
-		padding: 5px;
-		gap: 5px;
-
-		@media (prefers-color-scheme: dark) {
-			border-color: $border-dark;
-		}
-
-		a {
-			flex-grow: 1;
-			width: 100%
-		}
-
-		div.results-alias {
-			flex-grow: 1;
-			padding-left: 5px;
-		}
-
-		div.cpu-aliases-box {
-			display: none;
-
-			&.visible {
-				display: grid;
-				//grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-			}
-		}
-
-		&.entry-centered {
-			align-items: center;
-		}
-	}
-
-	div div {
-		width: 65%;
-		padding: 3px 0;
-	}
-
-	.header-label {
-		padding: 3px 0;
-		font-weight: bold;
-		width: 30%;
-	}
-
-	.toolbar-thin {
-		width: auto;
-	}
-
-	.combo {
-		display: flex;
-		align-items: center;
-		gap: 5px;
-	}
-}
-
 button.alias-collapsible {
 	background-color: $btn-darkbg-color-hover;
 	color: white;
@@ -528,71 +430,6 @@ button.alias-collapsible.active::after {
 #setcpu3,
 #setcpup3 {
 	select {
-		display: none;
-	}
-}
-
-// table variant for admin manage lists, toggled via JS
-@media screen and(min-width:651px) {
-
-	div.plain-list.table {
-		display: table; //mimics the old <table> structure
-
-		div.list-entry.centered {
-			display: table-row;
-
-			&:nth-child(1) {
-				display: table-row !important;
-			}
-
-			//show the table style headers (normally hidden for grid view)
-
-			div {
-				display: table-cell;
-				width: auto; //width reset to default (set value in the grid view)
-				padding: 0px 15px;
-			}
-
-			&.bios div {
-				padding: 6px 15px;
-			}
-
-			&.alt {
-				background: $accent-bkg-light;
-
-				@media (prefers-color-scheme: dark) {
-					background: $accent-bkg-dark;
-				}
-			}
-
-			&.bios.nows {
-				line-height: 30px
-			}
-
-			&.largefile div {
-				padding: 0px 2px;
-			}
-
-			div.header-label {
-				display: none;
-			}
-
-			// hide labels used in the grid view
-			div.cpu-aliases-box {
-				display: none;
-
-				&.visible {
-					display: grid;
-					//grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-				}
-			}
-		}
-
-	}
-}
-
-@media screen and(max-width:650px) {
-	div.list-entry.centered.head {
 		display: none;
 	}
 }

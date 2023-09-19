@@ -1,5 +1,5 @@
 {% if type == "driver-results" %}
-    <div class="list-entry centered head" style="font-style:italic;">
+    <div class="list-entry centered head">
         <div>Name</div>
         <div>Version</div>
         <div>Last edited</div>
@@ -29,14 +29,14 @@
 			{% endif %}
             </div>
             <div class="header-label">File name</div>
-            <div><a href="{{ vich_uploader_asset(driver, 'file')}}">
+            <div><a class="combo" href="{{ vich_uploader_asset(driver, 'file')}}">
 				<img src="{{ absolute_url(asset('build/icons/dw.svg')) }}" alt="" width="16" style="vertical-align: middle;">{% set fname = driver.getFileName()|slice(0,driver.getFileName()|length - 27) ~ driver.getFileName()[driver.getFileName()|length - 4 :] %}{{ fname }}</a>
 			</div>
         </div>
     {% endfor %}
 {% endif %}
 {% if type == "chipset-results" %}
-    <div class="list-entry centered head" style="font-style:italic;">
+    <div class="list-entry centered head">
 		<div>Name</div>
 		<div>Parts</div>
 		<div>Aliases</div>
@@ -62,7 +62,7 @@
 	{% endfor %}
 {% endif %}
 {% if type == "cpu-results" %}
-    <div class="list-entry centered head" style="font-style:italic;">
+    <div class="list-entry centered head">
 		<div>Name</div>
 		<div>Family</div>
         <div>Speed/FSB</div>
@@ -95,17 +95,17 @@
         {% endif %}
         <div class="header-label">Package</div>
         {% if cpu.getSockets() is not empty %}
-		<div class="tag-container">
+		<div><div class="tag-container">
 			{% for socket in cpu.getSockets() %}<span class="text-block">{{ socket.getNameAndType}}</span>{% endfor %}
-		</div>
+		</div></div>
 		{% else %}
 		<div>Unknown</div>
 		{% endif %}
 		<div class="header-label">Voltage</div>
 		{% if cpu.getVoltages() is not empty %}
-		<div class="tag-container">
+		<div><div class="tag-container">
 			{% for voltage in cpu.getVoltages() %}<span class="text-block">{{ voltage.getValueWithUnit()}}</span>{% endfor %}
-		</div>
+		</div></div>
 		{% else %}
 		<div>Unknown</div>
 		{% endif %}

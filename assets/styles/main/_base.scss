@@ -252,7 +252,8 @@ main {
 	}
 
 	button,
-	a.button {
+	a.button,
+	span.button {
 		font-family: $standard-font;
 		font-size: 11pt;
 		transition: ease-in-out $anim-duration box-shadow, ease-in-out $anim-duration background-color;
@@ -263,8 +264,9 @@ main {
 		color: $accent-frg-light;
 		display: flex;
 		align-items: center;
+		justify-content: center;
 		gap: 10px;
-		padding: 5px 10px;
+		padding: 5px 10px;		
 
 		@media (prefers-color-scheme: dark) {
 			background: $accent-bkg-dark;
@@ -316,7 +318,8 @@ main {
 	}
 }
 
-a.button-widget {
+a.button-widget,
+span.button-widget {
 	font-family: $standard-font;
 	font-size: 11pt;
 	transition: ease-in-out $anim-duration box-shadow, ease-in-out $anim-duration background-color;
@@ -388,4 +391,164 @@ a.button-widget {
 ::-webkit-scrollbar-thumb:hover {
 	background-color: #555;
 	transition: ease-in-out $anim-duration background-color;
+}
+
+div.plain-list {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+	gap: 5px;
+
+	&.w300p {
+		grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+	}
+
+	&.w400p {
+		grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+	}
+
+	div.list-entry {
+		display: grid;
+		grid-template-columns: [first] 25% [second] auto [end];
+		flex-wrap: wrap;
+		align-items: start;
+		align-content: start;
+		padding: 5px;
+		gap: 5px;
+		border-bottom: solid thin $border-light;
+
+		@media (prefers-color-scheme: dark) {
+			border-color: $border-dark;
+		}
+
+		>div {
+			padding: 3px 0;
+		}
+
+		>div.header-label {
+			font-weight: bold;
+			width: 30%;
+		}
+
+		div.results-alias {
+			flex-grow: 1;
+			padding-left: 5px;
+		}
+
+		div.cpu-aliases-box {
+			display: none;
+
+			&.visible {
+				display: grid;
+				//grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+			}
+		}
+
+		&.entry-centered {
+			align-items: center;
+		}
+
+		&.head {
+			border-bottom: solid thin $border-light !important;
+
+			@media (prefers-color-scheme: dark) {
+				border-color: $border-dark;
+			}
+
+			div {
+				font-weight: bold;
+				padding: 6px 15px;
+			}
+		}
+	}
+
+	.toolbar-thin {
+		width: auto;
+	}
+}
+
+// table variant for admin manage lists, toggled via JS
+@media screen and (min-width: $minw-table-breakpoint) {
+	div.plain-list.table {
+		display: table; //mimics the old <table> structure
+		border-collapse: collapse;
+		width: 100%;
+
+		div.list-entry {
+			border-bottom: none;
+		}
+
+		div.list-entry.centered {
+			display: table-row;
+
+			&:nth-child(1) {
+				display: table-row !important;
+			}
+
+			//show the table style headers (normally hidden for grid view)
+
+			>div {
+				display: table-cell;
+				width: auto; //width reset to default (set value in the grid view)
+				padding: 5px 10px;
+				vertical-align: top;
+			}
+
+			&.head {
+				background: $accent-bkg-light;
+
+				@media (prefers-color-scheme: dark) {
+					background: $accent-bkg-dark;
+				}
+
+				>div {
+					vertical-align: middle;
+					padding-top: 10px;
+					padding-bottom: 10px;
+				}
+			}
+
+			&.alt {
+				background: $accent-bkg-light;
+
+				@media (prefers-color-scheme: dark) {
+					background: $accent-bkg-dark;
+				}
+			}
+
+			&.bios.nows {
+				line-height: 30px
+			}
+
+			&.largefile div {
+				padding: 0px 2px;
+			}
+
+			div.header-label {
+				display: none;
+			}
+
+			// hide labels used in the grid view
+			div.cpu-aliases-box {
+				display: none;
+
+				&.visible {
+					display: grid;
+					//grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+				}
+			}
+		}
+
+	}
+}
+
+@media screen and (max-width: $maxw-table-breakpoint) {
+	div.list-entry.centered.head {
+		display: none;
+	}
+}
+
+.combo {
+	display: flex;
+	align-items: center;
+	gap: 5px;
 }
