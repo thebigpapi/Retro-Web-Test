@@ -3,6 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Motherboard;
+use App\Controller\Admin\Filter\MotherboardImageFilter;
 use App\Form\Type\MotherboardAliasType;
 use App\Form\Type\MotherboardIdRedirectionType;
 use App\Form\Type\DramTypeType;
@@ -28,7 +29,6 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
-use EasyCorp\Bundle\EasyAdminBundle\Field\ArrayField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
@@ -76,7 +76,7 @@ class MotherboardCrudController extends AbstractCrudController
     {
         return parent::configureCrud($crud)
             ->showEntityActionsInlined()
-            ->setPaginatorPageSize(100)
+            ->setPaginatorPageSize(10)
             ->overrideTemplate('crud/edit', 'admin/crud/edit_mobo.html.twig')
             ->overrideTemplate('crud/new', 'admin/crud/new_mobo.html.twig')
             ->setDefaultSort(['lastEdited' => 'DESC']);
@@ -88,6 +88,7 @@ class MotherboardCrudController extends AbstractCrudController
             ->add('name')
             ->add('motherboardAliases')
             ->add('chipset')
+            ->add(MotherboardImageFilter::new('images'))
             ->add('expansionChips')
             ->add('cacheSize')
             ->add('dramType')
