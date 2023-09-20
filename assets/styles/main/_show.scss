@@ -192,13 +192,12 @@ div.quick-spec-split {
 
 div.quick-spec-table {
     display: grid;
+    padding: 5px;
     grid-template-columns: [first] 180px [second] auto [end];
 
     @media (max-width: 500px) {
         grid-template-columns: [first] 100px [second] auto [end];
     }
-
-    padding: 5px;
 
     div {
         padding: 5px 0px 5px;
@@ -250,6 +249,10 @@ div.full-spec {
     display: grid;
     grid-template-rows: [first] 40px [second] auto [end];
     grid-template-columns: [first] 50% [second] 50% [end];
+
+    &.search{
+        grid-template-columns: [first] 33% [second] 33% [third] 34% [end];
+    }
 
     div.full-spec-head {
         background-color: $accent-bkg-light;

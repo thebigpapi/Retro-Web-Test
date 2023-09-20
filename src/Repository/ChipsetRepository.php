@@ -137,8 +137,8 @@ class ChipsetRepository extends ServiceEntityRepository
         $rsm->addScalarResult('count', 'count');
 
         $result = $entityManager->createNativeQuery(
-            "SELECT count(DISTINCT chipset_id) FROM chipset_chipset_part WHERE chipset_part_id IN
-            (SELECT id FROM chip WHERE id NOT IN (SELECT chip_id FROM chip_documentation) AND dtype='chipsetpart')",$rsm)->getResult();
+            "SELECT count(DISTINCT chipset_id) FROM chipset_expansion_chip WHERE expansion_chip_id IN
+            (SELECT id FROM chip WHERE id NOT IN (SELECT chip_id FROM chip_documentation) AND dtype='expansionchip')",$rsm)->getResult();
         return $result;
     }
 }

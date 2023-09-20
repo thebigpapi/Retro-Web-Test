@@ -25,9 +25,6 @@
             <meta name="twitter:image" content="{{ absolute_url(asset('build/images/logo.webp')) }}">
 		{% endblock %}
 		{% block stylesheets %}
-		{% if is_granted('ROLE_USER') %}
-			{{ encore_entry_link_tags('admin_app') }}
-		{% endif %}
 			{{ encore_entry_link_tags('app') }}
 			{{ encore_entry_link_tags('glightbox') }}
 		{% endblock %}

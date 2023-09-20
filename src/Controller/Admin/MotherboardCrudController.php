@@ -28,6 +28,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
+use EasyCorp\Bundle\EasyAdminBundle\Field\ArrayField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
@@ -124,8 +125,8 @@ class MotherboardCrudController extends AbstractCrudController
         yield BooleanField::new('isMotherboardBios','BIOS')
             ->renderAsSwitch(false)
             ->onlyOnIndex();
-        yield BooleanField::new('isImages','Images')
-            ->renderAsSwitch(false)
+        yield TextField::new('isImages','Images')
+            //->renderAsSwitch(false)
             ->onlyOnIndex();
 
         // show and index

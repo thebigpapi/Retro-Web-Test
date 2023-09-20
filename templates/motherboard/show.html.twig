@@ -183,30 +183,23 @@
 			<!-- Chips -->
 			<div class="show-expchips" id="sh-expchips">
 				<div class="quick-spec-table">
-					<!-- Chipset w/parts -->
+					<!-- Chipset -->
 					<div class="quick-spec-head">
 						<img src="{{ absolute_url(asset('build/icons/show/chipset.svg')) }}" alt="chipset" width="24" height="24">Chipset
 					</div>
 					{% if motherboard.getChipset() is not empty %}
 						<div><a href="{{ path('app_homepage') }}chipsets/{{ motherboard.getChipset().getId()}}">{{ motherboard.getChipset().getFullName() }}</a></div>
-						{% if motherboard.getChipset().getExpansionChips() is not empty %}
-						<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/show/chipset.svg')) }}" alt="chipset" width="24" height="24">Chipset parts</div>
-						<div class="tag-container">
-						{% for chipPart in motherboard.getChipset().getExpansionChips() %}
-							<span class="text-block">{{ chipPart.getNameWithManufacturer() }}</span>
-						{% endfor %}
-						</div>
-						{% endif %}
 					{% else %}<div>Unknown</div>{% endif %}
 					<!-- Expansion Chips -->
 					{% if motherboard.getExpansionChips() is not empty %}
+						{% for chip in motherboard.getExpansionChips()|filter(a => a.getType().getName() == "Chipset part")%}
+							{% if loop.first %}<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/show/chipset.svg')) }}" alt="chip" width="24" height="24">Chipset parts</div><div>{% endif %}
+								<a href="{{ path('expansion_chip_show', {id: chip.getId()}) }}"><span class="text-block">{{ chip.getNameWithManufacturer() }}</span></a>
+							{% if loop.index == motherboard.getExpansionChips()|filter(a => a.getType().getName() == "Chipset part")|length %}</div>{% endif %}
+						{% endfor %}
 						{% for type in expansionchiptype %}
-							{% for chip in motherboard.getExpansionChips()|filter(a => a.getType().getName() == type.getName())%}
-								{% if loop.first %}
-								<div class="quick-spec-head">
-									<img src="{{ absolute_url(asset('build/icons/show/chip.svg')) }}" alt="chip" width="24" height="24">{{chip.getType().getName()}} chips
-								</div>
-								<div class="tag-container">{% endif %}
+							{% for chip in motherboard.getExpansionChips()|filter(a => a.getType().getName() !=  "Chipset part")|filter(a => a.getType().getName() == type.getName())%}
+								{% if loop.first %}<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/show/chip.svg')) }}" alt="chip" width="24" height="24">{{chip.getType().getName()}} chips</div><div>{% endif %}
 								<a href="{{ path('expansion_chip_show', {id: chip.getId()}) }}"><span class="text-block">{{ chip.getNameWithManufacturer() }}</span></a>
 								{% if loop.index == motherboard.getExpansionChips()|filter(a => a.getType().getName() == type.getName())|length %}</div>{% endif %}
 							{% endfor %}

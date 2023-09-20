@@ -177,6 +177,26 @@ class MotherboardRepository extends ServiceEntityRepository
 
         return $from;
     }
+    private function expansionChipsToSQL(array $expansionChips, array $from): array
+    {
+        foreach ($expansionChips as $key => $chip) {
+            $fromLength = count($from);
+            if ($fromLength == 0) {
+                    $from[] = " (
+                        SELECT mb.*
+                        FROM motherboard mb
+                        JOIN motherboard_expansion_chip mec ON mb.id=mec.motherboard_id
+                        WHERE mec.expansion_chip_id=:idChip" . $key . ") as mot" . $fromLength . " ";
+            } else {
+                    $from[] = " INNER JOIN (
+                        SELECT mb.*
+                        FROM motherboard mb
+                        JOIN motherboard_expansion_chip mec ON mb.id = mec.motherboard_id
+                        WHERE mec.expansion_chip_id = :idChip" . $key . ") as mot" . $fromLength . " ON mot" . ($fromLength - 1) . ".id = mot" . $fromLength . ".id ";
+            }
+        }
+        return $from;
+    }
 
     private function valueToWhere(string $key, ?string $value): string //Warning ! Different behavior
     {
@@ -281,7 +301,7 @@ class MotherboardRepository extends ServiceEntityRepository
         // Creating from statements
         $from = array();
 
-        if (!array_key_exists("ioPorts", $arrays) && !array_key_exists("expansionSlots", $arrays)) {
+        if (!array_key_exists("ioPorts", $arrays) && !array_key_exists("expansionSlots", $arrays) && !array_key_exists("expansionChips", $arrays)) {
             $from[] = "motherboard mot0";
         } else {
             if (array_key_exists("expansionSlots", $arrays)) {
@@ -289,6 +309,9 @@ class MotherboardRepository extends ServiceEntityRepository
             }
             if (array_key_exists("ioPorts", $arrays)) {
                 $from = $this->ioPortsToSQL($arrays['ioPorts'], $from);
+            }
+            if (array_key_exists("expansionChips", $arrays)) {
+                $from = $this->expansionChipsToSQL($arrays['expansionChips'], $from);
             }
         }
 
@@ -391,7 +414,7 @@ class MotherboardRepository extends ServiceEntityRepository
             $sql .= " UNION $noChipset";
         }
 
-        $sql .= "ORDER BY man1_name ASC, mot0_name ASC";
+        $sql .= "ORDER BY man1_name ASC, mot0_name ASC LIMIT 10000";
 
         return $sql;
     }
@@ -415,6 +438,12 @@ class MotherboardRepository extends ServiceEntityRepository
                 if (array_key_exists("count", $val)) {
                     $query->setParameter("portCount" . $key, $val['count']);
                 }
+            }
+        }
+
+        if (array_key_exists("expansionChips", $arrays)) {
+            foreach ($arrays['expansionChips'] as $key => $val) {
+                $query->setParameter("idChip" . $key, $val);
             }
         }
 

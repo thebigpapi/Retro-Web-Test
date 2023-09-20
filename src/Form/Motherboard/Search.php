@@ -5,6 +5,7 @@ namespace App\Form\Motherboard;
 use App\Entity\Chipset;
 use App\Form\Type\MotherboardExpansionSlotType;
 use App\Form\Type\MotherboardIoPortType;
+use App\Form\Type\ExpansionChipType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -73,6 +74,12 @@ class Search extends AbstractType
                 'autocomplete' => true,
                 'choices' => $options['chipsetManufacturers'],
                 'placeholder' => 'Select a chipset manufacturer ...',
+            ])
+            ->add('expansionChips', CollectionType::class, [
+                'entry_type' => ExpansionChipType::class,
+                'allow_add' => true,
+                'allow_delete' => true,
+                'label' => false,
             ])
             ->add('cpuSocket1', ChoiceType::class, [
                 'choice_label' => 'getNameAndType',

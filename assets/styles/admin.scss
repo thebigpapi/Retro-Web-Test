@@ -37,8 +37,10 @@ $btn-hover-dark: rgb(247, 207, 62);
 .form-group.field-collection .field-collection-delete-button {
 	i {
 		font-size: 18px;
-		vertical-align: middle;
+		vertical-align: baseline;
 	}
+	right: 0;
+	top: 0;
 }
 
 .btn-link-danger {
@@ -204,10 +206,12 @@ $btn-hover-dark: rgb(247, 207, 62);
 #Motherboard_motherboardIoPorts_collection>div>div>div,
 #Motherboard_motherboardExpansionSlots_collection>div>div>div {
 	display: block;
-
-	div.invalid-feedback {
-		width: 10px;
+	div.accordion-body.trw{
+		padding: 0px 10px;
 	}
+	/*div.invalid-feedback {
+		width: 10px;
+	}*/
 
 	div.form-widget-compound>div {
 		display: flex;
@@ -230,6 +234,7 @@ $btn-hover-dark: rgb(247, 207, 62);
 		>div:nth-child(2):before {
 			color: var(--form-input-text-color);
 			content: 'x';
+			line-height: 50px;
 			padding-left: 3px;
 		}
 

@@ -4,26 +4,20 @@ namespace App\Controller;
 
 use App\Entity\Manufacturer;
 use App\Entity\FormFactor;
-use App\Entity\Motherboard;
 use App\Entity\MotherboardIdRedirection;
 use App\Form\Motherboard\Search;
 use App\Repository\CpuSocketRepository;
-use App\Repository\ExpansionSlotRepository;
 use App\Repository\FormFactorRepository;
-use App\Repository\IoPortRepository;
 use App\Repository\ManufacturerRepository;
 use App\Repository\MotherboardIdRedirectionRepository;
 use App\Repository\MotherboardRepository;
 use App\Repository\ProcessorPlatformTypeRepository;
-use App\Repository\ExpansionChipRepository;
 use App\Repository\ExpansionChipTypeRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Contracts\Translation\TranslatorInterface;
 use Knp\Component\Pager\PaginatorInterface;
-use Exception;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormInterface;
@@ -71,6 +65,7 @@ class MotherboardController extends AbstractController
         $this->addCriteriaById($request, $criterias, 'platform2', 'processor_platform_type2');
         $this->addArrayCriteria($request, $criterias, 'expansionSlotsIds', 'expansionSlots');
         $this->addArrayCriteria($request, $criterias, 'ioPortsIds', 'ioPorts');
+        $this->addArrayCriteria($request, $criterias, 'expansionChipIds', 'expansionChips');
 
         $showImages = boolval(htmlentities($request->query->get('showImages') ?? ''));
 
@@ -236,15 +231,12 @@ class MotherboardController extends AbstractController
     #[Route('/motherboards/search/', name: 'motherboard_search')]
     public function search(
         Request $request,
-        TranslatorInterface $translator,
         ManufacturerRepository $manufacturerRepository,
-        ExpansionSlotRepository $expansionSlotRepository,
-        IoPortRepository $ioPortRepository,
         CpuSocketRepository $cpuSocketRepository,
         FormFactorRepository $formFactorRepository,
         ProcessorPlatformTypeRepository $processorPlatformTypeRepository
     ): Response {
-        $notIdentifiedMessage = $translator->trans("Not identified");
+        $notIdentifiedMessage = "Unidentified";
         $moboManufacturers = $manufacturerRepository->findAllMotherboardManufacturer();
         $unidentifiedMan = new Manufacturer();
         $unidentifiedMan->setName($notIdentifiedMessage);
@@ -254,10 +246,6 @@ class MotherboardController extends AbstractController
         $unidentifiedMan = new Manufacturer();
         $unidentifiedMan->setName($notIdentifiedMessage);
         array_unshift($chipsetManufacturers, $unidentifiedMan);
-
-        $slots = $expansionSlotRepository->findAll();
-
-        $ports = $ioPortRepository->findAll();
 
         $cpuSockets = $cpuSocketRepository->findAll();
 
@@ -351,7 +339,7 @@ class MotherboardController extends AbstractController
                 if ((int)$count !== 0) {
                     $slotCount = array('id' => $slot->getExpansionSlot()->getId(), 'count' => (int)$count);
                     array_push($parameters['expansionSlotsIds'], $slotCount);
-                } elseif ($count === '0') {
+                } elseif ($count == 0) {
                     $slotCount = array('id' => $slot->getExpansionSlot()->getId(), 'count' => null);
                     array_push($parameters['expansionSlotsIds'], $slotCount);
                 }
@@ -366,10 +354,18 @@ class MotherboardController extends AbstractController
                 if ((int)$count && $count !== 0) {
                     $portCount = array('id' => $port->getIoPort()->getId(), 'count' => (int)$count);
                     array_push($parameters['ioPortsIds'], $portCount);
-                } elseif ($count === '0') {
+                } elseif ($count == 0) {
                     $portCount = array('id' => $port->getIoPort()->getId(), 'count' => null);
                     array_push($parameters['ioPortsIds'], $portCount);
                 }
+            }
+        }
+
+        $expchips = $form['expansionChips']->getData();
+        if ($expchips) {
+            $parameters['expansionChipIds'] = array();
+            foreach ($expchips as $chip) {
+                array_push($parameters['expansionChipIds'], $chip->getId());
             }
         }
 
@@ -380,7 +376,6 @@ class MotherboardController extends AbstractController
                 $parameters['chipsetManufacturerId'] = $form['chipsetManufacturer']->getData()->getId();
             }
         }
-
         return $parameters;
     }
 

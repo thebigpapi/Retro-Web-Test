@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\IoPort;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query\ResultSetMapping;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -11,6 +12,7 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method IoPort|null findOneBy(array $criteria, array $orderBy = null)
  * @method IoPort[]    findAll()
  * @method IoPort[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method IoPort[]    findByPopularity()
  */
 class IoPortRepository extends ServiceEntityRepository
 {
@@ -19,32 +21,25 @@ class IoPortRepository extends ServiceEntityRepository
         parent::__construct($registry, IoPort::class);
     }
 
-    // /**
-    //  * @return IoPort[] Returns an array of IoPort objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('i')
-            ->andWhere('i.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('i.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
+    /**
+    * @return IoPort[] Returns an array of IoPort objects
     */
+    public function findByPopularity()
+    {
+        $entityManager = $this->getEntityManager();
 
-    /*
-    public function findOneBySomeField($value): ?IoPort
-    {
-        return $this->createQueryBuilder('i')
-            ->andWhere('i.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        $rsm = new ResultSetMapping();
+        $rsm->addEntityResult('App\Entity\IoPort', 'io');
+        $rsm->addJoinedEntityResult('App\Entity\MotherboardIoPort', 'moboio', 'io', 'motherboardIoPorts');
+        $rsm->addFieldResult('io', 'id', 'id');
+        $rsm->addFieldResult('io', 'name', 'name');
+
+        $query = $entityManager->createNativeQuery(
+            "SELECT io.id, count(moboio.io_port_id) as popularity, io.name
+            FROM io_port io JOIN motherboard_io_port moboio ON io.id=moboio.io_port_id GROUP BY io.id, io.name
+            ORDER BY popularity DESC;",
+            $rsm
+        );
+        return $query->getResult();
     }
-    */
 }

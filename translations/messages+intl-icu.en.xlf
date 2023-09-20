@@ -57,10 +57,6 @@
         <source>Drivers</source>
         <target>Drivers</target>
       </trans-unit>
-      <trans-unit id="2XmLg8e">
-        <source></source>
-        <target></target>
-      </trans-unit>
       <trans-unit id="5CDxzHP">
         <source>Processors</source>
         <target>Processors</target>
@@ -692,10 +688,6 @@
       <trans-unit id="yC8qW8n">
         <source>Icon</source>
         <target>Icon</target>
-      </trans-unit>
-      <trans-unit id="BBp84kk">
-        <source>Manual (pdf/zip file)</source>
-        <target>Manual (PDF or ZIP file)</target>
       </trans-unit>
       <trans-unit id="5v78m39">
         <source>Settings</source>

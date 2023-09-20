@@ -1,19 +1,13 @@
 
 {% if type == "add" %}
     <a class="button-widget" style="margin:5px;" data-action="click->collection#expandButton" data-list-id="{{action}}-fields-list">
-	    <img src="{{ absolute_url(asset('build/icons/add.svg')) }}" data-list-id="{{action}}-fields-list" alt="" width="22">
+        <img src="{{ absolute_url(asset('build/icons/add.svg')) }}" data-list-id="{{action}}-fields-list" alt="" width="22">
         <span data-list-id="{{action}}-fields-list">Add</span>
     </a>
 {% endif %}
 {% if type == "del" %}
-    <a style='min-width:2.5em;' class='button-widget' data-action='click->collection#removeButton{% if count < 0 %}Ex{% endif %}'>
-	    <img data-action='click->collection#removeButton{% if count < 0 %}Xtd{% else %}Ex{% endif %}' src='{{ absolute_url(asset('build/icons/delete.svg')) }}' alt='' width='16'>
-        <span data-action='click->collection#removeButton{% if count < 0 %}Xtd{% else %}Ex{% endif %}'>Del</span>
+    <a style='min-width:2.5em;' class='button-widget' data-action='click->collection#removeButton'>
+        <img data-action='click->collection#removeButtonEx' src='{{ absolute_url(asset('build/icons/delete.svg')) }}' alt='' width='16'>
+        <span data-action='click->collection#removeButtonEx'>Del</span>
     </a>
-    {% if count > 1 %}
-        <a class='button-widget' href='#'>
-            <img src='{{ absolute_url(asset('build/icons/edit.svg')) }}' alt='' width='16'>
-            <span>Edit</span>
-        </a>
-    {% endif %}
 {% endif %}
