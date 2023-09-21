@@ -251,7 +251,11 @@ div.full-spec {
     grid-template-columns: [first] 50% [second] 50% [end];
 
     &.search{
-        grid-template-columns: [first] 33% [second] 33% [third] 34% [end];
+        grid-template-columns: repeat(auto-fill, minmax($form-breakpoint - 45px, 1fr));
+
+        @media (max-width: $form-breakpoint) {
+            display: block;
+        }
     }
 
     div.full-spec-head {

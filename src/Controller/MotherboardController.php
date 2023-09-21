@@ -27,13 +27,14 @@ class MotherboardController extends AbstractController
 {
     public function addCriteriaById(Request $request, array &$criterias, string $htmlId, string $sqlId): void
     {
-        $entityId = htmlentities($request->query->get($htmlId) ?? '');
+        $entityId = htmlentities($request->query->get($htmlId) ?? ($request->request->get($htmlId) ?? ''));
         if ($entityId && intval($entityId)) $criterias[$sqlId] = "$entityId";
         elseif ($entityId === "NULL") $criterias[$sqlId] = null;
     }
+
     public function addArrayCriteria(Request $request, array &$criterias, string $htmlId, string $sqlId): void
     {
-        $entityIds = $request->query->get($htmlId);
+        $entityIds = $request->query->get($htmlId) ?? $request->request->get($htmlId);
         $entityArray = null;
         if ($entityIds) {
             if (is_array($entityIds)) {
@@ -44,6 +45,7 @@ class MotherboardController extends AbstractController
             $criterias[$sqlId] = $entityArray;
         }
     }
+
     #[Route('/motherboards/', name: 'mobosearch', methods: ['GET'])]
     public function searchResult(
         Request $request,
@@ -85,6 +87,50 @@ class MotherboardController extends AbstractController
             'motherboards' => $motherboards,
             'motherboard_count' => count($data),
             'show_images' => $showImages,
+        ]);
+    }
+
+    #[Route('/motherboards/results', name: 'mobolivesearch')]
+    public function liveResults(
+        Request $request,
+        PaginatorInterface $paginator,
+        MotherboardRepository $motherboardRepository
+    ): Response {
+        $criterias = array();
+        $name = htmlentities($request->query->get('name') ?? ($request->request->get('name') ?? ''));
+        if ($name) $criterias['name'] = "$name";
+        $this->addCriteriaById($request, $criterias, 'manufacturerId', 'manufacturer');
+        $this->addCriteriaById($request, $criterias, 'formFactorId', 'form_factor');
+        $this->addCriteriaById($request, $criterias, 'chipsetId', 'chipset');
+        if(!array_key_exists('chipset', $criterias)){
+            $this->addCriteriaById($request, $criterias, 'chipsetManufacturerId', 'chipsetManufacturer');
+        }
+        $this->addCriteriaById($request, $criterias, 'cpuSocket1', 'cpu_socket1');
+        $this->addCriteriaById($request, $criterias, 'cpuSocket2', 'cpu_socket2');
+        $this->addCriteriaById($request, $criterias, 'platform1', 'processor_platform_type1');
+        $this->addCriteriaById($request, $criterias, 'platform2', 'processor_platform_type2');
+        $this->addArrayCriteria($request, $criterias, 'expansionSlotsIds', 'expansionSlots');
+        $this->addArrayCriteria($request, $criterias, 'ioPortsIds', 'ioPorts');
+        $this->addArrayCriteria($request, $criterias, 'expansionChipIds', 'expansionChips');
+
+        $showImages = boolval(htmlentities($request->query->get('showImages') ??
+            ($request->request->get('showImages') ?? '')));
+
+        $data = $motherboardRepository->findByWithJoin($criterias, array('man1_name' => 'ASC', 'mot0_name' => 'ASC'));
+        $maxItems = $request->query->getInt('itemsPerPage',
+            $request->request->getInt('itemsPerPage', $this->getParameter('app.pagination.max')));
+        $motherboards = $paginator->paginate(
+            $data,
+            $request->query->getInt('page', $request->request->getInt('page', 1)),
+            $maxItems
+        );
+
+        return $this->render('motherboard/result_live.html.twig', [
+            'controller_name' => 'MotherboardController',
+            'motherboards' => $motherboards,
+            'motherboard_count' => count($data),
+            'show_images' => $showImages,
+            'domTarget' => $request->request->get('domTarget') ?? $request->query->get('domTarget') ?? "",
         ]);
     }
 
@@ -236,46 +282,31 @@ class MotherboardController extends AbstractController
         FormFactorRepository $formFactorRepository,
         ProcessorPlatformTypeRepository $processorPlatformTypeRepository
     ): Response {
-        $notIdentifiedMessage = "Unidentified";
-        $moboManufacturers = $manufacturerRepository->findAllMotherboardManufacturer();
-        $unidentifiedMan = new Manufacturer();
-        $unidentifiedMan->setName($notIdentifiedMessage);
-        array_unshift($moboManufacturers, $unidentifiedMan);
+        $form = $this->_searchFormHandler($request, $manufacturerRepository, $cpuSocketRepository,
+            $formFactorRepository, $processorPlatformTypeRepository);
 
-        $chipsetManufacturers = $manufacturerRepository->findAllChipsetManufacturer();
-        $unidentifiedMan = new Manufacturer();
-        $unidentifiedMan->setName($notIdentifiedMessage);
-        array_unshift($chipsetManufacturers, $unidentifiedMan);
-
-        $cpuSockets = $cpuSocketRepository->findAll();
-
-        $formFactors = $formFactorRepository->findAll();
-        $unidentifiedFormFactor = new FormFactor();
-        $unidentifiedFormFactor->setName($notIdentifiedMessage);
-        array_unshift($formFactors, $unidentifiedFormFactor);
-
-        $procPlatformTypes = $processorPlatformTypeRepository->findBy(array(), array('name' => 'ASC'));
-
-        $biosManufacturers = $manufacturerRepository->findAllBiosManufacturer();
-
-        $form = $this->createForm(Search::class, array(), [
-            'moboManufacturers' => $moboManufacturers,
-            'chipsetManufacturers' => $chipsetManufacturers,
-            'formFactors' => $formFactors,
-            'procPlatformTypes' => $procPlatformTypes,
-            'bios' => $biosManufacturers,
-            'cpuSockets' => $cpuSockets,
-        ]);
-
-        $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             return $this->redirect($this->generateUrl('mobosearch', $this->searchFormToParam($request, $form)));
         }
+
         return $this->render('motherboard/search.html.twig', [
             'form' => $form->createView(),
         ]);
     }
 
+    #[Route('/motherboards/live', name: 'mobolivewrapper')]
+    public function liveSearch(
+        Request $request,
+        ManufacturerRepository $manufacturerRepository,
+        CpuSocketRepository $cpuSocketRepository,
+        FormFactorRepository $formFactorRepository,
+        ProcessorPlatformTypeRepository $processorPlatformTypeRepository
+    ): Response {
+        $form = $this->_searchFormHandler($request, $manufacturerRepository, $cpuSocketRepository,
+            $formFactorRepository, $processorPlatformTypeRepository);
+        
+        return $this->redirect($this->generateUrl('mobolivesearch', $this->searchFormToParam($request, $form)));
+    }
 
     private function searchFormToParam(Request $request, FormInterface $form): array
     {
@@ -288,15 +319,13 @@ class MotherboardController extends AbstractController
             }
         }
 
-        /**
-         * @var ClickableInterface
-         */
-        $searchWithImagesButton = $form['searchWithImages'];
+        $parameters['page'] = intval($request->request->get('page') ?? $request->query->get('page') ?? 1);
+        $parameters['domTarget'] = $request->request->get('domTarget') ?? $request->query->get('domTarget') ?? "";
 
-        if ($searchWithImagesButton->isClicked()) {
-            $parameters['showImages'] = true;
-        }
+        $tempItems = intval($form['itemsPerPage']->getData()->value);
+        $parameters['itemsPerPage'] = $tempItems > 0 ? $tempItems : $this->getParameter('app.pagination.max');
 
+        $parameters['showImages'] = $form['searchWithImages']->getData();
         $parameters['name'] = $form['name']->getData();
 
         if ($form['formFactor']->getData()) {
@@ -399,5 +428,48 @@ class MotherboardController extends AbstractController
             'motherboards' => $motherboards,
             'letter' => $letter,
         ]);
+    }
+
+    private function _searchFormHandler(
+        Request $request,
+        ManufacturerRepository $manufacturerRepository,
+        CpuSocketRepository $cpuSocketRepository,
+        FormFactorRepository $formFactorRepository,
+        ProcessorPlatformTypeRepository $processorPlatformTypeRepository
+    ): FormInterface {
+        $notIdentifiedMessage = "Unidentified";
+        $moboManufacturers = $manufacturerRepository->findAllMotherboardManufacturer();
+        $unidentifiedMan = new Manufacturer();
+        $unidentifiedMan->setName($notIdentifiedMessage);
+        array_unshift($moboManufacturers, $unidentifiedMan);
+
+        $chipsetManufacturers = $manufacturerRepository->findAllChipsetManufacturer();
+        $unidentifiedMan = new Manufacturer();
+        $unidentifiedMan->setName($notIdentifiedMessage);
+        array_unshift($chipsetManufacturers, $unidentifiedMan);
+
+        $cpuSockets = $cpuSocketRepository->findAll();
+
+        $formFactors = $formFactorRepository->findAll();
+        $unidentifiedFormFactor = new FormFactor();
+        $unidentifiedFormFactor->setName($notIdentifiedMessage);
+        array_unshift($formFactors, $unidentifiedFormFactor);
+
+        $procPlatformTypes = $processorPlatformTypeRepository->findBy(array(), array('name' => 'ASC'));
+
+        $biosManufacturers = $manufacturerRepository->findAllBiosManufacturer();
+
+        $form = $this->createForm(Search::class, array(), [
+            'moboManufacturers' => $moboManufacturers,
+            'chipsetManufacturers' => $chipsetManufacturers,
+            'formFactors' => $formFactors,
+            'procPlatformTypes' => $procPlatformTypes,
+            'bios' => $biosManufacturers,
+            'cpuSockets' => $cpuSockets,
+        ]);
+
+        $form->handleRequest($request);
+
+        return $form;
     }
 }

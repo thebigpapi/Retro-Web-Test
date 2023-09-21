@@ -1,0 +1,30 @@
+<div class="pagination">
+    <input id="pagination_{{route}}_page" type="hidden" value="{{current}}"/>
+    <div class="toolbar toolbar-main">
+    {% if pageCount > 1 %}
+        <button class="button button-widget first"
+            {% if first is defined %}onclick="paginate({{first}})"{% endif %}>
+            &lt;&lt;&nbsp;First</button>
+        <button class="button button-widget previous"
+            {% if previous is defined %}onclick="paginate({{previous}})"{% endif %}>
+        &lt;&nbsp;Prev</button>
+        {% for page in pagesInRange %}
+            {% if page != current %}
+                <button class="button button-widget page"
+                    onclick="paginate({{page}})">
+                {{ page }}</button>
+            {% else %}
+                <span class="button button-widget current">{{ page }}</span>
+            {% endif %}
+        {% endfor %}
+        <button class="button button-widget next"
+            {% if next is defined %}onclick="paginate({{next}})"{% endif %}>
+            Next&nbsp;&gt;</button>
+        <button class="button button-widget last"
+            {% if last is defined %}onclick="paginate({{last}})"{% endif %}>
+            Last&nbsp;&gt;&gt;</button>
+    {% endif %}
+    </div>
+    <div class="info">Showing results [{{ firstItemNumber }}-{{ lastItemNumber }}] of {{ totalCount }}</div>
+</div>
+
