@@ -38,22 +38,13 @@ class AdminController extends AbstractDashboardController
     #[Route('/logs', name:'logs')]
     public function logs(Request $request, TraceRepository $traceRepository, PaginatorInterface $paginator): Response
     {
-        $logs = $traceRepository->findAll();
+        $logs = $traceRepository->findAllSorted();
         if (!$logs) {
             return $this->render('admin/logs.html.twig', [
                 'objectList' => [],
                 'exist' => false,
             ]);
         } else {
-            usort(
-                $logs,
-                function (Trace $a, Trace $b) {
-                    if ($a->getDate() == $b->getDate()) {
-                        return 0;
-                    }
-                    return ($a->getDate() > $b->getDate()) ? -1 : 1;
-                }
-            );
             $paginatedObjects = $paginator->paginate(
                 $logs,
                 $request->query->getInt('page', 1),

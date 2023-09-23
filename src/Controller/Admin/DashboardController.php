@@ -67,6 +67,7 @@ class DashboardController extends AbstractDashboardController
     {
         $assets = parent::configureAssets();
         $assets->addWebpackEncoreEntry('app_ea');
+        $assets->addWebpackEncoreEntry('glightbox');
         return $assets;
     }
     public function configureDashboard(): Dashboard
@@ -123,7 +124,7 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Licenses', 'nav/book.svg', License::class)->setPermission('ROLE_ADMIN');
         yield MenuItem::section('Administrative');
         yield MenuItem::linkToRoute('Logs', 'show/data.svg','logs');
-        yield MenuItem::linkToCrud('Logs (experimental)', 'show/data.svg', Trace::class)->setPermission('ROLE_ADMIN');
+        //yield MenuItem::linkToCrud('Logs (experimental)', 'show/data.svg', Trace::class)->setPermission('ROLE_ADMIN');
         yield MenuItem::linkToCrud('Users', 'admin/user.svg', User::class)->setPermission('ROLE_SUPER_ADMIN');
     }
 

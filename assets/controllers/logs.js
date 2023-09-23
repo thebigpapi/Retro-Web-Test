@@ -1,6 +1,6 @@
-let list = document.getElementById('logs-table').children[1].children;
+let list = document.getElementById('logs-table');
 if(list){
-    for (let element of list) {
+    for (let element of list.children[1].children) {
         let changes = element.children[3];
         changes.innerHTML = "<button class='log-collapsible'>View details</button><pre class='log-content'>" + syntaxHighlight(changes.innerHTML) + "</pre>";
         changes.children[0].addEventListener("click", function() {

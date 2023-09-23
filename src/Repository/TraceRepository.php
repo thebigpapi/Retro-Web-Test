@@ -49,6 +49,18 @@ class TraceRepository extends ServiceEntityRepository
     /**
      * @return Trace[] Returns an array of Trace objects
      */
+    public function findAllSorted(): array
+    {
+        return $this->createQueryBuilder('t')
+            ->orderBy('t.date', 'DESC')
+            ->setMaxResults(10000)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+    /**
+     * @return Trace[] Returns an array of Trace objects
+     */
     public function findAllById($id)
     {
         $entityManager = $this->getEntityManager();
