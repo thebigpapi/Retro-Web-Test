@@ -18,4 +18,6 @@ const lightbox = GLightbox({
     autoplayVideos: false
 });
 // start the Stimulus application
-import './bootstrap';
+//import './bootstrap';
+import './controllers/updatecpus.js';
+import './controllers/logs.js';

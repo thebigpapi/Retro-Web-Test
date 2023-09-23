@@ -24,7 +24,7 @@ class ChipsetAliasType extends AbstractType
                 'multiple' => false,
                 'expanded' => false,
                 'required' => false,
-                'autocomplete' => true,
+                'attr' => ['data-ea-widget' => 'ea-autocomplete'],
             ])
             ->add('name', TextType::class)
             ->add('partNumber', TextType::class, [

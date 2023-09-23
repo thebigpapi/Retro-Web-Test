@@ -34,6 +34,7 @@ class ProcessorPlatformTypeForm extends AbstractType
             'multiple' => false,
             'expanded' => false,
             'placeholder'=> 'Select a family ...',
+            'attr' => ['data-ea-widget' => 'ea-autocomplete']
         ]);
     }
 

@@ -29,7 +29,7 @@ class ExpansionChipType extends AbstractType
             'choices' => $this->getExpChipRepository()->findByPopularity(),
             'multiple' => false,
             'expanded' => false,
-            'autocomplete' => true,
+            'attr' => ['data-ea-widget' => 'ea-autocomplete'],
             'placeholder'=> 'Select a chip ...',
         ]);
     }

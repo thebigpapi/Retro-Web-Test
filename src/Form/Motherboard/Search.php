@@ -65,7 +65,7 @@ class Search extends AbstractType
                 'multiple' => false,
                 'expanded' => false,
                 'required' => false,
-                'autocomplete' => true,
+                'attr' => ['data-ea-widget' => 'ea-autocomplete'],
                 'choices' => $options['moboManufacturers'],
                 'placeholder' => 'Select a manufacturer ...'
             ])

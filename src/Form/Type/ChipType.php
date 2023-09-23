@@ -32,7 +32,6 @@ class ChipType extends AbstractType
         $builder
             ->add('manufacturer', EntityType::class, [
                 'class' => Manufacturer::class,
-                'autocomplete' => true,
                 'choice_label' => 'name',
                 'multiple' => false,
                 'expanded' => false,

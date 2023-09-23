@@ -42,7 +42,7 @@ class LargeFileMotherboardType extends AbstractType
                 'choice_label' => 'getNameWithTags',
                 'multiple' => false,
                 'expanded' => false,
-                'autocomplete' => true,
+                'attr' => ['data-ea-widget' => 'ea-autocomplete'],
                 'choices' => $largeFiles,
                 'placeholder'=> 'Select a driver ...',
             ]);

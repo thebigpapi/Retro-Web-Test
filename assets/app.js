@@ -8,7 +8,7 @@
 // any CSS you import will output into a single css file (app.css in this case)
 import './styles/app.scss';
 import './styles/autocomplete.scss';
-import GLightbox from './controllers/glightbox/glightbox.js';
+import GLightbox from './controllers/glightbox.min.js';
 
 const lightbox = GLightbox({
     touchNavigation: true,
@@ -16,4 +16,7 @@ const lightbox = GLightbox({
     autoplayVideos: false
 });
 // start the Stimulus application
-import './bootstrap';
+//import './bootstrap';
+import './controllers/show.js';
+import './controllers/datetime.js';
+import './controllers/search.js';

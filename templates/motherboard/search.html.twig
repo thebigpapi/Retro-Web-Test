@@ -180,17 +180,17 @@
 				<span>Search</span>
 			</button>
 			<input id="rst-btn" type="reset" value="reset" data-action="click->search#reset" data-reset-ids='search_chipsetManufacturer search_cpuSocket1 search_cpuSocket2'>
-    		<input id="pagination_redir" type="button" value="" data-action="click->search#searchLive" data-results-id='search_moboResults' value="1">
+    		<input id="pagination_redir" type="button" value="" data-results-id='search_moboResults' value="1">
 			<script>
 				function paginate(newPageIdx) {
-					console.debug("setting paginator " + newPageIdx);
-					var redirElem = document.getElementById('pagination_redir');
-					if (redirElem) {
-						redirElem.setAttribute("value", newPageIdx);
-						redirElem.click();
-					}
-					return false;
+				console.debug("setting paginator " + newPageIdx);
+				var redirElem = document.getElementById('pagination_redir');
+				if (redirElem) {
+					redirElem.setAttribute("value", newPageIdx);
+					redirElem.click();
 				}
+				return false;
+			}
 			</script>
 		</div>
 	</fieldset>

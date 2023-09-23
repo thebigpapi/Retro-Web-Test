@@ -24,6 +24,7 @@ class ChipsetBiosCodeType extends AbstractType
                 'label' => 'Chipset manufacturer',
                 'multiple' => false,
                 'expanded' => false,
+                'attr' => ['data-ea-widget' => 'ea-autocomplete']
                 ])
             ->add('code', TextType::class);
     }
