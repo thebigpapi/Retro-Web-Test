@@ -66,6 +66,10 @@ export default class extends Controller {
             var control = select.tomselect; 
             control.clear();
         }
+        let search = document.getElementById("search_moboResults");
+        if (search) {
+            search.innerHTML = "";
+        }
     }
 
     /**
@@ -77,6 +81,13 @@ export default class extends Controller {
         let search = event.target;
         let targetId = search.dataset.targetId;
         _this.setResult(search.name, search.value, targetId);
+    }
+
+    searchLive(event) {
+        let _this = this;
+        let search = event.target;
+        let resultsId = search.dataset.resultsId; // Section containing results
+        _this.setLiveResults(resultsId);
     }
 
     /**
@@ -92,8 +103,6 @@ export default class extends Controller {
         let params = new FormData();
         params.set(searchedName, searchedValue);
 
-        console.log(searchedName + " " + searchedValue);
-
         (async () => {
             const rawResponse = await fetch(form.action, {
                 method: 'POST',
@@ -101,14 +110,47 @@ export default class extends Controller {
             });
             let parser = new DOMParser();
             let parsedResponse = parser.parseFromString(await rawResponse.text(), "text/html");
-            console.log(targetId);
             document.getElementById(targetId).innerHTML = parsedResponse.getElementById(targetId).innerHTML;
-            if(targetId != "search_chipset"){
+            if (targetId != "search_chipset" && targetId != "search_moboResults"){
                 var select = document.getElementById(targetId);
                 var control = select.tomselect;
                 control.clear();
                 control.clearOptions(); 
                 control.sync();
+            }
+        })();
+    }
+
+    setLiveResults(targetId) {
+        let _this = this;
+        let form = _this.element;
+
+        const formData = new URLSearchParams();
+        for (const pair of new FormData(form)) {
+            formData.append(pair[0], pair[1]);
+        }
+        var redirElem = document.getElementById('pagination_redir');
+        if (redirElem) {
+            console.log(redirElem);
+            formData.append("page", redirElem.getAttribute("value"));
+        } else {
+            formData.append("page", 1);
+        }
+        formData.append("domTarget", targetId);
+        document.getElementById(targetId).innerHTML = "Loading results...";
+
+        (async () => {
+            const rawResponse = await fetch(form.dataset.liveAction, {
+                method: 'POST',
+                body: formData
+            });
+            let parser = new DOMParser();
+            let parsedResponse = parser.parseFromString(await rawResponse.text(), "text/html");
+            let responseDiv = parsedResponse.getElementById(targetId);
+            if (responseDiv) {
+                document.getElementById(targetId).innerHTML = responseDiv.innerHTML;
+            } else {
+                document.getElementById(targetId).innerHTML = "Critical error while fetching results";
             }
         })();
     }

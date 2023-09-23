@@ -6,13 +6,16 @@ use App\Entity\Chipset;
 use App\Form\Type\MotherboardExpansionSlotType;
 use App\Form\Type\MotherboardIoPortType;
 use App\Form\Type\ExpansionChipType;
+use App\Form\Type\ItemsPerPageType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\EnumType;
 use App\Entity\Manufacturer;
 use App\Entity\CpuSocket;
 use App\Entity\FormFactor;
@@ -120,8 +123,22 @@ class Search extends AbstractType
                 'allow_delete' => true,
                 'label' => false,
             ])
-            ->add('search', SubmitType::class)
-            ->add('searchWithImages', SubmitType::class);
+            ->add('searchWithImages', CheckboxType::class, [
+                'data' => true,
+                'label' => false,
+                'attr' => array('checked' => 'checked'),
+            ])
+            ->add('itemsPerPage', EnumType::class, [
+                'class' => ItemsPerPageType::class,
+                'empty_data' => ItemsPerPageType::Items100,
+                'choice_label' => fn ($choice) => strval($choice->value),
+            ])
+            ->add('page', IntegerType::class, [
+                'attr' => [
+                    'min' => 1,
+                    'value' => 1,
+                ]
+            ]);
 
         $formModifier = function (FormInterface $form, Manufacturer $chipsetManufacturer = null) {
             /**
