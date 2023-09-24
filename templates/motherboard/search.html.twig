@@ -1,17 +1,5 @@
 {% extends 'base.html.twig' %}
 
-{% form_theme form _self %}
-
-{% block checkbox_widget %}
-	{% set type = type|default('checkbox') %}
-	<input type="{{ type }}" {{ block('widget_attributes') }} {% if value is not empty %} value="{{ value }}" {% endif %}>
-{% endblock %}
-
-{% block hidden_widget %}
-	{% set type = type|default('hidden') %}
-	<input type="{{ type }}" {{ block('widget_attributes') }} {% if value is not empty %} value="{{ value }}" {% endif %}>
-{% endblock %}
-
 {% block title %}Search boards - TRW{% endblock %}
 
 {% block metatags %}
@@ -19,17 +7,7 @@
 	<link rel="alternate" hreflang="x-default" href="{{ absolute_url(path('mobosearch')) }}"/>
 {% endblock %}
 {% block body %}
-	{# <div class="index-title">
-		List boards whose manufacturer name starts with:<br>
-	</div>
-	<div class="index-list">
-		{% for letter in ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','?']%}
-			<a class="index-letter" href="{{path("moboindex", {"letter":letter})}}">{{letter}}</a>
-		{% endfor %}
-	</div> #}
-	
-	{{ form_start(form, {'method': 'POST', 'name': 'search_motherboard', 'action': path("mobosearch"),
-						 'attr': {'data-controller': 'search', 'data-live-action': path('mobolivewrapper')}}) }}
+	{{ form_start(form, {'method': 'POST', 'name': 'search_motherboard', 'action': path("mobosearch"), 'attr': { 'data-live-action': path('mobolivewrapper')}}) }}
 	<fieldset id="search-fieldset">
 		<div class="title">Search for a motherboard</div>
 		<section class="search-form-grid">
@@ -180,10 +158,10 @@
 				<span>Search</span>
 			</button>
 			<input id="rst-btn" type="reset" value="reset" data-reset-ids='search_chipsetManufacturer search_cpuSocket1 search_cpuSocket2'>
-			<input id="pagination_redir" type="button" value="" data-results-id='search_moboResults' value="1">
+			<input id="pagination_redir" type="button" value="" data-results-id='search_liveResults' value="1">
 			<script>
 				function paginate(newPageIdx) {
-				console.debug("setting paginator " + newPageIdx);
+				//console.debug("setting paginator " + newPageIdx);
 				var redirElem = document.getElementById('pagination_redir');
 				if (redirElem) {
 					redirElem.setAttribute("value", newPageIdx);
@@ -198,15 +176,10 @@
 		</div>
 	</fieldset>
 	{{ form_end(form, {render_rest: false}) }}
-
 	<!-- Search results -->
-	<section id="search_moboResults">
+	<section id="search_liveResults">
 	{% if motherboards is defined %}
-		<div id="route-results">
-			{% include 'motherboard/result.html.twig' with {'motherboards': motherboards, 'motherboard_count': motherboard_count, 'show_images': show_images} %}
-		</div>
+		{% include 'motherboard/result.html.twig' with {'motherboards': motherboards, 'show_images': show_images, 'route': true} %}
 	{% endif %}
-
 	</section>
-
-</form>{% endblock %}
+{% endblock %}

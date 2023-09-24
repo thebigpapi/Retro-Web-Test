@@ -103,7 +103,6 @@ class MotherboardController extends AbstractController
                 'form' => $form->createView(),
                 'controller_name' => 'MotherboardController',
                 'motherboards' => $motherboards,
-                'motherboard_count' => count($data),
                 'show_images' => $showImages,
             ]);
         }
@@ -133,7 +132,7 @@ class MotherboardController extends AbstractController
             if($key != "domTarget")
                 $string .= $key . '=' . $value . '&';
         }
-        return $this->render('motherboard/result_live.html.twig', [
+        return $this->render('motherboard/result.html.twig', [
             'controller_name' => 'MotherboardController',
             'motherboards' => $motherboards,
             'motherboard_count' => count($data),

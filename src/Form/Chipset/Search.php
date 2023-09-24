@@ -3,7 +3,10 @@
 namespace App\Form\Chipset;
 
 use App\Entity\Chipset;
+use App\Form\Type\ItemsPerPageType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\EnumType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -31,8 +34,17 @@ class Search extends AbstractType
                 'choices' => $options['chipsetManufacturers'],
                 'placeholder' => 'Select a chipset manufacturer ...',
             ])
-            ->add('search', SubmitType::class)
-            ->add('searchWithImages', SubmitType::class);
+            ->add('itemsPerPage', EnumType::class, [
+                'class' => ItemsPerPageType::class,
+                'empty_data' => ItemsPerPageType::Items100,
+                'choice_label' => fn ($choice) => strval($choice->value),
+            ])
+            //->add('search', SubmitType::class)
+            ->add('searchWithImages', CheckboxType::class, [
+                'data' => true,
+                'label' => false,
+                'attr' => array('checked' => 'checked'),
+            ]);
 
         $formModifier = function (FormInterface $form, Manufacturer $chipsetManufacturer = null) {
             /**

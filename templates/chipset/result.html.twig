@@ -1,21 +1,9 @@
-{% extends 'base.html.twig' %}
-{% block title %}Search results (chipset) - TRW{% endblock %}
-
-{% block metatags %}
-	<meta name="description" content="Search for a chipset by name, manufacturer, part number and more.">
-{% endblock %}
-
-{% block body %}
-	<div class="title">
-		<b>Search results</b>
-	</div>
-	<p style="text-align:center;padding-top:10px;">
-		<i>{{ chipset_count > 0 ? chipset_count : 'No' }}{{ chipset_count == 1 ? ' result' : ' results' }}</i>
-	</p>
-	{% if chipsets is not empty %}
-		<div class="results{% if not show_images %} lst{% endif %}">
-			{{ knp_pagination_render(chipsets, 'macros/pagination.html.twig') }}
-			{% if show_images %}
+{% if route is defined and route == true %}{% set typeid = 'route-results' %}{% else %}{% set typeid = domTarget %}{% endif %}
+<div id="{{ typeid }}">
+{% if chipsets is defined and chipsets is not empty %}
+	<div class="results{% if not show_images %} lst{% endif %}">
+		{{ knp_pagination_render(chipsets, 'macros/pagination_async.html.twig') }}
+		{% if show_images %}
 			<div class="perks">
 				<div id="index-datetime" class="perks-list">
 				{% for chipset in chipsets %}
@@ -37,12 +25,12 @@
 						</div>
 						<a href="{{ path("chipset_show", {id: chipset.getId()}) }}" title="Click to visit page">
 							<div class="perk-name">{{ chipset.getFullName() }}</div>
-							<div class="perk-date">
+							<div class="perk-alias">
 								{% if chipset.getParts() is not empty %}<span class="results-alias">
 									<small>Parts: {% for chipPart in chipset.getExpansionChips() %}{{ chipPart.getNameWithManufacturer() }}{% if not loop.last %}, {% endif %}{% endfor %}</small>
 								</span>{% endif %}
 							</div>
-							<div class="perk-date">
+							<div class="perk-alias">
 								{% if chipset.getChipsetAliases() is not empty %}<span class="results-alias">
 									<small>Alias: {% for alias in chipset.getChipsetAliases() %}{{ alias.getFullAliasName() }}{% if not loop.last %}, {% endif %}{% endfor %}</small>
 								</span>{% endif %}
@@ -57,7 +45,13 @@
 					{% include 'macros/widget.html.twig' with {'type':'chipset-results', 'entity': chipsets} %}
 				</div>
 			{% endif %}
-			{{ knp_pagination_render(chipsets, 'macros/pagination.html.twig') }}
-		</div>
-	{% endif %}
-{% endblock %}
+		{{ knp_pagination_render(chipsets, 'macros/pagination_async.html.twig') }}
+	</div>
+{% else %}
+	No results
+{% endif %}
+{% if params is defined %}
+<div id="search-params-id" style="display:none;">{{params}}</div>
+{% endif %}
+</div>
+

@@ -1,42 +1,8 @@
-/*if(document.getElementById('search_chipsetManufacturer')){
-    var select_chipmanuf = document.getElementById('search_chipsetManufacturer');
-    var idx_chipmanuf = select_chipmanuf.options[select_chipmanuf.selectedIndex].value;
-    if(idx_chipmanuf)
-        this.setResult('search[chipsetManufacturer]', idx_chipmanuf, 'search_chipset');
-    //tom-select sync
-    select_chipmanuf.tomselect.sync();
-}
-if(document.getElementById('search_cpuSocket1')){
-    var select_cpuskt1 = document.getElementById('search_cpuSocket1');
-    var idx_cpuskt1 = select_cpuskt1.options[select_cpuskt1.selectedIndex].value;
-    if(idx_cpuskt1)
-        this.setResult('search[cpuSocket1]', idx_cpuskt1, 'search_platform1');
-    //tom-select sync
-    select_cpuskt1.tomselect.sync();
-}
-if(document.getElementById('search_cpuSocket2')){
-    var select_cpuskt2 = document.getElementById('search_cpuSocket2');
-    var idx_cpuskt2 = select_cpuskt2.options[select_cpuskt2.selectedIndex].value;
-    if(idx_cpuskt2)
-        this.setResult('search[cpuSocket2]', idx_cpuskt2, 'search_platform2');
-    //tom-select sync
-    select_cpuskt2.tomselect.sync();
-}
-// tom-select sync for non ajax elements
-if(document.getElementById('search_manufacturer'))
-    document.getElementById('search_manufacturer').tomselect.sync();
-if(document.getElementById('search_platform1'))
-    document.getElementById('search_platform1').tomselect.sync();
-if(document.getElementById('search_platform2'))
-    document.getElementById('search_platform2').tomselect.sync();
-if(document.getElementById('search_formFactor'))
-    document.getElementById('search_formFactor').tomselect.sync();*/
-//alert("trig");
 let search_live = document.getElementById('pagination_redir');
 if(search_live)
     search_live.addEventListener("click", searchLive);
 let chpsel = document.getElementById('search_chipsetManufacturer');
-if(chpsel)
+if(chpsel && document.getElementById('search_chipset'))
     chpsel.addEventListener("change", function(){
         setResult(chpsel.name, chpsel.value, chpsel.getAttribute('data-target-id'));
     }, false);
@@ -72,7 +38,7 @@ function reset() {
             var control = select.tomselect; 
             control.clear();
         }
-        let search = document.getElementById("search_moboResults");
+        let search = document.getElementById("search_liveResults");
         if (search) {
             search.innerHTML = "";
         }
@@ -90,18 +56,13 @@ function setResult(searchedName, searchedValue, targetId) {
             let parser = new DOMParser();
             let parsedResponse = parser.parseFromString(await rawResponse.text(), "text/html");
             document.getElementById(targetId).innerHTML = parsedResponse.getElementById(targetId).innerHTML;
-            /*if (targetId != "search_chipset" && targetId != "search_moboResults"){
-                var select = document.getElementById(targetId);
-                var control = select.tomselect;
-                control.clear();
-                control.clearOptions(); 
-                control.sync();
-            }*/
         })();
     }
 
 function searchLive() {
         let form = document.getElementsByName('search_motherboard')[0];
+        if(!form)
+            form = document.getElementsByName('search_chipset')[0];
         let url = {};
         const formData = new URLSearchParams();
         for (const pair of new FormData(form)) {
@@ -111,6 +72,7 @@ function searchLive() {
         }
         var redirElem = document.getElementById('pagination_redir');
         var targetId = redirElem.getAttribute("data-results-id");
+        console.log(targetId);
         if (redirElem) {
             formData.append("page", redirElem.getAttribute("value"));
         } else {
@@ -127,7 +89,9 @@ function searchLive() {
             let parser = new DOMParser();
             let parsedResponse = parser.parseFromString(await rawResponse.text(), "text/html");
             let responseDiv = parsedResponse.getElementById(targetId);
+            console.log(parsedResponse);
             if (responseDiv) {
+                console.log(responseDiv);
                 document.getElementById(targetId).innerHTML = responseDiv.innerHTML;
                 let string = document.getElementById('search-params-id');
                 window.history.replaceState({},'', string.firstChild.data);

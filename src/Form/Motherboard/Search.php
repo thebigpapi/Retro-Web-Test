@@ -7,6 +7,7 @@ use App\Form\Type\MotherboardExpansionSlotType;
 use App\Form\Type\MotherboardIoPortType;
 use App\Form\Type\ExpansionChipType;
 use App\Form\Type\ItemsPerPageType;
+use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -23,7 +24,6 @@ use App\Entity\ProcessorPlatformType;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormInterface;
-use App\Repository\ProcessorPlatformTypeRepository;
 use Doctrine\ORM\EntityManagerInterface;
 
 class Search extends AbstractType
@@ -35,7 +35,7 @@ class Search extends AbstractType
         $this->entityManager = $entityManager;
     }
 
-    private function getProcessorPlatformTypeRepository(): ProcessorPlatformTypeRepository
+    private function getProcessorPlatformTypeRepository(): EntityRepository
     {
         return $this->entityManager->getRepository(ProcessorPlatformType::class);
     }
