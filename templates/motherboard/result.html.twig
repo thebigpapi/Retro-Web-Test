@@ -1,18 +1,3 @@
-{% extends 'base.html.twig' %}
-
-{% block title %}Search results - TRW{% endblock %}
-
-{% block metatags %}
-	<meta name="description" content="Search for a motherboard by name, chipset, manufacturer, CPU family, form factor, expansion slot count and more.">
-{% endblock %}
-
-{% block body %}
-	<div class="title">
-		<b>Search results</b>
-	</div>
-	<p style="text-align:center;padding-top:10px;">
-		<i>{{ motherboard_count > 0 ? motherboard_count : 'No' }}{{ motherboard_count == 1 ? ' result' : ' results' }}</i>
-	</p>
 	{% if motherboards is not empty %}
 		<div class="results{% if not show_images %} lst{% endif %}">
 			{{ knp_pagination_render(motherboards, 'macros/pagination.html.twig') }}
@@ -38,7 +23,7 @@
 						{% endif %}</div>
 						<a href="{{ path("motherboard_show", {id:motherboard.getId()}) }}" title="Click to visit page">
 							<div class="perk-name">{{ motherboard.getManufacturerName() }}&nbsp;{{ motherboard.name }}</div>
-							<div class="perk-date">
+							<div class="perk-alias">
 							{% if motherboard.getMotherboardAliases() is not empty %}{% for alias in motherboard.getMotherboardAliases() %}
 								<span class="results-alias">
 									<small>{% if alias.getManufacturer() is not null %}{{ alias.getManufacturer().getName() }}{% else %}Unknown{% endif %}&nbsp;{{ alias.name }}{% if not loop.last %} |{% endif %}</small>
@@ -72,4 +57,3 @@
 			{{ knp_pagination_render(motherboards, 'macros/pagination.html.twig') }}
 		</div>
 	{% endif %}
-{% endblock %}

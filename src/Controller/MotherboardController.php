@@ -15,6 +15,8 @@ use App\Repository\ProcessorPlatformTypeRepository;
 use App\Repository\ExpansionChipTypeRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\ClickableInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Knp\Component\Pager\PaginatorInterface;
@@ -45,13 +47,7 @@ class MotherboardController extends AbstractController
             $criterias[$sqlId] = $entityArray;
         }
     }
-
-    #[Route('/motherboards/', name: 'mobosearch', methods: ['GET'])]
-    public function searchResult(
-        Request $request,
-        PaginatorInterface $paginator,
-        MotherboardRepository $motherboardRepository
-    ): Response {
+    public function getCriteria(Request $request){
         $criterias = array();
         $name = htmlentities($request->query->get('name') ?? '');
         if ($name) $criterias['name'] = "$name";
@@ -68,26 +64,49 @@ class MotherboardController extends AbstractController
         $this->addArrayCriteria($request, $criterias, 'expansionSlotsIds', 'expansionSlots');
         $this->addArrayCriteria($request, $criterias, 'ioPortsIds', 'ioPorts');
         $this->addArrayCriteria($request, $criterias, 'expansionChipIds', 'expansionChips');
+        return $criterias;
+    }
+
+    #[Route('/motherboards/', name: 'mobosearch', methods: ['GET', 'POST'])]
+    public function searchResult(
+        Request $request,
+        PaginatorInterface $paginator,
+        MotherboardRepository $motherboardRepository,
+        ManufacturerRepository $manufacturerRepository,
+        CpuSocketRepository $cpuSocketRepository,
+        FormFactorRepository $formFactorRepository,
+        ProcessorPlatformTypeRepository $processorPlatformTypeRepository
+    ): Response {
+        $form = $this->_searchFormHandler($request, $manufacturerRepository, $cpuSocketRepository,
+            $formFactorRepository, $processorPlatformTypeRepository);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            return $this->redirect($this->generateUrl('mobosearch', $this->searchFormToParam($request, $form)));
+        }
+        $criterias = $this->getCriteria($request);
 
         $showImages = boolval(htmlentities($request->query->get('showImages') ?? ''));
-
+        $maxItems = $request->query->getInt('itemsPerPage', $request->request->getInt('itemsPerPage', $this->getParameter('app.pagination.max')));
         if ($criterias == array()) {
-            return $this->redirectToRoute('motherboard_search');
+            return $this->render('motherboard/search.html.twig', [
+                'form' => $form->createView(),
+            ]);
         }
-
-        $data = $motherboardRepository->findByWithJoin($criterias, array('man1_name' => 'ASC', 'mot0_name' => 'ASC'));
-        $motherboards = $paginator->paginate(
-            $data,
-            $request->query->getInt('page', 1),
-            $this->getParameter('app.pagination.max')
-        );
-
-        return $this->render('motherboard/result.html.twig', [
-            'controller_name' => 'MotherboardController',
-            'motherboards' => $motherboards,
-            'motherboard_count' => count($data),
-            'show_images' => $showImages,
-        ]);
+        else{
+            $data = $motherboardRepository->findByWithJoin($criterias);
+            $motherboards = $paginator->paginate(
+                $data,
+                $request->query->getInt('page', 1),
+                $maxItems
+            );
+            return $this->render('motherboard/search.html.twig', [
+                'form' => $form->createView(),
+                'controller_name' => 'MotherboardController',
+                'motherboards' => $motherboards,
+                'motherboard_count' => count($data),
+                'show_images' => $showImages,
+            ]);
+        }
     }
 
     #[Route('/motherboards/results', name: 'mobolivesearch')]
@@ -96,27 +115,12 @@ class MotherboardController extends AbstractController
         PaginatorInterface $paginator,
         MotherboardRepository $motherboardRepository
     ): Response {
-        $criterias = array();
-        $name = htmlentities($request->query->get('name') ?? ($request->request->get('name') ?? ''));
-        if ($name) $criterias['name'] = "$name";
-        $this->addCriteriaById($request, $criterias, 'manufacturerId', 'manufacturer');
-        $this->addCriteriaById($request, $criterias, 'formFactorId', 'form_factor');
-        $this->addCriteriaById($request, $criterias, 'chipsetId', 'chipset');
-        if(!array_key_exists('chipset', $criterias)){
-            $this->addCriteriaById($request, $criterias, 'chipsetManufacturerId', 'chipsetManufacturer');
-        }
-        $this->addCriteriaById($request, $criterias, 'cpuSocket1', 'cpu_socket1');
-        $this->addCriteriaById($request, $criterias, 'cpuSocket2', 'cpu_socket2');
-        $this->addCriteriaById($request, $criterias, 'platform1', 'processor_platform_type1');
-        $this->addCriteriaById($request, $criterias, 'platform2', 'processor_platform_type2');
-        $this->addArrayCriteria($request, $criterias, 'expansionSlotsIds', 'expansionSlots');
-        $this->addArrayCriteria($request, $criterias, 'ioPortsIds', 'ioPorts');
-        $this->addArrayCriteria($request, $criterias, 'expansionChipIds', 'expansionChips');
+        $criterias = $this->getCriteria($request);
 
         $showImages = boolval(htmlentities($request->query->get('showImages') ??
             ($request->request->get('showImages') ?? '')));
 
-        $data = $motherboardRepository->findByWithJoin($criterias, array('man1_name' => 'ASC', 'mot0_name' => 'ASC'));
+        $data = $motherboardRepository->findByWithJoin($criterias);
         $maxItems = $request->query->getInt('itemsPerPage',
             $request->request->getInt('itemsPerPage', $this->getParameter('app.pagination.max')));
         $motherboards = $paginator->paginate(
@@ -124,13 +128,18 @@ class MotherboardController extends AbstractController
             $request->query->getInt('page', $request->request->getInt('page', 1)),
             $maxItems
         );
-
+        $string = "/motherboards/?";
+        foreach ($request->query as $key => $value){
+            if($key != "domTarget")
+                $string .= $key . '=' . $value . '&';
+        }
         return $this->render('motherboard/result_live.html.twig', [
             'controller_name' => 'MotherboardController',
             'motherboards' => $motherboards,
             'motherboard_count' => count($data),
             'show_images' => $showImages,
             'domTarget' => $request->request->get('domTarget') ?? $request->query->get('domTarget') ?? "",
+            'params' => substr($string, 0, -1),
         ]);
     }
 
@@ -274,26 +283,6 @@ class MotherboardController extends AbstractController
         ]);
     }
 
-    #[Route('/motherboards/search/', name: 'motherboard_search')]
-    public function search(
-        Request $request,
-        ManufacturerRepository $manufacturerRepository,
-        CpuSocketRepository $cpuSocketRepository,
-        FormFactorRepository $formFactorRepository,
-        ProcessorPlatformTypeRepository $processorPlatformTypeRepository
-    ): Response {
-        $form = $this->_searchFormHandler($request, $manufacturerRepository, $cpuSocketRepository,
-            $formFactorRepository, $processorPlatformTypeRepository);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            return $this->redirect($this->generateUrl('mobosearch', $this->searchFormToParam($request, $form)));
-        }
-
-        return $this->render('motherboard/search.html.twig', [
-            'form' => $form->createView(),
-        ]);
-    }
-
     #[Route('/motherboards/live', name: 'mobolivewrapper')]
     public function liveSearch(
         Request $request,
@@ -304,7 +293,7 @@ class MotherboardController extends AbstractController
     ): Response {
         $form = $this->_searchFormHandler($request, $manufacturerRepository, $cpuSocketRepository,
             $formFactorRepository, $processorPlatformTypeRepository);
-        
+
         return $this->redirect($this->generateUrl('mobolivesearch', $this->searchFormToParam($request, $form)));
     }
 

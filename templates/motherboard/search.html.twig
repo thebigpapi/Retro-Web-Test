@@ -16,7 +16,7 @@
 
 {% block metatags %}
 	<meta name="description" content="Search for a motherboard by name, chipset, manufacturer, CPU family, form factor, expansion slot count and more.">
-	<link rel="alternate" hreflang="x-default" href="{{ absolute_url(path('motherboard_search')) }}"/>
+	<link rel="alternate" hreflang="x-default" href="{{ absolute_url(path('mobosearch')) }}"/>
 {% endblock %}
 {% block body %}
 	{# <div class="index-title">
@@ -28,7 +28,7 @@
 		{% endfor %}
 	</div> #}
 	
-	{{ form_start(form, {'method': 'POST', 'name': 'search_motherboard', 'action': path("motherboard_search"),
+	{{ form_start(form, {'method': 'POST', 'name': 'search_motherboard', 'action': path("mobosearch"),
 						 'attr': {'data-controller': 'search', 'data-live-action': path('mobolivewrapper')}}) }}
 	<fieldset id="search-fieldset">
 		<div class="title">Search for a motherboard</div>
@@ -61,7 +61,7 @@
 					<img src="{{ absolute_url(asset('build/icons/search/help.svg')) }}" alt="" width="16" height="16">
 				</label>
 				<div class="search-form-widget">
-					<div id="setcpu1">{{ form_widget(form.cpuSocket1, {'attr': {'data-action': "change->search#search", 'data-target-id': 'search_platform1'}}) }}</div>
+					<div id="setcpu1">{{ form_widget(form.cpuSocket1, {'attr': {'data-target-id': 'search_platform1'}}) }}</div>
 					<div id="setcpup1">{{ form_widget(form.platform1, {'attr': {'aria-label': "CPU family"}}) }}</div>
 				</div>
 			</div>
@@ -179,14 +179,17 @@
 				<img src="{{ absolute_url(asset('build/icons/search/search.svg')) }}" alt="search" width="24" height="24">
 				<span>Search</span>
 			</button>
-			<input id="rst-btn" type="reset" value="reset" data-action="click->search#reset" data-reset-ids='search_chipsetManufacturer search_cpuSocket1 search_cpuSocket2'>
-    		<input id="pagination_redir" type="button" value="" data-results-id='search_moboResults' value="1">
+			<input id="rst-btn" type="reset" value="reset" data-reset-ids='search_chipsetManufacturer search_cpuSocket1 search_cpuSocket2'>
+			<input id="pagination_redir" type="button" value="" data-results-id='search_moboResults' value="1">
 			<script>
 				function paginate(newPageIdx) {
 				console.debug("setting paginator " + newPageIdx);
 				var redirElem = document.getElementById('pagination_redir');
 				if (redirElem) {
 					redirElem.setAttribute("value", newPageIdx);
+					if(el = document.getElementById("route-results"))
+						el.remove();
+					window.history.replaceState({},'', window.origin + '/motherboards/');
 					redirElem.click();
 				}
 				return false;
@@ -198,5 +201,12 @@
 
 	<!-- Search results -->
 	<section id="search_moboResults">
+	{% if motherboards is defined %}
+		<div id="route-results">
+			{% include 'motherboard/result.html.twig' with {'motherboards': motherboards, 'motherboard_count': motherboard_count, 'show_images': show_images} %}
+		</div>
+	{% endif %}
+
 	</section>
+
 </form>{% endblock %}

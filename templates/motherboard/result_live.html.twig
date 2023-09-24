@@ -60,4 +60,8 @@
 {% else %}
 	No results
 {% endif %}
+{% if params is defined %}
+<div id="search-params-id" style="display:none;">{{params}}</div>
+{% endif %}
 </div>
+

@@ -35,6 +35,21 @@ if(document.getElementById('search_formFactor'))
 let search_live = document.getElementById('pagination_redir');
 if(search_live)
     search_live.addEventListener("click", searchLive);
+let chpsel = document.getElementById('search_chipsetManufacturer');
+if(chpsel)
+    chpsel.addEventListener("change", function(){
+        setResult(chpsel.name, chpsel.value, chpsel.getAttribute('data-target-id'));
+    }, false);
+let cpu1sel = document.getElementById('search_cpuSocket1');
+if(cpu1sel)
+    cpu1sel.addEventListener("change", function(){
+        setResult(cpu1sel.name, cpu1sel.value, cpu1sel.getAttribute('data-target-id'));
+    }, false);
+let cpu2sel = document.getElementById('search_cpuSocket2');
+if(cpu2sel)
+    cpu2sel.addEventListener("change", function(){
+        setResult(cpu2sel.name, cpu2sel.value, cpu2sel.getAttribute('data-target-id'));
+    }, false);
 function reset() {
         let _this = this;
         let searchs = event.target.dataset.resetIds.split(' ');
@@ -62,17 +77,8 @@ function reset() {
             search.innerHTML = "";
         }
     }
-
-function search() {
-        let search = event.target;
-        let targetId = search.dataset.targetId;
-        setResult(search.name, search.value, targetId);
-    }
-
 function setResult(searchedName, searchedValue, targetId) {
-        let _this = this;
-        let form = _this.element;
-
+        let form = document.getElementsByName('search_motherboard')[0];
         let params = new FormData();
         params.set(searchedName, searchedValue);
 
@@ -84,27 +90,28 @@ function setResult(searchedName, searchedValue, targetId) {
             let parser = new DOMParser();
             let parsedResponse = parser.parseFromString(await rawResponse.text(), "text/html");
             document.getElementById(targetId).innerHTML = parsedResponse.getElementById(targetId).innerHTML;
-            if (targetId != "search_chipset" && targetId != "search_moboResults"){
+            /*if (targetId != "search_chipset" && targetId != "search_moboResults"){
                 var select = document.getElementById(targetId);
                 var control = select.tomselect;
                 control.clear();
                 control.clearOptions(); 
                 control.sync();
-            }
+            }*/
         })();
     }
 
 function searchLive() {
         let form = document.getElementsByName('search_motherboard')[0];
-
+        let url = {};
         const formData = new URLSearchParams();
         for (const pair of new FormData(form)) {
+            if(pair[1])
+                url[pair[0].substring(7, pair[0].length-1)] = pair[1];
             formData.append(pair[0], pair[1]);
         }
         var redirElem = document.getElementById('pagination_redir');
         var targetId = redirElem.getAttribute("data-results-id");
         if (redirElem) {
-            console.log(redirElem);
             formData.append("page", redirElem.getAttribute("value"));
         } else {
             formData.append("page", 1);
@@ -122,6 +129,8 @@ function searchLive() {
             let responseDiv = parsedResponse.getElementById(targetId);
             if (responseDiv) {
                 document.getElementById(targetId).innerHTML = responseDiv.innerHTML;
+                let string = document.getElementById('search-params-id');
+                window.history.replaceState({},'', string.firstChild.data);
             } else {
                 document.getElementById(targetId).innerHTML = "Critical error while fetching results";
             }
