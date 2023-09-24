@@ -1,4 +1,3 @@
-import './styles/glightbox.min.css';
 import GLightbox from './controllers/glightbox/glightbox.js';
 
 const lightbox = GLightbox({

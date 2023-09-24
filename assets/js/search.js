@@ -1,4 +1,39 @@
-let search_live = document.getElementById('pagination_redir');
+//initialize tom-select
+var settings = {};
+if(select_chipmanuf = document.getElementById('search_chipsetManufacturer')){
+    new TomSelect('#search_chipsetManufacturer',settings);
+    select_chipmanuf.tomselect.sync();
+}
+if(select_cpuskt1 = document.getElementById('search_cpuSocket1')){
+    new TomSelect('#search_cpuSocket1',settings);
+    select_cpuskt1.tomselect.sync();
+}
+if(select_cpuskt2 = document.getElementById('search_cpuSocket2')){
+    new TomSelect('#search_cpuSocket2',settings);
+    select_cpuskt2.tomselect.sync();
+}
+if(select_manuf = document.getElementById('search_manufacturer')){
+    new TomSelect('#search_manufacturer',settings);
+    select_manuf.tomselect.sync();
+}
+if(select_platform1 = document.getElementById('search_platform1')){
+    new TomSelect('#search_platform1',settings);
+    select_platform1.tomselect.sync();
+}
+if(select_platform2 = document.getElementById('search_platform2')){
+    new TomSelect('#search_platform2',settings);
+    select_platform1.tomselect.sync();
+}
+if(select_formfactor = document.getElementById('search_formFactor')){
+    new TomSelect('#search_formFactor',settings);
+    select_formfactor.tomselect.sync();
+}
+// event listeners
+if(search_paginate = document.getElementById('search-paginate-id'))
+    search_paginate.addEventListener("click", function(){
+        paginate(search_paginate.getAttribute("data-paginate"));
+    }, false);
+var search_live = document.getElementById('pagination_redir');
 if(search_live)
     search_live.addEventListener("click", searchLive);
 let chpsel = document.getElementById('search_chipsetManufacturer');
@@ -16,6 +51,20 @@ if(cpu2sel)
     cpu2sel.addEventListener("change", function(){
         setResult(cpu2sel.name, cpu2sel.value, cpu2sel.getAttribute('data-target-id'));
     }, false);
+
+    function paginate(newPageIdx) {
+        //console.debug("setting paginator " + newPageIdx);
+        var redirElem = document.getElementById('pagination_redir');
+        if (redirElem) {
+            redirElem.setAttribute("value", newPageIdx);
+            if(el = document.getElementById("route-results"))
+                el.remove();
+            window.history.replaceState({},'', window.origin + '/motherboards/');
+            redirElem.click();
+        }
+        return false;
+    }
+
 function reset() {
         let _this = this;
         let searchs = event.target.dataset.resetIds.split(' ');
@@ -100,8 +149,6 @@ function searchLive() {
             }
         })();
     }
-    window.expand = expand;
-    window.remove = remove;
     function expand(idx) {
         let list = document.getElementById(idx);
         //store the table widget DOM in list and newWidget, increment the counter

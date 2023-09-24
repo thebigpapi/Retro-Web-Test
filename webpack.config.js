@@ -22,6 +22,14 @@ Encore
         from: './assets/icons/',
         to: 'icons/[path][name].[ext]',
     })
+    .copyFiles({
+        from: './assets/js/',
+        to: 'js/[path][name].[ext]',
+    })
+    .copyFiles({
+        from: './assets/styles/glightbox',
+        to: 'css/[path][name].[ext]',
+    })
     /*
      * ENTRY CONFIG
      *

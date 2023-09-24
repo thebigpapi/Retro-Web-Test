@@ -20,6 +20,9 @@
 	{% endapply %}
 	<link rel="alternate" hreflang="x-default" href="{{ absolute_url(path('processor_show', {id: cpu.getId()})) }}"/>
 {% endblock %}
+{% block extra_javascripts %}
+	<script src="/build/js/show.js" defer></script>
+{% endblock %}
 
 {% block body %}
 <!-- MANUF./NAME/PART NO. -->

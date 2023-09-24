@@ -1,14 +1,5 @@
-import { Controller } from 'stimulus';
 
-export default class extends Controller {
-
-    connect() {
-    }
-    /**
-     * Submit the form
-     * @param {*} event
-     */
-    submitcontinue(event) {
+function  submitcontinue(event) {
         let _this=this;
         _this.submit(event, "saveAndContinue", "edit-LargeFile-form");
     }
@@ -16,7 +7,7 @@ export default class extends Controller {
      * Submit the form
      * @param {*} event
      */
-    submitnewadd(event) {
+function  submitnewadd(event) {
         let _this=this;
         _this.submit(event, "saveAndAddAnother", "new-LargeFile-form");
     }
@@ -24,23 +15,17 @@ export default class extends Controller {
      * Submit the form
      * @param {*} event
      */
-    submitreturn(event) {
+function submitreturn(event) {
         let _this=this;
         _this.submit(event, "saveAndReturn", "edit-LargeFile-form");
     }
-    /**
-     * Submit the form
-     * @param {*} event
-     */
-    submitnewreturn(event) {
+
+function submitnewreturn(event) {
         let _this=this;
         _this.submit(event, "saveAndReturn", "new-LargeFile-form");
     }
-    /**
-     * Submit the form
-     * @param {*} event 
-     */
-    submit(event, type, formtype) {
+
+function submit(event, type, formtype) {
         let date = new Date()
         let bytesLoaded = 0
         event.preventDefault()
@@ -119,4 +104,3 @@ export default class extends Controller {
         formData.append("ea[newForm][btn]", type);
         xhr.send(formData);
     }
-}

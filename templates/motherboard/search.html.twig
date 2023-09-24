@@ -6,6 +6,10 @@
 	<meta name="description" content="Search for a motherboard by name, chipset, manufacturer, CPU family, form factor, expansion slot count and more.">
 	<link rel="alternate" hreflang="x-default" href="{{ absolute_url(path('mobosearch')) }}"/>
 {% endblock %}
+{% block extra_javascripts %}
+	<script src="/build/js/tom-select.complete.min.js" defer></script>
+	<script src="/build/js/search.js" defer></script>
+{% endblock %}
 {% block body %}
 	{{ form_start(form, {'method': 'POST', 'name': 'search_motherboard', 'action': path("mobosearch"), 'attr': { 'data-live-action': path('mobolivewrapper')}}) }}
 	<fieldset id="search-fieldset">
@@ -153,26 +157,12 @@
 				<img src="{{ absolute_url(asset('build/icons/search/reset.svg')) }}" alt="reset" width="24" height="24">
 				<span>Reset fields</span>
 			</button>
-			<button type="button" onclick="paginate(1)">
+			<button id="search-paginate-id" type="button" data-paginate="1">
 				<img src="{{ absolute_url(asset('build/icons/search/search.svg')) }}" alt="search" width="24" height="24">
 				<span>Search</span>
 			</button>
 			<input id="rst-btn" type="reset" value="reset" data-reset-ids='search_chipsetManufacturer search_cpuSocket1 search_cpuSocket2'>
 			<input id="pagination_redir" type="button" value="" data-results-id='search_liveResults' value="1">
-			<script>
-				function paginate(newPageIdx) {
-				//console.debug("setting paginator " + newPageIdx);
-				var redirElem = document.getElementById('pagination_redir');
-				if (redirElem) {
-					redirElem.setAttribute("value", newPageIdx);
-					if(el = document.getElementById("route-results"))
-						el.remove();
-					window.history.replaceState({},'', window.origin + '/motherboards/');
-					redirElem.click();
-				}
-				return false;
-			}
-			</script>
 		</div>
 	</fieldset>
 	{{ form_end(form, {render_rest: false}) }}

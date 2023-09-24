@@ -6,6 +6,10 @@
 	<meta name="description" content="Search for a chipset by name, manufacturer and part number.">
 	<link rel="alternate" hreflang="x-default" href="{{ absolute_url(path('chipsetsearch')) }}"/>
 {% endblock %}
+{% block extra_javascripts %}
+	<script src="/build/js/tom-select.complete.min.js" defer></script>
+	<script src="/build/js/search.js" defer></script>
+{% endblock %}
 {% block body %}
 	{{ form_start(form, {'method': 'POST', 'name': 'search_chipset', 'action':path("chipsetsearch"), 'attr':{'data-live-action': path('chipsetlivewrapper')}}) }}
 	<fieldset id="search-fieldset">
