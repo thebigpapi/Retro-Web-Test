@@ -27,6 +27,7 @@
 /public/icons/*
 /public/chip/*
 /public/cache/*
+/public/storage/*
 !public/media/cache/.gitkeep
 !public/motherboard/bios/.gitkeep
 !public/motherboard/image/.gitkeep

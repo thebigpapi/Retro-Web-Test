@@ -32,7 +32,7 @@
 		{% endblock %}
 		{% block javascripts %}
 			<script src="/build/js/datetime.js" defer></script>
-			{{ encore_entry_script_tags('glightbox') }}
+			<script type="module">import '/build/js/glightbox.min.js';const lightbox = GLightbox({});</script>
 		{% endblock %}
 		{% block extra_javascripts %}
 		{% endblock %}

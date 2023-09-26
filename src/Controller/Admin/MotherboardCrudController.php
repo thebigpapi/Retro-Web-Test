@@ -69,6 +69,7 @@ class MotherboardCrudController extends AbstractCrudController
             ->remove(Crud::PAGE_INDEX, Action::DELETE)
             ->add(Crud::PAGE_EDIT, $duplicate)
             ->add(Crud::PAGE_INDEX, $view)
+            ->add(Crud::PAGE_EDIT, $view)
             ->add(Crud::PAGE_INDEX, $del)
             ->setPermission(Action::DELETE, 'ROLE_ADMIN');
     }

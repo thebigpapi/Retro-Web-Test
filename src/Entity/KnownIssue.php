@@ -26,9 +26,13 @@ class KnownIssue
     #[Assert\Length(max: 512, maxMessage: 'Description is longer than {{ limit }} characters, try to make it shorter.')]
     private $description;
 
+    #[ORM\ManyToMany(targetEntity: StorageDevice::class, mappedBy: 'knownIssues')]
+    private Collection $storageDevices;
+
     public function __construct()
     {
         $this->motherboards = new ArrayCollection();
+        $this->storageDevices = new ArrayCollection();
     }
 
     public function __toString(): string
@@ -81,6 +85,33 @@ class KnownIssue
     public function setDescription(?string $description): self
     {
         $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, StorageDevice>
+     */
+    public function getStorageDevices(): Collection
+    {
+        return $this->storageDevices;
+    }
+
+    public function addStorageDevice(StorageDevice $storageDevice): self
+    {
+        if (!$this->storageDevices->contains($storageDevice)) {
+            $this->storageDevices->add($storageDevice);
+            $storageDevice->addKnownIssue($this);
+        }
+
+        return $this;
+    }
+
+    public function removeStorageDevice(StorageDevice $storageDevice): self
+    {
+        if ($this->storageDevices->removeElement($storageDevice)) {
+            $storageDevice->removeKnownIssue($this);
+        }
 
         return $this;
     }

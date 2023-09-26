@@ -4,11 +4,17 @@
     <div class="row">
         <div class="col-md-6">
             <div class="col-md-12"><h4><i>Board count by manufacturer (first 25)</i></h4></div>
-            {{ render_chart(boardChart) }}
+            <canvas id="boardmanufcountdash"></canvas>
+            {% for key, value in boardChart %}
+                <div id="{{key}}" style="display:none;">{{value}}</div>
+            {% endfor %}
         </div>
         <div class="col-md-6">
             <div class="col-md-12"><h4><i>Board count by socket (first 25)</i></h4></div>
-            {{ render_chart(socketChart) }}
+            <canvas id="boardsocketcountdash"></canvas>
+            {% for key, value in socketChart %}
+                <div id="{{key}}" style="display:none;">{{value}}</div>
+            {% endfor %}
         </div>
     </div>
     <div class="row">

@@ -4,27 +4,45 @@
     <div class="row">
         <div class="col-md-6">
             <div class="col-md-12"><h4><i>Board count by manufacturer</i></h4></div>
-            {{ render_chart(boardChart) }}
+            <canvas id="boardmanufcount"></canvas>
+            {% for key, value in boardChart %}
+                <div id="{{key}}" style="display:none;">{{value}}</div>
+            {% endfor %}
         </div>
         <div class="col-md-6">
             <div class="col-md-12"><h4><i>Board count by socket</i></h4></div>
-            {{ render_chart(socketChart) }}
+            <canvas id="boardsocketcount"></canvas>
+            {% for key, value in socketChart %}
+                <div id="{{key}}" style="display:none;">{{value}}</div>
+            {% endfor %}
         </div>
         <div class="col-md-6">
             <div class="col-md-12"><h4><i>Board count by chipset</i></h4></div>
-            {{ render_chart(chipsetChart) }}
+            <canvas id="boardchipsetcount"></canvas>
+            {% for key, value in chipsetChart %}
+                <div id="{{key}}" style="display:none;">{{value}}</div>
+            {% endfor %}
         </div>
         <div class="col-md-6">
             <div class="col-md-12"><h4><i>Board count by expansion chip</i></h4></div>
-            {{ render_chart(expansionChipChart) }}
+            <canvas id="boardchipcount"></canvas>
+            {% for key, value in expansionChipChart %}
+                <div id="{{key}}" style="display:none;">{{value}}</div>
+            {% endfor %}
         </div>
         <div class="col-md-6">
             <div class="col-md-12"><h4><i>Board count by form factor</i></h4></div>
-            {{ render_chart(formFactorChart) }}
+            <canvas id="boardffcount"></canvas>
+            {% for key, value in formFactorChart %}
+                <div id="{{key}}" style="display:none;">{{value}}</div>
+            {% endfor %}
         </div>
         <div class="col-md-6">
             <div class="col-md-12"><h4><i>Chipset documentation presence</i></h4></div>
-            {{ render_chart(chipsetDocCountChart) }}
+            <canvas id="chipsetdoccount"></canvas>
+            {% for key, value in chipsetDocCountChart %}
+                <div id="{{key}}" style="display:none;">{{value}}</div>
+            {% endfor %}
         </div>
     </div>
 {% endblock %}

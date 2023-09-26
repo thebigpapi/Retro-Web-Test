@@ -17,10 +17,10 @@
 									<img src="{{ vich_uploader_asset(image, 'imageFile') | imagine_filter('motherboard_show_thumb') }}" alt="" title="Click to preview image"></a>
 								{% endfor %}
 								{% else %}
-								<img src="{{ absolute_url(asset('build/images/chipset/image-missing.webp')) }}" loading="lazy" width="250" height="200" title="no images available :(">
+								<img src="{{ absolute_url(asset('build/images/missing/chipset-missing.jpg')) }}" loading="lazy" width="250" height="200" title="no images available :(">
 							{% endif %}{% endfor %}
 						{% else %}
-							<img src="{{ absolute_url(asset('build/images/chipset/image-missing.webp')) }}" loading="lazy" width="250" height="200" title="no images available :(">
+							<img src="{{ absolute_url(asset('build/images/missing/chipset-missing.jpg')) }}" loading="lazy" width="250" height="200" title="no images available :(">
 						{% endif %}
 						</div>
 						<a href="{{ path("chipset_show", {id: chipset.getId()}) }}" title="Click to visit page">

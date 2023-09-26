@@ -59,6 +59,9 @@ class Manufacturer
     #[ORM\Column(length: 7, nullable: true)]
     private ?string $fccid = null;
 
+    #[ORM\OneToMany(mappedBy: 'manufacturer', targetEntity: StorageDevice::class)]
+    private Collection $storageDevices;
+
     public function __construct()
     {
         $this->motherboards = new ArrayCollection();
@@ -71,6 +74,7 @@ class Manufacturer
         $this->chipsetBiosCodes = new ArrayCollection();
         $this->osFlags = new ArrayCollection();
         $this->pciVendorIds = new ArrayCollection();
+        $this->storageDevices = new ArrayCollection();
     }
     public function __toString(): string
     {
@@ -392,6 +396,36 @@ class Manufacturer
     public function setFccid(?string $fccid): self
     {
         $this->fccid = $fccid;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, StorageDevice>
+     */
+    public function getStorageDevices(): Collection
+    {
+        return $this->storageDevices;
+    }
+
+    public function addStorageDevice(StorageDevice $storageDevice): self
+    {
+        if (!$this->storageDevices->contains($storageDevice)) {
+            $this->storageDevices->add($storageDevice);
+            $storageDevice->setManufacturer($this);
+        }
+
+        return $this;
+    }
+
+    public function removeStorageDevice(StorageDevice $storageDevice): self
+    {
+        if ($this->storageDevices->removeElement($storageDevice)) {
+            // set the owning side to null (unless already changed)
+            if ($storageDevice->getManufacturer() === $this) {
+                $storageDevice->setManufacturer(null);
+            }
+        }
 
         return $this;
     }

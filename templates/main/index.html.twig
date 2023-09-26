@@ -49,10 +49,10 @@
 								{% set imgtype_count = imgtype_count + 1 %}
 						{% endfor %}
 						{% if imgtype_count == 0 %}
-							<img src="{{ absolute_url(asset('build/images/motherboard/image-missing.webp')) }}" loading="lazy" width="250" height="200" title="no images available :(">
+							<img src="{{ absolute_url(asset('build/images/missing/board-missing.jpg')) }}" loading="lazy" width="250" height="200" title="no images available :(">
 						{% endif %}
 					{% else %}
-						<img src="{{ absolute_url(asset('build/images/motherboard/image-missing.webp')) }}" alt="missing image" loading="lazy" width="250" height="200" title="no images available :(">
+						<img src="{{ absolute_url(asset('build/images/missing/board-missing.jpg')) }}" alt="missing image" loading="lazy" width="250" height="200" title="no images available :(">
 					{% endif %}</div>
 					<div class="perk-name">{{ motherboard.getManufacturerName() }}&nbsp;{{ motherboard.name }}</div>
 					<div class="perk-date">{{ motherboard.getLastEdited()|date("Y-m-d\\TH:i:s", "GMT") }}Z</div>

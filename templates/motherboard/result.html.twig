@@ -18,10 +18,10 @@
 							{% set imgtype_count = imgtype_count + 1 %}
 						{% endfor %}
 						{% if imgtype_count == 0 %}
-							<img src="{{ absolute_url(asset('build/images/motherboard/image-missing.webp')) }}" loading="lazy" width="250" height="200" title="no images available :(">
+							<img src="{{ absolute_url(asset('build/images/missing/board-missing.jpg')) }}" loading="lazy" width="250" height="200" title="no images available :(">
 						{% endif %}
 					{% else %}
-						<img src="{{ absolute_url(asset('build/images/motherboard/image-missing.webp')) }}" loading="lazy" width="250" height="200" title="no images available :(">
+						<img src="{{ absolute_url(asset('build/images/missing/board-missing.jpg')) }}" loading="lazy" width="250" height="200" title="no images available :(">
 					{% endif %}</div>
 					<a href="{{ path("motherboard_show", {id:motherboard.getId()}) }}" title="Click to visit page">
 						<div class="perk-name">{{ motherboard.getManufacturerName() }}&nbsp;{{ motherboard.name }}</div>

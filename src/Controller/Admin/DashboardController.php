@@ -9,7 +9,9 @@ use App\Entity\Coprocessor;
 use App\Entity\ProcessorPlatformType;
 use App\Entity\InstructionSet;
 use App\Entity\CpuSpeed;
-use App\Entity\ChipsetPart;
+use App\Entity\HardDrive;
+use App\Entity\CdDrive;
+use App\Entity\FloppyDrive;
 use App\Entity\ExpansionChip;
 use App\Entity\ExpansionChipType;
 use App\Entity\CacheSize;
@@ -67,7 +69,9 @@ class DashboardController extends AbstractDashboardController
     {
         $assets = parent::configureAssets();
         $assets->addWebpackEncoreEntry('app_ea');
-        $assets->addWebpackEncoreEntry('glightbox');
+        $assets->addHtmlContentToHead('<script type="module">import "/build/js/glightbox.min.js";const lightbox = GLightbox({});</script>');
+        $assets->addWebpackEncoreEntry('chart');
+        $assets->addCssFile('/build/css/glightbox.min.css');
         return $assets;
     }
     public function configureDashboard(): Dashboard
@@ -96,6 +100,9 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Motherboards', 'show/motherboard.svg', Motherboard::class)->setDefaultSort(['lastEdited' => 'DESC']);
         yield MenuItem::linkToCrud('Drivers', 'show/hardware.svg', LargeFile::class);
         yield MenuItem::linkToCrud('Chipsets', 'show/chipset.svg', Chipset::class);
+        yield MenuItem::linkToCrud('Hard drives', 'admin/hdd.svg', HardDrive::class);
+        yield MenuItem::linkToCrud('CD drives', 'show/chip.svg', CdDrive::class);
+        yield MenuItem::linkToCrud('Floppy drives', 'admin/floppy.svg', FloppyDrive::class);
         yield MenuItem::section('Chips');
         yield MenuItem::linkToCrud('Expansion chips', 'show/chip.svg', ExpansionChip::class);
         yield MenuItem::linkToCrud('Expansion chip types', 'show/chip.svg', ExpansionChipType::class)->setPermission('ROLE_ADMIN');
@@ -128,50 +135,21 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Users', 'admin/user.svg', User::class)->setPermission('ROLE_SUPER_ADMIN');
     }
 
-    private function createBoardDashChart(): Chart
+    private function createBoardDashChart(): array
     {
         $manufBoardCount = $this->motherboardRepository->getManufCount();
-        return $this->makeChart(array_slice($manufBoardCount, 0, 25), 1);
+        return $this->getData(array_slice($manufBoardCount, 0, 25), 1, 'board');
     }
-    private function createSocketDashChart(): Chart
+    private function createSocketDashChart(): array
     {
         $boardSockCount = $this->motherboardRepository->getSocketCount();
-        return $this->makeChart(array_slice($boardSockCount, 0, 25), 1);
+        return $this->getData(array_slice($boardSockCount, 0, 25), 1, 'socket');
     }
-    private function makeChart($array, $r): Chart
+    private function getData($array, $r, $id): array
     {
-        $chart = $this->chartBuilder->createChart(Chart::TYPE_BAR);
-        $chart->setData([
-            'labels'=> array_keys($array),
-            'datasets' => [
-                [
-                    'label' => 'Board count',
-                    'backgroundColor' => [
-                        'rgba(255, 99, 132, 0.9)',
-                        'rgba(255, 159, 64, 0.9)',
-                        'rgba(255, 205, 86, 0.9)',
-                        'rgba(75, 192, 192, 0.9)',
-                        'rgba(54, 162, 235, 0.9)',
-                        'rgba(153, 102, 255, 0.9)',
-                        'rgba(201, 203, 207, 0.9)'
-                    ],
-                    'borderColor' => [
-                        'rgb(255, 99, 132)',
-                        'rgb(255, 159, 64)',
-                        'rgb(255, 205, 86)',
-                        'rgb(75, 192, 192)',
-                        'rgb(54, 162, 235)',
-                        'rgb(153, 102, 255)',
-                        'rgb(201, 203, 207)'
-                    ],
-                    'data' => array_values($array),
-                ],
-            ],
-        ]);
-        $chart->setOptions([
-            'indexAxis'=> 'y',
-            'aspectRatio' => $r,
-        ]);
-        return $chart;
+        $result = array();
+        $result[$id . 'keysId'] = json_encode(array_keys($array));
+        $result[$id . 'valuesId'] = json_encode(array_values($array));
+        return $result;
     }
 }

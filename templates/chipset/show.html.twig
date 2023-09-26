@@ -29,8 +29,8 @@
 				{% endfor %}
 			{% endfor %}
 		{% else %}
-			<meta name="twitter:image" content="{{ absolute_url(asset('build/images/motherboard/image-missing.webp')) }}">
-			<meta property="og:image" content="{{ absolute_url(asset('build/images/motherboard/image-missing.webp')) }}">
+			<meta name="twitter:image" content="{{ absolute_url(asset('build/images/missing/chipset-missing.jpg')) }}">
+			<meta property="og:image" content="{{ absolute_url(asset('build/images/missing/chipset-missing.jpg')) }}">
 		{% endif %}
 	{% endapply %}
 {% endblock %}
@@ -231,9 +231,15 @@
 					{% endfor %}
 				{% endfor %}
 			</div>
+		{% else %}
+			<div class="show-image">
+				<img src={{ absolute_url(asset('build/images/missing/chipset-missing.jpg')) }} title="no images available :(" style="width:100%;">
+			</div>
 		{% endif %}
-	{#{% else %}
-		<div class="show-image"><p style="font-size:20px;height:100px;">no images available :(</p></div>#}
+	{% else %}
+		<div class="show-image">
+			<img src={{ absolute_url(asset('build/images/missing/chipset-missing.jpg')) }} title="no images available :(" style="width:100%;">
+		</div>
 	{% endif %}
 
 </div>

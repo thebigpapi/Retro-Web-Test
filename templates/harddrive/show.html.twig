@@ -1,0 +1,174 @@
+{% extends 'base.html.twig' %}
+{% from 'macros/largeFile.html.twig' import link as driverLink %}
+{% from 'macros/largeFile.html.twig' import header as driverHeader %}
+
+{% block title %}
+	{{ harddrive.getNameWithManufacturer() }}
+{% endblock %}
+{% block metatags %}
+	<meta name="description" content="Expansion chip:{{ harddrive.getNameWithManufacturer() }}">
+{% endblock %}
+{% block extra_javascripts %}
+	<script src="/build/js/show.js" defer></script>
+{% endblock %}
+
+{% block opengraph %}
+	{% apply spaceless %}
+	<meta property="og:title" content="{{ harddrive.getNameWithManufacturer() }}">
+	<meta property="og:description" content="Get expansion chip info, images and drivers for {{ harddrive.getNameWithManufacturer() }}!">
+	{% if harddrive.getStorageDeviceImages() is not empty %}
+		{% for image in harddrive.getStorageDeviceImages()|sort((a, b) => a.getFileName() <=> b.getFileName())|slice(0, 1) %}
+			<meta name="twitter:image" content="{{ vich_uploader_asset(image, 'imageFile')}}">
+			<meta property="og:image" content="{{ vich_uploader_asset(image, 'imageFile')}}">
+		{% endfor %}
+	{% else %}
+		<meta name="twitter:image" content="{{ absolute_url(asset('build/images/missing/hdd-missing.jpg')) }}">
+		<meta property="og:image" content="{{ absolute_url(asset('build/images/missing/hdd-missing.jpg')) }}">
+	{% endif %}
+	{% endapply %}
+	<link rel="alternate" hreflang="x-default" href="{{ absolute_url(path('hard_drive_show', {id: harddrive.getId()})) }}"/>
+{% endblock %}
+
+{% block body %}
+<!-- MANUF./NAME/PART NO. -->
+<div class="title">{{ harddrive.getNameWithManufacturer() }}</div>
+{% if harddrive.getStorageDeviceAliases() is not empty %}
+<div class="tag-container" style="justify-content:center;padding-bottom:15px">
+	<span style="width:100%;text-align:center">Also known as:</span>
+	{% for alias in harddrive.getStorageDeviceAliases() %}
+		<span class="text-block" >{{ alias.getFullAliasName() }}</span>
+	{% endfor %}
+</div>
+{% endif %}
+
+<div class="main-strip">
+	<div class="internal-container">
+		{% include 'macros/navbar.html.twig' with {'entity': harddrive, 'entityName': 'HardDrive', 'name': 'hard drive'} %}
+		<div class="internal-content">
+			<!-- DESCRIPRION -->
+			<div class="show-general" id="sh-general">
+				<div class="quick-spec-split">
+					<div class="quick-spec-table">
+						<!-- Capacity -->
+						<div class="quick-spec-head">
+							<img src="{{ absolute_url(asset('build/icons/show/cpu_pins.svg')) }}" alt="cpu" width="24" height="24">Capacity
+						</div>
+						<div>{{ harddrive.getCapacity() }}</div>
+						<!-- RPM -->
+						<div class="quick-spec-head">
+							<img src="{{ absolute_url(asset('build/icons/show/486.svg')) }}" alt="486" width="24" height="24">RPM
+						</div>
+						<div>{{ harddrive.getSpindleSpeed() ?: 'Unknown' }}</div>
+						<!-- Platters -->
+						<div class="quick-spec-head">
+							<img src="{{ absolute_url(asset('build/icons/show/486.svg')) }}" alt="486" width="24" height="24">Platters
+						</div>
+						<div>{{ harddrive.getPlatters() ?: 'Unknown' }}</div>
+					</div>
+					<div class="quick-spec-table">
+						<!-- Cylinders -->
+						<div class="quick-spec-head">
+							<img src="{{ absolute_url(asset('build/icons/show/486.svg')) }}" alt="486" width="24" height="24">Cylinders
+						</div>
+						<div>{{ harddrive.getCylinders() ?: 'Unknown' }}</div>
+						<!-- Heads -->
+						<div class="quick-spec-head">
+							<img src="{{ absolute_url(asset('build/icons/show/486.svg')) }}" alt="486" width="24" height="24">Heads
+						</div>
+						<div>{{ harddrive.getHeads() ?: 'Unknown' }}</div>
+						<!-- Sectors -->
+						<div class="quick-spec-head">
+							<img src="{{ absolute_url(asset('build/icons/show/486.svg')) }}" alt="486" width="24" height="24">Sectors
+						</div>
+						<div>{{ harddrive.getSectors() ?: 'Unknown' }}</div>
+					</div>
+				</div>
+				<div id="index-datetime"><div class="div-datetime">Last updated <span class="perk-date">{{ harddrive.getLastEdited()|date("Y-m-d\\TH:i:s", "GMT") }}Z</span></div></div>
+					<div class="chipset-textarea">
+					{% if harddrive.getDescription() is not empty %}
+						{% apply markdown_to_html %}{{ harddrive.getDescription() }}{% endapply %}
+					{% endif %}
+					</div>
+			</div>
+			<div>
+				<!-- MANUALS -->
+				<div class="show-downloads-group">
+					{% set allDocs = harddrive.getStorageDeviceDocumentations() %}
+					<div class="show-downloads-group-header">
+						<img src="{{ absolute_url(asset('build/icons/show/manual.svg')) }}" alt="doc" width="32" height="32">
+						<span>{{ allDocs|length }} document{% if allDocs|length != 1 %}s{% endif %} available</span>
+					</div>
+					{% if allDocs is not empty %}
+					<div class="plain-list w300p table">
+						<div class="list-entry centered head">
+							<div>Language</div>
+							<div>File</div>
+						</div>
+						{% for manual in allDocs|sort((a, b) => a.getLinkName <=> b.getLinkName) %}
+						<div class="list-entry centered {% if loop.index is divisible by(2) %}alt{% endif %}">
+							<div class="header-label">Language</div>
+							<div>{{ manual.getLanguage().getName()}}</div>
+							<div class="header-label">File</div>
+							<div>
+								<a class="combo" href="{{ vich_uploader_asset(manual, 'manualFile') }}">
+									<img src="{{ absolute_url(asset('build/icons/dw.svg')) }}" alt="" width="16" height="16">
+									<span>{{ manual.getLinkName() }}</span>
+								</a>
+							</div>
+						</div>
+						{% endfor %}
+					</div>
+					{% endif %}
+				</div>
+				<!-- AUDIO FILES -->
+				<div class="show-downloads-group">
+					{% set allFiles = harddrive.getAudioFiles() %}
+					<div class="show-downloads-group-header">
+						<img src="{{ absolute_url(asset('build/icons/show/manual.svg')) }}" alt="doc" width="32" height="32">
+						<span>{{ allFiles|length }} file{% if allFiles|length != 1 %}s{% endif %} available</span>
+					</div>
+					{% if allFiles is not empty %}
+					<div class="plain-list w300p table">
+						<div class="list-entry centered head">
+							<div>Language</div>
+							<div>File</div>
+						</div>
+						{% for file in allFiles|sort((a, b) => a.getName <=> b.getName) %}
+						<div class="list-entry centered {% if loop.index is divisible by(2) %}alt{% endif %}">
+							<div class="header-label">File</div>
+							<div>
+								<a class="combo" href="{{ vich_uploader_asset(file, 'audioFile') }}">
+									<img src="{{ absolute_url(asset('build/icons/dw.svg')) }}" alt="" width="16" height="16">
+									<span>{{ file.getName() }}</span>
+								</a>
+							</div>
+						</div>
+						{% endfor %}
+					</div>
+					{% endif %}
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- IMAGES -->
+	{% if harddrive.getStorageDeviceImages() is not empty %}
+		{% set lpindex = 0 %}
+		<div class="show-images" id="sh-images">
+			{% for image in harddrive.getStorageDeviceImages()|sort((a, b) => a.getFileName() <=> b.getFileName()) %}
+				{% set lpindex = lpindex + 1 %}
+				{% include 'macros/images.html.twig' with {'type':'expansionchip', 'entity': image, 'index': lpindex, 'length': harddrive.getStorageDeviceImages()|length} %}
+			{% endfor %}
+		</div>
+	{% else %}
+		<div class="show-images">
+			<img src={{ absolute_url(asset('build/images/missing/hdd-missing.jpg')) }} title="no images available :(" style="width:100%;">
+		</div>
+	{% endif %}
+
+</div>
+<div class="disclaimer">
+	<p><b>Disclaimer</b></p>
+	<p>The info found in this page might not be entirely correct. Check out <a href="{{ path('app_contributions') }}">this guide</a> to learn how you can improve it.</p>
+</div>
+{% endblock %}

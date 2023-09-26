@@ -590,7 +590,6 @@ class Motherboard
     }
     public function updateLastEdited()
     {
-        //$this->verifyStoltsPorts();
         $this->lastEdited = new \DateTime('now');
     }
     public function getMaxCpu(): ?int

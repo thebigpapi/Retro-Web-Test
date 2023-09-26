@@ -49,39 +49,7 @@ class StatsController extends AbstractDashboardController
             ->setTitle('The Retro Web')
             ->setFaviconPath('build/icons/favicon.ico');
     }
-    private function createBoardChart(): Chart
-    {
-        $manufBoardCount = $this->motherboardRepository->getManufCount();
-        return $this->makeChart(array_slice($manufBoardCount, 0, 90), Chart::TYPE_BAR, 0.4);
-    }
-    private function createChipsetChart(): Chart
-    {
-        $manufBoardCount = $this->motherboardRepository->getChipsetCount();
-        return $this->makeChart(array_slice($manufBoardCount, 0, 90), Chart::TYPE_BAR, 0.4);
-    }
-    private function createChipChart(): Chart
-    {
-        $manufBoardCount = $this->motherboardRepository->getExpChipCount();
-        return $this->makeChart(array_slice($manufBoardCount, 0, 90), Chart::TYPE_BAR, 0.4);
-    }
-    private function createSocketChart(): Chart
-    {
-        $boardSockCount = $this->motherboardRepository->getSocketCount();
-        $newarray = array();
-        $newarray['Other'] = 0;
-        foreach(array_slice($boardSockCount, 0, 100) as $key => $value){
-            if((int) $value >= 10)
-                $newarray[$key] = (int) $value;
-            else{
-                $newarray['Other'] += (int) $value;
-            }
-        }
-        $other = $newarray['Other'];
-        unset($newarray['Other']);
-        $newarray['Other'] = $other;
-        return $this->makeChart($newarray, Chart::TYPE_BAR, 0.4);
-    }
-    private function createFormFactorChart(): Chart
+    private function createFormFactorChart(): array
     {
         $formFactorCount = $this->motherboardRepository->getFormFactorCount();
         $newarray = array();
@@ -96,49 +64,53 @@ class StatsController extends AbstractDashboardController
         $other = $newarray['Other'];
         unset($newarray['Other']);
         $newarray['Other'] = $other;
-        return $this->makeChart($newarray, Chart::TYPE_BAR, 1);
+        return $this->getData($newarray, 'ff');
     }
-    private function createChipsetDocCountChart(): Chart{
+    private function createChipsetDocCountChart(): array
+    {
         $chipsetDocCount = $this->chipsetRepository->getChipsetDocCount();
         $newarray = array();
         $newarray['No'] = $chipsetDocCount[0]['count'];
         $newarray['Yes'] = $this->chipsetRepository->getCount() - $newarray['No'];
-        return $this->makeChart($newarray, Chart::TYPE_PIE, 2);
+        return $this->getData($newarray, 'doc');
     }
-    private function makeChart($array, $t, $r): Chart
+    private function createBoardChart(): array
     {
-        $chart = $this->chartBuilder->createChart($t);
-        $chart->setData([
-            'labels'=> array_keys($array),
-            'datasets' => [
-                [
-                    'label' => 'Board count',
-                    'backgroundColor' => [
-                        'rgba(255, 99, 132, 0.9)',
-                        'rgba(255, 159, 64, 0.9)',
-                        'rgba(255, 205, 86, 0.9)',
-                        'rgba(75, 192, 192, 0.9)',
-                        'rgba(54, 162, 235, 0.9)',
-                        'rgba(153, 102, 255, 0.9)',
-                        'rgba(201, 203, 207, 0.9)'
-                    ],
-                    'borderColor' => [
-                        'rgb(255, 99, 132)',
-                        'rgb(255, 159, 64)',
-                        'rgb(255, 205, 86)',
-                        'rgb(75, 192, 192)',
-                        'rgb(54, 162, 235)',
-                        'rgb(153, 102, 255)',
-                        'rgb(201, 203, 207)'
-                    ],
-                    'data' => array_values($array),
-                ],
-            ],
-        ]);
-        $chart->setOptions([
-            'indexAxis'=> 'y',
-            'aspectRatio' => $r,
-        ]);
-        return $chart;
+        $manufBoardCount = $this->motherboardRepository->getManufCount();
+        return $this->getData(array_slice($manufBoardCount, 0, 90), 'board');
+    }
+    private function createSocketChart(): array
+    {
+        $boardSockCount = $this->motherboardRepository->getSocketCount();
+        $newarray = array();
+        $newarray['Other'] = 0;
+        foreach(array_slice($boardSockCount, 0, 100) as $key => $value){
+            if((int) $value >= 10)
+                $newarray[$key] = (int) $value;
+            else{
+                $newarray['Other'] += (int) $value;
+            }
+        }
+        $other = $newarray['Other'];
+        unset($newarray['Other']);
+        $newarray['Other'] = $other;
+        return $this->getData($newarray, 'socket');
+    }
+    private function createChipsetChart(): array
+    {
+        $manufBoardCount = $this->motherboardRepository->getChipsetCount();
+        return $this->getData(array_slice($manufBoardCount, 0, 90), 'chipset');
+    }
+    private function createChipChart(): array
+    {
+        $manufBoardCount = $this->motherboardRepository->getExpChipCount();
+        return $this->getData(array_slice($manufBoardCount, 0, 90), 'chip');
+    }
+    private function getData($array, $id): array
+    {
+        $result = array();
+        $result[$id . 'keysId'] = json_encode(array_keys($array));
+        $result[$id . 'valuesId'] = json_encode(array_values($array));
+        return $result;
     }
 }

@@ -32,8 +32,8 @@
 			<meta property="og:image" content="{{ vich_uploader_asset(image, 'imageFile')}}">
 		{% endfor %}
 	{% else %}
-		<meta name="twitter:image" content="{{ absolute_url(asset('build/images/motherboard/image-missing.webp')) }}">
-		<meta property="og:image" content="{{ absolute_url(asset('build/images/motherboard/image-missing.webp')) }}">
+		<meta name="twitter:image" content="{{ absolute_url(asset('build/images/missing/board-missing.jpg')) }}">
+		<meta property="og:image" content="{{ absolute_url(asset('build/images/missing/board-missing.jpg')) }}">
 	{% endif %}
 	{% endapply %}
 {% endblock %}
@@ -404,7 +404,7 @@
 		{% endfor %}
 	{% else %}
 		<div class="show-image">
-			<img src={{ absolute_url(asset('build/images/motherboard/image-missing.webp')) }} title="no images available :(" style="width:100%;">
+			<img src={{ absolute_url(asset('build/images/missing/board-missing.jpg')) }} title="no images available :(" style="width:100%;">
 		</div>
 	{% endif %}
 	</div>

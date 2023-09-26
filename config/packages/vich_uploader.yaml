@@ -14,6 +14,11 @@ vich_uploader:
             upload_destination: '%kernel.project_dir%/public/motherboard/miscfile'
             namer: Vich\UploaderBundle\Naming\SmartUniqueNamer
             delete_on_remove: true
+        audiofile:
+            uri_prefix: /storage/audiofile
+            upload_destination: '%kernel.project_dir%/public/storage/audiofile'
+            namer: Vich\UploaderBundle\Naming\SmartUniqueNamer
+            delete_on_remove: true
         chipsetDoc:
             uri_prefix: /chipset/documentation
             upload_destination: '%kernel.project_dir%/public/chipset/documentation'
@@ -22,6 +27,11 @@ vich_uploader:
         chipDoc:
             uri_prefix: /chip/documentation
             upload_destination: '%kernel.project_dir%/public/chip/documentation'
+            namer: Vich\UploaderBundle\Naming\SmartUniqueNamer
+            delete_on_remove: true
+        storageDoc:
+            uri_prefix: /storage/documentation
+            upload_destination: '%kernel.project_dir%/public/storage/documentation'
             namer: Vich\UploaderBundle\Naming\SmartUniqueNamer
             delete_on_remove: true
         bios:
@@ -37,6 +47,11 @@ vich_uploader:
         chipimage:
             uri_prefix: '/chip/image'
             upload_destination: '%kernel.project_dir%/public/chip/image'
+            namer: Vich\UploaderBundle\Naming\SmartUniqueNamer
+            delete_on_remove: true
+        storageimage:
+            uri_prefix: '/storage/image'
+            upload_destination: '%kernel.project_dir%/public/storage/image'
             namer: Vich\UploaderBundle\Naming\SmartUniqueNamer
             delete_on_remove: true
         largefile:
