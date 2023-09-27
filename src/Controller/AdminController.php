@@ -120,7 +120,6 @@ class AdminController extends AbstractDashboardController
     #[Route('/dashboard/getcpufamilies', name:'mobo_get_cpu_families', methods:['POST'])]
     public function getCPUFamilies(Request $request, CpuSocketRepository $cpuSocketRepository): JsonResponse
     {
-        //dd($request->query);
         $platforms = array();
         $cpuSockets = json_decode($request->getContent());
         if ($cpuSockets[0] instanceof CpuSocket) {

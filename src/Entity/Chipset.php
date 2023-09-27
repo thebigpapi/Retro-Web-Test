@@ -114,6 +114,24 @@ class Chipset
         }
         return "$fullName";
     }
+    public function getNameCached(): string
+    {
+        $fullName = $this->getManufacturer()->getName();
+        if ($this->part_no) {
+            $fullName .= " $this->part_no";
+            if ($this->name) {
+                $fullName .= " ($this->name)";
+            }
+        } else {
+            if ($this->name) {
+                $fullName .= " $this->name";
+            } else {
+                $fullName .= " Unidentified";
+            }
+        }
+        $fullName .= " " . $this->getParts();
+        return $fullName;
+    }
     public function getFullNameParts(): string
     {
         if ($this->getManufacturer()) {
@@ -138,20 +156,11 @@ class Chipset
     }
     public function getParts(): string
     {
-        $chipset = "";
-        foreach ($this->expansionChips as $key => $part) {
-            if ($key === array_key_last($this->expansionChips->getValues())) {
-                $chipset = $chipset . $part->getNameWithManufacturer();
-            } else {
-                $chipset = $chipset . $part->getNameWithManufacturer() . ", ";
-            }
+        if($this->getCachedName() != "")
+            return $this->getCachedName();
+        else{
+            return "[uncached parts]";
         }
-        if ($chipset) {
-            $chipset = "[$chipset]";
-        }
-
-
-        return "$chipset";
     }
     /**
      * @return Collection|Motherboard[]

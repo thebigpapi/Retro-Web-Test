@@ -68,7 +68,6 @@ class MiscFile
 
     public function setFileName(?string $file_name): self
     {
-        dd($file_name);
         $this->file_name = $file_name;
 
         return $this;

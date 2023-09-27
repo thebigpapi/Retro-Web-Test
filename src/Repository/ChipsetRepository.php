@@ -80,7 +80,6 @@ class ChipsetRepository extends ServiceEntityRepository
         foreach ($valuesArray as $key => $value) {
             $query->setParameter($key, $value);
         }
-        //dd($query->getResult());
         return $query->getResult();
     }
     /**

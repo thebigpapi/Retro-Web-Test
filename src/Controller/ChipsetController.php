@@ -112,7 +112,6 @@ class ChipsetController extends AbstractController
                 $request->query->getInt('page', 1),
                 $maxItems
             );
-            //dd($chipsets);
         $string = "/chipsets/?";
         foreach ($request->query as $key => $value){
             if($key != "domTarget")

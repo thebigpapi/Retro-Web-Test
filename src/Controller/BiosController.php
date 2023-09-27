@@ -134,7 +134,6 @@ class BiosController extends AbstractController
             'chipsetManufacturers' => $chipsetManufacturers,
             //'csrf_protection' => false // that code is aimed to remove cookie requirement but it breaks ajax stuff
         ]);
-        //dd($expansionChip);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $parameters = array();

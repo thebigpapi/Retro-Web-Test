@@ -14,11 +14,6 @@ class MotherboardIdRedirection extends IdRedirection
     {
         parent::__construct();
     }
-    /*public function __toString(): string
-    {
-        dd($this->destination);
-        return $this->destination;
-    }*/
     public function getDestination(): ?Motherboard
     {
         return $this->destination;

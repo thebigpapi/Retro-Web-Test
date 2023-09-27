@@ -31,7 +31,17 @@ class RedirectController extends AbstractController
     #[Route(path: '/motherboard/search/')]
     public function redirectNewSearch()
     {
-        return $this->redirect($this->generateUrl('motherboard_search'));
+        return $this->redirect($this->generateUrl('mobosearch'));
+    }
+    #[Route(path: '/motherboards/search/')]
+    public function redirectNewSearchWithS()
+    {
+        return $this->redirect($this->generateUrl('mobosearch'));
+    }
+    #[Route(path: '/chipsets/search/')]
+    public function redirectChipsetNewSearch()
+    {
+        return $this->redirect($this->generateUrl('chipsetsearch'));
     }
 
 

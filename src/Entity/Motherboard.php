@@ -183,7 +183,6 @@ class Motherboard
     }
     public function getChipset(): ?Chipset
     {
-        dump( $this->chipset);
         return $this->chipset;
     }
     public function setChipset(?Chipset $chipset): self
