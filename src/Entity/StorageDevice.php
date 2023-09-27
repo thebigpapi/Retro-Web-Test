@@ -278,6 +278,16 @@ class StorageDevice
 
         return $this;
     }
+    public function addAlias(Manufacturer $manuf, ?string $name, string $partNumber): self
+    {
+        $sa = new StorageDeviceAlias();
+        $sa->setManufacturer($manuf);
+        $sa->setStorageDevice($this);
+        $sa->setName($name);
+        $sa->setPartNumber($partNumber);
+
+        return $this->addStorageDeviceAlias($sa);
+    }
 
     public function removeStorageDeviceAlias(StorageDeviceAlias $storageDeviceAlias): self
     {

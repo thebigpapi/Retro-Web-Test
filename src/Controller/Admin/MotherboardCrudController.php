@@ -49,7 +49,6 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
-use EasyCorp\Bundle\EasyAdminBundle\Dto\BatchActionDto;
 use EasyCorp\Bundle\EasyAdminBundle\Security\Permission;
 
 class MotherboardCrudController extends AbstractCrudController
@@ -73,16 +72,17 @@ class MotherboardCrudController extends AbstractCrudController
                 ->generateUrl()
         );
         $view = Action::new('view', 'View')->linkToCrudAction('viewBoard');
-        $del = Action::new('delet1', 'Delete')->addCssClass('text-danger')->linkToCrudAction('deleteBoard');
+        $eview = Action::new('eview', 'View')->linkToCrudAction('viewBoard')->setIcon('fa fa-magnifying-glass');
+        $del = Action::new('deletemobo', 'Delete')->addCssClass('text-danger')->linkToCrudAction('deleteBoard');
         return $actions
             ->add(Crud::PAGE_NEW, Action::SAVE_AND_CONTINUE)
             ->remove(Crud::PAGE_NEW, Action::SAVE_AND_ADD_ANOTHER)
             ->remove(Crud::PAGE_INDEX, Action::DELETE)
             ->add(Crud::PAGE_EDIT, $duplicate)
             ->add(Crud::PAGE_INDEX, $view)
-            ->add(Crud::PAGE_EDIT, $view)
+            ->add(Crud::PAGE_EDIT, $eview)
             ->add(Crud::PAGE_INDEX, $del)
-            ->reorder(Crud::PAGE_INDEX, ['view', Action::EDIT, 'delet1'])
+            ->reorder(Crud::PAGE_INDEX, ['view', Action::EDIT, 'deletemobo'])
             ->setPermission($del, 'ROLE_ADMIN');
     }
     public function configureCrud(Crud $crud): Crud
@@ -167,6 +167,7 @@ class MotherboardCrudController extends AbstractCrudController
         yield CollectionField::new('redirections', 'Redirections')
             ->setEntryType(MotherboardIdRedirectionType::class)
             ->renderExpanded()
+            ->setFormTypeOption('error_bubbling', false)
             ->setColumns('col-sm-12 col-lg-6 col-xxl-4')
             ->onlyOnForms();
         yield FormField::addPanel('Misc')
@@ -338,6 +339,12 @@ class MotherboardCrudController extends AbstractCrudController
                 $cloned->removeMotherboardMaxRam($item);
                 $cloned->addMaxRam($ram, $note);
             }
+            foreach ($cloned->getMotherboardAliases() as $item){
+                $man = $item->getManufacturer();
+                $name = $item->getName();
+                $cloned->removeMotherboardAlias($item);
+                $cloned->addAlias($man, $name);
+            }
             $context->getEntity()->setInstance($cloned);
         }
         $newForm = $this->createNewForm($context->getEntity(), $context->getCrud()->getNewFormOptions(), $context);
@@ -374,8 +381,6 @@ class MotherboardCrudController extends AbstractCrudController
         }
 
         return $responseParameters;
-
-        //return parent::new($context);
     }
 
     public function viewBoard(AdminContext $context)

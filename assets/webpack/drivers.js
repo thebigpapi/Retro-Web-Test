@@ -1,30 +1,15 @@
 
-function  submitcontinue(event) {
-        let _this=this;
-        _this.submit(event, "saveAndContinue", "edit-LargeFile-form");
-    }
-    /**
-     * Submit the form
-     * @param {*} event
-     */
-function  submitnewadd(event) {
-        let _this=this;
-        _this.submit(event, "saveAndAddAnother", "new-LargeFile-form");
-    }
-    /**
-     * Submit the form
-     * @param {*} event
-     */
-function submitreturn(event) {
-        let _this=this;
-        _this.submit(event, "saveAndReturn", "edit-LargeFile-form");
-    }
-
-function submitnewreturn(event) {
-        let _this=this;
-        _this.submit(event, "saveAndReturn", "new-LargeFile-form");
-    }
-
+let submitreturn_btn = document.getElementsByClassName('action-saveAndReturn btn btn-primary action-save')[0];
+if(submitreturn_btn)
+    submitreturn_btn.addEventListener("click", function(event){
+        submit(event, "saveAndReturn", submitreturn_btn.getAttribute('form'));
+    }, false);
+let submitcontinue_btn = document.getElementsByClassName('action-saveAndContinue btn btn-secondary action-save')[0];
+if(!submitcontinue_btn)
+    submitcontinue_btn.addEventListener("click", function(event){
+        submit(event, "saveAndContinue", submitcontinue_btn.getAttribute('form'));
+    }, false);
+console.log("driver");
 function submit(event, type, formtype) {
         let date = new Date()
         let bytesLoaded = 0
@@ -78,12 +63,14 @@ function submit(event, type, formtype) {
                 let doc = parser.parseFromString(xhr.responseText, "text/html");
                 if (doc.getElementById("message")) {
                     document.getElementById("message").innerHTML = doc.getElementById("message").innerHTML
+                    
                 }
                 else {
                     window.location.href = xhr.responseURL
                     document.body.innerHTML = xhr.responseText
                 }
                 if (doc.getElementById("errors-message")) {
+                    console.log(doc.getElementById("errors-message"));
                     document.getElementById("errors-message").innerHTML = doc.getElementById("errors-message").innerHTML
                 }
             }
@@ -101,6 +88,7 @@ function submit(event, type, formtype) {
             }
         }
         let formData = new FormData(document.getElementById(formtype));
+        console.log(formtype, type);
         formData.append("ea[newForm][btn]", type);
         xhr.send(formData);
     }

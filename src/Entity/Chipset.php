@@ -379,6 +379,16 @@ class Chipset
 
         return $this;
     }
+    public function addAlias(Manufacturer $manuf, ?string $name, string $partNumber): self
+    {
+        $ca = new ChipsetAlias();
+        $ca->setManufacturer($manuf);
+        $ca->setChipset($this);
+        $ca->setName($name);
+        $ca->setPartNumber($partNumber);
+
+        return $this->addChipsetAlias($ca);
+    }
 
     public function getLastEdited(): ?\DateTimeInterface
     {

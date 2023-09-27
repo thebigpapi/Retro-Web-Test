@@ -64,7 +64,7 @@ class StorageDeviceAlias
     {
         return $this->partNumber;
     }
-    public function setPartNumber(string $partNumber): self
+    public function setPartNumber(?string $partNumber): self
     {
         $this->partNumber = $partNumber;
 

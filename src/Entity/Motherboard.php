@@ -629,6 +629,15 @@ class Motherboard
 
         return $this;
     }
+    public function addAlias(Manufacturer $manuf, string $name): self
+    {
+        $ma = new MotherboardAlias();
+        $ma->setManufacturer($manuf);
+        $ma->setMotherboard($this);
+        $ma->setName($name);
+
+        return $this->addMotherboardAlias($ma);
+    }
     /**
      * @return Collection|CpuSocket[]
      */
