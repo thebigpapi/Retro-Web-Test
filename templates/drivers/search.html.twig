@@ -37,7 +37,7 @@
 			<h4 hidden>Search navigation</h4>
 			<div class="toolbar toolbar-main">
 				<button type="button" onclick="document.getElementById('search_search').click();return false;">
-					<img src="{{ absolute_url(asset('build/icons/search/search.svg')) }}" alt="imgsearch" width="24" height="24">
+					<img src="{{ absolute_url(asset('build/icons/search.svg')) }}" alt="imgsearch" width="24" height="24">
 					<span>Search</span>
 				</button>
 				{{ form_row(form.search)|replace({'<div><button': '<input', '</button></div>': '">', '>': ' value="'})|raw }}
@@ -47,7 +47,7 @@
 			<div class="search-form-entry">
 				<label class="search-form-label" for="search_name" title="This is where you enter the driver name, version or file name.">
 					<span>Name</span>
-					<img src="{{ absolute_url(asset('build/icons/search/help.svg')) }}" alt="" width="16" height="16">
+					<img src="{{ absolute_url(asset('build/icons/help.svg')) }}" alt="" width="16" height="16">
 				</label>
 				<div class="search-form-widget" style="display: flex;flex-direction: row;">
 					<div>{{ form_widget(form.name) }}</div>

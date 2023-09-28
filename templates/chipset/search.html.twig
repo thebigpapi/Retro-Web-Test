@@ -18,7 +18,7 @@
 			<div class="search-form-entry" style="min-width:min(27em,50vw);">
 				<label class="search-form-label" for="search_chipsetManufacturer" title="This is where you select the manufacturer name and enter the chipset part number.">
 					<span>Manufacturer and name</span>
-					<img src="{{ absolute_url(asset('build/icons/search/help.svg')) }}" alt="" width="16" height="16">
+					<img src="{{ absolute_url(asset('build/icons/help.svg')) }}" alt="" width="16" height="16">
 				</label>
 				<div class="search-form-widget">
 					<div id="setchip1">{{ form_widget(form.chipsetManufacturer) }}</div>
@@ -31,7 +31,7 @@
 			<div class="search-form-entry">
 				<label class="search-form-label file" title="If unchecked, only show chipset models, without any thumbnail.">
 					<span>Show images</span>
-					<img src="{{ absolute_url(asset('build/icons/search/help.svg')) }}" alt="" width="16" height="16">
+					<img src="{{ absolute_url(asset('build/icons/help.svg')) }}" alt="" width="16" height="16">
 				</label>
 				<label class="search-form-widget">
 					{{ form_widget(form.searchWithImages, {'attr': {'style': 'width:25px;height:25px'}}) }}
@@ -51,11 +51,11 @@
 		<!-- Search toolbar -->
 		<div class="toolbar toolbar-main">
 			<button type="button" onclick="document.getElementById('rst-btn').click();return false;">
-				<img src="{{ absolute_url(asset('build/icons/search/reset.svg')) }}" alt="reset" width="24" height="24">
+				<img src="{{ absolute_url(asset('build/icons/reset.svg')) }}" alt="reset" width="24" height="24">
 				<span>Reset fields</span>
 			</button>
 			<button type="button" onclick="paginate(1)">
-				<img src="{{ absolute_url(asset('build/icons/search/search.svg')) }}" alt="search" width="24" height="24">
+				<img src="{{ absolute_url(asset('build/icons/search.svg')) }}" alt="search" width="24" height="24">
 				<span>Search</span>
 			</button>
 			<input id="rst-btn" type="reset" value="reset" data-reset-ids='search_chipsetManufacturer search_cpuSocket1 search_cpuSocket2'>

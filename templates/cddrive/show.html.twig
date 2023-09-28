@@ -50,22 +50,22 @@
 					<div class="quick-spec-table">
 						<!-- CD read -->
 						<div class="quick-spec-head">
-							<img src="{{ absolute_url(asset('build/icons/show/cpu_pins.svg')) }}" alt="cpu" width="24" height="24">CD read speed
+							<img src="{{ absolute_url(asset('build/icons/cpupins.svg')) }}" alt="cpu" width="24" height="24">CD read speed
 						</div>
 						<div>{{ cddrive.getCdReadSpeed() ?: 'Unknown' }}</div>
 						<!-- CD write -->
 						<div class="quick-spec-head">
-							<img src="{{ absolute_url(asset('build/icons/show/486.svg')) }}" alt="486" width="24" height="24">CD write speed
+							<img src="{{ absolute_url(asset('build/icons/486.svg')) }}" alt="486" width="24" height="24">CD write speed
 						</div>
 						<div>{{ cddrive.getCdWriteSpeed() ?: 'Unknown' }}</div>
 						<!-- DVD read -->
 						<div class="quick-spec-head">
-							<img src="{{ absolute_url(asset('build/icons/show/486.svg')) }}" alt="486" width="24" height="24">DVD read speed
+							<img src="{{ absolute_url(asset('build/icons/486.svg')) }}" alt="486" width="24" height="24">DVD read speed
 						</div>
 						<div>{{ cddrive.getDvdReadSpeed() ?: 'Unknown' }}</div>
 						<!-- DVD write speed -->
 						<div class="quick-spec-head">
-							<img src="{{ absolute_url(asset('build/icons/show/486.svg')) }}" alt="486" width="24" height="24">DVD write speed
+							<img src="{{ absolute_url(asset('build/icons/486.svg')) }}" alt="486" width="24" height="24">DVD write speed
 						</div>
 						<div>{{ cddrive.getDvdWriteSpeed() ?: 'Unknown' }}</div>
 					</div>
@@ -81,7 +81,7 @@
 				<div class="show-downloads-group">
 					{% set allDocs = cddrive.getStorageDeviceDocumentations() %}
 					<div class="show-downloads-group-header">
-						<img src="{{ absolute_url(asset('build/icons/show/manual.svg')) }}" alt="doc" width="32" height="32">
+						<img src="{{ absolute_url(asset('build/icons/manual.svg')) }}" alt="doc" width="32" height="32">
 						<span>{{ allDocs|length }} document{% if allDocs|length != 1 %}s{% endif %} available</span>
 					</div>
 					{% if allDocs is not empty %}
@@ -110,7 +110,7 @@
 				<div class="show-downloads-group">
 					{% set allFiles = cddrive.getAudioFiles() %}
 					<div class="show-downloads-group-header">
-						<img src="{{ absolute_url(asset('build/icons/show/manual.svg')) }}" alt="doc" width="32" height="32">
+						<img src="{{ absolute_url(asset('build/icons/manual.svg')) }}" alt="doc" width="32" height="32">
 						<span>{{ allFiles|length }} file{% if allFiles|length != 1 %}s{% endif %} available</span>
 					</div>
 					{% if allFiles is not empty %}

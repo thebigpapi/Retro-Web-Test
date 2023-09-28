@@ -97,9 +97,14 @@ body.body {
     border-image-slice: 1;
     border-image-source: linear-gradient(to right,$color,transparent);
 }
+@font-face {
+    font-family: 'digital-7';
+    src: url('digital-7.ttf');
+  }
 
 @import 'main/base';
 @import 'main/index';
 @import 'main/search';
 @import 'main/show';
 @import 'main/info';
+@import 'main/audio';

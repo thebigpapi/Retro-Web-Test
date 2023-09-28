@@ -5,7 +5,7 @@ if(submitreturn_btn)
         submit(event, "saveAndReturn", submitreturn_btn.getAttribute('form'));
     }, false);
 let submitcontinue_btn = document.getElementsByClassName('action-saveAndContinue btn btn-secondary action-save')[0];
-if(!submitcontinue_btn)
+if(submitcontinue_btn)
     submitcontinue_btn.addEventListener("click", function(event){
         submit(event, "saveAndContinue", submitcontinue_btn.getAttribute('form'));
     }, false);

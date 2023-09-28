@@ -18,7 +18,7 @@
 			<div class="search-form-entry">
 				<label class="search-form-label" for="search_name" title="This is where you enter the board part number, do not write the manufacturer name here!">
 					<span>Manufacturer and name</span>
-					<img src="{{ absolute_url(asset('build/icons/search/help.svg')) }}" alt="" width="16" height="16">
+					<img src="{{ absolute_url(asset('build/icons/help.svg')) }}" alt="" width="16" height="16">
 				</label>
 				<div class="search-form-widget">
 					<div id="setmanuf">{{ form_widget(form.manufacturer, {'attr': {'aria-label': "Manufacturer", 'data-target-id': 'search_manufacturer'}}) }}</div>
@@ -29,7 +29,7 @@
 			<div class="search-form-entry">
 				<label class="search-form-label" for="search_chipset" title="Select a manufacturer from the first field, then pick the part number from the second field">
 					<span>Chipset</span>
-					<img src="{{ absolute_url(asset('build/icons/search/help.svg')) }}" alt="" width="16" height="16">
+					<img src="{{ absolute_url(asset('build/icons/help.svg')) }}" alt="" width="16" height="16">
 				</label>
 				<div class="search-form-widget">
 					<div id="setchip1">{{ form_widget(form.chipsetManufacturer, {'attr': {'data-action': "change->search#search", 'data-target-id': 'search_chipset', 'aria-label': "Chipset manufacturer"}}) }}</div>
@@ -40,7 +40,7 @@
 			<div class="search-form-entry">
 				<label class="search-form-label" for="search_cpuSocket1" title="Select a CPU socket from the first field and/or pick the CPU family from the second field">
 					<span>CPU socket</span>
-					<img src="{{ absolute_url(asset('build/icons/search/help.svg')) }}" alt="" width="16" height="16">
+					<img src="{{ absolute_url(asset('build/icons/help.svg')) }}" alt="" width="16" height="16">
 				</label>
 				<div class="search-form-widget">
 					<div id="setcpu1">{{ form_widget(form.cpuSocket1, {'attr': {'data-target-id': 'search_platform1'}}) }}</div>
@@ -133,7 +133,7 @@
 			<div class="search-form-entry">
 				<label class="search-form-label file" title="If unchecked, only show board models, without any thumbnail.">
 					<span>Show images</span>
-					<img src="{{ absolute_url(asset('build/icons/search/help.svg')) }}" alt="" width="16" height="16">
+					<img src="{{ absolute_url(asset('build/icons/help.svg')) }}" alt="" width="16" height="16">
 				</label>
 				<label class="search-form-widget">
 					{{ form_widget(form.searchWithImages, {'attr': {'style': 'width:25px;height:25px'}}) }}
@@ -154,11 +154,11 @@
 		<!-- Search toolbar -->
 		<div class="toolbar toolbar-main">
 			<button type="button" onclick="document.getElementById('rst-btn').click();return false;">
-				<img src="{{ absolute_url(asset('build/icons/search/reset.svg')) }}" alt="reset" width="24" height="24">
+				<img src="{{ absolute_url(asset('build/icons/reset.svg')) }}" alt="reset" width="24" height="24">
 				<span>Reset fields</span>
 			</button>
 			<button id="search-paginate-id" type="button" data-paginate="1">
-				<img src="{{ absolute_url(asset('build/icons/search/search.svg')) }}" alt="search" width="24" height="24">
+				<img src="{{ absolute_url(asset('build/icons/search.svg')) }}" alt="search" width="24" height="24">
 				<span>Search</span>
 			</button>
 			<input id="rst-btn" type="reset" value="reset" data-reset-ids='search_chipsetManufacturer search_cpuSocket1 search_cpuSocket2'>

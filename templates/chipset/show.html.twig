@@ -56,7 +56,7 @@
 				<div class="quick-spec-table">
 					<!-- Chipset parts -->
 					<div class="quick-spec-head">
-						<img src="{{ absolute_url(asset('build/icons/show/chipset.svg')) }}" alt="chip" width="24" height="24">Chipset parts
+						<img src="{{ absolute_url(asset('build/icons/chipset.svg')) }}" alt="chip" width="24" height="24">Chipset parts
 					</div>
 					{% if chipset.getExpansionChips() is not empty %}
 					<div class="tag-container">
@@ -67,21 +67,21 @@
 					{% else %}<div>Unknown</div>{% endif %}
 					<!-- Release date -->
 					<div class="quick-spec-head">
-						<img src="{{ absolute_url(asset('build/icons/show/calendar.svg')) }}" alt="date" width="24" height="24">Release date
+						<img src="{{ absolute_url(asset('build/icons/calendar.svg')) }}" alt="date" width="24" height="24">Release date
 					</div>
 					<div>{{ chipset.getReleaseDate() ? chipset.getReleaseDateString() : 'Unknown' }}</div>
 					<!-- Actions -->
 					<div class="quick-spec-head">
-						<img src="{{ absolute_url(asset('build/icons/show/cursor.svg')) }}" alt="act" width="24" height="24">Actions
+						<img src="{{ absolute_url(asset('build/icons/cursor.svg')) }}" alt="act" width="24" height="24">Actions
 					</div>
 					<div>
 					<div class="toolbar">
 						{% if chipset.getEncyclopediaLink() is not null %}
 						<a class='button-widget' href="{{ chipset.getEncyclopediaLink() }}">
-							<img src='{{ absolute_url(asset('build/icons/show/data.svg')) }}' alt='' width='16' height='16' style='vertical-align:middle;padding:3px;'>Encyclopedia link</a>
+							<img src='{{ absolute_url(asset('build/icons/data.svg')) }}' alt='' width='16' height='16' style='vertical-align:middle;padding:3px;'>Encyclopedia link</a>
 						{% endif %}
 						<a class='button-widget' href="{{ absolute_url(path('app_homepage')) }}motherboards/?chipsetId={{ chipset.getId() }}&amp;showImages=1">
-							<img src='{{ absolute_url(asset('build/icons/show/hardware.svg')) }}' alt='' width='16' height='16' style='vertical-align:middle;padding:3px;'>See all boards with this chipset</a>
+							<img src='{{ absolute_url(asset('build/icons/hardware.svg')) }}' alt='' width='16' height='16' style='vertical-align:middle;padding:3px;'>See all boards with this chipset</a>
 						<a class='button-widget' href="{{ absolute_url(path('app_homepage')) }}bios/?chipsetId={{ chipset.getId() }}">
 							<img src='{{ absolute_url(asset('build/icons/dw.svg')) }}' alt='' width='16' height='16' style='vertical-align:middle;padding:3px;'>See all BIOSes for this chipset</a>
 						</div>
@@ -114,7 +114,7 @@
 				<!-- DRIVERS -->
 				<div class="show-downloads-group">
 					<div class="show-downloads-group-header">
-						<img src="{{ absolute_url(asset('build/icons/show/hardware.svg')) }}" alt="drv" width="32" height="32">
+						<img src="{{ absolute_url(asset('build/icons/hardware.svg')) }}" alt="drv" width="32" height="32">
 						<span>{{ chipset.getDrivers.count() }} driver{% if chipset.getDrivers.count() != 1 %}s{% endif %} available</span>
 					</div>
 					{% if chipset.getDrivers() is not empty %}
@@ -184,7 +184,7 @@
 						{% endfor %}
 					{% endif %}
 					<div class="show-downloads-group-header">
-						<img src="{{ absolute_url(asset('build/icons/show/manual.svg')) }}" alt="doc" width="32" height="32">
+						<img src="{{ absolute_url(asset('build/icons/manual.svg')) }}" alt="doc" width="32" height="32">
 						<span>{{ allDocs|length }} document{% if allDocs|length != 1 %}s{% endif %} available</span>
 					</div>
 					{% if allDocs is not empty %}

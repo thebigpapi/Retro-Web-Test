@@ -49,10 +49,10 @@
 			<div class="show-general" id="sh-general">
 				<div class="quick-spec-table">
 					<!-- Type -->
-					<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/show/chip.svg')) }}" alt="date" width="24" height="24">Type</div>
+					<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/chip.svg')) }}" alt="date" width="24" height="24">Type</div>
 					<div>{{expansion_chip.getType().getName()}}</div>
 					<!-- PCI DEV -->
-					<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/show/tag.svg')) }}" alt="date" width="24" height="24">PCI ID</div>
+					<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/tag.svg')) }}" alt="date" width="24" height="24">PCI ID</div>
 					<div class="monospace">
 					{% if expansion_chip.getPciDevs() is not empty %}
 						{% if expansion_chip.getManufacturer().getPciVendorIds() is not empty %}
@@ -77,7 +77,7 @@
 				<!-- DRIVERS -->
 				<div class="show-downloads-group">
 					<div class="show-downloads-group-header">
-						<img src="{{ absolute_url(asset('build/icons/show/hardware.svg')) }}" alt="drv" width="32" height="32">
+						<img src="{{ absolute_url(asset('build/icons/hardware.svg')) }}" alt="drv" width="32" height="32">
 						<span>{{ expansion_chip.getDrivers.count() }} driver{% if expansion_chip.getDrivers.count() != 1 %}s{% endif %} available</span>
 					</div>
 					{% if expansion_chip.getDrivers() is not empty %}
@@ -141,7 +141,7 @@
 				<div class="show-downloads-group">
 					{% set allDocs = expansion_chip.getDocumentations() %}
 					<div class="show-downloads-group-header">
-						<img src="{{ absolute_url(asset('build/icons/show/manual.svg')) }}" alt="doc" width="32" height="32">
+						<img src="{{ absolute_url(asset('build/icons/manual.svg')) }}" alt="doc" width="32" height="32">
 						<span>{{ allDocs|length }} document{% if allDocs|length != 1 %}s{% endif %} available</span>
 					</div>
 					{% if allDocs is not empty %}

@@ -25,6 +25,11 @@ class AudioFileType extends AbstractType
                 'constraints' => [
                     new File([
                         'maxSize' => '64Mi',
+                        'mimeTypes' => [
+                            'audio/mpeg',
+                            'audio/ogg',
+                        ],
+                        'mimeTypesMessage' => 'Please upload a valid audio file',
                     ])
                 ],
             ]);

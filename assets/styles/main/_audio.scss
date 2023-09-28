@@ -1,0 +1,99 @@
+div.audio-player{
+    height: 30px;
+    width: 300px;
+    background: #444;
+    box-shadow: 0 0 20px 0 #000a;
+    font-family: arial;
+    color: white;
+    font-size: 0.75em;
+    overflow: hidden;
+    display: grid;
+    grid-template-rows: 8px auto;
+    padding-bottom: 8px;
+    div.timeline {
+        background: white;
+        width: 100%;
+        position: relative;
+        cursor: pointer;
+        box-shadow: 0 2px 10px 0 #0008;
+        div.progress {
+            background: coral;
+            width: 0%;
+            height: 100%;
+            transition: 0.25s;
+        }
+    }
+    div.controls {
+        display: flex;
+        justify-content: space-between;
+        align-items: stretch;
+        padding: 0 20px;
+        & > * {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        div.toggle-play{
+            &.play {
+                cursor: pointer;
+                position: relative;
+                left: 0;
+                height: 0;
+                width: 0;
+                border: 7px solid #0000;
+                border-left: 13px solid white;
+                &:hover {
+                    transform: scale(1.1);
+                }
+            }
+            &.pause {
+                height: 15px;
+                width: 20px;
+                cursor: pointer;
+                position: relative;
+                &:before {
+                    position: absolute;
+                    top: 0;
+                    left: 0px;
+                    background: white;
+                    content: "";
+                    height: 15px;
+                    width: 3px;
+                }
+                &:after {
+                    position: absolute;
+                    top: 0;
+                    right: 8px;
+                    background: white;
+                    content: "";
+                    height: 15px;
+                    width: 3px;
+                }
+                &:hover {
+                    transform: scale(1.1);
+                }
+            }
+        }
+        div.time {
+            display: flex;
+            font-family: 'digital-7', sans-serif;font-size:26px;
+            & > * {
+                padding: 2px;
+            }
+        }
+    }
+    div.volume-container {
+        cursor: pointer;
+        div.volume-icon {
+            height: 26px;
+            display: flex;
+            align-items: center;
+        }
+        input.volume-slider {
+            //background: white;
+            //box-shadow: 0 0 20px #000a;
+            //transition: 0.25s;
+            color:coral;
+        }
+    }
+}

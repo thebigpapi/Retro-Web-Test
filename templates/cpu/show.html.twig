@@ -44,7 +44,7 @@
 				<div class="quick-spec-table">
 					<!-- Socket -->
 					<div class="quick-spec-head">
-						<img src="{{ absolute_url(asset('build/icons/show/cpu_pins.svg')) }}" alt="cpu" width="24" height="24">Package
+						<img src="{{ absolute_url(asset('build/icons/cpupins.svg')) }}" alt="cpu" width="24" height="24">Package
 					</div>
 					{% if cpu.getSockets() is not empty %}
 					<div class="tag-container">
@@ -55,38 +55,38 @@
 					{% endif %}
 					<!-- Family (platform) -->
 					<div class="quick-spec-head">
-						<img src="{{ absolute_url(asset('build/icons/show/486.svg')) }}" alt="486" width="24" height="24">Family
+						<img src="{{ absolute_url(asset('build/icons/486.svg')) }}" alt="486" width="24" height="24">Family
 					</div>
 					<div>{{ cpu.getPlatform() ? cpu.getPlatform().getName() : 'Unknown' }}</div>
 					<!-- Core -->
 					<div class="quick-spec-head">
-						<img src="{{ absolute_url(asset('build/icons/show/486.svg')) }}" alt="486" width="24" height="24">Core
+						<img src="{{ absolute_url(asset('build/icons/486.svg')) }}" alt="486" width="24" height="24">Core
 					</div>
 					<div>{{ cpu.getCore() ? cpu.getCore() : 'Unknown' }}</div>
 					<!-- Speed -->
 					<div class="quick-spec-head">
-						<img src="{{ absolute_url(asset('build/icons/show/speed.svg')) }}" alt="speed" width="24" height="24">Speed
+						<img src="{{ absolute_url(asset('build/icons/speed.svg')) }}" alt="speed" width="24" height="24">Speed
 					</div>
 					<div>{{ cpu.getSpeed() ? cpu.getSpeed().getValueWithUnit() : 'Unknown' }}</div>
 					<!-- FSB -->
 					<div class="quick-spec-head">
-						<img src="{{ absolute_url(asset('build/icons/show/speed.svg')) }}" alt="speed" width="24" height="24">FSB
+						<img src="{{ absolute_url(asset('build/icons/speed.svg')) }}" alt="speed" width="24" height="24">FSB
 					</div>
 					<div>{{ cpu.getFsb() ? cpu.getFsb().getValueWithUnit() : 'Unknown' }}</div>
 					<!-- Process node -->
 					<div class="quick-spec-head">
-						<img src="{{ absolute_url(asset('build/icons/show/dimension.svg')) }}" alt="dimension" width="24" height="24">Process node
+						<img src="{{ absolute_url(asset('build/icons/dimension.svg')) }}" alt="dimension" width="24" height="24">Process node
 					</div>
 					<div>{{ cpu.getProcessNodeWithValue() ? cpu.getProcessNodeWithValue() : 'Unknown' }}</div>
 				</div><div class="quick-spec-table">
 					<!-- TDP -->
 					<div class="quick-spec-head">
-						<img src="{{ absolute_url(asset('build/icons/show/power.svg')) }}" alt="power" width="24" height="24">TDP
+						<img src="{{ absolute_url(asset('build/icons/power.svg')) }}" alt="power" width="24" height="24">TDP
 					</div>
 					<div>{{ cpu.getTdpWithValue() ? cpu.getTdpWithValue() : 'Unknown' }}</div>
 					<!-- Voltage -->
 					<div class="quick-spec-head">
-						<img src="{{ absolute_url(asset('build/icons/show/power.svg')) }}" alt="power" width="24" height="24">Voltage
+						<img src="{{ absolute_url(asset('build/icons/power.svg')) }}" alt="power" width="24" height="24">Voltage
 					</div>
 					{% if cpu.getVoltages() is not empty %}
 					<div class="tag-container">
@@ -97,22 +97,22 @@
 					{% endif %}
 					<!-- L1 cache -->
 					<div class="quick-spec-head">
-						<img src="{{ absolute_url(asset('build/icons/admin/ram.svg')) }}" alt="ram" width="24" height="24">L1 cache
+						<img src="{{ absolute_url(asset('build/icons/ram.svg')) }}" alt="ram" width="24" height="24">L1 cache
 					</div>
 					<div>{{ cpu.getL1() ? cpu.getL1().getValueWithUnit() ~ (cpu.getL1CacheMethod() ? ' (' ~ cpu.getL1CacheMethod().getName() ~ ')') : 'None' }}</div>
 					<!-- L2 cache -->
 					<div class="quick-spec-head">
-						<img src="{{ absolute_url(asset('build/icons/admin/ram.svg')) }}" alt="ram" width="24" height="24">L2 cache
+						<img src="{{ absolute_url(asset('build/icons/ram.svg')) }}" alt="ram" width="24" height="24">L2 cache
 					</div>
 					<div>{{ cpu.getL2() ? cpu.getL2().getValueWithUnit() ~ (cpu.getL2CacheRatio() ? ' (' ~ cpu.getL2CacheRatio().getName() ~ ' speed)') : 'None' }}</div>
 					<!-- L3 cache -->
 					<div class="quick-spec-head">
-						<img src="{{ absolute_url(asset('build/icons/admin/ram.svg')) }}" alt="ram" width="24" height="24">L3 cache
+						<img src="{{ absolute_url(asset('build/icons/ram.svg')) }}" alt="ram" width="24" height="24">L3 cache
 					</div>
 					<div>{{ cpu.getL3() ? cpu.getL3().getValueWithUnit() ~ (cpu.getL3CacheRatio() ? ' (' ~ cpu.getL3CacheRatio().getName() ~ ' speed)') : 'None' }}</div>
 					<!-- Instruction set -->
 					<div class="quick-spec-head">
-						<img src="{{ absolute_url(asset('build/icons/show/cpu_pins.svg')) }}" alt="cpu" width="24" height="24">Instruction set
+						<img src="{{ absolute_url(asset('build/icons/cpupins.svg')) }}" alt="cpu" width="24" height="24">Instruction set
 					</div>
 					{% if cpu.getInstructionSets() is not empty %}
 					<div class="tag-container">

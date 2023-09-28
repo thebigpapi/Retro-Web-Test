@@ -10,6 +10,7 @@
 {% endblock %}
 {% block extra_javascripts %}
 	<script src="/build/js/show.js" defer></script>
+	<script src="/build/js/audio.js" defer></script>
 {% endblock %}
 
 {% block opengraph %}
@@ -51,34 +52,34 @@
 					<div class="quick-spec-table">
 						<!-- Capacity -->
 						<div class="quick-spec-head">
-							<img src="{{ absolute_url(asset('build/icons/show/cpu_pins.svg')) }}" alt="cpu" width="24" height="24">Capacity
+							<img src="{{ absolute_url(asset('build/icons/cpupins.svg')) }}" alt="cpu" width="24" height="24">Capacity
 						</div>
 						<div>{{ harddrive.getCapacity() }}</div>
 						<!-- RPM -->
 						<div class="quick-spec-head">
-							<img src="{{ absolute_url(asset('build/icons/show/486.svg')) }}" alt="486" width="24" height="24">RPM
+							<img src="{{ absolute_url(asset('build/icons/486.svg')) }}" alt="486" width="24" height="24">RPM
 						</div>
 						<div>{{ harddrive.getSpindleSpeed() ?: 'Unknown' }}</div>
 						<!-- Platters -->
 						<div class="quick-spec-head">
-							<img src="{{ absolute_url(asset('build/icons/show/486.svg')) }}" alt="486" width="24" height="24">Platters
+							<img src="{{ absolute_url(asset('build/icons/486.svg')) }}" alt="486" width="24" height="24">Platters
 						</div>
 						<div>{{ harddrive.getPlatters() ?: 'Unknown' }}</div>
 					</div>
 					<div class="quick-spec-table">
 						<!-- Cylinders -->
 						<div class="quick-spec-head">
-							<img src="{{ absolute_url(asset('build/icons/show/486.svg')) }}" alt="486" width="24" height="24">Cylinders
+							<img src="{{ absolute_url(asset('build/icons/486.svg')) }}" alt="486" width="24" height="24">Cylinders
 						</div>
 						<div>{{ harddrive.getCylinders() ?: 'Unknown' }}</div>
 						<!-- Heads -->
 						<div class="quick-spec-head">
-							<img src="{{ absolute_url(asset('build/icons/show/486.svg')) }}" alt="486" width="24" height="24">Heads
+							<img src="{{ absolute_url(asset('build/icons/486.svg')) }}" alt="486" width="24" height="24">Heads
 						</div>
 						<div>{{ harddrive.getHeads() ?: 'Unknown' }}</div>
 						<!-- Sectors -->
 						<div class="quick-spec-head">
-							<img src="{{ absolute_url(asset('build/icons/show/486.svg')) }}" alt="486" width="24" height="24">Sectors
+							<img src="{{ absolute_url(asset('build/icons/486.svg')) }}" alt="486" width="24" height="24">Sectors
 						</div>
 						<div>{{ harddrive.getSectors() ?: 'Unknown' }}</div>
 					</div>
@@ -95,7 +96,7 @@
 				<div class="show-downloads-group">
 					{% set allDocs = harddrive.getStorageDeviceDocumentations() %}
 					<div class="show-downloads-group-header">
-						<img src="{{ absolute_url(asset('build/icons/show/manual.svg')) }}" alt="doc" width="32" height="32">
+						<img src="{{ absolute_url(asset('build/icons/manual.svg')) }}" alt="doc" width="32" height="32">
 						<span>{{ allDocs|length }} document{% if allDocs|length != 1 %}s{% endif %} available</span>
 					</div>
 					{% if allDocs is not empty %}
@@ -124,24 +125,24 @@
 				<div class="show-downloads-group">
 					{% set allFiles = harddrive.getAudioFiles() %}
 					<div class="show-downloads-group-header">
-						<img src="{{ absolute_url(asset('build/icons/show/manual.svg')) }}" alt="doc" width="32" height="32">
+						<img src="{{ absolute_url(asset('build/icons/audio.svg')) }}" alt="doc" width="32" height="32">
 						<span>{{ allFiles|length }} file{% if allFiles|length != 1 %}s{% endif %} available</span>
 					</div>
 					{% if allFiles is not empty %}
-					<div class="plain-list w300p table">
+					<div id="audiofiles" data-count="{{allFiles|length}}" class="plain-list w300p table">
 						<div class="list-entry centered head">
-							<div>Language</div>
-							<div>File</div>
+							<div>Title</div>
+							<div>Preview</div>
 						</div>
 						{% for file in allFiles|sort((a, b) => a.getName <=> b.getName) %}
 						<div class="list-entry centered {% if loop.index is divisible by(2) %}alt{% endif %}">
-							<div class="header-label">File</div>
-							<div>
-								<a class="combo" href="{{ vich_uploader_asset(file, 'audioFile') }}">
+							<div class="header-label">Title</div>
+							<div><a class="combo" href="{{ vich_uploader_asset(file, 'audioFile') }}">
 									<img src="{{ absolute_url(asset('build/icons/dw.svg')) }}" alt="" width="16" height="16">
 									<span>{{ file.getName() }}</span>
-								</a>
-							</div>
+							</a></div>
+							<div class="header-label">Preview</div>
+							{% include 'macros/player.html.twig' with {'src': vich_uploader_asset(file, 'audioFile'), 'index': loop.index} %}
 						</div>
 						{% endfor %}
 					</div>
