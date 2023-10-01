@@ -27,6 +27,9 @@ class ExpansionChip extends Chip
     #[ORM\Column(length: 8192, nullable: true)]
     private ?string $description = null;
 
+    #[ORM\Column(type: 'datetime', mapped: false)]
+    private $lastEdited;
+
     public function __construct()
     {
         parent::__construct();

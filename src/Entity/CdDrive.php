@@ -23,6 +23,9 @@ class CdDrive extends StorageDevice
     #[ORM\Column(type: 'string', length: 255)]
     private $trayType;
 
+    #[ORM\Column(type: 'datetime', mapped: false)]
+    private $lastEdited;
+
     public function getCdReadSpeed(): ?int
     {
         return $this->cdReadSpeed;

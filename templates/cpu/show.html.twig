@@ -126,15 +126,19 @@
 		</div>
 	</div>
 	<!-- IMAGES -->
+	<div class="show-images" id="sh-images">
 	{% if cpu.getImages() is not empty %}
 		{% set lpindex = 0 %}
-		<div class="show-images" id="sh-images">
-			{% for image in cpu.getImages()|sort((a, b) => a.getFileName() <=> b.getFileName()) %}
-				{% set lpindex = lpindex + 1 %}
-				{% include 'macros/images.html.twig' with {'type':'expansionchip', 'entity': image, 'index': lpindex, 'length': cpu.getImages()|length} %}
-			{% endfor %}
+		{% for image in cpu.getImages()|sort((a, b) => a.getFileName() <=> b.getFileName()) %}
+			{% set lpindex = lpindex + 1 %}
+			{% include 'macros/images.html.twig' with {'type':'expansionchip', 'entity': image, 'index': lpindex, 'length': cpu.getImages()|length} %}
+		{% endfor %}
+	{% else %}
+		<div class="show-images">
+			<img src={{ absolute_url(asset('build/images/missing/cpu-missing.jpg')) }} title="no images available :(" style="width:100%;">
 		</div>
 	{% endif %}
+	</div>
 
 </div>
 <div class="disclaimer">

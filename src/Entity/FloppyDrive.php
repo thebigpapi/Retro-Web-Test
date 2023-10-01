@@ -11,6 +11,9 @@ class FloppyDrive extends StorageDevice
     #[ORM\Column(type: 'string', length: 255)]
     private $density;
 
+    #[ORM\Column(type: 'datetime', mapped: false)]
+    private $lastEdited;
+
     public function getDensity(): ?string
     {
         return $this->density;

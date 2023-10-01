@@ -11,6 +11,7 @@ use App\Form\Type\ChipImageType;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
@@ -120,6 +121,8 @@ class ExpansionChipCrudController extends AbstractCrudController
             ->setColumns(6)
             ->renderExpanded()
             ->onlyOnForms();
+        yield DateField::new('lastEdited', 'Last edit')
+            ->hideOnForm();
     }
     public function viewExpChip(AdminContext $context)
     {

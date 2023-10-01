@@ -13,14 +13,14 @@ use App\Entity\Creditor;
 use Symfony\Component\Form\ChoiceList\View\ChoiceView;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
-use Vich\UploaderBundle\Form\Type\VichFileType;
+use Vich\UploaderBundle\Form\Type\VichImageType;
 
 class ChipImageType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('imageFile', VichFileType::class, [
+            ->add('imageFile', VichImageType::class, [
                 'label' => 'Image (jpg file)',
                 'allow_delete' => false,
                 'required' => false,

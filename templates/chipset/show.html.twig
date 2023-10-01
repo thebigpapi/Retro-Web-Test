@@ -232,14 +232,18 @@
 				{% endfor %}
 			</div>
 		{% else %}
+		<div class="show-images" id="sh-images">
 			<div class="show-image">
 				<img src={{ absolute_url(asset('build/images/missing/chipset-missing.jpg')) }} title="no images available :(" style="width:100%;">
 			</div>
+		</div>
 		{% endif %}
 	{% else %}
+	<div class="show-images" id="sh-images">
 		<div class="show-image">
 			<img src={{ absolute_url(asset('build/images/missing/chipset-missing.jpg')) }} title="no images available :(" style="width:100%;">
 		</div>
+	</div>
 	{% endif %}
 
 </div>

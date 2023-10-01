@@ -57,41 +57,38 @@
 						<div>{{ harddrive.getCapacity() }}</div>
 						<!-- RPM -->
 						<div class="quick-spec-head">
-							<img src="{{ absolute_url(asset('build/icons/486.svg')) }}" alt="486" width="24" height="24">RPM
+							<img src="{{ absolute_url(asset('build/icons/speed.svg')) }}" alt="486" width="24" height="24">RPM
 						</div>
 						<div>{{ harddrive.getSpindleSpeed() ?: 'Unknown' }}</div>
 						<!-- Platters -->
 						<div class="quick-spec-head">
-							<img src="{{ absolute_url(asset('build/icons/486.svg')) }}" alt="486" width="24" height="24">Platters
+							<img src="{{ absolute_url(asset('build/icons/platter.svg')) }}" alt="486" width="24" height="24">Platters
 						</div>
 						<div>{{ harddrive.getPlatters() ?: 'Unknown' }}</div>
 					</div>
 					<div class="quick-spec-table">
 						<!-- Cylinders -->
 						<div class="quick-spec-head">
-							<img src="{{ absolute_url(asset('build/icons/486.svg')) }}" alt="486" width="24" height="24">Cylinders
+							<img src="{{ absolute_url(asset('build/icons/platter.svg')) }}" alt="486" width="24" height="24">Cylinders
 						</div>
 						<div>{{ harddrive.getCylinders() ?: 'Unknown' }}</div>
 						<!-- Heads -->
 						<div class="quick-spec-head">
-							<img src="{{ absolute_url(asset('build/icons/486.svg')) }}" alt="486" width="24" height="24">Heads
+							<img src="{{ absolute_url(asset('build/icons/platter.svg')) }}" alt="486" width="24" height="24">Heads
 						</div>
 						<div>{{ harddrive.getHeads() ?: 'Unknown' }}</div>
 						<!-- Sectors -->
 						<div class="quick-spec-head">
-							<img src="{{ absolute_url(asset('build/icons/486.svg')) }}" alt="486" width="24" height="24">Sectors
+							<img src="{{ absolute_url(asset('build/icons/platter.svg')) }}" alt="486" width="24" height="24">Sectors
 						</div>
 						<div>{{ harddrive.getSectors() ?: 'Unknown' }}</div>
 					</div>
 				</div>
-				<div id="index-datetime"><div class="div-datetime">Last updated <span class="perk-date">{{ harddrive.getLastEdited()|date("Y-m-d\\TH:i:s", "GMT") }}Z</span></div></div>
-					<div class="chipset-textarea">
-					{% if harddrive.getDescription() is not empty %}
-						{% apply markdown_to_html %}{{ harddrive.getDescription() }}{% endapply %}
-					{% endif %}
-					</div>
-			</div>
-			<div>
+				<div class="chipset-textarea">
+				{% if harddrive.getDescription() is not empty %}
+					{% apply markdown_to_html %}{{ harddrive.getDescription() }}{% endapply %}
+				{% endif %}
+				</div>
 				<!-- MANUALS -->
 				<div class="show-downloads-group">
 					{% set allDocs = harddrive.getStorageDeviceDocumentations() %}
@@ -126,7 +123,7 @@
 					{% set allFiles = harddrive.getAudioFiles() %}
 					<div class="show-downloads-group-header">
 						<img src="{{ absolute_url(asset('build/icons/audio.svg')) }}" alt="doc" width="32" height="32">
-						<span>{{ allFiles|length }} file{% if allFiles|length != 1 %}s{% endif %} available</span>
+						<span>{{ allFiles|length }} audio file{% if allFiles|length != 1 %}s{% endif %} available</span>
 					</div>
 					{% if allFiles is not empty %}
 					<div id="audiofiles" data-count="{{allFiles|length}}" class="plain-list w300p table">
@@ -148,24 +145,25 @@
 					</div>
 					{% endif %}
 				</div>
+				<div id="index-datetime"><div class="div-datetime">Last updated <span class="perk-date">{{ harddrive.getLastEdited()|date("Y-m-d\\TH:i:s", "GMT") }}Z</span></div></div>
 			</div>
 		</div>
 	</div>
 
 	<!-- IMAGES -->
+	<div class="show-images" id="sh-images">
 	{% if harddrive.getStorageDeviceImages() is not empty %}
 		{% set lpindex = 0 %}
-		<div class="show-images" id="sh-images">
-			{% for image in harddrive.getStorageDeviceImages()|sort((a, b) => a.getFileName() <=> b.getFileName()) %}
-				{% set lpindex = lpindex + 1 %}
-				{% include 'macros/images.html.twig' with {'type':'expansionchip', 'entity': image, 'index': lpindex, 'length': harddrive.getStorageDeviceImages()|length} %}
-			{% endfor %}
-		</div>
+		{% for image in harddrive.getStorageDeviceImages()|sort((a, b) => a.getFileName() <=> b.getFileName()) %}
+			{% set lpindex = lpindex + 1 %}
+			{% include 'macros/images.html.twig' with {'type':'expansionchip', 'entity': image, 'index': lpindex, 'length': harddrive.getStorageDeviceImages()|length} %}
+		{% endfor %}
 	{% else %}
 		<div class="show-images">
 			<img src={{ absolute_url(asset('build/images/missing/hdd-missing.jpg')) }} title="no images available :(" style="width:100%;">
 		</div>
 	{% endif %}
+	</div>
 
 </div>
 <div class="disclaimer">

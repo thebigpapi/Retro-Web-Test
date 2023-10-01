@@ -144,6 +144,7 @@ function searchLive() {
                 document.getElementById(targetId).innerHTML = responseDiv.innerHTML;
                 let string = document.getElementById('search-params-id');
                 window.history.replaceState({},'', string.firstChild.data);
+                const lightbox = GLightbox({});
             } else {
                 document.getElementById(targetId).innerHTML = "Critical error while fetching results";
             }
@@ -166,6 +167,23 @@ function searchLive() {
             newElem.setAttribute("class", "editor-row");
         newElem.innerHTML = newWidget;
         list.appendChild(newElem);
+        console.log(idx, counter);
+        //tom-select
+        if(idx == "motherboardExpansionSlots-fields-list"){
+            el = document.getElementById('search_motherboardExpansionSlots_' + (counter - 1) + '_expansion_slot');
+            new TomSelect('#search_motherboardExpansionSlots_' + (counter - 1) + '_expansion_slot', {});
+            el.tomselect.sync();
+        }
+        if(idx == "motherboardIoPorts-fields-list"){
+            el = document.getElementById('search_motherboardIoPorts_' + (counter - 1) + '_io_port');
+            new TomSelect('#search_motherboardIoPorts_' + (counter - 1) + '_io_port', {});
+            el.tomselect.sync();
+        }
+        if(idx == "expansionChips-fields-list"){
+            el = document.getElementById('search_expansionChips_' + (counter - 1));
+            new TomSelect('#search_expansionChips_' + (counter - 1), {});
+            el.tomselect.sync();
+        }
     }
     function remove(el){
         var element = el.parentNode;

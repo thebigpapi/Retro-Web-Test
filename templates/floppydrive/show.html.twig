@@ -47,22 +47,18 @@
 		<div class="internal-content">
 			<!-- DESCRIPRION -->
 			<div class="show-general" id="sh-general">
-
-					<div class="quick-spec-table">
-						<!-- Density -->
-						<div class="quick-spec-head">
-							<img src="{{ absolute_url(asset('build/icons/cpupins.svg')) }}" alt="cpu" width="24" height="24">Capacity
-						</div>
-						<div>{{ floppydrive.getDensity() }}</div>
+				<div class="quick-spec-table">
+					<!-- Density -->
+					<div class="quick-spec-head">
+						<img src="{{ absolute_url(asset('build/icons/cpupins.svg')) }}" alt="cpu" width="24" height="24">Capacity
 					</div>
-				<div id="index-datetime"><div class="div-datetime">Last updated <span class="perk-date">{{ floppydrive.getLastEdited()|date("Y-m-d\\TH:i:s", "GMT") }}Z</span></div></div>
-					<div class="chipset-textarea">
-					{% if floppydrive.getDescription() is not empty %}
-						{% apply markdown_to_html %}{{ floppydrive.getDescription() }}{% endapply %}
-					{% endif %}
-					</div>
-			</div>
-			<div>
+					<div>{{ floppydrive.getDensity() }}</div>
+				</div>
+				<div class="chipset-textarea">
+				{% if floppydrive.getDescription() is not empty %}
+					{% apply markdown_to_html %}{{ floppydrive.getDescription() }}{% endapply %}
+				{% endif %}
+				</div>
 				<!-- MANUALS -->
 				<div class="show-downloads-group">
 					{% set allDocs = floppydrive.getStorageDeviceDocumentations() %}
@@ -92,24 +88,25 @@
 					</div>
 					{% endif %}
 				</div>
+				<div id="index-datetime"><div class="div-datetime">Last updated <span class="perk-date">{{ floppydrive.getLastEdited()|date("Y-m-d\\TH:i:s", "GMT") }}Z</span></div></div>
 			</div>
 		</div>
 	</div>
 
 	<!-- IMAGES -->
+	<div class="show-images" id="sh-images">
 	{% if floppydrive.getStorageDeviceImages() is not empty %}
 		{% set lpindex = 0 %}
-		<div class="show-images" id="sh-images">
-			{% for image in floppydrive.getStorageDeviceImages()|sort((a, b) => a.getFileName() <=> b.getFileName()) %}
-				{% set lpindex = lpindex + 1 %}
-				{% include 'macros/images.html.twig' with {'type':'expansionchip', 'entity': image, 'index': lpindex, 'length': floppydrive.getStorageDeviceImages()|length} %}
-			{% endfor %}
-		</div>
+		{% for image in floppydrive.getStorageDeviceImages()|sort((a, b) => a.getFileName() <=> b.getFileName()) %}
+			{% set lpindex = lpindex + 1 %}
+			{% include 'macros/images.html.twig' with {'type':'expansionchip', 'entity': image, 'index': lpindex, 'length': floppydrive.getStorageDeviceImages()|length} %}
+		{% endfor %}
 	{% else %}
 		<div class="show-images">
-			<img src={{ absolute_url(asset('build/images/missing/hdd-missing.jpg')) }} title="no images available :(" style="width:100%;">
+			<img src={{ absolute_url(asset('build/images/missing/fdd-missing.jpg')) }} title="no images available :(" style="width:100%;">
 		</div>
 	{% endif %}
+	</div>
 
 </div>
 <div class="disclaimer">

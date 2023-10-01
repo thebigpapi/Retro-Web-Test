@@ -76,7 +76,16 @@ class HardDriveCrudController extends AbstractCrudController
     {
         return parent::configureFilters($filters)
             ->add('manufacturer')
-            ->add('name');
+            ->add('name')
+            ->add('partNumber')
+            ->add('storageDeviceAliases')
+            ->add('capacity')
+            ->add('cylinders')
+            ->add('heads')
+            ->add('sectors')
+            ->add('platters')
+            ->add('spindleSpeed')
+            ->add('lastEdited');
     }
     public function configureFields(string $pageName): iterable
     {
@@ -107,6 +116,7 @@ class HardDriveCrudController extends AbstractCrudController
         yield NumberField::new('capacity')
             ->setColumns('col-sm-4 col-lg-3 col-xxl-2');
         yield NumberField::new('cylinders')
+            ->setFormTypeOption('choice_label', 'ehTest')
             ->setColumns('col-sm-4 col-lg-3 col-xxl-2');
         yield NumberField::new('heads')
             ->setColumns('col-sm-4 col-lg-3 col-xxl-2');

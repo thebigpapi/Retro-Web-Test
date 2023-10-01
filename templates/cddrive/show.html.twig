@@ -47,36 +47,33 @@
 		<div class="internal-content">
 			<!-- DESCRIPRION -->
 			<div class="show-general" id="sh-general">
-					<div class="quick-spec-table">
-						<!-- CD read -->
-						<div class="quick-spec-head">
-							<img src="{{ absolute_url(asset('build/icons/cpupins.svg')) }}" alt="cpu" width="24" height="24">CD read speed
-						</div>
-						<div>{{ cddrive.getCdReadSpeed() ?: 'Unknown' }}</div>
-						<!-- CD write -->
-						<div class="quick-spec-head">
-							<img src="{{ absolute_url(asset('build/icons/486.svg')) }}" alt="486" width="24" height="24">CD write speed
-						</div>
-						<div>{{ cddrive.getCdWriteSpeed() ?: 'Unknown' }}</div>
-						<!-- DVD read -->
-						<div class="quick-spec-head">
-							<img src="{{ absolute_url(asset('build/icons/486.svg')) }}" alt="486" width="24" height="24">DVD read speed
-						</div>
-						<div>{{ cddrive.getDvdReadSpeed() ?: 'Unknown' }}</div>
-						<!-- DVD write speed -->
-						<div class="quick-spec-head">
-							<img src="{{ absolute_url(asset('build/icons/486.svg')) }}" alt="486" width="24" height="24">DVD write speed
-						</div>
-						<div>{{ cddrive.getDvdWriteSpeed() ?: 'Unknown' }}</div>
+				<div class="quick-spec-table">
+					<!-- CD read -->
+					<div class="quick-spec-head">
+						<img src="{{ absolute_url(asset('build/icons/cpupins.svg')) }}" alt="cpu" width="24" height="24">CD read speed
 					</div>
-				<div id="index-datetime"><div class="div-datetime">Last updated <span class="perk-date">{{ cddrive.getLastEdited()|date("Y-m-d\\TH:i:s", "GMT") }}Z</span></div></div>
-					<div class="chipset-textarea">
-					{% if cddrive.getDescription() is not empty %}
-						{% apply markdown_to_html %}{{ cddrive.getDescription() }}{% endapply %}
-					{% endif %}
+					<div>{{ cddrive.getCdReadSpeed() ?: 'Unknown' }}</div>
+					<!-- CD write -->
+					<div class="quick-spec-head">
+						<img src="{{ absolute_url(asset('build/icons/486.svg')) }}" alt="486" width="24" height="24">CD write speed
 					</div>
-			</div>
-			<div>
+					<div>{{ cddrive.getCdWriteSpeed() ?: 'Unknown' }}</div>
+					<!-- DVD read -->
+					<div class="quick-spec-head">
+						<img src="{{ absolute_url(asset('build/icons/486.svg')) }}" alt="486" width="24" height="24">DVD read speed
+					</div>
+					<div>{{ cddrive.getDvdReadSpeed() ?: 'Unknown' }}</div>
+					<!-- DVD write speed -->
+					<div class="quick-spec-head">
+						<img src="{{ absolute_url(asset('build/icons/486.svg')) }}" alt="486" width="24" height="24">DVD write speed
+					</div>
+					<div>{{ cddrive.getDvdWriteSpeed() ?: 'Unknown' }}</div>
+				</div>
+				<div class="chipset-textarea">
+				{% if cddrive.getDescription() is not empty %}
+					{% apply markdown_to_html %}{{ cddrive.getDescription() }}{% endapply %}
+				{% endif %}
+				</div>
 				<!-- MANUALS -->
 				<div class="show-downloads-group">
 					{% set allDocs = cddrive.getStorageDeviceDocumentations() %}
@@ -133,24 +130,25 @@
 					</div>
 					{% endif %}
 				</div>
+				<div id="index-datetime"><div class="div-datetime">Last updated <span class="perk-date">{{ cddrive.getLastEdited()|date("Y-m-d\\TH:i:s", "GMT") }}Z</span></div></div>
 			</div>
 		</div>
 	</div>
 
 	<!-- IMAGES -->
+	<div class="show-images" id="sh-images">
 	{% if cddrive.getStorageDeviceImages() is not empty %}
 		{% set lpindex = 0 %}
-		<div class="show-images" id="sh-images">
-			{% for image in cddrive.getStorageDeviceImages()|sort((a, b) => a.getFileName() <=> b.getFileName()) %}
-				{% set lpindex = lpindex + 1 %}
-				{% include 'macros/images.html.twig' with {'type':'expansionchip', 'entity': image, 'index': lpindex, 'length': cddrive.getStorageDeviceImages()|length} %}
-			{% endfor %}
-		</div>
+		{% for image in cddrive.getStorageDeviceImages()|sort((a, b) => a.getFileName() <=> b.getFileName()) %}
+			{% set lpindex = lpindex + 1 %}
+			{% include 'macros/images.html.twig' with {'type':'expansionchip', 'entity': image, 'index': lpindex, 'length': cddrive.getStorageDeviceImages()|length} %}
+		{% endfor %}
 	{% else %}
 		<div class="show-images">
-			<img src={{ absolute_url(asset('build/images/missing/hdd-missing.jpg')) }} title="no images available :(" style="width:100%;">
+			<img src={{ absolute_url(asset('build/images/missing/cdd-missing.jpg')) }} title="no images available :(" style="width:100%;">
 		</div>
 	{% endif %}
+	</div>
 
 </div>
 <div class="disclaimer">

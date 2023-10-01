@@ -42,6 +42,9 @@ class Processor extends ProcessingUnit
     #[ORM\OneToMany(targetEntity: ProcessorVoltage::class, mappedBy: 'processor', orphanRemoval: true, cascade: ['persist'])]
     private $voltages;
 
+    #[ORM\Column(type: 'datetime', mapped: false)]
+    private $lastEdited;
+
     public function __construct()
     {
         parent::__construct();

@@ -71,9 +71,6 @@
 					{% apply markdown_to_html %}{{ expansion_chip.getDescription() }}{% endapply %}
 				{% endif %}
 				</div>
-			</div>
-
-			<div class="show-downloads" id="sh-downloads">
 				<!-- DRIVERS -->
 				<div class="show-downloads-group">
 					<div class="show-downloads-group-header">
@@ -136,7 +133,6 @@
 					{% else %}
 					{% endif %}
 				</div>
-
 				<!-- MANUALS -->
 				<div class="show-downloads-group">
 					{% set allDocs = expansion_chip.getDocumentations() %}
@@ -166,24 +162,25 @@
 					</div>
 					{% endif %}
 				</div>
+				<div id="index-datetime"><div class="div-datetime">Last updated <span class="perk-date">{{ expansion_chip.getLastEdited()|date("Y-m-d\\TH:i:s", "GMT") }}Z</span></div></div>
 			</div>
 		</div>
 	</div>
 
 	<!-- IMAGES -->
+	<div class="show-images" id="sh-images">
 	{% if expansion_chip.getImages() is not empty %}
 		{% set lpindex = 0 %}
-		<div class="show-images" id="sh-images">
-			{% for image in expansion_chip.getImages()|sort((a, b) => a.getFileName() <=> b.getFileName()) %}
-				{% set lpindex = lpindex + 1 %}
-				{% include 'macros/images.html.twig' with {'type':'expansionchip', 'entity': image, 'index': lpindex, 'length': expansion_chip.getImages()|length} %}
-			{% endfor %}
-		</div>
+		{% for image in expansion_chip.getImages()|sort((a, b) => a.getFileName() <=> b.getFileName()) %}
+			{% set lpindex = lpindex + 1 %}
+			{% include 'macros/images.html.twig' with {'type':'expansionchip', 'entity': image, 'index': lpindex, 'length': expansion_chip.getImages()|length} %}
+		{% endfor %}
 	{% else %}
 		<div class="show-images">
 			<img src={{ absolute_url(asset('build/images/missing/chip-missing.jpg')) }} title="no images available :(" style="width:100%;">
 		</div>
 	{% endif %}
+	</div>
 
 </div>
 <div class="disclaimer">

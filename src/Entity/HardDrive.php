@@ -26,6 +26,9 @@ class HardDrive extends StorageDevice
     #[ORM\Column(type: 'smallint', nullable: true)]
     private $platters;
 
+    #[ORM\Column(type: 'datetime', mapped: false)]
+    private $lastEdited;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -55,6 +58,10 @@ class HardDrive extends StorageDevice
     public function getCylinders(): ?int
     {
         return $this->cylinders;
+    }
+    public function ehTest(): ?string
+    {
+        return $this->cylinders + "a";
     }
 
     public function setCylinders(?int $cylinders): self

@@ -1,15 +1,18 @@
 
-let submitreturn_btn = document.getElementsByClassName('action-saveAndReturn btn btn-primary action-save')[0];
-if(submitreturn_btn)
-    submitreturn_btn.addEventListener("click", function(event){
-        submit(event, "saveAndReturn", submitreturn_btn.getAttribute('form'));
-    }, false);
-let submitcontinue_btn = document.getElementsByClassName('action-saveAndContinue btn btn-secondary action-save')[0];
-if(submitcontinue_btn)
-    submitcontinue_btn.addEventListener("click", function(event){
-        submit(event, "saveAndContinue", submitcontinue_btn.getAttribute('form'));
-    }, false);
-console.log("driver");
+let form = document.getElementById('edit-LargeFile-form');
+if(form){
+    let submitreturn_btn = document.getElementsByClassName('action-saveAndReturn btn btn-primary action-save')[0];
+    if(submitreturn_btn)
+        submitreturn_btn.addEventListener("click", function(event){
+            submit(event, "saveAndReturn", submitreturn_btn.getAttribute('form'));
+        }, false);
+    let submitcontinue_btn = document.getElementsByClassName('action-saveAndContinue btn btn-secondary action-save')[0];
+    if(submitcontinue_btn)
+        submitcontinue_btn.addEventListener("click", function(event){
+            submit(event, "saveAndContinue", submitcontinue_btn.getAttribute('form'));
+        }, false);
+    console.log("driver");
+}
 function submit(event, type, formtype) {
         let date = new Date()
         let bytesLoaded = 0
