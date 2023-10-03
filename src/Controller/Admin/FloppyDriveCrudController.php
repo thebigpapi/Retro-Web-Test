@@ -15,6 +15,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CodeEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
@@ -73,7 +74,10 @@ class FloppyDriveCrudController extends AbstractCrudController
     {
         return parent::configureFilters($filters)
             ->add('manufacturer')
-            ->add('name');
+            ->add('name')
+            ->add('partNumber')
+            ->add('storageDeviceAliases')
+            ->add('lastEdited');
     }
     public function configureFields(string $pageName): iterable
     {
@@ -102,7 +106,22 @@ class FloppyDriveCrudController extends AbstractCrudController
             ->setColumns('col-sm-6 col-lg-6 col-xxl-4')
             ->onlyOnForms();
         yield TextField::new('density')
-            ->setColumns('col-sm-4 col-lg-3 col-xxl-2');
+            ->onlyOnIndex();
+        yield ChoiceField::new('density')
+            ->setColumns('col-sm-6 col-lg-6 col-xxl-4')
+            ->setFormTypeOption('placeholder', 'Select a density ...')
+            ->setFormTypeOption('choices', [
+                'Single density (8 inch SD)' => 'Single density (8 inch SD)',
+                'Double density (8 inch DD)' => 'Double density (8 inch DD)',
+                'Single density (5.25 inch SD)' => 'Single density (5.25 inch SD)',
+                'Double density (5.25 inch DD)' => 'Double density (5.25 inch DD)',
+                'Quad density (5.25 inch QD)' => 'Quad density (5.25 inch QD)',
+                'Double density (3.5 inch DD)' => 'Double density (3.5 inch DD)',
+                'High density (3.5 inch HD)' => 'High density (3.5 inch HD)',
+                'Extra-high density (3.5 inch ED)' => 'Extra-high density (3.5 inch ED)',
+                'Triple density (3.5 inch TD)' => 'Triple density (3.5 inch TD)'
+            ])
+            ->onlyOnForms();
         yield CollectionField::new('storageDeviceAliases', 'Alternative names')
             ->setEntryType(StorageDeviceAliasType::class)
             ->renderExpanded()

@@ -38,29 +38,54 @@ class HardDriveRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
+    /**
+     * @return HardDrive[]
+     */
+    public function findByHdd(array $criteria): array
+    {
+        $entityManager = $this->getEntityManager();
 
-//    /**
-//     * @return HardDrive[] Returns an array of HardDrive objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('h')
-//            ->andWhere('h.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('h.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+        $whereArray = array();
+        $valuesArray = array();
 
-//    public function findOneBySomeField($value): ?HardDrive
-//    {
-//        return $this->createQueryBuilder('h')
-//            ->andWhere('h.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+        // Checking values in criteria and creating WHERE statements
+        if (array_key_exists('name', $criteria)) {
+            $multicrit = explode(" ", $criteria['name']);
+            foreach ($multicrit as $key => $val) {
+                $whereArray[] = "(LOWER(hdd.name) LIKE :nameLike$key
+                    OR LOWER(hdd.partNumber) LIKE :nameLike$key
+                    OR LOWER(alias.name) LIKE :nameLike$key
+                    OR LOWER(alias.partNumber) LIKE :nameLike$key)";
+                $valuesArray["nameLike$key"] = "%" . strtolower($val) . "%";
+            }
+        }
+        if (array_key_exists('manufacturer', $criteria)) {
+            $whereArray[] = "(man.id = :manufacturerId)";
+            $valuesArray["manufacturerId"] = (int)$criteria['manufacturer'];
+        }
+
+        // Building where statement
+        $whereString = implode(" AND ", $whereArray);
+
+        // Building query
+        $query = $entityManager->createQuery(
+            "SELECT hdd
+            FROM App\Entity\HardDrive hdd JOIN hdd.manufacturer man LEFT OUTER JOIN hdd.storageDeviceAliases alias
+            WHERE $whereString
+            ORDER BY man.name ASC, hdd.name ASC"
+        );
+
+        // Setting values
+        foreach ($valuesArray as $key => $value) {
+            $query->setParameter($key, $value);
+        }
+        return $query->getResult();
+    }
+    public function getCount(): int
+    {
+        return $this->createQueryBuilder('h')
+            ->select('count(h.id)')
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
 }

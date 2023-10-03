@@ -113,10 +113,12 @@ class HardDriveCrudController extends AbstractCrudController
         yield TextField::new('partNumber')
             ->setColumns('col-sm-6 col-lg-6 col-xxl-4')
             ->onlyOnForms();
+        yield TextField::new('getCapacityFormatted', 'Capacity')
+            ->onlyOnIndex();
         yield NumberField::new('capacity')
-            ->setColumns('col-sm-4 col-lg-3 col-xxl-2');
+            ->setColumns('col-sm-4 col-lg-3 col-xxl-2')
+            ->onlyOnForms();
         yield NumberField::new('cylinders')
-            ->setFormTypeOption('choice_label', 'ehTest')
             ->setColumns('col-sm-4 col-lg-3 col-xxl-2');
         yield NumberField::new('heads')
             ->setColumns('col-sm-4 col-lg-3 col-xxl-2');

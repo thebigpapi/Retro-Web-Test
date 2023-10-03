@@ -16,6 +16,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CodeEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
@@ -76,7 +77,14 @@ class CdDriveCrudController extends AbstractCrudController
     {
         return parent::configureFilters($filters)
             ->add('manufacturer')
-            ->add('name');
+            ->add('name')
+            ->add('partNumber')
+            ->add('storageDeviceAliases')
+            ->add('cdReadSpeed')
+            ->add('cdWriteSpeed')
+            ->add('dvdReadSpeed')
+            ->add('dvdWriteSpeed')
+            ->add('lastEdited');
     }
     public function configureFields(string $pageName): iterable
     {
@@ -104,16 +112,25 @@ class CdDriveCrudController extends AbstractCrudController
         yield TextField::new('partNumber')
             ->setColumns('col-sm-6 col-lg-6 col-xxl-4')
             ->onlyOnForms();
-        yield NumberField::new('cdReadSpeed')
+        yield NumberField::new('cdReadSpeed', 'CD read')
             ->setColumns('col-sm-4 col-lg-3 col-xxl-2');
-        yield NumberField::new('cdWriteSpeed')
+        yield NumberField::new('cdWriteSpeed', 'CD write')
             ->setColumns('col-sm-4 col-lg-3 col-xxl-2');
-        yield NumberField::new('dvdReadSpeed')
+        yield NumberField::new('dvdReadSpeed', 'DVD read')
             ->setColumns('col-sm-4 col-lg-3 col-xxl-2');
-        yield NumberField::new('dvdWriteSpeed')
+        yield NumberField::new('dvdWriteSpeed', 'DVD write')
             ->setColumns('col-sm-4 col-lg-3 col-xxl-2');
         yield TextField::new('trayType')
-            ->setColumns('col-sm-4 col-lg-3 col-xxl-2');
+            ->onlyOnIndex();
+        yield ChoiceField::new('trayType')
+            ->setColumns('col-sm-4 col-lg-3 col-xxl-2')
+            ->setFormTypeOption('placeholder', 'Select a tray type ...')
+            ->setFormTypeOption('choices', [
+                'Tray' => 'Tray',
+                'Caddy' => 'Caddy',
+                'Slot' => 'Slot'
+            ])
+            ->onlyOnForms();
         yield CollectionField::new('storageDeviceAliases', 'Alternative names')
             ->setEntryType(StorageDeviceAliasType::class)
             ->renderExpanded()

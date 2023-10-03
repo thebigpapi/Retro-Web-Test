@@ -1,0 +1,40 @@
+{% if route is defined and route == true %}{% set typeid = 'route-results' %}{% else %}{% set typeid = domTarget %}{% endif %}
+<div id="{{ typeid }}">
+{% if cdds is defined and cdds is not empty %}
+	<div class="results{% if not show_images %} lst{% endif %}">
+		{{ knp_pagination_render(cdds, 'macros/pagination_async.html.twig') }}
+		{% if show_images %}
+			<div class="perks">
+				<div id="index-datetime" class="perks-list">
+				{% for cdd in cdds %}
+					<div class="perk">
+						<div class="perk-image">
+							<img src="{{ absolute_url(asset('build/images/missing/cdd-missing.jpg')) }}" loading="lazy" width="250" height="200" title="no images available :(">
+						</div>
+						<a href="{{ path("cd_drive_show", {id: cdd.getId()}) }}" title="Click to visit page">
+							<div class="perk-name">{{ cdd.getNameWithManufacturer() }}</div>
+							<div class="perk-alias">
+								{% if cdd.getStorageDeviceAliases() is not empty %}<span class="results-alias">
+									<small>Alias: {% for alias in cdd.getStorageDeviceAliases() %}{{ alias.getFullAliasName() }}{% if not loop.last %}, {% endif %}{% endfor %}</small>
+								</span>{% endif %}
+							</div>
+						</a>
+					</div>	
+				{% endfor %}
+				</div>
+			</div>
+			{% else %}
+				<div class="plain-list w300p table">
+					{% include 'macros/widget.html.twig' with {'type':'cdd-results', 'entity': cdds} %}
+				</div>
+			{% endif %}
+		{{ knp_pagination_render(cdds, 'macros/pagination_async.html.twig') }}
+	</div>
+{% else %}
+	No results
+{% endif %}
+{% if params is defined %}
+<div id="search-params-id" style="display:none;">{{params}}</div>
+{% endif %}
+</div>
+

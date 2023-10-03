@@ -104,9 +104,7 @@ class ChipsetController extends AbstractController
         $criterias = $this->getCriteria($request);
         $showImages = boolval(htmlentities($request->query->get('showImages')));
         $maxItems = $request->query->getInt('itemsPerPage', $request->request->getInt('itemsPerPage', $this->getParameter('app.pagination.max')));
-        
         $data = $chipsetRepository->findByChipset($criterias);
-        
         $chipsets = $paginator->paginate(
                 $data,
                 $request->query->getInt('page', 1),
@@ -118,7 +116,7 @@ class ChipsetController extends AbstractController
                 $string .= $key . '=' . $value . '&';
         }
         return $this->render('chipset/result.html.twig', [
-            'controller_name' => 'MotherboardController',
+            'controller_name' => 'ChipsetController',
             'chipsets' => $chipsets,
             'show_images' => $showImages,
             'domTarget' => $request->request->get('domTarget') ?? $request->query->get('domTarget') ?? "",

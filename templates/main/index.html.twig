@@ -32,6 +32,18 @@
 			<img src="{{ absolute_url(asset('build/icons/hardware.svg')) }}" alt="driver" width="210" height="180">
 			<div>Drivers &amp; Software</div><div>({{driverCount}}&nbsp;files)</div>
 		</a>
+		<a href="{{ path("hddsearch") }}">
+			<img src="{{ absolute_url(asset('build/icons/hdd.svg')) }}" alt="cpu" width="210" height="180">
+			<div>HDDs</div><div>({{hddCount}}&nbsp;drives)</div>
+		</a>
+		<a href="{{ path("cddsearch") }}">
+			<img src="{{ absolute_url(asset('build/icons/cd.svg')) }}" alt="cpu" width="210" height="180">
+			<div>CD drives</div><div>({{cddCount}}&nbsp;drives)</div>
+		</a>
+		<a href="{{ path("fddsearch") }}">
+			<img src="{{ absolute_url(asset('build/icons/floppy.svg')) }}" alt="cpu" width="210" height="180">
+			<div>Floppy drives</div><div>({{fddCount}}&nbsp;drives)</div>
+		</a>
 	</div>
 	<div class="perks" data-controller="datetime">
 		<p><b>Recently added and updated boards</b></p>

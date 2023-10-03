@@ -38,29 +38,54 @@ class CdDriveRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
+    /**
+     * @return CdDrive[]
+     */
+    public function findByCdd(array $criteria): array
+    {
+        $entityManager = $this->getEntityManager();
 
-//    /**
-//     * @return CdDrive[] Returns an array of CdDrive objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('c')
-//            ->andWhere('c.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('c.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+        $whereArray = array();
+        $valuesArray = array();
 
-//    public function findOneBySomeField($value): ?CdDrive
-//    {
-//        return $this->createQueryBuilder('c')
-//            ->andWhere('c.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+        // Checking values in criteria and creating WHERE statements
+        if (array_key_exists('name', $criteria)) {
+            $multicrit = explode(" ", $criteria['name']);
+            foreach ($multicrit as $key => $val) {
+                $whereArray[] = "(LOWER(cdd.name) LIKE :nameLike$key
+                    OR LOWER(cdd.partNumber) LIKE :nameLike$key
+                    OR LOWER(alias.name) LIKE :nameLike$key
+                    OR LOWER(alias.partNumber) LIKE :nameLike$key)";
+                $valuesArray["nameLike$key"] = "%" . strtolower($val) . "%";
+            }
+        }
+        if (array_key_exists('manufacturer', $criteria)) {
+            $whereArray[] = "(man.id = :manufacturerId)";
+            $valuesArray["manufacturerId"] = (int)$criteria['manufacturer'];
+        }
+
+        // Building where statement
+        $whereString = implode(" AND ", $whereArray);
+
+        // Building query
+        $query = $entityManager->createQuery(
+            "SELECT cdd
+            FROM App\Entity\CdDrive cdd JOIN cdd.manufacturer man LEFT OUTER JOIN cdd.storageDeviceAliases alias
+            WHERE $whereString
+            ORDER BY man.name ASC, cdd.name ASC"
+        );
+
+        // Setting values
+        foreach ($valuesArray as $key => $value) {
+            $query->setParameter($key, $value);
+        }
+        return $query->getResult();
+    }
+    public function getCount(): int
+    {
+        return $this->createQueryBuilder('c')
+            ->select('count(c.id)')
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
 }

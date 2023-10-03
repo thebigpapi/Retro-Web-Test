@@ -31,7 +31,7 @@ if(select_formfactor = document.getElementById('search_formFactor')){
 // event listeners
 if(search_paginate = document.getElementById('search-paginate-id'))
     search_paginate.addEventListener("click", function(){
-        paginate(search_paginate.getAttribute("data-paginate"));
+        paginate(search_paginate.getAttribute("data-paginate"), search_paginate.getAttribute("data-target"));
     }, false);
 var search_live = document.getElementById('pagination_redir');
 if(search_live)
@@ -52,17 +52,16 @@ if(cpu2sel)
         setResult(cpu2sel.name, cpu2sel.value, cpu2sel.getAttribute('data-target-id'));
     }, false);
 
-    function paginate(newPageIdx) {
-        //console.debug("setting paginator " + newPageIdx);
-        var redirElem = document.getElementById('pagination_redir');
-        if (redirElem) {
-            redirElem.setAttribute("value", newPageIdx);
-            if(el = document.getElementById("route-results"))
-                el.remove();
-            window.history.replaceState({},'', window.origin + '/motherboards/');
-            redirElem.click();
-        }
-        return false;
+function paginate(newPageIdx, target) {
+    var redirElem = document.getElementById('pagination_redir');
+    if (redirElem) {
+        redirElem.setAttribute("value", newPageIdx);
+        if(el = document.getElementById("route-results"))
+            el.remove();
+        window.history.replaceState({},'', window.origin + '/' + target + '/');
+        redirElem.click();
+    }
+    return false;
     }
 
 function reset() {
@@ -94,6 +93,14 @@ function reset() {
     }
 function setResult(searchedName, searchedValue, targetId) {
         let form = document.getElementsByName('search_motherboard')[0];
+        if(!form)
+            form = document.getElementsByName('search_chipset')[0];
+        if(!form)
+            form = document.getElementsByName('search_hdd')[0];
+        if(!form)
+            form = document.getElementsByName('search_cdd')[0];
+        if(!form)
+            form = document.getElementsByName('search_fdd')[0];
         let params = new FormData();
         params.set(searchedName, searchedValue);
 
@@ -112,6 +119,12 @@ function searchLive() {
         let form = document.getElementsByName('search_motherboard')[0];
         if(!form)
             form = document.getElementsByName('search_chipset')[0];
+        if(!form)
+            form = document.getElementsByName('search_hdd')[0];
+        if(!form)
+            form = document.getElementsByName('search_cdd')[0];
+        if(!form)
+            form = document.getElementsByName('search_fdd')[0];
         let url = {};
         const formData = new URLSearchParams();
         for (const pair of new FormData(form)) {
@@ -121,7 +134,6 @@ function searchLive() {
         }
         var redirElem = document.getElementById('pagination_redir');
         var targetId = redirElem.getAttribute("data-results-id");
-        console.log(targetId);
         if (redirElem) {
             formData.append("page", redirElem.getAttribute("value"));
         } else {
@@ -138,9 +150,7 @@ function searchLive() {
             let parser = new DOMParser();
             let parsedResponse = parser.parseFromString(await rawResponse.text(), "text/html");
             let responseDiv = parsedResponse.getElementById(targetId);
-            console.log(parsedResponse);
             if (responseDiv) {
-                console.log(responseDiv);
                 document.getElementById(targetId).innerHTML = responseDiv.innerHTML;
                 let string = document.getElementById('search-params-id');
                 window.history.replaceState({},'', string.firstChild.data);
@@ -167,7 +177,6 @@ function searchLive() {
             newElem.setAttribute("class", "editor-row");
         newElem.innerHTML = newWidget;
         list.appendChild(newElem);
-        console.log(idx, counter);
         //tom-select
         if(idx == "motherboardExpansionSlots-fields-list"){
             el = document.getElementById('search_motherboardExpansionSlots_' + (counter - 1) + '_expansion_slot');

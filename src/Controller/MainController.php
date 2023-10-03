@@ -2,6 +2,9 @@
 
 namespace App\Controller;
 
+use App\Repository\CdDriveRepository;
+use App\Repository\FloppyDriveRepository;
+use App\Repository\HardDriveRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\MotherboardRepository;
@@ -14,7 +17,16 @@ use Symfony\Component\HttpFoundation\Response;
 class MainController extends AbstractController
 {
     #[Route('/', name:'app_homepage')]
-    public function index(MotherboardRepository $motherboardRepository, MotherboardBiosRepository $motherboardBiosRepository, ChipsetRepository $chipsetRepository, ProcessorRepository $cpuRepository, LargeFileRepository $largeFileRepository): Response
+    public function index(
+        MotherboardRepository $motherboardRepository,
+        MotherboardBiosRepository $motherboardBiosRepository,
+        ChipsetRepository $chipsetRepository,
+        ProcessorRepository $cpuRepository,
+        LargeFileRepository $largeFileRepository,
+        HardDriveRepository $hddRepository,
+        CdDriveRepository $cddRepository,
+        FloppyDriveRepository $fddRepository,
+    ): Response
     {
         $latestMotherboards = $motherboardRepository->findLatest();
         return $this->render('main/index.html.twig', [
@@ -25,6 +37,9 @@ class MainController extends AbstractController
             'cpuCount' => $cpuRepository->getCount(),
             'biosCount' => $motherboardBiosRepository->getCount(),
             'driverCount' => $largeFileRepository->getCount(),
+            'hddCount' => $hddRepository->getCount(),
+            'cddCount' => $cddRepository->getCount(),
+            'fddCount' => $fddRepository->getCount(),
         ]);
     }
 

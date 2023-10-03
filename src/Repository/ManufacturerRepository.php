@@ -201,33 +201,52 @@ class ManufacturerRepository extends ServiceEntityRepository
 
         return $query->getResult();
     }
-
-    // /**
-    //  * @return Manufacturer[] Returns an array of Manufacturer objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    /**
+     * @return Manufacturer[]
+     */
+    public function findAllHddManufacturer(): array
     {
-        return $this->createQueryBuilder('m')
-            ->andWhere('m.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('m.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
+        $entityManager = $this->getEntityManager();
 
-    /*
-    public function findOneBySomeField($value): ?Manufacturer
-    {
-        return $this->createQueryBuilder('m')
-            ->andWhere('m.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        $query = $entityManager->createQuery(
+            'SELECT DISTINCT man
+            FROM App\Entity\HardDrive hdd, App\Entity\Manufacturer man
+            WHERE hdd.manufacturer=man
+            ORDER BY man.name ASC'
+        );
+
+        return $query->getResult();
     }
-    */
+    /**
+     * @return Manufacturer[]
+     */
+    public function findAllCddManufacturer(): array
+    {
+        $entityManager = $this->getEntityManager();
+
+        $query = $entityManager->createQuery(
+            'SELECT DISTINCT man
+            FROM App\Entity\CdDrive cdd, App\Entity\Manufacturer man
+            WHERE cdd.manufacturer=man
+            ORDER BY man.name ASC'
+        );
+
+        return $query->getResult();
+    }
+    /**
+     * @return Manufacturer[]
+     */
+    public function findAllFddManufacturer(): array
+    {
+        $entityManager = $this->getEntityManager();
+
+        $query = $entityManager->createQuery(
+            'SELECT DISTINCT man
+            FROM App\Entity\FloppyDrive fdd, App\Entity\Manufacturer man
+            WHERE fdd.manufacturer=man
+            ORDER BY man.name ASC'
+        );
+
+        return $query->getResult();
+    }
 }

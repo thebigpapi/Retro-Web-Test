@@ -1,27 +1,27 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Search chipsets - TRW{% endblock %}
+{% block title %}Search CD drives - TRW{% endblock %}
 
 {% block metatags %}
-	<meta name="description" content="Search for a chipset by name, manufacturer and part number.">
-	<link rel="alternate" hreflang="x-default" href="{{ absolute_url(path('chipsetsearch')) }}"/>
+	<meta name="description" content="Search for a CD drive by name, manufacturer and part number.">
+	<link rel="alternate" hreflang="x-default" href="{{ absolute_url(path('cddsearch')) }}"/>
 {% endblock %}
 {% block extra_javascripts %}
 	<script src="/build/js/tom-select.complete.min.js" defer></script>
 	<script src="/build/js/search.js" defer></script>
 {% endblock %}
 {% block body %}
-	{{ form_start(form, {'method': 'POST', 'name': 'search_chipset', 'action':path("chipsetsearch"), 'attr':{'data-live-action': path('chipsetlivewrapper')}}) }}
+	{{ form_start(form, {'method': 'POST', 'name': 'search_cdd', 'action':path("cddsearch"), 'attr':{'data-live-action': path('cddlivewrapper')}}) }}
 	<fieldset id="search-fieldset">
-		<div class="title">Search for a chipset</div>
+		<div class="title">Search for a CD drive</div>
 		<section class="search-form-grid" style="display:flex;justify-content:center;flex-wrap:wrap;">
 			<div class="search-form-entry" style="min-width:min(27em,50vw);">
-				<label class="search-form-label" for="search_chipsetManufacturer" title="This is where you select the manufacturer name and enter the chipset part number.">
+				<label class="search-form-label" for="search_cddManufacturer" title="This is where you select the manufacturer name and enter the CD drive part number.">
 					<span>Manufacturer and name</span>
 					<img src="{{ absolute_url(asset('build/icons/help.svg')) }}" alt="" width="16" height="16">
 				</label>
 				<div class="search-form-widget">
-					<div id="setchip1">{{ form_widget(form.chipsetManufacturer) }}</div>
+					<div id="setchip1">{{ form_widget(form.cddManufacturer) }}</div>
 					<div>{{ form_widget(form.name, {'attr': {'placeholder': 'Name or Part number (without manufacturer) ...'}}) }}</div>
 				</div>
 			</div>
@@ -29,7 +29,7 @@
 		<section class="search-form-grid search-form-grid-tight">
 			<div class="search-form-header">Search results options</div>
 			<div class="search-form-entry">
-				<label class="search-form-label file" title="If unchecked, only show chipset models, without any thumbnail.">
+				<label class="search-form-label file" title="If unchecked, only show CD drive models, without any thumbnail.">
 					<span>Show images</span>
 					<img src="{{ absolute_url(asset('build/icons/help.svg')) }}" alt="" width="16" height="16">
 				</label>
@@ -54,19 +54,19 @@
 				<img src="{{ absolute_url(asset('build/icons/reset.svg')) }}" alt="reset" width="24" height="24">
 				<span>Reset fields</span>
 			</button>
-			<button id="search-paginate-id" type="button" data-paginate="1" data-target="chipsets">
+			<button id="search-paginate-id" type="button" data-paginate="1" data-target="cddrives">
 				<img src="{{ absolute_url(asset('build/icons/search.svg')) }}" alt="search" width="24" height="24">
 				<span>Search</span>
 			</button>
-			<input id="rst-btn" type="reset" value="reset" data-reset-ids='search_chipsetManufacturer search_cpuSocket1 search_cpuSocket2'>
+			<input id="rst-btn" type="reset" value="reset" data-reset-ids='search_cddManufacturer'>
 			<input id="pagination_redir" type="button" value="" data-results-id='search_liveResults' value="1">
 		</div>
 	</fieldset>
 	{{ form_end(form, {render_rest: false}) }}
 	<!-- Search results -->
 	<section id="search_liveResults">
-	{% if chipsets is defined %}
-		{% include 'chipset/result.html.twig' with {'chipsets': chipsets, 'show_images': show_images, 'route': true} %}
+	{% if cdds is defined %}
+		{% include 'cddrive/result.html.twig' with {'cdds': cdds, 'show_images': show_images, 'route': true} %}
 	{% endif %}
 	</section>
 {% endblock %}
