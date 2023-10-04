@@ -59,6 +59,9 @@ class StorageDevice
     #[ORM\Column(type: 'datetime')]
     private $lastEdited;
 
+    #[ORM\ManyToMany(targetEntity: StorageDeviceInterface::class, inversedBy: 'storageDevices')]
+    private Collection $interfaces;
+
     public function __construct()
     {
         $this->knownIssues = new ArrayCollection();
@@ -67,6 +70,7 @@ class StorageDevice
         $this->storageDeviceImages = new ArrayCollection();
         $this->storageDeviceAliases = new ArrayCollection();
         $this->lastEdited = new \DateTime('now');
+        $this->interfaces = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -309,5 +313,29 @@ class StorageDevice
         $result .= " " . $this->partNumber;
         $result .= $this->name ? " (" . $this->name . ")" : "";
         return $result;
+    }
+
+    /**
+     * @return Collection<int, StorageDeviceInterface>
+     */
+    public function getInterfaces(): Collection
+    {
+        return $this->interfaces;
+    }
+
+    public function addInterface(StorageDeviceInterface $interface): self
+    {
+        if (!$this->interfaces->contains($interface)) {
+            $this->interfaces->add($interface);
+        }
+
+        return $this;
+    }
+
+    public function removeInterface(StorageDeviceInterface $interface): self
+    {
+        $this->interfaces->removeElement($interface);
+
+        return $this;
     }
 }

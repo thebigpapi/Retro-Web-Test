@@ -115,10 +115,11 @@ class HardDriveCrudController extends AbstractCrudController
         yield TextField::new('partNumber')
             ->setColumns('col-sm-6 col-lg-6 col-xxl-4')
             ->onlyOnForms();
-        /*yield CollectionField::new('interfaces', 'Interface')
+        yield CollectionField::new('interfaces', 'Interface')
             ->setEntryType(StorageDeviceInterfaceType::class)
             ->setColumns('col-sm-6 col-lg-6 col-xxl-4')
-            ->onlyOnForms();*/
+            ->renderExpanded()
+            ->onlyOnForms();
         yield AssociationField::new('physicalSize', 'Physical size')
             //->setEntryType(StorageDeviceSizeType::class)
             ->setColumns('col-sm-6 col-lg-6 col-xxl-4')
