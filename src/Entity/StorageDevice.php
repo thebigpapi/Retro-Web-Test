@@ -47,8 +47,7 @@ class StorageDevice
     #[Assert\Valid()]
     private $storageDeviceImages;
 
-    #[ORM\ManyToOne(targetEntity: StorageDeviceInterface::class, inversedBy: 'storageDevices')]
-    private $interface = null;
+
 
     #[ORM\ManyToOne(targetEntity: StorageDeviceSize::class, inversedBy: 'storageDevices')]
     private $physicalSize = null;
@@ -233,18 +232,6 @@ class StorageDevice
                 $storageDeviceImage->setStorageDevice(null);
             }
         }
-
-        return $this;
-    }
-
-    public function getInterface(): ?StorageDeviceInterface
-    {
-        return $this->interface;
-    }
-
-    public function setInterface(?StorageDeviceInterface $interface): self
-    {
-        $this->interface = $interface;
 
         return $this;
     }

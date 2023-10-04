@@ -141,30 +141,6 @@ class ProcessorPlatformType
         return new ArrayCollection($processors);
     }
     /**
-     * @return Collection|Coprocessor[]
-     */
-    public function getCoprocessors(): Collection
-    {
-        $coprocessors = array();
-        foreach ($this->processingUnits as $coprocessor) {
-            if ($coprocessor instanceof Coprocessor) {
-                $coprocessors[] = $coprocessor;
-            }
-        }
-        return new ArrayCollection($coprocessors);
-    }
-    /**
-     * @return Collection|Coprocessor[]
-     */
-    public function getCompatibleCoprocessors(): Collection
-    {
-        $coprocessors = $this->getProcessors()->toArray();
-        foreach ($this->getCompatibleWith() as $compatible) {
-            $coprocessors = array_merge($coprocessors, $compatible->getCoprocessors()->toArray());
-        }
-        return new ArrayCollection($coprocessors);
-    }
-    /**
      * @return Collection|self[]
      */
     public function getCompatibleWith(): Collection

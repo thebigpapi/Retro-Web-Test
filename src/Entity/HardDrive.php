@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\HardDriveRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: HardDriveRepository::class)]
@@ -28,6 +30,15 @@ class HardDrive extends StorageDevice
 
     #[ORM\Column(type: 'datetime', mapped: false)]
     private $lastEdited;
+
+    #[ORM\Column(nullable: true)]
+    private ?int $buffer = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?float $randomSeek = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?float $trackSeek = null;
 
     public function getId(): ?int
     {
@@ -118,6 +129,42 @@ class HardDrive extends StorageDevice
     public function setPlatters(?int $platters): self
     {
         $this->platters = $platters;
+
+        return $this;
+    }
+
+    public function getBuffer(): ?int
+    {
+        return $this->buffer;
+    }
+
+    public function setBuffer(?int $buffer): self
+    {
+        $this->buffer = $buffer;
+
+        return $this;
+    }
+
+    public function getRandomSeek(): ?float
+    {
+        return $this->randomSeek;
+    }
+
+    public function setRandomSeek(?float $randomSeek): self
+    {
+        $this->randomSeek = $randomSeek;
+
+        return $this;
+    }
+
+    public function getTrackSeek(): ?float
+    {
+        return $this->trackSeek;
+    }
+
+    public function setTrackSeek(?float $trackSeek): self
+    {
+        $this->trackSeek = $trackSeek;
 
         return $this;
     }

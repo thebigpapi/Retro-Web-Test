@@ -22,6 +22,10 @@ class StorageDeviceSize
 
     #[ORM\OneToMany(mappedBy: 'physicalSize', targetEntity: StorageDevice::class)]
     private $storageDevices;
+    public function __toString(): string
+    {
+        return $this->name;
+    }
 
     public function __construct()
     {

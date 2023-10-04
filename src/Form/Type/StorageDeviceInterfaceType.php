@@ -5,17 +5,19 @@ namespace App\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use App\Entity\Coprocessor;
+use App\Entity\StorageDeviceInterface;
 
-class CoprocessorType extends AbstractType
+class StorageDeviceInterfaceType extends AbstractType
 {
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'class' => Coprocessor::class,
-            'choice_label' => 'getNameWithSpecs',
+            'class' => StorageDeviceInterface::class,
+            'choice_label' => 'getName',
             'multiple' => false,
             'expanded' => false,
+            'attr' => ['data-ea-widget' => 'ea-autocomplete'],
+            'placeholder'=> 'Select an interface ...',
         ]);
     }
 

@@ -8,6 +8,7 @@ use App\Form\Type\KnownIssueType;
 use App\Form\Type\StorageDeviceAliasType;
 use App\Form\Type\StorageDeviceDocumentationType;
 use App\Form\Type\StorageDeviceImageTypeForm;
+use App\Form\Type\StorageDeviceInterfaceType;
 use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
@@ -16,6 +17,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CodeEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
@@ -111,6 +113,14 @@ class HardDriveCrudController extends AbstractCrudController
             ->setColumns('col-sm-6 col-lg-6 col-xxl-4')
             ->onlyOnForms();
         yield TextField::new('partNumber')
+            ->setColumns('col-sm-6 col-lg-6 col-xxl-4')
+            ->onlyOnForms();
+        /*yield CollectionField::new('interfaces', 'Interface')
+            ->setEntryType(StorageDeviceInterfaceType::class)
+            ->setColumns('col-sm-6 col-lg-6 col-xxl-4')
+            ->onlyOnForms();*/
+        yield AssociationField::new('physicalSize', 'Physical size')
+            //->setEntryType(StorageDeviceSizeType::class)
             ->setColumns('col-sm-6 col-lg-6 col-xxl-4')
             ->onlyOnForms();
         yield TextField::new('getCapacityFormatted', 'Capacity')
