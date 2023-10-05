@@ -6,7 +6,7 @@ liip_imagine:
     driver: "gd"
 
     filter_sets:
-        motherboard_show_thumb:
+        show_thumb:
             quality: 50
             filters :
                 downscale:

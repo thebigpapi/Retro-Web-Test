@@ -88,6 +88,7 @@ class HardDriveController extends AbstractController
             }
         }
         $parameters['name'] = $form['name']->getData();
+        $parameters['capacity'] = $form['capacity']->getData();
 
         return $parameters;
     }
@@ -121,6 +122,10 @@ class HardDriveController extends AbstractController
         $name = htmlentities($request->query->get('name') ?? '');
         if ($name) {
             $criterias['name'] = "$name";
+        }
+        $capacity = htmlentities($request->query->get('capacity') ?? '');
+        if ($capacity) {
+            $criterias['capacity'] = "$capacity";
         }
         $hddManufacturerId = htmlentities($request->query->get('hddManufacturerId') ?? '');
         if ($hddManufacturerId && intval($hddManufacturerId)) {

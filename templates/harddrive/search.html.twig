@@ -15,7 +15,7 @@
 	<fieldset id="search-fieldset">
 		<div class="title">Search for a hard drive</div>
 		<section class="search-form-grid" style="display:flex;justify-content:center;flex-wrap:wrap;">
-			<div class="search-form-entry" style="min-width:min(27em,50vw);">
+			<div class="search-form-entry" >
 				<label class="search-form-label" for="search_hddManufacturer" title="This is where you select the manufacturer name and enter the hard drive part number.">
 					<span>Manufacturer and name</span>
 					<img src="{{ absolute_url(asset('build/icons/help.svg')) }}" alt="" width="16" height="16">
@@ -23,6 +23,15 @@
 				<div class="search-form-widget">
 					<div id="setchip1">{{ form_widget(form.hddManufacturer) }}</div>
 					<div>{{ form_widget(form.name, {'attr': {'placeholder': 'Name or Part number (without manufacturer) ...'}}) }}</div>
+				</div>
+			</div>
+			<div class="search-form-entry">
+				<label class="search-form-label" for="search_chipset" title="By default, it is in Megabytes. Operators can be used (like '>128MB')">
+					<span>Capacity</span>
+					<img src="{{ absolute_url(asset('build/icons/help.svg')) }}" alt="" width="16" height="16">
+				</label>
+				<div class="search-form-widget">
+					<div>{{ form_widget(form.capacity) }}</div>
 				</div>
 			</div>
 		</section>

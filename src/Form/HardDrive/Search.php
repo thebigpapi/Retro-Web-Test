@@ -23,6 +23,9 @@ class Search extends AbstractType
             ->add('partNumber', TextType::class, [
                 'required' => false,
             ])
+            ->add('capacity', TextType::class, [
+                'required' => false,
+            ])
             ->add('hddManufacturer', ChoiceType::class, [
                 'choice_label' => 'getName',
                 'multiple' => false,
