@@ -26,7 +26,7 @@
 		<meta property="og:image" content="{{ absolute_url(asset('build/images/missing/hdd-missing.jpg')) }}">
 	{% endif %}
 	{% endapply %}
-	<link rel="alternate" hreflang="x-default" href="{{ absolute_url(path('hard_drive_show', {id: cddrive.getId()})) }}"/>
+	<link rel="alternate" hreflang="x-default" href="{{ absolute_url(path('cd_drive_show', {id: cddrive.getId()})) }}"/>
 {% endblock %}
 
 {% block body %}
@@ -43,37 +43,56 @@
 
 <div class="main-strip">
 	<div class="internal-container">
-		{% include 'macros/navbar.html.twig' with {'entity': cddrive, 'entityName': 'HardDrive', 'name': 'hard drive'} %}
+		{% include 'macros/navbar.html.twig' with {'entity': cddrive, 'entityName': 'CdDrive', 'name': 'CD drive'} %}
 		<div class="internal-content">
 			<!-- DESCRIPRION -->
 			<div class="show-general" id="sh-general">
-				<div class="quick-spec-table">
-					<!-- CD read -->
-					<div class="quick-spec-head">
-						<img src="{{ absolute_url(asset('build/icons/cpupins.svg')) }}" alt="cpu" width="24" height="24">CD read speed
+				<div class="quick-spec-split">
+					<div class="quick-spec-table">
+						<!-- Interface -->
+						<div class="quick-spec-head">
+							<img src="{{ absolute_url(asset('build/icons/io.svg')) }}" alt="cpu" width="24" height="24">Interface{% if cddrive.getInterfaces()|length > 1 %}s{% endif %}
+						</div>
+						{% if cddrive.getInterfaces() is not empty %}
+						<div class="tag-container">{% for interface in cddrive.getInterfaces() %}<span class="text-block">{{ interface.getName}}</span>{% endfor %}</div>
+						{% else %}
+						<div>Unknown</div>
+						{% endif %}
+						<!-- Size -->
+						<div class="quick-spec-head">
+							<img src="{{ absolute_url(asset('build/icons/dimension.svg')) }}" alt="cpu" width="24" height="24">Form factor
+						</div>
+						<div>{{ cddrive.getPhysicalSize() }}</div>
+						<!-- Tray -->
+						<div class="quick-spec-head">
+							<img src="{{ absolute_url(asset('build/icons/dimension.svg')) }}" alt="cpu" width="24" height="24">Tray type
+						</div>
+						<div>{{ cddrive.getTrayType() }}</div>
 					</div>
-					<div>{{ cddrive.getCdReadSpeed() ?: 'Unknown' }}</div>
-					<!-- CD write -->
-					<div class="quick-spec-head">
-						<img src="{{ absolute_url(asset('build/icons/486.svg')) }}" alt="486" width="24" height="24">CD write speed
+					<div class="quick-spec-table">
+						<!-- CD read -->
+						<div class="quick-spec-head">
+							<img src="{{ absolute_url(asset('build/icons/cpupins.svg')) }}" alt="cpu" width="24" height="24">CD read speed
+						</div>
+						<div>{{ cddrive.getCdReadSpeed() ?: 'Unknown' }}</div>
+						<!-- CD write -->
+						<div class="quick-spec-head">
+							<img src="{{ absolute_url(asset('build/icons/486.svg')) }}" alt="486" width="24" height="24">CD write speed
+						</div>
+						<div>{{ cddrive.getCdWriteSpeed() ?: 'Unknown' }}</div>
+						<!-- DVD read -->
+						<div class="quick-spec-head">
+							<img src="{{ absolute_url(asset('build/icons/486.svg')) }}" alt="486" width="24" height="24">DVD read speed
+						</div>
+						<div>{{ cddrive.getDvdReadSpeed() ?: 'Unknown' }}</div>
+						<!-- DVD write speed -->
+						<div class="quick-spec-head">
+							<img src="{{ absolute_url(asset('build/icons/486.svg')) }}" alt="486" width="24" height="24">DVD write speed
+						</div>
+						<div>{{ cddrive.getDvdWriteSpeed() ?: 'Unknown' }}</div>
 					</div>
-					<div>{{ cddrive.getCdWriteSpeed() ?: 'Unknown' }}</div>
-					<!-- DVD read -->
-					<div class="quick-spec-head">
-						<img src="{{ absolute_url(asset('build/icons/486.svg')) }}" alt="486" width="24" height="24">DVD read speed
-					</div>
-					<div>{{ cddrive.getDvdReadSpeed() ?: 'Unknown' }}</div>
-					<!-- DVD write speed -->
-					<div class="quick-spec-head">
-						<img src="{{ absolute_url(asset('build/icons/486.svg')) }}" alt="486" width="24" height="24">DVD write speed
-					</div>
-					<div>{{ cddrive.getDvdWriteSpeed() ?: 'Unknown' }}</div>
 				</div>
-				<div class="chipset-textarea">
-				{% if cddrive.getDescription() is not empty %}
-					{% apply markdown_to_html %}{{ cddrive.getDescription() }}{% endapply %}
-				{% endif %}
-				</div>
+				{% include 'macros/notes.html.twig' with {'entity': cddrive} %}
 				<!-- MANUALS -->
 				<div class="show-downloads-group">
 					{% set allDocs = cddrive.getStorageDeviceDocumentations() %}
@@ -96,33 +115,6 @@
 								<a class="combo" href="{{ vich_uploader_asset(manual, 'manualFile') }}">
 									<img src="{{ absolute_url(asset('build/icons/dw.svg')) }}" alt="" width="16" height="16">
 									<span>{{ manual.getLinkName() }}</span>
-								</a>
-							</div>
-						</div>
-						{% endfor %}
-					</div>
-					{% endif %}
-				</div>
-				<!-- AUDIO FILES -->
-				<div class="show-downloads-group">
-					{% set allFiles = cddrive.getAudioFiles() %}
-					<div class="show-downloads-group-header">
-						<img src="{{ absolute_url(asset('build/icons/manual.svg')) }}" alt="doc" width="32" height="32">
-						<span>{{ allFiles|length }} file{% if allFiles|length != 1 %}s{% endif %} available</span>
-					</div>
-					{% if allFiles is not empty %}
-					<div class="plain-list w300p table">
-						<div class="list-entry centered head">
-							<div>Language</div>
-							<div>File</div>
-						</div>
-						{% for file in allFiles|sort((a, b) => a.getName <=> b.getName) %}
-						<div class="list-entry centered {% if loop.index is divisible by(2) %}alt{% endif %}">
-							<div class="header-label">File</div>
-							<div>
-								<a class="combo" href="{{ vich_uploader_asset(file, 'audioFile') }}">
-									<img src="{{ absolute_url(asset('build/icons/dw.svg')) }}" alt="" width="16" height="16">
-									<span>{{ file.getName() }}</span>
 								</a>
 							</div>
 						</div>

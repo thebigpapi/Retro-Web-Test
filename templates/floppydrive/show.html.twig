@@ -26,7 +26,7 @@
 		<meta property="og:image" content="{{ absolute_url(asset('build/images/missing/hdd-missing.jpg')) }}">
 	{% endif %}
 	{% endapply %}
-	<link rel="alternate" hreflang="x-default" href="{{ absolute_url(path('hard_drive_show', {id: floppydrive.getId()})) }}"/>
+	<link rel="alternate" hreflang="x-default" href="{{ absolute_url(path('floppy_drive_show', {id: floppydrive.getId()})) }}"/>
 {% endblock %}
 
 {% block body %}
@@ -43,22 +43,32 @@
 
 <div class="main-strip">
 	<div class="internal-container">
-		{% include 'macros/navbar.html.twig' with {'entity': floppydrive, 'entityName': 'HardDrive', 'name': 'hard drive'} %}
+		{% include 'macros/navbar.html.twig' with {'entity': floppydrive, 'entityName': 'FloppyDrive', 'name': 'floppy drive'} %}
 		<div class="internal-content">
 			<!-- DESCRIPRION -->
 			<div class="show-general" id="sh-general">
 				<div class="quick-spec-table">
+					<!-- Interface -->
+					<div class="quick-spec-head">
+						<img src="{{ absolute_url(asset('build/icons/io.svg')) }}" alt="cpu" width="24" height="24">Interface{% if floppydrive.getInterfaces()|length > 1 %}s{% endif %}
+					</div>
+					{% if floppydrive.getInterfaces() is not empty %}
+					<div class="tag-container">{% for interface in floppydrive.getInterfaces() %}<span class="text-block">{{ interface.getName}}</span>{% endfor %}</div>
+					{% else %}
+					<div>Unknown</div>
+					{% endif %}
+					<!-- Size -->
+					<div class="quick-spec-head">
+						<img src="{{ absolute_url(asset('build/icons/dimension.svg')) }}" alt="cpu" width="24" height="24">Form factor
+					</div>
+					<div>{{ floppydrive.getPhysicalSize() }}</div>
 					<!-- Density -->
 					<div class="quick-spec-head">
-						<img src="{{ absolute_url(asset('build/icons/cpupins.svg')) }}" alt="cpu" width="24" height="24">Capacity
+						<img src="{{ absolute_url(asset('build/icons/floppy.svg')) }}" alt="cpu" width="24" height="24">Density
 					</div>
 					<div>{{ floppydrive.getDensity() }}</div>
 				</div>
-				<div class="chipset-textarea">
-				{% if floppydrive.getDescription() is not empty %}
-					{% apply markdown_to_html %}{{ floppydrive.getDescription() }}{% endapply %}
-				{% endif %}
-				</div>
+				{% include 'macros/notes.html.twig' with {'entity': floppydrive} %}
 				<!-- MANUALS -->
 				<div class="show-downloads-group">
 					{% set allDocs = floppydrive.getStorageDeviceDocumentations() %}

@@ -160,25 +160,7 @@
 						{% else %}<div class="list-table-head"></div><div>N/A</div>{% endif %}
 					</div>
 				</div>
-				{% if motherboard.getKnownIssues() is not empty %}
-				<div style="padding-top:10px;padding-left: 5px;">
-					<h3><b>Known issues:</b></h3>
-					<div class="notes">
-{% apply markdown_to_html %}{% for issue in motherboard.getKnownIssues()|sort %}
-* {{ issue.getName() }}
-
-{{ issue.getDescription() }}
-
-{% endfor %}{% endapply %}
-					</div>
-				</div>
-				{% endif %}
-				{% if motherboard.note is not null %}
-				<div style="padding-top:10px;padding-left: 5px;">
-					<h3><b>Notes</b></h3>
-					<div class="notes">{% apply markdown_to_html %}{{ motherboard.note }}{% endapply %}</div>
-				</div>
-				{% endif %}
+				{% include 'macros/notes.html.twig' with {'entity': motherboard} %}
 				<div id="index-datetime" data-controller="datetime"><div class="div-datetime">Last updated <span class="perk-date">{{ motherboard.getLastEdited()|date("Y-m-d\\TH:i:s", "GMT") }}Z</span></div></div>
 				<span><small><i>&nbsp;TRW ID: {{motherboard.getId()}}</i></small></span>
 			</div>

@@ -50,21 +50,36 @@
 			<div class="show-general" id="sh-general">
 				<div class="quick-spec-split">
 					<div class="quick-spec-table">
+						<!-- Interface -->
+						<div class="quick-spec-head">
+							<img src="{{ absolute_url(asset('build/icons/io.svg')) }}" alt="cpu" width="24" height="24">Interface{% if harddrive.getInterfaces()|length > 1 %}s{% endif %}
+						</div>
+						{% if harddrive.getInterfaces() is not empty %}
+						<div class="tag-container">{% for interface in harddrive.getInterfaces() %}<span class="text-block">{{ interface.getName}}</span>{% endfor %}</div>
+						{% else %}
+						<div>Unknown</div>
+						{% endif %}
+						<!-- Size -->
+						<div class="quick-spec-head">
+							<img src="{{ absolute_url(asset('build/icons/dimension.svg')) }}" alt="cpu" width="24" height="24">Form factor
+						</div>
+						<div>{{ harddrive.getPhysicalSize() }}</div>
 						<!-- Capacity -->
 						<div class="quick-spec-head">
-							<img src="{{ absolute_url(asset('build/icons/cpupins.svg')) }}" alt="cpu" width="24" height="24">Capacity
+							<img src="{{ absolute_url(asset('build/icons/hdd.svg')) }}" alt="cpu" width="24" height="24">Capacity
 						</div>
-						<div>{{ harddrive.getCapacity() }}</div>
-						<!-- RPM -->
+						<div>{{ harddrive.getCapacityFormatted() }}</div>
+						<!-- Random seek -->
 						<div class="quick-spec-head">
-							<img src="{{ absolute_url(asset('build/icons/speed.svg')) }}" alt="486" width="24" height="24">RPM
+							<img src="{{ absolute_url(asset('build/icons/speed.svg')) }}" alt="486" width="24" height="24">Random seek
 						</div>
-						<div>{{ harddrive.getSpindleSpeed() ?: 'Unknown' }}</div>
-						<!-- Platters -->
+						<div>{{ harddrive.getRandomSeek() ~ ' ms' ?: 'Unknown' }}</div>
+						<!-- Track-to-track seek -->
 						<div class="quick-spec-head">
-							<img src="{{ absolute_url(asset('build/icons/platter.svg')) }}" alt="486" width="24" height="24">Platters
+							<img src="{{ absolute_url(asset('build/icons/speed.svg')) }}" alt="486" width="24" height="24">Track-to-track seek
 						</div>
-						<div>{{ harddrive.getPlatters() ?: 'Unknown' }}</div>
+						<div>{{ harddrive.getTrackSeek() ~ ' ms' ?: 'Unknown' }}</div>
+
 					</div>
 					<div class="quick-spec-table">
 						<!-- Cylinders -->
@@ -82,13 +97,19 @@
 							<img src="{{ absolute_url(asset('build/icons/platter.svg')) }}" alt="486" width="24" height="24">Sectors
 						</div>
 						<div>{{ harddrive.getSectors() ?: 'Unknown' }}</div>
+						<!-- Platters -->
+						<div class="quick-spec-head">
+							<img src="{{ absolute_url(asset('build/icons/platter.svg')) }}" alt="486" width="24" height="24">Platters
+						</div>
+						<div>{{ harddrive.getPlatters() ?: 'Unknown' }}</div>
+						<!-- RPM -->
+						<div class="quick-spec-head">
+							<img src="{{ absolute_url(asset('build/icons/speed.svg')) }}" alt="486" width="24" height="24">RPM
+						</div>
+						<div>{{ harddrive.getSpindleSpeed() ?: 'Unknown' }}</div>
 					</div>
 				</div>
-				<div class="chipset-textarea">
-				{% if harddrive.getDescription() is not empty %}
-					{% apply markdown_to_html %}{{ harddrive.getDescription() }}{% endapply %}
-				{% endif %}
-				</div>
+				{% include 'macros/notes.html.twig' with {'entity': harddrive} %}
 				<!-- MANUALS -->
 				<div class="show-downloads-group">
 					{% set allDocs = harddrive.getStorageDeviceDocumentations() %}

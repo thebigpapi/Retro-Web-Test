@@ -51,26 +51,30 @@
 					<!-- Type -->
 					<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/chip.svg')) }}" alt="date" width="24" height="24">Type</div>
 					<div>{{expansion_chip.getType().getName()}}</div>
-					<!-- PCI DEV -->
-					<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/tag.svg')) }}" alt="date" width="24" height="24">PCI ID</div>
-					<div class="monospace">
+					<!-- Vendor ID -->
+					<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/tag.svg')) }}" alt="date" width="24" height="24">Vendor ID</div>
+					<div class="tag-container">
+					{% if expansion_chip.getManufacturer().getPciVendorIds() is not empty %}
+						{% for vendor in expansion_chip.getManufacturer().getPciVendorIds() %}
+							<span class="text-block">{{vendor.getVen()}}</span>
+						{% endfor %}
+					{% else %}
+						<div>Unknown</div>
+					{% endif %}
+					</div>
+					<!-- Device ID -->
+					<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/tag.svg')) }}" alt="date" width="24" height="24">Device ID</div>
+					<div class="tag-container">
 					{% if expansion_chip.getPciDevs() is not empty %}
-						{% if expansion_chip.getManufacturer().getPciVendorIds() is not empty %}
-							{% for vendor in expansion_chip.getManufacturer().getPciVendorIds()%}
-								{% for device in expansion_chip.getPciDevs() %}
-								<div>PCI\VEN_{{vendor.getVen()}}&amp;DEV_{{device.getDev()}}</div>
-								{% endfor %}
-							{% endfor %}
-						{% else %}PCI VEN missing!{% endif %}
-					{% else %}unknown{% endif %}
+						{% for device in expansion_chip.getPciDevs() %}
+							<span class="text-block">{{device.getDev()}}</span>
+						{% endfor %}
+					{% else %}
+						<div>Unknown</div>
+					{% endif %}
 					</div>
 				</div>
-				<div class="chipset-textarea">
-				<!-- Description -->
-				{% if expansion_chip.getDescription() is not empty %}
-					{% apply markdown_to_html %}{{ expansion_chip.getDescription() }}{% endapply %}
-				{% endif %}
-				</div>
+				{% include 'macros/notes.html.twig' with {'entity': expansion_chip} %}
 				<!-- DRIVERS -->
 				<div class="show-downloads-group">
 					<div class="show-downloads-group-header">

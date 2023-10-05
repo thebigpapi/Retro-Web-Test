@@ -15,13 +15,13 @@ use Knp\Component\Pager\PaginatorInterface;
 
 class FloppyDriveController extends AbstractController
 {
-    #[Route(path: '/floppydrives/{id}', name: 'cd_drive_show', requirements: ['id' => '\d+'])]
-    public function cdDriveShow(int $id, FloppyDriveRepository $cdDriveRepository)
+    #[Route(path: '/floppydrives/{id}', name: 'floppy_drive_show', requirements: ['id' => '\d+'])]
+    public function floppyDriveShow(int $id, FloppyDriveRepository $floppyDriveRepository)
     {
-        $fdd = $cdDriveRepository->find($id);
+        $fdd = $floppyDriveRepository->find($id);
         if (!$fdd) {
             throw $this->createNotFoundException(
-                'No hard drive found for id ' . $id
+                'No floppy drive found for id ' . $id
             );
         } else {
             return $this->render('floppydrive/show.html.twig', [

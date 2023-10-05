@@ -115,16 +115,9 @@ class HardDriveCrudController extends AbstractCrudController
         yield TextField::new('partNumber')
             ->setColumns('col-sm-6 col-lg-6 col-xxl-4')
             ->onlyOnForms();
-        yield CollectionField::new('interfaces', 'Interface')
-            ->setEntryType(StorageDeviceInterfaceType::class)
-            ->setColumns('col-sm-6 col-lg-6 col-xxl-4')
-            ->renderExpanded()
-            ->onlyOnForms();
-        yield AssociationField::new('physicalSize', 'Physical size')
-            //->setEntryType(StorageDeviceSizeType::class)
-            ->setColumns('col-sm-6 col-lg-6 col-xxl-4')
-            ->onlyOnForms();
         yield TextField::new('getCapacityFormatted', 'Capacity')
+            ->onlyOnIndex();
+        yield TextField::new('physicalSize', 'Physical size')
             ->onlyOnIndex();
         yield NumberField::new('capacity')
             ->setColumns('col-sm-4 col-lg-3 col-xxl-2')
@@ -139,15 +132,29 @@ class HardDriveCrudController extends AbstractCrudController
             ->setColumns('col-sm-4 col-lg-3 col-xxl-2');
         yield NumberField::new('platters')
             ->setColumns('col-sm-4 col-lg-3 col-xxl-2');
+        yield NumberField::new('randomSeek')
+            ->setColumns('col-sm-4 col-lg-3 col-xxl-2');
+        yield NumberField::new('trackSeek')
+            ->setColumns('col-sm-4 col-lg-3 col-xxl-2');
+        yield AssociationField::new('physicalSize', 'Physical size')
+            ->setColumns('col-sm-6 col-lg-6 col-xxl-4')
+            ->onlyOnForms();
+        yield FormField::addRow();
+        yield CollectionField::new('knownIssues', 'Known issues')
+            ->setEntryType(KnownIssueType::class)
+            ->setColumns('col-sm-6 col-lg-6 col-xxl-4')
+            ->renderExpanded()
+            ->onlyOnForms();
+        yield CollectionField::new('interfaces', 'Interface')
+            ->setEntryType(StorageDeviceInterfaceType::class)
+            ->setColumns('col-sm-6 col-lg-6 col-xxl-4')
+            ->renderExpanded()
+            ->onlyOnForms();
         yield CollectionField::new('storageDeviceAliases', 'Alternative names')
             ->setEntryType(StorageDeviceAliasType::class)
             ->renderExpanded()
             ->setFormTypeOption('error_bubbling', false)
-            ->setColumns('col-sm-12 col-lg-6 col-xxl-4')
-            ->onlyOnForms();
-        yield CollectionField::new('knownIssues', 'Known issues')
-            ->setEntryType(KnownIssueType::class)
-            ->renderExpanded()
+            ->setColumns('col-sm-6 col-lg-6 col-xxl-4')
             ->onlyOnForms();
         yield CodeEditorField::new('description')
             ->setLanguage('markdown')

@@ -7,6 +7,7 @@ use App\Form\Type\KnownIssueType;
 use App\Form\Type\StorageDeviceAliasType;
 use App\Form\Type\StorageDeviceDocumentationType;
 use App\Form\Type\StorageDeviceImageTypeForm;
+use App\Form\Type\StorageDeviceInterfaceType;
 use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
@@ -105,14 +106,15 @@ class FloppyDriveCrudController extends AbstractCrudController
         yield TextField::new('partNumber')
             ->setColumns('col-sm-6 col-lg-6 col-xxl-4')
             ->onlyOnForms();
+        yield AssociationField::new('physicalSize', 'Physical size')
+            ->setColumns('col-sm-6 col-lg-6 col-xxl-4')
+            ->onlyOnForms();
         yield TextField::new('density')
             ->onlyOnIndex();
         yield ChoiceField::new('density')
             ->setColumns('col-sm-6 col-lg-6 col-xxl-4')
             ->setFormTypeOption('placeholder', 'Select a density ...')
             ->setFormTypeOption('choices', [
-                'Single density (8 inch SD)' => 'Single density (8 inch SD)',
-                'Double density (8 inch DD)' => 'Double density (8 inch DD)',
                 'Single density (5.25 inch SD)' => 'Single density (5.25 inch SD)',
                 'Double density (5.25 inch DD)' => 'Double density (5.25 inch DD)',
                 'Quad density (5.25 inch QD)' => 'Quad density (5.25 inch QD)',
@@ -122,15 +124,22 @@ class FloppyDriveCrudController extends AbstractCrudController
                 'Triple density (3.5 inch TD)' => 'Triple density (3.5 inch TD)'
             ])
             ->onlyOnForms();
+        yield FormField::addRow();
+        yield CollectionField::new('knownIssues', 'Known issues')
+            ->setEntryType(KnownIssueType::class)
+            ->setColumns('col-sm-6 col-lg-6 col-xxl-4')
+            ->renderExpanded()
+            ->onlyOnForms();
+        yield CollectionField::new('interfaces', 'Interface')
+            ->setEntryType(StorageDeviceInterfaceType::class)
+            ->setColumns('col-sm-6 col-lg-6 col-xxl-4')
+            ->renderExpanded()
+            ->onlyOnForms();
         yield CollectionField::new('storageDeviceAliases', 'Alternative names')
             ->setEntryType(StorageDeviceAliasType::class)
             ->renderExpanded()
             ->setFormTypeOption('error_bubbling', false)
-            ->setColumns('col-sm-12 col-lg-6 col-xxl-4')
-            ->onlyOnForms();
-        yield CollectionField::new('knownIssues', 'Known issues')
-            ->setEntryType(KnownIssueType::class)
-            ->renderExpanded()
+            ->setColumns('col-sm-6 col-lg-6 col-xxl-4')
             ->onlyOnForms();
         yield CodeEditorField::new('description')
             ->setLanguage('markdown')
