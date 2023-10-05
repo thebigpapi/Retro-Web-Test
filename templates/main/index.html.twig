@@ -28,7 +28,7 @@
 			<img src="{{ absolute_url(asset('build/icons/486dx.svg')) }}" alt="cpu" width="210" height="180">
 			<div>CPUs</div><div>({{cpuCount}}&nbsp;entries)</div>
 		</a>
-		<a href="{{ path("driver_search") }}">
+		<a href="{{ path("driversearch") }}">
 			<img src="{{ absolute_url(asset('build/icons/hardware.svg')) }}" alt="driver" width="210" height="180">
 			<div>Drivers &amp; Software</div><div>({{driverCount}}&nbsp;files)</div>
 		</a>
@@ -69,7 +69,7 @@
 					<div class="perk-name">{{ motherboard.getManufacturerName() }}&nbsp;{{ motherboard.name }}</div>
 					<div class="perk-date">{{ motherboard.getLastEdited()|date("Y-m-d\\TH:i:s", "GMT") }}Z</div>
 				</a>
-			</div>	
+			</div>
 		{% endfor %}
 		</div>
 	</div>

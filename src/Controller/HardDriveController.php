@@ -76,10 +76,6 @@ class HardDriveController extends AbstractController
     private function searchFormToParam(Request $request, $form): array
     {
         $parameters = array();
-
-        $parameters['showImages'] = $form['searchWithImages']->getData();
-        $parameters['domTarget'] = $request->request->get('domTarget') ?? $request->query->get('domTarget') ?? "";
-
         if ($form['hddManufacturer']->getData()) {
             if ($form['hddManufacturer']->getData()->getId() == 0) {
                 $parameters['hddManufacturerId']  = "NULL";
@@ -87,6 +83,14 @@ class HardDriveController extends AbstractController
                 $parameters['hddManufacturerId'] = $form['hddManufacturer']->getData()->getId();
             }
         }
+
+        $parameters['page'] = intval($request->request->get('page') ?? $request->query->get('page') ?? 1);
+        $parameters['domTarget'] = $request->request->get('domTarget') ?? $request->query->get('domTarget') ?? "";
+
+        $tempItems = intval($form['itemsPerPage']->getData()->value);
+        $parameters['itemsPerPage'] = $tempItems > 0 ? $tempItems : $this->getParameter('app.pagination.max');
+
+        $parameters['showImages'] = $form['searchWithImages']->getData();
         $parameters['name'] = $form['name']->getData();
         $parameters['capacity'] = $form['capacity']->getData();
 

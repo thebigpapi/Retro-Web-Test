@@ -69,13 +69,21 @@ class ChipsetRepository extends ServiceEntityRepository
         $whereString = implode(" AND ", $whereArray);
 
         // Building query
-        $query = $entityManager->createQuery(
-            "SELECT chip
-            FROM App\Entity\Chipset chip JOIN chip.manufacturer man JOIN chip.expansionChips part LEFT OUTER JOIN chip.chipsetAliases alias
-            WHERE $whereString
-            ORDER BY man.name ASC, chip.name ASC"/*, chip.release_date ASC*/
-        );
-
+        if($whereArray == []){
+            $query = $entityManager->createQuery(
+                "SELECT chip
+                FROM App\Entity\Chipset chip JOIN chip.manufacturer man JOIN chip.expansionChips part LEFT OUTER JOIN chip.chipsetAliases alias
+                ORDER BY man.name ASC, chip.name ASC"
+            );
+        }
+        else{
+            $query = $entityManager->createQuery(
+                "SELECT chip
+                FROM App\Entity\Chipset chip JOIN chip.manufacturer man JOIN chip.expansionChips part LEFT OUTER JOIN chip.chipsetAliases alias
+                WHERE $whereString
+                ORDER BY man.name ASC, chip.name ASC"
+            );
+        }
         // Setting values
         foreach ($valuesArray as $key => $value) {
             $query->setParameter($key, $value);

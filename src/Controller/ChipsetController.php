@@ -137,10 +137,6 @@ class ChipsetController extends AbstractController
     private function searchFormToParam(Request $request, $form): array
     {
         $parameters = array();
-
-        $parameters['showImages'] = $form['searchWithImages']->getData();
-        $parameters['domTarget'] = $request->request->get('domTarget') ?? $request->query->get('domTarget') ?? "";
-
         if ($form['chipsetManufacturer']->getData()) {
             if ($form['chipsetManufacturer']->getData()->getId() == 0) {
                 $parameters['chipsetManufacturerId']  = "NULL";
@@ -148,6 +144,14 @@ class ChipsetController extends AbstractController
                 $parameters['chipsetManufacturerId'] = $form['chipsetManufacturer']->getData()->getId();
             }
         }
+
+        $parameters['page'] = intval($request->request->get('page') ?? $request->query->get('page') ?? 1);
+        $parameters['domTarget'] = $request->request->get('domTarget') ?? $request->query->get('domTarget') ?? "";
+
+        $tempItems = intval($form['itemsPerPage']->getData()->value);
+        $parameters['itemsPerPage'] = $tempItems > 0 ? $tempItems : $this->getParameter('app.pagination.max');
+
+        $parameters['showImages'] = $form['searchWithImages']->getData();
         $parameters['name'] = $form['name']->getData();
 
         return $parameters;

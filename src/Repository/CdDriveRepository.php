@@ -68,12 +68,21 @@ class CdDriveRepository extends ServiceEntityRepository
         $whereString = implode(" AND ", $whereArray);
 
         // Building query
-        $query = $entityManager->createQuery(
-            "SELECT cdd
-            FROM App\Entity\CdDrive cdd JOIN cdd.manufacturer man LEFT OUTER JOIN cdd.storageDeviceAliases alias
-            WHERE $whereString
-            ORDER BY man.name ASC, cdd.name ASC"
-        );
+        if($whereArray == []){
+            $query = $entityManager->createQuery(
+                "SELECT cdd
+                FROM App\Entity\CdDrive cdd JOIN cdd.manufacturer man LEFT OUTER JOIN cdd.storageDeviceAliases alias
+                ORDER BY man.name ASC, cdd.name ASC"
+            );
+        }
+        else{
+            $query = $entityManager->createQuery(
+                "SELECT cdd
+                FROM App\Entity\CdDrive cdd JOIN cdd.manufacturer man LEFT OUTER JOIN cdd.storageDeviceAliases alias
+                WHERE $whereString
+                ORDER BY man.name ASC, cdd.name ASC"
+            );
+        }
 
         // Setting values
         foreach ($valuesArray as $key => $value) {

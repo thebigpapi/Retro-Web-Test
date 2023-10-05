@@ -120,6 +120,8 @@ function searchLive() {
         if(!form)
             form = document.getElementsByName('search_chipset')[0];
         if(!form)
+            form = document.getElementsByName('search_driver')[0];
+        if(!form)
             form = document.getElementsByName('search_hdd')[0];
         if(!form)
             form = document.getElementsByName('search_cdd')[0];
@@ -155,6 +157,7 @@ function searchLive() {
                 let string = document.getElementById('search-params-id');
                 window.history.replaceState({},'', string.firstChild.data);
                 const lightbox = GLightbox({});
+                getDates();
             } else {
                 document.getElementById(targetId).innerHTML = "Critical error while fetching results";
             }

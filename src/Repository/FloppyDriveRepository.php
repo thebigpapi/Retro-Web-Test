@@ -68,13 +68,21 @@ class FloppyDriveRepository extends ServiceEntityRepository
         $whereString = implode(" AND ", $whereArray);
 
         // Building query
-        $query = $entityManager->createQuery(
-            "SELECT fdd
-            FROM App\Entity\FloppyDrive fdd JOIN fdd.manufacturer man LEFT OUTER JOIN fdd.storageDeviceAliases alias
-            WHERE $whereString
-            ORDER BY man.name ASC, fdd.name ASC"
-        );
-
+        if($whereArray == []){
+            $query = $entityManager->createQuery(
+                "SELECT fdd
+                FROM App\Entity\FloppyDrive fdd JOIN fdd.manufacturer man LEFT OUTER JOIN fdd.storageDeviceAliases alias
+                ORDER BY man.name ASC, fdd.name ASC"
+            );
+        }
+        else{
+            $query = $entityManager->createQuery(
+                "SELECT fdd
+                FROM App\Entity\FloppyDrive fdd JOIN fdd.manufacturer man LEFT OUTER JOIN fdd.storageDeviceAliases alias
+                WHERE $whereString
+                ORDER BY man.name ASC, fdd.name ASC"
+            );
+        }
         // Setting values
         foreach ($valuesArray as $key => $value) {
             $query->setParameter($key, $value);

@@ -1,48 +1,19 @@
 {% extends 'base.html.twig' %}
 
-{% form_theme form _self %}
-
-{% block checkbox_widget %}
-	{% set type = type|default('checkbox') %}
-	<input type="{{ type }}" {{ block('widget_attributes') }} {% if value is not empty %} value="{{ value }}" {% endif %}>
-{% endblock %}
-
-{% block hidden_widget %}
-	{% set type = type|default('hidden') %}
-	<input type="{{ type }}" {{ block('widget_attributes') }} {% if value is not empty %} value="{{ value }}" {% endif %}>
-{% endblock %}
-
 {% block title %}Search drivers - TRW{% endblock %}
-
 
 {% block metatags %}
 	<meta name="description" content="Search for a driver by name, manufacturer and part number.">
-	<link rel="alternate" hreflang="x-default" href="{{ absolute_url(path('driver_search')) }}"/>
+	<link rel="alternate" hreflang="x-default" href="{{ absolute_url(path('driversearch')) }}"/>
+{% endblock %}
+{% block extra_javascripts %}
+	<script src="/build/js/tom-select.complete.min.js" defer></script>
+	<script src="/build/js/search.js" defer></script>
 {% endblock %}
 {% block body %}
-
-	<div id="hiddenDiv" style="display: none;"></div>
-	{{ form_start(form, {'method': 'POST', 'name': 'search_driver', 'action':path("driver_search"), 'attr':{'data-controller':'search'}}) }}
+	{{ form_start(form, {'method': 'POST', 'name': 'search_driver', 'action':path("driversearch"), 'attr':{'data-live-action': path('driverlivewrapper')}}) }}
 	<fieldset id="search-fieldset">
-		<div class="title">Search for: drivers/software</div>
-		<div class="index-title">
-			List by first letter<br>
-		</div>
-		<div class="index-list">
-			{% for letter in ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z']%}
-				<a class="index-letter" href="{{path("driverindex", {"letter":letter})}}">{{letter}}</a>
-			{% endfor %}
-		</div>
-		<section>
-			<h4 hidden>Search navigation</h4>
-			<div class="toolbar toolbar-main">
-				<button type="button" onclick="document.getElementById('search_search').click();return false;">
-					<img src="{{ absolute_url(asset('build/icons/search.svg')) }}" alt="imgsearch" width="24" height="24">
-					<span>Search</span>
-				</button>
-				{{ form_row(form.search)|replace({'<div><button': '<input', '</button></div>': '">', '>': ' value="'})|raw }}
-			</div>
-		</section>
+		<div class="title">Search for drivers/software</div>
 		<section class="search-form-grid" style="display:flex;justify-content:center;flex-wrap:wrap;">
 			<div class="search-form-entry">
 				<label class="search-form-label" for="search_name" title="This is where you enter the driver name, version or file name.">
@@ -54,14 +25,36 @@
 				</div>
 			</div>
 		</section>
-	</fieldset>
-	{% if latestDrivers is not empty %}
-		<div class="results lst">
-			<div class="plain-list w300p perks table">
-				<p><b>Recently added and updated drivers</b></p>
-				{% include 'macros/widget.html.twig' with {'type':'driver-results', 'entity': latestDrivers} %}
+		<section class="search-form-grid search-form-grid-tight">
+			<div class="search-form-header">Search results options</div>
+			<div class="search-form-entry">
+				<label class="search-form-label">
+					<span>Items per page</span>
+				</label>
+				<div class="search-form-widget">
+					<div>{{ form_widget(form.itemsPerPage) }}</div>
+				</div>
 			</div>
+		</section>
+		<!-- Search toolbar -->
+		<div class="toolbar toolbar-main">
+			<button type="button" onclick="document.getElementById('rst-btn').click();return false;">
+				<img src="{{ absolute_url(asset('build/icons/reset.svg')) }}" alt="reset" width="24" height="24">
+				<span>Reset fields</span>
+			</button>
+			<button id="search-paginate-id" type="button" data-paginate="1" data-target="drivers">
+				<img src="{{ absolute_url(asset('build/icons/search.svg')) }}" alt="search" width="24" height="24">
+				<span>Search</span>
+			</button>
+			<input id="rst-btn" type="reset" value="reset" data-reset-ids='search_fddManufacturer'>
+			<input id="pagination_redir" type="button" value="" data-results-id='search_liveResults' value="1">
 		</div>
+	</fieldset>
+	{{ form_end(form, {render_rest: false}) }}
+	<!-- Search results -->
+	<section id="search_liveResults">
+	{% if drivers is defined %}
+		{% include 'drivers/result.html.twig' with {'drivers': drivers, 'route': true} %}
 	{% endif %}
-	<div>{{ form_rest(form)}}</div>
-</form>{% endblock %}
+	</section>
+{% endblock %}

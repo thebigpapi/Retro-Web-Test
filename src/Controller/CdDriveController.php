@@ -72,10 +72,6 @@ class CdDriveController extends AbstractController
     private function searchFormToParam(Request $request, $form): array
     {
         $parameters = array();
-
-        $parameters['showImages'] = $form['searchWithImages']->getData();
-        $parameters['domTarget'] = $request->request->get('domTarget') ?? $request->query->get('domTarget') ?? "";
-
         if ($form['cddManufacturer']->getData()) {
             if ($form['cddManufacturer']->getData()->getId() == 0) {
                 $parameters['cddManufacturerId']  = "NULL";
@@ -83,6 +79,14 @@ class CdDriveController extends AbstractController
                 $parameters['cddManufacturerId'] = $form['cddManufacturer']->getData()->getId();
             }
         }
+
+        $parameters['page'] = intval($request->request->get('page') ?? $request->query->get('page') ?? 1);
+        $parameters['domTarget'] = $request->request->get('domTarget') ?? $request->query->get('domTarget') ?? "";
+
+        $tempItems = intval($form['itemsPerPage']->getData()->value);
+        $parameters['itemsPerPage'] = $tempItems > 0 ? $tempItems : $this->getParameter('app.pagination.max');
+
+        $parameters['showImages'] = $form['searchWithImages']->getData();
         $parameters['name'] = $form['name']->getData();
 
         return $parameters;
