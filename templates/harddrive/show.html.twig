@@ -69,6 +69,11 @@
 							<img src="{{ absolute_url(asset('build/icons/hdd.svg')) }}" alt="cpu" width="24" height="24">Capacity
 						</div>
 						<div>{{ harddrive.getCapacityFormatted() }}</div>
+						<!-- Buffer -->
+						<div class="quick-spec-head">
+							<img src="{{ absolute_url(asset('build/icons/hdd.svg')) }}" alt="486" width="24" height="24">Buffer size
+						</div>
+						<div>{{ harddrive.getBufferFormatted() ?: 'Unknown' }}</div>
 						<!-- Random seek -->
 						<div class="quick-spec-head">
 							<img src="{{ absolute_url(asset('build/icons/speed.svg')) }}" alt="486" width="24" height="24">Random seek

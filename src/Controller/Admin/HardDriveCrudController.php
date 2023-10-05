@@ -93,6 +93,7 @@ class HardDriveCrudController extends AbstractCrudController
             ->add('platters')
             ->add('randomSeek')
             ->add('trackSeek')
+            ->add('buffer')
             ->add('spindleSpeed')
             ->add('lastEdited');
     }
@@ -139,10 +140,13 @@ class HardDriveCrudController extends AbstractCrudController
             ->setColumns('col-sm-4 col-lg-3 col-xxl-2');
         yield NumberField::new('platters')
             ->setColumns('col-sm-4 col-lg-3 col-xxl-2');
-        yield NumberField::new('randomSeek')
+        yield NumberField::new('randomSeek', 'Random seek (in ms)')
             ->setColumns('col-sm-4 col-lg-3 col-xxl-2');
-        yield NumberField::new('trackSeek')
+        yield NumberField::new('trackSeek', 'Track-to-track seek (in ms)')
             ->setColumns('col-sm-4 col-lg-3 col-xxl-2');
+        yield NumberField::new('buffer', 'Buffer (in KB)')
+            ->setColumns('col-sm-4 col-lg-3 col-xxl-2')
+            ->onlyOnForms();
         yield AssociationField::new('physicalSize', 'Physical size')
             ->setColumns('col-sm-6 col-lg-6 col-xxl-4')
             ->onlyOnForms();
