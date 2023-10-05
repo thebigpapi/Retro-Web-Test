@@ -3,25 +3,82 @@
 namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Contracts\Translation\TranslatorInterface;
+use Symfony\Component\HttpFoundation\Response;
 use Knp\Component\Pager\PaginatorInterface;
 use App\Entity\Manufacturer;
-use App\Entity\MotherboardBios;
 use App\Form\Bios\Search;
-use App\Entity\ManufacturerBiosManufacturerCode;
-use App\Entity\ChipsetBiosCode;
-use App\Repository\ManufacturerBiosManufacturerCodeRepository;
 use App\Repository\ManufacturerRepository;
 use App\Repository\ExpansionChipRepository;
 use App\Repository\MotherboardBiosRepository;
 
 class BiosController extends AbstractController
 {
-    #[Route(path: '/bios/', name: 'bios_result')]
-    public function result(Request $request, PaginatorInterface $paginator, MotherboardBiosRepository $motherboardBiosRepository)
+    #[Route(path: '/bios/', name: 'biossearch', methods: ['GET', 'POST'])]
+    public function searchResultBios(Request $request, PaginatorInterface $paginator, ExpansionChipRepository $expansionChipRepository, MotherboardBiosRepository $motherboardBiosRepository, ManufacturerRepository $manufacturerRepository)
     {
+        $form = $this->_searchFormHandlerBios($request, $expansionChipRepository, $manufacturerRepository);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            return $this->redirect($this->generateUrl('biossearch', $this->searchFormToParamBios($request, $form)));
+        }
+        //get criterias
+        $criterias = $this->getCriteriaBios($request);
+        $maxItems = $request->query->getInt('itemsPerPage', $request->request->getInt('itemsPerPage', $this->getParameter('app.pagination.max')));
+        if ($criterias == array()) {
+            return $this->render('bios/search.html.twig', [
+                'form' => $form->createView(),
+            ]);
+        }
+        else{
+            $data = $motherboardBiosRepository->findBios($criterias);
+            $bios = $paginator->paginate(
+                $data,
+                $request->query->getInt('page', 1),
+                $maxItems
+            );
+            return $this->render('bios/search.html.twig', [
+                'form' => $form->createView(),
+                'controller_name' => 'BiosController',
+                'bios' => $bios,
+            ]);
+        }
+    }
+
+    #[Route('/bios/live', name: 'bioslivewrapper')]
+    public function liveSearchBios(Request $request, ExpansionChipRepository $expansionChipRepository, ManufacturerRepository $manufacturerRepository): Response
+    {
+        $form = $this->_searchFormHandlerBios($request, $expansionChipRepository, $manufacturerRepository);
+
+        return $this->redirect($this->generateUrl('bioslivesearch', $this->searchFormToParamBios($request, $form)));
+    }
+
+    #[Route('/bios/results', name: 'bioslivesearch')]
+    public function liveResultsBios(Request $request, PaginatorInterface $paginator, MotherboardBiosRepository $motherboardBiosRepository): Response
+    {
+        $criterias = $this->getCriteriaBios($request);
+        $maxItems = $request->query->getInt('itemsPerPage', $request->request->getInt('itemsPerPage', $this->getParameter('app.pagination.max')));
+        $data = $motherboardBiosRepository->findBios($criterias);
+        $bios = $paginator->paginate(
+                $data,
+                $request->query->getInt('page', 1),
+                $maxItems
+            );
+        $string = "/bios/?";
+        foreach ($request->query as $key => $value){
+            if($key != "domTarget")
+                $string .= $key . '=' . $value . '&';
+        }
+        return $this->render('bios/result.html.twig', [
+            'controller_name' => 'BiosController',
+            'bios' => $bios,
+            'domTarget' => $request->request->get('domTarget') ?? $request->query->get('domTarget') ?? "",
+            'params' => substr($string, 0, -1),
+        ]);
+    }
+    public function getCriteriaBios(Request $request){
         $criterias = array();
         $postString = $request->query->get('postString');
         if ($postString) {
@@ -53,114 +110,73 @@ class BiosController extends AbstractController
         } elseif ($chipsetId == "NULL") {
             $criterias['chipset_id'] = null;
         }
-        if (empty($criterias)) {
-            return $this->redirectToRoute("bios_search");
-        }
-        $data = $motherboardBiosRepository->findBios($criterias);
-        // this doesn't really work as it should, disabled :))
-        /*
-        $postStringAnalysis = false;
-        if (empty($data)) {
-            try {
-                if ($postString && $biosManufacturerId && intval($biosManufacturerId)) {
-                    $biosManufacturer = $manufacturerRepository->find($biosManufacturerId);
-                    if ($biosManufacturer->getName() == "AMI") {
-                        $subStr = explode("-", $postString);
-                        if (substr_count($postString, "-") == 3) { //Old AMI
-                            $mfgCode = $subStr[1];
-                        } else { //New AMI
-                            $mfgCode = substr($subStr[2], 2);
-                        }
-                    } elseif ($biosManufacturer->getName() == "Award") {
-                        $subStr = explode("-", $postString);
-                        dd($subStr);
-                        $mfgCode = substr($subStr[count($subStr) - 2], 5, 2);
-
-                    }
-
-                    $biosCodes = $manufacturerBiosManufacturerCodeRepository->findBy(array("biosManufacturer" => $biosManufacturer));
-                    $manufacturers = array();
-                    foreach ($biosCodes as $biosCode) {
-                        if ($mfgCode == $biosCode->getCode()) {
-                            $manufacturers[] = $biosCode->getManufacturer()->getId();
-                        }
-                    };
-                    if (!empty($manufacturers)) {
-                        $criterias['motherboard_manufacturer_ids'] = $manufacturers;
-                        $postStringAnalysis = true;
-                        $data = $motherboardBiosRepository->findBios($criterias);
-                    }
-                }
-            } catch (\Exception $e) {
+        return $criterias;
+    }
+    private function searchFormToParamBios(Request $request, $form): array
+    {
+        $parameters = array();
+        if ($form['chipsetManufacturer']->getData()) {
+            if ($form['chipsetManufacturer']->getData()->getId() == 0) {
+                $parameters['chipsetManufacturerId']  = "NULL";
+            } else {
+                $parameters['chipsetManufacturerId'] = $form['chipsetManufacturer']->getData()->getId();
             }
+        }
+
+        $parameters['page'] = intval($request->request->get('page') ?? $request->query->get('page') ?? 1);
+        $parameters['domTarget'] = $request->request->get('domTarget') ?? $request->query->get('domTarget') ?? "";
+
+        $tempItems = intval($form['itemsPerPage']->getData()->value);
+        $parameters['itemsPerPage'] = $tempItems > 0 ? $tempItems : $this->getParameter('app.pagination.max');
+
+        if ($postString = $form['post_string']->getData()) {
+            $parameters['postString'] = $postString;
+        }
+        if ($coreVersion = $form['core_version']->getData()) {
+            $parameters['coreVersion'] = $coreVersion;
+        }
+        if ($biosManufacturer = $form['manufacturer']->getData()) {
+            $parameters['biosManufacturerId'] = $biosManufacturer->getId();
+        }
+        /*if ($expansionChip = $form['expansionChip']->getData()) {
+            $parameters['expansionChipId'] = $expansionChip->getId();
         }*/
-        $bios = $paginator->paginate(
-            $data,
-            $request->query->getInt('page', 1),
-            $this->getParameter('app.pagination.max')
-        );
-        return $this->render('bios/result.html.twig', [
-            'bios' => $bios,
-            'bios_count' => count($data),
-            'postStringAnalysis' => false,
+        if ($filePresent = $form['file_present']->getData()) {
+            $parameters['filePresent'] = $filePresent;
+        }
+        if ($chipset = $form['chipset']->getData()) {
+            $parameters['chipsetId'] = $chipset->getId();
+        }
+
+        return $parameters;
+    }
+    private function _searchFormHandlerBios(Request $request, ExpansionChipRepository $expansionChipRepository, ManufacturerRepository $manufacturerRepository): FormInterface
+    {
+        $chipsetManufacturers = $manufacturerRepository->findAllChipsetManufacturer();
+        $biosManufacturers = $manufacturerRepository->findAllBiosManufacturer();
+        $expansionChip = $expansionChipRepository->findAll();
+        $unidentifiedMan = new Manufacturer();
+        $unidentifiedMan->setName("Not identified");
+        $form = $this->createForm(Search::class, array(), [
+            'biosManufacturers' => $biosManufacturers,
+            'expansionChips' => $expansionChip,
+            'chipsetManufacturers' => $chipsetManufacturers
         ]);
+
+        $form->handleRequest($request);
+
+        return $form;
     }
 
     #[Route(path: '/bios/list', name: 'bios_list')]
     public function biosList(ManufacturerRepository $manufacturerRepository)
     {
-        $biosCodes = $manufacturerRepository->findAllBiosManufacturer2();
+        $biosCodes = $manufacturerRepository->findAllBiosManufacturerAdv();
         $chipdata = $manufacturerRepository->findAllChipsetBiosManufacturer();
         return $this->render('bios/list.html.twig', [
             'controller_name' => 'MainController',
             'biosCodes' => $biosCodes,
             'chipCodes' => $chipdata,
-        ]);
-    }
-
-
-    #[Route(path: '/bios/search/', name: 'bios_search')]
-    public function search(Request $request, TranslatorInterface $translator, ManufacturerRepository $manufacturerRepository, ExpansionChipRepository $expansionChipRepository)
-    {
-        $notIdentifiedMessage = $translator->trans("Not identified");
-        $chipsetManufacturers = $manufacturerRepository->findAllChipsetManufacturer();
-        $biosManufacturers = $manufacturerRepository->findAllBiosManufacturer();
-        $expansionChip = $expansionChipRepository->findAll();
-        $unidentifiedMan = new Manufacturer();
-        $unidentifiedMan->setName($notIdentifiedMessage);
-        $form = $this->createForm(Search::class, array(), [
-            'biosManufacturers' => $biosManufacturers,
-            'expansionChips' => $expansionChip,
-            'chipsetManufacturers' => $chipsetManufacturers,
-            //'csrf_protection' => false // that code is aimed to remove cookie requirement but it breaks ajax stuff
-        ]);
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $parameters = array();
-
-            if ($postString = $form['post_string']->getData()) {
-                $parameters['postString'] = $postString;
-            }
-            if ($coreVersion = $form['core_version']->getData()) {
-                $parameters['coreVersion'] = $coreVersion;
-            }
-            if ($biosManufacturer = $form['manufacturer']->getData()) {
-                $parameters['biosManufacturerId'] = $biosManufacturer->getId();
-            }
-            /*if ($expansionChip = $form['expansionChip']->getData()) {
-                $parameters['expansionChipId'] = $expansionChip->getId();
-            }*/
-            if ($filePresent = $form['file_present']->getData()) {
-                $parameters['filePresent'] = $filePresent;
-            }
-            if ($chipset = $form['chipset']->getData()) {
-                $parameters['chipsetId'] = $chipset->getId();
-            }
-
-            return $this->redirect($this->generateUrl('bios_result', $parameters));
-        }
-        return $this->render('bios/search.html.twig', [
-            'form' => $form->createView(),
         ]);
     }
 }

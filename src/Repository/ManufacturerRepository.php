@@ -127,7 +127,7 @@ class ManufacturerRepository extends ServiceEntityRepository
     /**
      * @return array
      */
-    public function findAllBiosManufacturer2(): array
+    public function findAllBiosManufacturerAdv(): array
     {
         $conn = $this->getEntityManager()
             ->getConnection();

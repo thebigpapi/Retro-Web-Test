@@ -7,7 +7,6 @@ use App\Entity\Manufacturer;
 use App\Form\Processor\Search;
 use App\Repository\ProcessorRepository;
 use App\Repository\ManufacturerRepository;
-use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Response;

@@ -5,26 +5,21 @@ namespace App\Controller;
 use App\Entity\CpuSocket;
 use App\Entity\ProcessorPlatformType;
 use App\Entity\Trace;
-use App\Entity\User;
-use App\Form\ManageUser;
 use App\Repository\ChipsetRepository;
 use App\Repository\CpuSocketRepository;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use App\Repository\MotherboardRepository;
 use App\Repository\TraceRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
-use App\BranchLoader\GitLoader;
 
 class AdminController extends AbstractDashboardController
 {

@@ -2,19 +2,16 @@
 
 namespace App\Controller;
 
-use App\Entity\Chipset;
 use App\Entity\Manufacturer;
 use App\Form\Chipset\Search;
 use App\Repository\ChipsetRepository;
 use App\Repository\ManufacturerRepository;
-use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Knp\Component\Pager\PaginatorInterface;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 class ChipsetController extends AbstractController
 {

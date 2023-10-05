@@ -3,7 +3,9 @@
 namespace App\Form\Bios;
 
 use App\Entity\Chipset;
+use App\Form\Type\ItemsPerPageType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\EnumType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -29,8 +31,6 @@ class Search extends AbstractType
                 'required' => false,
             ])
             ->add('chipsetManufacturer', ChoiceType::class, [
-                //'class' => Chipset::class,
-
                 'choice_label' => 'getName',
                 'multiple' => false,
                 'expanded' => false,
@@ -54,7 +54,11 @@ class Search extends AbstractType
                 'label'    => 'File is present ?',
                 'required' => false,
             ])
-            ->add('search', SubmitType::class);
+            ->add('itemsPerPage', EnumType::class, [
+                'class' => ItemsPerPageType::class,
+                'empty_data' => ItemsPerPageType::Items100,
+                'choice_label' => fn ($choice) => strval($choice->value),
+            ]);
 
         $formModifier = function (FormInterface $form, Manufacturer $chipsetManufacturer = null) {
             /**

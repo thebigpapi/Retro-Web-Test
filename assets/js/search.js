@@ -92,28 +92,20 @@ function reset() {
         }
     }
 function setResult(searchedName, searchedValue, targetId) {
-        let form = document.getElementsByName('search_motherboard')[0];
-        if(!form)
-            form = document.getElementsByName('search_chipset')[0];
-        if(!form)
-            form = document.getElementsByName('search_hdd')[0];
-        if(!form)
-            form = document.getElementsByName('search_cdd')[0];
-        if(!form)
-            form = document.getElementsByName('search_fdd')[0];
-        let params = new FormData();
-        params.set(searchedName, searchedValue);
+    let form = document.forms[0];
+    let params = new FormData();
+    params.set(searchedName, searchedValue);
 
-        (async () => {
-            const rawResponse = await fetch(form.action, {
-                method: 'POST',
-                body: params
-            });
-            let parser = new DOMParser();
-            let parsedResponse = parser.parseFromString(await rawResponse.text(), "text/html");
-            document.getElementById(targetId).innerHTML = parsedResponse.getElementById(targetId).innerHTML;
-        })();
-    }
+    (async () => {
+        const rawResponse = await fetch(form.action, {
+            method: 'POST',
+            body: params
+        });
+        let parser = new DOMParser();
+        let parsedResponse = parser.parseFromString(await rawResponse.text(), "text/html");
+        document.getElementById(targetId).innerHTML = parsedResponse.getElementById(targetId).innerHTML;
+    })();
+}
 
 function searchLive() {
         let form = document.forms[0];

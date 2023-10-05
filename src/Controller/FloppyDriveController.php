@@ -69,28 +69,6 @@ class FloppyDriveController extends AbstractController
         return $this->redirect($this->generateUrl('fddlivesearch', $this->searchFormToParam($request, $form)));
     }
 
-    private function searchFormToParam(Request $request, $form): array
-    {
-        $parameters = array();
-        if ($form['fddManufacturer']->getData()) {
-            if ($form['fddManufacturer']->getData()->getId() == 0) {
-                $parameters['fddManufacturerId']  = "NULL";
-            } else {
-                $parameters['fddManufacturerId'] = $form['fddManufacturer']->getData()->getId();
-            }
-        }
-
-        $parameters['page'] = intval($request->request->get('page') ?? $request->query->get('page') ?? 1);
-        $parameters['domTarget'] = $request->request->get('domTarget') ?? $request->query->get('domTarget') ?? "";
-
-        $tempItems = intval($form['itemsPerPage']->getData()->value);
-        $parameters['itemsPerPage'] = $tempItems > 0 ? $tempItems : $this->getParameter('app.pagination.max');
-
-        $parameters['showImages'] = $form['searchWithImages']->getData();
-        $parameters['name'] = $form['name']->getData();
-
-        return $parameters;
-    }
     #[Route('/floppydrives/results', name: 'fddlivesearch')]
     public function liveResultsFdd(Request $request, PaginatorInterface $paginator, FloppyDriveRepository $fddRepository): Response
     {
@@ -129,6 +107,28 @@ class FloppyDriveController extends AbstractController
             $criterias['manufacturer'] = null;
         }
         return $criterias;
+    }
+    private function searchFormToParam(Request $request, $form): array
+    {
+        $parameters = array();
+        if ($form['fddManufacturer']->getData()) {
+            if ($form['fddManufacturer']->getData()->getId() == 0) {
+                $parameters['fddManufacturerId']  = "NULL";
+            } else {
+                $parameters['fddManufacturerId'] = $form['fddManufacturer']->getData()->getId();
+            }
+        }
+
+        $parameters['page'] = intval($request->request->get('page') ?? $request->query->get('page') ?? 1);
+        $parameters['domTarget'] = $request->request->get('domTarget') ?? $request->query->get('domTarget') ?? "";
+
+        $tempItems = intval($form['itemsPerPage']->getData()->value);
+        $parameters['itemsPerPage'] = $tempItems > 0 ? $tempItems : $this->getParameter('app.pagination.max');
+
+        $parameters['showImages'] = $form['searchWithImages']->getData();
+        $parameters['name'] = $form['name']->getData();
+
+        return $parameters;
     }
     private function _searchFormHandlerFdd(Request $request, ManufacturerRepository $manufacturerRepository,): FormInterface
     {

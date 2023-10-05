@@ -4,11 +4,8 @@ namespace App\Controller;
 
 use App\Entity\Manufacturer;
 use App\Form\HardDrive\Search;
-use App\Repository\CdDriveRepository;
-use App\Repository\FloppyDriveRepository;
 use App\Repository\HardDriveRepository;
 use App\Repository\ManufacturerRepository;
-use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,7 +15,6 @@ use Knp\Component\Pager\PaginatorInterface;
 
 class HardDriveController extends AbstractController
 {
-    // harddrive related
     #[Route(path: '/harddrives/{id}', name: 'hard_drive_show', requirements: ['id' => '\d+'])]
     public function hardDriveShow(int $id, HardDriveRepository $hardDriveRepository)
     {
@@ -73,29 +69,6 @@ class HardDriveController extends AbstractController
         return $this->redirect($this->generateUrl('hddlivesearch', $this->searchFormToParam($request, $form)));
     }
 
-    private function searchFormToParam(Request $request, $form): array
-    {
-        $parameters = array();
-        if ($form['hddManufacturer']->getData()) {
-            if ($form['hddManufacturer']->getData()->getId() == 0) {
-                $parameters['hddManufacturerId']  = "NULL";
-            } else {
-                $parameters['hddManufacturerId'] = $form['hddManufacturer']->getData()->getId();
-            }
-        }
-
-        $parameters['page'] = intval($request->request->get('page') ?? $request->query->get('page') ?? 1);
-        $parameters['domTarget'] = $request->request->get('domTarget') ?? $request->query->get('domTarget') ?? "";
-
-        $tempItems = intval($form['itemsPerPage']->getData()->value);
-        $parameters['itemsPerPage'] = $tempItems > 0 ? $tempItems : $this->getParameter('app.pagination.max');
-
-        $parameters['showImages'] = $form['searchWithImages']->getData();
-        $parameters['name'] = $form['name']->getData();
-        $parameters['capacity'] = $form['capacity']->getData();
-
-        return $parameters;
-    }
     #[Route('/harddrives/results', name: 'hddlivesearch')]
     public function liveResultsHdd(Request $request, PaginatorInterface $paginator, HardDriveRepository $hddRepository): Response
     {
@@ -138,6 +111,29 @@ class HardDriveController extends AbstractController
             $criterias['manufacturer'] = null;
         }
         return $criterias;
+    }
+    private function searchFormToParam(Request $request, $form): array
+    {
+        $parameters = array();
+        if ($form['hddManufacturer']->getData()) {
+            if ($form['hddManufacturer']->getData()->getId() == 0) {
+                $parameters['hddManufacturerId']  = "NULL";
+            } else {
+                $parameters['hddManufacturerId'] = $form['hddManufacturer']->getData()->getId();
+            }
+        }
+
+        $parameters['page'] = intval($request->request->get('page') ?? $request->query->get('page') ?? 1);
+        $parameters['domTarget'] = $request->request->get('domTarget') ?? $request->query->get('domTarget') ?? "";
+
+        $tempItems = intval($form['itemsPerPage']->getData()->value);
+        $parameters['itemsPerPage'] = $tempItems > 0 ? $tempItems : $this->getParameter('app.pagination.max');
+
+        $parameters['showImages'] = $form['searchWithImages']->getData();
+        $parameters['name'] = $form['name']->getData();
+        $parameters['capacity'] = $form['capacity']->getData();
+
+        return $parameters;
     }
     private function _searchFormHandlerHdd(Request $request, ManufacturerRepository $manufacturerRepository,): FormInterface
     {
