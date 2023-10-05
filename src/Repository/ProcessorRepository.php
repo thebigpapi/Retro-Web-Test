@@ -92,12 +92,22 @@ class ProcessorRepository extends ServiceEntityRepository
         $whereString = implode(" AND ", $whereArray);
 
         // Building query
-        $query = $entityManager->createQuery(
-            "SELECT cpu
-            FROM App\Entity\Processor cpu JOIN cpu.manufacturer man LEFT OUTER JOIN cpu.chipAliases alias LEFT JOIN App\Entity\ProcessingUnit p WITH p.platform = cpu.platform
-            WHERE $whereString
-            ORDER BY man.name ASC, cpu.name ASC, cpu.partNumber ASC"
-        );
+        if($whereArray == []){
+            $query = $entityManager->createQuery(
+                "SELECT cpu
+                FROM App\Entity\Processor cpu JOIN cpu.manufacturer man LEFT OUTER JOIN cpu.chipAliases alias LEFT JOIN App\Entity\ProcessingUnit p WITH p.platform = cpu.platform
+                ORDER BY man.name ASC, cpu.name ASC, cpu.partNumber ASC"
+            );
+        }
+        else{
+            $query = $entityManager->createQuery(
+                "SELECT cpu
+                FROM App\Entity\Processor cpu JOIN cpu.manufacturer man LEFT OUTER JOIN cpu.chipAliases alias LEFT JOIN App\Entity\ProcessingUnit p WITH p.platform = cpu.platform
+                WHERE $whereString
+                ORDER BY man.name ASC, cpu.name ASC, cpu.partNumber ASC"
+            );
+        }
+
         // Setting values
         foreach ($valuesArray as $key => $value) {
             $query->setParameter($key, $value);

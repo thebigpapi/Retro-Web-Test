@@ -42,11 +42,11 @@
 				{% endfor %}
 				</div>
 			</div>
-			{% else %}
-				<div class="plain-list w300p table">
-					{% include 'macros/widget.html.twig' with {'type':'chipset-results', 'entity': chipsets} %}
-				</div>
-			{% endif %}
+		{% else %}
+			<div class="plain-list w300p table">
+				{% include 'macros/widget.html.twig' with {'type':'chipset-results', 'entity': chipsets} %}
+			</div>
+		{% endif %}
 		{{ knp_pagination_render(chipsets, 'macros/pagination_async.html.twig') }}
 	</div>
 {% else %}

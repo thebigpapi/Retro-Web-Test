@@ -116,17 +116,7 @@ function setResult(searchedName, searchedValue, targetId) {
     }
 
 function searchLive() {
-        let form = document.getElementsByName('search_motherboard')[0];
-        if(!form)
-            form = document.getElementsByName('search_chipset')[0];
-        if(!form)
-            form = document.getElementsByName('search_driver')[0];
-        if(!form)
-            form = document.getElementsByName('search_hdd')[0];
-        if(!form)
-            form = document.getElementsByName('search_cdd')[0];
-        if(!form)
-            form = document.getElementsByName('search_fdd')[0];
+        let form = document.forms[0];
         let url = {};
         const formData = new URLSearchParams();
         for (const pair of new FormData(form)) {

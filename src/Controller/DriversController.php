@@ -15,7 +15,7 @@ use Knp\Component\Pager\PaginatorInterface;
 class DriversController extends AbstractController
 {
     #[Route('/drivers/{id}', name:'driver_show', requirements:['id' => '\d+'])]
-    public function show(int $id, LargeFileRepository $driverRepository): Response
+    public function showDriver(int $id, LargeFileRepository $driverRepository): Response
     {
         $driver = $driverRepository->find($id);
         if (!$driver) {
@@ -31,14 +31,14 @@ class DriversController extends AbstractController
     }
 
     #[Route('/drivers/', name:'driversearch', methods:['GET'])]
-    public function searchResultDrivers(Request $request, PaginatorInterface $paginator, LargeFileRepository $driverRepository): Response
+    public function searchResultDriver(Request $request, PaginatorInterface $paginator, LargeFileRepository $driverRepository): Response
     {
         $form = $this->_searchFormHandlerDrivers($request);
         if ($form->isSubmitted() && $form->isValid()) {
             return $this->redirect($this->generateUrl('driversearch', $this->searchFormToParam($request, $form)));
         }
         //get criterias
-        $criterias = $this->getCriteriaDrivers($request);
+        $criterias = $this->getCriteriaDriver($request);
         $maxItems = $request->query->getInt('itemsPerPage', $request->request->getInt('itemsPerPage', $this->getParameter('app.pagination.max')));
         if ($criterias == array()) {
             return $this->render('drivers/search.html.twig', [
@@ -66,22 +66,10 @@ class DriversController extends AbstractController
         return $this->redirect($this->generateUrl('driverlivesearch', $this->searchFormToParam($request, $form)));
     }
 
-    private function searchFormToParam(Request $request, $form): array
-    {
-        $parameters = array();
-        $parameters['page'] = intval($request->request->get('page') ?? $request->query->get('page') ?? 1);
-        $parameters['domTarget'] = $request->request->get('domTarget') ?? $request->query->get('domTarget') ?? "";
-
-        $tempItems = intval($form['itemsPerPage']->getData()->value);
-        $parameters['itemsPerPage'] = $tempItems > 0 ? $tempItems : $this->getParameter('app.pagination.max');
-
-        $parameters['name'] = $form['name']->getData();
-        return $parameters;
-    }
     #[Route('/drivers/results', name: 'driverlivesearch')]
     public function liveResultsDriver(Request $request, PaginatorInterface $paginator, LargeFileRepository $driverRepository): Response
     {
-        $criterias = $this->getCriteriaDrivers($request);
+        $criterias = $this->getCriteriaDriver($request);
         $maxItems = $request->query->getInt('itemsPerPage', $request->request->getInt('itemsPerPage', $this->getParameter('app.pagination.max')));
         $data = $driverRepository->findByDriver($criterias);
         dump($request->request->getInt('itemsPerPage'));
@@ -102,13 +90,25 @@ class DriversController extends AbstractController
             'params' => substr($string, 0, -1),
         ]);
     }
-    public function getCriteriaDrivers(Request $request){
+    public function getCriteriaDriver(Request $request){
         $criterias = array();
         $name = htmlentities($request->query->get('name') ?? '');
         if ($name) {
             $criterias['name'] = "$name";
         }
         return $criterias;
+    }
+    private function searchFormToParam(Request $request, $form): array
+    {
+        $parameters = array();
+        $parameters['page'] = intval($request->request->get('page') ?? $request->query->get('page') ?? 1);
+        $parameters['domTarget'] = $request->request->get('domTarget') ?? $request->query->get('domTarget') ?? "";
+
+        $tempItems = intval($form['itemsPerPage']->getData()->value);
+        $parameters['itemsPerPage'] = $tempItems > 0 ? $tempItems : $this->getParameter('app.pagination.max');
+
+        $parameters['name'] = $form['name']->getData();
+        return $parameters;
     }
     private function _searchFormHandlerDrivers(Request $request): FormInterface
     {
@@ -118,7 +118,7 @@ class DriversController extends AbstractController
     }
 
     #[Route('/drivers/index/{letter}', name:'driverindex', requirements:['letter' => '\w|[?]'], methods:["GET"])]
-    public function index(Request $request, PaginatorInterface $paginator, string $letter, LargeFileRepository $driverRepository): Response
+    public function indexDriver(Request $request, PaginatorInterface $paginator, string $letter, LargeFileRepository $driverRepository): Response
     {
         if ($letter === "?") {
             $letter = "";

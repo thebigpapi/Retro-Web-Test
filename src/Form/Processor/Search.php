@@ -4,15 +4,17 @@ namespace App\Form\Processor;
 
 use App\Entity\Processor;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\EnumType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use App\Entity\Manufacturer;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormInterface;
+use App\Form\Type\ItemsPerPageType;
 
 class Search extends AbstractType
 {
@@ -31,35 +33,16 @@ class Search extends AbstractType
                 'choices' => $options['cpuManufacturers'],
                 'placeholder' => 'Select a CPU manufacturer ...',
             ])
-            ->add('search', SubmitType::class);
-        $formModifier = function (FormInterface $form, Manufacturer $cpuManufacturer = null) {
-                /**
-                 * @var Processor[]
-                 */
-
-            };
-
-            $builder->addEventListener(
-                FormEvents::PRE_SET_DATA,
-                function (FormEvent $event) use ($formModifier) {
-                    // this would be your entity, i.e. SportMeetup
-                    $data = $event->getData();
-
-                    $formModifier($event->getForm(), null);
-                }
-            );
-
-            $builder->get('cpuManufacturer')->addEventListener(
-                FormEvents::POST_SUBMIT,
-                function (FormEvent $event) use ($formModifier) {
-                    // It's important here to fetch $event->getForm()->getData(), as
-                    // $event->getData() will get you the client data (that is, the ID)
-                    $cpuManufacturer = $event->getForm()->getData();
-                    // since we've added the listener to the child, we'll have to pass on
-                    // the parent to the callback functions!
-                    $formModifier($event->getForm()->getParent(), $cpuManufacturer);
-                }
-            );
+            ->add('itemsPerPage', EnumType::class, [
+                'class' => ItemsPerPageType::class,
+                'empty_data' => ItemsPerPageType::Items100,
+                'choice_label' => fn ($choice) => strval($choice->value),
+            ])
+            ->add('searchWithImages', CheckboxType::class, [
+                'data' => true,
+                'label' => false,
+                'attr' => array('checked' => 'checked'),
+            ]);
     }
     public function configureOptions(OptionsResolver $resolver)
     {
