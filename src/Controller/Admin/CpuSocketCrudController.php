@@ -30,6 +30,8 @@ class CpuSocketCrudController extends AbstractCrudController
     {
         return $crud
             ->showEntityActionsInlined()
+            ->setEntityLabelInSingular('socket')
+            ->setEntityLabelInPlural('Sockets')
             ->setPaginatorPageSize(100);
     }
     public function configureFields(string $pageName): iterable

@@ -34,7 +34,10 @@ class MediaTypeFlagCrudController extends AbstractCrudController
     }
     public function configureCrud(Crud $crud): Crud
     {
-        return $crud->showEntityActionsInlined();
+        return $crud
+            ->showEntityActionsInlined()
+            ->setEntityLabelInSingular('media type')
+            ->setEntityLabelInPlural('Media types');
     }
     public function configureActions(Actions $actions): Actions
     {

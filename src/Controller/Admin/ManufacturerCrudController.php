@@ -29,6 +29,8 @@ class ManufacturerCrudController extends AbstractCrudController
     {
         return $crud
             ->showEntityActionsInlined()
+            ->setEntityLabelInSingular('manufacturer')
+            ->setEntityLabelInPlural('Manufacturers')
             ->setPaginatorPageSize(100);
     }
     public function configureFields(string $pageName): iterable

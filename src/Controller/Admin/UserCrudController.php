@@ -37,7 +37,10 @@ class UserCrudController extends AbstractCrudController
     }
     public function configureCrud(Crud $crud): Crud
     {
-        return $crud->showEntityActionsInlined();
+        return $crud
+            ->showEntityActionsInlined()
+            ->setEntityLabelInSingular('user')
+            ->setEntityLabelInPlural('Users');
     }
     public function configureFields(string $pageName): iterable
     {

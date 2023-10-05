@@ -25,6 +25,8 @@ class DramTypeCrudController extends AbstractCrudController
     {
         return $crud
             ->showEntityActionsInlined()
+            ->setEntityLabelInSingular('RAM type')
+            ->setEntityLabelInPlural('RAM types')
             ->setPaginatorPageSize(100);
     }
     /*

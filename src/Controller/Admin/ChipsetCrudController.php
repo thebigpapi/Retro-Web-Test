@@ -71,6 +71,8 @@ class ChipsetCrudController extends AbstractCrudController
         return parent::configureCrud($crud)
             ->showEntityActionsInlined()
             ->setPaginatorPageSize(100)
+            ->setEntityLabelInSingular('chipset')
+            ->setEntityLabelInPlural('Chipsets')
             ->setDefaultSort(['lastEdited' => 'DESC']);
     }
     public function configureFilters(Filters $filters): Filters

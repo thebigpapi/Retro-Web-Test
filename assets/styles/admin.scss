@@ -33,7 +33,12 @@ $btn-hover-dark: rgb(247, 207, 62);
 	border-image-slice: 1;
 	border-image-source: linear-gradient(to right, $color, transparent);
 }
-
+#main-menu .menu .submenu {
+	margin-top: 0;
+	a {
+		color: var(--sidebar-menu-color);
+	}
+}
 .form-group.field-collection .field-collection-delete-button {
 	i {
 		font-size: 18px;

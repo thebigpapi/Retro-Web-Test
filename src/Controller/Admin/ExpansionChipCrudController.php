@@ -43,6 +43,8 @@ class ExpansionChipCrudController extends AbstractCrudController
     {
         return $crud
             ->showEntityActionsInlined()
+            ->setEntityLabelInSingular('expansion chip')
+            ->setEntityLabelInPlural('Expansion chips')
             ->setPaginatorPageSize(100);
     }
     public function configureFilters(Filters $filters): Filters

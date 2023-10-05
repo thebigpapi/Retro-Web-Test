@@ -25,11 +25,8 @@ class ExpansionChipTypeCrudController extends AbstractCrudController
     {
         return $crud
             ->showEntityActionsInlined()
+            ->setEntityLabelInSingular('chip type')
+            ->setEntityLabelInPlural('Expansion chip types')
             ->setPaginatorPageSize(100);
     }
-    /*
-    public function configureFields(string $pageName): iterable
-    {
-    }
-    */
 }

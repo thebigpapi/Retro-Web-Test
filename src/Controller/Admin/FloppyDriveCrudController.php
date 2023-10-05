@@ -15,6 +15,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
+use EasyCorp\Bundle\EasyAdminBundle\Field\ArrayField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CodeEditorField;
@@ -69,6 +70,8 @@ class FloppyDriveCrudController extends AbstractCrudController
     {
         return parent::configureCrud($crud)
             ->showEntityActionsInlined()
+            ->setEntityLabelInSingular('floppy drive')
+            ->setEntityLabelInPlural('Floppy drives')
             ->setPaginatorPageSize(100);
     }
     public function configureFilters(Filters $filters): Filters
@@ -78,6 +81,9 @@ class FloppyDriveCrudController extends AbstractCrudController
             ->add('name')
             ->add('partNumber')
             ->add('storageDeviceAliases')
+            ->add('interfaces')
+            ->add('physicalSize')
+            ->add('density')
             ->add('lastEdited');
     }
     public function configureFields(string $pageName): iterable
@@ -94,7 +100,8 @@ class FloppyDriveCrudController extends AbstractCrudController
             ->hideOnForm();
         yield TextField::new('partNumber')
             ->hideOnForm();
-
+        yield ArrayField::new('interfaces', 'Interface')
+            ->onlyOnIndex();
         // editor items
         yield AssociationField::new('manufacturer','Manufacturer')
             ->setFormTypeOption('required', false)

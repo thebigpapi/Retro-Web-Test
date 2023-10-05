@@ -25,11 +25,8 @@ class IoPortCrudController extends AbstractCrudController
     {
         return $crud
             ->showEntityActionsInlined()
+            ->setEntityLabelInSingular('I/O port')
+            ->setEntityLabelInPlural('I/O ports')
             ->setPaginatorPageSize(100);
     }
-    /*
-    public function configureFields(string $pageName): iterable
-    {
-    }
-    */
 }

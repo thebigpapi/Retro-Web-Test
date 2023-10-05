@@ -27,6 +27,8 @@ class MaxRamCrudController extends AbstractCrudController
     {
         return $crud
             ->showEntityActionsInlined()
+            ->setEntityLabelInSingular('RAM size')
+            ->setEntityLabelInPlural('RAM sizes')
             ->setPaginatorPageSize(100);
     }
     public function configureFields(string $pageName): iterable

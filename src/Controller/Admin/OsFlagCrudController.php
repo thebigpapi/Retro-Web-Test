@@ -28,6 +28,8 @@ class OsFlagCrudController extends AbstractCrudController
     {
         return $crud
             ->showEntityActionsInlined()
+            ->setEntityLabelInSingular('OS flag')
+            ->setEntityLabelInPlural('OS flags')
             ->setPaginatorPageSize(100);
     }
     public function configureFields(string $pageName): iterable

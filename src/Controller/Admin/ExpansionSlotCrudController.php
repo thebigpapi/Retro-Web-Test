@@ -25,11 +25,8 @@ class ExpansionSlotCrudController extends AbstractCrudController
     {
         return $crud
             ->showEntityActionsInlined()
+            ->setEntityLabelInSingular('expansion slot')
+            ->setEntityLabelInPlural('Expansion slots')
             ->setPaginatorPageSize(100);
     }
-    /*
-    public function configureFields(string $pageName): iterable
-    {
-    }
-    */
 }

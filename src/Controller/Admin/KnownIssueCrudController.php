@@ -28,6 +28,8 @@ class KnownIssueCrudController extends AbstractCrudController
     {
         return $crud
             ->showEntityActionsInlined()
+            ->setEntityLabelInSingular('known issue')
+            ->setEntityLabelInPlural('Known issues')
             ->setPaginatorPageSize(100);
     }
     public function configureFields(string $pageName): iterable

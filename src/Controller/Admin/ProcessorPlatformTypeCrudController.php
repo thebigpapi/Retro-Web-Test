@@ -30,6 +30,8 @@ class ProcessorPlatformTypeCrudController extends AbstractCrudController
     {
         return $crud
             ->showEntityActionsInlined()
+            ->setEntityLabelInSingular('CPU family')
+            ->setEntityLabelInPlural('CPU families')
             ->setPaginatorPageSize(100);
     }
     public function configureFields(string $pageName): iterable

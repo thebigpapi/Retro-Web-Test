@@ -69,6 +69,8 @@ class ProcessorCrudController extends AbstractCrudController
     {
         return $crud
             ->showEntityActionsInlined()
+            ->setEntityLabelInSingular('CPU')
+            ->setEntityLabelInPlural('CPUs')
             ->setPaginatorPageSize(100);
     }
     public function configureFilters(Filters $filters): Filters

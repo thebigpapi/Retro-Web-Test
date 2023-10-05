@@ -3,6 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Entity\StorageDeviceSize;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 
 class StorageDeviceSizeCrudController extends AbstractCrudController
@@ -11,15 +12,12 @@ class StorageDeviceSizeCrudController extends AbstractCrudController
     {
         return StorageDeviceSize::class;
     }
-
-    /*
-    public function configureFields(string $pageName): iterable
+    public function configureCrud(Crud $crud): Crud
     {
-        return [
-            IdField::new('id'),
-            TextField::new('title'),
-            TextEditorField::new('description'),
-        ];
+        return parent::configureCrud($crud)
+            ->showEntityActionsInlined()
+            ->setEntityLabelInSingular('storage size')
+            ->setEntityLabelInPlural('Storage physical size')
+            ->setPaginatorPageSize(100);
     }
-    */
 }

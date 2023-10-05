@@ -16,6 +16,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
+use EasyCorp\Bundle\EasyAdminBundle\Field\ArrayField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CodeEditorField;
@@ -72,6 +73,8 @@ class HardDriveCrudController extends AbstractCrudController
     {
         return parent::configureCrud($crud)
             ->showEntityActionsInlined()
+            ->setEntityLabelInSingular('hard drive')
+            ->setEntityLabelInPlural('Hard drives')
             ->setPaginatorPageSize(100);
     }
     public function configureFilters(Filters $filters): Filters
@@ -81,11 +84,15 @@ class HardDriveCrudController extends AbstractCrudController
             ->add('name')
             ->add('partNumber')
             ->add('storageDeviceAliases')
+            ->add('interfaces')
+            ->add('physicalSize')
             ->add('capacity')
             ->add('cylinders')
             ->add('heads')
             ->add('sectors')
             ->add('platters')
+            ->add('randomSeek')
+            ->add('trackSeek')
             ->add('spindleSpeed')
             ->add('lastEdited');
     }
@@ -117,7 +124,7 @@ class HardDriveCrudController extends AbstractCrudController
             ->onlyOnForms();
         yield TextField::new('getCapacityFormatted', 'Capacity')
             ->onlyOnIndex();
-        yield TextField::new('physicalSize', 'Physical size')
+        yield ArrayField::new('interfaces', 'Interface')
             ->onlyOnIndex();
         yield NumberField::new('capacity')
             ->setColumns('col-sm-4 col-lg-3 col-xxl-2')

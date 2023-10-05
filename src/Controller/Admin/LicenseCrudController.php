@@ -24,11 +24,8 @@ class LicenseCrudController extends AbstractCrudController
     public function configureCrud(Crud $crud): Crud
     {
         return $crud
-            ->showEntityActionsInlined();
+            ->showEntityActionsInlined()
+            ->setEntityLabelInSingular('license')
+            ->setEntityLabelInPlural('Licenses');
     }
-    /*
-    public function configureFields(string $pageName): iterable
-    {
-    }
-    */
 }

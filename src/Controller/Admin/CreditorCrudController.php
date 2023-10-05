@@ -27,7 +27,11 @@ class CreditorCrudController extends AbstractCrudController
     }
     public function configureCrud(Crud $crud): Crud
     {
-        return $crud->showEntityActionsInlined()->setPaginatorPageSize(100);
+        return $crud
+            ->showEntityActionsInlined()
+            ->setEntityLabelInSingular('creditor')
+            ->setEntityLabelInPlural('Creditors')
+            ->setPaginatorPageSize(100);
     }
     public function configureFields(string $pageName): iterable
     {

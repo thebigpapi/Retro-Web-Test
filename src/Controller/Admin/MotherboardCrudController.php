@@ -90,6 +90,8 @@ class MotherboardCrudController extends AbstractCrudController
         return parent::configureCrud($crud)
             ->showEntityActionsInlined()
             ->setPaginatorPageSize(100)
+            ->setEntityLabelInSingular('motherboard')
+            ->setEntityLabelInPlural('Motherboards')
             ->overrideTemplate('crud/edit', 'admin/crud/edit_mobo.html.twig')
             ->overrideTemplate('crud/new', 'admin/crud/new_mobo.html.twig')
             ->setDefaultSort(['lastEdited' => 'DESC']);

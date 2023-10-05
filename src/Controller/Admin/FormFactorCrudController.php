@@ -25,11 +25,8 @@ class FormFactorCrudController extends AbstractCrudController
     {
         return $crud
             ->showEntityActionsInlined()
+            ->setEntityLabelInSingular('form factor')
+            ->setEntityLabelInPlural('Form factors')
             ->setPaginatorPageSize(100);
     }
-    /*
-    public function configureFields(string $pageName): iterable
-    {
-    }
-    */
 }

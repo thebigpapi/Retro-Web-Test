@@ -3,6 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Entity\StorageDeviceInterface;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 
 class StorageDeviceInterfaceCrudController extends AbstractCrudController
@@ -11,15 +12,12 @@ class StorageDeviceInterfaceCrudController extends AbstractCrudController
     {
         return StorageDeviceInterface::class;
     }
-
-    /*
-    public function configureFields(string $pageName): iterable
+    public function configureCrud(Crud $crud): Crud
     {
-        return [
-            IdField::new('id'),
-            TextField::new('title'),
-            TextEditorField::new('description'),
-        ];
+        return parent::configureCrud($crud)
+            ->showEntityActionsInlined()
+            ->setEntityLabelInSingular('storage interface')
+            ->setEntityLabelInPlural('Storage interfaces')
+            ->setPaginatorPageSize(100);
     }
-    */
 }

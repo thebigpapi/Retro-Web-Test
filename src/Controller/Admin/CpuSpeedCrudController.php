@@ -27,6 +27,8 @@ class CpuSpeedCrudController extends AbstractCrudController
     {
         return $crud
             ->showEntityActionsInlined()
+            ->setEntityLabelInSingular('speed')
+            ->setEntityLabelInPlural('Speeds')
             ->setPaginatorPageSize(100);
     }
     public function configureFields(string $pageName): iterable
