@@ -74,7 +74,7 @@ class ExpansionChipCrudController extends AbstractCrudController
             ->setColumns(4);
         yield TextField::new('type','Type')->onlyOnIndex();
         // index
-        yield ArrayField::new('getPciDevs', 'PCI DEV')
+        yield ArrayField::new('getPciDevsLimited', 'Device ID')
             ->hideOnForm();
         yield BooleanField::new('getImages','Images')
             ->renderAsSwitch(false)
@@ -90,7 +90,7 @@ class ExpansionChipCrudController extends AbstractCrudController
             ->setFormTypeOption('placeholder', 'Select a type ...')
             ->setColumns(6)
             ->onlyOnForms();
-        yield CollectionField::new('pciDevs', 'PCI DEV')
+        yield CollectionField::new('pciDevs', 'Device ID')
             ->setEntryType(PciDeviceIdType::class)
             ->setColumns(6)
             ->renderExpanded()

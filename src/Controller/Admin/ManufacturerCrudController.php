@@ -39,9 +39,9 @@ class ManufacturerCrudController extends AbstractCrudController
             ->onlyOnIndex();
         yield TextField::new('name', 'Name');
         yield TextField::new('fullName', 'Full name');
-        yield ArrayField::new('getPciVendorIds', 'PCI Vendor')
+        yield ArrayField::new('getPciVendorIds', 'Vendor ID')
             ->hideOnForm();
-        yield CollectionField::new('pciVendorIds', 'PCI Vendor')
+        yield CollectionField::new('pciVendorIds', 'Vendor ID')
             ->setEntryType(PciVendorIdType::class)
             ->setColumns(6)
             ->renderExpanded()

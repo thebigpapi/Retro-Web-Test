@@ -74,7 +74,7 @@ class HardDrive extends StorageDevice
     {
         if($this->capacity > 1048575)
             $size = number_format($this->capacity/1048576, 2, '.', '') . " TB";
-        else $size = $this->capacity > 1024 ? number_format($this->capacity/1024, 2, '.', '') . " GB" : $this->capacity . " MB";
+        else $size = $this->capacity > 1023 ? number_format($this->capacity/1024, 2, '.', '') . " GB" : $this->capacity . " MB";
         return $size;
     }
 

@@ -192,6 +192,21 @@ abstract class Chip
         return $this->pciDevs;
     }
 
+    public function getPciDevsLimited(): ?array
+    {
+        $result = array();
+        $idx = 1;
+        foreach($this->pciDevs as $dev){
+            $idx++;
+            array_push($result, $dev->getDev());
+            if($idx > 3){
+                array_push($result, "...");
+                break;
+            }
+        }
+        return $result;
+    }
+
     public function addPciDev(PciDeviceId $pciDev): self
     {
         if (!$this->pciDevs->contains($pciDev)) {
