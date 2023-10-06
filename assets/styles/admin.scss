@@ -100,6 +100,14 @@ $btn-hover-dark: rgb(247, 207, 62);
 	column-gap: 5px;
 	align-items: center;
 }
+.bios-bot-csv-box{
+	border: 1px solid #cbd5e1;
+	@media (prefers-color-scheme: dark) {
+		border: 1px solid #525252;
+	}
+	border-radius: 4px;
+	padding: 10px;
+}
 
 @media screen and (min-width: 768px) {
 	#Motherboard_motherboardBios_collection>div>div>div {
