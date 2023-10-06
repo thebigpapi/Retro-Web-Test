@@ -107,6 +107,13 @@ $btn-hover-dark: rgb(247, 207, 62);
 	}
 	border-radius: 4px;
 	padding: 10px;
+	>div{
+		padding-bottom: 5px;
+		>span{
+			min-width: 80px;
+			display: inline-block;
+		}
+	}
 }
 
 @media screen and (min-width: 768px) {
