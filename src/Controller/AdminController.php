@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use App\Entity\CpuSocket;
 use App\Entity\ProcessorPlatformType;
-use App\Entity\Trace;
 use App\Repository\ChipsetRepository;
 use App\Repository\CpuSocketRepository;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
@@ -15,103 +14,17 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use App\Repository\TraceRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class AdminController extends AbstractDashboardController
 {
-    //private $entityManager
     public function __construct(private EntityManagerInterface $entityManager)
     {
         $this->entityManager = $entityManager;
     }
 
-
-    #[Route('/logs', name:'logs')]
-    public function logs(Request $request, TraceRepository $traceRepository, PaginatorInterface $paginator): Response
-    {
-        $logs = $traceRepository->findAllSorted();
-        if (!$logs) {
-            return $this->render('admin/logs.html.twig', [
-                'objectList' => [],
-                'exist' => false,
-            ]);
-        } else {
-            $paginatedObjects = $paginator->paginate(
-                $logs,
-                $request->query->getInt('page', 1),
-                $this->getParameter('app.pagination.max')
-            );
-            return $this->render('admin/logs.html.twig', [
-                'objectList' => $paginatedObjects,
-                'exist' => true,
-            ]);
-        }
-    }
-
-    #[Route('/logs/{id}', name:'logs_filter_id', requirements: ['id' => '\d+'])]
-    public function logs_filter_id(int $id, Request $request, TraceRepository $traceRepository, PaginatorInterface $paginator): Response
-    {
-        $logs = $traceRepository->findAllById($id);
-        if (!$logs) {
-            return $this->render('admin/logs.html.twig', [
-                'objectList' => [],
-                'exist' => false,
-            ]);
-        } else {
-            usort(
-                $logs,
-                function (Trace $a, Trace $b) {
-                    if ($a->getDate() == $b->getDate()) {
-                        return 0;
-                    }
-                    return ($a->getDate() > $b->getDate()) ? -1 : 1;
-                }
-            );
-            $paginatedObjects = $paginator->paginate(
-                $logs,
-                $request->query->getInt('page', 1),
-                $this->getParameter('app.pagination.max')
-            );
-            return $this->render('admin/logs.html.twig', [
-                'objectList' => $paginatedObjects,
-                'exist' => true,
-            ]);
-        }
-    }
-    #[Route('/logs/{id}/{entity}', name:'logs_filter_id_entity', requirements: ['id' => '\d+'])]
-    public function logs_filter_id_entity(int $id, string $entity, Request $request, TraceRepository $traceRepository, PaginatorInterface $paginator): Response
-    {
-        $logs = $traceRepository->findAllByIdAndEntity($id, "App\\\\Entity\\\\" . $entity);
-        if (!$logs) {
-            return $this->render('admin/logs.html.twig', [
-                'objectList' => [],
-                'exist' => false,
-            ]);
-        } else {
-            usort(
-                $logs,
-                function (Trace $a, Trace $b) {
-                    if ($a->getDate() == $b->getDate()) {
-                        return 0;
-                    }
-                    return ($a->getDate() > $b->getDate()) ? -1 : 1;
-                }
-            );
-            $paginatedObjects = $paginator->paginate(
-                $logs,
-                $request->query->getInt('page', 1),
-                $this->getParameter('app.pagination.max')
-            );
-            return $this->render('admin/logs.html.twig', [
-                'objectList' => $paginatedObjects,
-                'exist' => true,
-            ]);
-        }
-    }
     #[Route('/dashboard/getcpufamilies', name:'mobo_get_cpu_families', methods:['POST'])]
     public function getCPUFamilies(Request $request, CpuSocketRepository $cpuSocketRepository): JsonResponse
     {

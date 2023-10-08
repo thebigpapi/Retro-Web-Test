@@ -73,6 +73,10 @@ class ExpansionChip extends Chip
         }
         return $this->getManufacturer()->getName() . " " . $this->partNumber;
     }
+    public function getManufacturerAndPN()
+    {
+        return $this->getManufacturer()->getName() . " " . $this->partNumber;
+    }
     /**
      * @return Collection|Motherboard[]
      */

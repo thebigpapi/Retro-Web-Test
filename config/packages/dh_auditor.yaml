@@ -1,0 +1,72 @@
+dh_auditor:
+    enabled: true
+    timezone: 'UTC'
+    role_checker: 'dh_auditor.role_checker'
+    user_provider: 'dh_auditor.user_provider'
+    security_provider: 'dh_auditor.security_provider'
+    providers:
+        doctrine:
+            table_prefix: null
+            table_suffix: '_audit'
+            ignored_columns:
+                - 'lastEdited'
+                - 'updatedAt'
+            viewer: true
+            entities:
+                App\Entity\AudioFile: ~
+                App\Entity\CacheSize: ~
+                App\Entity\CdDrive: ~
+                App\Entity\ChipAlias: ~
+                App\Entity\ChipDocumentation: ~
+                App\Entity\ChipImage: ~
+                App\Entity\Chipset: ~
+                App\Entity\ChipsetAlias: ~
+                App\Entity\ChipsetBiosCode: ~
+                App\Entity\ChipsetDocumentation: ~
+                App\Entity\CpuSocket: ~
+                App\Entity\Creditor: ~
+                App\Entity\DramType: ~
+                App\Entity\ExpansionChip: ~
+                App\Entity\ExpansionSlot: ~
+                App\Entity\FloppyDrive: ~
+                App\Entity\FormFactor: ~
+                App\Entity\HardDrive: ~
+                App\Entity\InstructionSet: ~
+                App\Entity\IoPort: ~
+                App\Entity\KnownIssue: ~
+                App\Entity\LargeFile: ~
+                App\Entity\LargeFileChipset: ~
+                App\Entity\LargeFileExpansionChip: ~
+                App\Entity\LargeFileMediaTypeFlag: ~
+                App\Entity\LargeFileMotherboard: ~
+                App\Entity\License: ~
+                App\Entity\Manual: ~
+                App\Entity\Manufacturer: ~
+                App\Entity\ManufacturerBiosManufacturerCode: ~
+                App\Entity\MaxRam: ~
+                App\Entity\MediaTypeFlag: ~
+                App\Entity\MiscFile: ~
+                App\Entity\Motherboard: ~
+                App\Entity\MotherboardAlias: ~
+                App\Entity\MotherboardBios: ~
+                App\Entity\MotherboardExpansionSlot: ~
+                App\Entity\MotherboardIdRedirection: ~
+                App\Entity\MotherboardImage: ~
+                App\Entity\MotherboardIoPort: ~
+                App\Entity\MotherboardMaxRam: ~
+                App\Entity\OsFlag: ~
+                App\Entity\Processor: ~
+                App\Entity\ProcessorPlatformType: ~
+                App\Entity\ProcessorVoltage: ~
+                App\Entity\PSUConnector: ~
+                App\Entity\StorageDeviceAlias: ~
+                App\Entity\StorageDeviceDocumentation: ~
+                App\Entity\StorageDeviceImage: ~
+                App\Entity\StorageDeviceInterface: ~
+                App\Entity\StorageDeviceSize: ~
+                App\Entity\User: ~
+            storage_services:
+                - '@doctrine.orm.default_entity_manager'
+            auditing_services:
+                - '@doctrine.orm.default_entity_manager'
+            storage_mapper: ~

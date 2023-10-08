@@ -26,9 +26,9 @@
 						{% endif %}
 						</div>
 						<a href="{{ path("chipset_show", {id: chipset.getId()}) }}" title="Click to visit page">
-							<div class="perk-name">{{ chipset.getFullName() }}</div>
+							<div class="perk-name">{{ chipset.getNameWithoutParts() }}</div>
 							<div class="perk-alias">
-								{% if chipset.getParts() is not empty %}<span class="results-alias">
+								{% if chipset.getExpansionChips() is not empty %}<span class="results-alias">
 									<small>Parts: {% for chipPart in chipset.getExpansionChips() %}{{ chipPart.getNameWithManufacturer() }}{% if not loop.last %}, {% endif %}{% endfor %}</small>
 								</span>{% endif %}
 							</div>

@@ -100,7 +100,7 @@ class ChipsetCrudController extends AbstractCrudController
             ->setColumns(4);
         yield TextField::new('name', 'Name')
             ->setColumns(4);
-        yield ArrayField::new('getParts', 'Parts')
+        yield ArrayField::new('getPartsCached', 'Parts')
             ->hideOnForm();
         yield DateField::new('release_date', 'Release Date')
             ->setColumns(4);

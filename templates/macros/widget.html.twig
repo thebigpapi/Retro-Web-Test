@@ -45,7 +45,7 @@
 	{% for chipset in entity %}
 	<div class="list-entry centered bios {% if loop.index is divisible by(2) %}alt{% endif %}{% if chipset.getExpansionChips() is empty %} nows{% endif %}">
 		<div class="header-label">Name</div>
-		<div><a class="result-link" href="{{ path("chipset_show", {id: chipset.getId()}) }}">{{ chipset.getFullName() }}</a></div>
+		<div><a class="result-link" href="{{ path("chipset_show", {id: chipset.getId()}) }}">{{ chipset.getNameWithoutParts() }}</a></div>
 		<div class="header-label">Parts</div>
 		<div>{% for chipPart in chipset.getExpansionChips() %}
 			<span class="text-block" style="margin-right: 5px;">{{ chipPart.getNameWithManufacturer() }}</span>

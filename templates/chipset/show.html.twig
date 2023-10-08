@@ -37,7 +37,7 @@
 
 {% block body %}
 <!-- MANUF./NAME/PART NO. -->
-<div class="title">{{ chipset.getFullName() }}</div>
+<div class="title">{{ chipset.getNameWithoutParts() }}</div>
 {% if chipset.getChipsetAliases() is not empty %}
 <div class="tag-container" style="justify-content:center;padding-bottom:15px">
 	<span style="width:100%;text-align:center">Also known as:</span>

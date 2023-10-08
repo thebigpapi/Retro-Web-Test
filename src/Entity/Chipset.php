@@ -81,7 +81,7 @@ class Chipset
     }
     public function __toString(): string
     {
-        return $this->getCachedName();
+        return $this->getNameCached();
     }
     public function getId(): ?int
     {
@@ -97,24 +97,11 @@ class Chipset
 
         return $this;
     }
-    public function getFullReference(): string
-    {
-        $fullName = "";
-        if ($this->part_no) {
-            $fullName = $fullName . " $this->part_no";
-            if ($this->name) {
-                $fullName = $fullName . " ($this->name)";
-            }
-        } else {
-            if ($this->name) {
-                $fullName = $fullName . " $this->name";
-            } else {
-                $fullName = $fullName . " Unidentified";
-            }
-        }
-        return "$fullName";
-    }
     public function getNameCached(): string
+    {
+        return $this->getNameWithoutParts() . " " . $this->getPartsCached();
+    }
+    public function getNameWithoutParts(): string
     {
         $fullName = $this->getManufacturer()->getName();
         if ($this->part_no) {
@@ -129,38 +116,31 @@ class Chipset
                 $fullName .= " Unidentified";
             }
         }
-        $fullName .= " " . $this->getParts();
         return $fullName;
-    }
-    public function getFullNameParts(): string
-    {
-        if ($this->getManufacturer()) {
-            $manufacturer = $this->getManufacturer()->getName();
-        } else {
-            $manufacturer = "";
-        }
-
-        $fullName = $manufacturer . $this->getFullReference() . ' ' . $this->getParts();
-        return "$fullName";
-    }
-    public function getFullName(): string
-    {
-        if ($this->getManufacturer()) {
-            $manufacturer = $this->getManufacturer()->getName();
-        } else {
-            $manufacturer = "";
-        }
-
-        $fullName = $manufacturer . $this->getFullReference();
-        return "$fullName";
     }
     public function getParts(): string
     {
-        if($this->getCachedName() != "")
-            return $this->getCachedName();
-        else{
-            return "[uncached parts]";
+        $parts = "";
+        if($this->expansionChips->isEmpty()){
+            return "[no parts]";
         }
+        foreach ($this->expansionChips as $key => $part) {
+            if ($key === array_key_last($this->expansionChips->getValues())) {
+                $parts .= $part->getManufacturerAndPN();
+            } else {
+                $parts .= $part->getManufacturerAndPN() . ", ";
+            }
+        }
+        if ($parts) {
+            $parts = "[$parts]";
+        }
+
+
+        return "$parts";
+    }
+    public function getPartsCached(): string
+    {
+        return ($this->getCachedName() != "") ? $this->getCachedName() : "[uncached parts]";
     }
     /**
      * @return Collection|Motherboard[]
@@ -414,7 +394,7 @@ class Chipset
         } else {
             $strBuilder .= "[Unknown]";
         }
-        $strBuilder .= $this->getFullReference();
+        $strBuilder .= $this->getNameWithoutParts();
         return $strBuilder;
     }
 
@@ -439,7 +419,7 @@ class Chipset
 
     public function updateCachedName(): self
     {
-        $this->cachedName = $this->getFullNameParts();
+        $this->cachedName = $this->getParts();
 
         return $this;
     }

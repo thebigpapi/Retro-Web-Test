@@ -64,7 +64,7 @@
 						<img src="{{ absolute_url(asset('build/icons/chipset.svg')) }}" alt="chip" width="24" height="24">Chipset
 					</div>
 					{% if motherboard.getChipset() is not null %}
-						<div><a href="{{ path('chipset_show', {id: motherboard.getChipset().getId()}) }}">{{ motherboard.getChipset().getFullName() }}</a></div>
+						<div><a href="{{ path('chipset_show', {id: motherboard.getChipset().getId()}) }}">{{ motherboard.getChipset().getNameWithoutParts() }}</a></div>
 					{% else %}
 					<div>Unknown</div>
 					{% endif %}
@@ -173,7 +173,7 @@
 						<img src="{{ absolute_url(asset('build/icons/chipset.svg')) }}" alt="chipset" width="24" height="24">Chipset
 					</div>
 					{% if motherboard.getChipset() is not empty %}
-						<div><a href="{{ path('app_homepage') }}chipsets/{{ motherboard.getChipset().getId()}}">{{ motherboard.getChipset().getFullName() }}</a></div>
+						<div><a href="{{ path('app_homepage') }}chipsets/{{ motherboard.getChipset().getId()}}">{{ motherboard.getChipset().getNameWithoutParts() }}</a></div>
 					{% else %}<div>Unknown</div>{% endif %}
 					<!-- Expansion Chips -->
 					{% if motherboard.getExpansionChips() is not empty %}

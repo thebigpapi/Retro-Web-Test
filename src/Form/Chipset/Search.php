@@ -52,18 +52,9 @@ class Search extends AbstractType
              */
             $chipsets = $chipsetManufacturer?->getChipsets()->toArray() ?? [];
 
-            usort(
-                $chipsets,
-                function (Chipset $a, Chipset $b) {
-                    if ($a->getFullReference() == $b->getFullReference()) {
-                        return 0;
-                    }
-                    if ($a->getFullReference() == " Unidentified ") {
-                        return -1;
-                    }
-                    return ($a->getFullReference() < $b->getFullReference()) ? -1 : 1;
-                }
-            );
+            usort($chipsets, function (Chipset $a, Chipset $b) {
+                return strnatcasecmp($a->getCachedName() ?? '', $b->getCachedName() ?? '');
+            });
         };
 
         $builder->addEventListener(

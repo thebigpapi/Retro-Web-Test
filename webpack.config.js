@@ -30,6 +30,10 @@ Encore
         from: './assets/styles/glightbox',
         to: 'css/[path][name].[ext]',
     })
+    .copyFiles({
+        from: './assets/styles/audit',
+        to: 'css/[path][name].[ext]',
+    })
     /*
      * ENTRY CONFIG
      *

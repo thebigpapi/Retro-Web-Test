@@ -157,7 +157,7 @@ class Search extends AbstractType
             usort(
                 $chipsets,
                 function (Chipset $a, Chipset $b) {
-                    return strcmp($a->getFullNameParts(), $b->getFullNameParts());
+                    return strcmp($a->getNameCached(), $b->getNameCached());
                 }
             );
 
@@ -166,7 +166,7 @@ class Search extends AbstractType
             }
             $chipTag = (null === $chipsetManufacturer) ? "No chipset selected!" : "any " . $chipsetManufacturer->getName() . " chipset";
             $form->add('chipset', ChoiceType::class, [
-                'choice_label' => 'getFullNameParts',
+                'choice_label' => 'getNameCached',
                 'multiple' => false,
                 'expanded' => false,
                 'required' => false,

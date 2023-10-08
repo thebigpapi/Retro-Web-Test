@@ -1,0 +1,131 @@
+{% extends "@DHAuditor/layout.html.twig" %}
+
+{% import '@DHAuditor/Audit/helpers/helper.html.twig' as helper %}
+{% import '@DHAuditor/Audit/helpers/pager.html.twig' as pager %}
+
+{% block dh_auditor_header %}
+{% set titles = {
+	'App\\Entity\\AudioFile' : 'Audio files',
+    'App\\Entity\\CacheSize' : 'Cache sizes',
+    'App\\Entity\\CdDrive' : 'CD drives',
+    'App\\Entity\\ChipAlias' : 'Chip aliases',
+    'App\\Entity\\ChipDocumentation' : 'Chip docs',
+    'App\\Entity\\ChipImage' : 'Chip images',
+    'App\\Entity\\Chipset' : 'Chipset',
+    'App\\Entity\\ChipsetAlias' : 'Chipset aliases',
+    'App\\Entity\\ChipsetBiosCode' : 'Chipset BIOS codes',
+    'App\\Entity\\ChipsetDocumentation' : 'Chipset docs',
+    'App\\Entity\\CpuSocket' : 'CPU sockets',
+    'App\\Entity\\Creditor' : 'Creditors',
+    'App\\Entity\\DramType' : 'RAM types',
+    'App\\Entity\\ExpansionChip' : 'Expansion chips',
+    'App\\Entity\\ExpansionSlot' : 'Expansion slots',
+    'App\\Entity\\FloppyDrive' : 'Floppy drives',
+    'App\\Entity\\FormFactor' : 'Form factors',
+    'App\\Entity\\HardDrive' : 'Hard drives',
+    'App\\Entity\\InstructionSet' : 'Instruction sets',
+    'App\\Entity\\IoPort' : 'I/O ports',
+    'App\\Entity\\KnownIssue' : 'Known issues',
+    'App\\Entity\\LargeFile' : 'Drivers',
+    'App\\Entity\\LargeFileChipset' : 'Chipset drivers',
+    'App\\Entity\\LargeFileExpansionChip' : 'Expansion chip drivers',
+    'App\\Entity\\LargeFileMediaTypeFlag' : 'Driver media flags',
+    'App\\Entity\\LargeFileMotherboard' : 'Motherboard drivers',
+    'App\\Entity\\License' : 'Licenses',
+    'App\\Entity\\Manual' : 'Motherboard docs',
+    'App\\Entity\\Manufacturer' : 'Manufacturers',
+    'App\\Entity\\ManufacturerBiosManufacturerCode' : 'BIOS manufacturer codes',
+    'App\\Entity\\MaxRam' : 'RAM sizes',
+    'App\\Entity\\MediaTypeFlag' : 'Media flags',
+    'App\\Entity\\MiscFile' : 'Misc files',
+    'App\\Entity\\Motherboard' : 'Motherboards',
+    'App\\Entity\\MotherboardAlias' : 'Motherboard aliases',
+    'App\\Entity\\MotherboardBios' : 'Motherboard BIOSes',
+    'App\\Entity\\MotherboardExpansionSlot' : 'Motherboard expansion slots',
+    'App\\Entity\\MotherboardIdRedirection' : 'Motherboard URL redirects',
+    'App\\Entity\\MotherboardImage' : 'Motherboard images',
+    'App\\Entity\\MotherboardIoPort' : 'Motherboard I/O ports',
+    'App\\Entity\\MotherboardMaxRam' : 'Motherboard RAM sizes',
+    'App\\Entity\\OsFlag' : 'OS flags',
+    'App\\Entity\\PSUConnector' : 'PSU connectors',
+    'App\\Entity\\Processor' : 'CPUs',
+    'App\\Entity\\ProcessorPlatformType' : 'CPU families',
+    'App\\Entity\\ProcessorVoltage' : 'CPU voltages',
+    'App\\Entity\\StorageDeviceAlias' : 'Storage device aliases',
+    'App\\Entity\\StorageDeviceDocumentation' : 'Storage device docs',
+    'App\\Entity\\StorageDeviceImage' : 'Storage device images',
+    'App\\Entity\\StorageDeviceInterface' : 'Storage device interfaces',
+    'App\\Entity\\StorageDeviceSize' : 'Storage device physical sizes',
+    'App\\Entity\\User' : 'Users'
+}
+%}
+<nav class="bg-white border border-gray-200 rounded flex" aria-label="Breadcrumb">
+    <ol role="list" class="max-w-screen-xl w-full mx-auto px-4 flex space-x-4 sm:px-6 lg:px-6">
+        <li class="flex">
+            <div class="flex items-center">
+                <a href="{{ path('dh_auditor_list_audits') }}" class="text-gray-400 hover:text-gray-500 flex space-x-1">
+                    <!-- Heroicon name: solid/home -->
+                    <svg class="flex-shrink-0 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                        <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
+                    </svg>
+                    <span>{% trans from 'auditor' %}audit.header.home{% endtrans %}</span>
+                </a>
+            </div>
+        </li>
+
+        <li class="flex {% if id is null %}flex-grow items-center justify-between{% endif %}">
+            <div class="flex items-center">
+                <svg class="flex-shrink-0 w-6 h-full text-gray-200" viewBox="0 0 24 44" preserveAspectRatio="none" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path d="M.293 0l22 22-22 22h1.414l22-22-22-22H.293z" />
+                </svg>
+                <a class="ml-4 text-gray-500 hover:text-gray-700" {% if id is null %}aria-current="page"{% endif %} href="{{ path('dh_auditor_show_entity_history', { 'entity': helper.namespaceToParam(entity) }) }}">
+                    <code class="text-pink-500">{{ titles[entity] }}</code>
+                </a>
+                {% if id is null %}
+                <span class="ml-2 italic text-gray-400 font-light">{% trans from 'auditor' %}audit.audit_details.most_recent{% endtrans %}</span>
+                {% endif %}
+            </div>
+
+            {% if id is null %}
+            <div>
+                <span class="bg-purple-500 rounded text-sm text-white px-2 py-1">{% trans with { '%count%': paginator.results|length } from 'auditor' %}audit.audit_details.operations_count{% endtrans %}</span>
+            </div>
+            {% endif %}
+        </li>
+
+        {% if id is not null %}
+        <li class="flex flex-grow items-center justify-between">
+            <div class="flex items-center">
+                <svg class="flex-shrink-0 w-6 h-full text-gray-200" viewBox="0 0 24 44" preserveAspectRatio="none" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path d="M.293 0l22 22-22 22h1.414l22-22-22-22H.293z" />
+                </svg>
+                <a class="ml-4 text-gray-500 hover:text-gray-700" aria-current="page" href="{{ path('dh_auditor_show_entity_history', { 'entity': helper.namespaceToParam(entity), 'id': id }) }}">
+                    <code class="text-pink-500">ID: {{ id }}</code>
+                </a>
+                <span class="ml-2 italic text-gray-400 font-light">{% trans from 'auditor' %}audit.audit_details.most_recent{% endtrans %}</span>
+            </div>
+
+            <div>
+                <span class="bg-purple-500 rounded text-sm text-white px-2 py-1">{% trans with { '%count%': paginator.results|length } from 'auditor' %}audit.audit_details.operations_count{% endtrans %}</span>
+            </div>
+        </li>
+        {% endif %}
+    </ol>
+</nav>
+{% endblock %}
+{% block dh_auditor_content %}
+<div class="flow-root">
+    <ul role="list" class="-mb-8">
+        {% set i = 0 %}
+        {% set amount = paginator.results|length %}
+        {% for entry in paginator.results %}
+            {% set i = i + 1 %}
+        <li>
+            {{ include('@DHAuditor/Audit/entry.html.twig', {'entry': entry, 'is_last': i >= amount}) }}
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+
+{{ pager.render(helper.namespaceToParam(entity), id, paginator) }}
+{% endblock dh_auditor_content %}
