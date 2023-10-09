@@ -108,7 +108,7 @@ abstract class ProcessingUnit extends Chip
 
         $pType = '(' . ($this->getPlatform() ? $this->getPlatform()->getName() : "Unidentified") . ')';
 
-        return implode(" ", array($this->getManufacturer()->getShortNameIfExist(), $this->name, $speed, $partno, $pType));
+        return implode(" ", array($this->getManufacturer()->getName(), $this->name, $speed, $partno, $pType));
     }
     public static function sort(Collection $processingUnits): Collection
     {
@@ -116,8 +116,8 @@ abstract class ProcessingUnit extends Chip
         usort(
             $array,
             function (ProcessingUnit $a, ProcessingUnit $b) {
-                if ($a->getManufacturer()->getShortNameIfExist() != $b->getManufacturer()->getShortNameIfExist()) {
-                    return strnatcasecmp($a->getManufacturer()->getShortNameIfExist(), $b->getManufacturer()->getShortNameIfExist());
+                if ($a->getManufacturer()->getName() != $b->getManufacturer()->getName()) {
+                    return strnatcasecmp($a->getManufacturer()->getName(), $b->getManufacturer()->getName());
                 } 
                 if ($a->getName() != $b->getName()) {
                     return strnatcasecmp($a->getName(), $b->getName());

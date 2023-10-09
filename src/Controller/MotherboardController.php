@@ -4,26 +4,22 @@ namespace App\Controller;
 
 use App\Entity\Manufacturer;
 use App\Entity\FormFactor;
-use App\Entity\Motherboard;
 use App\Entity\MotherboardIdRedirection;
 use App\Form\Motherboard\Search;
 use App\Repository\CpuSocketRepository;
-use App\Repository\ExpansionSlotRepository;
 use App\Repository\FormFactorRepository;
-use App\Repository\IoPortRepository;
 use App\Repository\ManufacturerRepository;
 use App\Repository\MotherboardIdRedirectionRepository;
 use App\Repository\MotherboardRepository;
 use App\Repository\ProcessorPlatformTypeRepository;
-use App\Repository\ExpansionChipRepository;
 use App\Repository\ExpansionChipTypeRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\ClickableInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Contracts\Translation\TranslatorInterface;
 use Knp\Component\Pager\PaginatorInterface;
-use Exception;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormInterface;
@@ -31,103 +27,132 @@ use Symfony\Component\HttpFoundation\Response;
 
 class MotherboardController extends AbstractController
 {
-    #[Route('/motherboards/', name: 'mobosearch', methods: ['GET'])]
+    public function addCriteriaById(Request $request, array &$criterias, string $htmlId, string $sqlId): void
+    {
+        $entityId = htmlentities($request->query->get($htmlId) ?? ($request->request->get($htmlId) ?? ''));
+        if ($entityId && intval($entityId)) $criterias[$sqlId] = "$entityId";
+        elseif ($entityId === "NULL") $criterias[$sqlId] = null;
+    }
+
+    public function addArrayCriteria(Request $request, array &$criterias, string $htmlId, string $sqlId): void
+    {
+        $entityIds = $request->query->get($htmlId) ?? $request->request->get($htmlId);
+        $entityArray = null;
+        if ($entityIds) {
+            if (is_array($entityIds)) {
+                $entityArray = $entityIds;
+            } else {
+                $entityArray = json_decode($entityIds);
+            }
+            $criterias[$sqlId] = $entityArray;
+        }
+    }
+    public function getCriteria(Request $request){
+        $criterias = array();
+        $name = htmlentities($request->query->get('name') ?? '');
+        if ($name) $criterias['name'] = "$name";
+        $this->addCriteriaById($request, $criterias, 'manufacturerId', 'manufacturer');
+        $this->addCriteriaById($request, $criterias, 'formFactorId', 'form_factor');
+        $this->addCriteriaById($request, $criterias, 'chipsetId', 'chipset');
+        if(!array_key_exists('chipset', $criterias)){
+            $this->addCriteriaById($request, $criterias, 'chipsetManufacturerId', 'chipsetManufacturer');
+        }
+        $this->addCriteriaById($request, $criterias, 'cpuSocket1', 'cpu_socket1');
+        $this->addCriteriaById($request, $criterias, 'cpuSocket2', 'cpu_socket2');
+        $this->addCriteriaById($request, $criterias, 'platform1', 'processor_platform_type1');
+        $this->addCriteriaById($request, $criterias, 'platform2', 'processor_platform_type2');
+        $this->addArrayCriteria($request, $criterias, 'expansionSlotsIds', 'expansionSlots');
+        $this->addArrayCriteria($request, $criterias, 'ioPortsIds', 'ioPorts');
+        $this->addArrayCriteria($request, $criterias, 'expansionChipIds', 'expansionChips');
+        return $criterias;
+    }
+
+    #[Route('/motherboards/', name: 'mobosearch', methods: ['GET', 'POST'])]
     public function searchResult(
+        Request $request,
+        PaginatorInterface $paginator,
+        MotherboardRepository $motherboardRepository,
+        ManufacturerRepository $manufacturerRepository,
+        CpuSocketRepository $cpuSocketRepository,
+        FormFactorRepository $formFactorRepository,
+        ProcessorPlatformTypeRepository $processorPlatformTypeRepository
+    ): Response {
+        $form = $this->_searchFormHandler($request, $manufacturerRepository, $cpuSocketRepository,
+            $formFactorRepository, $processorPlatformTypeRepository);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            return $this->redirect($this->generateUrl('mobosearch', $this->searchFormToParam($request, $form)));
+        }
+        $criterias = $this->getCriteria($request);
+
+        $showImages = boolval(htmlentities($request->query->get('showImages') ?? ''));
+        $maxItems = $request->query->getInt('itemsPerPage', $request->request->getInt('itemsPerPage', $this->getParameter('app.pagination.max')));
+        if ($criterias == array()) {
+            return $this->render('motherboard/search.html.twig', [
+                'form' => $form->createView(),
+            ]);
+        }
+        else{
+            $data = $motherboardRepository->findByWithJoin($criterias);
+            $motherboards = $paginator->paginate(
+                $data,
+                $request->query->getInt('page', 1),
+                $maxItems
+            );
+            return $this->render('motherboard/search.html.twig', [
+                'form' => $form->createView(),
+                'controller_name' => 'MotherboardController',
+                'motherboards' => $motherboards,
+                'show_images' => $showImages,
+            ]);
+        }
+    }
+
+    #[Route('/motherboards/results', name: 'mobolivesearch')]
+    public function liveResults(
         Request $request,
         PaginatorInterface $paginator,
         MotherboardRepository $motherboardRepository
     ): Response {
-        $criterias = array();
-        $name = htmlentities($request->query->get('name') ?? '');
-        if ($name) $criterias['name'] = "$name";
+        $criterias = $this->getCriteria($request);
 
-        $manufacturerId = htmlentities($request->query->get('manufacturerId') ?? '');
-        if ($manufacturerId && intval($manufacturerId)) $criterias['manufacturer'] = "$manufacturerId";
-        elseif ($manufacturerId === "NULL") $criterias['manufacturer'] = null;
+        $showImages = boolval(htmlentities($request->query->get('showImages') ??
+            ($request->request->get('showImages') ?? '')));
 
-        $formFactorId = htmlentities($request->query->get('formFactorId') ?? '');
-        if ($formFactorId && intval($formFactorId)) $criterias['form_factor'] = "$formFactorId";
-        elseif ($formFactorId === "NULL") $criterias['form_factor'] = null;
-
-        $chipsetId = htmlentities($request->query->get('chipsetId') ?? '');
-        if ($chipsetId && intval($chipsetId)) $criterias['chipset'] = "$chipsetId";
-        elseif ($chipsetId === "NULL") $criterias['chipset'] = null;
-
-        $cpuSocket1 = htmlentities($request->query->get('cpuSocket1') ?? '');
-        if ($cpuSocket1 && intval($cpuSocket1)) $criterias['cpu_socket1'] = "$cpuSocket1";
-        elseif ($cpuSocket1 === "NULL") $criterias['cpu_socket1'] = null;
-
-        $platform1 = htmlentities($request->query->get('platform1') ?? '');
-        if ($platform1 && intval($platform1)) $criterias['processor_platform_type1'] = "$platform1";
-        elseif ($platform1 === "NULL") $criterias['processor_platform_type1'] = null;
-
-        $cpuSocket2 = htmlentities($request->query->get('cpuSocket2') ?? '');
-        if ($cpuSocket2 && intval($cpuSocket2)) $criterias['cpu_socket2'] = "$cpuSocket2";
-        elseif ($cpuSocket2 === "NULL") $criterias['cpu_socket2'] = null;
-
-        $platform2 = htmlentities($request->query->get('platform2') ?? '');
-        if ($platform2 && intval($platform2)) $criterias['processor_platform_type2'] = "$platform2";
-        elseif ($platform2 === "NULL") $criterias['processor_platform_type2'] = null;
-
-        $chipsetManufacturerId = htmlentities($request->query->get('chipsetManufacturerId') ?? '');
-        if (
-            $chipsetManufacturerId
-            &&
-            intval($chipsetManufacturerId)
-            &&
-            !array_key_exists('chipset', $criterias)
-        ) {
-            $criterias['chipsetManufacturer'] = "$chipsetManufacturerId";
-        } elseif ($chipsetManufacturerId === "NULL" && !array_key_exists('chipset', $criterias)) {
-            $criterias['chipsetManufacturer'] = null;
-        }
-
-        $showImages = boolval(htmlentities($request->query->get('showImages') ?? ''));
-
-        //[{"id":1, "count":2}]
-        $expansionSlotsIds = $request->query->get('expansionSlotsIds');
-        $expansionSlotsArray = null;
-        if ($expansionSlotsIds) {
-            if (is_array($expansionSlotsIds)) {
-                $expansionSlotsArray = $expansionSlotsIds;
-            } else {
-                $expansionSlotsArray = json_decode($expansionSlotsIds);
-            }
-            $criterias['expansionSlots'] = $expansionSlotsArray;
-        }
-
-        //[{"id":1, "count":2}]
-        $ioPortsIds = $request->query->get('ioPortsIds');
-        $ioPortsArray = null;
-        if ($ioPortsIds) {
-            if (is_array($ioPortsIds)) {
-                $ioPortsArray = $ioPortsIds;
-            } else {
-                $ioPortsArray = json_decode($ioPortsIds);
-            }
-            $criterias['ioPorts'] = $ioPortsArray;
-        }
-
-        if ($criterias == array()) {
-            return $this->redirectToRoute('motherboard_search');
-        }
-
-        try {
-            $data = $motherboardRepository->findByWithJoin($criterias, array('man1_name' => 'ASC', 'mot0_name' => 'ASC'));
-        } catch (Exception $e) {
-            return $this->redirectToRoute('motherboard_search');
-        }
+        $data = $motherboardRepository->findByWithJoin($criterias);
+        $maxItems = $request->query->getInt('itemsPerPage',
+            $request->request->getInt('itemsPerPage', $this->getParameter('app.pagination.max')));
         $motherboards = $paginator->paginate(
             $data,
-            $request->query->getInt('page', 1),
-            $this->getParameter('app.pagination.max')
+            $request->query->getInt('page', $request->request->getInt('page', 1)),
+            $maxItems
         );
-
+        $string = "/motherboards/?";
+        foreach ($request->query as $key => $value){
+            if($key == "expansionSlotsIds" || $key == "ioPortsIds"){
+                foreach($value as $idx => $property){
+                    foreach($property as $type=> $val){
+                        $string .= $key . '%5B' . $idx . '%5D%5B' . $type . '%5D=' . $val .'&';
+                    }
+                }
+            }
+            else if($key == "expansionChipIds"){
+                foreach($value as $idx => $val){
+                    $string .= $key . '%5B' . $idx . '%5D=' . $val .'&';
+                }
+            }
+            else{
+                if($key != "domTarget")
+                    $string .= $key . '=' . $value . '&';
+            }
+        }
         return $this->render('motherboard/result.html.twig', [
             'controller_name' => 'MotherboardController',
             'motherboards' => $motherboards,
             'motherboard_count' => count($data),
             'show_images' => $showImages,
+            'domTarget' => $request->request->get('domTarget') ?? $request->query->get('domTarget') ?? "",
+            'params' => substr($string, 0, -1),
         ]);
     }
 
@@ -183,7 +208,7 @@ class MotherboardController extends AbstractController
         return $this->redirect($this->generateUrl('motherboard_show_slug', array("slug" => $motherboard->getSlug())));
     }
 
-    #[Route('/motherboards/{id}/delete/', name: 'motherboard_delete', requirements: ["id" => "\d+"])]
+    #[Route('/dashboard/motherboard-delete/{id}', name: 'motherboard_delete', requirements: ["id" => "\d+"])]
     public function delete(
         Request $request,
         int $id,
@@ -271,76 +296,21 @@ class MotherboardController extends AbstractController
         ]);
     }
 
-    #[Route('/motherboards/search/', name: 'motherboard_search')]
-    public function search(
+    #[Route('/motherboards/live', name: 'mobolivewrapper')]
+    public function liveSearch(
         Request $request,
-        TranslatorInterface $translator,
         ManufacturerRepository $manufacturerRepository,
-        ExpansionSlotRepository $expansionSlotRepository,
-        IoPortRepository $ioPortRepository,
         CpuSocketRepository $cpuSocketRepository,
         FormFactorRepository $formFactorRepository,
         ProcessorPlatformTypeRepository $processorPlatformTypeRepository
     ): Response {
-        $notIdentifiedMessage = $translator->trans("Not identified");
-        $moboManufacturers = $manufacturerRepository->findAllMotherboardManufacturer();
-        $unidentifiedMan = new Manufacturer();
-        $unidentifiedMan->setName($notIdentifiedMessage);
-        array_unshift($moboManufacturers, $unidentifiedMan);
+        $form = $this->_searchFormHandler($request, $manufacturerRepository, $cpuSocketRepository,
+            $formFactorRepository, $processorPlatformTypeRepository);
 
-        $chipsetManufacturers = $manufacturerRepository->findAllChipsetManufacturer();
-        $unidentifiedMan = new Manufacturer();
-        $unidentifiedMan->setName($notIdentifiedMessage);
-        array_unshift($chipsetManufacturers, $unidentifiedMan);
-
-        $slots = $expansionSlotRepository->findAll();
-
-        $ports = $ioPortRepository->findAll();
-
-        $cpuSockets = $cpuSocketRepository->findAll();
-
-        $formFactors = $formFactorRepository->findAll();
-        $unidentifiedFormFactor = new FormFactor();
-        $unidentifiedFormFactor->setName($notIdentifiedMessage);
-        array_unshift($formFactors, $unidentifiedFormFactor);
-
-        $procPlatformTypes = $processorPlatformTypeRepository->findBy(array(), array('name' => 'ASC'));
-
-        $biosManufacturers = $manufacturerRepository->findAllBiosManufacturer();
-
-        $slotsForm = array();
-        foreach ($slots as $k => $slotForm) {
-            $expSlot = array("expansion_slot" => $slotForm, "count" => 0);
-            array_push($slotsForm, $expSlot);
-        }
-        $portsForm = array();
-        foreach ($ports as $k => $portForm) {
-            $ioPort = array("io_port" => $portForm, "count" => 0);
-            array_push($portsForm, $ioPort);
-        }
-
-        $form = $this->createForm(Search::class, array(), [
-            'moboManufacturers' => $moboManufacturers,
-            'chipsetManufacturers' => $chipsetManufacturers,
-            'formFactors' => $formFactors,
-            'procPlatformTypes' => $procPlatformTypes,
-            'bios' => $biosManufacturers,
-            'cpuSockets' => $cpuSockets,
-        ]);
-
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            return $this->redirect($this->generateUrl('mobosearch', $this->searchFormToParam($request, $form, $slots, $ports)));
-        }
-        return $this->render('motherboard/search.html.twig', [
-            'form' => $form->createView(),
-            'slots' => $slots,
-            'ports' => $ports,
-        ]);
+        return $this->redirect($this->generateUrl('mobolivesearch', $this->searchFormToParam($request, $form)));
     }
 
-
-    private function searchFormToParam(Request $request, FormInterface $form, array $slots, array $ports): array
+    private function searchFormToParam(Request $request, FormInterface $form): array
     {
         $parameters = array();
         if ($form['manufacturer']->getData()) {
@@ -351,15 +321,13 @@ class MotherboardController extends AbstractController
             }
         }
 
-        /**
-         * @var ClickableInterface
-         */
-        $searchWithImagesButton = $form['searchWithImages'];
+        $parameters['page'] = intval($request->request->get('page') ?? $request->query->get('page') ?? 1);
+        $parameters['domTarget'] = $request->request->get('domTarget') ?? $request->query->get('domTarget') ?? "";
 
-        if ($searchWithImagesButton->isClicked()) {
-            $parameters['showImages'] = true;
-        }
+        $tempItems = intval($form['itemsPerPage']->getData()->value);
+        $parameters['itemsPerPage'] = $tempItems > 0 ? $tempItems : $this->getParameter('app.pagination.max');
 
+        $parameters['showImages'] = $form['searchWithImages']->getData();
         $parameters['name'] = $form['name']->getData();
 
         if ($form['formFactor']->getData()) {
@@ -394,30 +362,43 @@ class MotherboardController extends AbstractController
             $parameters['platform2'] = $form['platform2']->getData()->getId();
         }
 
-        $parameters['expansionSlotsIds'] = array();
-        foreach ($slots as $slot) {
-            $count = $request->request->get('slot' . $slot->getId());
-            if ((int)$count !== 0) {
-                $sloCount = array('id' => $slot->getId(), 'count' => (int)$count);
-                array_push($parameters['expansionSlotsIds'], $sloCount);
-            } elseif ($count === '0') {
-                $sloCount = array('id' => $slot->getId(), 'count' => null);
-                array_push($parameters['expansionSlotsIds'], $sloCount);
+        $slots = $form['motherboardExpansionSlots']->getData();
+        if ($slots) {
+            $parameters['expansionSlotsIds'] = array();
+            foreach ($slots as $slot) {
+                $count = $slot->getCount();
+                if ((int)$count !== 0) {
+                    $slotCount = array('id' => $slot->getExpansionSlot()->getId(), 'count' => (int)$count);
+                    array_push($parameters['expansionSlotsIds'], $slotCount);
+                } elseif ($count == 0) {
+                    $slotCount = array('id' => $slot->getExpansionSlot()->getId(), 'count' => null);
+                    array_push($parameters['expansionSlotsIds'], $slotCount);
+                }
             }
         }
 
-        $ioPorts = array();
-        foreach ($ports as $port) {
-            $count = $request->request->get('port' . $port->getId());
-            if ((int)$count && $count !== 0) {
-                $porCount = array('id' => $port->getId(), 'count' => (int)$count);
-                array_push($ioPorts, $porCount);
-            } elseif ($count === '0') {
-                $porCount = array('id' => $port->getId(), 'count' => null);
-                array_push($ioPorts, $porCount);
+        $ports = $form['motherboardIoPorts']->getData();
+        if ($ports) {
+            $parameters['ioPortsIds'] = array();
+            foreach ($ports as $port) {
+                $count = $port->getCount();
+                if ((int)$count && $count !== 0) {
+                    $portCount = array('id' => $port->getIoPort()->getId(), 'count' => (int)$count);
+                    array_push($parameters['ioPortsIds'], $portCount);
+                } elseif ($count == 0) {
+                    $portCount = array('id' => $port->getIoPort()->getId(), 'count' => null);
+                    array_push($parameters['ioPortsIds'], $portCount);
+                }
             }
         }
-        $parameters['ioPortsIds'] = $ioPorts;
+
+        $expchips = $form['expansionChips']->getData();
+        if ($expchips) {
+            $parameters['expansionChipIds'] = array();
+            foreach ($expchips as $chip) {
+                array_push($parameters['expansionChipIds'], $chip->getId());
+            }
+        }
 
         if ($form['chipsetManufacturer']->getData() && !$form['chipset']->getData()) {
             if ($form['chipsetManufacturer']->getData()->getId() == 0) {
@@ -426,7 +407,6 @@ class MotherboardController extends AbstractController
                 $parameters['chipsetManufacturerId'] = $form['chipsetManufacturer']->getData()->getId();
             }
         }
-
         return $parameters;
     }
 
@@ -450,5 +430,48 @@ class MotherboardController extends AbstractController
             'motherboards' => $motherboards,
             'letter' => $letter,
         ]);
+    }
+
+    private function _searchFormHandler(
+        Request $request,
+        ManufacturerRepository $manufacturerRepository,
+        CpuSocketRepository $cpuSocketRepository,
+        FormFactorRepository $formFactorRepository,
+        ProcessorPlatformTypeRepository $processorPlatformTypeRepository
+    ): FormInterface {
+        $notIdentifiedMessage = "Unidentified";
+        $moboManufacturers = $manufacturerRepository->findAllMotherboardManufacturer();
+        $unidentifiedMan = new Manufacturer();
+        $unidentifiedMan->setName($notIdentifiedMessage);
+        array_unshift($moboManufacturers, $unidentifiedMan);
+
+        $chipsetManufacturers = $manufacturerRepository->findAllChipsetManufacturer();
+        $unidentifiedMan = new Manufacturer();
+        $unidentifiedMan->setName($notIdentifiedMessage);
+        array_unshift($chipsetManufacturers, $unidentifiedMan);
+
+        $cpuSockets = $cpuSocketRepository->findAll();
+
+        $formFactors = $formFactorRepository->findAll();
+        $unidentifiedFormFactor = new FormFactor();
+        $unidentifiedFormFactor->setName($notIdentifiedMessage);
+        array_unshift($formFactors, $unidentifiedFormFactor);
+
+        $procPlatformTypes = $processorPlatformTypeRepository->findBy(array(), array('name' => 'ASC'));
+
+        $biosManufacturers = $manufacturerRepository->findAllBiosManufacturer();
+
+        $form = $this->createForm(Search::class, array(), [
+            'moboManufacturers' => $moboManufacturers,
+            'chipsetManufacturers' => $chipsetManufacturers,
+            'formFactors' => $formFactors,
+            'procPlatformTypes' => $procPlatformTypes,
+            'bios' => $biosManufacturers,
+            'cpuSockets' => $cpuSockets,
+        ]);
+
+        $form->handleRequest($request);
+
+        return $form;
     }
 }

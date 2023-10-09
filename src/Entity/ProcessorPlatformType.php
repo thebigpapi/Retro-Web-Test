@@ -42,6 +42,10 @@ class ProcessorPlatformType
         $this->ChildProcessorPlatformType = new ArrayCollection();
         $this->cpuSockets = new ArrayCollection();
     }
+    public function __toString(): string
+    {
+        return $this->name;
+    }
     public function getId(): ?int
     {
         return $this->id;
@@ -135,30 +139,6 @@ class ProcessorPlatformType
             $processors = array_merge($processors, $compatible->getProcessors()->toArray());
         }
         return new ArrayCollection($processors);
-    }
-    /**
-     * @return Collection|Coprocessor[]
-     */
-    public function getCoprocessors(): Collection
-    {
-        $coprocessors = array();
-        foreach ($this->processingUnits as $coprocessor) {
-            if ($coprocessor instanceof Coprocessor) {
-                $coprocessors[] = $coprocessor;
-            }
-        }
-        return new ArrayCollection($coprocessors);
-    }
-    /**
-     * @return Collection|Coprocessor[]
-     */
-    public function getCompatibleCoprocessors(): Collection
-    {
-        $coprocessors = $this->getProcessors()->toArray();
-        foreach ($this->getCompatibleWith() as $compatible) {
-            $coprocessors = array_merge($coprocessors, $compatible->getCoprocessors()->toArray());
-        }
-        return new ArrayCollection($coprocessors);
     }
     /**
      * @return Collection|self[]

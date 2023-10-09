@@ -19,7 +19,7 @@ class KnownIssueType extends AbstractType
             'choice_label' => 'name',
             'multiple' => false,
             'expanded' => false,
-            'autocomplete' => true,
+            'attr' => ['data-ea-widget' => 'ea-autocomplete']
         ]);
     }
 

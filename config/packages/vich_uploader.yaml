@@ -8,30 +8,52 @@ vich_uploader:
             uri_prefix: /motherboard/manual
             upload_destination: '%kernel.project_dir%/public/motherboard/manual'
             namer: Vich\UploaderBundle\Naming\SmartUniqueNamer
+            delete_on_remove: true
         miscfile:
             uri_prefix: /motherboard/miscfile
             upload_destination: '%kernel.project_dir%/public/motherboard/miscfile'
             namer: Vich\UploaderBundle\Naming\SmartUniqueNamer
+            delete_on_remove: true
+        audiofile:
+            uri_prefix: /storage/audiofile
+            upload_destination: '%kernel.project_dir%/public/storage/audiofile'
+            namer: Vich\UploaderBundle\Naming\SmartUniqueNamer
+            delete_on_remove: true
         chipsetDoc:
             uri_prefix: /chipset/documentation
             upload_destination: '%kernel.project_dir%/public/chipset/documentation'
             namer: Vich\UploaderBundle\Naming\SmartUniqueNamer
+            delete_on_remove: true
         chipDoc:
             uri_prefix: /chip/documentation
             upload_destination: '%kernel.project_dir%/public/chip/documentation'
             namer: Vich\UploaderBundle\Naming\SmartUniqueNamer
+            delete_on_remove: true
+        storageDoc:
+            uri_prefix: /storage/documentation
+            upload_destination: '%kernel.project_dir%/public/storage/documentation'
+            namer: Vich\UploaderBundle\Naming\SmartUniqueNamer
+            delete_on_remove: true
         bios:
             uri_prefix: /motherboard/bios
             upload_destination: '%kernel.project_dir%/public/motherboard/bios'
             namer: Vich\UploaderBundle\Naming\SmartUniqueNamer
+            delete_on_remove: true
         image:
             uri_prefix: /motherboard/image
             upload_destination: '%kernel.project_dir%/public/motherboard/image'
             namer: Vich\UploaderBundle\Naming\SmartUniqueNamer
+            delete_on_remove: true
         chipimage:
             uri_prefix: '/chip/image'
             upload_destination: '%kernel.project_dir%/public/chip/image'
             namer: Vich\UploaderBundle\Naming\SmartUniqueNamer
+            delete_on_remove: true
+        storageimage:
+            uri_prefix: '/storage/image'
+            upload_destination: '%kernel.project_dir%/public/storage/image'
+            namer: Vich\UploaderBundle\Naming\SmartUniqueNamer
+            delete_on_remove: true
         largefile:
             uri_prefix: '/uploads'
             upload_destination: '%kernel.project_dir%/public/uploads'

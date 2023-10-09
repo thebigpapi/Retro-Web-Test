@@ -44,9 +44,9 @@ class ProcessorRepository extends ServiceEntityRepository
         $entityManager = $this->getEntityManager();
         $likematch = "$letter%";
         $query = $entityManager->createQuery(
-            "SELECT UPPER(COALESCE(man.shortName, man.name)) manNameSort, cpu
+            "SELECT UPPER(man.name) manNameSort, cpu
             FROM App\Entity\Processor cpu, App\Entity\Manufacturer man
-            WHERE cpu.manufacturer=man AND UPPER(COALESCE(man.shortName, man.name)) like :likeMatch
+            WHERE cpu.manufacturer=man AND UPPER(man.name) like :likeMatch
             ORDER BY manNameSort ASC, cpu.name ASC"
         )->setParameter('likeMatch', $likematch);
 
@@ -92,12 +92,22 @@ class ProcessorRepository extends ServiceEntityRepository
         $whereString = implode(" AND ", $whereArray);
 
         // Building query
-        $query = $entityManager->createQuery(
-            "SELECT cpu
-            FROM App\Entity\Processor cpu JOIN cpu.manufacturer man LEFT OUTER JOIN cpu.chipAliases alias LEFT JOIN App\Entity\ProcessingUnit p WITH p.platform = cpu.platform
-            WHERE $whereString
-            ORDER BY man.name ASC, cpu.name ASC, cpu.partNumber ASC"
-        );
+        if($whereArray == []){
+            $query = $entityManager->createQuery(
+                "SELECT cpu
+                FROM App\Entity\Processor cpu JOIN cpu.manufacturer man LEFT OUTER JOIN cpu.chipAliases alias LEFT JOIN App\Entity\ProcessingUnit p WITH p.platform = cpu.platform
+                ORDER BY man.name ASC, cpu.name ASC, cpu.partNumber ASC"
+            );
+        }
+        else{
+            $query = $entityManager->createQuery(
+                "SELECT cpu
+                FROM App\Entity\Processor cpu JOIN cpu.manufacturer man LEFT OUTER JOIN cpu.chipAliases alias LEFT JOIN App\Entity\ProcessingUnit p WITH p.platform = cpu.platform
+                WHERE $whereString
+                ORDER BY man.name ASC, cpu.name ASC, cpu.partNumber ASC"
+            );
+        }
+
         // Setting values
         foreach ($valuesArray as $key => $value) {
             $query->setParameter($key, $value);
@@ -111,5 +121,19 @@ class ProcessorRepository extends ServiceEntityRepository
             ->select('count(m.id)')
             ->getQuery()
             ->getSingleScalarResult();
+    }
+    /**
+     * @return Processor[]
+     */
+    public function findAllByCreditor(int $cid): array
+    {
+        $entityManager = $this->getEntityManager();
+        $dql   = "SELECT DISTINCT cpu
+        FROM App:Processor cpu
+        JOIN cpu.images mi LEFT JOIN mi.creditor c
+        WHERE c.id = :cid
+        ORDER BY cpu.name ASC";
+        $query = $entityManager->createQuery($dql)->setParameter(":cid", $cid);
+        return $query->getResult();
     }
 }

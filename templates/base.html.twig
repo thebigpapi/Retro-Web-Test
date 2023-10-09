@@ -1,6 +1,6 @@
 {# templates/base.html.twig #}
 <!DOCTYPE HTML>
-<html dir="auto" lang="en">
+<html dir="auto" lang="en" class="html">
 	<head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1"> {% block metatags %}{% endblock %}
@@ -25,18 +25,20 @@
             <meta name="twitter:image" content="{{ absolute_url(asset('build/images/logo.webp')) }}">
 		{% endblock %}
 		{% block stylesheets %}
-		{% if is_granted('ROLE_USER') %}
-			{{ encore_entry_link_tags('admin_app') }}
-		{% endif %}
+			<link href="/build/css/glightbox.min.css" rel="stylesheet">
 			{{ encore_entry_link_tags('app') }}
-			{{ encore_entry_link_tags('glightbox') }}
+		{% endblock %}
+		{% block extra_stylesheets %}
 		{% endblock %}
 		{% block javascripts %}
-			{{ encore_entry_script_tags('app') }}
+			<script src="/build/js/datetime.js" defer></script>
+			<script type="module">import '/build/js/glightbox.min.js';const lightbox = GLightbox({});</script>
+		{% endblock %}
+		{% block extra_javascripts %}
 		{% endblock %}
 	</head>
-	<body class="content">
-		<header>
+	<body class="content body">
+		<header class="trw-header">
 			<div>
 				<nav class="navbar-logo">
 					<a href="{{ path('app_homepage') }}" title="Go to homepage">
@@ -46,29 +48,29 @@
 				</nav>
 				<nav class="navbar-links">
 					<a href="{{ path('app_support') }}" class="nav-link">
-						<img src="{{ absolute_url(asset('build/icons/nav/support.svg')) }}" width="24" height="24" alt="art">
+						<img src="{{ absolute_url(asset('build/icons/support.svg')) }}" width="24" height="24" alt="art">
 						<span class="navbar-label">Support Us</span>
 					</a>
 					<a href="https://blog.theretroweb.com" class="nav-link">
-						<img src="{{ absolute_url(asset('build/icons/nav/articles.svg')) }}" width="24" height="24" alt="art">
+						<img src="{{ absolute_url(asset('build/icons/articles.svg')) }}" width="24" height="24" alt="art">
 						<span class="navbar-label">Articles</span>
 					</a>
 					<a href="https://wiki.theretroweb.com" class="nav-link">
-						<img src="{{ absolute_url(asset('build/icons/nav/book.svg')) }}" width="24" height="24" alt="wiki">
+						<img src="{{ absolute_url(asset('build/icons/book.svg')) }}" width="24" height="24" alt="wiki">
 						<span class="navbar-label">Wiki</span>
 					</a>
-					{% if is_granted('ROLE_ADMIN') %}
-						<a href="{{ path('admin_index') }}" class="nav-link">
-							<img src="{{ absolute_url(asset('build/icons/nav/settings.svg')) }}" width="24" height="24" alt="admin">
+					{% if is_granted('ROLE_USER') %}
+						<a href="{{ path('dashboard') }}" class="nav-link">
+							<img src="{{ absolute_url(asset('build/icons/settings.svg')) }}" width="24" height="24" alt="admin">
 							<span class="navbar-label">Admin</span>
 						</a>
 						<a href="{{ path('app_logout') }}" class="nav-link">
-							<img src="{{ absolute_url(asset('build/icons/nav/power.svg')) }}" width="24" height="24" alt="logout">
+							<img src="{{ absolute_url(asset('build/icons/login.svg')) }}" width="24" height="24" alt="logout">
 							<span class="navbar-label"></span>
 						</a>
 					{% else %}
 						<a href="{{ path('app_login') }}" class="nav-link">
-							<img src="{{ absolute_url(asset('build/icons/nav/power.svg')) }}" width="24" height="24" alt="login">
+							<img src="{{ absolute_url(asset('build/icons/login.svg')) }}" width="24" height="24" alt="login">
 							<span class="navbar-label"></span>
 						</a>
 					{% endif %}
@@ -103,19 +105,19 @@
 			<div>
 				<div class="footer-links">
 					<a href="{{ path('app_info') }}">
-						<img src="{{ absolute_url(asset('build/icons/nav/about.svg')) }}" width="16" height="16" alt="about">
+						<img src="{{ absolute_url(asset('build/icons/about.svg')) }}" width="16" height="16" alt="about">
 						<span class="navbar-label">Info</span>
 					</a>
 					<a href="https://discord.gg/HWWH7hsk2p">
-						<img src="{{ absolute_url(asset('build/icons/nav/discord.svg')) }}" width="16" height="16" alt="discord">
+						<img src="{{ absolute_url(asset('build/icons/discord.svg')) }}" width="16" height="16" alt="discord">
 						<span class="navbar-label">Join our Discord</span>
 					</a>
 					<a href="mailto:info@theretroweb.com">
-						<img src="{{ absolute_url(asset('build/icons/nav/email.svg')) }}" width="16" height="16" alt="email">
+						<img src="{{ absolute_url(asset('build/icons/email.svg')) }}" width="16" height="16" alt="email">
 						<span class="navbar-label">Email us</span>
 					</a>
 					<a href="https://gitlab.com/ultimateretro/ultimateretro">
-						<img src="{{ absolute_url(asset('build/icons/nav/gitlab.svg')) }}" width="16" height="16" alt="gitlab">
+						<img src="{{ absolute_url(asset('build/icons/gitlab.svg')) }}" width="16" height="16" alt="gitlab">
 						<span class="navbar-label">Our GitLab repo</span>
 					</a>
 				</div>

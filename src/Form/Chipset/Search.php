@@ -3,7 +3,10 @@
 namespace App\Form\Chipset;
 
 use App\Entity\Chipset;
+use App\Form\Type\ItemsPerPageType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\EnumType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -23,7 +26,7 @@ class Search extends AbstractType
                 'required' => false,
             ])
             ->add('chipsetManufacturer', ChoiceType::class, [
-                'choice_label' => 'getShortNameIfExist',
+                'choice_label' => 'getName',
                 'multiple' => false,
                 'expanded' => false,
                 'required' => false,
@@ -31,8 +34,17 @@ class Search extends AbstractType
                 'choices' => $options['chipsetManufacturers'],
                 'placeholder' => 'Select a chipset manufacturer ...',
             ])
-            ->add('search', SubmitType::class)
-            ->add('searchWithImages', SubmitType::class);
+            ->add('itemsPerPage', EnumType::class, [
+                'class' => ItemsPerPageType::class,
+                'empty_data' => ItemsPerPageType::Items100,
+                'choice_label' => fn ($choice) => strval($choice->value),
+            ])
+            //->add('search', SubmitType::class)
+            ->add('searchWithImages', CheckboxType::class, [
+                'data' => true,
+                'label' => false,
+                'attr' => array('checked' => 'checked'),
+            ]);
 
         $formModifier = function (FormInterface $form, Manufacturer $chipsetManufacturer = null) {
             /**
@@ -40,18 +52,9 @@ class Search extends AbstractType
              */
             $chipsets = $chipsetManufacturer?->getChipsets()->toArray() ?? [];
 
-            usort(
-                $chipsets,
-                function (Chipset $a, Chipset $b) {
-                    if ($a->getFullReference() == $b->getFullReference()) {
-                        return 0;
-                    }
-                    if ($a->getFullReference() == " Unidentified ") {
-                        return -1;
-                    }
-                    return ($a->getFullReference() < $b->getFullReference()) ? -1 : 1;
-                }
-            );
+            usort($chipsets, function (Chipset $a, Chipset $b) {
+                return strnatcasecmp($a->getCachedName() ?? '', $b->getCachedName() ?? '');
+            });
         };
 
         $builder->addEventListener(

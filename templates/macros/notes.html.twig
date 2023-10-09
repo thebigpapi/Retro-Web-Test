@@ -1,0 +1,28 @@
+
+
+{% if entity.getKnownIssues() is defined and entity.getKnownIssues() is not empty %}
+	<div class="chipset-textarea">
+        <h3><b>Known issues:</b></h3>
+{% apply markdown_to_html %}{% for issue in entity.getKnownIssues()|sort %}
+* {{ issue.getName() }}
+
+{{ issue.getDescription() }}
+
+{% endfor %}{% endapply %}
+	</div>
+{% endif %}
+{% if entity.note is defined %}
+    {% if entity.note is not null %}
+        <div class="chipset-textarea">
+            <h3><b>Notes:</b></h3>
+            {% apply markdown_to_html %}{{ entity.note }}{% endapply %}
+        </div>
+    {% endif %}
+{% else %}
+    {% if entity.description is not null %}
+        <div class="chipset-textarea">
+            <h3><b>Description:</b></h3>
+            {% apply markdown_to_html %}{{ entity.description }}{% endapply %}
+        </div>
+    {% endif %}
+{% endif %}

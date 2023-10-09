@@ -19,6 +19,10 @@ class ProcessorVoltage
     #[ORM\JoinColumn(nullable: false)]
     private $processor;
 
+    public function __toString(): string
+    {
+        return $this->getValueWithUnit();
+    }
     public function getId(): ?int
     {
         return $this->id;

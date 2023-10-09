@@ -30,7 +30,6 @@ class ProcessingUnitType extends AbstractType
                 'choice_label' => 'getValueWithUnit',
                 'multiple' => false,
                 'expanded' => false,
-                'autocomplete' => true,
             ])
             ->add('platform', EntityType::class, [
                 'class' => ProcessorPlatformType::class,
@@ -43,7 +42,6 @@ class ProcessingUnitType extends AbstractType
                 'choice_label' => 'getValueWithUnit',
                 'multiple' => false,
                 'expanded' => false,
-                'autocomplete' => true,
             ])
             ->add('instructionSets', CollectionType::class, [
                 'entry_type' => InstructionSetType::class,

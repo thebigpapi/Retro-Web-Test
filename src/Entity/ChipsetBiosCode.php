@@ -22,7 +22,15 @@ class ChipsetBiosCode
     private $biosManufacturer;
 
     #[ORM\Column(type: 'string', length: 255)]
-    #[Assert\Length(max:255, maxMessage: 'BIOS code is longer than {{ limit }} characters, try to make it shorter.')]
+    #[Assert\Length(
+        min: 2,
+        max: 50,
+        minMessage: 'BIOS code is shorter than {{ limit }} characters.',
+        maxMessage: 'BIOS code is longer than {{ limit }} characters.'
+    )]
+    #[Assert\NotBlank(
+        message: 'BIOS code cannot be blank'
+    )]
     private $code;
 
     public function getId(): ?int

@@ -22,8 +22,20 @@ class MotherboardAlias
 
     #[ORM\Column(type: 'string', length: 255)]
     #[Assert\Length(max: 255, maxMessage: 'Alias name is longer than {{ limit }} characters, try to make it shorter.')]
+    #[Assert\NotBlank(message: 'Alias name cannot be blank')]
     private $name;
 
+    public function __toString(): string
+    {
+        $name = "";
+        if ($this->manufacturer) {
+            $name = $this->manufacturer->getName();
+        }
+        else{
+            $name = "Unknown ";
+        }
+        return $name . " " . $this->name;
+    }
     public function getId(): ?int
     {
         return $this->id;
@@ -52,10 +64,11 @@ class MotherboardAlias
     {
         return $this->name;
     }
-    public function setName(string $name): self
+    public function setName(?string $name): self
     {
         $this->name = $name;
 
         return $this;
     }
+
 }

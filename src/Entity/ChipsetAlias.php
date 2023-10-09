@@ -26,6 +26,7 @@ class ChipsetAlias
 
     #[ORM\Column(type: 'string', length: 255)]
     #[Assert\Length(max: 255, maxMessage: 'Part number is longer than {{ limit }} characters, try to make it shorter.')]
+    #[Assert\NotBlank(message: 'Chipset alias part number cannot be blank')]
     private $partNumber;
 
     public function getId(): ?int
@@ -66,7 +67,7 @@ class ChipsetAlias
     {
         return $this->partNumber;
     }
-    public function setPartNumber(string $partNumber): self
+    public function setPartNumber(?string $partNumber): self
     {
         $this->partNumber = $partNumber;
 
@@ -92,7 +93,7 @@ class ChipsetAlias
     public function getFullAliasName(): string
     {
         if ($this->getManufacturer()) {
-            $manuf = $this->getManufacturer()->getShortNameIfExist();
+            $manuf = $this->getManufacturer()->getName();
         } else {
             $manuf = "";
         }

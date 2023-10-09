@@ -34,6 +34,10 @@ class InstructionSet
         $this->compatibleWith = new ArrayCollection();
         $this->childInstructionSets = new ArrayCollection();
     }
+    public function __toString(): string
+    {
+        return $this->name;
+    }
     public function getId(): ?int
     {
         return $this->id;

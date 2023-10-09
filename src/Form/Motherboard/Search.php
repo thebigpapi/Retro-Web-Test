@@ -3,12 +3,20 @@
 namespace App\Form\Motherboard;
 
 use App\Entity\Chipset;
+use App\Form\Type\MotherboardExpansionSlotType;
+use App\Form\Type\MotherboardIoPortType;
+use App\Form\Type\ExpansionChipType;
+use App\Form\Type\ItemsPerPageType;
+use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\EnumType;
 use App\Entity\Manufacturer;
 use App\Entity\CpuSocket;
 use App\Entity\FormFactor;
@@ -16,7 +24,6 @@ use App\Entity\ProcessorPlatformType;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormInterface;
-use App\Repository\ProcessorPlatformTypeRepository;
 use Doctrine\ORM\EntityManagerInterface;
 
 class Search extends AbstractType
@@ -28,7 +35,7 @@ class Search extends AbstractType
         $this->entityManager = $entityManager;
     }
 
-    private function getProcessorPlatformTypeRepository(): ProcessorPlatformTypeRepository
+    private function getProcessorPlatformTypeRepository(): EntityRepository
     {
         return $this->entityManager->getRepository(ProcessorPlatformType::class);
     }
@@ -54,22 +61,28 @@ class Search extends AbstractType
                 'required' => false,
             ])
             ->add('manufacturer', ChoiceType::class, [
-                'choice_label' => 'shortNameIfExist',
+                'choice_label' => 'name',
                 'multiple' => false,
                 'expanded' => false,
                 'required' => false,
-                'autocomplete' => true,
+                'attr' => ['data-ea-widget' => 'ea-autocomplete'],
                 'choices' => $options['moboManufacturers'],
                 'placeholder' => 'Select a manufacturer ...'
             ])
             ->add('chipsetManufacturer', ChoiceType::class, [
-                'choice_label' => 'getShortNameIfExist',
+                'choice_label' => 'getName',
                 'multiple' => false,
                 'expanded' => false,
                 'required' => false,
                 'autocomplete' => true,
                 'choices' => $options['chipsetManufacturers'],
                 'placeholder' => 'Select a chipset manufacturer ...',
+            ])
+            ->add('expansionChips', CollectionType::class, [
+                'entry_type' => ExpansionChipType::class,
+                'allow_add' => true,
+                'allow_delete' => true,
+                'label' => false,
             ])
             ->add('cpuSocket1', ChoiceType::class, [
                 'choice_label' => 'getNameAndType',
@@ -94,13 +107,38 @@ class Search extends AbstractType
                 'choice_label' => 'name',
                 'multiple' => false,
                 'expanded' => false,
-                'required' => false,
                 'autocomplete' => true,
                 'choices' => $options['formFactors'],
                 'placeholder' => 'Select a form factor ...',
             ])
-            ->add('search', SubmitType::class)
-            ->add('searchWithImages', SubmitType::class);
+            ->add('motherboardExpansionSlots', CollectionType::class, [
+                'entry_type' => MotherboardExpansionSlotType::class,
+                'allow_add' => true,
+                'allow_delete' => true,
+                'label' => false,
+            ])
+            ->add('motherboardIoPorts', CollectionType::class, [
+                'entry_type' => MotherboardIoPortType::class,
+                'allow_add' => true,
+                'allow_delete' => true,
+                'label' => false,
+            ])
+            ->add('searchWithImages', CheckboxType::class, [
+                'data' => true,
+                'label' => false,
+                'attr' => array('checked' => 'checked'),
+            ])
+            ->add('itemsPerPage', EnumType::class, [
+                'class' => ItemsPerPageType::class,
+                'empty_data' => ItemsPerPageType::Items100,
+                'choice_label' => fn ($choice) => strval($choice->value),
+            ])
+            ->add('page', IntegerType::class, [
+                'attr' => [
+                    'min' => 1,
+                    'value' => 1,
+                ]
+            ]);
 
         $formModifier = function (FormInterface $form, Manufacturer $chipsetManufacturer = null) {
             /**
@@ -119,16 +157,16 @@ class Search extends AbstractType
             usort(
                 $chipsets,
                 function (Chipset $a, Chipset $b) {
-                    return strcmp($a->getFullNameParts(), $b->getFullNameParts());
+                    return strcmp($a->getNameCached(), $b->getNameCached());
                 }
             );
 
             if ($unidentified) {
                 array_unshift($chipsets, $unidentified);
             }
-            $chipTag = (null === $chipsetManufacturer) ? "No chipset selected!" : "any " . $chipsetManufacturer->getShortNameIfExist() . " chipset";
+            $chipTag = (null === $chipsetManufacturer) ? "No chipset selected!" : "any " . $chipsetManufacturer->getName() . " chipset";
             $form->add('chipset', ChoiceType::class, [
-                'choice_label' => 'getFullNameParts',
+                'choice_label' => 'getNameCached',
                 'multiple' => false,
                 'expanded' => false,
                 'required' => false,

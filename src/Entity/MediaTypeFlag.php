@@ -30,7 +30,7 @@ class MediaTypeFlag
 
     #[ORM\Column(type: 'string', length: 255)]
     #[Assert\Length(max: 255, maxMessage: 'File name is longer than {{ limit }} characters, try to make it shorter.')]
-    private string|null $file_name;
+    private $file_name;
 
     /**
      * NOTE: This is not a mapped field of entity metadata, just a simple property.

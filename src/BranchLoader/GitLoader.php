@@ -50,4 +50,21 @@ class GitLoader
 
         return $logs;
     }
+
+    public function getCurrentCommitHash()
+    {
+        $gitHeadRefFile = $this->projectDir . '/.git/refs/heads/' . $this->getBranchName();
+        $commitHash = "unknown";
+        
+        $stringFromFile = file_exists($gitHeadRefFile) ? file($gitHeadRefFile, FILE_USE_INCLUDE_PATH) : "";
+
+        if (isset($stringFromFile) && is_array($stringFromFile)) {
+            //get the string from the array
+            $firstLine = $stringFromFile[0];
+            $commitHash = substr(trim($firstLine), 0, 8);
+        }
+
+        return $commitHash;
+
+    }
 }

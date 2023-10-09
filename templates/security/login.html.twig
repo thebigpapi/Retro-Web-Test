@@ -12,7 +12,7 @@ a.login-link:hover{color:#7ce5ff;}
 		<br>Click&nbsp;<a class="login-link" href="{{ path('app_homepage') }}">this link</a>&nbsp;to return to the main page.
 	</div>
 	<div style="display:flex;flex-direction:row;flex-wrap:wrap;align-items:center;justify-content:center;margin-top:50px;">
-		<img src="{{ absolute_url(asset('build/icons/admin/keys.svg')) }}" alt="" width="128">
+		<img src="{{ absolute_url(asset('build/icons/keys.svg')) }}" alt="" width="128">
 		{% if app.user %}You are logged in as {{ app.user.username }}, <a href="{{ path('app_logout') }}">Logout</a>{% else %}
 		<form method="post">
 						<table>

@@ -1,0 +1,81 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Search hard drives - TRW{% endblock %}
+
+{% block metatags %}
+	<meta name="description" content="Search for a hard drive by name, manufacturer and part number.">
+	<link rel="alternate" hreflang="x-default" href="{{ absolute_url(path('hddsearch')) }}"/>
+{% endblock %}
+{% block extra_javascripts %}
+	<script src="/build/js/tom-select.complete.min.js" defer></script>
+	<script src="/build/js/search.js" defer></script>
+{% endblock %}
+{% block body %}
+	{{ form_start(form, {'method': 'POST', 'name': 'search_hdd', 'action':path("hddsearch"), 'attr':{'data-live-action': path('hddlivewrapper')}}) }}
+	<fieldset id="search-fieldset">
+		<div class="title">Search for a hard drive</div>
+		<section class="search-form-grid" style="display:flex;justify-content:center;flex-wrap:wrap;">
+			<div class="search-form-entry" >
+				<label class="search-form-label" for="search_hddManufacturer" title="This is where you select the manufacturer name and enter the hard drive part number.">
+					<span>Manufacturer and name</span>
+					<img src="{{ absolute_url(asset('build/icons/help.svg')) }}" alt="" width="16" height="16">
+				</label>
+				<div class="search-form-widget">
+					<div id="setchip1">{{ form_widget(form.hddManufacturer) }}</div>
+					<div>{{ form_widget(form.name, {'attr': {'placeholder': 'Name or Part number (without manufacturer) ...'}}) }}</div>
+				</div>
+			</div>
+			<div class="search-form-entry">
+				<label class="search-form-label" for="search_chipset" title="By default, it is in Megabytes. Operators can be used (like '>128MB')">
+					<span>Capacity</span>
+					<img src="{{ absolute_url(asset('build/icons/help.svg')) }}" alt="" width="16" height="16">
+				</label>
+				<div class="search-form-widget">
+					<div>{{ form_widget(form.capacity) }}</div>
+				</div>
+			</div>
+		</section>
+		<section class="search-form-grid search-form-grid-tight">
+			<div class="search-form-header">Search results options</div>
+			<div class="search-form-entry">
+				<label class="search-form-label file" title="If unchecked, only show hard drive models, without any thumbnail.">
+					<span>Show images</span>
+					<img src="{{ absolute_url(asset('build/icons/help.svg')) }}" alt="" width="16" height="16">
+				</label>
+				<label class="search-form-widget">
+					{{ form_widget(form.searchWithImages, {'attr': {'style': 'width:25px;height:25px'}}) }}
+					<span class="slider"></span>
+				</label>
+			</div>
+
+			<div class="search-form-entry">
+				<label class="search-form-label">
+					<span>Items per page</span>
+				</label>
+				<div class="search-form-widget">
+					<div>{{ form_widget(form.itemsPerPage) }}</div>
+				</div>
+			</div>
+		</section>
+		<!-- Search toolbar -->
+		<div class="toolbar toolbar-main">
+			<button type="button" onclick="document.getElementById('rst-btn').click();return false;">
+				<img src="{{ absolute_url(asset('build/icons/reset.svg')) }}" alt="reset" width="24" height="24">
+				<span>Reset fields</span>
+			</button>
+			<button id="search-paginate-id" type="button" data-paginate="1" data-target="harddrives">
+				<img src="{{ absolute_url(asset('build/icons/search.svg')) }}" alt="search" width="24" height="24">
+				<span>Search</span>
+			</button>
+			<input id="rst-btn" type="reset" value="reset" data-reset-ids='search_hddManufacturer'>
+			<input id="pagination_redir" type="button" value="" data-results-id='search_liveResults' value="1">
+		</div>
+	</fieldset>
+	{{ form_end(form, {render_rest: false}) }}
+	<!-- Search results -->
+	<section id="search_liveResults">
+	{% if hdds is defined %}
+		{% include 'harddrive/result.html.twig' with {'hdds': hdds, 'show_images': show_images, 'route': true} %}
+	{% endif %}
+	</section>
+{% endblock %}

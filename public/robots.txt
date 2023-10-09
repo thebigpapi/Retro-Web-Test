@@ -5,5 +5,5 @@ Allow: /motherboards/*
 Allow: /bios
 Allow: /bios/*
 Allow: /credits
-Disallow: /admin
+Disallow: /dashboard
 Sitemap: https://www.ultimateretro.net/sitemap.xml

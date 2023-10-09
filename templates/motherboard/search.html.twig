@@ -1,90 +1,56 @@
 {% extends 'base.html.twig' %}
 
-{% form_theme form _self %}
-
-{% block checkbox_widget %}
-	{% set type = type|default('checkbox') %}
-	<input type="{{ type }}" {{ block('widget_attributes') }} {% if value is not empty %} value="{{ value }}" {% endif %}>
-{% endblock %}
-
-{% block hidden_widget %}
-	{% set type = type|default('hidden') %}
-	<input type="{{ type }}" {{ block('widget_attributes') }} {% if value is not empty %} value="{{ value }}" {% endif %}>
-{% endblock %}
-
 {% block title %}Search boards - TRW{% endblock %}
 
 {% block metatags %}
 	<meta name="description" content="Search for a motherboard by name, chipset, manufacturer, CPU family, form factor, expansion slot count and more.">
-	<link rel="alternate" hreflang="x-default" href="{{ absolute_url(path('motherboard_search')) }}"/>
+	<link rel="alternate" hreflang="x-default" href="{{ absolute_url(path('mobosearch')) }}"/>
+{% endblock %}
+{% block extra_javascripts %}
+	<script src="/build/js/tom-select.complete.min.js" defer></script>
+	<script src="/build/js/search.js" defer></script>
 {% endblock %}
 {% block body %}
-	{{ form_start(form, {'method': 'POST', 'name': 'search_motherboard', 'action':path("motherboard_search"), 'attr':{'data-controller':'search'}}) }}
+	{{ form_start(form, {'method': 'POST', 'name': 'search_motherboard', 'action': path("mobosearch"), 'attr': { 'data-live-action': path('mobolivewrapper')}}) }}
 	<fieldset id="search-fieldset">
 		<div class="title">Search for a motherboard</div>
-		<div class="index-title">
-			List boards whose manufacturer name starts with:<br>
-		</div>
-		<div class="index-list">
-			{% for letter in ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','?']%}
-				<a class="index-letter" href="{{path("moboindex", {"letter":letter})}}">{{letter}}</a>
-			{% endfor %}
-		</div>
-		<section>
-			<h4 hidden>Search navigation</h4>
-			<div class="toolbar">
-				<button type="button" onclick="document.getElementById('rst-btn').click();return false;">
-					<img src="{{ absolute_url(asset('build/icons/search/reset.svg')) }}" alt="reset" width="24" height="24">
-					<span>Reset fields</span>
-				</button>
-				<button type="button" onclick="document.getElementById('search_searchWithImages').click();return false;">
-					<img src="{{ absolute_url(asset('build/icons/search/search.svg')) }}" alt="search" width="24" height="24">
-					<span>Search</span>
-				</button>
-				<button type="button" onclick="document.getElementById('search_search').click();return false;">
-					<img src="{{ absolute_url(asset('build/icons/search/search_noimage.svg')) }}" alt="searchnoimg" width="24" height="24">
-					<span>Search without images</span>
-				</button>
-				<input id="rst-btn" type="reset" value="reset" data-action="click->search#reset" data-reset-ids='search_chipsetManufacturer search_cpuSocket1 search_cpuSocket2'>
-				{{ form_row(form.searchWithImages)|replace({'<div><button': '<input', '</button></div>': '">', '>': ' value="'})|raw }}
-				{{ form_row(form.search)|replace({'<div><button': '<input', '</button></div>': '">', '>': ' value="'})|raw }}
-			</div>
-		</section>
 		<section class="search-form-grid">
-
 			<div class="search-form-entry">
 				<label class="search-form-label" for="search_name" title="This is where you enter the board part number, do not write the manufacturer name here!">
-					<span>Manufacturer and Name</span>
-					<img src="{{ absolute_url(asset('build/icons/search/help.svg')) }}" alt="" width="16" height="16">
+					<span>Manufacturer and name</span>
+					<img src="{{ absolute_url(asset('build/icons/help.svg')) }}" alt="" width="16" height="16">
 				</label>
 				<div class="search-form-widget">
 					<div id="setmanuf">{{ form_widget(form.manufacturer, {'attr': {'aria-label': "Manufacturer", 'data-target-id': 'search_manufacturer'}}) }}</div>
 					<div>{{ form_widget(form.name, {'attr': {'placeholder': 'Name or Part number (without manufacturer) ...'}}) }}</div>
 				</div>
 			</div>
+
 			<div class="search-form-entry">
 				<label class="search-form-label" for="search_chipset" title="Select a manufacturer from the first field, then pick the part number from the second field">
 					<span>Chipset</span>
-					<img src="{{ absolute_url(asset('build/icons/search/help.svg')) }}" alt="" width="16" height="16">
+					<img src="{{ absolute_url(asset('build/icons/help.svg')) }}" alt="" width="16" height="16">
 				</label>
 				<div class="search-form-widget">
 					<div id="setchip1">{{ form_widget(form.chipsetManufacturer, {'attr': {'data-action': "change->search#search", 'data-target-id': 'search_chipset', 'aria-label': "Chipset manufacturer"}}) }}</div>
 					<div>{{ form_widget(form.chipset) }}</div>
 				</div>
 			</div>
+
 			<div class="search-form-entry">
 				<label class="search-form-label" for="search_cpuSocket1" title="Select a CPU socket from the first field and/or pick the CPU family from the second field">
 					<span>CPU socket</span>
-					<img src="{{ absolute_url(asset('build/icons/search/help.svg')) }}" alt="" width="16" height="16">
+					<img src="{{ absolute_url(asset('build/icons/help.svg')) }}" alt="" width="16" height="16">
 				</label>
 				<div class="search-form-widget">
-					<div id="setcpu1">{{ form_widget(form.cpuSocket1, {'attr': {'data-action': "change->search#search", 'data-target-id': 'search_platform1'}}) }}</div>
+					<div id="setcpu1">{{ form_widget(form.cpuSocket1, {'attr': {'data-target-id': 'search_platform1'}}) }}</div>
 					<div id="setcpup1">{{ form_widget(form.platform1, {'attr': {'aria-label': "CPU family"}}) }}</div>
 				</div>
 			</div>
+
 			<div class="search-form-entry">
 				<label class="search-form-label" for="search_cpuSocket2">
-					<span>2nd CPU socket (different type)</span>
+					<span>2nd CPU socket</span>
 				</label>
 				<div class="search-form-widget">
 					<div id="setcpu3">{{ form_widget(form.cpuSocket2, {'attr': {'data-action': "change->search#search", 'data-target-id': 'search_platform2'}}) }}</div>
@@ -101,36 +67,109 @@
 				</div>
 			</div>
 		</section>
-		<div class="search-form-entry">
-			<label class="search-form-label" title="0 - all boards without that slot will be shown">
-				<span>Expansion slots</span>
-				<img src="{{ absolute_url(asset('build/icons/search/help.svg')) }}" alt="" width="16" height="16">
-			</label>
-			<div class="search-form-many" id="search_expansion_slots">
-				{% for slot in slots %}
-					{% if slot.hiddenSearch == false %}
-						<div class="search-many-item">
-							<input type="text" size="2" name="slot{{slot.id}}" id="id_slot{{slot.id}}">
-							<label for="id_slot{{slot.id}}">x&nbsp;{{ slot.name }}</label>
+
+		<section class="search-form-grid">
+			<div class="search-form-filter" data-controller="collection">
+				<label class="search-form-label" title="">
+					<span>Expansion slots</span>
+					{% include 'macros/buttons.html.twig' with {'type':'add', 'action': 'motherboardExpansionSlots'} %}
+				</label>
+				<div class="search-form-widget filter-list" id="motherboardExpansionSlots-fields-list" data-widget-counter="{{ form.motherboardExpansionSlots|length }}" data-prototype="
+					{{ form_widget(form.motherboardExpansionSlots.vars.prototype.count, {'attr': {'class': 'num'}} )|e }} x
+					{{ form_widget(form.motherboardExpansionSlots.vars.prototype.expansion_slot)|e  }}
+					{% include 'macros/buttons.html.twig' with {'type':'del'} %}" data-controller="collection">
+					{% for slot in form.motherboardExpansionSlots %}
+						<div class="editor-row">
+							{{ form_widget(slot.count, {'attr': {'class': 'num'}}) }} x
+							{{ form_widget(slot.expansion_slot, {'attr': {'style': 'width:50%'}}) }}
+							{% include 'macros/buttons.html.twig' with {'type':'del'} %}
 						</div>
-					{% endif %}
-				{% endfor %}
+						{{ form_errors(slot.count) }}
+					{% endfor %}
+				</div>
 			</div>
-		</div>
-		<div class="search-form-entry">
-			<label class="search-form-label" title="0 - all boards without that port will be shown">
-				<span>I/O ports</span>
-				<img src="{{ absolute_url(asset('build/icons/search/help.svg')) }}" alt="" width="16" height="16">
-			</label>
-			<div class="search-form-many" id="search_io_ports">
-				{% for port in ports %}
-					<div class="search-many-item">
-						<input type="text" size="2" name="port{{port.id}}" id="id_port{{port.id}}">
-						<label for="id_port{{port.id}}">x&nbsp;{{ port.name }}</label>
-					</div>
-				{% endfor %}
+
+			<div class="search-form-filter" data-controller="collection">
+				<label class="search-form-label" title="">
+					<span>I/O ports</span>
+					{% include 'macros/buttons.html.twig' with {'type':'add', 'action': 'motherboardIoPorts'} %}
+				</label>
+				<div class="search-form-widget filter-list" id="motherboardIoPorts-fields-list" data-widget-counter="{{ form.motherboardIoPorts|length }}" data-prototype="
+					{{ form_widget(form.motherboardIoPorts.vars.prototype.count, {'attr': {'class': 'num'}} )|e }} x
+					{{ form_widget(form.motherboardIoPorts.vars.prototype.io_port)|e }}
+					{% include 'macros/buttons.html.twig' with {'type':'del'} %}" data-controller="collection">
+					{% for port in form.motherboardIoPorts %}
+						<div class="editor-row">
+							{{ form_widget(port.count, {'attr': {'class': 'num'}}) }} x
+							{{ form_widget(port.io_port, {'attr': {'style': 'width:50%'}}) }}
+							{% include 'macros/buttons.html.twig' with {'type':'del'} %}
+						</div>
+						{{ form_errors(port.count) }}
+					{% endfor %}
+				</div>
 			</div>
+
+			<div class="search-form-filter" data-controller="collection">
+				<label class="search-form-label" title="">
+					<span>Expansion chips</span>
+					{% include 'macros/buttons.html.twig' with {'type':'add', 'action': 'expansionChips'} %}
+				</label>
+				<div class="search-form-widget filter-list" id="expansionChips-fields-list" data-widget-counter="{{ form.expansionChips|length }}" data-prototype="
+					{{ form_widget(form.expansionChips.vars.prototype, {'attr': {'style': 'width:50%'}})|e }}
+					{% include 'macros/buttons.html.twig' with {'type':'del'} %}</div>" data-controller="collection">
+					{% for expchip in form.expansionChips %}
+						<div class="editor-row">
+							{{ form_widget(expchip, {'attr': {'style': 'width:50%'}}) }}
+							{% include 'macros/buttons.html.twig' with {'type':'del'} %}
+							{{ form_errors(expchip) }}
+						</div>
+					{% endfor %}
+				</div>
+			</div>
+		</section>
+
+		<section class="search-form-grid search-form-grid-tight">
+			<div class="search-form-header">Search results options</div>
+			<div class="search-form-entry">
+				<label class="search-form-label file" title="If unchecked, only show board models, without any thumbnail.">
+					<span>Show images</span>
+					<img src="{{ absolute_url(asset('build/icons/help.svg')) }}" alt="" width="16" height="16">
+				</label>
+				<label class="search-form-widget">
+					{{ form_widget(form.searchWithImages, {'attr': {'style': 'width:25px;height:25px'}}) }}
+					<span class="slider"></span>
+				</label>
+			</div>
+
+			<div class="search-form-entry">
+				<label class="search-form-label">
+					<span>Items per page</span>
+				</label>
+				<div class="search-form-widget">
+					<div>{{ form_widget(form.itemsPerPage) }}</div>
+				</div>
+			</div>
+		</section>
+
+		<!-- Search toolbar -->
+		<div class="toolbar toolbar-main">
+			<button type="button" onclick="document.getElementById('rst-btn').click();return false;">
+				<img src="{{ absolute_url(asset('build/icons/reset.svg')) }}" alt="reset" width="24" height="24">
+				<span>Reset fields</span>
+			</button>
+			<button id="search-paginate-id" type="button" data-paginate="1" data-target="motherboards">
+				<img src="{{ absolute_url(asset('build/icons/search.svg')) }}" alt="search" width="24" height="24">
+				<span>Search</span>
+			</button>
+			<input id="rst-btn" type="reset" value="reset" data-reset-ids='search_chipsetManufacturer search_cpuSocket1 search_cpuSocket2'>
+			<input id="pagination_redir" type="button" value="" data-results-id='search_liveResults' value="1">
 		</div>
 	</fieldset>
-	<div>{{ form_rest(form) }}</div>
-</form>{% endblock %}
+	{{ form_end(form, {render_rest: false}) }}
+	<!-- Search results -->
+	<section id="search_liveResults">
+	{% if motherboards is defined %}
+		{% include 'motherboard/result.html.twig' with {'motherboards': motherboards, 'show_images': show_images, 'route': true} %}
+	{% endif %}
+	</section>
+{% endblock %}

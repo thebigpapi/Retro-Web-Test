@@ -9,19 +9,32 @@ use Symfony\Component\Validator\Constraints as Assert;
 class MotherboardMaxRam
 {
     #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
+    private $id;
+
     #[ORM\ManyToOne(targetEntity: Motherboard::class, inversedBy: 'motherboardMaxRams')]
     #[ORM\JoinColumn(nullable: false)]
     private $motherboard;
 
-    #[ORM\Id]
     #[ORM\ManyToOne(targetEntity: MaxRam::class, inversedBy: 'motherboardMaxRams')]
     #[ORM\JoinColumn(nullable: false)]
     private $max_ram;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    #[Assert\Length(max: 255, maxMessage: 'RAM note is longer than {{ limit }} characters, try to make it shorter.')]
+    #[Assert\Length(max: 40, maxMessage: 'RAM note is longer than {{ limit }} characters.')]
 
     private $note;
+
+    public function __toString(): string
+    {
+        return $this->getMaxRam()->getValueWithUnit();
+    }
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
 
     public function getMotherboard(): ?Motherboard
     {

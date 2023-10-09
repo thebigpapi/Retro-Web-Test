@@ -8,7 +8,7 @@
 </div>
 {{ form_start(userForm, {'method': 'POST'}) }}
 <div style="margin:0 auto;display:table;">
-	<img style="display:inline-block;" src="{{ absolute_url(asset('build/icons/admin/user.svg')) }}" width="128" alt="">
+	<img style="display:inline-block;" src="{{ absolute_url(asset('build/icons/user.svg')) }}" width="128" alt="">
 	<table style="display:inline-block;">
 		<tr>
 			<td>Select an user:&nbsp;</td>
@@ -18,7 +18,7 @@
 			<td>Action:&nbsp;</td>
 			<td>
                 <a class="button" onclick="document.getElementById('manage_user_reset').click();" style="display:inline-block;">
-		            <img src="{{ absolute_url(asset('build/icons/search/reset.svg')) }}" alt="" width="24" style="vertical-align: middle;padding-right:2px;">Reset</a>
+		            <img src="{{ absolute_url(asset('build/icons/reset.svg')) }}" alt="" width="24" style="vertical-align: middle;padding-right:2px;">Reset</a>
                 <a class="button" onclick="document.getElementById('manage_user_add').click();" style="display:inline-block;">
 		            <img src="{{ absolute_url(asset('build/icons/add.svg')) }}" alt="" width="24" style="vertical-align: middle;padding-right:2px;">Add</a>
                 <a class="button" onclick="if(confirm('Are you sure you want to delete this user?'))document.getElementById('manage_user_delete').click();" style="display:inline-block;">

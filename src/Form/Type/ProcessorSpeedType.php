@@ -16,10 +16,11 @@ class ProcessorSpeedType extends AbstractType
     {
         $resolver->setDefaults([
             'class' => CpuSpeed::class,
-            'autocomplete' => true,
+            'attr' => ['data-ea-widget' => 'ea-autocomplete'],
             'choice_label' => 'getValueWithUnit',
             'multiple' => false,
             'expanded' => false,
+            'placeholder'=> 'Select a speed ...',
         ]);
     }
 

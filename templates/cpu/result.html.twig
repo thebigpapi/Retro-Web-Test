@@ -1,24 +1,48 @@
-{% extends 'base.html.twig' %}
-{% block title %}Search results CPU - TRW{% endblock %}
 
-{% block metatags %}
-	<meta name="description" content="Search for a cpu by name, manufacturer, part number and more.">
-{% endblock %}
-
-{% block body %}
-	<div class="title">
-		<b>Search results</b>
-	</div>
-	<p style="text-align:center;padding-top:10px;">
-		<i>{{ cpu_count > 0 ? cpu_count : 'No' }}{{ cpu_count == 1 ? ' result' : ' results' }}</i>
-	</p>
-	{% if cpus is not empty %}
-		<div class="results lst" data-controller="cpu--results">
-			{{ knp_pagination_render(cpus, 'macros/pagination.html.twig') }}
+{% if route is defined and route == true %}{% set typeid = 'route-results' %}{% else %}{% set typeid = domTarget %}{% endif %}
+<div id="{{ typeid }}">
+{% if cpus is defined and cpus is not empty %}
+	<div class="results{% if not show_images %} lst{% endif %}">
+		{{ knp_pagination_render(cpus, 'macros/pagination.html.twig') }}
+		{% if show_images %}
+			<div class="perks">
+				<div id="index-datetime" class="perks-list">
+				{% for cpu in cpus %}
+					<div class="perk">
+						<div class="perk-image">
+						{% if cpu.getImages() is not empty %}
+								{% for image in cpu.getImages()|sort((a, b) => a.getFileName() <=> b.getFileName())|slice(0, 1) %}
+								<a href="{{ vich_uploader_asset(image, 'imageFile')}}" class="glightbox">
+									<img src="{{ vich_uploader_asset(image, 'imageFile') | imagine_filter('show_thumb') }}" alt="" title="Click to preview image"></a>
+								{% endfor %}
+						{% else %}
+							<img src="{{ absolute_url(asset('build/images/missing/cpu-missing.jpg')) }}" loading="lazy" width="250" height="200" title="no images available :(">
+						{% endif %}
+						</div>
+						<a href="{{ path("processor_show", {id: cpu.getId()}) }}" title="Click to visit page">
+							<div class="perk-name">{{ cpu.getNameWithManufacturer() }}</div>
+							<div class="perk-alias">
+								{% if cpu.getChipAliases() is not empty %}<span class="results-alias">
+									<small>Alias: {% for alias in cpu.getChipAliases() %}{{ alias.getFullAliasName() }}{% if not loop.last %}, {% endif %}{% endfor %}</small>
+								</span>{% endif %}
+							</div>
+						</a>
+					</div>
+				{% endfor %}
+				</div>
+			</div>
+		{% else %}
 			<div id="cpu-results-table" class="plain-list w300p table">
 				{% include 'macros/widget.html.twig' with {'type':'cpu-results', 'entity': cpus} %}
 			</div>
-			{{ knp_pagination_render(cpus, 'macros/pagination.html.twig') }}
-		</div>
-	{% endif %}
-{% endblock %}
+		{% endif %}
+		{{ knp_pagination_render(cpus, 'macros/pagination.html.twig') }}
+	</div>
+{% else %}
+	No results
+{% endif %}
+{% if params is defined %}
+<div id="search-params-id" style="display:none;">{{params}}</div>
+{% endif %}
+</div>
+

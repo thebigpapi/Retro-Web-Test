@@ -20,11 +20,11 @@ class ChipsetAliasType extends AbstractType
         $builder
             ->add('manufacturer', EntityType::class, [
                 'class' => Manufacturer::class,
-                'choice_label' => 'shortNameIfExist',
+                'choice_label' => 'name',
                 'multiple' => false,
                 'expanded' => false,
                 'required' => false,
-                'autocomplete' => true,
+                'attr' => ['data-ea-widget' => 'ea-autocomplete'],
             ])
             ->add('name', TextType::class)
             ->add('partNumber', TextType::class, [
@@ -42,7 +42,7 @@ class ChipsetAliasType extends AbstractType
     public function finishView(FormView $view, FormInterface $form, array $options)
     {
         usort($view->vars['form']['manufacturer']->vars['choices'], function (ChoiceView $a, ChoiceView $b) {
-            return strnatcasecmp($a->data->getShortNameIfExist() ?? '', $b->data->getShortNameIfExist() ?? '');
+            return strnatcasecmp($a->data->getName() ?? '', $b->data->getName() ?? '');
         });
     }
 }

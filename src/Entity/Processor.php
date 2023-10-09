@@ -10,8 +10,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: 'App\Repository\ProcessorRepository')]
 class Processor extends ProcessingUnit
 {
-    #[ORM\ManyToMany(targetEntity: Motherboard::class, mappedBy: 'processors')]
-    private $motherboards;
 
     #[ORM\ManyToOne(targetEntity: CacheSize::class, inversedBy: 'getProcessorsL1')]
     private $L1;
@@ -44,37 +42,14 @@ class Processor extends ProcessingUnit
     #[ORM\OneToMany(targetEntity: ProcessorVoltage::class, mappedBy: 'processor', orphanRemoval: true, cascade: ['persist'])]
     private $voltages;
 
+    #[ORM\Column(type: 'datetime', mapped: false)]
+    private $lastEdited;
+
     public function __construct()
     {
         parent::__construct();
-        $this->motherboards = new ArrayCollection();
         $this->voltages = new ArrayCollection();
         $this->documentations = new ArrayCollection();
-    }
-    /**
-     * @return Collection|Motherboard[]
-     */
-    public function getMotherboards(): Collection
-    {
-        return $this->motherboards;
-    }
-    public function addMotherboard(Motherboard $motherboard): self
-    {
-        if (!$this->motherboards->contains($motherboard)) {
-            $this->motherboards[] = $motherboard;
-            $motherboard->addProcessor($this);
-        }
-
-        return $this;
-    }
-    public function removeMotherboard(Motherboard $motherboard): self
-    {
-        if ($this->motherboards->contains($motherboard)) {
-            $this->motherboards->removeElement($motherboard);
-            $motherboard->removeProcessor($this);
-        }
-
-        return $this;
     }
     public function getNameWithPlatform()
     {
@@ -89,7 +64,7 @@ class Processor extends ProcessingUnit
             array_push($inner, ($this->ProcessNode ? $this->ProcessNode . 'nm' : ''));
         if($this->tdp != "")
             array_push($inner, ($this->tdp ? $this->tdp . 'W' : ''));
-        return implode(" ", array($this->getManufacturer()->getShortNameIfExist(), $this->partNumber, "[" . implode(", ", $inner) . "]"));
+        return implode(" ", array($this->getManufacturer()->getName(), $this->partNumber, "[" . implode(", ", $inner) . "]"));
     }
     public function getNameWithSpecs()
     {
@@ -110,7 +85,7 @@ class Processor extends ProcessingUnit
 
         $tdp = $this->tdp ? $this->tdp . 'W' : '';
 
-        return implode(" ", array($this->getManufacturer()->getShortNameIfExist(), $this->name, $core, $speed, $voltages, $cache, $partno, $pType, $processNode, $tdp));
+        return implode(" ", array($this->getManufacturer()->getName(), $this->name, $core, $speed, $voltages, $cache, $partno, $pType, $processNode, $tdp));
     }
     public function getL1(): ?CacheSize
     {
@@ -312,10 +287,14 @@ class Processor extends ProcessingUnit
     {
         $fullName = $this->partNumber;
         if ($this->getManufacturer()) {
-            $fullName = $this->getManufacturer()->getShortNameIfExist() . " " . $fullName;
+            $fullName = $this->getManufacturer()->getName() . " " . $fullName;
         } else {
             $fullName = "Unknown " . $fullName;
         }
         return "$fullName";
+    }
+    public function getSpeedFSB(){
+        return $this->speed->getValueWithUnit() . ($this->fsb != $this->speed ? '/' . $this->fsb->getValueWithUnit() : '');
+
     }
 }

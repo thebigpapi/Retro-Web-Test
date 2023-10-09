@@ -39,17 +39,16 @@ class ManufacturerRepository extends ServiceEntityRepository
         $rsm->addEntityResult('App\Entity\Manufacturer', 'man');
         $rsm->addFieldResult('man', 'id', 'id');
         $rsm->addFieldResult('man', 'name', 'name');
-        $rsm->addFieldResult('man', 'short_name', 'shortName');
         $rsm->addFieldResult('man', 'fccid', 'fccid');
         $rsm->addJoinedEntityResult('App\Entity\PciVendorId', 'pv', 'man', 'pciVendorIds');
         $rsm->addFieldResult('pv', 'pvid', 'id');
         $rsm->addFieldResult('pv', 'ven', 'ven');
 
         $query = $entityManager->createNativeQuery(
-            "SELECT * FROM (SELECT distinct man.id, man.name, man.short_name, man.fccid, pv.id as pvid, pv.ven, upper(coalesce(man.short_name, man.name)) as realname
+            "SELECT * FROM (SELECT distinct man.id, man.name, man.fccid, pv.id as pvid, pv.ven
             FROM manufacturer man LEFT JOIN pci_vendor_id pv ON pv.manufacturer_id=man.id) as req
             $whereString 
-            ORDER BY realname;",
+            ORDER BY man.name;",
             $rsm
         );
 
@@ -72,13 +71,12 @@ class ManufacturerRepository extends ServiceEntityRepository
         $rsm->addEntityResult('App\Entity\Manufacturer', 'man');
         $rsm->addFieldResult('man', 'id', 'id');
         $rsm->addFieldResult('man', 'name', 'name');
-        $rsm->addFieldResult('man', 'short_name', 'shortName');
 
         $query = $entityManager->createNativeQuery(
-            'SELECT distinct man.id, man.name, man.short_name, upper(coalesce(man.short_name, man.name)) as realname
+            'SELECT distinct man.id, man.name
             FROM (SELECT distinct man.* FROM manufacturer man JOIN motherboard mobo ON mobo.manufacturer_id = man.id
             UNION SELECT distinct man.* FROM manufacturer man JOIN motherboard_alias alias ON alias.manufacturer_id = man.id) as man
-            ORDER BY realname;',
+            ORDER BY man.name;',
             $rsm
         );
 
@@ -98,12 +96,11 @@ class ManufacturerRepository extends ServiceEntityRepository
         $rsm->addEntityResult('App\Entity\Manufacturer', 'man');
         $rsm->addFieldResult('man', 'id', 'id');
         $rsm->addFieldResult('man', 'name', 'name');
-        $rsm->addFieldResult('man', 'short_name', 'shortName');
 
         $query = $entityManager->createNativeQuery(
-            'SELECT DISTINCT man.id, man.name, man.short_name, COALESCE(man.short_name, man.name) realName
-            FROM chipset chip JOIN manufacturer man on chip.manufacturer_id=man.id 
-            ORDER BY realName ASC',
+            'SELECT DISTINCT man.id, man.name
+            FROM chipset chip JOIN manufacturer man on chip.manufacturer_id=man.id
+            ORDER BY man.name ASC',
             $rsm
         );
 
@@ -130,11 +127,11 @@ class ManufacturerRepository extends ServiceEntityRepository
     /**
      * @return array
      */
-    public function findAllBiosManufacturer2(): array
+    public function findAllBiosManufacturerAdv(): array
     {
         $conn = $this->getEntityManager()
             ->getConnection();
-        $sql = 'SELECT COALESCE(m.short_name, m.name) as biosMan, COALESCE(m2.short_name, m2.name) as moboMan, mbmc.code
+        $sql = 'SELECT m.name as biosMan, m2.name as moboMan, mbmc.code
         FROM manufacturer m JOIN manufacturer_bios_manufacturer_code mbmc on m.id = mbmc.bios_manufacturer_id
         JOIN manufacturer m2 on mbmc.manufacturer_id = m2.id
         ORDER BY biosMan, code;';
@@ -156,7 +153,7 @@ class ManufacturerRepository extends ServiceEntityRepository
     {
         $conn = $this->getEntityManager()
             ->getConnection();
-        $sql = 'SELECT COALESCE(m.short_name, m.name) as chipsetMan, concat(c.part_no, concat(\' \', c.name)) as chipsetName, cbc.code
+        $sql = 'SELECT m.name as chipsetMan, concat(c.part_no, concat(\' \', c.name)) as chipsetName, cbc.code
         FROM manufacturer m JOIN chipset_bios_code cbc on m.id = cbc.bios_manufacturer_id
         JOIN chipset c on cbc.chipset_id = c.id
         ORDER BY chipsetMan, code;';
@@ -204,33 +201,52 @@ class ManufacturerRepository extends ServiceEntityRepository
 
         return $query->getResult();
     }
-
-    // /**
-    //  * @return Manufacturer[] Returns an array of Manufacturer objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    /**
+     * @return Manufacturer[]
+     */
+    public function findAllHddManufacturer(): array
     {
-        return $this->createQueryBuilder('m')
-            ->andWhere('m.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('m.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
+        $entityManager = $this->getEntityManager();
 
-    /*
-    public function findOneBySomeField($value): ?Manufacturer
-    {
-        return $this->createQueryBuilder('m')
-            ->andWhere('m.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        $query = $entityManager->createQuery(
+            'SELECT DISTINCT man
+            FROM App\Entity\HardDrive hdd, App\Entity\Manufacturer man
+            WHERE hdd.manufacturer=man
+            ORDER BY man.name ASC'
+        );
+
+        return $query->getResult();
     }
-    */
+    /**
+     * @return Manufacturer[]
+     */
+    public function findAllCddManufacturer(): array
+    {
+        $entityManager = $this->getEntityManager();
+
+        $query = $entityManager->createQuery(
+            'SELECT DISTINCT man
+            FROM App\Entity\CdDrive cdd, App\Entity\Manufacturer man
+            WHERE cdd.manufacturer=man
+            ORDER BY man.name ASC'
+        );
+
+        return $query->getResult();
+    }
+    /**
+     * @return Manufacturer[]
+     */
+    public function findAllFddManufacturer(): array
+    {
+        $entityManager = $this->getEntityManager();
+
+        $query = $entityManager->createQuery(
+            'SELECT DISTINCT man
+            FROM App\Entity\FloppyDrive fdd, App\Entity\Manufacturer man
+            WHERE fdd.manufacturer=man
+            ORDER BY man.name ASC'
+        );
+
+        return $query->getResult();
+    }
 }

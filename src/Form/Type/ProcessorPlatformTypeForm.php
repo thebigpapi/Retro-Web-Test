@@ -30,10 +30,10 @@ class ProcessorPlatformTypeForm extends AbstractType
     {
         $resolver->setDefaults([
             'class' => ProcessorPlatformType::class,
-
             'choice_label' => 'getName',
             'multiple' => false,
             'expanded' => false,
+            'placeholder'=> 'Select a family ...',
         ]);
     }
 

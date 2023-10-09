@@ -3,7 +3,9 @@
 namespace App\Form\Bios;
 
 use App\Entity\Chipset;
+use App\Form\Type\ItemsPerPageType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\EnumType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -29,9 +31,7 @@ class Search extends AbstractType
                 'required' => false,
             ])
             ->add('chipsetManufacturer', ChoiceType::class, [
-                //'class' => Chipset::class,
-
-                'choice_label' => 'getShortNameIfExist',
+                'choice_label' => 'getName',
                 'multiple' => false,
                 'expanded' => false,
                 'required' => false,
@@ -43,7 +43,7 @@ class Search extends AbstractType
             ->add('manufacturer', EntityType::class, [
                 'class' => Manufacturer::class,
                 'autocomplete' => true,
-                'choice_label' => 'shortNameIfExist',
+                'choice_label' => 'name',
                 'multiple' => false,
                 'expanded' => false,
                 'required' => false,
@@ -54,7 +54,11 @@ class Search extends AbstractType
                 'label'    => 'File is present ?',
                 'required' => false,
             ])
-            ->add('search', SubmitType::class);
+            ->add('itemsPerPage', EnumType::class, [
+                'class' => ItemsPerPageType::class,
+                'empty_data' => ItemsPerPageType::Items100,
+                'choice_label' => fn ($choice) => strval($choice->value),
+            ]);
 
         $formModifier = function (FormInterface $form, Manufacturer $chipsetManufacturer = null) {
             /**
@@ -63,11 +67,11 @@ class Search extends AbstractType
             $chipsets = $chipsetManufacturer?->getChipsets()->toArray() ?? [];
 
             usort($chipsets, function (Chipset $a, Chipset $b) {
-                return strcmp($a->getFullReference(), $b->getFullReference());
+                return strnatcasecmp($a->getCachedName() ?? '', $b->getCachedName() ?? '');
             });
-            $chipTag = null === $chipsetManufacturer ? "No chipset selected!" : "Select any " . $chipsetManufacturer->getShortNameIfExist() . " chipset ...";
+            $chipTag = null === $chipsetManufacturer ? "No chipset selected!" : "Select any " . $chipsetManufacturer->getName() . " chipset ...";
             $form->add('chipset', ChoiceType::class, [
-                'choice_label' => 'getFullReference',
+                'choice_label' => 'getCachedName',
                 'multiple' => false,
                 'expanded' => false,
                 'required' => false,

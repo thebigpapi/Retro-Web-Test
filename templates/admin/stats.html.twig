@@ -1,38 +1,48 @@
-{% extends 'base.html.twig' %}
-
-{% block title %}Stats{% endblock %}
-
-{% block body %}
-	<div class="title">
-		<b>Statistics</b>
-	</div>
-	<div>
-        <b>Branch: </b>
-        <span>{{ collector.getBranchName() }} </span>
+{% extends '@EasyAdmin/page/content.html.twig' %}
+{% block page_title %}Statistics{% endblock %}
+{% block main %}
+    <div class="row">
+        <div class="col-md-6">
+            <div class="col-md-12"><h4><i>Board count by manufacturer</i></h4></div>
+            <canvas id="boardmanufcount"></canvas>
+            {% for key, value in boardChart %}
+                <div id="{{key}}" style="display:none;">{{value}}</div>
+            {% endfor %}
+        </div>
+        <div class="col-md-6">
+            <div class="col-md-12"><h4><i>Board count by socket</i></h4></div>
+            <canvas id="boardsocketcount"></canvas>
+            {% for key, value in socketChart %}
+                <div id="{{key}}" style="display:none;">{{value}}</div>
+            {% endfor %}
+        </div>
+        <div class="col-md-6">
+            <div class="col-md-12"><h4><i>Board count by chipset</i></h4></div>
+            <canvas id="boardchipsetcount"></canvas>
+            {% for key, value in chipsetChart %}
+                <div id="{{key}}" style="display:none;">{{value}}</div>
+            {% endfor %}
+        </div>
+        <div class="col-md-6">
+            <div class="col-md-12"><h4><i>Board count by expansion chip</i></h4></div>
+            <canvas id="boardchipcount"></canvas>
+            {% for key, value in expansionChipChart %}
+                <div id="{{key}}" style="display:none;">{{value}}</div>
+            {% endfor %}
+        </div>
+        <div class="col-md-6">
+            <div class="col-md-12"><h4><i>Board count by form factor</i></h4></div>
+            <canvas id="boardffcount"></canvas>
+            {% for key, value in formFactorChart %}
+                <div id="{{key}}" style="display:none;">{{value}}</div>
+            {% endfor %}
+        </div>
+        <div class="col-md-6">
+            <div class="col-md-12"><h4><i>Chipset documentation presence</i></h4></div>
+            <canvas id="chipsetdoccount"></canvas>
+            {% for key, value in chipsetDocCountChart %}
+                <div id="{{key}}" style="display:none;">{{value}}</div>
+            {% endfor %}
+        </div>
     </div>
-	<div>
-        <b>Version date:</b>
-        <span>{{ collector.getLastCommitDetail()['date'] }} </span>
-    </div>
-	<div>
-        <b>Version message:</b>
-        <span>{{ collector.getLastCommitMessage()}} </span>
-    </div>
-	<p><b>Board count: {{moboCount}}</b></p>
-	<dl>
-		<dt>Top 15 board manufacturers:</dt>
-		{% for name, count in manufBoardCount %}
-			{% if loop.index < 16 %}
-				{% if loop.first %}
-					{% set ref = count %}
-				{% endif %}
-				<dd class="percentage percentage-{{ (count / ref * 100)|force_to_int }}">
-					<span class="text">
-						{{ name }}: {{ count }}
-					</span>
-				</dd>
-			{% endif %}
-		{% endfor %}
-	</dl>
-	other stuff coming soon.
 {% endblock %}

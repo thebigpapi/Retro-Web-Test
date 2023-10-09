@@ -38,6 +38,10 @@ class CacheSize
         $this->getProcessorsL2 = new ArrayCollection();
         $this->getProcessorsL3 = new ArrayCollection();
     }
+    public function __toString(): string
+    {
+        return $this->getValueWithUnit();
+    }
     public function getId(): ?int
     {
         return $this->id;

@@ -16,10 +16,11 @@ class PSUConnectorType extends AbstractType
     {
         $resolver->setDefaults([
             'class' => PSUConnector::class,
-            'autocomplete' => true,
             'choice_label' => 'name',
             'multiple' => false,
             'expanded' => false,
+            'attr' => ['data-ea-widget' => 'ea-autocomplete'],
+            'placeholder'=> 'Select a PSU connector ...',
         ]);
     }
 

@@ -1,50 +1,24 @@
 {% extends 'base.html.twig' %}
 
-{% form_theme form _self %}
-
-{% block checkbox_widget %}
-	{% set type = type|default('checkbox') %}
-	<input type="{{ type }}" {{ block('widget_attributes') }} {% if value is not empty %} value="{{ value }}" {% endif %}>
-{% endblock %}
-
-{% block hidden_widget %}
-	{% set type = type|default('hidden') %}
-	<input type="{{ type }}" {{ block('widget_attributes') }} {% if value is not empty %} value="{{ value }}" {% endif %}>
-{% endblock %}
-
 {% block title %}Search for a BIOS - TRW{% endblock %}
 
 {% block metatags %}
 	<meta name="description" content="Search for a motherboard BIOS by POST string, chipset, manufacturer, and more.">
-	<link rel="alternate" hreflang="x-default" href="{{ absolute_url(path('bios_search')) }}"/>
+	<link rel="alternate" hreflang="x-default" href="{{ absolute_url(path('biossearch')) }}"/>
 {% endblock %}
-
+{% block extra_javascripts %}
+	<script src="/build/js/tom-select.complete.min.js" defer></script>
+	<script src="/build/js/search.js" defer></script>
+{% endblock %}
 {% block body %}
-	
-	<div id="hiddenDiv" style="display: none;"></div>
-	{{ form_start(form, {'method': 'POST', 'name': 'search', 'action':path("bios_search"), 'attr':{'data-controller':'search'}}) }}
+	{{ form_start(form, {'method': 'POST', 'name': 'search', 'action':path("biossearch"), 'attr':{'data-live-action': path('bioslivewrapper')}}) }}
 	<fieldset id="search-fieldset">
 		<div class="title">Search for a BIOS</div>
-		<section>
-			<div class="toolbar">
-				<button type="button" onclick="document.getElementById('rst-btn').click();return false;">
-					<img src="{{ absolute_url(asset('build/icons/search/reset.svg')) }}" alt="reset" width="24" height="24">
-					<span>Reset fields</span>
-				</button>
-				<button type="button" onclick="document.getElementById('search_search').click();return false;">
-					<img src="{{ absolute_url(asset('build/icons/search/search.svg')) }}" alt="search" width="24" height="24">
-					<span>Search</span>
-				</button>
-				<input id="rst-btn" type="reset" value="reset" data-action="click->search#reset" data-reset-ids="search_chipsetManufacturer">
-				{{ form_row(form.search)|replace({'<div><button': '<input', '</button></div>': '">', '>': ' value="'})|raw }}
-			</div>
-		</section>
 		<section class="search-form-grid">
 			<div class="search-form-entry">
-				<label class="search-form-label" for="search_manufacturer" title="This is the BIOS manufacturer (e.g: AMI, Award, Phoenix)"
-				>
+				<label class="search-form-label" for="search_manufacturer" title="This is the BIOS manufacturer (e.g: AMI, Award, Phoenix)">
 					<span>BIOS Manufacturer</span>
-					<img src="{{ absolute_url(asset('build/icons/search/help.svg')) }}" alt="" width="16" height="16">
+					<img src="{{ absolute_url(asset('build/icons/help.svg')) }}" alt="" width="16" height="16">
 				</label>
 				<div class="search-form-widget">
 					<div id="setmanuf">{{ form_widget(form.manufacturer, {'attr': {'class': 'sform'}}) }}</div>
@@ -54,7 +28,7 @@
 				<label class="search-form-label" for="search_expansionchip" title="This is the test 1234"
 				>
 					<span>Expansion Chip</span>
-					<img src="{{ absolute_url(asset('build/icons/search/help.svg')) }}" alt="" width="16" height="16">
+					<img src="{{ absolute_url(asset('build/icons/help.svg')) }}" alt="" width="16" height="16">
 				</label>
 				<div class="search-form-widget">
 					<div>{{ form_widget(form.expansionChip, {'attr': {'class': 'sform'}}) }}</div>
@@ -65,7 +39,7 @@
 				<label class="search-form-label" for="search_chipset" title="Select a manufacturer from the first field, then pick the part number from the second field"
 				>
 					<span>Chipset</span>
-					<img src="{{ absolute_url(asset('build/icons/search/help.svg')) }}" alt="" width="16" height="16">
+					<img src="{{ absolute_url(asset('build/icons/help.svg')) }}" alt="" width="16" height="16">
 				</label>
 				<div class="search-form-widget">
 					<div id="setchip1">{{ form_widget(form.chipsetManufacturer, {'attr': {'data-action': "change->search#search", 'data-target-id': 'search_chipset', 'aria-label': "Chipset manufacturer"}}) }}</div>
@@ -85,30 +59,64 @@
 			<div class="search-form-entry">
 				<label class="search-form-label" for="search_core_version" title="This is the version of the BIOS's core (e.g. 4.51pg)">
 					<span>Core version</span>
-					<img src="{{ absolute_url(asset('build/icons/search/help.svg')) }}" alt="" width="16" height="16">
+					<img src="{{ absolute_url(asset('build/icons/help.svg')) }}" alt="" width="16" height="16">
 				</label>
 				<div class="search-form-widget">
 					<div>{{ form_widget(form.core_version, {'attr': {'style': 'width:15%', 'size': '50'}}) }}</div>
 				</div>
 			</div>
 
+
+		</section>
+		<section class="search-form-grid search-form-grid-tight">
+			<div class="search-form-header">Search results options</div>
 			<div class="search-form-entry">
 				<label class="search-form-label file" title="If checked, only BIOS entries with files attached will be shown">
 					<span>Show results with files</span>
-					<img src="{{ absolute_url(asset('build/icons/search/help.svg')) }}" alt="" width="16" height="16">
+					<img src="{{ absolute_url(asset('build/icons/help.svg')) }}" alt="" width="16" height="16">
 				</label>
 				<label class="search-form-widget">
 					{{ form_widget(form.file_present, {'attr': {'style': 'width:25px;height:25px'}}) }}
 					<span class="slider"></span>
 				</label>
 			</div>
-		</section>
-	</fieldset>
-	<br><div style="margin:12px;">
-		<div><i>Other actions:</i></div>
-		<a class='button-widget' href="{{path("bios_list")}}">
-			<img src='{{ absolute_url(asset('build/icons/search/search.svg')) }}' alt='' width='16' height='16' style='vertical-align:middle;padding:3px;'>See the list of BIOS chipset and manufacturer IDs</a>
-	</div>
-	<div>{{ form_rest(form) }}</div>
 
-</form>{% endblock %}
+			<div class="search-form-entry">
+				<label class="search-form-label">
+					<span>Items per page</span>
+				</label>
+				<div class="search-form-widget">
+					<div>{{ form_widget(form.itemsPerPage) }}</div>
+				</div>
+			</div>
+			<div class="search-form-entry">
+				<label class="search-form-label">
+					<span>Other actions</span>
+				</label>
+				<a class='button-widget' href="{{path("bios_list")}}">
+					<img src='{{ absolute_url(asset('build/icons/search.svg')) }}' alt='' width='16' height='16' style='vertical-align:middle;padding:3px;'>BIOS IDs list</a>
+			</div>
+
+		</section>
+		<!-- Search toolbar -->
+		<div class="toolbar toolbar-main">
+			<button type="button" onclick="document.getElementById('rst-btn').click();return false;">
+				<img src="{{ absolute_url(asset('build/icons/reset.svg')) }}" alt="reset" width="24" height="24">
+				<span>Reset fields</span>
+			</button>
+			<button id="search-paginate-id" type="button" data-paginate="1" data-target="bios">
+				<img src="{{ absolute_url(asset('build/icons/search.svg')) }}" alt="search" width="24" height="24">
+				<span>Search</span>
+			</button>
+			<input id="rst-btn" type="reset" value="reset" data-reset-ids='search_chipsetManufacturer'>
+			<input id="pagination_redir" type="button" value="" data-results-id='search_liveResults' value="1">
+		</div>
+	</fieldset>
+	{{ form_end(form, {render_rest: false}) }}
+	<!-- Search results -->
+	<section id="search_liveResults">
+	{% if bios is defined %}
+		{% include 'bios/result.html.twig' with {'bios': bios, 'route': true} %}
+	{% endif %}
+	</section>
+{% endblock %}

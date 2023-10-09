@@ -1,0 +1,52 @@
+{% if route is defined and route == true %}{% set typeid = 'route-results' %}{% else %}{% set typeid = domTarget %}{% endif %}
+<div id="{{ typeid }}">
+{% if fdds is defined and fdds is not empty %}
+	<div class="results{% if not show_images %} lst{% endif %}">
+		{{ knp_pagination_render(fdds, 'macros/pagination_async.html.twig') }}
+		{% if show_images %}
+			<div class="perks">
+				<div id="index-datetime" class="perks-list">
+				{% for fdd in fdds %}
+					<div class="perk">
+						<div class="perk-image">
+						{% if fdd.getStorageDeviceImages() is not empty %}
+							{% set imgtype_count = 0 %}
+							{% for image in fdd.getStorageDeviceImages()|filter(a => a.type == "top")|sort((a, b) => a.getFileName() <=> b.getFileName())|slice(0, 1) %}
+								<a href="{{ vich_uploader_asset(image, 'imageFile')}}" class="glightbox"><img src="{% if vich_uploader_asset(image, 'imageFile') | ext != "svg" %}
+									{{ vich_uploader_asset(image, 'imageFile') | imagine_filter('show_thumb') }}{% else %}
+									{{ vich_uploader_asset(image, 'imageFile')}}{% endif %}" alt="" loading="lazy" width="250" height="200" title="Click to preview image"></a>
+								{% set imgtype_count = imgtype_count + 1 %}
+							{% endfor %}
+							{% if imgtype_count == 0 %}
+								<img src="{{ absolute_url(asset('build/images/missing/fdd-missing.jpg')) }}" loading="lazy" width="250" height="200" title="no images available :(">
+							{% endif %}
+						{% else %}
+							<img src="{{ absolute_url(asset('build/images/missing/fdd-missing.jpg')) }}" loading="lazy" width="250" height="200" title="no images available :(">
+						{% endif %}</div>
+						<a href="{{ path("cd_drive_show", {id: fdd.getId()}) }}" title="Click to visit page">
+							<div class="perk-name">{{ fdd.getNameWithManufacturer() }}</div>
+							<div class="perk-alias">
+								{% if fdd.getStorageDeviceAliases() is not empty %}<span class="results-alias">
+									<small>Alias: {% for alias in fdd.getStorageDeviceAliases() %}{{ alias.getFullAliasName() }}{% if not loop.last %}, {% endif %}{% endfor %}</small>
+								</span>{% endif %}
+							</div>
+						</a>
+					</div>	
+				{% endfor %}
+				</div>
+			</div>
+			{% else %}
+				<div class="plain-list w300p table">
+					{% include 'macros/widget.html.twig' with {'type':'fdd-results', 'entity': fdds} %}
+				</div>
+			{% endif %}
+		{{ knp_pagination_render(fdds, 'macros/pagination_async.html.twig') }}
+	</div>
+{% else %}
+	No results
+{% endif %}
+{% if params is defined %}
+<div id="search-params-id" style="display:none;">{{params}}</div>
+{% endif %}
+</div>
+

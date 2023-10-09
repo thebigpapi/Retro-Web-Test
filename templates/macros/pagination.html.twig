@@ -1,15 +1,20 @@
-{% if pageCount > 1 %}
-    <div class="pagination">
-        <a class="first" href="{% if first is defined %}{{ path(route, query|merge({(pageParameterName): first})) }}{% endif %}">&lt;&lt;&nbsp;First</a>
-        <a class="previous" rel="prev" href="{% if previous is defined %}{{ path(route, query|merge({(pageParameterName): previous})) }}{% endif %}">&lt;&nbsp;Prev</a>
+<div class="pagination">
+    <input id="pagination_{{route}}_page" type="hidden" value="{{current}}"/>
+    <div class="toolbar toolbar-main">
+    {% if pageCount > 1 %}
+        <a class="button button-widget first" href="{% if first is defined %}{{ path(route, query|merge({(pageParameterName): first})) }}{% endif %}">&lt;&lt;&nbsp;First</a>
+        <a class="button button-widget previous" rel="prev" href="{% if previous is defined %}{{ path(route, query|merge({(pageParameterName): previous})) }}{% endif %}">&lt;&nbsp;Prev</a>
         {% for page in pagesInRange %}
             {% if page != current %}
-                <a class="page" href="{{ path(route, query|merge({(pageParameterName): page})) }}">{{ page }}</a>
+                <a class="button button-widget page" href="{{ path(route, query|merge({(pageParameterName): page})) }}">{{ page }}</a>
             {% else %}
-                <span class="current">{{ page }}</span>
+                <span class="button button-widget current">{{ page }}</span>
             {% endif %}
         {% endfor %}
-        <a class="next" rel="next" href="{% if next is defined %}{{ path(route, query|merge({(pageParameterName): next})) }}{% endif %}">Next&nbsp;&gt;</a>
-        <a class="last" href="{% if last is defined %}{{ path(route, query|merge({(pageParameterName): last})) }}{% endif %}">Last&nbsp;&gt;&gt;</a>
+        <a class="button button-widget next" rel="next" href="{% if next is defined %}{{ path(route, query|merge({(pageParameterName): next})) }}{% endif %}">Next&nbsp;&gt;</a>
+        <a class="button button-widget last" href="{% if last is defined %}{{ path(route, query|merge({(pageParameterName): last})) }}{% endif %}">Last&nbsp;&gt;&gt;</a>
+    {% endif %}
     </div>
-{% endif %}
+    <div class="info">Showing results [{{ firstItemNumber }}-{{ lastItemNumber }}] of {{ totalCount }}</div>
+</div>
+

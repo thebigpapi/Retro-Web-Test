@@ -19,6 +19,10 @@ class PciDeviceId
     #[ORM\ManyToOne(targetEntity: Chip::class, inversedBy: 'pciDevs')]
     private $chip;
 
+    public function __toString(): string
+    {
+        return $this->getDev();
+    }
     public function getId(): ?int
     {
         return $this->id;

@@ -2,231 +2,92 @@
 
 namespace App\Controller;
 
-use App\Entity\Trace;
-use App\Entity\User;
-use App\Form\ManageUser;
+use App\Entity\CpuSocket;
+use App\Entity\ProcessorPlatformType;
+use App\Repository\CdDriveRepository;
+use App\Repository\ChipsetRepository;
+use App\Repository\CpuSocketRepository;
+use App\Repository\ExpansionChipRepository;
+use App\Repository\FloppyDriveRepository;
+use App\Repository\HardDriveRepository;
+use App\Repository\MotherboardRepository;
+use App\Repository\ProcessorRepository;
+use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use App\Repository\MotherboardRepository;
-use App\Repository\TraceRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
-use App\BranchLoader\GitLoader;
 
-class AdminController extends AbstractController
+class AdminController extends AbstractDashboardController
 {
-    #[Route('/admin', name:'admin_index')]
-    public function index(): Response
+    public function __construct(private EntityManagerInterface $entityManager)
     {
-        return $this->render('admin/index.html.twig');
+        $this->entityManager = $entityManager;
     }
 
-    #[Route('/admin/stats', name:'admin_stats')]
-    public function stats(MotherboardRepository $motherboardRepository, GitLoader $git): Response
+    #[Route('/dashboard/getcpufamilies', name:'mobo_get_cpu_families', methods:['POST'])]
+    public function getCPUFamilies(Request $request, CpuSocketRepository $cpuSocketRepository): JsonResponse
     {
-        $manufBoardCount = $motherboardRepository->getManufCount();
-        return $this->render('admin/stats.html.twig', [
-            'controller_name' => 'MainController',
-            'manufBoardCount' => $manufBoardCount,
-            'moboCount' => $motherboardRepository->getCount(),
-            'collector' => $git,
-        ]);
-    }
-
-    #[Route('/admin/logs', name:'admin_logs')]
-    public function logs(Request $request, TraceRepository $traceRepository, PaginatorInterface $paginator): Response
-    {
-        $logs = $traceRepository->findAll();
-        if (!$logs) {
-            return $this->render('admin/logs.html.twig', [
-                'objectList' => [],
-                'exist' => false,
-            ]);
+        $platforms = array();
+        $cpuSockets = json_decode($request->getContent());
+        if ($cpuSockets[0] instanceof CpuSocket) {
+            foreach ($cpuSockets as $socket) {
+                $platforms = array_merge($platforms, $socket->getPlatforms()->toArray());
+            }
         } else {
-            usort(
-                $logs,
-                function (Trace $a, Trace $b) {
-                    if ($a->getDate() == $b->getDate()) {
-                        return 0;
-                    }
-                    return ($a->getDate() > $b->getDate()) ? -1 : 1;
-                }
-            );
-            $paginatedObjects = $paginator->paginate(
-                $logs,
-                $request->query->getInt('page', 1),
-                $this->getParameter('app.pagination.max')
-            );
-            return $this->render('admin/logs.html.twig', [
-                'objectList' => $paginatedObjects,
-                'exist' => true,
-            ]);
+            foreach ($cpuSockets as $socketId) {
+                $socket = $cpuSocketRepository->find($socketId);
+                $platforms = array_merge($platforms, $socket->getPlatforms()->toArray());
+            }
         }
-    }
-
-    #[Route('/admin/logs/{id}', name:'admin_logs_filter_id', requirements: ['id' => '\d+'])]
-    public function logs_filter_id(int $id, Request $request, TraceRepository $traceRepository, PaginatorInterface $paginator): Response
-    {
-        $logs = $traceRepository->findAllById($id);
-        if (!$logs) {
-            return $this->render('admin/logs.html.twig', [
-                'objectList' => [],
-                'exist' => false,
-            ]);
-        } else {
-            usort(
-                $logs,
-                function (Trace $a, Trace $b) {
-                    if ($a->getDate() == $b->getDate()) {
-                        return 0;
-                    }
-                    return ($a->getDate() > $b->getDate()) ? -1 : 1;
-                }
-            );
-            $paginatedObjects = $paginator->paginate(
-                $logs,
-                $request->query->getInt('page', 1),
-                $this->getParameter('app.pagination.max')
-            );
-            return $this->render('admin/logs.html.twig', [
-                'objectList' => $paginatedObjects,
-                'exist' => true,
-            ]);
+        usort($platforms, function (ProcessorPlatformType $a, ProcessorPlatformType $b) {
+            return strnatcasecmp($a->getName() ?? '', $b->getName() ?? '');
+        });
+        $cpuPlatforms = array();
+        foreach($platforms as $platform){
+            $cpuPlatforms["e" . (string)$platform->getId()] = $platform->getName();
         }
+        return new JsonResponse($cpuPlatforms);
     }
-    #[Route('/admin/logs/{id}/{entity}', name:'admin_logs_filter_id_entity', requirements: ['id' => '\d+'])]
-    public function logs_filter_id_entity(int $id, string $entity, Request $request, TraceRepository $traceRepository, PaginatorInterface $paginator): Response
+    #[Route('/admin/updatechipset/{a}/{b}', name:'update_chipsets_cached_name', requirements: ['a' => '\d+', 'b' => '\d+'])]
+    public function updateChipsetsCachedName(ChipsetRepository $chipsetRepository, int $a, int $b, EntityManagerInterface $entityManager): JsonResponse
     {
-        $logs = $traceRepository->findAllByIdAndEntity($id, "App\\\\Entity\\\\" . $entity);
-        if (!$logs) {
-            return $this->render('admin/logs.html.twig', [
-                'objectList' => [],
-                'exist' => false,
-            ]);
-        } else {
-            usort(
-                $logs,
-                function (Trace $a, Trace $b) {
-                    if ($a->getDate() == $b->getDate()) {
-                        return 0;
-                    }
-                    return ($a->getDate() > $b->getDate()) ? -1 : 1;
-                }
-            );
-            $paginatedObjects = $paginator->paginate(
-                $logs,
-                $request->query->getInt('page', 1),
-                $this->getParameter('app.pagination.max')
-            );
-            return $this->render('admin/logs.html.twig', [
-                'objectList' => $paginatedObjects,
-                'exist' => true,
-            ]);
+        $cp = $chipsetRepository->findAll();
+        foreach($cp as $chip){
+            if($chip->getId() >= $a && $chip->getId() <= $b){
+                $chip->updateCachedName();
+                $entityManager->persist($chip);
+                $entityManager->flush();
+            }
         }
+        return new JsonResponse("finished " . $a . " " . $b);
     }
-
-    #[Route('/admin/guidelines', name:'admin_guidelines')]
-    public function guidelines(): Response
-    {
-        return $this->render('admin/guidelines.html.twig');
-    }
-
-    #[Route('/admin/users', name:'admin_user_settings')]
+    #[Route('/dashboard/settings', name:'admin_user_settings')]
     public function userIndex(): Response
     {
         return $this->render('admin/users/index.html.twig');
     }
-
-    #[Route('/admin/users/manage', name:'admin_user_manage')]
-    public function manageUsers(Request $request, UserPasswordHasherInterface $passwordHasher, EntityManagerInterface $entityManager, UserRepository $userRepository): Response
+    #[Route('/dashboard/settings/resetpass/{id}', name: 'admin_reset_pass', requirements: ['id' => '\d+'])]
+    public function resetPasswd(int $id, Request $request, UserPasswordHasherInterface $passwordHasher, EntityManagerInterface $entityManager, UserRepository $userRepository): Response
     {
-        $userForm = $this->createForm(ManageUser::class);
-        $message = "";
+        $user = $userRepository->find($id);
+        $password = $this->randomStr(16);
+        $hashedPassword = $passwordHasher->hashPassword($user, $password);
+        $user->setPassword($hashedPassword);
 
-        $userForm->handleRequest($request);
-        if ($userForm->isSubmitted() && $userForm->isValid()) {
-            /**
-             * @var ClickableInterface
-             */
-            $resetButton = $userForm->get('reset');
-            /**
-             * @var ClickableInterface
-             */
-            $deleteButton = $userForm->get('delete');
-            /**
-             * @var ClickableInterface
-             */
-            $addButton = $userForm->get('add');
-            
-            if ($resetButton->isClicked()) {
-                
-                $user = $userRepository->find($userForm->getData()['users']->getId());
+        $entityManager->persist($user);
+        $entityManager->flush();
 
-                $password = $this->randomStr(16);
-                $hashedPassword = $passwordHasher->hashPassword($user, $password);
-                $user->setPassword($hashedPassword);
-                
-                $entityManager->persist($user);
-                $entityManager->flush();
-
-                return $this->render('admin/users/user_created.html.twig', [
-                    'username' => $user->getUsername(),
-                    'password' => $password,
-                ]);
-            }
-            if ($deleteButton->isClicked()) {
-                $user = $userRepository->find($userForm->getData()['users']->getId());
-
-                $message = "Successfully removed user " . $user->getUsername();
-                $entityManager->remove($user);
-                $entityManager->flush();
-            }
-            if ($addButton->isClicked()) {
-                return $this->redirect('./manage/add');
-            }
-        }
-        return $this->render('admin/users/manage.html.twig', [
-            'userForm' => $userForm->createView(),
-            'message' => $message,
-        ]);
-    }
-
-    #[Route('/admin/users/manage/add', name:'admin_user_add')]
-    public function addUser(Request $request, UserPasswordHasherInterface $passwordHasher, EntityManagerInterface $entityManager): Response
-    {
-        $form = $this->createFormBuilder()
-            ->add('name', TextType::class)
-            ->add('add', SubmitType::class)
-            ->getForm();
-
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $data = $form->getData();
-
-            $user = new User();
-            $user->setRoles(array('ROLE_ADMIN'));
-            $user->setUsername($data['name']);
-            $password = $this->randomStr(16);
-            $hashedPassword = $passwordHasher->hashPassword($user, $password);
-            $user->setPassword($hashedPassword);
-
-            $entityManager->persist($user);
-            $entityManager->flush();
-
-            return $this->render('admin/users/user_created.html.twig', [
-                'username' => $user->getUsername(),
-                'password' => $password,
-            ]);
-        }
-        return $this->render('admin/users/add.html.twig', [
-            'form' => $form->createView(),
+        return $this->render('admin/users/password_reset.html.twig', [
+            'username' => $user->getUsername(),
+            'password' => $password,
         ]);
     }
 
@@ -251,7 +112,7 @@ class AdminController extends AbstractController
         return $str;
     }
 
-    #[Route('/admin/users/password', name:'admin_user_changepwd')]
+    #[Route('/dashboard/settings/password', name:'admin_user_changepwd')]
     public function changeUserPassword(Request $request, UserPasswordHasherInterface $passwordHasher, EntityManagerInterface $entityManager, UserRepository $userRepository): Response
     {
         $form = $this->createFormBuilder()
@@ -296,7 +157,7 @@ class AdminController extends AbstractController
         ]);
     }
 
-    #[Route('/admin/users/username', name:'admin_user_changename')]
+    #[Route('/dashboard/settings/username', name:'admin_user_changename')]
     public function changeUserName(Request $request, EntityManagerInterface $entityManager, UserRepository $userRepository): Response
     {
         $form = $this->createFormBuilder()
@@ -332,6 +193,66 @@ class AdminController extends AbstractController
         }
         return $this->render('admin/users/change_name.html.twig', [
             'form' => $form->createView(),
+        ]);
+    }
+    #[Route('/dashboard/creditorimages/{id}/{name}', name:'dashboard_creditor_images', requirements: ['id' => '\d+'])]
+    public function creditorImages(
+        int $id,
+        string $name,
+        MotherboardRepository $motherboardRepository,
+        ExpansionChipRepository $expansionChipRepository,
+        ProcessorRepository $processorRepository,
+        HardDriveRepository $hddRepository,
+        CdDriveRepository $cddRepository,
+        FloppyDriveRepository $fddRepository,
+        PaginatorInterface $paginatorInterface,
+        Request $request
+    ): Response
+    {
+        $board_data = $motherboardRepository->findAllByCreditor($id);
+        $boards = $paginatorInterface->paginate(
+            $board_data,
+            $request->query->getInt('page', 1),
+            50
+        );
+        $chip_data = $expansionChipRepository->findAllByCreditor($id);
+        $chips = $paginatorInterface->paginate(
+            $chip_data,
+            $request->query->getInt('page', 1),
+            50
+        );
+        $cpu_data = $processorRepository->findAllByCreditor($id);
+        $cpus = $paginatorInterface->paginate(
+            $cpu_data,
+            $request->query->getInt('page', 1),
+            50
+        );
+        $hdd_data = $hddRepository->findAllByCreditor($id);
+        $hdds = $paginatorInterface->paginate(
+            $hdd_data,
+            $request->query->getInt('page', 1),
+            50
+        );
+        $cdd_data = $cddRepository->findAllByCreditor($id);
+        $cdds = $paginatorInterface->paginate(
+            $cdd_data,
+            $request->query->getInt('page', 1),
+            50
+        );
+        $fdd_data = $fddRepository->findAllByCreditor($id);
+        $fdds = $paginatorInterface->paginate(
+            $fdd_data,
+            $request->query->getInt('page', 1),
+            50
+        );
+        return $this->render('admin/creditor_images.html.twig', [
+            'motherboards' => $boards,
+            'chips' => $chips,
+            'cpus' => $cpus,
+            'hdds' => $hdds,
+            'cdds' => $cdds,
+            'fdds' => $fdds,
+            'name' => $name,
         ]);
     }
 }
