@@ -27,8 +27,8 @@
             <span>{{ collector.getLastCommitDetail()['date'] }} </span>
         </div>
         <div>
-            <b>Version message:</b>
-            <span>{{ collector.getLastCommitMessage()}} </span>
+            <b>Commit hash:</b>
+            <span>{{ collector.getCurrentCommitHash()}} </span>
         </div>
     </div>
 {% endblock %}
