@@ -14,7 +14,7 @@
         <label for="tab-nav-3"><img src="{{ absolute_url(asset('build/icons/dw.svg')) }}" alt="" width="24" height="24">Downloads</label>
     {% endif %}
     {% if is_granted('ROLE_USER') %}
-        <input type="radio" name="tabsh" id="tab-nav-h" data-URL="{{ path('dh_auditor_show_entity_history', {id:motherboard.getId(), entity:'App-Entity-' ~ entityName}) }}">
+        <input type="radio" name="tabsh" id="tab-nav-h" data-URL="{{ path('dh_auditor_show_entity_history', {id:entity.getId(), entity:'App-Entity-' ~ entityName}) }}">
         <label for="tab-nav-h"><img src="{{ absolute_url(asset('build/icons/calendar.svg')) }}" alt="" width="24" height="24">Logs</label>
         <input type="radio" name="tabs0" id="tab-nav-0" data-URL="
         {{ ea_url().setDashboard('App\\Controller\\Admin\\DashboardController').setController('App\\Controller\\Admin\\' ~ entityName ~ 'CrudController').setAction('edit').setEntityId(entity.getId())}}">

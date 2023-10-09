@@ -14,9 +14,15 @@ $form-breakpoint: 460px;
 
 /* Light mode colors */
 $btn-hover-light: rgb(215, 133, 0);
+$active-link-light: #3dabf5;
+$container-bkg-light: #FFFFFF;
+$content-frg-light: #000000;
 
 /* Dark mode colors */
 $btn-hover-dark: rgb(247, 207, 62);
+$active-link-dark: #77c5f9;
+$container-bkg-dark: #202020;
+$border-dark: #cdcdcd;
 
 @mixin noselect() {
 	-moz-user-select: -moz-none;
@@ -112,6 +118,57 @@ $btn-hover-dark: rgb(247, 207, 62);
 		>span{
 			min-width: 80px;
 			display: inline-block;
+		}
+	}
+}
+div.show-nav-ea {
+	@include noselect();
+	flex-grow: 1;
+	display: flex;
+	align-items: end;
+	flex-wrap: wrap;
+	gap: 2px;
+
+	input {
+		display: none;
+	}
+
+	label {
+		display: inline-table;
+		align-items: center;
+		padding: 8px 10px;
+		height: 24px;
+		cursor: pointer;
+		transition: ease-in-out background-color $anim-duration, ease-in-out color $anim-duration;
+
+		img {
+			margin-right: 5px;
+		}
+
+		border-radius: 5px 5px 0px 0px;
+		border: thin solid transparent;
+
+		&:hover {
+			transition: ease-in-out background-color $anim-duration, ease-in-out color $anim-duration;
+			color: $active-link-light;
+
+			@media (prefers-color-scheme: dark) {
+				color: $active-link-dark;
+			}
+		}
+	}
+
+	label:hover,
+	input[name="tabs"]:checked+label {
+		transition: ease-in-out background-color $anim-duration, ease-in-out color $anim-duration;
+		background: $container-bkg-light;
+		border: thin solid $content-frg-light;
+		border-bottom: thin solid $active-link-light;
+
+		@media (prefers-color-scheme: dark) {
+			background: $container-bkg-dark;
+			border: thin solid $border-dark;
+			border-bottom: thin solid $active-link-dark;
 		}
 	}
 }

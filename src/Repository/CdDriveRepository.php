@@ -97,4 +97,18 @@ class CdDriveRepository extends ServiceEntityRepository
             ->getQuery()
             ->getSingleScalarResult();
     }
+    /**
+     * @return CdDrive[]
+     */
+    public function findAllByCreditor(int $cid): array
+    {
+        $entityManager = $this->getEntityManager();
+        $dql   = "SELECT DISTINCT cdd
+        FROM App:CdDrive cdd
+        JOIN cdd.storageDeviceImages mi LEFT JOIN mi.creditor c
+        WHERE c.id = :cid
+        ORDER BY cdd.name ASC";
+        $query = $entityManager->createQuery($dql)->setParameter(":cid", $cid);
+        return $query->getResult();
+    }
 }

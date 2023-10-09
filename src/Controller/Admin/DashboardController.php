@@ -69,6 +69,7 @@ class DashboardController extends AbstractDashboardController
         $assets = parent::configureAssets();
         $assets->addWebpackEncoreEntry('app_ea');
         $assets->addHtmlContentToHead('<script type="module">import "/build/js/glightbox.min.js";const lightbox = GLightbox({});</script>');
+        $assets->addHtmlContentToHead('<script src="/build/js/show.js" defer></script>');
         $assets->addWebpackEncoreEntry('chart');
         $assets->addCssFile('/build/css/glightbox.min.css');
         return $assets;
@@ -134,8 +135,8 @@ class DashboardController extends AbstractDashboardController
             MenuItem::linkToCrud('Manufacturers', 'board.svg', Manufacturer::class),
             MenuItem::linkToCrud('Creditors', 'search_image.svg', Creditor::class),
             MenuItem::linkToCrud('Licenses', 'book.svg', License::class)->setPermission('ROLE_ADMIN'),
-            MenuItem::linkToRoute('Logs', 'data.svg','logs'),
         ]);
+        yield MenuItem::linkToUrl('Logs', 'data.svg',"/audit");
         yield MenuItem::linkToCrud('Users', 'user.svg', User::class)->setPermission('ROLE_SUPER_ADMIN');
     }
 

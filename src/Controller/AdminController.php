@@ -4,8 +4,14 @@ namespace App\Controller;
 
 use App\Entity\CpuSocket;
 use App\Entity\ProcessorPlatformType;
+use App\Repository\CdDriveRepository;
 use App\Repository\ChipsetRepository;
 use App\Repository\CpuSocketRepository;
+use App\Repository\ExpansionChipRepository;
+use App\Repository\FloppyDriveRepository;
+use App\Repository\HardDriveRepository;
+use App\Repository\MotherboardRepository;
+use App\Repository\ProcessorRepository;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
@@ -16,6 +22,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class AdminController extends AbstractDashboardController
@@ -186,6 +193,66 @@ class AdminController extends AbstractDashboardController
         }
         return $this->render('admin/users/change_name.html.twig', [
             'form' => $form->createView(),
+        ]);
+    }
+    #[Route('/dashboard/creditorimages/{id}/{name}', name:'dashboard_creditor_images', requirements: ['id' => '\d+'])]
+    public function creditorImages(
+        int $id,
+        string $name,
+        MotherboardRepository $motherboardRepository,
+        ExpansionChipRepository $expansionChipRepository,
+        ProcessorRepository $processorRepository,
+        HardDriveRepository $hddRepository,
+        CdDriveRepository $cddRepository,
+        FloppyDriveRepository $fddRepository,
+        PaginatorInterface $paginatorInterface,
+        Request $request
+    ): Response
+    {
+        $board_data = $motherboardRepository->findAllByCreditor($id);
+        $boards = $paginatorInterface->paginate(
+            $board_data,
+            $request->query->getInt('page', 1),
+            50
+        );
+        $chip_data = $expansionChipRepository->findAllByCreditor($id);
+        $chips = $paginatorInterface->paginate(
+            $chip_data,
+            $request->query->getInt('page', 1),
+            50
+        );
+        $cpu_data = $processorRepository->findAllByCreditor($id);
+        $cpus = $paginatorInterface->paginate(
+            $cpu_data,
+            $request->query->getInt('page', 1),
+            50
+        );
+        $hdd_data = $hddRepository->findAllByCreditor($id);
+        $hdds = $paginatorInterface->paginate(
+            $hdd_data,
+            $request->query->getInt('page', 1),
+            50
+        );
+        $cdd_data = $cddRepository->findAllByCreditor($id);
+        $cdds = $paginatorInterface->paginate(
+            $cdd_data,
+            $request->query->getInt('page', 1),
+            50
+        );
+        $fdd_data = $fddRepository->findAllByCreditor($id);
+        $fdds = $paginatorInterface->paginate(
+            $fdd_data,
+            $request->query->getInt('page', 1),
+            50
+        );
+        return $this->render('admin/creditor_images.html.twig', [
+            'motherboards' => $boards,
+            'chips' => $chips,
+            'cpus' => $cpus,
+            'hdds' => $hdds,
+            'cdds' => $cdds,
+            'fdds' => $fdds,
+            'name' => $name,
         ]);
     }
 }

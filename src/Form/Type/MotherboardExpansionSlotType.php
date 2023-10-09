@@ -36,7 +36,7 @@ class MotherboardExpansionSlotType extends AbstractType
             ->add('expansion_slot', EntityType::class, [
                 'class' => ExpansionSlot::class,
                 'choice_label' => 'name',
-                'choices' => $this->getExpansionSlotRepository()->findByPopularity(),
+                //'choices' => $this->getExpansionSlotRepository()->findByPopularity(),
                 'label' => false,
                 'multiple' => false,
                 'expanded' => false,

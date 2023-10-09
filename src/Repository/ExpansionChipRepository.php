@@ -63,4 +63,18 @@ class ExpansionChipRepository extends ServiceEntityRepository
         );
         return $query->getResult();
     }
+    /**
+     * @return ExpansionChip[]
+     */
+    public function findAllByCreditor(int $cid): array
+    {
+        $entityManager = $this->getEntityManager();
+        $dql   = "SELECT DISTINCT ec
+        FROM App:ExpansionChip ec
+        JOIN ec.images mi LEFT JOIN mi.creditor c
+        WHERE c.id = :cid
+        ORDER BY ec.name ASC";
+        $query = $entityManager->createQuery($dql)->setParameter(":cid", $cid);
+        return $query->getResult();
+    }
 }

@@ -26,7 +26,7 @@ class ExpansionChipType extends AbstractType
         $resolver->setDefaults([
             'class' => ExpansionChip::class,
             'choice_label' => 'getNameWithManufacturer',
-            'choices' => $this->getExpChipRepository()->findByPopularity(),
+            'choices' => $this->getExpChipRepository()->findAll(),
             'multiple' => false,
             'expanded' => false,
             'attr' => ['data-ea-widget' => 'ea-autocomplete'],

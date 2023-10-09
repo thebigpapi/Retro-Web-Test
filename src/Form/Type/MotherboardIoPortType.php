@@ -36,7 +36,7 @@ class MotherboardIoPortType extends AbstractType
             ->add('io_port', EntityType::class, [
                 'class' => IoPort::class,
                 'choice_label' => 'name',
-                'choices' => $this->getIoPortRepository()->findByPopularity(),
+                //'choices' => $this->getIoPortRepository()->findByPopularity(),
                 'label' => false,
                 'multiple' => false,
                 'expanded' => false,

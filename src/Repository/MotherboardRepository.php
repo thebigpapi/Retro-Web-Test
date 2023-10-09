@@ -694,4 +694,18 @@ class MotherboardRepository extends ServiceEntityRepository
         // returns an array of Product objects
         return $query->getResult();
     }
+    /**
+     * @return Motherboard[]
+     */
+    public function findAllByCreditor(int $cid): array
+    {
+        $entityManager = $this->getEntityManager();
+        $dql   = "SELECT DISTINCT m
+        FROM App:Motherboard m
+        JOIN m.images mi LEFT JOIN mi.creditor c
+        WHERE c.id = :cid
+        ORDER BY m.name ASC";
+        $query = $entityManager->createQuery($dql)->setParameter(":cid", $cid);
+        return $query->getResult();
+    }
 }

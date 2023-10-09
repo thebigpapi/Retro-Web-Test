@@ -3,6 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Creditor;
+use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
@@ -13,6 +14,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\UrlField;
+use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 
 class CreditorCrudController extends AbstractCrudController
 {
@@ -22,7 +24,11 @@ class CreditorCrudController extends AbstractCrudController
     }
     public function configureActions(Actions $actions): Actions
     {
+        $view = Action::new('view', 'View images')->linkToCrudAction('viewImages');
         return $actions
+            ->add(Crud::PAGE_NEW, Action::SAVE_AND_CONTINUE)
+            ->remove(Crud::PAGE_NEW, Action::SAVE_AND_ADD_ANOTHER)
+            ->add(Crud::PAGE_INDEX, $view)
             ->setPermission(Action::DELETE, 'ROLE_ADMIN');
     }
     public function configureCrud(Crud $crud): Crud
@@ -49,9 +55,16 @@ class CreditorCrudController extends AbstractCrudController
             ->setFormTypeOption('required', false)
             ->setColumns(6)
             ->onlyOnForms();
-        yield NumberField::new('getMoboImg', 'Mobo img')
-            ->onlyOnIndex();
-        yield NumberField::new('getChipImg', 'Chip img')
-            ->onlyOnIndex();
+    }
+    public function viewImages(AdminContext $context, AdminUrlGenerator $adminUrlGenerator)
+    {
+        $id = $context->getEntity()->getInstance()->getId();
+        $name = $context->getEntity()->getInstance()->getName();
+        $targetUrl = $adminUrlGenerator
+            ->setController(self::class)
+            ->setRoute('dashboard_creditor_images', ['id' => $id, 'name' => $name])
+            ->setEntityId($id)
+            ->generateUrl();
+        return $this->redirect($targetUrl);
     }
 }

@@ -122,4 +122,18 @@ class ProcessorRepository extends ServiceEntityRepository
             ->getQuery()
             ->getSingleScalarResult();
     }
+    /**
+     * @return Processor[]
+     */
+    public function findAllByCreditor(int $cid): array
+    {
+        $entityManager = $this->getEntityManager();
+        $dql   = "SELECT DISTINCT cpu
+        FROM App:Processor cpu
+        JOIN cpu.images mi LEFT JOIN mi.creditor c
+        WHERE c.id = :cid
+        ORDER BY cpu.name ASC";
+        $query = $entityManager->createQuery($dql)->setParameter(":cid", $cid);
+        return $query->getResult();
+    }
 }

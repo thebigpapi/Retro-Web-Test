@@ -130,4 +130,18 @@ class HardDriveRepository extends ServiceEntityRepository
             ->getQuery()
             ->getSingleScalarResult();
     }
+    /**
+     * @return HardDrive[]
+     */
+    public function findAllByCreditor(int $cid): array
+    {
+        $entityManager = $this->getEntityManager();
+        $dql   = "SELECT DISTINCT hdd
+        FROM App:HardDrive hdd
+        JOIN hdd.storageDeviceImages mi LEFT JOIN mi.creditor c
+        WHERE c.id = :cid
+        ORDER BY hdd.name ASC";
+        $query = $entityManager->createQuery($dql)->setParameter(":cid", $cid);
+        return $query->getResult();
+    }
 }

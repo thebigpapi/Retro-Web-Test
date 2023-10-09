@@ -96,4 +96,18 @@ class FloppyDriveRepository extends ServiceEntityRepository
             ->getQuery()
             ->getSingleScalarResult();
     }
+    /**
+     * @return FloppyDrive[]
+     */
+    public function findAllByCreditor(int $cid): array
+    {
+        $entityManager = $this->getEntityManager();
+        $dql   = "SELECT DISTINCT fdd
+        FROM App:FloppyDrive fdd
+        JOIN fdd.storageDeviceImages mi LEFT JOIN mi.creditor c
+        WHERE c.id = :cid
+        ORDER BY fdd.name ASC";
+        $query = $entityManager->createQuery($dql)->setParameter(":cid", $cid);
+        return $query->getResult();
+    }
 }
