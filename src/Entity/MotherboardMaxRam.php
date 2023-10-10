@@ -18,6 +18,7 @@ class MotherboardMaxRam
     private $motherboard;
 
     #[ORM\ManyToOne(targetEntity: MaxRam::class, inversedBy: 'motherboardMaxRams')]
+    #[Assert\NotBlank(message:'RAM size cannot be blank')]
     #[ORM\JoinColumn(nullable: false)]
     private $max_ram;
 
@@ -28,7 +29,7 @@ class MotherboardMaxRam
 
     public function __toString(): string
     {
-        return $this->getMaxRam()->getValueWithUnit();
+        return $this->getMaxRam() ? $this->getMaxRam()->getValueWithUnit() : "";
     }
 
     public function getId(): ?int

@@ -20,7 +20,7 @@ class MotherboardImage
 
     #[ORM\ManyToOne(targetEntity: MotherboardImageType::class, inversedBy: 'motherboardImages')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Assert\NotBlank(message: 'Motherboard image type cannot be blank')]
+    #[Assert\NotBlank(message: 'Image type cannot be blank')]
     private $motherboardImageType;
 
     #[ORM\ManyToOne(targetEntity: Motherboard::class, inversedBy: 'images')]

@@ -57,7 +57,7 @@ class MotherboardIoPort
     {
         return $this->count;
     }
-    public function setCount(int $count): self
+    public function setCount(?int $count): self
     {
         $this->count = $count;
 
