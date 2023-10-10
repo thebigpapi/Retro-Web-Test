@@ -161,7 +161,7 @@
 					</div>
 				</div>
 				{% include 'macros/notes.html.twig' with {'entity': motherboard} %}
-				<div id="index-datetime" data-controller="datetime"><div class="div-datetime">Last updated <span class="perk-date">{{ motherboard.getLastEdited()|date("Y-m-d\\TH:i:s", "GMT") }}Z</span></div></div>
+				<div id="index-datetime"><div class="div-datetime">Last updated <span class="perk-date">{{ motherboard.getLastEdited()|date("Y-m-d\\TH:i:s", "GMT") }}Z</span></div></div>
 				<span><small><i>&nbsp;TRW ID: {{motherboard.getId()}}</i></small></span>
 			</div>
 

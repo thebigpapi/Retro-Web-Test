@@ -4,6 +4,10 @@ if(select_chipmanuf = document.getElementById('search_chipsetManufacturer')){
     new TomSelect('#search_chipsetManufacturer',settings);
     select_chipmanuf.tomselect.sync();
 }
+if(select_mobomanuf = document.getElementById('search_moboManufacturer')){
+    new TomSelect('#search_moboManufacturer',settings);
+    select_mobomanuf.tomselect.sync();
+}
 if(select_cpuskt1 = document.getElementById('search_cpuSocket1')){
     new TomSelect('#search_cpuSocket1',settings);
     select_cpuskt1.tomselect.sync();
@@ -33,24 +37,23 @@ if(search_paginate = document.getElementById('search-paginate-id'))
     search_paginate.addEventListener("click", function(){
         paginate(search_paginate.getAttribute("data-paginate"), search_paginate.getAttribute("data-target"));
     }, false);
-var search_live = document.getElementById('pagination_redir');
-if(search_live)
+if(search_live = document.getElementById('pagination_redir'))
     search_live.addEventListener("click", searchLive);
 let chpsel = document.getElementById('search_chipsetManufacturer');
 if(chpsel && document.getElementById('search_chipset'))
     chpsel.addEventListener("change", function(){
         setResult(chpsel.name, chpsel.value, chpsel.getAttribute('data-target-id'));
     }, false);
-let cpu1sel = document.getElementById('search_cpuSocket1');
-if(cpu1sel)
+if(cpu1sel = document.getElementById('search_cpuSocket1'))
     cpu1sel.addEventListener("change", function(){
         setResult(cpu1sel.name, cpu1sel.value, cpu1sel.getAttribute('data-target-id'));
     }, false);
-let cpu2sel = document.getElementById('search_cpuSocket2');
-if(cpu2sel)
+if(cpu2sel = document.getElementById('search_cpuSocket2'))
     cpu2sel.addEventListener("change", function(){
         setResult(cpu2sel.name, cpu2sel.value, cpu2sel.getAttribute('data-target-id'));
     }, false);
+if(resetbtn = document.getElementById('rst-btn'))
+    resetbtn.addEventListener("click", reset);
 
 function paginate(newPageIdx, target) {
     var redirElem = document.getElementById('pagination_redir');
@@ -65,32 +68,28 @@ function paginate(newPageIdx, target) {
     }
 
 function reset() {
-        let _this = this;
-        let searchs = event.target.dataset.resetIds.split(' ');
-        searchs.forEach(selectId => {
-            let search = document.getElementById(selectId);
-            let targetId = search.dataset.targetId;
-            setResult(search.name, "", targetId);
-        });
-        let select_ids = [
-            "search_manufacturer", 
-            "search_chipsetManufacturer",
-            "search_cpuSocket1",
-            "search_cpuSocket2",
-            "search_platform1",
-            "search_platform2",
-            "search_formFactor"
-        ];
-        for(let id of select_ids){
-            var select = document.getElementById(id);
-            var control = select.tomselect; 
+    alert("aa");
+    let select_ids = [
+        "search_manufacturer", 
+        "search_chipsetManufacturer",
+        "search_moboManufacturer",
+        "search_cpuSocket1",
+        "search_cpuSocket2",
+        "search_platform1",
+        "search_platform2",
+        "search_formFactor"
+    ];
+    for(let id of select_ids){
+        if(select = document.getElementById(id)){
+            var control = select.tomselect;
             control.clear();
         }
-        let search = document.getElementById("search_liveResults");
-        if (search) {
-            search.innerHTML = "";
-        }
     }
+    let search = document.getElementById("search_liveResults");
+    if (search) {
+        search.innerHTML = "";
+    }
+}
 function setResult(searchedName, searchedValue, targetId) {
     let form = document.forms[0];
     let params = new FormData();

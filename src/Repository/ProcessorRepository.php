@@ -96,6 +96,7 @@ class ProcessorRepository extends ServiceEntityRepository
             $query = $entityManager->createQuery(
                 "SELECT cpu
                 FROM App\Entity\Processor cpu JOIN cpu.manufacturer man LEFT OUTER JOIN cpu.chipAliases alias LEFT JOIN App\Entity\ProcessingUnit p WITH p.platform = cpu.platform
+                WHERE cpu.id < 10000
                 ORDER BY man.name ASC, cpu.name ASC, cpu.partNumber ASC"
             );
         }

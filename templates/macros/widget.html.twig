@@ -14,7 +14,7 @@
             <div class="header-label">Version</div>
             <div>{{ driver.getFileVersion() ? driver.getFileVersion() : 'Unknown' }}</div>
             <div class="header-label">Last edited</div>
-            <div id="index-datetime" data-controller="datetime"><div class="div-datetime" style="padding:0;"><span class="perk-date">{{ driver.getLastEdited()|date("Y-m-d\\TH:i:s", "GMT") }}Z</span></div></div>
+            <div id="index-datetime"><div class="div-datetime" style="padding:0;"><span class="perk-date">{{ driver.getLastEdited()|date("Y-m-d\\TH:i:s", "GMT") }}Z</span></div></div>
             <div class="header-label">Media type</div>
             <div style="display: flex;align-items: center;">{% for relation in driver.getMediaTypeFlags() %}
                 <i style="vertical-align:super;">{{relation.getCount()}}x</i>

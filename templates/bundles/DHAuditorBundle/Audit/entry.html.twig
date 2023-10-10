@@ -56,7 +56,7 @@
                                                 {% if values.old is null %}
                                                     <span class="bg-gray-500 px-2 py-0.5 rounded text-white">null</span>
                                                 {% else %}
-                                                    <span class="text-red-500">{{ helper.dump(values.old) }}</span>
+                                                    <span class="text-red-500">{{ helper.dump(values.old)|length > 75 ? helper.dump(values.old)|slice(0, 75) ~ '...' : helper.dump(values.old) }}</span>
                                                 {% endif %}
                                             {% endif %}
                                         </td>
@@ -66,9 +66,9 @@
                                                     <span class="bg-gray-500 px-2 py-0.5 rounded text-white">null</span>
                                                 {% else %}
                                                     {% if values.old is null %}
-                                                        <span class="text-blue-500">{{ helper.dump(values.new) }}</span>
+                                                        <span class="text-blue-500">{{ helper.dump(values.new)|length > 75 ? helper.dump(values.new)|slice(0, 75) ~ '...' : helper.dump(values.new) }}</span>
                                                     {% else %}
-                                                        <span class="text-green-500">{{ helper.dump(values.new) }}</span>
+                                                        <span class="text-green-500">{{ helper.dump(values.new)|length > 75 ? helper.dump(values.new)|slice(0, 75) ~ '...' : helper.dump(values.new) }}</span>
                                                     {% endif %}
                                                 {% endif %}
                                             {% endif %}

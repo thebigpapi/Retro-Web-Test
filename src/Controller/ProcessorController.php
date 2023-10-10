@@ -32,7 +32,7 @@ class ProcessorController extends AbstractController
         }
     }
 
-    #[Route('/cpus/', name:'cpusearch', methods:['GET'])]
+    #[Route('/cpus/', name:'cpusearch', methods: ['GET', 'POST'])]
     public function searchResultCpu(Request $request, PaginatorInterface $paginator, ManufacturerRepository $manufacturerRepository, ProcessorRepository $cpuRepository): Response
     {
         $form = $this->_searchFormHandlerCpu($request, $manufacturerRepository);

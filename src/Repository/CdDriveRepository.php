@@ -72,6 +72,7 @@ class CdDriveRepository extends ServiceEntityRepository
             $query = $entityManager->createQuery(
                 "SELECT cdd
                 FROM App\Entity\CdDrive cdd JOIN cdd.manufacturer man LEFT OUTER JOIN cdd.storageDeviceAliases alias
+                WHERE cdd.id < 10000
                 ORDER BY man.name ASC, cdd.name ASC"
             );
         }

@@ -68,8 +68,15 @@ class BiosController extends AbstractController
             );
         $string = "/bios/?";
         foreach ($request->query as $key => $value){
-            if($key != "domTarget")
-                $string .= $key . '=' . $value . '&';
+            if($key == "expansionChipIds"){
+                foreach($value as $idx => $val){
+                    $string .= $key . '%5B' . $idx . '%5D=' . $val .'&';
+                }
+            }
+            else{
+                if($key != "domTarget")
+                    $string .= $key . '=' . $value . '&';
+            }
         }
         return $this->render('bios/result.html.twig', [
             'controller_name' => 'BiosController',
@@ -94,12 +101,12 @@ class BiosController extends AbstractController
         } elseif ($biosManufacturerId == "NULL") {
             $criterias['manufacturer_id'] = null;
         }
-        /*$expansionChipId = htmlentities($request->query->get('expansionChipId') ?? '');
-        if ($expansionChipId && intval($expansionChipId)) {
-            $criterias['expansionchip_id'] = intval($expansionChipId);
-        } elseif ($expansionChipId == "NULL") {
-            $criterias['expansionchip_id'] = null;
-        }*/
+        $moboManufacturerId = htmlentities($request->query->get('moboManufacturerId') ?? '');
+        if ($moboManufacturerId && intval($moboManufacturerId)) {
+            $criterias['mbmanufacturer_id'] = intval($moboManufacturerId);
+        } elseif ($moboManufacturerId == "NULL") {
+            $criterias['mbmanufacturer_id'] = null;
+        }
         $filePresent = htmlentities($request->query->get('filePresent') ?? '');
         if ($filePresent && boolval($filePresent)) {
             $criterias['file_present'] = boolval($filePresent);
@@ -109,6 +116,16 @@ class BiosController extends AbstractController
             $criterias['chipset_id'] = intval($chipsetId);
         } elseif ($chipsetId == "NULL") {
             $criterias['chipset_id'] = null;
+        }
+        $chipIds = $request->query->get('expansionChipIds') ?? $request->request->get('expansionChipIds');
+        $chipArray = null;
+        if ($chipIds) {
+            if (is_array($chipIds)) {
+                $chipArray = $chipIds;
+            } else {
+                $chipArray = json_decode($chipIds);
+            }
+            $criterias['expansionChips'] = $chipArray;
         }
         return $criterias;
     }
@@ -138,9 +155,16 @@ class BiosController extends AbstractController
         if ($biosManufacturer = $form['manufacturer']->getData()) {
             $parameters['biosManufacturerId'] = $biosManufacturer->getId();
         }
-        /*if ($expansionChip = $form['expansionChip']->getData()) {
-            $parameters['expansionChipId'] = $expansionChip->getId();
-        }*/
+        if ($moboManufacturer = $form['moboManufacturer']->getData()) {
+            $parameters['moboManufacturerId'] = $moboManufacturer->getId();
+        }
+        $expchips = $form['expansionChips']->getData();
+        if ($expchips) {
+            $parameters['expansionChipIds'] = array();
+            foreach ($expchips as $chip) {
+                array_push($parameters['expansionChipIds'], $chip->getId());
+            }
+        }
         if ($filePresent = $form['file_present']->getData()) {
             $parameters['filePresent'] = $filePresent;
         }
@@ -154,11 +178,13 @@ class BiosController extends AbstractController
     {
         $chipsetManufacturers = $manufacturerRepository->findAllChipsetManufacturer();
         $biosManufacturers = $manufacturerRepository->findAllBiosManufacturer();
+        $moboManufacturers = $manufacturerRepository->findAllMotherboardManufacturer();
         $expansionChip = $expansionChipRepository->findAll();
         $unidentifiedMan = new Manufacturer();
         $unidentifiedMan->setName("Not identified");
         $form = $this->createForm(Search::class, array(), [
             'biosManufacturers' => $biosManufacturers,
+            'moboManufacturers' => $moboManufacturers,
             'expansionChips' => $expansionChip,
             'chipsetManufacturers' => $chipsetManufacturers
         ]);

@@ -63,6 +63,6 @@
 
 {% block main %}
     {% block new_form %}
-        {{ form(new_form, {'attr': {'data-controller': 'motherboard--add', 'data-action': 'submit->motherboard--add#check'}}) }}
+        {{ form(new_form) }}
     {% endblock new_form %}
 {% endblock %}

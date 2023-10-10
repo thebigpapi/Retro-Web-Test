@@ -4,7 +4,9 @@ namespace App\Form\Bios;
 
 use App\Entity\Chipset;
 use App\Form\Type\ItemsPerPageType;
+use App\Form\Type\ExpansionChipType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\EnumType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -50,6 +52,22 @@ class Search extends AbstractType
                 'choices' => $options['biosManufacturers'],
                 'placeholder' => 'Select a manufacturer ...',
             ])
+            ->add('moboManufacturer', EntityType::class, [
+                'class' => Manufacturer::class,
+                'autocomplete' => true,
+                'choice_label' => 'name',
+                'multiple' => false,
+                'expanded' => false,
+                'required' => false,
+                'choices' => $options['moboManufacturers'],
+                'placeholder' => 'Select a manufacturer ...',
+            ])
+            ->add('expansionChips', CollectionType::class, [
+                'entry_type' => ExpansionChipType::class,
+                'allow_add' => true,
+                'allow_delete' => true,
+                'label' => false,
+            ])
             ->add('file_present', CheckboxType::class, [
                 'label'    => 'File is present ?',
                 'required' => false,
@@ -67,11 +85,11 @@ class Search extends AbstractType
             $chipsets = $chipsetManufacturer?->getChipsets()->toArray() ?? [];
 
             usort($chipsets, function (Chipset $a, Chipset $b) {
-                return strnatcasecmp($a->getCachedName() ?? '', $b->getCachedName() ?? '');
+                return strnatcasecmp($a->getNameCached() ?? '', $b->getNameCached() ?? '');
             });
             $chipTag = null === $chipsetManufacturer ? "No chipset selected!" : "Select any " . $chipsetManufacturer->getName() . " chipset ...";
             $form->add('chipset', ChoiceType::class, [
-                'choice_label' => 'getCachedName',
+                'choice_label' => 'getNameCached',
                 'multiple' => false,
                 'expanded' => false,
                 'required' => false,
@@ -109,6 +127,7 @@ class Search extends AbstractType
     {
         $resolver->setDefaults([
             'biosManufacturers' => array(),
+            'moboManufacturers' => array(),
             'expansionChips' => array(),
             'chipsetManufacturers' => array(),
         ]);

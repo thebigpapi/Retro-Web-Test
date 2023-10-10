@@ -76,7 +76,7 @@
 						</a>
 					</div>
 				</div>
-			<div id="index-datetime" data-controller="datetime"><div class="div-datetime">Last updated <span class="perk-date">{{ driver.getLastEdited()|date("Y-m-d\\TH:i:s", "GMT") }}Z</span></div></div>
+			<div id="index-datetime"><div class="div-datetime">Last updated <span class="perk-date">{{ driver.getLastEdited()|date("Y-m-d\\TH:i:s", "GMT") }}Z</span></div></div>
 		</div>
 		{% if driver.getNote() is not empty %}
 			{% apply markdown_to_html %}{{ driver.getNote() }}{% endapply %}

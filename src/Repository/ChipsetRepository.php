@@ -73,6 +73,7 @@ class ChipsetRepository extends ServiceEntityRepository
             $query = $entityManager->createQuery(
                 "SELECT chip
                 FROM App\Entity\Chipset chip JOIN chip.manufacturer man JOIN chip.expansionChips part LEFT OUTER JOIN chip.chipsetAliases alias
+                WHERE chip.id < 10000
                 ORDER BY man.name ASC, chip.name ASC"
             );
         }

@@ -104,6 +104,7 @@ class HardDriveRepository extends ServiceEntityRepository
             $query = $entityManager->createQuery(
                 "SELECT hdd
                 FROM App\Entity\HardDrive hdd JOIN hdd.manufacturer man LEFT OUTER JOIN hdd.storageDeviceAliases alias
+                WHERE hdd.id < 10000
                 ORDER BY man.name ASC, hdd.name ASC"
             );
         }
