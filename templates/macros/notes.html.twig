@@ -15,14 +15,14 @@
     {% if entity.note is not null %}
         <div class="chipset-textarea">
             <h3><b>Notes:</b></h3>
-            {% apply markdown_to_html %}{{ entity.note }}{% endapply %}
+            {{ entity.note|markdown_to_html }}
         </div>
     {% endif %}
 {% else %}
     {% if entity.description is not null %}
         <div class="chipset-textarea">
             <h3><b>Description:</b></h3>
-            {% apply markdown_to_html %}{{ entity.description }}{% endapply %}
+            {{ entity.description|markdown_to_html }}
         </div>
     {% endif %}
 {% endif %}
