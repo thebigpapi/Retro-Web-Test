@@ -62,10 +62,14 @@ class CdDriveCrudController extends AbstractCrudController
         );
         $view = Action::new('view', 'View')->linkToCrudAction('viewCdDrive');
         $eview = Action::new('eview', 'View')->linkToCrudAction('viewCdDrive')->setIcon('fa fa-magnifying-glass');
+        $logs = Action::new('logs', 'Logs')->linkToCrudAction('viewLogs');
+        $elogs= Action::new('elogs', 'Logs')->linkToCrudAction('viewLogs')->setIcon('fa fa-history');
         return $actions
             ->add(Crud::PAGE_NEW, Action::SAVE_AND_CONTINUE)
             ->remove(Crud::PAGE_NEW, Action::SAVE_AND_ADD_ANOTHER)
             ->add(Crud::PAGE_EDIT, $duplicate)
+            ->add(Crud::PAGE_INDEX, $logs)
+            ->add(Crud::PAGE_EDIT, $elogs)
             ->add(Crud::PAGE_INDEX, $view)
             ->add(Crud::PAGE_EDIT, $eview)
             ->setPermission(Action::DELETE, 'ROLE_ADMIN');
@@ -187,6 +191,12 @@ class CdDriveCrudController extends AbstractCrudController
     {
         $hddId = $context->getEntity()->getInstance()->getId();
         return $this->redirectToRoute('cd_drive_show', array('id'=>$hddId));
+    }
+    public function viewLogs(AdminContext $context)
+    {
+        $entityId = $context->getEntity()->getInstance()->getId();
+        $entity = str_replace("\\", "-",$context->getEntity()->getFqcn());
+        return $this->redirectToRoute('dh_auditor_show_entity_history', array('id' => $entityId, 'entity' => $entity));
     }
     public function new(AdminContext $context)
     {

@@ -61,10 +61,14 @@ class HardDriveCrudController extends AbstractCrudController
         );
         $view = Action::new('view', 'View')->linkToCrudAction('viewHardDrive');
         $eview = Action::new('eview', 'View')->linkToCrudAction('viewHardDrive')->setIcon('fa fa-magnifying-glass');
+        $logs = Action::new('logs', 'Logs')->linkToCrudAction('viewLogs');
+        $elogs= Action::new('elogs', 'Logs')->linkToCrudAction('viewLogs')->setIcon('fa fa-history');
         return $actions
             ->add(Crud::PAGE_NEW, Action::SAVE_AND_CONTINUE)
             ->remove(Crud::PAGE_NEW, Action::SAVE_AND_ADD_ANOTHER)
             ->add(Crud::PAGE_EDIT, $duplicate)
+            ->add(Crud::PAGE_INDEX, $logs)
+            ->add(Crud::PAGE_EDIT, $elogs)
             ->add(Crud::PAGE_INDEX, $view)
             ->add(Crud::PAGE_EDIT, $eview)
             ->setPermission(Action::DELETE, 'ROLE_ADMIN');
@@ -131,19 +135,25 @@ class HardDriveCrudController extends AbstractCrudController
             ->setColumns('col-sm-4 col-lg-3 col-xxl-2')
             ->onlyOnForms();
         yield NumberField::new('cylinders')
-            ->setColumns('col-sm-4 col-lg-3 col-xxl-2');
+            ->setColumns('col-sm-4 col-lg-3 col-xxl-2')
+            ->onlyOnForms();
         yield NumberField::new('heads')
-            ->setColumns('col-sm-4 col-lg-3 col-xxl-2');
+            ->setColumns('col-sm-4 col-lg-3 col-xxl-2')
+            ->onlyOnForms();
         yield NumberField::new('sectors', 'Sectors per track')
-            ->setColumns('col-sm-4 col-lg-3 col-xxl-2');
+            ->setColumns('col-sm-4 col-lg-3 col-xxl-2')
+            ->onlyOnForms();
         yield NumberField::new('spindleSpeed', 'RPM')
             ->setColumns('col-sm-4 col-lg-3 col-xxl-2');
         yield NumberField::new('platters')
-            ->setColumns('col-sm-4 col-lg-3 col-xxl-2');
+            ->setColumns('col-sm-4 col-lg-3 col-xxl-2')
+            ->onlyOnForms();
         yield NumberField::new('randomSeek', 'Random seek (in ms)')
-            ->setColumns('col-sm-4 col-lg-3 col-xxl-2');
+            ->setColumns('col-sm-4 col-lg-3 col-xxl-2')
+            ->onlyOnForms();
         yield NumberField::new('trackSeek', 'Track-to-track seek (in ms)')
-            ->setColumns('col-sm-4 col-lg-3 col-xxl-2');
+            ->setColumns('col-sm-4 col-lg-3 col-xxl-2')
+            ->onlyOnForms();
         yield NumberField::new('buffer', 'Buffer (in KB)')
             ->setColumns('col-sm-4 col-lg-3 col-xxl-2')
             ->onlyOnForms();
@@ -200,6 +210,12 @@ class HardDriveCrudController extends AbstractCrudController
     {
         $hddId = $context->getEntity()->getInstance()->getId();
         return $this->redirectToRoute('hard_drive_show', array('id'=>$hddId));
+    }
+    public function viewLogs(AdminContext $context)
+    {
+        $entityId = $context->getEntity()->getInstance()->getId();
+        $entity = str_replace("\\", "-",$context->getEntity()->getFqcn());
+        return $this->redirectToRoute('dh_auditor_show_entity_history', array('id' => $entityId, 'entity' => $entity));
     }
     public function new(AdminContext $context)
     {

@@ -57,10 +57,14 @@ class ProcessorCrudController extends AbstractCrudController
         );
         $view = Action::new('view', 'View')->linkToCrudAction('viewCPU');
         $eview = Action::new('eview', 'View')->linkToCrudAction('viewCPU')->setIcon('fa fa-magnifying-glass');
+        $logs = Action::new('logs', 'Logs')->linkToCrudAction('viewLogs');
+        $elogs= Action::new('elogs', 'Logs')->linkToCrudAction('viewLogs')->setIcon('fa fa-history');
         return $actions
             ->add(Crud::PAGE_NEW, Action::SAVE_AND_CONTINUE)
             ->remove(Crud::PAGE_NEW, Action::SAVE_AND_ADD_ANOTHER)
             ->add(Crud::PAGE_EDIT, $duplicate)
+            ->add(Crud::PAGE_INDEX, $logs)
+            ->add(Crud::PAGE_EDIT, $elogs)
             ->add(Crud::PAGE_INDEX, $view)
             ->add(Crud::PAGE_EDIT, $eview)
             ->setPermission(Action::DELETE, 'ROLE_ADMIN');
@@ -79,6 +83,7 @@ class ProcessorCrudController extends AbstractCrudController
             ->add('manufacturer')
             ->add('name')
             ->add('partNumber')
+            ->add('chipAliases')
             ->add('sockets')
             ->add('core')
             ->add('speed')
@@ -104,8 +109,6 @@ class ProcessorCrudController extends AbstractCrudController
             ->setColumns(4);
         yield TextField::new('name', 'Aux Name')
             ->setColumns(4);
-        yield ArrayField::new('getChipAliases', 'Aliases')
-            ->hideOnForm();
         yield TextField::new('core', 'Core')
             ->hideOnForm();
         yield TextField::new('speed', 'Speed')
@@ -207,6 +210,12 @@ class ProcessorCrudController extends AbstractCrudController
     {
         $cpuId = $context->getEntity()->getInstance()->getId();
         return $this->redirectToRoute('processor_show', array('id'=>$cpuId));
+    }
+    public function viewLogs(AdminContext $context)
+    {
+        $entityId = $context->getEntity()->getInstance()->getId();
+        $entity = str_replace("\\", "-",$context->getEntity()->getFqcn());
+        return $this->redirectToRoute('dh_auditor_show_entity_history', array('id' => $entityId, 'entity' => $entity));
     }
     public function new(AdminContext $context)
     {

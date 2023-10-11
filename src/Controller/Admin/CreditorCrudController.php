@@ -25,10 +25,16 @@ class CreditorCrudController extends AbstractCrudController
     public function configureActions(Actions $actions): Actions
     {
         $view = Action::new('view', 'View images')->linkToCrudAction('viewImages');
+        $eview = Action::new('eview', 'View images')->linkToCrudAction('viewImages')->setIcon('fa fa-magnifying-glass');
+        $logs = Action::new('logs', 'Logs')->linkToCrudAction('viewLogs');
+        $elogs= Action::new('elogs', 'Logs')->linkToCrudAction('viewLogs')->setIcon('fa fa-history');
         return $actions
             ->add(Crud::PAGE_NEW, Action::SAVE_AND_CONTINUE)
             ->remove(Crud::PAGE_NEW, Action::SAVE_AND_ADD_ANOTHER)
+            ->add(Crud::PAGE_INDEX, $logs)
+            ->add(Crud::PAGE_EDIT, $elogs)
             ->add(Crud::PAGE_INDEX, $view)
+            ->add(Crud::PAGE_EDIT, $eview)
             ->setPermission(Action::DELETE, 'ROLE_ADMIN');
     }
     public function configureCrud(Crud $crud): Crud
@@ -55,6 +61,12 @@ class CreditorCrudController extends AbstractCrudController
             ->setFormTypeOption('required', false)
             ->setColumns(6)
             ->onlyOnForms();
+    }
+    public function viewLogs(AdminContext $context)
+    {
+        $entityId = $context->getEntity()->getInstance()->getId();
+        $entity = str_replace("\\", "-",$context->getEntity()->getFqcn());
+        return $this->redirectToRoute('dh_auditor_show_entity_history', array('id' => $entityId, 'entity' => $entity));
     }
     public function viewImages(AdminContext $context, AdminUrlGenerator $adminUrlGenerator)
     {

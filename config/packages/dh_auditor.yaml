@@ -24,9 +24,11 @@ dh_auditor:
                 App\Entity\ChipsetBiosCode: ~
                 App\Entity\ChipsetDocumentation: ~
                 App\Entity\CpuSocket: ~
+                App\Entity\CpuSpeed: ~
                 App\Entity\Creditor: ~
                 App\Entity\DramType: ~
                 App\Entity\ExpansionChip: ~
+                App\Entity\ExpansionChipType: ~
                 App\Entity\ExpansionSlot: ~
                 App\Entity\FloppyDrive: ~
                 App\Entity\FormFactor: ~

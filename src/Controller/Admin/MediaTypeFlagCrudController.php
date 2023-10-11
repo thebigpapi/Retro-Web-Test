@@ -3,6 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Entity\MediaTypeFlag;
+use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
@@ -18,7 +19,26 @@ class MediaTypeFlagCrudController extends AbstractCrudController
     {
         return MediaTypeFlag::class;
     }
-
+    public function configureActions(Actions $actions): Actions
+    {
+        $logs = Action::new('logs', 'Logs')->linkToCrudAction('viewLogs');
+        $elogs= Action::new('elogs', 'Logs')->linkToCrudAction('viewLogs')->setIcon('fa fa-history');
+        return $actions
+            ->add(Crud::PAGE_NEW, Action::SAVE_AND_CONTINUE)
+            ->remove(Crud::PAGE_NEW, Action::SAVE_AND_ADD_ANOTHER)
+            ->add(Crud::PAGE_INDEX, $logs)
+            ->add(Crud::PAGE_EDIT, $elogs)
+            ->setPermission(Action::DELETE, 'ROLE_ADMIN')
+            ->setPermission(Action::EDIT, 'ROLE_ADMIN')
+            ->setPermission(Action::INDEX, 'ROLE_ADMIN');
+    }
+    public function configureCrud(Crud $crud): Crud
+    {
+        return $crud
+            ->showEntityActionsInlined()
+            ->setEntityLabelInSingular('media type')
+            ->setEntityLabelInPlural('Media types');
+    }
     public function configureFields(string $pageName): iterable
     {
         yield IdField::new('id')->onlyOnIndex();
@@ -32,18 +52,10 @@ class MediaTypeFlagCrudController extends AbstractCrudController
             ->setFormTypeOption('allow_delete', false)
             ->onlyOnForms();
     }
-    public function configureCrud(Crud $crud): Crud
+    public function viewLogs(AdminContext $context)
     {
-        return $crud
-            ->showEntityActionsInlined()
-            ->setEntityLabelInSingular('media type')
-            ->setEntityLabelInPlural('Media types');
-    }
-    public function configureActions(Actions $actions): Actions
-    {
-        return $actions
-            ->setPermission(Action::DELETE, 'ROLE_ADMIN')
-            ->setPermission(Action::EDIT, 'ROLE_ADMIN')
-            ->setPermission(Action::INDEX, 'ROLE_ADMIN');
+        $entityId = $context->getEntity()->getInstance()->getId();
+        $entity = str_replace("\\", "-",$context->getEntity()->getFqcn());
+        return $this->redirectToRoute('dh_auditor_show_entity_history', array('id' => $entityId, 'entity' => $entity));
     }
 }

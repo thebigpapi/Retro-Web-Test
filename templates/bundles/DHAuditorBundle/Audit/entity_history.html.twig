@@ -16,9 +16,11 @@
     'App\\Entity\\ChipsetBiosCode' : 'Chipset BIOS codes',
     'App\\Entity\\ChipsetDocumentation' : 'Chipset docs',
     'App\\Entity\\CpuSocket' : 'CPU sockets',
+    'App\\Entity\\CpuSpeed' : 'Speeds',
     'App\\Entity\\Creditor' : 'Creditors',
     'App\\Entity\\DramType' : 'RAM types',
     'App\\Entity\\ExpansionChip' : 'Expansion chips',
+    'App\\Entity\\ExpansionChipType' : 'Expansion chip types',
     'App\\Entity\\ExpansionSlot' : 'Expansion slots',
     'App\\Entity\\FloppyDrive' : 'Floppy drives',
     'App\\Entity\\FormFactor' : 'Form factors',
@@ -124,6 +126,7 @@
             {{ include('@DHAuditor/Audit/entry.html.twig', {'entry': entry, 'is_last': i >= amount}) }}
         </li>
         {% endfor %}
+        {% if i == 0 %}Nothing to see here.{% endif %}
     </ul>
 </div>
 
