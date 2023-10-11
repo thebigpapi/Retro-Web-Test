@@ -3,41 +3,56 @@
 namespace App\Entity;
 
 use App\Repository\HardDriveRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: HardDriveRepository::class)]
 class HardDrive extends StorageDevice
 {
     #[ORM\Column(type: 'integer')]
+    #[Assert\LessThan(4294967295, message: "Capacity should be smaller than 4294967295")]
+    #[Assert\Positive(message: "Capacity should be above 0")]
     private $capacity;
 
     #[ORM\Column(type: 'smallint', nullable: true)]
+    #[Assert\LessThan(65535, message: "Cylinders should be smaller than 65535")]
+    #[Assert\Positive(message: "Cylinders should be above 0")]
     private $cylinders;
 
     #[ORM\Column(type: 'smallint', nullable: true)]
+    #[Assert\LessThan(65535, message: "Heads should be smaller than 65535")]
+    #[Assert\Positive(message: "Heads should be above 0")]
     private $heads;
 
     #[ORM\Column(type: 'smallint', nullable: true)]
+    #[Assert\LessThan(65535, message: "Sectors per track should be smaller than 65535")]
+    #[Assert\Positive(message: "Sectors per track should be above 0")]
     private $sectors;
 
     #[ORM\Column(type: 'smallint', nullable: true)]
+    #[Assert\LessThan(65535, message: "RPM should be smaller than 65535")]
+    #[Assert\Positive(message: "RPM should be above 0")]
     private $spindleSpeed;
 
     #[ORM\Column(type: 'smallint', nullable: true)]
+    #[Assert\LessThan(65535, message: "Platter count should be smaller than 65535")]
+    #[Assert\Positive(message: "Platter count should be above 0")]
     private $platters;
 
     #[ORM\Column(type: 'datetime', mapped: false)]
     private $lastEdited;
 
     #[ORM\Column(nullable: true)]
+    #[Assert\LessThan(4294967295, message: "Buffer size should be smaller than 4294967295")]
+    #[Assert\Positive(message: "Buffer size should be above 0")]
     private ?int $buffer = null;
 
     #[ORM\Column(nullable: true)]
+    #[Assert\Positive(message: "Random seek time should be above 0")]
     private ?float $randomSeek = null;
 
     #[ORM\Column(nullable: true)]
+    #[Assert\Positive(message: "Random seek time should be above 0")]
     private ?float $trackSeek = null;
 
     public function getId(): ?int

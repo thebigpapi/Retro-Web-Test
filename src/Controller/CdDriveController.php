@@ -21,7 +21,7 @@ class CdDriveController extends AbstractController
         $cdd = $cdDriveRepository->find($id);
         if (!$cdd) {
             throw $this->createNotFoundException(
-                'No hard drive found for id ' . $id
+                'No CD drive found for id ' . $id
             );
         } else {
             return $this->render('cddrive/show.html.twig', [

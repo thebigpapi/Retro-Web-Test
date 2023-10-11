@@ -127,14 +127,14 @@ class HardDriveCrudController extends AbstractCrudController
             ->onlyOnIndex();
         yield ArrayField::new('interfaces', 'Interface')
             ->onlyOnIndex();
-        yield NumberField::new('capacity')
+        yield NumberField::new('capacity', 'Capacity (in MB)')
             ->setColumns('col-sm-4 col-lg-3 col-xxl-2')
             ->onlyOnForms();
         yield NumberField::new('cylinders')
             ->setColumns('col-sm-4 col-lg-3 col-xxl-2');
         yield NumberField::new('heads')
             ->setColumns('col-sm-4 col-lg-3 col-xxl-2');
-        yield NumberField::new('sectors')
+        yield NumberField::new('sectors', 'Sectors per track')
             ->setColumns('col-sm-4 col-lg-3 col-xxl-2');
         yield NumberField::new('spindleSpeed', 'RPM')
             ->setColumns('col-sm-4 col-lg-3 col-xxl-2');
