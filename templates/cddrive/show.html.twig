@@ -60,34 +60,34 @@
 						{% endif %}
 						<!-- Size -->
 						<div class="quick-spec-head">
-							<img src="{{ absolute_url(asset('build/icons/dimension.svg')) }}" alt="cpu" width="24" height="24">Form factor
+							<img src="{{ absolute_url(asset('build/icons/dimension.svg')) }}" alt="" width="24" height="24">Form factor
 						</div>
 						<div>{{ cddrive.getPhysicalSize() }}</div>
 						<!-- Tray -->
 						<div class="quick-spec-head">
-							<img src="{{ absolute_url(asset('build/icons/dimension.svg')) }}" alt="cpu" width="24" height="24">Tray type
+							<img src="{{ absolute_url(asset('build/icons/cd_drive.svg')) }}" alt="" width="24" height="24">Tray type
 						</div>
 						<div>{{ cddrive.getTrayType() }}</div>
 					</div>
 					<div class="quick-spec-table">
 						<!-- CD read -->
 						<div class="quick-spec-head">
-							<img src="{{ absolute_url(asset('build/icons/cpupins.svg')) }}" alt="cpu" width="24" height="24">CD read speed
+							<img src="{{ absolute_url(asset('build/icons/cd.svg')) }}" alt="cdr" width="24" height="24">CD read speed
 						</div>
 						<div>{{ cddrive.getCdReadSpeed() ?: 'Unknown' }}</div>
 						<!-- CD write -->
 						<div class="quick-spec-head">
-							<img src="{{ absolute_url(asset('build/icons/486.svg')) }}" alt="486" width="24" height="24">CD write speed
+							<img src="{{ absolute_url(asset('build/icons/cd.svg')) }}" alt="cdw" width="24" height="24">CD write speed
 						</div>
 						<div>{{ cddrive.getCdWriteSpeed() ?: 'Unknown' }}</div>
 						<!-- DVD read -->
 						<div class="quick-spec-head">
-							<img src="{{ absolute_url(asset('build/icons/486.svg')) }}" alt="486" width="24" height="24">DVD read speed
+							<img src="{{ absolute_url(asset('build/icons/dvd.svg')) }}" alt="dvdr" width="24" height="24">DVD read speed
 						</div>
 						<div>{{ cddrive.getDvdReadSpeed() ?: 'Unknown' }}</div>
 						<!-- DVD write speed -->
 						<div class="quick-spec-head">
-							<img src="{{ absolute_url(asset('build/icons/486.svg')) }}" alt="486" width="24" height="24">DVD write speed
+							<img src="{{ absolute_url(asset('build/icons/dvd.svg')) }}" alt="dvdw" width="24" height="24">DVD write speed
 						</div>
 						<div>{{ cddrive.getDvdWriteSpeed() ?: 'Unknown' }}</div>
 					</div>

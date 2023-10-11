@@ -155,7 +155,7 @@ class HardDrive extends StorageDevice
     public function getBufferFormatted(): ?string
     {
         if(!$this->buffer)
-            return "none/unknown";
+            return "None/Unknown";
         if($this->buffer > 1048575)
             $size = number_format($this->buffer/1048576, 2, '.', '') . " GB";
         else $size = $this->buffer > 1023 ? number_format($this->buffer/1024, 2, '.', '') . " MB" : $this->buffer . " KB";

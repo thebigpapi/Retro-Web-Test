@@ -68,7 +68,6 @@ function paginate(newPageIdx, target) {
     }
 
 function reset() {
-    alert("aa");
     let select_ids = [
         "search_manufacturer", 
         "search_chipsetManufacturer",
@@ -140,7 +139,7 @@ function searchLive() {
                 const lightbox = GLightbox({});
                 getDates();
             } else {
-                document.getElementById(targetId).innerHTML = "Critical error while fetching results";
+                document.getElementById(targetId).innerHTML = "Critical error while fetching results:<br>" + parsedResponse.title;
             }
         })();
     }
