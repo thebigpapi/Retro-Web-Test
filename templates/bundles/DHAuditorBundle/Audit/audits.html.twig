@@ -135,7 +135,7 @@
 }
 %}
     <div class="auditor-audits mb-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mx-4 sm:mx-0">
-        {% for entity, table in audited %}
+        {% for entity, table in audited|sort((a, b) => titles[a] <=> titles[b]) %}
             <div class="bg-white overflow-hidden rounded border border-gray-200 hover:bg-blue-50 hover:border-blue-300 transition-all duration-300 group flex flex-col justify-between">
                 <a class="text-blue-500" href="{{ path('dh_auditor_show_entity_history', {'entity': helper.namespaceToParam(entity)}) }}">
                 <div class="px-4 py-3 sm:px-4">

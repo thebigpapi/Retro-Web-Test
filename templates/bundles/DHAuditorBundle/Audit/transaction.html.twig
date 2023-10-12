@@ -78,24 +78,26 @@
                 <svg class="flex-shrink-0 w-6 h-full text-gray-200" viewBox="0 0 24 44" preserveAspectRatio="none" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                     <path d="M.293 0l22 22-22 22h1.414l22-22-22-22H.293z" />
                 </svg>
-                <a class="ml-4 font-medium text-pink-500" href="{{ path('dh_auditor_show_transaction', {hash: hash}) }}" title="{% trans from 'auditor' %}transaction{% endtrans %} #{{ hash }}">
+                <a style="word-break:break-all;" class="ml-4 font-medium text-pink-500" href="{{ path('dh_auditor_show_transaction', {hash: hash}) }}" title="{% trans from 'auditor' %}transaction{% endtrans %} #{{ hash }}">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline align-text-top" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
                     </svg>
                     {{ hash }}
                 </a>
-                <span class="ml-2 italic text-gray-400 font-light">{% trans from 'auditor' %}audit.audit_details.entity_per_entity{% endtrans %}</span>
             </div>
             {% set amount = 0 %}
             {% for entity, entries in audits %}
                 {% set amount = amount + entries|length %}
             {% endfor %}
             <div>
-                <span class="bg-purple-500 rounded text-sm text-white px-2 py-1">{% trans with { '%count%': amount } from 'auditor' %}audit.audit_details.operations_count{% endtrans %}</span>
+                <span class="bg-purple-500 rounded text-sm text-white px-2 py-1 no-wrap audit-mobile-600-hide no-wrap">{% trans with { '%count%': amount } from 'auditor' %}audit.audit_details.operations_count{% endtrans %}</span>
             </div>
         </li>
     </ol>
 </nav>
+<div>
+    <span class="bg-purple-500 rounded text-sm text-white px-2 py-1 no-wrap audit-mobile-600 no-wrap">{% trans with { '%count%': amount } from 'auditor' %}audit.audit_details.operations_count{% endtrans %}</span>
+</div>
 {% endblock %}
 
 {% block dh_auditor_content %}
@@ -114,7 +116,7 @@
             <span class="ml-2 italic text-gray-400 font-light">{% trans from 'auditor' %}audit.audit_details.most_recent{% endtrans %}</span>
         </div>
         <div>
-            <span class="bg-purple-500 rounded text-sm text-white px-2 py-1">{% trans with { '%count%': entries|length } from 'auditor' %}audit.audit_details.operations_count{% endtrans %}</span>
+            <span class="bg-purple-500 rounded text-sm text-white px-2 py-1 no-wrap">{% trans with { '%count%': entries|length } from 'auditor' %}audit.audit_details.operations_count{% endtrans %}</span>
         </div>
     </div>
 
