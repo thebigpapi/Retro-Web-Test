@@ -60,7 +60,6 @@ class LargeFileCrudController extends AbstractCrudController
         $logs = Action::new('logs', 'Logs')->linkToCrudAction('viewLogs');
         $elogs= Action::new('elogs', 'Logs')->linkToCrudAction('viewLogs')->setIcon('fa fa-history');
         return $actions
-            ->add(Crud::PAGE_NEW, Action::SAVE_AND_CONTINUE)
             ->remove(Crud::PAGE_NEW, Action::SAVE_AND_ADD_ANOTHER)
             ->add(Crud::PAGE_EDIT, $duplicate)
             ->add(Crud::PAGE_INDEX, $logs)

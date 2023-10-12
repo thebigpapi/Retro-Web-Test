@@ -1,5 +1,7 @@
 
 let form = document.getElementById('edit-LargeFile-form');
+if(!form)
+    form = document.getElementById('new-LargeFile-form');
 if(form){
     let submitreturn_btn = document.getElementsByClassName('action-saveAndReturn btn btn-primary action-save')[0];
     if(submitreturn_btn)
@@ -11,7 +13,6 @@ if(form){
         submitcontinue_btn.addEventListener("click", function(event){
             submit(event, "saveAndContinue", submitcontinue_btn.getAttribute('form'));
         }, false);
-    console.log("driver");
 }
 function submit(event, type, formtype) {
         let date = new Date()
@@ -66,7 +67,6 @@ function submit(event, type, formtype) {
                 let doc = parser.parseFromString(xhr.responseText, "text/html");
                 if (doc.getElementById("message")) {
                     document.getElementById("message").innerHTML = doc.getElementById("message").innerHTML
-                    
                 }
                 else {
                     window.location.href = xhr.responseURL
@@ -91,7 +91,12 @@ function submit(event, type, formtype) {
             }
         }
         let formData = new FormData(document.getElementById(formtype));
-        console.log(formtype, type);
         formData.append("ea[newForm][btn]", type);
+        if(type == "saveAndReturn" && document.getElementById('new-LargeFile-form'))
+            window.onbeforeunload = null;
         xhr.send(formData);
+        if(type == "saveAndContinue"){
+            window.onbeforeunload = null;
+            window.location.reload();
+        }
     }
