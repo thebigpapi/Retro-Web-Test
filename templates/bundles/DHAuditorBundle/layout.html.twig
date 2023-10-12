@@ -1,5 +1,5 @@
 {% extends 'base.html.twig' %}
-{% block title %}logs{% endblock %}
+{% block title %}Logs - TRW{% endblock %}
 {% block metatags %}
 	<meta name="description" content="The Retro Web motherboard database, here you can find board photos, BIOS images, manuals and more!">
 	<link rel="alternate" hreflang="x-default" href="{{ absolute_url(path('app_homepage')) }}"/>
@@ -12,9 +12,7 @@
     <div class="title">Logs</div>
     <header class="bg-white">
         <div class="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8">
-{#            <h1 class="text-lg leading-6 font-semibold text-gray-900">#}
             {% block dh_auditor_header %}{% endblock %}
-{#            </h1>#}
         </div>
     </header>
     <main>
