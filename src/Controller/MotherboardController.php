@@ -366,12 +366,12 @@ class MotherboardController extends AbstractController
         if ($slots) {
             $parameters['expansionSlotsIds'] = array();
             foreach ($slots as $slot) {
-                $count = $slot->getCount();
-                if ((int)$count !== 0) {
-                    $slotCount = array('id' => $slot->getExpansionSlot()->getId(), 'count' => (int)$count);
+                $countArray = $this->convertCount($slot['count']);
+                if ($countArray['value'] !== 0) {
+                    $slotCount = array('id' => $slot['expansion_slot']->getId(), 'count' => $countArray['value'], 'sign' => $countArray['sign']);
                     array_push($parameters['expansionSlotsIds'], $slotCount);
-                } elseif ($count == 0) {
-                    $slotCount = array('id' => $slot->getExpansionSlot()->getId(), 'count' => null);
+                } elseif ($countArray['value'] == 0) {
+                    $slotCount = array('id' => $slot['expansion_slot']->getId(), 'count' => null, 'sign' => '=');
                     array_push($parameters['expansionSlotsIds'], $slotCount);
                 }
             }
@@ -381,12 +381,12 @@ class MotherboardController extends AbstractController
         if ($ports) {
             $parameters['ioPortsIds'] = array();
             foreach ($ports as $port) {
-                $count = $port->getCount();
-                if ((int)$count && $count !== 0) {
-                    $portCount = array('id' => $port->getIoPort()->getId(), 'count' => (int)$count);
+                $countArray = $this->convertCount($port['count']);
+                if ($countArray['value'] !== 0) {
+                    $portCount = array('id' => $port['io_port']->getId(), 'count' => $countArray['value'], 'sign' => $countArray['sign']);
                     array_push($parameters['ioPortsIds'], $portCount);
-                } elseif ($count == 0) {
-                    $portCount = array('id' => $port->getIoPort()->getId(), 'count' => null);
+                } elseif ($countArray['value']== 0) {
+                    $portCount = array('id' => $port['io_port']->getId(), 'count' => null, 'sign' => '=');
                     array_push($parameters['ioPortsIds'], $portCount);
                 }
             }
@@ -473,5 +473,26 @@ class MotherboardController extends AbstractController
         $form->handleRequest($request);
 
         return $form;
+    }
+    public function convertCount($input): array
+    {
+        $output = array();
+        $output['valid'] = true;
+        $nospaces = html_entity_decode(preg_replace("/\s+/", "", $input));
+        $sign = preg_replace('/[^><=]/', '', $nospaces);
+        $numbers = preg_replace('/[^0-9]/', '', $nospaces);
+        if($numbers == "")
+            $output['valid'] = false;
+        $output['value'] = (int)$numbers;
+        $output['sign'] = '=';
+        if($sign == "<")
+            $output['sign'] = '<';
+        if($sign == ">")
+            $output['sign'] = '>';
+        if($sign == ">=")
+            $output['sign'] = '>=';
+        if($sign == "<=")
+            $output['sign'] = '<=';
+        return $output;
     }
 }

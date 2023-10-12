@@ -70,7 +70,6 @@ class MotherboardBiosRepository extends ServiceEntityRepository
         if (array_key_exists('expansionChips', $criterias)) {
             foreach ($criterias['expansionChips'] as $key => $value) {
                 $whereArray[] = "(m.id in (select m$key.id from App\Entity\Motherboard m$key JOIN m$key.expansionChips ec$key where ec$key.id=:idChip$key))";
-                dump($value);
                 $valuesArray["idChip$key"] = $value;
         }
         }

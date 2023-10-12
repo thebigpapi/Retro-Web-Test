@@ -97,10 +97,8 @@ class HardDriveRepository extends ServiceEntityRepository
 
         // Building where statement
         $whereString = implode(" AND ", $whereArray);
-        dump($whereArray);
         // Building query
         if($whereArray == []){
-            dump($whereArray);
             $query = $entityManager->createQuery(
                 "SELECT hdd
                 FROM App\Entity\HardDrive hdd JOIN hdd.manufacturer man LEFT OUTER JOIN hdd.storageDeviceAliases alias
@@ -109,7 +107,6 @@ class HardDriveRepository extends ServiceEntityRepository
             );
         }
         else{
-            dump($whereString);
             $query = $entityManager->createQuery(
                 "SELECT hdd
                 FROM App\Entity\HardDrive hdd JOIN hdd.manufacturer man LEFT OUTER JOIN hdd.storageDeviceAliases alias

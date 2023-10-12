@@ -3,8 +3,8 @@
 namespace App\Form\Motherboard;
 
 use App\Entity\Chipset;
-use App\Form\Type\MotherboardExpansionSlotType;
-use App\Form\Type\MotherboardIoPortType;
+use App\Form\Type\ExpansionSlotSearchType;
+use App\Form\Type\IoPortSearchType;
 use App\Form\Type\ExpansionChipType;
 use App\Form\Type\ItemsPerPageType;
 use Doctrine\ORM\EntityRepository;
@@ -112,13 +112,13 @@ class Search extends AbstractType
                 'placeholder' => 'Select a form factor ...',
             ])
             ->add('motherboardExpansionSlots', CollectionType::class, [
-                'entry_type' => MotherboardExpansionSlotType::class,
+                'entry_type' => ExpansionSlotSearchType::class,
                 'allow_add' => true,
                 'allow_delete' => true,
                 'label' => false,
             ])
             ->add('motherboardIoPorts', CollectionType::class, [
-                'entry_type' => MotherboardIoPortType::class,
+                'entry_type' => IoPortSearchType::class,
                 'allow_add' => true,
                 'allow_delete' => true,
                 'label' => false,

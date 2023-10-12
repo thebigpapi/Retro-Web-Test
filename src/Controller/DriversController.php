@@ -72,7 +72,6 @@ class DriversController extends AbstractController
         $criterias = $this->getCriteriaDriver($request);
         $maxItems = $request->query->getInt('itemsPerPage', $request->request->getInt('itemsPerPage', $this->getParameter('app.pagination.max')));
         $data = $driverRepository->findByDriver($criterias);
-        dump($request->request->getInt('itemsPerPage'));
         $drivers = $paginator->paginate(
                 $data,
                 $request->query->getInt('page', 1),

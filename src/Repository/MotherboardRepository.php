@@ -105,14 +105,24 @@ class MotherboardRepository extends ServiceEntityRepository
                         SELECT mb.*
                         FROM motherboard mb
                         JOIN motherboard_expansion_slot mex ON mb.id=mex.motherboard_id
-                        WHERE mex.expansion_slot_id=:idSlot" . $key . " AND mex.count=:slotCount" . $key . "
+                        WHERE mex.expansion_slot_id=:idSlot" . $key . " AND (
+                            (mex.count=:slotCount" . $key . " AND :signSlot" . $key . "= '=') OR
+                            (mex.count>:slotCount" . $key . " AND :signSlot" . $key . "= '>') OR
+                            (mex.count<:slotCount" . $key . " AND :signSlot" . $key . "= '<') OR
+                            (mex.count<=:slotCount" . $key . " AND :signSlot" . $key . "= '<=') OR
+                            (mex.count>=:slotCount" . $key . " AND :signSlot" . $key . "= '>='))
                         ) as mot" . $fromLength . " ";
                 } else {
                     $from[] = " INNER JOIN (
                         SELECT mb.*
                         FROM motherboard mb
                         JOIN motherboard_expansion_slot mex ON mb.id = mex.motherboard_id
-                        WHERE mex.expansion_slot_id = :idSlot" . $key . " AND mex.count=:slotCount" . $key . "
+                        WHERE mex.expansion_slot_id = :idSlot" . $key . " AND (
+                            (mex.count=:slotCount" . $key . " AND :signSlot" . $key . "= '=') OR
+                            (mex.count>:slotCount" . $key . " AND :signSlot" . $key . "= '>') OR
+                            (mex.count<:slotCount" . $key . " AND :signSlot" . $key . "= '<') OR
+                            (mex.count<=:slotCount" . $key . " AND :signSlot" . $key . "= '<=') OR
+                            (mex.count>=:slotCount" . $key . " AND :signSlot" . $key . "= '>='))
                         ) as mot" . $fromLength . " ON mot" . ($fromLength - 1) . ".id = mot" . $fromLength . ".id ";
                 }
             } else {
@@ -146,14 +156,24 @@ class MotherboardRepository extends ServiceEntityRepository
                         SELECT mb.*
                         FROM motherboard mb
                         JOIN motherboard_io_port mip ON mb.id = mip.motherboard_id
-                        WHERE mip.io_port_id = :idPort" . $key . " AND mip.count= :portCount" . $key . "
+                        WHERE mip.io_port_id = :idPort" . $key . " AND (
+                            (mip.count=:portCount" . $key . " AND :signPort" . $key . "= '=') OR
+                            (mip.count>:portCount" . $key . " AND :signPort" . $key . "= '>') OR
+                            (mip.count<:portCount" . $key . " AND :signPort" . $key . "= '<') OR
+                            (mip.count<=:portCount" . $key . " AND :signPort" . $key . "= '<=') OR
+                            (mip.count>=:portCount" . $key . " AND :signPort" . $key . "= '>='))
                         ) as mot" . $fromLength . " ";
                 } else {
                     $from[] = " INNER JOIN (
                         SELECT mb.*
                         FROM motherboard mb
                         JOIN motherboard_io_port mip ON mb.id = mip.motherboard_id
-                        WHERE mip.io_port_id = :idPort" . $key . " AND mip.count= :portCount" . $key . "
+                        WHERE mip.io_port_id = :idPort" . $key . " AND (
+                            (mip.count=:portCount" . $key . " AND :signPort" . $key . "= '=') OR
+                            (mip.count>:portCount" . $key . " AND :signPort" . $key . "= '>') OR
+                            (mip.count<:portCount" . $key . " AND :signPort" . $key . "= '<') OR
+                            (mip.count<=:portCount" . $key . " AND :signPort" . $key . "= '<=') OR
+                            (mip.count>=:portCount" . $key . " AND :signPort" . $key . "= '>='))
                         ) as mot" . $fromLength . " ON mot" . ($fromLength - 1) . ".id = mot" . $fromLength . ".id ";
                 }
             } else {
@@ -425,6 +445,7 @@ class MotherboardRepository extends ServiceEntityRepository
         if (array_key_exists("expansionSlots", $arrays)) {
             foreach ($arrays['expansionSlots'] as $key => $val) {
                 $query->setParameter("idSlot" . $key, $val['id']);
+                $query->setParameter("signSlot" . $key, $val['sign']);
                 if (array_key_exists("count", $val)) {
                     $query->setParameter("slotCount" . $key, $val['count']);
                 }
@@ -435,6 +456,7 @@ class MotherboardRepository extends ServiceEntityRepository
         if (array_key_exists("ioPorts", $arrays)) {
             foreach ($arrays['ioPorts'] as $key => $val) {
                 $query->setParameter("idPort" . $key, $val['id']);
+                $query->setParameter("signPort" . $key, $val['sign']);
                 if (array_key_exists("count", $val)) {
                     $query->setParameter("portCount" . $key, $val['count']);
                 }
