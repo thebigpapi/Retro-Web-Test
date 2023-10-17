@@ -142,6 +142,13 @@ class ProcessorCrudController extends AbstractCrudController
         yield NumberField::new('ProcessNode', 'Process (in nm)')
             ->setColumns(2)
             ->onlyOnForms();
+        yield NumberField::new('cores', 'Core count')
+            ->setColumns(2)
+            ->onlyOnForms();
+        yield NumberField::new('threads', 'Thread count')
+            ->setColumns(2)
+            ->onlyOnForms();
+        yield FormField::addRow();
         yield CollectionField::new('sockets', 'Socket')
             ->setEntryType(CpuSocketType::class)
             ->setColumns(6)

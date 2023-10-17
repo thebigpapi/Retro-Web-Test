@@ -65,20 +65,30 @@
 					<div>{{ cpu.getCore() ? cpu.getCore() : 'Unknown' }}</div>
 					<!-- Speed -->
 					<div class="quick-spec-head">
-						<img src="{{ absolute_url(asset('build/icons/speed.svg')) }}" alt="speed" width="24" height="24">Speed
+						<img src="{{ absolute_url(asset('build/icons/speed.svg')) }}" alt="speed" width="24" height="24">Frequency
 					</div>
 					<div>{{ cpu.getSpeed() ? cpu.getSpeed().getValueWithUnit() : 'Unknown' }}</div>
 					<!-- FSB -->
 					<div class="quick-spec-head">
-						<img src="{{ absolute_url(asset('build/icons/speed.svg')) }}" alt="speed" width="24" height="24">FSB
+						<img src="{{ absolute_url(asset('build/icons/speed.svg')) }}" alt="speed" width="24" height="24">Bus speed
 					</div>
 					<div>{{ cpu.getFsb() ? cpu.getFsb().getValueWithUnit() : 'Unknown' }}</div>
+					<!-- Cores -->
+					<div class="quick-spec-head">
+						<img src="{{ absolute_url(asset('build/icons/cpu.svg')) }}" alt="cores" width="24" height="24">Core count
+					</div>
+					<div>{{ cpu.getCores() ? cpu.getCores() : 'Unknown' }}</div>
+					<!-- Threads -->
+					<div class="quick-spec-head">
+						<img src="{{ absolute_url(asset('build/icons/cpu.svg')) }}" alt="threads" width="24" height="24">Thread count
+					</div>
+					<div>{{ cpu.getThreads() ? cpu.getThreads() : 'Unknown' }}</div>
+				</div><div class="quick-spec-table">
 					<!-- Process node -->
 					<div class="quick-spec-head">
 						<img src="{{ absolute_url(asset('build/icons/dimension.svg')) }}" alt="dimension" width="24" height="24">Process node
 					</div>
 					<div>{{ cpu.getProcessNodeWithValue() ? cpu.getProcessNodeWithValue() : 'Unknown' }}</div>
-				</div><div class="quick-spec-table">
 					<!-- TDP -->
 					<div class="quick-spec-head">
 						<img src="{{ absolute_url(asset('build/icons/power.svg')) }}" alt="power" width="24" height="24">TDP

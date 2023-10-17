@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -44,6 +45,12 @@ class Processor extends ProcessingUnit
 
     #[ORM\Column(type: 'datetime', mapped: false)]
     private $lastEdited;
+
+    #[ORM\Column(type: Types::SMALLINT, nullable: true)]
+    private ?int $cores = null;
+
+    #[ORM\Column(type: Types::SMALLINT, nullable: true)]
+    private ?int $threads = null;
 
     public function __construct()
     {
@@ -296,5 +303,29 @@ class Processor extends ProcessingUnit
     public function getSpeedFSB(){
         return $this->speed->getValueWithUnit() . ($this->fsb != $this->speed ? '/' . $this->fsb->getValueWithUnit() : '');
 
+    }
+
+    public function getCores(): ?int
+    {
+        return $this->cores;
+    }
+
+    public function setCores(?int $cores): self
+    {
+        $this->cores = $cores;
+
+        return $this;
+    }
+
+    public function getThreads(): ?int
+    {
+        return $this->threads;
+    }
+
+    public function setThreads(?int $threads): self
+    {
+        $this->threads = $threads;
+
+        return $this;
     }
 }
