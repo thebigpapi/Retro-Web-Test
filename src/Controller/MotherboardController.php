@@ -64,6 +64,7 @@ class MotherboardController extends AbstractController
         $this->addArrayCriteria($request, $criterias, 'expansionSlotsIds', 'expansionSlots');
         $this->addArrayCriteria($request, $criterias, 'ioPortsIds', 'ioPorts');
         $this->addArrayCriteria($request, $criterias, 'expansionChipIds', 'expansionChips');
+        $this->addArrayCriteria($request, $criterias, 'dramTypeIds', 'dramTypes');
         return $criterias;
     }
 
@@ -137,6 +138,11 @@ class MotherboardController extends AbstractController
                 }
             }
             else if($key == "expansionChipIds"){
+                foreach($value as $idx => $val){
+                    $string .= $key . '%5B' . $idx . '%5D=' . $val .'&';
+                }
+            }
+            else if($key == "dramTypeIds"){
                 foreach($value as $idx => $val){
                     $string .= $key . '%5B' . $idx . '%5D=' . $val .'&';
                 }
@@ -397,6 +403,13 @@ class MotherboardController extends AbstractController
             $parameters['expansionChipIds'] = array();
             foreach ($expchips as $chip) {
                 array_push($parameters['expansionChipIds'], $chip->getId());
+            }
+        }
+        $dramtypes = $form['dramTypes']->getData();
+        if ($dramtypes) {
+            $parameters['dramTypeIds'] = array();
+            foreach ($dramtypes as $type) {
+                array_push($parameters['dramTypeIds'], $type->getId());
             }
         }
 

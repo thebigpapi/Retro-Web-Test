@@ -176,6 +176,11 @@ function searchLive() {
             new TomSelect('#search_expansionChips_' + (counter - 1), {});
             el.tomselect.sync();
         }
+        if(idx == "dramTypes-fields-list"){
+            el = document.getElementById('search_dramTypes_' + (counter - 1));
+            new TomSelect('#search_dramTypes_' + (counter - 1), {});
+            el.tomselect.sync();
+        }
     }
     function remove(el){
         var element = el.parentNode;

@@ -3,6 +3,7 @@
 namespace App\Form\Motherboard;
 
 use App\Entity\Chipset;
+use App\Form\Type\DramTypeType;
 use App\Form\Type\ExpansionSlotSearchType;
 use App\Form\Type\IoPortSearchType;
 use App\Form\Type\ExpansionChipType;
@@ -80,6 +81,12 @@ class Search extends AbstractType
             ])
             ->add('expansionChips', CollectionType::class, [
                 'entry_type' => ExpansionChipType::class,
+                'allow_add' => true,
+                'allow_delete' => true,
+                'label' => false,
+            ])
+            ->add('dramTypes', CollectionType::class, [
+                'entry_type' => DramTypeType::class,
                 'allow_add' => true,
                 'allow_delete' => true,
                 'label' => false,

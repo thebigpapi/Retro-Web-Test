@@ -217,6 +217,26 @@ class MotherboardRepository extends ServiceEntityRepository
         }
         return $from;
     }
+    private function dramTypesToSQL(array $dramTypes, array $from): array
+    {
+        foreach ($dramTypes as $key => $type) {
+            $fromLength = count($from);
+            if ($fromLength == 0) {
+                    $from[] = " (
+                        SELECT mb.*
+                        FROM motherboard mb
+                        JOIN motherboard_dram_type mdt ON mb.id=mdt.motherboard_id
+                        WHERE mdt.dram_type_id=:idType" . $key . ") as mot" . $fromLength . " ";
+            } else {
+                    $from[] = " INNER JOIN (
+                        SELECT mb.*
+                        FROM motherboard mb
+                        JOIN motherboard_dram_type mdt ON mb.id=mdt.motherboard_id
+                        WHERE mdt.dram_type_id = :idType" . $key . ") as mot" . $fromLength . " ON mot" . ($fromLength - 1) . ".id = mot" . $fromLength . ".id ";
+            }
+        }
+        return $from;
+    }
 
     private function valueToWhere(string $key, ?string $value): string //Warning ! Different behavior
     {
@@ -321,7 +341,7 @@ class MotherboardRepository extends ServiceEntityRepository
         // Creating from statements
         $from = array();
 
-        if (!array_key_exists("ioPorts", $arrays) && !array_key_exists("expansionSlots", $arrays) && !array_key_exists("expansionChips", $arrays)) {
+        if (!array_key_exists("ioPorts", $arrays) && !array_key_exists("expansionSlots", $arrays) && !array_key_exists("expansionChips", $arrays) && !array_key_exists("dramTypes", $arrays)) {
             $from[] = "motherboard mot0";
         } else {
             if (array_key_exists("expansionSlots", $arrays)) {
@@ -332,6 +352,9 @@ class MotherboardRepository extends ServiceEntityRepository
             }
             if (array_key_exists("expansionChips", $arrays)) {
                 $from = $this->expansionChipsToSQL($arrays['expansionChips'], $from);
+            }
+            if (array_key_exists("dramTypes", $arrays)) {
+                $from = $this->dramTypesToSQL($arrays['dramTypes'], $from);
             }
         }
 
@@ -466,6 +489,11 @@ class MotherboardRepository extends ServiceEntityRepository
         if (array_key_exists("expansionChips", $arrays)) {
             foreach ($arrays['expansionChips'] as $key => $val) {
                 $query->setParameter("idChip" . $key, $val);
+            }
+        }
+        if (array_key_exists("dramTypes", $arrays)) {
+            foreach ($arrays['dramTypes'] as $key => $val) {
+                $query->setParameter("idType" . $key, $val);
             }
         }
 

@@ -66,6 +66,23 @@
 					<div id="setformf">{{ form_widget(form.formFactor) }}</div>
 				</div>
 			</div>
+			<div class="search-form-filter">
+				<label class="search-form-label" title="">
+					<span>RAM type</span>
+					{% include 'macros/buttons.html.twig' with {'type':'add', 'action': 'dramTypes'} %}
+				</label>
+				<div class="search-form-widget filter-list" id="dramTypes-fields-list" data-widget-counter="{{ form.dramTypes|length }}" data-prototype="
+					{{ form_widget(form.dramTypes.vars.prototype, {'attr': {'style': 'width:50%'}})|e }}
+					{% include 'macros/buttons.html.twig' with {'type':'del'} %}</div>">
+					{% for type in form.dramTypes %}
+						<div class="editor-row">
+							{{ form_widget(type, {'attr': {'style': 'width:50%'}}) }}
+							{% include 'macros/buttons.html.twig' with {'type':'del'} %}
+							{{ form_errors(type) }}
+						</div>
+					{% endfor %}
+				</div>
+			</div>
 		</section>
 
 		<section class="search-form-grid">
