@@ -41,6 +41,6 @@ services:
                 # must match the value returned by the getName() method
                 id: 'app.git_data_collector'
         public: false
-
+    dh_auditor.role_checker: '@App\Audit\Security\RoleChecker'
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

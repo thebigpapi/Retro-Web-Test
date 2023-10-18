@@ -66,7 +66,10 @@ dh_auditor:
                 App\Entity\StorageDeviceImage: ~
                 App\Entity\StorageDeviceInterface: ~
                 App\Entity\StorageDeviceSize: ~
-                App\Entity\User: ~
+                App\Entity\User:
+                    roles:
+                        view:
+                            - 'ROLE_SUPER_ADMIN'
             storage_services:
                 - '@doctrine.orm.default_entity_manager'
             auditing_services:
