@@ -441,7 +441,7 @@
 
 {%- block form_rows -%}
     {% if form.vars.id == 'Motherboard_motherboardBios' %}
-        {% for child in form|filter(child => not child.rendered)|sort((a, b) => b.children.boardVersion <=> a.children.boardVersion) %}
+        {% for child in form|filter(child => not child.rendered)|sort((a, b) => b.children.boardVersion.vars.value <=> a.children.boardVersion.vars.value) %}
             {{- form_row(child) -}}
         {% endfor %}
     {% else %}

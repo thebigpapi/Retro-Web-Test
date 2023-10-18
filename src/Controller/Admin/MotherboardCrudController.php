@@ -284,6 +284,7 @@ class MotherboardCrudController extends AbstractCrudController
             ->onlyOnForms();
         yield CollectionField::new('motherboardBios', 'BIOS images')
             ->setEntryType(MotherboardBiosType::class)
+            ->setFormTypeOption('error_bubbling', false)
             ->addCssClass('mobo-bios')
             ->setColumns(12)
             ->renderExpanded()
