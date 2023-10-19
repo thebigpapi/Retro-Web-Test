@@ -58,7 +58,7 @@
     {% set allows_deleting_items = form_parent(form).vars.allow_delete|default(false) %}
     {% set render_expanded = form_parent(form).vars.ea_crud_form.ea_field.customOptions.get('renderExpanded') ?? false %}
     {% set delete_item_button %}
-        <button type="button" class="btn btn-link btn-link-danger field-collection-delete-button"
+        <button id="{{ id }}_deletebtn" type="button" class="btn btn-link btn-link-danger field-collection-delete-button"
                 style="position:relative;"
                 title="{{ 'action.remove_item'|trans({}, 'EasyAdminBundle') }}">
             <i class="far fa-trash-alt"></i>
@@ -193,7 +193,20 @@
 {{ form_widget(form)}}
 <div style="padding-top:10px;">
     <button id="update-cpu-btn" class="btn btn-secondary" type="button">
-        <span class="btn-label"><i class="fa fa-external-link"></i> <span class="action-label">Update CPU families</span></span>
+        <span class="btn-label"><span class="action-label">Update CPU families</span></span>
     </button>
+    <span id="update-cpus-label" style="text-wrap:nowrap;"></span>
 </div>
 {% endblock _Motherboard_maxcpu_widget %}
+{% block _Motherboard_chipset_widget %}
+<div style="padding:10px 0px;">
+    <button id="update-chipset-btn" class="btn btn-secondary" type="button">
+        <span class="btn-label" style="text-wrap:nowrap;"><i class="fa fa-external-link"></i> <span class="action-label">Read expansion chips</span></span>
+    </button>
+    <button id="reset-chipset-btn" class="btn btn-secondary" type="button">
+        <span class="btn-label" style="text-wrap:nowrap;"><i class="fa fa-refresh"></i> <span class="action-label">Reset</span></span>
+    </button>
+    <span id="update-chipset-label"></span>
+</div>
+{{ form_widget(form)}}
+{% endblock _Motherboard_chipset_widget %}

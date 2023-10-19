@@ -94,6 +94,28 @@ class ChipsetRepository extends ServiceEntityRepository
     /**
      * @return Chipset[]
      */
+    public function findByChips(array $criteria): array
+    {
+        $entityManager = $this->getEntityManager();
+        $whereString = "(";
+        foreach ($criteria as $key => $val) {
+            $whereString .= "$val";
+            if ($key !== array_key_last($criteria)) {
+                $whereString .= ",";
+            }
+        }
+        $whereString .= ")";
+        $query = $entityManager->createQuery(
+            "SELECT chip
+            FROM App\Entity\Chipset chip JOIN chip.manufacturer man JOIN chip.expansionChips part LEFT OUTER JOIN chip.chipsetAliases alias
+            WHERE part.id IN $whereString
+            ORDER BY man.name ASC, chip.name ASC"
+        );
+        return $query->getResult();
+    }
+    /**
+     * @return Chipset[]
+     */
     public function findAllAlphabetic(string $letter): array
     {
         $entityManager = $this->getEntityManager();

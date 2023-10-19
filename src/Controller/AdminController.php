@@ -56,6 +56,48 @@ class AdminController extends AbstractDashboardController
         }
         return new JsonResponse($cpuPlatforms);
     }
+    #[Route('/dashboard/getchipsets', name:'mobo_get_chipsets', methods:['POST'])]
+    public function getChipsets(Request $request, ChipsetRepository $chipsetRepository): JsonResponse
+    {
+        $chips = json_decode($request->getContent());
+        $chipsets = array();
+        foreach($chipsetRepository->findByChips($chips) as $chipset){
+            $chipsets[$chipset->getId()] = $chipset->getNameCached();
+        }
+        return new JsonResponse($chipsets);
+    }
+    #[Route('/dashboard/getallchipsets', name:'mobo_get_all_chipsets', methods:['POST'])]
+    public function getAllChipsets(Request $request, ChipsetRepository $chipsetRepository): JsonResponse
+    {
+        $chipsets = array();
+        foreach($chipsetRepository->findAll() as $chipset){
+            $chipsets[$chipset->getId()] = $chipset->getNameCached();
+        }
+        return new JsonResponse($chipsets);
+    }
+    #[Route('/dashboard/getchips', name:'mobo_get_chips', methods:['POST'])]
+    public function getChips(Request $request, ChipsetRepository $chipsetRepository): JsonResponse
+    {
+        $chipset = json_decode($request->getContent());
+        $chips = array();
+
+        foreach($chipsetRepository->findById($chipset)[0]->getExpansionChips() as $chip){
+            $chips[$chip->getId()] = $chip->getNameWithManufacturer();
+        }
+        return new JsonResponse($chips);
+    }
+    #[Route('/dashboard/filterchips', name:'mobo_filter_chips', methods:['POST'])]
+    public function filterChips(Request $request, ExpansionChipRepository $expansionChipRepository): JsonResponse
+    {
+        $chips = json_decode($request->getContent());
+        $newchips = array();
+        foreach($chips as $chip){
+            $chipEntity = $expansionChipRepository->findById($chip)[0];
+            if($chipEntity->getExpansionChipType()->getId() != 30)
+                $newchips[$chip] = $chipEntity->getNameWithManufacturer();
+        }
+        return new JsonResponse($newchips);
+    }
     #[Route('/admin/updatechipset/{a}/{b}', name:'update_chipsets_cached_name', requirements: ['a' => '\d+', 'b' => '\d+'])]
     public function updateChipsetsCachedName(ChipsetRepository $chipsetRepository, int $a, int $b, EntityManagerInterface $entityManager): JsonResponse
     {
