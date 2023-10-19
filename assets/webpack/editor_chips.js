@@ -34,11 +34,9 @@ function updateChipset() {
     let chips = document.getElementById('Motherboard_expansionChips');
     if(!chips){
         chips = document.getElementById('Motherboard_expansionChips_collection').children[0].children[0];
-        if(chips.innerHTML == "Empty"){
-            setMessage("Error: no chips added!");
-            return;
+        if(chips.innerHTML != "Empty"){
+            chips = chips.children[0].children[0];
         }
-        chips = document.getElementById('Motherboard_expansionChips_collection').children[0].children[0].children[0].children[0];
     }
     let chip_cnt = chips.childElementCount;
     while(chip_cnt > 0){
@@ -95,11 +93,9 @@ function updateChips() {
     let chips = document.getElementById('Motherboard_expansionChips');
     if(!chips){
         chips = document.getElementById('Motherboard_expansionChips_collection').children[0].children[0];
-        if(chips.innerHTML == "Empty"){
-            setMessage("Error: no chips added!");
-            return;
+        if(chips.innerHTML != "Empty"){
+            chips = chips.children[0].children[0];
         }
-        chips = document.getElementById('Motherboard_expansionChips_collection').children[0].children[0].children[0].children[0];
     }
     let chip_cnt = chips.childElementCount;
     while(chip_cnt > 0){
@@ -114,10 +110,8 @@ function updateChips() {
     if(chipset_value){
         setChips(chipset_value, params.length);
     }
-    else{
-        setMessage("Error: no chipset selected!");
+    else
         return;
-    }
 }
 function setChips(value, verify){
     // fetch new chips based on chipset
