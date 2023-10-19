@@ -36,7 +36,7 @@ class IoPortRepository extends ServiceEntityRepository
 
         $query = $entityManager->createNativeQuery(
             "SELECT io.id, count(moboio.io_port_id) as popularity, io.name
-            FROM io_port io JOIN motherboard_io_port moboio ON io.id=moboio.io_port_id GROUP BY io.id, io.name
+            FROM io_port io LEFT JOIN motherboard_io_port moboio ON io.id=moboio.io_port_id GROUP BY io.id, io.name
             ORDER BY popularity DESC;",
             $rsm
         );

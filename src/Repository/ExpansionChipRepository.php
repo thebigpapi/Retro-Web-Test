@@ -56,7 +56,7 @@ class ExpansionChipRepository extends ServiceEntityRepository
 
         $query = $entityManager->createNativeQuery(
             "SELECT ec.id, count(moboec.expansion_chip_id) as popularity, man.id as man_id, man.name as man_name, ch.name, ch.part_number
-            FROM expansion_chip ec JOIN chip ch ON ch.id=ec.id JOIN manufacturer man ON ch.manufacturer_id=man.id JOIN motherboard_expansion_chip moboec ON ec.id=moboec.expansion_chip_id 
+            FROM expansion_chip ec JOIN chip ch ON ch.id=ec.id JOIN manufacturer man ON ch.manufacturer_id=man.id LEFT JOIN motherboard_expansion_chip moboec ON ec.id=moboec.expansion_chip_id 
             GROUP BY ec.id, man_id, man_name, ch.name, ch.part_number
             ORDER BY popularity DESC;",
             $rsm

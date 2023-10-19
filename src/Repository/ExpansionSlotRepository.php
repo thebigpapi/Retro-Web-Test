@@ -36,7 +36,7 @@ class ExpansionSlotRepository extends ServiceEntityRepository
 
         $query = $entityManager->createNativeQuery(
             "SELECT es.id, count(mes.expansion_slot_id) as popularity, es.name
-            FROM expansion_slot es JOIN motherboard_expansion_slot mes ON es.id=mes.expansion_slot_id GROUP BY es.id, es.name
+            FROM expansion_slot es LEFT JOIN motherboard_expansion_slot mes ON es.id=mes.expansion_slot_id GROUP BY es.id, es.name
             ORDER BY popularity DESC;",
             $rsm
         );
