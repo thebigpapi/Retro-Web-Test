@@ -35,7 +35,7 @@ function updateChipset() {
     if(!chips){
         chips = document.getElementById('Motherboard_expansionChips_collection').children[0].children[0];
         if(chips.innerHTML == "Empty"){
-            alert("Error: no chips added!");
+            setMessage("Error: no chips added!");
             return;
         }
         chips = document.getElementById('Motherboard_expansionChips_collection').children[0].children[0].children[0].children[0];
@@ -54,7 +54,7 @@ function updateChipset() {
         setChipset(params);
     }
     else{
-        alert("Error: no expansion chips listed!");
+        setMessage("Error: no expansion chips listed!");
         return;
     }
 }
@@ -96,7 +96,7 @@ function updateChips() {
     if(!chips){
         chips = document.getElementById('Motherboard_expansionChips_collection').children[0].children[0];
         if(chips.innerHTML == "Empty"){
-            alert("Error: no chips added!");
+            setMessage("Error: no chips added!");
             return;
         }
         chips = document.getElementById('Motherboard_expansionChips_collection').children[0].children[0].children[0].children[0];
@@ -115,7 +115,7 @@ function updateChips() {
         setChips(chipset_value, params.length);
     }
     else{
-        alert("Error: no chipset selected!");
+        setMessage("Error: no chipset selected!");
         return;
     }
 }
