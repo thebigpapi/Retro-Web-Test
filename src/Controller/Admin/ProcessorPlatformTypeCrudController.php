@@ -3,15 +3,20 @@
 namespace App\Controller\Admin;
 
 use App\Entity\ProcessorPlatformType;
+use App\Form\Type\InstructionSetType;
 use App\Form\Type\ProcessorPlatformTypeForm;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ArrayField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 
 class ProcessorPlatformTypeCrudController extends AbstractCrudController
@@ -41,11 +46,48 @@ class ProcessorPlatformTypeCrudController extends AbstractCrudController
             ->setEntityLabelInPlural('CPU families')
             ->setPaginatorPageSize(100);
     }
+    public function configureFilters(Filters $filters): Filters
+    {
+        return parent::configureFilters($filters)
+            ->add('name')
+            ->add('L1code')
+            ->add('L1codeRatio')
+            ->add('L1data')
+            ->add('L1dataRatio')
+            ->add('instructionSets')
+            ->add('processNode');
+    }
     public function configureFields(string $pageName): iterable
     {
         yield IdField::new('id')
             ->onlyOnIndex();
         yield TextField::new('name', 'Name');
+        yield IntegerField::new('processNode', 'Process (in nm)')
+            ->hideOnForm();
+        yield NumberField::new('processNode', 'Process (in nm)')
+            ->setColumns(2)
+            ->onlyOnForms();
+        yield AssociationField::new('L1code','L1 code size')
+            ->setFormTypeOption('placeholder', 'Select a size ...')
+            ->setFormTypeOption('required', false)
+            ->setColumns(2)
+            ->onlyOnForms();
+        yield NumberField::new('L1codeRatio','L1 code ratio')
+            ->setColumns(2)
+            ->onlyOnForms();
+        yield AssociationField::new('L1data','L1 data size')
+            ->setFormTypeOption('placeholder', 'Select a size ...')
+            ->setFormTypeOption('required', false)
+            ->setColumns(2)
+            ->onlyOnForms();
+        yield NumberField::new('L1dataRatio','L1 data ratio')
+            ->setColumns(2)
+            ->onlyOnForms();
+        yield CollectionField::new('instructionSets', 'Instruction set')
+            ->setEntryType(InstructionSetType::class)
+            ->setColumns(6)
+            ->renderExpanded()
+            ->onlyOnForms();
         yield ArrayField::new('getCompatibleWith', 'Compatible with families')
             ->onlyOnIndex();
         yield CollectionField::new('compatibleWith', 'Compatible with families')

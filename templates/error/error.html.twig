@@ -13,6 +13,16 @@
 					<a href="{{ path('app_homepage') }}">here</a>.</p>
 			</div>
 			<img style="" src="{{ absolute_url(asset('build/images/search404.gif')) }}" alt="error">
+		{% elseif code == 403 %}
+			<div style="width:60%;float:left;">
+				<h1>Error
+					{{ code }}:
+					{{ codeText }}</h1>
+				<p>Seems like you're not allowed to be here.</p>
+				<p>You can go back to the homepage by clicking
+					<a href="{{ path('app_homepage') }}">here</a>.</p>
+			</div>
+			<img style="" src="{{ absolute_url(asset('build/images/error.gif')) }}" alt="error">
 		{% else %}
 			<div style="width:60%;float:left;">
 				<h1>Error
@@ -23,11 +33,9 @@
 					<a href="{{ path('app_homepage') }}">here</a>.</p>
 			</div>
 			<img style="" src="{{ absolute_url(asset('build/images/error.gif')) }}" alt="error">
-			{% if is_granted('ROLE_ADMIN') %}
-				<div style="background-color:#d43934;color:#e0e0e0;padding:5px 10px 5px;border-radius:4px;">
-					<p>{{ message }}</p>
-				</div>
-			{% endif %}
+			<div style="background-color:#d43934;color:#e0e0e0;padding:5px 10px 5px;border-radius:4px;">
+				<p>{{ message }}</p>
+			</div>
 		{% endif %}
 	</div>
 {% endblock %}

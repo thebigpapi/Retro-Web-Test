@@ -22,9 +22,6 @@ abstract class ProcessingUnit extends Chip
     #[ORM\ManyToOne(targetEntity: ProcessorPlatformType::class, inversedBy: 'processingUnits')]
     protected $platform;
 
-    #[ORM\ManyToMany(targetEntity: InstructionSet::class, inversedBy: 'processingUnits')]
-    protected $instructionSets;
-
     #[ORM\ManyToOne(targetEntity: CpuSpeed::class, inversedBy: 'processingUnitsFsb')]
     #[ORM\OrderBy(['value' => 'ASC'])]
     protected $fsb;
@@ -35,7 +32,6 @@ abstract class ProcessingUnit extends Chip
     public function __construct()
     {
         parent::__construct();
-        $this->instructionSets = new ArrayCollection();
         $this->sockets = new ArrayCollection();
     }
     public function getId(): ?int
@@ -62,34 +58,6 @@ abstract class ProcessingUnit extends Chip
 
         return $this;
     }
-    /**
-     * @return Collection|InstructionSet[]
-     */
-    public function getInstructionSets(): Collection
-    {
-        return $this->instructionSets;
-    }
-    public function addInstructionSet(InstructionSet $instructionSet): self
-    {
-        if (!$this->instructionSets->contains($instructionSet)) {
-            $this->instructionSets[] = $instructionSet;
-            $instructionSet->addProcessingUnit($this);
-        }
-
-        return $this;
-    }
-    public function removeInstructionSet(InstructionSet $instructionSet): self
-    {
-        if ($this->instructionSets->contains($instructionSet)) {
-            $this->instructionSets->removeElement($instructionSet);
-            // set the owning side to null (unless already changed)
-            if ($instructionSet->getProcessingUnits() === $this) {
-                $instructionSet->removeProcessingUnit($this);
-            }
-        }
-
-        return $this;
-    }
     public function getFsb(): ?CpuSpeed
     {
         return $this->fsb;
@@ -99,34 +67,6 @@ abstract class ProcessingUnit extends Chip
         $this->fsb = $fsb;
 
         return $this;
-    }
-    public function getNameWithSpecs()
-    {
-        $speed = $speed = $this->speed->getValueWithUnit() . ($this->fsb != $this->speed ? '/' . $this->fsb->getValueWithUnit() : '');
-
-        $partno = "[$this->partNumber]";
-
-        $pType = '(' . ($this->getPlatform() ? $this->getPlatform()->getName() : "Unidentified") . ')';
-
-        return implode(" ", array($this->getManufacturer()->getName(), $this->name, $speed, $partno, $pType));
-    }
-    public static function sort(Collection $processingUnits): Collection
-    {
-        $array = $processingUnits->toArray();
-        usort(
-            $array,
-            function (ProcessingUnit $a, ProcessingUnit $b) {
-                if ($a->getManufacturer()->getName() != $b->getManufacturer()->getName()) {
-                    return strnatcasecmp($a->getManufacturer()->getName(), $b->getManufacturer()->getName());
-                } 
-                if ($a->getName() != $b->getName()) {
-                    return strnatcasecmp($a->getName(), $b->getName());
-                } 
-                return strnatcasecmp($a->getSpeed()->getValue(), $b->getSpeed()->getValue());
-            }
-        );
-
-        return new ArrayCollection($array);
     }
     /**
      * @return Collection|CpuSocket[]

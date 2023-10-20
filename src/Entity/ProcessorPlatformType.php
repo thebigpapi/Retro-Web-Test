@@ -34,6 +34,27 @@ class ProcessorPlatformType
     #[ORM\ManyToMany(targetEntity: CpuSocket::class, mappedBy: 'platforms')]
     private $cpuSockets;
 
+    #[ORM\ManyToMany(targetEntity: InstructionSet::class, inversedBy: 'processorPlatformTypes')]
+    protected $instructionSets;
+
+    #[ORM\Column(type: 'integer', nullable: true)]
+    private $processNode;
+
+    #[ORM\ManyToOne(targetEntity: CacheSize::class, inversedBy: 'getProcessorsL1data')]
+    private $L1data;
+
+    #[ORM\ManyToOne(targetEntity: CacheSize::class, inversedBy: 'getProcessorsL1code')]
+    private $L1code;
+
+    #[ORM\Column]
+    private ?float $L1codeRatio = null;
+
+    #[ORM\Column]
+    private ?float $L1dataRatio = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?bool $hasIMC = null;
+
     public function __construct()
     {
         $this->motherboards = new ArrayCollection();
@@ -41,6 +62,7 @@ class ProcessorPlatformType
         $this->compatibleWith = new ArrayCollection();
         $this->ChildProcessorPlatformType = new ArrayCollection();
         $this->cpuSockets = new ArrayCollection();
+        $this->instructionSets = new ArrayCollection();
     }
     public function __toString(): string
     {
@@ -61,7 +83,7 @@ class ProcessorPlatformType
         return $this;
     }
     /**
-     * @return Collection|Motherboards[]
+     * @return Collection|Motherboard[]
      */
     public function getMotherboards(): Collection
     {
@@ -84,6 +106,34 @@ class ProcessorPlatformType
             }
 
             return $this;
+        }
+
+        return $this;
+    }
+    /**
+     * @return Collection|InstructionSet[]
+     */
+    public function getInstructionSets(): Collection
+    {
+        return $this->instructionSets;
+    }
+    public function addInstructionSet(InstructionSet $instructionSet): self
+    {
+        if (!$this->instructionSets->contains($instructionSet)) {
+            $this->instructionSets[] = $instructionSet;
+            $instructionSet->addPlatform($this);
+        }
+
+        return $this;
+    }
+    public function removeInstructionSet(InstructionSet $instructionSet): self
+    {
+        if ($this->instructionSets->contains($instructionSet)) {
+            $this->instructionSets->removeElement($instructionSet);
+            // set the owning side to null (unless already changed)
+            if ($instructionSet->getPlatforms() === $this) {
+                $instructionSet->removePlatform($this);
+            }
         }
 
         return $this;
@@ -212,5 +262,75 @@ class ProcessorPlatformType
         }
 
         return $this;
+    }
+    public function getProcessNode(): ?int
+    {
+        return $this->processNode;
+    }
+    public function setProcessNode(?int $processNode): self
+    {
+        $this->processNode = $processNode;
+
+        return $this;
+    }
+    public function getL1data(): ?CacheSize
+    {
+        return $this->L1data;
+    }
+    public function setL1data(?CacheSize $L1data): self
+    {
+        $this->L1data = $L1data;
+
+        return $this;
+    }
+    public function getL1code(): ?CacheSize
+    {
+        return $this->L1code;
+    }
+    public function setL1code(?CacheSize $L1code): self
+    {
+        $this->L1code = $L1code;
+
+        return $this;
+    }
+
+    public function getL1codeRatio(): ?float
+    {
+        return $this->L1codeRatio;
+    }
+
+    public function setL1codeRatio(float $L1codeRatio): self
+    {
+        $this->L1codeRatio = $L1codeRatio;
+
+        return $this;
+    }
+
+    public function getL1dataRatio(): ?float
+    {
+        return $this->L1dataRatio;
+    }
+
+    public function setL1dataRatio(float $L1dataRatio): self
+    {
+        $this->L1dataRatio = $L1dataRatio;
+
+        return $this;
+    }
+
+    public function isHasIMC(): ?bool
+    {
+        return $this->hasIMC;
+    }
+
+    public function setHasIMC(?bool $hasIMC): self
+    {
+        $this->hasIMC = $hasIMC;
+
+        return $this;
+    }
+    public function getProcessNodeWithValue(): string
+    {
+        return $this->processNode ? $this->processNode . "nm" : "";
     }
 }

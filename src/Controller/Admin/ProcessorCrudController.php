@@ -7,9 +7,9 @@ use App\Form\Type\ChipAliasType;
 use App\Form\Type\ChipImageType;
 use App\Form\Type\CpuSocketType;
 use App\Form\Type\ProcessorVoltageType;
-use App\Form\Type\InstructionSetType;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
+use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
@@ -85,6 +85,7 @@ class ProcessorCrudController extends AbstractCrudController
             ->add('partNumber')
             ->add('chipAliases')
             ->add('sockets')
+            ->add('platform')
             ->add('core')
             ->add('speed')
             ->add('fsb')
@@ -107,7 +108,7 @@ class ProcessorCrudController extends AbstractCrudController
             ->onlyOnForms();
         yield TextField::new('partNumber', 'Name')
             ->setColumns(4);
-        yield TextField::new('name', 'Aux Name')
+        yield TextField::new('name', 'Part number')
             ->setColumns(4);
         yield TextField::new('core', 'Core')
             ->hideOnForm();
@@ -128,11 +129,11 @@ class ProcessorCrudController extends AbstractCrudController
         yield TextField::new('core', 'Core')
             ->setColumns(2)
             ->onlyOnForms();
-        yield AssociationField::new('speed','Speed')
+        yield AssociationField::new('speed','Frequency')
             ->setFormTypeOption('placeholder', 'Select a speed ...')
             ->setColumns(2)
             ->onlyOnForms();
-        yield AssociationField::new('fsb','FSB')
+        yield AssociationField::new('fsb','Bus speed')
             ->setFormTypeOption('placeholder', 'Select a speed ...')
             ->setColumns(2)
             ->onlyOnForms();
@@ -160,24 +161,12 @@ class ProcessorCrudController extends AbstractCrudController
             ->renderExpanded()
             ->onlyOnForms();
         yield FormField::addPanel('Cache')->onlyOnForms();
-        yield AssociationField::new('L1','L1 size')
-            ->setFormTypeOption('placeholder', 'Select a size ...')
-            ->setFormTypeOption('required', false)
-            ->setColumns(2)
-            ->onlyOnForms();
-        yield AssociationField::new('L1CacheMethod','L1 method')
-            ->setFormTypeOption('autocomplete', 'disabled')
-            ->setFormTypeOption('required', false)
-            ->setColumns(2)
-            ->onlyOnForms();
         yield AssociationField::new('L2','L2 size')
             ->setFormTypeOption('placeholder', 'Select a size ...')
             ->setFormTypeOption('required', false)
             ->setColumns(2)
             ->onlyOnForms();
-        yield AssociationField::new('L2CacheRatio','L2 ratio')
-            ->setFormTypeOption('autocomplete', 'disabled')
-            ->setFormTypeOption('required', false)
+        yield BooleanField::new('L2shared','L2 shared')
             ->setColumns(2)
             ->onlyOnForms();
         yield AssociationField::new('L3','L3 size')
@@ -185,17 +174,11 @@ class ProcessorCrudController extends AbstractCrudController
             ->setFormTypeOption('required', false)
             ->setColumns(2)
             ->onlyOnForms();
-        yield AssociationField::new('L3CacheRatio','L3 ratio')
-            ->setFormTypeOption('autocomplete', 'disabled')
+        yield BooleanField::new('L3shared','L3 shared')
             ->setFormTypeOption('required', false)
             ->setColumns(2)
             ->onlyOnForms();
         yield FormField::addPanel('Other')->onlyOnForms();
-        yield CollectionField::new('instructionSets', 'Instruction set')
-            ->setEntryType(InstructionSetType::class)
-            ->setColumns(6)
-            ->renderExpanded()
-            ->onlyOnForms();
         yield CollectionField::new('chipAliases', 'Chip aliases')
             ->setEntryType(ChipAliasType::class)
             ->setFormTypeOption('error_bubbling', false)

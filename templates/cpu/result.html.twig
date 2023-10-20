@@ -3,7 +3,7 @@
 <div id="{{ typeid }}">
 {% if cpus is defined and cpus is not empty %}
 	<div class="results{% if not show_images %} lst{% endif %}">
-		{{ knp_pagination_render(cpus, 'macros/pagination.html.twig') }}
+		{{ knp_pagination_render(cpus, 'macros/pagination_async.html.twig') }}
 		{% if show_images %}
 			<div class="perks">
 				<div id="index-datetime" class="perks-list">
@@ -36,7 +36,7 @@
 				{% include 'macros/widget.html.twig' with {'type':'cpu-results', 'entity': cpus} %}
 			</div>
 		{% endif %}
-		{{ knp_pagination_render(cpus, 'macros/pagination.html.twig') }}
+		{{ knp_pagination_render(cpus, 'macros/pagination_async.html.twig') }}
 	</div>
 {% else %}
 	No results

@@ -12,23 +12,11 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Processor extends ProcessingUnit
 {
 
-    #[ORM\ManyToOne(targetEntity: CacheSize::class, inversedBy: 'getProcessorsL1')]
-    private $L1;
-
     #[ORM\ManyToOne(targetEntity: CacheSize::class, inversedBy: 'getProcessorsL2')]
     private $L2;
 
     #[ORM\ManyToOne(targetEntity: CacheSize::class, inversedBy: 'getProcessorsL3')]
     private $L3;
-
-    #[ORM\ManyToOne(targetEntity: CacheMethod::class, inversedBy: 'processors')]
-    private $L1CacheMethod;
-
-    #[ORM\ManyToOne(targetEntity: CacheRatio::class, inversedBy: 'processorsL2')]
-    private $L2CacheRatio;
-
-    #[ORM\ManyToOne(targetEntity: CacheRatio::class, inversedBy: 'processorsL3')]
-    private $L3CacheRatio;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     #[Assert\Length(max: 255, maxMessage: 'Core is longer than {{ limit }} characters, try to make it shorter.')]
@@ -43,14 +31,17 @@ class Processor extends ProcessingUnit
     #[ORM\OneToMany(targetEntity: ProcessorVoltage::class, mappedBy: 'processor', orphanRemoval: true, cascade: ['persist'])]
     private $voltages;
 
-    #[ORM\Column(type: 'datetime', mapped: false)]
-    private $lastEdited;
-
     #[ORM\Column(type: Types::SMALLINT, nullable: true)]
     private ?int $cores = null;
 
     #[ORM\Column(type: Types::SMALLINT, nullable: true)]
     private ?int $threads = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?bool $L2shared = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?bool $L3shared = null;
 
     public function __construct()
     {
@@ -73,37 +64,6 @@ class Processor extends ProcessingUnit
             array_push($inner, ($this->tdp ? $this->tdp . 'W' : ''));
         return implode(" ", array($this->getManufacturer()->getName(), $this->partNumber, "[" . implode(", ", $inner) . "]"));
     }
-    public function getNameWithSpecs()
-    {
-
-        $cache = $this->getCachesWithValue();
-
-        $core = $this->getCore() ? "($this->core)" : '';
-
-        $speed = $this->speed->getValueWithUnit() . ($this->fsb != $this->speed ? '/' . $this->fsb->getValueWithUnit() : '');
-
-        $voltages = $this->getVoltagesWithValue();
-
-        $partno = "[$this->partNumber]";
-
-        $pType = '(' . ($this->getPlatform() ? $this->getPlatform()->getName() : "Unidentified") . ')';
-
-        $processNode = $this->ProcessNode ? $this->ProcessNode . 'nm' : '';
-
-        $tdp = $this->tdp ? $this->tdp . 'W' : '';
-
-        return implode(" ", array($this->getManufacturer()->getName(), $this->name, $core, $speed, $voltages, $cache, $partno, $pType, $processNode, $tdp));
-    }
-    public function getL1(): ?CacheSize
-    {
-        return $this->L1;
-    }
-    public function setL1(?CacheSize $L1): self
-    {
-        $this->L1 = $L1;
-
-        return $this;
-    }
     public function getL2(): ?CacheSize
     {
         return $this->L2;
@@ -121,36 +81,6 @@ class Processor extends ProcessingUnit
     public function setL3(?CacheSize $L3): self
     {
         $this->L3 = $L3;
-
-        return $this;
-    }
-    public function getL1CacheMethod(): ?CacheMethod
-    {
-        return $this->L1CacheMethod;
-    }
-    public function setL1CacheMethod(?CacheMethod $L1CacheMethod): self
-    {
-        $this->L1CacheMethod = $L1CacheMethod;
-
-        return $this;
-    }
-    public function getL2CacheRatio(): ?CacheRatio
-    {
-        return $this->L2CacheRatio;
-    }
-    public function setL2CacheRatio(?CacheRatio $L2CacheRatio): self
-    {
-        $this->L2CacheRatio = $L2CacheRatio;
-
-        return $this;
-    }
-    public function getL3CacheRatio(): ?CacheRatio
-    {
-        return $this->L3CacheRatio;
-    }
-    public function setL3CacheRatio(?CacheRatio $L3CacheRatio): self
-    {
-        $this->L3CacheRatio = $L3CacheRatio;
 
         return $this;
     }
@@ -183,30 +113,6 @@ class Processor extends ProcessingUnit
         $this->ProcessNode = $ProcessNode;
 
         return $this;
-    }
-    public static function sort(Collection $processors): Collection
-    {
-        $array = $processors->toArray();
-        usort(
-            $array,
-            function (Processor $a, Processor $b) {
-                if ($a->getFsb() != $b->getFsb()) {
-                    return ($a->getFsb()->getValue() > $b->getFsb()->getValue()) ? -1 : 1;
-                }
-                if ($a->getProcessNode() != $b->getProcessNode()) {
-                    return ($a->getProcessNode() < $b->getProcessNode()) ? -1 : 1;
-                }
-                if ($a->getSpeed() != $b->getSpeed()) {
-                    return ($a->getSpeed()->getValue() > $b->getSpeed()->getValue()) ? -1 : 1;
-                }
-                if ($a->getManufacturer() != $b->getManufacturer()) {
-                    return ($a->getManufacturer() < $b->getManufacturer()) ? -1 : 1;
-                }
-                return 0;
-            }
-        );
-
-        return new ArrayCollection($array);
     }
     /**
      * @return Collection|ProcessorVoltage[]
@@ -249,30 +155,6 @@ class Processor extends ProcessingUnit
             }
         }
         return $res;
-    }
-    public function getCachesWithValue(): string
-    {
-        $cache = '';
-        if ($this->L1) {
-            $cache = "[L1: " . $this->L1->getValueWithUnit();
-            if ($this->L1CacheMethod) {
-                $cache = "$cache " . $this->L1CacheMethod->getName();
-            }
-            if ($this->L2) {
-                $cache = "$cache, L2: " . $this->L2->getValueWithUnit();
-                if ($this->L2CacheRatio) {
-                    $cache = "$cache " . $this->L2CacheRatio->getName();
-                }
-                if ($this->L3) {
-                    $cache = "$cache, L3: " . $this->L3->getValueWithUnit();
-                    if ($this->L3CacheRatio) {
-                        $cache = "$cache " . $this->L3CacheRatio->getName();
-                    }
-                }
-            }
-            $cache = "$cache]";
-        }
-        return $cache;
     }
     public function getProcessNodeWithValue(): string
     {
@@ -325,6 +207,30 @@ class Processor extends ProcessingUnit
     public function setThreads(?int $threads): self
     {
         $this->threads = $threads;
+
+        return $this;
+    }
+
+    public function isL2shared(): ?bool
+    {
+        return $this->L2shared;
+    }
+
+    public function setL2shared(?bool $L2shared): self
+    {
+        $this->L2shared = $L2shared;
+
+        return $this;
+    }
+
+    public function isL3shared(): ?bool
+    {
+        return $this->L3shared;
+    }
+
+    public function setL3shared(?bool $L3shared): self
+    {
+        $this->L3shared = $L3shared;
 
         return $this;
     }

@@ -88,7 +88,8 @@
 					<div class="quick-spec-head">
 						<img src="{{ absolute_url(asset('build/icons/dimension.svg')) }}" alt="dimension" width="24" height="24">Process node
 					</div>
-					<div>{{ cpu.getProcessNodeWithValue() ? cpu.getProcessNodeWithValue() : 'Unknown' }}</div>
+					<div>{{ cpu.getProcessNodeWithValue() ? cpu.getProcessNodeWithValue() : (cpu.getPlatform() ? (cpu.getPlatform().getProcessNodeWithValue() ?: 'Unknown'))}}
+					</div>
 					<!-- TDP -->
 					<div class="quick-spec-head">
 						<img src="{{ absolute_url(asset('build/icons/power.svg')) }}" alt="power" width="24" height="24">TDP
@@ -109,27 +110,46 @@
 					<div class="quick-spec-head">
 						<img src="{{ absolute_url(asset('build/icons/ram.svg')) }}" alt="ram" width="24" height="24">L1 cache
 					</div>
-					<div>{{ cpu.getL1() ? cpu.getL1().getValueWithUnit() ~ (cpu.getL1CacheMethod() ? ' (' ~ cpu.getL1CacheMethod().getName() ~ ')') : 'None' }}</div>
+					<div>
+					{% if cpu.getPlatform() is not empty %}
+						{% if cpu.getPlatform().getL1code() is not empty %}
+							{{ cpu.getCores() > 1 ? (cpu.getPlatform().getL1codeRatio() * cpu.getCores()) ~ " x "}}{{cpu.getPlatform().getL1code()}}
+						{% else %}
+							unknown
+						{% endif %}code ,
+						{% if cpu.getPlatform().getL1data() is not empty %}
+							{{ cpu.getCores() > 1 ? (cpu.getPlatform().getL1dataRatio() * cpu.getCores()) ~ " x "}}{{cpu.getPlatform().getL1data()}}
+						{% else %}
+							unknown
+						{% endif %}data
+					{% else %}
+						Unknown
+					{% endif %}
+					</div>
 					<!-- L2 cache -->
 					<div class="quick-spec-head">
 						<img src="{{ absolute_url(asset('build/icons/ram.svg')) }}" alt="ram" width="24" height="24">L2 cache
 					</div>
-					<div>{{ cpu.getL2() ? cpu.getL2().getValueWithUnit() ~ (cpu.getL2CacheRatio() ? ' (' ~ cpu.getL2CacheRatio().getName() ~ ' speed)') : 'None' }}</div>
+					<div>{{ cpu.getL2() ? cpu.getL2().getValueWithUnit() : 'None' }}</div>
 					<!-- L3 cache -->
 					<div class="quick-spec-head">
 						<img src="{{ absolute_url(asset('build/icons/ram.svg')) }}" alt="ram" width="24" height="24">L3 cache
 					</div>
-					<div>{{ cpu.getL3() ? cpu.getL3().getValueWithUnit() ~ (cpu.getL3CacheRatio() ? ' (' ~ cpu.getL3CacheRatio().getName() ~ ' speed)') : 'None' }}</div>
+					<div>{{ cpu.getL3() ? cpu.getL3().getValueWithUnit() : 'None' }}</div>
 					<!-- Instruction set -->
 					<div class="quick-spec-head">
 						<img src="{{ absolute_url(asset('build/icons/cpupins.svg')) }}" alt="cpu" width="24" height="24">Instruction set
 					</div>
-					{% if cpu.getInstructionSets() is not empty %}
-					<div class="tag-container">
-						{% for instruction in cpu.getInstructionSets() %}<span class="text-block">{{ instruction.getName()}}</span>{% endfor %}
-					</div>
+					{% if cpu.getPlatform() is not empty %}
+						{% if cpu.getPlatform().getInstructionSets() is not empty %}
+						<div class="tag-container">
+							{% for instruction in cpu.getPlatform().getInstructionSets() %}<span class="text-block">{{ instruction.getName()}}</span>{% endfor %}
+						</div>
+						{% else %}
+						<div>Unknown</div>
+						{% endif %}
 					{% else %}
-					<div>Unknown</div>
+						<div>Unknown</div>
 					{% endif %}
 				</div>
 			</div>
