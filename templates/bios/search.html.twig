@@ -11,7 +11,7 @@
 	<script src="/build/js/search.js" defer></script>
 {% endblock %}
 {% block body %}
-	{{ form_start(form, {'method': 'POST', 'name': 'search', 'action':path("biossearch"), 'attr':{'data-live-action': path('bioslivewrapper')}}) }}
+	{{ form_start(form, {'method': 'POST', 'name': 'search', 'action':path("biossearch"), 'attr':{'onkeydown': 'return event.key != \'Enter\'', 'data-live-action': path('bioslivewrapper')}}) }}
 	<fieldset id="search-fieldset">
 		<div class="title">Search for a BIOS</div>
 		<section class="search-form-grid">

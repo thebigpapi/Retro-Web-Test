@@ -11,7 +11,7 @@
 	<script src="/build/js/search.js" defer></script>
 {% endblock %}
 {% block body %}
-	{{ form_start(form, {'method': 'POST', 'name': 'search_cdd', 'action':path("cddsearch"), 'attr':{'data-live-action': path('cddlivewrapper')}}) }}
+	{{ form_start(form, {'method': 'POST', 'name': 'search_cdd', 'action':path("cddsearch"), 'attr':{'onkeydown': 'return event.key != \'Enter\'', 'data-live-action': path('cddlivewrapper')}}) }}
 	<fieldset id="search-fieldset">
 		<div class="title">Search for an optical drive</div>
 		<section class="search-form-grid" style="display:flex;justify-content:center;flex-wrap:wrap;">

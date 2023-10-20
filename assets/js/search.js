@@ -32,6 +32,10 @@ if(select_formfactor = document.getElementById('search_formFactor')){
     new TomSelect('#search_formFactor',settings);
     select_formfactor.tomselect.sync();
 }
+if(select_expchipmanuf = document.getElementById('search_expansionChipManufacturer')){
+    new TomSelect('#search_expansionChipManufacturer',settings);
+    select_expchipmanuf.tomselect.sync();
+}
 // event listeners
 if(search_paginate = document.getElementById('search-paginate-id'))
     search_paginate.addEventListener("click", function(){
@@ -54,6 +58,15 @@ if(cpu2sel = document.getElementById('search_cpuSocket2'))
     }, false);
 if(resetbtn = document.getElementById('rst-btn'))
     resetbtn.addEventListener("click", reset);
+
+const form = document.forms[0];
+form.addEventListener("keydown", (e) => {
+    if (!e.repeat && e.key == "Enter") {
+        console.log(e.key);
+        e.preventDefault;
+        paginate(search_paginate.getAttribute("data-paginate"), search_paginate.getAttribute("data-target"));
+    }
+});
 
 function paginate(newPageIdx, target) {
     var redirElem = document.getElementById('pagination_redir');
