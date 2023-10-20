@@ -35,7 +35,7 @@ class CacheSizeCrudController extends AbstractCrudController
         return $crud
             ->showEntityActionsInlined()
             ->setEntityLabelInSingular('cache size')
-            ->setEntityLabelInPlural('Cache sizes')
+            ->setEntityLabelInPlural('<img class=ea-entity-icon src=/build/icons/chip.svg width=48 height=48>Cache sizes')
             ->setPaginatorPageSize(100);
     }
     public function configureFields(string $pageName): iterable

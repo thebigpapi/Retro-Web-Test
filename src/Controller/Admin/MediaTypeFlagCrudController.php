@@ -37,7 +37,7 @@ class MediaTypeFlagCrudController extends AbstractCrudController
         return $crud
             ->showEntityActionsInlined()
             ->setEntityLabelInSingular('media type')
-            ->setEntityLabelInPlural('Media types');
+            ->setEntityLabelInPlural('<img class=ea-entity-icon src=/build/icons/file.svg width=48 height=48>Media types');
     }
     public function configureFields(string $pageName): iterable
     {

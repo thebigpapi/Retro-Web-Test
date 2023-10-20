@@ -44,7 +44,7 @@ class UserCrudController extends AbstractCrudController
         return $crud
             ->showEntityActionsInlined()
             ->setEntityLabelInSingular('user')
-            ->setEntityLabelInPlural('Users');
+            ->setEntityLabelInPlural('<img class=ea-entity-icon src=/build/icons/user.svg width=48 height=48>Users');
     }
     public function configureFields(string $pageName): iterable
     {

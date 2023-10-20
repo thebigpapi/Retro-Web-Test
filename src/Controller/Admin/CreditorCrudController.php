@@ -42,7 +42,7 @@ class CreditorCrudController extends AbstractCrudController
         return $crud
             ->showEntityActionsInlined()
             ->setEntityLabelInSingular('creditor')
-            ->setEntityLabelInPlural('Creditors')
+            ->setEntityLabelInPlural('<img class=ea-entity-icon src=/build/icons/creditor.svg width=48 height=48>Creditors')
             ->setPaginatorPageSize(100);
     }
     public function configureFields(string $pageName): iterable

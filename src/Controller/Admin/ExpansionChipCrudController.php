@@ -50,7 +50,7 @@ class ExpansionChipCrudController extends AbstractCrudController
         return $crud
             ->showEntityActionsInlined()
             ->setEntityLabelInSingular('expansion chip')
-            ->setEntityLabelInPlural('Expansion chips')
+            ->setEntityLabelInPlural('<img class=ea-entity-icon src=/build/icons/chip.svg width=48 height=48>Expansion chips')
             ->setPaginatorPageSize(100);
     }
     public function configureFilters(Filters $filters): Filters

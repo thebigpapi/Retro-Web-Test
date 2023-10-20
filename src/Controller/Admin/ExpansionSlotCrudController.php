@@ -33,7 +33,7 @@ class ExpansionSlotCrudController extends AbstractCrudController
         return $crud
             ->showEntityActionsInlined()
             ->setEntityLabelInSingular('expansion slot')
-            ->setEntityLabelInPlural('Expansion slots')
+            ->setEntityLabelInPlural('<img class=ea-entity-icon src=/build/icons/card.svg width=48 height=48>Expansion slots')
             ->setPaginatorPageSize(100);
     }
     public function viewLogs(AdminContext $context)

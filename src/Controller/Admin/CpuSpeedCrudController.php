@@ -35,7 +35,7 @@ class CpuSpeedCrudController extends AbstractCrudController
         return $crud
             ->showEntityActionsInlined()
             ->setEntityLabelInSingular('speed')
-            ->setEntityLabelInPlural('Speeds')
+            ->setEntityLabelInPlural('<img class=ea-entity-icon src=/build/icons/speed.svg width=48 height=48>Speeds')
             ->setPaginatorPageSize(100);
     }
     public function configureFields(string $pageName): iterable

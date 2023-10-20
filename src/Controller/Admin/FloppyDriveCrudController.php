@@ -76,7 +76,7 @@ class FloppyDriveCrudController extends AbstractCrudController
         return parent::configureCrud($crud)
             ->showEntityActionsInlined()
             ->setEntityLabelInSingular('floppy drive')
-            ->setEntityLabelInPlural('Floppy drives')
+            ->setEntityLabelInPlural('<img class=ea-entity-icon src=/build/icons/floppy_drive.svg width=48 height=48>Floppy drives')
             ->setPaginatorPageSize(100);
     }
     public function configureFilters(Filters $filters): Filters

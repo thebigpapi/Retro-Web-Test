@@ -33,7 +33,7 @@ class DramTypeCrudController extends AbstractCrudController
         return $crud
             ->showEntityActionsInlined()
             ->setEntityLabelInSingular('RAM type')
-            ->setEntityLabelInPlural('RAM types')
+            ->setEntityLabelInPlural('<img class=ea-entity-icon src=/build/icons/ram.svg width=48 height=48>RAM types')
             ->setPaginatorPageSize(100);
     }
     public function viewLogs(AdminContext $context)

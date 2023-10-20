@@ -74,7 +74,7 @@ class ProcessorCrudController extends AbstractCrudController
         return $crud
             ->showEntityActionsInlined()
             ->setEntityLabelInSingular('CPU')
-            ->setEntityLabelInPlural('CPUs')
+            ->setEntityLabelInPlural('<img class=ea-entity-icon src=/build/icons/486dx.svg width=48 height=48>CPUs')
             ->setPaginatorPageSize(100);
     }
     public function configureFilters(Filters $filters): Filters

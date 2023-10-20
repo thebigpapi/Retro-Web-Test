@@ -38,7 +38,7 @@ class CpuSocketCrudController extends AbstractCrudController
         return $crud
             ->showEntityActionsInlined()
             ->setEntityLabelInSingular('socket')
-            ->setEntityLabelInPlural('Sockets')
+            ->setEntityLabelInPlural('<img class=ea-entity-icon src=/build/icons/cpupins.svg width=48 height=48>Sockets')
             ->setPaginatorPageSize(100);
     }
     public function configureFields(string $pageName): iterable

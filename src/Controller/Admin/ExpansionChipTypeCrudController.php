@@ -33,7 +33,7 @@ class ExpansionChipTypeCrudController extends AbstractCrudController
         return $crud
             ->showEntityActionsInlined()
             ->setEntityLabelInSingular('chip type')
-            ->setEntityLabelInPlural('Expansion chip types')
+            ->setEntityLabelInPlural('<img class=ea-entity-icon src=/build/icons/chip_alias.svg width=48 height=48>Expansion chip types')
             ->setPaginatorPageSize(100);
     }
     public function viewLogs(AdminContext $context)

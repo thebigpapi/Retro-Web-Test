@@ -33,7 +33,7 @@ class PSUConnectorCrudController extends AbstractCrudController
         return $crud
             ->showEntityActionsInlined()
             ->setEntityLabelInSingular('PSU connector')
-            ->setEntityLabelInPlural('PSU connectors')
+            ->setEntityLabelInPlural('<img class=ea-entity-icon src=/build/icons/power.svg width=48 height=48>PSU connectors')
             ->setPaginatorPageSize(100);
     }
     public function viewLogs(AdminContext $context)

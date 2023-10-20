@@ -38,7 +38,7 @@ class InstructionSetCrudController extends AbstractCrudController
         return $crud
             ->showEntityActionsInlined()
             ->setEntityLabelInSingular('instruction set')
-            ->setEntityLabelInPlural('Instruction sets')
+            ->setEntityLabelInPlural('<img class=ea-entity-icon src=/build/icons/486.svg width=48 height=48>Instruction sets')
             ->setPaginatorPageSize(100);
     }
     public function configureFields(string $pageName): iterable

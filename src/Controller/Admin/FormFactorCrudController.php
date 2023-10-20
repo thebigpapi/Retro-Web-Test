@@ -33,7 +33,7 @@ class FormFactorCrudController extends AbstractCrudController
         return $crud
             ->showEntityActionsInlined()
             ->setEntityLabelInSingular('form factor')
-            ->setEntityLabelInPlural('Form factors')
+            ->setEntityLabelInPlural('<img class=ea-entity-icon src=/build/icons/dimension.svg width=48 height=48>Form factors')
             ->setPaginatorPageSize(100);
     }
     public function viewLogs(AdminContext $context)

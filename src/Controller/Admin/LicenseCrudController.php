@@ -33,7 +33,7 @@ class LicenseCrudController extends AbstractCrudController
         return $crud
             ->showEntityActionsInlined()
             ->setEntityLabelInSingular('license')
-            ->setEntityLabelInPlural('Licenses');
+            ->setEntityLabelInPlural('<img class=ea-entity-icon src=/build/icons/license.svg width=48 height=48>Licenses');
     }
     public function viewLogs(AdminContext $context)
     {

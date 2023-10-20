@@ -37,7 +37,7 @@ class ManufacturerCrudController extends AbstractCrudController
         return $crud
             ->showEntityActionsInlined()
             ->setEntityLabelInSingular('manufacturer')
-            ->setEntityLabelInPlural('Manufacturers')
+            ->setEntityLabelInPlural('<img class=ea-entity-icon src=/build/icons/factory.svg width=48 height=48>Manufacturers')
             ->setPaginatorPageSize(100);
     }
     public function configureFields(string $pageName): iterable

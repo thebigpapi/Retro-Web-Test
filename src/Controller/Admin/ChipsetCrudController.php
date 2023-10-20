@@ -76,7 +76,7 @@ class ChipsetCrudController extends AbstractCrudController
             ->showEntityActionsInlined()
             ->setPaginatorPageSize(100)
             ->setEntityLabelInSingular('chipset')
-            ->setEntityLabelInPlural('Chipsets')
+            ->setEntityLabelInPlural('<img class=ea-entity-icon src=/build/icons/chipset.svg width=48 height=48>Chipsets')
             ->setDefaultSort(['lastEdited' => 'DESC']);
     }
     public function configureFilters(Filters $filters): Filters

@@ -74,7 +74,7 @@ class LargeFileCrudController extends AbstractCrudController
             ->showEntityActionsInlined()
             ->setPaginatorPageSize(100)
             ->setEntityLabelInSingular('driver')
-            ->setEntityLabelInPlural('Drivers')
+            ->setEntityLabelInPlural('<img class=ea-entity-icon src=/build/icons/hardware.svg width=48 height=48>Drivers')
             ->overrideTemplate('crud/edit', 'admin/crud/edit_driver.html.twig')
             ->overrideTemplate('crud/new', 'admin/crud/new_driver.html.twig')
             ->setDefaultSort(['lastEdited' => 'DESC']);

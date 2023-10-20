@@ -31,7 +31,7 @@ class StorageDeviceSizeCrudController extends AbstractCrudController
         return parent::configureCrud($crud)
             ->showEntityActionsInlined()
             ->setEntityLabelInSingular('storage size')
-            ->setEntityLabelInPlural('Storage physical size')
+            ->setEntityLabelInPlural('<img class=ea-entity-icon src=/build/icons/dimension.svg width=48 height=48>Storage physical size')
             ->setPaginatorPageSize(100);
     }
     public function viewLogs(AdminContext $context)

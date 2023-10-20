@@ -31,7 +31,7 @@ class StorageDeviceInterfaceCrudController extends AbstractCrudController
         return parent::configureCrud($crud)
             ->showEntityActionsInlined()
             ->setEntityLabelInSingular('storage interface')
-            ->setEntityLabelInPlural('Storage interfaces')
+            ->setEntityLabelInPlural('<img class=ea-entity-icon src=/build/icons/io.svg width=48 height=48>Storage interfaces')
             ->setPaginatorPageSize(100);
     }
     public function viewLogs(AdminContext $context)

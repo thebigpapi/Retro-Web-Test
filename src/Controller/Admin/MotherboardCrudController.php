@@ -95,7 +95,7 @@ class MotherboardCrudController extends AbstractCrudController
             ->showEntityActionsInlined()
             ->setPaginatorPageSize(100)
             ->setEntityLabelInSingular('motherboard')
-            ->setEntityLabelInPlural('Motherboards')
+            ->setEntityLabelInPlural('<img class=ea-entity-icon src=/build/icons/board.svg width=48 height=48>Motherboards')
             ->overrideTemplate('crud/edit', 'admin/crud/edit_mobo.html.twig')
             ->overrideTemplate('crud/new', 'admin/crud/new_mobo.html.twig')
             ->setDefaultSort(['lastEdited' => 'DESC']);
@@ -406,7 +406,7 @@ class MotherboardCrudController extends AbstractCrudController
     {
         $boardId = $context->getEntity()->getInstance()->getId();
         $url = $this->adminUrlGenerator
-        ->setController(ProductCrudController::class)
+        ->setController(MotherboardCrudController::class)
         ->setRoute('motherboard_delete', array('id'=>$boardId))
         //->setAction(Action::EDIT)
         ->setEntityId($boardId)

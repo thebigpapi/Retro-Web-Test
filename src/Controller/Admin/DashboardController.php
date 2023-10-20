@@ -99,14 +99,14 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::section('Main items');
         yield MenuItem::linkToCrud('Motherboards', 'board.svg', Motherboard::class)->setDefaultSort(['lastEdited' => 'DESC']);
         yield MenuItem::linkToCrud('Chipsets', 'chipset.svg', Chipset::class);
-        yield MenuItem::linkToCrud('CPUs', 'cpu.svg', Processor::class);
+        yield MenuItem::linkToCrud('CPUs', '486.svg', Processor::class);
         yield MenuItem::linkToCrud('Drivers', 'hardware.svg', LargeFile::class);
         yield MenuItem::linkToCrud('Hard drives', 'hdd.svg', HardDrive::class);
-        yield MenuItem::linkToCrud('CD drives', 'cd.svg', CdDrive::class);
+        yield MenuItem::linkToCrud('Optical drives', 'cd.svg', CdDrive::class);
         yield MenuItem::linkToCrud('Floppy drives', 'floppy.svg', FloppyDrive::class);
         yield MenuItem::linkToCrud('Expansion chips', 'chip.svg', ExpansionChip::class);
         yield MenuItem::section('Auxiliary items');
-        yield MenuItem::linkToCrud('Expansion chip types', 'chip.svg', ExpansionChipType::class)->setPermission('ROLE_ADMIN');
+        yield MenuItem::linkToCrud('Expansion chip types', 'chip_alias.svg', ExpansionChipType::class)->setPermission('ROLE_ADMIN');
         yield MenuItem::subMenu('Storage related', 'hdd.svg')->setSubItems([
             MenuItem::linkToCrud('Interface', 'io.svg', StorageDeviceInterface::class),
             MenuItem::linkToCrud('Physical size', 'dimension.svg', StorageDeviceSize::class),
@@ -116,7 +116,7 @@ class DashboardController extends AbstractDashboardController
             MenuItem::linkToCrud('RAM size', 'ram_multi.svg', MaxRam::class),
             MenuItem::linkToCrud('RAM type', 'ram.svg', DramType::class),
         ])->setPermission('ROLE_ADMIN');
-        yield MenuItem::subMenu('CPU related', '486.svg')->setSubItems([
+        yield MenuItem::subMenu('CPU related', 'cpu.svg')->setSubItems([
             MenuItem::linkToCrud('CPU families', '486.svg', ProcessorPlatformType::class),
             MenuItem::linkToCrud('Instruction sets', '486.svg', InstructionSet::class),
             MenuItem::linkToCrud('Speeds', 'speed.svg', CpuSpeed::class),
@@ -124,7 +124,7 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::subMenu('Connectors', 'connector.svg')->setSubItems([
             MenuItem::linkToCrud('Sockets', 'cpupins.svg', CpuSocket::class),
             MenuItem::linkToCrud('Expansion slots', 'card.svg', ExpansionSlot::class),
-            MenuItem::linkToCrud('I/O ports', 'connector.svg', IoPort::class),
+            MenuItem::linkToCrud('I/O ports', 'rs232.svg', IoPort::class),
             MenuItem::linkToCrud('PSU connectors', 'power.svg', PSUConnector::class),
         ])->setPermission('ROLE_ADMIN');
         yield MenuItem::subMenu('Misc', 'misc.svg')->setSubItems([
@@ -132,9 +132,9 @@ class DashboardController extends AbstractDashboardController
             MenuItem::linkToCrud('Media types', 'file.svg', MediaTypeFlag::class)->setPermission('ROLE_ADMIN'),
             MenuItem::linkToCrud('Form factors', 'dimension.svg', FormFactor::class)->setPermission('ROLE_ADMIN'),
             MenuItem::linkToCrud('Known Issues', 'misc.svg', KnownIssue::class),
-            MenuItem::linkToCrud('Manufacturers', 'board.svg', Manufacturer::class),
-            MenuItem::linkToCrud('Creditors', 'search_image.svg', Creditor::class),
-            MenuItem::linkToCrud('Licenses', 'book.svg', License::class)->setPermission('ROLE_ADMIN'),
+            MenuItem::linkToCrud('Manufacturers', 'factory.svg', Manufacturer::class),
+            MenuItem::linkToCrud('Creditors', 'creditor.svg', Creditor::class),
+            MenuItem::linkToCrud('Licenses', 'license.svg', License::class)->setPermission('ROLE_ADMIN'),
         ]);
         yield MenuItem::linkToUrl('Logs', 'data.svg',"/audit");
         yield MenuItem::linkToCrud('Users', 'user.svg', User::class)->setPermission('ROLE_SUPER_ADMIN');
