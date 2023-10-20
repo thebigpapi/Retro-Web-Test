@@ -61,6 +61,30 @@
 	</div>
 	{% endfor %}
 {% endif %}
+{% if type == "expansionchip-results" %}
+    <div class="list-entry centered head">
+		<div>Name</div>
+		<div>Type</div>
+		<div>Aliases</div>
+        <div>Release date</div>
+	</div>
+	{% for chip in entity %}
+	<div class="list-entry centered bios {% if loop.index is divisible by(2) %}alt{% endif %}">
+		<div class="header-label">Name</div>
+		<div><a class="result-link" href="{{ path("expansion_chip_show", {id: chip.getId()}) }}">{{ chip.getNameWithManufacturer() }}</a></div>
+		<div class="header-label">Type</div>
+		<div>{{ chip.getType() }}</div>
+		<div class="header-label">Aliases</div>
+		<div>{% if chip.getChipAliases() is not empty %}
+			{% for alias in chip.getChipAliases() %}
+				<span>{{ alias.getFullAliasName() }}{% if not loop.last %} |{% endif %}</span>
+			{% endfor %}
+		{% endif %}</div>
+        <div class="header-label">Release date</div>
+		<div></div>
+	</div>
+	{% endfor %}
+{% endif %}
 {% if type == "hdd-results" %}
     <div class="list-entry centered head">
 		<div>Name</div>

@@ -11,7 +11,7 @@
 	<script src="/build/js/search.js" defer></script>
 {% endblock %}
 {% block body %}
-	{{ form_start(form, {'method': 'POST', 'name': 'search_processor', 'action':path("cpusearch"), 'attr':{'data-live-action': path('cpulivewrapper')}}) }}
+	{{ form_start(form, {'method': 'POST', 'name': 'search_processor', 'action':path("cpusearch"), 'attr':{'onkeydown': 'return event.key != \'Enter\'', 'data-live-action': path('cpulivewrapper')}}) }}
 	<fieldset id="search-fieldset">
 		<div class="title">Search for CPUs</div>
 		<section class="search-form-grid" style="display:flex;justify-content:center;flex-wrap:wrap;">

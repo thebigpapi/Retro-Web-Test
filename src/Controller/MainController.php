@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Repository\CdDriveRepository;
+use App\Repository\ExpansionChipRepository;
 use App\Repository\FloppyDriveRepository;
 use App\Repository\HardDriveRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -26,6 +27,7 @@ class MainController extends AbstractController
         HardDriveRepository $hddRepository,
         CdDriveRepository $cddRepository,
         FloppyDriveRepository $fddRepository,
+        ExpansionChipRepository $expansionChipRepository
     ): Response
     {
         $latestMotherboards = $motherboardRepository->findLatest();
@@ -34,6 +36,7 @@ class MainController extends AbstractController
             'latestMotherboards' => $latestMotherboards,
             'moboCount' => $motherboardRepository->getCount(),
             'chipCount' => $chipsetRepository->getCount(),
+            'expchipCount' => $expansionChipRepository->getCount(),
             'cpuCount' => $cpuRepository->getCount(),
             'biosCount' => $motherboardBiosRepository->getCount(),
             'driverCount' => $largeFileRepository->getCount(),

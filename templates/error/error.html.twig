@@ -2,7 +2,7 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-	<div style="padding-top:150px;margin:auto;width:70%;">
+	<div style="padding-top:150px;margin:auto;width:75%;">
 		{% if code == 404 %}
 			<div style="width:60%;float:left;">
 				<h1>Error
@@ -14,7 +14,7 @@
 			</div>
 			<img style="" src="{{ absolute_url(asset('build/images/search404.gif')) }}" alt="error">
 		{% elseif code == 403 %}
-			<div style="width:60%;float:left;">
+			<div style="width:50%;float:left;">
 				<h1>Error
 					{{ code }}:
 					{{ codeText }}</h1>
@@ -22,9 +22,9 @@
 				<p>You can go back to the homepage by clicking
 					<a href="{{ path('app_homepage') }}">here</a>.</p>
 			</div>
-			<img style="" src="{{ absolute_url(asset('build/images/error.gif')) }}" alt="error">
+			<img style="width:50%" src="{{ absolute_url(asset('build/images/403.jpg')) }}" alt="error">
 		{% else %}
-			<div style="width:60%;float:left;">
+			<div style="width:50%;float:left;">
 				<h1>Error
 					{{ code }}:
 					{{ codeText }}</h1>
@@ -32,7 +32,7 @@
 				<p>You can go back to the homepage by clicking
 					<a href="{{ path('app_homepage') }}">here</a>.</p>
 			</div>
-			<img style="" src="{{ absolute_url(asset('build/images/error.gif')) }}" alt="error">
+			<img style="width:50%;" src="{{ absolute_url(asset('build/images/500.jpg')) }}" alt="error">
 			<div style="background-color:#d43934;color:#e0e0e0;padding:5px 10px 5px;border-radius:4px;">
 				<p>{{ message }}</p>
 			</div>

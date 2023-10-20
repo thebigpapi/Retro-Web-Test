@@ -11,7 +11,7 @@
 	<script src="/build/js/search.js" defer></script>
 {% endblock %}
 {% block body %}
-	{{ form_start(form, {'method': 'POST', 'name': 'search_driver', 'action':path("driversearch"), 'attr':{'data-live-action': path('driverlivewrapper')}}) }}
+	{{ form_start(form, {'method': 'POST', 'name': 'search_driver', 'action':path("driversearch"), 'attr':{'onkeydown': 'return event.key != \'Enter\'', 'data-live-action': path('driverlivewrapper')}}) }}
 	<fieldset id="search-fieldset">
 		<div class="title">Search for drivers/software</div>
 		<section class="search-form-grid" style="display:flex;justify-content:center;flex-wrap:wrap;">

@@ -21,7 +21,58 @@ class ExpansionChipRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, ExpansionChip::class);
     }
+/**
+     * @return ExpansionChip[]
+     */
+    public function findByExpansionChip(array $criteria): array
+    {
+        $entityManager = $this->getEntityManager();
 
+        $whereArray = array();
+        $valuesArray = array();
+
+        // Checking values in criteria and creating WHERE statements
+        if (array_key_exists('name', $criteria)) {
+            $multicrit = explode(" ", $criteria['name']);
+            foreach ($multicrit as $key => $val) {
+                $whereArray[] = "(LOWER(chip.name) LIKE :nameLike$key 
+                    OR LOWER(chip.partNumber) LIKE :nameLike$key 
+                    OR LOWER(alias.name) LIKE :nameLike$key 
+                    OR LOWER(alias.partNumber) LIKE :nameLike$key)";
+                $valuesArray["nameLike$key"] = "%" . strtolower($val) . "%";
+            }
+        }
+        if (array_key_exists('manufacturer', $criteria)) {
+            $whereArray[] = "(man.id = :manufacturerId)";
+            $valuesArray["manufacturerId"] = (int)$criteria['manufacturer'];
+        }
+
+        // Building where statement
+        $whereString = implode(" AND ", $whereArray);
+
+        // Building query
+        if($whereArray == []){
+            $query = $entityManager->createQuery(
+                "SELECT chip
+                FROM App\Entity\ExpansionChip chip JOIN chip.manufacturer man LEFT OUTER JOIN chip.chipAliases alias
+                WHERE chip.id < 10000
+                ORDER BY man.name ASC, chip.name ASC"
+            );
+        }
+        else{
+            $query = $entityManager->createQuery(
+                "SELECT chip
+                FROM App\Entity\ExpansionChip chip JOIN chip.manufacturer man LEFT OUTER JOIN chip.chipAliases alias
+                WHERE $whereString
+                ORDER BY man.name ASC, chip.name ASC"
+            );
+        }
+        // Setting values
+        foreach ($valuesArray as $key => $value) {
+            $query->setParameter($key, $value);
+        }
+        return $query->getResult();
+    }
     /**
      * @return ExpansionChip[]
      */
@@ -76,5 +127,12 @@ class ExpansionChipRepository extends ServiceEntityRepository
         ORDER BY ec.name ASC";
         $query = $entityManager->createQuery($dql)->setParameter(":cid", $cid);
         return $query->getResult();
+    }
+    public function getCount(): int
+    {
+        return $this->createQueryBuilder('ec')
+            ->select('count(ec.id)')
+            ->getQuery()
+            ->getSingleScalarResult();
     }
 }

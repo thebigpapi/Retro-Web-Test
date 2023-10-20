@@ -11,7 +11,7 @@
 	<script src="/build/js/search.js" defer></script>
 {% endblock %}
 {% block body %}
-	{{ form_start(form, {'method': 'POST', 'name': 'search_fdd', 'action':path("fddsearch"), 'attr':{'data-live-action': path('fddlivewrapper')}}) }}
+	{{ form_start(form, {'method': 'POST', 'name': 'search_fdd', 'action':path("fddsearch"), 'attr':{'onkeydown': 'return event.key != \'Enter\'', 'data-live-action': path('fddlivewrapper')}}) }}
 	<fieldset id="search-fieldset">
 		<div class="title">Search for a floppy drive</div>
 		<section class="search-form-grid" style="display:flex;justify-content:center;flex-wrap:wrap;">
