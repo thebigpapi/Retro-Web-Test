@@ -38,15 +38,6 @@
 {% block body %}
 <!-- MANUF./NAME/PART NO. -->
 <div class="title">{{ chipset.getNameWithoutParts() }}</div>
-{% if chipset.getChipsetAliases() is not empty %}
-<div class="tag-container" style="justify-content:center;padding-bottom:15px">
-	<span style="width:100%;text-align:center">Also known as:</span>
-	{% for alias in chipset.getChipsetAliases() %}
-		<span class="text-block" >{{ alias.getFullAliasName() }}</span>
-	{% endfor %}
-</div>
-{% endif %}
-
 <div class="main-strip">
 	<div class="internal-container">
 		{% include 'macros/navbar.html.twig' with {'entity': chipset, 'entityName': 'Chipset', 'name': 'chipset'} %}
@@ -87,6 +78,7 @@
 						</div>
 					</div>
 				</div>
+				{% include 'macros/aliases.html.twig' with {'entity':chipset.getChipsetAliases(), 'msg': 'Also known as:'} %}
 				{% include 'macros/notes.html.twig' with {'entity': chipset} %}
 				<div class="chipset-textarea">
 				{% if chipset.getExpansionChips() is not empty %}

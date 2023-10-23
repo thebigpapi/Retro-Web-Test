@@ -28,6 +28,10 @@ class ChipsetAlias
     #[Assert\Length(max: 255, maxMessage: 'Part number is longer than {{ limit }} characters, try to make it shorter.')]
     #[Assert\NotBlank(message: 'Chipset alias part number cannot be blank')]
     private $partNumber;
+    public function __toString(): string
+    {
+        return $this->getFullAliasName();
+    }
 
     public function getId(): ?int
     {
@@ -73,32 +77,17 @@ class ChipsetAlias
 
         return $this;
     }
-    public function getFullAliasRef(): string
-    {
-        $fullName = "";
-        if ($this->partNumber) {
-            $fullName = $fullName . " $this->partNumber";
-            if ($this->name) {
-                $fullName = $fullName . " ($this->name)";
-            }
-        } else {
-            if ($this->name) {
-                $fullName = $fullName . " $this->name";
-            } else {
-                $fullName = $fullName . " Unidentified";
-            }
-        }
-        return "$fullName";
-    }
     public function getFullAliasName(): string
     {
+        $fullName = $this->partNumber;
         if ($this->getManufacturer()) {
-            $manuf = $this->getManufacturer()->getName();
+            $fullName = $this->getManufacturer()->getName() . " " . $fullName;
         } else {
-            $manuf = "";
+            $fullName = "Unknown " . $fullName;
         }
-
-        $fullName = $manuf . $this->getFullAliasRef();
+        if ($this->name) {
+            $fullName = $fullName . " ($this->name)";
+        }
         return "$fullName";
     }
 }

@@ -86,7 +86,7 @@ class ChipsetCrudController extends AbstractCrudController
             ->add('name')
             ->add('part_no')
             ->add('expansionChips')
-            //->add('release_date')
+            ->add('chipsetAliases')
             ->add('lastEdited');
     }
     public function configureFields(string $pageName): iterable

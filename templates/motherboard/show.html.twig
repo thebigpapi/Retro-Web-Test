@@ -40,17 +40,7 @@
 
 {% block body %}
 <!-- TITLE/ALIASES -->
-<div class="title">
-	{{ motherboard.getManufacturer() ? motherboard.getManufacturer().getName() : 'Unknown' }} {{ motherboard.getName() }}
-</div>
-{% if motherboard.getMotherboardAliases() is not empty %}
-<div class="tag-container" style="justify-content:center;padding-bottom:15px">
-	<span style="width:100%;text-align:center">Also known as:</span>
-	{% for alias in motherboard.getMotherboardAliases() %}
-		<span class="text-block" >{% if alias.getManufacturer() is not null %}{{ alias.getManufacturer().getName() }}{% else %}Unknown{% endif %}&nbsp;{{ alias.getName() }}</span>
-	{% endfor %}
-</div>
-{% endif %}
+<div class="title">{{ motherboard.getPrettyTitle() }}</div>
 <div class="main-strip">
 	<div class="internal-container">
 		{% include 'macros/navbar.html.twig' with {'entity': motherboard, 'entityName': 'Motherboard', 'name': 'board'} %}
@@ -160,6 +150,7 @@
 						{% else %}<div class="list-table-head"></div><div>N/A</div>{% endif %}
 					</div>
 				</div>
+				{% include 'macros/aliases.html.twig' with {'entity':motherboard.getMotherboardAliases(), 'msg': 'Also known as:'} %}
 				{% include 'macros/notes.html.twig' with {'entity': motherboard} %}
 				<div id="index-datetime"><div class="div-datetime">Last updated <span class="perk-date">{{ motherboard.getLastEdited()|date("Y-m-d\\TH:i:s", "GMT") }}Z</span></div></div>
 				<span><small><i>&nbsp;TRW ID: {{motherboard.getId()}}</i></small></span>

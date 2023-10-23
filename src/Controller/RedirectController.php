@@ -43,6 +43,21 @@ class RedirectController extends AbstractController
     {
         return $this->redirect($this->generateUrl('chipsetsearch'));
     }
+    #[Route(path: '/bios/search/')]
+    public function redirectBiosNewSearch()
+    {
+        return $this->redirect($this->generateUrl('biossearch'));
+    }
+    #[Route(path: '/drivers/search/')]
+    public function redirectDriverNewSearch()
+    {
+        return $this->redirect($this->generateUrl('driversearch'));
+    }
+    #[Route(path: '/cpus/search/')]
+    public function redirectCpuNewSearch()
+    {
+        return $this->redirect($this->generateUrl('cpusearch'));
+    }
 
 
     #[Route(path: '/motherboard/index/{letter}', requirements: ['letter' => '\w'])]

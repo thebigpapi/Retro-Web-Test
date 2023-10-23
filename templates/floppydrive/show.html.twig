@@ -32,15 +32,6 @@
 {% block body %}
 <!-- MANUF./NAME/PART NO. -->
 <div class="title">{{ floppydrive.getNameWithManufacturer() }}</div>
-{% if floppydrive.getStorageDeviceAliases() is not empty %}
-<div class="tag-container" style="justify-content:center;padding-bottom:15px">
-	<span style="width:100%;text-align:center">Also known as:</span>
-	{% for alias in floppydrive.getStorageDeviceAliases() %}
-		<span class="text-block" >{{ alias.getFullAliasName() }}</span>
-	{% endfor %}
-</div>
-{% endif %}
-
 <div class="main-strip">
 	<div class="internal-container">
 		{% include 'macros/navbar.html.twig' with {'entity': floppydrive, 'entityName': 'FloppyDrive', 'name': 'floppy drive'} %}
@@ -68,6 +59,7 @@
 					</div>
 					<div>{{ floppydrive.getDensity() }}</div>
 				</div>
+				{% include 'macros/aliases.html.twig' with {'entity':floppydrive.getStorageDeviceAliases(), 'msg': 'Also known as:'} %}
 				{% include 'macros/notes.html.twig' with {'entity': floppydrive} %}
 				<!-- MANUALS -->
 				<div class="show-downloads-group">

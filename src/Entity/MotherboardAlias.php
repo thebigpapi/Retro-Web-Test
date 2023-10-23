@@ -70,5 +70,15 @@ class MotherboardAlias
 
         return $this;
     }
+    public function getFullAliasName(): string
+    {
+        $fullName = $this->name;
+        if ($this->getManufacturer()) {
+            $fullName = $this->getManufacturer()->getName() . " " . $fullName;
+        } else {
+            $fullName = "Unknown " . $fullName;
+        }
+        return "$fullName";
+    }
 
 }

@@ -400,16 +400,7 @@ class Chipset
 
     public function getMetaDescription(): string
     {
-        $strBuilder = "Get info, documentation and more about the ";
-        $strBuilder .= $this->getPrettyTitle();
-        $strBuilder .= " chipset";
-        /*$relDate = $this->getReleaseDate();
-        if (strlen($relDate) > 0) {
-            $strBuilder .= ", released " . $relDate;
-        }*/
-        $strBuilder .= ".";
-
-        return $strBuilder;
+        return "Get info, documentation and more about the " . $this->getPrettyTitle() . " chipset.";
     }
 
     public function getCachedName(): ?string

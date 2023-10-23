@@ -32,15 +32,6 @@
 {% block body %}
 <!-- MANUF./NAME/PART NO. -->
 <div class="title">{{ expansion_chip.getNameWithManufacturer() }}</div>
-{% if expansion_chip.getChipAliases() is not empty %}
-<div class="tag-container" style="justify-content:center;padding-bottom:15px">
-	<span style="width:100%;text-align:center">Also known as:</span>
-	{% for alias in expansion_chip.getChipAliases() %}
-		<span class="text-block" >{{ alias.getFullAliasName() }}</span>
-	{% endfor %}
-</div>
-{% endif %}
-
 <div class="main-strip">
 	<div class="internal-container">
 		{% include 'macros/navbar.html.twig' with {'entity': expansion_chip, 'entityName': 'ExpansionChip', 'name': 'chip'} %}
@@ -74,6 +65,7 @@
 					{% endif %}
 					</div>
 				</div>
+				{% include 'macros/aliases.html.twig' with {'entity':expansion_chip.getChipAliases(), 'msg': 'Also known as:'} %}
 				{% include 'macros/notes.html.twig' with {'entity': expansion_chip} %}
 				<!-- DRIVERS -->
 				<div class="show-downloads-group">

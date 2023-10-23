@@ -33,15 +33,6 @@
 {% block body %}
 <!-- MANUF./NAME/PART NO. -->
 <div class="title">{{ harddrive.getNameWithManufacturer() }}</div>
-{% if harddrive.getStorageDeviceAliases() is not empty %}
-<div class="tag-container" style="justify-content:center;padding-bottom:15px">
-	<span style="width:100%;text-align:center">Also known as:</span>
-	{% for alias in harddrive.getStorageDeviceAliases() %}
-		<span class="text-block" >{{ alias.getFullAliasName() }}</span>
-	{% endfor %}
-</div>
-{% endif %}
-
 <div class="main-strip">
 	<div class="internal-container">
 		{% include 'macros/navbar.html.twig' with {'entity': harddrive, 'entityName': 'HardDrive', 'name': 'hard drive'} %}
@@ -114,6 +105,7 @@
 						<div>{{ harddrive.getSpindleSpeed() ?: 'Unknown' }}</div>
 					</div>
 				</div>
+				{% include 'macros/aliases.html.twig' with {'entity':harddrive.getStorageDeviceAliases(), 'msg': 'Also known as:'} %}
 				{% include 'macros/notes.html.twig' with {'entity': harddrive} %}
 				<!-- MANUALS -->
 				<div class="show-downloads-group">
