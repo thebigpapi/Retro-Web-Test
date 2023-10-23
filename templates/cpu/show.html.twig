@@ -136,12 +136,40 @@
 					<div class="quick-spec-head">
 						<img src="{{ absolute_url(asset('build/icons/ram.svg')) }}" alt="ram" width="24" height="24">L2 cache
 					</div>
-					<div>{{ cpu.getL2() ? cpu.getL2().getValueWithUnit() : 'None' }}</div>
+					<div>
+					{% if cpu.getL2() is not empty %}
+						{% if cpu.isL2shared() == true %}
+							{{ cpu.getL2().getValueWithUnit() ~ ' shared'}}
+						{% else %}
+							{% if cpu.getCores() is not empty %}
+								{{ cpu.getCores() ~ ' x ' ~ cpu.getL2().getValueWithUnit()}}
+							{% else %}
+								{{ cpu.getL2().getValueWithUnit() }}
+							{% endif %}
+						{% endif %}
+					{% else %}
+						None
+					{% endif %}
+					</div>
 					<!-- L3 cache -->
 					<div class="quick-spec-head">
 						<img src="{{ absolute_url(asset('build/icons/ram.svg')) }}" alt="ram" width="24" height="24">L3 cache
 					</div>
-					<div>{{ cpu.getL3() ? cpu.getL3().getValueWithUnit() : 'None' }}</div>
+					<div>
+					{% if cpu.getL3() is not empty %}
+						{% if cpu.isL3shared() == true %}
+							{{ cpu.getL3().getValueWithUnit() ~ ' shared'}}
+						{% else %}
+							{% if cpu.getCores() is not empty %}
+								{{ cpu.getCores() ~ ' x ' ~ cpu.getL3().getValueWithUnit()}}
+							{% else %}
+								{{ cpu.getL3().getValueWithUnit() }}
+							{% endif %}
+						{% endif %}
+					{% else %}
+						None
+					{% endif %}
+					</div>
 					<!-- Instruction set -->
 					<div class="quick-spec-head">
 						<img src="{{ absolute_url(asset('build/icons/cpupins.svg')) }}" alt="cpu" width="24" height="24">Instruction set
