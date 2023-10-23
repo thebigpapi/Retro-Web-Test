@@ -98,18 +98,32 @@ class AdminController extends AbstractDashboardController
         }
         return new JsonResponse($newchips);
     }
-    #[Route('/admin/updatechipset/{a}/{b}', name:'update_chipsets_cached_name', requirements: ['a' => '\d+', 'b' => '\d+'])]
-    public function updateChipsetsCachedName(ChipsetRepository $chipsetRepository, int $a, int $b, EntityManagerInterface $entityManager): JsonResponse
+    #[Route('/admin/updatechipset', name:'update_chipsets_cached_name')]
+    public function updateChipsetsCachedName(): Response
     {
-        $cp = $chipsetRepository->findAll();
-        foreach($cp as $chip){
-            if($chip->getId() >= $a && $chip->getId() <= $b){
+        $idx = 1;
+        return $this->redirect($this->generateUrl('update_chipsets_cached_name_idx', array("idx" => $idx)));
+    }
+    #[Route('/admin/updatechipset/{idx}', name:'update_chipsets_cached_name_idx', requirements: ['idx' => '\d+'])]
+    public function updateChipsetsCachedNameAB(ChipsetRepository $chipsetRepository, int $idx, EntityManagerInterface $entityManager): Response
+    {
+        $run = false;
+        foreach($chipsetRepository->findAll() as $chip){
+            if($chip->getId() >= $idx && $chip->getId() <= ($idx + 100)){
                 $chip->updateCachedName();
                 $entityManager->persist($chip);
                 $entityManager->flush();
+                $run = true;
             }
         }
-        return new JsonResponse("finished " . $a . " " . $b);
+        if($run == false)
+            return $this->redirect($this->generateUrl('update_chipsets_cached_name_done'));
+        return $this->redirect($this->generateUrl('update_chipsets_cached_name_idx', array("idx" => ($idx + 100))));
+    }
+    #[Route('/admin/updatechipset/done', name:'update_chipsets_cached_name_done')]
+    public function updateChipsetsCachedNameDone(): JsonResponse
+    {
+        return new JsonResponse("finished");
     }
     #[Route('/dashboard/settings', name:'admin_user_settings')]
     public function userIndex(): Response
