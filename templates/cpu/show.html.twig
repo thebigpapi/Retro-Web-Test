@@ -59,10 +59,12 @@
 					</div>
 					<div>{{ cpu.getPlatform() ? cpu.getPlatform().getName() : 'Unknown' }}</div>
 					<!-- Core -->
+					{% if cpu.getCore() is not empty %}
 					<div class="quick-spec-head">
 						<img src="{{ absolute_url(asset('build/icons/486.svg')) }}" alt="486" width="24" height="24">Core
 					</div>
-					<div>{{ cpu.getCore() ? cpu.getCore() : 'Unknown' }}</div>
+					<div>{{ cpu.getCore() }}</div>
+					{% endif %}
 					<!-- Speed -->
 					<div class="quick-spec-head">
 						<img src="{{ absolute_url(asset('build/icons/speed.svg')) }}" alt="speed" width="24" height="24">Frequency
@@ -83,6 +85,10 @@
 						<img src="{{ absolute_url(asset('build/icons/cpu.svg')) }}" alt="threads" width="24" height="24">Thread count
 					</div>
 					<div>{{ cpu.getThreads() ? cpu.getThreads() : 'Unknown' }}</div>
+					<div class="quick-spec-head">
+						<img src="{{ absolute_url(asset('build/icons/ram.svg')) }}" alt="threads" width="24" height="24">IMC
+					</div>
+					<div>{{ cpu.getPlatform() ? (cpu.getPlatform().hasIMC() ? 'Yes' : 'None') : 'Unknown'}}</div>
 				</div><div class="quick-spec-table">
 					<!-- Process node -->
 					<div class="quick-spec-head">

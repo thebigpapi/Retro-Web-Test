@@ -149,18 +149,6 @@ class ProcessorCrudController extends AbstractCrudController
         yield NumberField::new('threads', 'Thread count')
             ->setColumns(2)
             ->onlyOnForms();
-        yield FormField::addRow();
-        yield CollectionField::new('sockets', 'Socket')
-            ->setEntryType(CpuSocketType::class)
-            ->setColumns(6)
-            ->renderExpanded()
-            ->onlyOnForms();
-        yield CollectionField::new('voltages', 'Voltage (in V)')
-            ->setEntryType(ProcessorVoltageType::class)
-            ->setColumns(6)
-            ->renderExpanded()
-            ->onlyOnForms();
-        yield FormField::addPanel('Cache')->onlyOnForms();
         yield AssociationField::new('L2','L2 size')
             ->setFormTypeOption('placeholder', 'Select a size ...')
             ->setFormTypeOption('required', false)
@@ -177,6 +165,17 @@ class ProcessorCrudController extends AbstractCrudController
         yield BooleanField::new('L3shared','L3 shared')
             ->setFormTypeOption('required', false)
             ->setColumns(2)
+            ->onlyOnForms();
+        yield FormField::addRow();
+        yield CollectionField::new('sockets', 'Socket')
+            ->setEntryType(CpuSocketType::class)
+            ->setColumns(6)
+            ->renderExpanded()
+            ->onlyOnForms();
+        yield CollectionField::new('voltages', 'Voltage (in V)')
+            ->setEntryType(ProcessorVoltageType::class)
+            ->setColumns(6)
+            ->renderExpanded()
             ->onlyOnForms();
         yield FormField::addPanel('Other')->onlyOnForms();
         yield CollectionField::new('chipAliases', 'Chip aliases')

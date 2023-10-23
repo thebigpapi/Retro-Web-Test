@@ -13,6 +13,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ArrayField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
@@ -82,6 +83,9 @@ class ProcessorPlatformTypeCrudController extends AbstractCrudController
             ->onlyOnForms();
         yield NumberField::new('L1dataRatio','L1 data ratio')
             ->setColumns(2)
+            ->onlyOnForms();
+        yield BooleanField::new('hasIMC', 'Integrated Memory Controller')
+            ->setColumns(6)
             ->onlyOnForms();
         yield CollectionField::new('instructionSets', 'Instruction set')
             ->setEntryType(InstructionSetType::class)
