@@ -159,7 +159,7 @@ class MotherboardController extends AbstractController
             'motherboard_count' => count($data),
             'show_images' => $showImages,
             'domTarget' => $request->request->get('domTarget') ?? $request->query->get('domTarget') ?? "",
-            'params' => substr($string, 0, -1),
+            'params' => substr(urlencode($string), 0, -1),
         ]);
     }
 
