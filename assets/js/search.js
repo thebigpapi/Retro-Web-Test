@@ -58,7 +58,13 @@ if(cpu2sel = document.getElementById('search_cpuSocket2'))
     }, false);
 if(resetbtn = document.getElementById('rst-btn'))
     resetbtn.addEventListener("click", reset);
-
+function displayalias(idx){
+    let el = document.getElementById('cpu-alias-box-' + idx);
+    if (el.getAttribute("class") == "cpu-aliases-box")
+        el.setAttribute("class", "cpu-aliases-box visible");
+    else
+        el.setAttribute("class", "cpu-aliases-box");
+}
 const form = document.forms[0];
 form.addEventListener("keydown", (e) => {
     if (!e.repeat && e.key == "Enter") {

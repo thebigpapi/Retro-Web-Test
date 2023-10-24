@@ -164,8 +164,8 @@
 		<div>
 			<a class="result-link" href="{{ path("processor_show", {id: cpu.getId()}) }}">{{ cpu.getNameWithManufacturer() }}</a>
 			{% if cpu.getChipAliases() is not empty %}
-				<button class='alias-collapsible'>View aliases</button>
-				<div class="cpu-aliases-box">
+				<button class='alias-collapsible' onclick="this.classList.toggle('active');displayalias({{loop.index}})">View aliases</button>
+				<div class="cpu-aliases-box" id="cpu-alias-box-{{loop.index}}">
 				{% for alias in cpu.getChipAliases() %}
 					<div style="padding:4px 4px;">{{ alias.getFullAliasName() }}</div>
 				{% endfor %}
