@@ -134,23 +134,23 @@ class MotherboardController extends AbstractController
             if($key == "expansionSlotsIds" || $key == "ioPortsIds"){
                 foreach($value as $idx => $property){
                     foreach($property as $type=> $val){
-                        $string .= "$key[$idx][$type]=$val&";
+                        $string .= $key . '%5B' . $idx . '%5D%5B' . $type . '%5D=' . $val .'&';
                     }
                 }
             }
             else if($key == "expansionChipIds"){
                 foreach($value as $idx => $val){
-                    $string .= "$key[$idx]=$val&";
+                    $string .= $key . '%5B' . $idx . '%5D=' . $val .'&';
                 }
             }
             else if($key == "dramTypeIds"){
                 foreach($value as $idx => $val){
-                    $string .= "$key[$idx]=$val&";
+                    $string .= $key . '%5B' . $idx . '%5D=' . $val .'&';
                 }
             }
             else{
                 if($key != "domTarget")
-                    $string .= "$key=$value&";
+                    $string .= $key . '=' . $value . '&';
             }
         }
         return $this->render('motherboard/result.html.twig', [
@@ -159,7 +159,7 @@ class MotherboardController extends AbstractController
             'motherboard_count' => count($data),
             'show_images' => $showImages,
             'domTarget' => $request->request->get('domTarget') ?? $request->query->get('domTarget') ?? "",
-            'params' => substr(urlencode($string), 0, -1),
+            'params' => substr($string, 0, -1),
         ]);
     }
 
@@ -373,15 +373,13 @@ class MotherboardController extends AbstractController
         if ($slots) {
             $parameters['expansionSlotsIds'] = array();
             foreach ($slots as $slot) {
-                if($slot['expansion_slot'] != null && $slot['count'] != null){
-                    $countArray = $this->convertCount($slot['count']);
-                    if ($countArray['value'] !== 0) {
-                        $slotCount = array('id' => $slot['expansion_slot']->getId(), 'count' => $countArray['value'], 'sign' => $countArray['sign']);
-                        array_push($parameters['expansionSlotsIds'], $slotCount);
-                    } elseif ($countArray['value'] == 0) {
-                        $slotCount = array('id' => $slot['expansion_slot']->getId(), 'count' => null, 'sign' => '=');
-                        array_push($parameters['expansionSlotsIds'], $slotCount);
-                    }
+                $countArray = $this->convertCount($slot['count']);
+                if ($countArray['value'] !== 0) {
+                    $slotCount = array('id' => $slot['expansion_slot']->getId(), 'count' => $countArray['value'], 'sign' => $countArray['sign']);
+                    array_push($parameters['expansionSlotsIds'], $slotCount);
+                } elseif ($countArray['value'] == 0) {
+                    $slotCount = array('id' => $slot['expansion_slot']->getId(), 'count' => null, 'sign' => '=');
+                    array_push($parameters['expansionSlotsIds'], $slotCount);
                 }
             }
         }
@@ -390,15 +388,13 @@ class MotherboardController extends AbstractController
         if ($ports) {
             $parameters['ioPortsIds'] = array();
             foreach ($ports as $port) {
-                if($port['io_port'] != null && $port['count'] != null){
-                    $countArray = $this->convertCount($port['count']);
-                    if ($countArray['value'] !== 0) {
-                        $portCount = array('id' => $port['io_port']->getId(), 'count' => $countArray['value'], 'sign' => $countArray['sign']);
-                        array_push($parameters['ioPortsIds'], $portCount);
-                    } elseif ($countArray['value']== 0) {
-                        $portCount = array('id' => $port['io_port']->getId(), 'count' => null, 'sign' => '=');
-                        array_push($parameters['ioPortsIds'], $portCount);
-                    }
+                $countArray = $this->convertCount($port['count']);
+                if ($countArray['value'] !== 0) {
+                    $portCount = array('id' => $port['io_port']->getId(), 'count' => $countArray['value'], 'sign' => $countArray['sign']);
+                    array_push($parameters['ioPortsIds'], $portCount);
+                } elseif ($countArray['value']== 0) {
+                    $portCount = array('id' => $port['io_port']->getId(), 'count' => null, 'sign' => '=');
+                    array_push($parameters['ioPortsIds'], $portCount);
                 }
             }
         }
@@ -407,16 +403,14 @@ class MotherboardController extends AbstractController
         if ($expchips) {
             $parameters['expansionChipIds'] = array();
             foreach ($expchips as $chip) {
-                if($chip != null)
-                    array_push($parameters['expansionChipIds'], $chip->getId());
+                array_push($parameters['expansionChipIds'], $chip->getId());
             }
         }
         $dramtypes = $form['dramTypes']->getData();
         if ($dramtypes) {
             $parameters['dramTypeIds'] = array();
             foreach ($dramtypes as $type) {
-                if($type != null)
-                    array_push($parameters['dramTypeIds'], $type->getId());
+                array_push($parameters['dramTypeIds'], $type->getId());
             }
         }
 
