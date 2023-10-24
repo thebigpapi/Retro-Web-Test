@@ -3,6 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Entity\ProcessorPlatformType;
+use App\Form\Type\DramTypeType;
 use App\Form\Type\EntityDocumentationType;
 use App\Form\Type\InstructionSetType;
 use App\Form\Type\ProcessorPlatformTypeForm;
@@ -94,7 +95,9 @@ class ProcessorPlatformTypeCrudController extends AbstractCrudController
         yield NumberField::new('L1dataRatio','L1 data ratio')
             ->setColumns(2)
             ->onlyOnForms();
-        yield BooleanField::new('hasIMC', 'Integrated Memory Controller')
+        yield CollectionField::new('dramType', 'RAM types')
+            ->setEntryType(DramTypeType::class)
+            ->renderExpanded()
             ->setColumns(6)
             ->onlyOnForms();
         yield CollectionField::new('instructionSets', 'Instruction set')

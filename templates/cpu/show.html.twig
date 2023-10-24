@@ -80,7 +80,18 @@
 					<div class="quick-spec-head">
 						<img src="{{ absolute_url(asset('build/icons/ram_multi.svg')) }}" alt="threads" width="24" height="24">IMC
 					</div>
-					<div>{{ cpu.getPlatform() ? (cpu.getPlatform().hasIMC() ? 'Yes' : 'None') : 'Unknown'}}</div>
+					<div>
+					{% if cpu.getPlatform() is not empty %}
+						{% if cpu.getPlatform().getDramType() is not empty %}
+						<div class="tag-container">
+							{% for dram in cpu.getPlatform().getDramType() %}<span class="text-block">{{ dram.getName()}}</span>{% endfor %}
+						</div>
+						{% else %}
+							None
+						{% endif %}
+					{% else %}
+						Unknown
+					{% endif %}</div>
 				</div><div class="quick-spec-table">
 					<!-- Process node -->
 					<div class="quick-spec-head">

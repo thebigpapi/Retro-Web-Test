@@ -52,15 +52,15 @@ class ProcessorPlatformType
     #[ORM\Column]
     private ?float $L1dataRatio = null;
 
-    #[ORM\Column(nullable: true)]
-    private ?bool $hasIMC = null;
-
     #[ORM\Column(length: 4096, nullable: true)]
     private ?string $description = null;
 
     #[ORM\OneToMany(mappedBy: 'processorPlatformType', targetEntity: EntityDocumentation::class, orphanRemoval: true, cascade: ['persist'])]
     #[Assert\Valid()]
     private Collection $entityDocumentations;
+
+    #[ORM\ManyToMany(targetEntity: DramType::class, inversedBy: 'processorPlatformTypes')]
+    private Collection $dramType;
 
     public function __construct()
     {
@@ -71,6 +71,7 @@ class ProcessorPlatformType
         $this->cpuSockets = new ArrayCollection();
         $this->instructionSets = new ArrayCollection();
         $this->entityDocumentations = new ArrayCollection();
+        $this->dramType = new ArrayCollection();
     }
     public function __toString(): string
     {
@@ -326,17 +327,6 @@ class ProcessorPlatformType
         return $this;
     }
 
-    public function isHasIMC(): ?bool
-    {
-        return $this->hasIMC;
-    }
-
-    public function setHasIMC(?bool $hasIMC): self
-    {
-        $this->hasIMC = $hasIMC;
-
-        return $this;
-    }
     public function getProcessNodeWithValue(): string
     {
         return $this->processNode ? $this->processNode . "nm" : "";
@@ -380,6 +370,30 @@ class ProcessorPlatformType
                 $entityDocumentation->setProcessorPlatformType(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, DramType>
+     */
+    public function getDramType(): Collection
+    {
+        return $this->dramType;
+    }
+
+    public function addDramType(DramType $dramType): self
+    {
+        if (!$this->dramType->contains($dramType)) {
+            $this->dramType->add($dramType);
+        }
+
+        return $this;
+    }
+
+    public function removeDramType(DramType $dramType): self
+    {
+        $this->dramType->removeElement($dramType);
 
         return $this;
     }

@@ -35,14 +35,22 @@
 					<div class="quick-spec-head">
 						<img src="{{ absolute_url(asset('build/icons/ram.svg')) }}" alt="ram" width="24" height="24">L1 cache
 					</div>
-					<div>{{ family.getL1code() ? (family.getL1code() ~ ' code (ratio ' ~ (family.getL1codeRatio() ?: 'unknown') ~ '), ') : 'Unknown code, '}}
-					{{ family.getL1data() ? (family.getL1data() ~ ' data (ratio ' ~ (family.getL1dataRatio() ?: 'unknown') ~ ')') : 'Unknown data'}}
+					<div>{{ family.getL1code() ? (family.getL1code() ~ ' code (ratio ' ~ (family.getL1codeRatio() ?: 'unknown') ~ 'x), ') : 'Unknown code, '}}
+					{{ family.getL1data() ? (family.getL1data() ~ ' data (ratio ' ~ (family.getL1dataRatio() ?: 'unknown') ~ 'x)') : 'Unknown data'}}
 					</div>
 					<!-- IMC -->
 					<div class="quick-spec-head">
 						<img src="{{ absolute_url(asset('build/icons/ram_multi.svg')) }}" alt="threads" width="24" height="24">IMC
 					</div>
-					<div>{{ family.hasIMC() ? 'Yes' : 'None' }}</div>
+					<div>
+					{% if family.getDramType() is not empty %}
+						<div class="tag-container">
+							{% for dram in family.getDramType() %}<span class="text-block">{{ dram.getName()}}</span>{% endfor %}
+						</div>
+					{% else %}
+						None
+					{% endif %}
+					</div>
 					<!-- Compatible with family -->
 					{% if family.getCompatibleWith() is not empty %}
 						<div class="quick-spec-head">
