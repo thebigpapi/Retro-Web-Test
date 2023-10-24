@@ -162,7 +162,8 @@ class BiosController extends AbstractController
         if ($expchips) {
             $parameters['expansionChipIds'] = array();
             foreach ($expchips as $chip) {
-                array_push($parameters['expansionChipIds'], $chip->getId());
+                if($chip != null)
+                    array_push($parameters['expansionChipIds'], $chip->getId());
             }
         }
         if ($filePresent = $form['file_present']->getData()) {
