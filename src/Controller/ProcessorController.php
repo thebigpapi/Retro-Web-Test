@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\CpuSocket;
 use App\Entity\Processor;
 use App\Entity\Manufacturer;
 use App\Form\Processor\Search;
@@ -155,8 +156,8 @@ class ProcessorController extends AbstractController
         if ($form['fsbSpeed']->getData()) {
             $parameters['fsbSpeedId'] = $form['fsbSpeed']->getData()->getId();
         }
-        $sockets = $form['sockets']->getData();
-        if ($sockets) {
+        $sockets = array_filter($form['sockets']->getData(), fn(?CpuSocket $socket) => $socket !== null);
+        if (!empty($sockets)) {
             $parameters['socketIds'] = array();
             foreach ($sockets  as $socket) {
                 array_push($parameters['socketIds'], $socket->getId());
