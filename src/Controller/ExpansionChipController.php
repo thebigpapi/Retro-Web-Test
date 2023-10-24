@@ -43,26 +43,24 @@ class ExpansionChipController extends AbstractController
         $criterias = $this->getCriteriaExpansionChip($request);
         $showImages = boolval(htmlentities($request->query->get('showImages')));
         $maxItems = $request->query->getInt('itemsPerPage', $request->request->getInt('itemsPerPage', $this->getParameter('app.pagination.max')));
-        if ($criterias == array()) {
+        if (empty($criterias)) {
             return $this->render('expansion_chip/search.html.twig', [
                 'form' => $form->createView(),
             ]);
         }
-        else{
-            $data = $expansionChipRepository->findByExpansionChip($criterias);
-            $expansionChips = $paginator->paginate(
-                $data,
-                $request->query->getInt('page', 1),
-                $maxItems
-            );
-            return $this->render('expansion_chip/search.html.twig', [
-                'form' => $form->createView(),
-                'controller_name' => 'ExpansionChipController',
-                'expansionchips' => $expansionChips,
-                'show_images' => $showImages,
-            ]);
-        }
-
+        
+        $data = $expansionChipRepository->findByExpansionChip($criterias);
+        $expansionChips = $paginator->paginate(
+            $data,
+            $request->query->getInt('page', 1),
+            $maxItems
+        );
+        return $this->render('expansion_chip/search.html.twig', [
+            'form' => $form->createView(),
+            'controller_name' => 'ExpansionChipController',
+            'expansionchips' => $expansionChips,
+            'show_images' => $showImages,
+        ]);
 
     }
 

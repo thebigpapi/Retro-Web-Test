@@ -27,24 +27,22 @@ class BiosController extends AbstractController
         //get criterias
         $criterias = $this->getCriteriaBios($request);
         $maxItems = $request->query->getInt('itemsPerPage', $request->request->getInt('itemsPerPage', $this->getParameter('app.pagination.max')));
-        if ($criterias == array()) {
+        if (empty($criterias)) {
             return $this->render('bios/search.html.twig', [
                 'form' => $form->createView(),
             ]);
         }
-        else{
-            $data = $motherboardBiosRepository->findBios($criterias);
-            $bios = $paginator->paginate(
-                $data,
-                $request->query->getInt('page', 1),
-                $maxItems
-            );
-            return $this->render('bios/search.html.twig', [
-                'form' => $form->createView(),
-                'controller_name' => 'BiosController',
-                'bios' => $bios,
-            ]);
-        }
+        $data = $motherboardBiosRepository->findBios($criterias);
+        $bios = $paginator->paginate(
+            $data,
+            $request->query->getInt('page', 1),
+            $maxItems
+        );
+        return $this->render('bios/search.html.twig', [
+            'form' => $form->createView(),
+            'controller_name' => 'BiosController',
+            'bios' => $bios,
+        ]);
     }
 
     #[Route('/bios/live', name: 'bioslivewrapper')]
