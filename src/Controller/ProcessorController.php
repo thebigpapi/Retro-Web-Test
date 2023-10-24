@@ -157,6 +157,7 @@ class ProcessorController extends AbstractController
         if ($form['fsbSpeed']->getData()) {
             $parameters['fsbSpeedId'] = $form['fsbSpeed']->getData()->getId();
         }
+
         $parameters['socketIds'] = array_map(fn(CpuSocket $socket) => $socket->getId(), array_filter($form['sockets']->getData(), fn(?CpuSocket $socket) => $socket !== null));
 
         $parameters['platformIds'] = array_map(fn(ProcessorPlatformType $platform) => $platform->getId(), array_filter($form['platforms']->getData(), fn(?ProcessorPlatformType $platform) => $platform !== null));

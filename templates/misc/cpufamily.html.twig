@@ -57,7 +57,7 @@
 							<img src="{{ absolute_url(asset('build/icons/486.svg')) }}" alt="cpu" width="24" height="24">Compatible families
 						</div>
 						<div class="tag-container">
-							{% for compfamily in family.getCompatibleWith() %}<span class="text-block">{{ compfamily.getName}}</span>{% endfor %}
+							{% for compfamily in family.getCompatibleWith() %}<a href="{{ path('cpufamily_show', {id: compfamily.getId()}) }}"><span class="text-block">{{ compfamily.getName}}</span></a>{% endfor %}
 						</div>
 					{% endif %}
 				</div>

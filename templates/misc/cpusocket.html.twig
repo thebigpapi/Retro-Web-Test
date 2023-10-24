@@ -46,7 +46,7 @@
 					</div>
 					{% if socket.getPlatforms() is not empty %}
 					<div class="tag-container">
-						{% for family in socket.getPlatforms() %}<span class="text-block">{{ family.getName}}</span>{% endfor %}
+						{% for family in socket.getPlatforms() %}<a href="{{ path('cpufamily_show', {id: family.getId()}) }}"><span class="text-block">{{ family.getName}}</span></a>{% endfor %}
 					</div>
 					{% else %}
 					<div>Unknown</div>
