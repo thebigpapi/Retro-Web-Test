@@ -65,6 +65,8 @@ class ProcessorRepository extends ServiceEntityRepository
         $entityManager = $this->getEntityManager();
 
         $whereArray = array();
+        $whereArrayPlatform = array();
+        $whereArraySocket = array();
         $valuesArray = array();
 
         // Checking values in criteria and creating WHERE statements
@@ -72,10 +74,28 @@ class ProcessorRepository extends ServiceEntityRepository
             $whereArray[] = "(man.id = :manufacturerId)";
             $valuesArray["manufacturerId"] = (int)$criteria['manufacturer'];
         }
+        if (array_key_exists('cpuSpeed', $criteria)) {
+            $whereArray[] = "(p.speed = :cpuSpeedId)";
+            $valuesArray["cpuSpeedId"] = (int)$criteria['cpuSpeed'];
+        }
+        if (array_key_exists('fsbSpeed', $criteria)) {
+            $whereArray[] = "(p.fsb = :fsbSpeedId)";
+            $valuesArray["fsbSpeedId"] = (int)$criteria['fsbSpeed'];
+        }
+        if (array_key_exists('sockets', $criteria)) {
+            foreach ($criteria['sockets'] as $key => $val) {
+                $whereArraySocket[] = "(cs.id = :socketId$key)";
+                $valuesArray["socketId$key"] = $val;
+            }
+            $whereArray[] = implode(" OR ", $whereArraySocket);
+        }
 
-        if (array_key_exists('platform', $criteria)) {
-            $whereArray[] = "(cpu.platform = :platformId)";
-            $valuesArray["platformId"] = (int)$criteria['platform'];
+        if (array_key_exists('platforms', $criteria)) {
+            foreach ($criteria['platforms'] as $key => $val) {
+                $whereArrayPlatform[] = "(cpu.platform = :platformId$key)";
+                $valuesArray["platformId$key"] = $val;
+            }
+            $whereArray[] = implode(" OR ", $whereArrayPlatform);
         }
 
         if (array_key_exists('name', $criteria)) {
@@ -95,7 +115,7 @@ class ProcessorRepository extends ServiceEntityRepository
         if($whereArray == []){
             $query = $entityManager->createQuery(
                 "SELECT cpu
-                FROM App\Entity\Processor cpu JOIN cpu.manufacturer man LEFT OUTER JOIN cpu.chipAliases alias LEFT JOIN App\Entity\ProcessingUnit p WITH p.platform = cpu.platform
+                FROM App\Entity\Processor cpu JOIN cpu.manufacturer man LEFT OUTER JOIN cpu.chipAliases alias
                 WHERE cpu.id < 10000
                 ORDER BY man.name ASC, cpu.name ASC, cpu.partNumber ASC"
             );
@@ -103,7 +123,7 @@ class ProcessorRepository extends ServiceEntityRepository
         else{
             $query = $entityManager->createQuery(
                 "SELECT cpu
-                FROM App\Entity\Processor cpu JOIN cpu.manufacturer man LEFT OUTER JOIN cpu.chipAliases alias LEFT JOIN App\Entity\ProcessingUnit p WITH p.platform = cpu.platform
+                FROM App\Entity\Processor cpu JOIN cpu.manufacturer man LEFT OUTER JOIN cpu.chipAliases alias INNER JOIN App\Entity\ProcessingUnit p with p.id = cpu.id join p.sockets as cs
                 WHERE $whereString
                 ORDER BY man.name ASC, cpu.name ASC, cpu.partNumber ASC"
             );

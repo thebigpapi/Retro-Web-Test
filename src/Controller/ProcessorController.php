@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Processor;
 use App\Entity\Manufacturer;
 use App\Form\Processor\Search;
+use App\Repository\CpuSpeedRepository;
 use App\Repository\ProcessorRepository;
 use App\Repository\ManufacturerRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -33,9 +34,9 @@ class ProcessorController extends AbstractController
     }
 
     #[Route('/cpus/', name:'cpusearch', methods: ['GET', 'POST'])]
-    public function searchResultCpu(Request $request, PaginatorInterface $paginator, ManufacturerRepository $manufacturerRepository, ProcessorRepository $cpuRepository): Response
+    public function searchResultCpu(Request $request, PaginatorInterface $paginator, ManufacturerRepository $manufacturerRepository, ProcessorRepository $cpuRepository, CpuSpeedRepository $cpuSpeedRepository): Response
     {
-        $form = $this->_searchFormHandlerCpu($request, $manufacturerRepository);
+        $form = $this->_searchFormHandlerCpu($request, $manufacturerRepository, $cpuSpeedRepository);
 
         if ($form->isSubmitted() && $form->isValid()) {
             return $this->redirect($this->generateUrl('chipsetsearch', $this->searchFormToParamCpu($request, $form)));
@@ -65,9 +66,9 @@ class ProcessorController extends AbstractController
         }
     }
     #[Route('/cpus/live', name: 'cpulivewrapper')]
-    public function liveSearchCpu(Request $request, ManufacturerRepository $manufacturerRepository): Response
+    public function liveSearchCpu(Request $request, ManufacturerRepository $manufacturerRepository, CpuSpeedRepository $cpuSpeedRepository): Response
     {
-        $form = $this->_searchFormHandlerCpu($request, $manufacturerRepository);
+        $form = $this->_searchFormHandlerCpu($request, $manufacturerRepository, $cpuSpeedRepository);
         return $this->redirect($this->generateUrl('cpulivesearch', $this->searchFormToParamCpu($request, $form)));
     }
 
@@ -85,8 +86,20 @@ class ProcessorController extends AbstractController
             );
         $string = "/cpus/?";
         foreach ($request->query as $key => $value){
-            if($key != "domTarget")
-                $string .= $key . '=' . $value . '&';
+            if($key == "socketIds"){
+                foreach($value as $idx => $val){
+                    $string .= $key . '%5B' . $idx . '%5D=' . $val .'&';
+                }
+            }
+            else if($key == "platformIds"){
+                foreach($value as $idx => $val){
+                    $string .= $key . '%5B' . $idx . '%5D=' . $val .'&';
+                }
+            }
+            else{
+                if($key != "domTarget")
+                    $string .= $key . '=' . $value . '&';
+            }
         }
         return $this->render('cpu/result.html.twig', [
             'controller_name' => 'ProcessorController',
@@ -96,18 +109,34 @@ class ProcessorController extends AbstractController
             'params' => substr($string, 0, -1),
         ]);
     }
+    public function addCriteriaById(Request $request, array &$criterias, string $htmlId, string $sqlId): void
+    {
+        $entityId = htmlentities($request->query->get($htmlId) ?? ($request->request->get($htmlId) ?? ''));
+        if ($entityId && intval($entityId)) $criterias[$sqlId] = "$entityId";
+        elseif ($entityId === "NULL") $criterias[$sqlId] = null;
+    }
+    public function addArrayCriteria(Request $request, array &$criterias, string $htmlId, string $sqlId): void
+    {
+        $entityIds = $request->query->get($htmlId) ?? $request->request->get($htmlId);
+        $entityArray = null;
+        if ($entityIds) {
+            if (is_array($entityIds)) {
+                $entityArray = $entityIds;
+            } else {
+                $entityArray = json_decode($entityIds);
+            }
+            $criterias[$sqlId] = $entityArray;
+        }
+    }
     public function getCriteriaCpu(Request $request){
         $criterias = array();
-        $name = htmlentities($request->query->get('name') ?? '');
-        if ($name) {
+        if ($name = htmlentities($request->query->get('name') ?? ''))
             $criterias['name'] = "$name";
-        }
-        $cpuManufacturerId = htmlentities($request->query->get('cpuManufacturerId') ?? '');
-        if ($cpuManufacturerId && intval($cpuManufacturerId) && !array_key_exists('cpu', $criterias)) {
-            $criterias['manufacturer'] = "$cpuManufacturerId";
-        } elseif ($cpuManufacturerId === "NULL" && !array_key_exists('cpu', $criterias)) {
-            $criterias['manufacturer'] = null;
-        }
+        $this->addCriteriaById($request, $criterias, 'cpuManufacturerId', 'manufacturer');
+        $this->addCriteriaById($request, $criterias, 'cpuSpeedId', 'cpuSpeed');
+        $this->addCriteriaById($request, $criterias, 'fsbSpeedId', 'fsbSpeed');
+        $this->addArrayCriteria($request, $criterias, 'socketIds', 'sockets');
+        $this->addArrayCriteria($request, $criterias, 'platformIds', 'platforms');
         return $criterias;
     }
     private function searchFormToParamCpu(Request $request, $form): array
@@ -118,6 +147,26 @@ class ProcessorController extends AbstractController
                 $parameters['cpuManufacturerId']  = "NULL";
             } else {
                 $parameters['cpuManufacturerId'] = $form['cpuManufacturer']->getData()->getId();
+            }
+        }
+        if ($form['cpuSpeed']->getData()) {
+            $parameters['cpuSpeedId'] = $form['cpuSpeed']->getData()->getId();
+        }
+        if ($form['fsbSpeed']->getData()) {
+            $parameters['fsbSpeedId'] = $form['fsbSpeed']->getData()->getId();
+        }
+        $sockets = $form['sockets']->getData();
+        if ($sockets) {
+            $parameters['socketIds'] = array();
+            foreach ($sockets  as $socket) {
+                array_push($parameters['socketIds'], $socket->getId());
+            }
+        }
+        $platforms = $form['platforms']->getData();
+        if ($platforms) {
+            $parameters['platformIds'] = array();
+            foreach ($platforms  as $platform) {
+                array_push($parameters['platformIds'], $platform->getId());
             }
         }
 
@@ -135,14 +184,17 @@ class ProcessorController extends AbstractController
     private function _searchFormHandlerCpu(
         Request $request,
         ManufacturerRepository $manufacturerRepository,
+        CpuSpeedRepository $cpuSpeedRepository,
     ): FormInterface {
         $cpuManufacturers = $manufacturerRepository->findAllProcessorManufacturer();
+        $cpuSpeed = $cpuSpeedRepository->findAll();
         $unidentifiedMan = new Manufacturer();
         $unidentifiedMan->setName("Not identified");
         array_unshift($cpuManufacturers, $unidentifiedMan);
 
         $form = $this->createForm(Search::class, array(), [
             'cpuManufacturers' => $cpuManufacturers,
+            'cpuSpeeds' => $cpuSpeed,
         ]);
 
         $form->handleRequest($request);

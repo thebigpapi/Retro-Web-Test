@@ -1,40 +1,28 @@
 //initialize tom-select
 var settings = {};
-if(select_chipmanuf = document.getElementById('search_chipsetManufacturer')){
-    new TomSelect('#search_chipsetManufacturer',settings);
-    select_chipmanuf.tomselect.sync();
+let static_selects = [
+    "chipsetManufacturer",
+    "moboManufacturer",
+    "expansionChipManufacturer",
+    "cpuManufacturer",
+    "cpuSocket1",
+    "cpuSocket2",
+    "manufacturer",
+    "platform1",
+    "platform2",
+    "formFactor",
+    "cpuSpeed",
+    "fsbSpeed"
+];
+for(let item of static_selects){
+    loadTS(item);
 }
-if(select_mobomanuf = document.getElementById('search_moboManufacturer')){
-    new TomSelect('#search_moboManufacturer',settings);
-    select_mobomanuf.tomselect.sync();
-}
-if(select_cpuskt1 = document.getElementById('search_cpuSocket1')){
-    new TomSelect('#search_cpuSocket1',settings);
-    select_cpuskt1.tomselect.sync();
-}
-if(select_cpuskt2 = document.getElementById('search_cpuSocket2')){
-    new TomSelect('#search_cpuSocket2',settings);
-    select_cpuskt2.tomselect.sync();
-}
-if(select_manuf = document.getElementById('search_manufacturer')){
-    new TomSelect('#search_manufacturer',settings);
-    select_manuf.tomselect.sync();
-}
-if(select_platform1 = document.getElementById('search_platform1')){
-    new TomSelect('#search_platform1',settings);
-    select_platform1.tomselect.sync();
-}
-if(select_platform2 = document.getElementById('search_platform2')){
-    new TomSelect('#search_platform2',settings);
-    select_platform1.tomselect.sync();
-}
-if(select_formfactor = document.getElementById('search_formFactor')){
-    new TomSelect('#search_formFactor',settings);
-    select_formfactor.tomselect.sync();
-}
-if(select_expchipmanuf = document.getElementById('search_expansionChipManufacturer')){
-    new TomSelect('#search_expansionChipManufacturer',settings);
-    select_expchipmanuf.tomselect.sync();
+function loadTS(targetId){
+    console.log("called" + targetId);
+    if(el = document.getElementById('search_' + targetId)){
+        new TomSelect('#search_' + targetId, settings);
+        el.tomselect.sync();
+    }
 }
 // event listeners
 if(search_paginate = document.getElementById('search-paginate-id'))
@@ -87,18 +75,8 @@ function paginate(newPageIdx, target) {
     }
 
 function reset() {
-    let select_ids = [
-        "search_manufacturer", 
-        "search_chipsetManufacturer",
-        "search_moboManufacturer",
-        "search_cpuSocket1",
-        "search_cpuSocket2",
-        "search_platform1",
-        "search_platform2",
-        "search_formFactor"
-    ];
-    for(let id of select_ids){
-        if(select = document.getElementById(id)){
+    for(let id of static_selects){
+        if(select = document.getElementById('search_' + id)){
             var control = select.tomselect;
             control.clear();
         }
@@ -198,6 +176,16 @@ function searchLive() {
         if(idx == "dramTypes-fields-list"){
             el = document.getElementById('search_dramTypes_' + (counter - 1));
             new TomSelect('#search_dramTypes_' + (counter - 1), {});
+            el.tomselect.sync();
+        }
+        if(idx == "sockets-fields-list"){
+            el = document.getElementById('search_sockets_' + (counter - 1));
+            new TomSelect('#search_sockets_' + (counter - 1), {});
+            el.tomselect.sync();
+        }
+        if(idx == "platforms-fields-list"){
+            el = document.getElementById('search_platforms_' + (counter - 1));
+            new TomSelect('#search_platforms_' + (counter - 1), {});
             el.tomselect.sync();
         }
     }

@@ -25,6 +25,52 @@
 					<div>{{ form_widget(form.name, {'attr': {'placeholder': 'Name or Part number (without manufacturer) ...'}}) }}</div>
 				</div>
 			</div>
+			<div class="search-form-entry" style="min-width:min(27em,50vw);">
+				<label class="search-form-label" for="search_cpuManufacturer" title="This is where you select the manufacturer name and enter the CPU name/part number.">
+					<span>CPU and bus speed</span>
+					<img src="{{ absolute_url(asset('build/icons/help.svg')) }}" alt="" width="16" height="16">
+				</label>
+				<div class="search-form-widget">
+					<div>{{ form_widget(form.cpuSpeed) }}</div>
+					<div>{{ form_widget(form.fsbSpeed) }}</div>
+				</div>
+			</div>
+		</section>
+		<section class="search-form-grid">
+			<div class="search-form-filter">
+				<label class="search-form-label" title="">
+					<span>Sockets</span>
+					{% include 'macros/buttons.html.twig' with {'type':'add', 'action': 'sockets'} %}
+				</label>
+				<div class="search-form-widget filter-list" id="sockets-fields-list" data-widget-counter="{{ form.sockets|length }}" data-prototype="
+					{{ form_widget(form.sockets.vars.prototype, {'attr': {'style': 'width:50%'}})|e }}
+					{% include 'macros/buttons.html.twig' with {'type':'del'} %}</div>">
+					{% for socket in form.sockets %}
+						<div class="editor-row">
+							{{ form_widget(socket, {'attr': {'style': 'width:50%'}}) }}
+							{% include 'macros/buttons.html.twig' with {'type':'del'} %}
+							{{ form_errors(socket) }}
+						</div>
+					{% endfor %}
+				</div>
+			</div>
+			<div class="search-form-filter">
+				<label class="search-form-label" title="">
+					<span>Platforms</span>
+					{% include 'macros/buttons.html.twig' with {'type':'add', 'action': 'platforms'} %}
+				</label>
+				<div class="search-form-widget filter-list" id="platforms-fields-list" data-widget-counter="{{ form.platforms|length }}" data-prototype="
+					{{ form_widget(form.platforms.vars.prototype, {'attr': {'style': 'width:50%'}})|e }}
+					{% include 'macros/buttons.html.twig' with {'type':'del'} %}</div>">
+					{% for platform in form.platforms %}
+						<div class="editor-row">
+							{{ form_widget(platform, {'attr': {'style': 'width:50%'}}) }}
+							{% include 'macros/buttons.html.twig' with {'type':'del'} %}
+							{{ form_errors(platform) }}
+						</div>
+					{% endfor %}
+				</div>
+			</div>
 		</section>
 		<section class="search-form-grid search-form-grid-tight">
 			<div class="search-form-header">Search results options</div>
