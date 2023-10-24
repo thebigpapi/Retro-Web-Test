@@ -36,11 +36,15 @@ class Creditor
     #[ORM\OneToMany(mappedBy: 'creditor', targetEntity: StorageDeviceImage::class)]
     private Collection $storageDeviceImages;
 
+    #[ORM\OneToMany(mappedBy: 'creditor', targetEntity: EntityImage::class)]
+    private Collection $entityImages;
+
     public function __construct()
     {
         $this->chipImages = new ArrayCollection();
         $this->motherboardImages = new ArrayCollection();
         $this->storageDeviceImages = new ArrayCollection();
+        $this->entityImages = new ArrayCollection();
     }
     public function getId(): ?int
     {
@@ -165,6 +169,36 @@ class Creditor
             // set the owning side to null (unless already changed)
             if ($storageDeviceImage->getCreditor() === $this) {
                 $storageDeviceImage->setCreditor(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, EntityImage>
+     */
+    public function getEntityImages(): Collection
+    {
+        return $this->entityImages;
+    }
+
+    public function addEntityImage(EntityImage $entityImage): self
+    {
+        if (!$this->entityImages->contains($entityImage)) {
+            $this->entityImages->add($entityImage);
+            $entityImage->setCreditor($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEntityImage(EntityImage $entityImage): self
+    {
+        if ($this->entityImages->removeElement($entityImage)) {
+            // set the owning side to null (unless already changed)
+            if ($entityImage->getCreditor() === $this) {
+                $entityImage->setCreditor(null);
             }
         }
 

@@ -1,0 +1,94 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	{{ family.getName() }}
+{% endblock %}
+{% block metatags %}
+	<meta name="description" content="Expansion chip:{{ family.getName() }}">
+{% endblock %}
+{% block extra_javascripts %}
+	<script src="/build/js/show.js" defer></script>
+{% endblock %}
+
+{% block opengraph %}
+	{% apply spaceless %}
+	<meta property="og:title" content="{{ family.getName() }}">
+	<meta property="og:description" content="Get CPU family info for {{ family.getName() }}!">
+	{% endapply %}
+	<link rel="alternate" hreflang="x-default" href="{{ absolute_url(path('cpufamily_show', {id: family.getId()})) }}"/>
+{% endblock %}
+
+{% block body %}
+<!-- MANUF./NAME/PART NO. -->
+<div class="title">{{ family.getName() }}</div>
+<div class="main-strip">
+	<div class="internal-container">
+		{% include 'macros/navbar.html.twig' with {'entity': family, 'entityName': 'ProcessorPlatformType', 'name': 'family'} %}
+		<div class="internal-content">
+			<!-- DESCRIPRION -->
+			<div class="show-general" id="sh-general">
+				<div class="quick-spec-table">
+					<!-- Process -->
+					<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/dimension.svg')) }}" alt="node" width="24" height="24">Process node</div>
+					<div>{{ family.getProcessNodeWithValue() ?: 'Unknown'}}</div>
+                    <!-- L1 cache -->
+					<div class="quick-spec-head">
+						<img src="{{ absolute_url(asset('build/icons/ram.svg')) }}" alt="ram" width="24" height="24">L1 cache
+					</div>
+					<div>{{ family.getL1code() ? (family.getL1code() ~ ' code (ratio ' ~ (family.getL1codeRatio() ?: 'unknown') ~ '), ') : 'Unknown code, '}}
+					{{ family.getL1data() ? (family.getL1data() ~ ' data (ratio ' ~ (family.getL1dataRatio() ?: 'unknown') ~ ')') : 'Unknown data'}}
+					</div>
+					<!-- IMC -->
+					<div class="quick-spec-head">
+						<img src="{{ absolute_url(asset('build/icons/ram_multi.svg')) }}" alt="threads" width="24" height="24">IMC
+					</div>
+					<div>{{ family.hasIMC() ? 'Yes' : 'None' }}</div>
+					<!-- Compatible with family -->
+					{% if family.getCompatibleWith() is not empty %}
+						<div class="quick-spec-head">
+							<img src="{{ absolute_url(asset('build/icons/486.svg')) }}" alt="cpu" width="24" height="24">Compatible families
+						</div>
+						<div class="tag-container">
+							{% for compfamily in family.getCompatibleWith() %}<span class="text-block">{{ compfamily.getName}}</span>{% endfor %}
+						</div>
+					{% endif %}
+				</div>
+				{% include 'macros/notes.html.twig' with {'entity': family} %}
+				<!-- MANUALS -->
+				<div class="show-downloads-group">
+					{% set allDocs = family.getEntityDocumentations() %}
+					<div class="show-downloads-group-header">
+						<img src="{{ absolute_url(asset('build/icons/manual.svg')) }}" alt="doc" width="32" height="32">
+						<span>{{ allDocs|length }} document{% if allDocs|length != 1 %}s{% endif %} available</span>
+					</div>
+					{% if allDocs is not empty %}
+					<div class="plain-list w300p table">
+						<div class="list-entry centered head">
+							<div>Language</div>
+							<div>File</div>
+						</div>
+						{% for manual in allDocs|sort((a, b) => a.getLinkName <=> b.getLinkName) %}
+						<div class="list-entry centered {% if loop.index is divisible by(2) %}alt{% endif %}">
+							<div class="header-label">Language</div>
+							<div>{{ manual.getLanguage().getName()}}</div>
+							<div class="header-label">File</div>
+							<div>
+								<a class="combo" href="{{ vich_uploader_asset(manual, 'manualFile') }}">
+									<img src="{{ absolute_url(asset('build/icons/dw.svg')) }}" alt="" width="16" height="16">
+									<span>{{ manual.getLinkName() }}</span>
+								</a>
+							</div>
+						</div>
+						{% endfor %}
+					</div>
+					{% endif %}
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="disclaimer">
+	<p><b>Disclaimer</b></p>
+	<p>The info found in this page might not be entirely correct. Check out <a href="{{ path('app_contributions') }}">this guide</a> to learn how you can improve it.</p>
+</div>
+{% endblock %}

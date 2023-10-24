@@ -3,6 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Entity\ProcessorPlatformType;
+use App\Form\Type\EntityDocumentationType;
 use App\Form\Type\InstructionSetType;
 use App\Form\Type\ProcessorPlatformTypeForm;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
@@ -14,7 +15,9 @@ use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ArrayField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\CodeEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
@@ -28,6 +31,8 @@ class ProcessorPlatformTypeCrudController extends AbstractCrudController
     }
     public function configureActions(Actions $actions): Actions
     {
+        $view = Action::new('view', 'View')->linkToCrudAction('viewFamily');
+        $eview = Action::new('eview', 'View')->linkToCrudAction('viewFamily')->setIcon('fa fa-magnifying-glass');
         $logs = Action::new('logs', 'Logs')->linkToCrudAction('viewLogs');
         $elogs= Action::new('elogs', 'Logs')->linkToCrudAction('viewLogs')->setIcon('fa fa-history');
         return $actions
@@ -35,6 +40,8 @@ class ProcessorPlatformTypeCrudController extends AbstractCrudController
             ->remove(Crud::PAGE_NEW, Action::SAVE_AND_ADD_ANOTHER)
             ->add(Crud::PAGE_INDEX, $logs)
             ->add(Crud::PAGE_EDIT, $elogs)
+            ->add(Crud::PAGE_INDEX, $view)
+            ->add(Crud::PAGE_EDIT, $eview)
             ->setPermission(Action::DELETE, 'ROLE_ADMIN')
             ->setPermission(Action::EDIT, 'ROLE_ADMIN')
             ->setPermission(Action::INDEX, 'ROLE_ADMIN');
@@ -60,6 +67,9 @@ class ProcessorPlatformTypeCrudController extends AbstractCrudController
     }
     public function configureFields(string $pageName): iterable
     {
+        yield FormField::addTab('Basic Data')
+            ->setIcon('info')
+            ->onlyOnForms();
         yield IdField::new('id')
             ->onlyOnIndex();
         yield TextField::new('name', 'Name');
@@ -98,6 +108,23 @@ class ProcessorPlatformTypeCrudController extends AbstractCrudController
             ->setEntryType(ProcessorPlatformTypeForm::class)
             ->renderExpanded()
             ->onlyOnForms();
+        yield CodeEditorField::new('description')
+            ->setLanguage('markdown')
+            ->onlyOnForms();
+        yield FormField::addTab('Attachments')
+            ->setIcon('download')
+            ->onlyOnForms();
+        yield CollectionField::new('entityDocumentations', 'Documentation')
+            ->setEntryType(EntityDocumentationType::class)
+            ->renderExpanded()
+            ->setFormTypeOption('error_bubbling', false)
+            ->setColumns(6)
+            ->onlyOnForms();
+    }
+    public function viewFamily(AdminContext $context)
+    {
+        $entityId = $context->getEntity()->getInstance()->getId();
+        return $this->redirectToRoute('cpufamily_show', array('id'=>$entityId));
     }
     public function viewLogs(AdminContext $context)
     {

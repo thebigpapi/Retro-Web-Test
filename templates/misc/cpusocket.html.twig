@@ -1,0 +1,109 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	{{ socket.getNameAndType() }}
+{% endblock %}
+{% block metatags %}
+	<meta name="description" content="Expansion chip:{{ socket.getNameAndType() }}">
+{% endblock %}
+{% block extra_javascripts %}
+	<script src="/build/js/show.js" defer></script>
+{% endblock %}
+
+{% block opengraph %}
+	{% apply spaceless %}
+	<meta property="og:title" content="{{ socket.getNameAndType() }}">
+	<meta property="og:description" content="Get CPU family info for {{ socket.getNameAndType() }}!">
+	{% if socket.getEntityImages() is not empty %}
+		{% for image in socket.getEntityImages()|sort((a, b) => a.getFileName() <=> b.getFileName())|slice(0, 1) %}
+			<meta name="twitter:image" content="{{ vich_uploader_asset(image, 'imageFile')}}">
+			<meta property="og:image" content="{{ vich_uploader_asset(image, 'imageFile')}}">
+		{% endfor %}
+	{% else %}
+		<meta name="twitter:image" content="{{ absolute_url(asset('build/images/missing/chip-missing.jpg')) }}">
+		<meta property="og:image" content="{{ absolute_url(asset('build/images/missing/chip-missing.jpg')) }}">
+	{% endif %}
+	{% endapply %}
+	<link rel="alternate" hreflang="x-default" href="{{ absolute_url(path('cpusocket_show', {id: socket.getId()})) }}"/>
+{% endblock %}
+
+{% block body %}
+<!-- MANUF./NAME/PART NO. -->
+<div class="title">{{ socket.getNameAndType() }}</div>
+<div class="main-strip">
+	<div class="internal-container">
+		{% include 'macros/navbar.html.twig' with {'entity': socket, 'entityName': 'CpuSocket', 'name': 'socket'} %}
+		<div class="internal-content">
+			<!-- DESCRIPRION -->
+			<div class="show-general" id="sh-general">
+				<div class="quick-spec-table">
+					<!-- Type -->
+					<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/cpupins.svg')) }}" alt="node" width="24" height="24">Type</div>
+					<div>{{ socket.getType() ?: 'Unknown'}}</div>
+                    <!-- Family-->
+					<div class="quick-spec-head">
+						<img src="{{ absolute_url(asset('build/icons/486.svg')) }}" alt="cpu" width="24" height="24">Families
+					</div>
+					{% if socket.getPlatforms() is not empty %}
+					<div class="tag-container">
+						{% for family in socket.getPlatforms() %}<span class="text-block">{{ family.getName}}</span>{% endfor %}
+					</div>
+					{% else %}
+					<div>Unknown</div>
+					{% endif %}
+				</div>
+				{% include 'macros/notes.html.twig' with {'entity': socket} %}
+				<!-- MANUALS -->
+				<div class="show-downloads-group">
+					{% set allDocs = socket.getEntityDocumentations() %}
+					<div class="show-downloads-group-header">
+						<img src="{{ absolute_url(asset('build/icons/manual.svg')) }}" alt="doc" width="32" height="32">
+						<span>{{ allDocs|length }} document{% if allDocs|length != 1 %}s{% endif %} available</span>
+					</div>
+					{% if allDocs is not empty %}
+					<div class="plain-list w300p table">
+						<div class="list-entry centered head">
+							<div>Language</div>
+							<div>File</div>
+						</div>
+						{% for manual in allDocs|sort((a, b) => a.getLinkName <=> b.getLinkName) %}
+						<div class="list-entry centered {% if loop.index is divisible by(2) %}alt{% endif %}">
+							<div class="header-label">Language</div>
+							<div>{{ manual.getLanguage().getName()}}</div>
+							<div class="header-label">File</div>
+							<div>
+								<a class="combo" href="{{ vich_uploader_asset(manual, 'manualFile') }}">
+									<img src="{{ absolute_url(asset('build/icons/dw.svg')) }}" alt="" width="16" height="16">
+									<span>{{ manual.getLinkName() }}</span>
+								</a>
+							</div>
+						</div>
+						{% endfor %}
+					</div>
+					{% endif %}
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- IMAGES -->
+	<div class="show-images" id="sh-images">
+	{% if socket.getEntityImages() is not empty %}
+		{% set lpindex = 0 %}
+		{% for image in socket.getEntityImages()|sort((a, b) => a.getFileName() <=> b.getFileName()) %}
+			{% set lpindex = lpindex + 1 %}
+			{% include 'macros/images.html.twig' with {'type':'expansionchip', 'entity': image, 'index': lpindex, 'length': socket.getEntityImages()|length} %}
+		{% endfor %}
+	{% else %}
+		<div class="show-images">
+			<img src={{ absolute_url(asset('build/images/missing/chip-missing.jpg')) }} title="no images available :(" style="width:100%;">
+		</div>
+	{% endif %}
+	</div>
+
+</div>
+<div class="disclaimer">
+	<p><b>Disclaimer</b></p>
+	<p>The info found in this page might not be entirely correct. Check out <a href="{{ path('app_contributions') }}">this guide</a> to learn how you can improve it.</p>
+</div>
+{% endblock %}

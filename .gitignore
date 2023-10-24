@@ -27,6 +27,7 @@
 /public/media/*
 /public/icons/*
 /public/chip/*
+/public/misc/*
 /public/cache/*
 /public/storage/*
 !public/media/cache/.gitkeep

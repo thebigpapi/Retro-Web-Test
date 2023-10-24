@@ -55,10 +55,6 @@
 						<img src="{{ absolute_url(asset('build/icons/articles.svg')) }}" width="24" height="24" alt="art">
 						<span class="navbar-label">Articles</span>
 					</a>
-					<a href="https://wiki.theretroweb.com" class="nav-link">
-						<img src="{{ absolute_url(asset('build/icons/book.svg')) }}" width="24" height="24" alt="wiki">
-						<span class="navbar-label">Wiki</span>
-					</a>
 					{% if is_granted('ROLE_USER') %}
 						<a href="{{ path('dashboard') }}" class="nav-link">
 							<img src="{{ absolute_url(asset('build/icons/settings.svg')) }}" width="24" height="24" alt="admin">

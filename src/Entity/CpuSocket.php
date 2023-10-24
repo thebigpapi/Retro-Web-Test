@@ -32,11 +32,24 @@ class CpuSocket
     #[ORM\ManyToMany(targetEntity: ProcessingUnit::class, mappedBy: 'sockets')]
     private $processingUnits;
 
+    #[ORM\OneToMany(mappedBy: 'cpuSocket', targetEntity: EntityDocumentation::class, orphanRemoval: true, cascade: ['persist'])]
+    #[Assert\Valid()]
+    private Collection $entityDocumentations;
+
+    #[ORM\Column(length: 4096, nullable: true)]
+    private ?string $description = null;
+
+    #[ORM\OneToMany(mappedBy: 'cpuSocket', targetEntity: EntityImage::class, orphanRemoval: true, cascade: ['persist'])]
+    #[Assert\Valid()]
+    private Collection $entityImages;
+
     public function __construct()
     {
         $this->platforms = new ArrayCollection();
         $this->motherboards = new ArrayCollection();
         $this->processingUnits = new ArrayCollection();
+        $this->entityDocumentations = new ArrayCollection();
+        $this->entityImages = new ArrayCollection();
     }
     public function __toString(): string
     {
@@ -143,6 +156,78 @@ class CpuSocket
         if ($this->processingUnits->contains($processingUnit)) {
             $this->processingUnits->removeElement($processingUnit);
             $processingUnit->removeSocket($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, EntityDocumentation>
+     */
+    public function getEntityDocumentations(): Collection
+    {
+        return $this->entityDocumentations;
+    }
+
+    public function addEntityDocumentation(EntityDocumentation $entityDocumentation): self
+    {
+        if (!$this->entityDocumentations->contains($entityDocumentation)) {
+            $this->entityDocumentations->add($entityDocumentation);
+            $entityDocumentation->setCpuSocket($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEntityDocumentation(EntityDocumentation $entityDocumentation): self
+    {
+        if ($this->entityDocumentations->removeElement($entityDocumentation)) {
+            // set the owning side to null (unless already changed)
+            if ($entityDocumentation->getCpuSocket() === $this) {
+                $entityDocumentation->setCpuSocket(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(?string $description): self
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, EntityImage>
+     */
+    public function getEntityImages(): Collection
+    {
+        return $this->entityImages;
+    }
+
+    public function addEntityImage(EntityImage $entityImage): self
+    {
+        if (!$this->entityImages->contains($entityImage)) {
+            $this->entityImages->add($entityImage);
+            $entityImage->setCpuSocket($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEntityImage(EntityImage $entityImage): self
+    {
+        if ($this->entityImages->removeElement($entityImage)) {
+            // set the owning side to null (unless already changed)
+            if ($entityImage->getCpuSocket() === $this) {
+                $entityImage->setCpuSocket(null);
+            }
         }
 
         return $this;

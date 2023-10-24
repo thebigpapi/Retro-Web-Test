@@ -55,6 +55,13 @@ class ProcessorPlatformType
     #[ORM\Column(nullable: true)]
     private ?bool $hasIMC = null;
 
+    #[ORM\Column(length: 4096, nullable: true)]
+    private ?string $description = null;
+
+    #[ORM\OneToMany(mappedBy: 'processorPlatformType', targetEntity: EntityDocumentation::class, orphanRemoval: true, cascade: ['persist'])]
+    #[Assert\Valid()]
+    private Collection $entityDocumentations;
+
     public function __construct()
     {
         $this->motherboards = new ArrayCollection();
@@ -63,6 +70,7 @@ class ProcessorPlatformType
         $this->ChildProcessorPlatformType = new ArrayCollection();
         $this->cpuSockets = new ArrayCollection();
         $this->instructionSets = new ArrayCollection();
+        $this->entityDocumentations = new ArrayCollection();
     }
     public function __toString(): string
     {
@@ -332,5 +340,47 @@ class ProcessorPlatformType
     public function getProcessNodeWithValue(): string
     {
         return $this->processNode ? $this->processNode . "nm" : "";
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(?string $description): self
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, EntityDocumentation>
+     */
+    public function getEntityDocumentations(): Collection
+    {
+        return $this->entityDocumentations;
+    }
+
+    public function addEntityDocumentation(EntityDocumentation $entityDocumentation): self
+    {
+        if (!$this->entityDocumentations->contains($entityDocumentation)) {
+            $this->entityDocumentations->add($entityDocumentation);
+            $entityDocumentation->setProcessorPlatformType($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEntityDocumentation(EntityDocumentation $entityDocumentation): self
+    {
+        if ($this->entityDocumentations->removeElement($entityDocumentation)) {
+            // set the owning side to null (unless already changed)
+            if ($entityDocumentation->getProcessorPlatformType() === $this) {
+                $entityDocumentation->setProcessorPlatformType(null);
+            }
+        }
+
+        return $this;
     }
 }

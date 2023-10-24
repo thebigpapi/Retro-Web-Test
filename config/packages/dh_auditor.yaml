@@ -27,6 +27,8 @@ dh_auditor:
                 App\Entity\CpuSpeed: ~
                 App\Entity\Creditor: ~
                 App\Entity\DramType: ~
+                App\Entity\EntityDocumentation: ~
+                App\Entity\EntityImage: ~
                 App\Entity\ExpansionChip: ~
                 App\Entity\ExpansionChipType: ~
                 App\Entity\ExpansionSlot: ~

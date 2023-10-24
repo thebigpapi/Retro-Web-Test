@@ -23,13 +23,22 @@ class PSUConnector
     #[ORM\ManyToMany(targetEntity: Motherboard::class, mappedBy: 'psuConnectors')]
     private $motherboards;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    #[Assert\Length(max: 255, maxMessage: 'Website link is longer than {{ limit }} characters, try to make it shorter.')]
-    private ?string $website = null;
+    #[ORM\OneToMany(mappedBy: 'psuConnector', targetEntity: EntityDocumentation::class, orphanRemoval: true, cascade: ['persist'])]
+    #[Assert\Valid()]
+    private Collection $entityDocumentations;
+
+    #[ORM\Column(length: 4096, nullable: true)]
+    private ?string $description = null;
+
+    #[ORM\OneToMany(mappedBy: 'psuConnector', targetEntity: EntityImage::class, orphanRemoval: true, cascade: ['persist'])]
+    #[Assert\Valid()]
+    private Collection $entityImages;
 
     public function __construct()
     {
         $this->motherboards = new ArrayCollection();
+        $this->entityDocumentations = new ArrayCollection();
+        $this->entityImages = new ArrayCollection();
     }
     public function __toString(): string
     {
@@ -71,14 +80,74 @@ class PSUConnector
         return $this;
     }
 
-    public function getWebsite(): ?string
+    /**
+     * @return Collection<int, EntityDocumentation>
+     */
+    public function getEntityDocumentations(): Collection
     {
-        return $this->website;
+        return $this->entityDocumentations;
     }
 
-    public function setWebsite(?string $website): self
+    public function addEntityDocumentation(EntityDocumentation $entityDocumentation): self
     {
-        $this->website = $website;
+        if (!$this->entityDocumentations->contains($entityDocumentation)) {
+            $this->entityDocumentations->add($entityDocumentation);
+            $entityDocumentation->setPsuConnector($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEntityDocumentation(EntityDocumentation $entityDocumentation): self
+    {
+        if ($this->entityDocumentations->removeElement($entityDocumentation)) {
+            // set the owning side to null (unless already changed)
+            if ($entityDocumentation->getPsuConnector() === $this) {
+                $entityDocumentation->setPsuConnector(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(?string $description): self
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, EntityImage>
+     */
+    public function getEntityImages(): Collection
+    {
+        return $this->entityImages;
+    }
+
+    public function addEntityImage(EntityImage $entityImage): self
+    {
+        if (!$this->entityImages->contains($entityImage)) {
+            $this->entityImages->add($entityImage);
+            $entityImage->setPsuConnector($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEntityImage(EntityImage $entityImage): self
+    {
+        if ($this->entityImages->removeElement($entityImage)) {
+            // set the owning side to null (unless already changed)
+            if ($entityImage->getPsuConnector() === $this) {
+                $entityImage->setPsuConnector(null);
+            }
+        }
 
         return $this;
     }

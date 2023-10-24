@@ -76,8 +76,9 @@
 						<img src="{{ absolute_url(asset('build/icons/cpu.svg')) }}" alt="threads" width="24" height="24">Thread count
 					</div>
 					<div>{{ cpu.getThreads() ? cpu.getThreads() : 'Unknown' }}</div>
+					<!-- IMC -->
 					<div class="quick-spec-head">
-						<img src="{{ absolute_url(asset('build/icons/ram.svg')) }}" alt="threads" width="24" height="24">IMC
+						<img src="{{ absolute_url(asset('build/icons/ram_multi.svg')) }}" alt="threads" width="24" height="24">IMC
 					</div>
 					<div>{{ cpu.getPlatform() ? (cpu.getPlatform().hasIMC() ? 'Yes' : 'None') : 'Unknown'}}</div>
 				</div><div class="quick-spec-table">

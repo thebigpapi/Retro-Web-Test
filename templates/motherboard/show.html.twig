@@ -63,7 +63,8 @@
 						<img src="{{ absolute_url(asset('build/icons/cpupins.svg')) }}" alt="cpu" width="24" height="24">CPU socket{% if motherboard.getCpuSockets()|length > 1 %}s{% endif %}
 					</div>
 					{% if motherboard.getCpuSockets() is not empty %}
-					<div class="tag-container">{% for socket in motherboard.getCpuSockets() %}<span class="text-block">{{ socket.getNameAndType}}</span>{% endfor %}</div>
+					<div class="tag-container">{% for socket in motherboard.getCpuSockets() %}
+						<a href="{{ path('cpusocket_show', {id: socket.getId()}) }}"><span class="text-block">{{ socket.getNameAndType}}</span></a>{% endfor %}</div>
 					{% else %}
 					<div>Unknown</div>
 					{% endif %}
@@ -72,7 +73,8 @@
 						<img src="{{ absolute_url(asset('build/icons/486.svg')) }}" alt="cpu" width="24" height="24">CPU family
 					</div>
 					{% if motherboard.getProcessorPlatformTypes() is not empty %}
-					<div class="tag-container">{% for platform in motherboard.getProcessorPlatformTypes() %}<span class="text-block">{{ platform.getName() }}</span>{% endfor %}</div>
+					<div class="tag-container">{% for platform in motherboard.getProcessorPlatformTypes() %}
+						<a href="{{ path('cpufamily_show', {id: platform.getId()}) }}"><span class="text-block">{{ platform.getName() }}</span></a>{% endfor %}</div>
 					{% else %}
 					<div>Unknown</div>
 					{% endif %}
@@ -119,7 +121,8 @@
 						<img src="{{ absolute_url(asset('build/icons/power.svg')) }}" alt="pwr" width="24" height="24">PSU connector
 					</div>
 					{% if motherboard.getPsuConnectors() is not empty %}
-					<div class="tag-container">{% for psu in motherboard.getPsuConnectors() %}<span class="text-block">{% if psu.getWebsite() is not null %}<a href="{{ psu.getWebsite() }}">{{ psu.getName() }}</a>{% else %}{{ psu.getName() }}{% endif %}</span>{% endfor %}</div>
+					<div class="tag-container">{% for psu in motherboard.getPsuConnectors() %}
+						<a href="{{ path('psu_connector_show', {id: psu.getId()}) }}"><span class="text-block">{{ psu.getName() }}</span></a>{% endfor %}</div>
 					{% else %}
 					<div>Unknown</div>
 					{% endif %}
