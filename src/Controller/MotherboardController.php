@@ -134,23 +134,23 @@ class MotherboardController extends AbstractController
             if($key == "expansionSlotsIds" || $key == "ioPortsIds"){
                 foreach($value as $idx => $property){
                     foreach($property as $type=> $val){
-                        $string .= $key . '%5B' . $idx . '%5D%5B' . $type . '%5D=' . $val .'&';
+                        $string .= "$key[$idx][$type]=$val&";
                     }
                 }
             }
             else if($key == "expansionChipIds"){
                 foreach($value as $idx => $val){
-                    $string .= $key . '%5B' . $idx . '%5D=' . $val .'&';
+                    $string .= "$key[$idx]=$val&";
                 }
             }
             else if($key == "dramTypeIds"){
                 foreach($value as $idx => $val){
-                    $string .= $key . '%5B' . $idx . '%5D=' . $val .'&';
+                    $string .= "$key[$idx]=$val&";
                 }
             }
             else{
                 if($key != "domTarget")
-                    $string .= $key . '=' . $value . '&';
+                    $string .= "$key=$value&";
             }
         }
         return $this->render('motherboard/result.html.twig', [
