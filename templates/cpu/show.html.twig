@@ -39,7 +39,7 @@
 					</div>
 					{% if cpu.getSockets() is not empty %}
 					<div class="tag-container">
-						{% for socket in cpu.getSockets() %}<span class="text-block">{{ socket.getNameAndType}}</span>{% endfor %}
+						{% for socket in cpu.getSockets() %}<a href="{{ path('cpusocket_show', {id: socket.getId()}) }}"><span class="text-block">{{ socket.getNameAndType}}</span></a>{% endfor %}
 					</div>
 					{% else %}
 					<div>Unknown</div>
@@ -48,7 +48,7 @@
 					<div class="quick-spec-head">
 						<img src="{{ absolute_url(asset('build/icons/486.svg')) }}" alt="486" width="24" height="24">Family
 					</div>
-					<div>{{ cpu.getPlatform() ? cpu.getPlatform().getName() : 'Unknown' }}</div>
+					<div>{% if cpu.getSockets() is not empty %}<a href="{{ path('cpufamily_show', {id: cpu.getPlatform().getId()}) }}">{{ cpu.getPlatform().getName() }}</a>{% else %}Unknown{% endif %}</div>
 					<!-- Core -->
 					{% if cpu.getCore() is not empty %}
 					<div class="quick-spec-head">
