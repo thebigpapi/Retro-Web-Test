@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\CpuSocket;
 use App\Entity\Processor;
 use App\Entity\Manufacturer;
+use App\Entity\ProcessorPlatformType;
 use App\Form\Processor\Search;
 use App\Repository\CpuSpeedRepository;
 use App\Repository\ProcessorRepository;
@@ -156,22 +157,10 @@ class ProcessorController extends AbstractController
         if ($form['fsbSpeed']->getData()) {
             $parameters['fsbSpeedId'] = $form['fsbSpeed']->getData()->getId();
         }
-        $sockets = $form['sockets']->getData();
-        if ($sockets) {
-            $parameters['socketIds'] = array();
-            foreach ($sockets  as $socket) {
-                if($socket != null)
-                    array_push($parameters['socketIds'], $socket->getId());
-            }
-        }
-        $platforms = $form['platforms']->getData();
-        if ($platforms) {
-            $parameters['platformIds'] = array();
-            foreach ($platforms  as $platform) {
-                if($platform != null)
-                    array_push($parameters['platformIds'], $platform->getId());
-            }
-        }
+
+        $parameters['socketIds'] = array_map(fn(CpuSocket $socket) => $socket->getId(), array_filter($form['sockets']->getData(), fn(?CpuSocket $socket) => $socket !== null));
+
+        $parameters['platformIds'] = array_map(fn(ProcessorPlatformType $platform) => $platform->getId(), array_filter($form['platforms']->getData(), fn(?ProcessorPlatformType $platform) => $platform !== null));
 
         $parameters['page'] = intval($request->request->get('page') ?? $request->query->get('page') ?? 1);
         $parameters['domTarget'] = $request->request->get('domTarget') ?? $request->query->get('domTarget') ?? "";
@@ -184,6 +173,7 @@ class ProcessorController extends AbstractController
 
         return $parameters;
     }
+
     private function _searchFormHandlerCpu(
         Request $request,
         ManufacturerRepository $manufacturerRepository,
