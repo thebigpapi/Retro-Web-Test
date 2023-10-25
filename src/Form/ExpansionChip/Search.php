@@ -26,7 +26,7 @@ class Search extends AbstractType
                 'required' => false,
                 'autocomplete' => true,
                 'choices' => $options['expansionChipManufacturers'],
-                'placeholder' => 'Select an expansion chip manufacturer ...',
+                'placeholder' => 'Type to select an expansion chip manufacturer ...',
             ])
             ->add('itemsPerPage', EnumType::class, [
                 'class' => ItemsPerPageType::class,

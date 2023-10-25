@@ -34,7 +34,7 @@ class Search extends AbstractType
                 'required' => false,
                 'autocomplete' => true,
                 'choices' => $options['cpuManufacturers'],
-                'placeholder' => 'Select a CPU manufacturer ...',
+                'placeholder' => 'Type to select a CPU manufacturer ...',
             ])
             ->add('cpuSpeed', ChoiceType::class, [
                 'choice_label' => 'getValueWithUnit',
@@ -43,7 +43,7 @@ class Search extends AbstractType
                 'required' => false,
                 'autocomplete' => true,
                 'choices' => $options['cpuSpeeds'],
-                'placeholder' => 'Select a CPU frequency ...',
+                'placeholder' => 'Type to select a CPU frequency ...',
             ])
             ->add('fsbSpeed', ChoiceType::class, [
                 'choice_label' => 'getValueWithUnit',
@@ -52,7 +52,7 @@ class Search extends AbstractType
                 'required' => false,
                 'autocomplete' => true,
                 'choices' => $options['cpuSpeeds'],
-                'placeholder' => 'Select a bus speed ...',
+                'placeholder' => 'Type to select a bus speed ...',
             ])
             ->add('sockets', CollectionType::class, [
                 'entry_type' => CpuSocketType::class,

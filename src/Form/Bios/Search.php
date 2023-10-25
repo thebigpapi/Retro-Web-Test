@@ -39,7 +39,7 @@ class Search extends AbstractType
                 'required' => false,
                 'autocomplete' => true,
                 'choices' => $options['chipsetManufacturers'],
-                'placeholder' => 'Select a chipset manufacturer ...',
+                'placeholder' => 'Type to select a chipset manufacturer ...',
             ])
 
             ->add('manufacturer', EntityType::class, [
@@ -50,7 +50,7 @@ class Search extends AbstractType
                 'expanded' => false,
                 'required' => false,
                 'choices' => $options['biosManufacturers'],
-                'placeholder' => 'Select a manufacturer ...',
+                'placeholder' => 'Type to select a manufacturer ...',
             ])
             ->add('moboManufacturer', EntityType::class, [
                 'class' => Manufacturer::class,
@@ -60,7 +60,7 @@ class Search extends AbstractType
                 'expanded' => false,
                 'required' => false,
                 'choices' => $options['moboManufacturers'],
-                'placeholder' => 'Select a manufacturer ...',
+                'placeholder' => 'Type to select a manufacturer ...',
             ])
             ->add('expansionChips', CollectionType::class, [
                 'entry_type' => ExpansionChipType::class,
@@ -87,7 +87,7 @@ class Search extends AbstractType
             usort($chipsets, function (Chipset $a, Chipset $b) {
                 return strnatcasecmp($a->getNameCached() ?? '', $b->getNameCached() ?? '');
             });
-            $chipTag = null === $chipsetManufacturer ? "No chipset selected!" : "Select any " . $chipsetManufacturer->getName() . " chipset ...";
+            $chipTag = null === $chipsetManufacturer ? "No chipset selected!" : "Type to select any " . $chipsetManufacturer->getName() . " chipset ...";
             $form->add('chipset', ChoiceType::class, [
                 'choice_label' => 'getNameCached',
                 'multiple' => false,

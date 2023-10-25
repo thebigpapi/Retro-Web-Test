@@ -30,7 +30,7 @@ class Search extends AbstractType
                 'required' => false,
                 'autocomplete' => true,
                 'choices' => $options['cddManufacturers'],
-                'placeholder' => 'Select an optical drive manufacturer ...',
+                'placeholder' => 'Type to select an optical drive manufacturer ...',
             ])
             ->add('itemsPerPage', EnumType::class, [
                 'class' => ItemsPerPageType::class,

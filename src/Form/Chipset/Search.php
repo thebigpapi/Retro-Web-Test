@@ -32,7 +32,7 @@ class Search extends AbstractType
                 'required' => false,
                 'autocomplete' => true,
                 'choices' => $options['chipsetManufacturers'],
-                'placeholder' => 'Select a chipset manufacturer ...',
+                'placeholder' => 'Type to select a chipset manufacturer ...',
             ])
             ->add('itemsPerPage', EnumType::class, [
                 'class' => ItemsPerPageType::class,

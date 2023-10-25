@@ -72,7 +72,7 @@ class Search extends AbstractType
                 'expanded' => false,
                 'required' => false,
                 'choices' => $options['moboManufacturers'],
-                'placeholder' => 'Select a manufacturer ...'
+                'placeholder' => 'Type to select a manufacturer ...'
             ])
             ->add('expansionChips', CollectionType::class, [
                 'entry_type' => ExpansionChipType::class,
@@ -93,7 +93,7 @@ class Search extends AbstractType
                 'required' => false,
                 'autocomplete' => true,
                 'choices' => $options['cpuSockets'],
-                'placeholder' => 'Select a socket ...',
+                'placeholder' => 'Type to select a socket ...',
             ])
             ->add('cpuSocket2', ChoiceType::class, [
                 'choice_label' => 'getNameAndType',
@@ -102,7 +102,7 @@ class Search extends AbstractType
                 'required' => false,
                 'autocomplete' => true,
                 'choices' => $options['cpuSockets'],
-                'placeholder' => 'Select a socket ...',
+                'placeholder' => 'Type to select a socket ...',
             ])
             ->add('formFactor', ChoiceType::class, [
                 'required' => false,
@@ -111,7 +111,7 @@ class Search extends AbstractType
                 'expanded' => false,
                 'autocomplete' => true,
                 'choices' => $options['formFactors'],
-                'placeholder' => 'Select a form factor ...',
+                'placeholder' => 'Type to select a form factor ...',
             ])
             ->add('motherboardExpansionSlots', CollectionType::class, [
                 'entry_type' => ExpansionSlotSearchType::class,
@@ -174,7 +174,7 @@ class Search extends AbstractType
                 'expanded' => false,
                 'required' => false,
                 'choices' => $chipsets,
-                'placeholder' => "Select a chipset ...",
+                'placeholder' => "Type to select a chipset ...",
             ]);
         };
         $builder->addEventListener(
@@ -198,7 +198,7 @@ class Search extends AbstractType
                 'required' => false,
                 'autocomplete' => true,
                 'choices' => $platforms,
-                'placeholder' => 'Select a processor family ...',
+                'placeholder' => 'Type to select a processor family ...',
             ]);
         };
 
@@ -234,7 +234,7 @@ class Search extends AbstractType
                 'required' => false,
                 'autocomplete' => true,
                 'choices' => $platforms,
-                'placeholder' => 'Select a processor family ...',
+                'placeholder' => 'Type to select a processor family ...',
             ]);
         };
 

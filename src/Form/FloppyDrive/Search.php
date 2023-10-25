@@ -30,7 +30,7 @@ class Search extends AbstractType
                 'required' => false,
                 'autocomplete' => true,
                 'choices' => $options['fddManufacturers'],
-                'placeholder' => 'Select a floppy drive manufacturer ...',
+                'placeholder' => 'Type to select a floppy drive manufacturer ...',
             ])
             ->add('itemsPerPage', EnumType::class, [
                 'class' => ItemsPerPageType::class,

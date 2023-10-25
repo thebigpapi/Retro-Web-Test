@@ -25,30 +25,7 @@
 				</div>
 			</div>
 		</section>
-		<section class="search-form-grid search-form-grid-tight">
-			<div class="search-form-header">Search results options</div>
-			<div class="search-form-entry">
-				<label class="search-form-label">
-					<span>Items per page</span>
-				</label>
-				<div class="search-form-widget">
-					<div>{{ form_widget(form.itemsPerPage) }}</div>
-				</div>
-			</div>
-		</section>
-		<!-- Search toolbar -->
-		<div class="toolbar toolbar-main">
-			<button type="button" onclick="document.getElementById('rst-btn').click();return false;">
-				<img src="{{ absolute_url(asset('build/icons/reset.svg')) }}" alt="reset" width="24" height="24">
-				<span>Reset fields</span>
-			</button>
-			<button id="search-paginate-id" type="button" data-paginate="1" data-target="drivers">
-				<img src="{{ absolute_url(asset('build/icons/search.svg')) }}" alt="search" width="24" height="24">
-				<span>Search</span>
-			</button>
-			<input id="rst-btn" type="reset" value="reset" data-reset-ids='search_fddManufacturer'>
-			<input id="pagination_redir" type="button" data-results-id='search_liveResults' value="1">
-		</div>
+		{% include 'macros/searchitems.html.twig' with {'datatarget': 'drivers', 'dataresetids': ''} %}
 	</fieldset>
 	{{ form_end(form, {render_rest: false}) }}
 	<!-- Search results -->

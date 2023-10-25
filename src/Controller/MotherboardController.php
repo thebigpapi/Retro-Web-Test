@@ -335,7 +335,6 @@ class MotherboardController extends AbstractController
 
         $parameters['showImages'] = $form['searchWithImages']->getData();
         $parameters['name'] = $form['name']->getData();
-        $parameters['chipsetManufacturerId'] = "NULL";
 
         if ($form['formFactor']->getData()) {
             if ($form['formFactor']->getData()->getId() == 0) {

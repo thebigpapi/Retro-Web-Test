@@ -33,7 +33,7 @@ class Search extends AbstractType
                 'required' => false,
                 'autocomplete' => true,
                 'choices' => $options['hddManufacturers'],
-                'placeholder' => 'Select a hard drive manufacturer ...',
+                'placeholder' => 'Type to select a hard drive manufacturer ...',
             ])
             ->add('itemsPerPage', EnumType::class, [
                 'class' => ItemsPerPageType::class,
