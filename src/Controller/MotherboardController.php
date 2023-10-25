@@ -89,25 +89,24 @@ class MotherboardController extends AbstractController
 
         $showImages = boolval(htmlentities($request->query->get('showImages') ?? ''));
         $maxItems = $request->query->getInt('itemsPerPage', $request->request->getInt('itemsPerPage', $this->getParameter('app.pagination.max')));
-        if ($criterias == array()) {
+        if (empty($criterias)) {
             return $this->render('motherboard/search.html.twig', [
                 'form' => $form->createView(),
             ]);
         }
-        else{
-            $data = $motherboardRepository->findByWithJoin($criterias);
-            $motherboards = $paginator->paginate(
-                $data,
-                $request->query->getInt('page', 1),
-                $maxItems
-            );
-            return $this->render('motherboard/search.html.twig', [
-                'form' => $form->createView(),
-                'controller_name' => 'MotherboardController',
-                'motherboards' => $motherboards,
-                'show_images' => $showImages,
-            ]);
-        }
+        
+        $data = $motherboardRepository->findByWithJoin($criterias);
+        $motherboards = $paginator->paginate(
+            $data,
+            $request->query->getInt('page', 1),
+            $maxItems
+        );
+        return $this->render('motherboard/search.html.twig', [
+            'form' => $form->createView(),
+            'controller_name' => 'MotherboardController',
+            'motherboards' => $motherboards,
+            'show_images' => $showImages,
+        ]);
     }
 
     #[Route('/motherboards/results', name: 'mobolivesearch')]

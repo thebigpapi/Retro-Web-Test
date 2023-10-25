@@ -43,27 +43,24 @@ class ChipsetController extends AbstractController
         $criterias = $this->getCriteriaChipset($request);
         $showImages = boolval(htmlentities($request->query->get('showImages')));
         $maxItems = $request->query->getInt('itemsPerPage', $request->request->getInt('itemsPerPage', $this->getParameter('app.pagination.max')));
-        if ($criterias == array()) {
+        if (empty($criterias)) {
             return $this->render('chipset/search.html.twig', [
                 'form' => $form->createView(),
             ]);
         }
-        else{
-            $data = $chipsetRepository->findByChipset($criterias);
-            $chipsets = $paginator->paginate(
-                $data,
-                $request->query->getInt('page', 1),
-                $maxItems
-            );
-            return $this->render('chipset/search.html.twig', [
-                'form' => $form->createView(),
-                'controller_name' => 'ChipsetController',
-                'chipsets' => $chipsets,
-                'show_images' => $showImages,
-            ]);
-        }
 
-
+        $data = $chipsetRepository->findByChipset($criterias);
+        $chipsets = $paginator->paginate(
+            $data,
+            $request->query->getInt('page', 1),
+            $maxItems
+        );
+        return $this->render('chipset/search.html.twig', [
+            'form' => $form->createView(),
+            'controller_name' => 'ChipsetController',
+            'chipsets' => $chipsets,
+            'show_images' => $showImages,
+        ]);
     }
 
     #[Route('/chipsets/live', name: 'chipsetlivewrapper')]

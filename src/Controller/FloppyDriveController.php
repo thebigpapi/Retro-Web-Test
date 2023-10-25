@@ -42,25 +42,24 @@ class FloppyDriveController extends AbstractController
         $criterias = $this->getCriteriaFdd($request);
         $showImages = boolval(htmlentities($request->query->get('showImages')));
         $maxItems = $request->query->getInt('itemsPerPage', $request->request->getInt('itemsPerPage', $this->getParameter('app.pagination.max')));
-        if ($criterias == array()) {
+        if (empty($criterias)) {
             return $this->render('floppydrive/search.html.twig', [
                 'form' => $form->createView(),
             ]);
         }
-        else{
-            $data = $fddRepository->findByFdd($criterias);
-            $fdds = $paginator->paginate(
-                $data,
-                $request->query->getInt('page', 1),
-                $maxItems
-            );
-            return $this->render('floppydrive/search.html.twig', [
-                'form' => $form->createView(),
-                'controller_name' => 'FloppyDriveController',
-                'fdds' => $fdds,
-                'show_images' => $showImages,
-            ]);
-        }
+
+        $data = $fddRepository->findByFdd($criterias);
+        $fdds = $paginator->paginate(
+            $data,
+            $request->query->getInt('page', 1),
+            $maxItems
+        );
+        return $this->render('floppydrive/search.html.twig', [
+            'form' => $form->createView(),
+            'controller_name' => 'FloppyDriveController',
+            'fdds' => $fdds,
+            'show_images' => $showImages,
+        ]);
     }
     #[Route('/floppydrives/live', name: 'fddlivewrapper')]
     public function liveSearchFdd(Request $request, ManufacturerRepository $manufacturerRepository): Response

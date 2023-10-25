@@ -47,25 +47,25 @@ class ProcessorController extends AbstractController
         $criterias = $this->getCriteriaCpu($request);
         $showImages = boolval(htmlentities($request->query->get('showImages')));
         $maxItems = $request->query->getInt('itemsPerPage', $request->request->getInt('itemsPerPage', $this->getParameter('app.pagination.max')));
-        if ($criterias == array()) {
+        if (empty($criterias)) {
             return $this->render('cpu/search.html.twig', [
                 'form' => $form->createView(),
             ]);
         }
-        else{
-            $data = $cpuRepository->findByCPU($criterias);
-            $cpus = $paginator->paginate(
-                $data,
-                $request->query->getInt('page', 1),
-                $maxItems
-            );
-            return $this->render('cpu/search.html.twig', [
-                'form' => $form->createView(),
-                'controller_name' => 'ProcessorController',
-                'show_images' => $showImages,
-                'cpus' => $cpus,
-            ]);
-        }
+
+        $data = $cpuRepository->findByCPU($criterias);
+        $cpus = $paginator->paginate(
+            $data,
+            $request->query->getInt('page', 1),
+            $maxItems
+        );
+        return $this->render('cpu/search.html.twig', [
+            'form' => $form->createView(),
+            'controller_name' => 'ProcessorController',
+            'show_images' => $showImages,
+            'cpus' => $cpus,
+        ]);
+        
     }
     #[Route('/cpus/live', name: 'cpulivewrapper')]
     public function liveSearchCpu(Request $request, ManufacturerRepository $manufacturerRepository, CpuSpeedRepository $cpuSpeedRepository): Response

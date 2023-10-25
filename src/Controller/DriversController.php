@@ -40,24 +40,23 @@ class DriversController extends AbstractController
         //get criterias
         $criterias = $this->getCriteriaDriver($request);
         $maxItems = $request->query->getInt('itemsPerPage', $request->request->getInt('itemsPerPage', $this->getParameter('app.pagination.max')));
-        if ($criterias == array()) {
+        if (empty($criterias)) {
             return $this->render('drivers/search.html.twig', [
                 'form' => $form->createView(),
             ]);
         }
-        else{
-            $data = $driverRepository->findByDriver($criterias);
-            $drivers = $paginator->paginate(
-                $data,
-                $request->query->getInt('page', 1),
-                $maxItems
-            );
-            return $this->render('drivers/search.html.twig', [
-                'form' => $form->createView(),
-                'controller_name' => 'DriversController',
-                'drivers' => $drivers,
-            ]);
-        }
+        
+        $data = $driverRepository->findByDriver($criterias);
+        $drivers = $paginator->paginate(
+            $data,
+            $request->query->getInt('page', 1),
+            $maxItems
+        );
+        return $this->render('drivers/search.html.twig', [
+            'form' => $form->createView(),
+            'controller_name' => 'DriversController',
+            'drivers' => $drivers,
+        ]);
     }
     #[Route('/drivers/live', name: 'driverlivewrapper')]
     public function liveSearchDriver(Request $request): Response

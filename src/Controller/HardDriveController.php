@@ -42,25 +42,24 @@ class HardDriveController extends AbstractController
         $criterias = $this->getCriteriaHdd($request);
         $showImages = boolval(htmlentities($request->query->get('showImages')));
         $maxItems = $request->query->getInt('itemsPerPage', $request->request->getInt('itemsPerPage', $this->getParameter('app.pagination.max')));
-        if ($criterias == array()) {
+        if (empty($criterias)) {
             return $this->render('harddrive/search.html.twig', [
                 'form' => $form->createView(),
             ]);
         }
-        else{
-            $data = $hddRepository->findByHdd($criterias);
-            $hdds = $paginator->paginate(
-                $data,
-                $request->query->getInt('page', 1),
-                $maxItems
-            );
-            return $this->render('harddrive/search.html.twig', [
-                'form' => $form->createView(),
-                'controller_name' => 'HardDriveController',
-                'hdds' => $hdds,
-                'show_images' => $showImages,
-            ]);
-        }
+
+        $data = $hddRepository->findByHdd($criterias);
+        $hdds = $paginator->paginate(
+            $data,
+            $request->query->getInt('page', 1),
+            $maxItems
+        );
+        return $this->render('harddrive/search.html.twig', [
+            'form' => $form->createView(),
+            'controller_name' => 'HardDriveController',
+            'hdds' => $hdds,
+            'show_images' => $showImages,
+        ]);
     }
     #[Route('/harddrives/live', name: 'hddlivewrapper')]
     public function liveSearchHdd(Request $request, ManufacturerRepository $manufacturerRepository): Response
