@@ -419,14 +419,6 @@ class MotherboardController extends AbstractController
                 array_push($parameters['dramTypeIds'], $type->getId());
             }
         }
-
-        /*if ($form['chipsetManufacturer']->getData() && !$form['chipset']->getData()) {
-            if ($form['chipsetManufacturer']->getData()->getId() == 0) {
-                $parameters['chipsetManufacturerId']  = "NULL";
-            } else {
-                $parameters['chipsetManufacturerId'] = $form['chipsetManufacturer']->getData()->getId();
-            }
-        }*/
         return $parameters;
     }
 

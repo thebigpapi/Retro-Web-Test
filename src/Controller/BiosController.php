@@ -130,13 +130,6 @@ class BiosController extends AbstractController
     private function searchFormToParamBios(Request $request, $form): array
     {
         $parameters = array();
-        if ($form['chipsetManufacturer']->getData()) {
-            if ($form['chipsetManufacturer']->getData()->getId() == 0) {
-                $parameters['chipsetManufacturerId']  = "NULL";
-            } else {
-                $parameters['chipsetManufacturerId'] = $form['chipsetManufacturer']->getData()->getId();
-            }
-        }
 
         $parameters['page'] = intval($request->request->get('page') ?? $request->query->get('page') ?? 1);
         $parameters['domTarget'] = $request->request->get('domTarget') ?? $request->query->get('domTarget') ?? "";
@@ -167,8 +160,19 @@ class BiosController extends AbstractController
         if ($filePresent = $form['file_present']->getData()) {
             $parameters['filePresent'] = $filePresent;
         }
-        if ($chipset = $form['chipset']->getData()) {
-            $parameters['chipsetId'] = $chipset->getId();
+        if ($form['chipset']->getData()) {
+            if ($form['chipset']->getData()->getId() == 0) {
+                if ($form['chipset']->getData()->getName() == " chipset of any kind"){
+                    $parameters['chipsetManufacturerId'] = $form['chipset']->getData()->getManufacturer()->getId();
+                }
+                else{
+                    $parameters['chipsetId']  = "NULL";
+                }
+            }
+            else {
+                $parameters['chipsetId'] = $form['chipset']->getData()->getId();
+            }
+
         }
 
         return $parameters;

@@ -16,6 +16,14 @@ let static_selects = [
     "cpuSpeed",
     "fsbSpeed"
 ];
+let dynamic_selects = [
+    'motherboardExpansionSlots-fields-list',
+    'motherboardIoPorts-fields-list',
+    'expansionChips-fields-list',
+    'dramTypes-fields-list',
+    'sockets-fields-list',
+    'platforms-fields-list'
+];
 // init tom-selects
 for(let item of static_selects){
     loadTS(item);
@@ -101,6 +109,10 @@ function reset() {
             var control = select.tomselect;
             control.clear();
         }
+    }
+    for(let id of dynamic_selects){
+        if(select = document.getElementById(id))
+            select.innerHTML = "";
     }
     let search = document.getElementById("search_liveResults");
     if (search) {

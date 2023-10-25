@@ -5,6 +5,8 @@ namespace App\Form\Bios;
 use App\Entity\Chipset;
 use App\Form\Type\ItemsPerPageType;
 use App\Form\Type\ExpansionChipType;
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\EnumType;
@@ -12,10 +14,8 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use App\Entity\Manufacturer;
-use App\Entity\ExpansionChip;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormEvent;
@@ -23,6 +23,16 @@ use Symfony\Component\Form\FormInterface;
 
 class Search extends AbstractType
 {
+    private EntityManagerInterface $entityManager;
+
+    public function __construct(EntityManagerInterface $entityManager)
+    {
+        $this->entityManager = $entityManager;
+    }
+    private function getManufacturerRepository(): EntityRepository
+    {
+        return $this->entityManager->getRepository(Manufacturer::class);
+    }
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -32,16 +42,6 @@ class Search extends AbstractType
             ->add('core_version', TextType::class, [
                 'required' => false,
             ])
-            ->add('chipsetManufacturer', ChoiceType::class, [
-                'choice_label' => 'getName',
-                'multiple' => false,
-                'expanded' => false,
-                'required' => false,
-                'autocomplete' => true,
-                'choices' => $options['chipsetManufacturers'],
-                'placeholder' => 'Type to select a chipset manufacturer ...',
-            ])
-
             ->add('manufacturer', EntityType::class, [
                 'class' => Manufacturer::class,
                 'autocomplete' => true,
@@ -82,19 +82,35 @@ class Search extends AbstractType
             /**
              * @var Chipset[]
              */
-            $chipsets = $chipsetManufacturer?->getChipsets()->toArray() ?? [];
-
-            usort($chipsets, function (Chipset $a, Chipset $b) {
-                return strnatcasecmp($a->getNameCached() ?? '', $b->getNameCached() ?? '');
-            });
-            $chipTag = null === $chipsetManufacturer ? "No chipset selected!" : "Type to select any " . $chipsetManufacturer->getName() . " chipset ...";
+            $chipsets = [];
+            $chipsetManuf = $this->getManufacturerRepository()->findAllChipsetManufacturer();
+            usort(
+                $chipsetManuf,
+                function (Manufacturer $a, Manufacturer $b) {
+                    return strcmp($a->getName(), $b->getName());
+                }
+            );
+            foreach($chipsetManuf as $man){
+                $cm = $man->getChipsets()->toArray() ?? [];
+                $any = new Chipset;
+                $any->setName(" chipset of any kind");
+                $any->setManufacturer($man);
+                array_unshift($cm, $any);
+                $chipsets = array_merge($chipsets, $cm);
+            }
+            usort(
+                $chipsets,
+                function (Chipset $a, Chipset $b) {
+                    return strcmp($a->getNameCached(), $b->getNameCached());
+                }
+            );
             $form->add('chipset', ChoiceType::class, [
-                'choice_label' => 'getNameCached',
+                'choice_label' => 'getNameCachedSearch',
                 'multiple' => false,
                 'expanded' => false,
                 'required' => false,
                 'choices' => $chipsets,
-                'placeholder' => $chipTag,
+                'placeholder' => "Type to select a chipset ...",
             ]);
         };
 
@@ -105,20 +121,6 @@ class Search extends AbstractType
                 $data = $event->getData();
 
                 $formModifier($event->getForm(), null);
-            }
-        );
-
-
-        $builder->get('chipsetManufacturer')->addEventListener(
-            FormEvents::POST_SUBMIT,
-            function (FormEvent $event) use ($formModifier) {
-                // It's important here to fetch $event->getForm()->getData(), as
-                // $event->getData() will get you the client data (that is, the ID)
-                $chipsetManufacturer = $event->getForm()->getData();
-
-                // since we've added the listener to the child, we'll have to pass on
-                // the parent to the callback functions!
-                $formModifier($event->getForm()->getParent(), $chipsetManufacturer);
             }
         );
     }
