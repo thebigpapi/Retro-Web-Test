@@ -22,6 +22,7 @@ use App\Entity\Manufacturer;
 use App\Entity\CpuSocket;
 use App\Entity\FormFactor;
 use App\Entity\ProcessorPlatformType;
+use App\Repository\ManufacturerRepository;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormInterface;
@@ -39,6 +40,10 @@ class Search extends AbstractType
     private function getProcessorPlatformTypeRepository(): EntityRepository
     {
         return $this->entityManager->getRepository(ProcessorPlatformType::class);
+    }
+    private function getManufacturerRepository(): EntityRepository
+    {
+        return $this->entityManager->getRepository(Manufacturer::class);
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -66,18 +71,8 @@ class Search extends AbstractType
                 'multiple' => false,
                 'expanded' => false,
                 'required' => false,
-                'attr' => ['data-ea-widget' => 'ea-autocomplete'],
                 'choices' => $options['moboManufacturers'],
                 'placeholder' => 'Select a manufacturer ...'
-            ])
-            ->add('chipsetManufacturer', ChoiceType::class, [
-                'choice_label' => 'getName',
-                'multiple' => false,
-                'expanded' => false,
-                'required' => false,
-                'autocomplete' => true,
-                'choices' => $options['chipsetManufacturers'],
-                'placeholder' => 'Select a chipset manufacturer ...',
             ])
             ->add('expansionChips', CollectionType::class, [
                 'entry_type' => ExpansionChipType::class,
@@ -151,35 +146,35 @@ class Search extends AbstractType
             /**
              * @var Chipset[]
              */
-            $chipsets = $chipsetManufacturer?->getChipsets()->toArray() ?? [];
-            $unidentified = null;
-
-            foreach ($chipsets as $key => $val) {
-                if ($val->getName() == "unidentified") {
-                    $unidentified = $val;
-                    unset($chipsets[$key]);
+            $chipsets = [];
+            $chipsetManuf = $this->getManufacturerRepository()->findAllChipsetManufacturer();
+            usort(
+                $chipsetManuf,
+                function (Manufacturer $a, Manufacturer $b) {
+                    return strcmp($a->getName(), $b->getName());
                 }
+            );
+            foreach($chipsetManuf as $man){
+                $cm = $man->getChipsets()->toArray() ?? [];
+                $any = new Chipset;
+                $any->setName(" chipset of any kind");
+                $any->setManufacturer($man);
+                array_unshift($cm, $any);
+                $chipsets = array_merge($chipsets, $cm);
             }
-
             usort(
                 $chipsets,
                 function (Chipset $a, Chipset $b) {
                     return strcmp($a->getNameCached(), $b->getNameCached());
                 }
             );
-
-            if ($unidentified) {
-                array_unshift($chipsets, $unidentified);
-            }
-            $chipTag = (null === $chipsetManufacturer) ? "No chipset selected!" : "any " . $chipsetManufacturer->getName() . " chipset";
             $form->add('chipset', ChoiceType::class, [
                 'choice_label' => 'getNameCached',
                 'multiple' => false,
                 'expanded' => false,
                 'required' => false,
-                //'autocomplete' => true,
                 'choices' => $chipsets,
-                'placeholder' => $chipTag,
+                'placeholder' => "Select a chipset ...",
             ]);
         };
         $builder->addEventListener(
@@ -187,14 +182,6 @@ class Search extends AbstractType
             function (FormEvent $event) use ($formModifier) {
                 $data = $event->getData();
                 $formModifier($event->getForm(), null);
-            }
-        );
-
-        $builder->get('chipsetManufacturer')->addEventListener(
-            FormEvents::POST_SUBMIT,
-            function (FormEvent $event) use ($formModifier) {
-                $chipsetManufacturer = $event->getForm()->getData();
-                $formModifier($event->getForm()->getParent(), $chipsetManufacturer);
             }
         );
 

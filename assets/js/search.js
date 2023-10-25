@@ -1,10 +1,12 @@
 //initialize tom-select
 var settings = {};
+const form = document.forms[0];
 let static_selects = [
     "chipsetManufacturer",
     "moboManufacturer",
     "expansionChipManufacturer",
     "cpuManufacturer",
+    "chipset",
     "cpuSocket1",
     "cpuSocket2",
     "manufacturer",
@@ -14,15 +16,9 @@ let static_selects = [
     "cpuSpeed",
     "fsbSpeed"
 ];
+// init tom-selects
 for(let item of static_selects){
     loadTS(item);
-}
-function loadTS(targetId){
-    console.log("called" + targetId);
-    if(el = document.getElementById('search_' + targetId)){
-        new TomSelect('#search_' + targetId, settings);
-        el.tomselect.sync();
-    }
 }
 // event listeners
 if(search_paginate = document.getElementById('search-paginate-id'))
@@ -31,11 +27,6 @@ if(search_paginate = document.getElementById('search-paginate-id'))
     }, false);
 if(search_live = document.getElementById('pagination_redir'))
     search_live.addEventListener("click", searchLive);
-let chpsel = document.getElementById('search_chipsetManufacturer');
-if(chpsel && document.getElementById('search_chipset'))
-    chpsel.addEventListener("change", function(){
-        setResult(chpsel.name, chpsel.value, chpsel.getAttribute('data-target-id'));
-    }, false);
 if(cpu1sel = document.getElementById('search_cpuSocket1'))
     cpu1sel.addEventListener("change", function(){
         setResult(cpu1sel.name, cpu1sel.value, cpu1sel.getAttribute('data-target-id'));
@@ -46,6 +37,37 @@ if(cpu2sel = document.getElementById('search_cpuSocket2'))
     }, false);
 if(resetbtn = document.getElementById('rst-btn'))
     resetbtn.addEventListener("click", reset);
+// cookies
+if(search_image = document.getElementById('search_searchWithImages')){
+    if(getCookie('searchImage') == "false")
+        search_image.nextElementSibling.click();
+    search_image.addEventListener("click", function(){
+        setCookie('searchImage', search_image.checked, 5);
+    }, false);
+}
+// functions
+function setCookie(cName, cValue, expDays) {
+    let date = new Date();
+    date.setTime(date.getTime() + (expDays * 24 * 60 * 60 * 1000));
+    const expires = "expires=" + date.toUTCString();
+    document.cookie = cName + "=" + cValue + "; " + expires + "; path=/";
+}
+function getCookie(cName) {
+    const name = cName + "=";
+    const cDecoded = decodeURIComponent(document.cookie); //to be careful
+    const cArr = cDecoded .split('; ');
+    let res;
+    cArr.forEach(val => {
+        if (val.indexOf(name) === 0) res = val.substring(name.length);
+    })
+    return res;
+}
+function loadTS(targetId){
+    if(el = document.getElementById('search_' + targetId)){
+        new TomSelect('#search_' + targetId, settings);
+        el.tomselect.sync();
+    }
+}
 function displayalias(idx){
     let el = document.getElementById('cpu-alias-box-' + idx);
     if (el.getAttribute("class") == "cpu-aliases-box")
@@ -53,7 +75,6 @@ function displayalias(idx){
     else
         el.setAttribute("class", "cpu-aliases-box");
 }
-const form = document.forms[0];
 form.addEventListener("keydown", (e) => {
     if (!e.repeat && e.key == "Enter") {
         console.log(e.key);

@@ -99,7 +99,9 @@ class Chipset
     }
     public function getNameCached(): string
     {
-        return $this->getNameWithoutParts() . " " . $this->getPartsCached();
+        $output = $this->getNameWithoutParts() . " " . $this->getPartsCached();
+        $output = strlen($output) > 80 ? substr($output,0,80)."..." : $output;
+        return $output;
     }
     public function getNameWithoutParts(): string
     {
@@ -140,7 +142,11 @@ class Chipset
     }
     public function getPartsCached(): string
     {
-        return ($this->getCachedName() != "") ? $this->getCachedName() : "[uncached parts]";
+        $output = "";
+        if($this->name == " chipset of any kind")
+            return $output;
+        $output = ($this->getCachedName() != "") ? $this->getCachedName() : "[uncached parts]";
+        return $output;
     }
     /**
      * @return Collection|Motherboard[]

@@ -336,6 +336,7 @@ class MotherboardController extends AbstractController
 
         $parameters['showImages'] = $form['searchWithImages']->getData();
         $parameters['name'] = $form['name']->getData();
+        $parameters['chipsetManufacturerId'] = "NULL";
 
         if ($form['formFactor']->getData()) {
             if ($form['formFactor']->getData()->getId() == 0) {
@@ -347,10 +348,17 @@ class MotherboardController extends AbstractController
 
         if ($form['chipset']->getData()) {
             if ($form['chipset']->getData()->getId() == 0) {
-                $parameters['chipsetId']  = "NULL";
-            } else {
+                if ($form['chipset']->getData()->getName() == " chipset of any kind"){
+                    $parameters['chipsetManufacturerId'] = $form['chipset']->getData()->getManufacturer()->getId();
+                }
+                else{
+                    $parameters['chipsetId']  = "NULL";
+                }
+            }
+            else {
                 $parameters['chipsetId'] = $form['chipset']->getData()->getId();
             }
+
         }
 
         if ($form['cpuSocket1']->getData()) {
@@ -414,13 +422,13 @@ class MotherboardController extends AbstractController
             }
         }
 
-        if ($form['chipsetManufacturer']->getData() && !$form['chipset']->getData()) {
+        /*if ($form['chipsetManufacturer']->getData() && !$form['chipset']->getData()) {
             if ($form['chipsetManufacturer']->getData()->getId() == 0) {
                 $parameters['chipsetManufacturerId']  = "NULL";
             } else {
                 $parameters['chipsetManufacturerId'] = $form['chipsetManufacturer']->getData()->getId();
             }
-        }
+        }*/
         return $parameters;
     }
 

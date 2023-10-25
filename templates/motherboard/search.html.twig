@@ -32,8 +32,7 @@
 					<img src="{{ absolute_url(asset('build/icons/help.svg')) }}" alt="" width="16" height="16">
 				</label>
 				<div class="search-form-widget">
-					<div id="setchip1">{{ form_widget(form.chipsetManufacturer, {'attr': {'data-action': "change->search#search", 'data-target-id': 'search_chipset', 'aria-label': "Chipset manufacturer"}}) }}</div>
-					<div>{{ form_widget(form.chipset) }}</div>
+					<div class="search-chipset-ts">{{ form_widget(form.chipset) }}</div>
 				</div>
 			</div>
 
@@ -179,7 +178,7 @@
 				<span>Search</span>
 			</button>
 			<input id="rst-btn" type="reset" value="reset" data-reset-ids='search_chipsetManufacturer search_cpuSocket1 search_cpuSocket2'>
-			<input id="pagination_redir" type="button" value="" data-results-id='search_liveResults' value="1">
+			<input id="pagination_redir" type="button" data-results-id='search_liveResults' value="1">
 		</div>
 	</fieldset>
 	{{ form_end(form, {render_rest: false}) }}
