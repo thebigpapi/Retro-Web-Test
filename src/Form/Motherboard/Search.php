@@ -169,7 +169,7 @@ class Search extends AbstractType
                 }
             );
             $form->add('chipset', ChoiceType::class, [
-                'choice_label' => 'getNameCached',
+                'choice_label' => 'getNameCachedSearch',
                 'multiple' => false,
                 'expanded' => false,
                 'required' => false,

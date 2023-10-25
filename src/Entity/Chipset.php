@@ -99,9 +99,29 @@ class Chipset
     }
     public function getNameCached(): string
     {
-        $output = $this->getNameWithoutParts() . " " . $this->getPartsCached();
-        $output = strlen($output) > 80 ? substr($output,0,80)."..." : $output;
-        return $output;
+        return $this->getNameWithoutParts() . " " . $this->getPartsCached();
+    }
+    public function getNameCachedSearch(): string
+    {
+        $fullName = $this->getManufacturer()->getName();
+        if($this->getId() == null)
+            return "any " . $fullName . " chipset";
+        if ($this->part_no) {
+            $fullName .= " $this->part_no";
+            if ($this->name) {
+                $fullName .= " ($this->name) ". $this->getPartsCached();
+            }
+        } else {
+            if ($this->name) {
+                $fullName .= " $this->name";
+                if(strtolower($this->name) != "unidentified")
+                    $fullName .= " " . $this->getPartsCached();
+            } else {
+                $fullName .= " unidentified";
+            }
+        }
+        $fullName = strlen($fullName) > 80 ? substr($fullName,0,80)."..." : $fullName;
+        return $fullName;
     }
     public function getNameWithoutParts(): string
     {
@@ -142,11 +162,7 @@ class Chipset
     }
     public function getPartsCached(): string
     {
-        $output = "";
-        if($this->name == " chipset of any kind")
-            return $output;
-        $output = ($this->getCachedName() != "") ? $this->getCachedName() : "[uncached parts]";
-        return $output;
+        return ($this->getCachedName() != "") ? $this->getCachedName() : "[uncached parts]";
     }
     /**
      * @return Collection|Motherboard[]
