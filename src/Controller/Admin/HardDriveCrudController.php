@@ -3,10 +3,12 @@
 namespace App\Controller\Admin;
 
 use App\Entity\HardDrive;
+use App\Entity\StorageDevice;
 use App\Form\Type\AudioFileType;
 use App\Form\Type\KnownIssueType;
 use App\Form\Type\StorageDeviceAliasType;
 use App\Form\Type\StorageDeviceDocumentationType;
+use App\Form\Type\StorageDeviceIdRedirectionType;
 use App\Form\Type\StorageDeviceImageTypeForm;
 use App\Form\Type\StorageDeviceInterfaceType;
 use Doctrine\ORM\EntityManagerInterface;
@@ -200,6 +202,12 @@ class HardDriveCrudController extends AbstractCrudController
             ->setFormTypeOption('error_bubbling', false)
             ->setColumns(6)
             ->renderExpanded()
+            ->onlyOnForms();
+        yield CollectionField::new('redirections', 'Redirections')
+            ->setEntryType(StorageDeviceIdRedirectionType::class)
+            ->renderExpanded()
+            ->setFormTypeOption('error_bubbling', false)
+            ->setColumns('col-sm-12 col-lg-6 col-xxl-4')
             ->onlyOnForms();
 
         // show and index

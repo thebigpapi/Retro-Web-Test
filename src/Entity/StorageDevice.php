@@ -47,7 +47,9 @@ class StorageDevice
     #[Assert\Valid()]
     private $storageDeviceImages;
 
-
+    #[ORM\OneToMany(targetEntity: StorageDeviceIdRedirection::class, mappedBy: 'destination', orphanRemoval: true, cascade: ['persist'])]
+    #[Assert\Valid()]
+    private $redirections;
 
     #[ORM\ManyToOne(targetEntity: StorageDeviceSize::class, inversedBy: 'storageDevices')]
     private $physicalSize = null;
@@ -69,6 +71,7 @@ class StorageDevice
         $this->storageDeviceDocumentations = new ArrayCollection();
         $this->storageDeviceImages = new ArrayCollection();
         $this->storageDeviceAliases = new ArrayCollection();
+        $this->redirections = new ArrayCollection();
         $this->lastEdited = new \DateTime('now');
         $this->interfaces = new ArrayCollection();
     }
@@ -286,6 +289,34 @@ class StorageDevice
             // set the owning side to null (unless already changed)
             if ($storageDeviceAlias->getStorageDevice() === $this) {
                 $storageDeviceAlias->setStorageDevice(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|MotherboardIdRedirection[]
+     */
+    public function getRedirections(): Collection
+    {
+        return $this->redirections;
+    }
+    public function addRedirection(StorageDeviceIdRedirection $redirection): self
+    {
+        if (!$this->redirections->contains($redirection)) {
+            $this->redirections[] = $redirection;
+            $redirection->setDestination($this);
+        }
+
+        return $this;
+    }
+    public function removeRedirection(StorageDeviceIdRedirection $redirection): self
+    {
+        if ($this->redirections->removeElement($redirection)) {
+            // set the owning side to null (unless already changed)
+            if ($redirection->getDestination() === $this) {
+                $redirection->setDestination(null);
             }
         }
 

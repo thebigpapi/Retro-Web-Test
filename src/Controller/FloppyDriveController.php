@@ -3,33 +3,43 @@
 namespace App\Controller;
 
 use App\Entity\Manufacturer;
+use App\Entity\StorageDeviceIdRedirection;
 use App\Form\FloppyDrive\Search;
 use App\Repository\FloppyDriveRepository;
 use App\Repository\ManufacturerRepository;
+use App\Repository\StorageDeviceIdRedirectionRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Knp\Component\Pager\PaginatorInterface;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 class FloppyDriveController extends AbstractController
 {
     #[Route(path: '/floppydrives/{id}', name: 'floppy_drive_show', requirements: ['id' => '\d+'])]
-    public function floppyDriveShow(int $id, FloppyDriveRepository $floppyDriveRepository)
+    public function floppyDriveShow(int $id, FloppyDriveRepository $floppyDriveRepository, StorageDeviceIdRedirectionRepository $storageDeviceIdRedirectionRepository)
     {
         $fdd = $floppyDriveRepository->find($id);
         if (!$fdd) {
-            throw $this->createNotFoundException(
-                'No floppy drive found for id ' . $id
-            );
-        } else {
-            return $this->render('floppydrive/show.html.twig', [
-                'floppydrive' => $fdd,
-                'controller_name' => 'FloppyDriveController',
-            ]);
-        }
+            $idRedirection = $storageDeviceIdRedirectionRepository->findRedirection($id, 'trw');
+
+            if (!$idRedirection) {
+                throw $this->createNotFoundException(
+                    'No floppy drive found for id ' . $id
+                );
+            } 
+            return $this->redirect($this->generateUrl('floppy_drive_show', array("id" => $idRedirection)));
+        } 
+        return $this->render('floppydrive/show.html.twig', [
+            'floppydrive' => $fdd,
+            'controller_name' => 'FloppyDriveController',
+        ]);
     }
+
     #[Route(path: '/floppydrives/', name: 'fddsearch', methods: ['GET'])]
     public function searchResultFdd(Request $request, PaginatorInterface $paginator, FloppyDriveRepository $fddRepository, ManufacturerRepository $manufacturerRepository)
     {
@@ -93,6 +103,97 @@ class FloppyDriveController extends AbstractController
             'params' => substr($string, 0, -1),
         ]);
     }
+
+    #[Route('/dashboard/floppy-drive-delete/{id}', name: 'floppy_drive_delete', requirements: ["id" => "\d+"])]
+    public function delete(
+        Request $request,
+        int $id,
+        FloppyDriveRepository $floppyDriveRepository,
+        EntityManagerInterface $entityManager
+    ): Response {
+        $fdd = $floppyDriveRepository->find($id);
+
+        if (!$fdd) {
+            throw $this->createNotFoundException(
+                'No $fdd found for id ' . $id
+            );
+        }
+        //$slug = $fdd->getSlug();
+
+        $form = $this->createFormBuilder()
+            ->add('No', SubmitType::class)
+            ->add('Yes', SubmitType::class)
+            ->add('Redirection', NumberType::class, [
+                'required' => false,
+            ])
+            ->getForm();
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            /**
+             * @var ClickableInterface
+             */
+            $noButton = $form->get('No');
+            /**
+             * @var ClickableInterface
+             */
+            $yesButton = $form->get('Yes');
+            if ($noButton->isClicked()) {
+                return $this->redirect($this->generateUrl('floppy_drive_show', array("id" => $id)));
+            }
+            if ($yesButton->isClicked()) {
+                //If user selected a fdd where the current id will redirect to
+                if ($form->get('Redirection') && !is_null($form->get('Redirection')->getData())) {
+                    $idRedirection = $form->get('Redirection')->getData();
+                    $destinationFdd = $floppyDriveRepository->find($idRedirection);
+
+
+                    if ($destinationFdd) {
+                        //Creating new redirection
+                        $redirection = new StorageDeviceIdRedirection();
+                        $redirection->setSource($id);
+                        $redirection->setSourceType('trw');
+                        $redirection->setDestination($destinationFdd);
+
+                        /*$slugRedirection = new StorageDeviceIdRedirection();
+                        $slugRedirection->setSource($slug);
+                        $slugRedirection->setSourceType('trw_slug');
+                        $slugRedirection->setDestination($destinationFdd);*/
+
+                        $entityManager->persist($redirection);
+                        //$entityManager->persist($slugRedirection);
+
+                        //Moving each old redirection to the destination storageDevice
+                        foreach ($fdd->getRedirections()->toArray() as $redirection) {
+                            $newRedirection = new StorageDeviceIdRedirection();
+                            $newRedirection->setSource($redirection->getSource());
+                            $newRedirection->setSourceType($redirection->getSourceType());
+                            $newRedirection->setDestination($destinationFdd);
+                            $entityManager->persist($newRedirection);
+                        }
+                    } else {
+                        throw $this->createNotFoundException(
+                            'No $fdd found for id ' . $idRedirection
+                        );
+                    }
+                }
+                //Deleting the fdd
+                $entityManager->remove($fdd);
+                $entityManager->flush();
+                return $this->render('storagedevice/delete_confirm.html.twig', [
+                    'id' => $id,
+                    'storageDeviceType' => 'FDD'
+                ]);
+            }
+        }
+
+        return $this->render('storagedevice/delete.html.twig', [
+            'form' => $form->createView(),
+            'storageDevice' => $fdd,
+            'storageDeviceType' => 'FDD'
+        ]);
+    }
+
     public function getCriteriaFdd(Request $request){
         $criterias = array();
         $name = htmlentities($request->query->get('name') ?? '');

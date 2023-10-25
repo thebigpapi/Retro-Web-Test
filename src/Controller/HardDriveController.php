@@ -3,32 +3,42 @@
 namespace App\Controller;
 
 use App\Entity\Manufacturer;
+use App\Entity\StorageDeviceIdRedirection;
 use App\Form\HardDrive\Search;
 use App\Repository\HardDriveRepository;
 use App\Repository\ManufacturerRepository;
+use App\Repository\StorageDeviceIdRedirectionRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Knp\Component\Pager\PaginatorInterface;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 class HardDriveController extends AbstractController
 {
     #[Route(path: '/harddrives/{id}', name: 'hard_drive_show', requirements: ['id' => '\d+'])]
-    public function hardDriveShow(int $id, HardDriveRepository $hardDriveRepository)
+    public function hardDriveShow(int $id, HardDriveRepository $hardDriveRepository, StorageDeviceIdRedirectionRepository $storageDeviceIdRedirectionRepository)
     {
         $hdd = $hardDriveRepository->find($id);
         if (!$hdd) {
-            throw $this->createNotFoundException(
-                'No hard drive found for id ' . $id
-            );
-        } else {
-            return $this->render('harddrive/show.html.twig', [
-                'harddrive' => $hdd,
-                'controller_name' => 'HardDriveController',
-            ]);
-        }
+            $idRedirection = $storageDeviceIdRedirectionRepository->findRedirection($id, 'trw');
+
+            if (!$idRedirection) {
+                throw $this->createNotFoundException(
+                    'No hard drive found for id ' . $id
+                );
+            } 
+            return $this->redirect($this->generateUrl('hard_drive_show', array("id" => $idRedirection)));
+        } 
+
+        return $this->render('harddrive/show.html.twig', [
+            'harddrive' => $hdd,
+            'controller_name' => 'HardDriveController',
+        ]);
     }
     #[Route(path: '/harddrives/', name: 'hddsearch', methods: ['GET'])]
     public function searchResultHdd(Request $request, PaginatorInterface $paginator, HardDriveRepository $hddRepository, ManufacturerRepository $manufacturerRepository)
@@ -111,6 +121,97 @@ class HardDriveController extends AbstractController
         }
         return $criterias;
     }
+
+    #[Route('/dashboard/hard-drive-delete/{id}', name: 'hard_drive_delete', requirements: ["id" => "\d+"])]
+    public function delete(
+        Request $request,
+        int $id,
+        HardDriveRepository $hardDriveRepository,
+        EntityManagerInterface $entityManager
+    ): Response {
+        $hdd = $hardDriveRepository->find($id);
+
+        if (!$hdd) {
+            throw $this->createNotFoundException(
+                'No $hdd found for id ' . $id
+            );
+        }
+        //$slug = $hdd->getSlug();
+
+        $form = $this->createFormBuilder()
+            ->add('No', SubmitType::class)
+            ->add('Yes', SubmitType::class)
+            ->add('Redirection', NumberType::class, [
+                'required' => false,
+            ])
+            ->getForm();
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            /**
+             * @var ClickableInterface
+             */
+            $noButton = $form->get('No');
+            /**
+             * @var ClickableInterface
+             */
+            $yesButton = $form->get('Yes');
+            if ($noButton->isClicked()) {
+                return $this->redirect($this->generateUrl('hard_drive_show', array("id" => $id)));
+            }
+            if ($yesButton->isClicked()) {
+                //If user selected a hdd where the current id will redirect to
+                if ($form->get('Redirection') && !is_null($form->get('Redirection')->getData())) {
+                    $idRedirection = $form->get('Redirection')->getData();
+                    $destinationHdd = $hardDriveRepository->find($idRedirection);
+
+
+                    if ($destinationHdd) {
+                        //Creating new redirection
+                        $redirection = new StorageDeviceIdRedirection();
+                        $redirection->setSource($id);
+                        $redirection->setSourceType('trw');
+                        $redirection->setDestination($destinationHdd);
+
+                        /*$slugRedirection = new StorageDeviceIdRedirection();
+                        $slugRedirection->setSource($slug);
+                        $slugRedirection->setSourceType('trw_slug');
+                        $slugRedirection->setDestination($destinationHdd);*/
+
+                        $entityManager->persist($redirection);
+                        //$entityManager->persist($slugRedirection);
+
+                        //Moving each old redirection to the destination motherboard
+                        foreach ($hdd->getRedirections()->toArray() as $redirection) {
+                            $newRedirection = new StorageDeviceIdRedirection();
+                            $newRedirection->setSource($redirection->getSource());
+                            $newRedirection->setSourceType($redirection->getSourceType());
+                            $newRedirection->setDestination($destinationHdd);
+                            $entityManager->persist($newRedirection);
+                        }
+                    } else {
+                        throw $this->createNotFoundException(
+                            'No $hdd found for id ' . $idRedirection
+                        );
+                    }
+                }
+                //Deleting the motherboard
+                $entityManager->remove($hdd);
+                $entityManager->flush();
+                return $this->render('storagedevice/delete_confirm.html.twig', [
+                    'id' => $id,
+                    'storageDeviceType' => 'HDD'
+                ]);
+            }
+        }
+
+        return $this->render('storagedevice/delete.html.twig', [
+            'form' => $form->createView(),
+            'storageDevice' => $hdd,
+            'storageDeviceType' => 'HDD'
+        ]);
+    }
+
     private function searchFormToParam(Request $request, $form): array
     {
         $parameters = array();
