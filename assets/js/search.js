@@ -14,6 +14,7 @@ let static_selects = [
     "platform2",
     "formFactor",
     "cpuSpeed",
+    "type",
     "fsbSpeed"
 ];
 let dynamic_selects = [

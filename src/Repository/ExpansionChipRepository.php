@@ -21,7 +21,17 @@ class ExpansionChipRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, ExpansionChip::class);
     }
-/**
+    public function hex2Int($PCIDEVID)
+    {
+        //check that characters are in hexadecimal
+        if (!preg_match("/^[\da-fA-F]{4}$/", $PCIDEVID)) {
+            return -1;
+        }
+
+        //convert to integer
+        return hexdec($PCIDEVID);
+    }
+    /**
      * @return ExpansionChip[]
      */
     public function findByExpansionChip(array $criteria): array
@@ -42,9 +52,20 @@ class ExpansionChipRepository extends ServiceEntityRepository
                 $valuesArray["nameLike$key"] = "%" . strtolower($val) . "%";
             }
         }
+        if (array_key_exists('deviceId', $criteria)) {
+            $devId = $this->hex2Int($criteria['deviceId']);
+            if($devId >= 0){
+                $whereArray[] = "dev.dev = :devLike";
+                $valuesArray["devLike"] = $devId;
+            }
+        }
         if (array_key_exists('manufacturer', $criteria)) {
             $whereArray[] = "(man.id = :manufacturerId)";
             $valuesArray["manufacturerId"] = (int)$criteria['manufacturer'];
+        }
+        if (array_key_exists('type', $criteria)) {
+            $whereArray[] = "(typ.id = :typeId)";
+            $valuesArray["typeId"] = (int)$criteria['type'];
         }
 
         // Building where statement
@@ -62,7 +83,7 @@ class ExpansionChipRepository extends ServiceEntityRepository
         else{
             $query = $entityManager->createQuery(
                 "SELECT chip
-                FROM App\Entity\ExpansionChip chip JOIN chip.manufacturer man LEFT OUTER JOIN chip.chipAliases alias
+                FROM App\Entity\ExpansionChip chip JOIN chip.manufacturer man LEFT OUTER JOIN chip.chipAliases alias LEFT JOIN chip.pciDevs dev LEFT JOIN chip.type typ
                 WHERE $whereString
                 ORDER BY man.name ASC, chip.name ASC"
             );

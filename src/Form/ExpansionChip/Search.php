@@ -19,6 +19,17 @@ class Search extends AbstractType
             ->add('name', TextType::class, [
                 'required' => false,
             ])
+            ->add('deviceId', TextType::class, [
+                'required' => false,
+            ])
+            ->add('type', ChoiceType::class, [
+                'choice_label' => 'name',
+                'multiple' => false,
+                'expanded' => false,
+                'required' => false,
+                'choices' => $options['expansionChipTypes'],
+                'placeholder' => 'Type to select a type ...'
+            ])
             ->add('expansionChipManufacturer', ChoiceType::class, [
                 'choice_label' => 'getName',
                 'multiple' => false,
@@ -44,6 +55,7 @@ class Search extends AbstractType
     {
         $resolver->setDefaults([
             'expansionChipManufacturers' => array(),
+            'expansionChipTypes' => array(),
         ]);
     }
 }

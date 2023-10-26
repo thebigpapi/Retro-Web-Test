@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Manufacturer;
 use App\Form\ExpansionChip\Search;
 use App\Repository\ExpansionChipRepository;
+use App\Repository\ExpansionChipTypeRepository;
 use App\Repository\ManufacturerRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
@@ -32,9 +33,9 @@ class ExpansionChipController extends AbstractController
 
     }
     #[Route(path: '/expansion-chips/', name: 'expansionchipsearch', methods: ['GET'])]
-    public function searchResultExpansionChip(Request $request, PaginatorInterface $paginator, ExpansionChipRepository $expansionChipRepository, ManufacturerRepository $manufacturerRepository)
+    public function searchResultExpansionChip(Request $request, PaginatorInterface $paginator, ExpansionChipRepository $expansionChipRepository, ManufacturerRepository $manufacturerRepository, ExpansionChipTypeRepository $expansionChipTypeRepository)
     {
-        $form = $this->_searchFormHandlerExpansionChip($request, $manufacturerRepository);
+        $form = $this->_searchFormHandlerExpansionChip($request, $manufacturerRepository, $expansionChipTypeRepository);
 
         if ($form->isSubmitted() && $form->isValid()) {
             return $this->redirect($this->generateUrl('expansionchipsearch', $this->searchFormToParamExpansionChip($request, $form)));
@@ -48,7 +49,6 @@ class ExpansionChipController extends AbstractController
                 'form' => $form->createView(),
             ]);
         }
-        
         $data = $expansionChipRepository->findByExpansionChip($criterias);
         $expansionChips = $paginator->paginate(
             $data,
@@ -68,8 +68,9 @@ class ExpansionChipController extends AbstractController
     public function liveSearchExpansionChip(
         Request $request,
         ManufacturerRepository $manufacturerRepository,
+        ExpansionChipTypeRepository $expansionChipTypeRepository
     ): Response {
-        $form = $this->_searchFormHandlerExpansionChip($request, $manufacturerRepository);
+        $form = $this->_searchFormHandlerExpansionChip($request, $manufacturerRepository, $expansionChipTypeRepository);
 
         return $this->redirect($this->generateUrl('expansionchiplivesearch', $this->searchFormToParamExpansionChip($request, $form)));
     }
@@ -108,6 +109,10 @@ class ExpansionChipController extends AbstractController
         if ($name) {
             $criterias['name'] = "$name";
         }
+        $devId = htmlentities($request->query->get('deviceId') ?? '');
+        if ($devId) {
+            $criterias['deviceId'] = "$devId";
+        }
         $expansionChipId = htmlentities($request->query->get('expansionChipId') ?? '');
         if ($expansionChipId && intval($expansionChipId)) {
             $criterias['expansionchip'] = "$expansionChipId";
@@ -119,6 +124,12 @@ class ExpansionChipController extends AbstractController
             $criterias['manufacturer'] = "$expansionChipManufacturerId";
         } elseif ($expansionChipManufacturerId === "NULL") {
             $criterias['manufacturer'] = null;
+        }
+        $typeId = htmlentities($request->query->get('typeId') ?? '');
+        if ($typeId && intval($typeId)) {
+            $criterias['type'] = "$typeId";
+        } elseif ($typeId === "NULL") {
+            $criterias['type'] = null;
         }
         return $criterias;
     }
@@ -132,6 +143,13 @@ class ExpansionChipController extends AbstractController
                 $parameters['expansionChipManufacturerId'] = $form['expansionChipManufacturer']->getData()->getId();
             }
         }
+        if ($form['type']->getData()) {
+            if ($form['type']->getData()->getId() == 0) {
+                $parameters['typeId']  = "NULL";
+            } else {
+                $parameters['typeId'] = $form['type']->getData()->getId();
+            }
+        }
 
         $parameters['page'] = intval($request->request->get('page') ?? $request->query->get('page') ?? 1);
         $parameters['domTarget'] = $request->request->get('domTarget') ?? $request->query->get('domTarget') ?? "";
@@ -141,20 +159,24 @@ class ExpansionChipController extends AbstractController
 
         $parameters['showImages'] = $form['searchWithImages']->getData();
         $parameters['name'] = $form['name']->getData();
+        $parameters['deviceId'] = $form['deviceId']->getData();
 
         return $parameters;
     }
     private function _searchFormHandlerExpansionChip(
         Request $request,
         ManufacturerRepository $manufacturerRepository,
+        ExpansionChipTypeRepository $expansionChipTypeRepository,
     ): FormInterface {
         $expansionChipManufacturers = $manufacturerRepository->findAllExpansionChipManufacturer();
+        $expansionChipTypes = $expansionChipTypeRepository->findAll();
         $unidentifiedMan = new Manufacturer();
         $unidentifiedMan->setName("Not identified");
         array_unshift($expansionChipManufacturers, $unidentifiedMan);
 
         $form = $this->createForm(Search::class, array(), [
             'expansionChipManufacturers' => $expansionChipManufacturers,
+            'expansionChipTypes' => $expansionChipTypes,
         ]);
 
         $form->handleRequest($request);

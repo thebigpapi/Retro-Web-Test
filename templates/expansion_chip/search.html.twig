@@ -25,6 +25,23 @@
 					<div>{{ form_widget(form.name, {'attr': {'placeholder': 'Name or Part number (without manufacturer) ...'}}) }}</div>
 				</div>
 			</div>
+			<div class="search-form-entry" style="min-width:min(27em,50vw);">
+				<label class="search-form-label" for="search_type" title="This is where you select the chip type.">
+					<span>Chip type</span>
+					<img src="{{ absolute_url(asset('build/icons/help.svg')) }}" alt="" width="16" height="16">
+				</label>
+				<div class="search-form-widget">
+					<div id="setchip1">{{ form_widget(form.type) }}</div>
+				</div>
+			</div>
+			<div class="search-form-entry">
+				<label class="search-form-label" for="search_deviceId">
+					<span>Device ID</span>
+				</label>
+				<div class="search-form-widget">
+					<div>{{ form_widget(form.deviceId) }}</div>
+				</div>
+			</div>
 		</section>
 		{% include 'macros/searchitems.html.twig' with {'datatarget': 'expansion-chips', 'dataresetids': 'search_expansionChipManufacturer', 'search_with_images' : true} %}
 	</fieldset>
