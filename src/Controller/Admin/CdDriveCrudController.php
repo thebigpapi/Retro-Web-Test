@@ -65,14 +65,18 @@ class CdDriveCrudController extends AbstractCrudController
         $eview = Action::new('eview', 'View')->linkToCrudAction('viewCdDrive')->setIcon('fa fa-magnifying-glass');
         $logs = Action::new('logs', 'Logs')->linkToCrudAction('viewLogs');
         $elogs= Action::new('elogs', 'Logs')->linkToCrudAction('viewLogs')->setIcon('fa fa-history');
+        $del = Action::new('deletecdd', 'Delete')->addCssClass('text-danger')->linkToCrudAction('deleteCdd');
         return $actions
             ->add(Crud::PAGE_NEW, Action::SAVE_AND_CONTINUE)
             ->remove(Crud::PAGE_NEW, Action::SAVE_AND_ADD_ANOTHER)
+            ->remove(Crud::PAGE_INDEX, Action::DELETE)
             ->add(Crud::PAGE_EDIT, $duplicate)
             ->add(Crud::PAGE_INDEX, $logs)
             ->add(Crud::PAGE_EDIT, $elogs)
             ->add(Crud::PAGE_INDEX, $view)
             ->add(Crud::PAGE_EDIT, $eview)
+            ->add(Crud::PAGE_INDEX, $del)
+            ->reorder(Crud::PAGE_INDEX, ['view', 'logs', Action::EDIT, 'deletecdd'])
             ->setPermission(Action::DELETE, 'ROLE_ADMIN');
     }
     public function configureCrud(Crud $crud): Crud
@@ -205,6 +209,17 @@ class CdDriveCrudController extends AbstractCrudController
         $entity = str_replace("\\", "-",$context->getEntity()->getFqcn());
         return $this->redirectToRoute('dh_auditor_show_entity_history', array('id' => $entityId, 'entity' => $entity));
     }
+    public function deleteCdd(AdminContext $context)
+    {
+        $cddId = $context->getEntity()->getInstance()->getId();
+        $url = $this->adminUrlGenerator
+        ->setController(CdDriveCrudController::class)
+        ->setRoute('cd_drive_delete', array('id'=>$cddId))
+        ->setEntityId($cddId)
+        ->generateUrl();
+        return $this->redirect($url);
+    }
+
     public function new(AdminContext $context)
     {
         $event = new BeforeCrudActionEvent($context);

@@ -104,7 +104,7 @@ class CdDriveController extends AbstractController
         ]);
     }
 
-    #[Route('/dashboard/floppy-drive-delete/{id}', name: 'cd_drive_delete', requirements: ["id" => "\d+"])]
+    #[Route('/dashboard/cd-drive-delete/{id}', name: 'cd_drive_delete', requirements: ["id" => "\d+"])]
     public function delete(
         Request $request,
         int $id,
