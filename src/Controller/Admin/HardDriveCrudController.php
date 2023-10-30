@@ -3,10 +3,12 @@
 namespace App\Controller\Admin;
 
 use App\Entity\HardDrive;
+use App\Entity\StorageDevice;
 use App\Form\Type\AudioFileType;
 use App\Form\Type\KnownIssueType;
 use App\Form\Type\StorageDeviceAliasType;
 use App\Form\Type\StorageDeviceDocumentationType;
+use App\Form\Type\StorageDeviceIdRedirectionType;
 use App\Form\Type\StorageDeviceImageTypeForm;
 use App\Form\Type\StorageDeviceInterfaceType;
 use Doctrine\ORM\EntityManagerInterface;
@@ -63,14 +65,18 @@ class HardDriveCrudController extends AbstractCrudController
         $eview = Action::new('eview', 'View')->linkToCrudAction('viewHardDrive')->setIcon('fa fa-magnifying-glass');
         $logs = Action::new('logs', 'Logs')->linkToCrudAction('viewLogs');
         $elogs= Action::new('elogs', 'Logs')->linkToCrudAction('viewLogs')->setIcon('fa fa-history');
+        $del = Action::new('deletehdd', 'Delete')->addCssClass('text-danger')->linkToCrudAction('deleteHdd');
         return $actions
             ->add(Crud::PAGE_NEW, Action::SAVE_AND_CONTINUE)
             ->remove(Crud::PAGE_NEW, Action::SAVE_AND_ADD_ANOTHER)
+            ->remove(Crud::PAGE_INDEX, Action::DELETE)
             ->add(Crud::PAGE_EDIT, $duplicate)
             ->add(Crud::PAGE_INDEX, $logs)
             ->add(Crud::PAGE_EDIT, $elogs)
             ->add(Crud::PAGE_INDEX, $view)
             ->add(Crud::PAGE_EDIT, $eview)
+            ->add(Crud::PAGE_INDEX, $del)
+            ->reorder(Crud::PAGE_INDEX, ['view', 'logs', Action::EDIT, 'deletehdd'])
             ->setPermission(Action::DELETE, 'ROLE_ADMIN');
     }
     public function configureCrud(Crud $crud): Crud
@@ -177,6 +183,12 @@ class HardDriveCrudController extends AbstractCrudController
             ->setFormTypeOption('error_bubbling', false)
             ->setColumns('col-sm-6 col-lg-6 col-xxl-4')
             ->onlyOnForms();
+        yield CollectionField::new('redirections', 'Redirections')
+            ->setEntryType(StorageDeviceIdRedirectionType::class)
+            ->renderExpanded()
+            ->setFormTypeOption('error_bubbling', false)
+            ->setColumns('col-sm-12 col-lg-6 col-xxl-4')
+            ->onlyOnForms();
         yield CodeEditorField::new('description')
             ->setLanguage('markdown')
             ->onlyOnForms();
@@ -201,7 +213,6 @@ class HardDriveCrudController extends AbstractCrudController
             ->setColumns(6)
             ->renderExpanded()
             ->onlyOnForms();
-
         // show and index
         yield DateField::new('lastEdited', 'Last edit')
             ->hideOnForm();
@@ -217,6 +228,17 @@ class HardDriveCrudController extends AbstractCrudController
         $entity = str_replace("\\", "-",$context->getEntity()->getFqcn());
         return $this->redirectToRoute('dh_auditor_show_entity_history', array('id' => $entityId, 'entity' => $entity));
     }
+    public function deleteHdd(AdminContext $context)
+    {
+        $hddId = $context->getEntity()->getInstance()->getId();
+        $url = $this->adminUrlGenerator
+        ->setController(HardDriveCrudController::class)
+        ->setRoute('hard_drive_delete', array('id'=>$hddId))
+        ->setEntityId($hddId)
+        ->generateUrl();
+        return $this->redirect($url);
+    }
+
     public function new(AdminContext $context)
     {
         $event = new BeforeCrudActionEvent($context);

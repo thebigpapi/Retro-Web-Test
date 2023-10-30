@@ -6,6 +6,7 @@ use App\Entity\FloppyDrive;
 use App\Form\Type\KnownIssueType;
 use App\Form\Type\StorageDeviceAliasType;
 use App\Form\Type\StorageDeviceDocumentationType;
+use App\Form\Type\StorageDeviceIdRedirectionType;
 use App\Form\Type\StorageDeviceImageTypeForm;
 use App\Form\Type\StorageDeviceInterfaceType;
 use Doctrine\ORM\EntityManagerInterface;
@@ -61,14 +62,19 @@ class FloppyDriveCrudController extends AbstractCrudController
         $eview = Action::new('eview', 'View')->linkToCrudAction('viewFloppyDrive')->setIcon('fa fa-magnifying-glass');
         $logs = Action::new('logs', 'Logs')->linkToCrudAction('viewLogs');
         $elogs= Action::new('elogs', 'Logs')->linkToCrudAction('viewLogs')->setIcon('fa fa-history');
+        $del = Action::new('deletefdd', 'Delete')->addCssClass('text-danger')->linkToCrudAction('deleteFdd');
+
         return $actions
             ->add(Crud::PAGE_NEW, Action::SAVE_AND_CONTINUE)
             ->remove(Crud::PAGE_NEW, Action::SAVE_AND_ADD_ANOTHER)
+            ->remove(Crud::PAGE_INDEX, Action::DELETE)
             ->add(Crud::PAGE_EDIT, $duplicate)
             ->add(Crud::PAGE_INDEX, $logs)
             ->add(Crud::PAGE_EDIT, $elogs)
             ->add(Crud::PAGE_INDEX, $view)
             ->add(Crud::PAGE_EDIT, $eview)
+            ->add(Crud::PAGE_INDEX, $del)
+            ->reorder(Crud::PAGE_INDEX, ['view', 'logs', Action::EDIT, 'deletefdd'])
             ->setPermission(Action::DELETE, 'ROLE_ADMIN');
     }
     public function configureCrud(Crud $crud): Crud
@@ -153,6 +159,12 @@ class FloppyDriveCrudController extends AbstractCrudController
             ->setFormTypeOption('error_bubbling', false)
             ->setColumns('col-sm-6 col-lg-6 col-xxl-4')
             ->onlyOnForms();
+        yield CollectionField::new('redirections', 'Redirections')
+            ->setEntryType(StorageDeviceIdRedirectionType::class)
+            ->renderExpanded()
+            ->setFormTypeOption('error_bubbling', false)
+            ->setColumns('col-sm-12 col-lg-6 col-xxl-4')
+            ->onlyOnForms();
         yield CodeEditorField::new('description')
             ->setLanguage('markdown')
             ->onlyOnForms();
@@ -186,6 +198,17 @@ class FloppyDriveCrudController extends AbstractCrudController
         $entity = str_replace("\\", "-",$context->getEntity()->getFqcn());
         return $this->redirectToRoute('dh_auditor_show_entity_history', array('id' => $entityId, 'entity' => $entity));
     }
+    public function deleteFdd(AdminContext $context)
+    {
+        $fddId = $context->getEntity()->getInstance()->getId();
+        $url = $this->adminUrlGenerator
+        ->setController(FloppyDriveCrudController::class)
+        ->setRoute('floppy_drive_delete', array('id'=>$fddId))
+        ->setEntityId($fddId)
+        ->generateUrl();
+        return $this->redirect($url);
+    }
+
     public function new(AdminContext $context)
     {
         $event = new BeforeCrudActionEvent($context);
