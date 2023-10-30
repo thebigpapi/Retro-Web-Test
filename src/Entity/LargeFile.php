@@ -48,6 +48,9 @@ class LargeFile
 
     #[ORM\ManyToOne(targetEntity: DumpQualityFlag::class, inversedBy: 'largeFiles')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Assert\NotBlank(
+        message: 'Flag cannot be blank'
+    )]
     private $dumpQualityFlag;
 
     #[ORM\ManyToMany(targetEntity: Language::class, inversedBy: 'largeFiles')]

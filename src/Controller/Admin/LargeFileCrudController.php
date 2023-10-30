@@ -100,25 +100,26 @@ class LargeFileCrudController extends AbstractCrudController
                 'apps' => 'apps',
                 'drivers' => 'drivers',
             ])
-            ->setFormTypeOption('empty_data', 'drivers')
-            ->setFormTypeOption('autocomplete', 'disabled')
+            ->setFormTypeOption('placeholder', 'Select a type ...')
+            ->setFormTypeOption('autocomplete', 'off')
             ->setColumns(4)
             ->onlyOnForms();
         yield TextField::new('subdirectory', 'Type')
             ->onlyOnIndex();
         yield AssociationField::new('dumpQualityFlag','Quality')
+            ->setFormTypeOption('placeholder', 'Select a quality ...')
             ->setColumns(4)
             ->onlyOnForms();
         yield DateField::new('release_date', 'Release Date')
             ->setFormTypeOption('attr', ['style'=>'width:100%;'])
             ->setColumns(2);
-        yield ChoiceField::new('datePrecision', 'Date precision')
+        yield ChoiceField::new('datePrecision', 'Display date format (optional)')
             ->setChoices([
                 'Year, month and day' => 'd',
                 'Year and month' => 'm',
                 'Year only' => 'y',
             ])
-            ->setFormTypeOption('autocomplete', false)
+            ->setFormTypeOption('placeholder', 'Select a format ...')
             ->setColumns(2)
             ->onlyOnForms();
         yield TextareaField::new('file', 'File')

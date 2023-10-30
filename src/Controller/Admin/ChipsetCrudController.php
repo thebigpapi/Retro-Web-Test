@@ -11,6 +11,7 @@ use App\Form\Type\LargeFileChipsetType;
 use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
+use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
@@ -107,7 +108,16 @@ class ChipsetCrudController extends AbstractCrudController
         yield ArrayField::new('getPartsCached', 'Parts')
             ->hideOnForm();
         yield DateField::new('release_date', 'Release Date')
-            ->setColumns(4);
+            ->setColumns(2);
+        yield ChoiceField::new('datePrecision', 'Display date format (optional)')
+            ->setChoices([
+                'Year, month and day' => 'd',
+                'Year and month' => 'm',
+                'Year only' => 'y',
+            ])
+            ->setFormTypeOption('placeholder', 'Select a format ...')
+            ->setColumns(2)
+            ->onlyOnForms();
         yield UrlField::new('encyclopedia_link', 'Link')
             ->setColumns(4)
             ->hideOnIndex();

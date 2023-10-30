@@ -69,8 +69,6 @@ function setChipset(values){
         if(xhr.status === 200) {
             chipsetArray = JSON.parse(xhr.responseText);
             let chipset = document.getElementById('Motherboard_chipset');
-            let invalidOp = new Option("Invalid CPU family, reselect!",'');
-            invalidOp.setAttribute("selected", "selected");
             chipset.innerHTML = "";
             for(const key in chipsetArray){
                 let option = new Option(chipsetArray[key],key);
