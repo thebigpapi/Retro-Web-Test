@@ -53,6 +53,12 @@ $border-dark: #cdcdcd;
 	right: 0;
 	top: 0;
 }
+.form-group.field-collection .accordion-item .form-group {
+    padding: 2px 0
+}
+.ts-wrapper .ts-control {
+    height: initial;
+}
 
 .btn-link-danger {
 	transition: ease-in-out 0.1s color;
@@ -293,6 +299,7 @@ div.show-nav-ea {
 	div.form-widget-compound>div {
 		display: flex;
 		flex-direction: row;
+		align-items: center;
 
 		>div:nth-child(1) {
 			flex-grow: 1;

@@ -188,6 +188,64 @@
     </div>
 {% endblock %}
 
+{% block ea_crud_widget %}
+    {% if ea_crud_form.form_tabs|length > 0 %}
+        <div class="col-12">
+            <div class="nav-tabs-custom form-tabs">
+                <ul class="nav nav-tabs">
+                    {% for tab_name, tab_config in ea_crud_form.form_tabs %}
+                        <li class="nav-item">
+                            <a class="nav-link {% if tab_config.active %}active{% endif %}" href="#{{ tab_config['id'] }}" id="{{ tab_config['id'] }}-tab" data-bs-toggle="tab">
+                                {%- if tab_config.icon|default(false) -%}
+                                    <i class="fa-fw {{ tab_config.icon }}"></i>
+                                {%- endif -%}
+                                {{ tab_config['label']|trans(domain = ea.i18n.translationDomain) }}
+                                {%- if tab_config.errors > 0 -%}
+                                    <span class="badge badge-danger" title="{{ 'form.tab.error_badge_title'|trans({'%count%': tab_config.errors}, 'EasyAdminBundle') }}">
+                                        {{- tab_config.errors -}}
+                                    </span>
+                                {%- endif -%}
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+                <div class="tab-content">
+                    {% for tab_name, tab_config in ea_crud_form.form_tabs %}
+                        <div id="{{ tab_config['id'] }}" class="tab-pane {% if tab_config.active %}active{% endif %} {{ tab_config['css_class']|default('') }}">
+                            {% if tab_config['help']|default(false) %}
+                                <div class="content-header-help tab-help">
+                                    {{ tab_config['help']|trans(domain = ea.i18n.translationDomain)|raw }}
+                                </div>
+                            {% endif %}
+
+                            <div class="row">
+                                {% if tab_name is defined and tab_name %}
+                                    {% macro recursiveTabForm(form, ea_crud_form, tab_name) %}
+                                        {% for field in form|filter(field => not ea_crud_form.form_panels|filter((panel_config, form_panel) => form_panel == field.vars.ea_crud_form.form_panel) and ((field.vars.ea_crud_form.form_tab is defined and field.vars.ea_crud_form.form_tab == tab_name) or field.vars.ea_crud_form.form_tabs is defined)) %}
+                                            {% if field.vars.ea_crud_form.form_tabs is defined %}
+                                                {# If the field is a nested CRUD form then only render its children #}
+                                                {{ _self.recursiveTabForm(field, ea_crud_form, tab_name) }}
+                                            {% else %}
+                                                {# Render all other fields #}
+                                                {{ form_row(field) }}
+                                            {% endif %}
+                                        {% endfor %}
+                                    {% endmacro %}
+                                    {{ _self.recursiveTabForm(form, ea_crud_form, tab_name) }}
+                                {% endif %}
+                                {{ block('ea_crud_widget_panels') }}
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+                <div style="height:240px;"></div>
+            </div>
+        </div>
+    {% else %}
+        {{ block('ea_crud_widget_panels') }}
+    {% endif %}
+{% endblock ea_crud_widget %}
+
 {# added update CPU button #}
 {% block _Motherboard_maxcpu_widget %}
 {{ form_widget(form)}}
