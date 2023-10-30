@@ -159,6 +159,12 @@ class FloppyDriveCrudController extends AbstractCrudController
             ->setFormTypeOption('error_bubbling', false)
             ->setColumns('col-sm-6 col-lg-6 col-xxl-4')
             ->onlyOnForms();
+        yield CollectionField::new('redirections', 'Redirections')
+            ->setEntryType(StorageDeviceIdRedirectionType::class)
+            ->renderExpanded()
+            ->setFormTypeOption('error_bubbling', false)
+            ->setColumns('col-sm-12 col-lg-6 col-xxl-4')
+            ->onlyOnForms();
         yield CodeEditorField::new('description')
             ->setLanguage('markdown')
             ->onlyOnForms();
@@ -176,12 +182,6 @@ class FloppyDriveCrudController extends AbstractCrudController
             ->setFormTypeOption('error_bubbling', false)
             ->setColumns(6)
             ->renderExpanded()
-            ->onlyOnForms();
-        yield CollectionField::new('redirections', 'Redirections')
-            ->setEntryType(StorageDeviceIdRedirectionType::class)
-            ->renderExpanded()
-            ->setFormTypeOption('error_bubbling', false)
-            ->setColumns('col-sm-12 col-lg-6 col-xxl-4')
             ->onlyOnForms();
         // show and index
         yield DateField::new('lastEdited', 'Last edit')
