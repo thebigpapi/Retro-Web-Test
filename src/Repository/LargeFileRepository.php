@@ -88,11 +88,7 @@ class LargeFileRepository extends ServiceEntityRepository
 
         // Building query
         if($whereArray == []){
-            $query = $entityManager->createQuery(
-                "SELECT drv
-                FROM App\Entity\LargeFile drv
-                ORDER BY drv.name ASC, drv.file_name ASC"
-            )->setMaxResults(1000);
+            return [];
         }
         else{
             $query = $entityManager->createQuery(

@@ -113,12 +113,7 @@ class ProcessorRepository extends ServiceEntityRepository
 
         // Building query
         if($whereArray == []){
-            $query = $entityManager->createQuery(
-                "SELECT cpu
-                FROM App\Entity\Processor cpu JOIN cpu.manufacturer man LEFT OUTER JOIN cpu.chipAliases alias
-                WHERE cpu.id < 10000
-                ORDER BY man.name ASC, cpu.name ASC, cpu.partNumber ASC"
-            );
+            return [];
         }
         else{
             $query = $entityManager->createQuery(

@@ -79,12 +79,7 @@ class MotherboardBiosRepository extends ServiceEntityRepository
 
         // Building query
         if($whereArray == []){
-            $query = $entityManager->createQuery(
-                "SELECT man.name as manName, m.id, m.name, bios, bman.name as bmanName
-                FROM App\Entity\MotherboardBios bios JOIN bios.manufacturer bman JOIN bios.motherboard m JOIN m.manufacturer man JOIN m.expansionChips mec
-                WHERE bios.id < 10000
-                ORDER BY man.name ASC, m.name ASC, bios.coreVersion ASC, manName ASC"
-            );
+            return [];
         }
         else{
             $query = $entityManager->createQuery(

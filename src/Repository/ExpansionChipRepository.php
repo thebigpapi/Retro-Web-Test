@@ -73,12 +73,7 @@ class ExpansionChipRepository extends ServiceEntityRepository
 
         // Building query
         if($whereArray == []){
-            $query = $entityManager->createQuery(
-                "SELECT chip
-                FROM App\Entity\ExpansionChip chip JOIN chip.manufacturer man LEFT OUTER JOIN chip.chipAliases alias
-                WHERE chip.id < 10000
-                ORDER BY man.name ASC, chip.name ASC"
-            );
+            return [];
         }
         else{
             $query = $entityManager->createQuery(

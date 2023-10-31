@@ -69,12 +69,7 @@ class FloppyDriveRepository extends ServiceEntityRepository
 
         // Building query
         if($whereArray == []){
-            $query = $entityManager->createQuery(
-                "SELECT fdd
-                FROM App\Entity\FloppyDrive fdd JOIN fdd.manufacturer man LEFT OUTER JOIN fdd.storageDeviceAliases alias
-                WHERE fdd.id < 10000
-                ORDER BY man.name ASC, fdd.name ASC"
-            );
+            return [];
         }
         else{
             $query = $entityManager->createQuery(

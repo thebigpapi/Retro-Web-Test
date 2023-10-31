@@ -566,6 +566,8 @@ class MotherboardRepository extends ServiceEntityRepository
     {
         $arrays = array();
         $values = array();
+        if($criteria == [])
+            return [];
         $this->separateArraysFromValues($criteria, $arrays, $values);
 
         $sql = $this->prepareSQL($values, $arrays);
