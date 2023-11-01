@@ -1,24 +1,17 @@
-{% extends 'base.html.twig' %}
-{% block title %}Search results (drivers) - TRW{% endblock %}
-
-{% block metatags %}
-	<meta name="description" content="Search for a driver by name, manufacturer, part number and more.">
-{% endblock %}
-
-{% block body %}
-	<div class="title">
-		<b>Search results</b>
+{% if route is defined and route == true %}{% set typeid = 'route-results' %}{% else %}{% set typeid = domTarget %}{% endif %}
+<div id="{{ typeid }}">
+{% if drivers is defined and drivers is not empty %}
+	<div class="results lst">
+		{{ knp_pagination_render(drivers, 'macros/pagination.html.twig') }}
+			<div class="plain-list w300p table">
+				{% include 'macros/widget.html.twig' with {'type':'driver-results', 'entity': drivers} %}
+			</div>
+		{{ knp_pagination_render(drivers, 'macros/pagination.html.twig') }}
 	</div>
-	<p style="text-align:center;padding-top:10px;">
-		<i>{{ driver_count > 0 ? driver_count : 'No' }}{{ driver_count == 1 ? ' result' : ' results' }}</i>
-	</p>
-	{% if drivers is not empty %}
-		<div class="results lst">
-			{{ knp_pagination_render(drivers, 'macros/pagination.html.twig') }}
-				<div class="plain-list w300p table">
-					{% include 'macros/widget.html.twig' with {'type':'driver-results', 'entity': drivers} %}
-				</div>
-			{{ knp_pagination_render(drivers, 'macros/pagination.html.twig') }}
-		</div>
-	{% endif %}
-{% endblock %}
+{% else %}
+	No results
+{% endif %}
+{% if params is defined %}
+<div id="search-params-id" style="display:none;">{{params}}</div>
+{% endif %}
+</div>

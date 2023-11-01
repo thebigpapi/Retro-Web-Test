@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Search floppy drives - TRW{% endblock %}
+
+{% block metatags %}
+	<meta name="description" content="Search for a floppy drive by name, manufacturer and part number.">
+	<link rel="alternate" hreflang="x-default" href="{{ absolute_url(path('fddsearch')) }}"/>
+{% endblock %}
+{% block extra_javascripts %}
+	<script src="/build/js/tom-select.complete.min.js" defer></script>
+	<script src="/build/js/search.js" defer></script>
+{% endblock %}
+{% block body %}
+	{{ form_start(form, {'method': 'POST', 'name': 'search_fdd', 'action':path("fddsearch"), 'attr':{'onkeydown': 'return event.key != \'Enter\'', 'data-live-action': path('fddlivewrapper')}}) }}
+	<fieldset id="search-fieldset">
+		<div class="title">Search for a floppy drive</div>
+		<section class="search-form-grid" style="display:flex;justify-content:center;flex-wrap:wrap;">
+			<div class="search-form-entry" style="min-width:min(27em,50vw);">
+				<label class="search-form-label" for="search_fddManufacturer" title="This is where you select the manufacturer name and enter the floppy drive part number.">
+					<span>Manufacturer and name</span>
+					<img src="{{ absolute_url(asset('build/icons/help.svg')) }}" alt="" width="16" height="16">
+				</label>
+				<div class="search-form-widget">
+					<div id="setchip1">{{ form_widget(form.fddManufacturer) }}</div>
+					<div>{{ form_widget(form.name, {'attr': {'placeholder': 'Name or Part number (without manufacturer) ...'}}) }}</div>
+				</div>
+			</div>
+		</section>
+		{% include 'macros/searchitems.html.twig' with {'datatarget': 'floppydrives', 'dataresetids': 'search_fddManufacturer', 'search_with_images' : true} %}
+	</fieldset>
+	{{ form_end(form, {render_rest: false}) }}
+	<!-- Search results -->
+	<section id="search_liveResults">
+	{% if fdds is defined %}
+		{% include 'floppydrive/result.html.twig' with {'fdds': fdds, 'show_images': show_images, 'route': true} %}
+	{% endif %}
+	</section>
+{% endblock %}

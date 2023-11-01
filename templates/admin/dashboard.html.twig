@@ -1,0 +1,34 @@
+{% extends '@EasyAdmin/page/content.html.twig' %}
+{% block page_title %}Dashboard{% endblock %}
+{% block main %}
+    <div class="row">
+        <div class="col-md-6">
+            <div class="col-md-12"><h4><i>Board count by manufacturer (first 25)</i></h4></div>
+            <canvas id="boardmanufcountdash"></canvas>
+            {% for key, value in boardChart %}
+                <div id="{{key}}" style="display:none;">{{value}}</div>
+            {% endfor %}
+        </div>
+        <div class="col-md-6">
+            <div class="col-md-12"><h4><i>Board count by socket (first 25)</i></h4></div>
+            <canvas id="boardsocketcountdash"></canvas>
+            {% for key, value in socketChart %}
+                <div id="{{key}}" style="display:none;">{{value}}</div>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="row">
+        <div>
+            <b>Branch: </b>
+            <span>{{ collector.getBranchName() }} </span>
+        </div>
+        <div>
+            <b>Version date:</b>
+            <span>{{ collector.getLastCommitDetail()['date'] }} </span>
+        </div>
+        <div>
+            <b>Commit hash:</b>
+            <span>{{ collector.getCurrentCommitHash()}} </span>
+        </div>
+    </div>
+{% endblock %}

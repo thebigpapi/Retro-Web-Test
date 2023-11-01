@@ -1,0 +1,21 @@
+{% extends '@EasyAdmin/page/content.html.twig' %}
+
+{% block page_title 'Delete ' ~ storageDeviceType %}
+{% block page_content %}
+<div class="col-4">
+	<div style="display:table;margin:0 auto;padding-top:25px;">
+		<div style="display:table;margin:0 auto;padding-top:25px;">
+			Are you sure you want to delete {{ storageDevice.getManufacturer() ? storageDevice.getManufacturer.getName }} {{storageDevice.getPartNumber() ?: 'NULL'}}
+		</div>
+		<div style="display:table;margin:0 auto;padding-top:25px;">
+			<a class="btn" onclick="document.getElementById('form_Yes').click();" style="display:inline-block;">
+				<img src="{{ absolute_url(asset('build/icons/tick.svg')) }}" alt="" width="24"> Yes</a>&nbsp;
+			<a class="btn" onclick="document.getElementById('form_No').click();" style="display:inline-block;">
+				<img src="{{ absolute_url(asset('build/icons/delete.svg')) }}" alt="" width="24">No</a>
+		</div>
+	{{ form_start(form, {'method': 'POST'}) }}
+		<div style="padding-top:25px;">Redirection ID (optional) {{form_widget(form.Redirection)}}</div>
+	</div>
+	<div style="display: none;">{{form_widget(form.Yes)}}{{form_widget(form.No)}}{{ form_end(form)}}</div>
+</div>
+{% endblock %}

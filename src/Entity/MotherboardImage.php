@@ -5,6 +5,7 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -19,6 +20,7 @@ class MotherboardImage
 
     #[ORM\ManyToOne(targetEntity: MotherboardImageType::class, inversedBy: 'motherboardImages')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Assert\NotBlank(message: 'Image type cannot be blank')]
     private $motherboardImageType;
 
     #[ORM\ManyToOne(targetEntity: Motherboard::class, inversedBy: 'images')]
@@ -121,5 +123,14 @@ class MotherboardImage
         $this->creditor = $creditor;
 
         return $this;
+    }
+    #[Assert\Callback]
+    public function validate(ExecutionContextInterface $context, mixed $payload): void
+    {
+        if(null === $this->imageFile && null === $this->file_name) {
+            $context->buildViolation('Image is not uploaded!')
+                ->atPath('imageFile')
+                ->addViolation();
+        }
     }
 }

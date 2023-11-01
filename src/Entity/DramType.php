@@ -22,9 +22,17 @@ class DramType
     #[ORM\ManyToMany(targetEntity: Motherboard::class, mappedBy: 'dramType')]
     private $motherboards;
 
+    #[ORM\ManyToMany(targetEntity: ProcessorPlatformType::class, mappedBy: 'dramType')]
+    private Collection $processorPlatformTypes;
+
     public function __construct()
     {
         $this->motherboards = new ArrayCollection();
+        $this->processorPlatformTypes = new ArrayCollection();
+    }
+    public function __toString(): string
+    {
+        return $this->name;
     }
     public function getId(): ?int
     {
@@ -61,6 +69,33 @@ class DramType
         if ($this->motherboards->contains($motherboard)) {
             $this->motherboards->removeElement($motherboard);
             $motherboard->removeDramType($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ProcessorPlatformType>
+     */
+    public function getProcessorPlatformTypes(): Collection
+    {
+        return $this->processorPlatformTypes;
+    }
+
+    public function addProcessorPlatformType(ProcessorPlatformType $processorPlatformType): self
+    {
+        if (!$this->processorPlatformTypes->contains($processorPlatformType)) {
+            $this->processorPlatformTypes->add($processorPlatformType);
+            $processorPlatformType->addDramType($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProcessorPlatformType(ProcessorPlatformType $processorPlatformType): self
+    {
+        if ($this->processorPlatformTypes->removeElement($processorPlatformType)) {
+            $processorPlatformType->removeDramType($this);
         }
 
         return $this;

@@ -87,12 +87,17 @@ class LargeFileRepository extends ServiceEntityRepository
         $whereString = implode(" AND ", $whereArray);
 
         // Building query
-        $query = $entityManager->createQuery(
-            "SELECT drv
-            FROM App\Entity\LargeFile drv
-            WHERE $whereString
-            ORDER BY drv.name ASC, drv.file_name ASC"
-        );
+        if($whereArray == []){
+            return [];
+        }
+        else{
+            $query = $entityManager->createQuery(
+                "SELECT drv
+                FROM App\Entity\LargeFile drv
+                WHERE $whereString
+                ORDER BY drv.name ASC, drv.file_name ASC"
+            )->setMaxResults(1000);
+        }
 
         // Setting values
         foreach ($valuesArray as $key => $value) {

@@ -19,8 +19,8 @@ class InstructionSet
     #[Assert\Length(max: 255, maxMessage: 'Name is longer than {{ limit }} characters, try to make it shorter.')]
     private $name;
 
-    #[ORM\ManyToMany(targetEntity: ProcessingUnit::class, mappedBy: 'instructionSets')]
-    private $processingUnits;
+    #[ORM\ManyToMany(targetEntity: ProcessorPlatformType::class, mappedBy: 'instructionSets')]
+    private $processorPlatformTypes;
 
     #[ORM\ManyToMany(targetEntity: InstructionSet::class, inversedBy: 'childInstructionSets')]
     private $compatibleWith;
@@ -30,9 +30,13 @@ class InstructionSet
 
     public function __construct()
     {
-        $this->processingUnits = new ArrayCollection();
+        $this->processorPlatformTypes = new ArrayCollection();
         $this->compatibleWith = new ArrayCollection();
         $this->childInstructionSets = new ArrayCollection();
+    }
+    public function __toString(): string
+    {
+        return $this->name;
     }
     public function getId(): ?int
     {
@@ -49,28 +53,28 @@ class InstructionSet
         return $this;
     }
     /**
-     * @return Collection|ProcessingUnit[]
+     * @return Collection|ProcessorPlatformType[]
      */
-    public function getProcessingUnits(): Collection
+    public function getPlatforms(): Collection
     {
-        return $this->processingUnits;
+        return $this->processorPlatformTypes;
     }
-    public function addProcessingUnit(ProcessingUnit $processingUnit): self
+    public function addPlatform(ProcessorPlatformType $processorPlatformType): self
     {
-        if (!$this->processingUnits->contains($processingUnit)) {
-            $this->processingUnits[] = $processingUnit;
-            $processingUnit->addInstructionSet($this);
+        if (!$this->processorPlatformTypes->contains($processorPlatformType)) {
+            $this->processorPlatformTypes[] = $processorPlatformType;
+            $processorPlatformType->addInstructionSet($this);
         }
 
         return $this;
     }
-    public function removeProcessingUnit(ProcessingUnit $processingUnit): self
+    public function removePlatform(ProcessorPlatformType $processorPlatformType): self
     {
-        if ($this->processingUnits->contains($processingUnit)) {
-            $this->processingUnits->removeElement($processingUnit);
+        if ($this->processorPlatformTypes->contains($processorPlatformType)) {
+            $this->processorPlatformTypes->removeElement($processorPlatformType);
             // set the owning side to null (unless already changed)
-            if ($processingUnit->getInstructionSets() === $this) {
-                $processingUnit->removeInstructionSet($this);
+            if ($processorPlatformType->getInstructionSets() === $this) {
+                $processorPlatformType->removeInstructionSet($this);
             }
         }
 

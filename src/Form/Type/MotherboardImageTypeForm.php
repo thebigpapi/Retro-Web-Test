@@ -3,7 +3,6 @@
 namespace App\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -15,28 +14,17 @@ use App\Entity\Creditor;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\ChoiceList\View\ChoiceView;
+use Vich\UploaderBundle\Form\Type\VichImageType;
 
 class MotherboardImageTypeForm extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('file_name', TextType::class, [
+            ->add('imageFile', VichImageType::class, [
+                'label' => 'JPG or SVG file',
+                'allow_delete' => false,
                 'required' => false,
-                'disabled' => true,
-            ])
-            ->add('imageFile', FileType::class, [
-                'label' => 'Image (png, svg, jpg or gif file)',
-
-                // unmapped means that this field is not associated to any entity property
-                //'mapped' => false,
-
-                // make it optional so you don't have to re-upload the PDF file
-                // every time you edit the Product details
-                'required' => false,
-
-                // unmapped fields can't define their validation using annotations
-                // in the associated entity, so you can use the PHP constraint classes
                 'constraints' => [
                     new File([
                         'maxSize' => '8192k',
@@ -51,23 +39,27 @@ class MotherboardImageTypeForm extends AbstractType
                     ])
                 ],
             ])
-            ->add('description', TextType::class, [
-                'required' => false,
-            ])
-            ->add('motherboardImageType', EntityType::class, [
-                'class' => MotherboardImageType::class,
-                'required' => true,
-                'choice_label' => 'name',
-                'multiple' => false,
-                'expanded' => false,
-            ])
             ->add('creditor', EntityType::class, [
                 'class' => Creditor::class,
                 'required' => false,
                 'choice_label' => 'name',
                 'multiple' => false,
                 'expanded' => false,
-                'autocomplete' => true,
+                'attr' => ['data-ea-widget' => 'ea-autocomplete'],
+                'placeholder'=> 'Select a creditor ...',
+            ])
+            ->add('motherboardImageType', EntityType::class, [
+                'class' => MotherboardImageType::class,
+                'label' => 'Type',
+                'required' => true,
+                'choice_label' => 'name',
+                'multiple' => false,
+                'expanded' => false,
+                'placeholder'=> 'Select a type ...',
+            ])
+            ->add('description', TextType::class, [
+                'label' => 'Note',
+                'required' => false,
             ]);
     }
 

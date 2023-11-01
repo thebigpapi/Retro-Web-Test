@@ -1,7 +1,7 @@
 <div class="show-image">
 	<a href="{{ vich_uploader_asset(image, 'imageFile')}}" class="glightbox" data-description="
 	{% if type == "chipset" %}
-		{{ chipPart.getFullName() }}
+		{{ chipPart.getNameWithManufacturer() }}
 	{% endif %}
 	{% if image.creditor %}
 		<div style='float:right;color:black;'>
@@ -22,10 +22,10 @@
 		<p style='color:black;'>Notes: {{ image.description }}</p>
 	{% endif %}">
     {% if type == "motherboard" %}
-		<img src="{% if vich_uploader_asset(image, 'imageFile') | ext != "svg" %}{{ vich_uploader_asset(image, 'imageFile') | imagine_filter('motherboard_show_thumb') }}{% else %}{{ vich_uploader_asset(image, 'imageFile')}}{% endif %}"
+		<img src="{% if vich_uploader_asset(image, 'imageFile') | ext != "svg" %}{{ vich_uploader_asset(image, 'imageFile') | imagine_filter('show_thumb') }}{% else %}{{ vich_uploader_asset(image, 'imageFile')}}{% endif %}"
 		width="640" height="480" alt="image{{index}}" title="{% if image.description %}{{ image.description }}{% endif %}">
     {% else %}
-        <img src="{{ vich_uploader_asset(image, 'imageFile') | imagine_filter('motherboard_show_thumb') }}"
+        <img src="{{ vich_uploader_asset(image, 'imageFile') | imagine_filter('show_thumb') }}"
         width="640" height="480" alt="image{{index}}" title="{% if image.description %}{{ image.description }}{% endif %}">
     {% endif %}
 		Image {{ index }} of {{ length }} {{ image.creditor ? '(' ~ image.creditor.name ~ ')'}}

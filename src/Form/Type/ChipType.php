@@ -32,8 +32,7 @@ class ChipType extends AbstractType
         $builder
             ->add('manufacturer', EntityType::class, [
                 'class' => Manufacturer::class,
-                'autocomplete' => true,
-                'choice_label' => 'shortNameIfExist',
+                'choice_label' => 'name',
                 'multiple' => false,
                 'expanded' => false,
             ])
@@ -70,7 +69,7 @@ class ChipType extends AbstractType
     public function finishView(FormView $view, FormInterface $form, array $options)
     {
         usort($view->vars['form']['manufacturer']->vars['choices'], function (ChoiceView $a, ChoiceView $b) {
-            return ($a->data->getShortNameIfExist() <=> $b->data->getShortNameIfExist());
+            return ($a->data->getName() <=> $b->data->getName());
         });
     }
 }

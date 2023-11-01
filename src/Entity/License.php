@@ -28,9 +28,11 @@ class License
 
     public function __construct()
     {
-        $this->motherboardImages = new ArrayCollection();
-        $this->chipImages = new ArrayCollection();
         $this->creditors = new ArrayCollection();
+    }
+    public function __toString(): string
+    {
+        return $this->getName();
     }
     public function getId(): ?int
     {

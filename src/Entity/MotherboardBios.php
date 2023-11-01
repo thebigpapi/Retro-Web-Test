@@ -5,6 +5,7 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -29,7 +30,7 @@ class MotherboardBios
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     #[Assert\Length(max: 255, maxMessage: 'BIOS file name is longer than {{ limit }} characters, try to make it shorter.')]
-    private string|null $file_name;
+    private string|null $file_name = null;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     #[Assert\Length(max: 255, maxMessage: 'BIOS POST string is longer than {{ limit }} characters, try to make it shorter.')]
@@ -52,7 +53,6 @@ class MotherboardBios
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     #[Assert\Length(max: 255, maxMessage: 'BIOS note is longer than {{ limit }} characters, try to make it shorter.')]
     private $note;
-
     public function __construct()
     {
         $this->updated_at = new \DateTime('now');
@@ -153,5 +153,14 @@ class MotherboardBios
         $this->note = $note;
 
         return $this;
+    }
+    #[Assert\Callback]
+    public function validate(ExecutionContextInterface $context, mixed $payload): void
+    {
+        if(!isset($this->manufacturer)) {
+            $context->buildViolation('Manufacturer is not set!')
+                ->atPath('manufacturer')
+                ->addViolation();
+        }
     }
 }

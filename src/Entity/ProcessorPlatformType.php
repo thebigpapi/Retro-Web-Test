@@ -34,6 +34,34 @@ class ProcessorPlatformType
     #[ORM\ManyToMany(targetEntity: CpuSocket::class, mappedBy: 'platforms')]
     private $cpuSockets;
 
+    #[ORM\ManyToMany(targetEntity: InstructionSet::class, inversedBy: 'processorPlatformTypes')]
+    protected $instructionSets;
+
+    #[ORM\Column(type: 'integer', nullable: true)]
+    private $processNode;
+
+    #[ORM\ManyToOne(targetEntity: CacheSize::class, inversedBy: 'getProcessorsL1data')]
+    private $L1data;
+
+    #[ORM\ManyToOne(targetEntity: CacheSize::class, inversedBy: 'getProcessorsL1code')]
+    private $L1code;
+
+    #[ORM\Column]
+    private ?float $L1codeRatio = null;
+
+    #[ORM\Column]
+    private ?float $L1dataRatio = null;
+
+    #[ORM\Column(length: 4096, nullable: true)]
+    private ?string $description = null;
+
+    #[ORM\OneToMany(mappedBy: 'processorPlatformType', targetEntity: EntityDocumentation::class, orphanRemoval: true, cascade: ['persist'])]
+    #[Assert\Valid()]
+    private Collection $entityDocumentations;
+
+    #[ORM\ManyToMany(targetEntity: DramType::class, inversedBy: 'processorPlatformTypes')]
+    private Collection $dramType;
+
     public function __construct()
     {
         $this->motherboards = new ArrayCollection();
@@ -41,6 +69,13 @@ class ProcessorPlatformType
         $this->compatibleWith = new ArrayCollection();
         $this->ChildProcessorPlatformType = new ArrayCollection();
         $this->cpuSockets = new ArrayCollection();
+        $this->instructionSets = new ArrayCollection();
+        $this->entityDocumentations = new ArrayCollection();
+        $this->dramType = new ArrayCollection();
+    }
+    public function __toString(): string
+    {
+        return $this->name;
     }
     public function getId(): ?int
     {
@@ -57,7 +92,7 @@ class ProcessorPlatformType
         return $this;
     }
     /**
-     * @return Collection|Motherboards[]
+     * @return Collection|Motherboard[]
      */
     public function getMotherboards(): Collection
     {
@@ -80,6 +115,34 @@ class ProcessorPlatformType
             }
 
             return $this;
+        }
+
+        return $this;
+    }
+    /**
+     * @return Collection|InstructionSet[]
+     */
+    public function getInstructionSets(): Collection
+    {
+        return $this->instructionSets;
+    }
+    public function addInstructionSet(InstructionSet $instructionSet): self
+    {
+        if (!$this->instructionSets->contains($instructionSet)) {
+            $this->instructionSets[] = $instructionSet;
+            $instructionSet->addPlatform($this);
+        }
+
+        return $this;
+    }
+    public function removeInstructionSet(InstructionSet $instructionSet): self
+    {
+        if ($this->instructionSets->contains($instructionSet)) {
+            $this->instructionSets->removeElement($instructionSet);
+            // set the owning side to null (unless already changed)
+            if ($instructionSet->getPlatforms() === $this) {
+                $instructionSet->removePlatform($this);
+            }
         }
 
         return $this;
@@ -135,30 +198,6 @@ class ProcessorPlatformType
             $processors = array_merge($processors, $compatible->getProcessors()->toArray());
         }
         return new ArrayCollection($processors);
-    }
-    /**
-     * @return Collection|Coprocessor[]
-     */
-    public function getCoprocessors(): Collection
-    {
-        $coprocessors = array();
-        foreach ($this->processingUnits as $coprocessor) {
-            if ($coprocessor instanceof Coprocessor) {
-                $coprocessors[] = $coprocessor;
-            }
-        }
-        return new ArrayCollection($coprocessors);
-    }
-    /**
-     * @return Collection|Coprocessor[]
-     */
-    public function getCompatibleCoprocessors(): Collection
-    {
-        $coprocessors = $this->getProcessors()->toArray();
-        foreach ($this->getCompatibleWith() as $compatible) {
-            $coprocessors = array_merge($coprocessors, $compatible->getCoprocessors()->toArray());
-        }
-        return new ArrayCollection($coprocessors);
     }
     /**
      * @return Collection|self[]
@@ -230,6 +269,131 @@ class ProcessorPlatformType
             $this->cpuSockets->removeElement($cpuSocket);
             $cpuSocket->removePlatform($this);
         }
+
+        return $this;
+    }
+    public function getProcessNode(): ?int
+    {
+        return $this->processNode;
+    }
+    public function setProcessNode(?int $processNode): self
+    {
+        $this->processNode = $processNode;
+
+        return $this;
+    }
+    public function getL1data(): ?CacheSize
+    {
+        return $this->L1data;
+    }
+    public function setL1data(?CacheSize $L1data): self
+    {
+        $this->L1data = $L1data;
+
+        return $this;
+    }
+    public function getL1code(): ?CacheSize
+    {
+        return $this->L1code;
+    }
+    public function setL1code(?CacheSize $L1code): self
+    {
+        $this->L1code = $L1code;
+
+        return $this;
+    }
+
+    public function getL1codeRatio(): ?float
+    {
+        return $this->L1codeRatio;
+    }
+
+    public function setL1codeRatio(float $L1codeRatio): self
+    {
+        $this->L1codeRatio = $L1codeRatio;
+
+        return $this;
+    }
+
+    public function getL1dataRatio(): ?float
+    {
+        return $this->L1dataRatio;
+    }
+
+    public function setL1dataRatio(float $L1dataRatio): self
+    {
+        $this->L1dataRatio = $L1dataRatio;
+
+        return $this;
+    }
+
+    public function getProcessNodeWithValue(): string
+    {
+        return $this->processNode ? $this->processNode . "nm" : "";
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(?string $description): self
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, EntityDocumentation>
+     */
+    public function getEntityDocumentations(): Collection
+    {
+        return $this->entityDocumentations;
+    }
+
+    public function addEntityDocumentation(EntityDocumentation $entityDocumentation): self
+    {
+        if (!$this->entityDocumentations->contains($entityDocumentation)) {
+            $this->entityDocumentations->add($entityDocumentation);
+            $entityDocumentation->setProcessorPlatformType($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEntityDocumentation(EntityDocumentation $entityDocumentation): self
+    {
+        if ($this->entityDocumentations->removeElement($entityDocumentation)) {
+            // set the owning side to null (unless already changed)
+            if ($entityDocumentation->getProcessorPlatformType() === $this) {
+                $entityDocumentation->setProcessorPlatformType(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, DramType>
+     */
+    public function getDramType(): Collection
+    {
+        return $this->dramType;
+    }
+
+    public function addDramType(DramType $dramType): self
+    {
+        if (!$this->dramType->contains($dramType)) {
+            $this->dramType->add($dramType);
+        }
+
+        return $this;
+    }
+
+    public function removeDramType(DramType $dramType): self
+    {
+        $this->dramType->removeElement($dramType);
 
         return $this;
     }

@@ -22,7 +22,10 @@ class ManufacturerBiosManufacturerCode
 
     #[ORM\Column(type: 'string', length: 255)]
     private $code;
-
+    public function __toString(): string
+    {
+        return $this->getCode();
+    }
     public function getId(): ?int
     {
         return $this->id;

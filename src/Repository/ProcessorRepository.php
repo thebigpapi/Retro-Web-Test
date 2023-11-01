@@ -44,9 +44,9 @@ class ProcessorRepository extends ServiceEntityRepository
         $entityManager = $this->getEntityManager();
         $likematch = "$letter%";
         $query = $entityManager->createQuery(
-            "SELECT UPPER(COALESCE(man.shortName, man.name)) manNameSort, cpu
+            "SELECT UPPER(man.name) manNameSort, cpu
             FROM App\Entity\Processor cpu, App\Entity\Manufacturer man
-            WHERE cpu.manufacturer=man AND UPPER(COALESCE(man.shortName, man.name)) like :likeMatch
+            WHERE cpu.manufacturer=man AND UPPER(man.name) like :likeMatch
             ORDER BY manNameSort ASC, cpu.name ASC"
         )->setParameter('likeMatch', $likematch);
 
@@ -65,6 +65,8 @@ class ProcessorRepository extends ServiceEntityRepository
         $entityManager = $this->getEntityManager();
 
         $whereArray = array();
+        $whereArrayPlatform = array();
+        $whereArraySocket = array();
         $valuesArray = array();
 
         // Checking values in criteria and creating WHERE statements
@@ -72,10 +74,28 @@ class ProcessorRepository extends ServiceEntityRepository
             $whereArray[] = "(man.id = :manufacturerId)";
             $valuesArray["manufacturerId"] = (int)$criteria['manufacturer'];
         }
+        if (array_key_exists('cpuSpeed', $criteria)) {
+            $whereArray[] = "(p.speed = :cpuSpeedId)";
+            $valuesArray["cpuSpeedId"] = (int)$criteria['cpuSpeed'];
+        }
+        if (array_key_exists('fsbSpeed', $criteria)) {
+            $whereArray[] = "(p.fsb = :fsbSpeedId)";
+            $valuesArray["fsbSpeedId"] = (int)$criteria['fsbSpeed'];
+        }
+        if (array_key_exists('sockets', $criteria)) {
+            foreach ($criteria['sockets'] as $key => $val) {
+                $whereArraySocket[] = "(cs.id = :socketId$key)";
+                $valuesArray["socketId$key"] = $val;
+            }
+            $whereArray[] = implode(" OR ", $whereArraySocket);
+        }
 
-        if (array_key_exists('platform', $criteria)) {
-            $whereArray[] = "(cpu.platform = :platformId)";
-            $valuesArray["platformId"] = (int)$criteria['platform'];
+        if (array_key_exists('platforms', $criteria)) {
+            foreach ($criteria['platforms'] as $key => $val) {
+                $whereArrayPlatform[] = "(cpu.platform = :platformId$key)";
+                $valuesArray["platformId$key"] = $val;
+            }
+            $whereArray[] = implode(" OR ", $whereArrayPlatform);
         }
 
         if (array_key_exists('name', $criteria)) {
@@ -92,12 +112,18 @@ class ProcessorRepository extends ServiceEntityRepository
         $whereString = implode(" AND ", $whereArray);
 
         // Building query
-        $query = $entityManager->createQuery(
-            "SELECT cpu
-            FROM App\Entity\Processor cpu JOIN cpu.manufacturer man LEFT OUTER JOIN cpu.chipAliases alias LEFT JOIN App\Entity\ProcessingUnit p WITH p.platform = cpu.platform
-            WHERE $whereString
-            ORDER BY man.name ASC, cpu.name ASC, cpu.partNumber ASC"
-        );
+        if($whereArray == []){
+            return [];
+        }
+        else{
+            $query = $entityManager->createQuery(
+                "SELECT cpu
+                FROM App\Entity\Processor cpu JOIN cpu.manufacturer man LEFT OUTER JOIN cpu.chipAliases alias INNER JOIN App\Entity\ProcessingUnit p with p.id = cpu.id join p.sockets as cs
+                WHERE $whereString
+                ORDER BY man.name ASC, cpu.name ASC, cpu.partNumber ASC"
+            );
+        }
+
         // Setting values
         foreach ($valuesArray as $key => $value) {
             $query->setParameter($key, $value);
@@ -111,5 +137,19 @@ class ProcessorRepository extends ServiceEntityRepository
             ->select('count(m.id)')
             ->getQuery()
             ->getSingleScalarResult();
+    }
+    /**
+     * @return Processor[]
+     */
+    public function findAllByCreditor(int $cid): array
+    {
+        $entityManager = $this->getEntityManager();
+        $dql   = "SELECT DISTINCT cpu
+        FROM App:Processor cpu
+        JOIN cpu.images mi LEFT JOIN mi.creditor c
+        WHERE c.id = :cid
+        ORDER BY cpu.name ASC";
+        $query = $entityManager->createQuery($dql)->setParameter(":cid", $cid);
+        return $query->getResult();
     }
 }

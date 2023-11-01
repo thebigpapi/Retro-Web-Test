@@ -1,60 +1,92 @@
 {% extends 'base.html.twig' %}
 
-{% form_theme form _self %}
-
-{% block checkbox_widget %}
-	{% set type = type|default('checkbox') %}
-	<input type="{{ type }}" {{ block('widget_attributes') }} {% if value is not empty %} value="{{ value }}" {% endif %}>
-{% endblock %}
-
-{% block hidden_widget %}
-	{% set type = type|default('hidden') %}
-	<input type="{{ type }}" {{ block('widget_attributes') }} {% if value is not empty %} value="{{ value }}" {% endif %}>
-{% endblock %}
-
 {% block title %}Search CPUs - TRW{% endblock %}
-
 
 {% block metatags %}
 	<meta name="description" content="Search for a CPU by name, manufacturer and part number.">
-	<link rel="alternate" hreflang="x-default" href="{{ absolute_url(path('processor_search')) }}"/>
+	<link rel="alternate" hreflang="x-default" href="{{ absolute_url(path('cpusearch')) }}"/>
+{% endblock %}
+{% block extra_javascripts %}
+	<script src="/build/js/tom-select.complete.min.js" defer></script>
+	<script src="/build/js/search.js" defer></script>
 {% endblock %}
 {% block body %}
-
-	<div id="hiddenDiv" style="display: none;"></div>
-	{{ form_start(form, {'method': 'POST', 'name': 'search_processor', 'action':path("processor_search"), 'attr':{'data-controller':'search'}}) }}
+	{{ form_start(form, {'method': 'POST', 'name': 'search_processor', 'action':path("cpusearch"), 'attr':{'onkeydown': 'return event.key != \'Enter\'', 'data-live-action': path('cpulivewrapper')}}) }}
 	<fieldset id="search-fieldset">
-		<div class="title">Search for: CPUs</div>
+		<div class="title">Search for CPUs</div>
 		<div class="index-title">
-			List by first letter:<br>
+			List by first letter<br>
 		</div>
 		<div class="index-list">
 			{% for letter in ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z']%}
 				<a class="index-letter" href="{{path("processorindex", {"letter":letter})}}">{{letter}}</a>
 			{% endfor %}
 		</div>
-		<section>
-			<h4 hidden>Search navigation</h4>
-			<div class="toolbar">
-				<button type="button" onclick="document.getElementById('search_search').click();return false;">
-					<img src="{{ absolute_url(asset('build/icons/search/search.svg')) }}" alt="search" width="24" height="24">
-					<span>Search</span>
-				</button>
-				{{ form_row(form.search)|replace({'<div><button': '<input', '</button></div>': '">', '>': ' value="'})|raw }}
-			</div>
-		</section>
 		<section class="search-form-grid" style="display:flex;justify-content:center;flex-wrap:wrap;">
 			<div class="search-form-entry" style="min-width:min(27em,50vw);">
 				<label class="search-form-label" for="search_cpuManufacturer" title="This is where you select the manufacturer name and enter the CPU name/part number.">
-					<span>Manufacturer and Name</span>
-					<img src="{{ absolute_url(asset('build/icons/search/help.svg')) }}" alt="" width="16" height="16">
+					<span>Manufacturer and name</span>
+					<img src="{{ absolute_url(asset('build/icons/help.svg')) }}" alt="" width="16" height="16">
 				</label>
 				<div class="search-form-widget">
 					<div id="setchip1">{{ form_widget(form.cpuManufacturer) }}</div>
 					<div>{{ form_widget(form.name, {'attr': {'placeholder': 'Name or Part number (without manufacturer) ...'}}) }}</div>
 				</div>
 			</div>
+			<div class="search-form-entry" style="min-width:min(27em,50vw);">
+				<label class="search-form-label" for="search_cpuManufacturer" title="This is where you select the manufacturer name and enter the CPU name/part number.">
+					<span>CPU and bus speed</span>
+					<img src="{{ absolute_url(asset('build/icons/help.svg')) }}" alt="" width="16" height="16">
+				</label>
+				<div class="search-form-widget">
+					<div>{{ form_widget(form.cpuSpeed) }}</div>
+					<div>{{ form_widget(form.fsbSpeed) }}</div>
+				</div>
+			</div>
 		</section>
+		<section class="search-form-grid">
+			<div class="search-form-filter">
+				<label class="search-form-label" title="">
+					<span>Sockets</span>
+					{% include 'macros/buttons.html.twig' with {'type':'add', 'action': 'sockets'} %}
+				</label>
+				<div class="search-form-widget filter-list" id="sockets-fields-list" data-widget-counter="{{ form.sockets|length }}" data-prototype="
+					{{ form_widget(form.sockets.vars.prototype, {'attr': {'style': 'width:50%'}})|e }}
+					{% include 'macros/buttons.html.twig' with {'type':'del'} %}</div>">
+					{% for socket in form.sockets %}
+						<div class="editor-row">
+							{{ form_widget(socket, {'attr': {'style': 'width:50%'}}) }}
+							{% include 'macros/buttons.html.twig' with {'type':'del'} %}
+							{{ form_errors(socket) }}
+						</div>
+					{% endfor %}
+				</div>
+			</div>
+			<div class="search-form-filter">
+				<label class="search-form-label" title="">
+					<span>Platforms</span>
+					{% include 'macros/buttons.html.twig' with {'type':'add', 'action': 'platforms'} %}
+				</label>
+				<div class="search-form-widget filter-list" id="platforms-fields-list" data-widget-counter="{{ form.platforms|length }}" data-prototype="
+					{{ form_widget(form.platforms.vars.prototype, {'attr': {'style': 'width:50%'}})|e }}
+					{% include 'macros/buttons.html.twig' with {'type':'del'} %}</div>">
+					{% for platform in form.platforms %}
+						<div class="editor-row">
+							{{ form_widget(platform, {'attr': {'style': 'width:50%'}}) }}
+							{% include 'macros/buttons.html.twig' with {'type':'del'} %}
+							{{ form_errors(platform) }}
+						</div>
+					{% endfor %}
+				</div>
+			</div>
+		</section>
+		{% include 'macros/searchitems.html.twig' with {'datatarget': 'cpus', 'dataresetids': 'search_cpuManufacturer', 'search_with_images' : true} %}
 	</fieldset>
-	<div>{{ form_rest(form)}}</div>
-</form>{% endblock %}
+	{{ form_end(form, {render_rest: false}) }}
+	<!-- Search results -->
+	<section id="search_liveResults">
+	{% if cpus is defined %}
+		{% include 'cpu/result.html.twig' with {'cpus': cpus, 'show_images': show_images, 'route': true} %}
+	{% endif %}
+	</section>
+{% endblock %}

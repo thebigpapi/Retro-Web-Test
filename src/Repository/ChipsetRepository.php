@@ -6,6 +6,7 @@ use App\Entity\Chipset;
 use App\Entity\Manufacturer;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\ORM\Query\ResultSetMapping;
 use Generator;
 
 /**
@@ -30,7 +31,7 @@ class ChipsetRepository extends ServiceEntityRepository
 
         $dql   = "SELECT c, cp 
         FROM App:Chipset c 
-        JOIN c.manufacturer m LEFT JOIN c.chipsetParts cp
+        JOIN c.manufacturer m LEFT JOIN c.expansionChips cp
         ORDER BY m.name ASC, c.name ASC";
         $query = $entityManager->createQuery($dql);
 
@@ -52,6 +53,7 @@ class ChipsetRepository extends ServiceEntityRepository
             foreach ($multicrit as $key => $val) {
                 $whereArray[] = "(LOWER(chip.name) LIKE :nameLike$key 
                     OR LOWER(chip.part_no) LIKE :nameLike$key 
+                    OR LOWER(part.name) LIKE :nameLike$key
                     OR LOWER(part.partNumber) LIKE :nameLike$key
                     OR LOWER(alias.name) LIKE :nameLike$key 
                     OR LOWER(alias.partNumber) LIKE :nameLike$key)";
@@ -67,18 +69,43 @@ class ChipsetRepository extends ServiceEntityRepository
         $whereString = implode(" AND ", $whereArray);
 
         // Building query
-        $query = $entityManager->createQuery(
-            "SELECT chip
-            FROM App\Entity\Chipset chip JOIN chip.manufacturer man JOIN chip.chipsetParts part LEFT OUTER JOIN chip.chipsetAliases alias
-            WHERE $whereString
-            ORDER BY man.name ASC, chip.release_date ASC, chip.name ASC"
-        );
-
+        if($whereArray == []){
+            return [];
+        }
+        else{
+            $query = $entityManager->createQuery(
+                "SELECT chip
+                FROM App\Entity\Chipset chip JOIN chip.manufacturer man JOIN chip.expansionChips part LEFT OUTER JOIN chip.chipsetAliases alias
+                WHERE $whereString
+                ORDER BY man.name ASC, chip.name ASC"
+            );
+        }
         // Setting values
         foreach ($valuesArray as $key => $value) {
             $query->setParameter($key, $value);
         }
-        //dd($query->getResult());
+        return $query->getResult();
+    }
+    /**
+     * @return Chipset[]
+     */
+    public function findByChips(array $criteria): array
+    {
+        $entityManager = $this->getEntityManager();
+        $whereString = "(";
+        foreach ($criteria as $key => $val) {
+            $whereString .= "$val";
+            if ($key !== array_key_last($criteria)) {
+                $whereString .= ",";
+            }
+        }
+        $whereString .= ")";
+        $query = $entityManager->createQuery(
+            "SELECT chip
+            FROM App\Entity\Chipset chip JOIN chip.manufacturer man JOIN chip.expansionChips part LEFT OUTER JOIN chip.chipsetAliases alias
+            WHERE part.id IN $whereString
+            ORDER BY man.name ASC, chip.name ASC"
+        );
         return $query->getResult();
     }
     /**
@@ -89,13 +116,13 @@ class ChipsetRepository extends ServiceEntityRepository
         $entityManager = $this->getEntityManager();
         $likematch = "$letter%";
         $query = $entityManager->createQuery(
-            "SELECT chip, chipPart, chipPartMan, cal, UPPER(COALESCE(man.shortName, man.name)) manNameSort, UPPER(chip.name) chipNameSort
+            "SELECT chip, chipPart, chipPartMan, cal, UPPER(man.name) manNameSort, UPPER(chip.name) chipNameSort
             FROM App\Entity\Chipset chip
-            LEFT JOIN chip.chipsetParts chipPart
+            LEFT JOIN chip.expansionChips chipPart
             LEFT JOIN chipPart.manufacturer chipPartMan
             LEFT JOIN chip.chipsetAliases cal,
             App\Entity\Manufacturer man 
-            WHERE chip.manufacturer=man AND UPPER(COALESCE(man.shortName, man.name)) like :likeMatch
+            WHERE chip.manufacturer=man AND UPPER(man.name) like :likeMatch
             ORDER BY manNameSort ASC, chipNameSort ASC"
         )->setParameter('likeMatch', $likematch);
 
@@ -124,5 +151,19 @@ class ChipsetRepository extends ServiceEntityRepository
             ->select('count(m.id)')
             ->getQuery()
             ->getSingleScalarResult();
+    }
+    /**
+     * @return Chipset[] Returns an array of sockets and count of board for each socket
+     */
+    public function getChipsetDocCount(): array
+    {
+        $entityManager = $this->getEntityManager();
+        $rsm = new ResultSetMapping();
+        $rsm->addScalarResult('count', 'count');
+
+        $result = $entityManager->createNativeQuery(
+            "SELECT count(DISTINCT chipset_id) FROM chipset_expansion_chip WHERE expansion_chip_id IN
+            (SELECT id FROM chip WHERE id NOT IN (SELECT chip_id FROM chip_documentation) AND dtype='expansionchip')",$rsm)->getResult();
+        return $result;
     }
 }

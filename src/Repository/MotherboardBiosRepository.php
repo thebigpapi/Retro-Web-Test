@@ -51,6 +51,10 @@ class MotherboardBiosRepository extends ServiceEntityRepository
             $whereArray[] = "(bios.manufacturer = :manufacturer_id)";
             $valuesArray["manufacturer_id"] = (int)$criterias['manufacturer_id'];
         }
+        if (array_key_exists('mbmanufacturer_id', $criterias)) {
+            $whereArray[] = "(m.manufacturer = :mbmanufacturer_id)";
+            $valuesArray["mbmanufacturer_id"] = (int)$criterias['mbmanufacturer_id'];
+        }
         if (array_key_exists('chipset_id', $criterias)) {
             $whereArray[] = "(m.chipset = :chipset_id)";
             $valuesArray["chipset_id"] = (int)$criterias['chipset_id'];
@@ -63,17 +67,28 @@ class MotherboardBiosRepository extends ServiceEntityRepository
             $whereArray[] = "(LOWER(bios.postString) LIKE LOWER(:postString))";
             $valuesArray["postString"] = "%" . $criterias['post_string'] . "%";
         }
+        if (array_key_exists('expansionChips', $criterias)) {
+            foreach ($criterias['expansionChips'] as $key => $value) {
+                $whereArray[] = "(m.id in (select m$key.id from App\Entity\Motherboard m$key JOIN m$key.expansionChips ec$key where ec$key.id=:idChip$key))";
+                $valuesArray["idChip$key"] = $value;
+        }
+        }
 
         // Building where statement
         $whereString = implode(" AND ", $whereArray);
 
         // Building query
-        $query = $entityManager->createQuery(
-            "SELECT COALESCE(man.shortName, man.name) as manName, m.id, m.name, bios, COALESCE(bman.shortName, bman.name) as bmanName
-            FROM App\Entity\MotherboardBios bios JOIN bios.manufacturer bman JOIN bios.motherboard m JOIN m.manufacturer man
-            WHERE $whereString
-            ORDER BY bios.coreVersion ASC, manName ASC, m.name ASC"
-        );
+        if($whereArray == []){
+            return [];
+        }
+        else{
+            $query = $entityManager->createQuery(
+                "SELECT man.name as manName, m.id, m.name, bios, bman.name as bmanName
+                FROM App\Entity\MotherboardBios bios JOIN bios.manufacturer bman JOIN bios.motherboard m JOIN m.manufacturer man JOIN m.expansionChips mec
+                WHERE $whereString
+                ORDER BY man.name ASC, m.name ASC, bios.coreVersion ASC, manName ASC"
+            );
+        }
 
         // Setting values
         foreach ($valuesArray as $key => $value) {

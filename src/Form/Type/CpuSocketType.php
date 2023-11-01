@@ -19,7 +19,8 @@ class CpuSocketType extends AbstractType
             'choice_label' => 'getNameAndType',
             'multiple' => false,
             'expanded' => false,
-            'autocomplete' => true,
+            'attr' => ['data-ea-widget' => 'ea-autocomplete'],
+            'placeholder'=> 'Select a CPU socket ...',
         ]);
     }
 

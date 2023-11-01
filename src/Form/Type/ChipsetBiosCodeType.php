@@ -20,9 +20,11 @@ class ChipsetBiosCodeType extends AbstractType
         $builder
             ->add('biosManufacturer', EntityType::class, [
                 'class' => Manufacturer::class,
-                'choice_label' => 'shortNameIfExist',
+                'choice_label' => 'name',
+                'label' => 'Chipset manufacturer',
                 'multiple' => false,
                 'expanded' => false,
+                'attr' => ['data-ea-widget' => 'ea-autocomplete']
                 ])
             ->add('code', TextType::class);
     }

@@ -2,35 +2,40 @@
 
 namespace App\Form\Type;
 
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use App\Entity\ExpansionChip;
-use Symfony\Component\Form\FormInterface;
-use Symfony\Component\Form\FormView;
-use Symfony\Component\Form\ChoiceList\View\ChoiceView;
 
 class ExpansionChipType extends AbstractType
 {
+    private EntityManagerInterface $entityManager;
+
+    public function __construct(EntityManagerInterface $entityManager)
+    {
+        $this->entityManager = $entityManager;
+    }
+    private function getExpChipRepository(): EntityRepository
+    {
+        return $this->entityManager->getRepository(ExpansionChip::class);
+    }
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
             'class' => ExpansionChip::class,
             'choice_label' => 'getNameWithManufacturer',
+            'choices' => $this->getExpChipRepository()->findByPopularity(),
             'multiple' => false,
             'expanded' => false,
-            'autocomplete' => true,
+            'attr' => ['data-ea-widget' => 'ea-autocomplete'],
+            'placeholder'=> 'Select a chip ...',
         ]);
     }
 
     public function getParent(): ?string
     {
         return EntityType::class;
-    }
-    public function finishView(FormView $view, FormInterface $form, array $options)
-    {
-        usort($view->vars['choices'], function (ChoiceView $a, ChoiceView $b) {
-            return strnatcasecmp($a->data->getName() ?? '', $b->data->getName() ?? '');
-        });
     }
 }

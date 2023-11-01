@@ -22,6 +22,7 @@ class GitDataCollector extends DataCollector
         // We add the git informations in $data[]
         $this->data = [
             'git_branch' => $this->gitLoader->getBranchName(),
+            'git_commit' => $this->gitLoader->getCurrentCommitHash(),
             'last_commit_message' => $this->gitLoader->getLastCommitMessage(),
             'logs' => $this->gitLoader->getLastCommitDetail(),
         ];
@@ -45,6 +46,11 @@ class GitDataCollector extends DataCollector
     public function getGitBranch()
     {
         return $this->data['git_branch'];
+    }
+
+    public function getGitCommit()
+    {
+        return $this->data['git_commit'];
     }
 
     public function getLastCommitMessage()

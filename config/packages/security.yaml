@@ -36,7 +36,7 @@ security:
                 realm: Secured Area
             entry_point: App\Security\LoginFormAuthenticator
             custom_authenticator: App\Security\LoginFormAuthenticator
-            
+
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#firewalls-authentication
@@ -59,9 +59,8 @@ security:
         # - { path: ^/profile, roles: ROLE_USER }
         # require ROLE_ADMIN for /admin*
         - { path: '^/login$', roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: '^/motherboards/\d+/delete/$', roles: ROLE_ADMIN }
-        - { path: '^/admin/manage_users', roles: ROLE_SUPER_ADMIN }
-        - { path: '^/admin/*', roles: ROLE_ADMIN }
+        - { path: '^/dashboard*', roles: ROLE_USER }
+        - { path: '^/admin*', roles: ROLE_SUPER_ADMIN }
 
 
         # or require ROLE_ADMIN or IS_AUTHENTICATED_FULLY for /admin*

@@ -1,0 +1,118 @@
+{% extends '@!DHAuditor/Audit/helpers/helper.html.twig' %}
+
+{% macro summarize(entity, entry) %}
+    {% set titles = {
+        'App\\Entity\\AudioFile' : 'Audio file',
+        'App\\Entity\\CacheSize' : 'Cache size',
+        'App\\Entity\\CdDrive' : 'Optical drive',
+        'App\\Entity\\ChipAlias' : 'Chip alias',
+        'App\\Entity\\ChipDocumentation' : 'Chip doc',
+        'App\\Entity\\ChipImage' : 'Chip image',
+        'App\\Entity\\Chipset' : 'Chipset',
+        'App\\Entity\\ChipsetAlias' : 'Chipset alias',
+        'App\\Entity\\ChipsetBiosCode' : 'Chipset BIOS code',
+        'App\\Entity\\ChipsetDocumentation' : 'Chipset doc',
+        'App\\Entity\\CpuSocket' : 'CPU socket',
+        'App\\Entity\\CpuSpeed' : 'Speed',
+        'App\\Entity\\Creditor' : 'Creditor',
+        'App\\Entity\\DramType' : 'RAM type',
+        'App\\Entity\\EntityDocumentation' : 'Entity documentation',
+        'App\\Entity\\EntityImage' : 'Entity image',
+        'App\\Entity\\ExpansionChip' : 'Expansion chip',
+        'App\\Entity\\ExpansionChipType' : 'Expansion chip type',
+        'App\\Entity\\ExpansionSlot' : 'Expansion slot',
+        'App\\Entity\\FloppyDrive' : 'Floppy drive',
+        'App\\Entity\\FormFactor' : 'Form factor',
+        'App\\Entity\\HardDrive' : 'Hard drive',
+        'App\\Entity\\InstructionSet' : 'Instruction set',
+        'App\\Entity\\IoPort' : 'I/O port',
+        'App\\Entity\\KnownIssue' : 'Known issue',
+        'App\\Entity\\LargeFile' : 'Driver',
+        'App\\Entity\\LargeFileChipset' : 'Chipset driver',
+        'App\\Entity\\LargeFileExpansionChip' : 'Expansion chip driver',
+        'App\\Entity\\LargeFileMediaTypeFlag' : 'Driver media flag',
+        'App\\Entity\\LargeFileMotherboard' : 'Motherboard driver',
+        'App\\Entity\\License' : 'License',
+        'App\\Entity\\Manual' : 'Motherboard doc',
+        'App\\Entity\\Manufacturer' : 'Manufacturer',
+        'App\\Entity\\ManufacturerBiosManufacturerCode' : 'BIOS manufacturer code',
+        'App\\Entity\\MaxRam' : 'RAM size',
+        'App\\Entity\\MediaTypeFlag' : 'Media flag',
+        'App\\Entity\\MiscFile' : 'Misc file',
+        'App\\Entity\\Motherboard' : 'Motherboard',
+        'App\\Entity\\MotherboardAlias' : 'Motherboard alias',
+        'App\\Entity\\MotherboardBios' : 'Motherboard BIOS',
+        'App\\Entity\\MotherboardExpansionSlot' : 'Motherboard expansion slot',
+        'App\\Entity\\MotherboardIdRedirection' : 'Motherboard URL redirect',
+        'App\\Entity\\MotherboardImage' : 'Motherboard image',
+        'App\\Entity\\MotherboardIoPort' : 'Motherboard I/O port',
+        'App\\Entity\\MotherboardMaxRam' : 'Motherboard RAM size',
+        'App\\Entity\\OsFlag' : 'OS flag',
+        'App\\Entity\\PSUConnector' : 'PSU connector',
+        'App\\Entity\\Processor' : 'CPUs',
+        'App\\Entity\\ProcessorPlatformType' : 'CPU family',
+        'App\\Entity\\ProcessorVoltage' : 'CPU voltage',
+        'App\\Entity\\StorageDeviceAlias' : 'Storage device alias',
+        'App\\Entity\\StorageDeviceDocumentation' : 'Storage device doc',
+        'App\\Entity\\StorageDeviceImage' : 'Storage device image',
+        'App\\Entity\\StorageDeviceInterface' : 'Storage device interface',
+        'App\\Entity\\StorageDeviceSize' : 'Storage device physical size',
+        'App\\Entity\\User' : 'User'
+    }
+    %}
+    {% import _self as helper %}
+
+    {% set diffs = entry.getDiffs() %}
+
+    {% if entry.getType() == 'insert' %}
+        {% set action = 'inserted' %}
+    {% elseif entry.getType() == 'update' %}
+        {% set action = 'updated' %}
+    {% elseif entry.getType() == 'remove' %}
+        {% set action = 'deleted' %}
+        {% set source = diffs %}
+    {% elseif entry.getType() == 'associate' %}
+        {% set action = 'associated' %}
+        {% set source = diffs.source %}
+        {% set target = diffs.target %}
+    {% elseif entry.getType() == 'dissociate' %}
+        {% set action = 'dissociated' %}
+        {% set source = diffs.source %}
+        {% set target = diffs.target %}
+    {% else %}
+        {% set action = 'unknown_action' %}
+    {% endif %}
+
+    {% set source_subject = titles[entity] ~ '#' ~ entry.getObjectId() %}
+    {% set source_label = '' %}
+    {% if source is defined and source is not null and source_subject != source.label %}
+        {% if 'App\\Entity\\' not in source.label|trim %}
+            {% set source_label = '(' ~ source.label|trim ~ ')' %}
+        {% endif %}
+    {% endif %}
+
+    {% set target_link = '' %}
+    {% set target_subject = '' %}
+    {% set target_label = '' %}
+    {% if target is defined and target is not null %}
+        {% set target_id = target.pkName is defined ? target[target.pkName] : target.id %}
+        {% set target_subject = titles[target.class] ~ '#' ~ target_id %}
+        {% set target_link = path('dh_auditor_show_entity_history', { 'entity': helper.namespaceToParam(target.class), 'id': target_id }) %}
+        {% if target_subject != target.label %}
+            {% if 'App\\Entity\\' not in helper.dump(target)|trim %}
+                {% set target_label = '(' ~ helper.dump(target)|trim ~ ')' %}
+            {% endif %}
+        {% endif %}
+    {% endif %}
+
+    {{ ('audit.audit_details.summary.' ~ action)|trans({
+        '%source_link%': path('dh_auditor_show_entity_history', { 'entity': helper.namespaceToParam(entity), 'id': entry.getObjectId() }),
+        '%source%': source_subject,
+        '%source_label%': source_label,
+        '%target_link%': target_link,
+        '%target%': target_subject,
+        '%target_label%': target_label,
+        '%user%': entry.getUsername() is null ? 'audit.audit_details.summary.unkown_user'|trans(domain='auditor') : entry.getUsername(),
+        '%ip%': '',
+    }, domain='auditor')|raw }}
+{% endmacro %}

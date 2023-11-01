@@ -6,8 +6,11 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: 'App\Repository\MotherboardRepository')]
+#[UniqueEntity('slug')]
 class Motherboard
 {
     #[ORM\Id]
@@ -48,9 +51,6 @@ class Motherboard
     #[ORM\ManyToMany(targetEntity: ProcessorPlatformType::class, inversedBy: 'motherboards')]
     private $processorPlatformTypes;
 
-    #[ORM\ManyToMany(targetEntity: Processor::class, inversedBy: 'motherboards')]
-    private $processors;
-
     #[ORM\ManyToMany(targetEntity: CpuSpeed::class, inversedBy: 'motherboards')]
     private $cpuSpeed;
 
@@ -66,9 +66,6 @@ class Motherboard
     #[ORM\OneToMany(targetEntity: Manual::class, mappedBy: 'motherboard', orphanRemoval: true, cascade: ['persist'])]
     #[Assert\Valid()]
     private $manuals;
-
-    #[ORM\ManyToMany(targetEntity: Coprocessor::class, inversedBy: 'motherboards')]
-    private $coprocessors;
 
     #[ORM\OneToMany(targetEntity: MotherboardImage::class, mappedBy: 'motherboard', orphanRemoval: true, cascade: ['persist'])]
     #[Assert\Valid()]
@@ -103,6 +100,7 @@ class Motherboard
     private $drivers;
 
     #[ORM\OneToMany(targetEntity: MotherboardIdRedirection::class, mappedBy: 'destination', orphanRemoval: true, cascade: ['persist'])]
+    #[Assert\Valid()]
     private $redirections;
 
     #[ORM\ManyToMany(targetEntity: PSUConnector::class, inversedBy: 'motherboards')]
@@ -119,7 +117,6 @@ class Motherboard
     #[ORM\OneToMany(mappedBy: 'motherboard', targetEntity: MiscFile::class, orphanRemoval: true, cascade: ['persist'])]
     #[Assert\Valid()]
     private $miscFiles;
-
     public function __construct()
     {
         $this->motherboardMaxRams = new ArrayCollection();
@@ -130,8 +127,6 @@ class Motherboard
         $this->cacheSize = new ArrayCollection();
         $this->dramType = new ArrayCollection();
         $this->manuals = new ArrayCollection();
-        $this->processors = new ArrayCollection();
-        $this->coprocessors = new ArrayCollection();
         $this->images = new ArrayCollection();
         $this->knownIssues = new ArrayCollection();
         $this->lastEdited = new \DateTime('now');
@@ -168,10 +163,10 @@ class Motherboard
 
         return $this;
     }
-    public function getManufacturerShortNameIfExist(): ?string
+    public function getManufacturerName(): ?string
     {
         if ($this->manufacturer) {
-            return $this->manufacturer->getShortNameIfExist();
+            return $this->manufacturer->getName();
         } else {
             return 'Unknown';
         }
@@ -195,6 +190,12 @@ class Motherboard
         $this->chipset = $chipset;
 
         return $this;
+    }
+    public function isChipset(): bool
+    {
+        if(isset($this->chipset))
+            return true;
+        return false;
     }
     /**
      * @return Collection|MotherboardMaxRam[]
@@ -240,7 +241,7 @@ class Motherboard
     {
         return $this->motherboardBios;
     }
-    public function addMotherboardBios(MotherboardBios $motherboardBios): self
+    public function addMotherboardBio(MotherboardBios $motherboardBios): self
     {
         if (!$this->motherboardBios->contains($motherboardBios)) {
             $this->motherboardBios[] = $motherboardBios;
@@ -249,7 +250,7 @@ class Motherboard
 
         return $this;
     }
-    public function removeMotherboardBios(MotherboardBios $motherboardBios): self
+    public function removeMotherboardBio(MotherboardBios $motherboardBios): self
     {
         if ($this->motherboardBios->contains($motherboardBios)) {
             $this->motherboardBios->removeElement($motherboardBios);
@@ -260,6 +261,13 @@ class Motherboard
         }
 
         return $this;
+    }
+    public function isMotherboardBios(): bool
+    {
+        if(isset($this->motherboardBios))
+            if(count($this->motherboardBios) > 0)
+                return true;
+        return false;
     }
     /**
      * @return Collection|MotherboardExpansionSlot[]
@@ -277,7 +285,7 @@ class Motherboard
 
         return $this;
     }
-    public function addExpansionSlot(ExpansionSlot $expansionSlot, int $count): self
+    public function addExpansionSlt(ExpansionSlot $expansionSlot, int $count): self
     {
         $mes = new MotherboardExpansionSlot();
         $mes->setExpansionSlot($expansionSlot);
@@ -354,67 +362,6 @@ class Motherboard
     {
         if ($this->processorPlatformTypes->contains($processorPlatformType)) {
             $this->processorPlatformTypes->removeElement($processorPlatformType);
-        }
-
-        return $this;
-    }
-    /**
-     * @return Collection|Processor[]
-     */
-    public function getSortedProcessors(): Collection
-    {
-        $processors = array();
-        foreach ($this->processors as $processor) {
-            $processorsTmp = array();
-            foreach ($processor->getChipAliases() as $alias) {
-                if (
-                    ($alias->getManufacturer() != $processor->getManufacturer())
-                    &&
-                    $alias->getName() != $processor->getName()
-                ) {
-                    $alreadyAdded = false;
-                    foreach ($processorsTmp as $processorTmp) {
-                        if (
-                            ($alias->getManufacturer() == $processorTmp->getManufacturer())
-                            &&
-                            $alias->getName() == $processorTmp->getName()
-                        ) {
-                            $alreadyAdded = true;
-                        }
-                    }
-                    if (!$alreadyAdded) {
-                        $fakeCPU = clone $processor;
-                        $fakeCPU->setName($alias->getName());
-                        $fakeCPU->setManufacturer($alias->getManufacturer());
-                        $fakeCPU->setPartNumber($alias->getPartNumber());
-                        $processorsTmp[] = $fakeCPU;
-                    }
-                }
-            }
-            $processors = array_merge($processors, $processorsTmp);
-        }
-        $processors = array_merge($processors, $this->processors->toArray());
-        return Processor::sort(new ArrayCollection($processors));
-    }
-    /**
-     * @return Collection|Processor[]
-     */
-    public function getProcessors(): array
-    {
-        return $this->processors->toArray();
-    }
-    public function addProcessor(Processor $processor): self
-    {
-        if (!$this->processors->contains($processor)) {
-            $this->processors[] = $processor;
-        }
-
-        return $this;
-    }
-    public function removeProcessor(Processor $processor): self
-    {
-        if ($this->processors->contains($processor)) {
-            $this->processors->removeElement($processor);
         }
 
         return $this;
@@ -526,28 +473,12 @@ class Motherboard
 
         return $this;
     }
-    /**
-     * @return Collection|Coprocessor[]
-     */
-    public function getCoprocessors(): Collection
+    public function isManuals(): bool
     {
-        return $this->coprocessors;
-    }
-    public function addCoprocessor(Coprocessor $coprocessor): self
-    {
-        if (!$this->coprocessors->contains($coprocessor)) {
-            $this->coprocessors[] = $coprocessor;
-        }
-
-        return $this;
-    }
-    public function removeCoprocessor(Coprocessor $coprocessor): self
-    {
-        if ($this->coprocessors->contains($coprocessor)) {
-            $this->coprocessors->removeElement($coprocessor);
-        }
-
-        return $this;
+        if(isset($this->manuals))
+            if(count($this->manuals) > 0)
+                return true;
+        return false;
     }
     /**
      * @return Collection|MotherboardImage[]
@@ -576,6 +507,30 @@ class Motherboard
         }
 
         return $this;
+    }
+    public function isImages(): string
+    {
+        if(isset($this->images))
+            $types = array(
+                1 => 0,
+                2 => 0,
+                3 => 0,
+                4 => 0,
+                5 => 0,
+            );
+        foreach($this->images as $image){
+            $types[$image->getMotherboardImageType()->getId()] += 1;
+        }
+        if(($types[1] || $types[5])){
+            if(!($types[2] || $types[3] || $types[4]))
+                return "Schema only";
+            else return "Schema and photo";
+        }
+        else{
+            if(!($types[2] || $types[3] || $types[4]))
+                return "None";
+            else return "Photo only";
+        }
     }
     /**
      * @return Collection|KnownIssue[]
@@ -674,6 +629,15 @@ class Motherboard
 
         return $this;
     }
+    public function addAlias(Manufacturer $manuf, string $name): self
+    {
+        $ma = new MotherboardAlias();
+        $ma->setManufacturer($manuf);
+        $ma->setMotherboard($this);
+        $ma->setName($name);
+
+        return $this->addMotherboardAlias($ma);
+    }
     /**
      * @return Collection|CpuSocket[]
      */
@@ -707,6 +671,11 @@ class Motherboard
         $drivers = array_merge($this->getDrivers()->toArray(), $this->getChipset()?->getDrivers()->toArray() ?? []);
         foreach ($this->getExpansionChips() as $expansionChip) {
             $drivers = array_merge($drivers, $expansionChip->getDrivers()->toArray());
+        }
+        if($this->getChipset()){
+            foreach ($this->getChipset()->getExpansionChips() as $chipsetParts) {
+                $drivers = array_merge($drivers, $chipsetParts->getDrivers()->toArray());
+            }
         }
         return new ArrayCollection($drivers);
     }
@@ -822,6 +791,13 @@ class Motherboard
 
         return $this;
     }
+    public function isExpansionChips(): bool
+    {
+        if(isset($this->expansionChips))
+            if(count($this->expansionChips) > 0)
+                return true;
+        return false;
+    }
 
     /**
      * @return Collection<int, MiscFile>
@@ -858,7 +834,7 @@ class Motherboard
         $strBuilder = "";
         $mfgData = $this->getManufacturer();
         if ($mfgData != null) {
-            $strBuilder .= $mfgData->getShortNameIfExist();
+            $strBuilder .= $mfgData->getName();
         } else {
             $strBuilder .= "[Unknown]";
         }
@@ -878,5 +854,57 @@ class Motherboard
         }
         $strBuilder .= " chipset. Get specs, BIOS, documentation and more!";
         return $strBuilder;
+    }
+    #[Assert\Callback]
+    public function verifyIoPorts(ExecutionContextInterface $context): void
+    {
+        $arr = array();
+        foreach($this->motherboardIoPorts as $item){
+            $port = $item->getIoPort();
+            if($item->getCount() == 0){
+                $context->buildViolation('I/O port count should be above 0')
+                    ->atPath('motherboardIoPorts')
+                    ->addViolation();
+            }
+            if(in_array($port, $arr)){
+                $context->buildViolation('Duplicate I/O port types are not allowed!')
+                    ->atPath('motherboardIoPorts')
+                    ->addViolation();
+            }
+            array_push($arr, $port);
+        }
+    }
+    #[Assert\Callback]
+    public function verifyExpansionSlots(ExecutionContextInterface $context): void
+    {
+        $arr = array();
+        foreach($this->motherboardExpansionSlots as $item){
+            $slot = $item->getExpansionSlot();
+            if($item->getCount() == 0){
+                $context->buildViolation('Expansion slot count should be above 0')
+                    ->atPath('motherboardExpansionSlots')
+                    ->addViolation();
+            }
+            if(in_array($slot, $arr)){
+                $context->buildViolation('Duplicate expansion slot types are not allowed!')
+                    ->atPath('motherboardExpansionSlots')
+                    ->addViolation();
+            }
+            array_push($arr, $slot);
+        }
+    }
+    #[Assert\Callback]
+    public function verifyMaxRams(ExecutionContextInterface $context): void
+    {
+        $arr = array();
+        foreach($this->motherboardMaxRams as $item){
+            $val = $item->getMaxram();
+            if(in_array($val, $arr)){
+                $context->buildViolation('Duplicate RAM sizes are not allowed!')
+                    ->atPath('motherboardMaxRams')
+                    ->addViolation();
+            }
+            array_push($arr, $val);
+        }
     }
 }

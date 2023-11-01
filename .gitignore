@@ -7,6 +7,7 @@
 /public/bundles/
 /var/
 /vendor/
+/.vscode/
 ###< symfony/framework-bundle ###
 
 ###> symfony/phpunit-bridge ###
@@ -26,7 +27,9 @@
 /public/media/*
 /public/icons/*
 /public/chip/*
+/public/misc/*
 /public/cache/*
+/public/storage/*
 !public/media/cache/.gitkeep
 !public/motherboard/bios/.gitkeep
 !public/motherboard/image/.gitkeep

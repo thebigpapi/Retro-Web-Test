@@ -22,6 +22,18 @@ Encore
         from: './assets/icons/',
         to: 'icons/[path][name].[ext]',
     })
+    .copyFiles({
+        from: './assets/js/',
+        to: 'js/[path][name].[ext]',
+    })
+    .copyFiles({
+        from: './assets/styles/glightbox',
+        to: 'css/[path][name].[ext]',
+    })
+    .copyFiles({
+        from: './assets/styles/audit',
+        to: 'css/[path][name].[ext]',
+    })
     /*
      * ENTRY CONFIG
      *
@@ -29,15 +41,14 @@ Encore
      * and one CSS file (e.g. app.css) if your JavaScript imports CSS.
      */
     .addEntry('app', './assets/app.js')
-    .addEntry('admin_app', './assets/admin_app.js')
-    .addEntry('glightbox', './assets/glightbox.js')
-    //.addEntry('motherboards/search', './assets/search.js')
+    .addEntry('app_ea', './assets/app_ea.js')
+    .addEntry('chart', './assets/chart.js')
 
     // enables the Symfony UX Stimulus bridge (used in assets/bootstrap.js)
-    .enableStimulusBridge('./assets/controllers.json')
+    //.enableStimulusBridge('./assets/controllers.json')
 
     // When enabled, Webpack "splits" your files into smaller pieces for greater optimization.
-    .splitEntryChunks()
+    //.splitEntryChunks()
 
     // will require an extra script tag for runtime.js
     // but, you probably want this, unless you're building a single-page app

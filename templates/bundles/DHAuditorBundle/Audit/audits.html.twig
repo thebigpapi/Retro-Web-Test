@@ -1,0 +1,168 @@
+{% extends "@DHAuditor/layout.html.twig" %}
+
+{% import '@DHAuditor/Audit/helpers/helper.html.twig' as helper %}
+
+{% block dh_auditor_header %}
+    <nav class="bg-white border border-gray-200 rounded flex" aria-label="Breadcrumb">
+        <ol role="list" class="max-w-screen-xl w-full mx-auto px-4 flex space-x-4 sm:px-6 lg:px-6">
+            <li class="flex">
+                <div class="flex items-center h-11">
+                    <a href="{{ path('dh_auditor_list_audits') }}" class="text-gray-400 hover:text-gray-500 flex space-x-1">
+                        <!-- Heroicon name: solid/home -->
+                        <svg class="flex-shrink-0 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                            <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
+                        </svg>
+                        <span>{% trans from 'auditor' %}audit.header.home{% endtrans %}</span>
+                    </a>
+                </div>
+            </li>
+        </ol>
+    </nav>
+{% endblock %}
+
+{% block dh_auditor_content %}
+{% set icons = {
+    'audio_file' : 'audio.svg',
+    'cache_size' : 'chip.svg',
+    'cd_drive' : 'cd_drive.svg',
+    'chip_alias' : 'chip_alias.svg',
+    'chip_documentation' : 'chip_docs.svg',
+    'chip_image' : 'chip_image.svg',
+    'chipset' : 'chipsetfull.svg',
+    'chipset_alias' : 'chipset_alias.svg',
+    'chipset_bios_code' : 'awchip.svg',
+    'chipset_documentation' : 'chipset_docs.svg',
+    'cpu_socket' : 'cpupins.svg',
+    'cpu_speed' : 'speed.svg',
+    'creditor' : 'creditor.svg',
+    'dram_type' : 'ram.svg',
+    'entity_image' : 'search_image.svg',
+    'entity_documentation' : 'manual.svg',
+    'expansion_chip' : 'chip.svg',
+    'expansion_chip_type' : 'chip_alias.svg',
+    'expansion_slot' : 'card.svg',
+    'floppy_drive' : 'floppy_drive.svg',
+    'form_factor' : 'dimension.svg',
+    'hard_drive' : 'hdd.svg',
+    'instruction_set' : '486.svg',
+    'io_port' : 'rs232.svg',
+    'known_issue' : 'chip.svg',
+    'large_file' : 'hardware.svg',
+    'large_file_chipset' : 'chipset_drivers.svg',
+    'large_file_expansion_chip' : 'chip_drivers.svg',
+    'large_file_media_type_flag' : 'driver_mediatype.svg',
+    'large_file_motherboard' : 'board_drivers.svg',
+    'license' : 'license.svg',
+    'manual' : 'board_docs.svg',
+    'manufacturer' : 'factory.svg',
+    'manufacturer_bios_manufacturer_code' : 'awchip_codes.svg',
+    'max_ram' : 'ram_multi.svg',
+    'media_type_flag' : 'mediatype.svg',
+    'misc_file' : 'miscfile.svg',
+    'motherboard' : 'board.svg',
+    'motherboard_alias' : 'board_alias.svg',
+    'motherboard_bios' : 'awchip.svg',
+    'motherboard_expansion_slot' : 'card.svg',
+    'motherboard_id_redirection' : 'www.svg',
+    'motherboard_image' : 'board_image.svg',
+    'motherboard_io_port' : 'rs232.svg',
+    'motherboard_max_ram' : 'ram_multi.svg',
+    'os_flag' : 'os/1998win.svg',
+    'psuconnector' : 'power.svg',
+    'processor' : '486dx.svg',
+    'processor_platform_type' : '486.svg',
+    'processor_voltage' : '486_power.svg',
+    'storage_device_alias' : 'hdd_alias.svg',
+    'storage_device_documentation' : 'hdd_docs.svg',
+    'storage_device_image' : 'hdd_image.svg',
+    'storage_device_interface' : 'io.svg',
+    'storage_device_size' : 'hdd_dimension.svg',
+    'user' : 'user.svg'
+}%}
+{% set titles = {
+    'audio_file' : 'Audio files',
+    'cache_size' : 'Cache sizes',
+    'cd_drive' : 'Optical drives',
+    'chip_alias' : 'Chip aliases',
+    'chip_documentation' : 'Chip docs',
+    'chip_image' : 'Chip images',
+    'chipset' : 'Chipset',
+    'chipset_alias' : 'Chipset aliases',
+    'chipset_bios_code' : 'Chipset BIOS codes',
+    'chipset_documentation' : 'Chipset docs',
+    'cpu_socket' : 'CPU sockets',
+    'cpu_speed' : 'Speeds',
+    'creditor' : 'Creditors',
+    'dram_type' : 'RAM types',
+    'entity_image' : 'Entity images',
+    'entity_documentation' : 'Entity documentations',
+    'expansion_chip' : 'Expansion chips',
+    'expansion_chip_type' : 'Expansion chip types',
+    'expansion_slot' : 'Expansion slots',
+    'floppy_drive' : 'Floppy drives',
+    'form_factor' : 'Form factors',
+    'hard_drive' : 'Hard drives',
+    'instruction_set' : 'Instruction sets',
+    'io_port' : 'I/O ports',
+    'known_issue' : 'Known issues',
+    'large_file' : 'Drivers',
+    'large_file_chipset' : 'Chipset drivers',
+    'large_file_expansion_chip' : 'Expansion chip drivers',
+    'large_file_media_type_flag' : 'Driver media flags',
+    'large_file_motherboard' : 'Motherboard drivers',
+    'license' : 'Licenses',
+    'manual' : 'Motherboard docs',
+    'manufacturer' : 'Manufacturers',
+    'manufacturer_bios_manufacturer_code' : 'BIOS manufacturer codes',
+    'max_ram' : 'RAM sizes',
+    'media_type_flag' : 'Media flags',
+    'misc_file' : 'Misc files',
+    'motherboard' : 'Motherboards',
+    'motherboard_alias' : 'Motherboard aliases',
+    'motherboard_bios' : 'Motherboard BIOSes',
+    'motherboard_expansion_slot' : 'Motherboard expansion slots',
+    'motherboard_id_redirection' : 'Motherboard URL redirects',
+    'motherboard_image' : 'Motherboard images',
+    'motherboard_io_port' : 'Motherboard I/O ports',
+    'motherboard_max_ram' : 'Motherboard RAM sizes',
+    'os_flag' : 'OS flags',
+    'psuconnector' : 'PSU connectors',
+    'processor' : 'CPUs',
+    'processor_platform_type' : 'CPU families',
+    'processor_voltage' : 'CPU voltages',
+    'storage_device_alias' : 'Storage device aliases',
+    'storage_device_documentation' : 'Storage device docs',
+    'storage_device_image' : 'Storage device images',
+    'storage_device_interface' : 'Storage device interfaces',
+    'storage_device_size' : 'Storage device physical sizes',
+    'user' : 'Users'
+}
+%}
+    <div class="auditor-audits mb-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mx-4 sm:mx-0">
+        {% for entity, table in audited|sort((a, b) => titles[a] <=> titles[b]) %}
+            <div class="bg-white overflow-hidden rounded border border-gray-200 hover:bg-blue-50 hover:border-blue-300 transition-all duration-300 group flex flex-col justify-between">
+                <a class="text-blue-500" href="{{ path('dh_auditor_show_entity_history', {'entity': helper.namespaceToParam(entity)}) }}">
+                <div class="px-4 py-3 sm:px-4">
+                    <h3 class="text-lg leading-6 text-gray-900">
+                        <code class="text-pink-500">{{ titles[table] }}</code>
+                    </h3>
+                    <p class="mt-1 max-w-2xl text-sm text-gray-500">
+                        {{ entity|escape }}
+                    </p>
+                </div>
+                <div style="padding:0px 15px"><img src="{{ absolute_url(asset('build/icons/' ~ icons[table] ~ '')) }}" alt="chipset" width="180" height="180"></div>
+                <div class="border-t border-gray-200 px-4 py-2 bg-gray-50 group-hover:bg-blue-100 group-hover:border-blue-200 transition-all duration-300">
+                    <dl class="flex justify-between items-center">
+                        <dt class="text-sm font-medium text-gray-500">
+                            {% trans with { '%count%': reader.createQuery(entity).count() } from 'auditor' %}audit.audit_details.operations_count{% endtrans %}
+                        </dt>
+                        <dd class="text-sm text-gray-900 text-right">
+                            <span class="text-blue-500"></span>
+                        </dd>
+                    </dl>
+                </div>
+                </a>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock dh_auditor_content %}

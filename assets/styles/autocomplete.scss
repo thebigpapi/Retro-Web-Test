@@ -1,306 +1,144 @@
-/**
- * tom-select css modified for TRW
- /* Light mode colors */
-$head-bkg-light: #303030;
-$accent-bkg-light: #e0e0e0;
-$accent-frg-light: #000000;
-$content-bkg-light: #F9F9F9;
-$shadow-light: #696969;
+@import "~tom-select/dist/css/tom-select.bootstrap5.min.css";
 
-/* Dark mode colors */
-$accent-bkg-dark: #303030;
-$accent-frg-dark: #EEEEEE;
-$content-bkg-dark: #303030;
-$border-dark: #cdcdcd;
-
-/* COLORS */
-.ts-dropdown,
-.ts-control,
-.ts-control input {
-  color: $accent-bkg-dark;
-  @media (prefers-color-scheme: dark) {
-    color: $accent-frg-dark;
-  }
-  font-family: inherit;
-  font-size: 13px;
-  line-height: 18px;
+.ts-wrapper {
+  min-height: unset;
 }
-
-.active:after {
-	content: "\20\20\3C\2212";
-	color:black;
+.ts-wrapper .ts-control {
+  height: 30px;
+  min-height: unset;
+  padding: 3px 28px 4px 7px;
 }
-
-.ts-control,
-.ts-wrapper.single.input-active .ts-control {
-  background: $accent-bkg-light;
-  @media (prefers-color-scheme: dark) {
-    background-color: $accent-bkg-dark;
-  }
-  cursor: text;
+.ts-wrapper.input-active {
+  border-color: var(--form-input-hover-border-color);
+  box-shadow: var(--form-input-hover-shadow);
+  outline: 0;
 }
-
-.plugin-dropdown_input.focus.dropdown-active .ts-control {
+.ts-wrapper.focus .ts-control {
   box-shadow: none;
-  border: 1px solid #d0d0d0;
+  outline: 0;
 }
-/* MISC SETTINGS */
-.ts-hidden-accessible {
-  border: 0 !important;
-  clip: rect(0 0 0 0) !important;
-  clip-path: inset(50%) !important;
-  overflow: hidden !important;
-  padding: 0 !important;
-  //position: absolute !important;
-  width: 1px !important;
-  white-space: nowrap !important;
-}
-div.clear-button{
-  display:none!important;
+.ts-control, .ts-wrapper.single.input-active .ts-control, .full .ts-control {
+  background: var(--form-control-bg);
 }
 
-div.item{
-  width:auto !important;
-}
-/* WRAPPER */
-.ts-wrapper{
-  display: flex;
-  min-height: 30px;
-  position: relative;
-  &.single{
-    >.ts-control{
-      background: $accent-bkg-light;
-      color: $accent-frg-light;
-      @media (prefers-color-scheme: dark) {
-        background-color: $accent-bkg-dark;
-        color: $accent-frg-dark;
-      }
-      padding-right: 2rem;
-      cursor: pointer;
-      input{cursor: pointer;}
-      &:after {
-        content: " ";
-        display: block;
-        position: absolute;
-        top: 50%;
-        right: 15px;
-        margin-top: -3px;
-        width: 0;
-        height: 0;
-        border-style: solid;
-        border-width: 5px 5px 0 5px;
-        border-color: $shadow-light transparent transparent transparent;
-        @media (prefers-color-scheme: dark) {
-          border-color:$content-bkg-light transparent transparent transparent;
-        }
-      }
-    }
-    &.ts-control, &.ts-dropdown.single {
-      border-color: $content-bkg-dark;
-      @media (prefers-color-scheme: dark) {
-        border-color: $border-dark;
-      }
-    }
-    &.dropdown-active .ts-control::after {
-      margin-top: -4px;
-      border-width: 0 5px 5px 5px;
-      border-color: transparent transparent $shadow-light transparent;
-      @media (prefers-color-scheme: dark) {
-        border-color: transparent transparent $content-bkg-light transparent;
-      }
-    }
-  }
-  >.dropdown-header{
-    position: relative;
-    padding: 10px 8px;
-    border-bottom: 1px solid #d0d0d0;
-    background: #f8f8f8;
-    border-radius: 3px 3px 0 0;
-  }
-  > .dropdown-header-close {
-    position: absolute;
-    right: 8px;
-    top: 50%;
-    color: #303030;
-    opacity: 0.4;
-    margin-top: -12px;
-    line-height: 20px;
-    font-size: 20px !important;
-    &:hover { color: black; }
-  }
-}
-
-.full .ts-control {
-  background-color: #fff;
-}
-.ts-wrapper.single .ts-control {box-shadow:none;}
-/* MAIN SELECTOR (CONTAINER) */
-div.ts-control{
-  display: flex;
-  flex-direction: row;
-  border: 1px solid #d0d0d0;
-  padding-left: 8px !important;
-  width: 100%;
-  overflow: hidden;
-  position: relative;
-  z-index: 1;
-  box-sizing: border-box;
-  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.1);
-  border-radius: 3px;
-  flex-wrap: wrap;
-  > * {
-    vertical-align: baseline;
-    display: inline-block;
-  }
-  input {
-    flex: 1 1 auto;
-    min-width: 1rem;
-    display: inline-block !important;
-    padding: 0 !important;
-    min-height: 25px !important;
-    max-height: none !important;
-    max-width: 12rem !important;
-    margin: 0 !important;
-    text-indent: 0 !important;
-    border: 0 none !important;
-    background: none !important;
-    line-height: inherit !important;
-    user-select: auto !important;
-    box-shadow: none !important;
-    &:focus{ outline: none !important; }
-  }
-  input::-ms-clear {
-    display: none;
-  }
-  div{
-    line-height: 30px;
-    max-width: 14rem !important;
-    padding-bottom: 0px !important;
-    padding-top: 0px !important;
-  }
-}
-#manufacturer-select div.ts-control div {max-width: 21rem !important;}
-#mobo-chipset-select div.ts-control div {max-width: 40rem !important;}
-#expansionChip-fields-list div.ts-control div {max-width: 22rem !important;}
-#knownIssues-fields-list div.ts-control div {max-width: 28rem !important;}
-#motherboardAliases-fields-list div.ts-control div {max-width: 28rem !important;}
-#psuConnectors-fields-list div.ts-control div {max-width: 24rem !important;}
-#chipsetParts-fields-list div.ts-control div {max-width: 24rem !important;}
-#drivers-fields-list div.ts-control div {max-width: 30rem !important;}
-#osFlags-fields-list div.ts-control div {max-width: 18rem !important;}
-#osFlags-fields-list div.ts-wrapper {max-width: 20rem;}
-#motherboardBios-fields-list div.ts-control input {
-  position: absolute;
-  margin-left:5rem !important;
-}
-
-
-div.editor-row.bios{
-  .ts-control > div.item {
-    overflow:hidden;
-    white-space: nowrap;
-    //padding-left: 5px;
-  }
-}
-
-.has-items .ts-control > input {
-  margin: 0px 4px !important;
-}
-.disabled .ts-control {
-  opacity: 0.5;
-  background-color: #fafafa;
-}
-.input-hidden .ts-control > input {
-  opacity: 0;
-  position: absolute;
-  left: -10000px;
-}
-
-.disabled .ts-control, .disabled .ts-control * {
-  cursor: default !important;
-}
-.focus .ts-control {
-  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.15);
-}
-/* DROPDOWN */
-.ts-dropdown.single{
-  min-width:200px;
-}
-
-.ts-dropdown {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  width: 100%;
-  z-index: 10;
-  border: 1px solid #d0d0d0;
-  background: #fff;
-  margin: 0.25rem 0 0 0;
-  border-top: 0 none;
-  box-sizing: border-box;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-  border-radius: 0 0 3px 3px;
-}
-.ts-dropdown [data-selectable] {
-  cursor: pointer;
-  overflow: hidden;
-}
-
-.ts-dropdown .option,
-.ts-dropdown .optgroup-header,
-.ts-dropdown .no-results,
-.ts-dropdown .create {
+.dropdown-input-wrap {
+  background: var(--form-type-autocomplete-dropdown-input-wrapper-bg);
+  border-bottom: 1px solid var(--form-input-border-color);
   padding: 5px 5px;
-  color: #000000;
 }
-.ts-dropdown .option, .ts-dropdown [data-disabled], .ts-dropdown [data-disabled] [data-selectable].option {
-  cursor: inherit;
-  opacity: 0.5;
+.dropdown-input,
+.plugin-dropdown_input.focus .dropdown-input {
+  background: var(--form-control-bg);
+  border: 1px solid var(--form-type-autocomplete-dropdown-input-border-color);
+  border-radius: var(--border-radius);
+  box-shadow: var(--form-input-box-shadow);
+  color: var(--form-input-text-color);
+  height: 30px;
+  position: relative;
 }
-.ts-dropdown [data-selectable].option {
-  opacity: 1;
-  cursor: pointer;
-  display: block;
-  color: $head-bkg-light;
+.dropdown-input:focus {
+  border: 0;
+  box-shadow: 0 0 0 1px rgba(43, 45, 80, 0), 0 0 0 1px rgba(6, 122, 184, .2), 0 0 0 2px rgba(6, 122, 184, .25), 0 1px 1px rgba(0, 0, 0, .08);
+  outline: 0;
 }
-.ts-dropdown .optgroup:first-child .optgroup-header {
-  border-top: 0 none;
+
+.ts-dropdown, .ts-dropdown.form-control, .ts-dropdown.form-select {
+  background: var(--form-type-autocomplete-dropdown-bg);
+  border: 1px solid var(--form-input-border-color);
+  box-shadow: var(--shadow-xl);
+  color: var(--form-input-text-color);
 }
-.ts-dropdown .optgroup-header {
-  color: #303030;
-  background: #fff;
-  cursor: default;
+.ts-dropdown .active, .ts-dropdown .create:hover, .ts-dropdown .option:hover {
+  background-color: var(--form-type-autocomplete-dropdown-active-item-bg);
+  color: var(--form-input-text-color);
 }
-.ts-dropdown .active {
-  background-color: $border-dark;
-  color: #495c68;
+.ts-dropdown [data-selectable] .highlight {
+  background: var(--highlight-bg);
 }
-.ts-dropdown .active.create {
-  color: #495c68;
-}
-.ts-dropdown .create {
-  color: rgba(48, 48, 48, 0.5);
+
+.ts-control, .ts-control input, .ts-dropdown {
+  color: var(--form-input-text-color);
 }
 
 .ts-dropdown-content {
-  overflow-y: auto;
-  overflow-x: hidden;
-  max-height: 250px;
-  scroll-behavior: smooth;
+  padding: 4px 5px;
 }
-
-.dropdown-active .ts-control {
-  border-radius: 3px 3px 0 0;
+.ts-dropdown [data-selectable].option {
+  border-radius: var(--border-radius);
+  margin: 2px 0;
 }
 
 .ts-dropdown .optgroup-header {
-  padding-top: 7px;
+  background: var(--form-type-autocomplete-optgroup-bg);
+  color: var(--form-type-autocomplete-optgroup-color);
+  font-size: 13px;
   font-weight: bold;
-  font-size: 0.85em;
 }
-.ts-dropdown .optgroup {
-  border-top: 1px solid #f0f0f0;
+
+.ts-wrapper.multi,
+.ts-wrapper.multi.has-items .ts-control {
+  height: auto;
 }
-.ts-dropdown .optgroup:first-child {
-  border-top: 0 none;
+.ts-wrapper.multi .ts-control,
+.ts-wrapper.multi.has-items .ts-control {
+  padding: 2px 15px 3px 7px;
+}
+.ts-wrapper.plugin-remove_button.multi.has-items .ts-control {
+  padding-right: 55px;
+}
+.ts-wrapper.multi .ts-control > div {
+  background: var(--form-type-autocomplete-multi-item-bg);
+  border-radius: var(--border-radius);
+  box-shadow: 0 0 0 1px var(--form-type-autocomplete-multi-item-border-color);
+  color: var(--form-input-text-color);
+  margin: 2px 5px 2px 0;
+  padding: 0 4px;
+}
+.ts-wrapper.plugin-remove_button .item .remove {
+  border-left: 1px solid var(--form-type-autocomplete-multi-item-border-color);
+  border-radius: 0 var(--border-radius) var(--border-radius) 0;
+}
+.ts-wrapper.plugin-remove_button .item .remove:hover {
+  background: var(--form-type-autocomplete-multi-item-remove-button-hover-bg);
+}
+
+.plugin-clear_button.ts-wrapper .clear-button,
+.plugin-clear_button.ts-wrapper.multi .clear-button {
+  background: var(--form-type-autocomplete-close-button-bg) !important;
+  border-radius: 50%;
+  color: white;
+  cursor: pointer;
+  display: flex;
+  align-content: center;
+  justify-content: center;
+  font-size: 16px;
+  font-weight: bold;
+  height: 14px;
+  line-height: 0.65;
+  padding: 0;
+  right: 32px;
+  top: calc(50% - 2px);
+  width: 14px;
+}
+.ts-wrapper.plugin-clear_button.multi .clear-button {
+  right: 10px;
+}
+.ts-wrapper.plugin-remove_button.plugin-clear_button.multi.has-items .clear-button {
+  right: 32px;
+}
+.plugin-clear_button.ts-wrapper .clear-button:hover,
+.plugin-clear_button.ts-wrapper.multi .clear-button:hover {
+  background: var(--form-type-autocomplete-close-button-hover-bg) !important;
+}
+.ts-dropdown .create, .ts-dropdown .no-results, .ts-dropdown .optgroup-header, .ts-dropdown .option {
+  padding: 3px 0.5rem;
+}
+.ts-wrapper:not(.form-control):not(.form-select).single .ts-control {
+  background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3E%3C/svg%3E");
+  background-position: right .75rem center;
+  background-repeat: no-repeat;
+  background-size: 16px 12px;
+  @media (prefers-color-scheme: dark) {
+    background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='none' stroke='%23ffffff' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3E%3C/svg%3E");
+  }
 }

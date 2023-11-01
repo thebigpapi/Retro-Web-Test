@@ -20,11 +20,11 @@ class MotherboardAliasType extends AbstractType
         $builder
             ->add('manufacturer', EntityType::class, [
                 'class' => Manufacturer::class,
-                'choice_label' => 'shortNameIfExist',
+                'choice_label' => 'name',
                 'multiple' => false,
                 'expanded' => false,
                 'required' => false,
-                'autocomplete' => true,
+                'attr' => ['data-ea-widget' => 'ea-autocomplete']
             ])
             ->add('name', TextType::class, [
                 'required' => true,
@@ -41,7 +41,7 @@ class MotherboardAliasType extends AbstractType
     public function finishView(FormView $view, FormInterface $form, array $options)
     {
         usort($view->children['manufacturer']->vars['choices'], function (ChoiceView $a, ChoiceView $b) {
-            return strnatcasecmp($a->data->getShortNameIfExist() ?? '', $b->data->getShortNameIfExist() ?? '');
+            return strnatcasecmp($a->data->getName() ?? '', $b->data->getName() ?? '');
         });
     }
 }

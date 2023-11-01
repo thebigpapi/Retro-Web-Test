@@ -43,6 +43,9 @@ abstract class Chip
     #[Assert\Valid()]
     private Collection $pciDevs;
 
+    #[ORM\Column(type: 'datetime')]
+    private $lastEdited;
+
 
     public function __construct()
     {
@@ -113,6 +116,16 @@ abstract class Chip
 
         return $this;
     }
+    public function addAlias(Manufacturer $manuf, ?string $name, string $partNumber): self
+    {
+        $cha = new ChipAlias();
+        $cha->setManufacturer($manuf);
+        $cha->setChip($this);
+        $cha->setName($name);
+        $cha->setPartNumber($partNumber);
+
+        return $this->addChipAlias($cha);
+    }
     /**
      * @return Collection|ChipImage[]
      */
@@ -179,6 +192,21 @@ abstract class Chip
         return $this->pciDevs;
     }
 
+    public function getPciDevsLimited(): ?array
+    {
+        $result = array();
+        $idx = 1;
+        foreach($this->pciDevs as $dev){
+            $idx++;
+            array_push($result, $dev->getDev());
+            if($idx > 3){
+                array_push($result, "...");
+                break;
+            }
+        }
+        return $result;
+    }
+
     public function addPciDev(PciDeviceId $pciDev): self
     {
         if (!$this->pciDevs->contains($pciDev)) {
@@ -199,5 +227,20 @@ abstract class Chip
         }
 
         return $this;
+    }
+    public function getLastEdited(): ?\DateTimeInterface
+    {
+        return $this->lastEdited;
+    }
+
+    public function setLastEdited(\DateTimeInterface $lastEdited): self
+    {
+        $this->lastEdited = $lastEdited;
+
+        return $this;
+    }
+    public function updateLastEdited()
+    {
+        $this->lastEdited = new \DateTime('now');
     }
 }

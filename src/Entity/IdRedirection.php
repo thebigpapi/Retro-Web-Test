@@ -16,6 +16,9 @@ abstract class IdRedirection
     private $id;
 
     #[ORM\Column(type: 'string')]
+    #[Assert\NotBlank(
+        message: 'Redirect source cannot be blank'
+    )]
     private $source;
 
     #[ORM\Column(type: 'string', length: 255)]

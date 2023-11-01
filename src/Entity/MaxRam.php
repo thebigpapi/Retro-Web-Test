@@ -9,7 +9,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: 'App\Repository\MaxRamRepository')]
-#[UniqueEntity('value')]
 class MaxRam
 {
     #[ORM\Id]
@@ -20,6 +19,7 @@ class MaxRam
     #[ORM\Column(type: 'bigint')]
     #[Assert\NotBlank]
     #[Assert\PositiveOrZero]
+    #[Assert\Unique()]
     private $value;
 
     #[ORM\OneToMany(targetEntity: MotherboardMaxRam::class, mappedBy: 'max_ram', orphanRemoval: true)]
@@ -32,6 +32,10 @@ class MaxRam
     {
         $this->motherboardMaxRams = new ArrayCollection();
         $this->motherboards = new ArrayCollection();
+    }
+    public function __toString(): string
+    {
+        return $this->getValueWithUnit();
     }
     public function getId(): ?int
     {

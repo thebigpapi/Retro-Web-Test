@@ -11,6 +11,9 @@ $wide-max-width: 1600px;
 $max-width: 1400px;
 $thin-max-width: 1000px;
 $form-breakpoint: 460px;
+$form-breakpoint-tight: 200px;
+$maxw-table-breakpoint: 740px;
+$minw-table-breakpoint: calc($maxw-table-breakpoint + 1px);
 
 /* Light mode colors */
 $head-bkg-light: #303030;
@@ -27,6 +30,7 @@ $active-link-light: #3dabf5;
 $visited-link-light: #0979c3;
 $border-light: #303030;
 $shadow-light: #696969;
+$button-hover-light: #cdcdcd;
 
 /* Dark mode colors */
 $head-bkg-dark: #303030;
@@ -46,8 +50,9 @@ $border-quick: #525252;
 $shadow-dark: #303030;
 $btn-darkbg-color-hover:#5f5f5f;
 $link-hover-color: #7ce5ff;
+$button-hover-dark: #646464;
 
-html {
+html.html {
     height: 100%;
     font-family: $standard-font;
     color: $body-frg-light;
@@ -59,7 +64,7 @@ html {
     }
 }
 
-body {
+body.body {
     font-family: $standard-font;
     color: $body-frg-light;
     background: $body-bkg-light;
@@ -92,9 +97,15 @@ body {
     border-image-slice: 1;
     border-image-source: linear-gradient(to right,$color,transparent);
 }
+@font-face {
+    font-family: 'digital-7';
+    src: url('digital-7.ttf');
+  }
 
 @import 'main/base';
 @import 'main/index';
 @import 'main/search';
 @import 'main/show';
 @import 'main/info';
+@import 'main/audio';
+@import "./variables-theme.scss";

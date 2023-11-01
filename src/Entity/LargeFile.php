@@ -10,6 +10,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -41,12 +42,15 @@ class LargeFile
 
     #[Vich\UploadableField(mapping: 'largefile', fileNameProperty: 'file_name', size: 'size')]
     private File|null $file = null;
-    
+
     #[ORM\Column(type: 'datetime')]
     private $updated_at;
 
     #[ORM\ManyToOne(targetEntity: DumpQualityFlag::class, inversedBy: 'largeFiles')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Assert\NotBlank(
+        message: 'Flag cannot be blank'
+    )]
     private $dumpQualityFlag;
 
     #[ORM\ManyToMany(targetEntity: Language::class, inversedBy: 'largeFiles')]
@@ -414,5 +418,14 @@ class LargeFile
         }
 
         return $strBuilder;
+    }
+    #[Assert\Callback]
+    public function validate(ExecutionContextInterface $context, mixed $payload): void
+    {
+        if(null === $this->file && null === $this->file_name) {
+            $context->buildViolation('File is not uploaded!')
+                ->atPath('file')
+                ->addViolation();
+        }
     }
 }
