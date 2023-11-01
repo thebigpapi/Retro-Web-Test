@@ -1,5 +1,41 @@
 //initialize tom-select
-var settings = {};
+var settings = {
+    plugins: {
+        dropdown_input: {},
+    },
+    render:{
+		option: function(data, escape) {
+			return '<div>' + escape(data.text) + '</div>';
+		},
+		item: function(data, escape) {
+			return '<div>' + escape(data.text) + '</div>';
+		},
+		option_create: function(data, escape) {
+			return '<div class="create">Add <strong>' + escape(data.input) + '</strong>&hellip;</div>';
+		},
+		no_results:function(data,escape){
+			return '<div class="no-results">No results found for "'+escape(data.input)+'"</div>';
+		},
+		not_loading:function(data,escape){
+			// no default content
+		},
+		optgroup: function(data) {
+			let optgroup = document.createElement('div');
+			optgroup.className = 'optgroup';
+			optgroup.appendChild(data.options);
+			return optgroup;
+		},
+		optgroup_header: function(data, escape) {
+			return '<div class="optgroup-header">' + escape(data.label) + '</div>';
+		},
+		loading:function(data,escape){
+			return '<div class="spinner"></div>';
+		},
+		dropdown:function(){
+			return '<div></div>';
+		}
+	}
+};
 const form = document.forms[0];
 let static_selects = [
     "chipsetManufacturer",
@@ -36,14 +72,6 @@ if(search_paginate = document.getElementById('search-paginate-id'))
     }, false);
 if(search_live = document.getElementById('pagination_redir'))
     search_live.addEventListener("click", searchLive);
-if(cpu1sel = document.getElementById('search_cpuSocket1'))
-    cpu1sel.addEventListener("change", function(){
-        setResult(cpu1sel.name, cpu1sel.value, cpu1sel.getAttribute('data-target-id'));
-    }, false);
-if(cpu2sel = document.getElementById('search_cpuSocket2'))
-    cpu2sel.addEventListener("change", function(){
-        setResult(cpu2sel.name, cpu2sel.value, cpu2sel.getAttribute('data-target-id'));
-    }, false);
 if(resetbtn = document.getElementById('rst-btn'))
     resetbtn.addEventListener("click", reset);
 // cookies
@@ -194,22 +222,22 @@ function searchLive() {
         //tom-select
         if(idx == "motherboardExpansionSlots-fields-list"){
             el = document.getElementById('search_motherboardExpansionSlots_' + (counter - 1) + '_expansion_slot');
-            new TomSelect('#search_motherboardExpansionSlots_' + (counter - 1) + '_expansion_slot', {});
+            new TomSelect('#search_motherboardExpansionSlots_' + (counter - 1) + '_expansion_slot', settings);
             el.tomselect.sync();
         }
         if(idx == "motherboardIoPorts-fields-list"){
             el = document.getElementById('search_motherboardIoPorts_' + (counter - 1) + '_io_port');
-            new TomSelect('#search_motherboardIoPorts_' + (counter - 1) + '_io_port', {});
+            new TomSelect('#search_motherboardIoPorts_' + (counter - 1) + '_io_port', settings);
             el.tomselect.sync();
         }
         if(idx == "expansionChips-fields-list"){
             el = document.getElementById('search_expansionChips_' + (counter - 1));
-            new TomSelect('#search_expansionChips_' + (counter - 1), {});
+            new TomSelect('#search_expansionChips_' + (counter - 1), settings);
             el.tomselect.sync();
         }
         if(idx == "dramTypes-fields-list"){
             el = document.getElementById('search_dramTypes_' + (counter - 1));
-            new TomSelect('#search_dramTypes_' + (counter - 1), {});
+            new TomSelect('#search_dramTypes_' + (counter - 1), settings);
             el.tomselect.sync();
         }
         if(idx == "sockets-fields-list"){
