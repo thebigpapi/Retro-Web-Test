@@ -3,6 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Entity\LargeFile;
+use App\Entity\LargeFileMediaTypeFlag;
 use App\Form\Type\LanguageType;
 use App\Form\Type\OsFlagType;
 use App\Form\Type\LargeFileMediaTypeFlagType;
@@ -244,7 +245,10 @@ class LargeFileCrudController extends AbstractCrudController
             $driver->addOsFlag($flag);
         }
         foreach ($old->getMediaTypeFlags() as $media){
-            $driver->addMediaTypeFlag($media);
+            $newMedia = new LargeFileMediaTypeFlag();
+            $newMedia->setCount($media->getCount());
+            $newMedia->setMediaTypeFlag($media->getMediaTypeFlag());
+            $driver->addMediaTypeFlag($newMedia);
         }
         return $driver;
     }

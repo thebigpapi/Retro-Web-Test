@@ -3,6 +3,8 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Chipset;
+use App\Entity\ChipsetAlias;
+use App\Entity\ChipsetBiosCode;
 use App\Form\Type\ChipsetAliasType;
 use App\Form\Type\ChipsetBiosCodeType;
 use App\Form\Type\ChipsetDocumentationType;
@@ -237,7 +239,9 @@ class ChipsetCrudController extends AbstractCrudController
     {
         $chipset = new Chipset();
         $chipset->setPartNo($old->getPartNo());
+        $chipset->setName($old->getName());
         $chipset->setManufacturer($old->getManufacturer());
+        $chipset->setReleaseDate($old->getReleaseDate());
         $chipset->setDatePrecision($old->getDatePrecision());
         $chipset->setEncyclopediaLink($old->getEncyclopediaLink());
         $chipset->setDescription($old->getDescription());
@@ -246,10 +250,17 @@ class ChipsetCrudController extends AbstractCrudController
             $chipset->addExpansionChip($chip);
         }
         foreach ($old->getChipsetAliases() as $alias){
-            $chipset->addChipsetAlias($alias);
+            $newAlias = new ChipsetAlias();
+            $newAlias->setManufacturer($alias->getManufacturer());
+            $newAlias->setName($alias->getName());
+            $newAlias->setPartNumber($alias->getPartNumber());
+            $chipset->addChipsetAlias($newAlias);
         }
         foreach ($old->getBiosCodes() as $code){
-            $chipset->addBiosCode($code);
+            $newCode = new ChipsetBiosCode();
+            $newCode->setBiosManufacturer($code->getBiosManufacturer());
+            $newCode->setCode($code->getCode());
+            $chipset->addBiosCode($newCode);
         }
         return $chipset;
     }

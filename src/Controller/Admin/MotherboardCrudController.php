@@ -4,7 +4,10 @@ namespace App\Controller\Admin;
 
 use App\Entity\Motherboard;
 use App\Controller\Admin\Filter\MotherboardImageFilter;
+use App\Entity\MotherboardAlias;
 use App\Entity\MotherboardExpansionSlot;
+use App\Entity\MotherboardIoPort;
+use App\Entity\MotherboardMaxRam;
 use App\Form\Type\MotherboardAliasType;
 use App\Form\Type\MotherboardIdRedirectionType;
 use App\Form\Type\DramTypeType;
@@ -377,7 +380,10 @@ class MotherboardCrudController extends AbstractCrudController
         $board->setChipset($old->getChipset());
         $board->setLastEdited(new \DateTime('now'));
         foreach ($old->getMotherboardAliases() as $alias){
-            $board->addMotherboardAlias($alias);
+            $newAlias = new MotherboardAlias();
+            $newAlias->setManufacturer($alias->getManufacturer());
+            $newAlias->setName($alias->getName());
+            $board->addMotherboardAlias($newAlias);
         }
         foreach ($old->getKnownIssues() as $issue){
             $board->addKnownIssue($issue);
@@ -401,13 +407,22 @@ class MotherboardCrudController extends AbstractCrudController
             $board->addCacheSize($cache);
         }
         foreach ($old->getMotherboardMaxRams() as $ram){
-            $board->addMotherboardMaxRam($ram);
+            $newRam = new MotherboardMaxRam();
+            $newRam->setMaxram($ram->getMaxram());
+            $newRam->setNote($ram->getNote());
+            $board->addMotherboardMaxRam($newRam);
         }
         foreach ($old->getMotherboardExpansionSlots() as $slot){
-            $board->addMotherboardExpansionSlot($slot);
+            $newSlot = new MotherboardExpansionSlot();
+            $newSlot->setCount($slot->getCount());
+            $newSlot->setExpansionSlot($slot->getExpansionSlot());
+            $board->addMotherboardExpansionSlot($newSlot);
         }
         foreach ($old->getMotherboardIoPorts() as $port){
-            $board->addMotherboardIoPort($port);
+            $newPort = new MotherboardIoPort();
+            $newPort->setCount($port->getCount());
+            $newPort->setIoPort($port->getIoPort());
+            $board->addMotherboardIoPort($newPort);
         }
         foreach ($old->getPsuConnectors() as $psu){
             $board->addPsuConnector($psu);

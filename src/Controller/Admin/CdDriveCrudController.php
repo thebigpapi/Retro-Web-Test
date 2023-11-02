@@ -4,6 +4,7 @@ namespace App\Controller\Admin;
 
 use App\Controller\Admin\Filter\CdDriveTrayFilter;
 use App\Entity\CdDrive;
+use App\Entity\StorageDeviceAlias;
 use App\Form\Type\AudioFileType;
 use App\Form\Type\KnownIssueType;
 use App\Form\Type\StorageDeviceAliasType;
@@ -297,7 +298,11 @@ class CdDriveCrudController extends AbstractCrudController
         $cdd->setDescription($old->getDescription());
         $cdd->setLastEdited(new \DateTime('now'));
         foreach ($old->getStorageDeviceAliases() as $alias){
-            $cdd->addStorageDeviceAlias($alias);
+            $newAlias = new StorageDeviceAlias();
+            $newAlias->setManufacturer($alias->getManufacturer());
+            $newAlias->setName($alias->getName());
+            $newAlias->setPartNumber($alias->getPartNumber());
+            $cdd->addStorageDeviceAlias($newAlias);
         }
         foreach ($old->getKnownIssues() as $issue){
             $cdd->addKnownIssue($issue);

@@ -3,6 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Entity\FloppyDrive;
+use App\Entity\StorageDeviceAlias;
 use App\Form\Type\KnownIssueType;
 use App\Form\Type\StorageDeviceAliasType;
 use App\Form\Type\StorageDeviceDocumentationType;
@@ -283,7 +284,11 @@ class FloppyDriveCrudController extends AbstractCrudController
         $fdd->setDescription($old->getDescription());
         $fdd->setLastEdited(new \DateTime('now'));
         foreach ($old->getStorageDeviceAliases() as $alias){
-            $fdd->addStorageDeviceAlias($alias);
+            $newAlias = new StorageDeviceAlias();
+            $newAlias->setManufacturer($alias->getManufacturer());
+            $newAlias->setName($alias->getName());
+            $newAlias->setPartNumber($alias->getPartNumber());
+            $fdd->addStorageDeviceAlias($newAlias);
         }
         foreach ($old->getKnownIssues() as $issue){
             $fdd->addKnownIssue($issue);

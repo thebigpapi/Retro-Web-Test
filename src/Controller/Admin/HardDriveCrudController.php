@@ -4,6 +4,7 @@ namespace App\Controller\Admin;
 
 use App\Entity\HardDrive;
 use App\Entity\StorageDevice;
+use App\Entity\StorageDeviceAlias;
 use App\Form\Type\AudioFileType;
 use App\Form\Type\KnownIssueType;
 use App\Form\Type\StorageDeviceAliasType;
@@ -321,7 +322,11 @@ class HardDriveCrudController extends AbstractCrudController
         $hdd->setDescription($old->getDescription());
         $hdd->setLastEdited(new \DateTime('now'));
         foreach ($old->getStorageDeviceAliases() as $alias){
-            $hdd->addStorageDeviceAlias($alias);
+            $newAlias = new StorageDeviceAlias();
+            $newAlias->setManufacturer($alias->getManufacturer());
+            $newAlias->setName($alias->getName());
+            $newAlias->setPartNumber($alias->getPartNumber());
+            $hdd->addStorageDeviceAlias($newAlias);
         }
         foreach ($old->getKnownIssues() as $issue){
             $hdd->addKnownIssue($issue);

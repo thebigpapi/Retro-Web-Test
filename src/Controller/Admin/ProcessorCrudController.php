@@ -2,7 +2,9 @@
 
 namespace App\Controller\Admin;
 
+use App\Entity\ChipAlias;
 use App\Entity\Processor;
+use App\Entity\ProcessorVoltage;
 use App\Form\Type\ChipAliasType;
 use App\Form\Type\ChipImageType;
 use App\Form\Type\CpuSocketType;
@@ -292,10 +294,16 @@ class ProcessorCrudController extends AbstractCrudController
             $cpu->addSocket($socket);
         }
         foreach ($old->getVoltages() as $voltage){
-            $cpu->addVoltage($voltage);
+            $newVoltage = new ProcessorVoltage();
+            $newVoltage->setValue($voltage->getValue());
+            $cpu->addVoltage($newVoltage);
         }
         foreach ($old->getChipAliases() as $alias){
-            $cpu->addChipAlias($alias);
+            $newAlias = new ChipAlias();
+            $newAlias->setManufacturer($alias->getManufacturer());
+            $newAlias->setName($alias->getName());
+            $newAlias->setPartNumber($alias->getPartNumber());
+            $cpu->addChipAlias($newAlias);
         }
         return $cpu;
     }
