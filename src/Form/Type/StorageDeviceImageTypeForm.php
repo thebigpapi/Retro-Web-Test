@@ -51,12 +51,12 @@ class StorageDeviceImageTypeForm extends AbstractType
             ])
             ->add('type', ChoiceType::class, [
                 'choices' => array(
-                    'Schema' => 'schema',
-                    'Top photo' => 'top',
-                    'Bottom photo' => 'bottom',
-                    'Front photo' => 'front',
-                    'Back photo' => 'back',
-                    'Misc' => 'misc',
+                    'Schema' => '1',
+                    'Top photo' => '2',
+                    'Bottom photo' => '5',
+                    'Front photo' => '3',
+                    'Back photo' => '4',
+                    'Misc' => '6',
                 ),
                 'required' => true,
             ])
