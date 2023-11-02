@@ -424,9 +424,9 @@ class MotherboardCrudController extends AbstractCrudController
             $newPort->setIoPort($port->getIoPort());
             $board->addMotherboardIoPort($newPort);
         }
-        foreach ($old->getPsuConnectors() as $psu){
+        /*foreach ($old->getPsuConnectors() as $psu){
             $board->addPsuConnector($psu);
-        }
+        }*/
         return $board;
     }
 
