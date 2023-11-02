@@ -199,8 +199,8 @@ class CdDriveCrudController extends AbstractCrudController
     }
     public function viewCdDrive(AdminContext $context)
     {
-        $hddId = $context->getEntity()->getInstance()->getId();
-        return $this->redirectToRoute('cd_drive_show', array('id'=>$hddId));
+        $cddId = $context->getEntity()->getInstance()->getId();
+        return $this->redirectToRoute('cd_drive_show', array('id'=>$cddId));
     }
     public function viewLogs(AdminContext $context)
     {
@@ -244,15 +244,7 @@ class CdDriveCrudController extends AbstractCrudController
             $entityManager = $this->container->get('doctrine')->getManagerForClass($className);
             $oldentity = $entityManager->find($className, $context->getRequest()->query->get('duplicate'));
             /** @var CdDrive $cloned */
-            $cloned = clone $oldentity;
-            $cloned->setLastEdited(new \DateTime('now'));
-            foreach ($cloned->getStorageDeviceAliases() as $item){
-                $man = $item->getManufacturer();
-                $name = $item->getName();
-                $partNumber = $item->getPartNumber();
-                $cloned->removeStorageDeviceAlias($item);
-                $cloned->addAlias($man, $name, $partNumber);
-            }
+            $cloned = $this->makeNewCdDrive($oldentity);
             $context->getEntity()->setInstance($cloned);
         }
         $newForm = $this->createNewForm($context->getEntity(), $context->getCrud()->getNewFormOptions(), $context);
@@ -289,6 +281,31 @@ class CdDriveCrudController extends AbstractCrudController
         }
 
         return $responseParameters;
+    }
+    public function makeNewCdDrive(CdDrive $old): CdDrive
+    {
+        $cdd = new CdDrive();
+        $cdd->setManufacturer($old->getManufacturer());
+        $cdd->setName($old->getName());
+        $cdd->setPartNumber($old->getPartNumber());
+        $cdd->setPhysicalSize($old->getPhysicalSize());
+        $cdd->setCdReadSpeed($old->getCdReadSpeed());
+        $cdd->setCdWriteSpeed($old->getCdWriteSpeed());
+        $cdd->setDvdReadSpeed($old->getDvdReadSpeed());
+        $cdd->setDvdWriteSpeed($old->getDvdWriteSpeed());
+        $cdd->setTrayType($old->getTrayType());
+        $cdd->setDescription($old->getDescription());
+        $cdd->setLastEdited(new \DateTime('now'));
+        foreach ($old->getStorageDeviceAliases() as $alias){
+            $cdd->addStorageDeviceAlias($alias);
+        }
+        foreach ($old->getKnownIssues() as $issue){
+            $cdd->addKnownIssue($issue);
+        }
+        foreach ($old->getInterfaces() as $interface){
+            $cdd->addInterface($interface);
+        }
+        return $cdd;
     }
     /**
      * @param CdDrive $entityInstance

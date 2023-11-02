@@ -231,15 +231,7 @@ class ProcessorCrudController extends AbstractCrudController
             $entityManager = $this->container->get('doctrine')->getManagerForClass($className);
             $oldentity = $entityManager->find($className, $context->getRequest()->query->get('duplicate'));
             /** @var Processor $cloned */
-            $cloned = clone $oldentity;
-            $cloned->setLastEdited(new \DateTime('now'));
-            foreach ($cloned->getChipAliases() as $item){
-                $man = $item->getManufacturer();
-                $name = $item->getName();
-                $partNumber = $item->getPartNumber();
-                $cloned->removeChipAlias($item);
-                $cloned->addAlias($man, $name, $partNumber);
-            }
+            $cloned = $this->makeNewProcessor($oldentity);
             $context->getEntity()->setInstance($cloned);
         }
         $newForm = $this->createNewForm($context->getEntity(), $context->getCrud()->getNewFormOptions(), $context);
@@ -276,5 +268,35 @@ class ProcessorCrudController extends AbstractCrudController
         }
 
         return $responseParameters;
+    }
+    public function makeNewProcessor(Processor $old): Processor
+    {
+        $cpu = new Processor();
+        $cpu->setManufacturer($old->getManufacturer());
+        $cpu->setName($old->getName());
+        $cpu->setPartNumber($old->getPartNumber());
+        $cpu->setPlatform($old->getPlatform());
+        $cpu->setCore($old->getCore());
+        $cpu->setSpeed($old->getSpeed());
+        $cpu->setFsb($old->getFsb());
+        $cpu->setTdp($old->getTdp());
+        $cpu->setProcessNode($old->getProcessNode());
+        $cpu->setCores($old->getCores());
+        $cpu->setThreads($old->getThreads());
+        $cpu->setL2($old->getL2());
+        $cpu->setL2shared($old->isL2shared());
+        $cpu->setL3($old->getL3());
+        $cpu->setL3shared($old->isL3shared());
+        $cpu->setLastEdited(new \DateTime('now'));
+        foreach ($old->getSockets() as $socket){
+            $cpu->addSocket($socket);
+        }
+        foreach ($old->getVoltages() as $voltage){
+            $cpu->addVoltage($voltage);
+        }
+        foreach ($old->getChipAliases() as $alias){
+            $cpu->addChipAlias($alias);
+        }
+        return $cpu;
     }
 }

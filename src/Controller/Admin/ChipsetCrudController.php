@@ -195,15 +195,7 @@ class ChipsetCrudController extends AbstractCrudController
             $entityManager = $this->container->get('doctrine')->getManagerForClass($className);
             $oldentity = $entityManager->find($className, $context->getRequest()->query->get('duplicate'));
             /** @var Chipset $cloned */
-            $cloned = clone $oldentity;
-            $cloned->setLastEdited(new \DateTime('now'));
-            foreach ($cloned->getChipsetAliases() as $item){
-                $man = $item->getManufacturer();
-                $name = $item->getName();
-                $partNumber = $item->getPartNumber();
-                $cloned->removeChipsetAlias($item);
-                $cloned->addAlias($man, $name, $partNumber);
-            }
+            $cloned = $this->makeNewChipset($oldentity);
             $context->getEntity()->setInstance($cloned);
         }
         $newForm = $this->createNewForm($context->getEntity(), $context->getCrud()->getNewFormOptions(), $context);
@@ -240,6 +232,26 @@ class ChipsetCrudController extends AbstractCrudController
         }
 
         return $responseParameters;
+    }
+    public function makeNewChipset(Chipset $old): Chipset
+    {
+        $chipset = new Chipset();
+        $chipset->setPartNo($old->getPartNo());
+        $chipset->setManufacturer($old->getManufacturer());
+        $chipset->setDatePrecision($old->getDatePrecision());
+        $chipset->setEncyclopediaLink($old->getEncyclopediaLink());
+        $chipset->setDescription($old->getDescription());
+        $chipset->setLastEdited(new \DateTime('now'));
+        foreach ($old->getExpansionChips() as $chip){
+            $chipset->addExpansionChip($chip);
+        }
+        foreach ($old->getChipsetAliases() as $alias){
+            $chipset->addChipsetAlias($alias);
+        }
+        foreach ($old->getBiosCodes() as $code){
+            $chipset->addBiosCode($code);
+        }
+        return $chipset;
     }
     /**
      * @param Chipset $entityInstance

@@ -188,15 +188,7 @@ class LargeFileCrudController extends AbstractCrudController
             $entityManager = $this->container->get('doctrine')->getManagerForClass($className);
             $oldentity = $entityManager->find($className, $context->getRequest()->query->get('duplicate'));
             /** @var LargeFile $cloned */
-            $cloned = clone $oldentity;
-            $cloned->setLastEdited(new \DateTime('now'));
-            /*foreach ($cloned->getChipsetAliases() as $item){
-                $man = $item->getManufacturer();
-                $name = $item->getName();
-                $partNumber = $item->getPartNumber();
-                $cloned->removeChipsetAlias($item);
-                $cloned->addAlias($man, $name, $partNumber);
-            }*/
+            $cloned = $this->makeNewLargeFile($oldentity);
             $context->getEntity()->setInstance($cloned);
         }
         $newForm = $this->createNewForm($context->getEntity(), $context->getCrud()->getNewFormOptions(), $context);
@@ -233,6 +225,28 @@ class LargeFileCrudController extends AbstractCrudController
         }
 
         return $responseParameters;
+    }
+    public function makeNewLargeFile(LargeFile $old): LargeFile
+    {
+        $driver = new LargeFile();
+        $driver->setName($old->getName());
+        $driver->setFileVersion($old->getFileVersion());
+        $driver->setSubdirectory($old->getSubdirectory());
+        $driver->setDumpQualityFlag($old->getDumpQualityFlag());
+        $driver->setReleaseDate($old->getReleaseDate());
+        $driver->setDatePrecision($old->getDatePrecision());
+        $driver->setNote($old->getNote());
+        $driver->setLastEdited(new \DateTime('now'));
+        foreach ($old->getLanguages() as $lang){
+            $driver->addLanguage($lang);
+        }
+        foreach ($old->getOsFlags() as $flag){
+            $driver->addOsFlag($flag);
+        }
+        foreach ($old->getMediaTypeFlags() as $media){
+            $driver->addMediaTypeFlag($media);
+        }
+        return $driver;
     }
     /**
      * @param LargeFile $entityInstance
