@@ -212,7 +212,7 @@ function updateMultiSelectCount(type, pos, arr){
     else return false;
 
 }
-function updateSelect(idx, value){search_motherboardIoPorts_0_io_port
+function updateSelect(idx, value){
     console.log(idx);
     let val = value.toString();
     let sel = document.getElementById("search_" + idx);
