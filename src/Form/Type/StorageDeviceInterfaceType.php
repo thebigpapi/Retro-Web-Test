@@ -17,7 +17,7 @@ class StorageDeviceInterfaceType extends AbstractType
             'multiple' => false,
             'expanded' => false,
             'attr' => ['data-ea-widget' => 'ea-autocomplete'],
-            'placeholder'=> 'Select an interface ...',
+            'placeholder'=> 'Type to select an interface ...',
         ]);
     }
 

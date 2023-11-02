@@ -101,14 +101,14 @@ class LargeFileCrudController extends AbstractCrudController
                 'apps' => 'apps',
                 'drivers' => 'drivers',
             ])
-            ->setFormTypeOption('placeholder', 'Select a type ...')
+            ->setFormTypeOption('placeholder', 'Type to select a type ...')
             ->setFormTypeOption('autocomplete', 'off')
             ->setColumns(4)
             ->onlyOnForms();
         yield TextField::new('subdirectory', 'Type')
             ->onlyOnIndex();
         yield AssociationField::new('dumpQualityFlag','Quality')
-            ->setFormTypeOption('placeholder', 'Select a quality ...')
+            ->setFormTypeOption('placeholder', 'Type to select a quality ...')
             ->setColumns(4)
             ->onlyOnForms();
         yield DateField::new('release_date', 'Release Date')
@@ -120,7 +120,7 @@ class LargeFileCrudController extends AbstractCrudController
                 'Year and month' => 'm',
                 'Year only' => 'y',
             ])
-            ->setFormTypeOption('placeholder', 'Select a format ...')
+            ->setFormTypeOption('placeholder', 'Type to select a format ...')
             ->setColumns(2)
             ->onlyOnForms();
         yield TextareaField::new('file', 'File')

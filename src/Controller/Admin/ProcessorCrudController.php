@@ -105,7 +105,7 @@ class ProcessorCrudController extends AbstractCrudController
         yield TextField::new('getManufacturer','Manufacturer')
             ->hideOnForm();
         yield AssociationField::new('manufacturer','Manufacturer')
-            ->setFormTypeOption('placeholder', 'Select a manufacturer ...')
+            ->setFormTypeOption('placeholder', 'Type to select a manufacturer ...')
             ->setColumns(4)
             ->onlyOnForms();
         yield TextField::new('partNumber', 'Name')
@@ -125,18 +125,18 @@ class ProcessorCrudController extends AbstractCrudController
         yield ArrayField::new('getVoltages', 'Voltage')
             ->hideOnForm();
         yield AssociationField::new('platform', 'Family')
-            ->setFormTypeOption('placeholder', 'Select a family ...')
+            ->setFormTypeOption('placeholder', 'Type to select a family ...')
             ->setColumns(2)
             ->onlyOnForms();
         yield TextField::new('core', 'Core')
             ->setColumns(2)
             ->onlyOnForms();
         yield AssociationField::new('speed','Frequency')
-            ->setFormTypeOption('placeholder', 'Select a speed ...')
+            ->setFormTypeOption('placeholder', 'Type to select a speed ...')
             ->setColumns(2)
             ->onlyOnForms();
         yield AssociationField::new('fsb','Bus speed')
-            ->setFormTypeOption('placeholder', 'Select a speed ...')
+            ->setFormTypeOption('placeholder', 'Type to select a speed ...')
             ->setColumns(2)
             ->onlyOnForms();
         yield NumberField::new('tdp', 'TDP (in W)')
@@ -152,7 +152,7 @@ class ProcessorCrudController extends AbstractCrudController
             ->setColumns(2)
             ->onlyOnForms();
         yield AssociationField::new('L2','L2 size')
-            ->setFormTypeOption('placeholder', 'Select a size ...')
+            ->setFormTypeOption('placeholder', 'Type to select a size ...')
             ->setFormTypeOption('required', false)
             ->setColumns(2)
             ->onlyOnForms();
@@ -160,7 +160,7 @@ class ProcessorCrudController extends AbstractCrudController
             ->setColumns(2)
             ->onlyOnForms();
         yield AssociationField::new('L3','L3 size')
-            ->setFormTypeOption('placeholder', 'Select a size ...')
+            ->setFormTypeOption('placeholder', 'Type to select a size ...')
             ->setFormTypeOption('required', false)
             ->setColumns(2)
             ->onlyOnForms();

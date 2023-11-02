@@ -47,13 +47,15 @@ class StorageDeviceImageTypeForm extends AbstractType
                 'multiple' => false,
                 'expanded' => false,
                 'attr' => ['data-ea-widget' => 'ea-autocomplete'],
-                'placeholder'=> 'Select a creditor ...',
+                'placeholder'=> 'Type to select a creditor ...',
             ])
             ->add('type', ChoiceType::class, [
                 'choices' => array(
                     'Schema' => 'schema',
                     'Top photo' => 'top',
-                    'Rear photo' => 'read',
+                    'Bottom photo' => 'bottom',
+                    'Front photo' => 'front',
+                    'Back photo' => 'back',
                     'Misc' => 'misc',
                 ),
                 'required' => true,

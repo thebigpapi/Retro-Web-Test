@@ -33,7 +33,7 @@ class ProcessorPlatformTypeForm extends AbstractType
             'choice_label' => 'getName',
             'multiple' => false,
             'expanded' => false,
-            'placeholder'=> 'Select a family ...',
+            'placeholder'=> 'Type to select a family ...',
         ]);
     }
 

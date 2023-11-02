@@ -46,7 +46,7 @@ class MotherboardImageTypeForm extends AbstractType
                 'multiple' => false,
                 'expanded' => false,
                 'attr' => ['data-ea-widget' => 'ea-autocomplete'],
-                'placeholder'=> 'Select a creditor ...',
+                'placeholder'=> 'Type to select a creditor ...',
             ])
             ->add('motherboardImageType', EntityType::class, [
                 'class' => MotherboardImageType::class,
@@ -55,7 +55,7 @@ class MotherboardImageTypeForm extends AbstractType
                 'choice_label' => 'name',
                 'multiple' => false,
                 'expanded' => false,
-                'placeholder'=> 'Select a type ...',
+                'placeholder'=> 'Type to select a type ...',
             ])
             ->add('description', TextType::class, [
                 'label' => 'Note',

@@ -46,7 +46,7 @@ class OsFlagCrudController extends AbstractCrudController
         yield TextField::new('getManufacturer','Manufacturer')
             ->hideOnForm();
         yield AssociationField::new('manufacturer','Manufacturer')
-            ->setFormTypeOption('placeholder', 'Select a manufacturer ...')
+            ->setFormTypeOption('placeholder', 'Type to select a manufacturer ...')
             ->onlyOnForms();
         yield TextField::new('name', 'Name');
         yield TextField::new('version', 'Version');

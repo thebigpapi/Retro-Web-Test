@@ -44,7 +44,7 @@ class LargeFileMotherboardType extends AbstractType
                 'expanded' => false,
                 'attr' => ['data-ea-widget' => 'ea-autocomplete'],
                 'choices' => $largeFiles,
-                'placeholder'=> 'Select a driver ...',
+                'placeholder'=> 'Type to select a driver ...',
             ]);
     }
 

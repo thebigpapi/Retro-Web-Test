@@ -25,7 +25,7 @@ class MotherboardExpansionSlotType extends AbstractType
                 'multiple' => false,
                 'expanded' => false,
                 'attr' => ['data-ea-widget' => 'ea-autocomplete'],
-                'placeholder' => 'Select type...',
+                'placeholder' => 'Type to select a type...',
             ])
 ;
     }

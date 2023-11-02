@@ -227,7 +227,7 @@ class MotherboardCrudController extends AbstractCrudController
             ->setColumns('col-sm-12 col-lg-8 col-xxl-6')
             ->onlyOnForms();
         yield AssociationField::new('chipset')
-            ->setFormTypeOption('placeholder', 'Select a chipset ...')
+            ->setFormTypeOption('placeholder', 'Type to select a chipset ...')
             ->setFormTypeOption('choice_label', 'getNameCached')
             ->setFormTypeOption('required', false)
             ->setColumns('col-sm-12 col-lg-8 col-xxl-6')
@@ -250,7 +250,7 @@ class MotherboardCrudController extends AbstractCrudController
             ->renderExpanded()
             ->onlyOnForms();
         yield AssociationField::new('maxVideoRam', 'Max VRAM (onboard GPU)')
-            ->setFormTypeOption('placeholder', 'Select a VRAM size ...')
+            ->setFormTypeOption('placeholder', 'Type to select a VRAM size ...')
             ->setFormTypeOption('required', false)
             ->onlyOnForms();
         yield FormField::addPanel('Connections')
