@@ -2,7 +2,7 @@
 {% from 'macros/largeFile.html.twig' import link as driverLink %}
 {% from 'macros/largeFile.html.twig' import header as driverHeader %}
 
-{% block title %}{{ chipset.getPrettyTitle() }} - The Retro Web{% endblock %}
+{% block title %}{{ chipset.getNameWithoutParts() }} - The Retro Web{% endblock %}
 {% block metatags %}
 	<meta name="description" content="{{ chipset.getMetaDescription() }}">
 	<link rel="canonical" hreflang="x-default" href="{{ absolute_url(path('chipset_show', {id: chipset.getId()})) }}"/>
@@ -16,8 +16,8 @@
 		<meta name="twitter:card" content="summary">
 		<meta property="og:site_name" content="The Retro Web">
 		<meta property="og:type" content="website">
-		<meta name="twitter:title" content="{{ chipset.getPrettyTitle() }}">
-		<meta property="og:title" content="{{ chipset.getPrettyTitle() }}">
+		<meta name="twitter:title" content="{{ chipset.getNameWithoutParts() }}">
+		<meta property="og:title" content="{{ chipset.getNameWithoutParts() }}">
 		<meta name="twitter:description" content="{{ chipset.getMetaDescription() }}">
 		<meta property="og:description" content="{{ chipset.getMetaDescription() }}">
 		<meta property="og:url" content="{{ absolute_url(path('chipset_show', {id: chipset.getId()})) }}">

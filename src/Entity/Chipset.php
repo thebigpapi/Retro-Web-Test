@@ -109,8 +109,9 @@ class Chipset
         if ($this->part_no) {
             $fullName .= " $this->part_no";
             if ($this->name) {
-                $fullName .= " ($this->name) ". $this->getPartsCached();
+                $fullName .= " ($this->name)";
             }
+            $fullName .= " " . $this->getPartsCached();
         } else {
             if ($this->name) {
                 $fullName .= " $this->name";

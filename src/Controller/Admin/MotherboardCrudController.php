@@ -8,6 +8,7 @@ use App\Entity\MotherboardAlias;
 use App\Entity\MotherboardExpansionSlot;
 use App\Entity\MotherboardIoPort;
 use App\Entity\MotherboardMaxRam;
+use App\Entity\PSUConnector;
 use App\Form\Type\MotherboardAliasType;
 use App\Form\Type\MotherboardIdRedirectionType;
 use App\Form\Type\DramTypeType;
@@ -329,7 +330,7 @@ class MotherboardCrudController extends AbstractCrudController
             $entityManager = $this->container->get('doctrine')->getManagerForClass($className);
             $oldmobo = $entityManager->find($className, $context->getRequest()->query->get('duplicate'));
             /** @var Motherboard $cloned */
-            $cloned = $this->makeNewMotherboard($oldmobo);
+            $cloned = $this->makeNewMotherboard($oldmobo, $entityManager);
             $context->getEntity()->setInstance($cloned);
         }
         $newForm = $this->createNewForm($context->getEntity(), $context->getCrud()->getNewFormOptions(), $context);
@@ -367,7 +368,7 @@ class MotherboardCrudController extends AbstractCrudController
 
         return $responseParameters;
     }
-    public function makeNewMotherboard(Motherboard $old): Motherboard
+    public function makeNewMotherboard(Motherboard $old, EntityManagerInterface $entityManager): Motherboard
     {
         $board = new Motherboard();
         $board->setManufacturer($old->getManufacturer());
@@ -424,9 +425,9 @@ class MotherboardCrudController extends AbstractCrudController
             $newPort->setIoPort($port->getIoPort());
             $board->addMotherboardIoPort($newPort);
         }
-        /*foreach ($old->getPsuConnectors() as $psu){
+        foreach ($old->getPsuConnectors() as $psu){
             $board->addPsuConnector($psu);
-        }*/
+        }
         return $board;
     }
 
