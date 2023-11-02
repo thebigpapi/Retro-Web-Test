@@ -38,23 +38,23 @@ class Search extends AbstractType
         usort(
             $chipsetManuf,
             function (Manufacturer $a, Manufacturer $b) {
-                return strcmp($a->getName(), $b->getName());
+                return strcmp($b->getName(), $a->getName());
             }
         );
         foreach($chipsetManuf as $man){
-            $cm = $man->getChipsets()->toArray() ?? [];
             $any = new Chipset;
             $any->setName(" chipset of any kind");
             $any->setManufacturer($man);
-            array_unshift($cm, $any);
-            $chipsets = array_merge($chipsets, $cm);
+            array_unshift($chipsets, $any);
         }
+        $allchipsets = $this->entityManager->getRepository(Chipset::class)->findAll();
         usort(
-            $chipsets,
+            $allchipsets,
             function (Chipset $a, Chipset $b) {
                 return strcmp($a->getNameCached(), $b->getNameCached());
             }
         );
+        $chipsets = array_merge($chipsets, $allchipsets);
         return $chipsets;
     }
 
