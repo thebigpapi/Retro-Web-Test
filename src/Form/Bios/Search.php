@@ -33,6 +33,32 @@ class Search extends AbstractType
     {
         return $this->entityManager->getRepository(Manufacturer::class);
     }
+    private function getChipsets(): array
+    {
+        $chipsets = [];
+        $chipsetManuf = $this->entityManager->getRepository(Manufacturer::class)->findAllChipsetManufacturer();
+        usort(
+            $chipsetManuf,
+            function (Manufacturer $a, Manufacturer $b) {
+                return strcmp($a->getName(), $b->getName());
+            }
+        );
+        foreach($chipsetManuf as $man){
+            $cm = $man->getChipsets()->toArray() ?? [];
+            $any = new Chipset;
+            $any->setName(" chipset of any kind");
+            $any->setManufacturer($man);
+            array_unshift($cm, $any);
+            $chipsets = array_merge($chipsets, $cm);
+        }
+        usort(
+            $chipsets,
+            function (Chipset $a, Chipset $b) {
+                return strcmp($a->getNameCached(), $b->getNameCached());
+            }
+        );
+        return $chipsets;
+    }
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -49,6 +75,11 @@ class Search extends AbstractType
                 'multiple' => false,
                 'expanded' => false,
                 'required' => false,
+                'choice_attr' => function ($choice, string $key, mixed $value) {
+                    if($choice == "Not identified")
+                        return ['data_id' => 'NULL' ];
+                    return ['data_id' => $choice->getId() ];
+                },
                 'choices' => $options['biosManufacturers'],
                 'placeholder' => 'Type to select a manufacturer ...',
             ])
@@ -59,8 +90,28 @@ class Search extends AbstractType
                 'multiple' => false,
                 'expanded' => false,
                 'required' => false,
+                'choice_attr' => function ($choice, string $key, mixed $value) {
+                    if($choice == "Not identified")
+                        return ['data_id' => 'NULL' ];
+                    return ['data_id' => $choice->getId() ];
+                },
                 'choices' => $options['moboManufacturers'],
                 'placeholder' => 'Type to select a manufacturer ...',
+            ])
+            ->add('chipset', ChoiceType::class, [
+                'choice_label' => 'getNameCachedSearch',
+                'multiple' => false,
+                'expanded' => false,
+                'required' => false,
+                'choice_attr' => function ($choice, string $key, mixed $value) {
+                    if($choice == "Not identified")
+                        return ['data_id' => 'NULL' ];
+                    if(strpos($choice, "any") && strpos($choice, "chipset"))
+                        return ['data_id' => 0 . $choice->getManufacturer()->getId() ];
+                    return ['data_id' => $choice->getId() ];
+                },
+                'choices' => $this->getChipsets(),
+                'placeholder' => "Type to select a chipset ...",
             ])
             ->add('expansionChips', CollectionType::class, [
                 'entry_type' => ExpansionChipType::class,
@@ -77,52 +128,6 @@ class Search extends AbstractType
                 'empty_data' => ItemsPerPageType::Items100,
                 'choice_label' => fn ($choice) => strval($choice->value),
             ]);
-
-        $formModifier = function (FormInterface $form, Manufacturer $chipsetManufacturer = null) {
-            /**
-             * @var Chipset[]
-             */
-            $chipsets = [];
-            $chipsetManuf = $this->getManufacturerRepository()->findAllChipsetManufacturer();
-            usort(
-                $chipsetManuf,
-                function (Manufacturer $a, Manufacturer $b) {
-                    return strcmp($a->getName(), $b->getName());
-                }
-            );
-            foreach($chipsetManuf as $man){
-                $cm = $man->getChipsets()->toArray() ?? [];
-                $any = new Chipset;
-                $any->setName(" chipset of any kind");
-                $any->setManufacturer($man);
-                array_unshift($cm, $any);
-                $chipsets = array_merge($chipsets, $cm);
-            }
-            usort(
-                $chipsets,
-                function (Chipset $a, Chipset $b) {
-                    return strcmp($a->getNameCached(), $b->getNameCached());
-                }
-            );
-            $form->add('chipset', ChoiceType::class, [
-                'choice_label' => 'getNameCachedSearch',
-                'multiple' => false,
-                'expanded' => false,
-                'required' => false,
-                'choices' => $chipsets,
-                'placeholder' => "Type to select a chipset ...",
-            ]);
-        };
-
-        $builder->addEventListener(
-            FormEvents::PRE_SET_DATA,
-            function (FormEvent $event) use ($formModifier) {
-                // this would be your entity, i.e. SportMeetup
-                $data = $event->getData();
-
-                $formModifier($event->getForm(), null);
-            }
-        );
     }
 
     public function configureOptions(OptionsResolver $resolver)

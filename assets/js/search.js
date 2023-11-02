@@ -42,6 +42,9 @@ let static_selects = [
     "moboManufacturer",
     "expansionChipManufacturer",
     "cpuManufacturer",
+    "hddManufacturer",
+    "cddManufacturer",
+    "fddManufacturer",
     "chipset",
     "cpuSocket1",
     "cpuSocket2",
@@ -61,7 +64,16 @@ let dynamic_selects = [
     'sockets-fields-list',
     'platforms-fields-list'
 ];
+// cookies
+if(search_image = document.getElementById('search_searchWithImages')){
+    if(getCookie('searchImage') == "false")
+        search_image.nextElementSibling.click();
+    search_image.addEventListener("click", function(){
+        setCookie('searchImage', search_image.checked, 5);
+    }, false);
+}
 // init tom-selects
+decodeURL();
 for(let item of static_selects){
     loadTS(item);
 }
@@ -74,14 +86,7 @@ if(search_live = document.getElementById('pagination_redir'))
     search_live.addEventListener("click", searchLive);
 if(resetbtn = document.getElementById('rst-btn'))
     resetbtn.addEventListener("click", reset);
-// cookies
-if(search_image = document.getElementById('search_searchWithImages')){
-    if(getCookie('searchImage') == "false")
-        search_image.nextElementSibling.click();
-    search_image.addEventListener("click", function(){
-        setCookie('searchImage', search_image.checked, 5);
-    }, false);
-}
+
 // functions
 function setCookie(cName, cValue, expDays) {
     let date = new Date();
@@ -98,6 +103,129 @@ function getCookie(cName) {
         if (val.indexOf(name) === 0) res = val.substring(name.length);
     })
     return res;
+}
+function decodeURL(){
+    let url = window.location.href.substring(window.location.href.indexOf("?") + 1, window.location.href.length);
+    let p = url.split("&");
+    let params = [];
+    for(const i of p){
+        split = i.split("=");
+        if(split.length > 2 && split[0].includes("sign"))
+            params[split[0]] = split[1] + "%3D";
+        else
+            params[split[0]] = split[1];
+    }
+    updateFields(params);
+}
+function updateFields(params){
+    let static_fields = ["name", "capacity", "deviceId"];
+    console.log(params);
+    let complex_cnt = 0;
+    let complex_arr = [];
+    for(const [key, value] of Object.entries(params)){
+        if(key.includes("expansionChipIds") || key.includes("dramTypeIds") || key.includes("socketIds") || key.includes("platformIds")){
+            updateMultiSelect(key, value);
+        }
+        else if(key.includes("expansionSlotsIds") || key.includes("ioPortsIds")){
+            complex_cnt++;
+            let first_split = key.split("Ids%5B");
+            let second_split = first_split[1].split("%5D%5B");
+            complex_arr[second_split[1].split("%5D")[0]] =  value;
+            if(complex_cnt == 3){
+                updateMultiSelectCount(first_split[0],second_split[0], complex_arr);
+                complex_cnt = 0;
+                complex_arr = [];
+            }
+        }
+        else if(static_fields.includes(key))
+            document.getElementById("search_" + key).value = value;
+        else if(key.includes("Id")){
+            console.log(key);
+            updateSelect(key.substring(0, key.length - 2), value);
+        }
+        else if(key == "itemsPerPage")
+            document.getElementById("search_itemsPerPage").value = value;
+        else if(key == "showImages"){
+            let sh = document.getElementById("search_searchWithImages");
+            if(sh.checked != Boolean(Number(value)))
+                sh.nextElementSibling.click();
+        }
+        else {
+            if(key.includes("cpuSocket") || key.includes("platform"))
+                updateSelect(key, value);
+            if(key == "postString"){
+                document.getElementById("search_post_string").value = value;
+            }
+            if(key == "coreVersion"){
+                document.getElementById("search_core_version").value = value;
+            }
+        }
+    }
+}
+function updateMultiSelect(key, value){
+    let type = key.split("Ids%5B")
+    let pos = type[1].split("%5D")[0];
+    let add = document.getElementById(type[0] + "s-add-id");
+    add.click();
+    let select = document.getElementById("search_" + type[0] + "s_" + pos);
+    select.value = value;
+    select.tomselect.sync();
+    console.log(type, pos, value);
+}
+function updateMultiSelectCount(type, pos, arr){
+    console.log(type, pos, arr);
+    let sign = "";
+    switch(arr["sign"]){
+        case "%3E%3D":
+            sign = ">=";
+            break;
+        case "%3C%3D":
+            sign = "<=";
+            break;
+        case "%3E":
+            sign = ">";
+            break;
+        case "%3C":
+            sign = "<";
+            break;
+        default:
+            break;
+    }
+    if(type == "expansionSlots"){
+        let add = document.getElementById("motherboardExpansionSlots-add-id");
+        add.click();
+        let select = document.getElementById("search_motherboardExpansionSlots_" + pos + "_expansion_slot");
+        let box = document.getElementById("search_motherboardExpansionSlots_" + pos + "_count");
+        select.value = arr["id"];
+        select.tomselect.sync();
+        box.value = sign + arr["count"];
+    }
+    else if(type == "ioPorts"){
+        let add = document.getElementById("motherboardIoPorts-add-id");
+        add.click();
+        let select = document.getElementById("search_motherboardIoPorts_" + pos + "_io_port");
+        let box = document.getElementById("search_motherboardIoPorts_" + pos + "_count");
+        select.value = arr["id"];
+        select.tomselect.sync();
+        box.value = sign + arr["count"];
+    }
+    else return false;
+
+}
+function updateSelect(idx, value){search_motherboardIoPorts_0_io_port
+    console.log(idx);
+    let val = value.toString();
+    let sel = document.getElementById("search_" + idx);
+    if(idx == "chipsetManufacturer" && (window.location.href.includes("motherboards") || window.location.href.includes("bios"))){
+        sel = document.getElementById("search_chipset");
+        val = "0" + val;
+    }
+    if(idx == "biosManufacturer"){
+        sel = document.getElementById("search_manufacturer");
+    }
+    const options = Array.from(sel.options);
+    const optionToSelect = options.find(item => val == item.getAttribute("data_id"));
+    sel.value = optionToSelect.value;
 }
 function loadTS(targetId){
     if(el = document.getElementById('search_' + targetId)){
