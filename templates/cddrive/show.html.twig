@@ -65,22 +65,22 @@
 						<div class="quick-spec-head">
 							<img src="{{ absolute_url(asset('build/icons/cd.svg')) }}" alt="cdr" width="24" height="24">CD read speed
 						</div>
-						<div>{{ cddrive.getCdReadSpeed() ?: 'Unknown' }}</div>
+						<div>{{ cddrive.getCdReadSpeed() ~ 'x' ?: 'Unknown' }}</div>
 						<!-- CD write -->
 						<div class="quick-spec-head">
 							<img src="{{ absolute_url(asset('build/icons/cd.svg')) }}" alt="cdw" width="24" height="24">CD write speed
 						</div>
-						<div>{{ cddrive.getCdWriteSpeed() ?: 'Unknown' }}</div>
+						<div>{{ cddrive.getCdWriteSpeed() ~ 'x' ?: 'Unknown' }}</div>
 						<!-- DVD read -->
 						<div class="quick-spec-head">
 							<img src="{{ absolute_url(asset('build/icons/dvd.svg')) }}" alt="dvdr" width="24" height="24">DVD read speed
 						</div>
-						<div>{{ cddrive.getDvdReadSpeed() ?: 'Unknown' }}</div>
+						<div>{{ cddrive.getDvdReadSpeed() ~ 'x' ?: 'Unknown' }}</div>
 						<!-- DVD write speed -->
 						<div class="quick-spec-head">
 							<img src="{{ absolute_url(asset('build/icons/dvd.svg')) }}" alt="dvdw" width="24" height="24">DVD write speed
 						</div>
-						<div>{{ cddrive.getDvdWriteSpeed() ?: 'Unknown' }}</div>
+						<div>{{ cddrive.getDvdWriteSpeed() ~ 'x' ?: 'Unknown' }}</div>
 					</div>
 				</div>
 				{% include 'macros/aliases.html.twig' with {'entity':cddrive.getStorageDeviceAliases(), 'msg': 'Also known as:'} %}
