@@ -848,7 +848,7 @@ class Motherboard
         $strBuilder .= " is a motherboard based on the ";
         $chipData = $this->getChipset();
         if ($chipData != null) {
-            $strBuilder .= $chipData->getPrettyTitle();
+            $strBuilder .= $chipData->getNameWithoutParts();
         } else {
             $strBuilder .= "[Unidentified]";
         }
