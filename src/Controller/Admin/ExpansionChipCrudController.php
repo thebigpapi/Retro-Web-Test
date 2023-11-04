@@ -8,6 +8,7 @@ use App\Form\Type\PciDeviceIdType;
 use App\Form\Type\LargeFileExpansionChipType;
 use App\Form\Type\ChipDocumentationType;
 use App\Form\Type\ChipImageType;
+use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
@@ -142,5 +143,13 @@ class ExpansionChipCrudController extends AbstractCrudController
         $entityId = $context->getEntity()->getInstance()->getId();
         $entity = str_replace("\\", "-",$context->getEntity()->getFqcn());
         return $this->redirectToRoute('dh_auditor_show_entity_history', array('id' => $entityId, 'entity' => $entity));
+    }
+        /**
+     * @param ExpansionChip $entityInstance
+     */
+    public function updateEntity(EntityManagerInterface $entityManager, $entityInstance): void
+    {
+        $entityInstance->updateLastEdited();
+        parent::updateEntity($entityManager, $entityInstance);
     }
 }
