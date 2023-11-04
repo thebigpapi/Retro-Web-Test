@@ -180,7 +180,14 @@
 					{% if cpu.getPlatform() is not empty %}
 						{% if cpu.getPlatform().getInstructionSets() is not empty %}
 						<div class="tag-container">
-							{% for instruction in cpu.getPlatform().getInstructionSets() %}<span class="text-block">{{ instruction.getName()}}</span>{% endfor %}
+							{% for instruction in cpu.getPlatform().getInstructionSets() %}
+								<span class="text-block">{{ instruction.getName()}}</span>
+								{% if instruction.getCompatibleWith() is not empty %}
+									{% for ins in instruction.getCompatibleWith() %}
+										<span class="text-block">{{ ins.getName()}}</span>
+									{% endfor %}
+								{% endif %}
+							{% endfor %}
 						</div>
 						{% else %}
 						<div>Unknown</div>

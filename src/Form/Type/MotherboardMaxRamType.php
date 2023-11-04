@@ -25,7 +25,7 @@ class MotherboardMaxRamType extends AbstractType
                 'multiple' => false,
                 'expanded' => false,
                 'attr' => ['data-ea-widget' => 'ea-autocomplete'],
-                'placeholder'=> 'Select a RAM size ...',
+                'placeholder'=> 'Type to select a RAM size ...',
                 ])
             ->add('note', TextType::class, ['required' => false]);
     }

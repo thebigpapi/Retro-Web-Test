@@ -73,8 +73,16 @@
 						<img src="{{ absolute_url(asset('build/icons/486.svg')) }}" alt="cpu" width="24" height="24">CPU family
 					</div>
 					{% if motherboard.getProcessorPlatformTypes() is not empty %}
-					<div class="tag-container">{% for platform in motherboard.getProcessorPlatformTypes() %}
-						<a href="{{ path('cpufamily_show', {id: platform.getId()}) }}"><span class="text-block">{{ platform.getName() }}</span></a>{% endfor %}</div>
+					<div class="tag-container">
+						{% for platform in motherboard.getProcessorPlatformTypes() %}
+						<a href="{{ path('cpufamily_show', {id: platform.getId()}) }}"><span class="text-block">{{ platform.getName() }}</span></a>
+						{% if platform.getCompatibleWith() is not empty %}
+							{% for compfamily in platform.getCompatibleWith() %}
+								<a href="{{ path('cpufamily_show', {id: compfamily.getId()}) }}"><span class="text-block">{{ compfamily.getName}}</span></a>
+							{% endfor %}
+						{% endif %}
+						{% endfor %}
+					</div>
 					{% else %}
 					<div>Unknown</div>
 					{% endif %}

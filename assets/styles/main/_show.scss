@@ -106,7 +106,10 @@ div.main-strip {
                 }
 
                 border-radius: 5px 5px 0px 0px;
-                border: thin solid transparent;
+                border: thin solid $button-hover-light;
+                @media (prefers-color-scheme: dark) {
+                    border: thin solid $button-hover-dark;
+                }
 
                 &:hover {
                     transition: ease-in-out background-color $anim-duration, ease-in-out color $anim-duration;
@@ -139,6 +142,9 @@ div.main-strip {
             padding: 5px;
             background-color: $container-bkg-light;
 
+            @media (max-width: 500px) {
+                padding: 1px;
+            }
             @media (prefers-color-scheme: dark) {
                 background-color: $container-bkg-dark;
             }
@@ -160,6 +166,10 @@ div.main-strip {
             div.show-downloads-group {
                 padding: 10px;
                 border-bottom: solid thin $border-dark;
+
+                @media (max-width: 500px) {
+                    padding: 3px;
+                }
 
                 @media (prefers-color-scheme: dark) {
                     border-color: $shadow-light;
@@ -196,7 +206,8 @@ div.quick-spec-table {
     grid-template-columns: [first] 180px [second] auto [end];
 
     @media (max-width: 500px) {
-        grid-template-columns: [first] 100px [second] auto [end];
+        padding: 3px;
+        grid-template-columns: [first] 140px [second] auto [end];
     }
 
     div {
@@ -236,6 +247,9 @@ div.quick-spec-table {
         img {
             vertical-align: middle;
             padding-right: 5px;
+            @media (max-width: 500px) {
+                padding-right: 0px;
+            }
         }
     }
 

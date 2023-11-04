@@ -30,7 +30,7 @@ class ExpansionChipType extends AbstractType
             'multiple' => false,
             'expanded' => false,
             'attr' => ['data-ea-widget' => 'ea-autocomplete'],
-            'placeholder'=> 'Select a chip ...',
+            'placeholder'=> 'Type to select a chip ...',
         ]);
     }
 

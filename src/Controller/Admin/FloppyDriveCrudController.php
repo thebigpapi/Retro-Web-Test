@@ -3,6 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Entity\FloppyDrive;
+use App\Entity\StorageDeviceAlias;
 use App\Form\Type\KnownIssueType;
 use App\Form\Type\StorageDeviceAliasType;
 use App\Form\Type\StorageDeviceDocumentationType;
@@ -234,15 +235,7 @@ class FloppyDriveCrudController extends AbstractCrudController
             $entityManager = $this->container->get('doctrine')->getManagerForClass($className);
             $oldentity = $entityManager->find($className, $context->getRequest()->query->get('duplicate'));
             /** @var FloppyDrive $cloned */
-            $cloned = clone $oldentity;
-            $cloned->setLastEdited(new \DateTime('now'));
-            foreach ($cloned->getStorageDeviceAliases() as $item){
-                $man = $item->getManufacturer();
-                $name = $item->getName();
-                $partNumber = $item->getPartNumber();
-                $cloned->removeStorageDeviceAlias($item);
-                $cloned->addAlias($man, $name, $partNumber);
-            }
+            $cloned = $this->makeNewFloppyDrive($oldentity);
             $context->getEntity()->setInstance($cloned);
         }
         $newForm = $this->createNewForm($context->getEntity(), $context->getCrud()->getNewFormOptions(), $context);
@@ -279,6 +272,31 @@ class FloppyDriveCrudController extends AbstractCrudController
         }
 
         return $responseParameters;
+    }
+    public function makeNewFloppyDrive(FloppyDrive $old): FloppyDrive
+    {
+        $fdd = new FloppyDrive();
+        $fdd->setManufacturer($old->getManufacturer());
+        $fdd->setName($old->getName());
+        $fdd->setPartNumber($old->getPartNumber());
+        $fdd->setPhysicalSize($old->getPhysicalSize());
+        $fdd->setDensity($old->getDensity());
+        $fdd->setDescription($old->getDescription());
+        $fdd->setLastEdited(new \DateTime('now'));
+        foreach ($old->getStorageDeviceAliases() as $alias){
+            $newAlias = new StorageDeviceAlias();
+            $newAlias->setManufacturer($alias->getManufacturer());
+            $newAlias->setName($alias->getName());
+            $newAlias->setPartNumber($alias->getPartNumber());
+            $fdd->addStorageDeviceAlias($newAlias);
+        }
+        foreach ($old->getKnownIssues() as $issue){
+            $fdd->addKnownIssue($issue);
+        }
+        foreach ($old->getInterfaces() as $interface){
+            $fdd->addInterface($interface);
+        }
+        return $fdd;
     }
     /**
      * @param FloppyDrive $entityInstance

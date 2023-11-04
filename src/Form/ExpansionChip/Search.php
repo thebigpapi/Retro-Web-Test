@@ -27,6 +27,9 @@ class Search extends AbstractType
                 'multiple' => false,
                 'expanded' => false,
                 'required' => false,
+                'choice_attr' => function ($choice, string $key, mixed $value) {
+                    return ['data_id' => $choice->getId() ];
+                },
                 'choices' => $options['expansionChipTypes'],
                 'placeholder' => 'Type to select a type ...'
             ])
@@ -35,7 +38,11 @@ class Search extends AbstractType
                 'multiple' => false,
                 'expanded' => false,
                 'required' => false,
-                'autocomplete' => true,
+                'choice_attr' => function ($choice, string $key, mixed $value) {
+                    if($choice == "Not identified")
+                        return ['data_id' => 'NULL' ];
+                    return ['data_id' => $choice->getId() ];
+                },
                 'choices' => $options['expansionChipManufacturers'],
                 'placeholder' => 'Type to select an expansion chip manufacturer ...',
             ])

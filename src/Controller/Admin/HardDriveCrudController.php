@@ -4,6 +4,7 @@ namespace App\Controller\Admin;
 
 use App\Entity\HardDrive;
 use App\Entity\StorageDevice;
+use App\Entity\StorageDeviceAlias;
 use App\Form\Type\AudioFileType;
 use App\Form\Type\KnownIssueType;
 use App\Form\Type\StorageDeviceAliasType;
@@ -264,15 +265,7 @@ class HardDriveCrudController extends AbstractCrudController
             $entityManager = $this->container->get('doctrine')->getManagerForClass($className);
             $oldentity = $entityManager->find($className, $context->getRequest()->query->get('duplicate'));
             /** @var HardDrive $cloned */
-            $cloned = clone $oldentity;
-            $cloned->setLastEdited(new \DateTime('now'));
-            foreach ($cloned->getStorageDeviceAliases() as $item){
-                $man = $item->getManufacturer();
-                $name = $item->getName();
-                $partNumber = $item->getPartNumber();
-                $cloned->removeStorageDeviceAlias($item);
-                $cloned->addAlias($man, $name, $partNumber);
-            }
+            $cloned = $this->makeNewHardDrive($oldentity);
             $context->getEntity()->setInstance($cloned);
         }
         $newForm = $this->createNewForm($context->getEntity(), $context->getCrud()->getNewFormOptions(), $context);
@@ -309,6 +302,39 @@ class HardDriveCrudController extends AbstractCrudController
         }
 
         return $responseParameters;
+    }
+    public function makeNewHardDrive(HardDrive $old): HardDrive
+    {
+        $hdd = new HardDrive();
+        $hdd->setManufacturer($old->getManufacturer());
+        $hdd->setName($old->getName());
+        $hdd->setPartNumber($old->getPartNumber());
+        $hdd->setPhysicalSize($old->getPhysicalSize());
+        $hdd->setCapacity($old->getCapacity());
+        $hdd->setCylinders($old->getCylinders());
+        $hdd->setHeads($old->getHeads());
+        $hdd->setSectors($old->getSectors());
+        $hdd->setPlatters($old->getPlatters());
+        $hdd->setRandomSeek($old->getRandomSeek());
+        $hdd->setTrackSeek($old->getTrackSeek());
+        $hdd->setBuffer($old->getBuffer());
+        $hdd->setSpindleSpeed($old->getSpindleSpeed());
+        $hdd->setDescription($old->getDescription());
+        $hdd->setLastEdited(new \DateTime('now'));
+        foreach ($old->getStorageDeviceAliases() as $alias){
+            $newAlias = new StorageDeviceAlias();
+            $newAlias->setManufacturer($alias->getManufacturer());
+            $newAlias->setName($alias->getName());
+            $newAlias->setPartNumber($alias->getPartNumber());
+            $hdd->addStorageDeviceAlias($newAlias);
+        }
+        foreach ($old->getKnownIssues() as $issue){
+            $hdd->addKnownIssue($issue);
+        }
+        foreach ($old->getInterfaces() as $interface){
+            $hdd->addInterface($interface);
+        }
+        return $hdd;
     }
     /**
      * @param HardDrive $entityInstance

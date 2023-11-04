@@ -172,7 +172,7 @@
 	<div class="show-images" id="sh-images">
 	{% if harddrive.getStorageDeviceImages() is not empty %}
 		{% set lpindex = 0 %}
-		{% for image in harddrive.getStorageDeviceImages()|sort((a, b) => a.getFileName() <=> b.getFileName()) %}
+		{% for image in harddrive.getStorageDeviceImages()|sort((a, b) => a.getFileName() <=> b.getFileName())|sort((a, b) => a.getType <=> b.getType) %}
 			{% set lpindex = lpindex + 1 %}
 			{% include 'macros/images.html.twig' with {'type':'expansionchip', 'entity': image, 'index': lpindex, 'length': harddrive.getStorageDeviceImages()|length} %}
 		{% endfor %}

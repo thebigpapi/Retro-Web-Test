@@ -20,7 +20,7 @@ class PSUConnectorType extends AbstractType
             'multiple' => false,
             'expanded' => false,
             'attr' => ['data-ea-widget' => 'ea-autocomplete'],
-            'placeholder'=> 'Select a PSU connector ...',
+            'placeholder'=> 'Type to select a PSU connector ...',
         ]);
     }
 

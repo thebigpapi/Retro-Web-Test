@@ -20,7 +20,7 @@ class CacheSizeType extends AbstractType
             'multiple' => false,
             'expanded' => false,
             'attr' => ['data-ea-widget' => 'ea-autocomplete'],
-            'placeholder'=> 'Select a cache size ...',
+            'placeholder'=> 'Type to select a cache size ...',
         ]);
     }
 

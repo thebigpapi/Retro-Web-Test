@@ -3,6 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Entity\LargeFile;
+use App\Entity\LargeFileMediaTypeFlag;
 use App\Form\Type\LanguageType;
 use App\Form\Type\OsFlagType;
 use App\Form\Type\LargeFileMediaTypeFlagType;
@@ -100,14 +101,14 @@ class LargeFileCrudController extends AbstractCrudController
                 'apps' => 'apps',
                 'drivers' => 'drivers',
             ])
-            ->setFormTypeOption('placeholder', 'Select a type ...')
+            ->setFormTypeOption('placeholder', 'Type to select a type ...')
             ->setFormTypeOption('autocomplete', 'off')
             ->setColumns(4)
             ->onlyOnForms();
         yield TextField::new('subdirectory', 'Type')
             ->onlyOnIndex();
         yield AssociationField::new('dumpQualityFlag','Quality')
-            ->setFormTypeOption('placeholder', 'Select a quality ...')
+            ->setFormTypeOption('placeholder', 'Type to select a quality ...')
             ->setColumns(4)
             ->onlyOnForms();
         yield DateField::new('release_date', 'Release Date')
@@ -119,7 +120,7 @@ class LargeFileCrudController extends AbstractCrudController
                 'Year and month' => 'm',
                 'Year only' => 'y',
             ])
-            ->setFormTypeOption('placeholder', 'Select a format ...')
+            ->setFormTypeOption('placeholder', 'Type to select a format ...')
             ->setColumns(2)
             ->onlyOnForms();
         yield TextareaField::new('file', 'File')
@@ -188,15 +189,7 @@ class LargeFileCrudController extends AbstractCrudController
             $entityManager = $this->container->get('doctrine')->getManagerForClass($className);
             $oldentity = $entityManager->find($className, $context->getRequest()->query->get('duplicate'));
             /** @var LargeFile $cloned */
-            $cloned = clone $oldentity;
-            $cloned->setLastEdited(new \DateTime('now'));
-            /*foreach ($cloned->getChipsetAliases() as $item){
-                $man = $item->getManufacturer();
-                $name = $item->getName();
-                $partNumber = $item->getPartNumber();
-                $cloned->removeChipsetAlias($item);
-                $cloned->addAlias($man, $name, $partNumber);
-            }*/
+            $cloned = $this->makeNewLargeFile($oldentity);
             $context->getEntity()->setInstance($cloned);
         }
         $newForm = $this->createNewForm($context->getEntity(), $context->getCrud()->getNewFormOptions(), $context);
@@ -233,6 +226,31 @@ class LargeFileCrudController extends AbstractCrudController
         }
 
         return $responseParameters;
+    }
+    public function makeNewLargeFile(LargeFile $old): LargeFile
+    {
+        $driver = new LargeFile();
+        $driver->setName($old->getName());
+        $driver->setFileVersion($old->getFileVersion());
+        $driver->setSubdirectory($old->getSubdirectory());
+        $driver->setDumpQualityFlag($old->getDumpQualityFlag());
+        $driver->setReleaseDate($old->getReleaseDate());
+        $driver->setDatePrecision($old->getDatePrecision());
+        $driver->setNote($old->getNote());
+        $driver->setLastEdited(new \DateTime('now'));
+        foreach ($old->getLanguages() as $lang){
+            $driver->addLanguage($lang);
+        }
+        foreach ($old->getOsFlags() as $flag){
+            $driver->addOsFlag($flag);
+        }
+        foreach ($old->getMediaTypeFlags() as $media){
+            $newMedia = new LargeFileMediaTypeFlag();
+            $newMedia->setCount($media->getCount());
+            $newMedia->setMediaTypeFlag($media->getMediaTypeFlag());
+            $driver->addMediaTypeFlag($newMedia);
+        }
+        return $driver;
     }
     /**
      * @param LargeFile $entityInstance

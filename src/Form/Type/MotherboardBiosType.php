@@ -24,7 +24,7 @@ class MotherboardBiosType extends AbstractType
                 'multiple' => false,
                 'expanded' => false,
                 'attr' => ['data-ea-widget' => 'ea-autocomplete'],
-                'placeholder' => 'Select a manufacturer ...',
+                'placeholder' => 'Type to select a manufacturer ...',
             ])
             ->add('postString', TextType::class, [
                 'label' => false,

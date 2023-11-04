@@ -33,7 +33,8 @@ class ProcessorPlatformTypeForm extends AbstractType
             'choice_label' => 'getName',
             'multiple' => false,
             'expanded' => false,
-            'placeholder'=> 'Select a family ...',
+            'attr' => ['data-ea-widget' => 'ea-autocomplete'],
+            'placeholder'=> 'Type to select a family ...',
         ]);
     }
 

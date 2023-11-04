@@ -71,7 +71,7 @@ class ExpansionChipCrudController extends AbstractCrudController
         yield TextField::new('getManufacturer','Manufacturer')
             ->hideOnForm();
         yield AssociationField::new('manufacturer','Manufacturer')
-            ->setFormTypeOption('placeholder', 'Select a manufacturer ...')
+            ->setFormTypeOption('placeholder', 'Type to select a manufacturer ...')
             ->setColumns(4)
             ->onlyOnForms();
         yield TextField::new('partNumber', 'Part number')
@@ -93,7 +93,7 @@ class ExpansionChipCrudController extends AbstractCrudController
             ->onlyOnIndex();
         // editor
         yield AssociationField::new('type','Type')
-            ->setFormTypeOption('placeholder', 'Select a type ...')
+            ->setFormTypeOption('placeholder', 'Type to select a type ...')
             ->setColumns(6)
             ->onlyOnForms();
         yield CollectionField::new('pciDevs', 'Device ID')

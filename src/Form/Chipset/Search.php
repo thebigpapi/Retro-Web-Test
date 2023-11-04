@@ -31,6 +31,11 @@ class Search extends AbstractType
                 'expanded' => false,
                 'required' => false,
                 'autocomplete' => true,
+                'choice_attr' => function ($choice, string $key, mixed $value) {
+                    if($choice == "Not identified")
+                        return ['data_id' => 'NULL' ];
+                    return ['data_id' => $choice->getId() ];
+                },
                 'choices' => $options['chipsetManufacturers'],
                 'placeholder' => 'Type to select a chipset manufacturer ...',
             ])

@@ -275,11 +275,16 @@ class MotherboardRepository extends ServiceEntityRepository
             $where[] = "mot0.id IN (SELECT platform1.motherboard_id
             FROM motherboard_processor_platform_type as platform1
             JOIN motherboard_processor_platform_type as platform2 ON
-            platform1.motherboard_id = platform2.motherboard_id
-            WHERE platform1.processor_platform_type_id=:platform1 AND platform2.processor_platform_type_id=:platform2)";
+            platform1.motherboard_id = platform2.motherboard_id 
+            LEFT JOIN processor_platform_type_processor_platform_type AS comp1 ON 
+            comp1.processor_platform_type_source=platform1.processor_platform_type_id
+            LEFT JOIN processor_platform_type_processor_platform_type AS comp2 ON 
+            comp2.processor_platform_type_source=platform2.processor_platform_type_id
+            WHERE (platform1.processor_platform_type_id=:platform1 OR comp1.processor_platform_type_target=:platform1) AND (platform2.processor_platform_type_id=:platform2 OR comp2.processor_platform_type_target=:platform2))";
         } else { // One platform
-            $where[] = "mot0.id IN (SELECT motherboard_id FROM motherboard_processor_platform_type
-            WHERE processor_platform_type_id=:platform)";
+            $where[] = "mot0.id IN (SELECT motherboard_id FROM motherboard_processor_platform_type pl 
+            LEFT JOIN processor_platform_type_processor_platform_type AS comp ON comp.processor_platform_type_source=pl.processor_platform_type_id 
+            WHERE pl.processor_platform_type_id=:platform OR comp.processor_platform_type_target=:platform)";
         }
         return $where;
     }

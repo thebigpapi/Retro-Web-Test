@@ -80,7 +80,7 @@ class ProcessorPlatformTypeCrudController extends AbstractCrudController
             ->setColumns(2)
             ->onlyOnForms();
         yield AssociationField::new('L1code','L1 code size')
-            ->setFormTypeOption('placeholder', 'Select a size ...')
+            ->setFormTypeOption('placeholder', 'Type to select a size ...')
             ->setFormTypeOption('required', false)
             ->setColumns(2)
             ->onlyOnForms();
@@ -88,7 +88,7 @@ class ProcessorPlatformTypeCrudController extends AbstractCrudController
             ->setColumns(2)
             ->onlyOnForms();
         yield AssociationField::new('L1data','L1 data size')
-            ->setFormTypeOption('placeholder', 'Select a size ...')
+            ->setFormTypeOption('placeholder', 'Type to select a size ...')
             ->setFormTypeOption('required', false)
             ->setColumns(2)
             ->onlyOnForms();

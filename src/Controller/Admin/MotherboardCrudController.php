@@ -4,7 +4,11 @@ namespace App\Controller\Admin;
 
 use App\Entity\Motherboard;
 use App\Controller\Admin\Filter\MotherboardImageFilter;
+use App\Entity\MotherboardAlias;
 use App\Entity\MotherboardExpansionSlot;
+use App\Entity\MotherboardIoPort;
+use App\Entity\MotherboardMaxRam;
+use App\Entity\PSUConnector;
 use App\Form\Type\MotherboardAliasType;
 use App\Form\Type\MotherboardIdRedirectionType;
 use App\Form\Type\DramTypeType;
@@ -223,7 +227,7 @@ class MotherboardCrudController extends AbstractCrudController
             ->setColumns('col-sm-12 col-lg-8 col-xxl-6')
             ->onlyOnForms();
         yield AssociationField::new('chipset')
-            ->setFormTypeOption('placeholder', 'Select a chipset ...')
+            ->setFormTypeOption('placeholder', 'Type to select a chipset ...')
             ->setFormTypeOption('choice_label', 'getNameCached')
             ->setFormTypeOption('required', false)
             ->setColumns('col-sm-12 col-lg-8 col-xxl-6')
@@ -246,7 +250,7 @@ class MotherboardCrudController extends AbstractCrudController
             ->renderExpanded()
             ->onlyOnForms();
         yield AssociationField::new('maxVideoRam', 'Max VRAM (onboard GPU)')
-            ->setFormTypeOption('placeholder', 'Select a VRAM size ...')
+            ->setFormTypeOption('placeholder', 'Type to select a VRAM size ...')
             ->setFormTypeOption('required', false)
             ->onlyOnForms();
         yield FormField::addPanel('Connections')
@@ -326,32 +330,7 @@ class MotherboardCrudController extends AbstractCrudController
             $entityManager = $this->container->get('doctrine')->getManagerForClass($className);
             $oldmobo = $entityManager->find($className, $context->getRequest()->query->get('duplicate'));
             /** @var Motherboard $cloned */
-            $cloned = clone $oldmobo;
-            $cloned->setLastEdited(new \DateTime('now'));
-            foreach ($cloned->getMotherboardExpansionSlots() as $item){
-                $count = $item->getCount();
-                $slot = $item->getExpansionSlot();
-                $cloned->removeMotherboardExpansionSlot($item);
-                $cloned->addExpansionSlt($slot, $count);
-            }
-            foreach ($cloned->getMotherboardIoPorts() as $item){
-                $count = $item->getCount();
-                $port = $item->getIoPort();
-                $cloned->removeMotherboardIoPort($item);
-                $cloned->addIoPort($port, $count);
-            }
-            foreach ($cloned->getMotherboardMaxRams() as $item){
-                $note = $item->getNote();
-                $ram = $item->getMaxram();
-                $cloned->removeMotherboardMaxRam($item);
-                $cloned->addMaxRam($ram, $note);
-            }
-            foreach ($cloned->getMotherboardAliases() as $item){
-                $man = $item->getManufacturer();
-                $name = $item->getName();
-                $cloned->removeMotherboardAlias($item);
-                $cloned->addAlias($man, $name);
-            }
+            $cloned = $this->makeNewMotherboard($oldmobo, $entityManager);
             $context->getEntity()->setInstance($cloned);
         }
         $newForm = $this->createNewForm($context->getEntity(), $context->getCrud()->getNewFormOptions(), $context);
@@ -388,6 +367,68 @@ class MotherboardCrudController extends AbstractCrudController
         }
 
         return $responseParameters;
+    }
+    public function makeNewMotherboard(Motherboard $old, EntityManagerInterface $entityManager): Motherboard
+    {
+        $board = new Motherboard();
+        $board->setManufacturer($old->getManufacturer());
+        $board->setName($old->getName());
+        $board->setFormFactor($old->getFormFactor());
+        $board->setDimensions($old->getDimensions());
+        $board->setNote($old->getNote());
+        $board->setMaxCpu($old->getMaxCpu());
+        $board->setMaxVideoRam($old->getMaxVideoRam());
+        $board->setChipset($old->getChipset());
+        $board->setLastEdited(new \DateTime('now'));
+        foreach ($old->getMotherboardAliases() as $alias){
+            $newAlias = new MotherboardAlias();
+            $newAlias->setManufacturer($alias->getManufacturer());
+            $newAlias->setName($alias->getName());
+            $board->addMotherboardAlias($newAlias);
+        }
+        foreach ($old->getKnownIssues() as $issue){
+            $board->addKnownIssue($issue);
+        }
+        foreach ($old->getCpuSockets() as $socket){
+            $board->addCpuSocket($socket);
+        }
+        foreach ($old->getProcessorPlatformTypes() as $family){
+            $board->addProcessorPlatformType($family);
+        }
+        foreach ($old->getCpuSpeed() as $fsb){
+            $board->addCpuSpeed($fsb);
+        }
+        foreach ($old->getExpansionChips() as $chip){
+            $board->addExpansionChip($chip);
+        }
+        foreach ($old->getDramType() as $ram){
+            $board->addDramType($ram);
+        }
+        foreach ($old->getCacheSize() as $cache){
+            $board->addCacheSize($cache);
+        }
+        foreach ($old->getMotherboardMaxRams() as $ram){
+            $newRam = new MotherboardMaxRam();
+            $newRam->setMaxram($ram->getMaxram());
+            $newRam->setNote($ram->getNote());
+            $board->addMotherboardMaxRam($newRam);
+        }
+        foreach ($old->getMotherboardExpansionSlots() as $slot){
+            $newSlot = new MotherboardExpansionSlot();
+            $newSlot->setCount($slot->getCount());
+            $newSlot->setExpansionSlot($slot->getExpansionSlot());
+            $board->addMotherboardExpansionSlot($newSlot);
+        }
+        foreach ($old->getMotherboardIoPorts() as $port){
+            $newPort = new MotherboardIoPort();
+            $newPort->setCount($port->getCount());
+            $newPort->setIoPort($port->getIoPort());
+            $board->addMotherboardIoPort($newPort);
+        }
+        foreach ($old->getPsuConnectors() as $psu){
+            $board->addPsuConnector($psu);
+        }
+        return $board;
     }
 
     public function viewBoard(AdminContext $context)
