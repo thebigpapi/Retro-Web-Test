@@ -42,6 +42,8 @@ class Processor extends ProcessingUnit
 
     #[ORM\Column(nullable: true)]
     private ?bool $L3shared = null;
+    #[ORM\Column(type: 'datetime', mapped: false)]
+    private $lastEdited;
 
     public function __construct()
     {
