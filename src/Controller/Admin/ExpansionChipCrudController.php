@@ -61,6 +61,7 @@ class ExpansionChipCrudController extends AbstractCrudController
             ->add('name')
             ->add('partNumber')
             ->add('chipAliases')
+            ->add('pciDevs')
             ->add('type');
     }
     public function configureFields(string $pageName): iterable
