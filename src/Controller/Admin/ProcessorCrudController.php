@@ -9,6 +9,7 @@ use App\Form\Type\ChipAliasType;
 use App\Form\Type\ChipImageType;
 use App\Form\Type\CpuSocketType;
 use App\Form\Type\ProcessorVoltageType;
+use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
@@ -306,5 +307,13 @@ class ProcessorCrudController extends AbstractCrudController
             $cpu->addChipAlias($newAlias);
         }
         return $cpu;
+    }
+            /**
+     * @param Processor $entityInstance
+     */
+    public function updateEntity(EntityManagerInterface $entityManager, $entityInstance): void
+    {
+        $entityInstance->updateLastEdited();
+        parent::updateEntity($entityManager, $entityInstance);
     }
 }

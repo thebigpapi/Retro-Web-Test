@@ -30,6 +30,7 @@ class ExpansionChip extends Chip
     #[ORM\Column(type: 'datetime', mapped: false)]
     private $lastEdited;
 
+
     public function __construct()
     {
         parent::__construct();

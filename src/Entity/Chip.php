@@ -52,6 +52,7 @@ abstract class Chip
         $this->chipAliases = new ArrayCollection();
         $this->images = new ArrayCollection();
         $this->pciDevs = new ArrayCollection();
+        $this->lastEdited = new \DateTime('now');
     }
     public function getId(): ?int
     {

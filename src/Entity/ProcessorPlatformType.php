@@ -126,6 +126,19 @@ class ProcessorPlatformType
     {
         return $this->instructionSets;
     }
+    public function getInstructionSetsFull(): Collection
+    {
+        $output = $this->instructionSets;
+        foreach($this->instructionSets as $item){
+            $compatible = $item->getCompatibleWith();
+            if(!($compatible->isEmpty())){
+                foreach($compatible as $c)
+                    if(!($output->contains($c)))
+                        $output->add($c);
+            }
+        }
+        return $output;
+    }
     public function addInstructionSet(InstructionSet $instructionSet): self
     {
         if (!$this->instructionSets->contains($instructionSet)) {

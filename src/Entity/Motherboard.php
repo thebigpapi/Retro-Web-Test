@@ -350,6 +350,22 @@ class Motherboard
     {
         return $this->processorPlatformTypes;
     }
+    public function getCompatibleFamilies(): Collection
+    {
+        $input = $this->processorPlatformTypes;
+        $output = new ArrayCollection();
+        foreach($this->processorPlatformTypes as $platform){
+            $compatible = $platform->getCompatibleWith();
+            if(!($compatible->isEmpty())){
+                foreach($compatible as $c)
+                    if(!($input->contains($c))){
+                        $output->add($c);
+                        $input->add($c);
+                    }
+            }
+        }
+        return $output;
+    }
     public function addProcessorPlatformType(ProcessorPlatformType $processorPlatformType): self
     {
         if (!$this->processorPlatformTypes->contains($processorPlatformType)) {
@@ -848,7 +864,7 @@ class Motherboard
         $strBuilder .= " is a motherboard based on the ";
         $chipData = $this->getChipset();
         if ($chipData != null) {
-            $strBuilder .= $chipData->getPrettyTitle();
+            $strBuilder .= $chipData->getNameWithoutParts();
         } else {
             $strBuilder .= "[Unidentified]";
         }

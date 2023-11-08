@@ -408,22 +408,9 @@ class Chipset
         $this->lastEdited = new \DateTime('now');
     }
 
-    public function getPrettyTitle(): string
-    {
-        $strBuilder = "";
-        $mfgData = $this->getManufacturer();
-        if ($mfgData != null) {
-            $strBuilder .= $mfgData->getName();
-        } else {
-            $strBuilder .= "[Unknown]";
-        }
-        $strBuilder .= $this->getNameWithoutParts();
-        return $strBuilder;
-    }
-
     public function getMetaDescription(): string
     {
-        return "Get info, documentation and more about the " . $this->getPrettyTitle() . " chipset.";
+        return "Get info, documentation and more about the " . $this->getNameWithoutParts() . " chipset.";
     }
 
     public function getCachedName(): ?string

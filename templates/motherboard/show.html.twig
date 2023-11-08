@@ -76,11 +76,9 @@
 					<div class="tag-container">
 						{% for platform in motherboard.getProcessorPlatformTypes() %}
 						<a href="{{ path('cpufamily_show', {id: platform.getId()}) }}"><span class="text-block">{{ platform.getName() }}</span></a>
-						{% if platform.getCompatibleWith() is not empty %}
-							{% for compfamily in platform.getCompatibleWith() %}
-								<a href="{{ path('cpufamily_show', {id: compfamily.getId()}) }}"><span class="text-block">{{ compfamily.getName}}</span></a>
-							{% endfor %}
-						{% endif %}
+						{% endfor %}
+						{% for compatible in motherboard.getCompatibleFamilies() %}
+						<a href="{{ path('cpufamily_show', {id: compatible.getId()}) }}"><span class="text-block comp">{{ compatible.getName() }}</span></a>
 						{% endfor %}
 					</div>
 					{% else %}

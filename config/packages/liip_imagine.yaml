@@ -7,7 +7,7 @@ liip_imagine:
 
     filter_sets:
         show_thumb:
-            quality: 50
+            quality: 70
             filters :
-                downscale:
-                    max: [350, 350]
+                relative_resize:
+                    widen: 480
