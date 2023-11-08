@@ -350,15 +350,18 @@ class Motherboard
     {
         return $this->processorPlatformTypes;
     }
-    public function getFamilies(): Collection
+    public function getCompatibleFamilies(): Collection
     {
-        $output = $this->processorPlatformTypes;
+        $input = $this->processorPlatformTypes;
+        $output = new ArrayCollection();
         foreach($this->processorPlatformTypes as $platform){
             $compatible = $platform->getCompatibleWith();
             if(!($compatible->isEmpty())){
                 foreach($compatible as $c)
-                    if(!($output->contains($c)))
+                    if(!($input->contains($c))){
                         $output->add($c);
+                        $input->add($c);
+                    }
             }
         }
         return $output;

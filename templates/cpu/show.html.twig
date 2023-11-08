@@ -178,19 +178,14 @@
 						<img src="{{ absolute_url(asset('build/icons/cpupins.svg')) }}" alt="cpu" width="24" height="24">Instruction set
 					</div>
 					{% if cpu.getPlatform() is not empty %}
-						{% if cpu.getPlatform().getInstructionSets() is not empty %}
-						<div class="tag-container">
-							{% for instruction in cpu.getPlatform().getInstructionSets() %}
-								<span class="text-block">{{ instruction.getName()}}</span>
-								{% if instruction.getCompatibleWith() is not empty %}
-									{% for ins in instruction.getCompatibleWith() %}
-										<span class="text-block">{{ ins.getName()}}</span>
-									{% endfor %}
-								{% endif %}
-							{% endfor %}
-						</div>
+						{% if cpu.getPlatform().getInstructionSetsFull() is not empty %}
+							<div class="tag-container">
+								{% for instruction in cpu.getPlatform().getInstructionSetsFull() %}
+									<span class="text-block">{{ instruction.getName()}}</span>
+								{% endfor %}
+							</div>
 						{% else %}
-						<div>Unknown</div>
+							<div>Unknown</div>
 						{% endif %}
 					{% else %}
 						<div>Unknown</div>

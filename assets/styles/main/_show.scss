@@ -331,9 +331,22 @@ span.text-block {
     padding: 3px 5px 3px;
     align-items: center;
     gap: 4px;
+    &.comp{
+        color:rgb(0, 156, 0);
+        &:hover{
+            color:rgb(107, 201, 107);
+            transition: ease-in-out $anim-duration color;
+        }
+    }
 
     @media (prefers-color-scheme: dark) {
         border: 1px solid #878787;
+        &.comp{
+            color:rgb(126, 225, 126);
+            &:hover{
+                color:rgb(170, 231, 170);
+            }
+        }
     }
 }
 

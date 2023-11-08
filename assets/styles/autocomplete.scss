@@ -54,6 +54,7 @@
 }
 .ts-dropdown [data-selectable] .highlight {
   background: var(--highlight-bg);
+  padding: 0px 2px;
 }
 
 .ts-control, .ts-control input, .ts-dropdown {

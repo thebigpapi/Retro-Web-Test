@@ -64,18 +64,13 @@
 					<div class="quick-spec-head">
 						<img src="{{ absolute_url(asset('build/icons/cpupins.svg')) }}" alt="cpu" width="24" height="24">Instruction set
 					</div>
-					{% if family.getInstructionSets() is not empty %}
+					{% if family.getInstructionSetsFull() is not empty %}
 						<div class="tag-container">
-							{% for instruction in family.getInstructionSets() %}
+							{% for instruction in family.getInstructionSetsFull() %}
 								<span class="text-block">{{ instruction.getName()}}</span>
-								{% if instruction.getCompatibleWith() is not empty %}
-									{% for ins in instruction.getCompatibleWith() %}
-										<span class="text-block">{{ ins.getName()}}</span>
-									{% endfor %}
-								{% endif %}
 							{% endfor %}
 						</div>
-						{% else %}
+					{% else %}
 						<div>Unknown</div>
 					{% endif %}
 				</div>
