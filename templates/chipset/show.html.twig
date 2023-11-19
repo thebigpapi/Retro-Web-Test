@@ -34,7 +34,18 @@
 		{% endif %}
 	{% endapply %}
 {% endblock %}
-
+{% block subnav %}
+<div>
+	<nav class="navbar-subcategories">
+		<a href="{{ path('expansionchipsearch') }}" class="nav-link">
+			<span class="navbar-label">Expansion chip</span>
+		</a>
+		<a href="{{ path('chipsetsearch') }}" class="nav-link active">
+			<span class="navbar-label">Chipset</span>
+		</a>
+	</nav>
+</div>
+{% endblock %}
 {% block body %}
 <!-- MANUF./NAME/PART NO. -->
 <div class="title">{{ chipset.getNameWithoutParts() }}</div>

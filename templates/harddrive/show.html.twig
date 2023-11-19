@@ -29,7 +29,21 @@
 	{% endapply %}
 	<link rel="alternate" hreflang="x-default" href="{{ absolute_url(path('hard_drive_show', {id: harddrive.getId()})) }}"/>
 {% endblock %}
-
+{% block subnav %}
+<div>
+	<nav class="navbar-subcategories">
+		<a href="{{ path('hddsearch') }}" class="nav-link active">
+			<span class="navbar-label">Hard drive</span>
+		</a>
+		<a href="{{ path('cddsearch') }}" class="nav-link">
+			<span class="navbar-label">Optical drive</span>
+		</a>
+		<a href="{{ path('fddsearch') }}" class="nav-link">
+			<span class="navbar-label">Floppy drive</span>
+		</a>
+	</nav>
+</div>
+{% endblock %}
 {% block body %}
 <!-- MANUF./NAME/PART NO. -->
 <div class="title">{{ harddrive.getNameWithManufacturer() }}</div>

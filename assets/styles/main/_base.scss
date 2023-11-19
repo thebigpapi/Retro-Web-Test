@@ -48,6 +48,13 @@ header.trw-header {
 				justify-content: start;
 			}
 
+			.nav-link.active {
+				color: $active-link-light;
+				@media (prefers-color-scheme: dark) {
+					color: $active-link-dark;
+				}
+			}
+
 			a {
 				display: flex;
 				align-items: center;

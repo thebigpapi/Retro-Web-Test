@@ -10,6 +10,18 @@
 	<script src="/build/js/tom-select.complete.min.js" defer></script>
 	<script src="/build/js/search.js" defer></script>
 {% endblock %}
+{% block subnav %}
+<div>
+	<nav class="navbar-subcategories">
+		<a href="{{ path('expansionchipsearch') }}" class="nav-link">
+			<span class="navbar-label">Expansion chip</span>
+		</a>
+		<a href="{{ path('chipsetsearch') }}" class="nav-link active">
+			<span class="navbar-label">Chipset</span>
+		</a>
+	</nav>
+</div>
+{% endblock %}
 {% block body %}
 	{{ form_start(form, {'method': 'POST', 'name': 'search_chipset', 'action':path("chipsetsearch"), 'attr':{'onkeydown': 'return event.key != \'Enter\'', 'data-live-action': path('chipsetlivewrapper')}}) }}
 	<fieldset id="search-fieldset">

@@ -38,6 +38,19 @@
 	{% endapply %}
 {% endblock %}
 
+{% block subnav %}
+<div>
+	<nav class="navbar-subcategories">
+		<a href="{{ path('mobosearch') }}" class="nav-link active">
+			<span class="navbar-label">Motherboard</span>
+		</a>
+		<a href="{{ path('biossearch') }}" class="nav-link">
+			<span class="navbar-label">BIOS</span>
+		</a>
+	</nav>
+</div>
+{% endblock %}
+
 {% block body %}
 <!-- TITLE/ALIASES -->
 <div class="title">{{ motherboard.getPrettyTitle() }}</div>

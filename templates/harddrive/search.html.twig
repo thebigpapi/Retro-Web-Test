@@ -10,6 +10,21 @@
 	<script src="/build/js/tom-select.complete.min.js" defer></script>
 	<script src="/build/js/search.js" defer></script>
 {% endblock %}
+{% block subnav %}
+<div>
+	<nav class="navbar-subcategories">
+		<a href="{{ path('hddsearch') }}" class="nav-link active">
+			<span class="navbar-label">Hard drive</span>
+		</a>
+		<a href="{{ path('cddsearch') }}" class="nav-link">
+			<span class="navbar-label">Optical drive</span>
+		</a>
+		<a href="{{ path('fddsearch') }}" class="nav-link">
+			<span class="navbar-label">Floppy drive</span>
+		</a>
+	</nav>
+</div>
+{% endblock %}
 {% block body %}
 	{{ form_start(form, {'method': 'POST', 'name': 'search_hdd', 'action':path("hddsearch"), 'attr':{'onkeydown': 'return event.key != \'Enter\'', 'data-live-action': path('hddlivewrapper')}}) }}
 	<fieldset id="search-fieldset">

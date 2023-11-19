@@ -5,50 +5,91 @@
 	<link rel="alternate" hreflang="x-default" href="{{ absolute_url(path('app_homepage')) }}"/>
 {% endblock %}
 
-{% block body %}<div class="title">Where do you want to go today?</div>
-	<div class="index-buttons">
-		<a href="{{ path("mobosearch") }}">
-			<img src="{{ absolute_url(asset('build/icons/motherboard.svg')) }}" alt="mobo" width="210" height="180">
-			<div>Motherboards</div><div>({{moboCount}}&nbsp;entries)</div>
-		</a>
-		{# ============= when it's ready
-		<a href="#">
-			<img src="{{ absolute_url(asset('build/images/index/card.webp')) }}" alt="cards" width="210" height="180">
-			<div>Expansion cards</div><div>[WIP]</div>
-		</a>#}
-		<a href="{{ path("biossearch") }}">
-			<img src="{{ absolute_url(asset('build/icons/awchip.svg')) }}" alt="bios" width="210" height="180">
-			<div>BIOS images</div><div>({{biosCount}}&nbsp;files)</div>
-		</a>
-		<a href="{{ path("chipsetsearch") }}">
-			<img src="{{ absolute_url(asset('build/icons/chipsetfull.svg')) }}" alt="chipset" width="210" height="180">
-			<div>Chipsets</div><div>({{chipCount}}&nbsp;entries)</div>
-		</a>
-		<a href="{{ path("expansionchipsearch") }}">
-			<img src="{{ absolute_url(asset('build/icons/chip.svg')) }}" alt="chip" width="210" height="180">
-			<div>Expansion chips</div><div>({{expchipCount}}&nbsp;entries)</div>
-		</a>
-		<a href="{{ path("cpusearch") }}">
-			<img src="{{ absolute_url(asset('build/icons/486dx.svg')) }}" alt="cpu" width="210" height="180">
-			<div>CPUs</div><div>({{cpuCount}}&nbsp;entries)</div>
-		</a>
-		<a href="{{ path("driversearch") }}">
-			<img src="{{ absolute_url(asset('build/icons/hardware.svg')) }}" alt="driver" width="210" height="180">
-			<div>Drivers &amp; Software</div><div>({{driverCount}}&nbsp;files)</div>
-		</a>
-		<a href="{{ path("hddsearch") }}">
-			<img src="{{ absolute_url(asset('build/icons/harddrive.svg')) }}" alt="hdd" width="210" height="180">
-			<div>Hard drives</div><div>({{hddCount}}&nbsp;drives)</div>
-		</a>
-		<a href="{{ path("cddsearch") }}">
-			<img src="{{ absolute_url(asset('build/icons/cd_drive.svg')) }}" alt="cdd" width="210" height="180">
-			<div>Optical drives</div><div>({{cddCount}}&nbsp;drives)</div>
-		</a>
-		<a href="{{ path("fddsearch") }}">
-			<img src="{{ absolute_url(asset('build/icons/floppy_drive.svg')) }}" alt="fdd" width="210" height="180">
-			<div>Floppy drives</div><div>({{fddCount}}&nbsp;drives)</div>
-		</a>
+{% block body %}
+	{#<!-- ============= when it's ready
+	<a href="#">
+		<img src="{{ absolute_url(asset('build/images/index/card.webp')) }}" alt="cards" width="210" height="180">
+		<div>Expansion cards</div><div>[WIP]</div>
+	</a> -->#}
+
+	<div class="perks">
+		<p><b>Quick stats</b></p>
+		<div class="perks-list perks-tiny">
+			<div class="perk">
+				<a href="{{ path("mobosearch") }}">
+					<div class="perk-image">
+						<img src="{{ absolute_url(asset('build/icons/motherboard.svg')) }}" alt="mobo" loading="lazy" width="120" height="100">
+					</div>
+					<div class="perk-name">Motherboards</div>
+					<div class="perk-date">{{moboCount}}&nbsp;entries</div>
+				</a>
+			</div>
+			<div class="perk">
+				<a href="{{ path("biossearch") }}">
+					<div class="perk-image">
+						<img src="{{ absolute_url(asset('build/icons/awchip.svg')) }}" alt="bios" loading="lazy" width="120" height="100">
+					</div>
+					<div class="perk-name">BIOS images</div>
+					<div class="perk-date">{{biosCount}}&nbsp;files</div>
+				</a>
+			</div>
+			<div class="perk">
+				<a href="{{ path("expansionchipsearch") }}">
+					<div class="perk-image">
+						<img src="{{ absolute_url(asset('build/icons/chip.svg')) }}" alt="chip" loading="lazy" width="120" height="100">
+					</div>
+					<div class="perk-name">Expansion chips</div>
+					<div class="perk-date">{{expchipCount}}&nbsp;entries</div>
+				</a>
+			</div>
+			<div class="perk">
+				<a href="{{ path("chipsetsearch") }}">
+					<div class="perk-image">
+						<img src="{{ absolute_url(asset('build/icons/chipsetfull.svg')) }}" alt="chipset" loading="lazy" width="120" height="100">
+					</div>
+					<div class="perk-name">Chipsets</div>
+					<div class="perk-date">{{chipCount}}&nbsp;entries</div>
+				</a>
+			</div>
+			<div class="perk">
+				<a href="{{ path("cpusearch") }}">
+					<div class="perk-image">
+						<img src="{{ absolute_url(asset('build/icons/486dx.svg')) }}" alt="cpu" loading="lazy" width="120" height="100">
+					</div>
+					<div class="perk-name">CPUs</div>
+					<div class="perk-date">{{cpuCount}}&nbsp;entries</div>
+				</a>
+			</div>
+			<div class="perk">
+				<a href="{{ path("hddsearch") }}">
+					<div class="perk-image">
+						<img src="{{ absolute_url(asset('build/icons/harddrive.svg')) }}" alt="hdd" loading="lazy" width="120" height="100">
+					</div>
+					<div class="perk-name">Hard drives</div>
+					<div class="perk-date">{{hddCount}}&nbsp;drives</div>
+				</a>
+			</div>
+			<div class="perk">
+				<a href="{{ path("cddsearch") }}">
+					<div class="perk-image">
+						<img src="{{ absolute_url(asset('build/icons/cd_drive.svg')) }}" alt="cdd" loading="lazy" width="120" height="100">
+					</div>
+					<div class="perk-name">Optical drives</div>
+					<div class="perk-date">{{cddCount}}&nbsp;drives</div>
+				</a>
+			</div>
+			<div class="perk">
+				<a href="{{ path("fddsearch") }}">
+					<div class="perk-image">
+						<img src="{{ absolute_url(asset('build/icons/floppy_drive.svg')) }}" alt="fdd" loading="lazy" width="120" height="100">
+					</div>
+					<div class="perk-name">Floppy drives</div>
+					<div class="perk-date">{{fddCount}}&nbsp;drives</div>
+				</a>
+			</div>
+		</div>
 	</div>
+
 	<div class="perks">
 		<p><b>Recently added and updated boards</b></p>
 		<div id="index-datetime" class="perks-list">
