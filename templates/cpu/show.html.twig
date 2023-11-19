@@ -92,6 +92,18 @@
 					{% else %}
 						Unknown
 					{% endif %}</div>
+					<!-- Actions -->
+					{% if cpu.getSockets() is not empty %}					
+					<div class="quick-spec-head">
+						<img src="{{ absolute_url(asset('build/icons/cursor.svg')) }}" alt="act" width="24" height="24">Actions
+					</div>
+					<div>
+					<div class="toolbar">
+						<a class='button-widget' href="{{ absolute_url(path('app_homepage')) }}motherboards/?cpuSocket1={{ cpu.getSockets()[0].getId() }}&amp;platform1={{ cpu.getPlatform().getId() }}&amp;showImages=1">
+							<img src='{{ absolute_url(asset('build/icons/hardware.svg')) }}' alt='' width='16' height='16' style='vertical-align:middle;padding:3px;'>See all compatible boards</a>
+						</div>
+					</div>
+					{% endif %}
 				</div><div class="quick-spec-table">
 					<!-- Process node -->
 					<div class="quick-spec-head">
