@@ -12,8 +12,9 @@
 						<div class="perk-image">
 						{% if cpu.getImages() is not empty %}
 								{% for image in cpu.getImages()|sort((a, b) => a.getFileName() <=> b.getFileName())|slice(0, 1) %}
-								<a href="{{ vich_uploader_asset(image, 'imageFile')}}" class="glightbox">
-									<img src="{{ vich_uploader_asset(image, 'imageFile') | imagine_filter('show_thumb') }}" alt="" title="Click to preview image"></a>
+								<img src="{% if vich_uploader_asset(image, 'imageFile') | ext != "svg" %}
+								{{ vich_uploader_asset(image, 'imageFile') | imagine_filter('show_thumb') }}{% else %}
+								{{ vich_uploader_asset(image, 'imageFile')}}{% endif %}" alt="" loading="lazy" width="250" height="200" title="{% if image.description %}{{ image.description }}{% endif %}">
 								{% endfor %}
 						{% else %}
 							<img src="{{ absolute_url(asset('build/images/missing/cpu-missing.jpg')) }}" loading="lazy" width="250" height="200" title="no images available :(">

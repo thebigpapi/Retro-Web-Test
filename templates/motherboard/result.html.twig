@@ -12,9 +12,9 @@
 					{% if motherboard.getImages() is not empty %}
 						{% set imgtype_count = 0 %}
 						{% for image in motherboard.getImages()|filter(a => a.motherboardImageType.id in [1, 2])|sort((a, b) => a.getFileName() <=> b.getFileName())|sort((a, b) => b.motherboardImageType <=> a.motherboardImageType)|slice(0, 1) %}
-							<a href="{{ vich_uploader_asset(image, 'imageFile')}}" class="glightbox"><img src="{% if vich_uploader_asset(image, 'imageFile') | ext != "svg" %}
+							<img src="{% if vich_uploader_asset(image, 'imageFile') | ext != "svg" %}
 								{{ vich_uploader_asset(image, 'imageFile') | imagine_filter('show_thumb') }}{% else %}
-								{{ vich_uploader_asset(image, 'imageFile')}}{% endif %}" alt="" loading="lazy" width="250" height="200" title="Click to preview image"></a>
+								{{ vich_uploader_asset(image, 'imageFile')}}{% endif %}" alt="" loading="lazy" width="250" height="200" title="{% if image.description %}{{ image.description }}{% endif %}">
 							{% set imgtype_count = imgtype_count + 1 %}
 						{% endfor %}
 						{% if imgtype_count == 0 %}
