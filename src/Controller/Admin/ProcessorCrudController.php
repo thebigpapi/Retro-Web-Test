@@ -139,6 +139,7 @@ class ProcessorCrudController extends AbstractCrudController
             ->onlyOnForms();
         yield AssociationField::new('fsb','Bus speed')
             ->setFormTypeOption('placeholder', 'Type to select a speed ...')
+            ->setFormTypeOption('required', false)
             ->setColumns(2)
             ->onlyOnForms();
         yield NumberField::new('tdp', 'TDP (in W)')
