@@ -11,16 +11,12 @@
 	<script src="/build/js/search.js" defer></script>
 {% endblock %}
 {% block subnav %}
-<div>
-	<nav class="navbar-subcategories">
-		<a href="{{ path('mobosearch') }}" class="nav-link">
-			<span class="navbar-label">Motherboard</span>
-		</a>
-		<a href="{{ path('biossearch') }}" class="nav-link active">
-			<span class="navbar-label">BIOS</span>
-		</a>
-	</nav>
-</div>
+<a href="{{ path('mobosearch') }}" class="nav-link">
+	<span class="navbar-label">Motherboard</span>
+</a>
+<a href="{{ path('biossearch') }}" class="nav-link active">
+	<span class="navbar-label">BIOS</span>
+</a>
 {% endblock %}
 {% block body %}
 	{{ form_start(form, {'method': 'POST', 'name': 'search', 'action':path("biossearch"), 'attr':{'onkeydown': 'return event.key != \'Enter\'', 'data-live-action': path('bioslivewrapper')}}) }}

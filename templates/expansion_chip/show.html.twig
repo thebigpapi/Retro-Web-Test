@@ -29,16 +29,12 @@
 	<link rel="alternate" hreflang="x-default" href="{{ absolute_url(path('expansion_chip_show', {id: expansion_chip.getId()})) }}"/>
 {% endblock %}
 {% block subnav %}
-<div>
-	<nav class="navbar-subcategories">
-		<a href="{{ path('expansionchipsearch') }}" class="nav-link active">
-			<span class="navbar-label">Expansion chip</span>
-		</a>
-		<a href="{{ path('chipsetsearch') }}" class="nav-link">
-			<span class="navbar-label">Chipset</span>
-		</a>
-	</nav>
-</div>
+<a href="{{ path('expansionchipsearch') }}" class="nav-link active">
+	<span class="navbar-label">Expansion chip</span>
+</a>
+<a href="{{ path('chipsetsearch') }}" class="nav-link">
+	<span class="navbar-label">Chipset</span>
+</a>
 {% endblock %}
 {% block body %}
 <!-- MANUF./NAME/PART NO. -->
