@@ -15,6 +15,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\UrlField;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 
 class CreditorCrudController extends AbstractCrudController
 {
@@ -45,6 +46,13 @@ class CreditorCrudController extends AbstractCrudController
             ->setEntityLabelInPlural('<img class=ea-entity-icon src=/build/icons/creditor.svg width=48 height=48>Creditors')
             ->setPaginatorPageSize(100);
     }
+
+    public function configureFilters(Filters $filters): Filters
+    {
+        return parent::configureFilters($filters)
+            ->add('name');
+    }
+
     public function configureFields(string $pageName): iterable
     {
         yield IdField::new('id')
