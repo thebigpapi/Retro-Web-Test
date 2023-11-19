@@ -57,13 +57,7 @@ nav {
 		padding: 0 !important;
 	}
 
-	&.navbar-logo {
-		font-weight: bold;
-		font-size: 18pt;
-		padding: 0px 15px;
-		flex-grow: 1;
-		justify-content: start;
-	}
+
 
 	.nav-link.active {
 		color: $active-link-light;
@@ -107,6 +101,14 @@ nav {
 	&.navbar-primary {
 		justify-content: center;
 		font-size: 15pt;
+
+		&.navbar-logo {
+			font-weight: bold;
+			font-size: 18pt;
+			padding: 0px 15px;
+			flex-grow: 1;
+			justify-content: start;
+		}
 	}
 
 	&.navbar-secondary {
