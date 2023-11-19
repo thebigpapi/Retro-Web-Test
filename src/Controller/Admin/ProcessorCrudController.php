@@ -118,6 +118,7 @@ class ProcessorCrudController extends AbstractCrudController
         yield TextField::new('speed', 'Speed')
             ->hideOnForm();
         yield TextField::new('fsb', 'FSB')
+            ->setFormTypeOption('required', false)
             ->hideOnForm();
         yield IntegerField::new('tdp', 'TDP')
             ->hideOnForm();
