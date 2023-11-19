@@ -2,11 +2,11 @@
 <div id="{{ typeid }}">
 {% if drivers is defined and drivers is not empty %}
 	<div class="results lst">
-		{{ knp_pagination_render(drivers, 'macros/pagination.html.twig') }}
+		{{ knp_pagination_render(drivers, 'macros/pagination_async.html.twig') }}
 			<div class="plain-list w300p table">
 				{% include 'macros/widget.html.twig' with {'type':'driver-results', 'entity': drivers} %}
 			</div>
-		{{ knp_pagination_render(drivers, 'macros/pagination.html.twig') }}
+		{{ knp_pagination_render(drivers, 'macros/pagination_async.html.twig') }}
 	</div>
 {% else %}
 	No results
