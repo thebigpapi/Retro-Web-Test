@@ -106,8 +106,9 @@
 
 		<section class="search-form-grid">
 			<div class="search-form-filter">
-				<label class="search-form-label" title="">
+				<label class="search-form-label" title="In the count box, you can use the symbols <, > and = to specify non-exact slot amounts.&#013;&#010;Type in the search box to get the exact slot type.">
 					<span>Expansion slots</span>
+					<img src="{{ absolute_url(asset('build/icons/help.svg')) }}" alt="" width="16" height="16">
 					{% include 'macros/buttons.html.twig' with {'type':'add', 'action': 'motherboardExpansionSlots'} %}
 				</label>
 				<div class="search-form-widget filter-list" id="motherboardExpansionSlots-fields-list" data-widget-counter="{{ form.motherboardExpansionSlots|length }}" data-prototype="
@@ -126,8 +127,9 @@
 			</div>
 
 			<div class="search-form-filter">
-				<label class="search-form-label" title="">
+				<label class="search-form-label" title="In the count box, you can use the symbols <, > and = to specify non-exact port amounts.&#013;&#010;Type in the search box to get the exact port type.">
 					<span>I/O ports</span>
+					<img src="{{ absolute_url(asset('build/icons/help.svg')) }}" alt="" width="16" height="16">
 					{% include 'macros/buttons.html.twig' with {'type':'add', 'action': 'motherboardIoPorts'} %}
 				</label>
 				<div class="search-form-widget filter-list" id="motherboardIoPorts-fields-list" data-widget-counter="{{ form.motherboardIoPorts|length }}" data-prototype="
@@ -146,8 +148,9 @@
 			</div>
 
 			<div class="search-form-filter">
-				<label class="search-form-label" title="">
+				<label class="search-form-label" title="Type in the search box to thin down the result list.">
 					<span>Expansion chips</span>
+					<img src="{{ absolute_url(asset('build/icons/help.svg')) }}" alt="" width="16" height="16">
 					{% include 'macros/buttons.html.twig' with {'type':'add', 'action': 'expansionChips'} %}
 				</label>
 				<div class="search-form-widget filter-list" id="expansionChips-fields-list" data-widget-counter="{{ form.expansionChips|length }}" data-prototype="
