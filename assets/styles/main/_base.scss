@@ -57,8 +57,6 @@ nav {
 		padding: 0 !important;
 	}
 
-
-
 	.nav-link.active {
 		color: $active-link-light;
 
@@ -107,7 +105,7 @@ nav {
 			font-size: 18pt;
 			padding: 0px 15px;
 			flex-grow: 1;
-			justify-content: start;
+			justify-content: start !important;
 		}
 	}
 
