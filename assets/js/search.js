@@ -289,6 +289,7 @@ function setResult(searchedName, searchedValue, targetId) {
         let parser = new DOMParser();
         let parsedResponse = parser.parseFromString(await rawResponse.text(), "text/html");
         document.getElementById(targetId).innerHTML = parsedResponse.getElementById(targetId).innerHTML;
+        document.getElementById(targetId).scrollIntoView({ behavior: "smooth" });
     })();
 }
 
@@ -319,15 +320,17 @@ function searchLive() {
             let parser = new DOMParser();
             let parsedResponse = parser.parseFromString(await rawResponse.text(), "text/html");
             let responseDiv = parsedResponse.getElementById(targetId);
+            let resultDiv = document.getElementById(targetId);
             if (responseDiv) {
-                document.getElementById(targetId).innerHTML = responseDiv.innerHTML;
+                resultDiv.innerHTML = responseDiv.innerHTML;
                 let string = document.getElementById('search-params-id');
                 window.history.replaceState({},'', string.firstChild.data);
                 const lightbox = GLightbox({});
                 getDates();
             } else {
-                document.getElementById(targetId).innerHTML = "Critical error while fetching results:<br>" + parsedResponse.title;
+                resultDiv.innerHTML = "Critical error while fetching results:<br>" + parsedResponse.title;
             }
+            resultDiv.scrollIntoView({ behavior: "smooth" });
         })();
     }
     function expand(idx) {
