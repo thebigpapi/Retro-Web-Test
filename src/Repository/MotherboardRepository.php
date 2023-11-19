@@ -16,8 +16,7 @@ use Doctrine\ORM\Query\ResultSetMapping;
  * @method Motherboard[]    findAll()
  * @method Motherboard[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  * @method Motherboard[]    findByWithJoin(array $criteria)
- * @method Motherboard[]    findLatest()
- * @method Motherboard[]    find50Latest()
+ * @method Motherboard[]    findLatest(int $maxCount = 12)
  */
 class MotherboardRepository extends ServiceEntityRepository
 {
@@ -602,11 +601,11 @@ class MotherboardRepository extends ServiceEntityRepository
     /**
      * @return Motherboard[] Returns the last 12 edited motherboards. Used in home page.
      */
-    public function findLatest()
+    public function findLatest(int $maxCount = 12)
     {
         return $this->createQueryBuilder('m')
             ->orderBy('m.lastEdited', 'DESC')
-            ->setMaxResults(12)
+            ->setMaxResults($maxCount)
             ->getQuery()
             ->getResult();
     }

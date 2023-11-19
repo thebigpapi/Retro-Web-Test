@@ -151,4 +151,16 @@ class ExpansionChipRepository extends ServiceEntityRepository
             ->getQuery()
             ->getSingleScalarResult();
     }
+
+    /**
+     * @return ExpansionChip[] Returns the last 12 edited motherboards. Used in home page.
+     */
+    public function findLatest(int $maxCount = 12)
+    {
+        return $this->createQueryBuilder('ec')
+            ->orderBy('ec.lastEdited', 'DESC')
+            ->setMaxResults($maxCount)
+            ->getQuery()
+            ->getResult();
+    }
 }
