@@ -15,7 +15,7 @@
 {% block opengraph %}
 	{% apply spaceless %}
 	<meta property="og:title" content="{{ expansion_chip.getNameWithManufacturer() }}">
-	<meta property="og:description" content="Get expansion chip info, images and drivers for {{ expansion_chip.getNameWithManufacturer() }}!">
+	<meta property="og:description" content="Get info, images and drivers for the {{ expansion_chip.getNameWithManufacturer() }} expansion chip">
 	{% if expansion_chip.getImages() is not empty %}
 		{% for image in expansion_chip.getImages()|sort((a, b) => a.getFileName() <=> b.getFileName())|slice(0, 1) %}
 			<meta name="twitter:image" content="{{ vich_uploader_asset(image, 'imageFile')}}">
