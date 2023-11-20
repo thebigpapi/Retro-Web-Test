@@ -422,7 +422,7 @@ class MotherboardController extends AbstractController
         return $parameters;
     }
 
-    #[Route('/motherboards/index/{letter}', name: "moboindex", requirements: ['letter' => '\w|[?]'], methods: ['GET'])]
+    /* #[Route('/motherboards/index/{letter}', name: "moboindex", requirements: ['letter' => '\w|[?]'], methods: ['GET'])]
     public function index(
         PaginatorInterface $paginator,
         string $letter,
@@ -442,7 +442,7 @@ class MotherboardController extends AbstractController
             'motherboards' => $motherboards,
             'letter' => $letter,
         ]);
-    }
+    } */
 
     private function _searchFormHandler(
         Request $request,

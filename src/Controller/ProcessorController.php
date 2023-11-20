@@ -195,7 +195,7 @@ class ProcessorController extends AbstractController
         return $form;
     }
 
-    #[Route('/cpus/index/{letter}', name:'processorindex', requirements:['letter' => '\w|[?]'], methods:["GET"])]
+    /* #[Route('/cpus/index/{letter}', name:'processorindex', requirements:['letter' => '\w|[?]'], methods:["GET"])]
     public function indexCpu(Request $request, PaginatorInterface $paginator, string $letter, ProcessorRepository $cpuRepository): Response
     {
         if ($letter === "?") {
@@ -221,5 +221,5 @@ class ProcessorController extends AbstractController
             'cpu_count' => count($data),
             'letter' => $letter,
         ]);
-    }
+    } */
 }
