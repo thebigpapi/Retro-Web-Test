@@ -51,4 +51,10 @@ class SiteMapController extends AbstractController
         $response->headers->set('Content-Type', 'text/xml');
         return $response;
     }
+    
+    #[Route(path: '/robots.txt', name: 'robots', defaults: ['_format' => 'txt'])]
+    public function bots(): Response
+    {
+        return new Response($this->renderView('site_map/robots.txt.twig', []), 200);
+    }
 }

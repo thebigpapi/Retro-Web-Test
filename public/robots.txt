@@ -1,9 +1,0 @@
-User-agent: *
-Allow: /
-Allow: /motherboards
-Allow: /motherboards/*
-Allow: /bios
-Allow: /bios/*
-Allow: /credits
-Disallow: /dashboard
-Sitemap: https://www.ultimateretro.net/sitemap.xml
