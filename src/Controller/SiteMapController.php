@@ -2,59 +2,102 @@
 
 namespace App\Controller;
 
+use DateTime;
+use DateInterval;
 use App\Repository\MotherboardRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Contracts\Cache\CacheInterface;
 
 class SiteMapController extends AbstractController
 {
-    #[Route(path: '/sitemap.xml', name: 'sitemap', defaults: ['_format' => 'xml'])]
-    public function index(Request $request, MotherboardRepository $motherboardRepository, CacheInterface $cache): Response
+    private $sitemapDir;
+    private $projectDir;
+
+    public function __construct($projectDir)
     {
-        $hostname = $request->getSchemeAndHttpHost();
-        $urls = $cache->get("sitemapUrls" . $request->getLocale(), function () use ($motherboardRepository) {
-            // Url array
-            $urls = [];
+        $this->projectDir = $projectDir;
+        $this->sitemapDir = $projectDir . "/public/media/sitemap/";
 
-            // Adding "static" urls
-            $urls[] = ['loc' => $this->generateUrl('app_homepage')];
-            $urls[] = ['loc' => $this->generateUrl('app_credits')];
-            $urls[] = ['loc' => $this->generateUrl('motherboard_search')];
-            $urls[] = ['loc' => $this->generateUrl('bios_search')];
-            $urls[] = ['loc' => $this->generateUrl('bios_infoadv')];
-            $urls[] = ['loc' => $this->generateUrl('bios_info')];
+        if (!is_dir($this->sitemapDir)) {
+            mkdir($this->sitemapDir, recursive: true);
+        }
+    }
 
-            // Adding urls to motherboards
-            foreach ($motherboardRepository->findAllIds() as $motherboard) {
-                /*$images = [
-                    'loc' => '/uploads/images/featured/' . $article->getFeaturedImage(), // URL to image
-                    'title' => $article->getTitre()    // Optional, text describing the image
-                ];*/
+    #[Route(path: '/sitemap.xml', name: 'sitemap', defaults: ['_format' => 'xml'])]
+    public function index(MotherboardRepository $mobos): Response
+    {
+        if ($this->cachedSitemapExpired()) {
+            $this->refreshSitemap($mobos);
+        }
 
-                $urls[] = [
-                    'loc' => $this->generateUrl('motherboard_show', [
-                        'id' => $motherboard['id'],
-                    ]),
-                    'lastmod' => $motherboard['lastEdited']->format('Y-m-d'),
-                    //'image' => $images
-                ];
-            }
-            return $urls;
-        });
         $response = new Response($this->renderView('site_map/index.xml.twig', [
-            'urls' => $urls,
-            'hostname' => $hostname,
+            'mod_date' => $this->readLastSitemapGenTimestamp(),
+            'sub_files' => $this->getSitemapFiles(),
         ]), 200);
         $response->headers->set('Content-Type', 'text/xml');
         return $response;
     }
-    
+
     #[Route(path: '/robots.txt', name: 'robots', defaults: ['_format' => 'txt'])]
     public function bots(): Response
     {
         return new Response($this->renderView('site_map/robots.txt.twig', []), 200);
+    }
+
+    private function readLastSitemapGenTimestamp(): string
+    {
+        return date("Y-m-d", $this->getSitemapGenerationTimestamp());
+    }
+
+    private function cachedSitemapExpired(): bool
+    {
+        $minValidity = new DateTime();
+        $interval = new DateInterval("P1D"); # 1 day
+        $minValidity->sub($interval);
+        return $minValidity->getTimestamp() > $this->getSitemapGenerationTimestamp();
+    }
+
+    private function refreshSitemap(MotherboardRepository $mobos): void
+    {
+        $boards = $mobos->findAllAlphabetic("");
+        $this->writeRenderedMotherboardSitemap("motherboards.xml", $boards);
+        $ALL_LETTERS = str_split("ABCDEFGHIJKLMNOPQRSTUVWXYZ");
+        foreach ($ALL_LETTERS as $letter) {
+            $boards = $mobos->findAllAlphabetic($letter);
+            $this->writeRenderedMotherboardSitemap("motherboards." . $letter . ".xml", $boards);
+        }
+    }
+
+    private function getSitemapFiles(): array
+    {
+        $allFiles = glob($this->sitemapDir . "*.xml");
+        if ($allFiles === false) {
+            return [];
+        } else {
+            foreach ($allFiles as &$file) {
+                $file = str_replace($this->projectDir . "/public", "", $file);
+            }
+            return $allFiles;
+        }
+    }
+
+    private function writeRenderedMotherboardSitemap(string $fileName, array $boards): void
+    {
+        $map = $this->renderView("site_map/board_map.xml.twig", ['boards' => $boards]);
+        $fd = fopen($this->sitemapDir . $fileName, "w");
+        if ($fd) {
+            fwrite($fd, $map);
+            fclose($fd);
+        }
+    }
+
+    private function getSitemapGenerationTimestamp(): int
+    {
+        if (is_file($this->sitemapDir . "motherboards.xml")) {
+            $fileInfo = stat($this->sitemapDir . "motherboards.xml");
+            return $fileInfo["mtime"];
+        }
+        return 0;
     }
 }
