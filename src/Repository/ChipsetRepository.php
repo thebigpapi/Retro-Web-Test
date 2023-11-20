@@ -69,10 +69,9 @@ class ChipsetRepository extends ServiceEntityRepository
         $whereString = implode(" AND ", $whereArray);
 
         // Building query
-        if($whereArray == []){
+        if ($whereArray == []) {
             return [];
-        }
-        else{
+        } else {
             $query = $entityManager->createQuery(
                 "SELECT chip
                 FROM App\Entity\Chipset chip JOIN chip.manufacturer man JOIN chip.expansionChips part LEFT OUTER JOIN chip.chipsetAliases alias
@@ -114,23 +113,23 @@ class ChipsetRepository extends ServiceEntityRepository
     public function findAllAlphabetic(string $letter): array
     {
         $entityManager = $this->getEntityManager();
-        $likematch = "$letter%";
-        $query = $entityManager->createQuery(
-            "SELECT chip, chipPart, chipPartMan, cal, UPPER(man.name) manNameSort, UPPER(chip.name) chipNameSort
-            FROM App\Entity\Chipset chip
-            LEFT JOIN chip.expansionChips chipPart
-            LEFT JOIN chipPart.manufacturer chipPartMan
-            LEFT JOIN chip.chipsetAliases cal,
-            App\Entity\Manufacturer man 
-            WHERE chip.manufacturer=man AND UPPER(man.name) like :likeMatch
-            ORDER BY manNameSort ASC, chipNameSort ASC"
-        )->setParameter('likeMatch', $likematch);
+        if (empty($letter)) {
+            $query = $entityManager->createQuery(
+                "SELECT 'Unknown' as manName, chip.id, UPPER(chip.name) chipNameSort, chip.lastEdited
+                FROM App\Entity\Chipset chip
+                WHERE chip.manufacturer IS NULL
+                ORDER BY chipNameSort ASC");
+        } else {
+            $likematch = "$letter%";
+            $query = $entityManager->createQuery(
+                "SELECT chip.id, UPPER(man.name) manNameSort, UPPER(chip.name) chipNameSort, chip.lastEdited
+                FROM App\Entity\Chipset chip, App\Entity\Manufacturer man
+                WHERE chip.manufacturer=man AND UPPER(man.name) like :likeMatch
+                ORDER BY manNameSort ASC, chipNameSort ASC"
+                )->setParameter('likeMatch', $likematch);
+        }
 
-        $outputArray = [];
-        foreach ($query->getResult() as $res) {
-            $outputArray[] = $res[0];
-        };
-        return $outputArray;
+        return $query->getResult();
     }
 
     /**
@@ -163,7 +162,9 @@ class ChipsetRepository extends ServiceEntityRepository
 
         $result = $entityManager->createNativeQuery(
             "SELECT count(DISTINCT chipset_id) FROM chipset_expansion_chip WHERE expansion_chip_id IN
-            (SELECT id FROM chip WHERE id NOT IN (SELECT chip_id FROM chip_documentation) AND dtype='expansionchip')",$rsm)->getResult();
+            (SELECT id FROM chip WHERE id NOT IN (SELECT chip_id FROM chip_documentation) AND dtype='expansionchip')",
+            $rsm
+        )->getResult();
         return $result;
     }
 }

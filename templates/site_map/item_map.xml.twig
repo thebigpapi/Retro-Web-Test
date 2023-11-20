@@ -4,10 +4,10 @@
       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
       xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
             http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
-    {% for board in boards %}
+    {% for item in items %}
     <url>
-        <loc>{{ absolute_url(path("motherboard_show", { id: board["id"] })) }}</loc>
-        <lastmod>{{ board["lastEdited"]|date("Y-m-d") }}</lastmod>
+        <loc>{{ absolute_url(path(route, { id: item["id"] })) }}</loc>
+        <lastmod>{{ item["lastEdited"]|date("Y-m-d") }}</lastmod>
         <priority>0.8</priority>
         <changefreq>weekly</changefreq>
     </url>

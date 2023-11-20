@@ -53,19 +53,21 @@ class LargeFileRepository extends ServiceEntityRepository
         ;
     }
     */
+
     public function findAllAlphabetic(string $letter): array
     {
         $entityManager = $this->getEntityManager();
         $likematch = "$letter%";
         $query = $entityManager->createQuery(
-            "SELECT drv
-                FROM App\Entity\LargeFile drv 
-                WHERE drv.name like :likeMatch
-                ORDER BY drv.name ASC"
+            "SELECT drv.id, UPPER(drv.name) drvNameSort, drv.lastEdited
+                FROM App\Entity\LargeFile drv
+                WHERE UPPER(drv.name) like :likeMatch
+                ORDER BY drvNameSort ASC"
         )->setParameter('likeMatch', $likematch);
 
         return $query->getResult();
     }
+    
     public function findByDriver(array $criteria): array
     {
 

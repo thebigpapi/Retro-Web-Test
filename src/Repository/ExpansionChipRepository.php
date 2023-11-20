@@ -163,4 +163,28 @@ class ExpansionChipRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    public function findAllAlphabetic(string $letter): array
+    {
+        $entityManager = $this->getEntityManager();
+        if (empty($letter)) {
+            $query = $entityManager->createQuery(
+                "SELECT 'Unknown' as manName, chip.name, chip.id, UPPER(chip.name) as chipNameSort, chip.lastEdited
+                FROM App\Entity\ExpansionChip chip
+                WHERE chip.manufacturer IS NULL
+                ORDER BY chipNameSort ASC"
+            );
+        } else {
+            $likematch = "$letter%";
+
+            $query = $entityManager->createQuery(
+                "SELECT man.name as manName, chip.name, chip.id, UPPER(man.name) as manNameSort, UPPER(chip.name) as chipNameSort, chip.lastEdited
+                FROM App\Entity\ExpansionChip chip, App\Entity\Manufacturer man
+                WHERE chip.manufacturer=man AND UPPER(man.name) like :likeMatch
+                ORDER BY manNameSort ASC, chipNameSort ASC"
+            )->setParameter('likeMatch', $likematch);
+        }
+
+        return $query->getResult();
+    }
 }
