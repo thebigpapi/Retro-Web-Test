@@ -4,7 +4,7 @@
 	{{ psu_connector.getName() }}
 {% endblock %}
 {% block metatags %}
-	<meta name="description" content="Expansion chip:{{ psu_connector.getName() }}">
+	<meta name="description" content="Connector :{{ psu_connector.getName() }}">
 {% endblock %}
 {% block extra_javascripts %}
 	<script src="/build/js/show.js" defer></script>
@@ -13,15 +13,15 @@
 {% block opengraph %}
 	{% apply spaceless %}
 	<meta property="og:title" content="{{ psu_connector.getName() }}">
-	<meta property="og:description" content="Get CPU family info for {{ psu_connector.getName() }}!">
+	<meta property="og:description" content="Get connector info for {{ psu_connector.getName() }}!">
 	{% if psu_connector.getEntityImages() is not empty %}
 		{% for image in psu_connector.getEntityImages()|sort((a, b) => a.getFileName() <=> b.getFileName())|slice(0, 1) %}
 			<meta name="twitter:image" content="{{ vich_uploader_asset(image, 'imageFile')}}">
 			<meta property="og:image" content="{{ vich_uploader_asset(image, 'imageFile')}}">
 		{% endfor %}
 	{% else %}
-		<meta name="twitter:image" content="{{ absolute_url(asset('build/images/missing/chip-missing.jpg')) }}">
-		<meta property="og:image" content="{{ absolute_url(asset('build/images/missing/chip-missing.jpg')) }}">
+		<meta name="twitter:image" content="{{ absolute_url(asset('build/images/missing/connector-missing.jpg')) }}">
+		<meta property="og:image" content="{{ absolute_url(asset('build/images/missing/connector-missing.jpg')) }}">
 	{% endif %}
 	{% endapply %}
 	<link rel="alternate" hreflang="x-default" href="{{ absolute_url(path('cpusocket_show', {id: psu_connector.getId()})) }}"/>
@@ -76,11 +76,11 @@
 		{% set lpindex = 0 %}
 		{% for image in psu_connector.getEntityImages()|sort((a, b) => a.getFileName() <=> b.getFileName()) %}
 			{% set lpindex = lpindex + 1 %}
-			{% include 'macros/images.html.twig' with {'type':'expansionchip', 'entity': image, 'index': lpindex, 'length': psu_connector.getEntityImages()|length} %}
+			{% include 'macros/images.html.twig' with {'type':'connector', 'entity': image, 'index': lpindex, 'length': psu_connector.getEntityImages()|length} %}
 		{% endfor %}
 	{% else %}
 		<div class="show-images">
-			<img src={{ absolute_url(asset('build/images/missing/chip-missing.jpg')) }} title="no images available :(" style="width:100%;">
+			<img src={{ absolute_url(asset('build/images/missing/connector-missing.jpg')) }} title="no images available :(" style="width:100%;">
 		</div>
 	{% endif %}
 	</div>
