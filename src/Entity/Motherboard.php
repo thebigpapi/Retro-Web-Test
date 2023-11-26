@@ -241,6 +241,19 @@ class Motherboard
     {
         return $this->motherboardBios;
     }
+    public function getMotherboardBiosByVendor(): array
+    {
+        $biosByVendor = [];
+        foreach ($this->motherboardBios as $bios) {
+            $vendor = $bios->getManufacturer();
+            $vendorName = $vendor !== null ? $vendor->getName() : "[Unknown]";
+            if (!isset($biosByVendor[$vendorName])) {
+                $biosByVendor[$vendorName] = [];
+            }
+            $biosByVendor[$vendorName][] = $bios;
+        }
+        return $biosByVendor;
+    }
     public function addMotherboardBio(MotherboardBios $motherboardBios): self
     {
         if (!$this->motherboardBios->contains($motherboardBios)) {
