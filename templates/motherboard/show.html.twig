@@ -77,22 +77,6 @@
 					{% else %}
 					<div>Unknown</div>
 					{% endif %}
-					<!-- CPU family -->
-					<div class="quick-spec-head">
-						<img src="{{ absolute_url(asset('build/icons/486.svg')) }}" alt="cpu" width="24" height="24">CPU family
-					</div>
-					{% if motherboard.getProcessorPlatformTypes() is not empty %}
-					<div class="tag-container">
-						{% for platform in motherboard.getProcessorPlatformTypes() %}
-						<a href="{{ path('cpufamily_show', {id: platform.getId()}) }}"><span class="text-block">{{ platform.getName() }}</span></a>
-						{% endfor %}
-						{% for compatible in motherboard.getCompatibleFamilies() %}
-						<a href="{{ path('cpufamily_show', {id: compatible.getId()}) }}"><span class="text-block comp">{{ compatible.getName() }}</span></a>
-						{% endfor %}
-					</div>
-					{% else %}
-					<div>Unknown</div>
-					{% endif %}
 					<!-- FSB speed -->
 					<div class="quick-spec-head">
 						<img src="{{ absolute_url(asset('build/icons/speed.svg')) }}" alt="speed" width="24" height="24">FSB speed{% if motherboard.getCpuSpeed()|length > 1 %}s{% endif %}
@@ -208,6 +192,28 @@
 					<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/ram_multi.svg')) }}" alt="ram" width="24" height="24">Multi CPU support</div>
 					<div>yes ({{ motherboard.getMaxCpu()}} CPUs)</div>
 					{% endif %}
+				</div>
+				<!-- CPU family -->
+				<div class="full-spec">
+					<div class="full-spec-head">
+						<img src="{{ absolute_url(asset('build/icons/486.svg')) }}" alt="cpu" width="24" height="24"><b>CPU family support</b>
+					</div>
+					<div class="list-table">
+						{% if motherboard.getProcessorPlatformTypes() is not empty %}
+							{% for platform in motherboard.getProcessorPlatformTypes() %}
+							<div class="list-table-head"></div>
+							<div><a href="{{ path('cpufamily_show', {id: platform.getId()}) }}"><span class="text-block">{{ platform.getName() }}</span></a></div>
+							{% endfor %}
+							{% for compatible in motherboard.getCompatibleFamilies() %}
+							<div class="list-table-head"></div>
+							<div><a href="{{ path('cpufamily_show', {id: compatible.getId()}) }}"><span class="text-block comp">{{ compatible.getName() }}</span></a></div>
+							{% endfor %}
+						{% else %}
+							<div class="list-table-head"></div><div>N/A</div>
+						{% endif %}
+					</div>
+					<div class="full-spec-head"></div>
+					<div class="list-table"></div>
 				</div>
 			</div>
 
