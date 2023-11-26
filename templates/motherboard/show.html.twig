@@ -206,7 +206,7 @@
 							{% endfor %}
 							{% for compatible in motherboard.getCompatibleFamilies() %}
 							<div class="list-table-head"></div>
-							<div><a href="{{ path('cpufamily_show', {id: compatible.getId()}) }}"><span class="text-block comp">{{ compatible.getName() }}</span></a></div>
+							<div><a href="{{ path('cpufamily_show', {id: compatible.getId()}) }}"><span class="text-block {% if is_granted('ROLE_USER') %}comp{% endif %}">{{ compatible.getName() }}</span></a></div>
 							{% endfor %}
 						{% else %}
 							<div class="list-table-head"></div><div>N/A</div>
