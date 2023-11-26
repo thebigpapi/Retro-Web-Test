@@ -5,17 +5,153 @@
 	<link rel="alternate" hreflang="x-default" href="{{ absolute_url(path('app_homepage')) }}"/>
 {% endblock %}
 
+{% block extra_javascripts %}
+	<script src="/build/js/frontsearch.js" defer></script>
+{% endblock %}
+
 {% block body %}
-	{#<!-- ============= when it's ready
-	<a href="#">
-		<img src="{{ absolute_url(asset('build/images/index/card.webp')) }}" alt="cards" width="210" height="180">
-		<div>Expansion cards</div><div>[WIP]</div>
-	</a> -->#}
-<div class="side-by-side">
+{#<!-- ============= when it's ready
+<a href="#">
+	<img src="{{ absolute_url(asset('build/images/index/card.webp')) }}" alt="cards" width="210" height="180">
+	<div>Expansion cards</div><div>[WIP]</div>
+</a> -->#}
+
+<div class="perks">
+	<p><b>Search motherboard by model</b></p>
+	<fieldset class="search-bar">
+		<input id="search-box" type="text" placeholder='Name or Part number (without manufacturer) ...'>
+		<button id="search-button" type="submit" data-target="motherboards">
+			<img src="{{ absolute_url(asset('build/icons/search.svg')) }}" alt="search" width="24" height="24">
+			<span>Search</span>
+		</button>
+		<a href="{{ path('mobosearch') }}">Advanced search</a>
+	</fieldset>
+</div>
+
+<!-- DB stats -->
+<div class="perks">
+	<p><b>Browse by category</b></p>
+	<div class="perks-list perks-tiny">
+		<div class="perk">
+			<a href="{{ path("mobosearch") }}">
+				<div class="perk-image">
+					<img src="{{ absolute_url(asset('build/icons/motherboard.svg')) }}" alt="mobo" loading="lazy" width="120" height="100">
+				</div>
+				<div class="perk-name">Motherboards</div>
+				<div class="perk-alias">{{moboCount}}&nbsp;entries</div>
+			</a>
+		</div>
+		<div class="perk">
+			<a href="{{ path("biossearch") }}">
+				<div class="perk-image">
+					<img src="{{ absolute_url(asset('build/icons/awchip.svg')) }}" alt="bios" loading="lazy" width="120" height="100">
+				</div>
+				<div class="perk-name">BIOS images</div>
+				<div class="perk-alias">{{biosCount}}&nbsp;files</div>
+			</a>
+		</div>
+		<div class="perk">
+			<a href="{{ path("expansionchipsearch") }}">
+				<div class="perk-image">
+					<img src="{{ absolute_url(asset('build/icons/chip.svg')) }}" alt="chip" loading="lazy" width="120" height="100">
+				</div>
+				<div class="perk-name">Expansion chips</div>
+				<div class="perk-alias">{{expchipCount}}&nbsp;entries</div>
+			</a>
+		</div>
+		<div class="perk">
+			<a href="{{ path("chipsetsearch") }}">
+				<div class="perk-image">
+					<img src="{{ absolute_url(asset('build/icons/chipsetfull.svg')) }}" alt="chipset" loading="lazy" width="120" height="100">
+				</div>
+				<div class="perk-name">Chipsets</div>
+				<div class="perk-alias">{{chipCount}}&nbsp;entries</div>
+			</a>
+		</div>
+		<div class="perk">
+			<a href="{{ path("cpusearch") }}">
+				<div class="perk-image">
+					<img src="{{ absolute_url(asset('build/icons/486dx.svg')) }}" alt="cpu" loading="lazy" width="120" height="100">
+				</div>
+				<div class="perk-name">CPUs</div>
+				<div class="perk-alias">{{cpuCount}}&nbsp;entries</div>
+			</a>
+		</div>
+		<div class="perk">
+			<a href="{{ path("hddsearch") }}">
+				<div class="perk-image">
+					<img src="{{ absolute_url(asset('build/icons/harddrive.svg')) }}" alt="hdd" loading="lazy" width="120" height="100">
+				</div>
+				<div class="perk-name">Hard drives</div>
+				<div class="perk-alias">{{hddCount}}&nbsp;drives</div>
+			</a>
+		</div>
+		<div class="perk">
+			<a href="{{ path("cddsearch") }}">
+				<div class="perk-image">
+					<img src="{{ absolute_url(asset('build/icons/cd_drive.svg')) }}" alt="cdd" loading="lazy" width="120" height="100">
+				</div>
+				<div class="perk-name">Optical drives</div>
+				<div class="perk-alias">{{cddCount}}&nbsp;drives</div>
+			</a>
+		</div>
+		<div class="perk">
+			<a href="{{ path("fddsearch") }}">
+				<div class="perk-image">
+					<img src="{{ absolute_url(asset('build/icons/floppy_drive.svg')) }}" alt="fdd" loading="lazy" width="120" height="100">
+				</div>
+				<div class="perk-name">Floppy drives</div>
+				<div class="perk-alias">{{fddCount}}&nbsp;drives</div>
+			</a>
+		</div>
+		<div class="perk">
+			<a href="{{ path("driversearch") }}">
+				<div class="perk-image">
+					<img src="{{ absolute_url(asset('build/icons/hardware.svg')) }}" alt="driver" loading="lazy" width="120" height="100">
+				</div>
+				<div class="perk-name">Drivers &amp; software</div>
+				<div class="perk-alias">{{driverCount}}&nbsp;files</div>
+			</a>
+		</div>
+	</a>
+	</div>
+</div>
+
+<!-- Last edited boards -->
+<div class="perks">
+	<p><b>Last edited boards</b></p>
+	<div id="index-datetime" class="perks-list">
+	{% for motherboard in latestMotherboards %}
+		<div class="perk">
+			<a href="{{ path("motherboard_show", {id:motherboard.getId()}) }}">
+				<div class="perk-image">
+				{% if motherboard.getImages() is not empty %}
+					{% set imgtype_count = 0 %}
+					{% for image in motherboard.getImages()|filter(a => a.motherboardImageType.id in [1, 2])|sort((a, b) => a.getFileName() <=> b.getFileName())|sort((a, b) => b.motherboardImageType <=> a.motherboardImageType)|slice(0, 1) %}
+						<img src="{% if vich_uploader_asset(image, 'imageFile') | ext != "svg" %}
+							{{ vich_uploader_asset(image, 'imageFile') | imagine_filter('show_thumb') }}{% else %}
+							{{ vich_uploader_asset(image, 'imageFile')}}{% endif %}" alt="" loading="lazy" width="250" height="200" title="{% if image.description %}{{ image.description }}{% endif %}">
+							{% set imgtype_count = imgtype_count + 1 %}
+					{% endfor %}
+					{% if imgtype_count == 0 %}
+						<img src="{{ absolute_url(asset('build/images/missing/board-missing.jpg')) }}" loading="lazy" width="250" height="200" title="no images available :(">
+					{% endif %}
+				{% else %}
+					<img src="{{ absolute_url(asset('build/images/missing/board-missing.jpg')) }}" alt="missing image" loading="lazy" width="250" height="200" title="no images available :(">
+				{% endif %}</div>
+				<div class="perk-name">{{ motherboard.getManufacturerName() }}&nbsp;{{ motherboard.name }}</div>
+				<div class="perk-date">{{ motherboard.getLastEdited()|date("Y-m-d\\TH:i:s", "GMT") }}Z</div>
+			</a>
+		</div>
+	{% endfor %}
+	</div>
+</div>
+
+{#<div class="side-by-side">
 	<!-- Last edited boards -->
 	<div class="perks">
 		<p><b>Last edited boards</b></p>
-		<div id="index-datetime" class="perks-list">
+		<div id="index-datetime" class="perks-list perks-tiny">
         {% for motherboard in latestMotherboards %}
 			<div class="perk">
 				<a href="{{ path("motherboard_show", {id:motherboard.getId()}) }}">
@@ -45,7 +181,7 @@
 	<!-- Last edited chips -->
 	<div class="perks">
 		<p><b>Last edited expansion chips</b></p>
-		<div id="indexchips-datetime" class="perks-list">
+		<div id="indexchips-datetime" class="perks-list perks-tiny">
         {% for expansionchip in latestChips %}
 			<div class="perk">
 				<a href="{{ path("expansion_chip_show", {id: expansionchip.getId()}) }}" title="Click to visit page">
@@ -69,96 +205,7 @@
 			</div>
 		{% endfor %}
 		</div>
-	</div>
+	</div>	
 
-	<!-- DB stats -->
-	<div class="perks">
-		<p><b>Quick stats</b></p>
-		<div class="perks-list perks-tiny">
-			<div class="perk">
-				<a href="{{ path("mobosearch") }}">
-					<div class="perk-image">
-						<img src="{{ absolute_url(asset('build/icons/motherboard.svg')) }}" alt="mobo" loading="lazy" width="120" height="100">
-					</div>
-					<div class="perk-name">Motherboards</div>
-					<div class="perk-alias">{{moboCount}}&nbsp;entries</div>
-				</a>
-			</div>
-			<div class="perk">
-				<a href="{{ path("biossearch") }}">
-					<div class="perk-image">
-						<img src="{{ absolute_url(asset('build/icons/awchip.svg')) }}" alt="bios" loading="lazy" width="120" height="100">
-					</div>
-					<div class="perk-name">BIOS images</div>
-					<div class="perk-alias">{{biosCount}}&nbsp;files</div>
-				</a>
-			</div>
-			<div class="perk">
-				<a href="{{ path("expansionchipsearch") }}">
-					<div class="perk-image">
-						<img src="{{ absolute_url(asset('build/icons/chip.svg')) }}" alt="chip" loading="lazy" width="120" height="100">
-					</div>
-					<div class="perk-name">Expansion chips</div>
-					<div class="perk-alias">{{expchipCount}}&nbsp;entries</div>
-				</a>
-			</div>
-			<div class="perk">
-				<a href="{{ path("chipsetsearch") }}">
-					<div class="perk-image">
-						<img src="{{ absolute_url(asset('build/icons/chipsetfull.svg')) }}" alt="chipset" loading="lazy" width="120" height="100">
-					</div>
-					<div class="perk-name">Chipsets</div>
-					<div class="perk-alias">{{chipCount}}&nbsp;entries</div>
-				</a>
-			</div>
-			<div class="perk">
-				<a href="{{ path("cpusearch") }}">
-					<div class="perk-image">
-						<img src="{{ absolute_url(asset('build/icons/486dx.svg')) }}" alt="cpu" loading="lazy" width="120" height="100">
-					</div>
-					<div class="perk-name">CPUs</div>
-					<div class="perk-alias">{{cpuCount}}&nbsp;entries</div>
-				</a>
-			</div>
-			<div class="perk">
-				<a href="{{ path("hddsearch") }}">
-					<div class="perk-image">
-						<img src="{{ absolute_url(asset('build/icons/harddrive.svg')) }}" alt="hdd" loading="lazy" width="120" height="100">
-					</div>
-					<div class="perk-name">Hard drives</div>
-					<div class="perk-alias">{{hddCount}}&nbsp;drives</div>
-				</a>
-			</div>
-			<div class="perk">
-				<a href="{{ path("cddsearch") }}">
-					<div class="perk-image">
-						<img src="{{ absolute_url(asset('build/icons/cd_drive.svg')) }}" alt="cdd" loading="lazy" width="120" height="100">
-					</div>
-					<div class="perk-name">Optical drives</div>
-					<div class="perk-alias">{{cddCount}}&nbsp;drives</div>
-				</a>
-			</div>
-			<div class="perk">
-				<a href="{{ path("fddsearch") }}">
-					<div class="perk-image">
-						<img src="{{ absolute_url(asset('build/icons/floppy_drive.svg')) }}" alt="fdd" loading="lazy" width="120" height="100">
-					</div>
-					<div class="perk-name">Floppy drives</div>
-					<div class="perk-alias">{{fddCount}}&nbsp;drives</div>
-				</a>
-			</div>
-			<div class="perk">
-				<a href="{{ path("driversearch") }}">
-					<div class="perk-image">
-						<img src="{{ absolute_url(asset('build/icons/hardware.svg')) }}" alt="driver" loading="lazy" width="120" height="100">
-					</div>
-					<div class="perk-name">Drivers &amp; software</div>
-					<div class="perk-alias">{{driverCount}}&nbsp;files</div>
-				</a>
-			</div>
-		</a>
-		</div>
-	</div>
-
-<div>
+<div>#}
 {% endblock %}
