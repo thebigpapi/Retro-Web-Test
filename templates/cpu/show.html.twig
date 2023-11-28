@@ -190,7 +190,7 @@
 						{% if cpu.getPlatform().getInstructionSetsFull() is not empty %}
 							<div class="tag-container">
 							<ul>
-								{% for instruction in cpu.getPlatform().getInstructionSetsFull() %}
+								{% for instruction in cpu.getPlatform().getInstructionSetsFull()|sort((a, b) => a.name|lower <=> b.name|lower) %}
 									<li>{{ instruction.getName()}}</li>
 								{% endfor %}
 							</ul>
