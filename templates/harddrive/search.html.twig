@@ -32,12 +32,12 @@
 					<img src="{{ absolute_url(asset('build/icons/help.svg')) }}" alt="" width="16" height="16">
 				</label>
 				<div class="search-form-widget">
-					<div id="setchip1">{{ form_widget(form.hddManufacturer) }}</div>
+					<div>{{ form_widget(form.hddManufacturer) }}</div>
 					<div>{{ form_widget(form.name, {'attr': {'placeholder': 'Name or Part number (without manufacturer) ...'}}) }}</div>
 				</div>
 			</div>
 			<div class="search-form-entry">
-				<label class="search-form-label" for="search_chipset" title="By default, it is in Megabytes. Operators can be used (like '>128MB')">
+				<label class="search-form-label" for="search_capacity" title="By default, it is in Megabytes. Operators can be used (like '>128MB')">
 					<span>Capacity</span>
 					<img src="{{ absolute_url(asset('build/icons/help.svg')) }}" alt="" width="16" height="16">
 				</label>

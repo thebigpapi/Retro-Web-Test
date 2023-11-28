@@ -237,7 +237,7 @@ function updateSelect(idx, value) {
         sel = document.getElementById("search_manufacturer");
     }
     const options = Array.from(sel.options);
-    const optionToSelect = options.find(item => val == item.getAttribute("data_id"));
+    const optionToSelect = options.find(item => val == item.getAttribute("data-id"));
     sel.value = optionToSelect.value;
 }
 

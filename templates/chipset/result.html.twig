@@ -8,27 +8,27 @@
 				<div id="index-datetime" class="perks-list">
 				{% for chipset in chipsets %}
 					<div class="perk">
-						<div class="perk-image">
-						{% if chipset.getExpansionChips() is not empty %}
-							{% set imgcount = 0 %}
-							{% for chipPart in chipset.getExpansionChips() %}
-							{% if chipPart.getImages() is not empty %}
-								{% set imgcount = imgcount + 1 %}
-								{% for image in chipPart.getImages()|sort((a, b) => a.getFileName() <=> b.getFileName())|slice(0, 1) %}
-									{% if imgcount < 2 %}
-									<img src="{% if vich_uploader_asset(image, 'imageFile') | ext != "svg" %}
-								{{ vich_uploader_asset(image, 'imageFile') | imagine_filter('show_thumb') }}{% else %}
-								{{ vich_uploader_asset(image, 'imageFile')}}{% endif %}" alt="" loading="lazy" width="250" height="200" title="{% if image.description %}{{ image.description }}{% endif %}">
-									{% endif %}
+						<a href="{{ path("chipset_show", {id: chipset.getId()}) }}">
+							<div class="perk-image">
+							{% if chipset.getExpansionChips() is not empty %}
+								{% set imgcount = 0 %}
+								{% for chipPart in chipset.getExpansionChips() %}
+								{% if chipPart.getImages() is not empty %}
+									{% set imgcount = imgcount + 1 %}
+									{% for image in chipPart.getImages()|sort((a, b) => a.getFileName() <=> b.getFileName())|slice(0, 1) %}
+										{% if imgcount < 2 %}
+										<img src="{% if vich_uploader_asset(image, 'imageFile') | ext != "svg" %}
+									{{ vich_uploader_asset(image, 'imageFile') | imagine_filter('show_thumb') }}{% else %}
+									{{ vich_uploader_asset(image, 'imageFile')}}{% endif %}" alt="" loading="lazy" width="250" height="200" title="{% if image.description %}{{ image.description }}{% endif %}">
+										{% endif %}
+									{% endfor %}
+								{% endif %}
 								{% endfor %}
+								{% if imgcount == 0 %}<img src="{{ absolute_url(asset('build/images/missing/chipset-missing.jpg')) }}" loading="lazy" width="250" height="200" title="no images available :(">{% endif %}
+							{% else %}
+								<img src="{{ absolute_url(asset('build/images/missing/chipset-missing.jpg')) }}" loading="lazy" width="250" height="200" title="no images available :(">
 							{% endif %}
-							{% endfor %}
-							{% if imgcount == 0 %}<img src="{{ absolute_url(asset('build/images/missing/chipset-missing.jpg')) }}" loading="lazy" width="250" height="200" title="no images available :(">{% endif %}
-						{% else %}
-							<img src="{{ absolute_url(asset('build/images/missing/chipset-missing.jpg')) }}" loading="lazy" width="250" height="200" title="no images available :(">
-						{% endif %}
-						</div>
-						<a href="{{ path("chipset_show", {id: chipset.getId()}) }}" title="Click to visit page">
+							</div>
 							<div class="perk-name">{{ chipset.getNameWithoutParts() }}</div>
 							<div class="perk-alias">
 								{% if chipset.getExpansionChips() is not empty %}<span class="results-alias">
@@ -41,7 +41,7 @@
 								</span>{% endif %}
 							</div>
 						</a>
-					</div>	
+					</div>
 				{% endfor %}
 				</div>
 			</div>

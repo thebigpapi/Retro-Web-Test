@@ -8,31 +8,33 @@
 			<div id="index-datetime" class="perks-list">
 			{% for motherboard in motherboards %}
 				<div class="perk">
-					<div class="perk-image">
-					{% if motherboard.getImages() is not empty %}
-						{% set imgtype_count = 0 %}
-						{% for image in motherboard.getImages()|filter(a => a.motherboardImageType.id in [1, 2])|sort((a, b) => a.getFileName() <=> b.getFileName())|sort((a, b) => b.motherboardImageType <=> a.motherboardImageType)|slice(0, 1) %}
-							<img src="{% if vich_uploader_asset(image, 'imageFile') | ext != "svg" %}
-								{{ vich_uploader_asset(image, 'imageFile') | imagine_filter('show_thumb') }}{% else %}
-								{{ vich_uploader_asset(image, 'imageFile')}}{% endif %}" alt="" loading="lazy" width="250" height="200" title="{% if image.description %}{{ image.description }}{% endif %}">
-							{% set imgtype_count = imgtype_count + 1 %}
-						{% endfor %}
-						{% if imgtype_count == 0 %}
+					<a href="{{ path("motherboard_show", {id:motherboard.getId()}) }}">
+						<div class="perk-image">
+						{% if motherboard.getImages() is not empty %}
+							{% set imgtype_count = 0 %}
+							{% for image in motherboard.getImages()|filter(a => a.motherboardImageType.id in [1, 2])|sort((a, b) => a.getFileName() <=> b.getFileName())|sort((a, b) => b.motherboardImageType <=> a.motherboardImageType)|slice(0, 1) %}
+								<img src="{% if vich_uploader_asset(image, 'imageFile') | ext != "svg" %}
+									{{ vich_uploader_asset(image, 'imageFile') | imagine_filter('show_thumb') }}{% else %}
+									{{ vich_uploader_asset(image, 'imageFile')}}{% endif %}" alt="" loading="lazy" width="250" height="200" title="{% if image.description %}{{ image.description }}{% endif %}">
+								{% set imgtype_count = imgtype_count + 1 %}
+							{% endfor %}
+							{% if imgtype_count == 0 %}
+								<img src="{{ absolute_url(asset('build/images/missing/board-missing.jpg')) }}" loading="lazy" width="250" height="200" title="no images available :(">
+							{% endif %}
+						{% else %}
 							<img src="{{ absolute_url(asset('build/images/missing/board-missing.jpg')) }}" loading="lazy" width="250" height="200" title="no images available :(">
 						{% endif %}
-					{% else %}
-						<img src="{{ absolute_url(asset('build/images/missing/board-missing.jpg')) }}" loading="lazy" width="250" height="200" title="no images available :(">
-					{% endif %}</div>
-					<a href="{{ path("motherboard_show", {id:motherboard.getId()}) }}" title="Click to visit page">
+						</div>
 						<div class="perk-name">{{ motherboard.getManufacturerName() }}&nbsp;{{ motherboard.name }}</div>
 						<div class="perk-alias">
-						{% if motherboard.getMotherboardAliases() is not empty %}{% for alias in motherboard.getMotherboardAliases() %}
-							<span class="results-alias">
-								<small>{% if alias.getManufacturer() is not null %}{{ alias.getManufacturer().getName() }}{% else %}Unknown{% endif %}&nbsp;{{ alias.name }}{% if not loop.last %} |{% endif %}</small>
-							</span>
-						{% endfor %}{% endif %}</div>
+							{% if motherboard.getMotherboardAliases() is not empty %}{% for alias in motherboard.getMotherboardAliases() %}
+								<span class="results-alias">
+									<small>{% if alias.getManufacturer() is not null %}{{ alias.getManufacturer().getName() }}{% else %}Unknown{% endif %}&nbsp;{{ alias.name }}{% if not loop.last %} |{% endif %}</small>
+								</span>
+							{% endfor %}{% endif %}
+						</div>
 					</a>
-				</div>	
+				</div>
 			{% endfor %}
 			</div>
 		</div>

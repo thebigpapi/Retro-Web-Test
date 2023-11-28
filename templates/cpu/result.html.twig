@@ -9,18 +9,18 @@
 				<div id="index-datetime" class="perks-list">
 				{% for cpu in cpus %}
 					<div class="perk">
-						<div class="perk-image">
-						{% if cpu.getImages() is not empty %}
-								{% for image in cpu.getImages()|sort((a, b) => a.getFileName() <=> b.getFileName())|slice(0, 1) %}
-								<img src="{% if vich_uploader_asset(image, 'imageFile') | ext != "svg" %}
-								{{ vich_uploader_asset(image, 'imageFile') | imagine_filter('show_thumb') }}{% else %}
-								{{ vich_uploader_asset(image, 'imageFile')}}{% endif %}" alt="" loading="lazy" width="250" height="200" title="{% if image.description %}{{ image.description }}{% endif %}">
-								{% endfor %}
-						{% else %}
-							<img src="{{ absolute_url(asset('build/images/missing/cpu-missing.jpg')) }}" loading="lazy" width="250" height="200" title="no images available :(">
-						{% endif %}
-						</div>
-						<a href="{{ path("processor_show", {id: cpu.getId()}) }}" title="Click to visit page">
+						<a href="{{ path("processor_show", {id: cpu.getId()}) }}">
+							<div class="perk-image">
+							{% if cpu.getImages() is not empty %}
+									{% for image in cpu.getImages()|sort((a, b) => a.getFileName() <=> b.getFileName())|slice(0, 1) %}
+									<img src="{% if vich_uploader_asset(image, 'imageFile') | ext != "svg" %}
+									{{ vich_uploader_asset(image, 'imageFile') | imagine_filter('show_thumb') }}{% else %}
+									{{ vich_uploader_asset(image, 'imageFile')}}{% endif %}" alt="" loading="lazy" width="250" height="200" title="{% if image.description %}{{ image.description }}{% endif %}">
+									{% endfor %}
+							{% else %}
+								<img src="{{ absolute_url(asset('build/images/missing/cpu-missing.jpg')) }}" loading="lazy" width="250" height="200" title="no images available :(">
+							{% endif %}
+							</div>
 							<div class="perk-name">{{ cpu.getNameWithManufacturer() }}</div>
 							<div class="perk-alias">
 								{% if cpu.getChipAliases() is not empty %}<span class="results-alias">
