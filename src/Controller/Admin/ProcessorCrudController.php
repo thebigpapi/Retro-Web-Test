@@ -37,6 +37,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Factory\EntityFactory;
 use EasyCorp\Bundle\EasyAdminBundle\Security\Permission;
 use EasyCorp\Bundle\EasyAdminBundle\Config\KeyValueStore;
 use EasyCorp\Bundle\EasyAdminBundle\Collection\FieldCollection;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class ProcessorCrudController extends AbstractCrudController
 {
@@ -49,6 +50,16 @@ class ProcessorCrudController extends AbstractCrudController
     public static function getEntityFqcn(): string
     {
         return Processor::class;
+    }
+    protected function getRedirectResponseAfterSave(AdminContext $context, string $action): RedirectResponse
+    {
+        $submitButtonName = $context->getRequest()->request->all()['ea']['newForm']['btn'];
+
+        if (Action::SAVE_AND_RETURN === $submitButtonName) {
+            $entityId = $context->getEntity()->getInstance()->getId();
+            return $this->redirectToRoute('processor_show', array('id'=>$entityId));
+        }
+        return $this->redirectToRoute($context->getDashboardRouteName());
     }
     public function configureActions(Actions $actions): Actions
     {

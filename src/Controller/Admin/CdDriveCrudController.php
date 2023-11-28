@@ -40,6 +40,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Factory\EntityFactory;
 use EasyCorp\Bundle\EasyAdminBundle\Security\Permission;
 use EasyCorp\Bundle\EasyAdminBundle\Config\KeyValueStore;
 use EasyCorp\Bundle\EasyAdminBundle\Collection\FieldCollection;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class CdDriveCrudController extends AbstractCrudController
 {
@@ -52,6 +53,16 @@ class CdDriveCrudController extends AbstractCrudController
     public static function getEntityFqcn(): string
     {
         return CdDrive::class;
+    }
+    protected function getRedirectResponseAfterSave(AdminContext $context, string $action): RedirectResponse
+    {
+        $submitButtonName = $context->getRequest()->request->all()['ea']['newForm']['btn'];
+
+        if (Action::SAVE_AND_RETURN === $submitButtonName) {
+            $entityId = $context->getEntity()->getInstance()->getId();
+            return $this->redirectToRoute('cd_drive_show', array('id'=>$entityId));
+        }
+        return $this->redirectToRoute($context->getDashboardRouteName());
     }
 
     public function configureActions(Actions $actions): Actions
