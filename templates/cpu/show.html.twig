@@ -184,14 +184,16 @@
 					</div>
 					<!-- Instruction set -->
 					<div class="quick-spec-head">
-						<img src="{{ absolute_url(asset('build/icons/cpupins.svg')) }}" alt="cpu" width="24" height="24">Instruction set
+						<img src="{{ absolute_url(asset('build/icons/cpupins.svg')) }}" alt="cpu" width="24" height="24">Features
 					</div>
 					{% if cpu.getPlatform() is not empty %}
 						{% if cpu.getPlatform().getInstructionSetsFull() is not empty %}
 							<div class="tag-container">
+							<ul>
 								{% for instruction in cpu.getPlatform().getInstructionSetsFull() %}
-									<span class="text-block">{{ instruction.getName()}}</span>
+									<li>{{ instruction.getName()}}</li>
 								{% endfor %}
+							</ul>
 							</div>
 						{% else %}
 							<div>Unknown</div>

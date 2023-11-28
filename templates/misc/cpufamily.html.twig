@@ -62,13 +62,15 @@
 					{% endif %}
 					<!-- Instruction set -->
 					<div class="quick-spec-head">
-						<img src="{{ absolute_url(asset('build/icons/cpupins.svg')) }}" alt="cpu" width="24" height="24">Instruction set
+						<img src="{{ absolute_url(asset('build/icons/cpupins.svg')) }}" alt="cpu" width="24" height="24">Features
 					</div>
 					{% if family.getInstructionSetsFull() is not empty %}
 						<div class="tag-container">
-							{% for instruction in family.getInstructionSetsFull() %}
-								<span class="text-block">{{ instruction.getName()}}</span>
+						<ul>
+							{% for instruction in family.getInstructionSetsFull()|sort((a, b) => a.name|lower <=> b.name|lower) %}
+								<li>{{ instruction.getName()}}</li>
 							{% endfor %}
+							</ul>
 						</div>
 					{% else %}
 						<div>Unknown</div>

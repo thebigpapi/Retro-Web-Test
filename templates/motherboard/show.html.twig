@@ -200,14 +200,14 @@
 					</div>
 					<div class="list-table">
 						{% if motherboard.getProcessorPlatformTypes() is not empty %}
+						<ul>
 							{% for platform in motherboard.getProcessorPlatformTypes() %}
-							<div class="list-table-head"></div>
-							<div><a href="{{ path('cpufamily_show', {id: platform.getId()}) }}"><span class="text-block">{{ platform.getName() }}</span></a></div>
+							<li><a href="{{ path('cpufamily_show', {id: platform.getId()}) }}"><span class="text-block list">{{ platform.getName() }}</span></a></li>
 							{% endfor %}
 							{% for compatible in motherboard.getCompatibleFamilies() %}
-							<div class="list-table-head"></div>
-							<div><a href="{{ path('cpufamily_show', {id: compatible.getId()}) }}"><span class="text-block {% if is_granted('ROLE_USER') %}comp{% endif %}">{{ compatible.getName() }}</span></a></div>
+							<li><a href="{{ path('cpufamily_show', {id: compatible.getId()}) }}"><span class="text-block list {% if is_granted('ROLE_USER') %}comp{% endif %}">{{ compatible.getName() }}</span></a></li>
 							{% endfor %}
+						</ul>
 						{% else %}
 							<div class="list-table-head"></div><div>N/A</div>
 						{% endif %}
