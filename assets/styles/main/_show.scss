@@ -304,6 +304,10 @@ div.list-table {
     padding: 5px;
     align-content: start;
 
+    &.notemplate{
+        grid-template-columns: none;
+    }
+
     div {
         padding: 3px 0px 3px;
         text-align: left;
@@ -349,8 +353,8 @@ span.text-block {
         }
     }
     &.list{
-        border:none;
-        text-wrap: nowrap;
+        border: none;
+        display: inline;
     }
 }
 
