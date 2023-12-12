@@ -7,6 +7,7 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Knp\Component\Pager\PaginatorInterface;
 use App\Entity\Manufacturer;
 use App\Form\Bios\Search;
@@ -207,5 +208,23 @@ class BiosController extends AbstractController
             'biosCodes' => $biosCodes,
             'chipCodes' => $chipdata,
         ]);
+    }
+    #[Route('/bios/bot/string', name:'bios_bot_string', methods:['POST'])]
+    public function getBIOSListString(Request $request, MotherboardBiosRepository $motherboardBiosRepository): JsonResponse
+    {
+        $string = $request->request->get('string');
+        $filename1 = $request->request->get('filename1');
+        $filename2 = $request->request->get('filename2');
+        if($string == '' || $filename1 == '' || $filename2 == '')
+            return new JsonResponse([]);
+        $boards = $motherboardBiosRepository->findByString($string);
+        if(count($boards) > 0)
+            return new JsonResponse($boards);
+        else{
+            $boards = $motherboardBiosRepository->findByFilename($filename1, $filename2);
+            if(count($boards) > 0)
+                return new JsonResponse($boards);
+        }
+        return new JsonResponse([]);
     }
 }
