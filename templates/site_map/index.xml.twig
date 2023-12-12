@@ -4,40 +4,106 @@
       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
       xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
             http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
-{% set mod_date = 'now'|date('Y-m-d')  %}
     <url>
-        <loc>https://www.ultimateretro.net{{ path('app_homepage') }}</loc>
+        <loc>{{ absolute_url(path('app_homepage')) }}</loc>
         <lastmod>{{mod_date}}</lastmod>
-        <priority>1.00</priority>
+        <priority>1.0</priority>
+        <changefreq>daily</changefreq>
     </url>
     <url>
-        <loc>https://www.ultimateretro.net{{ path('app_homepage') }}motherboards/search/</loc>
+        <loc>{{ absolute_url(path('app_support')) }}</loc>
         <lastmod>{{mod_date}}</lastmod>
-        <priority>0.80</priority>
+        <priority>0.2</priority>
+        <changefreq>monthly</changefreq>
     </url>
     <url>
-        <loc>https://www.ultimateretro.net{{ path('app_homepage') }}bios/search/</loc>
+        <loc>{{ absolute_url(path('app_info')) }}</loc>
         <lastmod>{{mod_date}}</lastmod>
-        <priority>0.80</priority>
+        <priority>0.2</priority>
+        <changefreq>monthly</changefreq>
     </url>
     <url>
-        <loc>https://www.ultimateretro.net{{ path('app_homepage') }}bios/info/</loc>
+        <loc>{{ absolute_url(path('app_credits')) }}</loc>
         <lastmod>{{mod_date}}</lastmod>
-        <priority>0.80</priority>
+        <priority>0.2</priority>
+        <changefreq>monthly</changefreq>
     </url>
     <url>
-        <loc>https://www.ultimateretro.net{{ path('app_homepage') }}bios/infoadv/</loc>
+        <loc>{{ absolute_url(path('app_contributions')) }}</loc>
         <lastmod>{{mod_date}}</lastmod>
-        <priority>0.80</priority>
+        <priority>0.2</priority>
+        <changefreq>monthly</changefreq>
     </url>
     <url>
-        <loc>https://www.ultimateretro.net{{ path('app_homepage') }}chipsets/search/</loc>
+        <loc>{{ absolute_url(path('app_legal')) }}</loc>
         <lastmod>{{mod_date}}</lastmod>
-        <priority>0.80</priority>
+        <priority>0.2</priority>
+        <changefreq>monthly</changefreq>
     </url>
     <url>
-        <loc>https://www.ultimateretro.net{{ path('app_homepage') }}login</loc>
+        <loc>{{ absolute_url(path('mobosearch')) }}</loc>
         <lastmod>{{mod_date}}</lastmod>
-        <priority>0.50</priority>
+        <priority>0.8</priority>
+        <changefreq>weekly</changefreq>
     </url>
+    <url>
+        <loc>{{ absolute_url(path('biossearch')) }}</loc>
+        <lastmod>{{mod_date}}</lastmod>
+        <priority>0.8</priority>
+        <changefreq>weekly</changefreq>
+    </url>
+    <url>
+        <loc>{{ absolute_url(path('bios_list')) }}</loc>
+        <lastmod>{{mod_date}}</lastmod>
+        <priority>0.8</priority>
+        <changefreq>weekly</changefreq>
+    </url>
+    <url>
+        <loc>{{ absolute_url(path('expansionchipsearch')) }}</loc>
+        <lastmod>{{mod_date}}</lastmod>
+        <priority>0.8</priority>
+        <changefreq>weekly</changefreq>
+    </url>
+    <url>
+        <loc>{{ absolute_url(path('chipsetsearch')) }}</loc>
+        <lastmod>{{mod_date}}</lastmod>
+        <priority>0.8</priority>
+        <changefreq>weekly</changefreq>
+    </url>
+    <url>
+        <loc>{{ absolute_url(path('cpusearch')) }}</loc>
+        <lastmod>{{mod_date}}</lastmod>
+        <priority>0.8</priority>
+        <changefreq>weekly</changefreq>
+    </url>
+    <url>
+        <loc>{{ absolute_url(path('hddsearch')) }}</loc>
+        <lastmod>{{mod_date}}</lastmod>
+        <priority>0.8</priority>
+        <changefreq>weekly</changefreq>
+    </url>
+    <url>
+        <loc>{{ absolute_url(path('cddsearch')) }}</loc>
+        <lastmod>{{mod_date}}</lastmod>
+        <priority>0.8</priority>
+        <changefreq>weekly</changefreq>
+    </url>
+    <url>
+        <loc>{{ absolute_url(path('fddsearch')) }}</loc>
+        <lastmod>{{mod_date}}</lastmod>
+        <priority>0.8</priority>
+        <changefreq>weekly</changefreq>
+    </url>
+    <url>
+        <loc>{{ absolute_url(path('driversearch')) }}</loc>
+        <lastmod>{{mod_date}}</lastmod>
+        <priority>0.8</priority>
+        <changefreq>weekly</changefreq>
+    </url>
+    {% for subfile in sub_files %}
+    <sitemap>
+        <loc>{{ absolute_url(subfile) }}</loc>
+        <lastmod>{{ mod_date }}</lastmod>
+    </sitemap>
+    {% endfor %}
 </urlset>

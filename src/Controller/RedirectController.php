@@ -60,14 +60,14 @@ class RedirectController extends AbstractController
     }
 
 
-    #[Route(path: '/motherboard/index/{letter}', requirements: ['letter' => '\w'])]
+    /*#[Route(path: '/motherboard/index/{letter}', requirements: ['letter' => '\w'])]
     public function redirectIndex(Request $request, string $letter)
     {
         return $this->redirect($this->generateUrl('moboindex', array_merge(
             $request->query->all(),
             array("letter" => $letter)
         )));
-    }
+    }*/
 
     #[Route(path: '/{lang}/motherboards/search', requirements: ['lang' => 'de|en|es|fr|it|nl|ro|ru'])]
     public function redirectLangMoboSearch()
@@ -82,14 +82,15 @@ class RedirectController extends AbstractController
     }
 
 
-    #[Route(path: '/{lang}/motherboards/index/{letter}', requirements: ['lang' => 'de|en|es|fr|it|nl|ro|ru', 'letter' => '\w'])]
+    /*#[Route(path: '/{lang}/motherboards/index/{letter}', requirements: ['lang' => 'de|en|es|fr|it|nl|ro|ru', 'letter' => '\w'])]
     public function redirectLangMoboIndex(Request $request, string $letter)
     {
         return $this->redirect($this->generateUrl('moboindex', array_merge(
             $request->query->all(),
             array("letter" => $letter)
         )));
-    }
+    }*/
+
     #[Route(path: '/{lang}/bios/search', requirements: ['lang' => 'de|en|es|fr|it|nl|ro|ru'])]
     public function redirectLangBiosSearch()
     {
@@ -120,14 +121,15 @@ class RedirectController extends AbstractController
     }
 
 
-    #[Route(path: '/{lang}/chipsets/index/{letter}', requirements: ['lang' => 'de|en|es|fr|it|nl|ro|ru', 'letter' => '\w'])]
+    /* #[Route(path: '/{lang}/chipsets/index/{letter}', requirements: ['lang' => 'de|en|es|fr|it|nl|ro|ru', 'letter' => '\w'])]
     public function redirectLangChipsetIndex(Request $request, string $letter)
     {
         return $this->redirect($this->generateUrl('chipsetindex', array_merge(
             $request->query->all(),
             array("letter" => $letter)
         )));
-    }
+    }*/
+    
     /* credits redirect */
     #[Route(path: '/credits', methods: ['GET'])]
     public function redirectCredits(Request $request)

@@ -33,8 +33,8 @@ class Search extends AbstractType
                 'required' => false,
                 'choice_attr' => function ($choice, string $key, mixed $value) {
                     if($choice == "Not identified")
-                        return ['data_id' => 'NULL' ];
-                    return ['data_id' => $choice->getId() ];
+                        return ['data-id' => 'NULL' ];
+                    return ['data-id' => $choice->getId() ];
                 },
                 'choices' => $options['hddManufacturers'],
                 'placeholder' => 'Type to select a hard drive manufacturer ...',

@@ -1,16 +1,20 @@
 {% apply spaceless %}
 <div class="show-nav" id="sh-nav">
     {% if entityName == "Motherboard" %}
-        <input type="radio" name="tabs" id="tab-nav-1" checked>
+        <input type="radio" name="tabs" id="tab-nav-1" data-tab="sh-general" checked>
         <label for="tab-nav-1"><img src="{{ absolute_url(asset('build/icons/data.svg')) }}" alt="" width="24" height="24">Description</label>
-        <input type="radio" name="tabs" id="tab-nav-2">
+        <input type="radio" name="tabs" id="tab-nav-2" data-tab="sh-expchips">
         <label for="tab-nav-2"><img src="{{ absolute_url(asset('build/icons/chip.svg')) }}" alt="" width="24" height="24">Chips</label>
-        <input type="radio" name="tabs" id="tab-nav-3">
-        <label for="tab-nav-3"><img src="{{ absolute_url(asset('build/icons/dw.svg')) }}" alt="" width="24" height="24">Downloads</label>
+        <input type="radio" name="tabs" id="tab-nav-3" data-tab="sh-bios">
+        <label for="tab-nav-3"><img src="{{ absolute_url(asset('build/icons/awchip.svg')) }}" alt="" width="24" height="24">BIOS</label>
+        <input type="radio" name="tabs" id="tab-nav-4" data-tab="sh-driver">
+        <label for="tab-nav-4"><img src="{{ absolute_url(asset('build/icons/hardware.svg')) }}" alt="" width="24" height="24">Drivers</label>
+        <input type="radio" name="tabs" id="tab-nav-5" data-tab="sh-docs">
+        <label for="tab-nav-5"><img src="{{ absolute_url(asset('build/icons/manual.svg')) }}" alt="" width="24" height="24">Documentation</label>
     {% elseif entityName == "Chipset" %}
-        <input type="radio" name="tabs" id="tab-nav-1" checked>
+        <input type="radio" name="tabs" id="tab-nav-1" data-tab="sh-general" checked>
         <label for="tab-nav-1"><img src="{{ absolute_url(asset('build/icons/data.svg')) }}" alt="" width="24" height="24">Description</label>
-        <input type="radio" name="tabs" id="tab-nav-3">
+        <input type="radio" name="tabs" id="tab-nav-3" data-tab="sh-downloads">
         <label for="tab-nav-3"><img src="{{ absolute_url(asset('build/icons/dw.svg')) }}" alt="" width="24" height="24">Downloads</label>
     {% endif %}
     <input type="radio" name="tabsh" id="tab-nav-h" data-URL="{{ path('dh_auditor_show_entity_history', {id:entity.getId(), entity:'App-Entity-' ~ entityName}) }}">

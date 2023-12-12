@@ -5,7 +5,14 @@
 	<meta name="description" content="Search for a chipset by name, manufacturer, part number and more.">
 	<link rel="alternate" hreflang="x-default" href="{{ absolute_url(path('chipsetindex', {letter: ltr })) }}"/>
 {% endblock %}
-
+{% block subnav %}
+<a href="{{ path('expansionchipsearch') }}" class="nav-link">
+	<span class="navbar-label">Expansion chip</span>
+</a>
+<a href="{{ path('chipsetsearch') }}" class="nav-link active">
+	<span class="navbar-label">Chipset</span>
+</a>
+{% endblock %}
 {% block body %}
 	<div class="title">Index: {{ltr}}</div>
 	<p style="text-align:center;padding-top:10px;">

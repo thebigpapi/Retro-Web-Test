@@ -213,7 +213,7 @@ div.quick-spec-table {
     div {
         padding: 5px 0px 5px;
         vertical-align: middle;
-        align-self: center;
+        align-self: baseline;
 
         &.ts-wrapper {
             padding: 2px 0px 2px;
@@ -304,6 +304,10 @@ div.list-table {
     padding: 5px;
     align-content: start;
 
+    &.notemplate{
+        grid-template-columns: none;
+    }
+
     div {
         padding: 3px 0px 3px;
         text-align: left;
@@ -347,6 +351,10 @@ span.text-block {
                 color:rgb(170, 231, 170);
             }
         }
+    }
+    &.list{
+        border: none;
+        display: inline;
     }
 }
 

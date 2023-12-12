@@ -38,6 +38,15 @@
 	{% endapply %}
 {% endblock %}
 
+{% block subnav %}
+<a href="{{ path('mobosearch') }}" class="nav-link active">
+	<span class="navbar-label">Motherboard</span>
+</a>
+<a href="{{ path('biossearch') }}" class="nav-link">
+	<span class="navbar-label">BIOS</span>
+</a>
+{% endblock %}
+
 {% block body %}
 <!-- TITLE/ALIASES -->
 <div class="title">{{ motherboard.getPrettyTitle() }}</div>
@@ -65,22 +74,6 @@
 					{% if motherboard.getCpuSockets() is not empty %}
 					<div class="tag-container">{% for socket in motherboard.getCpuSockets() %}
 						<a href="{{ path('cpusocket_show', {id: socket.getId()}) }}"><span class="text-block">{{ socket.getNameAndType}}</span></a>{% endfor %}</div>
-					{% else %}
-					<div>Unknown</div>
-					{% endif %}
-					<!-- CPU family -->
-					<div class="quick-spec-head">
-						<img src="{{ absolute_url(asset('build/icons/486.svg')) }}" alt="cpu" width="24" height="24">CPU family
-					</div>
-					{% if motherboard.getProcessorPlatformTypes() is not empty %}
-					<div class="tag-container">
-						{% for platform in motherboard.getProcessorPlatformTypes() %}
-						<a href="{{ path('cpufamily_show', {id: platform.getId()}) }}"><span class="text-block">{{ platform.getName() }}</span></a>
-						{% endfor %}
-						{% for compatible in motherboard.getCompatibleFamilies() %}
-						<a href="{{ path('cpufamily_show', {id: compatible.getId()}) }}"><span class="text-block comp">{{ compatible.getName() }}</span></a>
-						{% endfor %}
-					</div>
 					{% else %}
 					<div>Unknown</div>
 					{% endif %}
@@ -144,7 +137,7 @@
 					<div class="full-spec-head"><img src="{{ absolute_url(asset('build/icons/connector.svg')) }}" alt="conn" width="24" height="24"><b>I/O ports</b></div>
 					<div class="list-table">
 						{% if motherboard.getMotherboardIoPorts() is not empty %}
-							{% for port in motherboard.getMotherboardIoPorts()|sort %}
+							{% for port in motherboard.getMotherboardIoPorts()|sort((a, b) => a.getIoPort().getName() <=> b.getIoPort().getName()) %}
 								<div class="list-table-head"><b>{{ port.getCount() }}x&nbsp;</b></div><div>{{ port.getIoPort().getName() }}</div>
 							{% endfor %}
 						{% else %}<div class="list-table-head"></div><div>N/A</div>{% endif %}
@@ -153,7 +146,7 @@
 					<div class="full-spec-head"><img src="{{ absolute_url(asset('build/icons/card.svg')) }}" alt="card" width="24" height="24"><b>Expansion slots</b></div>
 					<div class="list-table">
 						{% if motherboard.getMotherboardExpansionSlots() is not empty %}
-							{% for slot in motherboard.getMotherboardExpansionSlots()|sort %}
+							{% for slot in motherboard.getMotherboardExpansionSlots()|sort((a, b) => a.getExpansionSlot().getName() <=> b.getExpansionSlot().getName()) %}
 								<div class="list-table-head"><b>{{ slot.getCount() }}x&nbsp;</b></div><div>{{ slot.getExpansionSlot().getName() }}</div>
 							{% endfor %}
 						{% else %}<div class="list-table-head"></div><div>N/A</div>{% endif %}
@@ -200,11 +193,95 @@
 					<div>yes ({{ motherboard.getMaxCpu()}} CPUs)</div>
 					{% endif %}
 				</div>
+				<!-- CPU family -->
+				<div class="full-spec">
+					<div class="full-spec-head">
+						<img src="{{ absolute_url(asset('build/icons/486.svg')) }}" alt="cpu" width="24" height="24"><b>CPU family support</b>
+					</div>
+					<div class="list-table notemplate">
+						{% if motherboard.getProcessorPlatformTypes() is not empty %}
+						<ul>
+							{% for platform in motherboard.getProcessorPlatformTypes() %}
+							<li><a href="{{ path('cpufamily_show', {id: platform.getId()}) }}"><span class="text-block list">{{ platform.getName() }}</span></a></li>
+							{% endfor %}
+							{% for compatible in motherboard.getCompatibleFamilies() %}
+							<li><a href="{{ path('cpufamily_show', {id: compatible.getId()}) }}"><span class="text-block list {% if is_granted('ROLE_USER') %}comp{% endif %}">{{ compatible.getName() }}</span></a></li>
+							{% endfor %}
+						</ul>
+						{% else %}
+							<div class="list-table-head"></div><div>N/A</div>
+						{% endif %}
+					</div>
+					<div class="full-spec-head"></div>
+					<div class="list-table"></div>
+				</div>
 			</div>
 
-			<!-- DOWNLOADS -->
-			<div class="show-downloads" id="sh-downloads">
-				<!-- DRIVERS -->
+			<!-- BIOSes -->
+			<div class="show-downloads" id="sh-bios">
+				<div class="show-downloads-group">
+					<div class="show-downloads-group-header">
+						<img src="{{ absolute_url(asset('build/icons/chip.svg')) }}" alt="" width="32" height="32">
+						{% set bfile_cnt = 0 %}
+						{% if motherboard.getMotherboardBios() is not empty %}
+							{% for bios in motherboard.getMotherboardBios() %}
+								{% if bios.getFileName() is not null %}{% set bfile_cnt = bfile_cnt + 1 %}{% endif %}
+							{% endfor %}
+						{% endif %}
+						<span>{{ bfile_cnt }} BIOS image{% if bfile_cnt != 1 %}s{% endif %} available</span>
+					</div>
+					{% if motherboard.getMotherboardBios() is not empty %}
+					{% for biosVen,biosList in motherboard.getMotherboardBiosByVendor() %}
+					{#<div class="quick-spec-table">
+						<div class="quick-spec-head">Vendor</div>
+						<div>{{ biosVen }}</div>
+					</div>#}
+					<p><em>Vendor:</em>&nbsp;{{ biosVen }} [{{ biosList|length }}]</p>
+					<div class="plain-list w300p table">
+						<div class="list-entry centered head">
+							{#<div>Manuf.</div>#}
+							<div>POST string</div>
+							<div>Note</div>
+							<div>Core Ver.</div>
+							<div>BIOS Ver.</div>
+						</div>
+						{% for bios in biosList|sort((a, b) => b.boardVersion <=> a.boardVersion) %}
+						<div class="list-entry centered {% if loop.index is divisible by(2) %}alt{% endif %}">
+							{#<div class="header-label">Manuf.</div>
+							<div>{{ bios.getManufacturer() ? bios.getManufacturer().getName() }}</div>#}
+							<div class="header-label">POST string</div>
+							<div class="monospace">{{ bios.getPostString() }}</div>
+							<div class="header-label">Note</div>
+							<div>{{ bios.getNote() }}</div>
+							<div class="header-label">Core version</div>
+							<div>{{ bios.getCoreVersion() }}</div>
+							<div class="header-label">BIOS version</div>
+							<div>
+								{% if bios.getFileName() is not null %}
+									<a class="combo" href="{{ vich_uploader_asset(bios, 'romFile') }}">
+										<img src="{{ absolute_url(asset('build/icons/dw.svg')) }}" alt="" width="16" height="16">
+										<span>
+										{% if bios.getBoardVersion() is not null %}
+											{{ bios.getBoardVersion() }}
+										{% else %}
+											[unknown]
+										{% endif %}
+										</span>
+									</a>
+								{% else %}
+									{{ bios.getBoardVersion() }}
+								{% endif %}
+							</div>
+						</div>
+						{% endfor %}
+					</div>
+					{% endfor %}
+					{% endif %}
+				</div>
+			</div>
+
+			<!-- DRIVERS -->
+			<div class="show-downloads" id="sh-driver">
 				<div class="show-downloads-group">
 					<div class="show-downloads-group-header">
 						<img src="{{ absolute_url(asset('build/icons/hardware.svg')) }}" alt="drv" width="32" height="32">
@@ -266,62 +343,10 @@
 					{% else %}
 					{% endif %}
 				</div>
+			</div>
 
-				<!-- BIOSes -->
-				<div class="show-downloads-group">
-					<div class="show-downloads-group-header">
-						<img src="{{ absolute_url(asset('build/icons/chip.svg')) }}" alt="" width="32" height="32">
-						{% set bfile_cnt = 0 %}
-						{% if motherboard.getMotherboardBios() is not empty %}
-							{% for bios in motherboard.getMotherboardBios() %}
-								{% if bios.getFileName() is not null %}{% set bfile_cnt = bfile_cnt + 1 %}{% endif %}
-							{% endfor %}
-						{% endif %}
-						<span>{{ bfile_cnt }} BIOS image{% if bfile_cnt != 1 %}s{% endif %} available</span>
-					</div>
-					{% if motherboard.getMotherboardBios() is not empty %}
-					<div class="plain-list w300p table">
-						<div class="list-entry centered head">
-							<div>Manuf.</div>
-							<div>POST string</div>
-							<div>Note</div>
-							<div>Core Ver.</div>
-							<div>BIOS Ver.</div>
-						</div>
-						{% for bios in motherboard.getMotherboardBios()|sort((a, b) => b.boardVersion <=> a.boardVersion)|sort((a, b) => a.manufacturer <=> b.manufacturer) %}
-						<div class="list-entry centered {% if loop.index is divisible by(2) %}alt{% endif %}">
-							<div class="header-label">Manuf.</div>
-							<div>{{ bios.getManufacturer() ? bios.getManufacturer().getName() }}</div>
-							<div class="header-label">POST string</div>
-							<div class="monospace">{{ bios.getPostString() }}</div>
-							<div class="header-label">Note</div>
-							<div>{{ bios.getNote() }}</div>
-							<div class="header-label">Core version</div>
-							<div>{{ bios.getCoreVersion() }}</div>
-							<div class="header-label">BIOS version</div>
-							<div>
-								{% if bios.getFileName() is not null %}
-									<a class="combo" href="{{ vich_uploader_asset(bios, 'romFile') }}">
-										<img src="{{ absolute_url(asset('build/icons/dw.svg')) }}" alt="" width="16" height="16">
-										<span>
-										{% if bios.getBoardVersion() is not null %}
-											{{ bios.getBoardVersion() }}
-										{% else %}
-											[unknown]
-										{% endif %}
-										</span>
-									</a>
-								{% else %}
-									{{ bios.getBoardVersion() }}
-								{% endif %}
-							</div>
-						</div>
-						{% endfor %}
-					</div>
-					{% endif %}
-				</div>
-
-				<!-- MANUALS -->
+			<!-- Documentation -->
+			<div class="show-downloads" id="sh-docs">
 				<div class="show-downloads-group">
 					<div class="show-downloads-group-header">
 						<img src="{{ absolute_url(asset('build/icons/manual.svg')) }}" alt="doc" width="32" height="32">
@@ -378,6 +403,7 @@
 			</div>
 		</div>
 	</div>
+	
 	<!-- IMAGES -->
 	<div class="show-images" id="sh-images">
 	{% if motherboard.getImages() is not empty %}

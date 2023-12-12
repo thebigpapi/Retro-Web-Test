@@ -30,6 +30,9 @@ services:
         calls:
             - method: setContainer
               arguments: ['@service_container']
+    App\Controller\SiteMapController:
+        arguments:
+            ['%kernel.project_dir%']
     App\BranchLoader\GitLoader:
         arguments:
             ['%kernel.project_dir%']

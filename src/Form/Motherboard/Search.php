@@ -85,8 +85,8 @@ class Search extends AbstractType
                 'required' => false,
                 'choice_attr' => function ($choice, string $key, mixed $value) {
                     if($choice == "Not identified")
-                        return ['data_id' => 'NULL' ];
-                    return ['data_id' => $choice->getId() ];
+                        return ['data-id' => 'NULL' ];
+                    return ['data-id' => $choice->getId() ];
                 },
                 'choices' => $options['moboManufacturers'],
                 'placeholder' => 'Type to select a manufacturer ...'
@@ -98,10 +98,10 @@ class Search extends AbstractType
                 'required' => false,
                 'choice_attr' => function ($choice, string $key, mixed $value) {
                     if($choice == "Not identified")
-                        return ['data_id' => 'NULL' ];
+                        return ['data-id' => 'NULL' ];
                     if(strpos($choice, "any") && strpos($choice, "chipset"))
-                        return ['data_id' => 0 . $choice->getManufacturer()->getId() ];
-                    return ['data_id' => $choice->getId() ];
+                        return ['data-id' => 0 . $choice->getManufacturer()->getId() ];
+                    return ['data-id' => $choice->getId() ];
                 },
                 'choices' => $this->getChipsets(),
                 'placeholder' => "Type to select a chipset ...",
@@ -124,7 +124,7 @@ class Search extends AbstractType
                 'expanded' => false,
                 'required' => false,
                 'choice_attr' => function ($choice, string $key, mixed $value) {
-                    return ['data_id' => $choice->getId() ];
+                    return ['data-id' => $choice->getId() ];
                 },
                 'choices' => $options['cpuSockets'],
                 'placeholder' => 'Type to select a socket ...',
@@ -135,7 +135,7 @@ class Search extends AbstractType
                 'expanded' => false,
                 'required' => false,
                 'choice_attr' => function ($choice, string $key, mixed $value) {
-                    return ['data_id' => $choice->getId() ];
+                    return ['data-id' => $choice->getId() ];
                 },
                 'choices' => $options['cpuSockets'],
                 'placeholder' => 'Type to select a socket ...',
@@ -146,7 +146,7 @@ class Search extends AbstractType
                 'expanded' => false,
                 'required' => false,
                 'choice_attr' => function ($choice, string $key, mixed $value) {
-                    return ['data_id' => $choice->getId() ];
+                    return ['data-id' => $choice->getId() ];
                 },
                 'choices' => $options['procPlatformTypes'],
                 'placeholder' => 'Type to select a processor family ...',
@@ -157,7 +157,7 @@ class Search extends AbstractType
                 'expanded' => false,
                 'required' => false,
                 'choice_attr' => function ($choice, string $key, mixed $value) {
-                    return ['data_id' => $choice->getId() ];
+                    return ['data-id' => $choice->getId() ];
                 },
                 'choices' => $options['procPlatformTypes'],
                 'placeholder' => 'Type to select a processor family ...',
@@ -169,8 +169,8 @@ class Search extends AbstractType
                 'expanded' => false,
                 'choice_attr' => function ($choice, string $key, mixed $value) {
                     if($choice == "Unidentified")
-                        return ['data_id' => 'NULL' ];
-                    return ['data_id' => $choice->getId() ];
+                        return ['data-id' => 'NULL' ];
+                    return ['data-id' => $choice->getId() ];
                 },
                 'choices' => $options['formFactors'],
                 'placeholder' => 'Type to select a form factor ...',

@@ -42,19 +42,23 @@ class ProcessorRepository extends ServiceEntityRepository
     public function findAllAlphabetic(string $letter): array
     {
         $entityManager = $this->getEntityManager();
-        $likematch = "$letter%";
-        $query = $entityManager->createQuery(
-            "SELECT UPPER(man.name) manNameSort, cpu
-            FROM App\Entity\Processor cpu, App\Entity\Manufacturer man
-            WHERE cpu.manufacturer=man AND UPPER(man.name) like :likeMatch
-            ORDER BY manNameSort ASC, cpu.name ASC"
-        )->setParameter('likeMatch', $likematch);
+        if (empty($letter)) {
+            $query = $entityManager->createQuery(
+                "SELECT 'Unknown' as manName, cpu.id, UPPER(cpu.name) cpuNameSort, cpu.lastEdited
+                FROM App\Entity\Processor cpu
+                WHERE cpu.manufacturer IS NULL
+                ORDER BY cpuNameSort ASC");
+        } else {
+            $likematch = "$letter%";
+            $query = $entityManager->createQuery(
+                "SELECT cpu.id, UPPER(man.name) manNameSort, UPPER(cpu.name) cpuNameSort, cpu.lastEdited
+                FROM App\Entity\Processor cpu, App\Entity\Manufacturer man
+                WHERE cpu.manufacturer=man AND UPPER(man.name) like :likeMatch
+                ORDER BY manNameSort ASC, cpuNameSort ASC"
+                )->setParameter('likeMatch', $likematch);
+        }
 
-        $outputArray = [];
-        foreach ($query->getResult() as $res) {
-            $outputArray[] = $res[0];
-        };
-        return $outputArray;
+        return $query->getResult();
     }
     /**
      * @return Processor[]

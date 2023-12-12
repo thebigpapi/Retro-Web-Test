@@ -115,7 +115,7 @@ class DriversController extends AbstractController
         return $form;
     }
 
-    #[Route('/drivers/index/{letter}', name:'driverindex', requirements:['letter' => '\w|[?]'], methods:["GET"])]
+    /* #[Route('/drivers/index/{letter}', name:'driverindex', requirements:['letter' => '\w|[?]'], methods:["GET"])]
     public function indexDriver(Request $request, PaginatorInterface $paginator, string $letter, LargeFileRepository $driverRepository): Response
     {
         if ($letter === "?") {
@@ -141,5 +141,5 @@ class DriversController extends AbstractController
             'driver_count' => count($data),
             'letter' => $letter,
         ]);
-    }
+    } */
 }

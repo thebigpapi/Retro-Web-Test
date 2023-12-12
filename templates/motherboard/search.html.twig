@@ -10,18 +10,26 @@
 	<script src="/build/js/tom-select.complete.min.js" defer></script>
 	<script src="/build/js/search.js" defer></script>
 {% endblock %}
+{% block subnav %}
+<a href="{{ path('mobosearch') }}" class="nav-link active">
+	<span class="navbar-label">Motherboard</span>
+</a>
+<a href="{{ path('biossearch') }}" class="nav-link">
+	<span class="navbar-label">BIOS</span>
+</a>
+{% endblock %}
 {% block body %}
 	{{ form_start(form, {'method': 'POST', 'name': 'search_motherboard', 'action': path("mobosearch"), 'attr': {'onkeydown': 'return event.key != \'Enter\'', 'data-live-action': path('mobolivewrapper')}}) }}
 	<fieldset id="search-fieldset">
 		<div class="title">Search for a motherboard</div>
-		<div class="index-title">
+		{# <div class="index-title">
 			List boards whose manufacturer name starts with<br>
 		</div>
 		<div class="index-list">
 			{% for letter in ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','?']%}
 				<a class="index-letter" href="{{path("moboindex", {"letter":letter})}}">{{letter}}</a>
 			{% endfor %}
-		</div>
+		</div> #}
 		<section class="search-form-grid">
 			<div class="search-form-entry">
 				<label class="search-form-label" for="search_name" title="This is where you enter the board part number, do not write the manufacturer name here!">
@@ -94,8 +102,9 @@
 
 		<section class="search-form-grid">
 			<div class="search-form-filter">
-				<label class="search-form-label" title="">
+				<label class="search-form-label" title="In the count box, you can use the symbols <, > and = to specify non-exact slot amounts.&#10;Type in the search box to get the exact slot type.">
 					<span>Expansion slots</span>
+					<img src="{{ absolute_url(asset('build/icons/help.svg')) }}" alt="" width="16" height="16">
 					{% include 'macros/buttons.html.twig' with {'type':'add', 'action': 'motherboardExpansionSlots'} %}
 				</label>
 				<div class="search-form-widget filter-list" id="motherboardExpansionSlots-fields-list" data-widget-counter="{{ form.motherboardExpansionSlots|length }}" data-prototype="
@@ -114,8 +123,9 @@
 			</div>
 
 			<div class="search-form-filter">
-				<label class="search-form-label" title="">
+				<label class="search-form-label" title="In the count box, you can use the symbols <, > and = to specify non-exact port amounts.&#10;Type in the search box to get the exact port type.">
 					<span>I/O ports</span>
+					<img src="{{ absolute_url(asset('build/icons/help.svg')) }}" alt="" width="16" height="16">
 					{% include 'macros/buttons.html.twig' with {'type':'add', 'action': 'motherboardIoPorts'} %}
 				</label>
 				<div class="search-form-widget filter-list" id="motherboardIoPorts-fields-list" data-widget-counter="{{ form.motherboardIoPorts|length }}" data-prototype="
@@ -134,8 +144,9 @@
 			</div>
 
 			<div class="search-form-filter">
-				<label class="search-form-label" title="">
+				<label class="search-form-label" title="Type in the search box to thin down the result list.">
 					<span>Expansion chips</span>
+					<img src="{{ absolute_url(asset('build/icons/help.svg')) }}" alt="" width="16" height="16">
 					{% include 'macros/buttons.html.twig' with {'type':'add', 'action': 'expansionChips'} %}
 				</label>
 				<div class="search-form-widget filter-list" id="expansionChips-fields-list" data-widget-counter="{{ form.expansionChips|length }}" data-prototype="

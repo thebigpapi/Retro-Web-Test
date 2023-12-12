@@ -131,7 +131,7 @@ class DashboardController extends AbstractDashboardController
             MenuItem::linkToCrud('OS flags', 'os/1998win.svg', OsFlag::class)->setPermission('ROLE_ADMIN'),
             MenuItem::linkToCrud('Media types', 'file.svg', MediaTypeFlag::class)->setPermission('ROLE_ADMIN'),
             MenuItem::linkToCrud('Form factors', 'dimension.svg', FormFactor::class)->setPermission('ROLE_ADMIN'),
-            MenuItem::linkToCrud('Known Issues', 'misc.svg', KnownIssue::class),
+            MenuItem::linkToCrud('Known Issues', 'misc.svg', KnownIssue::class)->setPermission('ROLE_ADMIN'),
             MenuItem::linkToCrud('Manufacturers', 'factory.svg', Manufacturer::class),
             MenuItem::linkToCrud('Creditors', 'creditor.svg', Creditor::class),
             MenuItem::linkToCrud('Licenses', 'license.svg', License::class)->setPermission('ROLE_ADMIN'),

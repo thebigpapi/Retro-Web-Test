@@ -15,7 +15,7 @@
 {% block opengraph %}
 	{% apply spaceless %}
 	<meta property="og:title" content="{{ expansion_chip.getNameWithManufacturer() }}">
-	<meta property="og:description" content="Get expansion chip info, images and drivers for {{ expansion_chip.getNameWithManufacturer() }}!">
+	<meta property="og:description" content="Get info, images and drivers for the {{ expansion_chip.getNameWithManufacturer() }} expansion chip">
 	{% if expansion_chip.getImages() is not empty %}
 		{% for image in expansion_chip.getImages()|sort((a, b) => a.getFileName() <=> b.getFileName())|slice(0, 1) %}
 			<meta name="twitter:image" content="{{ vich_uploader_asset(image, 'imageFile')}}">
@@ -28,7 +28,14 @@
 	{% endapply %}
 	<link rel="alternate" hreflang="x-default" href="{{ absolute_url(path('expansion_chip_show', {id: expansion_chip.getId()})) }}"/>
 {% endblock %}
-
+{% block subnav %}
+<a href="{{ path('expansionchipsearch') }}" class="nav-link active">
+	<span class="navbar-label">Expansion chip</span>
+</a>
+<a href="{{ path('chipsetsearch') }}" class="nav-link">
+	<span class="navbar-label">Chipset</span>
+</a>
+{% endblock %}
 {% block body %}
 <!-- MANUF./NAME/PART NO. -->
 <div class="title">{{ expansion_chip.getNameWithManufacturer() }}</div>
@@ -63,6 +70,16 @@
 					{% else %}
 						<div>Unknown</div>
 					{% endif %}
+					</div>
+					<!-- Actions -->
+					<div class="quick-spec-head">
+						<img src="{{ absolute_url(asset('build/icons/cursor.svg')) }}" alt="act" width="24" height="24">Actions
+					</div>
+					<div>
+					<div class="toolbar">
+						<a class='button-widget' href="{{ absolute_url(path('app_homepage')) }}motherboards/?expansionChipIds%5B0%5D={{ expansion_chip.getId() }}&amp;showImages=1">
+							<img src='{{ absolute_url(asset('build/icons/hardware.svg')) }}' alt='' width='16' height='16' style='vertical-align:middle;padding:3px;'>See all boards with this chip</a>
+						</div>
 					</div>
 				</div>
 				{% include 'macros/aliases.html.twig' with {'entity':expansion_chip.getChipAliases(), 'msg': 'Also known as:'} %}

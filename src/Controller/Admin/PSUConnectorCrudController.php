@@ -15,12 +15,23 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class PSUConnectorCrudController extends AbstractCrudController
 {
     public static function getEntityFqcn(): string
     {
         return PSUConnector::class;
+    }
+    protected function getRedirectResponseAfterSave(AdminContext $context, string $action): RedirectResponse
+    {
+        $submitButtonName = $context->getRequest()->request->all()['ea']['newForm']['btn'];
+
+        if (Action::SAVE_AND_RETURN === $submitButtonName) {
+            $entityId = $context->getEntity()->getInstance()->getId();
+            return $this->redirectToRoute('psu_connector_show', array('id'=>$entityId));
+        }
+        return $this->redirectToRoute($context->getDashboardRouteName());
     }
     public function configureActions(Actions $actions): Actions
     {

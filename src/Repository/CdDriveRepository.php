@@ -107,4 +107,26 @@ class CdDriveRepository extends ServiceEntityRepository
         $query = $entityManager->createQuery($dql)->setParameter(":cid", $cid);
         return $query->getResult();
     }
+
+    public function findAllAlphabetic(string $letter): array
+    {
+        $entityManager = $this->getEntityManager();
+        if (empty($letter)) {
+            $query = $entityManager->createQuery(
+                "SELECT 'Unknown' as manName, odd.id, UPPER(odd.name) oddNameSort, odd.lastEdited
+                FROM App\Entity\CdDrive odd
+                WHERE odd.manufacturer IS NULL
+                ORDER BY oddNameSort ASC");
+        } else {
+            $likematch = "$letter%";
+            $query = $entityManager->createQuery(
+                "SELECT odd.id, UPPER(man.name) manNameSort, UPPER(odd.name) oddNameSort, odd.lastEdited
+                FROM App\Entity\CdDrive odd, App\Entity\Manufacturer man
+                WHERE odd.manufacturer=man AND UPPER(man.name) like :likeMatch
+                ORDER BY manNameSort ASC, oddNameSort ASC"
+                )->setParameter('likeMatch', $likematch);
+        }
+
+        return $query->getResult();
+    }
 }

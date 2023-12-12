@@ -23,12 +23,23 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class ProcessorPlatformTypeCrudController extends AbstractCrudController
 {
     public static function getEntityFqcn(): string
     {
         return ProcessorPlatformType::class;
+    }
+    protected function getRedirectResponseAfterSave(AdminContext $context, string $action): RedirectResponse
+    {
+        $submitButtonName = $context->getRequest()->request->all()['ea']['newForm']['btn'];
+
+        if (Action::SAVE_AND_RETURN === $submitButtonName) {
+            $entityId = $context->getEntity()->getInstance()->getId();
+            return $this->redirectToRoute('cpufamily_show', array('id'=>$entityId));
+        }
+        return $this->redirectToRoute($context->getDashboardRouteName());
     }
     public function configureActions(Actions $actions): Actions
     {

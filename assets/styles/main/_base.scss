@@ -9,9 +9,9 @@ header.trw-header {
 	font-size: 14pt;
 	width: 100%;
 	font-family: $header-font;
-	//padding: 8px 0;
 	z-index: 1;
 	box-shadow: 0px 3px 3px $shadow-light;
+	margin-bottom: 3px;
 
 	@media (prefers-color-scheme: dark) {
 		background-color: $head-bkg-dark;
@@ -23,67 +23,126 @@ header.trw-header {
 		font-size: 12pt;
 		padding: 5px 0;
 	}
+}
 
-	div {
-		width: 100%;
-		margin: auto;
-		max-width: $wide-max-width;
-		display: flex;
-		flex-wrap: wrap;
+div.page-header {
+	width: 100%;
+	margin: auto;
+	max-width: $wide-max-width;
+	display: flex;
+	flex-wrap: wrap;
+
+	@media (max-width: 500px) {
 		justify-content: center;
+	}
+}
 
-		nav {
-			display: flex;
-			align-items: center;
-			flex-wrap: wrap;
-			font-size: 15pt;
-			padding: 7px;
-			justify-content: center;
+nav {
+	display: flex;
+	align-items: center;
+	flex-wrap: wrap;
+	padding: 7px;
 
-			&.navbar-logo {
-				font-weight: bold;
-				font-size: 18pt;
-				padding: 0px 15px;
-				flex-grow: 1;
-				justify-content: start;
+	border-bottom: 1px solid $head-bkg-light;
+
+	@media (prefers-color-scheme: dark) {
+		border-bottom-color: $head-bkg-dark;
+	}
+
+	&:empty {
+		display: none;
+	}
+
+	&.navbar {
+		padding: 0 !important;
+	}
+
+	.nav-link.active {
+		color: $active-link-light;
+
+		@media (prefers-color-scheme: dark) {
+			color: $active-link-dark;
+		}
+	}
+
+	a {
+		display: flex;
+		align-items: center;
+		text-decoration: none;
+		color: $head-frg-light;
+		transition: ease-in-out $anim-duration color;
+		padding: 5px 2px;
+
+		@media (prefers-color-scheme: dark) {
+			color: $head-frg-dark;
+		}
+
+		&:hover {
+			color: $active-link-light;
+			transition: ease-in-out $anim-duration color;
+
+			@media (prefers-color-scheme: dark) {
+				color: $active-link-dark;
+			}
+		}
+
+		span {
+			padding: 0px 8px;
+		}
+
+		img {
+			padding: 0px 4px;
+			box-sizing: initial !important;
+		}
+	}
+
+	&.navbar-primary {
+		justify-content: center;
+		font-size: 15pt;
+
+		&.navbar-logo {
+			font-weight: bold;
+			font-size: 18pt;
+			padding: 0px 15px;
+			flex-grow: 1;
+			justify-content: start !important;
+
+			@media (max-width: 500px) {
+				justify-content: center !important;
+			}
+		}
+	}
+
+	&.navbar-secondary {
+		font-size: 11pt;
+		padding: 5px;
+		justify-content: start;
+		width: 100%;
+
+		.nav-link.active {
+			color: $active-link-light;
+
+			@media (prefers-color-scheme: dark) {
+				color: $active-link-dark;
+			}
+		}
+
+		a {
+			color: $body-frg-light;
+
+			@media (prefers-color-scheme: dark) {
+				color: $body-frg-dark;
 			}
 
-			a {
-				display: flex;
-				align-items: center;
-				text-decoration: none;
-				color: $head-frg-light;
-				transition: ease-in-out $anim-duration color;
-				padding: 5px 2px;
+			&:hover {
+				color: $active-link-light;
 
 				@media (prefers-color-scheme: dark) {
-					color: $head-frg-dark;
-				}
-
-				&:hover {
-					color: $active-link-light;
-					transition: ease-in-out $anim-duration color;
-
-					@media (prefers-color-scheme: dark) {
-						color: $active-link-dark;
-					}
-				}
-
-				span {
-					padding: 0px 8px;
-				}
-
-				img {
-					padding: 0px 4px;
-					box-sizing: initial !important;
+					color: $active-link-dark;
 				}
 			}
 		}
 	}
-}
-
-nav.navbar {
-	padding: 0 !important;
 }
 
 span.navbar-icon-trw-ea.trw-admin {
@@ -264,7 +323,7 @@ main {
 		align-items: center;
 		justify-content: center;
 		gap: 10px;
-		padding: 5px 10px;		
+		padding: 5px 10px;
 
 		@media (prefers-color-scheme: dark) {
 			background: $accent-bkg-dark;

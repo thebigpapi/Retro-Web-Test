@@ -6,7 +6,14 @@
 	<meta name="description" content="Advanced BIOS info(AMI/Award manufacturer codes), Award chipset IDs">
 	<link rel="alternate" hreflang="x-default" href="{{ absolute_url(path('bios_list')) }}"/>
 {% endblock %}
-
+{% block subnav %}
+<a href="{{ path('mobosearch') }}" class="nav-link">
+	<span class="navbar-label">Motherboard</span>
+</a>
+<a href="{{ path('biossearch') }}" class="nav-link active">
+	<span class="navbar-label">BIOS</span>
+</a>
+{% endblock %}
 {% block body %}
 	<div class="title">List of BIOS manufacturer and chipset codes</div>
 	{% for manufacturer, codes in biosCodes %}

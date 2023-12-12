@@ -10,6 +10,14 @@
 	<script src="/build/js/tom-select.complete.min.js" defer></script>
 	<script src="/build/js/search.js" defer></script>
 {% endblock %}
+{% block subnav %}
+<a href="{{ path('expansionchipsearch') }}" class="nav-link active">
+	<span class="navbar-label">Expansion chip</span>
+</a>
+<a href="{{ path('chipsetsearch') }}" class="nav-link">
+	<span class="navbar-label">Chipset</span>
+</a>
+{% endblock %}
 {% block body %}
 	{{ form_start(form, {'method': 'POST', 'name': 'search_expansionchip', 'action':path("expansionchipsearch"), 'attr':{'onkeydown': 'return event.key != \'Enter\'', 'data-live-action': path('expansionchiplivewrapper')}}) }}
 	<fieldset id="search-fieldset">
@@ -21,7 +29,7 @@
 					<img src="{{ absolute_url(asset('build/icons/help.svg')) }}" alt="" width="16" height="16">
 				</label>
 				<div class="search-form-widget">
-					<div id="setchip1">{{ form_widget(form.expansionChipManufacturer) }}</div>
+					<div>{{ form_widget(form.expansionChipManufacturer) }}</div>
 					<div>{{ form_widget(form.name, {'attr': {'placeholder': 'Name or Part number (without manufacturer) ...'}}) }}</div>
 				</div>
 			</div>
@@ -31,7 +39,7 @@
 					<img src="{{ absolute_url(asset('build/icons/help.svg')) }}" alt="" width="16" height="16">
 				</label>
 				<div class="search-form-widget">
-					<div id="setchip1">{{ form_widget(form.type) }}</div>
+					<div>{{ form_widget(form.type) }}</div>
 				</div>
 			</div>
 			<div class="search-form-entry">

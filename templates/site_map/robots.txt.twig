@@ -1,0 +1,23 @@
+User-agent: *
+
+Allow: {{ path('app_homepage') }}
+Allow: {{ path('app_support') }}
+Allow: {{ path('app_info') }}
+Allow: {{ path('app_credits') }}
+Allow: {{ path('app_contributions') }}
+Allow: {{ path('app_legal') }}
+Allow: {{ path('mobosearch') }}
+Allow: {{ path('biossearch') }}
+Allow: {{ path("bios_list") }}
+Allow: {{ path('expansionchipsearch') }}
+Allow: {{ path('chipsetsearch') }}
+Allow: {{ path('cpusearch') }}
+Allow: {{ path('hddsearch') }}
+Allow: {{ path('cddsearch') }}
+Allow: {{ path('fddsearch') }}
+Allow: {{ path('driversearch') }}
+
+Disallow: {{ path('dashboard') }}
+Disallow: {{ path('app_login') }}
+
+Sitemap: {{ absolute_url(path('sitemap')) }}

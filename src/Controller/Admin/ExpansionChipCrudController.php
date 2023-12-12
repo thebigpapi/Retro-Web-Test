@@ -24,12 +24,23 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class ExpansionChipCrudController extends AbstractCrudController
 {
     public static function getEntityFqcn(): string
     {
         return ExpansionChip::class;
+    }
+    protected function getRedirectResponseAfterSave(AdminContext $context, string $action): RedirectResponse
+    {
+        $submitButtonName = $context->getRequest()->request->all()['ea']['newForm']['btn'];
+
+        if (Action::SAVE_AND_RETURN === $submitButtonName) {
+            $entityId = $context->getEntity()->getInstance()->getId();
+            return $this->redirectToRoute('expansion_chip_show', array('id'=>$entityId));
+        }
+        return $this->redirectToRoute($context->getDashboardRouteName());
     }
     public function configureActions(Actions $actions): Actions
     {

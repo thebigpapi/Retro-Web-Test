@@ -104,8 +104,25 @@ div.index-title {
 }
 
 // Motherboard search form
-form fieldset {
+fieldset {
 	border: none;
+
+	&.search-bar {
+		display: flex;
+		gap: 15px;
+		max-width: 900px;
+		margin: 0 auto;
+		padding: 30px 15px;
+
+		a {
+			align-self: center;
+		}
+
+		input {
+			flex-grow: 1;
+			padding-left: 10px;
+		}
+	}
 
 	input.num {
 		max-width: 45px;
@@ -126,7 +143,7 @@ section {
 		grid-template-columns: repeat(auto-fill, minmax($form-breakpoint - 45px, 1fr));
 		column-gap: 20px;
 		row-gap: 10px;
-	
+
 		@media (max-width: $form-breakpoint) {
 			display: block;
 		}
@@ -183,7 +200,9 @@ label.search-form-label {
 				width: 100%;
 				flex-grow: 1;
 			}
-			&.dropdown-input-wrap, &.ts-dropdown-content{
+
+			&.dropdown-input-wrap,
+			&.ts-dropdown-content {
 				width: auto;
 			}
 		}
@@ -443,17 +462,6 @@ button.alias-collapsible:after {
 button.alias-collapsible.active::after {
 	content: " −";
 }
-
-/*#setmanuf,
-#setchip1,
-#setcpu1,
-#setcpup1,
-#setcpu3,
-#setcpup3 {
-	select {
-		display: none;
-	}
-}*/
 
 @media (hover: none) {
 	span.help-t {

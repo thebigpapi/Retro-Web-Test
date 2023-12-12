@@ -106,4 +106,26 @@ class FloppyDriveRepository extends ServiceEntityRepository
         $query = $entityManager->createQuery($dql)->setParameter(":cid", $cid);
         return $query->getResult();
     }
+
+    public function findAllAlphabetic(string $letter): array
+    {
+        $entityManager = $this->getEntityManager();
+        if (empty($letter)) {
+            $query = $entityManager->createQuery(
+                "SELECT 'Unknown' as manName, fdd.id, UPPER(fdd.name) fddNameSort, fdd.lastEdited
+                FROM App\Entity\FloppyDrive fdd
+                WHERE fdd.manufacturer IS NULL
+                ORDER BY fddNameSort ASC");
+        } else {
+            $likematch = "$letter%";
+            $query = $entityManager->createQuery(
+                "SELECT fdd.id, UPPER(man.name) manNameSort, UPPER(fdd.name) fddNameSort, fdd.lastEdited
+                FROM App\Entity\FloppyDrive fdd, App\Entity\Manufacturer man
+                WHERE fdd.manufacturer=man AND UPPER(man.name) like :likeMatch
+                ORDER BY manNameSort ASC, fddNameSort ASC"
+                )->setParameter('likeMatch', $likematch);
+        }
+
+        return $query->getResult();
+    }
 }

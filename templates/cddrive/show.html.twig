@@ -15,7 +15,7 @@
 {% block opengraph %}
 	{% apply spaceless %}
 	<meta property="og:title" content="{{ cddrive.getNameWithManufacturer() }}">
-	<meta property="og:description" content="Get expansion chip info, images and drivers for {{ cddrive.getNameWithManufacturer() }}!">
+	<meta property="og:description" content="Get info, images and documentation for the {{ cddrive.getNameWithManufacturer() }} optical drive">
 	{% if cddrive.getStorageDeviceImages() is not empty %}
 		{% for image in cddrive.getStorageDeviceImages()|sort((a, b) => a.getFileName() <=> b.getFileName())|slice(0, 1) %}
 			<meta name="twitter:image" content="{{ vich_uploader_asset(image, 'imageFile')}}">
@@ -28,7 +28,17 @@
 	{% endapply %}
 	<link rel="alternate" hreflang="x-default" href="{{ absolute_url(path('cd_drive_show', {id: cddrive.getId()})) }}"/>
 {% endblock %}
-
+{% block subnav %}
+<a href="{{ path('hddsearch') }}" class="nav-link">
+	<span class="navbar-label">Hard drive</span>
+</a>
+<a href="{{ path('cddsearch') }}" class="nav-link active">
+	<span class="navbar-label">Optical drive</span>
+</a>
+<a href="{{ path('fddsearch') }}" class="nav-link">
+	<span class="navbar-label">Floppy drive</span>
+</a>
+{% endblock %}
 {% block body %}
 <!-- MANUF./NAME/PART NO. -->
 <div class="title">{{ cddrive.getNameWithManufacturer() }}</div>

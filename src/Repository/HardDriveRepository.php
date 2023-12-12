@@ -13,6 +13,7 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method HardDrive|null findOneBy(array $criteria, array $orderBy = null)
  * @method HardDrive[]    findAll()
  * @method HardDrive[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method HardDrive[]    findAllAlphabetic(string $letter)
  */
 class HardDriveRepository extends ServiceEntityRepository
 {
@@ -135,6 +136,28 @@ class HardDriveRepository extends ServiceEntityRepository
         WHERE c.id = :cid
         ORDER BY hdd.name ASC";
         $query = $entityManager->createQuery($dql)->setParameter(":cid", $cid);
+        return $query->getResult();
+    }
+
+    public function findAllAlphabetic(string $letter): array
+    {
+        $entityManager = $this->getEntityManager();
+        if (empty($letter)) {
+            $query = $entityManager->createQuery(
+                "SELECT 'Unknown' as manName, hdd.id, UPPER(hdd.name) hddNameSort, hdd.lastEdited
+                FROM App\Entity\HardDrive hdd
+                WHERE hdd.manufacturer IS NULL
+                ORDER BY hddNameSort ASC");
+        } else {
+            $likematch = "$letter%";
+            $query = $entityManager->createQuery(
+                "SELECT hdd.id, UPPER(man.name) manNameSort, UPPER(hdd.name) hddNameSort, hdd.lastEdited
+                FROM App\Entity\HardDrive hdd, App\Entity\Manufacturer man
+                WHERE hdd.manufacturer=man AND UPPER(man.name) like :likeMatch
+                ORDER BY manNameSort ASC, hddNameSort ASC"
+                )->setParameter('likeMatch', $likematch);
+        }
+
         return $query->getResult();
     }
 }

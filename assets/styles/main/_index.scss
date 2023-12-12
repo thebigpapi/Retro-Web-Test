@@ -23,21 +23,29 @@ div.index-buttons {
         margin-bottom: 4px;
         display: inline-block;
         text-decoration: none;
-        transition: ease-in-out .15s box-shadow, ease-in-out .15s border-color, ease-in-out .15s color, ease-in-out .15s background-color;
+        transition: ease-in-out .15s box-shadow,
+        ease-in-out .15s border-color,
+        ease-in-out .15s color,
+        ease-in-out .15s background-color;
 
         img {
-            width:auto;
+            width: auto;
             height: 85%;
         }
 
         div {
             background-color: $accent-bkg-light;
             color: $accent-frg-light;
+
             @media (prefers-color-scheme: dark) {
                 background-color: $accent-bkg-dark;
                 color: $accent-frg-dark;
             }
-            transition: ease-in-out .15s box-shadow, ease-in-out .15s border-color, ease-in-out .15s color, ease-in-out .15s background-color;
+
+            transition: ease-in-out .15s box-shadow,
+            ease-in-out .15s border-color,
+            ease-in-out .15s color,
+            ease-in-out .15s background-color;
         }
 
         span {
@@ -62,7 +70,7 @@ div.index-buttons {
                 }
             }
         }
-    }    
+    }
 }
 
 span.image-block {
@@ -78,6 +86,12 @@ span.image-block {
     span span {
         display: block;
     }
+}
+
+div.side-by-side {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+    grid-gap: 25px;
 }
 
 div.perks {
@@ -109,6 +123,7 @@ div.perks {
 
             &:hover {
                 border: 1px solid $active-link-light;
+
                 @media (prefers-color-scheme: dark) {
                     border: 1px solid $active-link-dark;
                 }
@@ -138,8 +153,8 @@ div.perks {
                 img,
                 a.glightbox img {
                     margin: auto;
-                    width:auto;
-                    height:auto;
+                    width: auto;
+                    height: auto;
                     max-width: 270px;
                     max-height: 270px;
                 }
@@ -152,7 +167,7 @@ div.perks {
             a div.perk-name {
                 padding: 10px;
                 color: $normal-link-light;
-                
+
                 @media (prefers-color-scheme: dark) {
                     color: $normal-link-dark;
                 }
@@ -176,13 +191,34 @@ div.perks {
             }
         }
 
-        
+        &.perks-tiny {
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+
+            div.perk {
+
+                a div.perk-image,
+                div.perk-image {
+                    height: 180px;
+
+                    img,
+                    a.glightbox img {
+                        max-width: 120px;
+                        max-height: 120px;
+                    }
+                }
+            }
+        }
     }
 }
 
 /* results */
 div.results {
-    &.lst{display: flex;flex-direction: column;align-items: center;}
+    &.lst {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
     ul {
         margin: 0;
         padding-left: 40px;

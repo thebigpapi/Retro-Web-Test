@@ -61,11 +61,13 @@
 						<img src="{{ absolute_url(asset('build/icons/speed.svg')) }}" alt="speed" width="24" height="24">Frequency
 					</div>
 					<div>{{ cpu.getSpeed() ? cpu.getSpeed().getValueWithUnit() : 'Unknown' }}</div>
+					{% if cpu.getPlatform() is empty or cpu.getPlatform().getDramType() is empty %}
 					<!-- FSB -->
 					<div class="quick-spec-head">
 						<img src="{{ absolute_url(asset('build/icons/speed.svg')) }}" alt="speed" width="24" height="24">Bus speed
 					</div>
 					<div>{{ cpu.getFsb() ? cpu.getFsb().getValueWithUnit() : 'Unknown' }}</div>
+					{% endif %}
 					<!-- Cores -->
 					<div class="quick-spec-head">
 						<img src="{{ absolute_url(asset('build/icons/cpu.svg')) }}" alt="cores" width="24" height="24">Core count
@@ -76,22 +78,29 @@
 						<img src="{{ absolute_url(asset('build/icons/cpu.svg')) }}" alt="threads" width="24" height="24">Thread count
 					</div>
 					<div>{{ cpu.getThreads() ? cpu.getThreads() : 'Unknown' }}</div>
+					{% if cpu.getPlatform() is not empty and cpu.getPlatform().getDramType() is not empty %}
 					<!-- IMC -->
 					<div class="quick-spec-head">
 						<img src="{{ absolute_url(asset('build/icons/ram_multi.svg')) }}" alt="threads" width="24" height="24">IMC
 					</div>
 					<div>
-					{% if cpu.getPlatform() is not empty %}
-						{% if cpu.getPlatform().getDramType() is not empty %}
 						<div class="tag-container">
 							{% for dram in cpu.getPlatform().getDramType() %}<span class="text-block">{{ dram.getName()}}</span>{% endfor %}
 						</div>
-						{% else %}
-							None
-						{% endif %}
-					{% else %}
-						Unknown
-					{% endif %}</div>
+					</div>
+					{% endif %}
+					<!-- Actions -->
+					{% if cpu.getSockets() is not empty %}					
+					<div class="quick-spec-head">
+						<img src="{{ absolute_url(asset('build/icons/cursor.svg')) }}" alt="act" width="24" height="24">Actions
+					</div>
+					<div>
+					<div class="toolbar">
+						<a class='button-widget' href="{{ absolute_url(path('app_homepage')) }}motherboards/?cpuSocket1={{ cpu.getSockets()[0].getId() }}&amp;platform1={{ cpu.getPlatform().getId() }}&amp;showImages=1">
+							<img src='{{ absolute_url(asset('build/icons/hardware.svg')) }}' alt='' width='16' height='16' style='vertical-align:middle;padding:3px;'>See all compatible boards</a>
+						</div>
+					</div>
+					{% endif %}
 				</div><div class="quick-spec-table">
 					<!-- Process node -->
 					<div class="quick-spec-head">
@@ -175,14 +184,16 @@
 					</div>
 					<!-- Instruction set -->
 					<div class="quick-spec-head">
-						<img src="{{ absolute_url(asset('build/icons/cpupins.svg')) }}" alt="cpu" width="24" height="24">Instruction set
+						<img src="{{ absolute_url(asset('build/icons/cpupins.svg')) }}" alt="cpu" width="24" height="24">Features
 					</div>
 					{% if cpu.getPlatform() is not empty %}
 						{% if cpu.getPlatform().getInstructionSetsFull() is not empty %}
 							<div class="tag-container">
-								{% for instruction in cpu.getPlatform().getInstructionSetsFull() %}
-									<span class="text-block">{{ instruction.getName()}}</span>
+							<ul>
+								{% for instruction in cpu.getPlatform().getInstructionSetsFull()|sort((a, b) => a.name|lower <=> b.name|lower) %}
+									<li>{{ instruction.getName()}}</li>
 								{% endfor %}
+							</ul>
 							</div>
 						{% else %}
 							<div>Unknown</div>

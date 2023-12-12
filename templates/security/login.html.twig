@@ -15,35 +15,42 @@ a.login-link:hover{color:#7ce5ff;}
 		<img src="{{ absolute_url(asset('build/icons/keys.svg')) }}" alt="" width="128">
 		{% if app.user %}You are logged in as {{ app.user.username }}, <a href="{{ path('app_logout') }}">Logout</a>{% else %}
 		<form method="post">
-						<table>
-							<tr>
-								<td colspan="2">
-									<h2>Please login</h2>
-								</td>
-							</tr>
-							<tr>
-								<td>
-									<label for="inputUsername">Username</label>
-								</td>
-								<td><input type="text" value="{{ last_username }}" name="username" id="inputUsername"></td>
-							</tr>
-							<tr>
-								<td>
-									<label for="inputPassword">Password</label>
-								</td>
-								<td><input type="password" name="password" id="inputPassword">
-									<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}"></td>
-							</tr>
-							<tr>
-								<td>
-									<label><input type="checkbox" name="_remember_me">
-										Remember me</label>
-								</td>
-								<td>
-									<button style="margin-top:10px;float:right;" type="submit">Login</button>
-								</td>
-							</tr>
-						</table>
+			<fieldset id="login-fieldset">
+			<div class="title">Please, log in</div>
+			<div class="search-form-entry">
+				<label class="search-form-label">
+					<span>Username</span>
+				</label>
+				<div class="search-form-widget">
+					<div><input type="text" value="{{ last_username }}" name="username" id="inputUsername"></div>
+				</div>
+			</div>
+			<div class="search-form-entry">
+				<label class="search-form-label">
+					<span>Password</span>
+				</label>
+				<div class="search-form-widget">
+					<div>
+						<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+						<input type="password" name="password" id="inputPassword">
+					</div>
+				</div>
+			</div>
+			<div class="search-form-entry">
+				<label class="search-form-label">
+					<span>Remember me</span>&nbsp;<input type="checkbox" name="_remember_me">
+				</label>
+				{# <div class="search-form-widget">
+					<div><input type="checkbox" name="_remember_me"></div>
+				</div> #}
+			</div>
+
+			<div class="toolbar toolbar-main">
+				<button type="submit">
+					{# <img src="{{ absolute_url(asset('build/icons/search.svg')) }}" alt="search" width="24" height="24"> #}
+					<span>Login</span>
+				</button>
+			</div>
 		</form>
 		{% endif %}
 		

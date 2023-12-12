@@ -10,6 +10,17 @@
 	<script src="/build/js/tom-select.complete.min.js" defer></script>
 	<script src="/build/js/search.js" defer></script>
 {% endblock %}
+{% block subnav %}
+<a href="{{ path('hddsearch') }}" class="nav-link active">
+	<span class="navbar-label">Hard drive</span>
+</a>
+<a href="{{ path('cddsearch') }}" class="nav-link">
+	<span class="navbar-label">Optical drive</span>
+</a>
+<a href="{{ path('fddsearch') }}" class="nav-link">
+	<span class="navbar-label">Floppy drive</span>
+</a>
+{% endblock %}
 {% block body %}
 	{{ form_start(form, {'method': 'POST', 'name': 'search_hdd', 'action':path("hddsearch"), 'attr':{'onkeydown': 'return event.key != \'Enter\'', 'data-live-action': path('hddlivewrapper')}}) }}
 	<fieldset id="search-fieldset">
@@ -21,12 +32,12 @@
 					<img src="{{ absolute_url(asset('build/icons/help.svg')) }}" alt="" width="16" height="16">
 				</label>
 				<div class="search-form-widget">
-					<div id="setchip1">{{ form_widget(form.hddManufacturer) }}</div>
+					<div>{{ form_widget(form.hddManufacturer) }}</div>
 					<div>{{ form_widget(form.name, {'attr': {'placeholder': 'Name or Part number (without manufacturer) ...'}}) }}</div>
 				</div>
 			</div>
 			<div class="search-form-entry">
-				<label class="search-form-label" for="search_chipset" title="By default, it is in Megabytes. Operators can be used (like '>128MB')">
+				<label class="search-form-label" for="search_capacity" title="By default, it is in Megabytes. Operators can be used (like '>128MB')">
 					<span>Capacity</span>
 					<img src="{{ absolute_url(asset('build/icons/help.svg')) }}" alt="" width="16" height="16">
 				</label>

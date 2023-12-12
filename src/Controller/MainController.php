@@ -30,10 +30,12 @@ class MainController extends AbstractController
         ExpansionChipRepository $expansionChipRepository
     ): Response
     {
-        $latestMotherboards = $motherboardRepository->findLatest();
+        $latestMotherboards = $motherboardRepository->findLatest(6);
+        $latestChips = $expansionChipRepository->findLatest(6);
         return $this->render('main/index.html.twig', [
             'controller_name' => 'MainController',
             'latestMotherboards' => $latestMotherboards,
+            'latestChips' => $latestChips,
             'moboCount' => $motherboardRepository->getCount(),
             'chipCount' => $chipsetRepository->getCount(),
             'expchipCount' => $expansionChipRepository->getCount(),

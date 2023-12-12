@@ -39,14 +39,14 @@
 	</head>
 	<body class="content body">
 		<header class="trw-header">
-			<div>
-				<nav class="navbar-logo">
+			<div class="page-header">
+				<nav class="navbar-primary navbar-logo">
 					<a href="{{ path('app_homepage') }}" title="Go to homepage">
 						<img src="{{ absolute_url(asset('build/images/icon.png')) }}" width="40" height="40" alt="logo">
 						<span class="navbar-icon-label">The Retro Web</span>
 					</a>
 				</nav>
-				<nav class="navbar-links">
+				<nav class="navbar-primary navbar-links">
 					<a href="{{ path('app_support') }}" class="nav-link">
 						<img src="{{ absolute_url(asset('build/icons/support.svg')) }}" width="24" height="24" alt="art">
 						<span class="navbar-label">Support Us</span>
@@ -72,7 +72,34 @@
 					{% endif %}
 				</nav>
 			</div>
-		</header>
+		</header>		
+		<div class="page-header">
+			<nav class="navbar-secondary navbar-categories">
+				<a href="{{ path('mobosearch') }}" class="nav-link">
+					<img src="{{ absolute_url(asset('build/icons/motherboard.svg')) }}" width="24" height="24" alt="mobo">
+					<span class="navbar-label">Motherboards</span>
+				</a>
+				<a href="{{ path('expansionchipsearch') }}" class="nav-link">
+					<img src="{{ absolute_url(asset('build/icons/chip.svg')) }}" width="24" height="24" alt="chip">
+					<span class="navbar-label">Chips</span>
+				</a>
+				<a href="{{ path('cpusearch') }}" class="nav-link">
+					<img src="{{ absolute_url(asset('build/icons/486dx.svg')) }}" width="24" height="24" alt="cpu">
+					<span class="navbar-label">CPUs</span>
+				</a>
+				<a href="{{ path('hddsearch') }}" class="nav-link">
+					<img src="{{ absolute_url(asset('build/icons/harddrive.svg')) }}" width="24" height="24" alt="hdd">
+					<span class="navbar-label">Storage</span>
+				</a>
+				<a href="{{ path('driversearch') }}" class="nav-link">
+					<img src="{{ absolute_url(asset('build/icons/hardware.svg')) }}" width="24" height="24" alt="driver">
+					<span class="navbar-label">Drivers &amp; software</span>
+				</a>
+			</nav>
+		</div>
+		<div class="page-header">
+			<nav class="navbar-secondary navbar-subcategories">{% block subnav %}{% endblock %}</nav>
+		</div>
 		<main>
 			<div class="page">
 				{% set maintenance = get_env("MAINTENANCE_MODE")%}

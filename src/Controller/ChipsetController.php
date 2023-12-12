@@ -168,7 +168,7 @@ class ChipsetController extends AbstractController
         return $form;
     }
 
-    #[Route(path: '/chipsets/index/{letter}', name: 'chipsetindex', requirements: ['letter' => '\w'])]
+    /* #[Route(path: '/chipsets/index/{letter}', name: 'chipsetindex', requirements: ['letter' => '\w'])]
     public function indexChipset(PaginatorInterface $paginator, string $letter, ChipsetRepository $chipsetRepository, Request $request)
     {
         $data = $chipsetRepository->findAllAlphabetic($letter);
@@ -182,5 +182,5 @@ class ChipsetController extends AbstractController
             'chipset_count' => count($data),
             'letter' => $letter,
         ]);
-    }
+    }*/
 }
