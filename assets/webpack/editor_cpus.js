@@ -1,5 +1,10 @@
-if(updatecpubtn = document.getElementById('update-cpu-btn'))
+const { default: TomSelect } = require("tom-select");
+
+if(updatecpubtn = document.getElementById('update-cpu-btn')){
     updatecpubtn.addEventListener("click", updateFamilies);
+    updatecpubtn.click();
+}
+
 function updateFamilies() {
     let params = [];
     let cnt = 0;
@@ -85,6 +90,8 @@ function updateWidget(platformArray){
             if(!selected){
                 element.add(invalidOp);
             }
+            element.tomselect.clearOptions();
+            element.tomselect.sync();
             platform_cnt--;
         }
         cnt++;

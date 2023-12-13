@@ -191,27 +191,27 @@ class MotherboardCrudController extends AbstractCrudController
             ->setFormTypeOption('error_bubbling', false)
             ->setColumns('col-sm-12 col-lg-6 col-xxl-4')
             ->onlyOnForms();
-            yield FormField::addPanel('Memory')->onlyOnForms();
-            yield CollectionField::new('motherboardMaxRams', 'Supported RAM size')
-                ->setEntryType(MotherboardMaxRamType::class)
-                ->setFormTypeOption('error_bubbling', false)
-                ->setColumns('col-sm-12 col-lg-6 col-xxl-4')
-                ->renderExpanded()
-                ->onlyOnForms();
-            yield CollectionField::new('dramType', 'Supported RAM types')
-                ->setEntryType(DramTypeType::class)
-                ->setColumns('col-sm-12 col-lg-6 col-xxl-4')
-                ->renderExpanded()
-                ->onlyOnForms();
-            yield CollectionField::new('cacheSize', 'Cache')
-                ->setEntryType(CacheSizeType::class)
-                ->setColumns('col-sm-12 col-lg-6 col-xxl-4')
-                ->renderExpanded()
-                ->onlyOnForms();
-            yield AssociationField::new('maxVideoRam', 'Max VRAM (onboard GPU)')
-                ->setFormTypeOption('placeholder', 'Type to select a VRAM size ...')
-                ->setFormTypeOption('required', false)
-                ->onlyOnForms();
+        yield FormField::addPanel('Memory')->onlyOnForms();
+        yield CollectionField::new('motherboardMaxRams', 'Supported RAM size')
+            ->setEntryType(MotherboardMaxRamType::class)
+            ->setFormTypeOption('error_bubbling', false)
+            ->setColumns('col-sm-12 col-lg-6 col-xxl-4')
+            ->renderExpanded()
+            ->onlyOnForms();
+        yield CollectionField::new('dramType', 'Supported RAM types')
+            ->setEntryType(DramTypeType::class)
+            ->setColumns('col-sm-12 col-lg-6 col-xxl-4')
+            ->renderExpanded()
+            ->onlyOnForms();
+        yield CollectionField::new('cacheSize', 'Cache')
+            ->setEntryType(CacheSizeType::class)
+            ->setColumns('col-sm-12 col-lg-6 col-xxl-4')
+            ->renderExpanded()
+            ->onlyOnForms();
+        yield AssociationField::new('maxVideoRam', 'Max VRAM (onboard GPU)')
+            ->setFormTypeOption('placeholder', 'Type to select a VRAM size ...')
+            ->setFormTypeOption('required', false)
+            ->onlyOnForms();
         yield FormField::addPanel('Misc')
             ->onlyOnForms();
         yield AssociationField::new('formFactor','Form Factor')
