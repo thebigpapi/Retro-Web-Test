@@ -59,7 +59,7 @@ class ProcessorCrudController extends AbstractCrudController
             $entityId = $context->getEntity()->getInstance()->getId();
             return $this->redirectToRoute('processor_show', array('id'=>$entityId));
         }
-        return $this->redirectToRoute($context->getDashboardRouteName());
+        return parent::getRedirectResponseAfterSave($context, $action);
     }
     public function configureActions(Actions $actions): Actions
     {

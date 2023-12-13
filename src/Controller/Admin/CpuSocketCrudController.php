@@ -33,7 +33,7 @@ class CpuSocketCrudController extends AbstractCrudController
             $entityId = $context->getEntity()->getInstance()->getId();
             return $this->redirectToRoute('cpusocket_show', array('id'=>$entityId));
         }
-        return $this->redirectToRoute($context->getDashboardRouteName());
+        return parent::getRedirectResponseAfterSave($context, $action);
     }
     public function configureActions(Actions $actions): Actions
     {

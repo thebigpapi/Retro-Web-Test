@@ -58,7 +58,7 @@ class FloppyDriveCrudController extends AbstractCrudController
             $entityId = $context->getEntity()->getInstance()->getId();
             return $this->redirectToRoute('floppy_drive_show', array('id'=>$entityId));
         }
-        return $this->redirectToRoute($context->getDashboardRouteName());
+        return parent::getRedirectResponseAfterSave($context, $action);
     }
 
     public function configureActions(Actions $actions): Actions

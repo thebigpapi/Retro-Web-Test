@@ -62,7 +62,7 @@ class CdDriveCrudController extends AbstractCrudController
             $entityId = $context->getEntity()->getInstance()->getId();
             return $this->redirectToRoute('cd_drive_show', array('id'=>$entityId));
         }
-        return $this->redirectToRoute($context->getDashboardRouteName());
+        return parent::getRedirectResponseAfterSave($context, $action);
     }
 
     public function configureActions(Actions $actions): Actions

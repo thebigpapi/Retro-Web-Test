@@ -76,7 +76,7 @@ class MotherboardCrudController extends AbstractCrudController
             $boardId = $context->getEntity()->getInstance()->getId();
             return $this->redirectToRoute('motherboard_show', array('id'=>$boardId));
         }
-        return $this->redirectToRoute($context->getDashboardRouteName());
+        return parent::getRedirectResponseAfterSave($context, $action);
     }
     public function configureActions(Actions $actions): Actions
     {
