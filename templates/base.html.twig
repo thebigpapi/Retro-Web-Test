@@ -42,7 +42,11 @@
 			<div class="page-header">
 				<nav class="navbar-primary navbar-logo">
 					<a href="{{ path('app_homepage') }}" title="Go to homepage">
-						<img src="{{ absolute_url(asset('build/images/icon.png')) }}" width="40" height="40" alt="logo">
+						{% if "now"|date("m") == 12 %}
+							<img src="{{ absolute_url(asset('build/images/trw_christmas.png')) }}" width="40" height="40" alt="logo">
+						{% else %}
+							<img src="{{ absolute_url(asset('build/images/icon.png')) }}" width="40" height="40" alt="logo">
+						{% endif %}
 						<span class="navbar-icon-label">The Retro Web</span>
 					</a>
 				</nav>
@@ -72,7 +76,10 @@
 					{% endif %}
 				</nav>
 			</div>
-		</header>		
+		</header>
+		{% if "now"|date("m") == 12 %}
+			<div style="background: url('/build/images/lights.png') repeat-x;width:100%;background-size: 160px 20px;color:#191919">.</div>
+		{% endif %}
 		<div class="page-header">
 			<nav class="navbar-secondary navbar-categories">
 				<a href="{{ path('mobosearch') }}" class="nav-link">
