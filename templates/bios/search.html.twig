@@ -50,23 +50,6 @@
 					<div class="search-chipset-ts">{{ form_widget(form.chipset) }}</div>
 				</div>
 			</div>
-			<div class="search-form-filter">
-				<label class="search-form-label" title="">
-					<span>Expansion chips</span>
-					{% include 'macros/buttons.html.twig' with {'type':'add', 'action': 'expansionChips'} %}
-				</label>
-				<div class="search-form-widget filter-list" id="expansionChips-fields-list" data-widget-counter="{{ form.expansionChips|length }}" data-prototype="
-					{{ form_widget(form.expansionChips.vars.prototype, {'attr': {'style': 'width:50%'}})|e }}
-					{% include 'macros/buttons.html.twig' with {'type':'del'} %}</div>">
-					{% for expchip in form.expansionChips %}
-						<div class="editor-row">
-							{{ form_widget(expchip, {'attr': {'style': 'width:50%'}}) }}
-							{% include 'macros/buttons.html.twig' with {'type':'del'} %}
-							{{ form_errors(expchip) }}
-						</div>
-					{% endfor %}
-				</div>
-			</div>
 			<div class="search-form-entry">
 				<label class="search-form-label" for="search_post_string">
 					<span>POST string</span>
@@ -83,6 +66,32 @@
 				</label>
 				<div class="search-form-widget">
 					<div>{{ form_widget(form.core_version, {'attr': {'style': 'width:15%', 'size': '50'}}) }}</div>
+				</div>
+			</div>
+			<div class="search-form-entry">
+				<label class="search-form-label" for="search_file_name" title="This is the name of the uploaded file">
+					<span>File name</span>
+					<img src="{{ absolute_url(asset('build/icons/help.svg')) }}" alt="" width="16" height="16">
+				</label>
+				<div class="search-form-widget">
+					<div>{{ form_widget(form.file_name, {'attr': {'style': 'width:15%', 'size': '50'}}) }}</div>
+				</div>
+			</div>
+			<div class="search-form-filter">
+				<label class="search-form-label" title="">
+					<span>Expansion chips</span>
+					{% include 'macros/buttons.html.twig' with {'type':'add', 'action': 'expansionChips'} %}
+				</label>
+				<div class="search-form-widget filter-list" id="expansionChips-fields-list" data-widget-counter="{{ form.expansionChips|length }}" data-prototype="
+					{{ form_widget(form.expansionChips.vars.prototype, {'attr': {'style': 'width:50%'}})|e }}
+					{% include 'macros/buttons.html.twig' with {'type':'del'} %}</div>">
+					{% for expchip in form.expansionChips %}
+						<div class="editor-row">
+							{{ form_widget(expchip, {'attr': {'style': 'width:50%'}}) }}
+							{% include 'macros/buttons.html.twig' with {'type':'del'} %}
+							{{ form_errors(expchip) }}
+						</div>
+					{% endfor %}
 				</div>
 			</div>
 		</section>

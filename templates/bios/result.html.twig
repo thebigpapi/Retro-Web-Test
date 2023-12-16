@@ -9,6 +9,7 @@
 				<div>Motherboard</div>
 				<div>POST string</div>
 				<div>Type</div>
+				<div>Version</div>
 				<div>File</div>
 			</div>
 			{% for b in bios %}
@@ -26,21 +27,21 @@
 				<div class="header-label">Type</div>
 				<div>{{ b["bmanName"] }} {{ b[0].getCoreVersion() }}</div>
 
+				<div class="header-label">Version</div>
+				<div>{{ b[0].getBoardVersion() ?: "[unknown]" }}</div>
+
 				<div class="header-label">File</div>
 				<div>
 					{% if b[0].getFileName() is not null %}
 						<a class="combo" href="{{ vich_uploader_asset(b[0], 'romFile') }}">
 							<img src="{{ absolute_url(asset('build/icons/dw.svg')) }}" alt="" width="16" height="16">
 							<span>
-								{% if b[0].getBoardVersion() is not null %}
-									{{ b[0].getBoardVersion() }}
-								{% else %}
-									???
-								{% endif %}
+								{% set fname = b[0].getFileName() %}
+								{{ fname|slice(0, fname|length - 27) ~ fname[fname|length - 4 :] }}
 							</span>
 						</a>
 					{% else %}
-						{{ b[0].getBoardVersion() }}
+						<span>no file :(</span>
 					{% endif %}
 				</div>
 			</div>

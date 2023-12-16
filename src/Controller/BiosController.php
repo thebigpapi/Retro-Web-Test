@@ -110,6 +110,10 @@ class BiosController extends AbstractController
         if ($filePresent && boolval($filePresent)) {
             $criterias['file_present'] = boolval($filePresent);
         }
+        $fileName = htmlentities($request->query->get('fileName') ?? '');
+        if ($fileName) {
+            $criterias['file_name'] = "$fileName";
+        }
         $chipsetId = htmlentities($request->query->get('chipsetId') ?? '');
         if ($chipsetId && intval($chipsetId)) {
             $criterias['chipset_id'] = intval($chipsetId);
@@ -143,6 +147,9 @@ class BiosController extends AbstractController
         }
         if ($coreVersion = $form['core_version']->getData()) {
             $parameters['coreVersion'] = $coreVersion;
+        }
+        if ($fileName = $form['file_name']->getData()) {
+            $parameters['fileName'] = $fileName;
         }
         if ($biosManufacturer = $form['manufacturer']->getData()) {
             $parameters['biosManufacturerId'] = $biosManufacturer->getId();

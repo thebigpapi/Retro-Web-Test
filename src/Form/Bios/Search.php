@@ -68,6 +68,9 @@ class Search extends AbstractType
             ->add('core_version', TextType::class, [
                 'required' => false,
             ])
+            ->add('file_name', TextType::class, [
+                'required' => false,
+            ])
             ->add('manufacturer', EntityType::class, [
                 'class' => Manufacturer::class,
                 'autocomplete' => true,

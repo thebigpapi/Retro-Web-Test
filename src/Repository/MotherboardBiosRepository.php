@@ -67,6 +67,10 @@ class MotherboardBiosRepository extends ServiceEntityRepository
             $whereArray[] = "(LOWER(bios.postString) LIKE LOWER(:postString))";
             $valuesArray["postString"] = "%" . $criterias['post_string'] . "%";
         }
+        if (array_key_exists('file_name', $criterias)) {
+            $whereArray[] = "(LOWER(bios.file_name) LIKE LOWER(:fileName))";
+            $valuesArray["fileName"] = "%" . $criterias['file_name'] . "%";
+        }
         if (array_key_exists('expansionChips', $criterias)) {
             foreach ($criterias['expansionChips'] as $key => $value) {
                 $whereArray[] = "(m.id in (select m$key.id from App\Entity\Motherboard m$key JOIN m$key.expansionChips ec$key where ec$key.id=:idChip$key))";
@@ -84,7 +88,7 @@ class MotherboardBiosRepository extends ServiceEntityRepository
         else{
             $query = $entityManager->createQuery(
                 "SELECT man.name as manName, m.id, m.name, bios, bman.name as bmanName
-                FROM App\Entity\MotherboardBios bios JOIN bios.manufacturer bman JOIN bios.motherboard m JOIN m.manufacturer man JOIN m.expansionChips mec
+                FROM App\Entity\MotherboardBios bios JOIN bios.manufacturer bman JOIN bios.motherboard m JOIN m.manufacturer man LEFT JOIN m.expansionChips mec
                 WHERE $whereString
                 ORDER BY man.name ASC, m.name ASC, bios.coreVersion ASC, manName ASC"
             );
