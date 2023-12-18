@@ -151,6 +151,14 @@
 							{% endfor %}
 						{% else %}<div class="list-table-head"></div><div>N/A</div>{% endif %}
 					</div>
+					<div class="full-spec-head"><img src="{{ absolute_url(asset('build/icons/ram.svg')) }}" alt="card" width="24" height="24"><b>Memory connectors</b></div>
+					<div class="list-table">
+						{% if motherboard.getMotherboardMemoryConnectors() is not empty %}
+							{% for slot in motherboard.getMotherboardMemoryConnectors()|sort((a, b) => a.getMemoryConnector().getName() <=> b.getMemoryConnector().getName()) %}
+								<div class="list-table-head"><b>{{ slot.getCount() }}x&nbsp;</b></div><div>{{ slot.getMemoryConnector().getName() }}</div>
+							{% endfor %}
+						{% else %}<div class="list-table-head"></div><div>N/A</div>{% endif %}
+					</div>
 				</div>
 				{% include 'macros/aliases.html.twig' with {'entity':motherboard.getMotherboardAliases(), 'msg': 'Also known as:'} %}
 				{% include 'macros/notes.html.twig' with {'entity': motherboard} %}

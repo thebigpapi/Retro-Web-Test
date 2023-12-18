@@ -262,7 +262,7 @@ div.quick-spec-table {
 div.full-spec {
     display: grid;
     grid-template-rows: [first] 40px [second] auto [end];
-    grid-template-columns: [first] 50% [second] 50% [end];
+    grid-template-columns: [first] 33% [second] 33% [third] 33% [end];
 
     &.search{
         grid-template-columns: repeat(auto-fill, minmax($form-breakpoint - 45px, 1fr));

@@ -41,6 +41,7 @@ use Symfony\UX\Chartjs\Builder\ChartBuilderInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Config\UserMenu;
 use Symfony\Component\Security\Core\User\UserInterface;
 use App\BranchLoader\GitLoader;
+use App\Entity\MemoryConnector;
 
 class DashboardController extends AbstractDashboardController
 {
@@ -126,6 +127,7 @@ class DashboardController extends AbstractDashboardController
             MenuItem::linkToCrud('Expansion slots', 'card.svg', ExpansionSlot::class),
             MenuItem::linkToCrud('I/O ports', 'rs232.svg', IoPort::class),
             MenuItem::linkToCrud('PSU connectors', 'power.svg', PSUConnector::class),
+            MenuItem::linkToCrud('Memory connectors', 'ram.svg', MemoryConnector::class),
         ])->setPermission('ROLE_ADMIN');
         yield MenuItem::subMenu('Misc', 'misc.svg')->setSubItems([
             MenuItem::linkToCrud('OS flags', 'os/1998win.svg', OsFlag::class)->setPermission('ROLE_ADMIN'),

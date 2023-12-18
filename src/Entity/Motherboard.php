@@ -117,6 +117,9 @@ class Motherboard
     #[ORM\OneToMany(mappedBy: 'motherboard', targetEntity: MiscFile::class, orphanRemoval: true, cascade: ['persist'])]
     #[Assert\Valid()]
     private $miscFiles;
+
+    #[ORM\OneToMany(mappedBy: 'motherboard', targetEntity: MotherboardMemoryConnector::class, orphanRemoval: true, cascade: ['persist'])]
+    private Collection $motherboardMemoryConnectors;
     public function __construct()
     {
         $this->motherboardMaxRams = new ArrayCollection();
@@ -138,6 +141,7 @@ class Motherboard
         $this->psuConnectors = new ArrayCollection();
         $this->expansionChips = new ArrayCollection();
         $this->miscFiles = new ArrayCollection();
+        $this->motherboardMemoryConnectors = new ArrayCollection();
     }
     public function getId(): ?int
     {
@@ -935,5 +939,35 @@ class Motherboard
             }
             array_push($arr, $val);
         }
+    }
+
+    /**
+     * @return Collection<int, MotherboardMemoryConnector>
+     */
+    public function getMotherboardMemoryConnectors(): Collection
+    {
+        return $this->motherboardMemoryConnectors;
+    }
+
+    public function addMotherboardMemoryConnector(MotherboardMemoryConnector $motherboardMemoryConnector): self
+    {
+        if (!$this->motherboardMemoryConnectors->contains($motherboardMemoryConnector)) {
+            $this->motherboardMemoryConnectors->add($motherboardMemoryConnector);
+            $motherboardMemoryConnector->setMotherboard($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMotherboardMemoryConnector(MotherboardMemoryConnector $motherboardMemoryConnector): self
+    {
+        if ($this->motherboardMemoryConnectors->removeElement($motherboardMemoryConnector)) {
+            // set the owning side to null (unless already changed)
+            if ($motherboardMemoryConnector->getMotherboard() === $this) {
+                $motherboardMemoryConnector->setMotherboard(null);
+            }
+        }
+
+        return $this;
     }
 }
