@@ -61,6 +61,7 @@ let static_selects = [
 let dynamic_selects = [
     'motherboardExpansionSlots-fields-list',
     'motherboardIoPorts-fields-list',
+    'motherboardMemoryConnectors-fields-list',
     'expansionChips-fields-list',
     'dramTypes-fields-list',
     'sockets-fields-list',
@@ -133,7 +134,7 @@ function updateFields(params) {
         if (key.includes("expansionChipIds") || key.includes("dramTypeIds") || key.includes("socketIds") || key.includes("platformIds")) {
             updateMultiSelect(key, value);
         }
-        else if (key.includes("expansionSlotsIds") || key.includes("ioPortsIds")) {
+        else if (key.includes("expansionSlotsIds") || key.includes("ioPortsIds") || key.includes("memoryConnectorsIds")) {
             complex_cnt++;
             let first_split = key.split("Ids%5B");
             let second_split = first_split[1].split("%5D%5B");
@@ -218,6 +219,15 @@ function updateMultiSelectCount(type, pos, arr) {
         add.click();
         let select = document.getElementById("search_motherboardIoPorts_" + pos + "_io_port");
         let box = document.getElementById("search_motherboardIoPorts_" + pos + "_count");
+        select.value = arr["id"];
+        select.tomselect.sync();
+        box.value = sign + arr["count"];
+    }
+    else if (type == "memoryConnectors") {
+        let add = document.getElementById("motherboardMemoryConnectors-add-id");
+        add.click();
+        let select = document.getElementById("search_motherboardMemoryConnectors_" + pos + "_io_port");
+        let box = document.getElementById("search_motherboardMemoryConnectors_" + pos + "_count");
         select.value = arr["id"];
         select.tomselect.sync();
         box.value = sign + arr["count"];
@@ -373,9 +383,9 @@ function expand(idx) {
         new TomSelect('#search_motherboardExpansionSlots_' + (counter - 1) + '_expansion_slot', settings);
         el.tomselect.sync();
     }
-    if (idx == "motherboardIoPorts-fields-list") {
-        el = document.getElementById('search_motherboardIoPorts_' + (counter - 1) + '_io_port');
-        new TomSelect('#search_motherboardIoPorts_' + (counter - 1) + '_io_port', settings);
+    if (idx == "motherboardMemoryConnectors-fields-list") {
+        el = document.getElementById('search_motherboardMemoryConnectors_' + (counter - 1) + '_io_port');
+        new TomSelect('#search_motherboardMemoryConnectors_' + (counter - 1) + '_io_port', settings);
         el.tomselect.sync();
     }
     if (idx == "expansionChips-fields-list") {
