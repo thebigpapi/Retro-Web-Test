@@ -83,7 +83,7 @@ class LargeFile
     #[ORM\Column(type: 'integer', nullable: true)]
     private $size;
 
-    #[ORM\OneToMany(targetEntity: LargeFileExpansionChip::class, mappedBy: 'largeFile', orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: LargeFileExpansionChip::class, mappedBy: 'largeFile', orphanRemoval: true, cascade: ['persist'])]
     private $expansionchips;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]

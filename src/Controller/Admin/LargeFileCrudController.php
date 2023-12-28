@@ -7,6 +7,7 @@ use App\Entity\LargeFileMediaTypeFlag;
 use App\Form\Type\LanguageType;
 use App\Form\Type\OsFlagType;
 use App\Form\Type\LargeFileMediaTypeFlagType;
+use App\Form\Type\ExpansionChipLargeFileType;
 use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
@@ -21,6 +22,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CodeEditorField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
@@ -102,6 +104,9 @@ class LargeFileCrudController extends AbstractCrudController
     }
     public function configureFields(string $pageName): iterable
     {
+        yield FormField::addTab('Basic Data')
+            ->setIcon('info')
+            ->onlyOnForms();
         yield IdField::new('id')->onlyOnIndex();
         yield TextField::new('name', 'Name')
             ->setColumns(4);
@@ -163,6 +168,14 @@ class LargeFileCrudController extends AbstractCrudController
             ->onlyOnForms();
         yield DateField::new('lastEdited')
             ->hideOnForm();
+        yield FormField::addTab('Associations')
+            ->setIcon('info')
+            ->onlyOnForms();
+        yield CollectionField::new('expansionChips', 'Expansion chips')
+            ->setEntryType(ExpansionChipLargeFileType::class)
+            ->renderExpanded()
+            ->setColumns('col-sm-12 col-lg-8 col-xxl-6')
+            ->onlyOnForms();
     }
     public function viewDriver(AdminContext $context)
     {
