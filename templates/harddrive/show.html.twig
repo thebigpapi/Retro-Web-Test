@@ -60,6 +60,16 @@
 						{% else %}
 						<div>Unknown</div>
 						{% endif %}
+						<!-- Power connectors -->
+						<div class="quick-spec-head">
+							<img src="{{ absolute_url(asset('build/icons/power.svg')) }}" alt="pwr" width="24" height="24">Power connector
+						</div>
+						{% if harddrive.getPowerConnectors() is not empty %}
+						<div class="tag-container">{% for power in harddrive.getPowerConnectors() %}
+							<a href="{{ path('psu_connector_show', {id: power.getId()}) }}"><span class="text-block">{{ power.getName() }}</span></a>{% endfor %}</div>
+						{% else %}
+						<div>Unknown</div>
+						{% endif %}
 						<!-- Size -->
 						<div class="quick-spec-head">
 							<img src="{{ absolute_url(asset('build/icons/dimension.svg')) }}" alt="cpu" width="24" height="24">Form factor
@@ -85,7 +95,6 @@
 							<img src="{{ absolute_url(asset('build/icons/speed.svg')) }}" alt="486" width="24" height="24">Track-to-track seek
 						</div>
 						<div>{{ harddrive.getTrackSeek() ~ ' ms' ?: 'Unknown' }}</div>
-
 					</div>
 					<div class="quick-spec-table">
 						<!-- Cylinders -->

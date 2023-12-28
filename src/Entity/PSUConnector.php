@@ -34,11 +34,15 @@ class PSUConnector
     #[Assert\Valid()]
     private Collection $entityImages;
 
+    #[ORM\ManyToMany(targetEntity: StorageDevice::class, mappedBy: 'powerConnectors')]
+    private Collection $storageDevices;
+
     public function __construct()
     {
         $this->motherboards = new ArrayCollection();
         $this->entityDocumentations = new ArrayCollection();
         $this->entityImages = new ArrayCollection();
+        $this->storageDevices = new ArrayCollection();
     }
     public function __toString(): string
     {
@@ -147,6 +151,33 @@ class PSUConnector
             if ($entityImage->getPsuConnector() === $this) {
                 $entityImage->setPsuConnector(null);
             }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, StorageDevice>
+     */
+    public function getStorageDevices(): Collection
+    {
+        return $this->storageDevices;
+    }
+
+    public function addStorageDevice(StorageDevice $storageDevice): self
+    {
+        if (!$this->storageDevices->contains($storageDevice)) {
+            $this->storageDevices->add($storageDevice);
+            $storageDevice->addPowerConnector($this);
+        }
+
+        return $this;
+    }
+
+    public function removeStorageDevice(StorageDevice $storageDevice): self
+    {
+        if ($this->storageDevices->removeElement($storageDevice)) {
+            $storageDevice->removePowerConnector($this);
         }
 
         return $this;

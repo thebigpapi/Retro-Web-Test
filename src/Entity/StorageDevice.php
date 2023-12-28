@@ -64,6 +64,9 @@ class StorageDevice
     #[ORM\ManyToMany(targetEntity: StorageDeviceInterface::class, inversedBy: 'storageDevices')]
     private Collection $interfaces;
 
+    #[ORM\ManyToMany(targetEntity: PSUConnector::class, inversedBy: 'storageDevices')]
+    private Collection $powerConnectors;
+
     public function __construct()
     {
         $this->knownIssues = new ArrayCollection();
@@ -74,6 +77,7 @@ class StorageDevice
         $this->redirections = new ArrayCollection();
         $this->lastEdited = new \DateTime('now');
         $this->interfaces = new ArrayCollection();
+        $this->powerConnectors = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -366,6 +370,30 @@ class StorageDevice
     public function removeInterface(StorageDeviceInterface $interface): self
     {
         $this->interfaces->removeElement($interface);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, PSUConnector>
+     */
+    public function getPowerConnectors(): Collection
+    {
+        return $this->powerConnectors;
+    }
+
+    public function addPowerConnector(PSUConnector $powerConnector): self
+    {
+        if (!$this->powerConnectors->contains($powerConnector)) {
+            $this->powerConnectors->add($powerConnector);
+        }
+
+        return $this;
+    }
+
+    public function removePowerConnector(PSUConnector $powerConnector): self
+    {
+        $this->powerConnectors->removeElement($powerConnector);
 
         return $this;
     }

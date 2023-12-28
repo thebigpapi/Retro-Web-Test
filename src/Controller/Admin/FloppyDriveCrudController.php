@@ -10,6 +10,7 @@ use App\Form\Type\StorageDeviceDocumentationType;
 use App\Form\Type\StorageDeviceIdRedirectionType;
 use App\Form\Type\StorageDeviceImageTypeForm;
 use App\Form\Type\StorageDeviceInterfaceType;
+use App\Form\Type\PSUConnectorType;
 use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
@@ -155,13 +156,18 @@ class FloppyDriveCrudController extends AbstractCrudController
             ])
             ->onlyOnForms();
         yield FormField::addRow();
-        yield CollectionField::new('knownIssues', 'Known issues')
-            ->setEntryType(KnownIssueType::class)
+        yield CollectionField::new('interfaces', 'Interface')
+            ->setEntryType(StorageDeviceInterfaceType::class)
             ->setColumns('col-sm-6 col-lg-6 col-xxl-4')
             ->renderExpanded()
             ->onlyOnForms();
-        yield CollectionField::new('interfaces', 'Interface')
-            ->setEntryType(StorageDeviceInterfaceType::class)
+        yield CollectionField::new('powerConnectors', 'Power connectors')
+            ->setEntryType(PSUConnectorType::class)
+            ->setColumns('col-sm-12 col-lg-6 col-xxl-4')
+            ->renderExpanded()
+            ->onlyOnForms();
+        yield CollectionField::new('knownIssues', 'Known issues')
+            ->setEntryType(KnownIssueType::class)
             ->setColumns('col-sm-6 col-lg-6 col-xxl-4')
             ->renderExpanded()
             ->onlyOnForms();
