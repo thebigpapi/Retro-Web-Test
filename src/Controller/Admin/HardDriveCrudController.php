@@ -108,6 +108,7 @@ class HardDriveCrudController extends AbstractCrudController
             ->add('partNumber')
             ->add('storageDeviceAliases')
             ->add('interfaces')
+            ->add('powerConnectors')
             ->add('physicalSize')
             ->add('capacity')
             ->add('cylinders')

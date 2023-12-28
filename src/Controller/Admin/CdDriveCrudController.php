@@ -108,6 +108,7 @@ class CdDriveCrudController extends AbstractCrudController
             ->add('partNumber')
             ->add('storageDeviceAliases')
             ->add('interfaces')
+            ->add('powerConnectors')
             ->add('physicalSize')
             ->add(CdDriveTrayFilter::new('trayType'))
             ->add('cdReadSpeed')

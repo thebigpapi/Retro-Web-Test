@@ -106,6 +106,7 @@ class FloppyDriveCrudController extends AbstractCrudController
             ->add('partNumber')
             ->add('storageDeviceAliases')
             ->add('interfaces')
+            ->add('powerConnectors')
             ->add('physicalSize')
             ->add('density')
             ->add('lastEdited');
