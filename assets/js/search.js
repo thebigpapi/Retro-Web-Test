@@ -145,7 +145,7 @@ function updateFields(params) {
             }
         }
         else if (static_fields.includes(key))
-            document.getElementById("search_" + key).value = value;
+            document.getElementById("search_" + key).value = decodeURI(value);
         else if (key.includes("Id")) {
             updateSelect(key.substring(0, key.length - 2), value);
         }
