@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Entity\LargeFile;
 use App\Form\Drivers\Search;
 use App\Repository\LargeFileRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -45,7 +44,6 @@ class DriversController extends AbstractController
                 'form' => $form->createView(),
             ]);
         }
-        
         $data = $driverRepository->findByDriver($criterias);
         $drivers = $paginator->paginate(
             $data,
@@ -78,8 +76,15 @@ class DriversController extends AbstractController
             );
         $string = "/drivers/?";
         foreach ($request->query as $key => $value){
-            if($key != "domTarget")
-                $string .= $key . '=' . $value . '&';
+            if($key == "osFlagIds"){
+                foreach($value as $idx => $val){
+                    $string .= $key . '%5B' . $idx . '%5D=' . $val .'&';
+                }
+            }
+            else{
+                if($key != "domTarget")
+                    $string .= $key . '=' . $value . '&';
+            }
         }
         return $this->render('drivers/result.html.twig', [
             'controller_name' => 'DriversController',
@@ -94,6 +99,16 @@ class DriversController extends AbstractController
         if ($name) {
             $criterias['name'] = "$name";
         }
+        $osIds = $request->query->get('osFlagIds') ?? $request->request->get('osFlagIds');
+        $chipArray = null;
+        if ($osIds) {
+            if (is_array($osIds)) {
+                $chipArray = $osIds;
+            } else {
+                $chipArray = json_decode($osIds);
+            }
+            $criterias['osFlags'] = $chipArray;
+        }
         return $criterias;
     }
     private function searchFormToParam(Request $request, $form): array
@@ -106,6 +121,14 @@ class DriversController extends AbstractController
         $parameters['itemsPerPage'] = $tempItems > 0 ? $tempItems : $this->getParameter('app.pagination.max');
 
         $parameters['name'] = $form['name']->getData();
+        $osFlags = $form['osFlags']->getData();
+        if ($osFlags) {
+            $parameters['osFlagIds'] = array();
+            foreach ($osFlags as $os) {
+                if($os != null)
+                    array_push($parameters['osFlagIds'], $os->getId());
+            }
+        }
         return $parameters;
     }
     private function _searchFormHandlerDrivers(Request $request): FormInterface
@@ -114,32 +137,4 @@ class DriversController extends AbstractController
         $form->handleRequest($request);
         return $form;
     }
-
-    /* #[Route('/drivers/index/{letter}', name:'driverindex', requirements:['letter' => '\w|[?]'], methods:["GET"])]
-    public function indexDriver(Request $request, PaginatorInterface $paginator, string $letter, LargeFileRepository $driverRepository): Response
-    {
-        if ($letter === "?") {
-            $letter = "";
-        }
-        $data = $driverRepository->findAllAlphabetic($letter);
-
-        usort(
-            $data,
-            function (LargeFile $a, LargeFile $b) {
-                return strcmp($a->getName(), $b->getName());
-            }
-        );
-
-        $drivers = $paginator->paginate(
-            $data,
-            $request->query->getInt('page', 1),
-            $this->getParameter('app.pagination.max')
-        );
-
-        return $this->render('drivers/index.html.twig', [
-            'drivers' => $drivers,
-            'driver_count' => count($data),
-            'letter' => $letter,
-        ]);
-    } */
 }

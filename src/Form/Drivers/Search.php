@@ -6,7 +6,9 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EnumType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use App\Form\Type\ItemsPerPageType;
+use App\Form\Type\OsFlagType;
 
 class Search extends AbstractType
 {
@@ -15,6 +17,12 @@ class Search extends AbstractType
         $builder
             ->add('name', TextType::class, [
                 'required' => false,
+            ])
+            ->add('osFlags', CollectionType::class, [
+                'entry_type' => OsFlagType::class,
+                'allow_add' => true,
+                'allow_delete' => true,
+                'label' => false,
             ])
             ->add('itemsPerPage', EnumType::class, [
                 'class' => ItemsPerPageType::class,

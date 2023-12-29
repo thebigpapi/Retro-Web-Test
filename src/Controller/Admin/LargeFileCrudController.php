@@ -129,7 +129,10 @@ class LargeFileCrudController extends AbstractCrudController
             ->onlyOnForms();
         yield DateField::new('release_date', 'Release Date')
             ->setFormTypeOption('attr', ['style'=>'width:100%;'])
-            ->setColumns(2);
+            ->setColumns(2)
+            ->onlyOnForms();
+        yield TextField::new('getReleaseDateString', 'Release Date')
+            ->onlyOnIndex();
         yield ChoiceField::new('datePrecision', 'Display date format (optional)')
             ->setChoices([
                 'Year, month and day' => 'd',
@@ -166,8 +169,6 @@ class LargeFileCrudController extends AbstractCrudController
         yield CodeEditorField::new('note')
             ->setLanguage('markdown')
             ->onlyOnForms();
-        yield DateField::new('lastEdited')
-            ->hideOnForm();
         yield FormField::addTab('Associations')
             ->setIcon('info')
             ->onlyOnForms();

@@ -68,7 +68,7 @@ class LargeFileRepository extends ServiceEntityRepository
         return $query->getResult();
     }
     
-    public function findByDriver(array $criteria): array
+    public function findByDriver(array $criterias): array
     {
 
         $entityManager = $this->getEntityManager();
@@ -77,12 +77,18 @@ class LargeFileRepository extends ServiceEntityRepository
         $valuesArray = array();
 
         // Checking values in criteria and creating WHERE statements
-        if (array_key_exists('name', $criteria)) {
-            $multicrit = explode(" ", $criteria['name']);
+        if (array_key_exists('name', $criterias)) {
+            $multicrit = explode(" ", $criterias['name']);
             foreach ($multicrit as $key => $val) {
                 $whereArray[] = "(LOWER(drv.name) LIKE :nameLike$key OR LOWER(drv.fileVersion) LIKE :nameLike$key OR LOWER(drv.file_name) LIKE :nameLike$key)";
                 $valuesArray["nameLike$key"] = "%" . strtolower($val) . "%";
             }
+        }
+        if (array_key_exists('osFlags', $criterias)) {
+            foreach ($criterias['osFlags'] as $key => $value) {
+                $whereArray[] = "(drv.id in (select drv$key.id from App\Entity\LargeFile drv$key JOIN drv$key.osFlags os$key where os$key.id=:idOs$key))";
+                $valuesArray["idOs$key"] = $value;
+        }
         }
 
         // Building where statement

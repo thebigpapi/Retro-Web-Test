@@ -64,6 +64,7 @@ let dynamic_selects = [
     'expansionChips-fields-list',
     'dramTypes-fields-list',
     'sockets-fields-list',
+    'osFlags-fields-list',
     'platforms-fields-list'
 ];
 
@@ -130,7 +131,7 @@ function updateFields(params) {
     let complex_cnt = 0;
     let complex_arr = [];
     for (const [key, value] of Object.entries(params)) {
-        if (key.includes("expansionChipIds") || key.includes("dramTypeIds") || key.includes("socketIds") || key.includes("platformIds")) {
+        if (key.includes("osFlagIds") || key.includes("expansionChipIds") || key.includes("dramTypeIds") || key.includes("socketIds") || key.includes("platformIds")) {
             updateMultiSelect(key, value);
         }
         else if (key.includes("expansionSlotsIds") || key.includes("ioPortsIds")) {
@@ -396,6 +397,11 @@ function expand(idx) {
     if (idx == "platforms-fields-list") {
         el = document.getElementById('search_platforms_' + (counter - 1));
         new TomSelect('#search_platforms_' + (counter - 1), {});
+        el.tomselect.sync();
+    }
+    if (idx == "osFlags-fields-list") {
+        el = document.getElementById('search_osFlags_' + (counter - 1));
+        new TomSelect('#search_osFlags_' + (counter - 1), settings);
         el.tomselect.sync();
     }
 }
