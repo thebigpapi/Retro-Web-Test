@@ -8,6 +8,8 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\File;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use App\Entity\Manual;
 use App\Entity\Language;
 use Vich\UploaderBundle\Form\Type\VichFileType;
@@ -25,6 +27,16 @@ class ManualType extends AbstractType
                 'choice_label' => 'name',
                 'multiple' => false,
                 'expanded' => false,
+            ])
+            ->add('releaseDate', DateType::class, [
+                'widget' => 'single_text',
+            ])
+            ->add('datePrecision', ChoiceType::class, [
+                'choices'  => [
+                    'Year, month and day' => 'd',
+                    'Year and month' => 'm',
+                    'Year only' => 'y'
+                ],
             ])
             ->add('manualFile', VichFileType::class, [
                 'label' => 'PDF file',

@@ -1,6 +1,4 @@
 {% extends 'base.html.twig' %}
-{% from 'macros/largeFile.html.twig' import link as driverLink %}
-{% from 'macros/largeFile.html.twig' import header as driverHeader %}
 
 {% block title %}
 	{{ harddrive.getNameWithManufacturer() }}
@@ -147,12 +145,15 @@
 					<div class="plain-list w300p table">
 						<div class="list-entry centered head">
 							<div>Language</div>
+							<div>Release date</div>
 							<div>File</div>
 						</div>
 						{% for manual in allDocs|sort((a, b) => a.getLinkName <=> b.getLinkName) %}
 						<div class="list-entry centered {% if loop.index is divisible by(2) %}alt{% endif %}">
 							<div class="header-label">Language</div>
 							<div>{{ manual.getLanguage().getName()}}</div>
+							<div class="header-label">Release date</div>
+							<div>{{ manual.getReleaseDateString()}}</div>
 							<div class="header-label">File</div>
 							<div>
 								<a class="combo" href="{{ vich_uploader_asset(manual, 'manualFile') }}">

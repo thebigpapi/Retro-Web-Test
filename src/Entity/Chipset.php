@@ -296,6 +296,14 @@ class Chipset
     {
         return $this->drivers;
     }
+    public function getAllDrivers(): Collection
+    {
+        $drivers = $this->drivers->toArray();
+        foreach ($this->getExpansionChips() as $expansionChip) {
+            $drivers = array_merge($drivers, $expansionChip->getDrivers()->toArray());
+        }
+        return new ArrayCollection($drivers);
+    }
     public function addDriver(LargeFileChipset $driver): self
     {
         if (!$this->drivers->contains($driver)) {

@@ -8,6 +8,8 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\File;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use App\Entity\ChipsetDocumentation;
 use App\Entity\Language;
 use Vich\UploaderBundle\Form\Type\VichFileType;
@@ -27,6 +29,16 @@ class ChipsetDocumentationType extends AbstractType
                 'expanded' => false,
                 'attr' => ['data-ea-widget' => 'ea-autocomplete'],
                 ])
+            ->add('releaseDate', DateType::class, [
+                'widget' => 'single_text',
+            ])
+            ->add('datePrecision', ChoiceType::class, [
+                'choices'  => [
+                    'Year, month and day' => 'd',
+                    'Year and month' => 'm',
+                    'Year only' => 'y'
+                ],
+            ])
             ->add('manualFile', VichFileType::class, [
                 'label' => 'PDF or ZIP file',
                 'required' => false,
