@@ -11,8 +11,11 @@ use App\Form\Type\ChipsetDocumentationType;
 use App\Form\Type\ExpansionChipType;
 use App\Form\Type\LargeFileChipsetType;
 use Doctrine\ORM\EntityManagerInterface;
+use App\Controller\Admin\Filter\ChipDocFilter;
+use App\Controller\Admin\Filter\ChipDriverFilter;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
+use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
@@ -99,6 +102,8 @@ class ChipsetCrudController extends AbstractCrudController
             ->add('manufacturer')
             ->add('name')
             ->add('part_no')
+            ->add(ChipDocFilter::new('documentations'))
+            ->add(ChipDriverFilter::new('drivers'))
             ->add('expansionChips')
             ->add('chipsetAliases')
             ->add('lastEdited');
@@ -121,7 +126,10 @@ class ChipsetCrudController extends AbstractCrudController
         yield ArrayField::new('getPartsCached', 'Parts')
             ->hideOnForm();
         yield DateField::new('release_date', 'Release Date')
-            ->setColumns(2);
+            ->setColumns(2)
+            ->onlyOnForms();
+        yield TextField::new('getReleaseDateString', 'Release Date')
+            ->onlyOnIndex();
         yield ChoiceField::new('datePrecision', 'Display date format (optional)')
             ->setChoices([
                 'Year, month and day' => 'd',
@@ -134,6 +142,12 @@ class ChipsetCrudController extends AbstractCrudController
         yield UrlField::new('encyclopedia_link', 'Link')
             ->setColumns(4)
             ->hideOnIndex();
+        yield BooleanField::new('getDocumentations','Docs')
+            ->renderAsSwitch(false)
+            ->onlyOnIndex();
+        yield BooleanField::new('getDrivers','Drivers')
+            ->renderAsSwitch(false)
+            ->onlyOnIndex();
         yield DateField::new('lastEdited', 'Last edit')
             ->setFormTypeOption('disabled', 'disabled')
             ->setColumns(4);

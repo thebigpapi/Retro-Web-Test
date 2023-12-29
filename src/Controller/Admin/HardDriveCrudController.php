@@ -14,6 +14,9 @@ use App\Form\Type\StorageDeviceImageTypeForm;
 use App\Form\Type\StorageDeviceInterfaceType;
 use App\Form\Type\PSUConnectorType;
 use Doctrine\ORM\EntityManagerInterface;
+use App\Controller\Admin\Filter\StorageImageFilter;
+use App\Controller\Admin\Filter\StorageDocFilter;
+use App\Controller\Admin\Filter\StorageAudioFilter;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
@@ -22,7 +25,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ArrayField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CodeEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
@@ -107,6 +110,9 @@ class HardDriveCrudController extends AbstractCrudController
             ->add('name')
             ->add('partNumber')
             ->add('storageDeviceAliases')
+            ->add(StorageImageFilter::new('images'))
+            ->add(StorageDocFilter::new('documentations'))
+            ->add(StorageAudioFilter::new('audio'))
             ->add('interfaces')
             ->add('powerConnectors')
             ->add('physicalSize')
@@ -165,6 +171,15 @@ class HardDriveCrudController extends AbstractCrudController
             ->onlyOnForms();
         yield NumberField::new('spindleSpeed', 'RPM')
             ->setColumns('col-sm-4 col-lg-3 col-xxl-2');
+        yield BooleanField::new('getStorageDeviceImages','Images')
+            ->renderAsSwitch(false)
+            ->onlyOnIndex();
+        yield BooleanField::new('getStorageDeviceDocumentations','Docs')
+            ->renderAsSwitch(false)
+            ->onlyOnIndex();
+        yield BooleanField::new('getAudioFiles','Audio')
+            ->renderAsSwitch(false)
+            ->onlyOnIndex();
         yield NumberField::new('platters')
             ->setColumns('col-sm-4 col-lg-3 col-xxl-2')
             ->onlyOnForms();

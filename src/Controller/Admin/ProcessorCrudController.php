@@ -10,10 +10,10 @@ use App\Form\Type\ChipImageType;
 use App\Form\Type\CpuSocketType;
 use App\Form\Type\ProcessorVoltageType;
 use Doctrine\ORM\EntityManagerInterface;
+use App\Controller\Admin\Filter\ChipImageFilter;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
@@ -21,7 +21,6 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\ArrayField;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
@@ -98,6 +97,7 @@ class ProcessorCrudController extends AbstractCrudController
             ->add('name')
             ->add('partNumber')
             ->add('chipAliases')
+            ->add(ChipImageFilter::new('images'))
             ->add('sockets')
             ->add('platform')
             ->add('core')
@@ -135,6 +135,9 @@ class ProcessorCrudController extends AbstractCrudController
             ->hideOnForm();
         yield IntegerField::new('ProcessNode', 'Process')
             ->hideOnForm();
+        yield BooleanField::new('getImages','Images')
+            ->renderAsSwitch(false)
+            ->onlyOnIndex();
         yield AssociationField::new('platform', 'Family')
             ->setFormTypeOption('placeholder', 'Type to select a family ...')
             ->setColumns(2)

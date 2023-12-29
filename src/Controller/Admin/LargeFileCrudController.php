@@ -98,7 +98,8 @@ class LargeFileCrudController extends AbstractCrudController
         return parent::configureFilters($filters)
             ->add('name')
             ->add('fileVersion')
-            ->add('file_name')
+            ->add('file_name',)
+            ->add('osFlags')
             ->add('subdirectory')
             ->add('lastEdited');
     }

@@ -9,6 +9,9 @@ use App\Form\Type\LargeFileExpansionChipType;
 use App\Form\Type\ChipDocumentationType;
 use App\Form\Type\ChipImageType;
 use Doctrine\ORM\EntityManagerInterface;
+use App\Controller\Admin\Filter\ChipImageFilter;
+use App\Controller\Admin\Filter\ChipDocFilter;
+use App\Controller\Admin\Filter\ChipDriverFilter;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
@@ -71,6 +74,9 @@ class ExpansionChipCrudController extends AbstractCrudController
             ->add('manufacturer')
             ->add('name')
             ->add('partNumber')
+            ->add(ChipImageFilter::new('images'))
+            ->add(ChipDocFilter::new('documentations'))
+            ->add(ChipDriverFilter::new('drivers'))
             ->add('chipAliases')
             ->add('pciDevs')
             ->add('type');

@@ -12,12 +12,15 @@ use App\Form\Type\StorageDeviceImageTypeForm;
 use App\Form\Type\StorageDeviceInterfaceType;
 use App\Form\Type\PSUConnectorType;
 use Doctrine\ORM\EntityManagerInterface;
+use App\Controller\Admin\Filter\StorageImageFilter;
+use App\Controller\Admin\Filter\StorageDocFilter;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
+use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ArrayField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
@@ -105,6 +108,8 @@ class FloppyDriveCrudController extends AbstractCrudController
             ->add('name')
             ->add('partNumber')
             ->add('storageDeviceAliases')
+            ->add(StorageImageFilter::new('images'))
+            ->add(StorageDocFilter::new('documentations'))
             ->add('interfaces')
             ->add('powerConnectors')
             ->add('physicalSize')
@@ -142,6 +147,12 @@ class FloppyDriveCrudController extends AbstractCrudController
             ->setColumns('col-sm-6 col-lg-6 col-xxl-4')
             ->onlyOnForms();
         yield TextField::new('density')
+            ->onlyOnIndex();
+        yield BooleanField::new('getStorageDeviceImages','Images')
+            ->renderAsSwitch(false)
+            ->onlyOnIndex();
+        yield BooleanField::new('getStorageDeviceDocumentations','Docs')
+            ->renderAsSwitch(false)
             ->onlyOnIndex();
         yield ChoiceField::new('density')
             ->setColumns('col-sm-6 col-lg-6 col-xxl-4')
