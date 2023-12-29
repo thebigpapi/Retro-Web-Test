@@ -113,6 +113,16 @@ fieldset {
 		max-width: 900px;
 		margin: 0 auto;
 		padding: 30px 15px;
+		@media (max-width: 500px) {
+			flex-direction: column;
+			align-items: center;
+			button {
+				max-width: 9rem;
+			}
+			input{
+				width: 85vw;
+			}
+		}
 
 		a {
 			align-self: center;

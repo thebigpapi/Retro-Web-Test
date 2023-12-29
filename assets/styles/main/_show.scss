@@ -169,6 +169,9 @@ div.main-strip {
 
                 @media (max-width: 500px) {
                     padding: 3px;
+                    p.bios-vendor-header{
+                        border-bottom: solid thin $border-dark;
+                    }
                 }
 
                 @media (prefers-color-scheme: dark) {
@@ -203,7 +206,10 @@ div.quick-spec-split {
 div.quick-spec-table {
     display: grid;
     padding: 5px;
-    grid-template-columns: [first] 180px [second] auto [end];
+    grid-template-columns: [first] 11rem [second] auto [end];
+    &.wide {
+        grid-template-columns: [first] 15rem [second] auto [end];
+    }
 
     @media (max-width: 500px) {
         padding: 3px;
@@ -290,6 +296,10 @@ div.full-spec {
 
         @media (prefers-color-scheme: dark) {
             background-color: $accent-bkg-dark;
+        }
+        @media (max-width: 500px) {
+            padding-top: 3px;
+            padding-bottom: 3px;
         }
     }
 

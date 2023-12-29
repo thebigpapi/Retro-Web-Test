@@ -47,6 +47,7 @@
         {{ custom_page_title is null
             ? ea.crud.defaultPageTitle(null, null, ea.i18n.translationParameters)|trans|raw
             : custom_page_title|trans|raw }}
+    #{{ entity.getInstance().getId() }}
     {%- endapply -%}
 {% endblock %}
 

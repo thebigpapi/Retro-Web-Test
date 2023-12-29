@@ -73,6 +73,11 @@ div.page-header {
 		align-items: center;
 		column-gap: 3px;
 	}
+	@media screen and (max-width: $maxw-table-breakpoint) {
+		.navbar-li{
+			padding-left: 0;
+		}
+	}
 }
 
 nav {
@@ -513,6 +518,9 @@ div.plain-list {
 		@media (prefers-color-scheme: dark) {
 			border-color: $border-dark;
 		}
+		@media (max-width: 500px) {
+			grid-template-columns:none;
+		}
 
 		>div {
 			padding: 3px 0;
@@ -636,8 +644,17 @@ div.plain-list {
 }
 
 @media screen and (max-width: $maxw-table-breakpoint) {
-	div.list-entry.centered.head {
-		display: none;
+	div.list-entry.centered {
+		border-color: transparent !important;
+		&.head {
+			display: none;
+		}
+		&.alt {
+			background: $accent-bkg-light;
+			@media (prefers-color-scheme: dark) {
+				background: $accent-bkg-dark;
+			}
+		}
 	}
 }
 
@@ -736,7 +753,6 @@ aside.hamburger-sidebar {
 	height: max-content;
 	z-index: 3;
 	padding: 0.5rem;
-	
 	border-radius: 0px 0px 15px 0px;
 	padding-top: calc(var(--hamburger-height) + var(--hamburger-margin) + 1rem);
 	transition: ease-in-out $anim-duration all;
