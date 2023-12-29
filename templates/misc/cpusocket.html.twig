@@ -85,34 +85,7 @@
 				</div>
 				{% include 'macros/notes.html.twig' with {'entity': socket} %}
 				<!-- MANUALS -->
-				<div class="show-downloads-group">
-					{% set allDocs = socket.getEntityDocumentations() %}
-					<div class="show-downloads-group-header">
-						<img src="{{ absolute_url(asset('build/icons/manual.svg')) }}" alt="doc" width="32" height="32">
-						<span>{{ allDocs|length }} document{% if allDocs|length != 1 %}s{% endif %} available</span>
-					</div>
-					{% if allDocs is not empty %}
-					<div class="plain-list w300p table">
-						<div class="list-entry centered head">
-							<div>Language</div>
-							<div>File</div>
-						</div>
-						{% for manual in allDocs|sort((a, b) => a.getLinkName <=> b.getLinkName) %}
-						<div class="list-entry centered {% if loop.index is divisible by(2) %}alt{% endif %}">
-							<div class="header-label">Language</div>
-							<div>{{ manual.getLanguage().getName()}}</div>
-							<div class="header-label">File</div>
-							<div>
-								<a class="combo" href="{{ vich_uploader_asset(manual, 'manualFile') }}">
-									<img src="{{ absolute_url(asset('build/icons/dw.svg')) }}" alt="" width="16" height="16">
-									<span>{{ manual.getLinkName() }}</span>
-								</a>
-							</div>
-						</div>
-						{% endfor %}
-					</div>
-					{% endif %}
-				</div>
+				{% include 'macros/manuals.html.twig' with {'entity': socket.getEntityDocumentations()} %}
 			</div>
 		</div>
 	</div>
