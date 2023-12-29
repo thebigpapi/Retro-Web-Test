@@ -31,9 +31,47 @@ div.page-header {
 	max-width: $wide-max-width;
 	display: flex;
 	flex-wrap: wrap;
+	nav.navbar-subcategories{
+		display: block;
+	}
 
 	@media (max-width: 500px) {
 		justify-content: center;
+	}
+	.flex{
+		display: flex;
+	}
+	.navbar-ol{
+		list-style-type: none;
+		margin-top: 0;
+		margin-bottom: 0;
+	}
+	.navbar-li{
+		padding-left: 1rem;
+		padding-right: 1rem;
+	}
+	code.navbar-code{
+		display: flex;
+		align-items: center;
+		margin-left: 1rem;
+	}
+	svg.navbar-svg{
+		flex-shrink: 0;
+		width: 1.5rem;
+		height: 2rem;
+		&.home{
+			width: 1.25rem;
+			height: 1.25rem;
+		}
+	}
+	.ml-4 {
+		margin-left: 1rem;
+	}
+	div.navbar-anchor{
+		margin-left: 1rem;
+		display: flex;
+		align-items: center;
+		column-gap: 3px;
 	}
 }
 
@@ -607,4 +645,125 @@ div.plain-list {
 	display: flex;
 	align-items: center;
 	gap: 5px;
+}
+:root {
+	--bar-width: 60px;
+	--bar-height: 8px;
+	--hamburger-gap: 8px;
+	--foreground: #333;
+	--background: white;
+	--hamburger-margin: 8px;
+	--animation-timing: 200ms ease-in-out;
+	--hamburger-height: calc(var(--bar-height) * 2.8 + var(--hamburger-gap) * 2);
+}
+label.hamburger-menu {
+	--x-width: calc(var(--hamburger-height) * 1.41421356237);
+	display: flex;
+	flex-direction: column;
+	gap: var(--hamburger-gap);
+	width: max-content;
+	position: absolute;
+	top: var(--hamburger-margin);
+	left: var(--hamburger-margin);
+	z-index: 4;
+	-moz-user-select: -moz-none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+	cursor: pointer;
+	&:has(input:checked) {
+		--foreground: white;
+		--background: #333;
+		transform: translate(0, 0);
+		&::before {
+			rotate: 45deg;
+			width: var(--x-width);
+			transform: translate(0, calc(var(--bar-height) / -2));
+		}
+		&::after {
+			rotate: -45deg;
+			width: var(--x-width);
+			transform: translate(0, calc(var(--bar-height) / 2));
+		}
+		& + aside.hamburger-sidebar {
+			transform: translate(0, 0);
+			transition: opacity var(--animation-timing), width var(--animation-timing),
+			rotate var(--animation-timing), translate var(--animation-timing),
+			background-color var(--animation-timing);
+		}
+	}
+	&:has(input:focus-visible){
+		&::before, &::after{
+			border: 1px solid var(--background);
+			box-shadow: 0 0 0 1px var(--foreground);
+		}
+	}
+	input{
+		appearance: none;
+		padding: 0;
+		margin: 0;
+		outline: none;
+		pointer-events: none;
+		&:focus-visible {
+			border: 1px solid var(--background);
+			box-shadow: 0 0 0 1px var(--foreground);
+		}
+		&:checked {
+			opacity: 0;
+			width: 0;
+		}
+	}
+	&::before, &::after, input {
+		content: "";
+		width: var(--bar-width);
+		height: var(--bar-height);
+		background-color: var(--foreground);
+		border-radius: 9999px;
+		transform-origin: left center;
+		transition: opacity var(--animation-timing), width var(--animation-timing),
+			rotate var(--animation-timing), translate var(--animation-timing),
+			background-color var(--animation-timing);
+	}
+}
+
+aside.hamburger-sidebar {
+	position: absolute;
+	//transition: translate var(--animation-timing);
+	transition: ease-in-out 0.6s translate;
+	transform: translate(-100%, 0);
+	padding: 0.5rem 1rem;
+	padding-top: calc(var(--hamburger-height) + var(--hamburger-margin) + 1rem);
+	background-color: var(--foreground);
+	color: var(--background);
+	max-width: 10rem;
+	min-height: calc(100vh - (var(--hamburger-height) + var(--hamburger-margin) + 2rem));
+	//transition: opacity var(--animation-timing), width var(--animation-timing),
+			//rotate var(--animation-timing), translate var(--animation-timing),
+			//background-color var(--animation-timing);
+	//transform: translate(0, 0);
+	z-index: 3;
+	box-sizing: initial;
+	div.hamburger-sidebar-contents{
+		display:flex;
+		flex-direction: column;
+		a {
+			display: flex;
+			align-items: center;
+			text-decoration: none;
+			color: $body-frg-light;
+			@media (prefers-color-scheme: dark) {
+				color: $body-frg-dark;
+			}
+			&:hover {
+				color: $active-link-light;
+				@media (prefers-color-scheme: dark) {
+					color: $active-link-dark;
+				}
+			}
+			span {
+				padding: 0px 8px;
+			}
+		}
+	}
 }

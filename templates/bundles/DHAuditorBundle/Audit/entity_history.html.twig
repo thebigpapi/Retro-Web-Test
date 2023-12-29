@@ -4,6 +4,11 @@
 {% import '@DHAuditor/Audit/helpers/pager.html.twig' as pager %}
 
 {% block dh_auditor_header %}
+<div>
+    <span class="bg-purple-500 rounded text-sm text-white px-2 py-1 no-wrap audit-mobile-450">{% trans with { '%count%': paginator.results|length } from 'auditor' %}audit.audit_details.operations_count{% endtrans %}</span>
+</div>
+{% endblock %}
+{% block subnav %}
 {% set titles = {
 	'App\\Entity\\AudioFile' : 'Audio files',
     'App\\Entity\\CacheSize' : 'Cache sizes',
@@ -42,7 +47,7 @@
     'App\\Entity\\MaxRam' : 'RAM sizes',
     'App\\Entity\\MediaTypeFlag' : 'Media flags',
     'App\\Entity\\MiscFile' : 'Misc files',
-    'App\\Entity\\Motherboard' : 'Motherboard',
+    'App\\Entity\\Motherboard' : 'Motherboards',
     'App\\Entity\\MotherboardAlias' : 'Motherboard aliases',
     'App\\Entity\\MotherboardBios' : 'Motherboard BIOSes',
     'App\\Entity\\MotherboardExpansionSlot' : 'Motherboard expansion slots',
@@ -63,58 +68,35 @@
     'App\\Entity\\User' : 'Users'
 }
 %}
-<nav class="bg-white border border-gray-200 rounded flex" aria-label="Breadcrumb">
-    <ol role="list" class="max-w-screen-xl w-full mx-auto px-4 flex space-x-4 sm:px-6 lg:px-6">
-        <li class="flex">
+        <li class="flex {% if id is null %}flex-grow items-center justify-between{% endif %} navbar-li">
             <div class="flex items-center">
-                <a href="{{ path('dh_auditor_list_audits') }}" class="text-gray-400 hover:text-gray-500 flex space-x-1">
-                    <!-- Heroicon name: solid/home -->
-                    <svg class="flex-shrink-0 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                        <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
-                    </svg>
-                    <span>{% trans from 'auditor' %}audit.header.home{% endtrans %}</span>
-                </a>
-            </div>
-        </li>
-
-        <li class="flex {% if id is null %}flex-grow items-center justify-between{% endif %}">
-            <div class="flex items-center">
-                <svg class="flex-shrink-0 w-6 h-full text-gray-200" viewBox="0 0 24 44" preserveAspectRatio="none" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <svg class="navbar-svg" viewBox="0 0 24 44" preserveAspectRatio="none" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                     <path d="M.293 0l22 22-22 22h1.414l22-22-22-22H.293z" />
                 </svg>
                 <a class="ml-4 text-gray-500 hover:text-gray-700" {% if id is null %}aria-current="page"{% endif %} href="{{ path('dh_auditor_show_entity_history', { 'entity': helper.namespaceToParam(entity) }) }}">
-                    <code class="text-pink-500">{{ titles[entity] }}</code>
+                    <code class="text-pink-500">{{ titles[entity] }} (logs)</code>
                 </a>
             </div>
-
-            {% if id is null %}
+        </li>
+        {% if id is null %}
             <div>
                 <span class="bg-purple-500 rounded text-sm text-white px-2 py-1 no-wrap audit-mobile-450-hide">{% trans with { '%count%': paginator.results|length } from 'auditor' %}audit.audit_details.operations_count{% endtrans %}</span>
             </div>
-            {% endif %}
-        </li>
-
-        {% if id is not null %}
+        {% else %}
         <li class="flex flex-grow items-center justify-between">
             <div class="flex items-center">
-                <svg class="flex-shrink-0 w-6 h-full text-gray-200" viewBox="0 0 24 44" preserveAspectRatio="none" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <svg class="navbar-svg" viewBox="0 0 24 44" preserveAspectRatio="none" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                     <path d="M.293 0l22 22-22 22h1.414l22-22-22-22H.293z" />
                 </svg>
                 <a class="ml-4 text-gray-500 hover:text-gray-700" aria-current="page" href="{{ path('dh_auditor_show_entity_history', { 'entity': helper.namespaceToParam(entity), 'id': id }) }}">
                     <code class="text-pink-500">ID: {{ id }}</code>
                 </a>
             </div>
-
-            <div>
-                <span class="bg-purple-500 rounded text-sm text-white px-2 py-1 no-wrap audit-mobile-450-hide">{% trans with { '%count%': paginator.results|length } from 'auditor' %}audit.audit_details.operations_count{% endtrans %}</span>
-            </div>
+        </li>
+        <li class="flex" style="margin-left: auto;">
+            <span class="bg-purple-500 rounded text-sm text-white px-2 py-1 no-wrap audit-mobile-450-hide">{% trans with { '%count%': paginator.results|length } from 'auditor' %}audit.audit_details.operations_count{% endtrans %}</span>
         </li>
         {% endif %}
-    </ol>
-</nav>
-<div>
-    <span class="bg-purple-500 rounded text-sm text-white px-2 py-1 no-wrap audit-mobile-450">{% trans with { '%count%': paginator.results|length } from 'auditor' %}audit.audit_details.operations_count{% endtrans %}</span>
-</div>
 {% endblock %}
 {% block dh_auditor_content %}
 <div class="flow-root">

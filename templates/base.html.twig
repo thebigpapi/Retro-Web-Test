@@ -80,15 +80,26 @@
 		{% if "now"|date("m") == 12 %}
 			<div style="background: url('/build/images/lights.png') repeat-x;width:100%;background-size: 160px 20px;color:#191919">.</div>
 		{% endif %}
-		<div class="page-header">
-			<nav class="navbar-secondary navbar-categories">
+		<label class="hamburger-menu">
+			<input type="checkbox" />
+		</label>
+		<aside class="hamburger-sidebar">
+			<nav class="hamburger-sidebar-contents">
 				<a href="{{ path('mobosearch') }}" class="nav-link">
 					<img src="{{ absolute_url(asset('build/icons/motherboard.svg')) }}" width="24" height="24" alt="mobo">
 					<span class="navbar-label">Motherboards</span>
 				</a>
+				<a href="{{ path('biossearch') }}" class="nav-link">
+					<img src="{{ absolute_url(asset('build/icons/awchip.svg')) }}" width="24" height="24" alt="bios">
+					<span class="navbar-label">BIOS images</span>
+				</a>
 				<a href="{{ path('expansionchipsearch') }}" class="nav-link">
 					<img src="{{ absolute_url(asset('build/icons/chip.svg')) }}" width="24" height="24" alt="chip">
-					<span class="navbar-label">Chips</span>
+					<span class="navbar-label">Expansion chips</span>
+				</a>
+				<a href="{{ path('chipsetsearch') }}" class="nav-link">
+					<img src="{{ absolute_url(asset('build/icons/chipsetfull.svg')) }}" width="24" height="24" alt="chipset">
+					<span class="navbar-label">Chipsets</span>
 				</a>
 				<a href="{{ path('cpusearch') }}" class="nav-link">
 					<img src="{{ absolute_url(asset('build/icons/486dx.svg')) }}" width="24" height="24" alt="cpu">
@@ -96,16 +107,39 @@
 				</a>
 				<a href="{{ path('hddsearch') }}" class="nav-link">
 					<img src="{{ absolute_url(asset('build/icons/harddrive.svg')) }}" width="24" height="24" alt="hdd">
-					<span class="navbar-label">Storage</span>
+					<span class="navbar-label">Hard drives</span>
+				</a>
+				<a href="{{ path('cddsearch') }}" class="nav-link">
+					<img src="{{ absolute_url(asset('build/icons/cd_drive.svg')) }}" width="24" height="24" alt="cdd">
+					<span class="navbar-label">Optical drives</span>
+				</a>
+				<a href="{{ path('fddsearch') }}" class="nav-link">
+					<img src="{{ absolute_url(asset('build/icons/floppy_drive.svg')) }}" width="24" height="24" alt="fdd">
+					<span class="navbar-label">Floppy drives</span>
 				</a>
 				<a href="{{ path('driversearch') }}" class="nav-link">
 					<img src="{{ absolute_url(asset('build/icons/hardware.svg')) }}" width="24" height="24" alt="driver">
 					<span class="navbar-label">Drivers &amp; software</span>
 				</a>
 			</nav>
-		</div>
+		</aside>
 		<div class="page-header">
-			<nav class="navbar-secondary navbar-subcategories">{% block subnav %}{% endblock %}</nav>
+			<nav class="navbar-secondary navbar-subcategories">
+				<ol role="list" class="navbar-ol navbar-li flex">
+				<li class="flex">
+					<div class="flex">
+						<a href="{% if 'audit' in app.request.pathinfo %}{{ path('dh_auditor_list_audits') }}{% else %}{{ path('app_homepage') }}{% endif %}">
+							<!-- Heroicon name: solid/home -->
+							<svg class="navbar-svg home" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+								<path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"></path>
+							</svg>
+							<span>Home</span>
+						</a>
+					</div>
+				</li>
+				{% block subnav %}{% endblock %}
+				</ol>
+			</nav>
 		</div>
 		<main>
 			<div class="page">
