@@ -124,6 +124,8 @@ class ProcessorCrudController extends AbstractCrudController
             ->setColumns(4);
         yield TextField::new('name', 'Part number')
             ->setColumns(4);
+        yield TextField::new('platform', 'Family')
+            ->hideOnForm();
         yield TextField::new('core', 'Core')
             ->hideOnForm();
         yield TextField::new('speed', 'Speed')
@@ -131,11 +133,7 @@ class ProcessorCrudController extends AbstractCrudController
         yield TextField::new('fsb', 'FSB')
             ->setFormTypeOption('required', false)
             ->hideOnForm();
-        yield IntegerField::new('tdp', 'TDP')
-            ->hideOnForm();
         yield IntegerField::new('ProcessNode', 'Process')
-            ->hideOnForm();
-        yield ArrayField::new('getVoltages', 'Voltage')
             ->hideOnForm();
         yield AssociationField::new('platform', 'Family')
             ->setFormTypeOption('placeholder', 'Type to select a family ...')
@@ -208,8 +206,6 @@ class ProcessorCrudController extends AbstractCrudController
             ->setColumns(12)
             ->renderExpanded()
             ->onlyOnForms();
-        yield DateField::new('lastEdited', 'Last edit')
-            ->hideOnForm();
     }
     public function viewCPU(AdminContext $context)
     {
