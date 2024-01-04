@@ -162,7 +162,7 @@ class ManufacturerRepository extends ServiceEntityRepository
 
         $data = array();
         foreach ($res->fetchAllAssociative() as $row) {
-            $data[$row["chipsetman"]][] = array($row["chipsetname"], $row["code"]);
+            $data[$row["chipsetman"]][] = array($row["code"], $row["chipsetname"]);
         }
 
         return $data;

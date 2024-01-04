@@ -43,14 +43,11 @@
 	</div>
 	{% endfor %}
 	{% for manufacturer, codes in chipCodes %}
-	<div class="grid-list2">
+	<div class="grid-list">
 		<p><b>{{manufacturer}} chipset IDs</b></p>
-		<ul>
+		<ul class="block">
 			{% for code in codes %}
-				<li>
-					{{ code[1] }}:
-					{% if manufacturer != "Other" %}{{manufacturer}}{% endif %} {{ code[0] }}
-				</li>
+				<li>{{ code }}</li>
 			{% endfor %}
 		</ul>
 	</div>

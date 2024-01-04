@@ -210,10 +210,38 @@ class BiosController extends AbstractController
     {
         $biosCodes = $manufacturerRepository->findAllBiosManufacturerAdv();
         $chipdata = $manufacturerRepository->findAllChipsetBiosManufacturer();
+        $chipCodes = [];
+        foreach($chipdata as $manuf => $arr){
+            $key = "";
+            $val = "";
+            $code = [];
+            foreach($arr as $row){
+                if($row[0] == $key){
+                    if($row[1] != $val){
+                        if($val == "")
+                            $val = $row[0] . ": " . $manuf . " ";
+                        $val .= ", " . $row[1];
+                    }
+                }
+                else{
+                    if($val != ""){
+                        array_push($code, $val);
+                        $val = "";
+                    }
+                    if($val == "")
+                        $val = $row[0] . ": " . $manuf . " " . $row[1];
+                }
+                $key = $row[0];
+            }
+            //dd($code);
+            $chipCodes[$manuf] = $code;
+        }
+        //dd($chipCodes);
+        //dd($chipdata);
         return $this->render('bios/list.html.twig', [
             'controller_name' => 'MainController',
             'biosCodes' => $biosCodes,
-            'chipCodes' => $chipdata,
+            'chipCodes' => $chipCodes,
         ]);
     }
     #[Route('/bios/bot/string', name:'bios_bot_string', methods:['POST'])]

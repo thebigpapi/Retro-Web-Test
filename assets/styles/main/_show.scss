@@ -13,7 +13,7 @@ div.main-strip {
     div.show-images {
         flex: 0 1 25%;
         overflow: auto;
-        min-height: 150px;
+        min-height: 9rem;
         height: auto;
         max-height: 68vh;
         padding-right: 5px;
@@ -213,7 +213,7 @@ div.quick-spec-table {
 
     @media (max-width: 500px) {
         padding: 3px;
-        grid-template-columns: [first] 140px [second] auto [end];
+        grid-template-columns: [first] 8.75rem [second] auto [end];
     }
 
     div {
@@ -234,7 +234,7 @@ div.quick-spec-table {
         width: max(200px, 25vw);
 
         @media screen and (min-width: 2500px) {
-            max-width: 700px;
+            max-width: 43.75rem;
         }
 
         div.ts-control {
@@ -267,7 +267,7 @@ div.quick-spec-table {
 
 div.full-spec {
     display: grid;
-    grid-template-rows: [first] 40px [second] auto [end];
+    grid-template-rows: [first] 2.5rem [second] auto [end];
     grid-template-columns: [first] 33% [second] 33% [third] 33% [end];
 
     &.search{
@@ -283,7 +283,7 @@ div.full-spec {
         grid-row-start: 1;
         display: flex;
         justify-content: left;
-        padding-left: 50px;
+        padding-left: 3.125rem;
         align-items: center;
 
         img {
@@ -310,7 +310,7 @@ div.full-spec {
 
 div.list-table {
     display: grid;
-    grid-template-columns: [first] 60px [second] auto [end];
+    grid-template-columns: [first] 3.75rem [second] auto [end];
     padding: 5px;
     align-content: start;
 
@@ -369,8 +369,8 @@ span.text-block {
 }
 
 img.lang-flag {
-    height: 25px;
-    width: 46px;
+    height: 1.5rem;
+    width: 3rem;
 }
 
 div.div-datetime {
