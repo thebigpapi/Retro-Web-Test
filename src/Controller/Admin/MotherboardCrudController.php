@@ -4,10 +4,12 @@ namespace App\Controller\Admin;
 
 use App\Entity\Motherboard;
 use App\Controller\Admin\Filter\MotherboardImageFilter;
+use App\Entity\MemoryConnector;
 use App\Entity\MotherboardAlias;
 use App\Entity\MotherboardExpansionSlot;
 use App\Entity\MotherboardIoPort;
 use App\Entity\MotherboardMaxRam;
+use App\Entity\MotherboardMemoryConnector;
 use App\Entity\PSUConnector;
 use App\Form\Type\MotherboardAliasType;
 use App\Form\Type\MotherboardIdRedirectionType;
@@ -27,6 +29,7 @@ use App\Form\Type\CpuSocketType;
 use App\Form\Type\ProcessorPlatformTypeForm;
 use App\Form\Type\ProcessorSpeedType;
 use App\Form\Type\MotherboardImageTypeForm;
+use App\Form\Type\MotherboardMemoryConnectorType;
 use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Collection\FieldCollection;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
@@ -279,6 +282,12 @@ class MotherboardCrudController extends AbstractCrudController
             ->setColumns('col-sm-12 col-lg-6 col-xxl-4')
             ->renderExpanded()
             ->onlyOnForms();
+        yield CollectionField::new('motherboardMemoryConnectors', 'Memory connectors')
+            ->setEntryType(MotherboardMemoryConnectorType::class)
+            ->setFormTypeOption('error_bubbling', false)
+            ->setColumns('col-sm-12 col-lg-6 col-xxl-4')
+            ->renderExpanded()
+            ->onlyOnForms();
         yield CollectionField::new('psuConnectors', 'PSU connectors')
             ->setEntryType(PSUConnectorType::class)
             ->setColumns('col-sm-12 col-lg-6 col-xxl-4')
@@ -439,6 +448,12 @@ class MotherboardCrudController extends AbstractCrudController
             $newPort->setCount($port->getCount());
             $newPort->setIoPort($port->getIoPort());
             $board->addMotherboardIoPort($newPort);
+        }
+        foreach ($old->getMotherboardMemoryConnectors() as $connector){
+            $newConnector = new MotherboardMemoryConnector();
+            $newConnector->setCount($connector->getCount());
+            $newConnector->setMemoryConnector($connector->getMemoryConnector());
+            $board->addMotherboardMemoryConnector($newConnector);
         }
         foreach ($old->getPsuConnectors() as $psu){
             $board->addPsuConnector($psu);
