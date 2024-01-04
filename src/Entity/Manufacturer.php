@@ -62,6 +62,15 @@ class Manufacturer
     #[ORM\OneToMany(mappedBy: 'manufacturer', targetEntity: StorageDevice::class)]
     private Collection $storageDevices;
 
+    #[ORM\OneToMany(mappedBy: 'manufacturer', targetEntity: ManufacturerCode::class, orphanRemoval: true, cascade: ['persist'])]
+    private Collection $manufacturerCodes;
+
+    #[ORM\Column(length: 8192, nullable: true)]
+    private ?string $description = null;
+
+    #[ORM\OneToMany(mappedBy: 'manufacturer', targetEntity: EntityImage::class, orphanRemoval: true, cascade: ['persist'])]
+    private Collection $entityImages;
+
     public function __construct()
     {
         $this->motherboards = new ArrayCollection();
@@ -75,6 +84,8 @@ class Manufacturer
         $this->osFlags = new ArrayCollection();
         $this->pciVendorIds = new ArrayCollection();
         $this->storageDevices = new ArrayCollection();
+        $this->manufacturerCodes = new ArrayCollection();
+        $this->entityImages = new ArrayCollection();
     }
     public function __toString(): string
     {
@@ -424,6 +435,78 @@ class Manufacturer
             // set the owning side to null (unless already changed)
             if ($storageDevice->getManufacturer() === $this) {
                 $storageDevice->setManufacturer(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ManufacturerCode>
+     */
+    public function getManufacturerCodes(): Collection
+    {
+        return $this->manufacturerCodes;
+    }
+
+    public function addManufacturerCode(ManufacturerCode $manufacturerCode): self
+    {
+        if (!$this->manufacturerCodes->contains($manufacturerCode)) {
+            $this->manufacturerCodes->add($manufacturerCode);
+            $manufacturerCode->setManufacturer($this);
+        }
+
+        return $this;
+    }
+
+    public function removeManufacturerCode(ManufacturerCode $manufacturerCode): self
+    {
+        if ($this->manufacturerCodes->removeElement($manufacturerCode)) {
+            // set the owning side to null (unless already changed)
+            if ($manufacturerCode->getManufacturer() === $this) {
+                $manufacturerCode->setManufacturer(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(?string $description): self
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, EntityImage>
+     */
+    public function getEntityImages(): Collection
+    {
+        return $this->entityImages;
+    }
+
+    public function addEntityImage(EntityImage $entityImage): self
+    {
+        if (!$this->entityImages->contains($entityImage)) {
+            $this->entityImages->add($entityImage);
+            $entityImage->setManufacturer($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEntityImage(EntityImage $entityImage): self
+    {
+        if ($this->entityImages->removeElement($entityImage)) {
+            // set the owning side to null (unless already changed)
+            if ($entityImage->getManufacturer() === $this) {
+                $entityImage->setManufacturer(null);
             }
         }
 

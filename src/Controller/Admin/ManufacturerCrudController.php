@@ -5,6 +5,8 @@ namespace App\Controller\Admin;
 use App\Entity\Manufacturer;
 use App\Form\Type\ManufacturerBiosManufacturerCodeType;
 use App\Form\Type\PciVendorIdType;
+use App\Form\Type\ManufacturerCodeType;
+use App\Form\Type\EntityImageType;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
@@ -14,6 +16,8 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\ArrayField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\CodeEditorField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
 
 class ManufacturerCrudController extends AbstractCrudController
 {
@@ -23,6 +27,8 @@ class ManufacturerCrudController extends AbstractCrudController
     }
     public function configureActions(Actions $actions): Actions
     {
+        $view = Action::new('view', 'View')->linkToCrudAction('viewManufacturer');
+        $eview = Action::new('eview', 'View')->linkToCrudAction('viewManufacturer')->setIcon('fa fa-magnifying-glass');
         $logs = Action::new('logs', 'Logs')->linkToCrudAction('viewLogs');
         $elogs= Action::new('elogs', 'Logs')->linkToCrudAction('viewLogs')->setIcon('fa fa-history');
         return $actions
@@ -30,6 +36,8 @@ class ManufacturerCrudController extends AbstractCrudController
             ->remove(Crud::PAGE_NEW, Action::SAVE_AND_ADD_ANOTHER)
             ->add(Crud::PAGE_INDEX, $logs)
             ->add(Crud::PAGE_EDIT, $elogs)
+            ->add(Crud::PAGE_INDEX, $view)
+            ->add(Crud::PAGE_EDIT, $eview)
             ->setPermission(Action::DELETE, 'ROLE_ADMIN');
     }
     public function configureCrud(Crud $crud): Crud
@@ -42,24 +50,51 @@ class ManufacturerCrudController extends AbstractCrudController
     }
     public function configureFields(string $pageName): iterable
     {
+        yield FormField::addTab('Basic Data')
+            ->setIcon('info')
+            ->onlyOnForms();
         yield IdField::new('id')
             ->onlyOnIndex();
-        yield TextField::new('name', 'Name');
-        yield TextField::new('fullName', 'Full name');
+        yield TextField::new('name', 'Name')
+            ->setColumns(6);
+        yield TextField::new('fullName', 'Full name')
+            ->setColumns(6);
         yield ArrayField::new('getPciVendorIds', 'Vendor ID')
             ->hideOnForm();
+        yield CollectionField::new('manufacturerCodes', 'Codes')
+            ->setEntryType(ManufacturerCodeType::class)
+            ->setColumns('col-sm-6 col-lg-6 col-xxl-4')
+            ->renderExpanded()
+            ->onlyOnForms();
         yield CollectionField::new('pciVendorIds', 'Vendor ID')
             ->setEntryType(PciVendorIdType::class)
-            ->setColumns(6)
+            ->setColumns('col-sm-6 col-lg-6 col-xxl-4')
             ->renderExpanded()
             ->onlyOnForms();
         yield ArrayField::new('getBiosCodes', 'BIOS codes')
             ->onlyOnIndex();
         yield CollectionField::new('biosCodes', 'BIOS codes')
             ->setEntryType(ManufacturerBiosManufacturerCodeType::class)
-            ->setColumns(4)
+            ->setColumns('col-sm-6 col-lg-6 col-xxl-4')
             ->renderExpanded()
             ->onlyOnForms();
+        yield CodeEditorField::new('description')
+            ->setLanguage('markdown')
+            ->onlyOnForms();
+        yield FormField::addTab('Attachments')
+            ->setIcon('download')
+            ->onlyOnForms();
+        yield CollectionField::new('entityImages', 'Images')
+            ->setEntryType(EntityImageType::class)
+            ->renderExpanded()
+            ->setFormTypeOption('error_bubbling', false)
+            ->setColumns(6)
+            ->onlyOnForms();
+    }
+    public function viewManufacturer(AdminContext $context)
+    {
+        $manufacturerId = $context->getEntity()->getInstance()->getId();
+        return $this->redirectToRoute('manufacturer_show', array('id'=>$manufacturerId));
     }
     public function viewLogs(AdminContext $context)
     {

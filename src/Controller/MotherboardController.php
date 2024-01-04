@@ -549,4 +549,18 @@ class MotherboardController extends AbstractController
             'controller_name' => 'MotherboardController',
         ]);
     }
+    #[Route('/manufacturer/{id}', name: 'manufacturer_show', requirements: ['id' => '\d+'])]
+    public function showManufacturer(int $id, ManufacturerRepository $manufacturerRepository): Response {
+        $manuf = $manufacturerRepository->find($id);
+
+        if (!$manuf) {
+            throw $this->createNotFoundException(
+                'No manufacturer found for id ' . $id
+            );
+        }
+        return $this->render('misc/manufacturer.html.twig', [
+            'manufacturer' => $manuf,
+            'controller_name' => 'MotherboardController',
+        ]);
+    }
 }

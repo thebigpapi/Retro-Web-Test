@@ -44,6 +44,9 @@ class EntityImage
     #[ORM\ManyToOne(inversedBy: 'entityImages')]
     private ?CpuSocket $cpuSocket = null;
 
+    #[ORM\ManyToOne(inversedBy: 'entityImages')]
+    private ?Manufacturer $manufacturer = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -135,5 +138,17 @@ class EntityImage
                 ->atPath('imageFile')
                 ->addViolation();
         }
+    }
+
+    public function getManufacturer(): ?Manufacturer
+    {
+        return $this->manufacturer;
+    }
+
+    public function setManufacturer(?Manufacturer $manufacturer): self
+    {
+        $this->manufacturer = $manufacturer;
+
+        return $this;
     }
 }

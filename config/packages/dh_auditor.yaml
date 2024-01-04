@@ -37,7 +37,6 @@ dh_auditor:
                 App\Entity\HardDrive: ~
                 App\Entity\InstructionSet: ~
                 App\Entity\IoPort: ~
-                App\Entity\MemoryConnector: ~
                 App\Entity\KnownIssue: ~
                 App\Entity\LargeFile: ~
                 App\Entity\LargeFileChipset: ~
@@ -47,9 +46,11 @@ dh_auditor:
                 App\Entity\License: ~
                 App\Entity\Manual: ~
                 App\Entity\Manufacturer: ~
+                App\Entity\ManufacturerCode: ~
                 App\Entity\ManufacturerBiosManufacturerCode: ~
                 App\Entity\MaxRam: ~
                 App\Entity\MediaTypeFlag: ~
+                App\Entity\MemoryConnector: ~
                 App\Entity\MiscFile: ~
                 App\Entity\Motherboard: ~
                 App\Entity\MotherboardAlias: ~
