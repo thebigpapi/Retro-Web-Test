@@ -27,7 +27,7 @@ final class Version20230828131446 extends AbstractMigration
         $this->addSql('DROP TABLE motherboard_processor');
         $this->addSql('DROP TABLE motherboard_coprocessor');
         $this->addSql('ALTER TABLE chipset ALTER cached_name DROP DEFAULT');
-        //$this->addSql('DROP INDEX uniq_3d0ae6dc3ee4b093');
+        $this->addSql('DROP INDEX uniq_3d0ae6dc3ee4b093');
         $this->addSql('UPDATE manufacturer SET short_name=COALESCE(short_name, name)');
         $this->addSql('ALTER TABLE manufacturer RENAME COLUMN name TO full_name');
         $this->addSql('ALTER TABLE manufacturer RENAME COLUMN short_name TO name');
