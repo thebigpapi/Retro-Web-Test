@@ -7,7 +7,7 @@ use App\Repository\ExpansionChipRepository;
 use App\Repository\FloppyDriveRepository;
 use App\Repository\HardDriveRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use App\Repository\MotherboardRepository;
 use App\Repository\MotherboardBiosRepository;
 use App\Repository\ChipsetRepository;

@@ -5,7 +5,7 @@ namespace App\Controller;
 use App\Entity\MotherboardIdRedirection;
 use App\Entity\StorageDeviceIdRedirection;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use App\Repository\MotherboardIdRedirectionRepository;
 use App\Repository\StorageDeviceIdRedirectionRepository;
 use Symfony\Component\HttpFoundation\Response;
