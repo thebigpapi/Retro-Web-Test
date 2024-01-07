@@ -29,4 +29,12 @@ class SecurityController extends AbstractController
     {
         throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
     }
+
+    #[Route('/login_check', name:'app_login_check')]
+    public function loginCheckAction()
+    {
+        // this controller will not be executed,
+        // as the route is handled by the Security system
+        throw new \Exception('Which means that this Exception will not be raised anytime soon …');
+    }
 }

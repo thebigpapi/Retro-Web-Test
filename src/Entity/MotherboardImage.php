@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Repository\MotherboardImageRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -10,7 +11,7 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[Vich\Uploadable]
-#[ORM\Entity(repositoryClass: 'App\Repository\MotherboardImageRepository')]
+#[ORM\Entity(repositoryClass: MotherboardImageRepository::class)]
 class MotherboardImage
 {
     #[ORM\Id]
