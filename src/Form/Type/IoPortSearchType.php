@@ -17,6 +17,10 @@ class IoPortSearchType extends AbstractType
     {
         $this->entityManager = $entityManager;
     }
+
+    /**
+     * @return void
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder

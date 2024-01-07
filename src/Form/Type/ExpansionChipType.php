@@ -21,6 +21,10 @@ class ExpansionChipType extends AbstractType
     {
         return $this->entityManager->getRepository(ExpansionChip::class);
     }
+
+    /**
+     * @return void
+     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([

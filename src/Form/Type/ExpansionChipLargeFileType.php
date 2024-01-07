@@ -16,6 +16,9 @@ use Symfony\Component\Form\ChoiceList\View\ChoiceView;
 
 class ExpansionChipLargeFileType extends AbstractType
 {
+    /**
+     * @return void
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -32,6 +35,9 @@ class ExpansionChipLargeFileType extends AbstractType
             ]);
     }
 
+    /**
+     * @return void
+     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([

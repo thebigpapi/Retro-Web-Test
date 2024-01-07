@@ -58,6 +58,9 @@ class Search extends AbstractType
         return $chipsets;
     }
 
+    /**
+     * @return void
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         // sorting some fields before adding them to the form
@@ -205,6 +208,9 @@ class Search extends AbstractType
             ]);
     }
 
+    /**
+     * @return void
+     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([

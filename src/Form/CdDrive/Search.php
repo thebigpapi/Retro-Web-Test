@@ -14,6 +14,9 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class Search extends AbstractType
 {
+    /**
+     * @return void
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -48,6 +51,9 @@ class Search extends AbstractType
             ]);
     }
 
+    /**
+     * @return void
+     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([

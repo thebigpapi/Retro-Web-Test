@@ -15,6 +15,9 @@ use Symfony\Component\Form\FormView;
 
 class ChipsetBiosCodeType extends AbstractType
 {
+    /**
+     * @return void
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -29,12 +32,19 @@ class ChipsetBiosCodeType extends AbstractType
             ->add('code', TextType::class);
     }
 
+    /**
+     * @return void
+     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
             'data_class' => ChipsetBiosCode::class,
         ]);
     }
+
+    /**
+     * @return void
+     */
     public function finishView(FormView $view, FormInterface $form, array $options)
     {
         usort($view->children['biosManufacturer']->vars['choices'], function (ChoiceView $a, ChoiceView $b) {

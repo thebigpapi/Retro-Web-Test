@@ -16,6 +16,9 @@ use Vich\UploaderBundle\Form\Type\VichFileType;
 
 class ManualType extends AbstractType
 {
+    /**
+     * @return void
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -55,27 +58,13 @@ class ManualType extends AbstractType
             ]);
     }
 
+    /**
+     * @return void
+     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
             'data_class' => Manual::class,
         ]);
     }
-
-    /*public function upload()
-    {
-        // ...
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $someNewFilename = "test.pdf";
-            $directory = '/motherboard/manual/';
-
-            $file = $form['attachment']->getData();
-            $file->move($directory, $someNewFilename);
-
-            // ...
-        }
-
-        // ...
-    }*/
 }

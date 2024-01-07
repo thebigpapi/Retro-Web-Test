@@ -19,6 +19,9 @@ use Symfony\Component\Form\FormView;
 
 class ProcessingUnitType extends AbstractType
 {
+    /**
+     * @return void
+     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
@@ -55,6 +58,9 @@ class ProcessingUnitType extends AbstractType
             ]);
     }
 
+    /**
+     * @return void
+     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
@@ -62,6 +68,9 @@ class ProcessingUnitType extends AbstractType
         ]);
     }
 
+    /**
+     * @return void
+     */
     public function finishView(FormView $view, FormInterface $form, array $options)
     {
         usort($view->vars['form']['speed']->vars['choices'], function (ChoiceView $a, ChoiceView $b) {

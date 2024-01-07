@@ -9,20 +9,10 @@ use App\Entity\LargeFile;
 
 class LargeFileType extends AbstractType
 {
-    /*public function buildForm(FormBuilderInterface $builder, array $options)
-    {
-        $builder
-            ->add('chipset_part', EntityType::class, [
-                'class' => ChipsetPart::class,
-                'choice_label' => 'getFullName',
-                'multiple' => false,
-                'expanded' => false,
-                ])
-            ->add('index',NumberType::class, [
-                'required' => true,
-            ]);
-    }*/
 
+    /**
+     * @return void
+     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
@@ -33,12 +23,6 @@ class LargeFileType extends AbstractType
         ]);
     }
 
-    /*public function configureOptions(OptionsResolver $resolver)
-    {
-        $resolver->setDefaults([
-            'data_class' => ChipsetChipsetPart::class,
-        ]);
-    }*/
     public function getParent(): ?string
     {
         return EntityType::class;

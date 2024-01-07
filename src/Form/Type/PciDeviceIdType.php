@@ -10,6 +10,9 @@ use App\Entity\PciDeviceId;
 
 class PciDeviceIdType extends AbstractType
 {
+    /**
+     * @return void
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -19,6 +22,9 @@ class PciDeviceIdType extends AbstractType
             ]);
     }
 
+    /**
+     * @return void
+     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([

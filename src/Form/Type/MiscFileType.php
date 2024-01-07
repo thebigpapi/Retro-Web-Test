@@ -12,6 +12,9 @@ use Vich\UploaderBundle\Form\Type\VichFileType;
 
 class MiscFileType extends AbstractType
 {
+    /**
+     * @return void
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -30,6 +33,9 @@ class MiscFileType extends AbstractType
             ]);
     }
 
+    /**
+     * @return void
+     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([

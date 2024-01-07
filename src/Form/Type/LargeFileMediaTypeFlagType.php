@@ -12,6 +12,9 @@ use Symfony\Component\Form\Extension\Core\Type\NumberType;
 
 class LargeFileMediaTypeFlagType extends AbstractType
 {
+    /**
+     * @return void
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -25,6 +28,9 @@ class LargeFileMediaTypeFlagType extends AbstractType
             ]);
     }
 
+    /**
+     * @return void
+     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([

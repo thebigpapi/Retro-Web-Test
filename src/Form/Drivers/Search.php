@@ -12,6 +12,9 @@ use App\Form\Type\OsFlagType;
 
 class Search extends AbstractType
 {
+    /**
+     * @return void
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder

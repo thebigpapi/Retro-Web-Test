@@ -18,6 +18,9 @@ use Vich\UploaderBundle\Form\Type\VichImageType;
 
 class MotherboardImageTypeForm extends AbstractType
 {
+    /**
+     * @return void
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -63,6 +66,9 @@ class MotherboardImageTypeForm extends AbstractType
             ]);
     }
 
+    /**
+     * @return void
+     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
@@ -70,6 +76,9 @@ class MotherboardImageTypeForm extends AbstractType
         ]);
     }
 
+    /**
+     * @return void
+     */
     public function finishView(FormView $view, FormInterface $form, array $options)
     {
         usort($view->children['creditor']->vars['choices'], function (ChoiceView $a, ChoiceView $b) {

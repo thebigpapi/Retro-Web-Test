@@ -59,6 +59,10 @@ class Search extends AbstractType
         $chipsets = array_merge($chipsets, $allchipsets);
         return $chipsets;
     }
+
+    /**
+     * @return void
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -133,7 +137,10 @@ class Search extends AbstractType
             ]);
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    /**
+     * @return void
+     */
+    public function configureOptions(OptionsResolver $resolver) 
     {
         $resolver->setDefaults([
             'biosManufacturers' => array(),

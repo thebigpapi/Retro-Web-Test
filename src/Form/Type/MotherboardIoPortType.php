@@ -12,6 +12,9 @@ use App\Entity\MotherboardIoPort;
 
 class MotherboardIoPortType extends AbstractType
 {
+    /**
+     * @return void
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -29,6 +32,9 @@ class MotherboardIoPortType extends AbstractType
             ]);
     }
 
+    /**
+     * @return void
+     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([

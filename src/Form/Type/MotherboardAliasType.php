@@ -15,6 +15,9 @@ use Symfony\Component\Form\ChoiceList\View\ChoiceView;
 
 class MotherboardAliasType extends AbstractType
 {
+    /**
+     * @return void
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -31,6 +34,9 @@ class MotherboardAliasType extends AbstractType
             ]);
     }
 
+    /**
+     * @return void
+     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
@@ -38,6 +44,9 @@ class MotherboardAliasType extends AbstractType
         ]);
     }
 
+    /**
+     * @return void
+     */
     public function finishView(FormView $view, FormInterface $form, array $options)
     {
         usort($view->children['manufacturer']->vars['choices'], function (ChoiceView $a, ChoiceView $b) {

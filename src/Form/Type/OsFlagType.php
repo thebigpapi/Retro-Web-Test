@@ -19,6 +19,10 @@ class OsFlagType extends AbstractType
     {
         $this->entityManager = $entityManager;
     }
+
+    /**
+     * @return void
+     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([

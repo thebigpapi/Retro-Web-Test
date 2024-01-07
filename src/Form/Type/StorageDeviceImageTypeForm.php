@@ -10,7 +10,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\File;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use App\Entity\StorageDeviceImage;
-use App\Entity\StorageDeviceImageType;
 use App\Entity\Creditor;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
@@ -19,6 +18,9 @@ use Vich\UploaderBundle\Form\Type\VichImageType;
 
 class StorageDeviceImageTypeForm extends AbstractType
 {
+    /**
+     * @return void
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -67,6 +69,9 @@ class StorageDeviceImageTypeForm extends AbstractType
             ]);
     }
 
+    /**
+     * @return void
+     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
@@ -74,6 +79,9 @@ class StorageDeviceImageTypeForm extends AbstractType
         ]);
     }
 
+    /**
+     * @return void
+     */
     public function finishView(FormView $view, FormInterface $form, array $options)
     {
         usort($view->children['creditor']->vars['choices'], function (ChoiceView $a, ChoiceView $b) {

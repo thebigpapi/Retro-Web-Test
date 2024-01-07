@@ -12,6 +12,9 @@ use Symfony\Component\Form\ChoiceList\View\ChoiceView;
 
 class PSUConnectorType extends AbstractType
 {
+    /**
+     * @return void
+     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
@@ -28,6 +31,10 @@ class PSUConnectorType extends AbstractType
     {
         return EntityType::class;
     }
+
+    /**
+     * @return void
+     */
     public function finishView(FormView $view, FormInterface $form, array $options)
     {
         usort($view->vars['choices'], function (ChoiceView $a, ChoiceView $b) {
