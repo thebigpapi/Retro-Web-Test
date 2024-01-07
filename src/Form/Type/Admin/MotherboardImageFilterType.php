@@ -20,6 +20,9 @@ class MotherboardImageFilterType extends AbstractType
         ]);
     }
 
+    /**
+     * @return ?string
+     */
     public function getParent()
     {
         return ChoiceType::class;

@@ -142,7 +142,7 @@ class MotherboardCrudController extends AbstractCrudController
     public function configureFields(string $pageName): iterable
     {
         yield FormField::addTab('Basic Data')
-            ->setIcon('info')
+            ->setIcon('fa fa-info')
             ->onlyOnForms();
         // index items
         yield IdField::new('id')
@@ -232,7 +232,7 @@ class MotherboardCrudController extends AbstractCrudController
             ->setLanguage('markdown')
             ->onlyOnForms();
         yield FormField::addTab('Chips')
-            ->setIcon('microchip')
+            ->setIcon('fa fa-microchip')
             ->onlyOnForms();
         yield FormField::addPanel('CPU stuff')->onlyOnForms();
         yield CollectionField::new('cpuSockets', 'CPU sockets')
@@ -268,7 +268,7 @@ class MotherboardCrudController extends AbstractCrudController
             ->setColumns('col-sm-12 col-lg-8 col-xxl-6')
             ->onlyOnForms();
         yield FormField::addTab('Connectors')
-            ->setIcon('plug')
+            ->setIcon('fa fa-plug')
             ->onlyOnForms();
         yield CollectionField::new('motherboardIoPorts', 'I/O ports')
             ->setEntryType(MotherboardIoPortType::class)
@@ -294,7 +294,7 @@ class MotherboardCrudController extends AbstractCrudController
             ->renderExpanded()
             ->onlyOnForms();
         yield FormField::addTab('BIOS images')
-            ->setIcon('download')
+            ->setIcon('fa fa-download')
             ->onlyOnForms();
         yield CollectionField::new('motherboardBios', 'BIOS images')
             ->setEntryType(MotherboardBiosType::class)
@@ -304,7 +304,7 @@ class MotherboardCrudController extends AbstractCrudController
             ->renderExpanded()
             ->onlyOnForms();
         yield FormField::addTab('Other attachments')
-            ->setIcon('download')
+            ->setIcon('fa fa-download')
             ->onlyOnForms();
         yield CollectionField::new('images', 'Images')
             ->setEntryType(MotherboardImageTypeForm::class)
@@ -329,6 +329,10 @@ class MotherboardCrudController extends AbstractCrudController
             ->setColumns(6)
             ->onlyOnForms();
     }
+
+    /**
+     * @return KeyValueStore|Response
+     */
     public function new(AdminContext $context)
     {
         $event = new BeforeCrudActionEvent($context);

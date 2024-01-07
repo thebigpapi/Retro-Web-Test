@@ -41,7 +41,7 @@ class ChipsetController extends AbstractController
         }
         //get criterias
         $criterias = $this->getCriteriaChipset($request);
-        $showImages = boolval(htmlentities($request->query->get('showImages')));
+        $showImages = boolval(htmlentities($request->query->get('showImages') ?? ''));
         $maxItems = $request->query->getInt('itemsPerPage', $request->request->getInt('itemsPerPage', $this->getParameter('app.pagination.max')));
         if (empty($criterias)) {
             return $this->render('chipset/search.html.twig', [
@@ -80,7 +80,7 @@ class ChipsetController extends AbstractController
         ChipsetRepository $chipsetRepository
     ): Response {
         $criterias = $this->getCriteriaChipset($request);
-        $showImages = boolval(htmlentities($request->query->get('showImages')));
+        $showImages = boolval(htmlentities($request->query->get('showImages') ?? ''));
         $maxItems = $request->query->getInt('itemsPerPage', $request->request->getInt('itemsPerPage', $this->getParameter('app.pagination.max')));
         $data = $chipsetRepository->findByChipset($criterias);
         $chipsets = $paginator->paginate(

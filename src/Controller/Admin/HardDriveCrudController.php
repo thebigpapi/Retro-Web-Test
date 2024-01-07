@@ -130,7 +130,7 @@ class HardDriveCrudController extends AbstractCrudController
     public function configureFields(string $pageName): iterable
     {
         yield FormField::addTab('Basic Data')
-            ->setIcon('info')
+            ->setIcon('fa fa-info')
             ->onlyOnForms();
         // index items
         yield IdField::new('id')
@@ -227,7 +227,7 @@ class HardDriveCrudController extends AbstractCrudController
             ->setLanguage('markdown')
             ->onlyOnForms();
         yield FormField::addTab('Attachments')
-            ->setIcon('download')
+            ->setIcon('fa fa-download')
             ->onlyOnForms();
         yield CollectionField::new('storageDeviceImages', 'Images')
             ->setEntryType(StorageDeviceImageTypeForm::class)
@@ -273,6 +273,9 @@ class HardDriveCrudController extends AbstractCrudController
         return $this->redirect($url);
     }
 
+    /**
+     * @return KeyValueStore|Response
+     */
     public function new(AdminContext $context)
     {
         $event = new BeforeCrudActionEvent($context);

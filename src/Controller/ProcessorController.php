@@ -45,7 +45,7 @@ class ProcessorController extends AbstractController
         }
         //get criterias
         $criterias = $this->getCriteriaCpu($request);
-        $showImages = boolval(htmlentities($request->query->get('showImages')));
+        $showImages = boolval(htmlentities($request->query->get('showImages') ?? ''));
         $maxItems = $request->query->getInt('itemsPerPage', $request->request->getInt('itemsPerPage', $this->getParameter('app.pagination.max')));
         if (empty($criterias)) {
             return $this->render('cpu/search.html.twig', [
@@ -78,7 +78,7 @@ class ProcessorController extends AbstractController
     public function liveResultsCpu(Request $request, PaginatorInterface $paginator, ProcessorRepository $cpuRepository): Response
     {
         $criterias = $this->getCriteriaCpu($request);
-        $showImages = boolval(htmlentities($request->query->get('showImages')));
+        $showImages = boolval(htmlentities($request->query->get('showImages') ?? ''));
         $maxItems = $request->query->getInt('itemsPerPage', $request->request->getInt('itemsPerPage', $this->getParameter('app.pagination.max')));
         $data = $cpuRepository->findByCPU($criterias);
             $cpus = $paginator->paginate(

@@ -50,7 +50,7 @@ class HardDriveController extends AbstractController
         }
         //get criterias
         $criterias = $this->getCriteriaHdd($request);
-        $showImages = boolval(htmlentities($request->query->get('showImages')));
+        $showImages = boolval(htmlentities($request->query->get('showImages') ?? ''));
         $maxItems = $request->query->getInt('itemsPerPage', $request->request->getInt('itemsPerPage', $this->getParameter('app.pagination.max')));
         if (empty($criterias)) {
             return $this->render('harddrive/search.html.twig', [
@@ -82,7 +82,7 @@ class HardDriveController extends AbstractController
     public function liveResultsHdd(Request $request, PaginatorInterface $paginator, HardDriveRepository $hddRepository): Response
     {
         $criterias = $this->getCriteriaHdd($request);
-        $showImages = boolval(htmlentities($request->query->get('showImages')));
+        $showImages = boolval(htmlentities($request->query->get('showImages') ?? ''));
         $maxItems = $request->query->getInt('itemsPerPage', $request->request->getInt('itemsPerPage', $this->getParameter('app.pagination.max')));
         $data = $hddRepository->findByHdd($criterias);
         $hdds = $paginator->paginate(

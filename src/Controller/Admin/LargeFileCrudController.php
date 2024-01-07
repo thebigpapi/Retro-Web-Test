@@ -106,7 +106,7 @@ class LargeFileCrudController extends AbstractCrudController
     public function configureFields(string $pageName): iterable
     {
         yield FormField::addTab('Basic Data')
-            ->setIcon('info')
+            ->setIcon('fa fa-info')
             ->onlyOnForms();
         yield IdField::new('id')->onlyOnIndex();
         yield TextField::new('name', 'Name')
@@ -171,7 +171,7 @@ class LargeFileCrudController extends AbstractCrudController
             ->setLanguage('markdown')
             ->onlyOnForms();
         yield FormField::addTab('Associations')
-            ->setIcon('info')
+            ->setIcon('fa fa-info')
             ->onlyOnForms();
         yield CollectionField::new('expansionChips', 'Expansion chips')
             ->setEntryType(ExpansionChipLargeFileType::class)
@@ -190,6 +190,10 @@ class LargeFileCrudController extends AbstractCrudController
         $entity = str_replace("\\", "-",$context->getEntity()->getFqcn());
         return $this->redirectToRoute('dh_auditor_show_entity_history', array('id' => $entityId, 'entity' => $entity));
     }
+
+    /**
+     * @return KeyValueStore|Response
+     */
     public function new(AdminContext $context)
     {
         $event = new BeforeCrudActionEvent($context);
