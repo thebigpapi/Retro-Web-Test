@@ -29,6 +29,12 @@ dh_auditor:
                 App\Entity\DramType: ~
                 App\Entity\EntityDocumentation: ~
                 App\Entity\EntityImage: ~
+                App\Entity\ExpansionCard: ~
+                App\Entity\ExpansionCardAlias: ~
+                App\Entity\ExpansionCardBios: ~
+                App\Entity\ExpansionCardDocumentation: ~
+                App\Entity\ExpansionCardImage: ~
+                App\Entity\ExpansionCardType: ~
                 App\Entity\ExpansionChip: ~
                 App\Entity\ExpansionChipType: ~
                 App\Entity\ExpansionSlot: ~
@@ -40,6 +46,7 @@ dh_auditor:
                 App\Entity\KnownIssue: ~
                 App\Entity\LargeFile: ~
                 App\Entity\LargeFileChipset: ~
+                App\Entity\LargeFileExpansionCard: ~
                 App\Entity\LargeFileExpansionChip: ~
                 App\Entity\LargeFileMediaTypeFlag: ~
                 App\Entity\LargeFileMotherboard: ~
