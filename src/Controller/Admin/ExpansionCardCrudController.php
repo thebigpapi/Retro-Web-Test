@@ -10,6 +10,7 @@ use App\Form\Type\ExpansionCardDocumentationType;
 use App\Form\Type\ExpansionCardImageType;
 use App\Form\Type\ExpansionCardIdRedirectionType;
 use App\Form\Type\ExpansionChipType;
+use App\Form\Type\PSUConnectorType;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Controller\Admin\Filter\ChipImageFilter;
 use App\Controller\Admin\Filter\ChipDocFilter;
@@ -136,6 +137,11 @@ class ExpansionCardCrudController extends AbstractCrudController
             ->setEntryType(ExpansionChipType::class)
             ->renderExpanded()
             ->setColumns('col-sm-12 col-lg-8 col-xxl-6')
+            ->onlyOnForms();
+        yield CollectionField::new('powerConnectors', 'Power connectors')
+            ->setEntryType(PSUConnectorType::class)
+            ->setColumns('col-sm-12 col-lg-6 col-xxl-4')
+            ->renderExpanded()
             ->onlyOnForms();
         yield CodeEditorField::new('description')
             ->setLanguage('markdown')
