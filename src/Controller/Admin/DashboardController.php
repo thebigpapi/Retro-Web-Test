@@ -13,6 +13,8 @@ use App\Entity\CdDrive;
 use App\Entity\FloppyDrive;
 use App\Entity\ExpansionChip;
 use App\Entity\ExpansionChipType;
+use App\Entity\ExpansionCard;
+use App\Entity\ExpansionCardType;
 use App\Entity\CacheSize;
 use App\Entity\MaxRam;
 use App\Entity\DramType;
@@ -100,6 +102,7 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::section('Main items');
         yield MenuItem::linkToCrud('Motherboards', 'board.svg', Motherboard::class)->setDefaultSort(['lastEdited' => 'DESC']);
         yield MenuItem::linkToCrud('Chipsets', 'chipset.svg', Chipset::class);
+        yield MenuItem::linkToCrud('Expansion cards', 'card.svg', ExpansionCard::class);
         yield MenuItem::linkToCrud('CPUs', '486.svg', Processor::class);
         yield MenuItem::linkToCrud('Drivers', 'hardware.svg', LargeFile::class);
         yield MenuItem::linkToCrud('Hard drives', 'hdd.svg', HardDrive::class);
@@ -107,6 +110,7 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Floppy drives', 'floppy.svg', FloppyDrive::class);
         yield MenuItem::linkToCrud('Expansion chips', 'chip.svg', ExpansionChip::class);
         yield MenuItem::section('Auxiliary items');
+        yield MenuItem::linkToCrud('Expansion card types', 'card.svg', ExpansionCardType::class)->setPermission('ROLE_ADMIN');
         yield MenuItem::linkToCrud('Expansion chip types', 'chip_alias.svg', ExpansionChipType::class)->setPermission('ROLE_ADMIN');
         yield MenuItem::subMenu('Storage related', 'hdd.svg')->setSubItems([
             MenuItem::linkToCrud('Interface', 'io.svg', StorageDeviceInterface::class),

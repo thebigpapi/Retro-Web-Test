@@ -4,10 +4,10 @@ namespace App\Controller\Admin;
 
 use App\Entity\ExpansionCard;
 use App\Form\Type\ChipAliasType;
-use App\Form\Type\PciDeviceIdType;
-use App\Form\Type\LargeFileExpansionChipType;
-use App\Form\Type\ChipDocumentationType;
-use App\Form\Type\ChipImageType;
+use App\Form\Type\ExpansionCardBiosType;
+use App\Form\Type\LargeFileExpansionCardType;
+use App\Form\Type\ExpansionCardDocumentationType;
+use App\Form\Type\ExpansionCardImageType;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Controller\Admin\Filter\ChipImageFilter;
 use App\Controller\Admin\Filter\ChipDocFilter;
@@ -92,15 +92,14 @@ class ExpansionCardCrudController extends AbstractCrudController
             ->setFormTypeOption('placeholder', 'Type to select a manufacturer ...')
             ->setColumns(4)
             ->onlyOnForms();
-        yield TextField::new('partNumber', 'Part number')
-            ->setColumns(4);
         yield TextField::new('name', 'Name')
             ->setColumns(4);
-        yield TextField::new('type','Type')->onlyOnIndex();
+        yield ArrayField::new('type','Type')->onlyOnIndex();
         // index
-        yield ArrayField::new('getPciDevsLimited', 'Device ID')
-            ->hideOnForm();
-        yield BooleanField::new('getImages','Images')
+        yield BooleanField::new('isExpansionCardImage','Images')
+            ->renderAsSwitch(false)
+            ->onlyOnIndex();
+        yield BooleanField::new('isExpansionCardBios','BIOS')
             ->renderAsSwitch(false)
             ->onlyOnIndex();
         yield BooleanField::new('getDocumentations','Docs')
@@ -114,46 +113,50 @@ class ExpansionCardCrudController extends AbstractCrudController
             ->setFormTypeOption('placeholder', 'Type to select a type ...')
             ->setColumns(6)
             ->onlyOnForms();
-        yield CollectionField::new('pciDevs', 'Device ID')
-            ->setEntryType(PciDeviceIdType::class)
-            ->setColumns(6)
-            ->renderExpanded()
-            ->onlyOnForms();
         yield CodeEditorField::new('description')
             ->setLanguage('markdown')
             ->onlyOnForms();
-        yield CollectionField::new('chipAliases', 'Chip aliases')
+        yield CollectionField::new('expansionCardAliases', 'Alternative names')
             ->setEntryType(ChipAliasType::class)
             ->setFormTypeOption('error_bubbling', false)
             ->setColumns(6)
             ->renderExpanded()
             ->onlyOnForms();
-        yield FormField::addTab('Attachments')
+        yield FormField::addTab('BIOS images')
             ->setIcon('fa fa-download')
             ->onlyOnForms();
-        yield CollectionField::new('documentations', 'Documentation')
-            ->setEntryType(ChipDocumentationType::class)
+        yield CollectionField::new('expansionCardBios', 'BIOS')
+            ->setEntryType(ExpansionCardBiosType::class)
             ->setFormTypeOption('error_bubbling', false)
             ->setColumns(6)
             ->renderExpanded()
             ->onlyOnForms();
+        yield FormField::addTab('Other attachments')
+            ->setIcon('fa fa-download')
+            ->onlyOnForms();
         yield CollectionField::new('images', 'Images')
-            ->setEntryType(ChipImageType::class)
+            ->setEntryType(ExpansionCardImageType::class)
+            ->setColumns(6)
+            ->renderExpanded()
+            ->onlyOnForms();
+        yield CollectionField::new('documentations', 'Documentation')
+            ->setEntryType(ExpansionCardDocumentationType::class)
+            ->setFormTypeOption('error_bubbling', false)
             ->setColumns(6)
             ->renderExpanded()
             ->onlyOnForms();
         yield CollectionField::new('drivers', 'Drivers')
-            ->setEntryType(LargeFileExpansionChipType::class)
+            ->setEntryType(LargeFileExpansionCardType::class)
             ->setColumns(6)
             ->renderExpanded()
             ->onlyOnForms();
         yield DateField::new('lastEdited', 'Last edit')
             ->hideOnForm();
     }
-    public function viewExpChip(AdminContext $context)
+    public function viewExpCard(AdminContext $context)
     {
-        $chipsetId = $context->getEntity()->getInstance()->getId();
-        return $this->redirectToRoute('expansion_chip_show', array('id'=>$chipsetId));
+        $entityId = $context->getEntity()->getInstance()->getId();
+        return $this->redirectToRoute('expansioncard_show', array('id'=>$entityId));
     }
     public function viewLogs(AdminContext $context)
     {
@@ -162,7 +165,7 @@ class ExpansionCardCrudController extends AbstractCrudController
         return $this->redirectToRoute('dh_auditor_show_entity_history', array('id' => $entityId, 'entity' => $entity));
     }
         /**
-     * @param ExpansionChip $entityInstance
+     * @param ExpansionCard $entityInstance
      */
     public function updateEntity(EntityManagerInterface $entityManager, $entityInstance): void
     {

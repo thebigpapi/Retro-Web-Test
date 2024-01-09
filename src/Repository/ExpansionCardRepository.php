@@ -20,29 +20,60 @@ class ExpansionCardRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, ExpansionCard::class);
     }
+    /**
+     * @return ExpansionCard[]
+     */
+    public function findByExpansionCard(array $criteria): array
+    {
+        $entityManager = $this->getEntityManager();
 
-//    /**
-//     * @return ExpansionCard[] Returns an array of ExpansionCard objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('e')
-//            ->andWhere('e.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('e.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+        $whereArray = array();
+        $valuesArray = array();
 
-//    public function findOneBySomeField($value): ?ExpansionCard
-//    {
-//        return $this->createQueryBuilder('e')
-//            ->andWhere('e.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+        // Checking values in criteria and creating WHERE statements
+        if (array_key_exists('name', $criteria)) {
+            $multicrit = explode(" ", $criteria['name']);
+            foreach ($multicrit as $key => $val) {
+                $whereArray[] = "(LOWER(card.name) LIKE :nameLike$key 
+                    OR LOWER(alias.name) LIKE :nameLike$key)";
+                $valuesArray["nameLike$key"] = "%" . strtolower($val) . "%";
+            }
+        }
+        if (array_key_exists('manufacturer', $criteria)) {
+            $whereArray[] = "(man.id = :manufacturerId)";
+            $valuesArray["manufacturerId"] = (int)$criteria['manufacturer'];
+        }
+        if (array_key_exists('type', $criteria)) {
+            $whereArray[] = "(typ.id = :typeId)";
+            $valuesArray["typeId"] = (int)$criteria['type'];
+        }
+
+        // Building where statement
+        $whereString = implode(" AND ", $whereArray);
+
+        // Building query
+        if($whereArray == []){
+            return [];
+        }
+        else{
+            $query = $entityManager->createQuery(
+                "SELECT card
+                FROM App\Entity\ExpansionCard card JOIN card.manufacturer man LEFT OUTER JOIN card.expansionCardAliases alias LEFT JOIN card.type typ
+                WHERE $whereString
+                ORDER BY man.name ASC, card.name ASC"
+            );
+        }
+        // Setting values
+        foreach ($valuesArray as $key => $value) {
+            $query->setParameter($key, $value);
+        }
+        return $query->getResult();
+    }
+    public function getCount(): int
+    {
+        return $this->createQueryBuilder('ec')
+            ->select('count(ec.id)')
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
 }

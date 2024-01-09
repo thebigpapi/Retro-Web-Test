@@ -17,6 +17,7 @@ class ExpansionCard
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\Length(max: 255, maxMessage: 'Name is longer than {{ limit }} characters, try to make it shorter.')]
     private ?string $name = null;
 
     #[ORM\ManyToMany(targetEntity: ExpansionChip::class, inversedBy: 'expansionCards')]
@@ -26,16 +27,18 @@ class ExpansionCard
     private Collection $powerConnectors;
 
     #[ORM\Column(length: 4096, nullable: true)]
+    #[Assert\Length(max: 4096, maxMessage: 'Description is longer than {{ limit }} characters, try to make it shorter.')]
     private ?string $description = null;
 
-    #[ORM\OneToMany(mappedBy: 'expansionCard', targetEntity: LargeFileExpansionCard::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'expansionCard', targetEntity: LargeFileExpansionCard::class, orphanRemoval: true, cascade: ['persist'])]
     private Collection $drivers;
 
     #[ORM\OneToMany(targetEntity: ExpansionCardDocumentation::class, mappedBy: 'expansionCard', orphanRemoval: true, cascade: ['persist'])]
     #[Assert\Valid()]
     protected $documentations;
 
-    #[ORM\OneToMany(mappedBy: 'expansionCard', targetEntity: ExpansionCardImage::class)]
+    #[ORM\OneToMany(mappedBy: 'expansionCard', targetEntity: ExpansionCardImage::class, orphanRemoval: true, cascade: ['persist'])]
+    #[Assert\Valid()]
     private Collection $images;
 
     #[ORM\ManyToMany(targetEntity: ExpansionCardType::class, inversedBy: 'expansionCards')]
@@ -47,18 +50,23 @@ class ExpansionCard
     #[ORM\ManyToOne(inversedBy: 'expansionCards')]
     private ?Manufacturer $manufacturer = null;
 
-    #[ORM\OneToMany(mappedBy: 'expansionCard', targetEntity: ExpansionCardBios::class)]
+    #[ORM\OneToMany(mappedBy: 'expansionCard', targetEntity: ExpansionCardBios::class, orphanRemoval: true, cascade: ['persist'])]
     private Collection $expansionCardBios;
+
+    #[ORM\Column(type: 'datetime')]
+    private $lastEdited;
 
     public function __construct()
     {
         $this->expansionChips = new ArrayCollection();
         $this->powerConnectors = new ArrayCollection();
+        $this->documentations = new ArrayCollection();
         $this->drivers = new ArrayCollection();
         $this->images = new ArrayCollection();
         $this->type = new ArrayCollection();
         $this->expansionCardAliases = new ArrayCollection();
         $this->expansionCardBios = new ArrayCollection();
+        $this->lastEdited = new \DateTime('now');
     }
 
     public function getId(): ?int
@@ -76,6 +84,18 @@ class ExpansionCard
         $this->name = $name;
 
         return $this;
+    }
+    public function getPrettyTitle(): string
+    {
+        $strBuilder = "";
+        $mfgData = $this->getManufacturer();
+        if ($mfgData != null) {
+            $strBuilder .= $mfgData->getName();
+        } else {
+            $strBuilder .= "[Unknown]";
+        }
+        $strBuilder .= " " . $this->getName();
+        return $strBuilder;
     }
 
     /**
@@ -198,6 +218,42 @@ class ExpansionCard
         return $this;
     }
 
+    public function isExpansionCardImage(): bool
+    {
+        if(isset($this->images))
+            if(count($this->images) > 0)
+                return true;
+        return false;
+    }
+    /**
+     * @return Collection|ExpansionCardDocumentation[]
+     */
+    public function getDocumentations(): Collection
+    {
+        return $this->documentations;
+    }
+    public function addDocumentation(ExpansionCardDocumentation $documentation): self
+    {
+        if (!$this->documentations->contains($documentation)) {
+            $this->documentations[] = $documentation;
+            $documentation->setExpansionCard($this);
+        }
+
+        return $this;
+    }
+    public function removeDocumentation(ExpansionCardDocumentation $documentation): self
+    {
+        if ($this->documentations->contains($documentation)) {
+            $this->documentations->removeElement($documentation);
+            // set the owning side to null (unless already changed)
+            if ($documentation->getExpansionCard() === $this) {
+                $documentation->setExpansionCard(null);
+            }
+        }
+
+        return $this;
+    }
+
     /**
      * @return Collection<int, ExpansionCardType>
      */
@@ -292,5 +348,27 @@ class ExpansionCard
         }
 
         return $this;
+    }
+    public function isExpansionCardBios(): bool
+    {
+        if(isset($this->expansionCardBios))
+            if(count($this->expansionCardBios) > 0)
+                return true;
+        return false;
+    }
+    public function getLastEdited(): ?\DateTimeInterface
+    {
+        return $this->lastEdited;
+    }
+
+    public function setLastEdited(\DateTimeInterface $lastEdited): self
+    {
+        $this->lastEdited = $lastEdited;
+
+        return $this;
+    }
+    public function updateLastEdited()
+    {
+        $this->lastEdited = new \DateTime('now');
     }
 }
