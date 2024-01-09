@@ -20,6 +20,39 @@ class ExpansionCardRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, ExpansionCard::class);
     }
+    public function findSlug(string $slug): ExpansionCard|null
+    {
+        $entityManager = $this->getEntityManager();
+
+        $query = $entityManager->createQuery(
+            "SELECT card
+            FROM App\Entity\ExpansionCard card
+            WHERE card.slug = :slug"
+        )->setParameter('slug', $slug);
+
+        return $query->getOneOrNullResult();
+    }
+
+    public function checkIdentifierExists(string|int $identifier): bool
+    {
+        $entityManager = $this->getEntityManager();
+
+        if (is_int($identifier) && is_numeric($identifier)) {
+            $query = $entityManager->createQuery(
+                'SELECT card
+                FROM App\Entity\ExpansionCard card
+                WHERE card.id=:identifier'
+            )->setParameter('identifier', $identifier);
+        } else {
+            $query = $entityManager->createQuery(
+                'SELECT card
+                FROM App\Entity\ExpansionCard card
+                WHERE card.slug=:identifier'
+            )->setParameter('identifier', $identifier);
+        }
+
+        return boolval(count($query->getResult()));
+    }
     /**
      * @return ExpansionCard[]
      */

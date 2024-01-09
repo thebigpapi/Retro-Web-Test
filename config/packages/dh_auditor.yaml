@@ -33,6 +33,7 @@ dh_auditor:
                 App\Entity\ExpansionCardAlias: ~
                 App\Entity\ExpansionCardBios: ~
                 App\Entity\ExpansionCardDocumentation: ~
+                App\Entity\ExpansionCardIdRedirection: ~
                 App\Entity\ExpansionCardImage: ~
                 App\Entity\ExpansionCardType: ~
                 App\Entity\ExpansionChip: ~

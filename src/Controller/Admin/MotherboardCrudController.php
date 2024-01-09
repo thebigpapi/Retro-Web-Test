@@ -4,13 +4,12 @@ namespace App\Controller\Admin;
 
 use App\Entity\Motherboard;
 use App\Controller\Admin\Filter\MotherboardImageFilter;
-use App\Entity\MemoryConnector;
+use App\Controller\Admin\Filter\MotherboardBiosFilter;
 use App\Entity\MotherboardAlias;
 use App\Entity\MotherboardExpansionSlot;
 use App\Entity\MotherboardIoPort;
 use App\Entity\MotherboardMaxRam;
 use App\Entity\MotherboardMemoryConnector;
-use App\Entity\PSUConnector;
 use App\Form\Type\MotherboardAliasType;
 use App\Form\Type\MotherboardIdRedirectionType;
 use App\Form\Type\DramTypeType;
@@ -126,6 +125,7 @@ class MotherboardCrudController extends AbstractCrudController
             ->add('motherboardAliases')
             ->add('chipset')
             ->add(MotherboardImageFilter::new('images'))
+            ->add(MotherboardBiosFilter::new('motherboardBios'))
             ->add('expansionChips')
             ->add('cacheSize')
             ->add('dramType')

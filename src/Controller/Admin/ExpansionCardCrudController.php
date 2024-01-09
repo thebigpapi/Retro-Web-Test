@@ -8,6 +8,7 @@ use App\Form\Type\ExpansionCardBiosType;
 use App\Form\Type\LargeFileExpansionCardType;
 use App\Form\Type\ExpansionCardDocumentationType;
 use App\Form\Type\ExpansionCardImageType;
+use App\Form\Type\ExpansionCardIdRedirectionType;
 use App\Form\Type\ExpansionChipType;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Controller\Admin\Filter\ChipImageFilter;
@@ -67,6 +68,8 @@ class ExpansionCardCrudController extends AbstractCrudController
             ->showEntityActionsInlined()
             ->setEntityLabelInSingular('expansion card')
             ->setEntityLabelInPlural('<img class=ea-entity-icon src=/build/icons/chip.svg width=48 height=48>Expansion cards')
+            ->overrideTemplate('crud/edit', 'admin/crud/edit_card.html.twig')
+            ->overrideTemplate('crud/new', 'admin/crud/new_card.html.twig')
             ->setPaginatorPageSize(100);
     }
     public function configureFilters(Filters $filters): Filters
@@ -74,12 +77,13 @@ class ExpansionCardCrudController extends AbstractCrudController
         return parent::configureFilters($filters)
             ->add('manufacturer')
             ->add('name')
-            /*->add(ChipImageFilter::new('images'))
+            ->add('expansionCardAliases')
+            ->add('type')
+            ->add(ChipImageFilter::new('images'))
             ->add(ChipDocFilter::new('documentations'))
-            ->add(ChipDriverFilter::new('drivers'))*/
-            //->add('chipAliases')
-            //->add('pciDevs')
-            ->add('type');
+            ->add(ChipDriverFilter::new('drivers'));
+            
+
     }
     public function configureFields(string $pageName): iterable
     {
@@ -90,11 +94,13 @@ class ExpansionCardCrudController extends AbstractCrudController
         yield TextField::new('getManufacturer','Manufacturer')
             ->hideOnForm();
         yield AssociationField::new('manufacturer','Manufacturer')
-            ->setFormTypeOption('placeholder', 'Type to select a manufacturer ...')
-            ->setColumns(4)
+            ->setColumns('col-sm-6 col-lg-6 col-xxl-4')
             ->onlyOnForms();
         yield TextField::new('name', 'Name')
-            ->setColumns(4);
+            ->setColumns('col-sm-6 col-lg-6 col-xxl-4');
+        yield TextField::new('slug')
+            ->setColumns('col-sm-6 col-lg-6 col-xxl-4')
+            ->onlyOnForms();
         yield ArrayField::new('type','Type')->onlyOnIndex();
         // index
         yield BooleanField::new('isExpansionCardImage','Images')
@@ -110,9 +116,21 @@ class ExpansionCardCrudController extends AbstractCrudController
             ->renderAsSwitch(false)
             ->onlyOnIndex();
         // editor
+        yield CollectionField::new('expansionCardAliases', 'Alternative names')
+            ->setEntryType(ExpansionCardAliasType::class)
+            ->setFormTypeOption('error_bubbling', false)
+            ->setColumns('col-sm-12 col-lg-6 col-xxl-4')
+            ->renderExpanded()
+            ->onlyOnForms();
+        yield CollectionField::new('redirections', 'Redirections')
+            ->setEntryType(ExpansionCardIdRedirectionType::class)
+            ->renderExpanded()
+            ->setFormTypeOption('error_bubbling', false)
+            ->setColumns('col-sm-12 col-lg-6 col-xxl-4')
+            ->onlyOnForms();
         yield AssociationField::new('type','Type')
             ->setFormTypeOption('placeholder', 'Type to select a type ...')
-            ->setColumns(6)
+            ->setColumns('col-sm-12 col-lg-6 col-xxl-4')
             ->onlyOnForms();
         yield CollectionField::new('expansionChips', 'Expansion chips')
             ->setEntryType(ExpansionChipType::class)
@@ -121,12 +139,6 @@ class ExpansionCardCrudController extends AbstractCrudController
             ->onlyOnForms();
         yield CodeEditorField::new('description')
             ->setLanguage('markdown')
-            ->onlyOnForms();
-        yield CollectionField::new('expansionCardAliases', 'Alternative names')
-            ->setEntryType(ExpansionCardAliasType::class)
-            ->setFormTypeOption('error_bubbling', false)
-            ->setColumns(6)
-            ->renderExpanded()
             ->onlyOnForms();
         yield FormField::addTab('BIOS images')
             ->setIcon('fa fa-download')
@@ -170,7 +182,7 @@ class ExpansionCardCrudController extends AbstractCrudController
         $entity = str_replace("\\", "-",$context->getEntity()->getFqcn());
         return $this->redirectToRoute('dh_auditor_show_entity_history', array('id' => $entityId, 'entity' => $entity));
     }
-        /**
+    /**
      * @param ExpansionCard $entityInstance
      */
     public function updateEntity(EntityManagerInterface $entityManager, $entityInstance): void

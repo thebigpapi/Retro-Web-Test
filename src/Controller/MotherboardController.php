@@ -422,28 +422,6 @@ class MotherboardController extends AbstractController
         return $parameters;
     }
 
-    /* #[Route('/motherboards/index/{letter}', name: "moboindex", requirements: ['letter' => '\w|[?]'], methods: ['GET'])]
-    public function index(
-        PaginatorInterface $paginator,
-        string $letter,
-        MotherboardRepository $motherboardRepository,
-        Request $request
-    ): Response {
-        $letter === "?" ? $letter = "" : "";
-        $data = $motherboardRepository->findAllAlphabetic($letter);
-
-        $motherboards = $paginator->paginate(
-            $data,
-            $request->query->getInt('page', 1),
-            $this->getParameter('app.pagination.max')
-        );
-
-        return $this->render('motherboard/index.html.twig', [
-            'motherboards' => $motherboards,
-            'letter' => $letter,
-        ]);
-    } */
-
     private function _searchFormHandler(
         Request $request,
         ManufacturerRepository $manufacturerRepository,

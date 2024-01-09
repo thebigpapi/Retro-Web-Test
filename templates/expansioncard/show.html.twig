@@ -58,11 +58,19 @@
 			<div class="show-general" id="sh-general">
 				<div class="quick-spec-table">
 					<!-- Type -->
-					<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/chip.svg')) }}" alt="date" width="24" height="24">Type</div>
-					<div>{#{expansioncard.getType().getName()}#}</div>
+					<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/tag.svg')) }}" alt="date" width="24" height="24">Type</div>
+					{% if expansioncard.getType() is not empty %}
+					<div class="tag-container">
+						{% for type in expansioncard.getType() %}
+						<span class="text-block">{{ type }}</span>
+						{% endfor %}
+					</div>
+					{% else %}
+					<div>Unknown</div>
+					{% endif %}
 					<!-- Expansion Chips -->
 					{% if expansioncard.getExpansionChips() is not empty %}
-						{% for type in expansioncardtype %}
+						{% for type in expansionchiptype %}
 							{% for chip in expansioncard.getExpansionChips()|filter(a => a.getType().getName() == type.getName())%}
 								{% if loop.first %}<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/chip.svg')) }}" alt="chip" width="24" height="24">{{chip.getType().getName()}} chips</div><div class="tag-container">{% endif %}
 								<a href="{{ path('expansion_chip_show', {id: chip.getId()}) }}"><span class="text-block">{{ chip.getNameWithManufacturer() }}</span></a>
@@ -70,16 +78,16 @@
 							{% endfor %}
 						{% endfor %}
 					{% endif %}
-					<!-- Actions -->
+					<!-- PSU connectors -->
 					<div class="quick-spec-head">
-						<img src="{{ absolute_url(asset('build/icons/cursor.svg')) }}" alt="act" width="24" height="24">Actions
+						<img src="{{ absolute_url(asset('build/icons/power.svg')) }}" alt="pwr" width="24" height="24">Power connector
 					</div>
-					<div>
-					<div class="toolbar">
-						<a class='button-widget' href="{{ absolute_url(path('app_homepage')) }}expansioncards/?expansionChipIds%5B0%5D={{ expansioncard.getId() }}&amp;showImages=1">
-							<img src='{{ absolute_url(asset('build/icons/hardware.svg')) }}' alt='' width='16' height='16' style='vertical-align:middle;padding:3px;'>See all boards with this chip</a>
-						</div>
-					</div>
+					{% if expansioncard.getPowerConnectors() is not empty %}
+					<div class="tag-container">{% for power in expansioncard.getPowerConnectors() %}
+						<a href="{{ path('psu_connector_show', {id: power.getId()}) }}"><span class="text-block">{{ power.getName() }}</span></a>{% endfor %}</div>
+					{% else %}
+					<div>Unknown</div>
+					{% endif %}
 				</div>
 					{% include 'macros/aliases.html.twig' with {'entity':expansioncard.getExpansionCardAliases(), 'msg': 'Also known as:'} %}
 					{% include 'macros/notes.html.twig' with {'entity': expansioncard} %}

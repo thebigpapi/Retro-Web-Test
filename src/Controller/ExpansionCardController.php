@@ -6,7 +6,9 @@ use App\Entity\Manufacturer;
 use App\Form\ExpansionCard\Search;
 use App\Repository\ExpansionCardRepository;
 use App\Repository\ExpansionCardTypeRepository;
+use App\Repository\ExpansionChipTypeRepository;
 use App\Repository\ManufacturerRepository;
+use App\Repository\ExpansionCardIdRedirectionRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,22 +19,54 @@ use Knp\Component\Pager\PaginatorInterface;
 class ExpansionCardController extends AbstractController
 {
     #[Route('/expansioncards/{id}', name: 'expansioncard_show', requirements: ['id' => '\d+'])]
-    public function show(int $id, ExpansionCardRepository $expansionCardRepository, ExpansionCardTypeRepository $expansionCardTypeRepository): Response
-    {
-        $expansioncardtype = $expansionCardTypeRepository->findAll();
+    public function show(
+        int $id,
+        ExpansionCardRepository $expansionCardRepository,
+        ExpansionCardIdRedirectionRepository $expansionCardIdRedirectionRepository,
+    ): Response {
         $expansionCard = $expansionCardRepository->find($id);
+
         if (!$expansionCard) {
-            throw $this->createNotFoundException(
-                'No expansion card found for id ' . $id
-            );
-        } else {
-            return $this->render('expansioncard/show.html.twig', [
-                'expansioncard' => $expansionCard,
-                'expansioncardtype' => $expansioncardtype,
-                'controller_name' => 'ExpansionCardController',
-            ]);
+            $idRedirection = $expansionCardIdRedirectionRepository->findRedirection($id, 'uh19');
+
+            if (!$idRedirection) {
+                throw $this->createNotFoundException(
+                    'No expansion card found for id ' . $id
+                );
+            } else {
+                return $this->redirect($this->generateUrl('expansioncard_show', array("id" => $idRedirection)));
+            }
         }
 
+        return $this->redirect($this->generateUrl('expansioncard_show_slug', array("slug" => $expansionCard->getSlug())));
+    }
+    #[Route('/expansioncards/s/{slug}', name: 'expansioncard_show_slug')]
+    public function showSlug(
+        string $slug,
+        ExpansionCardRepository $expansionCardRepository,
+        ExpansionCardIdRedirectionRepository $expansionCardIdRedirectionRepository,
+        ExpansionChipTypeRepository $expansionChipTypeRepository
+    ): Response {
+        $expansionCard = $expansionCardRepository->findSlug($slug);
+        $expansionchiptype = $expansionChipTypeRepository->findAll();
+
+        if (!$expansionCard) {
+            $idRedirection = $expansionCardIdRedirectionRepository->findRedirection($slug, 'uh19_slug');
+
+            if (!$idRedirection) {
+                throw $this->createNotFoundException(
+                    'No expansion card found for slug ' . $slug
+                );
+            } else {
+                return $this->redirect($this->generateUrl('expansioncard_show', array("id" => $idRedirection)));
+            }
+        }
+
+        return $this->render('expansioncard/show.html.twig', [
+            'expansioncard' => $expansionCard,
+            'expansionchiptype' => $expansionchiptype,
+            'controller_name' => 'ExpansionCardController',
+        ]);
     }
     #[Route(path: '/expansioncards/', name: 'expansioncardsearch', methods: ['GET'])]
     public function searchResultExpansionCard(Request $request, PaginatorInterface $paginator, ExpansionCardRepository $expansionCardRepository, ManufacturerRepository $manufacturerRepository, ExpansionCardTypeRepository $expansionCardTypeRepository)

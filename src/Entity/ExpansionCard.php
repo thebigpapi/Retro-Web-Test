@@ -6,9 +6,11 @@ use App\Repository\ExpansionCardRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ExpansionCardRepository::class)]
+#[UniqueEntity('slug')]
 class ExpansionCard
 {
     #[ORM\Id]
@@ -56,6 +58,15 @@ class ExpansionCard
     #[ORM\Column(type: 'datetime')]
     private $lastEdited;
 
+    #[ORM\Column(type: 'string', length: 80, unique: true)]
+    #[Assert\Length(max: 80, maxMessage: 'Slug is longer than {{ limit }} characters, try to make it shorter.')]
+    #[Assert\Regex('/^[a-z0-9-_.,]+$/i', message: 'Slug uses problematic characters. Only alphanumeric, ".", ",", "-" and "_" are allowed.')]
+    private $slug;
+
+    #[ORM\OneToMany(mappedBy: 'destination', targetEntity: ExpansionCardIdRedirection::class, orphanRemoval: true, cascade: ['persist'])]
+    #[Assert\Valid()]
+    private Collection $redirections;
+
     public function __construct()
     {
         $this->expansionChips = new ArrayCollection();
@@ -67,6 +78,7 @@ class ExpansionCard
         $this->expansionCardAliases = new ArrayCollection();
         $this->expansionCardBios = new ArrayCollection();
         $this->lastEdited = new \DateTime('now');
+        $this->redirections = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -370,5 +382,45 @@ class ExpansionCard
     public function updateLastEdited()
     {
         $this->lastEdited = new \DateTime('now');
+    }
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+    public function setSlug(string $slug): self
+    {
+        $this->slug = strtolower($slug);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ExpansionCardIdRedirection>
+     */
+    public function getRedirections(): Collection
+    {
+        return $this->redirections;
+    }
+
+    public function addRedirection(ExpansionCardIdRedirection $redirection): static
+    {
+        if (!$this->redirections->contains($redirection)) {
+            $this->redirections[] = $redirection;
+            $redirection->setDestination($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRedirection(ExpansionCardIdRedirection $redirection): static
+    {
+        if ($this->redirections->removeElement($redirection)) {
+            // set the owning side to null (unless already changed)
+            if ($redirection->getDestination() === $this) {
+                $redirection->setDestination(null);
+            }
+        }
+
+        return $this;
     }
 }
