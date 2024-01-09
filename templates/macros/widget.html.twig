@@ -90,6 +90,27 @@
 	</div>
 	{% endfor %}
 {% endif %}
+{% if type == "expansioncard-results" %}
+    <div class="list-entry centered head">
+		<div>Name</div>
+		<div>Type</div>
+		<div>Aliases</div>
+	</div>
+	{% for card in entity %}
+	<div class="list-entry centered bios {% if loop.index is divisible by(2) %}alt{% endif %}">
+		<div class="header-label">Name</div>
+		<div><a class="result-link" href="{{ path("expansioncard_show", {id: card.getId()}) }}">{{ card.getPrettyTitle() }}</a></div>
+		<div class="header-label">Type</div>
+		<div>{#{ card.getType() }#}</div>
+		<div class="header-label">Aliases</div>
+		<div class="tag-container">{% if card.getExpansionCardAliases() is not empty %}
+			{% for alias in card.getExpansionCardAliases() %}
+				<span class="text-block">{{ alias.getFullAliasName() }}</span>
+			{% endfor %}
+		{% endif %}</div>
+	</div>
+	{% endfor %}
+{% endif %}
 {% if type == "hdd-results" %}
     <div class="list-entry centered head">
 		<div>Name</div>

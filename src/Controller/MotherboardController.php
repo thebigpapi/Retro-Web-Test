@@ -37,7 +37,7 @@ class MotherboardController extends AbstractController
 
     public function addArrayCriteria(Request $request, array &$criterias, string $htmlId, string $sqlId): void
     {
-        $entityIds = $request->query->get($htmlId) ?? $request->request->get($htmlId);
+        $entityIds = $request->query->all($htmlId) ?? $request->request->all($htmlId);
         $entityArray = null;
         if ($entityIds) {
             if (is_array($entityIds)) {

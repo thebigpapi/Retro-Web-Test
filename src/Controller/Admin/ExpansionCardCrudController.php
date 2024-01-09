@@ -3,11 +3,12 @@
 namespace App\Controller\Admin;
 
 use App\Entity\ExpansionCard;
-use App\Form\Type\ChipAliasType;
+use App\Form\Type\ExpansionCardAliasType;
 use App\Form\Type\ExpansionCardBiosType;
 use App\Form\Type\LargeFileExpansionCardType;
 use App\Form\Type\ExpansionCardDocumentationType;
 use App\Form\Type\ExpansionCardImageType;
+use App\Form\Type\ExpansionChipType;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Controller\Admin\Filter\ChipImageFilter;
 use App\Controller\Admin\Filter\ChipDocFilter;
@@ -113,11 +114,16 @@ class ExpansionCardCrudController extends AbstractCrudController
             ->setFormTypeOption('placeholder', 'Type to select a type ...')
             ->setColumns(6)
             ->onlyOnForms();
+        yield CollectionField::new('expansionChips', 'Expansion chips')
+            ->setEntryType(ExpansionChipType::class)
+            ->renderExpanded()
+            ->setColumns('col-sm-12 col-lg-8 col-xxl-6')
+            ->onlyOnForms();
         yield CodeEditorField::new('description')
             ->setLanguage('markdown')
             ->onlyOnForms();
         yield CollectionField::new('expansionCardAliases', 'Alternative names')
-            ->setEntryType(ChipAliasType::class)
+            ->setEntryType(ExpansionCardAliasType::class)
             ->setFormTypeOption('error_bubbling', false)
             ->setColumns(6)
             ->renderExpanded()

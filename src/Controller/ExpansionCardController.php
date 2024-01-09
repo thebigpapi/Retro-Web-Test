@@ -17,8 +17,9 @@ use Knp\Component\Pager\PaginatorInterface;
 class ExpansionCardController extends AbstractController
 {
     #[Route('/expansioncards/{id}', name: 'expansioncard_show', requirements: ['id' => '\d+'])]
-    public function show(int $id, ExpansionCardRepository $expansionCardRepository): Response
+    public function show(int $id, ExpansionCardRepository $expansionCardRepository, ExpansionCardTypeRepository $expansionCardTypeRepository): Response
     {
+        $expansioncardtype = $expansionCardTypeRepository->findAll();
         $expansionCard = $expansionCardRepository->find($id);
         if (!$expansionCard) {
             throw $this->createNotFoundException(
@@ -27,6 +28,7 @@ class ExpansionCardController extends AbstractController
         } else {
             return $this->render('expansioncard/show.html.twig', [
                 'expansioncard' => $expansionCard,
+                'expansioncardtype' => $expansioncardtype,
                 'controller_name' => 'ExpansionCardController',
             ]);
         }
@@ -92,8 +94,15 @@ class ExpansionCardController extends AbstractController
             );
         $string = "/expansioncards/?";
         foreach ($request->query as $key => $value){
-            if($key != "domTarget")
-                $string .= $key . '=' . $value . '&';
+            if($key == "expansionChipIds"){
+                foreach($value as $idx => $val){
+                    $string .= $key . '%5B' . $idx . '%5D=' . $val .'&';
+                }
+            }
+            else{
+                if($key != "domTarget")
+                    $string .= $key . '=' . $value . '&';
+            }
         }
         return $this->render('expansioncard/result.html.twig', [
             'controller_name' => 'ExpansionCardController',
@@ -109,16 +118,20 @@ class ExpansionCardController extends AbstractController
         if ($name) {
             $criterias['name'] = "$name";
         }
-        $expansionChipId = htmlentities($request->query->get('expansionChipId') ?? '');
-        if ($expansionChipId && intval($expansionChipId)) {
-            $criterias['expansionchip'] = "$expansionChipId";
-        } elseif ($expansionChipId === "NULL") {
-            $criterias['expansionchip'] = null;
+        $chipIds = $request->query->all('expansionChipIds') ?? $request->request->all('expansionChipIds');
+        $chipArray = null;
+        if ($chipIds) {
+            if (is_array($chipIds)) {
+                $chipArray = $chipIds;
+            } else {
+                $chipArray = json_decode($chipIds);
+            }
+            $criterias['expansionChips'] = $chipArray;
         }
-        $expansionChipManufacturerId = htmlentities($request->query->get('manufacturerId') ?? '');
-        if ($expansionChipManufacturerId && intval($expansionChipManufacturerId)) {
-            $criterias['manufacturer'] = "$expansionChipManufacturerId";
-        } elseif ($expansionChipManufacturerId === "NULL") {
+        $manufacturerId = htmlentities($request->query->get('manufacturerId') ?? '');
+        if ($manufacturerId && intval($manufacturerId)) {
+            $criterias['manufacturer'] = "$manufacturerId";
+        } elseif ($manufacturerId === "NULL") {
             $criterias['manufacturer'] = null;
         }
         $typeId = htmlentities($request->query->get('typeId') ?? '');
@@ -144,6 +157,14 @@ class ExpansionCardController extends AbstractController
                 $parameters['typeId']  = "NULL";
             } else {
                 $parameters['typeId'] = $form['type']->getData()->getId();
+            }
+        }
+        $expchips = $form['expansionChips']->getData();
+        if ($expchips) {
+            $parameters['expansionChipIds'] = array();
+            foreach ($expchips as $chip) {
+                if($chip != null)
+                    array_push($parameters['expansionChipIds'], $chip->getId());
             }
         }
 

@@ -39,6 +39,12 @@ class ExpansionCardRepository extends ServiceEntityRepository
                 $valuesArray["nameLike$key"] = "%" . strtolower($val) . "%";
             }
         }
+        if (array_key_exists('expansionChips', $criteria)) {
+            foreach ($criteria['expansionChips'] as $key => $value) {
+                $whereArray[] = "(card.id in (select m$key.id from App\Entity\ExpansionCard m$key JOIN m$key.expansionChips ec$key where ec$key.id=:idChip$key))";
+                $valuesArray["idChip$key"] = $value;
+            }
+        }
         if (array_key_exists('manufacturer', $criteria)) {
             $whereArray[] = "(man.id = :manufacturerId)";
             $valuesArray["manufacturerId"] = (int)$criteria['manufacturer'];

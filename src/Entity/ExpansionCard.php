@@ -44,7 +44,7 @@ class ExpansionCard
     #[ORM\ManyToMany(targetEntity: ExpansionCardType::class, inversedBy: 'expansionCards')]
     private Collection $type;
 
-    #[ORM\OneToMany(mappedBy: 'expansionCard', targetEntity: ExpansionCardAlias::class)]
+    #[ORM\OneToMany(mappedBy: 'expansionCard', targetEntity: ExpansionCardAlias::class, orphanRemoval: true, cascade: ['persist'])]
     private Collection $expansionCardAliases;
 
     #[ORM\ManyToOne(inversedBy: 'expansionCards')]

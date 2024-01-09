@@ -8,7 +8,7 @@
 				<div id="index-datetime" class="perks-list">
 				{% for expansioncard in expansioncards %}
 					<div class="perk">
-						<a href="{{ path("expansion_card_show", {id: expansioncard.getId()}) }}">
+						<a href="{{ path("expansioncard_show", {id: expansioncard.getId()}) }}">
 							<div class="perk-image">
 							{% if expansioncard.getImages() is not empty %}
 								{% set imgcount = 0 %}
@@ -23,10 +23,10 @@
 								<img src="{{ absolute_url(asset('build/images/missing/card-missing.jpg')) }}" loading="lazy" width="250" height="200" title="no images available :(">
 							{% endif %}
 							</div>
-							<div class="perk-name">{{ expansioncard.getNameWithManufacturer() }}</div>
+							<div class="perk-name">{{ expansioncard.getPrettyTitle() }}</div>
 							<div class="perk-alias">
-								{% if expansioncard.getcardAliases() is not empty %}<span class="results-alias">
-									<small>Alias: {% for alias in expansioncard.getcardAliases() %}{{ alias.getFullAliasName() }}{% if not loop.last %}, {% endif %}{% endfor %}</small>
+								{% if expansioncard.getExpansionCardAliases() is not empty %}<span class="results-alias">
+									<small>Alias: {% for alias in expansioncard.getExpansionCardAliases() %}{{ alias.getFullAliasName() }}{% if not loop.last %}, {% endif %}{% endfor %}</small>
 								</span>{% endif %}
 							</div>
 						</a>

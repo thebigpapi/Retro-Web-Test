@@ -62,7 +62,7 @@
 					<div>{#{expansioncard.getType().getName()}#}</div>
 					<!-- Expansion Chips -->
 					{% if expansioncard.getExpansionChips() is not empty %}
-						{% for type in expansionchiptype %}
+						{% for type in expansioncardtype %}
 							{% for chip in expansioncard.getExpansionChips()|filter(a => a.getType().getName() == type.getName())%}
 								{% if loop.first %}<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/chip.svg')) }}" alt="chip" width="24" height="24">{{chip.getType().getName()}} chips</div><div class="tag-container">{% endif %}
 								<a href="{{ path('expansion_chip_show', {id: chip.getId()}) }}"><span class="text-block">{{ chip.getNameWithManufacturer() }}</span></a>
@@ -81,11 +81,9 @@
 						</div>
 					</div>
 				</div>
-				<div class="full-spec">
-				{% include 'macros/aliases.html.twig' with {'entity':expansioncard.getExpansionCardAliases(), 'msg': 'Also known as:'} %}
-				{% include 'macros/notes.html.twig' with {'entity': expansioncard} %}
-				<div id="index-datetime"><div class="div-datetime">Last updated <span class="perk-date">{{ expansioncard.getLastEdited()|date("Y-m-d\\TH:i:s", "GMT") }}Z</span></div></div>
-				</div>
+					{% include 'macros/aliases.html.twig' with {'entity':expansioncard.getExpansionCardAliases(), 'msg': 'Also known as:'} %}
+					{% include 'macros/notes.html.twig' with {'entity': expansioncard} %}
+					<div id="index-datetime"><div class="div-datetime">Last updated <span class="perk-date">{{ expansioncard.getLastEdited()|date("Y-m-d\\TH:i:s", "GMT") }}Z</span></div></div>
 			</div>
 			<!-- BIOSes -->
 			<div class="show-downloads" id="sh-bios">
