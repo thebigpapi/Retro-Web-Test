@@ -9,8 +9,11 @@ use App\Form\Type\LargeFileExpansionCardType;
 use App\Form\Type\ExpansionCardDocumentationType;
 use App\Form\Type\ExpansionCardImageType;
 use App\Form\Type\ExpansionCardIdRedirectionType;
+use App\Form\Type\ExpansionCardTypeType;
 use App\Form\Type\ExpansionChipType;
 use App\Form\Type\PSUConnectorType;
+use App\Form\Type\DramTypeType;
+use App\Form\Type\MaxRamType;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Controller\Admin\Filter\ChipImageFilter;
 use App\Controller\Admin\Filter\ChipDocFilter;
@@ -69,8 +72,8 @@ class ExpansionCardCrudController extends AbstractCrudController
             ->showEntityActionsInlined()
             ->setEntityLabelInSingular('expansion card')
             ->setEntityLabelInPlural('<img class=ea-entity-icon src=/build/icons/chip.svg width=48 height=48>Expansion cards')
-            ->overrideTemplate('crud/edit', 'admin/crud/edit_card.html.twig')
-            ->overrideTemplate('crud/new', 'admin/crud/new_card.html.twig')
+            //->overrideTemplate('crud/edit', 'admin/crud/edit_card.html.twig')
+            //->overrideTemplate('crud/new', 'admin/crud/new_card.html.twig')
             ->setPaginatorPageSize(100);
     }
     public function configureFilters(Filters $filters): Filters
@@ -116,7 +119,11 @@ class ExpansionCardCrudController extends AbstractCrudController
         yield BooleanField::new('getDrivers','Drivers')
             ->renderAsSwitch(false)
             ->onlyOnIndex();
-        // editor
+        yield CollectionField::new('type','Type')
+            ->setEntryType(ExpansionCardTypeType::class)
+            ->renderExpanded()
+            ->setColumns('col-sm-12 col-lg-6 col-xxl-4')
+            ->onlyOnForms();
         yield CollectionField::new('expansionCardAliases', 'Alternative names')
             ->setEntryType(ExpansionCardAliasType::class)
             ->setFormTypeOption('error_bubbling', false)
@@ -129,9 +136,23 @@ class ExpansionCardCrudController extends AbstractCrudController
             ->setFormTypeOption('error_bubbling', false)
             ->setColumns('col-sm-12 col-lg-6 col-xxl-4')
             ->onlyOnForms();
-        yield AssociationField::new('type','Type')
-            ->setFormTypeOption('placeholder', 'Type to select a type ...')
+        yield CodeEditorField::new('description')
+            ->setLanguage('markdown')
+            ->onlyOnForms();
+        yield FormField::addTab('Specs')
+            ->setIcon('fa fa-info')
+            ->onlyOnForms();
+        yield FormField::addPanel('Memory')->onlyOnForms();
+        yield CollectionField::new('ramSize', 'Supported RAM size')
+            ->setEntryType(MaxRamType::class)
+            ->setFormTypeOption('error_bubbling', false)
             ->setColumns('col-sm-12 col-lg-6 col-xxl-4')
+            ->renderExpanded()
+            ->onlyOnForms();
+        yield CollectionField::new('dramType', 'Supported RAM types')
+            ->setEntryType(DramTypeType::class)
+            ->setColumns('col-sm-12 col-lg-6 col-xxl-4')
+            ->renderExpanded()
             ->onlyOnForms();
         yield CollectionField::new('expansionChips', 'Expansion chips')
             ->setEntryType(ExpansionChipType::class)
@@ -142,9 +163,6 @@ class ExpansionCardCrudController extends AbstractCrudController
             ->setEntryType(PSUConnectorType::class)
             ->setColumns('col-sm-12 col-lg-6 col-xxl-4')
             ->renderExpanded()
-            ->onlyOnForms();
-        yield CodeEditorField::new('description')
-            ->setLanguage('markdown')
             ->onlyOnForms();
         yield FormField::addTab('BIOS images')
             ->setIcon('fa fa-download')

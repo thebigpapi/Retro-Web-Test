@@ -25,10 +25,14 @@ class DramType
     #[ORM\ManyToMany(targetEntity: ProcessorPlatformType::class, mappedBy: 'dramType')]
     private Collection $processorPlatformTypes;
 
+    #[ORM\ManyToMany(targetEntity: ExpansionCard::class, mappedBy: 'dramType')]
+    private Collection $expansionCards;
+
     public function __construct()
     {
         $this->motherboards = new ArrayCollection();
         $this->processorPlatformTypes = new ArrayCollection();
+        $this->expansionCards = new ArrayCollection();
     }
     public function __toString(): string
     {
@@ -96,6 +100,33 @@ class DramType
     {
         if ($this->processorPlatformTypes->removeElement($processorPlatformType)) {
             $processorPlatformType->removeDramType($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ExpansionCard>
+     */
+    public function getExpansionCards(): Collection
+    {
+        return $this->expansionCards;
+    }
+
+    public function addExpansionCard(ExpansionCard $expansionCard): static
+    {
+        if (!$this->expansionCards->contains($expansionCard)) {
+            $this->expansionCards->add($expansionCard);
+            $expansionCard->addDramType($this);
+        }
+
+        return $this;
+    }
+
+    public function removeExpansionCard(ExpansionCard $expansionCard): static
+    {
+        if ($this->expansionCards->removeElement($expansionCard)) {
+            $expansionCard->removeDramType($this);
         }
 
         return $this;

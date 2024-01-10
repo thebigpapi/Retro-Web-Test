@@ -67,6 +67,15 @@ class ExpansionCard
     #[Assert\Valid()]
     private Collection $redirections;
 
+    #[ORM\OneToMany(mappedBy: 'expansionCard', targetEntity: ExpansionCardMemoryConnector::class, orphanRemoval: true)]
+    private Collection $expansionCardMemoryConnectors;
+
+    #[ORM\ManyToMany(targetEntity: DramType::class, inversedBy: 'expansionCards')]
+    private Collection $dramType;
+
+    #[ORM\ManyToMany(targetEntity: MaxRam::class, inversedBy: 'expansionCards')]
+    private Collection $ramSize;
+
     public function __construct()
     {
         $this->expansionChips = new ArrayCollection();
@@ -79,6 +88,9 @@ class ExpansionCard
         $this->expansionCardBios = new ArrayCollection();
         $this->lastEdited = new \DateTime('now');
         $this->redirections = new ArrayCollection();
+        $this->expansionCardMemoryConnectors = new ArrayCollection();
+        $this->dramType = new ArrayCollection();
+        $this->ramSize = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -420,6 +432,84 @@ class ExpansionCard
                 $redirection->setDestination(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ExpansionCardMemoryConnector>
+     */
+    public function getExpansionCardMemoryConnectors(): Collection
+    {
+        return $this->expansionCardMemoryConnectors;
+    }
+
+    public function addExpansionCardMemoryConnector(ExpansionCardMemoryConnector $expansionCardMemoryConnector): static
+    {
+        if (!$this->expansionCardMemoryConnectors->contains($expansionCardMemoryConnector)) {
+            $this->expansionCardMemoryConnectors->add($expansionCardMemoryConnector);
+            $expansionCardMemoryConnector->setExpansionCard($this);
+        }
+
+        return $this;
+    }
+
+    public function removeExpansionCardMemoryConnector(ExpansionCardMemoryConnector $expansionCardMemoryConnector): static
+    {
+        if ($this->expansionCardMemoryConnectors->removeElement($expansionCardMemoryConnector)) {
+            // set the owning side to null (unless already changed)
+            if ($expansionCardMemoryConnector->getExpansionCard() === $this) {
+                $expansionCardMemoryConnector->setExpansionCard(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, DramType>
+     */
+    public function getDramType(): Collection
+    {
+        return $this->dramType;
+    }
+
+    public function addDramType(DramType $dramType): static
+    {
+        if (!$this->dramType->contains($dramType)) {
+            $this->dramType->add($dramType);
+        }
+
+        return $this;
+    }
+
+    public function removeDramType(DramType $dramType): static
+    {
+        $this->dramType->removeElement($dramType);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, MaxRam>
+     */
+    public function getRamSize(): Collection
+    {
+        return $this->ramSize;
+    }
+
+    public function addRamSize(MaxRam $ramSize): static
+    {
+        if (!$this->ramSize->contains($ramSize)) {
+            $this->ramSize->add($ramSize);
+        }
+
+        return $this;
+    }
+
+    public function removeRamSize(MaxRam $ramSize): static
+    {
+        $this->ramSize->removeElement($ramSize);
 
         return $this;
     }

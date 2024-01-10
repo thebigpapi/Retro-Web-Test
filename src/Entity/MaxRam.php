@@ -28,10 +28,14 @@ class MaxRam
     #[ORM\OneToMany(targetEntity: Motherboard::class, mappedBy: 'maxVideoRam')]
     private $motherboards;
 
+    #[ORM\ManyToMany(targetEntity: ExpansionCard::class, mappedBy: 'ramSize')]
+    private Collection $expansionCards;
+
     public function __construct()
     {
         $this->motherboardMaxRams = new ArrayCollection();
         $this->motherboards = new ArrayCollection();
+        $this->expansionCards = new ArrayCollection();
     }
     public function __toString(): string
     {
@@ -113,6 +117,33 @@ class MaxRam
             if ($motherboard->getMaxVideoRam() === $this) {
                 $motherboard->setMaxVideoRam(null);
             }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ExpansionCard>
+     */
+    public function getExpansionCards(): Collection
+    {
+        return $this->expansionCards;
+    }
+
+    public function addExpansionCard(ExpansionCard $expansionCard): static
+    {
+        if (!$this->expansionCards->contains($expansionCard)) {
+            $this->expansionCards->add($expansionCard);
+            $expansionCard->addRamSize($this);
+        }
+
+        return $this;
+    }
+
+    public function removeExpansionCard(ExpansionCard $expansionCard): static
+    {
+        if ($this->expansionCards->removeElement($expansionCard)) {
+            $expansionCard->removeRamSize($this);
         }
 
         return $this;
