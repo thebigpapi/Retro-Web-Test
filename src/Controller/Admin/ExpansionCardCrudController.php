@@ -18,6 +18,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use App\Controller\Admin\Filter\ChipImageFilter;
 use App\Controller\Admin\Filter\ChipDocFilter;
 use App\Controller\Admin\Filter\ChipDriverFilter;
+use App\Form\Type\ExpansionCardIoPortType;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
@@ -123,6 +124,20 @@ class ExpansionCardCrudController extends AbstractCrudController
             ->setEntryType(ExpansionCardTypeType::class)
             ->renderExpanded()
             ->setColumns('col-sm-12 col-lg-6 col-xxl-4')
+            ->onlyOnForms();
+        yield AssociationField::new('expansionSlot','Expansion Slot')
+            ->setFormTypeOption('required', false)
+            ->setColumns('col-sm-12 col-lg-6 col-xxl-4')
+            ->onlyOnForms();
+        yield AssociationField::new('expansionSlotType','Expansion Slot Type')
+            ->setFormTypeOption('required', false)
+            ->setColumns('col-sm-12 col-lg-6 col-xxl-4')
+            ->onlyOnForms();
+        yield CollectionField::new('ioPorts', 'I/O ports')
+            ->setEntryType(ExpansionCardIoPortType::class)
+            ->setFormTypeOption('error_bubbling', false)
+            ->setColumns('col-sm-12 col-lg-6 col-xxl-4')
+            ->renderExpanded()
             ->onlyOnForms();
         yield CollectionField::new('expansionCardAliases', 'Alternative names')
             ->setEntryType(ExpansionCardAliasType::class)

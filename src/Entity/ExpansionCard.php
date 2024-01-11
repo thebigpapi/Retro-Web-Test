@@ -76,6 +76,17 @@ class ExpansionCard
     #[ORM\ManyToMany(targetEntity: MaxRam::class, inversedBy: 'expansionCards')]
     private Collection $ramSize;
 
+    #[ORM\OneToMany(mappedBy: 'expansionCard', targetEntity: ExpansionCardIoPort::class)]
+    private Collection $ioPorts;
+
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?ExpansionSlot2 $expansionSlot = null;
+
+    #[ORM\ManyToOne(inversedBy: 'expansionCards')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?ExpansionSlotType $expansionSlotType = null;
+
     public function __construct()
     {
         $this->expansionChips = new ArrayCollection();
@@ -91,6 +102,7 @@ class ExpansionCard
         $this->expansionCardMemoryConnectors = new ArrayCollection();
         $this->dramType = new ArrayCollection();
         $this->ramSize = new ArrayCollection();
+        $this->ioPorts = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -510,6 +522,60 @@ class ExpansionCard
     public function removeRamSize(MaxRam $ramSize): static
     {
         $this->ramSize->removeElement($ramSize);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ExpansionCardIoPort>
+     */
+    public function getIoPorts(): Collection
+    {
+        return $this->ioPorts;
+    }
+
+    public function addIoPort(ExpansionCardIoPort $expansionCardIoPort): static
+    {
+        if (!$this->ioPorts->contains($expansionCardIoPort)) {
+            $this->ioPorts->add($expansionCardIoPort);
+            $expansionCardIoPort->setExpansionCard($this);
+        }
+
+        return $this;
+    }
+
+    public function removeIoPort(ExpansionCardIoPort $expansionCardIoPort): static
+    {
+        if ($this->ioPorts->removeElement($expansionCardIoPort)) {
+            // set the owning side to null (unless already changed)
+            if ($expansionCardIoPort->getExpansionCard() === $this) {
+                $expansionCardIoPort->setExpansionCard(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getExpansionSlot(): ?ExpansionSlot2
+    {
+        return $this->expansionSlot;
+    }
+
+    public function setExpansionSlot(?ExpansionSlot2 $expansionSlot): static
+    {
+        $this->expansionSlot = $expansionSlot;
+
+        return $this;
+    }
+
+    public function getExpansionSlotType(): ?ExpansionSlotType
+    {
+        return $this->expansionSlotType;
+    }
+
+    public function setExpansionSlotType(?ExpansionSlotType $expansionSlotType): static
+    {
+        $this->expansionSlotType = $expansionSlotType;
 
         return $this;
     }

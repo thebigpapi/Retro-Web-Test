@@ -43,6 +43,10 @@ use Symfony\UX\Chartjs\Builder\ChartBuilderInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Config\UserMenu;
 use Symfony\Component\Security\Core\User\UserInterface;
 use App\BranchLoader\GitLoader;
+use App\Entity\ExpansionSlot2;
+use App\Entity\ExpansionSlotType;
+use App\Entity\IoPort2;
+use App\Entity\IoPortType;
 use App\Entity\MemoryConnector;
 
 class DashboardController extends AbstractDashboardController
@@ -129,7 +133,11 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::subMenu('Connectors', 'connector.svg')->setSubItems([
             MenuItem::linkToCrud('Sockets', 'cpupins.svg', CpuSocket::class),
             MenuItem::linkToCrud('Expansion slots', 'card.svg', ExpansionSlot::class),
+            MenuItem::linkToCrud('Expansion slots 2', 'card.svg', ExpansionSlot2::class),
+            MenuItem::linkToCrud('Expansion slots type', 'card.svg', ExpansionSlotType::class),
             MenuItem::linkToCrud('I/O ports', 'rs232.svg', IoPort::class),
+            MenuItem::linkToCrud('I/O ports 2', 'rs232.svg', IoPort2::class),
+            MenuItem::linkToCrud('I/O ports type', 'rs232.svg', IoPortType::class),
             MenuItem::linkToCrud('PSU connectors', 'power.svg', PSUConnector::class),
             MenuItem::linkToCrud('Memory connectors', 'ram.svg', MemoryConnector::class),
         ])->setPermission('ROLE_ADMIN');

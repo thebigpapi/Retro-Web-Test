@@ -68,6 +68,22 @@
 					{% else %}
 					<div>Unknown</div>
 					{% endif %}
+
+					<!-- Expansion Slot -->
+					<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/card.svg')) }}" alt="date" width="24" height="24">Expansion slot</div>
+					<div class="tag-container">
+					{% if expansioncard.getExpansionSlot() is not empty %}
+						<span class="text-block">{{ expansioncard.getExpansionSlot().getName() }}</span>
+					{% else %}
+						<div>Unknown</div>
+					{% endif %}
+					/
+					{% if expansioncard.getExpansionSlotType() is not empty %}
+						<span class="text-block">{{ expansioncard.getExpansionSlotType().getName() }}</span>
+					{% else %}
+						<div>Unknown</div>
+					{% endif %}
+					</div>
 					<!-- Expansion Chips -->
 					{% if expansioncard.getExpansionChips() is not empty %}
 						{% for type in expansionchiptype %}
@@ -88,6 +104,27 @@
 					{% else %}
 					<div>Unknown</div>
 					{% endif %}
+
+					<!-- IO ports -->
+					<div class="quick-spec-head">
+						<img src="{{ absolute_url(asset('build/icons/rs232.svg')) }}" alt="pwr" width="24" height="24">IO ports
+					</div>
+					<div class="list-table">
+						{% if expansioncard.getIoPorts() is not empty %}
+							{% for port in expansioncard.getIoPorts()|sort((a, b) => a.getIoPort().getName() <=> b.getIoPort().getName())|filter(port => not port.isInternal) %}
+								<div class="list-table-head"><b>{{ port.getCount() }}x&nbsp;</b></div><div>{{ port.getIoPort().getName() }}({% for type in port.ioPortTypes() %}
+									{{type.getName()}}
+								{% endfor %})</div>
+							{% endfor %}
+						{% else %}<div class="list-table-head"></div><div>N/A</div>{% endif %}
+					</div>
+					<div class="list-table">
+						{% if expansioncard.getIoPorts() is not empty %}
+							{% for port in expansioncard.getIoPorts()|sort((a, b) => a.getIoPort().getName() <=> b.getIoPort().getName())|filter(port => port.isInternal) %}
+								<div class="list-table-head"><b>{{ port.getCount() }}x&nbsp;</b></div><div>{{ port.getIoPort().getName() }}</div>
+							{% endfor %}
+						{% else %}<div class="list-table-head"></div><div>N/A</div>{% endif %}
+					</div>
 				</div>
 					{% include 'macros/aliases.html.twig' with {'entity':expansioncard.getExpansionCardAliases(), 'msg': 'Also known as:'} %}
 					{% include 'macros/notes.html.twig' with {'entity': expansioncard} %}
