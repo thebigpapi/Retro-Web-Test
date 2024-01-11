@@ -19,30 +19,11 @@ class ExpansionCardIoPortIoPortTypeType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'class' => IoPortType::class,
-            'choice_label' => 'name',
-            'multiple' => false,
-            'expanded' => false,
+            'data_class' => IoPortType::class,
             'attr' => ['data-ea-widget' => 'ea-autocomplete'],
+            'choice_label' => 'name',
         ]);
     }
-    public function getParent(): ?string
-    {
-        return EntityType::class;
-    }
 
-    public function getBlockPrefix(): string
-    {
-        return 'name';
-    }
 
-    /**
-     * @return void
-     */
-    public function finishView(FormView $view, FormInterface $form, array $options)
-    {
-        usort($view->vars['choices'], function (ChoiceView $a, ChoiceView $b) {
-            return ($a->data->getName() <=> $b->data->getName());
-        });
-    }
 }

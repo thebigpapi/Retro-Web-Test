@@ -76,7 +76,7 @@ class ExpansionCard
     #[ORM\ManyToMany(targetEntity: MaxRam::class, inversedBy: 'expansionCards')]
     private Collection $ramSize;
 
-    #[ORM\OneToMany(mappedBy: 'expansionCard', targetEntity: ExpansionCardIoPort::class)]
+    #[ORM\OneToMany(mappedBy: 'expansionCard', targetEntity: ExpansionCardIoPort::class, orphanRemoval: true, cascade: ['persist'])]
     private Collection $ioPorts;
 
     #[ORM\ManyToOne]
