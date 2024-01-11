@@ -9,14 +9,11 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use App\Entity\IoPort2;
 use App\Entity\ExpansionCardIoPort;
-use App\Repository\IoPortTypeRepository;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 
 class ExpansionCardIoPortType extends AbstractType
 {
-
-    public function __construct(private IoPortTypeRepository $ioPortTypeRepository) {}
 
     /**
      * @return void
