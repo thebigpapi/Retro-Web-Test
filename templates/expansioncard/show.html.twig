@@ -140,10 +140,10 @@
 							{% endfor %}
 						{% else %}<div class="list-table-head"></div><div>N/A</div>{% endif %}
 					</div>
-					{% include 'macros/aliases.html.twig' with {'entity':expansioncard.getExpansionCardAliases(), 'msg': 'Also known as:'} %}
-					{% include 'macros/notes.html.twig' with {'entity': expansioncard} %}
-					<div id="index-datetime"><div class="div-datetime">Last updated <span class="perk-date">{{ expansioncard.getLastEdited()|date("Y-m-d\\TH:i:s", "GMT") }}Z</span></div></div>
 				</div>
+				{% include 'macros/aliases.html.twig' with {'entity':expansioncard.getExpansionCardAliases(), 'msg': 'Also known as:'} %}
+				{% include 'macros/notes.html.twig' with {'entity': expansioncard} %}
+				<div id="index-datetime"><div class="div-datetime">Last updated <span class="perk-date">{{ expansioncard.getLastEdited()|date("Y-m-d\\TH:i:s", "GMT") }}Z</span></div></div>
 			</div>
 			<!-- BIOSes -->
 			<div class="show-downloads" id="sh-bios">
