@@ -18,7 +18,7 @@ class IoPortInterface
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
-    #[ORM\OneToMany(mappedBy: 'ioPort', targetEntity: ExpansionCardIoPort::class)]
+    #[ORM\OneToMany(mappedBy: 'ioPortInterface', targetEntity: ExpansionCardIoPort::class)]
     private Collection $expansionCardIoPorts;
 
     public function __construct()
@@ -60,7 +60,7 @@ class IoPortInterface
     {
         if (!$this->expansionCardIoPorts->contains($expansionCardIoPort)) {
             $this->expansionCardIoPorts->add($expansionCardIoPort);
-            $expansionCardIoPort->setIoPort($this);
+            $expansionCardIoPort->setIoPortInterface($this);
         }
 
         return $this;
@@ -70,8 +70,8 @@ class IoPortInterface
     {
         if ($this->expansionCardIoPorts->removeElement($expansionCardIoPort)) {
             // set the owning side to null (unless already changed)
-            if ($expansionCardIoPort->getIoPort() === $this) {
-                $expansionCardIoPort->setIoPort(null);
+            if ($expansionCardIoPort->getIoPortInterface() === $this) {
+                $expansionCardIoPort->setIoPortInterface(null);
             }
         }
 

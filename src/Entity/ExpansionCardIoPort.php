@@ -23,7 +23,7 @@ class ExpansionCardIoPort
     #[ORM\ManyToOne(inversedBy: 'expansionCardIoPorts')]
     #[ORM\JoinColumn(nullable: false)]
     #[Assert\NotBlank(message:'I/O port connector cannot be blank')]
-    private ?IoPortInterface $ioPort = null;
+    private ?IoPortInterface $ioPortInterface = null;
 
     #[ORM\ManyToMany(targetEntity: IoPortType::class, inversedBy: 'expansionCards')]
     private Collection $ioPortTypes;
@@ -59,14 +59,14 @@ class ExpansionCardIoPort
         return $this;
     }
 
-    public function getIoPort(): ?IoPortInterface
+    public function getIoPortInterface(): ?IoPortInterface
     {
-        return $this->ioPort;
+        return $this->ioPortInterface;
     }
 
-    public function setIoPort(?IoPortInterface $ioPort): static
+    public function setIoPortInterface(?IoPortInterface $ioPortInterface): static
     {
-        $this->ioPort = $ioPort;
+        $this->ioPortInterface = $ioPortInterface;
 
         return $this;
     }
