@@ -81,10 +81,16 @@ class ExpansionCard
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
+    #[Assert\NotBlank(
+        message: 'Interface cannot be blank'
+    )]
     private ?ExpansionSlotInterface $expansionSlotInterface = null;
 
     #[ORM\ManyToOne(inversedBy: 'expansionCards')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Assert\NotBlank(
+        message: 'Signal cannot be blank'
+    )]
     private ?ExpansionSlotSignal $expansionSlotSignal = null;
 
     public function __construct()
