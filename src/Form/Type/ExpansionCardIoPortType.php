@@ -10,7 +10,6 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use App\Entity\IoPortInterface;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use App\Entity\IoPortSignal;
 
 class ExpansionCardIoPortType extends AbstractType
@@ -34,20 +33,13 @@ class ExpansionCardIoPortType extends AbstractType
                 'attr' => ['data-ea-widget' => 'ea-autocomplete'],
                 'placeholder' => 'Type to select a connector ...',
             ])
-            ->add('ioPortSignals', CollectionType::class, [
-                'entry_type' => ExpansionCardIoPortSignalType::class,
-                'allow_add' => true,
-                'allow_delete' => true,
-            ])
-            /*->add('ioPortSignals', EntityType::class, [
+            ->add('ioPortSignals', EntityType::class, [
                 'class' => IoPortSignal::class,
-            //'choice_label' => 'name',
-            //'choices' => $this->ioPortSignalRepository->findAll(),
-            'multiple' => false,
-            'expanded' => false,
-            'attr' => ['data-ea-widget' => 'ea-autocomplete'],
-            'placeholder'=> 'Type to select an io port type ...',
-            ])*/
+                'multiple' => true,
+                'expanded' => false,
+                'attr' => ['data-ea-widget' => 'ea-autocomplete'],
+                'placeholder'=> 'Type to select an io port signal ...',
+            ])
             ->add('isInternal', CheckboxType::class, [
                 'label'    => 'Internal port',
                 'required' => false,

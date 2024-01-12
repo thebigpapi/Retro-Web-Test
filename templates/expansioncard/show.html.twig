@@ -112,7 +112,7 @@
 					<div class="list-table">
 						{% if expansioncard.getIoPorts() is not empty %}
 							{% for port in expansioncard.getIoPorts()|sort((a, b) => a.getIoPortInterface().getName() <=> b.getIoPortInterface().getName())|filter(port => not port.isInternal) %}
-								<div class="list-table-head"><b>{{ port.getCount() }}x&nbsp;</b></div><div>{{ port.getIoPortInterface().getName() }}({% for type in port.ioPortTypes() %}
+								<div class="list-table-head"><b>{{ port.getCount() }}x&nbsp;</b></div><div>{{ port.getIoPortInterface().getName() }}({% for type in port.ioPortSignals() %}
 									{{type.getName()}}
 								{% endfor %})</div>
 							{% endfor %}
