@@ -2,11 +2,11 @@
 
 namespace App\Entity;
 
-use App\Repository\ExpansionSlot2Repository;
+use App\Repository\ExpansionSlotInterfaceRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: ExpansionSlot2Repository::class)]
-class ExpansionSlot2
+#[ORM\Entity(repositoryClass: ExpansionSlotInterfaceRepository::class)]
+class ExpansionSlotInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]

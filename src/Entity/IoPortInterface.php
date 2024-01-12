@@ -2,13 +2,13 @@
 
 namespace App\Entity;
 
-use App\Repository\IoPort2Repository;
+use App\Repository\IoPortInterfaceRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: IoPort2Repository::class)]
-class IoPort2
+#[ORM\Entity(repositoryClass: IoPortInterfaceRepository::class)]
+class IoPortInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]

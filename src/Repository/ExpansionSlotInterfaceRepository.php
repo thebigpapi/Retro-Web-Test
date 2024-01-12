@@ -2,27 +2,27 @@
 
 namespace App\Repository;
 
-use App\Entity\ExpansionSlot2;
+use App\Entity\ExpansionSlotInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<ExpansionSlot2>
+ * @extends ServiceEntityRepository<ExpansionSlotInterface>
  *
- * @method ExpansionSlot2|null find($id, $lockMode = null, $lockVersion = null)
- * @method ExpansionSlot2|null findOneBy(array $criteria, array $orderBy = null)
- * @method ExpansionSlot2[]    findAll()
- * @method ExpansionSlot2[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method ExpansionSlotInterface|null find($id, $lockMode = null, $lockVersion = null)
+ * @method ExpansionSlotInterface|null findOneBy(array $criteria, array $orderBy = null)
+ * @method ExpansionSlotInterface[]    findAll()
+ * @method ExpansionSlotInterface[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class ExpansionSlot2Repository extends ServiceEntityRepository
+class ExpansionSlotInterfaceRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, ExpansionSlot2::class);
+        parent::__construct($registry, ExpansionSlotInterface::class);
     }
 
 //    /**
-//     * @return ExpansionSlot2[] Returns an array of ExpansionSlot2 objects
+//     * @return ExpansionSlotInterface[] Returns an array of ExpansionSlotInterface objects
 //     */
 //    public function findByExampleField($value): array
 //    {
@@ -36,7 +36,7 @@ class ExpansionSlot2Repository extends ServiceEntityRepository
 //        ;
 //    }
 
-//    public function findOneBySomeField($value): ?ExpansionSlot2
+//    public function findOneBySomeField($value): ?ExpansionSlotInterface
 //    {
 //        return $this->createQueryBuilder('e')
 //            ->andWhere('e.exampleField = :val')

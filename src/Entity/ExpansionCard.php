@@ -81,7 +81,7 @@ class ExpansionCard
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
-    private ?ExpansionSlot2 $expansionSlot = null;
+    private ?ExpansionSlotInterface $expansionSlot = null;
 
     #[ORM\ManyToOne(inversedBy: 'expansionCards')]
     #[ORM\JoinColumn(nullable: false)]
@@ -556,12 +556,12 @@ class ExpansionCard
         return $this;
     }
 
-    public function getExpansionSlot(): ?ExpansionSlot2
+    public function getExpansionSlot(): ?ExpansionSlotInterface
     {
         return $this->expansionSlot;
     }
 
-    public function setExpansionSlot(?ExpansionSlot2 $expansionSlot): static
+    public function setExpansionSlot(?ExpansionSlotInterface $expansionSlot): static
     {
         $this->expansionSlot = $expansionSlot;
 

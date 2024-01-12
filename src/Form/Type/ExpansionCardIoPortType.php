@@ -7,7 +7,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
-use App\Entity\IoPort2;
+use App\Entity\IoPortInterface;
 use App\Entity\ExpansionCardIoPort;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
@@ -25,7 +25,7 @@ class ExpansionCardIoPortType extends AbstractType
                 'label' => 'Count',
             ])
             ->add('ioPort', EntityType::class, [
-                'class' => IoPort2::class,
+                'class' => IoPortInterface::class,
                 'choice_label' => 'name',
                 'label' => false,
                 'multiple' => false,

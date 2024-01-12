@@ -2,18 +2,18 @@
 
 namespace App\Controller\Admin;
 
-use App\Entity\IoPort2;
+use App\Entity\ExpansionSlotInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 
-class IoPort2CrudController extends AbstractCrudController
+class ExpansionSlotInterfaceCrudController extends AbstractCrudController
 {
     public static function getEntityFqcn(): string
     {
-        return IoPort2::class;
+        return ExpansionSlotInterface::class;
     }
     public function configureActions(Actions $actions): Actions
     {
@@ -32,8 +32,8 @@ class IoPort2CrudController extends AbstractCrudController
     {
         return $crud
             ->showEntityActionsInlined()
-            ->setEntityLabelInSingular('I/O port 2')
-            ->setEntityLabelInPlural('<img class=ea-entity-icon src=/build/icons/rs232.svg width=48 height=48>I/O ports 2')
+            ->setEntityLabelInSingular('expansion slot interface')
+            ->setEntityLabelInPlural('<img class=ea-entity-icon src=/build/icons/card.svg width=48 height=48>Expansion slot interfaces')
             ->setPaginatorPageSize(100);
     }
     public function viewLogs(AdminContext $context)
