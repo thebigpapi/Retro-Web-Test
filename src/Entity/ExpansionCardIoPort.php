@@ -25,8 +25,8 @@ class ExpansionCardIoPort
     #[Assert\NotBlank(message:'I/O port connector cannot be blank')]
     private ?IoPortInterface $ioPortInterface = null;
 
-    #[ORM\ManyToMany(targetEntity: IoPortType::class, inversedBy: 'expansionCards')]
-    private Collection $ioPortTypes;
+    #[ORM\ManyToMany(targetEntity: IoPortSignal::class, inversedBy: 'expansionCards')]
+    private Collection $ioPortSignals;
 
     #[Assert\PositiveOrZero(message: "I/O port count should be 0 or above")]
     #[Assert\LessThan(100, message: "I/O port count should be below 100")]
@@ -39,7 +39,7 @@ class ExpansionCardIoPort
 
     public function __construct()
     {
-        $this->ioPortTypes = new ArrayCollection();
+        $this->ioPortSignals = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -72,25 +72,25 @@ class ExpansionCardIoPort
     }
 
     /**
-     * @return Collection<int, IoPortType>
+     * @return Collection<int, IoPortSignal>
      */
-    public function getIoPortTypes(): Collection
+    public function getIoPortSignals(): Collection
     {
-        return $this->ioPortTypes;
+        return $this->ioPortSignals;
     }
 
-    public function addIoPortType(IoPortType $ioPortType): static
+    public function addIoPortSignal(IoPortSignal $ioPortSignal): static
     {
-        if (!$this->ioPortTypes->contains($ioPortType)) {
-            $this->ioPortTypes->add($ioPortType);
+        if (!$this->ioPortSignals->contains($ioPortSignal)) {
+            $this->ioPortSignals->add($ioPortSignal);
         }
 
         return $this;
     }
 
-    public function removeIoPortType(IoPortType $ioPortType): static
+    public function removeIoPortSignal(IoPortSignal $ioPortSignal): static
     {
-        $this->ioPortTypes->removeElement($ioPortType);
+        $this->ioPortSignals->removeElement($ioPortSignal);
 
         return $this;
     }

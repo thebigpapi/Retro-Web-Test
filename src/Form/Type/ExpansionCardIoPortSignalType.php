@@ -2,17 +2,17 @@
 
 namespace App\Form\Type;
 
+use App\Entity\ExpansionCardIoPort;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use App\Entity\IoPortInterface;
-use App\Entity\ExpansionCardIoPort;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 
-class ExpansionCardIoPortType extends AbstractType
+class ExpansionCardIoPortSignalType extends AbstractType
 {
 
     /**
@@ -24,7 +24,7 @@ class ExpansionCardIoPortType extends AbstractType
             ->add('count', NumberType::class,[
                 'label' => 'Count',
             ])
-            ->add('ioPort', EntityType::class, [
+            ->add('ioPortInterface', EntityType::class, [
                 'class' => IoPortInterface::class,
                 'choice_label' => 'name',
                 'label' => false,
@@ -33,8 +33,8 @@ class ExpansionCardIoPortType extends AbstractType
                 'attr' => ['data-ea-widget' => 'ea-autocomplete'],
                 'placeholder' => 'Type to select a connector ...',
             ])
-            ->add('ioPortTypes', CollectionType::class, [
-                'entry_type' => ExpansionCardIoPortIoPortTypeType::class,
+            ->add('ioPortSignals', CollectionType::class, [
+                'entry_type' => ExpansionCardIoPortInterfaceIoPortSignalType::class,
                 'allow_add' => true,
                 'allow_delete' => true,
             ])

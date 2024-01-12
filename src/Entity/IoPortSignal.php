@@ -2,13 +2,13 @@
 
 namespace App\Entity;
 
-use App\Repository\IoPortTypeRepository;
+use App\Repository\IoPortSignalRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: IoPortTypeRepository::class)]
-class IoPortType
+#[ORM\Entity(repositoryClass: IoPortSignalRepository::class)]
+class IoPortSignal
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -18,7 +18,7 @@ class IoPortType
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
-    #[ORM\ManyToMany(targetEntity: ExpansionCardIoPort::class, mappedBy: 'ioPortTypes')]
+    #[ORM\ManyToMany(targetEntity: ExpansionCardIoPort::class, mappedBy: 'ioPortSignals')]
     private Collection $expansionCards;
 
     public function __construct()
@@ -60,7 +60,7 @@ class IoPortType
     {
         if (!$this->expansionCards->contains($expansionCard)) {
             $this->expansionCards->add($expansionCard);
-            $expansionCard->addIoPortType($this);
+            $expansionCard->addIoPortSignal($this);
         }
 
         return $this;
@@ -69,7 +69,7 @@ class IoPortType
     public function removeExpansionCard(ExpansionCardIoPort $expansionCard): static
     {
         if ($this->expansionCards->removeElement($expansionCard)) {
-            $expansionCard->removeIoPortType($this);
+            $expansionCard->removeIoPortSignal($this);
         }
 
         return $this;

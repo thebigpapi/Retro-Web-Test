@@ -5,13 +5,13 @@ namespace App\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use App\Entity\IoPortType;
-use App\Repository\IoPortTypeRepository;
+use App\Entity\IoPortSignal;
+use App\Repository\IoPortSignalRepository;
 
-class ExpansionCardIoPortIoPortTypeType extends AbstractType
+class ExpansionCardIoPortInterfaceIoPortSignalType extends AbstractType
 {
 
-    public function __construct(private IoPortTypeRepository $ioPortTypeRepository)
+    public function __construct(private IoPortSignalRepository $ioPortSignalRepository)
     {}
 
     public function getParent(): ?string
@@ -25,9 +25,9 @@ class ExpansionCardIoPortIoPortTypeType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'class' => IoPortType::class,
+            'class' => IoPortSignal::class,
             'choice_label' => 'name',
-            'choices' => $this->ioPortTypeRepository->findAll(),
+            'choices' => $this->ioPortSignalRepository->findAll(),
             'multiple' => false,
             'expanded' => false,
             'attr' => ['data-ea-widget' => 'ea-autocomplete'],

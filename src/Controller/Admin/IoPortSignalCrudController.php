@@ -2,18 +2,18 @@
 
 namespace App\Controller\Admin;
 
-use App\Entity\IoPortType;
+use App\Entity\IoPortSignal;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 
-class IoPortTypeCrudController extends AbstractCrudController
+class IoPortSignalCrudController extends AbstractCrudController
 {
     public static function getEntityFqcn(): string
     {
-        return IoPortType::class;
+        return IoPortSignal::class;
     }
     public function configureActions(Actions $actions): Actions
     {
@@ -32,8 +32,8 @@ class IoPortTypeCrudController extends AbstractCrudController
     {
         return $crud
             ->showEntityActionsInlined()
-            ->setEntityLabelInSingular('I/O port type')
-            ->setEntityLabelInPlural('<img class=ea-entity-icon src=/build/icons/rs232.svg width=48 height=48>I/O ports type')
+            ->setEntityLabelInSingular('I/O port signal')
+            ->setEntityLabelInPlural('<img class=ea-entity-icon src=/build/icons/rs232.svg width=48 height=48>I/O port signals')
             ->setPaginatorPageSize(100);
     }
     public function viewLogs(AdminContext $context)
