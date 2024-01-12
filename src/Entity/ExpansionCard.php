@@ -67,7 +67,7 @@ class ExpansionCard
     #[Assert\Valid()]
     private Collection $redirections;
 
-    #[ORM\OneToMany(mappedBy: 'expansionCard', targetEntity: ExpansionCardMemoryConnector::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'expansionCard', targetEntity: ExpansionCardMemoryConnector::class, orphanRemoval: true, cascade: ['persist'])]
     private Collection $expansionCardMemoryConnectors;
 
     #[ORM\ManyToMany(targetEntity: DramType::class, inversedBy: 'expansionCards')]

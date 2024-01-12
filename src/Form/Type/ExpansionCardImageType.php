@@ -4,6 +4,7 @@ namespace App\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\File;
@@ -24,18 +25,18 @@ class ExpansionCardImageType extends AbstractType
     {
         $builder
             ->add('imageFile', VichImageType::class, [
-                'label' => 'Image (jpg file)',
+                'label' => 'JPG or SVG file',
                 'allow_delete' => false,
                 'required' => false,
-
-                // unmapped fields can't define their validation using annotations
-                // in the associated entity, so you can use the PHP constraint classes
                 'constraints' => [
                     new File([
                         'maxSize' => '8192k',
                         'mimeTypes' => [
                             'image/jpeg',
                             'image/pjpeg',
+                            'image/png',
+                            'image/gif',
+                            'image/svg+xml',
                         ],
                         'mimeTypesMessage' => 'Please upload a valid image',
                     ])
@@ -48,6 +49,16 @@ class ExpansionCardImageType extends AbstractType
                 'multiple' => false,
                 'expanded' => false,
                 'attr' => ['data-ea-widget' => 'ea-autocomplete'],
+            ])
+            ->add('type', ChoiceType::class, [
+                'choices' => array(
+                    'Schema' => '1',
+                    'Photo front' => '2',
+                    'Photo back' => '3',
+                    'Photo misc' => '4',
+                    'Schema misc' => '5',
+                ),
+                'required' => true,
             ])
             ->add('description', TextType::class, [
                 'required' => false,

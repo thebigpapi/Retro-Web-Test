@@ -41,6 +41,9 @@ class ExpansionCardImage
     #[ORM\ManyToOne(inversedBy: 'images')]
     private ?ExpansionCard $expansionCard = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $type = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -107,6 +110,18 @@ class ExpansionCardImage
     public function setExpansionCard(?ExpansionCard $expansionCard): static
     {
         $this->expansionCard = $expansionCard;
+
+        return $this;
+    }
+
+    public function getType(): ?string
+    {
+        return $this->type;
+    }
+
+    public function setType(string $type): static
+    {
+        $this->type = $type;
 
         return $this;
     }

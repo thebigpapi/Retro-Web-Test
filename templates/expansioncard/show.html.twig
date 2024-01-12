@@ -58,7 +58,7 @@
 			<div class="show-general" id="sh-general">
 				<div class="quick-spec-table">
 					<!-- Type -->
-					<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/tag.svg')) }}" alt="date" width="24" height="24">Type</div>
+					<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/tag.svg')) }}" alt="type" width="24" height="24">Type</div>
 					{% if expansioncard.getType() is not empty %}
 					<div class="tag-container">
 						{% for type in expansioncard.getType() %}
@@ -70,20 +70,8 @@
 					{% endif %}
 
 					<!-- Expansion Slot -->
-					<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/card.svg')) }}" alt="date" width="24" height="24">Expansion slot</div>
-					<div class="tag-container">
-					{% if expansioncard.getExpansionSlotInterface() is not empty %}
-						<span class="text-block">{{ expansioncard.getExpansionSlotInterface().getName() }}</span>
-					{% else %}
-						<div>Unknown</div>
-					{% endif %}
-					/
-					{% if expansioncard.getExpansionSlotSignal() is not empty %}
-						<span class="text-block">{{ expansioncard.getExpansionSlotSignal().getName() }}</span>
-					{% else %}
-						<div>Unknown</div>
-					{% endif %}
-					</div>
+					<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/io.svg')) }}" alt="interface" width="24" height="24">Interface</div>
+					<div>{{ expansioncard.getExpansionSlotInterface().getName() }} {{ expansioncard.getExpansionSlotSignal().getName() }}</div>
 					<!-- Expansion Chips -->
 					{% if expansioncard.getExpansionChips() is not empty %}
 						{% for type in expansionchiptype %}
@@ -94,6 +82,20 @@
 							{% endfor %}
 						{% endfor %}
 					{% endif %}
+					<!-- Supported RAM types -->
+					{% if expansioncard.getDramType() is not empty %}
+					<div class="quick-spec-head">
+						<img src="{{ absolute_url(asset('build/icons/ram.svg')) }}" alt="ram" width="24" height="24">RAM type{% if expansioncard.getDramType()|length > 1 %}s{% endif %}
+					</div>
+					<div class="tag-container">{% for dram in expansioncard.getDramType() %}<span class="text-block">{{ dram.getName() }}</span>{% endfor %}</div>
+					{% endif %}
+					<!-- Max card RAM -->
+					{% if expansioncard.getRamSize() is not empty %}
+					<div class="quick-spec-head">
+						<img src="{{ absolute_url(asset('build/icons/ram_multi.svg')) }}" alt="ram" width="24" height="24">Max RAM size
+					</div>
+					<div class="tag-container">{% for size in expansioncard.getRamSize() %}<span class="text-block">{{ size.getValueWithUnit()}}</span>{% endfor %}</div>
+					{% endif %}
 					<!-- PSU connectors -->
 					<div class="quick-spec-head">
 						<img src="{{ absolute_url(asset('build/icons/power.svg')) }}" alt="pwr" width="24" height="24">Power connector
@@ -102,33 +104,46 @@
 					<div class="tag-container">{% for power in expansioncard.getPowerConnectors() %}
 						<a href="{{ path('psu_connector_show', {id: power.getId()}) }}"><span class="text-block">{{ power.getName() }}</span></a>{% endfor %}</div>
 					{% else %}
-					<div>Unknown</div>
+					<div>None</div>
 					{% endif %}
-
-					<!-- IO ports -->
-					<div class="quick-spec-head">
-						<img src="{{ absolute_url(asset('build/icons/rs232.svg')) }}" alt="pwr" width="24" height="24">IO ports
-					</div>
-					<div class="list-table">
-						{% if expansioncard.getIoPorts() is not empty %}
-							{% for port in expansioncard.getIoPorts()|sort((a, b) => a.getIoPortInterface().getName() <=> b.getIoPortInterface().getName())|filter(port => not port.isInternal) %}
-								<div class="list-table-head"><b>{{ port.getCount() }}x&nbsp;</b></div><div>{{ port.getIoPortInterface().getName() }}({% for type in port.ioPortSignals() %}
-									{{type.getName()}}
-								{% endfor %})</div>
-							{% endfor %}
-						{% else %}<div class="list-table-head"></div><div>N/A</div>{% endif %}
-					</div>
-					<div class="list-table">
-						{% if expansioncard.getIoPorts() is not empty %}
-							{% for port in expansioncard.getIoPorts()|sort((a, b) => a.getIoPortInterface().getName() <=> b.getIoPortInterface().getName())|filter(port => port.isInternal) %}
-								<div class="list-table-head"><b>{{ port.getCount() }}x&nbsp;</b></div><div>{{ port.getIoPortInterface().getName() }}</div>
-							{% endfor %}
-						{% else %}<div class="list-table-head"></div><div>N/A</div>{% endif %}
-					</div>
 				</div>
+				<div class="full-spec">
+					<!-- IO ports -->
+					<div class="full-spec-head"><img src="{{ absolute_url(asset('build/icons/rs232.svg')) }}" alt="portint" width="24" height="24"><b>I/O ports (external)</b></div>
+					<div class="list-table">
+						{% if expansioncard.getIoPorts()|filter(port => not port.isInternal) is not empty %}
+							{% for port in expansioncard.getIoPorts()|sort((a, b) => a.getIoPortInterface().getName() <=> b.getIoPortInterface().getName())|filter(port => not port.isInternal) %}
+								<div class="list-table-head">
+									<b>{{ port.getCount() }}x&nbsp;</b>
+								</div>
+								<div>{{ port.getIoPortInterface().getName() }}{% if port.ioPortSignals() is not empty %}&nbsp;({% for type in port.ioPortSignals() %}{{type.getName()}}{% if not loop.last %}, {% endif %}{% endfor %}){% endif %}</div>
+							{% endfor %}
+						{% else %}<div class="list-table-head"></div><div>N/A</div>{% endif %}
+					</div>
+					<div class="full-spec-head"><img src="{{ absolute_url(asset('build/icons/rs232.svg')) }}" alt="portint" width="24" height="24"><b>I/O ports (internal)</b></div>
+					<div class="list-table">
+						{% if expansioncard.getIoPorts()|filter(port => port.isInternal) is not empty %}
+							{% for port in expansioncard.getIoPorts()|sort((a, b) => a.getIoPortInterface().getName() <=> b.getIoPortInterface().getName())|filter(port => port.isInternal) %}
+								<div class="list-table-head">
+									<b>{{ port.getCount() }}x&nbsp;</b>
+								</div>
+								<div>{{ port.getIoPortInterface().getName() }}{% if port.ioPortSignals() is not empty %}&nbsp;({% for type in port.ioPortSignals() %}{{type.getName()}}{% if not loop.last %}, {% endif %}{% endfor %}){% endif %}</div>
+							{% endfor %}
+						{% else %}<div class="list-table-head"></div><div>N/A</div>{% endif %}
+					</div>
+					<!-- Memory connectors -->
+					<div class="full-spec-head"><img src="{{ absolute_url(asset('build/icons/ram.svg')) }}" alt="card" width="24" height="24"><b>Memory connectors</b></div>
+					<div class="list-table">
+						{% if expansioncard.getExpansionCardMemoryConnectors() is not empty %}
+							{% for slot in expansioncard.getExpansionCardMemoryConnectors()|sort((a, b) => a.getMemoryConnector().getName() <=> b.getMemoryConnector().getName()) %}
+								<div class="list-table-head"><b>{{ slot.getCount() }}x&nbsp;</b></div><div>{{ slot.getMemoryConnector().getName() }}</div>
+							{% endfor %}
+						{% else %}<div class="list-table-head"></div><div>N/A</div>{% endif %}
+					</div>
 					{% include 'macros/aliases.html.twig' with {'entity':expansioncard.getExpansionCardAliases(), 'msg': 'Also known as:'} %}
 					{% include 'macros/notes.html.twig' with {'entity': expansioncard} %}
 					<div id="index-datetime"><div class="div-datetime">Last updated <span class="perk-date">{{ expansioncard.getLastEdited()|date("Y-m-d\\TH:i:s", "GMT") }}Z</span></div></div>
+				</div>
 			</div>
 			<!-- BIOSes -->
 			<div class="show-downloads" id="sh-bios">
@@ -187,13 +202,13 @@
 	<div class="show-images" id="sh-images">
 	{% if expansioncard.getImages() is not empty %}
 		{% set lpindex = 0 %}
-		{% for image in expansioncard.getImages()|sort((a, b) => a.getFileName() <=> b.getFileName()) %}
+		{% for image in expansioncard.getImages()|sort((a, b) => a.getFileName() <=> b.getFileName())|sort((a, b) => a.getType <=> b.getType) %}
 			{% set lpindex = lpindex + 1 %}
 			{% include 'macros/images.html.twig' with {'type':'expansionchip', 'entity': image, 'index': lpindex, 'length': expansioncard.getImages()|length} %}
 		{% endfor %}
 	{% else %}
 		<div class="show-images">
-			<img src={{ absolute_url(asset('build/images/missing/chip-missing.jpg')) }} title="no images available :(" style="width:100%;">
+			<img src={{ absolute_url(asset('build/images/missing/card-missing.jpg')) }} title="no images available :(" style="width:100%;">
 		</div>
 	{% endif %}
 	</div>

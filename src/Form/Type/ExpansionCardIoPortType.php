@@ -27,7 +27,7 @@ class ExpansionCardIoPortType extends AbstractType
             ->add('ioPortInterface', EntityType::class, [
                 'class' => IoPortInterface::class,
                 'choice_label' => 'name',
-                'label' => false,
+                'label' => 'Connector',
                 'multiple' => false,
                 'expanded' => false,
                 'attr' => ['data-ea-widget' => 'ea-autocomplete'],
@@ -36,6 +36,7 @@ class ExpansionCardIoPortType extends AbstractType
             ->add('ioPortSignals', EntityType::class, [
                 'class' => IoPortSignal::class,
                 'multiple' => true,
+                'label' => 'Signals',
                 'expanded' => false,
                 'attr' => ['data-ea-widget' => 'ea-autocomplete'],
                 'placeholder'=> 'Type to select an io port signal ...',
