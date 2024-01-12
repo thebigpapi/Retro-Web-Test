@@ -125,11 +125,11 @@ class ExpansionCardCrudController extends AbstractCrudController
             ->renderExpanded()
             ->setColumns('col-sm-12 col-lg-6 col-xxl-4')
             ->onlyOnForms();
-        yield AssociationField::new('expansionSlot','Expansion Slot')
+        yield AssociationField::new('expansionSlotInterface','Expansion Slot Interface')
             ->setFormTypeOption('required', false)
             ->setColumns('col-sm-12 col-lg-6 col-xxl-4')
             ->onlyOnForms();
-        yield AssociationField::new('expansionSlotType','Expansion Slot Type')
+        yield AssociationField::new('expansionSlotSignal','Expansion Slot Signal')
             ->setFormTypeOption('required', false)
             ->setColumns('col-sm-12 col-lg-6 col-xxl-4')
             ->onlyOnForms();

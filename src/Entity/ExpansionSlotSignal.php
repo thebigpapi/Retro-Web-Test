@@ -2,13 +2,13 @@
 
 namespace App\Entity;
 
-use App\Repository\ExpansionSlotTypeRepository;
+use App\Repository\ExpansionSlotSignalRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: ExpansionSlotTypeRepository::class)]
-class ExpansionSlotType
+#[ORM\Entity(repositoryClass: ExpansionSlotSignalRepository::class)]
+class ExpansionSlotSignal
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -18,7 +18,7 @@ class ExpansionSlotType
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
-    #[ORM\OneToMany(mappedBy: 'expansionSlotType', targetEntity: ExpansionCard::class)]
+    #[ORM\OneToMany(mappedBy: 'expansionSlotSignal', targetEntity: ExpansionCard::class)]
     private Collection $expansionCards;
 
     public function __construct()
@@ -60,7 +60,7 @@ class ExpansionSlotType
     {
         if (!$this->expansionCards->contains($expansionCard)) {
             $this->expansionCards->add($expansionCard);
-            $expansionCard->setExpansionSlotType($this);
+            $expansionCard->setExpansionSlotSignal($this);
         }
 
         return $this;
@@ -70,8 +70,8 @@ class ExpansionSlotType
     {
         if ($this->expansionCards->removeElement($expansionCard)) {
             // set the owning side to null (unless already changed)
-            if ($expansionCard->getExpansionSlotType() === $this) {
-                $expansionCard->setExpansionSlotType(null);
+            if ($expansionCard->getExpansionSlotSignal() === $this) {
+                $expansionCard->setExpansionSlotSignal(null);
             }
         }
 

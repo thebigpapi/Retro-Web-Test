@@ -44,7 +44,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\UserMenu;
 use Symfony\Component\Security\Core\User\UserInterface;
 use App\BranchLoader\GitLoader;
 use App\Entity\ExpansionSlotInterface;
-use App\Entity\ExpansionSlotType;
+use App\Entity\ExpansionSlotSignal;
 use App\Entity\IoPortInterface;
 use App\Entity\IoPortType;
 use App\Entity\MemoryConnector;
@@ -134,7 +134,7 @@ class DashboardController extends AbstractDashboardController
             MenuItem::linkToCrud('Sockets', 'cpupins.svg', CpuSocket::class),
             MenuItem::linkToCrud('Expansion slots (motherboard)', 'card.svg', ExpansionSlot::class),
             MenuItem::linkToCrud('Expansion slot interfaces', 'card.svg', ExpansionSlotInterface::class),
-            MenuItem::linkToCrud('Expansion slots type', 'card.svg', ExpansionSlotType::class),
+            MenuItem::linkToCrud('Expansion slot signals', 'card.svg', ExpansionSlotSignal::class),
             MenuItem::linkToCrud('I/O ports (motherboard)', 'rs232.svg', IoPort::class),
             MenuItem::linkToCrud('I/O port interfaces', 'rs232.svg', IoPortInterface::class),
             MenuItem::linkToCrud('I/O ports type', 'rs232.svg', IoPortType::class),

@@ -2,18 +2,18 @@
 
 namespace App\Controller\Admin;
 
-use App\Entity\ExpansionSlotType;
+use App\Entity\ExpansionSlotSignal;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 
-class ExpansionSlotTypeCrudController extends AbstractCrudController
+class ExpansionSlotSignalCrudController extends AbstractCrudController
 {
     public static function getEntityFqcn(): string
     {
-        return ExpansionSlotType::class;
+        return ExpansionSlotSignal::class;
     }
     public function configureActions(Actions $actions): Actions
     {
@@ -32,8 +32,8 @@ class ExpansionSlotTypeCrudController extends AbstractCrudController
     {
         return $crud
             ->showEntityActionsInlined()
-            ->setEntityLabelInSingular('expansion slot type')
-            ->setEntityLabelInPlural('<img class=ea-entity-icon src=/build/icons/card.svg width=48 height=48>Expansion slots type')
+            ->setEntityLabelInSingular('expansion slot signal')
+            ->setEntityLabelInPlural('<img class=ea-entity-icon src=/build/icons/card.svg width=48 height=48>Expansion slot signals')
             ->setPaginatorPageSize(100);
     }
     public function viewLogs(AdminContext $context)

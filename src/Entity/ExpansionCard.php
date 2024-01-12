@@ -85,7 +85,7 @@ class ExpansionCard
 
     #[ORM\ManyToOne(inversedBy: 'expansionCards')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?ExpansionSlotType $expansionSlotType = null;
+    private ?ExpansionSlotSignal $expansionSlotSignal = null;
 
     public function __construct()
     {
@@ -568,14 +568,14 @@ class ExpansionCard
         return $this;
     }
 
-    public function getExpansionSlotType(): ?ExpansionSlotType
+    public function getExpansionSlotSignal(): ?ExpansionSlotSignal
     {
-        return $this->expansionSlotType;
+        return $this->expansionSlotSignal;
     }
 
-    public function setExpansionSlotType(?ExpansionSlotType $expansionSlotType): static
+    public function setExpansionSlotSignal(?ExpansionSlotSignal $expansionSlotSignal): static
     {
-        $this->expansionSlotType = $expansionSlotType;
+        $this->expansionSlotSignal = $expansionSlotSignal;
 
         return $this;
     }

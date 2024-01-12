@@ -78,8 +78,8 @@
 						<div>Unknown</div>
 					{% endif %}
 					/
-					{% if expansioncard.getExpansionSlotType() is not empty %}
-						<span class="text-block">{{ expansioncard.getExpansionSlotType().getName() }}</span>
+					{% if expansioncard.getExpansionSlotSignal() is not empty %}
+						<span class="text-block">{{ expansioncard.getExpansionSlotSignal().getName() }}</span>
 					{% else %}
 						<div>Unknown</div>
 					{% endif %}
