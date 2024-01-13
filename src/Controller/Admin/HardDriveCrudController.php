@@ -171,8 +171,7 @@ class HardDriveCrudController extends AbstractCrudController
             ->onlyOnForms();
         yield NumberField::new('spindleSpeed', 'RPM')
             ->setColumns('col-sm-4 col-lg-3 col-xxl-2');
-        yield BooleanField::new('getStorageDeviceImages','Images')
-            ->renderAsSwitch(false)
+        yield TextField::new('isStorageDeviceImage','Images')
             ->onlyOnIndex();
         yield BooleanField::new('getStorageDeviceDocumentations','Docs')
             ->renderAsSwitch(false)

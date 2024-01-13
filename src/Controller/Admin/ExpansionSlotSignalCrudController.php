@@ -20,8 +20,6 @@ class ExpansionSlotSignalCrudController extends AbstractCrudController
         $logs = Action::new('logs', 'Logs')->linkToCrudAction('viewLogs');
         $elogs= Action::new('elogs', 'Logs')->linkToCrudAction('viewLogs')->setIcon('fa fa-history');
         return $actions
-            ->add(Crud::PAGE_NEW, Action::SAVE_AND_CONTINUE)
-            ->remove(Crud::PAGE_NEW, Action::SAVE_AND_ADD_ANOTHER)
             ->add(Crud::PAGE_INDEX, $logs)
             ->add(Crud::PAGE_EDIT, $elogs)
             ->setPermission(Action::DELETE, 'ROLE_ADMIN')
@@ -32,8 +30,8 @@ class ExpansionSlotSignalCrudController extends AbstractCrudController
     {
         return $crud
             ->showEntityActionsInlined()
-            ->setEntityLabelInSingular('expansion slot signal')
-            ->setEntityLabelInPlural('<img class=ea-entity-icon src=/build/icons/card.svg width=48 height=48>Expansion slot signals')
+            ->setEntityLabelInSingular('electrical bus interface')
+            ->setEntityLabelInPlural('<img class=ea-entity-icon src=/build/icons/card.svg width=48 height=48>Electrical bus interfaces')
             ->setPaginatorPageSize(100);
     }
     public function viewLogs(AdminContext $context)

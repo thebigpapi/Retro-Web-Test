@@ -20,8 +20,6 @@ class IoPortInterfaceCrudController extends AbstractCrudController
         $logs = Action::new('logs', 'Logs')->linkToCrudAction('viewLogs');
         $elogs= Action::new('elogs', 'Logs')->linkToCrudAction('viewLogs')->setIcon('fa fa-history');
         return $actions
-            ->add(Crud::PAGE_NEW, Action::SAVE_AND_CONTINUE)
-            ->remove(Crud::PAGE_NEW, Action::SAVE_AND_ADD_ANOTHER)
             ->add(Crud::PAGE_INDEX, $logs)
             ->add(Crud::PAGE_EDIT, $elogs)
             ->setPermission(Action::DELETE, 'ROLE_ADMIN')
@@ -32,8 +30,8 @@ class IoPortInterfaceCrudController extends AbstractCrudController
     {
         return $crud
             ->showEntityActionsInlined()
-            ->setEntityLabelInSingular('I/O port interface')
-            ->setEntityLabelInPlural('<img class=ea-entity-icon src=/build/icons/rs232.svg width=48 height=48>I/O port interfaces')
+            ->setEntityLabelInSingular('mechanical I/O port interface')
+            ->setEntityLabelInPlural('<img class=ea-entity-icon src=/build/icons/rs232.svg width=48 height=48>Mechanical I/O port interfaces')
             ->setPaginatorPageSize(100);
     }
     public function viewLogs(AdminContext $context)

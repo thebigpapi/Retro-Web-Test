@@ -3,6 +3,7 @@
 namespace App\Controller\Admin\Filter;
 
 use App\Form\Type\Admin\BoolFilterType;
+use App\Form\Type\Admin\SchemaPhotoImageFilterType;
 use Doctrine\ORM\QueryBuilder;
 use EasyCorp\Bundle\EasyAdminBundle\Contracts\Filter\FilterInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto;
@@ -20,17 +21,41 @@ class StorageImageFilter implements FilterInterface
             ->setFilterFqcn(__CLASS__)
             ->setProperty($propertyName)
             ->setLabel($label)
-            ->setFormType(BoolFilterType::class);
+            ->setFormType(SchemaPhotoImageFilterType::class);
     }
 
     public function apply(QueryBuilder $queryBuilder, FilterDataDto $filterDataDto, ?FieldDto $fieldDto, EntityDto $entityDto): void
     {
-        if ('yes' === $filterDataDto->getValue()) {
+        if ('any' === $filterDataDto->getValue()) {
             $queryBuilder
                 ->leftjoin('entity.storageDeviceImages', 'storageimage')
                 ->andWhere('storageimage.id is not null');
         }
-        if ('no' === $filterDataDto->getValue()) {
+        if ('schemaonly' === $filterDataDto->getValue()) {
+            $queryBuilder
+                ->leftjoin('entity.storageDeviceImages', 'storageimage')
+                ->andWhere('storageimage.id is not null')
+                ->andWhere("entity.id not in (select sd.id from App\Entity\StorageDevice sd join sd.storageDeviceImages si where si.type <> '1')");
+        }
+        if ('schema' === $filterDataDto->getValue()) {
+            $queryBuilder
+                ->leftjoin('entity.storageDeviceImages', 'storageimage')
+                ->andWhere('storageimage.id is not null')
+                ->andWhere("storageimage.type = '1'");
+        }
+        if ('photoonly' === $filterDataDto->getValue()) {
+            $queryBuilder
+                ->leftjoin('entity.storageDeviceImages', 'storageimage')
+                ->andWhere('storageimage.id is not null')
+                ->andWhere("entity.id not in (select sd.id from App\Entity\StorageDevice sd join sd.storageDeviceImages si where si.type = '1')");
+        }
+        if ('photo' === $filterDataDto->getValue()) {
+            $queryBuilder
+                ->leftjoin('entity.storageDeviceImages', 'storageimage')
+                ->andWhere('storageimage.id is not null')
+                ->andWhere("storageimage.type <> '1'");
+        }
+        if ('none' === $filterDataDto->getValue()) {
             $queryBuilder
                 ->leftjoin('entity.storageDeviceImages', 'storageimage')
                 ->andWhere('storageimage.id is null');

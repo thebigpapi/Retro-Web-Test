@@ -6,7 +6,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class MotherboardImageFilterType extends AbstractType
+class SchemaPhotoImageFilterType extends AbstractType
 {
     /**
      * @return void
@@ -15,9 +15,11 @@ class MotherboardImageFilterType extends AbstractType
     {
         $resolver->setDefaults([
             'choices' => [
-                'Schema only' => 'schema',
-                'Schema and photo' => 'schemaphoto',
-                'Photo only' => 'photo',
+                'Any' => 'any',
+                'Contains schema' => 'schema',
+                'Contains photo' => 'photo',
+                'Schema only' => 'schemaonly',
+                'Photo only' => 'photoonly',
                 'None' => 'none',
             ],
         ]);

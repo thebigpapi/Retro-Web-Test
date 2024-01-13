@@ -259,13 +259,29 @@ class ExpansionCard
 
         return $this;
     }
-
-    public function isExpansionCardImage(): bool
+    public function isExpansionCardImage(): string
     {
         if(isset($this->images))
-            if(count($this->images) > 0)
-                return true;
-        return false;
+            $types = array(
+                1 => 0,
+                2 => 0,
+                3 => 0,
+                4 => 0,
+                5 => 0,
+            );
+        foreach($this->images as $image){
+            $types[(int)$image->getType()] += 1;
+        }
+        if(($types[1] || $types[5])){
+            if(!($types[2] || $types[3] || $types[4]))
+                return "Schema only";
+            else return "Schema and photo";
+        }
+        else{
+            if(!($types[2] || $types[3] || $types[4]))
+                return "None";
+            else return "Photo only";
+        }
     }
     /**
      * @return Collection|ExpansionCardDocumentation[]

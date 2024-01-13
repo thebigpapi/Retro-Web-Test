@@ -148,8 +148,7 @@ class FloppyDriveCrudController extends AbstractCrudController
             ->onlyOnForms();
         yield TextField::new('density')
             ->onlyOnIndex();
-        yield BooleanField::new('getStorageDeviceImages','Images')
-            ->renderAsSwitch(false)
+        yield TextField::new('isStorageDeviceImage','Images')
             ->onlyOnIndex();
         yield BooleanField::new('getStorageDeviceDocumentations','Docs')
             ->renderAsSwitch(false)

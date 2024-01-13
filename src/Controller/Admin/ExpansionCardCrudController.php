@@ -17,7 +17,7 @@ use App\Form\Type\PSUConnectorType;
 use App\Form\Type\DramTypeType;
 use App\Form\Type\MaxRamType;
 use Doctrine\ORM\EntityManagerInterface;
-use App\Controller\Admin\Filter\ChipImageFilter;
+use App\Controller\Admin\Filter\ExpansionCardImageFilter;
 use App\Controller\Admin\Filter\ChipDocFilter;
 use App\Controller\Admin\Filter\ChipDriverFilter;
 use App\Controller\Admin\Filter\ExpansionCardBiosFilter;
@@ -86,7 +86,7 @@ class ExpansionCardCrudController extends AbstractCrudController
             ->add('name')
             ->add('expansionCardAliases')
             ->add('type')
-            ->add(ChipImageFilter::new('images'))
+            ->add(ExpansionCardImageFilter::new('images'))
             ->add(ChipDocFilter::new('documentations'))
             ->add(ExpansionCardBiosFilter::new('expansionCardBios'))
             ->add(ChipDriverFilter::new('drivers'));
@@ -109,8 +109,7 @@ class ExpansionCardCrudController extends AbstractCrudController
             ->onlyOnForms();
         yield ArrayField::new('type','Type')->onlyOnIndex();
         // index
-        yield BooleanField::new('isExpansionCardImage','Images')
-            ->renderAsSwitch(false)
+        yield TextField::new('isExpansionCardImage','Images')
             ->onlyOnIndex();
         yield BooleanField::new('isExpansionCardBios','BIOS')
             ->renderAsSwitch(false)
