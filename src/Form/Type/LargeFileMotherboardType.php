@@ -23,18 +23,13 @@ class LargeFileMotherboardType extends AbstractType
         $this->entityManager = $entityManager;
     }
 
-    private function getLargeFileRepository(): LargeFileRepository
-    {
-        return $this->entityManager->getRepository(LargeFile::class);
-    }
-
     /**
      * @return void
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
 
-        $largeFiles = $this->getLargeFileRepository()->findAllOptimized();
+        $largeFiles = $this->entityManager->getRepository(LargeFile::class)->findAllOptimized();
         $builder
             ->add('isRecommended', CheckboxType::class, [
                 'required' => false,

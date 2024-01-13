@@ -48,10 +48,8 @@ trait ImpreciseDateTrait
             switch ($this->getDatePrecision()) {
                 case "m":
                     return $this->releaseDate->format("Y-m");
-                    break;
                 case "y":
                     return $this->releaseDate->format("Y");
-                    break;
                 default:
                     return $this->releaseDate->format("Y-m-d");
             }

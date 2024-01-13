@@ -3,6 +3,7 @@
 namespace App\Entity\Traits;
 
 use App\Entity\Language;
+use App\Repository\ManualRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;

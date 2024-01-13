@@ -4,15 +4,12 @@ namespace App\EventSubscriber;
 
 use App\Entity\ChipImage;
 use Doctrine\Common\EventSubscriber;
-use Doctrine\ORM\Events;
-use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 use Liip\ImagineBundle\Imagine\Cache\CacheManager;
 use Vich\UploaderBundle\Templating\Helper\UploaderHelper;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use App\Entity\Motherboard;
 use App\Entity\MotherboardImage;
-use Doctrine\ORM\Event\LifecycleEventArgs as EventLifecycleEventArgs;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
+use Doctrine\ORM\Event\PreRemoveEventArgs;
 
 class ImageCacheSubscriber implements EventSubscriber
 {
@@ -40,7 +37,7 @@ class ImageCacheSubscriber implements EventSubscriber
         ];
     }
 
-    public function preRemove(EventLifecycleEventArgs $args)
+    public function preRemove(PreRemoveEventArgs $args)
     {
         $entity = $args->getObject();
         if (!$entity instanceof MotherboardImage && !$entity instanceof ChipImage) {
