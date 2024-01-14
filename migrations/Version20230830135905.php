@@ -18,31 +18,31 @@ final class Version20230830135905 extends AbstractMigration
     }
 
 private function convertDate($dateString) {
-    // Sprawdź, czy data jest null
+    //check if the date is just null
     if ($dateString === null) {
         return null;
     }
 
-    // Dla formatu <MM/DD/YY lub <MM/DD/YYYY
+    // if date format is <MM/DD/YY or <MM/DD/YYYY
     if (preg_match('/<(\d{2})\/(\d{2})\/(\d{2,4})/', $dateString, $matches)) {
         $year = strlen($matches[3]) === 2 ? '19' . $matches[3] : $matches[3];
         return "{$year}-{$matches[1]}-{$matches[2]}";
     }
-    // Dla formatu YYYY lub YYYY?
+    // if date format is YYYY or YYYY?
     elseif (preg_match('/^(\d{4})\??$/', $dateString, $matches)) {
         return "{$matches[1]}-01-01"; // Zakładamy pierwszy dzień roku
     }
-    // Dla formatu YYYY-MM
+    // if date format is YYYY-MM
     elseif (preg_match('/^\d{4}-\d{2}$/', $dateString)) {
         return "{$dateString}-01"; // Zakładamy pierwszy dzień miesiąca
     }
-    // Dla formatu <MMMYY lub <MMMYYYY
+    // if date is written as <MMMYY or <MMMYYYY
     elseif (preg_match('/<([a-zA-Z]{3})(\d{2,4})/', $dateString, $matches)) {
         $month = $this->convertMonthNameToNumber($matches[1]);
         $year = strlen($matches[2]) === 2 ? '19' . $matches[2] : $matches[2];
         return $month ? "{$year}-{$month}-01" : null;
     }
-    return null; // Nieznany format lub puste pole
+    return null; // other date formats
 }
 
 private function convertMonthNameToNumber($monthName) {
@@ -63,7 +63,7 @@ private function convertMonthNameToNumber($monthName) {
 	foreach ($rows as $row) {
 	    $formattedDate = $this->convertDate($row['release_date']);
 
-	    // Aktualizacja tymczasowej kolumny
+	    // update temporary column
 	    if ($formattedDate) {
 	        $this->addSql('UPDATE chipset SET test = ? WHERE id = ?', [$formattedDate, $row['id']]);
 	    }
