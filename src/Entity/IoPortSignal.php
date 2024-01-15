@@ -21,9 +21,13 @@ class IoPortSignal
     #[ORM\ManyToMany(targetEntity: ExpansionCardIoPort::class, mappedBy: 'ioPortSignals')]
     private Collection $expansionCards;
 
+    #[ORM\OneToMany(mappedBy: 'signal', targetEntity: IoPortInterfaceSignal::class)]
+    private Collection $ioPortInterfaces;
+
     public function __construct()
     {
         $this->expansionCards = new ArrayCollection();
+        $this->ioPortInterfaces = new ArrayCollection();
     }
 
     public function __toString(): string
@@ -70,6 +74,36 @@ class IoPortSignal
     {
         if ($this->expansionCards->removeElement($expansionCard)) {
             $expansionCard->removeIoPortSignal($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, IoPortInterfaceSignal>
+     */
+    public function getIoPortInterfaces(): Collection
+    {
+        return $this->ioPortInterfaces;
+    }
+
+    public function addIoPortInterface(IoPortInterfaceSignal $ioPortInterface): static
+    {
+        if (!$this->ioPortInterfaces->contains($ioPortInterface)) {
+            $this->ioPortInterfaces->add($ioPortInterface);
+            $ioPortInterface->setElectrical($this);
+        }
+
+        return $this;
+    }
+
+    public function removeIoPortInterface(IoPortInterfaceSignal $ioPortInterface): static
+    {
+        if ($this->ioPortInterfaces->removeElement($ioPortInterface)) {
+            // set the owning side to null (unless already changed)
+            if ($ioPortInterface->getElectrical() === $this) {
+                $ioPortInterface->setElectrical(null);
+            }
         }
 
         return $this;

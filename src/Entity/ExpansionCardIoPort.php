@@ -37,6 +37,9 @@ class ExpansionCardIoPort
     #[ORM\Column]
     private ?bool $isInternal = null;
 
+    #[ORM\ManyToOne(inversedBy: 'expansionCardIoPorts')]
+    private ?IoPortInterfaceSignal $ioPortInterfaceSignal = null;
+
     public function __construct()
     {
         $this->ioPortSignals = new ArrayCollection();
@@ -115,6 +118,18 @@ class ExpansionCardIoPort
     public function setIsInternal(bool $isInternal): static
     {
         $this->isInternal = $isInternal;
+
+        return $this;
+    }
+
+    public function getIoPortInterfaceSignal(): ?IoPortInterfaceSignal
+    {
+        return $this->ioPortInterfaceSignal;
+    }
+
+    public function setIoPortInterfaceSignal(?IoPortInterfaceSignal $ioPortInterfaceSignal): static
+    {
+        $this->ioPortInterfaceSignal = $ioPortInterfaceSignal;
 
         return $this;
     }
