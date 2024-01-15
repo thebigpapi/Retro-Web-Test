@@ -35,6 +35,14 @@ class IoPortSignal
         return $this->name;
     }
 
+    public function jsonSerialize(): array
+    {
+        return [
+            'id' => $this->id,
+            'name' => $this->name,
+        ];
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -91,7 +99,7 @@ class IoPortSignal
     {
         if (!$this->ioPortInterfaces->contains($ioPortInterface)) {
             $this->ioPortInterfaces->add($ioPortInterface);
-            $ioPortInterface->setElectrical($this);
+            $ioPortInterface->setSignal($this);
         }
 
         return $this;
@@ -101,8 +109,8 @@ class IoPortSignal
     {
         if ($this->ioPortInterfaces->removeElement($ioPortInterface)) {
             // set the owning side to null (unless already changed)
-            if ($ioPortInterface->getElectrical() === $this) {
-                $ioPortInterface->setElectrical(null);
+            if ($ioPortInterface->getSignal() === $this) {
+                $ioPortInterface->setSignal(null);
             }
         }
 

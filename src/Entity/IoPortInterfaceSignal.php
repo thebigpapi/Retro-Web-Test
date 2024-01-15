@@ -44,6 +44,17 @@ class IoPortInterfaceSignal
         $this->expansionCardIoPorts = new ArrayCollection();
     }
 
+    public function jsonSerialize()
+    {
+        return array(
+            'id' => $this->id,
+            'name' => $this->name,
+            'signal'=> $this->signal->getId(),
+            'interface'=> $this->interface->getId(),
+
+        );
+    }
+
     public function getId(): ?int
     {
         return $this->id;
