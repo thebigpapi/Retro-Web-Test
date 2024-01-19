@@ -1,5 +1,6 @@
-//Keep track of which elements already have element listeners and which don't
-/** @type {string[]}*/
+/** Keeps track of which elements already have element listeners and which don't
+ *  @type {string[]}
+ */
 const ioPortsListened = [];
 
 if (ioPorts = document.getElementById('ExpansionCard_ioPorts')?.children) {
@@ -23,30 +24,26 @@ if (ioPortsBtn = document.getElementById('ExpansionCard_ioPorts_collection')?.pa
             }
         })
     })
-
-
-
 }
 
 /**
- * 
+ * Adds all the necessary listeners to a given io port form
  * @param {string} ioPortId 
  */
 function addListenersToIoPortForm(ioPortId) {
-    const baseId = ioPortId.replace('-contents', '');
-    const ioPortInterfaceSignalSelect = document.getElementById(baseId + '_ioPortInterfaceSignal');
-    const ioPortInterfaceSelect = document.getElementById(baseId + '_ioPortInterface');
-    const ioPortSignalsSelect = document.getElementById(baseId + '_ioPortSignals');
+    const ioPortInterfaceSignalSelect = document.getElementById(ioPortId + '_ioPortInterfaceSignal');
+    const ioPortInterfaceSelect = document.getElementById(ioPortId + '_ioPortInterface');
+    const ioPortSignalsSelect = document.getElementById(ioPortId + '_ioPortSignals');
 
-    ioPortInterfaceSignalSelect.addEventListener('change', event => ioPortInterfaceSignalChange(event, baseId));
+    ioPortInterfaceSignalSelect.addEventListener('change', event => ioPortInterfaceSignalChange(event, ioPortId));
 }
 
 /**
  * Updates the connector and signal based on what ioPort the user selected
  * @param {Event} event 
- * @param {string} baseId 
+ * @param {string} ioPortId 
  */
-function ioPortInterfaceSignalChange(event, baseId) {
+function ioPortInterfaceSignalChange(event, ioPortId) {
     const url = `${window.location.origin}/dashboard/getioports/${event.target.value}`;
 
     fetch(url)
@@ -61,8 +58,8 @@ function ioPortInterfaceSignalChange(event, baseId) {
             const intefaceId = res[0].interface;
             const signalId = res[0].signal
 
-            const ioPortInterfaceSelect = document.getElementById(baseId + '_ioPortInterface');
-            const ioPortSignalsSelect = document.getElementById(baseId + '_ioPortSignals');
+            const ioPortInterfaceSelect = document.getElementById(ioPortId + '_ioPortInterface');
+            const ioPortSignalsSelect = document.getElementById(ioPortId + '_ioPortSignals');
 
             ioPortInterfaceSelect.value = intefaceId;
             ioPortSignalsSelect.value = signalId;
@@ -81,5 +78,5 @@ function ioPortInterfaceSignalChange(event, baseId) {
  * @returns {string[]}
  */
 function getElementIdsFromIoPorts(ioPorts) {
-    return [].slice.call(ioPorts).map(port => port.children[0].children[0].id);
+    return [].slice.call(ioPorts).map(port => port.children[0].children[0].id.replace('-contents', ''));
 }
