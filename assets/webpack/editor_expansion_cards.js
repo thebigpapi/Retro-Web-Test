@@ -46,7 +46,7 @@ function addListenersToIoPortForm(ioPortId) {
 function ioPortInterfaceSignalChange(event, ioPortId) {
     const url = `${window.location.origin}/dashboard/getioports/${event.target.value}`;
 
-    fetch(url)
+    fetch(url, { cache: "force-cache" })
         .then((response) => {
             if (!response.ok) {
                 throw new Error(`HTTP error: ${response.status}`)
