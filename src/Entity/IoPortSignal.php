@@ -21,13 +21,14 @@ class IoPortSignal
     #[ORM\ManyToMany(targetEntity: ExpansionCardIoPort::class, mappedBy: 'ioPortSignals')]
     private Collection $expansionCards;
 
-    #[ORM\OneToMany(mappedBy: 'signal', targetEntity: IoPortInterfaceSignal::class)]
-    private Collection $ioPortInterfaces;
+
+    #[ORM\ManyToMany(targetEntity: IoPortInterfaceSignal::class, mappedBy: 'signals')]
+    private Collection $ioPortInterfaceSignals;
 
     public function __construct()
     {
         $this->expansionCards = new ArrayCollection();
-        $this->ioPortInterfaces = new ArrayCollection();
+        $this->ioPortInterfaceSignals = new ArrayCollection();
     }
 
     public function __toString(): string
@@ -90,28 +91,25 @@ class IoPortSignal
     /**
      * @return Collection<int, IoPortInterfaceSignal>
      */
-    public function getIoPortInterfaces(): Collection
+    public function getIoPortInterfaceSignals(): Collection
     {
-        return $this->ioPortInterfaces;
+        return $this->ioPortInterfaceSignals;
     }
 
-    public function addIoPortInterface(IoPortInterfaceSignal $ioPortInterface): static
+    public function addIoPortInterfaceSignal(IoPortInterfaceSignal $ioPortInterfaceSignal): static
     {
-        if (!$this->ioPortInterfaces->contains($ioPortInterface)) {
-            $this->ioPortInterfaces->add($ioPortInterface);
-            $ioPortInterface->setSignal($this);
+        if (!$this->ioPortInterfaceSignals->contains($ioPortInterfaceSignal)) {
+            $this->ioPortInterfaceSignals->add($ioPortInterfaceSignal);
+            $ioPortInterfaceSignal->addSignal($this);
         }
 
         return $this;
     }
 
-    public function removeIoPortInterface(IoPortInterfaceSignal $ioPortInterface): static
+    public function removeIoPortInterfaceSignal(IoPortInterfaceSignal $ioPortInterfaceSignal): static
     {
-        if ($this->ioPortInterfaces->removeElement($ioPortInterface)) {
-            // set the owning side to null (unless already changed)
-            if ($ioPortInterface->getSignal() === $this) {
-                $ioPortInterface->setSignal(null);
-            }
+        if ($this->ioPortInterfaceSignals->removeElement($ioPortInterfaceSignal)) {
+            $ioPortInterfaceSignal->removeSignal($this);
         }
 
         return $this;

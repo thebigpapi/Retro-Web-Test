@@ -16,10 +16,6 @@ class IoPortInterfaceSignal
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(inversedBy: 'ioPortInterfaces')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?IoPortSignal $signal = null;
-
     #[ORM\ManyToOne(inversedBy: 'ioPortSignals')]
     #[ORM\JoinColumn(nullable: false)]
     private ?IoPortInterface $interface = null;
@@ -33,15 +29,19 @@ class IoPortInterfaceSignal
     #[ORM\OneToMany(mappedBy: 'ioPortInterfaceSignal', targetEntity: ExpansionCardIoPort::class)]
     private Collection $expansionCardIoPorts;
 
+    #[ORM\ManyToMany(targetEntity: IoPortSignal::class, inversedBy: 'ioPortInterfaceSignals')]
+    private Collection $signals;
+
 
     public function __toString()
     {
-        return $this->name ?? ($this->interface->getName() . " (" . $this->signal->getName()) .")";
+        return $this->name ?? ($this->interface->getName() . " (" . $this->getNameAllSignals()) .")";
     }
 
     public function __construct()
     {
         $this->expansionCardIoPorts = new ArrayCollection();
+        $this->signals = new ArrayCollection();
     }
 
     public function jsonSerialize()
@@ -49,7 +49,7 @@ class IoPortInterfaceSignal
         return array(
             'id' => $this->id,
             'name' => $this->name,
-            'signal'=> $this->signal->getId(),
+            'signal'=> $this->getSignalIds(),
             'interface'=> $this->interface->getId(),
 
         );
@@ -59,17 +59,13 @@ class IoPortInterfaceSignal
     {
         return $this->id;
     }
-
-    public function getSignal(): ?IoPortSignal
+    public function getSignalIds(): ?array
     {
-        return $this->signal;
-    }
-
-    public function setSignal(?IoPortSignal $signal): static
-    {
-        $this->signal = $signal;
-
-        return $this;
+        $signals = [];
+        foreach($this->signals as $signal){
+            array_push($signals, $signal->getId());
+        }
+        return $signals;
     }
 
     public function getInterface(): ?IoPortInterface
@@ -87,6 +83,14 @@ class IoPortInterfaceSignal
     public function getName(): ?string
     {
         return $this->name;
+    }
+    public function getNameAllSignals(): string
+    {
+        $name = "";
+        foreach($this->signals as $signal){
+            $name .= $signal . ", ";
+        }
+        return substr($name, 0, -2);
     }
 
     public function setName(?string $name): static
@@ -134,6 +138,30 @@ class IoPortInterfaceSignal
                 $expansionCardIoPort->setIoPortInterfaceSignal(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, IoPortSignal>
+     */
+    public function getSignals(): Collection
+    {
+        return $this->signals;
+    }
+
+    public function addSignal(IoPortSignal $signal): static
+    {
+        if (!$this->signals->contains($signal)) {
+            $this->signals->add($signal);
+        }
+
+        return $this;
+    }
+
+    public function removeSignal(IoPortSignal $signal): static
+    {
+        $this->signals->removeElement($signal);
 
         return $this;
     }

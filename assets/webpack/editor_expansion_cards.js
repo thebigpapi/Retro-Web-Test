@@ -57,14 +57,19 @@ function ioPortInterfaceSignalChange(event, ioPortId) {
         .then((text) => {
             const res = JSON.parse(text);
             const intefaceId = res[0].interface;
-            const signalId = res[0].signal
+            const signalIds = res[0].signal
 
             const ioPortInterfaceSelect = document.getElementById(ioPortId + '_ioPortInterface');
             const ioPortSignalsSelect = document.getElementById(ioPortId + '_ioPortSignals');
 
             ioPortInterfaceSelect.value = intefaceId;
-            ioPortSignalsSelect.value = signalId;
-
+            Array.from(ioPortSignalsSelect.options).forEach(function (option) {
+                if (signalIds.includes(parseInt(option.value))) {
+                    option.selected = true;
+                } else {
+                    option.selected = false;
+                }
+            });
             ioPortInterfaceSelect.tomselect.sync();
             ioPortSignalsSelect.tomselect.sync();
         })
