@@ -21,7 +21,6 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
-use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ArrayField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
@@ -130,19 +129,15 @@ class CdDriveCrudController extends AbstractCrudController
         // index items
         yield IdField::new('id')
             ->onlyOnIndex();
-        yield TextField::new('manufacturer.name','Manufacturer')
-            ->hideOnForm();
+        yield AssociationField::new('manufacturer','Manufacturer')
+            ->setFormTypeOption('required', false)
+            ->setColumns('col-sm-6 col-lg-6 col-xxl-4');
         yield TextField::new('name')
             ->hideOnForm();
         yield TextField::new('partNumber')
             ->hideOnForm();
         yield ArrayField::new('interfaces', 'Interface')
             ->onlyOnIndex();
-        // editor items
-        yield AssociationField::new('manufacturer','Manufacturer')
-            ->setFormTypeOption('required', false)
-            ->setColumns('col-sm-6 col-lg-6 col-xxl-4')
-            ->onlyOnForms();
         yield TextField::new('name')
             ->setColumns('col-sm-6 col-lg-6 col-xxl-4')
             ->onlyOnForms();
@@ -164,8 +159,7 @@ class CdDriveCrudController extends AbstractCrudController
             ->onlyOnIndex();
         yield TextField::new('isStorageDeviceImage','Images')
             ->onlyOnIndex();
-        yield BooleanField::new('getStorageDeviceDocumentations','Docs')
-            ->renderAsSwitch(false)
+        yield CollectionField::new('storageDeviceDocumentations','Docs')
             ->onlyOnIndex();
         yield ChoiceField::new('trayType')
             ->setColumns('col-sm-4 col-lg-3 col-xxl-2')

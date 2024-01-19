@@ -148,24 +148,21 @@ class MotherboardCrudController extends AbstractCrudController
         // index items
         yield IdField::new('id')
             ->onlyOnIndex();
-        yield TextField::new('manufacturer.name','Manufacturer')
-            ->hideOnForm();
+        yield AssociationField::new('manufacturer','Manufacturer')
+            ->setFormTypeOption('required', false)
+            ->setColumns('col-sm-6 col-lg-6 col-xxl-4');
         yield TextField::new('name')
             ->hideOnForm();
-        yield BooleanField::new('isChipset','Chipset')
-            ->renderAsSwitch(false)
+        yield AssociationField::new('chipset','Chipset')
             ->onlyOnIndex();
         yield BooleanField::new('isExpansionChips','Exp.chips')
             ->renderAsSwitch(false)
             ->onlyOnIndex();
-        yield BooleanField::new('isManuals','Manual')
-            ->renderAsSwitch(false)
+        yield CollectionField::new('manuals','Manual')
             ->onlyOnIndex();
-        yield BooleanField::new('isMotherboardBios','BIOS')
-            ->renderAsSwitch(false)
+        yield CollectionField::new('motherboardBios','BIOS')
             ->onlyOnIndex();
         yield TextField::new('isImages','Images')
-            //->renderAsSwitch(false)
             ->onlyOnIndex();
 
         // show and index
@@ -173,10 +170,7 @@ class MotherboardCrudController extends AbstractCrudController
             ->hideOnForm();
 
         // editor items
-        yield AssociationField::new('manufacturer','Manufacturer')
-            ->setFormTypeOption('required', false)
-            ->setColumns('col-sm-6 col-lg-6 col-xxl-4')
-            ->onlyOnForms();
+
         yield TextField::new('name')
             ->setColumns('col-sm-6 col-lg-6 col-xxl-4')
             ->onlyOnForms();

@@ -23,6 +23,10 @@ class LargeFileChipset
 
     #[ORM\Column(type: 'boolean')]
     private $isRecommended;
+    public function __toString(): string
+    {
+        return $this->getLargeFile()->getNameWithTags();
+    }
 
     public function getId(): ?int
     {

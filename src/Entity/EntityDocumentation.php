@@ -31,6 +31,10 @@ class EntityDocumentation
     #[ORM\ManyToOne(inversedBy: 'entityDocumentations')]
     private ?CpuSocket $cpuSocket = null;
 
+    public function __toString(): string
+    {
+        return $this->getLinkName() . " [" . $this->getReleaseDateString() . "]";
+    }
     public function getId(): ?int
     {
         return $this->id;

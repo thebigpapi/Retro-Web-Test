@@ -97,11 +97,8 @@ class ExpansionCardCrudController extends AbstractCrudController
             ->setIcon('fa fa-info')
             ->onlyOnForms();
         yield IdField::new('id')->onlyOnIndex();
-        yield TextField::new('getManufacturer','Manufacturer')
-            ->hideOnForm();
         yield AssociationField::new('manufacturer','Manufacturer')
-            ->setColumns('col-sm-6 col-lg-6 col-xxl-4')
-            ->onlyOnForms();
+            ->setColumns('col-sm-6 col-lg-6 col-xxl-4');
         yield TextField::new('name', 'Name')
             ->setColumns('col-sm-6 col-lg-6 col-xxl-4');
         yield TextField::new('slug')

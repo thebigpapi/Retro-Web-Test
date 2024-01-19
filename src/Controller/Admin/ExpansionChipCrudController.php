@@ -87,12 +87,9 @@ class ExpansionChipCrudController extends AbstractCrudController
             ->setIcon('fa fa-info')
             ->onlyOnForms();
         yield IdField::new('id')->onlyOnIndex();
-        yield TextField::new('getManufacturer','Manufacturer')
-            ->hideOnForm();
         yield AssociationField::new('manufacturer','Manufacturer')
             ->setFormTypeOption('placeholder', 'Type to select a manufacturer ...')
-            ->setColumns(4)
-            ->onlyOnForms();
+            ->setColumns(4);
         yield TextField::new('partNumber', 'Part number')
             ->setColumns(4);
         yield TextField::new('name', 'Name')
@@ -101,14 +98,11 @@ class ExpansionChipCrudController extends AbstractCrudController
         // index
         yield ArrayField::new('getPciDevsLimited', 'Device ID')
             ->hideOnForm();
-        yield BooleanField::new('getImages','Images')
-            ->renderAsSwitch(false)
+        yield CollectionField::new('images','Images')
             ->onlyOnIndex();
-        yield BooleanField::new('getDocumentations','Docs')
-            ->renderAsSwitch(false)
+        yield CollectionField::new('documentations','Docs')
             ->onlyOnIndex();
-        yield BooleanField::new('getDrivers','Drivers')
-            ->renderAsSwitch(false)
+        yield CollectionField::new('drivers','Drivers')
             ->onlyOnIndex();
         // editor
         yield AssociationField::new('type','Type')

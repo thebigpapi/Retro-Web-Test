@@ -115,17 +115,14 @@ class ProcessorCrudController extends AbstractCrudController
             ->onlyOnForms();
         yield IdField::new('id')
             ->onlyOnIndex();
-        yield TextField::new('getManufacturer','Manufacturer')
-            ->hideOnForm();
         yield AssociationField::new('manufacturer','Manufacturer')
             ->setFormTypeOption('placeholder', 'Type to select a manufacturer ...')
-            ->setColumns(4)
-            ->onlyOnForms();
+            ->setColumns(4);
         yield TextField::new('partNumber', 'Name')
             ->setColumns(4);
         yield TextField::new('name', 'Part number')
             ->setColumns(4);
-        yield TextField::new('platform', 'Family')
+        yield AssociationField::new('platform', 'Family')
             ->hideOnForm();
         yield TextField::new('core', 'Core')
             ->hideOnForm();

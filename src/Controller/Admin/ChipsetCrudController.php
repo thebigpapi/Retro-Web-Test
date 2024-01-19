@@ -86,6 +86,8 @@ class ChipsetCrudController extends AbstractCrudController
             ->add(Crud::PAGE_EDIT, $elogs)
             ->add(Crud::PAGE_INDEX, $view)
             ->add(Crud::PAGE_EDIT, $eview)
+            ->add(Crud::PAGE_DETAIL, $elogs)
+            ->add(Crud::PAGE_DETAIL, $eview)
             ->setPermission(Action::DELETE, 'ROLE_ADMIN');
     }
     public function configureCrud(Crud $crud): Crud
@@ -114,23 +116,22 @@ class ChipsetCrudController extends AbstractCrudController
         yield FormField::addTab('Basic Data')
             ->setIcon('fa fa-info')
             ->onlyOnForms();
-        yield IdField::new('id')->onlyOnIndex();
-        yield TextField::new('getManufacturer', 'Manufacturer')
-            ->hideOnForm();
+        yield IdField::new('id')->hideOnForm();
         yield AssociationField::new('manufacturer', 'Manufacturer')
-            ->setColumns(4)
-            ->onlyOnForms();
+            ->setColumns(4);
         yield TextField::new('part_no', 'Part number')
             ->setColumns(4);
         yield TextField::new('name', 'Name')
             ->setColumns(4);
         yield ArrayField::new('getPartsCached', 'Parts')
-            ->hideOnForm();
+            ->onlyOnIndex();
+        yield ArrayField::new('expansionChips', 'Parts')
+            ->onlyOnDetail();
         yield DateField::new('release_date', 'Release Date')
             ->setColumns(2)
             ->onlyOnForms();
         yield TextField::new('getReleaseDateString', 'Release Date')
-            ->onlyOnIndex();
+            ->hideOnForm();
         yield ChoiceField::new('datePrecision', 'Display date format (optional)')
             ->setChoices([
                 'Year, month and day' => 'd',
@@ -143,12 +144,17 @@ class ChipsetCrudController extends AbstractCrudController
         yield UrlField::new('encyclopedia_link', 'Link')
             ->setColumns(4)
             ->hideOnIndex();
-        yield BooleanField::new('getDocumentations', 'Docs')
-            ->renderAsSwitch(false)
+        yield CollectionField::new('documentations', 'Docs')
             ->onlyOnIndex();
         yield BooleanField::new('getDrivers', 'Drivers')
             ->renderAsSwitch(false)
             ->onlyOnIndex();
+        yield ArrayField::new('drivers', 'Drivers (this entity)')
+            ->onlyOnDetail();
+        yield ArrayField::new('documentations', 'Documentation   __(this entity)')
+            ->onlyOnDetail();
+        yield TextField::new('description')
+            ->onlyOnDetail();
         yield DateField::new('lastEdited', 'Last edit')
             ->setFormTypeOption('disabled', 'disabled')
             ->setColumns(4);
