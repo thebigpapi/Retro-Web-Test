@@ -16,6 +16,7 @@ use App\Form\Type\ExpansionChipType;
 use App\Form\Type\PSUConnectorType;
 use App\Form\Type\DramTypeType;
 use App\Form\Type\MaxRamType;
+use App\Form\Type\PciDeviceIdType;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Controller\Admin\Filter\ExpansionCardImageFilter;
 use App\Controller\Admin\Filter\ChipDocFilter;
@@ -130,12 +131,6 @@ class ExpansionCardCrudController extends AbstractCrudController
             ->setFormTypeOption('required', true)
             ->setColumns('col-sm-12 col-lg-6 col-xxl-4')
             ->onlyOnForms();
-        yield CollectionField::new('ioPorts', 'I/O ports')
-            ->setEntryType(ExpansionCardIoPortType::class)
-            ->setFormTypeOption('error_bubbling', false)
-            ->setColumns('col-sm-12 col-lg-6 col-xxl-4')
-            ->renderExpanded()
-            ->onlyOnForms();
         yield CollectionField::new('expansionCardAliases', 'Alternative names')
             ->setEntryType(ExpansionCardAliasType::class)
             ->setFormTypeOption('error_bubbling', false)
@@ -147,6 +142,11 @@ class ExpansionCardCrudController extends AbstractCrudController
             ->renderExpanded()
             ->setFormTypeOption('error_bubbling', false)
             ->setColumns('col-sm-12 col-lg-6 col-xxl-4')
+            ->onlyOnForms();
+        yield CollectionField::new('pciDevs', 'Device ID')
+            ->setEntryType(PciDeviceIdType::class)
+            ->setColumns('col-sm-12 col-lg-6 col-xxl-4')
+            ->renderExpanded()
             ->onlyOnForms();
         yield CodeEditorField::new('description')
             ->setLanguage('markdown')
@@ -175,7 +175,13 @@ class ExpansionCardCrudController extends AbstractCrudController
         yield CollectionField::new('expansionChips', 'Expansion chips')
             ->setEntryType(ExpansionChipType::class)
             ->renderExpanded()
-            ->setColumns('col-sm-12 col-lg-8 col-xxl-6')
+            ->setColumns('col-sm-12 col-lg-6 col-xxl-4')
+            ->onlyOnForms();
+        yield CollectionField::new('ioPorts', 'I/O ports')
+            ->setEntryType(ExpansionCardIoPortType::class)
+            ->setFormTypeOption('error_bubbling', false)
+            ->setColumns('col-sm-12 col-lg-6 col-xxl-4')
+            ->renderExpanded()
             ->onlyOnForms();
         yield CollectionField::new('powerConnectors', 'Power connectors')
             ->setEntryType(PSUConnectorType::class)

@@ -101,7 +101,7 @@
 		<div class="header-label">Name</div>
 		<div><a class="result-link" href="{{ path("expansioncard_show", {id: card.getId()}) }}">{{ card.getPrettyTitle() }}</a></div>
 		<div class="header-label">Type</div>
-		<div>{#{ card.getType() }#}</div>
+		<div class="tag-container">{% for type in card.getType() %}<span class="text-block">{{ type.getName() }}</span>{% endfor %}</div>
 		<div class="header-label">Aliases</div>
 		<div class="tag-container">{% if card.getExpansionCardAliases() is not empty %}
 			{% for alias in card.getExpansionCardAliases() %}

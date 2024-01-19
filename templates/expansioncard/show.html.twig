@@ -68,7 +68,23 @@
 					{% else %}
 					<div>Unknown</div>
 					{% endif %}
-
+					<!-- Device ID -->
+					<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/tag.svg')) }}" alt="date" width="24" height="24">PCI ID</div>
+					<div class="tag-container">
+					{% if expansioncard.getPciDevs() is not empty %}
+						{% for device in expansioncard.getPciDevs() %}
+							<span class="text-block">{{device.getDev()}}</span>
+						{% endfor %}
+					{% elseif expansioncard.getExpansionChips()|filter(a => a.pciDevs is not empty) is not empty %}
+						{% for chip in expansioncard.getExpansionChips()|filter(a => a.pciDevs is not empty) %}
+							{% for device in chip.getPciDevs() %}
+								<span class="text-block">{{device.getDev()}}</span>
+							{% endfor %}
+						{% endfor %}
+					{% else %}
+						<div>None</div>
+					{% endif %}
+					</div>
 					<!-- Expansion Slot -->
 					<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/io.svg')) }}" alt="interface" width="24" height="24">Interface</div>
 					<div>{{ expansioncard.getExpansionSlotInterface().getName() }} {{ expansioncard.getExpansionSlotSignal().getName() }}</div>
@@ -189,11 +205,11 @@
 			</div>
 			<!-- DRIVERS -->
 			<div class="show-downloads" id="sh-driver">
-				{% include 'macros/drivers.html.twig' with {'entity': expansioncard.getDrivers()} %}
+				{% include 'macros/drivers.html.twig' with {'entity': expansioncard.getAllDrivers()} %}
 			</div>
 			<!-- Documentation -->
 			<div class="show-downloads" id="sh-docs">
-				{% include 'macros/manuals.html.twig' with {'entity': expansioncard.getDocumentations()} %}
+				{% include 'macros/manuals.html.twig' with {'entity': expansioncard.getDocumentations(), 'chips': expansioncard.getChipDocs()} %}
 			</div>
 		</div>
 	</div>

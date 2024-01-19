@@ -296,7 +296,7 @@
 			</div>
 			<!-- Documentation -->
 			<div class="show-downloads" id="sh-docs">
-				{% include 'macros/manuals.html.twig' with {'entity': motherboard.getManuals()} %}
+				{% include 'macros/manuals.html.twig' with {'entity': motherboard.getManuals(), 'chips': motherboard.getChipDocs()} %}
 				<!-- MISC FILES -->
 				<div class="show-downloads-group">
 					<div class="show-downloads-group-header">

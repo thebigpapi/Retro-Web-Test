@@ -485,6 +485,14 @@ class Motherboard
     {
         return $this->manuals;
     }
+    public function getChipDocs(): Collection
+    {
+        $docs = [];
+        foreach ($this->getExpansionChips() as $expansionChip) {
+            $docs = array_merge($docs, $expansionChip->getDocumentations()->toArray());
+        }
+        return new ArrayCollection($docs);
+    }
     public function addManual(Manual $manual): self
     {
         if (!$this->manuals->contains($manual)) {

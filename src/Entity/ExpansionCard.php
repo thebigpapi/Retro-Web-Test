@@ -6,6 +6,7 @@ use App\Repository\ExpansionCardRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Rector\NodeCollector\ValueObject\ArrayCallable;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -93,6 +94,9 @@ class ExpansionCard
     )]
     private ?ExpansionSlotSignal $expansionSlotSignal = null;
 
+    #[ORM\OneToMany(mappedBy: 'expansionCard', targetEntity: PciDeviceId::class,  orphanRemoval: true, cascade: ['persist'])]
+    private Collection $pciDevs;
+
     public function __construct()
     {
         $this->expansionChips = new ArrayCollection();
@@ -109,6 +113,7 @@ class ExpansionCard
         $this->dramType = new ArrayCollection();
         $this->ramSize = new ArrayCollection();
         $this->ioPorts = new ArrayCollection();
+        $this->pciDevs = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -207,6 +212,14 @@ class ExpansionCard
     {
         return $this->drivers;
     }
+    public function getAllDrivers(): Collection
+    {
+        $drivers = $this->getDrivers()->toArray();
+        foreach ($this->getExpansionChips() as $expansionChip) {
+            $drivers = array_merge($drivers, $expansionChip->getDrivers()->toArray());
+        }
+        return new ArrayCollection($drivers);
+    }
 
     public function addDriver(LargeFileExpansionCard $driver): static
     {
@@ -289,6 +302,14 @@ class ExpansionCard
     public function getDocumentations(): Collection
     {
         return $this->documentations;
+    }
+    public function getChipDocs(): Collection
+    {
+        $docs = [];
+        foreach ($this->getExpansionChips() as $expansionChip) {
+            $docs = array_merge($docs, $expansionChip->getDocumentations()->toArray());
+        }
+        return new ArrayCollection($docs);
     }
     public function addDocumentation(ExpansionCardDocumentation $documentation): self
     {
@@ -598,6 +619,36 @@ class ExpansionCard
     public function setExpansionSlotSignal(?ExpansionSlotSignal $expansionSlotSignal): static
     {
         $this->expansionSlotSignal = $expansionSlotSignal;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, PciDeviceId>
+     */
+    public function getPciDevs(): Collection
+    {
+        return $this->pciDevs;
+    }
+
+    public function addPciDev(PciDeviceId $pciDev): static
+    {
+        if (!$this->pciDevs->contains($pciDev)) {
+            $this->pciDevs->add($pciDev);
+            $pciDev->setExpansionCard($this);
+        }
+
+        return $this;
+    }
+
+    public function removePciDev(PciDeviceId $pciDev): static
+    {
+        if ($this->pciDevs->removeElement($pciDev)) {
+            // set the owning side to null (unless already changed)
+            if ($pciDev->getExpansionCard() === $this) {
+                $pciDev->setExpansionCard(null);
+            }
+        }
 
         return $this;
     }
