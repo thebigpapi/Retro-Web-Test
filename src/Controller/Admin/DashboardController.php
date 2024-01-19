@@ -126,7 +126,7 @@ class DashboardController extends AbstractDashboardController
             MenuItem::linkToCrud('Electrical bus interfaces', 'card.svg', ExpansionSlotSignal::class),
             MenuItem::linkToCrud('Mechanical I/O port interfaces', 'rs232.svg', IoPortInterface::class),
             MenuItem::linkToCrud('Electrical I/O port interfaces', 'rs232.svg', IoPortSignal::class),
-            MenuItem::linkToCrud('Electrical + mechanical I/O port interfaces', 'rs232.svg', IoPortInterfaceSignal::class),
+            MenuItem::linkToCrud('I/O port presets', 'rs232.svg', IoPortInterfaceSignal::class),
         ])->setPermission('ROLE_ADMIN');
         yield MenuItem::subMenu('Storage related', 'hdd.svg')->setSubItems([
             MenuItem::linkToCrud('Interface', 'io.svg', StorageDeviceInterface::class),

@@ -10,15 +10,16 @@ if (ioPorts = document.getElementById('ExpansionCard_ioPorts')?.children) {
 
 }
 
-if (ioPortsBtn = document.getElementById('ExpansionCard_ioPorts_collection')?.parentNode?.children[0]) {
+if (ioPortsBtn = document.getElementById('ExpansionCard_ioPorts_collection')?.previousElementSibling) {
     ioPortsBtn.addEventListener('click', () => {
         setTimeout(() => { //Ensures it's executed after EA's action
-            const ioPorts = document.getElementById('ExpansionCard_ioPorts').children;
+            let ioPorts = document.getElementById('ExpansionCard_ioPorts')?.children;
+            if(!ioPorts)
+                ioPorts = document.getElementById('ExpansionCard_ioPorts_collection').children[0].children[0].children[0].children[0]?.children;
             for (let ioPort of getElementIdsFromIoPorts(ioPorts)) {
                 if (ioPortsListened.includes(ioPort)) {
                     continue;
                 }
-
                 addListenersToIoPortForm(ioPort);
                 ioPortsListened.push(ioPort);
             }
