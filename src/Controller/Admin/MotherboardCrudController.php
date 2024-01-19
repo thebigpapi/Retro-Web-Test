@@ -18,7 +18,7 @@ use App\Form\Type\CacheSizeType;
 use App\Form\Type\PSUConnectorType;
 use App\Form\Type\MotherboardIoPortType;
 use App\Form\Type\MotherboardExpansionSlotType;
-use App\Form\Type\KnownIssueType;
+use App\Form\Type\KnownIssueMotherboardType;
 use App\Form\Type\ExpansionChipType;
 use App\Form\Type\LargeFileMotherboardType;
 use App\Form\Type\MotherboardBiosType;
@@ -220,7 +220,7 @@ class MotherboardCrudController extends AbstractCrudController
             ->setColumns('col-sm-12 col-lg-6 col-xxl-4')
             ->onlyOnForms();
         yield CollectionField::new('knownIssues', 'Known issues')
-            ->setEntryType(KnownIssueType::class)
+            ->setEntryType(KnownIssueMotherboardType::class)
             ->renderExpanded()
             ->onlyOnForms();
         yield CodeEditorField::new('note')

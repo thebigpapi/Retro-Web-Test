@@ -4,7 +4,7 @@ namespace App\Controller\Admin;
 
 use App\Entity\FloppyDrive;
 use App\Entity\StorageDeviceAlias;
-use App\Form\Type\KnownIssueType;
+use App\Form\Type\KnownIssueFddType;
 use App\Form\Type\StorageDeviceAliasType;
 use App\Form\Type\StorageDeviceDocumentationType;
 use App\Form\Type\StorageDeviceIdRedirectionType;
@@ -170,7 +170,7 @@ class FloppyDriveCrudController extends AbstractCrudController
             ->renderExpanded()
             ->onlyOnForms();
         yield CollectionField::new('knownIssues', 'Known issues')
-            ->setEntryType(KnownIssueType::class)
+            ->setEntryType(KnownIssueFddType::class)
             ->setColumns('col-sm-6 col-lg-6 col-xxl-4')
             ->renderExpanded()
             ->onlyOnForms();

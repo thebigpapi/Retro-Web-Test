@@ -97,6 +97,9 @@ class ExpansionCard
     #[ORM\OneToMany(mappedBy: 'expansionCard', targetEntity: PciDeviceId::class,  orphanRemoval: true, cascade: ['persist'])]
     private Collection $pciDevs;
 
+    #[ORM\ManyToMany(targetEntity: KnownIssue::class, inversedBy: 'expansionCards')]
+    private Collection $knownIssues;
+
     public function __construct()
     {
         $this->expansionChips = new ArrayCollection();
@@ -114,6 +117,7 @@ class ExpansionCard
         $this->ramSize = new ArrayCollection();
         $this->ioPorts = new ArrayCollection();
         $this->pciDevs = new ArrayCollection();
+        $this->knownIssues = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -649,6 +653,30 @@ class ExpansionCard
                 $pciDev->setExpansionCard(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, KnownIssue>
+     */
+    public function getKnownIssues(): Collection
+    {
+        return $this->knownIssues;
+    }
+
+    public function addKnownIssue(KnownIssue $knownIssue): static
+    {
+        if (!$this->knownIssues->contains($knownIssue)) {
+            $this->knownIssues->add($knownIssue);
+        }
+
+        return $this;
+    }
+
+    public function removeKnownIssue(KnownIssue $knownIssue): static
+    {
+        $this->knownIssues->removeElement($knownIssue);
 
         return $this;
     }

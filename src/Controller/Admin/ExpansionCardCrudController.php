@@ -17,6 +17,7 @@ use App\Form\Type\PSUConnectorType;
 use App\Form\Type\DramTypeType;
 use App\Form\Type\MaxRamType;
 use App\Form\Type\PciDeviceIdType;
+use App\Form\Type\KnownIssueExpansionCardType;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Controller\Admin\Filter\ExpansionCardImageFilter;
 use App\Controller\Admin\Filter\ChipDocFilter;
@@ -146,6 +147,10 @@ class ExpansionCardCrudController extends AbstractCrudController
         yield CollectionField::new('pciDevs', 'Device ID')
             ->setEntryType(PciDeviceIdType::class)
             ->setColumns('col-sm-12 col-lg-6 col-xxl-4')
+            ->renderExpanded()
+            ->onlyOnForms();
+        yield CollectionField::new('knownIssues', 'Known issues')
+            ->setEntryType(KnownIssueExpansionCardType::class)
             ->renderExpanded()
             ->onlyOnForms();
         yield CodeEditorField::new('description')

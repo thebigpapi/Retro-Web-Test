@@ -9,6 +9,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CodeEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 
@@ -44,6 +45,20 @@ class KnownIssueCrudController extends AbstractCrudController
         yield IdField::new('id')
             ->onlyOnIndex();
         yield TextField::new('name', 'Name');
+        yield ChoiceField::new('type')
+            ->setColumns('col-sm-6 col-lg-6 col-xxl-4')
+            ->setFormTypeOption('placeholder', 'Select a type ...')
+            ->setFormTypeOption('choices', [
+                'Motherboards' => 1,
+                'Expansion cards' => 2,
+                'Hard drives' => 3,
+                'Optical drives' => 4,
+                'Floppy drives' => 5,
+                'CPUs' => 6
+            ])
+            ->onlyOnForms();
+        yield TextField::new('getTypeFormatted', 'Type')
+            ->onlyOnIndex();
         yield TextField::new('description', 'Description')
             ->hideOnForm();
         yield CodeEditorField::new('description', 'Description')

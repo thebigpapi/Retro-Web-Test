@@ -5,7 +5,7 @@ namespace App\Controller\Admin;
 use App\Controller\Admin\Filter\CdDriveTrayFilter;
 use App\Entity\CdDrive;
 use App\Entity\StorageDeviceAlias;
-use App\Form\Type\KnownIssueType;
+use App\Form\Type\KnownIssueCddType;
 use App\Form\Type\StorageDeviceAliasType;
 use App\Form\Type\StorageDeviceDocumentationType;
 use App\Form\Type\StorageDeviceIdRedirectionType;
@@ -182,7 +182,7 @@ class CdDriveCrudController extends AbstractCrudController
             ->renderExpanded()
             ->onlyOnForms();
         yield CollectionField::new('knownIssues', 'Known issues')
-            ->setEntryType(KnownIssueType::class)
+            ->setEntryType(KnownIssueCddType::class)
             ->setColumns('col-sm-6 col-lg-6 col-xxl-4')
             ->renderExpanded()
             ->onlyOnForms();

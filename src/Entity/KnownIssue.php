@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -29,10 +30,17 @@ class KnownIssue
     #[ORM\ManyToMany(targetEntity: StorageDevice::class, mappedBy: 'knownIssues')]
     private Collection $storageDevices;
 
+    #[ORM\Column(type: Types::SMALLINT, nullable: true)]
+    private ?int $type = null;
+
+    #[ORM\ManyToMany(targetEntity: ExpansionCard::class, mappedBy: 'knownIssues')]
+    private Collection $expansionCards;
+
     public function __construct()
     {
         $this->motherboards = new ArrayCollection();
         $this->storageDevices = new ArrayCollection();
+        $this->expansionCards = new ArrayCollection();
     }
 
     public function __toString(): string
@@ -111,6 +119,57 @@ class KnownIssue
     {
         if ($this->storageDevices->removeElement($storageDevice)) {
             $storageDevice->removeKnownIssue($this);
+        }
+
+        return $this;
+    }
+
+    public function getType(): ?int
+    {
+        return $this->type;
+    }
+    public function getTypeFormatted(): string
+    {
+        switch($this->type){
+            case 1: return "Motherboards";
+            case 2: return "Expansion cards";
+            case 3: return "Hard drives";
+            case 4: return "Optical drives";
+            case 5: return "Floppy drives";
+            case 6: return "CPUs";
+            default: return "";
+        }
+    }
+
+    public function setType(?int $type): static
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ExpansionCard>
+     */
+    public function getExpansionCards(): Collection
+    {
+        return $this->expansionCards;
+    }
+
+    public function addExpansionCard(ExpansionCard $expansionCard): static
+    {
+        if (!$this->expansionCards->contains($expansionCard)) {
+            $this->expansionCards->add($expansionCard);
+            $expansionCard->addKnownIssue($this);
+        }
+
+        return $this;
+    }
+
+    public function removeExpansionCard(ExpansionCard $expansionCard): static
+    {
+        if ($this->expansionCards->removeElement($expansionCard)) {
+            $expansionCard->removeKnownIssue($this);
         }
 
         return $this;
