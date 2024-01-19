@@ -98,7 +98,7 @@
 				</div>
 				{% include 'macros/aliases.html.twig' with {'entity':chipset.getChipsetAliases(), 'msg': 'Also known as:'} %}
 				{% include 'macros/notes.html.twig' with {'entity': chipset} %}
-				<div class="chipset-textarea">
+				<div class="textarea">
 				{% if chipset.getExpansionChips() is not empty %}
 					{% set dcount = false %}
 					{% for chipPart in chipset.getExpansionChips()|filter(chipPart => chipPart.getDescription() is not empty) %}{% set dcount = true %}{% endfor %}

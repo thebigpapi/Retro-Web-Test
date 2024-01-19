@@ -1,7 +1,7 @@
 
 
 {% if entity.getKnownIssues() is defined and entity.getKnownIssues() is not empty %}
-	<div class="chipset-textarea">
+	<div class="textarea">
         <h3><b>Known issues:</b></h3>
 {% apply markdown_to_html %}{% for issue in entity.getKnownIssues()|sort %}
 * {{ issue.getName() }}
@@ -13,14 +13,14 @@
 {% endif %}
 {% if entity.note is defined %}
     {% if entity.note is not null %}
-        <div class="chipset-textarea">
+        <div class="textarea">
             <h3><b>Notes:</b></h3>
             {{ entity.note|markdown_to_html }}
         </div>
     {% endif %}
 {% else %}
     {% if entity.description is not null %}
-        <div class="chipset-textarea">
+        <div class="textarea">
             <h3><b>Description:</b></h3>
             {{ entity.description|markdown_to_html }}
         </div>
