@@ -22,6 +22,8 @@ use App\Controller\Admin\Filter\ExpansionCardImageFilter;
 use App\Controller\Admin\Filter\ChipDocFilter;
 use App\Controller\Admin\Filter\ChipDriverFilter;
 use App\Controller\Admin\Filter\ExpansionCardBiosFilter;
+use App\Form\Type\CustomJsonType;
+use App\Form\Type\JsonKeyValueType;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
@@ -216,6 +218,13 @@ class ExpansionCardCrudController extends AbstractCrudController
             ->setColumns(6)
             ->renderExpanded()
             ->onlyOnForms();
+        yield FormField::addTab('Misc specifications')
+            ->setIcon('fa fa-info')
+            ->onlyOnForms();
+        yield CodeEditorField::new('miscSpecs', 'Misc specs')
+            ->setFormType(CustomJsonType::class);
+            //->setColumns(6)
+            //->onlyOnForms();
         yield DateField::new('lastEdited', 'Last edit')
             ->hideOnForm();
     }

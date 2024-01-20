@@ -96,6 +96,8 @@ class ExpansionCard
 
     #[ORM\OneToMany(mappedBy: 'expansionCard', targetEntity: PciDeviceId::class,  orphanRemoval: true, cascade: ['persist'])]
     private Collection $pciDevs;
+    #[ORM\Column]
+    private array $miscSpecs = [];
 
     public function __construct()
     {
@@ -649,6 +651,17 @@ class ExpansionCard
                 $pciDev->setExpansionCard(null);
             }
         }
+        return $this;
+    }
+
+    public function getMiscSpecs(): array
+    {
+        return $this->miscSpecs;
+    }
+
+    public function setMiscSpecs(array $miscSpecs): static
+    {
+        $this->miscSpecs = $miscSpecs;
 
         return $this;
     }
