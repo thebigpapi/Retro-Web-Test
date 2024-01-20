@@ -19,32 +19,17 @@ class KnownIssueRepository extends ServiceEntityRepository
         parent::__construct($registry, KnownIssue::class);
     }
 
-    // /**
-    //  * @return KnownIssue[] Returns an array of KnownIssue objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    /**
+     * @return KnownIssue[] Returns an array of KnownIssue objects
+     */
+    public function findAllByType($value)
     {
         return $this->createQueryBuilder('k')
-            ->andWhere('k.exampleField = :val')
+            ->andWhere('k.type = :val')
             ->setParameter('val', $value)
-            ->orderBy('k.id', 'ASC')
-            ->setMaxResults(10)
+            ->orderBy('k.name', 'ASC')
             ->getQuery()
             ->getResult()
         ;
     }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?KnownIssue
-    {
-        return $this->createQueryBuilder('k')
-            ->andWhere('k.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

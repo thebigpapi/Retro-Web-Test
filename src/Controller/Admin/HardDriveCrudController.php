@@ -6,7 +6,7 @@ use App\Entity\HardDrive;
 use App\Entity\StorageDevice;
 use App\Entity\StorageDeviceAlias;
 use App\Form\Type\AudioFileType;
-use App\Form\Type\KnownIssueType;
+use App\Form\Type\KnownIssueHddType;
 use App\Form\Type\StorageDeviceAliasType;
 use App\Form\Type\StorageDeviceDocumentationType;
 use App\Form\Type\StorageDeviceIdRedirectionType;
@@ -199,7 +199,7 @@ class HardDriveCrudController extends AbstractCrudController
             ->renderExpanded()
             ->onlyOnForms();
         yield CollectionField::new('knownIssues', 'Known issues')
-            ->setEntryType(KnownIssueType::class)
+            ->setEntryType(KnownIssueHddType::class)
             ->setColumns('col-sm-6 col-lg-6 col-xxl-4')
             ->renderExpanded()
             ->onlyOnForms();

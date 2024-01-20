@@ -99,6 +99,9 @@ class ExpansionCard
     #[ORM\Column]
     private array $miscSpecs = [];
 
+    #[ORM\ManyToMany(targetEntity: KnownIssue::class, inversedBy: 'expansionCards')]
+    private Collection $knownIssues;
+
     public function __construct()
     {
         $this->expansionChips = new ArrayCollection();
@@ -116,6 +119,7 @@ class ExpansionCard
         $this->ramSize = new ArrayCollection();
         $this->ioPorts = new ArrayCollection();
         $this->pciDevs = new ArrayCollection();
+        $this->knownIssues = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -662,6 +666,30 @@ class ExpansionCard
     public function setMiscSpecs(array $miscSpecs): static
     {
         $this->miscSpecs = $miscSpecs;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, KnownIssue>
+     */
+    public function getKnownIssues(): Collection
+    {
+        return $this->knownIssues;
+    }
+
+    public function addKnownIssue(KnownIssue $knownIssue): static
+    {
+        if (!$this->knownIssues->contains($knownIssue)) {
+            $this->knownIssues->add($knownIssue);
+        }
+
+        return $this;
+    }
+
+    public function removeKnownIssue(KnownIssue $knownIssue): static
+    {
+        $this->knownIssues->removeElement($knownIssue);
 
         return $this;
     }
