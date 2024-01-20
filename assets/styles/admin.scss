@@ -411,6 +411,11 @@ div.mobo-buttons {
 	flex-direction: row;
 	padding-right: 10px;
 }
+div.hide-actions{
+	button.action-saveAndContinue, button.action-saveAndReturn{
+		display: none;
+	}
+}
 
 body:not(.ea-content-width-full) .content-wrapper {
 	max-width: none;

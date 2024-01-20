@@ -27,6 +27,16 @@ if (ioPortsBtn = document.getElementById('ExpansionCard_ioPorts_collection')?.pr
 }
 
 if (miscSpecs = document.getElementById('ExpansionCard_miscSpecs')) {
+    if(saveretbtn = document.getElementById("js-save")){
+        saveretbtn.addEventListener('click', function(event){
+            submit(miscSpecs, "action-saveAndReturn");
+        }, false);
+    }
+    if(savecontbtn = document.getElementById("js-save-continue")){
+        savecontbtn.addEventListener('click', function(event){
+            submit(miscSpecs, "action-saveAndContinue");
+        }, false);
+    }
     let update_btn = document.getElementById("update-specs-btn");
     let container = document.getElementById("formatted-specs");
     miscSpecsJson = JSON.parse(miscSpecs.value);
@@ -36,6 +46,11 @@ if (miscSpecs = document.getElementById('ExpansionCard_miscSpecs')) {
         }
         update_btn.addEventListener('click', () => saveMiscSpecsAsJson(miscSpecs));
     });
+}
+function submit(el, name){
+    saveMiscSpecsAsJson(el);
+    let save = document.getElementsByClassName(name)[0];
+    save.click();
 }
 
 function saveMiscSpecsAsJson(miscSpecs, form) {
