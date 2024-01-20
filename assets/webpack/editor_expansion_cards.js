@@ -40,9 +40,14 @@ if (miscSpecs = document.getElementById('ExpansionCard_miscSpecs')) {
     let update_btn = document.getElementById("update-specs-btn");
     let container = document.getElementById("formatted-specs");
     miscSpecsJson = JSON.parse(miscSpecs.value);
+    console.log(typeof miscSpecsJson)
+    console.log(miscSpecsJson.length);
+    if (miscSpecsJson.length === 0) {
+        miscSpecsJson = {};
+    }
     addMiscSpecsForm(container).then((form) => {
-        for (const valueObj of miscSpecsJson) {
-            addMiscSpecsFormElement(form, valueObj);
+        for (const key of Object.keys(miscSpecsJson)) {
+            addMiscSpecsFormElement(form, key, miscSpecsJson[key]);
         }
         update_btn.addEventListener('click', () => saveMiscSpecsAsJson(miscSpecs));
     });
@@ -54,18 +59,15 @@ function submit(el, name){
 }
 
 function saveMiscSpecsAsJson(miscSpecs, form) {
-    const jsonList = [];
+    const jsonMap = {};
     for (const id of miscSpecsIds) {
         const key = document.getElementById(`ExpansionCard_miscSpecs_${id}_key`).value;
         const value = document.getElementById(`ExpansionCard_miscSpecs_${id}_value`).value;
         if (key && value) {
-            let obj = {};
-            obj[key] = value;
-            jsonList.push(obj);
-            console.log(obj);
+            jsonMap[key]=value;
         }
     }
-    miscSpecs.textContent = JSON.stringify(jsonList, null, 4);
+    miscSpecs.textContent = JSON.stringify(jsonMap, null, 4);
 }
 
 async function addMiscSpecsForm(miscSpecsParent) {
@@ -83,7 +85,7 @@ async function addMiscSpecsForm(miscSpecsParent) {
     return form;
 }
 
-async function addMiscSpecsFormElement(form, valueObj = null) {
+async function addMiscSpecsFormElement(form, key = null, value = null) {
     const listElement = form.querySelectorAll('[data-empty-collection]')[0];
 
     const elementId = miscSpecsListCounter;
@@ -99,10 +101,9 @@ async function addMiscSpecsFormElement(form, valueObj = null) {
     //Adding the element to the html
     listElement.appendChild(element);
 
-    if (valueObj) {
-        const objKey = Object.keys(valueObj)[0];
-        document.getElementById(`ExpansionCard_miscSpecs_${elementId}_key`).value = objKey;
-        document.getElementById(`ExpansionCard_miscSpecs_${elementId}_value`).value = valueObj[objKey];
+    if (key && value) {
+        document.getElementById(`ExpansionCard_miscSpecs_${elementId}_key`).value = key;
+        document.getElementById(`ExpansionCard_miscSpecs_${elementId}_value`).value = value;
 
     }
 

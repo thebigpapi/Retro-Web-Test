@@ -161,9 +161,7 @@
 				{% apply markdown_to_html %}
 				| Property | Value |
 				|----------|-------|
-				{% for spec in expansioncard.getMiscSpecs() %}
-				{% for key, value in spec %}|{{key}}|{{value}}|
-				{% endfor %}
+				{% for key, value in expansioncard.getMiscSpecs() %}|{{key}}|{{value}}|
 				{% endfor %}
 				{% endapply %}
 					</div>
