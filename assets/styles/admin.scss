@@ -460,6 +460,23 @@ div.driver-messages {
 		display: none;
 	}
 }
+div.card-specs-grid textarea{
+	min-height: 30rem;
+}
+div.specs-elements{
+	display: flex;
+	gap: 5px;
+	padding: 0;
+	label{
+		display: none;
+	}
+	div.first{
+		flex-grow: 4;
+	}
+	div.second{
+		flex-grow: 6;
+	}
+}
 
 .form-widget .form-select,
 .form-widget input.form-control,

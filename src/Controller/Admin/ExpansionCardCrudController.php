@@ -18,6 +18,7 @@ use App\Form\Type\DramTypeType;
 use App\Form\Type\MaxRamType;
 use App\Form\Type\PciDeviceIdType;
 use App\Form\Type\KnownIssueExpansionCardType;
+use App\EasyAdmin\TextJsonField;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Controller\Admin\Filter\ExpansionCardImageFilter;
 use App\Controller\Admin\Filter\ChipDocFilter;
@@ -36,6 +37,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\ArrayField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CodeEditorField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
@@ -226,10 +228,10 @@ class ExpansionCardCrudController extends AbstractCrudController
         yield FormField::addTab('Misc specifications')
             ->setIcon('fa fa-info')
             ->onlyOnForms();
-        yield CodeEditorField::new('miscSpecs', 'Misc specs')
-            ->setFormType(CustomJsonType::class);
-            //->setColumns(6)
-            //->onlyOnForms();
+        yield TextJsonField::new('miscSpecs', 'Misc specs')
+            //->setFormType(CustomJsonType::class)
+            ->setColumns(12)
+            ->onlyOnForms();
         yield DateField::new('lastEdited', 'Last edit')
             ->hideOnForm();
     }

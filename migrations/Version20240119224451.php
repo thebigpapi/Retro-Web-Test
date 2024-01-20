@@ -20,7 +20,7 @@ final class Version20240119224451 extends AbstractMigration
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('ALTER TABLE expansion_card ADD misc_specs JSON NOT NULL');
+        $this->addSql("ALTER TABLE expansion_card ADD misc_specs JSON DEFAULT '[]'");
     }
 
     public function down(Schema $schema): void

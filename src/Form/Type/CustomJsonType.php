@@ -2,7 +2,7 @@
 
 namespace App\Form\Type;
 
-use EasyCorp\Bundle\EasyAdminBundle\Form\Type\CodeEditorType;
+use EasyCorp\Bundle\EasyAdminBundle\Form\Type\TextType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -21,8 +21,8 @@ class CustomJsonType extends AbstractType
             ));
     }
 
-    public function getParent(): string
+    /*public function getParent(): string
     {
-        return CodeEditorType::class;
-    }
+        return TextType::class;
+    }*/
 }

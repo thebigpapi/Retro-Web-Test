@@ -1,20 +1,12 @@
-/** Keeps track of which elements already have element listeners and which don't
- *  @type {string[]}
- */
 const ioPortsListened = [];
 let miscSpecsListCounter = 0;
 let miscSpecsJson = [];
-
-/** Keeps track of which misc specs are in the form
- *  @type {number[]}
- */
 let miscSpecsIds = [];
 
 if (ioPorts = document.getElementById('ExpansionCard_ioPorts')?.children) {
     const ioPortsArray = getElementIdsFromIoPorts(ioPorts);
     ioPortsArray.map(ioPort => addListenersToIoPortForm(ioPort));
     ioPortsListened.push(...ioPortsArray);
-
 }
 
 if (ioPortsBtn = document.getElementById('ExpansionCard_ioPorts_collection')?.previousElementSibling) {
@@ -35,18 +27,14 @@ if (ioPortsBtn = document.getElementById('ExpansionCard_ioPorts_collection')?.pr
 }
 
 if (miscSpecs = document.getElementById('ExpansionCard_miscSpecs')) {
-    //miscSpecs.parentNode.hidden = true;
+    let update_btn = document.getElementById("update-specs-btn");
+    let container = document.getElementById("formatted-specs");
     miscSpecsJson = JSON.parse(miscSpecs.value);
-    addMiscSpecsForm(miscSpecs.parentNode.parentNode).then((form) => {
+    addMiscSpecsForm(container).then((form) => {
         for (const valueObj of miscSpecsJson) {
             addMiscSpecsFormElement(form, valueObj);
         }
-
-        Array.from(document.getElementsByClassName('action-save')).map(
-            saveButton => {
-                saveButton.addEventListener('mouseenter', () => saveMiscSpecsAsJson(miscSpecs));
-                saveButton.addEventListener('click', () => cleanUp(form))
-            });
+        update_btn.addEventListener('click', () => saveMiscSpecsAsJson(miscSpecs));
     });
 }
 
@@ -62,22 +50,9 @@ function saveMiscSpecsAsJson(miscSpecs, form) {
             console.log(obj);
         }
     }
-    console.log(JSON.stringify(jsonList));
-    miscSpecs.textContent = JSON.stringify(jsonList);
-    const event = new Event('change', { bubbles: true});
-    miscSpecs.dispatchEvent(event);
-    //console.log(test);
+    miscSpecs.textContent = JSON.stringify(jsonList, null, 4);
 }
 
-function cleanUp(form) {
-    form.remove();
-}
-
-/**
- * 
- * @param {ParentNode} miscSpecsParent 
- * @returns {Promise<HTMLDivElement>}
- */
 async function addMiscSpecsForm(miscSpecsParent) {
     let form = document.createElement("div");
     form.classList.add("form-widget");
@@ -93,10 +68,6 @@ async function addMiscSpecsForm(miscSpecsParent) {
     return form;
 }
 
-/**
- * 
- * @param {HTMLDivElement} form 
- */
 async function addMiscSpecsFormElement(form, valueObj = null) {
     const listElement = form.querySelectorAll('[data-empty-collection]')[0];
 
@@ -125,20 +96,14 @@ async function addMiscSpecsFormElement(form, valueObj = null) {
 
 }
 
-/**
- * 
- * @param {number} id 
- */
 function deleteMiscSpecsFormElement(id) {
     miscSpecsIds.splice(miscSpecsIds.indexOf(id), 1);
     const element = document.getElementById(`ExpansionCard_miscSpecs_${id}-contents`);
     element.parentNode.parentNode.remove();
 }
 
-/**
- * Adds all the necessary listeners to a given io port form
- * @param {string} ioPortId 
- */
+/* I/O port stuff from here downwards */
+
 function addListenersToIoPortForm(ioPortId) {
     const ioPortInterfaceSignalSelect = document.getElementById(ioPortId + '_ioPortInterfaceSignal');
     const ioPortInterfaceSelect = document.getElementById(ioPortId + '_ioPortInterface');
@@ -147,11 +112,6 @@ function addListenersToIoPortForm(ioPortId) {
     ioPortInterfaceSignalSelect.addEventListener('change', event => ioPortInterfaceSignalChange(event, ioPortId));
 }
 
-/**
- * Updates the connector and signal based on what ioPort the user selected
- * @param {Event} event 
- * @param {string} ioPortId 
- */
 function ioPortInterfaceSignalChange(event, ioPortId) {
     const url = `${window.location.origin}/dashboard/getioports/${event.target.value}`;
 
