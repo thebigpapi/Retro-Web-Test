@@ -113,14 +113,12 @@
 					<div class="tag-container">{% for size in expansioncard.getRamSize() %}<span class="text-block">{{ size.getValueWithUnit()}}</span>{% endfor %}</div>
 					{% endif %}
 					<!-- PSU connectors -->
+					{% if expansioncard.getPowerConnectors() is not empty %}
 					<div class="quick-spec-head">
 						<img src="{{ absolute_url(asset('build/icons/power.svg')) }}" alt="pwr" width="24" height="24">Power connector
 					</div>
-					{% if expansioncard.getPowerConnectors() is not empty %}
 					<div class="tag-container">{% for power in expansioncard.getPowerConnectors() %}
 						<a href="{{ path('psu_connector_show', {id: power.getId()}) }}"><span class="text-block">{{ power.getName() }}</span></a>{% endfor %}</div>
-					{% else %}
-					<div>None</div>
 					{% endif %}
 				</div>
 				<div class="full-spec">
@@ -157,6 +155,19 @@
 						{% else %}<div class="list-table-head"></div><div>N/A</div>{% endif %}
 					</div>
 				</div>
+				{% if expansioncard.getMiscSpecs() is not empty %}
+					<div class="textarea">
+						<h3><b>Specs:</b></h3>
+				{% apply markdown_to_html %}
+				| Property | Value |
+				|----------|-------|
+				{% for spec in expansioncard.getMiscSpecs() %}
+				{% for key, value in spec %}|{{key}}|{{value}}|
+				{% endfor %}
+				{% endfor %}
+				{% endapply %}
+					</div>
+				{% endif %}
 				{% include 'macros/aliases.html.twig' with {'entity':expansioncard.getExpansionCardAliases(), 'msg': 'Also known as:'} %}
 				{% include 'macros/notes.html.twig' with {'entity': expansioncard} %}
 				<div id="index-datetime"><div class="div-datetime">Last updated <span class="perk-date">{{ expansioncard.getLastEdited()|date("Y-m-d\\TH:i:s", "GMT") }}Z</span></div></div>

@@ -662,6 +662,16 @@ class ExpansionCard
     {
         return $this->miscSpecs;
     }
+    public function getMiscSpecsFormatted(): array
+    {
+        $output = [];
+        foreach($this->miscSpecs as $spec){
+            $new = str_replace("\"","",json_encode($spec));
+            $new = str_replace(":",": ",$new);
+            array_push($output, substr($new, 1, -1));
+        }
+        return $output;
+    }
 
     public function setMiscSpecs(array $miscSpecs): static
     {
