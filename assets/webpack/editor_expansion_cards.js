@@ -39,6 +39,10 @@ if (miscSpecs = document.getElementById('ExpansionCard_miscSpecs')) {
     }
     setupMiscSpecsForm(true);
 }
+function setMsg(msg){
+    if(label = document.getElementById('set-template-label'))
+        label.innerHTML = msg;
+}
 
 function setupMiscSpecsForm(firstRun = false) {
     const update_btn = document.getElementById("update-specs-btn");
@@ -76,11 +80,13 @@ function saveMiscSpecsAsJson(miscSpecs) {
     for (const id of miscSpecsIds) {
         const key = document.getElementById(`ExpansionCard_miscSpecs_${id}_key`).value;
         const value = document.getElementById(`ExpansionCard_miscSpecs_${id}_value`).value;
-        if (key && value) {
+        console.log(key, value);
+        if (key) {
             jsonMap[key]=value;
         }
     }
     miscSpecs.textContent = JSON.stringify(jsonMap, null, 4);
+    setMsg("Set " + Object.keys(jsonMap).length + " specs");
 }
 
 async function applyTemplate(miscSpecs) {
@@ -100,9 +106,11 @@ async function applyTemplate(miscSpecs) {
             return response.text();
         })
         .then((text) => {
-            miscSpecs.textContent = text;
-
+            const obj = JSON.parse(text);
+            miscSpecs.textContent = JSON.stringify(obj, null, 4);
+            miscSpecsIds = [];
             setupMiscSpecsForm();
+            setMsg("Aplied template with " + Object.keys(obj).length + " specs");
         })
         .catch((error) => {
             console.log(`Could not fetch template : ${error}`);
@@ -140,7 +148,6 @@ async function addMiscSpecsFormElement(form, key = null, value = null) {
 
     //Adding the element to the html
     listElement.appendChild(element);
-
     if (key) {
         document.getElementById(`ExpansionCard_miscSpecs_${elementId}_key`).value = key;
         document.getElementById(`ExpansionCard_miscSpecs_${elementId}_value`).value = value;
