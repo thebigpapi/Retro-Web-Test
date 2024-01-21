@@ -157,23 +157,22 @@
 				</div>
 				{% if expansioncard.getMiscSpecs() is not empty %}
 					<div class="textarea">
-						<h3><b>Specs:</b></h3>
+						<h3><b>Specifications:</b></h3>
 						{% if expansioncard.getSimpleMiscSpecs() is not empty %}
+						<ul>
 							{% for spec_key, spec_value in expansioncard.getSimpleMiscSpecs() %}
-{% apply markdown_to_html %}
-* {{spec_key}}: {{spec_value}}
-{% endapply %}
+							<li>{{spec_key}}: {{spec_value}}</li>
 							{% endfor %}
+						</ul>
 						{% endif %}
 						{% if expansioncard.getTableMiscSpecs() is not empty %}
 						<div class="spec-section">
 							{% for spec_key, spec_value in expansioncard.getTableMiscSpecs() %}
-<div class="spec-table">{% apply markdown_to_html %}
-| {{spec_key}} | Value |
-|----------|-------|
-{% for key, value in spec_value %}|{{key}}|{{value}}|
-{% endfor %}
-{% endapply %}</div>
+								<table><thead><tr><th colspan="2">{{spec_key}}</th><tr></thead>
+								{% for key, value in spec_value %}
+									<tr><td>{{key}}</td><td>{{value}}</td></tr>
+								{% endfor %}
+								</table>
 							{% endfor %}
 						</div>
 						{% endif %}
