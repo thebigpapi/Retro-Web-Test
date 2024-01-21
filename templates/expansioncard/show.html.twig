@@ -120,6 +120,16 @@
 					<div class="tag-container">{% for power in expansioncard.getPowerConnectors() %}
 						<a href="{{ path('psu_connector_show', {id: power.getId()}) }}"><span class="text-block">{{ power.getName() }}</span></a>{% endfor %}</div>
 					{% endif %}
+					<!-- Slot height-->
+					{% if expansioncard.getSlotCount() is not null %}
+					<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/dimension.svg')) }}" alt="dim" width="24" height="24">Slot height</div>
+					<div>{{ expansioncard.getSlotCount() }}</div>
+					{% endif %}
+					<!-- Dimensions -->
+					{% if expansioncard.getWidth() is not null or expansioncard.getLength() is not null or expansioncard.getHeight() is not null %}
+					<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/dimension.svg')) }}" alt="dim" width="24" height="24">Dimensions</div>
+					<div>{{ expansioncard.getWidth() ?: '[unknown]' }} mm (width) x {{ expansioncard.getLength() ?: '[unknown]' }} mm (length) x {{ expansioncard.getHeight() ?: '[unknown]' }} mm (height)</div>
+					{% endif %}
 				</div>
 				<div class="full-spec">
 					<!-- IO ports -->

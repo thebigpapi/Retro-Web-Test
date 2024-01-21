@@ -42,6 +42,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
+use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class ExpansionCardCrudController extends AbstractCrudController
@@ -108,7 +109,7 @@ class ExpansionCardCrudController extends AbstractCrudController
         yield TextField::new('name', 'Name')
             ->setColumns('col-sm-6 col-lg-6 col-xxl-4');
         yield TextField::new('slug')
-            ->setColumns('col-sm-6 col-lg-6 col-xxl-4')
+            ->setColumns('col-sm-4 col-lg-4 col-xxl-4')
             ->onlyOnForms();
         yield ArrayField::new('type','Type')->onlyOnIndex();
         // index
@@ -123,11 +124,14 @@ class ExpansionCardCrudController extends AbstractCrudController
         yield BooleanField::new('getDrivers','Drivers')
             ->renderAsSwitch(false)
             ->onlyOnIndex();
-        yield CollectionField::new('type','Type')
-            ->setEntryType(ExpansionCardTypeType::class)
-            ->renderExpanded()
-            ->setColumns('col-sm-12 col-lg-6 col-xxl-4')
-            ->onlyOnForms();
+        yield IntegerField::new('width', 'Width (in mm)')
+            ->setColumns('col-sm-2 col-lg-2 col-xxl-1');
+        yield IntegerField::new('height', 'Height (in mm)')
+            ->setColumns('col-sm-2 col-lg-2 col-xxl-1');
+        yield IntegerField::new('length', 'Length (in mm)')
+            ->setColumns('col-sm-2 col-lg-2 col-xxl-1');
+        yield IntegerField::new('slotCount', 'Slot height')
+            ->setColumns('col-sm-2 col-lg-2 col-xxl-1');
         yield AssociationField::new('expansionSlotInterface','Interface connector')
             ->setFormTypeOption('required', true)
             ->setColumns('col-sm-12 col-lg-6 col-xxl-4')
@@ -146,6 +150,11 @@ class ExpansionCardCrudController extends AbstractCrudController
             ->setEntryType(ExpansionCardIdRedirectionType::class)
             ->renderExpanded()
             ->setFormTypeOption('error_bubbling', false)
+            ->setColumns('col-sm-12 col-lg-6 col-xxl-4')
+            ->onlyOnForms();
+        yield CollectionField::new('type','Type')
+            ->setEntryType(ExpansionCardTypeType::class)
+            ->renderExpanded()
             ->setColumns('col-sm-12 col-lg-6 col-xxl-4')
             ->onlyOnForms();
         yield CollectionField::new('pciDevs', 'Device ID')

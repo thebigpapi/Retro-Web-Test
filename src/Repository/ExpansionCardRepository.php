@@ -115,4 +115,12 @@ class ExpansionCardRepository extends ServiceEntityRepository
             ->getQuery()
             ->getSingleScalarResult();
     }
+    public function findLatest(int $maxCount = 12)
+    {
+        return $this->createQueryBuilder('ec')
+            ->orderBy('ec.lastEdited', 'DESC')
+            ->setMaxResults($maxCount)
+            ->getQuery()
+            ->getResult();
+    }
 }

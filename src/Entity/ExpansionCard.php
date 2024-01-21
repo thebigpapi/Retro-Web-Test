@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\ExpansionCardRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Rector\NodeCollector\ValueObject\ArrayCallable;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -102,6 +103,22 @@ class ExpansionCard
     #[ORM\ManyToMany(targetEntity: KnownIssue::class, inversedBy: 'expansionCards')]
     private Collection $knownIssues;
 
+    #[Assert\Positive(message: "Width should be above 0")]
+    #[ORM\Column(type: Types::SMALLINT, nullable: true)]
+    private ?int $width = null;
+
+    #[Assert\Positive(message: "Height should be above 0")]
+    #[ORM\Column(type: Types::SMALLINT, nullable: true)]
+    private ?int $height = null;
+
+    #[Assert\Positive(message: "Slot height should be greater than 0")]
+    #[ORM\Column(type: Types::SMALLINT, nullable: true)]
+    private ?int $slotCount = null;
+
+    #[Assert\Positive(message: "Length should be above 0")]
+    #[ORM\Column(type: Types::SMALLINT, nullable: true)]
+    private ?int $length = null;
+
     public function __construct()
     {
         $this->expansionChips = new ArrayCollection();
@@ -149,6 +166,14 @@ class ExpansionCard
         }
         $strBuilder .= " " . $this->getName();
         return $strBuilder;
+    }
+    public function getManufacturerName(): ?string
+    {
+        if ($this->manufacturer) {
+            return $this->manufacturer->getName();
+        } else {
+            return 'Unknown';
+        }
     }
 
     /**
@@ -726,6 +751,54 @@ class ExpansionCard
     public function removeKnownIssue(KnownIssue $knownIssue): static
     {
         $this->knownIssues->removeElement($knownIssue);
+
+        return $this;
+    }
+
+    public function getWidth(): ?int
+    {
+        return $this->width;
+    }
+
+    public function setWidth(?int $width): static
+    {
+        $this->width = $width;
+
+        return $this;
+    }
+
+    public function getHeight(): ?int
+    {
+        return $this->height;
+    }
+
+    public function setHeight(?int $height): static
+    {
+        $this->height = $height;
+
+        return $this;
+    }
+
+    public function getSlotCount(): ?int
+    {
+        return $this->slotCount;
+    }
+
+    public function setSlotCount(?int $slotCount): static
+    {
+        $this->slotCount = $slotCount;
+
+        return $this;
+    }
+
+    public function getLength(): ?int
+    {
+        return $this->length;
+    }
+
+    public function setLength(?int $length): static
+    {
+        $this->length = $length;
 
         return $this;
     }
