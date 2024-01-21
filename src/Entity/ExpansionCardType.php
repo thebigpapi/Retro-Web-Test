@@ -87,4 +87,8 @@ class ExpansionCardType
 
         return $this;
     }
+    public function getTemplateAsText(): string
+    {
+        return json_encode($this->template, \JSON_PARTIAL_OUTPUT_ON_ERROR);
+    }
 }

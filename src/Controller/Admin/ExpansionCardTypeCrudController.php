@@ -9,6 +9,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
+use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 
 class ExpansionCardTypeCrudController extends AbstractCrudController
@@ -44,10 +45,13 @@ class ExpansionCardTypeCrudController extends AbstractCrudController
     }
     public function configureFields(string $pageName): iterable
     {
+        yield IdField::new('id')->onlyOnIndex();
         yield TextField::new('name', 'Name')
             ->setColumns('col-sm-6 col-lg-6 col-xxl-4');
         yield TextJsonField::new('template', 'Template')
             ->setColumns(12)
             ->onlyOnForms();
+        yield TextField::new('getTemplateAsText', 'Template')
+            ->onlyOnIndex();
     }
 }

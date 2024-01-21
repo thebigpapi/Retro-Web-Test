@@ -159,11 +159,16 @@
 					<div class="textarea">
 						<h3><b>Specs:</b></h3>
 				{% apply markdown_to_html %}
-				| Property | Value |
-				|----------|-------|
-				{% for spec in expansioncard.getMiscSpecs() %}
-				{% for key, value in spec %}|{{key}}|{{value}}|
-				{% endfor %}
+				{% for spec_key, spec_value in expansioncard.getMiscSpecs() %}
+				{% if spec_value is iterable %}
+
+| {{spec_key}} | Value |
+|----------|-------|
+{% for key, value in spec_value %}|{{key}}|{{value}}|{% endfor %}
+
+{% else %}
+* {{spec_key}}: {{spec_value}}
+{% endif %}
 				{% endfor %}
 				{% endapply %}
 					</div>
