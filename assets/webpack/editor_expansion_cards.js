@@ -1,7 +1,9 @@
 const ioPortsListened = [];
 let miscSpecsListCounter = 0;
+let miscSpecsTableListCounter = 0;
 let miscSpecsJson = [];
 let miscSpecsIds = [];
+let miscSpecsTableIds = {};
 
 if (ioPorts = document.getElementById('ExpansionCard_ioPorts')?.children) {
     const ioPortsArray = getElementIdsFromIoPorts(ioPorts);
@@ -28,20 +30,12 @@ if (ioPortsBtn = document.getElementById('ExpansionCard_ioPorts_collection')?.pr
 
 if (miscSpecs = document.getElementById('ExpansionCard_miscSpecs')) {
     if(saveretbtn = document.getElementById("js-save")){
-        saveretbtn.addEventListener('click', function(event){
-            submit(miscSpecs, "action-saveAndReturn");
-        }, false);
+        saveretbtn.addEventListener('click', () => submit(miscSpecs, "action-saveAndReturn"), false);
     }
     if(savecontbtn = document.getElementById("js-save-continue")){
-        savecontbtn.addEventListener('click', function(event){
-            submit(miscSpecs, "action-saveAndContinue");
-        }, false);
+        savecontbtn.addEventListener('click', () => submit(miscSpecs, "action-saveAndContinue"), false);
     }
     setupMiscSpecsForm(true);
-}
-function setMsg(msg){
-    if(label = document.getElementById('set-template-label'))
-        label.innerHTML = msg;
 }
 
 function setupMiscSpecsForm(firstRun = false) {
@@ -60,7 +54,11 @@ function setupMiscSpecsForm(firstRun = false) {
     }
     addMiscSpecsForm(container).then((form) => {
         for (const key of Object.keys(miscSpecsJson)) {
-            addMiscSpecsFormElement(form, key, miscSpecsJson[key]);
+            if (typeof miscSpecsJson[key] === "object") {
+                addMiscSpecsTableFormElement(form, key, miscSpecsJson[key]);
+            } else {
+                addMiscSpecsFormElement(form, key, miscSpecsJson[key]);
+            }
         }
         if (firstRun) {
             update_btn.addEventListener('click', () => saveMiscSpecsAsJson(miscSpecs));
@@ -78,15 +76,28 @@ function submit(el, name){
 function saveMiscSpecsAsJson(miscSpecs) {
     const jsonMap = {};
     for (const id of miscSpecsIds) {
-        const key = document.getElementById(`ExpansionCard_miscSpecs_${id}_key`).value;
-        const value = document.getElementById(`ExpansionCard_miscSpecs_${id}_value`).value;
-        console.log(key, value);
-        if (key) {
+        const key = document.getElementById(`ExpansionCard_miscSpecs_${id}_key`)?.value;
+        let value = document.getElementById(`ExpansionCard_miscSpecs_${id}_value`)?.value;
+        if (key && value) {
             jsonMap[key]=value;
         }
     }
+    for (const id of Object.keys(miscSpecsTableIds)) {
+        const tableName = document.getElementById(`ExpansionCard_miscSpecs_table_${id}_name`)?.value;
+        if (tableName && miscSpecsTableIds[id]['ids'].length) {
+            const subObject = {};
+            for (const subId of miscSpecsTableIds[id]['ids']) {
+                const key = document.getElementById(`ExpansionCard_miscSpecs_table_${id}_${subId}_key`)?.value;
+                let value = document.getElementById(`ExpansionCard_miscSpecs_table_${id}_${subId}_value`)?.value;
+                if (key && value) {
+                    subObject[key]=value;
+                }
+            }
+            jsonMap[tableName] = subObject;
+        }
+        console.log(tableName);
+    }
     miscSpecs.textContent = JSON.stringify(jsonMap, null, 4);
-    setMsg("Set " + Object.keys(jsonMap).length + " specs");
 }
 
 async function applyTemplate(miscSpecs) {
@@ -106,11 +117,9 @@ async function applyTemplate(miscSpecs) {
             return response.text();
         })
         .then((text) => {
-            const obj = JSON.parse(text);
-            miscSpecs.textContent = JSON.stringify(obj, null, 4);
-            miscSpecsIds = [];
+            miscSpecs.textContent = text;
+
             setupMiscSpecsForm();
-            setMsg("Aplied template with " + Object.keys(obj).length + " specs");
         })
         .catch((error) => {
             console.log(`Could not fetch template : ${error}`);
@@ -127,8 +136,9 @@ async function addMiscSpecsForm(miscSpecsParent) {
     const html = await resp.text();
     form.innerHTML = html;
 
-    const button = form.getElementsByTagName('button')[0];
-    button.addEventListener('click', () => addMiscSpecsFormElement(form));
+    const buttons = form.getElementsByTagName('button');
+    buttons[0].addEventListener('click', () => addMiscSpecsFormElement(form));
+    buttons[1].addEventListener('click', () => addMiscSpecsTableFormElement(form));
     miscSpecsParent.appendChild(form)
     return form;
 }
@@ -148,6 +158,7 @@ async function addMiscSpecsFormElement(form, key = null, value = null) {
 
     //Adding the element to the html
     listElement.appendChild(element);
+
     if (key) {
         document.getElementById(`ExpansionCard_miscSpecs_${elementId}_key`).value = key;
         document.getElementById(`ExpansionCard_miscSpecs_${elementId}_value`).value = value;
@@ -155,14 +166,83 @@ async function addMiscSpecsFormElement(form, key = null, value = null) {
     }
 
     const deleteBtn = document.getElementById(`ExpansionCard_miscSpecs_${elementId}_deletebtn`);
-    deleteBtn.addEventListener('click', () => deleteMiscSpecsFormElement(elementId));
+    deleteBtn.addEventListener('click', () => {
+        miscSpecsIds.splice(miscSpecsIds.indexOf(elementId), 1);
+        const element = document.getElementById(`ExpansionCard_miscSpecs_${elementId}-contents`);
+        element.parentNode.parentNode.remove();
+    });
 
 }
 
-function deleteMiscSpecsFormElement(id) {
-    miscSpecsIds.splice(miscSpecsIds.indexOf(id), 1);
-    const element = document.getElementById(`ExpansionCard_miscSpecs_${id}-contents`);
-    element.parentNode.parentNode.remove();
+async function addMiscSpecsTableFormElement(form, key=null, values = null) {
+    const listElement = form.querySelectorAll('[data-empty-collection]')[0];
+
+    const elementId = miscSpecsTableListCounter;
+    miscSpecsTableIds[elementId]={counter:0,ids:[]};
+    miscSpecsTableListCounter++;
+    //Creating the element
+    const element = document.createElement("div");
+    element.classList.add(["field-collection-item", "field-collection-item-complex", "field-collection-item-first", "field-collection-item-last"])
+   
+    const resp = await fetch("build/html/jsonKeyValueFormTableElement.html");//, { cache: "force-cache" });
+    const html = (await resp.text()).replace(new RegExp('{id}', 'gi'), elementId);
+    element.innerHTML = html;
+    console.log(html);
+    //Adding the element to the html
+    listElement.appendChild(element);
+
+    const button = element.getElementsByTagName('button')[0];
+    button.addEventListener('click', () => addMiscSpecsTableKVElement(element, elementId));
+
+    if (key) {
+        document.getElementById(`ExpansionCard_miscSpecs_table_${elementId}_name`).value = key;
+
+        if (values) {
+            for (const subKey of Object.keys(values)) {
+                addMiscSpecsTableKVElement(element, elementId, subKey, values[subKey]);
+            }
+        }
+        //document.getElementById(`ExpansionCard_miscSpecs_${elementId}_value`).value = value;
+
+    }
+
+    const deleteBtn = document.getElementById(`ExpansionCard_miscSpecs_table_${elementId}_deletebtn`);
+    deleteBtn.addEventListener('click', () => {
+        delete miscSpecsTableIds[elementId];
+        const element = document.getElementById(`ExpansionCard_miscSpecs_table_${elementId}-contents`);
+        element.parentNode.parentNode.remove();
+    });
+}
+
+
+async function addMiscSpecsTableKVElement(form, tableId, key = null, value = null) {
+    const listElement = form.querySelectorAll('[data-empty-collection]')[0];
+
+    const elementId = miscSpecsTableIds[tableId]['counter'];
+    miscSpecsTableIds[tableId]['ids'].push(elementId);
+    miscSpecsTableIds[tableId]['counter']++;
+    //Creating the element
+    const element = document.createElement("div");
+    element.classList.add(["field-collection-item", "field-collection-item-complex", "field-collection-item-first", "field-collection-item-last"])
+    const resp = await fetch("build/html/jsonKeyValueFormTableFormElement.html");//, { cache: "force-cache" });
+    const html = (await resp.text()).replace(new RegExp('{id1}', 'gi'), tableId).replace(new RegExp('{id2}', 'gi'), elementId);
+    element.innerHTML = html;
+
+    //Adding the element to the html
+    listElement.appendChild(element);
+
+    if (key) {
+        document.getElementById(`ExpansionCard_miscSpecs_table_${tableId}_${elementId}_key`).value = key;
+        document.getElementById(`ExpansionCard_miscSpecs_table_${tableId}_${elementId}_value`).value = value;
+
+    }
+    const deleteBtn = document.getElementById(`ExpansionCard_miscSpecs_table_${tableId}_${elementId}_deletebtn`);
+    deleteBtn.addEventListener('click', () => {
+        miscSpecsTableIds[tableId]['ids'].splice(miscSpecsTableIds[tableId]['ids'].indexOf(elementId), 1);
+        const element = document.getElementById(`ExpansionCard_miscSpecs_table_${tableId}_${elementId}-contents`);
+        element.parentNode.parentNode.remove();
+    });
+
 }
 
 /* I/O port stuff from here downwards */
