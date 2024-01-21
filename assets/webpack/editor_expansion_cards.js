@@ -37,11 +37,20 @@ if (miscSpecs = document.getElementById('ExpansionCard_miscSpecs')) {
             submit(miscSpecs, "action-saveAndContinue");
         }, false);
     }
-    let update_btn = document.getElementById("update-specs-btn");
+    setupMiscSpecsForm(true);
+}
+
+function setupMiscSpecsForm(firstRun = false) {
+    const update_btn = document.getElementById("update-specs-btn");
+    const template_btn = document.getElementById("set-template-btn");
     let container = document.getElementById("formatted-specs");
+
+    if (!firstRun) {
+        container.children[0].remove();
+    }
+
     miscSpecsJson = JSON.parse(miscSpecs.value);
-    console.log(typeof miscSpecsJson)
-    console.log(miscSpecsJson.length);
+
     if (miscSpecsJson.length === 0) {
         miscSpecsJson = {};
     }
@@ -49,16 +58,20 @@ if (miscSpecs = document.getElementById('ExpansionCard_miscSpecs')) {
         for (const key of Object.keys(miscSpecsJson)) {
             addMiscSpecsFormElement(form, key, miscSpecsJson[key]);
         }
-        update_btn.addEventListener('click', () => saveMiscSpecsAsJson(miscSpecs));
+        if (firstRun) {
+            update_btn.addEventListener('click', () => saveMiscSpecsAsJson(miscSpecs));
+            template_btn.addEventListener('click', () => applyTemplate(miscSpecs));
+        }
     });
 }
+
 function submit(el, name){
     saveMiscSpecsAsJson(el);
     let save = document.getElementsByClassName(name)[0];
     save.click();
 }
 
-function saveMiscSpecsAsJson(miscSpecs, form) {
+function saveMiscSpecsAsJson(miscSpecs) {
     const jsonMap = {};
     for (const id of miscSpecsIds) {
         const key = document.getElementById(`ExpansionCard_miscSpecs_${id}_key`).value;
@@ -69,6 +82,33 @@ function saveMiscSpecsAsJson(miscSpecs, form) {
     }
     miscSpecs.textContent = JSON.stringify(jsonMap, null, 4);
 }
+
+async function applyTemplate(miscSpecs) {
+    const typeList = Array.from(document.getElementById('ExpansionCard_type_collection').children[0].children[0].children[0].children);
+    const types = [];
+    for (const typeElement of typeList) {
+        types.push(typeElement.children[0].children[0].children[0].children[0].children[0].value);
+    }
+
+    const url = `${window.location.origin}/dashboard/getexpansioncardtemplate?ids=${JSON.stringify(types)}`;
+
+    fetch(url, { cache: "force-cache" })
+        .then((response) => {
+            if (!response.ok) {
+                throw new Error(`HTTP error: ${response.status}`)
+            }
+            return response.text();
+        })
+        .then((text) => {
+            miscSpecs.textContent = text;
+
+            setupMiscSpecsForm();
+        })
+        .catch((error) => {
+            console.log(`Could not fetch template : ${error}`);
+        });
+}
+
 
 async function addMiscSpecsForm(miscSpecsParent) {
     let form = document.createElement("div");
@@ -101,7 +141,7 @@ async function addMiscSpecsFormElement(form, key = null, value = null) {
     //Adding the element to the html
     listElement.appendChild(element);
 
-    if (key && value) {
+    if (key) {
         document.getElementById(`ExpansionCard_miscSpecs_${elementId}_key`).value = key;
         document.getElementById(`ExpansionCard_miscSpecs_${elementId}_value`).value = value;
 

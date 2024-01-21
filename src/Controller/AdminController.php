@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\CpuSocket;
+use App\Entity\ExpansionCardType;
 use App\Entity\IoPortInterface;
 use App\Entity\IoPortInterfaceSignal;
 use App\Entity\IoPortSignal;
@@ -10,6 +11,7 @@ use App\Entity\ProcessorPlatformType;
 use App\Repository\CdDriveRepository;
 use App\Repository\ChipsetRepository;
 use App\Repository\CpuSocketRepository;
+use App\Repository\ExpansionCardTypeRepository;
 use App\Repository\ExpansionChipRepository;
 use App\Repository\FloppyDriveRepository;
 use App\Repository\HardDriveRepository;
@@ -28,6 +30,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
@@ -151,6 +154,28 @@ class AdminController extends AbstractDashboardController
             'username' => $user->getUsername(),
             'password' => $password,
         ]);
+    }
+
+    #[Route('/dashboard/getexpansioncardtemplate/', name:'get_expansion_card_template', methods:['GET'])]
+    public function getExpansioncardTemplate(Request $request, ExpansionCardTypeRepository $expansionCardTypeRepository): JsonResponse
+    {
+        $templates = [];
+        $filtersJson = $request->query->get('ids');
+        $ids = json_decode($filtersJson ?? "", true);
+        if (!$ids) {
+            throw new Exception("Missing or wrong expansion card type id list");
+        }
+        $templates = array_map(fn (ExpansionCardType $expansionCardType) => $expansionCardType->getTemplate(), $expansionCardTypeRepository->findBy(['id' => $ids]));
+       
+        $templatesMerged = [];
+
+        foreach ($templates as $template) {
+            foreach ($template as $key => $value) {
+                $templatesMerged[$key] = $value;
+            }
+        }
+
+        return new JsonResponse($templatesMerged);
     }
 
     #[Route('/dashboard/getioports/{id}', name:'get_ioports', methods:['GET'], requirements: ['id' => '\d+'])]

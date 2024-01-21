@@ -2,12 +2,14 @@
 
 namespace App\Controller\Admin;
 
+use App\EasyAdmin\TextJsonField;
 use App\Entity\ExpansionCardType;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
+use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 
 class ExpansionCardTypeCrudController extends AbstractCrudController
 {
@@ -39,5 +41,13 @@ class ExpansionCardTypeCrudController extends AbstractCrudController
         $entityId = $context->getEntity()->getInstance()->getId();
         $entity = str_replace("\\", "-",$context->getEntity()->getFqcn());
         return $this->redirectToRoute('dh_auditor_show_entity_history', array('id' => $entityId, 'entity' => $entity));
+    }
+    public function configureFields(string $pageName): iterable
+    {
+        yield TextField::new('name', 'Name')
+            ->setColumns('col-sm-6 col-lg-6 col-xxl-4');
+        yield TextJsonField::new('template', 'Template')
+            ->setColumns(12)
+            ->onlyOnForms();
     }
 }

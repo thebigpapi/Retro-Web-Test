@@ -21,6 +21,9 @@ class ExpansionCardType
     #[ORM\ManyToMany(targetEntity: ExpansionCard::class, mappedBy: 'type')]
     private Collection $expansionCards;
 
+    #[ORM\Column]
+    private array $template = [];
+
     public function __construct()
     {
         $this->expansionCards = new ArrayCollection();
@@ -69,6 +72,18 @@ class ExpansionCardType
         if ($this->expansionCards->removeElement($expansionCard)) {
             $expansionCard->removeType($this);
         }
+
+        return $this;
+    }
+
+    public function getTemplate(): array
+    {
+        return $this->template;
+    }
+
+    public function setTemplate(array $template): static
+    {
+        $this->template = $template;
 
         return $this;
     }
