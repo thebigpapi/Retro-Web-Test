@@ -158,19 +158,25 @@
 				{% if expansioncard.getMiscSpecs() is not empty %}
 					<div class="textarea">
 						<h3><b>Specs:</b></h3>
-				{% apply markdown_to_html %}
-				{% for spec_key, spec_value in expansioncard.getMiscSpecs() %}
-				{% if spec_value is iterable %}
-
+						{% if expansioncard.getSimpleMiscSpecs() is not empty %}
+							{% for spec_key, spec_value in expansioncard.getSimpleMiscSpecs() %}
+{% apply markdown_to_html %}
+* {{spec_key}}: {{spec_value}}
+{% endapply %}
+							{% endfor %}
+						{% endif %}
+						{% if expansioncard.getTableMiscSpecs() is not empty %}
+						<div class="spec-section">
+							{% for spec_key, spec_value in expansioncard.getTableMiscSpecs() %}
+<div class="spec-table">{% apply markdown_to_html %}
 | {{spec_key}} | Value |
 |----------|-------|
-{% for key, value in spec_value %}|{{key}}|{{value}}|{% endfor %}
-
-{% else %}
-* {{spec_key}}: {{spec_value}}
-{% endif %}
-				{% endfor %}
-				{% endapply %}
+{% for key, value in spec_value %}|{{key}}|{{value}}|
+{% endfor %}
+{% endapply %}</div>
+							{% endfor %}
+						</div>
+						{% endif %}
 					</div>
 				{% endif %}
 				{% include 'macros/aliases.html.twig' with {'entity':expansioncard.getExpansionCardAliases(), 'msg': 'Also known as:'} %}

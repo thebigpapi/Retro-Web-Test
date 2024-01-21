@@ -672,6 +672,32 @@ class ExpansionCard
         }
         return $output;
     }
+    public function getSimpleMiscSpecs(): array
+    {
+        $output = [];
+        foreach($this->miscSpecs as $key => $value){
+            if(!is_array($value))
+                $output[$key] = $value;
+        }
+        return $output;
+    }
+    public function getTableMiscSpecs(): array
+    {
+        $output = [];
+        foreach($this->miscSpecs as $key => $value){
+            if(is_array($value))
+                $output[$key] = $value;
+        }
+        return $this->sortMiscSpecTables($output);
+    }
+    function sortMiscSpecTables($arrays) {
+        $lengths = array_map('count', $arrays);
+        arsort($lengths);
+        $return = array();
+        foreach(array_keys($lengths) as $k)
+            $return[$k] = $arrays[$k];
+        return $return;
+    }
 
     public function setMiscSpecs(array $miscSpecs): static
     {

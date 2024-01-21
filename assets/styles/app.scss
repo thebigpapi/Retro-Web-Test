@@ -1253,6 +1253,12 @@ div.notes {
     overflow-y: hidden;
     margin: auto;
 }
+div.spec-section{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 6px;
+}
 
 div.show-downloads>div>img {
     padding: 5px;
