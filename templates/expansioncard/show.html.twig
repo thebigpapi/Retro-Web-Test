@@ -13,15 +13,15 @@
 {% block opengraph %}
 	{% apply spaceless %}
 	<meta property="og:title" content="{{ expansioncard.getPrettyTitle() }}">
-	<meta property="og:description" content="Get info, images and drivers for the {{ expansioncard.getPrettyTitle() }} expansion chip">
+	<meta property="og:description" content="Get info, images and drivers for the {{ expansioncard.getPrettyTitle() }} expansion card">
 	{% if expansioncard.getImages() is not empty %}
 		{% for image in expansioncard.getImages()|sort((a, b) => a.getFileName() <=> b.getFileName())|slice(0, 1) %}
 			<meta name="twitter:image" content="{{ vich_uploader_asset(image, 'imageFile')}}">
 			<meta property="og:image" content="{{ vich_uploader_asset(image, 'imageFile')}}">
 		{% endfor %}
 	{% else %}
-		<meta name="twitter:image" content="{{ absolute_url(asset('build/images/missing/chip-missing.jpg')) }}">
-		<meta property="og:image" content="{{ absolute_url(asset('build/images/missing/chip-missing.jpg')) }}">
+		<meta name="twitter:image" content="{{ absolute_url(asset('build/images/missing/card-missing.jpg')) }}">
+		<meta property="og:image" content="{{ absolute_url(asset('build/images/missing/card-missing.jpg')) }}">
 	{% endif %}
 	{% endapply %}
 	<link rel="alternate" hreflang="x-default" href="{{ absolute_url(path('expansioncard_show', {id: expansioncard.getId()})) }}"/>
