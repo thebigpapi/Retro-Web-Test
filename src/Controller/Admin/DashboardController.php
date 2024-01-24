@@ -31,6 +31,13 @@ use App\Entity\Creditor;
 use App\Entity\License;
 use App\Entity\StorageDeviceInterface;
 use App\Entity\StorageDeviceSize;
+use App\Entity\ExpansionSlotInterface;
+use App\Entity\ExpansionSlotSignal;
+use App\Entity\IoPortInterface;
+use App\Entity\IoPortInterfaceSignal;
+use App\Entity\IoPortSignal;
+use App\Entity\MemoryConnector;
+use App\Entity\ExpansionSlotInterfaceSignal;
 use App\Entity\User;
 use App\Repository\MotherboardRepository;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
@@ -43,12 +50,6 @@ use Symfony\UX\Chartjs\Builder\ChartBuilderInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Config\UserMenu;
 use Symfony\Component\Security\Core\User\UserInterface;
 use App\BranchLoader\GitLoader;
-use App\Entity\ExpansionSlotInterface;
-use App\Entity\ExpansionSlotSignal;
-use App\Entity\IoPortInterface;
-use App\Entity\IoPortInterfaceSignal;
-use App\Entity\IoPortSignal;
-use App\Entity\MemoryConnector;
 
 class DashboardController extends AbstractDashboardController
 {
@@ -122,11 +123,12 @@ class DashboardController extends AbstractDashboardController
         ])->setPermission('ROLE_ADMIN');
         yield MenuItem::subMenu('Expansion card related', 'card.svg')->setSubItems([
             MenuItem::linkToCrud('Types', 'tag.svg', ExpansionCardType::class),
-            MenuItem::linkToCrud('Mechanical bus interfaces', 'card.svg', ExpansionSlotInterface::class),
-            MenuItem::linkToCrud('Electrical bus interfaces', 'card.svg', ExpansionSlotSignal::class),
-            MenuItem::linkToCrud('Mechanical I/O port interfaces', 'rs232.svg', IoPortInterface::class),
-            MenuItem::linkToCrud('Electrical I/O port interfaces', 'rs232.svg', IoPortSignal::class),
             MenuItem::linkToCrud('I/O port presets', 'rs232.svg', IoPortInterfaceSignal::class),
+            MenuItem::linkToCrud('Expansion slot presets', 'card.svg', ExpansionSlotInterfaceSignal::class),
+            MenuItem::linkToCrud('I/O port connectors', 'rs232.svg', IoPortInterface::class),
+            MenuItem::linkToCrud('Expansion slot connectors', 'card_tag.svg', ExpansionSlotInterface::class),
+            MenuItem::linkToCrud('Electrical bus interfaces', 'tag.svg', ExpansionSlotSignal::class),
+            MenuItem::linkToCrud('Electrical I/O port interfaces', 'tag.svg', IoPortSignal::class),
         ])->setPermission('ROLE_ADMIN');
         yield MenuItem::subMenu('Storage related', 'hdd.svg')->setSubItems([
             MenuItem::linkToCrud('Interface', 'io.svg', StorageDeviceInterface::class),

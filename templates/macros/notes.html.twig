@@ -19,10 +19,18 @@
         </div>
     {% endif %}
 {% else %}
-    {% if entity.description is not null %}
+    {% if entity is iterable %}
         <div class="textarea">
-            <h3><b>Description:</b></h3>
-            {{ entity.description|markdown_to_html }}
+            {% for item in entity|filter(a => a.getDescription() is not null) %}
+                {% if loop.first %}<h3><b>{% if title is defined %}{{title}}{% else %}Description{% endif %}:</b></h3>{% endif %}
+                {{ item.getDescription() ? item.getDescription()|markdown_to_html }}
+
+            {% endfor %}
+        </div>
+    {% elseif entity.getDescription() is not null %}
+        <div class="textarea">
+            <h3><b>{% if title is defined %}{{title}}{% else %}Description{% endif %}:</b></h3>
+            {{ entity.getDescription()|markdown_to_html }}
         </div>
     {% endif %}
 {% endif %}

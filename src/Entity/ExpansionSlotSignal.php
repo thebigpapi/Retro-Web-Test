@@ -21,9 +21,24 @@ class ExpansionSlotSignal
     #[ORM\OneToMany(mappedBy: 'expansionSlotSignal', targetEntity: ExpansionCard::class)]
     private Collection $expansionCards;
 
+    #[ORM\ManyToMany(targetEntity: ExpansionSlotInterfaceSignal::class, mappedBy: 'signals')]
+    private Collection $expansionSlotInterfaceSignals;
+
+    #[ORM\OneToMany(mappedBy: 'expansionSlotSignal', targetEntity: EntityImage::class, orphanRemoval: true, cascade: ['persist'])]
+    private Collection $entityImages;
+
+    #[ORM\OneToMany(mappedBy: 'expansionSlotSignal', targetEntity: EntityDocumentation::class, orphanRemoval: true, cascade: ['persist'])]
+    private Collection $entityDocumentations;
+
+    #[ORM\Column(length: 4096, nullable: true)]
+    private ?string $description = null;
+
     public function __construct()
     {
         $this->expansionCards = new ArrayCollection();
+        $this->expansionSlotInterfaceSignals = new ArrayCollection();
+        $this->entityImages = new ArrayCollection();
+        $this->entityDocumentations = new ArrayCollection();
     }
 
     public function __toString(): string
@@ -74,6 +89,105 @@ class ExpansionSlotSignal
                 $expansionCard->setExpansionSlotSignal(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ExpansionSlotInterfaceSignal>
+     */
+    public function getExpansionSlotInterfaceSignals(): Collection
+    {
+        return $this->expansionSlotInterfaceSignals;
+    }
+
+    public function addExpansionSlotInterfaceSignal(ExpansionSlotInterfaceSignal $expansionSlotInterfaceSignal): static
+    {
+        if (!$this->expansionSlotInterfaceSignals->contains($expansionSlotInterfaceSignal)) {
+            $this->expansionSlotInterfaceSignals->add($expansionSlotInterfaceSignal);
+            $expansionSlotInterfaceSignal->addSignal($this);
+        }
+
+        return $this;
+    }
+
+    public function removeExpansionSlotInterfaceSignal(ExpansionSlotInterfaceSignal $expansionSlotInterfaceSignal): static
+    {
+        if ($this->expansionSlotInterfaceSignals->removeElement($expansionSlotInterfaceSignal)) {
+            $expansionSlotInterfaceSignal->removeSignal($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, EntityImage>
+     */
+    public function getEntityImages(): Collection
+    {
+        return $this->entityImages;
+    }
+
+    public function addEntityImage(EntityImage $entityImage): static
+    {
+        if (!$this->entityImages->contains($entityImage)) {
+            $this->entityImages->add($entityImage);
+            $entityImage->setExpansionSlotSignal($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEntityImage(EntityImage $entityImage): static
+    {
+        if ($this->entityImages->removeElement($entityImage)) {
+            // set the owning side to null (unless already changed)
+            if ($entityImage->getExpansionSlotSignal() === $this) {
+                $entityImage->setExpansionSlotSignal(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, EntityDocumentation>
+     */
+    public function getEntityDocumentations(): Collection
+    {
+        return $this->entityDocumentations;
+    }
+
+    public function addEntityDocumentation(EntityDocumentation $entityDocumentation): static
+    {
+        if (!$this->entityDocumentations->contains($entityDocumentation)) {
+            $this->entityDocumentations->add($entityDocumentation);
+            $entityDocumentation->setExpansionSlotSignal($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEntityDocumentation(EntityDocumentation $entityDocumentation): static
+    {
+        if ($this->entityDocumentations->removeElement($entityDocumentation)) {
+            // set the owning side to null (unless already changed)
+            if ($entityDocumentation->getExpansionSlotSignal() === $this) {
+                $entityDocumentation->setExpansionSlotSignal(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(?string $description): static
+    {
+        $this->description = $description;
 
         return $this;
     }

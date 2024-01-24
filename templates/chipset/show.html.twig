@@ -87,12 +87,12 @@
 					<div class="toolbar">
 						{% if chipset.getEncyclopediaLink() is not null %}
 						<a class='button-widget' href="{{ chipset.getEncyclopediaLink() }}">
-							<img src='{{ absolute_url(asset('build/icons/data.svg')) }}' alt='' width='16' height='16' style='vertical-align:middle;padding:3px;'>Encyclopedia link</a>
+							<img src='{{ absolute_url(asset('build/icons/www.svg')) }}' alt='' width='16' height='16' style='vertical-align:middle;padding:3px;'>Encyclopedia link</a>
 						{% endif %}
 						<a class='button-widget' href="{{ absolute_url(path('app_homepage')) }}motherboards/?chipsetId={{ chipset.getId() }}&amp;showImages=1">
-							<img src='{{ absolute_url(asset('build/icons/hardware.svg')) }}' alt='' width='16' height='16' style='vertical-align:middle;padding:3px;'>See all boards with this chipset</a>
+							<img src='{{ absolute_url(asset('build/icons/board.svg')) }}' alt='' width='16' height='16' style='vertical-align:middle;padding:3px;'>See all boards with this chipset</a>
 						<a class='button-widget' href="{{ absolute_url(path('app_homepage')) }}bios/?chipsetId={{ chipset.getId() }}">
-							<img src='{{ absolute_url(asset('build/icons/dw.svg')) }}' alt='' width='16' height='16' style='vertical-align:middle;padding:3px;'>See all BIOSes for this chipset</a>
+							<img src='{{ absolute_url(asset('build/icons/awchip.svg')) }}' alt='' width='16' height='16' style='vertical-align:middle;padding:3px;'>See all BIOSes for this chipset</a>
 						</div>
 					</div>
 				</div>

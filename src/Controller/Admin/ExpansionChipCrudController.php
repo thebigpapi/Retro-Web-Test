@@ -18,6 +18,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ArrayField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
@@ -110,9 +111,12 @@ class ExpansionChipCrudController extends AbstractCrudController
             ->onlyOnForms();
         yield CollectionField::new('pciDevs', 'Device ID')
             ->setEntryType(PciDeviceIdType::class)
-            ->setColumns(6)
+            ->setColumns(4)
             ->renderExpanded()
             ->onlyOnForms();
+        yield IntegerField::new('sort', 'Image sort')
+            ->setFormTypeOption('required', true)
+            ->setColumns(2);
         yield CodeEditorField::new('description')
             ->setLanguage('markdown')
             ->onlyOnForms();

@@ -1,0 +1,101 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	{{ io_port.getName() }}
+{% endblock %}
+{% block metatags %}
+	<meta name="description" content="Connector :{{ io_port.getName() }}">
+{% endblock %}
+{% block extra_javascripts %}
+	<script src="/build/js/show.js" defer></script>
+{% endblock %}
+
+{% block opengraph %}
+	{% apply spaceless %}
+	<meta property="og:title" content="{{ io_port.getName() }}">
+	<meta property="og:description" content="Get connector info for {{ io_port.getName() }}!">
+	{% if io_port.getInterface().getEntityImages() is not empty %}
+		{% for image in io_port.getInterface().getEntityImages()|sort((a, b) => a.getFileName() <=> b.getFileName())|slice(0, 1) %}
+			<meta name="twitter:image" content="{{ vich_uploader_asset(image, 'imageFile')}}">
+			<meta property="og:image" content="{{ vich_uploader_asset(image, 'imageFile')}}">
+		{% endfor %}
+	{% else %}
+		<meta name="twitter:image" content="{{ absolute_url(asset('build/images/missing/not-available.jpg')) }}">
+		<meta property="og:image" content="{{ absolute_url(asset('build/images/missing/not-available.jpg')) }}">
+	{% endif %}
+	{% endapply %}
+	<link rel="alternate" hreflang="x-default" href="{{ absolute_url(path('io_port_show', {id: io_port.getId()})) }}"/>
+{% endblock %}
+{% block subnav %}
+<li class="flex navbar-li">
+    <div class="flex items-center">
+        <svg class="navbar-svg" viewBox="0 0 24 44" preserveAspectRatio="none" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M.293 0l22 22-22 22h1.414l22-22-22-22H.293z"></path>
+        </svg>
+        <div class="navbar-anchor">
+			<img src="{{ absolute_url(asset('build/icons/rs232.svg')) }}" width="24" height="24" alt="port">
+            <code class="text-pink-500">I/O ports</code>
+        </div>
+    </div>
+</li>
+<li class="flex">
+    <div class="flex">
+        <svg class="navbar-svg" viewBox="0 0 24 44" preserveAspectRatio="none" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M.293 0l22 22-22 22h1.414l22-22-22-22H.293z"></path>
+        </svg>
+        <code class="navbar-code">ID: {{io_port.getId()}}</code>
+    </div>
+</li>
+{% endblock %}
+
+{% block body %}
+<!-- MANUF./NAME/PART NO. -->
+<div class="title">{{ io_port.getName() }}</div>
+<div class="main-strip">
+	<div class="internal-container">
+		{% include 'macros/navbar.html.twig' with {'entity': io_port, 'entityName': 'IoPortInterfaceSignal', 'name': 'connector'} %}
+		<div class="internal-content">
+			<!-- DESCRIPRION -->
+			<div class="show-general" id="sh-general">
+				<div class="quick-spec-table">
+					<!-- Mechanical -->
+					<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/rs232.svg')) }}" alt="conn" width="24" height="24">Connector</div>
+					<div>{{ io_port.getInterface() ? io_port.getInterface().getName() : 'Unknown'}}</div>
+					<!-- Electrical -->
+					<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/io.svg')) }}" alt="signal" width="24" height="24">Electrical interfaces</div>
+					{% if io_port.getSignals() is not empty %}
+					<div class="tag-container">{% for signal in io_port.getSignals() %}<span class="text-block">{{ signal.getName()}}</span>{% endfor %}</div>
+					{% else %}
+					<div>Unknown</div>
+					{% endif %}
+				</div>
+				{% include 'macros/notes.html.twig' with {'entity': io_port} %}
+				{% include 'macros/notes.html.twig' with {'title': 'Connector notes', 'entity': io_port.getInterface()} %}
+				{% include 'macros/notes.html.twig' with {'title': 'Electrical interface notes', 'entity': io_port.getSignals()} %}
+				<!-- MANUALS -->
+				{% include 'macros/manuals.html.twig' with {'entity': io_port.getAllDocs()} %}
+			</div>
+		</div>
+	</div>
+
+	<!-- IMAGES -->
+	<div class="show-images" id="sh-images">
+	{% if io_port.getAllImages() is not empty %}
+		{% set lpindex = 0 %}
+		{% for image in io_port.getAllImages()|sort((a, b) => a.getFileName() <=> b.getFileName()) %}
+			{% set lpindex = lpindex + 1 %}
+			{% include 'macros/images.html.twig' with {'type':'connector', 'entity': image, 'index': lpindex, 'length': io_port.getAllImages()|length} %}
+		{% endfor %}
+	{% else %}
+		<div class="show-images">
+			<img src={{ absolute_url(asset('build/images/missing/not-available.jpg')) }} title="no images available :(" style="width:100%;">
+		</div>
+	{% endif %}
+	</div>
+
+</div>
+<div class="disclaimer">
+	<p><b>Disclaimer</b></p>
+	<p>The info found in this page might not be entirely correct. Check out <a href="{{ path('app_contributions') }}">this guide</a> to learn how you can improve it.</p>
+</div>
+{% endblock %}

@@ -119,6 +119,12 @@ class ExpansionCard
     #[ORM\Column(type: Types::SMALLINT, nullable: true)]
     private ?int $length = null;
 
+    #[ORM\ManyToOne(inversedBy: 'expansionCards')]
+    private ?ExpansionSlotInterfaceSignal $expansionSlotInterfaceSignal = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $fccid = null;
+
     public function __construct()
     {
         $this->expansionChips = new ArrayCollection();
@@ -799,6 +805,30 @@ class ExpansionCard
     public function setLength(?int $length): static
     {
         $this->length = $length;
+
+        return $this;
+    }
+
+    public function getExpansionSlotInterfaceSignal(): ?ExpansionSlotInterfaceSignal
+    {
+        return $this->expansionSlotInterfaceSignal;
+    }
+
+    public function setExpansionSlotInterfaceSignal(?ExpansionSlotInterfaceSignal $expansionSlotInterfaceSignal): static
+    {
+        $this->expansionSlotInterfaceSignal = $expansionSlotInterfaceSignal;
+
+        return $this;
+    }
+
+    public function getFccid(): ?string
+    {
+        return $this->fccid;
+    }
+
+    public function setFccid(?string $fccid): static
+    {
+        $this->fccid = $fccid;
 
         return $this;
     }

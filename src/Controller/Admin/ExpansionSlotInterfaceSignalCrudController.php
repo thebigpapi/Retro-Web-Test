@@ -2,13 +2,13 @@
 
 namespace App\Controller\Admin;
 
-use App\Entity\IoPortInterfaceSignal;
-use App\Form\Type\IoPortSignalType;
+use App\Entity\ExpansionSlotInterfaceSignal;
+use App\Form\Type\ExpansionSlotSignalType;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
-use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CodeEditorField;
@@ -16,11 +16,11 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
-class IoPortInterfaceSignalCrudController extends AbstractCrudController
+class ExpansionSlotInterfaceSignalCrudController extends AbstractCrudController
 {
     public static function getEntityFqcn(): string
     {
-        return IoPortInterfaceSignal::class;
+        return ExpansionSlotInterfaceSignal::class;
     }
     protected function getRedirectResponseAfterSave(AdminContext $context, string $action): RedirectResponse
     {
@@ -28,14 +28,14 @@ class IoPortInterfaceSignalCrudController extends AbstractCrudController
 
         if (Action::SAVE_AND_RETURN === $submitButtonName) {
             $entityId = $context->getEntity()->getInstance()->getId();
-            return $this->redirectToRoute('io_port_show', array('id' => $entityId));
+            return $this->redirectToRoute('expansion_slot_show', array('id' => $entityId));
         }
         return parent::getRedirectResponseAfterSave($context, $action);
     }
     public function configureActions(Actions $actions): Actions
     {
-        $view = Action::new('view', 'View')->linkToCrudAction('viewIoPort');
-        $eview = Action::new('eview', 'View')->linkToCrudAction('viewIoPort')->setIcon('fa fa-magnifying-glass');
+        $view = Action::new('view', 'View')->linkToCrudAction('viewExpSlot');
+        $eview = Action::new('eview', 'View')->linkToCrudAction('viewExpSlot')->setIcon('fa fa-magnifying-glass');
         $logs = Action::new('logs', 'Logs')->linkToCrudAction('viewLogs');
         $elogs= Action::new('elogs', 'Logs')->linkToCrudAction('viewLogs')->setIcon('fa fa-history');
         return $actions
@@ -51,8 +51,8 @@ class IoPortInterfaceSignalCrudController extends AbstractCrudController
     {
         return $crud
             ->showEntityActionsInlined()
-            ->setEntityLabelInSingular('I/O port preset')
-            ->setEntityLabelInPlural('<img class=ea-entity-icon src=/build/icons/rs232.svg width=48 height=48>I/O port presets')
+            ->setEntityLabelInSingular('slot preset')
+            ->setEntityLabelInPlural('<img class=ea-entity-icon src=/build/icons/card.svg width=48 height=48>Expansion slot presets')
             ->setPaginatorPageSize(100);
     }
     public function configureFilters(Filters $filters): Filters
@@ -67,7 +67,7 @@ class IoPortInterfaceSignalCrudController extends AbstractCrudController
         yield TextField::new('name', 'Name')
             ->setColumns('col-sm-6 col-lg-6 col-xxl-4');
         yield CollectionField::new('signals','Electrical interface')
-            ->setEntryType(IoPortSignalType::class)
+            ->setEntryType(ExpansionSlotSignalType::class)
             ->renderExpanded()
             ->setColumns('col-sm-6 col-lg-6 col-xxl-4');
         yield AssociationField::new('interface','Mechanical interface')
@@ -76,10 +76,10 @@ class IoPortInterfaceSignalCrudController extends AbstractCrudController
             ->setLanguage('markdown')
             ->onlyOnForms();
     }
-    public function viewIoPort(AdminContext $context)
+    public function viewExpSlot(AdminContext $context)
     {
         $entityId = $context->getEntity()->getInstance()->getId();
-        return $this->redirectToRoute('io_port_show', array('id'=>$entityId));
+        return $this->redirectToRoute('expansion_slot_show', array('id'=>$entityId));
     }
     public function viewLogs(AdminContext $context)
     {

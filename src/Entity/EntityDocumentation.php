@@ -31,6 +31,18 @@ class EntityDocumentation
     #[ORM\ManyToOne(inversedBy: 'entityDocumentations')]
     private ?CpuSocket $cpuSocket = null;
 
+    #[ORM\ManyToOne(inversedBy: 'entityDocumentations')]
+    private ?IoPortInterface $ioPortInterface = null;
+
+    #[ORM\ManyToOne(inversedBy: 'entityDocumentations')]
+    private ?IoPortSignal $ioPortSignal = null;
+
+    #[ORM\ManyToOne(inversedBy: 'entityDocumentations')]
+    private ?ExpansionSlotSignal $expansionSlotSignal = null;
+
+    #[ORM\ManyToOne(inversedBy: 'entityDocumentations')]
+    private ?ExpansionSlotInterface $expansionSlotInterface = null;
+
     public function __toString(): string
     {
         return $this->getLinkName() . " [" . $this->getReleaseDateString() . "]";
@@ -72,6 +84,54 @@ class EntityDocumentation
     public function setCpuSocket(?CpuSocket $cpuSocket): self
     {
         $this->cpuSocket = $cpuSocket;
+
+        return $this;
+    }
+
+    public function getIoPortInterface(): ?IoPortInterface
+    {
+        return $this->ioPortInterface;
+    }
+
+    public function setIoPortInterface(?IoPortInterface $ioPortInterface): static
+    {
+        $this->ioPortInterface = $ioPortInterface;
+
+        return $this;
+    }
+
+    public function getIoPortSignal(): ?IoPortSignal
+    {
+        return $this->ioPortSignal;
+    }
+
+    public function setIoPortSignal(?IoPortSignal $ioPortSignal): static
+    {
+        $this->ioPortSignal = $ioPortSignal;
+
+        return $this;
+    }
+
+    public function getExpansionSlotSignal(): ?ExpansionSlotSignal
+    {
+        return $this->expansionSlotSignal;
+    }
+
+    public function setExpansionSlotSignal(?ExpansionSlotSignal $expansionSlotSignal): static
+    {
+        $this->expansionSlotSignal = $expansionSlotSignal;
+
+        return $this;
+    }
+
+    public function getExpansionSlotInterface(): ?ExpansionSlotInterface
+    {
+        return $this->expansionSlotInterface;
+    }
+
+    public function setExpansionSlotInterface(?ExpansionSlotInterface $expansionSlotInterface): static
+    {
+        $this->expansionSlotInterface = $expansionSlotInterface;
 
         return $this;
     }

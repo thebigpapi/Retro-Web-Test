@@ -42,6 +42,7 @@ dh_auditor:
                 App\Entity\ExpansionChipType: ~
                 App\Entity\ExpansionSlot: ~
                 App\Entity\ExpansionSlotInterface: ~
+                App\Entity\ExpansionSlotInterfaceSignal: ~
                 App\Entity\ExpansionSlotSignal: ~
                 App\Entity\FloppyDrive: ~
                 App\Entity\FormFactor: ~
@@ -49,6 +50,7 @@ dh_auditor:
                 App\Entity\InstructionSet: ~
                 App\Entity\IoPort: ~
                 App\Entity\IoPortInterface: ~
+                App\Entity\IoPortInterfaceSignal: ~
                 App\Entity\IoPortSignal: ~
                 App\Entity\KnownIssue: ~
                 App\Entity\LargeFile: ~

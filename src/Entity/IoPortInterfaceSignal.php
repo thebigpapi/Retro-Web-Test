@@ -165,4 +165,20 @@ class IoPortInterfaceSignal
 
         return $this;
     }
+    public function getAllDocs(): Collection
+    {
+        $docs = $this->getInterface()->getEntityDocumentations()->toArray() ?? [];
+        foreach ($this->getSignals() as $signal) {
+            $docs = array_merge($docs, $signal->getEntityDocumentations()->toArray());
+        }
+        return new ArrayCollection($docs);
+    }
+    public function getAllImages(): Collection
+    {
+        $img = $this->getInterface()->getEntityImages()->toArray() ?? [];
+        foreach ($this->getSignals() as $signal) {
+            $img = array_merge($img, $signal->getEntityImages()->toArray());
+        }
+        return new ArrayCollection($img);
+    }
 }

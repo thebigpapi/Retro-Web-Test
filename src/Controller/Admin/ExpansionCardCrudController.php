@@ -124,14 +124,10 @@ class ExpansionCardCrudController extends AbstractCrudController
         yield BooleanField::new('getDrivers','Drivers')
             ->renderAsSwitch(false)
             ->onlyOnIndex();
-        yield IntegerField::new('width', 'Width (in mm)')
-            ->setColumns('col-sm-2 col-lg-2 col-xxl-1');
-        yield IntegerField::new('height', 'Height (in mm)')
-            ->setColumns('col-sm-2 col-lg-2 col-xxl-1');
-        yield IntegerField::new('length', 'Length (in mm)')
-            ->setColumns('col-sm-2 col-lg-2 col-xxl-1');
-        yield IntegerField::new('slotCount', 'Slot height')
-            ->setColumns('col-sm-2 col-lg-2 col-xxl-1');
+        yield AssociationField::new('expansionSlotInterfaceSignal','Expansion slot preset')
+            ->setFormTypeOption('required', true)
+            ->setColumns('col-sm-12 col-lg-6 col-xxl-4')
+            ->onlyOnForms();
         yield AssociationField::new('expansionSlotInterface','Interface connector')
             ->setFormTypeOption('required', true)
             ->setColumns('col-sm-12 col-lg-6 col-xxl-4')
@@ -140,6 +136,14 @@ class ExpansionCardCrudController extends AbstractCrudController
             ->setFormTypeOption('required', true)
             ->setColumns('col-sm-12 col-lg-6 col-xxl-4')
             ->onlyOnForms();
+        yield IntegerField::new('width', 'Width (in mm)')
+            ->setColumns('col-sm-2 col-lg-2 col-xxl-1');
+        yield IntegerField::new('height', 'Height (in mm)')
+            ->setColumns('col-sm-2 col-lg-2 col-xxl-1');
+        yield IntegerField::new('length', 'Length (in mm)')
+            ->setColumns('col-sm-2 col-lg-2 col-xxl-1');
+        yield IntegerField::new('slotCount', 'Slot height')
+            ->setColumns('col-sm-2 col-lg-2 col-xxl-1');
         yield CollectionField::new('expansionCardAliases', 'Alternative names')
             ->setEntryType(ExpansionCardAliasType::class)
             ->setFormTypeOption('error_bubbling', false)
@@ -162,6 +166,9 @@ class ExpansionCardCrudController extends AbstractCrudController
             ->setColumns('col-sm-12 col-lg-6 col-xxl-4')
             ->renderExpanded()
             ->onlyOnForms();
+        yield TextField::new('fccid','FCC ID')
+            ->setColumns('col-sm-12 col-lg-6 col-xxl-4')
+            ->onlyOnForms();
         yield CollectionField::new('knownIssues', 'Known issues')
             ->setEntryType(KnownIssueExpansionCardType::class)
             ->renderExpanded()
@@ -169,10 +176,10 @@ class ExpansionCardCrudController extends AbstractCrudController
         yield CodeEditorField::new('description')
             ->setLanguage('markdown')
             ->onlyOnForms();
-        yield FormField::addTab('Specs')
+        yield FormField::addTab('Features')
             ->setIcon('fa fa-info')
             ->onlyOnForms();
-        yield FormField::addPanel('Memory')->onlyOnForms();
+        yield FormField::addPanel('Memory and chips')->onlyOnForms();
         yield CollectionField::new('ramSize', 'Supported RAM size')
             ->setEntryType(MaxRamType::class)
             ->setFormTypeOption('error_bubbling', false)
@@ -184,19 +191,20 @@ class ExpansionCardCrudController extends AbstractCrudController
             ->setColumns('col-sm-12 col-lg-6 col-xxl-4')
             ->renderExpanded()
             ->onlyOnForms();
-        yield CollectionField::new('expansionCardMemoryConnectors', 'Memory connectors')
-            ->setEntryType(ExpansionCardMemoryConnectorType::class)
-            ->setFormTypeOption('error_bubbling', false)
-            ->setColumns('col-sm-12 col-lg-6 col-xxl-4')
-            ->renderExpanded()
-            ->onlyOnForms();
         yield CollectionField::new('expansionChips', 'Expansion chips')
             ->setEntryType(ExpansionChipType::class)
             ->renderExpanded()
             ->setColumns('col-sm-12 col-lg-6 col-xxl-4')
             ->onlyOnForms();
+        yield FormField::addPanel('Connections')->onlyOnForms();
         yield CollectionField::new('ioPorts', 'I/O ports')
             ->setEntryType(ExpansionCardIoPortType::class)
+            ->setFormTypeOption('error_bubbling', false)
+            ->setColumns('col-sm-12 col-lg-6 col-xxl-4')
+            ->renderExpanded()
+            ->onlyOnForms();
+        yield CollectionField::new('expansionCardMemoryConnectors', 'Memory connectors')
+            ->setEntryType(ExpansionCardMemoryConnectorType::class)
             ->setFormTypeOption('error_bubbling', false)
             ->setColumns('col-sm-12 col-lg-6 col-xxl-4')
             ->renderExpanded()
@@ -206,10 +214,17 @@ class ExpansionCardCrudController extends AbstractCrudController
             ->setColumns('col-sm-12 col-lg-6 col-xxl-4')
             ->renderExpanded()
             ->onlyOnForms();
-        yield FormField::addTab('BIOS images')
+        yield FormField::addTab('Specs')
+            ->setIcon('fa fa-info')
+            ->onlyOnForms();
+        yield TextJsonField::new('miscSpecs', 'Misc specs')
+            //->setFormType(CustomJsonType::class)
+            ->setColumns(12)
+            ->onlyOnForms();
+        yield FormField::addTab('Firmware')
             ->setIcon('fa fa-download')
             ->onlyOnForms();
-        yield CollectionField::new('expansionCardBios', 'BIOS')
+        yield CollectionField::new('expansionCardBios', 'Firmware / BIOS images')
             ->setEntryType(ExpansionCardBiosType::class)
             ->setFormTypeOption('error_bubbling', false)
             ->setColumns(6)
@@ -233,13 +248,6 @@ class ExpansionCardCrudController extends AbstractCrudController
             ->setEntryType(LargeFileExpansionCardType::class)
             ->setColumns(6)
             ->renderExpanded()
-            ->onlyOnForms();
-        yield FormField::addTab('Misc specifications')
-            ->setIcon('fa fa-info')
-            ->onlyOnForms();
-        yield TextJsonField::new('miscSpecs', 'Misc specs')
-            //->setFormType(CustomJsonType::class)
-            ->setColumns(12)
             ->onlyOnForms();
         yield DateField::new('lastEdited', 'Last edit')
             ->hideOnForm();

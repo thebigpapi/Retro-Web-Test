@@ -13,11 +13,11 @@ use App\Repository\MotherboardIdRedirectionRepository;
 use App\Repository\MotherboardRepository;
 use App\Repository\ProcessorPlatformTypeRepository;
 use App\Repository\ExpansionChipTypeRepository;
-use App\Repository\PSUConnectorRepository;
+
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\ClickableInterface;
-use Symfony\Component\HttpFoundation\JsonResponse;
+
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Knp\Component\Pager\PaginatorInterface;
@@ -94,7 +94,7 @@ class MotherboardController extends AbstractController
                 'form' => $form->createView(),
             ]);
         }
-        
+
         $data = $motherboardRepository->findByWithJoin($criterias);
         $motherboards = $paginator->paginate(
             $data,
@@ -484,61 +484,5 @@ class MotherboardController extends AbstractController
         if($sign == "<=")
             $output['sign'] = '<=';
         return $output;
-    }
-    #[Route('/cpufamily/{id}', name: 'cpufamily_show', requirements: ['id' => '\d+'])]
-    public function showFamily(int $id, ProcessorPlatformTypeRepository $processorPlatformTypeRepository): Response {
-        $family = $processorPlatformTypeRepository->find($id);
-
-        if (!$family) {
-            throw $this->createNotFoundException(
-                'No CPU family found for id ' . $id
-            );
-        }
-        return $this->render('misc/cpufamily.html.twig', [
-            'family' => $family,
-            'controller_name' => 'MotherboardController',
-        ]);
-    }
-    #[Route('/cpusocket/{id}', name: 'cpusocket_show', requirements: ['id' => '\d+'])]
-    public function showSocket(int $id, CpuSocketRepository $cpuSocketRepository): Response {
-        $socket = $cpuSocketRepository->find($id);
-
-        if (!$socket) {
-            throw $this->createNotFoundException(
-                'No CPU socket found for id ' . $id
-            );
-        }
-        return $this->render('misc/cpusocket.html.twig', [
-            'socket' => $socket,
-            'controller_name' => 'MotherboardController',
-        ]);
-    }
-    #[Route('/psu-connector/{id}', name: 'psu_connector_show', requirements: ['id' => '\d+'])]
-    public function showPsuConnector(int $id, PSUConnectorRepository $psuConnectorRepository): Response {
-        $conn = $psuConnectorRepository->find($id);
-
-        if (!$conn) {
-            throw $this->createNotFoundException(
-                'No PSU connector found for id ' . $id
-            );
-        }
-        return $this->render('misc/psu_connector.html.twig', [
-            'psu_connector' => $conn,
-            'controller_name' => 'MotherboardController',
-        ]);
-    }
-    #[Route('/manufacturer/{id}', name: 'manufacturer_show', requirements: ['id' => '\d+'])]
-    public function showManufacturer(int $id, ManufacturerRepository $manufacturerRepository): Response {
-        $manuf = $manufacturerRepository->find($id);
-
-        if (!$manuf) {
-            throw $this->createNotFoundException(
-                'No manufacturer found for id ' . $id
-            );
-        }
-        return $this->render('misc/manufacturer.html.twig', [
-            'manufacturer' => $manuf,
-            'controller_name' => 'MotherboardController',
-        ]);
     }
 }

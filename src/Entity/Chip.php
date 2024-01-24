@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -45,6 +46,11 @@ abstract class Chip
 
     #[ORM\Column(type: 'datetime')]
     private $lastEdited;
+
+    #[ORM\Column(type: Types::SMALLINT)]
+    #[Assert\NotBlank(message: 'Sort position cannot be blank')]
+    #[Assert\Positive(message: "Sort position should be above 0")]
+    private ?int $sort = null;
 
 
     public function __construct()
@@ -243,5 +249,17 @@ abstract class Chip
     public function updateLastEdited()
     {
         $this->lastEdited = new \DateTime('now');
+    }
+
+    public function getSort(): ?int
+    {
+        return $this->sort;
+    }
+
+    public function setSort(int $sort): static
+    {
+        $this->sort = $sort;
+
+        return $this;
     }
 }

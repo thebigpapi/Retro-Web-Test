@@ -6,6 +6,7 @@ use App\Repository\IoPortSignalRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: IoPortSignalRepository::class)]
 class IoPortSignal
@@ -25,10 +26,23 @@ class IoPortSignal
     #[ORM\ManyToMany(targetEntity: IoPortInterfaceSignal::class, mappedBy: 'signals')]
     private Collection $ioPortInterfaceSignals;
 
+    #[ORM\OneToMany(mappedBy: 'ioPortSignal', targetEntity: EntityImage::class, orphanRemoval: true, cascade: ['persist'])]
+    #[Assert\Valid()]
+    private Collection $entityImages;
+
+    #[ORM\OneToMany(mappedBy: 'ioPortSignal', targetEntity: EntityDocumentation::class, orphanRemoval: true, cascade: ['persist'])]
+    #[Assert\Valid()]
+    private Collection $entityDocumentations;
+
+    #[ORM\Column(length: 4096, nullable: true)]
+    private ?string $description = null;
+
     public function __construct()
     {
         $this->expansionCards = new ArrayCollection();
         $this->ioPortInterfaceSignals = new ArrayCollection();
+        $this->entityImages = new ArrayCollection();
+        $this->entityDocumentations = new ArrayCollection();
     }
 
     public function __toString(): string
@@ -111,6 +125,78 @@ class IoPortSignal
         if ($this->ioPortInterfaceSignals->removeElement($ioPortInterfaceSignal)) {
             $ioPortInterfaceSignal->removeSignal($this);
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, EntityImage>
+     */
+    public function getEntityImages(): Collection
+    {
+        return $this->entityImages;
+    }
+
+    public function addEntityImage(EntityImage $entityImage): static
+    {
+        if (!$this->entityImages->contains($entityImage)) {
+            $this->entityImages->add($entityImage);
+            $entityImage->setIoPortSignal($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEntityImage(EntityImage $entityImage): static
+    {
+        if ($this->entityImages->removeElement($entityImage)) {
+            // set the owning side to null (unless already changed)
+            if ($entityImage->getIoPortSignal() === $this) {
+                $entityImage->setIoPortSignal(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, EntityDocumentation>
+     */
+    public function getEntityDocumentations(): Collection
+    {
+        return $this->entityDocumentations;
+    }
+
+    public function addEntityDocumentation(EntityDocumentation $entityDocumentation): static
+    {
+        if (!$this->entityDocumentations->contains($entityDocumentation)) {
+            $this->entityDocumentations->add($entityDocumentation);
+            $entityDocumentation->setIoPortSignal($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEntityDocumentation(EntityDocumentation $entityDocumentation): static
+    {
+        if ($this->entityDocumentations->removeElement($entityDocumentation)) {
+            // set the owning side to null (unless already changed)
+            if ($entityDocumentation->getIoPortSignal() === $this) {
+                $entityDocumentation->setIoPortSignal(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(?string $description): static
+    {
+        $this->description = $description;
 
         return $this;
     }

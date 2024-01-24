@@ -87,7 +87,14 @@
 					</div>
 					<!-- Expansion Slot -->
 					<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/io.svg')) }}" alt="interface" width="24" height="24">Interface</div>
-					<div>{{ expansioncard.getExpansionSlotInterface().getName() }} {{ expansioncard.getExpansionSlotSignal().getName() }}</div>
+					<div>
+					{% if expansioncard.getExpansionSlotInterfaceSignal() is not empty %}
+						<a href="{{ path('expansion_slot_show', {id: expansioncard.getExpansionSlotInterfaceSignal().getId()}) }}"
+						>{{ expansioncard.getExpansionSlotInterfaceSignal().getName() }}</a>
+					{% else %}
+						{{ expansioncard.getExpansionSlotInterface().getName() }} {{ expansioncard.getExpansionSlotSignal().getName() }}
+					{% endif %}
+					</div>
 					<!-- Expansion Chips -->
 					{% if expansioncard.getExpansionChips() is not empty %}
 						{% for type in expansionchiptype %}
@@ -140,7 +147,13 @@
 								<div class="list-table-head">
 									<b>{{ port.getCount() }}x&nbsp;</b>
 								</div>
-								<div>{{ port.getIoPortInterface().getName() }}{% if port.ioPortSignals() is not empty %}&nbsp;({% for type in port.ioPortSignals() %}{{type.getName()}}{% if not loop.last %}, {% endif %}{% endfor %}){% endif %}</div>
+								<div>
+								{% if port.getIoPortInterfaceSignal() is not empty %}
+									<a href="{{ path('io_port_show', {id: port.getIoPortInterfaceSignal().getId()}) }}">{{ port.getIoPortInterfaceSignal().getName() }}</a>
+								{% else %}
+									{{ port.getIoPortInterface().getName() }}{% if port.ioPortSignals() is not empty %}&nbsp;({% for type in port.ioPortSignals() %}{{type.getName()}}{% if not loop.last %}, {% endif %}{% endfor %}){% endif %}
+								{% endif %}
+								</div>
 							{% endfor %}
 						{% else %}<div class="list-table-head"></div><div>N/A</div>{% endif %}
 					</div>
@@ -151,7 +164,13 @@
 								<div class="list-table-head">
 									<b>{{ port.getCount() }}x&nbsp;</b>
 								</div>
-								<div>{{ port.getIoPortInterface().getName() }}{% if port.ioPortSignals() is not empty %}&nbsp;({% for type in port.ioPortSignals() %}{{type.getName()}}{% if not loop.last %}, {% endif %}{% endfor %}){% endif %}</div>
+								<div>
+								{% if port.getIoPortInterfaceSignal() is not empty %}
+									<a href="{{ path('io_port_show', {id: port.getIoPortInterfaceSignal().getId()}) }}">{{ port.getIoPortInterfaceSignal().getName() }}</a>
+								{% else %}
+									{{ port.getIoPortInterface().getName() }}{% if port.ioPortSignals() is not empty %}&nbsp;({% for type in port.ioPortSignals() %}{{type.getName()}}{% if not loop.last %}, {% endif %}{% endfor %}){% endif %}
+								{% endif %}
+								</div>
 							{% endfor %}
 						{% else %}<div class="list-table-head"></div><div>N/A</div>{% endif %}
 					</div>
