@@ -16,7 +16,7 @@ class ExpansionCardIoPort
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(inversedBy: 'expansionCardIoPorts')]
+    #[ORM\ManyToOne(inversedBy: 'ioPorts')]
     #[ORM\JoinColumn(nullable: false)]
     private ?ExpansionCard $expansionCard = null;
 

@@ -27,6 +27,9 @@ class ExpansionChip extends Chip
     #[ORM\Column(length: 8192, nullable: true)]
     private ?string $description = null;
 
+    #[ORM\ManyToMany(targetEntity: ExpansionCard::class, mappedBy: 'expansionChips')]
+    private Collection $expansionCards;
+
     #[ORM\Column(type: 'datetime', mapped: false)]
     private $lastEdited;
 
@@ -38,6 +41,7 @@ class ExpansionChip extends Chip
         $this->chipsets = new ArrayCollection();
         $this->drivers = new ArrayCollection();
         $this->documentations = new ArrayCollection();
+        $this->expansionCards = new ArrayCollection();
     }
     public function __toString(): string
     {
@@ -188,6 +192,34 @@ class ExpansionChip extends Chip
     public function setDescription(?string $description): self
     {
         $this->description = $description;
+
+        return $this;
+    }
+    /**
+     * @return Collection|ExpansionCard[]
+     */
+    public function getExpansionCards(): Collection
+    {
+        return $this->expansionCards;
+    }
+    public function addExpansionCard(ExpansionCard $expansionCard): self
+    {
+        if (!$this->expansionCards->contains($expansionCard)) {
+            $this->expansionCards[] = $expansionCard;
+            $expansionCard->addExpansionChip($this);
+        }
+
+        return $this;
+    }
+    public function removeExpansionCard(ExpansionCard $expansionCard): self
+    {
+        if ($this->expansionCards->contains($expansionCard)) {
+            $this->expansionCards->removeElement($expansionCard);
+            // set the owning side to null (unless already changed)
+            if ($expansionCard->getExpansionChips()->contains($this)) {
+                $expansionCard->removeExpansionChip($this);
+            }
+        }
 
         return $this;
     }

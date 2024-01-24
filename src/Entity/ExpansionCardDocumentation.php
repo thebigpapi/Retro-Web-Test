@@ -22,7 +22,7 @@ class ExpansionCardDocumentation
     #[Vich\UploadableField(mapping:'cardDoc', fileNameProperty:'file_name')]
     private File|null $manualFile = null;
 
-    #[ORM\ManyToOne]
+    #[ORM\ManyToOne(targetEntity: ExpansionCard::class, inversedBy: 'documentations')]
     private ?ExpansionCard $expansionCard = null;
 
     public function getExpansionCard(): ?ExpansionCard
