@@ -13,6 +13,8 @@ use App\Entity\CdDrive;
 use App\Entity\FloppyDrive;
 use App\Entity\ExpansionChip;
 use App\Entity\ExpansionChipType;
+use App\Entity\ExpansionCard;
+use App\Entity\ExpansionCardType;
 use App\Entity\CacheSize;
 use App\Entity\MaxRam;
 use App\Entity\DramType;
@@ -29,6 +31,13 @@ use App\Entity\Creditor;
 use App\Entity\License;
 use App\Entity\StorageDeviceInterface;
 use App\Entity\StorageDeviceSize;
+use App\Entity\ExpansionSlotInterface;
+use App\Entity\ExpansionSlotSignal;
+use App\Entity\IoPortInterface;
+use App\Entity\IoPortInterfaceSignal;
+use App\Entity\IoPortSignal;
+use App\Entity\MemoryConnector;
+use App\Entity\ExpansionSlotInterfaceSignal;
 use App\Entity\User;
 use App\Repository\MotherboardRepository;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
@@ -41,7 +50,6 @@ use Symfony\UX\Chartjs\Builder\ChartBuilderInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Config\UserMenu;
 use Symfony\Component\Security\Core\User\UserInterface;
 use App\BranchLoader\GitLoader;
-use App\Entity\MemoryConnector;
 
 class DashboardController extends AbstractDashboardController
 {
@@ -100,6 +108,7 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::section('Main items');
         yield MenuItem::linkToCrud('Motherboards', 'board.svg', Motherboard::class)->setDefaultSort(['lastEdited' => 'DESC']);
         yield MenuItem::linkToCrud('Chipsets', 'chipset.svg', Chipset::class);
+        yield MenuItem::linkToCrud('Expansion cards', 'card.svg', ExpansionCard::class);
         yield MenuItem::linkToCrud('CPUs', '486.svg', Processor::class);
         yield MenuItem::linkToCrud('Drivers', 'hardware.svg', LargeFile::class);
         yield MenuItem::linkToCrud('Hard drives', 'hdd.svg', HardDrive::class);
@@ -108,6 +117,19 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Expansion chips', 'chip.svg', ExpansionChip::class);
         yield MenuItem::section('Auxiliary items');
         yield MenuItem::linkToCrud('Expansion chip types', 'chip_alias.svg', ExpansionChipType::class)->setPermission('ROLE_ADMIN');
+        yield MenuItem::subMenu('Motherboard related', 'board.svg')->setSubItems([
+            MenuItem::linkToCrud('Expansion slots', 'card.svg', ExpansionSlot::class),
+            MenuItem::linkToCrud('I/O ports', 'rs232.svg', IoPort::class),
+        ])->setPermission('ROLE_ADMIN');
+        yield MenuItem::subMenu('Expansion card related', 'card.svg')->setSubItems([
+            MenuItem::linkToCrud('Types', 'tag.svg', ExpansionCardType::class),
+            MenuItem::linkToCrud('I/O port presets', 'rs232.svg', IoPortInterfaceSignal::class),
+            MenuItem::linkToCrud('Expansion slot presets', 'card.svg', ExpansionSlotInterfaceSignal::class),
+            MenuItem::linkToCrud('I/O port connectors', 'rs232.svg', IoPortInterface::class),
+            MenuItem::linkToCrud('Expansion slot connectors', 'card_tag.svg', ExpansionSlotInterface::class),
+            MenuItem::linkToCrud('Electrical bus interfaces', 'tag.svg', ExpansionSlotSignal::class),
+            MenuItem::linkToCrud('Electrical I/O port interfaces', 'tag.svg', IoPortSignal::class),
+        ])->setPermission('ROLE_ADMIN');
         yield MenuItem::subMenu('Storage related', 'hdd.svg')->setSubItems([
             MenuItem::linkToCrud('Interface', 'io.svg', StorageDeviceInterface::class),
             MenuItem::linkToCrud('Physical size', 'dimension.svg', StorageDeviceSize::class),
@@ -124,8 +146,6 @@ class DashboardController extends AbstractDashboardController
         ])->setPermission('ROLE_ADMIN');
         yield MenuItem::subMenu('Connectors', 'connector.svg')->setSubItems([
             MenuItem::linkToCrud('Sockets', 'cpupins.svg', CpuSocket::class),
-            MenuItem::linkToCrud('Expansion slots', 'card.svg', ExpansionSlot::class),
-            MenuItem::linkToCrud('I/O ports', 'rs232.svg', IoPort::class),
             MenuItem::linkToCrud('PSU connectors', 'power.svg', PSUConnector::class),
             MenuItem::linkToCrud('Memory connectors', 'ram.svg', MemoryConnector::class),
         ])->setPermission('ROLE_ADMIN');

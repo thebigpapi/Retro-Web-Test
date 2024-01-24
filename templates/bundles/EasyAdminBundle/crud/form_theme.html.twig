@@ -139,30 +139,21 @@
         {% if image_uri|default('') is not empty %}
             {% if download_uri|default('') is empty %}
                 <div class="ea-lightbox-thumbnail">
-                    {% if formTypeOptions.imagine_pattern is defined and formTypeOptions.imagine_pattern is not empty %}
-                        <img style="cursor: initial" src="{{ (asset_helper is same as(true) ? asset(image_uri) : image_uri)|ea_apply_filter_if_exists('imagine_filter', formTypeOptions.imagine_pattern) }}">
-                    {% else %}
+                    {% if image_uri ends with '.svg' %}
                         <img style="cursor: initial" src="{{ asset_helper is same as(true) ? asset(image_uri) : image_uri }}">
+                    {% else %}
+                        <img style="cursor: initial" src="{{ (asset_helper is same as(true) ? asset(image_uri) : image_uri)|ea_apply_filter_if_exists('imagine_filter','show_thumb') }}">
                     {% endif %}
                 </div>
             {% else %}
                 {% set _lightbox_id = 'ea-lightbox-' ~ id %}
-
                 <a href="{{ asset_helper is same as(true) ? asset(download_uri) : download_uri }}" class="ea-lightbox-thumbnail glightbox" data-ea-lightbox-content-selector="#{{ _lightbox_id }}">
-                    {% if formTypeOptions.imagine_pattern is defined and formTypeOptions.imagine_pattern is not empty %}
-                        <img src="{{ (asset_helper is same as(true) ? asset(download_uri) : download_uri)|ea_apply_filter_if_exists('imagine_filter', formTypeOptions.imagine_pattern) }}">
-                    {% else %}
+                    {% if download_uri ends with '.svg' %}
                         <img src="{{ asset_helper is same as(true) ? asset(download_uri) : download_uri }}">
+                    {% else %}
+                        <img src="{{ (asset_helper is same as(true) ? asset(download_uri) : download_uri)|ea_apply_filter_if_exists('imagine_filter','show_thumb') }}">
                     {% endif %}
                 </a>
-
-                <div id="{{ _lightbox_id }}" class="ea-lightbox">
-                    {% if formTypeOptions.imagine_pattern is defined and formTypeOptions.imagine_pattern is not empty %}
-                        <img src="{{ (asset_helper is same as(true) ? asset(download_uri) : download_uri)|ea_apply_filter_if_exists('imagine_filter', formTypeOptions.imagine_pattern) }}">
-                    {% else %}
-                        <img src="{{ asset_helper is same as(true) ? asset(download_uri) : download_uri }}">
-                    {% endif %}
-                </div>
             {% endif %}
         {% endif %}
 
@@ -268,3 +259,26 @@
 </div>
 {{ form_widget(form)}}
 {% endblock _Motherboard_chipset_widget %}
+{% block _ExpansionCard_miscSpecs_widget %}
+<div class="row">
+    <div class="col-sm-12 col-lg-6 col-xxl-4">
+        <button id="update-specs-btn" class="btn btn-secondary btn-success" type="button">
+            <span class="btn-label"><span class="action-label">Update specs</span></span>
+        </button>
+        <span id="update-specs-label" style="text-wrap:nowrap;"></span>
+        <button id="set-template-btn" class="btn btn-secondary btn-warning" type="button">
+            <span class="btn-label"><span class="action-label">Set template</span></span>
+        </button>
+        <span id="specs-form-label" style="text-wrap:nowrap;"></span>
+        <div id="formatted-specs" class="formatted-specs"></div>
+    </div>
+    <div class="col-sm-12 col-lg-6 col-xxl-6 card-specs-grid">
+        {{ form_widget(form)}}
+    </div>
+</div>
+{% endblock _ExpansionCard_miscSpecs_widget %}
+{% block _ExpansionCardType_template_widget %}
+<div class="card-specs-grid">
+    {{ form_widget(form)}}
+</div>
+{% endblock _ExpansionCardType_template_widget %}

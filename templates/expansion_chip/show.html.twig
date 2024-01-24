@@ -86,11 +86,11 @@
 					<div class="quick-spec-head">
 						<img src="{{ absolute_url(asset('build/icons/cursor.svg')) }}" alt="act" width="24" height="24">Actions
 					</div>
-					<div>
 					<div class="toolbar">
 						<a class='button-widget' href="{{ absolute_url(path('app_homepage')) }}motherboards/?expansionChipIds%5B0%5D={{ expansion_chip.getId() }}&amp;showImages=1">
-							<img src='{{ absolute_url(asset('build/icons/hardware.svg')) }}' alt='' width='16' height='16' style='vertical-align:middle;padding:3px;'>See all boards with this chip</a>
-						</div>
+							<img src='{{ absolute_url(asset('build/icons/board.svg')) }}' alt='' width='16' height='16' style='vertical-align:middle;padding:3px;'>See all boards with this chip</a>
+						<a class='button-widget' href="{{ absolute_url(path('app_homepage')) }}expansioncards/?expansionChipIds%5B0%5D={{ expansion_chip.getId() }}&amp;showImages=1">
+							<img src='{{ absolute_url(asset('build/icons/card.svg')) }}' alt='' width='16' height='16' style='vertical-align:middle;padding:3px;'>See all cards with this chip</a>
 					</div>
 				</div>
 				{% include 'macros/aliases.html.twig' with {'entity':expansion_chip.getChipAliases(), 'msg': 'Also known as:'} %}

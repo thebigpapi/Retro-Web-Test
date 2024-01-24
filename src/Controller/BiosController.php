@@ -120,7 +120,7 @@ class BiosController extends AbstractController
         } elseif ($chipsetId == "NULL") {
             $criterias['chipset_id'] = null;
         }
-        $chipIds = $request->query->get('expansionChipIds') ?? $request->request->get('expansionChipIds');
+        $chipIds = $request->query->all('expansionChipIds') ?? $request->request->all('expansionChipIds');
         $chipArray = null;
         if ($chipIds) {
             if (is_array($chipIds)) {

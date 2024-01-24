@@ -204,6 +204,22 @@ class ManufacturerRepository extends ServiceEntityRepository
     /**
      * @return Manufacturer[]
      */
+    public function findAllExpansionCardManufacturer(): array
+    {
+        $entityManager = $this->getEntityManager();
+
+        $query = $entityManager->createQuery(
+            'SELECT DISTINCT man
+            FROM App\Entity\ExpansionCard ac, App\Entity\Manufacturer man 
+            WHERE ac.manufacturer=man 
+            ORDER BY man.name ASC'
+        );
+
+        return $query->getResult();
+    }
+    /**
+     * @return Manufacturer[]
+     */
     public function findAllHddManufacturer(): array
     {
         $entityManager = $this->getEntityManager();

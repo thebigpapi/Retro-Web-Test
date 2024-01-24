@@ -38,6 +38,8 @@ class ManufacturerCrudController extends AbstractCrudController
             ->add(Crud::PAGE_EDIT, $elogs)
             ->add(Crud::PAGE_INDEX, $view)
             ->add(Crud::PAGE_EDIT, $eview)
+            ->add(Crud::PAGE_DETAIL, $elogs)
+            ->add(Crud::PAGE_DETAIL, $eview)
             ->setPermission(Action::DELETE, 'ROLE_ADMIN');
     }
     public function configureCrud(Crud $crud): Crud
@@ -54,7 +56,7 @@ class ManufacturerCrudController extends AbstractCrudController
             ->setIcon('fa fa-info')
             ->onlyOnForms();
         yield IdField::new('id')
-            ->onlyOnIndex();
+            ->hideOnForm();
         yield TextField::new('name', 'Name')
             ->setColumns(6);
         yield TextField::new('fullName', 'Full name')
@@ -66,18 +68,22 @@ class ManufacturerCrudController extends AbstractCrudController
             ->setColumns('col-sm-6 col-lg-6 col-xxl-4')
             ->renderExpanded()
             ->onlyOnForms();
+        yield ArrayField::new('manufacturerCodes', 'Codes')
+            ->onlyOnDetail();
         yield CollectionField::new('pciVendorIds', 'Vendor ID')
             ->setEntryType(PciVendorIdType::class)
             ->setColumns('col-sm-6 col-lg-6 col-xxl-4')
             ->renderExpanded()
             ->onlyOnForms();
         yield ArrayField::new('getBiosCodes', 'BIOS codes')
-            ->onlyOnIndex();
+            ->hideOnForm();
         yield CollectionField::new('biosCodes', 'BIOS codes')
             ->setEntryType(ManufacturerBiosManufacturerCodeType::class)
             ->setColumns('col-sm-6 col-lg-6 col-xxl-4')
             ->renderExpanded()
             ->onlyOnForms();
+        yield TextField::new('description')
+            ->onlyOnDetail();
         yield CodeEditorField::new('description')
             ->setLanguage('markdown')
             ->onlyOnForms();

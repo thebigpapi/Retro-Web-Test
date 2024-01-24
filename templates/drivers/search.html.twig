@@ -27,14 +27,6 @@
 	{{ form_start(form, {'method': 'POST', 'name': 'search_driver', 'action':path("driversearch"), 'attr':{'onkeydown': 'return event.key != \'Enter\'', 'data-live-action': path('driverlivewrapper')}}) }}
 	<fieldset id="search-fieldset">
 		<div class="title">Search for drivers &amp; software</div>
-		{# <div class="index-title">
-			List by first letter<br>
-		</div>
-		<div class="index-list">
-			{% for letter in ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z']%}
-				<a class="index-letter" href="{{path("driverindex", {"letter":letter})}}">{{letter}}</a>
-			{% endfor %}
-		</div> #}
 		<section class="search-form-grid">
 			<div class="search-form-entry">
 				<label class="search-form-label" for="search_name" title="This is where you enter the driver name, version or file name.">

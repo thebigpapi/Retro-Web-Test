@@ -17,9 +17,6 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use App\Entity\Manufacturer;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use Symfony\Component\Form\FormEvents;
-use Symfony\Component\Form\FormEvent;
-use Symfony\Component\Form\FormInterface;
 
 class Search extends AbstractType
 {
@@ -28,10 +25,6 @@ class Search extends AbstractType
     public function __construct(EntityManagerInterface $entityManager)
     {
         $this->entityManager = $entityManager;
-    }
-    private function getManufacturerRepository(): EntityRepository
-    {
-        return $this->entityManager->getRepository(Manufacturer::class);
     }
     private function getChipsets(): array
     {

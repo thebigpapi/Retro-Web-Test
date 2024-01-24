@@ -15,12 +15,10 @@ use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ArrayField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CodeEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -54,6 +52,8 @@ class ProcessorPlatformTypeCrudController extends AbstractCrudController
             ->add(Crud::PAGE_EDIT, $elogs)
             ->add(Crud::PAGE_INDEX, $view)
             ->add(Crud::PAGE_EDIT, $eview)
+            ->add(Crud::PAGE_DETAIL, $elogs)
+            ->add(Crud::PAGE_DETAIL, $eview)
             ->setPermission(Action::DELETE, 'ROLE_ADMIN')
             ->setPermission(Action::EDIT, 'ROLE_ADMIN')
             ->setPermission(Action::INDEX, 'ROLE_ADMIN');
@@ -83,48 +83,51 @@ class ProcessorPlatformTypeCrudController extends AbstractCrudController
             ->setIcon('fa fa-info')
             ->onlyOnForms();
         yield IdField::new('id')
-            ->onlyOnIndex();
-        yield TextField::new('name', 'Name');
-        yield IntegerField::new('processNode', 'Process (in nm)')
             ->hideOnForm();
+        yield TextField::new('name', 'Name');
         yield NumberField::new('processNode', 'Process (in nm)')
-            ->setColumns(2)
-            ->onlyOnForms();
+            ->setColumns(2);
         yield AssociationField::new('L1code','L1 code size')
             ->setFormTypeOption('placeholder', 'Type to select a size ...')
             ->setFormTypeOption('required', false)
-            ->setColumns(2)
-            ->onlyOnForms();
+            ->setColumns(2);
         yield NumberField::new('L1codeRatio','L1 code ratio')
             ->setColumns(2)
-            ->onlyOnForms();
+            ->hideOnIndex();
         yield AssociationField::new('L1data','L1 data size')
             ->setFormTypeOption('placeholder', 'Type to select a size ...')
             ->setFormTypeOption('required', false)
-            ->setColumns(2)
-            ->onlyOnForms();
+            ->setColumns(2);
         yield NumberField::new('L1dataRatio','L1 data ratio')
             ->setColumns(2)
-            ->onlyOnForms();
+            ->hideOnIndex();
         yield CollectionField::new('dramType', 'RAM types')
             ->setEntryType(DramTypeType::class)
             ->renderExpanded()
             ->setColumns(6)
             ->onlyOnForms();
+        yield ArrayField::new('dramType', 'RAM types')
+            ->onlyOnDetail();
         yield CollectionField::new('instructionSets', 'Instruction set')
             ->setEntryType(InstructionSetType::class)
             ->setColumns(6)
             ->renderExpanded()
             ->onlyOnForms();
-        yield ArrayField::new('getCompatibleWith', 'Compatible with families')
-            ->onlyOnIndex();
+        yield ArrayField::new('compatibleWith', 'Compatible with families')
+            ->onlyOnDetail();
+        yield ArrayField::new('instructionSets', 'Features (this entity)')
+            ->onlyOnDetail();
         yield CollectionField::new('compatibleWith', 'Compatible with families')
             ->setEntryType(ProcessorPlatformTypeForm::class)
             ->renderExpanded()
             ->onlyOnForms();
+        yield ArrayField::new('entityDocumentations', 'Documentation')
+            ->onlyOnDetail();
         yield CodeEditorField::new('description')
             ->setLanguage('markdown')
             ->onlyOnForms();
+        yield TextField::new('description')
+            ->onlyOnDetail();
         yield FormField::addTab('Attachments')
             ->setIcon('fa fa-download')
             ->onlyOnForms();

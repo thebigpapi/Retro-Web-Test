@@ -1,0 +1,287 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	{{ expansioncard.getPrettyTitle() }}
+{% endblock %}
+{% block metatags %}
+	<meta name="description" content="Expansion card:{{ expansioncard.getPrettyTitle() }}">
+{% endblock %}
+{% block extra_javascripts %}
+	<script src="/build/js/show.js" defer></script>
+{% endblock %}
+
+{% block opengraph %}
+	{% apply spaceless %}
+	<meta property="og:title" content="{{ expansioncard.getPrettyTitle() }}">
+	<meta property="og:description" content="Get info, images and drivers for the {{ expansioncard.getPrettyTitle() }} expansion card">
+	{% if expansioncard.getImages() is not empty %}
+		{% for image in expansioncard.getImages()|sort((a, b) => a.getFileName() <=> b.getFileName())|slice(0, 1) %}
+			<meta name="twitter:image" content="{{ vich_uploader_asset(image, 'imageFile')}}">
+			<meta property="og:image" content="{{ vich_uploader_asset(image, 'imageFile')}}">
+		{% endfor %}
+	{% else %}
+		<meta name="twitter:image" content="{{ absolute_url(asset('build/images/missing/card-missing.jpg')) }}">
+		<meta property="og:image" content="{{ absolute_url(asset('build/images/missing/card-missing.jpg')) }}">
+	{% endif %}
+	{% endapply %}
+	<link rel="alternate" hreflang="x-default" href="{{ absolute_url(path('expansioncard_show', {id: expansioncard.getId()})) }}"/>
+{% endblock %}
+{% block subnav %}
+<li class="flex navbar-li">
+    <div class="flex items-center">
+        <svg class="navbar-svg" viewBox="0 0 24 44" preserveAspectRatio="none" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M.293 0l22 22-22 22h1.414l22-22-22-22H.293z"></path>
+        </svg>
+        <a class="ml-4" href="{{ path('expansioncardsearch') }}">
+			<img src="{{ absolute_url(asset('build/icons/card.svg')) }}" width="24" height="24" alt="card">
+            <code class="text-pink-500">Expansion cards</code>
+        </a>
+    </div>
+</li>
+<li class="flex">
+    <div class="flex">
+        <svg class="navbar-svg" viewBox="0 0 24 44" preserveAspectRatio="none" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M.293 0l22 22-22 22h1.414l22-22-22-22H.293z"></path>
+        </svg>
+        <code class="navbar-code">ID: {{expansioncard.getId()}}</code>
+    </div>
+</li>
+{% endblock %}
+{% block body %}
+<!-- MANUF./NAME/PART NO. -->
+<div class="title">{{ expansioncard.getPrettyTitle() }}</div>
+<div class="main-strip">
+	<div class="internal-container">
+		{% include 'macros/navbar.html.twig' with {'entity': expansioncard, 'entityName': 'ExpansionCard', 'name': 'card'} %}
+		<div class="internal-content">
+			<!-- DESCRIPRION -->
+			<div class="show-general" id="sh-general">
+				<div class="quick-spec-table">
+					<!-- Type -->
+					<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/tag.svg')) }}" alt="type" width="24" height="24">Type</div>
+					{% if expansioncard.getType() is not empty %}
+					<div class="tag-container">
+						{% for type in expansioncard.getType() %}
+						<span class="text-block">{{ type }}</span>
+						{% endfor %}
+					</div>
+					{% else %}
+					<div>Unknown</div>
+					{% endif %}
+					<!-- Device ID -->
+					<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/tag.svg')) }}" alt="date" width="24" height="24">PCI ID</div>
+					<div class="tag-container">
+					{% if expansioncard.getPciDevs() is not empty %}
+						{% for device in expansioncard.getPciDevs() %}
+							<span class="text-block">{{device.getDev()}}</span>
+						{% endfor %}
+					{% elseif expansioncard.getExpansionChips()|filter(a => a.pciDevs is not empty) is not empty %}
+						{% for chip in expansioncard.getExpansionChips()|filter(a => a.pciDevs is not empty) %}
+							{% for device in chip.getPciDevs() %}
+								<span class="text-block">{{device.getDev()}}</span>
+							{% endfor %}
+						{% endfor %}
+					{% else %}
+						<div>None</div>
+					{% endif %}
+					</div>
+					<!-- Expansion Slot -->
+					<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/io.svg')) }}" alt="interface" width="24" height="24">Interface</div>
+					<div>
+					{% if expansioncard.getExpansionSlotInterfaceSignal() is not empty %}
+						<a href="{{ path('expansion_slot_show', {id: expansioncard.getExpansionSlotInterfaceSignal().getId()}) }}"
+						>{{ expansioncard.getExpansionSlotInterfaceSignal().getName() }}</a>
+					{% else %}
+						{{ expansioncard.getExpansionSlotInterface().getName() }} {{ expansioncard.getExpansionSlotSignal().getName() }}
+					{% endif %}
+					</div>
+					<!-- Expansion Chips -->
+					{% if expansioncard.getExpansionChips() is not empty %}
+						{% for type in expansionchiptype %}
+							{% for chip in expansioncard.getExpansionChips()|filter(a => a.getType().getName() == type.getName())%}
+								{% if loop.first %}<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/chip.svg')) }}" alt="chip" width="24" height="24">{{chip.getType().getName()}} chips</div><div class="tag-container">{% endif %}
+								<a href="{{ path('expansion_chip_show', {id: chip.getId()}) }}"><span class="text-block">{{ chip.getNameWithManufacturer() }}</span></a>
+								{% if loop.index == expansioncard.getExpansionChips()|filter(a => a.getType().getName() == type.getName())|length %}</div>{% endif %}
+							{% endfor %}
+						{% endfor %}
+					{% endif %}
+					<!-- Supported RAM types -->
+					{% if expansioncard.getDramType() is not empty %}
+					<div class="quick-spec-head">
+						<img src="{{ absolute_url(asset('build/icons/ram.svg')) }}" alt="ram" width="24" height="24">RAM type{% if expansioncard.getDramType()|length > 1 %}s{% endif %}
+					</div>
+					<div class="tag-container">{% for dram in expansioncard.getDramType() %}<span class="text-block">{{ dram.getName() }}</span>{% endfor %}</div>
+					{% endif %}
+					<!-- Max card RAM -->
+					{% if expansioncard.getRamSize() is not empty %}
+					<div class="quick-spec-head">
+						<img src="{{ absolute_url(asset('build/icons/ram_multi.svg')) }}" alt="ram" width="24" height="24">Max RAM size
+					</div>
+					<div class="tag-container">{% for size in expansioncard.getRamSize() %}<span class="text-block">{{ size.getValueWithUnit()}}</span>{% endfor %}</div>
+					{% endif %}
+					<!-- PSU connectors -->
+					{% if expansioncard.getPowerConnectors() is not empty %}
+					<div class="quick-spec-head">
+						<img src="{{ absolute_url(asset('build/icons/power.svg')) }}" alt="pwr" width="24" height="24">Power connector
+					</div>
+					<div class="tag-container">{% for power in expansioncard.getPowerConnectors() %}
+						<a href="{{ path('psu_connector_show', {id: power.getId()}) }}"><span class="text-block">{{ power.getName() }}</span></a>{% endfor %}</div>
+					{% endif %}
+					<!-- Slot height-->
+					{% if expansioncard.getSlotCount() is not null %}
+					<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/dimension.svg')) }}" alt="dim" width="24" height="24">Slot height</div>
+					<div>{{ expansioncard.getSlotCount() }}</div>
+					{% endif %}
+					<!-- Dimensions -->
+					{% if expansioncard.getWidth() is not null or expansioncard.getLength() is not null or expansioncard.getHeight() is not null %}
+					<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/dimension.svg')) }}" alt="dim" width="24" height="24">Dimensions</div>
+					<div>{{ expansioncard.getWidth() ?: '[unknown]' }} mm (width) x {{ expansioncard.getLength() ?: '[unknown]' }} mm (length) x {{ expansioncard.getHeight() ?: '[unknown]' }} mm (height)</div>
+					{% endif %}
+				</div>
+				<div class="full-spec">
+					<!-- IO ports -->
+					<div class="full-spec-head"><img src="{{ absolute_url(asset('build/icons/rs232.svg')) }}" alt="portint" width="24" height="24"><b>I/O ports (external)</b></div>
+					<div class="list-table">
+						{% if expansioncard.getIoPorts()|filter(port => not port.isInternal) is not empty %}
+							{% for port in expansioncard.getIoPorts()|sort((a, b) => a.getIoPortInterface().getName() <=> b.getIoPortInterface().getName())|filter(port => not port.isInternal) %}
+								<div class="list-table-head">
+									<b>{{ port.getCount() }}x&nbsp;</b>
+								</div>
+								<div>
+								{% if port.getIoPortInterfaceSignal() is not empty %}
+									<a href="{{ path('io_port_show', {id: port.getIoPortInterfaceSignal().getId()}) }}">{{ port.getIoPortInterfaceSignal().getName() }}</a>
+								{% else %}
+									{{ port.getIoPortInterface().getName() }}{% if port.ioPortSignals() is not empty %}&nbsp;({% for type in port.ioPortSignals() %}{{type.getName()}}{% if not loop.last %}, {% endif %}{% endfor %}){% endif %}
+								{% endif %}
+								</div>
+							{% endfor %}
+						{% else %}<div class="list-table-head"></div><div>N/A</div>{% endif %}
+					</div>
+					<div class="full-spec-head"><img src="{{ absolute_url(asset('build/icons/rs232.svg')) }}" alt="portint" width="24" height="24"><b>I/O ports (internal)</b></div>
+					<div class="list-table">
+						{% if expansioncard.getIoPorts()|filter(port => port.isInternal) is not empty %}
+							{% for port in expansioncard.getIoPorts()|sort((a, b) => a.getIoPortInterface().getName() <=> b.getIoPortInterface().getName())|filter(port => port.isInternal) %}
+								<div class="list-table-head">
+									<b>{{ port.getCount() }}x&nbsp;</b>
+								</div>
+								<div>
+								{% if port.getIoPortInterfaceSignal() is not empty %}
+									<a href="{{ path('io_port_show', {id: port.getIoPortInterfaceSignal().getId()}) }}">{{ port.getIoPortInterfaceSignal().getName() }}</a>
+								{% else %}
+									{{ port.getIoPortInterface().getName() }}{% if port.ioPortSignals() is not empty %}&nbsp;({% for type in port.ioPortSignals() %}{{type.getName()}}{% if not loop.last %}, {% endif %}{% endfor %}){% endif %}
+								{% endif %}
+								</div>
+							{% endfor %}
+						{% else %}<div class="list-table-head"></div><div>N/A</div>{% endif %}
+					</div>
+					<!-- Memory connectors -->
+					<div class="full-spec-head"><img src="{{ absolute_url(asset('build/icons/ram.svg')) }}" alt="card" width="24" height="24"><b>Memory connectors</b></div>
+					<div class="list-table">
+						{% if expansioncard.getExpansionCardMemoryConnectors() is not empty %}
+							{% for slot in expansioncard.getExpansionCardMemoryConnectors()|sort((a, b) => a.getMemoryConnector().getName() <=> b.getMemoryConnector().getName()) %}
+								<div class="list-table-head"><b>{{ slot.getCount() }}x&nbsp;</b></div><div>{{ slot.getMemoryConnector().getName() }}</div>
+							{% endfor %}
+						{% else %}<div class="list-table-head"></div><div>N/A</div>{% endif %}
+					</div>
+				</div>
+				{% if expansioncard.getMiscSpecs() is not empty %}
+					<div class="textarea">
+						<h3><b>Specifications:</b></h3>
+						{% if expansioncard.getSimpleMiscSpecs() is not empty %}
+						<ul>
+							{% for spec_key, spec_value in expansioncard.getSimpleMiscSpecs() %}
+							<li>{{spec_key}}: {{spec_value}}</li>
+							{% endfor %}
+						</ul>
+						{% endif %}
+						{% if expansioncard.getTableMiscSpecs() is not empty %}
+						<div class="spec-section">
+							{% for spec_key, spec_value in expansioncard.getTableMiscSpecs() %}
+								<table><thead><tr><th colspan="2">{{spec_key}}</th><tr></thead>
+								{% for key, value in spec_value %}
+									<tr><td>{{key}}</td><td>{{value}}</td></tr>
+								{% endfor %}
+								</table>
+							{% endfor %}
+						</div>
+						{% endif %}
+					</div>
+				{% endif %}
+				{% include 'macros/aliases.html.twig' with {'entity':expansioncard.getExpansionCardAliases(), 'msg': 'Also known as:'} %}
+				{% include 'macros/notes.html.twig' with {'entity': expansioncard} %}
+				<div id="index-datetime"><div class="div-datetime">Last updated <span class="perk-date">{{ expansioncard.getLastEdited()|date("Y-m-d\\TH:i:s", "GMT") }}Z</span></div></div>
+			</div>
+			<!-- BIOSes -->
+			<div class="show-downloads" id="sh-bios">
+				<div class="show-downloads-group">
+					<div class="show-downloads-group-header">
+						<img src="{{ absolute_url(asset('build/icons/awchip.svg')) }}" alt="" width="32" height="32">
+						{% set bfile_cnt = 0 %}
+						{% if expansioncard.getExpansionCardBios() is not empty %}
+							{% for bios in expansioncard.getExpansionCardBios() %}
+								{% if bios.getFileName() is not null %}{% set bfile_cnt = bfile_cnt + 1 %}{% endif %}
+							{% endfor %}
+						{% endif %}
+						<span>{{ bfile_cnt }} file{% if bfile_cnt != 1 %}s{% endif %} available</span>
+					</div>
+					{% if expansioncard.getExpansionCardBios() is not empty %}
+						<div class="plain-list w300p table">
+							<div class="list-entry centered head">
+								<div>Version</div>
+								<div>Note</div>
+								<div>File</div>
+							</div>
+							{% for bios in expansioncard.getExpansionCardBios()|sort((a, b) => b.boardVersion <=> a.boardVersion) %}
+							<div class="list-entry centered {% if loop.index is divisible by(2) %}alt{% endif %}">
+								<div class="header-label">Version</div>
+								<div>{{ bios.getVersion() }}</div>
+								<div class="header-label">Note</div>
+								<div>{{ bios.getNote() }}</div>
+								<div class="header-label">File</div>
+								<div>
+									{% if bios.getFileName() is not null %}
+										<a class="combo" href="{{ vich_uploader_asset(bios, 'romFile') }}">
+											<img src="{{ absolute_url(asset('build/icons/dw.svg')) }}" alt="" width="16" height="16">
+											{% set fname = bios.getFileName() %}
+											<span>{{ fname|slice(0, fname|length - 27) ~ fname[fname|length - 4 :] }}</span>
+										</a>
+									{% endif %}
+								</div>
+							</div>
+						</div>
+						{% endfor %}
+					{% endif %}
+				</div>
+			</div>
+			<!-- DRIVERS -->
+			<div class="show-downloads" id="sh-driver">
+				{% include 'macros/drivers.html.twig' with {'entity': expansioncard.getAllDrivers()} %}
+			</div>
+			<!-- Documentation -->
+			<div class="show-downloads" id="sh-docs">
+				{% include 'macros/manuals.html.twig' with {'entity': expansioncard.getDocumentations(), 'chips': expansioncard.getChipDocs()} %}
+			</div>
+		</div>
+	</div>
+
+	<!-- IMAGES -->
+	<div class="show-images" id="sh-images">
+	{% if expansioncard.getImages() is not empty %}
+		{% set lpindex = 0 %}
+		{% for image in expansioncard.getImages()|sort((a, b) => a.getFileName() <=> b.getFileName())|sort((a, b) => a.getType <=> b.getType) %}
+			{% set lpindex = lpindex + 1 %}
+			{% include 'macros/images.html.twig' with {'type':'expansionchip', 'entity': image, 'index': lpindex, 'length': expansioncard.getImages()|length} %}
+		{% endfor %}
+	{% else %}
+		<div class="show-images">
+			<img src={{ absolute_url(asset('build/images/missing/card-missing.jpg')) }} title="no images available :(" style="width:100%;">
+		</div>
+	{% endif %}
+	</div>
+
+</div>
+<div class="disclaimer">
+	<p><b>Disclaimer</b></p>
+	<p>The info found in this page might not be entirely correct. Check out <a href="{{ path('app_contributions') }}">this guide</a> to learn how you can improve it.</p>
+</div>
+{% endblock %}

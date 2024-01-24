@@ -23,7 +23,10 @@ class ChipsetDocumentation
 
     #[ORM\ManyToOne(targetEntity: Chipset::class, inversedBy: 'documentations')]
     private $chipset;
-
+    public function __toString(): string
+    {
+        return $this->getLinkName() . " [" . $this->getReleaseDateString() . "]";
+    }
     public function getChipset(): ?Chipset
     {
         return $this->chipset;

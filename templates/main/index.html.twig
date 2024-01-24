@@ -10,11 +10,6 @@
 {% endblock %}
 
 {% block body %}
-{#<!-- ============= when it's ready
-<a href="#">
-	<img src="{{ absolute_url(asset('build/images/index/card.webp')) }}" alt="cards" width="210" height="180">
-	<div>Expansion cards</div><div>[WIP]</div>
-</a> -->#}
 
 <div class="perks">
 	<p><b>Search motherboard by model</b></p>
@@ -66,6 +61,15 @@
 				</div>
 				<div class="perk-name">Chipsets</div>
 				<div class="perk-alias">{{chipCount}}&nbsp;entries</div>
+			</a>
+		</div>
+		<div class="perk">
+			<a href="{{ path("expansioncardsearch") }}">
+				<div class="perk-image">
+					<img src="{{ absolute_url(asset('build/icons/card.svg')) }}" alt="card" loading="lazy" width="120" height="100">
+				</div>
+				<div class="perk-name">Expansion cards</div>
+				<div class="perk-alias">{{expcardCount}}&nbsp;entries</div>
 			</a>
 		</div>
 		<div class="perk">
@@ -141,6 +145,34 @@
 				{% endif %}</div>
 				<div class="perk-name">{{ motherboard.getManufacturerName() }}&nbsp;{{ motherboard.name }}</div>
 				<div class="perk-date">{{ motherboard.getLastEdited()|date("Y-m-d\\TH:i:s", "GMT") }}Z</div>
+			</a>
+		</div>
+	{% endfor %}
+	</div>
+</div>
+<div class="perks">
+	<p><b>Last edited expansion cards</b></p>
+	<div id="index-datetime" class="perks-list">
+	{% for card in latestCards %}
+		<div class="perk">
+			<a href="{{ path("expansioncard_show", {id:card.getId()}) }}">
+				<div class="perk-image">
+				{% if card.getImages() is not empty %}
+					{% set imgtype_count = 0 %}
+					{% for image in card.getImages()|filter(a => a.type in [1, 2])|sort((a, b) => a.getFileName() <=> b.getFileName())|sort((a, b) => b.type <=> a.type)|slice(0, 1) %}
+						<img src="{% if vich_uploader_asset(image, 'imageFile') | ext != "svg" %}
+							{{ vich_uploader_asset(image, 'imageFile') | imagine_filter('show_thumb') }}{% else %}
+							{{ vich_uploader_asset(image, 'imageFile')}}{% endif %}" alt="" loading="lazy" width="250" height="200" title="{% if image.description %}{{ image.description }}{% endif %}">
+							{% set imgtype_count = imgtype_count + 1 %}
+					{% endfor %}
+					{% if imgtype_count == 0 %}
+						<img src="{{ absolute_url(asset('build/images/missing/card-missing.jpg')) }}" loading="lazy" width="250" height="200" title="no images available :(">
+					{% endif %}
+				{% else %}
+					<img src="{{ absolute_url(asset('build/images/missing/card-missing.jpg')) }}" alt="missing image" loading="lazy" width="250" height="200" title="no images available :(">
+				{% endif %}</div>
+				<div class="perk-name">{{ card.getManufacturerName() }}&nbsp;{{ card.name }}</div>
+				<div class="perk-date">{{ card.getLastEdited()|date("Y-m-d\\TH:i:s", "GMT") }}Z</div>
 			</a>
 		</div>
 	{% endfor %}

@@ -86,6 +86,9 @@ class LargeFile
     #[ORM\OneToMany(targetEntity: LargeFileExpansionChip::class, mappedBy: 'largeFile', orphanRemoval: true, cascade: ['persist'])]
     private $expansionchips;
 
+    #[ORM\OneToMany(targetEntity: LargeFileExpansionCard::class, mappedBy: 'largeFile', orphanRemoval: true, cascade: ['persist'])]
+    private $expansionCards;
+
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $lastEdited = null;
 
@@ -97,7 +100,12 @@ class LargeFile
         $this->motherboards = new ArrayCollection();
         $this->chipsets = new ArrayCollection();
         $this->expansionchips = new ArrayCollection();
+        $this->expansionCards = new ArrayCollection();
         $this->lastEdited = new \DateTime('now');
+    }
+    public function __toString(): string
+    {
+        return $this->getNameWithTags();
     }
     public function getId(): ?int
     {
@@ -418,6 +426,33 @@ class LargeFile
         }
 
         return $strBuilder;
+    }
+    /**
+     * @return Collection|LargeFileExpansionCard[]
+     */
+    public function getExpansionCards(): ?Collection
+    {
+        return $this->expansionchips;
+    }
+    public function addExpansionCard(LargeFileExpansionCard $largeFileExpansionCard): self
+    {
+        if (!$this->expansionchips->contains($largeFileExpansionCard)) {
+            $this->expansionchips[] = $largeFileExpansionCard;
+            $largeFileExpansionCard->setLargeFile($this);
+        }
+
+        return $this;
+    }
+    public function removeExpansionCard(LargeFileExpansionCard $largeFileExpansionCard): self
+    {
+        if ($this->expansionchips->removeElement($largeFileExpansionCard)) {
+            // set the owning side to null (unless already changed)
+            if ($largeFileExpansionCard->getLargeFile() === $this) {
+                $largeFileExpansionCard->setLargeFile(null);
+            }
+        }
+
+        return $this;
     }
     #[Assert\Callback]
     public function validate(ExecutionContextInterface $context, mixed $payload): void

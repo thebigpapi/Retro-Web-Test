@@ -71,6 +71,12 @@ class Manufacturer
     #[ORM\OneToMany(mappedBy: 'manufacturer', targetEntity: EntityImage::class, orphanRemoval: true, cascade: ['persist'])]
     private Collection $entityImages;
 
+    #[ORM\OneToMany(mappedBy: 'manufacturer', targetEntity: ExpansionCardAlias::class)]
+    private Collection $expansionCardAliases;
+
+    #[ORM\OneToMany(mappedBy: 'manufacturer', targetEntity: ExpansionCard::class)]
+    private Collection $expansionCards;
+
     public function __construct()
     {
         $this->motherboards = new ArrayCollection();
@@ -86,6 +92,8 @@ class Manufacturer
         $this->storageDevices = new ArrayCollection();
         $this->manufacturerCodes = new ArrayCollection();
         $this->entityImages = new ArrayCollection();
+        $this->expansionCardAliases = new ArrayCollection();
+        $this->expansionCards = new ArrayCollection();
     }
     public function __toString(): string
     {
@@ -507,6 +515,66 @@ class Manufacturer
             // set the owning side to null (unless already changed)
             if ($entityImage->getManufacturer() === $this) {
                 $entityImage->setManufacturer(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ExpansionCardAlias>
+     */
+    public function getExpansionCardAliases(): Collection
+    {
+        return $this->expansionCardAliases;
+    }
+
+    public function addExpansionCardAlias(ExpansionCardAlias $expansionCardAlias): static
+    {
+        if (!$this->expansionCardAliases->contains($expansionCardAlias)) {
+            $this->expansionCardAliases->add($expansionCardAlias);
+            $expansionCardAlias->setManufacturer($this);
+        }
+
+        return $this;
+    }
+
+    public function removeExpansionCardAlias(ExpansionCardAlias $expansionCardAlias): static
+    {
+        if ($this->expansionCardAliases->removeElement($expansionCardAlias)) {
+            // set the owning side to null (unless already changed)
+            if ($expansionCardAlias->getManufacturer() === $this) {
+                $expansionCardAlias->setManufacturer(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ExpansionCard>
+     */
+    public function getExpansionCards(): Collection
+    {
+        return $this->expansionCards;
+    }
+
+    public function addExpansionCard(ExpansionCard $expansionCard): static
+    {
+        if (!$this->expansionCards->contains($expansionCard)) {
+            $this->expansionCards->add($expansionCard);
+            $expansionCard->setManufacturer($this);
+        }
+
+        return $this;
+    }
+
+    public function removeExpansionCard(ExpansionCard $expansionCard): static
+    {
+        if ($this->expansionCards->removeElement($expansionCard)) {
+            // set the owning side to null (unless already changed)
+            if ($expansionCard->getManufacturer() === $this) {
+                $expansionCard->setManufacturer(null);
             }
         }
 

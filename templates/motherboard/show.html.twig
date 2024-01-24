@@ -143,8 +143,8 @@
 					<div>{{ motherboard.getDimensions() ?: 'Unknown' }}</div>
 				</div>
 			</div>
-				<div class="full-spec">
-					<div class="full-spec-head"><img src="{{ absolute_url(asset('build/icons/connector.svg')) }}" alt="conn" width="24" height="24"><b>I/O ports</b></div>
+			<div class="full-spec">
+				<div class="full-spec-head"><img src="{{ absolute_url(asset('build/icons/connector.svg')) }}" alt="conn" width="24" height="24"><b>I/O ports</b></div>
 					<div class="list-table">
 						{% if motherboard.getMotherboardIoPorts() is not empty %}
 							{% for port in motherboard.getMotherboardIoPorts()|sort((a, b) => a.getIoPort().getName() <=> b.getIoPort().getName()) %}
@@ -296,7 +296,7 @@
 			</div>
 			<!-- Documentation -->
 			<div class="show-downloads" id="sh-docs">
-				{% include 'macros/manuals.html.twig' with {'entity': motherboard.getManuals()} %}
+				{% include 'macros/manuals.html.twig' with {'entity': motherboard.getManuals(), 'chips': motherboard.getChipDocs()} %}
 				<!-- MISC FILES -->
 				<div class="show-downloads-group">
 					<div class="show-downloads-group-header">

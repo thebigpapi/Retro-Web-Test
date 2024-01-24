@@ -411,6 +411,11 @@ div.mobo-buttons {
 	flex-direction: row;
 	padding-right: 10px;
 }
+div.hide-actions{
+	button.action-saveAndContinue, button.action-saveAndReturn{
+		display: none;
+	}
+}
 
 body:not(.ea-content-width-full) .content-wrapper {
 	max-width: none;
@@ -459,6 +464,76 @@ div.driver-messages {
 	img {
 		display: none;
 	}
+}
+div.card-specs-grid textarea{
+	min-height: 30rem;
+}
+div.specs-elements{
+	display: flex;
+	gap: 5px;
+	padding: 0;
+	label{
+		display: none;
+	}
+	div.first{
+		flex-grow: 4;
+	}
+	div.second{
+		flex-grow: 6;
+	}
+}
+div.multi-widget-trw{
+	div.ts-wrapper{
+		background-color: #ffffff;
+		@media (prefers-color-scheme: dark) {
+			background-color: #252525;
+		}
+	}
+	.ts-wrapper.multi .ts-control>div.item{
+			font-size: 15px;
+			padding: 4px 6px;
+			width:85%;
+			a.remove{
+				border-left: 1px solid transparent;
+				margin-left: auto;
+				i{font-size: 19px;}
+			}
+	}
+	div.ts-control{
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+	}
+}
+i.red{
+	color: var(--link-danger-color);
+}
+.ts-wrapper.multi .ts-control>div.clear-button {
+	box-shadow: none;
+}
+.plugin-clear_button.ts-wrapper .clear-button, .plugin-clear_button.ts-wrapper.multi .clear-button {
+	background: transparent!important;
+}
+.plugin-clear_button.ts-wrapper .clear-button:hover, .plugin-clear_button.ts-wrapper.multi .clear-button:hover {
+    background: transparent!important;
+	i.red{
+		color: $btn-hover-light;
+		@media (prefers-color-scheme: dark) {
+			color: $btn-hover-dark;
+		}
+	}
+}
+.ts-wrapper.plugin-remove_button .item .remove:hover {
+	background: transparent;
+	i.red{
+		color: $btn-hover-light;
+		@media (prefers-color-scheme: dark) {
+			color: $btn-hover-dark;
+		}
+	}
+}
+div.clear-button-trw{
+	border: none !important;
 }
 
 .form-widget .form-select,

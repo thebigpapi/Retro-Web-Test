@@ -14,11 +14,11 @@ use App\Controller\Admin\Filter\ChipDocFilter;
 use App\Controller\Admin\Filter\ChipDriverFilter;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
-use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ArrayField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
@@ -87,12 +87,9 @@ class ExpansionChipCrudController extends AbstractCrudController
             ->setIcon('fa fa-info')
             ->onlyOnForms();
         yield IdField::new('id')->onlyOnIndex();
-        yield TextField::new('getManufacturer','Manufacturer')
-            ->hideOnForm();
         yield AssociationField::new('manufacturer','Manufacturer')
             ->setFormTypeOption('placeholder', 'Type to select a manufacturer ...')
-            ->setColumns(4)
-            ->onlyOnForms();
+            ->setColumns(4);
         yield TextField::new('partNumber', 'Part number')
             ->setColumns(4);
         yield TextField::new('name', 'Name')
@@ -101,14 +98,11 @@ class ExpansionChipCrudController extends AbstractCrudController
         // index
         yield ArrayField::new('getPciDevsLimited', 'Device ID')
             ->hideOnForm();
-        yield BooleanField::new('getImages','Images')
-            ->renderAsSwitch(false)
+        yield CollectionField::new('images','Images')
             ->onlyOnIndex();
-        yield BooleanField::new('getDocumentations','Docs')
-            ->renderAsSwitch(false)
+        yield CollectionField::new('documentations','Docs')
             ->onlyOnIndex();
-        yield BooleanField::new('getDrivers','Drivers')
-            ->renderAsSwitch(false)
+        yield CollectionField::new('drivers','Drivers')
             ->onlyOnIndex();
         // editor
         yield AssociationField::new('type','Type')
@@ -117,9 +111,12 @@ class ExpansionChipCrudController extends AbstractCrudController
             ->onlyOnForms();
         yield CollectionField::new('pciDevs', 'Device ID')
             ->setEntryType(PciDeviceIdType::class)
-            ->setColumns(6)
+            ->setColumns(4)
             ->renderExpanded()
             ->onlyOnForms();
+        yield IntegerField::new('sort', 'Image sort')
+            ->setFormTypeOption('required', true)
+            ->setColumns(2);
         yield CodeEditorField::new('description')
             ->setLanguage('markdown')
             ->onlyOnForms();

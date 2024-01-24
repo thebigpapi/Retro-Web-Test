@@ -19,6 +19,9 @@ class PciDeviceId
     #[ORM\ManyToOne(targetEntity: Chip::class, inversedBy: 'pciDevs')]
     private $chip;
 
+    #[ORM\ManyToOne(inversedBy: 'pciDevs')]
+    private ?ExpansionCard $expansionCard = null;
+
     public function __toString(): string
     {
         return $this->getDev();
@@ -59,5 +62,17 @@ class PciDeviceId
 
         //convert to integer
         return hexdec($PCIDEVID);
+    }
+
+    public function getExpansionCard(): ?ExpansionCard
+    {
+        return $this->expansionCard;
+    }
+
+    public function setExpansionCard(?ExpansionCard $expansionCard): static
+    {
+        $this->expansionCard = $expansionCard;
+
+        return $this;
     }
 }

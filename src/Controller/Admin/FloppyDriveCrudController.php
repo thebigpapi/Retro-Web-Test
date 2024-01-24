@@ -4,7 +4,7 @@ namespace App\Controller\Admin;
 
 use App\Entity\FloppyDrive;
 use App\Entity\StorageDeviceAlias;
-use App\Form\Type\KnownIssueType;
+use App\Form\Type\KnownIssueFddType;
 use App\Form\Type\StorageDeviceAliasType;
 use App\Form\Type\StorageDeviceDocumentationType;
 use App\Form\Type\StorageDeviceIdRedirectionType;
@@ -20,7 +20,6 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
-use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ArrayField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
@@ -42,6 +41,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Security\Permission;
 use EasyCorp\Bundle\EasyAdminBundle\Config\KeyValueStore;
 use EasyCorp\Bundle\EasyAdminBundle\Collection\FieldCollection;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Response;
 
 class FloppyDriveCrudController extends AbstractCrudController
 {    private $adminUrlGenerator;
@@ -124,35 +124,26 @@ class FloppyDriveCrudController extends AbstractCrudController
         // index items
         yield IdField::new('id')
             ->onlyOnIndex();
-        yield TextField::new('manufacturer.name','Manufacturer')
-            ->hideOnForm();
-        yield TextField::new('name')
-            ->hideOnForm();
-        yield TextField::new('partNumber')
-            ->hideOnForm();
-        yield ArrayField::new('interfaces', 'Interface')
-            ->onlyOnIndex();
-        // editor items
         yield AssociationField::new('manufacturer','Manufacturer')
             ->setFormTypeOption('required', false)
-            ->setColumns('col-sm-6 col-lg-6 col-xxl-4')
-            ->onlyOnForms();
+            ->setColumns('col-sm-6 col-lg-6 col-xxl-4');
+
+        // editor items
+
         yield TextField::new('name')
-            ->setColumns('col-sm-6 col-lg-6 col-xxl-4')
-            ->onlyOnForms();
+            ->setColumns('col-sm-6 col-lg-6 col-xxl-4');
         yield TextField::new('partNumber')
-            ->setColumns('col-sm-6 col-lg-6 col-xxl-4')
-            ->onlyOnForms();
+            ->setColumns('col-sm-6 col-lg-6 col-xxl-4');
+        yield ArrayField::new('interfaces', 'Interface')
+            ->onlyOnIndex();
         yield AssociationField::new('physicalSize', 'Physical size')
             ->setColumns('col-sm-6 col-lg-6 col-xxl-4')
             ->onlyOnForms();
         yield TextField::new('density')
             ->onlyOnIndex();
-        yield BooleanField::new('getStorageDeviceImages','Images')
-            ->renderAsSwitch(false)
+        yield TextField::new('isStorageDeviceImage','Images')
             ->onlyOnIndex();
-        yield BooleanField::new('getStorageDeviceDocumentations','Docs')
-            ->renderAsSwitch(false)
+        yield CollectionField::new('storageDeviceDocumentations','Docs')
             ->onlyOnIndex();
         yield ChoiceField::new('density')
             ->setColumns('col-sm-6 col-lg-6 col-xxl-4')
@@ -179,7 +170,7 @@ class FloppyDriveCrudController extends AbstractCrudController
             ->renderExpanded()
             ->onlyOnForms();
         yield CollectionField::new('knownIssues', 'Known issues')
-            ->setEntryType(KnownIssueType::class)
+            ->setEntryType(KnownIssueFddType::class)
             ->setColumns('col-sm-6 col-lg-6 col-xxl-4')
             ->renderExpanded()
             ->onlyOnForms();

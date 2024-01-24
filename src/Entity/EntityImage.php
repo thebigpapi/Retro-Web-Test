@@ -47,6 +47,18 @@ class EntityImage
     #[ORM\ManyToOne(inversedBy: 'entityImages')]
     private ?Manufacturer $manufacturer = null;
 
+    #[ORM\ManyToOne(inversedBy: 'entityImages')]
+    private ?IoPortInterface $ioPortInterface = null;
+
+    #[ORM\ManyToOne(inversedBy: 'entityImages')]
+    private ?IoPortSignal $ioPortSignal = null;
+
+    #[ORM\ManyToOne(inversedBy: 'entityImages')]
+    private ?ExpansionSlotSignal $expansionSlotSignal = null;
+
+    #[ORM\ManyToOne(inversedBy: 'entityImages')]
+    private ?ExpansionSlotInterface $expansionSlotInterface = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -148,6 +160,54 @@ class EntityImage
     public function setManufacturer(?Manufacturer $manufacturer): self
     {
         $this->manufacturer = $manufacturer;
+
+        return $this;
+    }
+
+    public function getIoPortInterface(): ?IoPortInterface
+    {
+        return $this->ioPortInterface;
+    }
+
+    public function setIoPortInterface(?IoPortInterface $ioPortInterface): static
+    {
+        $this->ioPortInterface = $ioPortInterface;
+
+        return $this;
+    }
+
+    public function getIoPortSignal(): ?IoPortSignal
+    {
+        return $this->ioPortSignal;
+    }
+
+    public function setIoPortSignal(?IoPortSignal $ioPortSignal): static
+    {
+        $this->ioPortSignal = $ioPortSignal;
+
+        return $this;
+    }
+
+    public function getExpansionSlotSignal(): ?ExpansionSlotSignal
+    {
+        return $this->expansionSlotSignal;
+    }
+
+    public function setExpansionSlotSignal(?ExpansionSlotSignal $expansionSlotSignal): static
+    {
+        $this->expansionSlotSignal = $expansionSlotSignal;
+
+        return $this;
+    }
+
+    public function getExpansionSlotInterface(): ?ExpansionSlotInterface
+    {
+        return $this->expansionSlotInterface;
+    }
+
+    public function setExpansionSlotInterface(?ExpansionSlotInterface $expansionSlotInterface): static
+    {
+        $this->expansionSlotInterface = $expansionSlotInterface;
 
         return $this;
     }

@@ -4,6 +4,7 @@ namespace App\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\File;
@@ -40,6 +41,9 @@ class ChipImageType extends AbstractType
                         'mimeTypesMessage' => 'Please upload a valid image',
                     ])
                 ],
+            ])
+            ->add('sort', IntegerType::class, [
+                'required' => true,
             ])
             ->add('creditor', EntityType::class, [
                 'class' => Creditor::class,

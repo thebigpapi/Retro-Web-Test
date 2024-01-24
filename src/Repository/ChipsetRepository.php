@@ -151,9 +151,6 @@ class ChipsetRepository extends ServiceEntityRepository
             ->getQuery()
             ->getSingleScalarResult();
     }
-    /**
-     * @return Chipset[] Returns an array of sockets and count of board for each socket
-     */
     public function getChipsetDocCount(): array
     {
         $entityManager = $this->getEntityManager();

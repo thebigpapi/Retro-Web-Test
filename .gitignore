@@ -21,6 +21,7 @@
 /public/motherboard/image/*
 /public/motherboard/manual/*
 /public/motherboard/*
+/public/expansioncard/*
 /public/chipset/documentation/*
 /public/chipset/*
 /public/uploads/*

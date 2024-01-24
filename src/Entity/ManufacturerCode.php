@@ -20,6 +20,11 @@ class ManufacturerCode
     #[ORM\JoinColumn(nullable: false)]
     private ?Manufacturer $manufacturer = null;
 
+    public function __toString(): string
+    {
+        return $this->getValue();
+    }
+
     public function getId(): ?int
     {
         return $this->id;

@@ -3,13 +3,21 @@
 namespace App\Controller;
 
 use App\Entity\CpuSocket;
+use App\Entity\ExpansionCardType;
+use App\Entity\IoPortInterface;
+use App\Entity\IoPortInterfaceSignal;
+use App\Entity\IoPortSignal;
 use App\Entity\ProcessorPlatformType;
 use App\Repository\CdDriveRepository;
 use App\Repository\ChipsetRepository;
 use App\Repository\CpuSocketRepository;
+use App\Repository\ExpansionCardTypeRepository;
 use App\Repository\ExpansionChipRepository;
 use App\Repository\FloppyDriveRepository;
 use App\Repository\HardDriveRepository;
+use App\Repository\IoPortInterfaceRepository;
+use App\Repository\IoPortInterfaceSignalRepository;
+use App\Repository\IoPortSignalRepository;
 use App\Repository\MotherboardRepository;
 use App\Repository\ProcessorRepository;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
@@ -17,11 +25,12 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
@@ -145,6 +154,86 @@ class AdminController extends AbstractDashboardController
             'username' => $user->getUsername(),
             'password' => $password,
         ]);
+    }
+
+    #[Route('/dashboard/getexpansioncardtemplate/', name:'get_expansion_card_template', methods:['GET'])]
+    public function getExpansioncardTemplate(Request $request, ExpansionCardTypeRepository $expansionCardTypeRepository): JsonResponse
+    {
+        $templates = [];
+        $filtersJson = $request->query->get('ids');
+        $ids = json_decode($filtersJson ?? "", true);
+        if (!$ids) {
+            throw new Exception("Missing or wrong expansion card type id list");
+        }
+        $templates = array_map(fn (ExpansionCardType $expansionCardType) => $expansionCardType->getTemplate(), $expansionCardTypeRepository->findBy(['id' => $ids]));
+       
+        $templatesMerged = [];
+
+        foreach ($templates as $template) {
+            foreach ($template as $key => $value) {
+                $templatesMerged[$key] = $value;
+            }
+        }
+
+        return new JsonResponse($templatesMerged);
+    }
+
+    #[Route('/dashboard/getioports/{id}', name:'get_ioports', methods:['GET'], requirements: ['id' => '\d+'])]
+    public function getIoPorts(Request $request, IoPortInterfaceSignalRepository $ioPortInterfaceSignalRepository, ?int $id = null): JsonResponse
+    {
+        $ioports = [];
+        if ($id) {
+            $ioport = $ioPortInterfaceSignalRepository->find($id);
+            if (!$ioport) {
+                return new Response('', 404);
+            }
+            $ioports = [$ioport];
+        } else {
+            $filtersJson = $request->query->get('filters');
+            if (!$filtersJson) {
+                $ioports =$ioPortInterfaceSignalRepository->findAll();
+            } else {
+                $filters = json_decode($filtersJson, true);
+                $ioports = $ioPortInterfaceSignalRepository->findBy($filters);
+            }
+        }
+
+        return new JsonResponse(array_map(fn (IoPortInterfaceSignal $ioport) => $ioport->jsonSerialize(), $ioports));
+    }
+
+    #[Route('/dashboard/getioportinterfaces/{id}', name:'get_ioportinterfaces', methods:['GET'], requirements: ['id' => '\d+'])]
+    public function getIoPortInterfaces(IoPortInterfaceRepository $ioPortInterfaceRepository, ?int $id = null): JsonResponse
+    {
+        $interfaces = [];
+        if ($id) {
+            $interface = $ioPortInterfaceRepository->find($id);
+            if (!$interface) {
+                return new Response('', 404);
+            }
+            $interfaces = [$interface];
+        } else {
+            $interfaces =$ioPortInterfaceRepository->findAll();
+        }
+
+        return new JsonResponse(array_map(fn (IoPortInterface $interface) => $interface->jsonSerialize(), $interfaces));
+    }
+
+    #[Route('/dashboard/getioportsignals/{id}', name:'get_ioportsignals', methods:['GET'], requirements: ['id' => '\d+'])]
+    public function getIoPortSignals(IoPortSignalRepository $ioPortSignalRepository, ?int $id = null): JsonResponse
+    {
+        $signals = [];
+        if ($id) {
+            $signal = $ioPortSignalRepository->find($id);
+            if (!$signal) {
+                return new Response('', 404);
+            }
+            $signals = [$signal];
+        } else {
+            $signals =$ioPortSignalRepository->findAll();
+            
+        }
+
+        return new JsonResponse(array_map(fn (IoPortSignal $signal) => $signal->jsonSerialize(), $signals));
     }
 
     /**

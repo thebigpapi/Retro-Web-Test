@@ -81,7 +81,7 @@ class Chipset
     }
     public function __toString(): string
     {
-        return $this->getNameCached();
+        return $this->getNameWithoutParts();
     }
     public function getId(): ?int
     {

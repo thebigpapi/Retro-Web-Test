@@ -21,9 +21,13 @@ class MemoryConnector
     #[ORM\OneToMany(mappedBy: 'memoryConnector', targetEntity: MotherboardMemoryConnector::class, orphanRemoval: true)]
     private Collection $motherboardMemoryConnectors;
 
+    #[ORM\OneToMany(mappedBy: 'memoryConnector', targetEntity: ExpansionCardMemoryConnector::class, orphanRemoval: true)]
+    private Collection $expansionCardMemoryConnectors;
+
     public function __construct()
     {
         $this->motherboardMemoryConnectors = new ArrayCollection();
+        $this->expansionCardMemoryConnectors = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -67,6 +71,36 @@ class MemoryConnector
             // set the owning side to null (unless already changed)
             if ($motherboardMemoryConnector->getMemoryConnector() === $this) {
                 $motherboardMemoryConnector->setMemoryConnector(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ExpansionCardMemoryConnector>
+     */
+    public function getExpansionCardMemoryConnectors(): Collection
+    {
+        return $this->expansionCardMemoryConnectors;
+    }
+
+    public function addExpansionCardMemoryConnector(ExpansionCardMemoryConnector $expansionCardMemoryConnector): static
+    {
+        if (!$this->expansionCardMemoryConnectors->contains($expansionCardMemoryConnector)) {
+            $this->expansionCardMemoryConnectors->add($expansionCardMemoryConnector);
+            $expansionCardMemoryConnector->setMemoryConnector($this);
+        }
+
+        return $this;
+    }
+
+    public function removeExpansionCardMemoryConnector(ExpansionCardMemoryConnector $expansionCardMemoryConnector): static
+    {
+        if ($this->expansionCardMemoryConnectors->removeElement($expansionCardMemoryConnector)) {
+            // set the owning side to null (unless already changed)
+            if ($expansionCardMemoryConnector->getMemoryConnector() === $this) {
+                $expansionCardMemoryConnector->setMemoryConnector(null);
             }
         }
 

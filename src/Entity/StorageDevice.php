@@ -246,6 +246,31 @@ class StorageDevice
 
         return $this;
     }
+    public function isStorageDeviceImage(): string
+    {
+        if(isset($this->storageDeviceImages))
+            $types = array(
+                1 => 0,
+                2 => 0,
+                3 => 0,
+                4 => 0,
+                5 => 0,
+                6 => 0,
+            );
+        foreach($this->storageDeviceImages as $image){
+            $types[(int)$image->getType()] += 1;
+        }
+        if(($types[1])){
+            if(!($types[2] || $types[3] || $types[4] || $types[5] || $types[6]))
+                return "Schema only";
+            else return "Schema and photo";
+        }
+        else{
+            if(!($types[2] || $types[3] || $types[4] || $types[5] || $types[6]))
+                return "None";
+            else return "Photo only";
+        }
+    }
 
     public function getPhysicalSize(): ?StorageDeviceSize
     {

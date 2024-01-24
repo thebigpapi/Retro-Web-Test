@@ -4,13 +4,12 @@ namespace App\Controller\Admin;
 
 use App\Entity\Motherboard;
 use App\Controller\Admin\Filter\MotherboardImageFilter;
-use App\Entity\MemoryConnector;
+use App\Controller\Admin\Filter\MotherboardBiosFilter;
 use App\Entity\MotherboardAlias;
 use App\Entity\MotherboardExpansionSlot;
 use App\Entity\MotherboardIoPort;
 use App\Entity\MotherboardMaxRam;
 use App\Entity\MotherboardMemoryConnector;
-use App\Entity\PSUConnector;
 use App\Form\Type\MotherboardAliasType;
 use App\Form\Type\MotherboardIdRedirectionType;
 use App\Form\Type\DramTypeType;
@@ -19,7 +18,7 @@ use App\Form\Type\CacheSizeType;
 use App\Form\Type\PSUConnectorType;
 use App\Form\Type\MotherboardIoPortType;
 use App\Form\Type\MotherboardExpansionSlotType;
-use App\Form\Type\KnownIssueType;
+use App\Form\Type\KnownIssueMotherboardType;
 use App\Form\Type\ExpansionChipType;
 use App\Form\Type\LargeFileMotherboardType;
 use App\Form\Type\MotherboardBiosType;
@@ -58,6 +57,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Security\Permission;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Response;
 
 class MotherboardCrudController extends AbstractCrudController
 {
@@ -126,6 +126,7 @@ class MotherboardCrudController extends AbstractCrudController
             ->add('motherboardAliases')
             ->add('chipset')
             ->add(MotherboardImageFilter::new('images'))
+            ->add(MotherboardBiosFilter::new('motherboardBios'))
             ->add('expansionChips')
             ->add('cacheSize')
             ->add('dramType')
@@ -147,24 +148,21 @@ class MotherboardCrudController extends AbstractCrudController
         // index items
         yield IdField::new('id')
             ->onlyOnIndex();
-        yield TextField::new('manufacturer.name','Manufacturer')
-            ->hideOnForm();
+        yield AssociationField::new('manufacturer','Manufacturer')
+            ->setFormTypeOption('required', false)
+            ->setColumns('col-sm-6 col-lg-6 col-xxl-4');
         yield TextField::new('name')
             ->hideOnForm();
-        yield BooleanField::new('isChipset','Chipset')
-            ->renderAsSwitch(false)
+        yield AssociationField::new('chipset','Chipset')
             ->onlyOnIndex();
         yield BooleanField::new('isExpansionChips','Exp.chips')
             ->renderAsSwitch(false)
             ->onlyOnIndex();
-        yield BooleanField::new('isManuals','Manual')
-            ->renderAsSwitch(false)
+        yield CollectionField::new('manuals','Manual')
             ->onlyOnIndex();
-        yield BooleanField::new('isMotherboardBios','BIOS')
-            ->renderAsSwitch(false)
+        yield CollectionField::new('motherboardBios','BIOS')
             ->onlyOnIndex();
         yield TextField::new('isImages','Images')
-            //->renderAsSwitch(false)
             ->onlyOnIndex();
 
         // show and index
@@ -172,10 +170,7 @@ class MotherboardCrudController extends AbstractCrudController
             ->hideOnForm();
 
         // editor items
-        yield AssociationField::new('manufacturer','Manufacturer')
-            ->setFormTypeOption('required', false)
-            ->setColumns('col-sm-6 col-lg-6 col-xxl-4')
-            ->onlyOnForms();
+
         yield TextField::new('name')
             ->setColumns('col-sm-6 col-lg-6 col-xxl-4')
             ->onlyOnForms();
@@ -184,7 +179,7 @@ class MotherboardCrudController extends AbstractCrudController
             ->onlyOnForms();
         yield FormField::addRow();
         yield CollectionField::new('motherboardAliases', 'Alternative names')
-            ->setEntryType(MotherboardAliasType::class)
+            ->useEntryCrudForm(MotherboardAliasCrudController::class)
             ->renderExpanded()
             ->setColumns('col-sm-12 col-lg-6 col-xxl-4')
             ->onlyOnForms();
@@ -225,7 +220,7 @@ class MotherboardCrudController extends AbstractCrudController
             ->setColumns('col-sm-12 col-lg-6 col-xxl-4')
             ->onlyOnForms();
         yield CollectionField::new('knownIssues', 'Known issues')
-            ->setEntryType(KnownIssueType::class)
+            ->setEntryType(KnownIssueMotherboardType::class)
             ->renderExpanded()
             ->onlyOnForms();
         yield CodeEditorField::new('note')
@@ -324,7 +319,7 @@ class MotherboardCrudController extends AbstractCrudController
             ->renderExpanded()
             ->onlyOnForms();
         yield CollectionField::new('drivers', 'Drivers')
-            ->setEntryType(LargeFileMotherboardType::class)
+            ->useEntryCrudForm(LargeFileMotherboardCrudController::class)
             ->renderExpanded()
             ->setColumns(6)
             ->onlyOnForms();
