@@ -12,7 +12,6 @@ use App\Form\Type\ExpansionCardIdRedirectionType;
 use App\Form\Type\ExpansionCardMemoryConnectorType;
 use App\Form\Type\ExpansionCardIoPortType;
 use App\Form\Type\ExpansionCardTypeType;
-use App\Form\Type\ExpansionChipType;
 use App\Form\Type\PSUConnectorType;
 use App\Form\Type\DramTypeType;
 use App\Form\Type\MaxRamType;
@@ -24,8 +23,6 @@ use App\Controller\Admin\Filter\ExpansionCardImageFilter;
 use App\Controller\Admin\Filter\ChipDocFilter;
 use App\Controller\Admin\Filter\ChipDriverFilter;
 use App\Controller\Admin\Filter\ExpansionCardBiosFilter;
-use App\Form\Type\CustomJsonType;
-use App\Form\Type\JsonKeyValueType;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
@@ -191,9 +188,8 @@ class ExpansionCardCrudController extends AbstractCrudController
             ->setColumns('col-sm-12 col-lg-6 col-xxl-4')
             ->renderExpanded()
             ->onlyOnForms();
-        yield CollectionField::new('expansionChips', 'Expansion chips')
-            ->setEntryType(ExpansionChipType::class)
-            ->renderExpanded()
+        yield AssociationField::new('expansionChips', 'Expansion chips')
+            ->setCustomOption('autocomplete', true)
             ->setColumns('col-sm-12 col-lg-6 col-xxl-4')
             ->onlyOnForms();
         yield FormField::addPanel('Connections')->onlyOnForms();
@@ -218,7 +214,6 @@ class ExpansionCardCrudController extends AbstractCrudController
             ->setIcon('fa fa-info')
             ->onlyOnForms();
         yield TextJsonField::new('miscSpecs', 'Misc specs')
-            //->setFormType(CustomJsonType::class)
             ->setColumns(12)
             ->onlyOnForms();
         yield FormField::addTab('Firmware')

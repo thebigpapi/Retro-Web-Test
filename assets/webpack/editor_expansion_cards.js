@@ -5,6 +5,11 @@ let miscSpecsJson = [];
 let miscSpecsIds = [];
 let miscSpecsTableIds = {};
 
+if(expChipsDiv = document.getElementById('ExpansionCard_expansionChips_autocomplete'))
+    setTimeout(() => { //Ensures it's executed after EA's action
+        expChipsDiv.nextElementSibling.setAttribute('id', 'ExpansionCard_expansionChips_autocomplete_ts');
+    })
+
 if (ioPorts = document.getElementById('ExpansionCard_ioPorts')?.children) {
     const ioPortsArray = getElementIdsFromIoPorts(ioPorts);
     ioPortsArray.map(ioPort => addListenersToIoPortForm(ioPort));

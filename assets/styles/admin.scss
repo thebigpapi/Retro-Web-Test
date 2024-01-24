@@ -482,6 +482,47 @@ div.specs-elements{
 		flex-grow: 6;
 	}
 }
+#ExpansionCard_expansionChips_autocomplete_ts{
+	div.ts-control{
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+	}
+	background-color: #ffffff;
+	@media (prefers-color-scheme: dark) {
+		background-color: #252525;
+	}
+}
+i.red{
+	color: var(--link-danger-color);
+}
+.ts-wrapper.multi .ts-control>div.clear-button {
+	box-shadow: none;
+}
+.plugin-clear_button.ts-wrapper .clear-button, .plugin-clear_button.ts-wrapper.multi .clear-button {
+	background: transparent!important;
+}
+.plugin-clear_button.ts-wrapper .clear-button:hover, .plugin-clear_button.ts-wrapper.multi .clear-button:hover {
+    background: transparent!important;
+	i.red{
+		color: $btn-hover-light;
+		@media (prefers-color-scheme: dark) {
+			color: $btn-hover-dark;
+		}
+	}
+}
+.ts-wrapper.plugin-remove_button .item .remove:hover {
+	background: transparent;
+	i.red{
+		color: $btn-hover-light;
+		@media (prefers-color-scheme: dark) {
+			color: $btn-hover-dark;
+		}
+	}
+}
+div.clear-button-trw{
+	border: none !important;
+}
 
 .form-widget .form-select,
 .form-widget input.form-control,
