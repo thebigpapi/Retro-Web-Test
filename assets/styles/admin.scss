@@ -482,15 +482,27 @@ div.specs-elements{
 		flex-grow: 6;
 	}
 }
-#ExpansionCard_expansionChips_autocomplete_ts{
+div.multi-widget-trw{
+	div.ts-wrapper{
+		background-color: #ffffff;
+		@media (prefers-color-scheme: dark) {
+			background-color: #252525;
+		}
+	}
+	.ts-wrapper.multi .ts-control>div.item{
+			font-size: 15px;
+			padding: 4px 6px;
+			width:85%;
+			a.remove{
+				border-left: 1px solid transparent;
+				margin-left: auto;
+				i{font-size: 19px;}
+			}
+	}
 	div.ts-control{
 		display: flex;
 		flex-direction: column;
 		align-items: flex-start;
-	}
-	background-color: #ffffff;
-	@media (prefers-color-scheme: dark) {
-		background-color: #252525;
 	}
 }
 i.red{

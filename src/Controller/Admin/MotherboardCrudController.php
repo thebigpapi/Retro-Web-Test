@@ -179,7 +179,7 @@ class MotherboardCrudController extends AbstractCrudController
             ->onlyOnForms();
         yield FormField::addRow();
         yield CollectionField::new('motherboardAliases', 'Alternative names')
-            ->setEntryType(MotherboardAliasType::class)
+            ->useEntryCrudForm(MotherboardAliasCrudController::class)
             ->renderExpanded()
             ->setColumns('col-sm-12 col-lg-6 col-xxl-4')
             ->onlyOnForms();
@@ -319,7 +319,7 @@ class MotherboardCrudController extends AbstractCrudController
             ->renderExpanded()
             ->onlyOnForms();
         yield CollectionField::new('drivers', 'Drivers')
-            ->setEntryType(LargeFileMotherboardType::class)
+            ->useEntryCrudForm(LargeFileMotherboardCrudController::class)
             ->renderExpanded()
             ->setColumns(6)
             ->onlyOnForms();

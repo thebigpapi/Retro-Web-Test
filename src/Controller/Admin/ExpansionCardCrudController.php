@@ -23,6 +23,7 @@ use App\Controller\Admin\Filter\ExpansionCardImageFilter;
 use App\Controller\Admin\Filter\ChipDocFilter;
 use App\Controller\Admin\Filter\ChipDriverFilter;
 use App\Controller\Admin\Filter\ExpansionCardBiosFilter;
+use App\Entity\LargeFileExpansionCard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
@@ -177,20 +178,22 @@ class ExpansionCardCrudController extends AbstractCrudController
             ->setIcon('fa fa-info')
             ->onlyOnForms();
         yield FormField::addPanel('Memory and chips')->onlyOnForms();
-        yield CollectionField::new('ramSize', 'Supported RAM size')
-            ->setEntryType(MaxRamType::class)
-            ->setFormTypeOption('error_bubbling', false)
-            ->setColumns('col-sm-12 col-lg-6 col-xxl-4')
-            ->renderExpanded()
+        yield AssociationField::new('ramSize', 'Supported RAM size')
+            //->setEntryType(MaxRamType::class)
+            //->setFormTypeOption('error_bubbling', false)
+            ->setColumns('col-sm-12 col-lg-6 col-xxl-4 multi-widget-trw')
+            //->renderExpanded()
+            ->autocomplete()
             ->onlyOnForms();
-        yield CollectionField::new('dramType', 'Supported RAM types')
-            ->setEntryType(DramTypeType::class)
-            ->setColumns('col-sm-12 col-lg-6 col-xxl-4')
-            ->renderExpanded()
+        yield AssociationField::new('dramType', 'Supported RAM types')
+            //->setEntryType(DramTypeType::class)
+            ->setColumns('col-sm-12 col-lg-6 col-xxl-4 multi-widget-trw')
+            //->renderExpanded()
+            ->autocomplete()
             ->onlyOnForms();
         yield AssociationField::new('expansionChips', 'Expansion chips')
-            ->setCustomOption('autocomplete', true)
-            ->setColumns('col-sm-12 col-lg-6 col-xxl-4')
+            ->autocomplete()
+            ->setColumns('col-sm-12 col-lg-6 col-xxl-4 multi-widget-trw')
             ->onlyOnForms();
         yield FormField::addPanel('Connections')->onlyOnForms();
         yield CollectionField::new('ioPorts', 'I/O ports')
@@ -240,7 +243,8 @@ class ExpansionCardCrudController extends AbstractCrudController
             ->renderExpanded()
             ->onlyOnForms();
         yield CollectionField::new('drivers', 'Drivers')
-            ->setEntryType(LargeFileExpansionCardType::class)
+            ->useEntryCrudForm(LargeFileExpansionCardCrudController::class)
+            //->setEntryType(LargeFileExpansionCardType::class)
             ->setColumns(6)
             ->renderExpanded()
             ->onlyOnForms();

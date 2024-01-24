@@ -103,6 +103,10 @@ class LargeFile
         $this->expansionCards = new ArrayCollection();
         $this->lastEdited = new \DateTime('now');
     }
+    public function __toString(): string
+    {
+        return $this->getNameWithTags();
+    }
     public function getId(): ?int
     {
         return $this->id;
