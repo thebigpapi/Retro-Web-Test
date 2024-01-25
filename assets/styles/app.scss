@@ -289,7 +289,7 @@ a.button-widget, span.button-widget {
 	display: flex;
 	align-items: center;
 	column-gap: 5px;
-
+    max-width: 4rem;
 	&:visited {
 		color: $accent-frg-light;
 

@@ -79,7 +79,7 @@ class ExpansionCardRepository extends ServiceEntityRepository
             }
         }
         if (array_key_exists('manufacturer', $criteria)) {
-            $whereArray[] = "(man.id = :manufacturerId)";
+            $whereArray[] = "(man.id = :manufacturerId OR alias.manufacturer = :manufacturerId)";
             $valuesArray["manufacturerId"] = (int)$criteria['manufacturer'];
         }
         if (array_key_exists('type', $criteria)) {

@@ -262,4 +262,14 @@ abstract class Chip
 
         return $this;
     }
+    public function getAllVendors(): Collection
+    {
+        $vendors = $this->getManufacturer()?->getPciVendorIds()->toArray() ?? [];
+        foreach($this->getChipAliases() as $alias){
+            $aliasVendors = $alias->getManufacturer()?->getPciVendorIds()->toArray() ?? [];
+            if(count($aliasVendors) > 0)
+                $vendors = array_merge($vendors, $aliasVendors);
+        }
+        return new ArrayCollection($vendors);
+    }
 }

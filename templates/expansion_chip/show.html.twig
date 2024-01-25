@@ -63,8 +63,8 @@
 					<!-- Vendor ID -->
 					<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/tag.svg')) }}" alt="date" width="24" height="24">Vendor ID</div>
 					<div class="tag-container">
-					{% if expansion_chip.getManufacturer().getPciVendorIds() is not empty %}
-						{% for vendor in expansion_chip.getManufacturer().getPciVendorIds() %}
+					{% if expansion_chip.getAllVendors() is not empty %}
+						{% for vendor in expansion_chip.getAllVendors() %}
 							<span class="text-block">{{vendor.getVen()}}</span>
 						{% endfor %}
 					{% else %}
