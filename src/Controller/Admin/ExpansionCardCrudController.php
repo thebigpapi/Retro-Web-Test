@@ -123,14 +123,17 @@ class ExpansionCardCrudController extends AbstractCrudController
             ->renderAsSwitch(false)
             ->onlyOnIndex();
         yield AssociationField::new('expansionSlotInterfaceSignal','Expansion slot preset')
+            ->setFormTypeOption('placeholder', 'Type to select a slot preset ...')
             ->setFormTypeOption('required', true)
             ->setColumns('col-sm-12 col-lg-6 col-xxl-4')
             ->onlyOnForms();
         yield AssociationField::new('expansionSlotInterface','Interface connector')
             ->setFormTypeOption('required', true)
+            ->setFormTypeOption('placeholder', 'Type to select a connector ...')
             ->setColumns('col-sm-12 col-lg-6 col-xxl-4')
             ->onlyOnForms();
         yield AssociationField::new('expansionSlotSignal','Interface signal')
+            ->setFormTypeOption('placeholder', 'Type to select a signal ...')
             ->setFormTypeOption('required', true)
             ->setColumns('col-sm-12 col-lg-6 col-xxl-4')
             ->onlyOnForms();
@@ -233,6 +236,7 @@ class ExpansionCardCrudController extends AbstractCrudController
             ->onlyOnForms();
         yield CollectionField::new('images', 'Images')
             ->setEntryType(ExpansionCardImageType::class)
+            ->setFormTypeOption('error_bubbling', false)
             ->setColumns(6)
             ->renderExpanded()
             ->onlyOnForms();

@@ -7,7 +7,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Rector\NodeCollector\ValueObject\ArrayCallable;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -49,12 +48,14 @@ class ExpansionCard
     private Collection $type;
 
     #[ORM\OneToMany(mappedBy: 'expansionCard', targetEntity: ExpansionCardAlias::class, orphanRemoval: true, cascade: ['persist'])]
+    #[Assert\Valid()]
     private Collection $expansionCardAliases;
 
     #[ORM\ManyToOne(inversedBy: 'expansionCards')]
     private ?Manufacturer $manufacturer = null;
 
     #[ORM\OneToMany(mappedBy: 'expansionCard', targetEntity: ExpansionCardBios::class, orphanRemoval: true, cascade: ['persist'])]
+    #[Assert\Valid()]
     private Collection $expansionCardBios;
 
     #[ORM\Column(type: 'datetime')]
@@ -70,6 +71,7 @@ class ExpansionCard
     private Collection $redirections;
 
     #[ORM\OneToMany(mappedBy: 'expansionCard', targetEntity: ExpansionCardMemoryConnector::class, orphanRemoval: true, cascade: ['persist'])]
+    #[Assert\Valid()]
     private Collection $expansionCardMemoryConnectors;
 
     #[ORM\ManyToMany(targetEntity: DramType::class, inversedBy: 'expansionCards')]
@@ -79,6 +81,7 @@ class ExpansionCard
     private Collection $ramSize;
 
     #[ORM\OneToMany(mappedBy: 'expansionCard', targetEntity: ExpansionCardIoPort::class, orphanRemoval: true, cascade: ['persist'])]
+    #[Assert\Valid()]
     private Collection $ioPorts;
 
     #[ORM\ManyToOne]

@@ -117,4 +117,13 @@ class ExpansionCardBios
 
         return $this;
     }
+    #[Assert\Callback]
+    public function validate(ExecutionContextInterface $context, mixed $payload): void
+    {
+        if(!isset($this->romFile) && !isset($this->file_name)) {
+            $context->buildViolation('File is not uploaded!')
+                ->atPath('romFile')
+                ->addViolation();
+        }
+    }
 }

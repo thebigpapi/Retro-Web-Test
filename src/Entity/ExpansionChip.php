@@ -73,14 +73,15 @@ class ExpansionChip extends Chip
     }
     public function getNameWithManufacturer()
     {
+        $name = $this->getManufacturer()?->getName() ?? "[unknown]";
         if ($this->name) {
-            return $this->getManufacturer()?->getName() ?? '[unknown]' . " " . $this->partNumber . " (" . $this->name . ")";
+            return $name . " " . $this->partNumber . " (" . $this->name . ")";
         }
-        return $this->getManufacturer()?->getName() ?? '[unknown]' . " " . $this->partNumber;
+        return $name . " " . $this->partNumber;
     }
     public function getManufacturerAndPN()
     {
-        return $this->getManufacturer()?->getName() ?? '[unknown]' . " " . $this->partNumber;
+        return ($this->getManufacturer()?->getName() ?? '[unknown]') . " " . $this->partNumber;
     }
     /**
      * @return Collection|Motherboard[]
