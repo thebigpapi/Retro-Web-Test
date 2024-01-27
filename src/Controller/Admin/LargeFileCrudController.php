@@ -125,10 +125,8 @@ class LargeFileCrudController extends AbstractCrudController
             ->onlyOnForms();
         yield TextField::new('subdirectory', 'Type')
             ->onlyOnIndex();
-        yield AssociationField::new('dumpQualityFlag','Quality')
-            ->setFormTypeOption('placeholder', 'Type to select a quality ...')
-            ->setColumns(4)
-            ->onlyOnForms();
+        yield TextField::new('getSizeFormatted', 'size')
+            ->onlyOnIndex();
         yield DateField::new('release_date', 'Release Date')
             ->setFormTypeOption('attr', ['style'=>'width:100%;'])
             ->setColumns(2)
@@ -149,18 +147,6 @@ class LargeFileCrudController extends AbstractCrudController
             ->setFormTypeOption('allow_delete', false)
             ->setColumns(4)
             ->onlyOnForms();
-        yield CollectionField::new('languages', 'Language')
-            ->setEntryType(LanguageType::class)
-            ->setColumns(4)
-            ->renderExpanded()
-            ->onlyOnForms();
-        yield CollectionField::new('mediaTypeFlags', 'Media type flags')
-            ->setEntryType(LargeFileMediaTypeFlagType::class)
-            ->setColumns(4)
-            ->renderExpanded()
-            ->onlyOnForms();
-        yield ArrayField::new('getMediaTypeFlags', 'Media type flags')
-            ->onlyOnIndex();
         yield ArrayField::new('getOsFlags', 'OS flags')
             ->onlyOnIndex();
         yield CollectionField::new('osFlags', 'OS flags')
@@ -264,22 +250,12 @@ class LargeFileCrudController extends AbstractCrudController
         $driver->setName($old->getName());
         $driver->setFileVersion($old->getFileVersion());
         $driver->setSubdirectory($old->getSubdirectory());
-        $driver->setDumpQualityFlag($old->getDumpQualityFlag());
         $driver->setReleaseDate($old->getReleaseDate());
         $driver->setDatePrecision($old->getDatePrecision());
         $driver->setNote($old->getNote());
         $driver->setLastEdited(new \DateTime('now'));
-        foreach ($old->getLanguages() as $lang){
-            $driver->addLanguage($lang);
-        }
         foreach ($old->getOsFlags() as $flag){
             $driver->addOsFlag($flag);
-        }
-        foreach ($old->getMediaTypeFlags() as $media){
-            $newMedia = new LargeFileMediaTypeFlag();
-            $newMedia->setCount($media->getCount());
-            $newMedia->setMediaTypeFlag($media->getMediaTypeFlag());
-            $driver->addMediaTypeFlag($newMedia);
         }
         return $driver;
     }

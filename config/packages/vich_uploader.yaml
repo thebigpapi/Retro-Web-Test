@@ -81,16 +81,8 @@ vich_uploader:
             directory_namer:
                 service: vich_uploader.namer_directory_property
                 options: { property: 'subdirectory', transliterate: true }
+            delete_on_remove: true
         osicon:
             uri_prefix: '/icons/os'
             upload_destination: '%kernel.project_dir%/public/icons/os'
             namer: Vich\UploaderBundle\Naming\SmartUniqueNamer
-        mediatypeicon:
-            uri_prefix: '/icons/mediatype'
-            upload_destination: '%kernel.project_dir%/public/icons/mediatype'
-            namer: Vich\UploaderBundle\Naming\SmartUniqueNamer
-
-    #mappings:
-    #    products:
-    #        uri_prefix: /images/products
-    #        upload_destination: '%kernel.project_dir%/public/images/products'

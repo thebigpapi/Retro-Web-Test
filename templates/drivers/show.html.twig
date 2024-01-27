@@ -52,6 +52,7 @@
 		{% include 'macros/navbar.html.twig' with {'entity': driver, 'entityName': 'LargeFile', 'name': 'driver'} %}
 		<div class="internal-content">
 			<!-- DESCRIPRION -->
+			<div class="quick-spec-split">
 				<div class="quick-spec-table">
 					<!-- Release Date -->
 					<div class="quick-spec-head">Release Date</div>
@@ -59,41 +60,29 @@
 					<!-- Version -->
 					<div class="quick-spec-head">Version</div>
 					<div>{{ driver.getFileVersion() ? driver.getFileVersion() : 'Unknown' }}</div>
-					<!-- Supported OS -->
-					<div class="quick-spec-head">Supported OS</div>
-					<div>{% for os in driver.getOsFlags()|sort((a, b) => a.getName <=> b.getName)|sort((a, b) => a.getVersion <=> b.getVersion) %}
-						<span style="display:inline-block;"><img src="{{ asset('build/icons/os/' ~ os.getVersion ~ '.svg') }}" alt="{{os.getVersion}}" width="16">{{ os.getName()}}{% if not loop.last %}, {% endif %}</span>
-					{% endfor %}</div>
-					<!-- Language -->
-					<div class="quick-spec-head">Language</div>
-					<div>{% for lang in driver.getLanguages() %}{{lang.getOriginalName()}}{% if not loop.last %}, {% endif %}
-					{% endfor %}</div>
-					<!-- Media type -->
-					<div class="quick-spec-head">Media type</div>
-					<div style="display: flex;align-items: center;">{% for relation in driver.getMediaTypeFlags() %}
-						<i style="vertical-align:super;">{{relation.getCount()}}x&nbsp;</i>
-						{{relation.getMediaTypeFlag().getName()}}<img src="{{ vich_uploader_asset(relation.getMediaTypeFlag(), 'icon')}}" style="padding-left: 5px;" alt="{{relation.getMediaTypeFlag().getName()}}" title="{{relation.getMediaTypeFlag().getName()}}" width="32">{% if not loop.last %}, {% endif %}
-					{% endfor %}</div>
-					<!-- Quality -->
-					<div class="quick-spec-head">Quality</div>	
-					<div><img src="{{ asset('build/icons/quality/' ~ driver.dumpQualityFlag().getTagName() ~ '.svg') }}" alt="{{driver.dumpQualityFlag().getName()}}" title="{{driver.dumpQualityFlag().getName()}}" width="32"></div>
-					<!-- Size -->
 					<div class="quick-spec-head">Size</div>
-					<div>
-					{% if driver.getSize() %}
-					{% if driver.getSize() > 1048575 %}{{ (driver.getSize() / 1048576)|number_format(2) }}&nbsp;MB
-					{% elseif driver.getSize() > 1023 %}{{ (driver.getSize() / 1024)|number_format(2)}}&nbsp;KB
-					{% else %}{{ driver.getSize()}}&nbsp;Bytes{% endif %}
-					{% else %}<i>unknown</i>{% endif %}
-					</div>
+					<div>{{driver.getSize() ? driver.getSizeFormatted() : "<i>unknown</i>" }}</div>
 					<!-- File -->
 					<div class="quick-spec-head">File</div>
 					<div><a href="{{ vich_uploader_asset(driver, 'file')}}">
 						<img src="{{ absolute_url(asset('build/icons/dw.svg')) }}" alt="" width="16" style="vertical-align: middle;">
-							{% set fname = driver.getFileName()|slice(0,driver.getFileName()|length - 27) ~ driver.getFileName()[driver.getFileName()|length - 4 :] %}{{ fname }}
+							{{ driver.getFileNameSimple() }}
 						</a>
 					</div>
 				</div>
+				<div class="quick-spec-table">
+				<!-- Supported OS -->
+					<div class="quick-spec-head">Supported OS</div>
+					<div class="tag-container"><ul style="padding:0;margin:0">
+						{% for os in driver.getOsFlags()|sort((a, b) => a.getName <=> b.getName)|sort((a, b) => a.getVersion <=> b.getVersion) %}
+						<li><span class="text-block" style="font-size: 0.9rem;padding:6px 8px;">
+							<img src="{{ asset('build/icons/os/' ~ os.getVersion ~ '.svg') }}" alt="{{os.getVersion}}"  width="28">
+							<span>{{os.getName()}}</span>
+						</span></li>
+						{% endfor %}
+					</ul></div>
+				</div>
+			</div>
 			<div id="index-datetime"><div class="div-datetime">Last updated <span class="perk-date">{{ driver.getLastEdited()|date("Y-m-d\\TH:i:s", "GMT") }}Z</span></div></div>
 		</div>
 		{% if driver.getNote() is not empty %}

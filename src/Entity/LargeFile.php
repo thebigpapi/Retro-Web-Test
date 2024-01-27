@@ -46,26 +46,12 @@ class LargeFile
     #[ORM\Column(type: 'datetime')]
     private $updated_at;
 
-    #[ORM\ManyToOne(targetEntity: DumpQualityFlag::class, inversedBy: 'largeFiles')]
-    #[ORM\JoinColumn(nullable: false)]
-    #[Assert\NotBlank(
-        message: 'Flag cannot be blank'
-    )]
-    private $dumpQualityFlag;
-
-    #[ORM\ManyToMany(targetEntity: Language::class, inversedBy: 'largeFiles')]
-    private $languages;
-
     #[ORM\Column(type: 'string', length: 255)]
     private $subdirectory;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     #[Assert\Length(max: 255, maxMessage: 'Version is longer than {{ limit }} characters, try to make it shorter.')]
     private $fileVersion;
-
-    #[ORM\OneToMany(targetEntity: LargeFileMediaTypeFlag::class, mappedBy: 'largeFile', orphanRemoval: true, cascade: ['persist'])]
-    #[Assert\Valid()]
-    private $mediaTypeFlags;
 
     #[ORM\ManyToMany(targetEntity: OsFlag::class, inversedBy: 'largeFiles')]
     private $osFlags;
@@ -94,8 +80,6 @@ class LargeFile
 
     public function __construct()
     {
-        $this->languages = new ArrayCollection();
-        $this->mediaTypeFlags = new ArrayCollection();
         $this->osFlags = new ArrayCollection();
         $this->motherboards = new ArrayCollection();
         $this->chipsets = new ArrayCollection();
@@ -131,6 +115,13 @@ class LargeFile
 
         return $this;
     }
+    public function getFileNameSimple(): string
+    {
+        $filename = $this->file_name;
+        $ext = pathinfo($filename, PATHINFO_EXTENSION);
+        $file = pathinfo($filename, PATHINFO_FILENAME);
+        return substr($file, 0, -23) . '.' . $ext;
+    }
     public function getFile(): ?File
     {
         return $this->file;
@@ -154,37 +145,6 @@ class LargeFile
 
         return $this;
     }
-    public function getDumpQualityFlag(): ?DumpQualityFlag
-    {
-        return $this->dumpQualityFlag;
-    }
-    public function setDumpQualityFlag(?DumpQualityFlag $dumpQualityFlag): self
-    {
-        $this->dumpQualityFlag = $dumpQualityFlag;
-
-        return $this;
-    }
-    /**
-     * @return Collection|Language[]
-     */
-    public function getLanguages(): Collection
-    {
-        return $this->languages;
-    }
-    public function addLanguage(Language $language): self
-    {
-        if (!$this->languages->contains($language)) {
-            $this->languages[] = $language;
-        }
-
-        return $this;
-    }
-    public function removeLanguage(Language $language): self
-    {
-        $this->languages->removeElement($language);
-
-        return $this;
-    }
     public function getSubdirectory(): ?string
     {
         return $this->subdirectory;
@@ -202,33 +162,6 @@ class LargeFile
     public function setFileVersion(?string $fileVersion): self
     {
         $this->fileVersion = $fileVersion;
-
-        return $this;
-    }
-    /**
-     * @return Collection|LargeFileMediaTypeFlag[]
-     */
-    public function getMediaTypeFlags(): Collection
-    {
-        return $this->mediaTypeFlags;
-    }
-    public function addMediaTypeFlag(LargeFileMediaTypeFlag $mediaTypeFlag): self
-    {
-        if (!$this->mediaTypeFlags->contains($mediaTypeFlag)) {
-            $this->mediaTypeFlags[] = $mediaTypeFlag;
-            $mediaTypeFlag->setLargeFile($this);
-        }
-
-        return $this;
-    }
-    public function removeMediaTypeFlag(LargeFileMediaTypeFlag $mediaTypeFlag): self
-    {
-        if ($this->mediaTypeFlags->removeElement($mediaTypeFlag)) {
-            // set the owning side to null (unless already changed)
-            if ($mediaTypeFlag->getLargeFile() === $this) {
-                $mediaTypeFlag->setLargeFile(null);
-            }
-        }
 
         return $this;
     }
@@ -258,37 +191,7 @@ class LargeFile
     }
     public function getNameWithTags(): string
     {
-        $tmp = $this->getLanguages();
-        $langs = "";
-        foreach ($tmp as $key => $language) {
-            if (array_key_last($tmp->toArray()) == $key) {
-                $langs .= $language->getIsoCode();
-            } else {
-                $langs .= $language->getIsoCode() . ", ";
-            }
-        }
-
-        $tmp = $this->getOsFlags();
-        $osTags = "";
-        foreach ($tmp as $key => $os) {
-            if (array_key_last($tmp->toArray()) == $key) {
-                $osTags .=  $os->getVersion();
-            } else {
-                $osTags .=  $os->getVersion() . ", ";
-            }
-        }
-
-        $tmp = $this->getMediaTypeFlags();
-        $mediaTypeTags = "";
-        foreach ($tmp as $key => $media) {
-            if (array_key_last($tmp->toArray()) == $key) {
-                $mediaTypeTags .=  $media->getMediaTypeFlag()->getTagName();
-            } else {
-                $mediaTypeTags .=  $media->getMediaTypeFlag()->getTagName() . ", ";
-            }
-        }
-
-        return $this->getName() . " " . $this->getFileVersion() ?? "" . " [" . $langs . "] [" . $mediaTypeTags . "] [" . $osTags . "]";
+        return $this->getName() . " " . $this->getFileVersion() ?? "";
     }
     /**
      * @return Collection|LargeFileMotherboard[]
@@ -363,6 +266,13 @@ class LargeFile
         $this->size = $size;
 
         return $this;
+    }
+    public function getSizeFormatted(): string
+    {
+        $size = $this->size;
+        $base = log($size) / log(1024);
+        $suffix = array("", "KB", "MB", "GB", "TB");
+        return round(pow(1024, $base - floor($base)), 1) . $suffix[floor($base)];
     }
     /**
      * @return Collection|LargeFileExpansionChip[]
