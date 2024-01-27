@@ -23,7 +23,6 @@ use App\Entity\ExpansionSlot;
 use App\Entity\IoPort;
 use App\Entity\PSUConnector;
 use App\Entity\OsFlag;
-use App\Entity\MediaTypeFlag;
 use App\Entity\FormFactor;
 use App\Entity\Manufacturer;
 use App\Entity\KnownIssue;
@@ -151,7 +150,6 @@ class DashboardController extends AbstractDashboardController
         ])->setPermission('ROLE_ADMIN');
         yield MenuItem::subMenu('Misc', 'misc.svg')->setSubItems([
             MenuItem::linkToCrud('OS flags', 'os/1998win.svg', OsFlag::class)->setPermission('ROLE_ADMIN'),
-            MenuItem::linkToCrud('Media types', 'file.svg', MediaTypeFlag::class)->setPermission('ROLE_ADMIN'),
             MenuItem::linkToCrud('Form factors', 'dimension.svg', FormFactor::class)->setPermission('ROLE_ADMIN'),
             MenuItem::linkToCrud('Known Issues', 'misc.svg', KnownIssue::class)->setPermission('ROLE_ADMIN'),
             MenuItem::linkToCrud('Manufacturers', 'factory.svg', Manufacturer::class),

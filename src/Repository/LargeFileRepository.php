@@ -28,8 +28,6 @@ class LargeFileRepository extends ServiceEntityRepository
         $query = $entityManager->createQuery(
             "SELECT lf, lang, mtf, ofgs
             FROM App\Entity\LargeFile lf
-            JOIN lf.languages as lang
-            JOIN lf.mediaTypeFlags as mtf
             JOIN lf.osFlags as ofgs
             ORDER BY lf.name ASC"
         );
