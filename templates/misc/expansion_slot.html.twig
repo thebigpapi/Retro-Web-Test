@@ -14,7 +14,7 @@
 	{% apply spaceless %}
 	<meta property="og:title" content="{{ expansion_slot.getName() }}">
 	<meta property="og:description" content="Get connector info for {{ expansion_slot.getName() }}!">
-	{% if expansion_slot.getInterface().getEntityImages() is not empty %}
+	{% if expansion_slot.getInterface() is not empty %}
 		{% for image in expansion_slot.getInterface().getEntityImages()|sort((a, b) => a.getFileName() <=> b.getFileName())|slice(0, 1) %}
 			<meta name="twitter:image" content="{{ vich_uploader_asset(image, 'imageFile')}}">
 			<meta property="og:image" content="{{ vich_uploader_asset(image, 'imageFile')}}">
@@ -33,8 +33,8 @@
             <path d="M.293 0l22 22-22 22h1.414l22-22-22-22H.293z"></path>
         </svg>
         <div class="navbar-anchor">
-			<img src="{{ absolute_url(asset('build/icons/rs232.svg')) }}" width="24" height="24" alt="port">
-            <code class="text-pink-500">I/O ports</code>
+			<img src="{{ absolute_url(asset('build/icons/exp_slot.svg')) }}" width="24" height="24" alt="port">
+            <code class="text-pink-500">Expansion slots</code>
         </div>
     </div>
 </li>
@@ -70,7 +70,9 @@
 					{% endif %}
 				</div>
 				{% include 'macros/notes.html.twig' with {'entity': expansion_slot} %}
-				{% include 'macros/notes.html.twig' with {'title': 'Connector notes', 'entity': expansion_slot.getInterface()} %}
+				{% if expansion_slot.getInterface() is not empty %}
+					{% include 'macros/notes.html.twig' with {'title': 'Connector notes', 'entity': expansion_slot.getInterface()} %}
+				{% endif %}
 				{% include 'macros/notes.html.twig' with {'title': 'Electrical interface notes', 'entity': expansion_slot.getSignals()} %}
 				<!-- MANUALS -->
 				{% include 'macros/manuals.html.twig' with {'entity': expansion_slot.getAllDocs()} %}

@@ -184,9 +184,13 @@
 						{% else %}<div class="list-table-head"></div><div>N/A</div>{% endif %}
 					</div>
 				</div>
+				{% include 'macros/aliases.html.twig' with {'entity':expansioncard.getExpansionCardAliases(), 'msg': 'Also known as:'} %}
+				{% include 'macros/notes.html.twig' with {'entity': expansioncard} %}
+				<div id="index-datetime"><div class="div-datetime">Last updated <span class="perk-date">{{ expansioncard.getLastEdited()|date("Y-m-d\\TH:i:s", "GMT") }}Z</span></div></div>
+			</div>
+			<div class="show-expchips" id="sh-expchips">
 				{% if expansioncard.getMiscSpecs() is not empty %}
-					<div class="textarea">
-						<h3><b>Specifications:</b></h3>
+					<div class="textarea" style="border-top: none;">
 						{% if expansioncard.getSimpleMiscSpecs() is not empty %}
 						<ul>
 							{% for spec_key, spec_value in expansioncard.getSimpleMiscSpecs() %}
@@ -206,10 +210,9 @@
 						</div>
 						{% endif %}
 					</div>
+				{% else %}
+				<div>No features.</div>
 				{% endif %}
-				{% include 'macros/aliases.html.twig' with {'entity':expansioncard.getExpansionCardAliases(), 'msg': 'Also known as:'} %}
-				{% include 'macros/notes.html.twig' with {'entity': expansioncard} %}
-				<div id="index-datetime"><div class="div-datetime">Last updated <span class="perk-date">{{ expansioncard.getLastEdited()|date("Y-m-d\\TH:i:s", "GMT") }}Z</span></div></div>
 			</div>
 			<!-- BIOSes -->
 			<div class="show-downloads" id="sh-bios">

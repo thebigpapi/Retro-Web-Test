@@ -51,8 +51,8 @@ class ExpansionSlotInterfaceSignalCrudController extends AbstractCrudController
     {
         return $crud
             ->showEntityActionsInlined()
-            ->setEntityLabelInSingular('slot preset')
-            ->setEntityLabelInPlural('<img class=ea-entity-icon src=/build/icons/card.svg width=48 height=48>Expansion slot presets')
+            ->setEntityLabelInSingular('expansion slot')
+            ->setEntityLabelInPlural('<img class=ea-entity-icon src=/build/icons/exp_slot.svg width=48 height=48>Expansion slots')
             ->setPaginatorPageSize(100);
     }
     public function configureFilters(Filters $filters): Filters

@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -21,6 +22,10 @@ class IoPort
 
     #[ORM\OneToMany(targetEntity: MotherboardIoPort::class, mappedBy: 'io_port', orphanRemoval: true)]
     private $motherboardIoPorts;
+
+    #[ORM\Column(type: Types::SMALLINT, nullable: true)]
+    #[Assert\Positive(message: "Port ID should be greater than 0")]
+    private ?int $cardId = null;
 
     public function __construct()
     {
@@ -65,6 +70,18 @@ class IoPort
                 $motherboardIoPort->setIoPort(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getCardId(): ?int
+    {
+        return $this->cardId;
+    }
+
+    public function setCardId(?int $cardId): static
+    {
+        $this->cardId = $cardId;
 
         return $this;
     }

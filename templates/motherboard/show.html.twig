@@ -144,20 +144,30 @@
 				</div>
 			</div>
 			<div class="full-spec">
-				<div class="full-spec-head"><img src="{{ absolute_url(asset('build/icons/connector.svg')) }}" alt="conn" width="24" height="24"><b>I/O ports</b></div>
+				<div class="full-spec-head"><img src="{{ absolute_url(asset('build/icons/rs232.svg')) }}" alt="conn" width="24" height="24"><b>I/O ports</b></div>
 					<div class="list-table">
 						{% if motherboard.getMotherboardIoPorts() is not empty %}
 							{% for port in motherboard.getMotherboardIoPorts()|sort((a, b) => a.getIoPort().getName() <=> b.getIoPort().getName()) %}
-								<div class="list-table-head"><b>{{ port.getCount() }}x&nbsp;</b></div><div>{{ port.getIoPort().getName() }}</div>
+								<div class="list-table-head"><b>{{ port.getCount() }}x&nbsp;</b></div>
+								<div>
+								{% if port.getIoPort().getCardId() is not empty %}
+								<a href="{{ path('io_port_show', {id: port.getIoPort().getCardId()}) }}">{{ port.getIoPort().getName() }}</a>
+								{% else %}{{ port.getIoPort().getName() }}{% endif %}
+								</div>
 							{% endfor %}
 						{% else %}<div class="list-table-head"></div><div>N/A</div>{% endif %}
 					</div>
 
-					<div class="full-spec-head"><img src="{{ absolute_url(asset('build/icons/card.svg')) }}" alt="card" width="24" height="24"><b>Expansion slots</b></div>
+					<div class="full-spec-head"><img src="{{ absolute_url(asset('build/icons/pci_slot_smol.svg')) }}" alt="card" width="24" height="24"><b>Expansion slots</b></div>
 					<div class="list-table">
 						{% if motherboard.getMotherboardExpansionSlots() is not empty %}
 							{% for slot in motherboard.getMotherboardExpansionSlots()|sort((a, b) => a.getExpansionSlot().getName() <=> b.getExpansionSlot().getName()) %}
-								<div class="list-table-head"><b>{{ slot.getCount() }}x&nbsp;</b></div><div>{{ slot.getExpansionSlot().getName() }}</div>
+								<div class="list-table-head"><b>{{ slot.getCount() }}x&nbsp;</b></div>
+								<div>
+								{% if slot.getExpansionSlot().getCardId() is not empty %}
+								<a href="{{ path('expansion_slot_show', {id: slot.getExpansionSlot().getCardId()}) }}">{{ slot.getExpansionSlot().getName() }}</a>
+								{% else %}{{ slot.getExpansionSlot().getName() }}{% endif %}
+								</div>
 							{% endfor %}
 						{% else %}<div class="list-table-head"></div><div>N/A</div>{% endif %}
 					</div>
@@ -230,6 +240,8 @@
 							<div class="list-table-head"></div><div>N/A</div>
 						{% endif %}
 					</div>
+					<div class="full-spec-head"></div>
+					<div class="list-table"></div>
 					<div class="full-spec-head"></div>
 					<div class="list-table"></div>
 				</div>

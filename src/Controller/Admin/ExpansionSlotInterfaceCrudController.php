@@ -69,7 +69,7 @@ class ExpansionSlotInterfaceCrudController extends AbstractCrudController
         return $crud
             ->showEntityActionsInlined()
             ->setEntityLabelInSingular('expansion slot connector')
-            ->setEntityLabelInPlural('<img class=ea-entity-icon src=/build/icons/card_tag.svg width=48 height=48>Expansion slot connectors')
+            ->setEntityLabelInPlural('<img class=ea-entity-icon src=/build/icons/pci_slot_smol.svg width=48 height=48>Expansion slot connectors')
             ->setPaginatorPageSize(100);
     }
     public function viewLogs(AdminContext $context)

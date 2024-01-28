@@ -1,5 +1,6 @@
 const trw_tabs = ["tab-nav-1", "tab-nav-2", "tab-nav-3", "tab-nav-4", "tab-nav-5"];
 const trw_pageElements = ["sh-general", "sh-expchips", "sh-downloads", "sh-bios", "sh-driver", "sh-docs"];
+const easyadmin = {"#expchips": "tab-chips", "#bios": "tab-bios", "#general": "tab-connectors", "#docs": "tab-other-attachments"}
 
 update_tab_selection();
 
@@ -18,8 +19,19 @@ if (historytab)
 
 function update_tab_selection() {
     for (const element of trw_pageElements) {
+        console.log(element);
         let anchorName = "#" + element.substring(3);
         if (window.location.href.indexOf(anchorName) != -1) {
+            inner_switch_tab(element);
+            let tabLabel = find_tab_label(element);
+            if (tabLabel) {
+                tabLabel.checked = true;
+            }
+            return;
+        }
+        //easyadmin tabs
+        console.log(anchorName, easyadmin[anchorName]);
+        if (window.location.href.indexOf(easyadmin[anchorName]) != -1) {
             inner_switch_tab(element);
             let tabLabel = find_tab_label(element);
             if (tabLabel) {
@@ -32,6 +44,7 @@ function update_tab_selection() {
 
 function find_tab_label(tabContainer) {
     for (const tabId of trw_tabs) {
+        //console.log(tabId, tabContainer);
         let tabLabel = document.getElementById(tabId);
         if (tabLabel && tabLabel.hasAttribute("data-tab") && tabLabel.getAttribute("data-tab") === tabContainer) {
             return tabLabel;

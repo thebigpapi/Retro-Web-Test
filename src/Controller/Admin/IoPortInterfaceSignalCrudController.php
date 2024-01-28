@@ -51,8 +51,8 @@ class IoPortInterfaceSignalCrudController extends AbstractCrudController
     {
         return $crud
             ->showEntityActionsInlined()
-            ->setEntityLabelInSingular('I/O port preset')
-            ->setEntityLabelInPlural('<img class=ea-entity-icon src=/build/icons/rs232.svg width=48 height=48>I/O port presets')
+            ->setEntityLabelInSingular('I/O port')
+            ->setEntityLabelInPlural('<img class=ea-entity-icon src=/build/icons/rs232.svg width=48 height=48>I/O ports')
             ->setPaginatorPageSize(100);
     }
     public function configureFilters(Filters $filters): Filters

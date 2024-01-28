@@ -115,19 +115,18 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Floppy drives', 'floppy.svg', FloppyDrive::class);
         yield MenuItem::linkToCrud('Expansion chips', 'chip.svg', ExpansionChip::class);
         yield MenuItem::section('Auxiliary items');
-        yield MenuItem::linkToCrud('Expansion chip types', 'chip_alias.svg', ExpansionChipType::class)->setPermission('ROLE_ADMIN');
+        yield MenuItem::subMenu('Expansion card related', 'card.svg')->setSubItems([
+            MenuItem::linkToCrud('Types', 'tag.svg', ExpansionCardType::class),
+            MenuItem::linkToCrud('I/O ports', 'rs232.svg', IoPortInterfaceSignal::class),
+            MenuItem::linkToCrud('I/O port connectors', 'connector.svg', IoPortInterface::class),
+            MenuItem::linkToCrud('I/O port signals', 'rs232_electric.svg', IoPortSignal::class),
+            MenuItem::linkToCrud('Expansion slots', 'exp_slot.svg', ExpansionSlotInterfaceSignal::class),
+            MenuItem::linkToCrud('Expansion slot connectors', 'pci_slot_smol.svg', ExpansionSlotInterface::class),
+            MenuItem::linkToCrud('Expansion slot signals', 'pci_slot_electric.svg', ExpansionSlotSignal::class),
+        ])->setPermission('ROLE_ADMIN');
         yield MenuItem::subMenu('Motherboard related', 'board.svg')->setSubItems([
             MenuItem::linkToCrud('Expansion slots', 'card.svg', ExpansionSlot::class),
             MenuItem::linkToCrud('I/O ports', 'rs232.svg', IoPort::class),
-        ])->setPermission('ROLE_ADMIN');
-        yield MenuItem::subMenu('Expansion card related', 'card.svg')->setSubItems([
-            MenuItem::linkToCrud('Types', 'tag.svg', ExpansionCardType::class),
-            MenuItem::linkToCrud('I/O port presets', 'rs232.svg', IoPortInterfaceSignal::class),
-            MenuItem::linkToCrud('Expansion slot presets', 'card.svg', ExpansionSlotInterfaceSignal::class),
-            MenuItem::linkToCrud('I/O port connectors', 'rs232.svg', IoPortInterface::class),
-            MenuItem::linkToCrud('Expansion slot connectors', 'card_tag.svg', ExpansionSlotInterface::class),
-            MenuItem::linkToCrud('Electrical bus interfaces', 'tag.svg', ExpansionSlotSignal::class),
-            MenuItem::linkToCrud('Electrical I/O port interfaces', 'tag.svg', IoPortSignal::class),
         ])->setPermission('ROLE_ADMIN');
         yield MenuItem::subMenu('Storage related', 'hdd.svg')->setSubItems([
             MenuItem::linkToCrud('Interface', 'io.svg', StorageDeviceInterface::class),
@@ -149,6 +148,7 @@ class DashboardController extends AbstractDashboardController
             MenuItem::linkToCrud('Memory connectors', 'ram.svg', MemoryConnector::class),
         ])->setPermission('ROLE_ADMIN');
         yield MenuItem::subMenu('Misc', 'misc.svg')->setSubItems([
+            MenuItem::linkToCrud('Expansion chip types', 'chip_alias.svg', ExpansionChipType::class)->setPermission('ROLE_ADMIN'),
             MenuItem::linkToCrud('OS flags', 'os/1998win.svg', OsFlag::class)->setPermission('ROLE_ADMIN'),
             MenuItem::linkToCrud('Form factors', 'dimension.svg', FormFactor::class)->setPermission('ROLE_ADMIN'),
             MenuItem::linkToCrud('Known Issues', 'misc.svg', KnownIssue::class)->setPermission('ROLE_ADMIN'),

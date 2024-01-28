@@ -69,7 +69,7 @@ class IoPortInterfaceCrudController extends AbstractCrudController
         return $crud
             ->showEntityActionsInlined()
             ->setEntityLabelInSingular('I/O port connector')
-            ->setEntityLabelInPlural('<img class=ea-entity-icon src=/build/icons/rs232.svg width=48 height=48>I/O port connectors')
+            ->setEntityLabelInPlural('<img class=ea-entity-icon src=/build/icons/connector.svg width=48 height=48>I/O port connectors')
             ->setPaginatorPageSize(100);
     }
     public function viewLogs(AdminContext $context)

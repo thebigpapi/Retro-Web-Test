@@ -68,8 +68,8 @@ class ExpansionSlotSignalCrudController extends AbstractCrudController
     {
         return $crud
             ->showEntityActionsInlined()
-            ->setEntityLabelInSingular('electrical bus interface')
-            ->setEntityLabelInPlural('<img class=ea-entity-icon src=/build/icons/card.svg width=48 height=48>Electrical bus interfaces')
+            ->setEntityLabelInSingular('expansion slot signal')
+            ->setEntityLabelInPlural('<img class=ea-entity-icon src=/build/icons/pci_slot_electric.svg width=48 height=48>Expansion slot signals')
             ->setPaginatorPageSize(100);
     }
     public function viewLogs(AdminContext $context)
