@@ -90,7 +90,7 @@
 				{% include 'macros/aliases.html.twig' with {'entity':floppydrive.getStorageDeviceAliases(), 'msg': 'Also known as:'} %}
 				{% include 'macros/notes.html.twig' with {'entity': floppydrive} %}
 				<!-- MANUALS -->
-				{% include 'macros/manuals.html.twig' with {'entity': floppydrive.getStorageDeviceDocumentations()} %}
+				{% include 'macros/manuals.html.twig' with {'entity': floppydrive.getStorageDeviceDocumentations(), 'audit_entity':'App-Entity-StorageDeviceDocumentation'} %}
 				<div id="index-datetime"><div class="div-datetime">Last updated <span class="perk-date">{{ floppydrive.getLastEdited()|date("Y-m-d\\TH:i:s", "GMT") }}Z</span></div></div>
 			</div>
 		</div>

@@ -59,7 +59,7 @@
 			<div class="show-general" id="sh-general">
 				{% include 'macros/notes.html.twig' with {'entity': psu_connector} %}
 				<!-- MANUALS -->
-				{% include 'macros/manuals.html.twig' with {'entity': psu_connector.getEntityDocumentations()} %}
+				{% include 'macros/manuals.html.twig' with {'entity': psu_connector.getEntityDocumentations(), 'audit_entity':'App-Entity-EntityDocumentation'} %}
 			</div>
 		</div>
 	</div>

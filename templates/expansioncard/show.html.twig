@@ -262,7 +262,7 @@
 			</div>
 			<!-- Documentation -->
 			<div class="show-downloads" id="sh-docs">
-				{% include 'macros/manuals.html.twig' with {'entity': expansioncard.getDocumentations(), 'chips': expansioncard.getChipDocs()} %}
+				{% include 'macros/manuals.html.twig' with {'entity': expansioncard.getDocumentations(), 'chips': expansioncard.getChipDocs(), 'audit_entity':'App-Entity-ExpansionCardDocumentation'} %}
 			</div>
 		</div>
 	</div>

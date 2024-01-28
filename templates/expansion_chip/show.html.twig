@@ -98,7 +98,7 @@
 				<!-- DRIVERS -->
 				{% include 'macros/drivers.html.twig' with {'entity': expansion_chip.getDrivers()} %}
 				<!-- MANUALS -->
-				{% include 'macros/manuals.html.twig' with {'entity': expansion_chip.getDocumentations()} %}
+				{% include 'macros/manuals.html.twig' with {'entity': expansion_chip.getDocumentations(), 'audit_entity':'App-Entity-ChipDocumentation'} %}
 				<div id="index-datetime"><div class="div-datetime">Last updated <span class="perk-date">{{ expansion_chip.getLastEdited()|date("Y-m-d\\TH:i:s", "GMT") }}Z</span></div></div>
 			</div>
 		</div>

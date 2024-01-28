@@ -269,6 +269,7 @@
 								<div>Note</div>
 								<div>Core Ver.</div>
 								<div>BIOS Ver.</div>
+								<div>Last edit</div>
 							</div>
 							{% for bios in biosList|sort((a, b) => b.boardVersion <=> a.boardVersion) %}
 							<div class="list-entry centered {% if loop.index is divisible by(2) %}alt{% endif %}">
@@ -295,6 +296,13 @@
 										{{ bios.getBoardVersion() }}
 									{% endif %}
 								</div>
+								<div class="header-label">Last edit</div>
+								<div>
+									<a href="{{ path('dh_auditor_show_entity_history', { 'entity': 'App-Entity-MotherboardBios', 'id': bios.getId() }) }}">
+										<img src="{{ absolute_url(asset('build/icons/calendar.svg')) }}" alt="pwr" width="16" height="16">
+									</a>
+									<i>{{ bios.getUpdatedAt()|date("Y-m-d")}}</i>
+								</div>
 							</div>
 							{% endfor %}
 						</div>
@@ -308,7 +316,7 @@
 			</div>
 			<!-- Documentation -->
 			<div class="show-downloads" id="sh-docs">
-				{% include 'macros/manuals.html.twig' with {'entity': motherboard.getManuals(), 'chips': motherboard.getChipDocs()} %}
+				{% include 'macros/manuals.html.twig' with {'entity': motherboard.getManuals(), 'audit_entity':'App-Entity-Manual', 'chips': motherboard.getChipDocs()} %}
 				<!-- MISC FILES -->
 				<div class="show-downloads-group">
 					<div class="show-downloads-group-header">

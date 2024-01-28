@@ -119,7 +119,7 @@
 
 			<div class="show-downloads" id="sh-downloads">
 				{% include 'macros/drivers.html.twig' with {'entity': chipset.getAllDrivers()} %}
-				{% include 'macros/manuals.html.twig' with {'entity': chipset.getDocumentations()} %}
+				{% include 'macros/manuals.html.twig' with {'entity': chipset.getDocumentations(), 'audit_entity':'App-Entity-ChipsetDocumentation'} %}
 			</div>
 		</div>
 	</div>

@@ -135,7 +135,7 @@
 				{% include 'macros/aliases.html.twig' with {'entity':harddrive.getStorageDeviceAliases(), 'msg': 'Also known as:'} %}
 				{% include 'macros/notes.html.twig' with {'entity': harddrive} %}
 				<!-- MANUALS -->
-				{% include 'macros/manuals.html.twig' with {'entity': harddrive.getStorageDeviceDocumentations()} %}
+				{% include 'macros/manuals.html.twig' with {'entity': harddrive.getStorageDeviceDocumentations(), 'audit_entity':'App-Entity-StorageDeviceDocumentation'} %}
 				<!-- AUDIO FILES -->
 				<div class="show-downloads-group">
 					{% set allFiles = harddrive.getAudioFiles() %}
