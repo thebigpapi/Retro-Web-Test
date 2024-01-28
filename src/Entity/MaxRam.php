@@ -19,7 +19,6 @@ class MaxRam
     #[ORM\Column(type: 'bigint')]
     #[Assert\NotBlank]
     #[Assert\PositiveOrZero]
-    #[Assert\Unique()]
     private $value;
 
     #[ORM\OneToMany(targetEntity: MotherboardMaxRam::class, mappedBy: 'max_ram', orphanRemoval: true)]

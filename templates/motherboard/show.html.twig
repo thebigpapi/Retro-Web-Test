@@ -183,7 +183,7 @@
 				{% include 'macros/aliases.html.twig' with {'entity':motherboard.getMotherboardAliases(), 'msg': 'Also known as:'} %}
 				{% include 'macros/notes.html.twig' with {'entity': motherboard} %}
 				<div id="index-datetime"><div class="div-datetime">Last updated <span class="perk-date">{{ motherboard.getLastEdited()|date("Y-m-d\\TH:i:s", "GMT") }}Z</span></div></div>
-				{% include 'macros/scoring.html.twig' with {'entity': motherboard} %}
+				{#% include 'macros/scoring.html.twig' with {'entity': motherboard} %#}
 			</div>
 
 			<!-- Chips -->
