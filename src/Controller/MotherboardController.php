@@ -374,11 +374,14 @@ class MotherboardController extends AbstractController
         if ($form['platform2']->getData()) {
             $parameters['platform2'] = $form['platform2']->getData()->getId();
         }
-
         $slots = $form['motherboardExpansionSlots']->getData();
         if ($slots) {
             $parameters['expansionSlotsIds'] = array();
+            $loopCount = 0;
             foreach ($slots as $slot) {
+                if($loopCount >= 6)
+                    break;
+                $loopCount++;
                 $countArray = $this->convertCount($slot['count']);
                 if ($countArray['value'] !== 0) {
                     $slotCount = array('id' => $slot['expansion_slot']->getId(), 'count' => $countArray['value'], 'sign' => $countArray['sign']);
@@ -393,7 +396,11 @@ class MotherboardController extends AbstractController
         $ports = $form['motherboardIoPorts']->getData();
         if ($ports) {
             $parameters['ioPortsIds'] = array();
+            $loopCount = 0;
             foreach ($ports as $port) {
+                if($loopCount >= 6)
+                    break;
+                $loopCount++;
                 $countArray = $this->convertCount($port['count']);
                 if ($countArray['value'] !== 0) {
                     $portCount = array('id' => $port['io_port']->getId(), 'count' => $countArray['value'], 'sign' => $countArray['sign']);
@@ -408,7 +415,11 @@ class MotherboardController extends AbstractController
         $expchips = $form['expansionChips']->getData();
         if ($expchips) {
             $parameters['expansionChipIds'] = array();
+            $loopCount = 0;
             foreach ($expchips as $chip) {
+                if($loopCount >= 6)
+                    break;
+                $loopCount++;
                 array_push($parameters['expansionChipIds'], $chip->getId());
             }
         }

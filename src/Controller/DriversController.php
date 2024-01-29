@@ -124,7 +124,11 @@ class DriversController extends AbstractController
         $osFlags = $form['osFlags']->getData();
         if ($osFlags) {
             $parameters['osFlagIds'] = array();
+            $loopCount = 0;
             foreach ($osFlags as $os) {
+                if($loopCount >= 6)
+                    break;
+                $loopCount++;
                 if($os != null)
                     array_push($parameters['osFlagIds'], $os->getId());
             }

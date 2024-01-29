@@ -810,6 +810,12 @@ div.editor-row {
 div.bios-image-container {
 	margin-bottom: 15px;
 }
+div.search-errors, input.search-errors{
+    border: 1px solid red;
+}
+span.search-errors-label{
+    color:red;
+}
 
 /* results */
 div.results {

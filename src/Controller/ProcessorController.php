@@ -3,9 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\CpuSocket;
-use App\Entity\Processor;
 use App\Entity\Manufacturer;
-use App\Entity\ProcessorPlatformType;
 use App\Form\Processor\Search;
 use App\Repository\CpuSpeedRepository;
 use App\Repository\ProcessorRepository;
@@ -65,7 +63,6 @@ class ProcessorController extends AbstractController
             'show_images' => $showImages,
             'cpus' => $cpus,
         ]);
-        
     }
     #[Route('/cpus/live', name: 'cpulivewrapper')]
     public function liveSearchCpu(Request $request, ManufacturerRepository $manufacturerRepository, CpuSpeedRepository $cpuSpeedRepository): Response
@@ -119,7 +116,7 @@ class ProcessorController extends AbstractController
     }
     public function addArrayCriteria(Request $request, array &$criterias, string $htmlId, string $sqlId): void
     {
-        $entityIds = $request->query->get($htmlId) ?? $request->request->get($htmlId);
+        $entityIds = $request->query->all($htmlId) ?? $request->request->all($htmlId);
         $entityArray = null;
         if ($entityIds) {
             if (is_array($entityIds)) {
@@ -158,9 +155,26 @@ class ProcessorController extends AbstractController
             $parameters['fsbSpeedId'] = $form['fsbSpeed']->getData()->getId();
         }
 
-        $parameters['socketIds'] = array_map(fn(CpuSocket $socket) => $socket->getId(), array_filter($form['sockets']->getData(), fn(?CpuSocket $socket) => $socket !== null));
-
-        $parameters['platformIds'] = array_map(fn(ProcessorPlatformType $platform) => $platform->getId(), array_filter($form['platforms']->getData(), fn(?ProcessorPlatformType $platform) => $platform !== null));
+        $sockets = array_filter($form['sockets']->getData(), fn(?CpuSocket $socket) => $socket !== null);
+        if (!empty($sockets)) {
+            $parameters['socketIds'] = array();
+            $loopCount = 0;
+            foreach ($sockets  as $socket) {
+                if($loopCount >= 6)
+                    break;
+                array_push($parameters['socketIds'], $socket->getId());
+            }
+        }
+        $platforms = $form['platforms']->getData();
+        if ($platforms) {
+            $parameters['platformIds'] = array();
+            $loopCount = 0;
+            foreach ($platforms  as $platform) {
+                if($loopCount >= 6)
+                    break;
+                array_push($parameters['platformIds'], $platform->getId());
+            }
+        }
 
         $parameters['page'] = intval($request->request->get('page') ?? $request->query->get('page') ?? 1);
         $parameters['domTarget'] = $request->request->get('domTarget') ?? $request->query->get('domTarget') ?? "";
@@ -194,32 +208,4 @@ class ProcessorController extends AbstractController
 
         return $form;
     }
-
-    /* #[Route('/cpus/index/{letter}', name:'processorindex', requirements:['letter' => '\w|[?]'], methods:["GET"])]
-    public function indexCpu(Request $request, PaginatorInterface $paginator, string $letter, ProcessorRepository $cpuRepository): Response
-    {
-        if ($letter === "?") {
-            $letter = "";
-        }
-        $data = $cpuRepository->findAllAlphabetic($letter);
-
-        usort(
-            $data,
-            function (Processor $a, Processor $b) {
-                return strcmp($a->getName(), $b->getName());
-            }
-        );
-
-        $cpus = $paginator->paginate(
-            $data,
-            $request->query->getInt('page', 1),
-            $this->getParameter('app.pagination.max')
-        );
-
-        return $this->render('cpu/index.html.twig', [
-            'cpus' => $cpus,
-            'cpu_count' => count($data),
-            'letter' => $letter,
-        ]);
-    } */
 }

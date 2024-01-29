@@ -276,6 +276,8 @@ form.addEventListener("keydown", (e) => {
 
 function paginate(newPageIdx, target) {
     var redirElem = document.getElementById('pagination_redir');
+    if(validate())
+        return false;
     if (redirElem) {
         redirElem.setAttribute("value", newPageIdx);
         if (el = document.getElementById("route-results"))
@@ -284,6 +286,61 @@ function paginate(newPageIdx, target) {
         redirElem.click();
     }
     return false;
+}
+function validate(){
+    state = false;
+    errors = [];
+    for(let elementId of dynamic_selects)
+        if(element = document.getElementById(elementId)){
+            for(let item of element.children){
+                if(item.children[0].tagName.toLowerCase() === 'input'){
+                    if(item.children[0].value == ""){
+                        errors[item.children[0].getAttribute('id')] = "Count cannot be empty!";
+                        state = true;
+                    }
+                    if(isNaN(parseInt(item.children[0].value.replace(/>|<|=/,'')))){
+                        errors[item.children[0].getAttribute('id')] = "Count input is invalid!";
+                        state = true;
+                    }
+                }
+                if(item.children[0].tagName.toLowerCase() === 'select' && item.children[0].value == ""){
+                    errors[item.children[0].getAttribute('id')] = "Field cannot be empty!";
+                    state = true;
+                }
+                if(item.children[1].tagName.toLowerCase() === 'select' && item.children[1].value == ""){
+                    errors[item.children[1].getAttribute('id')] = "Field cannot be empty!";
+                    state = true;
+                }
+            }
+        }
+    let labels = document.getElementsByClassName('search-errors-label');
+    let elements = document.getElementsByClassName('search-errors');
+    while(labels.length > 0){
+        labels[0].parentNode.parentNode.removeChild(labels[0].parentNode);
+    }
+    for (var i = 0; i < elements.length; i++) {
+        elements[i].classList.remove('search-errors');
+    }
+    if(Object.keys(errors).length > 0){
+        for(let [key, value] of Object.entries(errors)){
+            let element = document.getElementById(key);
+            if(element.tagName.toLowerCase() === "select")
+                element.nextElementSibling.children[0].classList.add("search-errors");
+            else
+                element.classList.add("search-errors");
+            let labelContainer = document.createElement('div');
+            let label = document.createElement('span');
+            let dud = document.createElement('div');
+            label.classList.add("search-errors-label");
+            label.innerHTML = value;
+            labelContainer.appendChild(label);
+            labelContainer.appendChild(dud);
+            element.parentNode.after(labelContainer);
+            console.log(label, element.parentNode)
+            console.log(key, value);
+        }
+    }
+    return state;
 }
 
 function reset() {
@@ -382,6 +439,11 @@ function expand(idx) {
     if (idx == "motherboardExpansionSlots-fields-list") {
         el = document.getElementById('search_motherboardExpansionSlots_' + (counter - 1) + '_expansion_slot');
         new TomSelect('#search_motherboardExpansionSlots_' + (counter - 1) + '_expansion_slot', settings);
+        el.tomselect.sync();
+    }
+    if (idx == "motherboardIoPorts-fields-list") {
+        el = document.getElementById('search_motherboardIoPorts_' + (counter - 1) + '_io_port');
+        new TomSelect('#search_motherboardIoPorts_' + (counter - 1) + '_io_port', settings);
         el.tomselect.sync();
     }
     if (idx == "motherboardMemoryConnectors-fields-list") {
