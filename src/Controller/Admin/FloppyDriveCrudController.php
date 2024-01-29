@@ -152,6 +152,7 @@ class FloppyDriveCrudController extends AbstractCrudController
                 'Single density (5.25 inch SD)' => 'Single density (5.25 inch SD)',
                 'Double density (5.25 inch DD)' => 'Double density (5.25 inch DD)',
                 'Quad density (5.25 inch QD)' => 'Quad density (5.25 inch QD)',
+                'High density (5.25 inch HD)' => 'High density (5.25 inch HD)',
                 'Double density (3.5 inch DD)' => 'Double density (3.5 inch DD)',
                 'High density (3.5 inch HD)' => 'High density (3.5 inch HD)',
                 'Extra-high density (3.5 inch ED)' => 'Extra-high density (3.5 inch ED)',
