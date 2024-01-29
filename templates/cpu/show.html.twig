@@ -222,6 +222,21 @@
 					{% else %}
 						<div>Unknown</div>
 					{% endif %}
+					<!-- CPUID -->
+
+					{% if cpu.getPlatform() is not empty %}
+						{% if cpu.getPlatform().getCpuid() is not empty %}
+						<div class="quick-spec-head">
+							<img src="{{ absolute_url(asset('build/icons/tag.svg')) }}" alt="tag" width="24" height="24">CPUID
+						</div>
+						<div class="tag-container">
+								{% for id in cpu.getPlatform().getCpuid()|sort((a, b) => a.name <=> b.name) %}
+									<span class="text-block">{{ id.getValue()}}</span>
+								{% endfor %}
+						</div>
+						{% endif %}
+					{% endif %}
+					<!-- TDP -->
 				</div>
 			</div>
 			{% include 'macros/aliases.html.twig' with {'entity':cpu.getChipAliases(), 'msg': 'Other part numbers/S-Specs:'} %}

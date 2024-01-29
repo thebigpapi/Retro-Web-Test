@@ -7,6 +7,7 @@ use App\Form\Type\DramTypeType;
 use App\Form\Type\EntityDocumentationType;
 use App\Form\Type\InstructionSetType;
 use App\Form\Type\ProcessorPlatformTypeForm;
+use App\Form\Type\CPUIDType;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
@@ -75,6 +76,7 @@ class ProcessorPlatformTypeCrudController extends AbstractCrudController
             ->add('L1data')
             ->add('L1dataRatio')
             ->add('instructionSets')
+            ->add('cpuid')
             ->add('processNode');
     }
     public function configureFields(string $pageName): iterable
@@ -119,6 +121,11 @@ class ProcessorPlatformTypeCrudController extends AbstractCrudController
             ->onlyOnDetail();
         yield CollectionField::new('compatibleWith', 'Compatible with families')
             ->setEntryType(ProcessorPlatformTypeForm::class)
+            ->renderExpanded()
+            ->onlyOnForms();
+        yield CollectionField::new('cpuid', 'CPUID')
+            ->setEntryType(CPUIDType::class)
+            ->setColumns(4)
             ->renderExpanded()
             ->onlyOnForms();
         yield ArrayField::new('entityDocumentations', 'Documentation')

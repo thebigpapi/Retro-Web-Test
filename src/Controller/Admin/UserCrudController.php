@@ -52,8 +52,7 @@ class UserCrudController extends AbstractCrudController
             ->onlyOnIndex();
         yield TextField::new('username', 'Username');
         yield TextField::new('password', 'Password')
-            ->onlyOnForms()
-            ->hideWhenUpdating();
+            ->onlyOnForms();
         yield ArrayField::new('roles', 'Roles');
 
     }
