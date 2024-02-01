@@ -43,7 +43,7 @@ class MotherboardRepository extends ServiceEntityRepository
         foreach ($expansionSlots as $key => $slot) {
             $fromLength = count($from);
             if (isset($slot['count'])) {
-                $from[] = (count($from) == 0 ? " (" : " INTERSECT") . "SELECT mb.id
+                $from[] = (count($from) == 0 ? " (" : " INTERSECT") . " SELECT mb.id
                     FROM motherboard mb
                     JOIN motherboard_expansion_slot mex ON mb.id=mex.motherboard_id
                     WHERE mex.expansion_slot_id=:idSlot" . $key . " AND (
@@ -53,7 +53,7 @@ class MotherboardRepository extends ServiceEntityRepository
                         (mex.count<=:slotCount" . $key . " AND :signSlot" . $key . "= '<=') OR
                         (mex.count>=:slotCount" . $key . " AND :signSlot" . $key . "= '>='))";
             } else {
-                $from[] = (count($from) == 0 ? " (" : " INTERSECT") . "SELECT mb.id
+                $from[] = (count($from) == 0 ? " (" : " INTERSECT") . " SELECT mb.id
                     FROM motherboard mb
                     WHERE mb.id NOT IN (SELECT motherboard_id FROM motherboard_expansion_slot mex
                         WHERE mex.expansion_slot_id = :idSlot" . $key . ")";
@@ -66,7 +66,7 @@ class MotherboardRepository extends ServiceEntityRepository
     {
         foreach ($ioPorts as $key => $port) {
             if (isset($port['count'])) {
-                $from[] = (count($from) == 0 ? " (" : " INTERSECT") . "SELECT mb.id
+                $from[] = (count($from) == 0 ? " (" : " INTERSECT") . " SELECT mb.id
                     FROM motherboard mb
                     JOIN motherboard_io_port mip ON mb.id = mip.motherboard_id
                     WHERE mip.io_port_id = :idPort" . $key . " AND (
@@ -76,7 +76,7 @@ class MotherboardRepository extends ServiceEntityRepository
                     (mip.count<=:portCount" . $key . " AND :signPort" . $key . "= '<=') OR
                     (mip.count>=:portCount" . $key . " AND :signPort" . $key . "= '>='))";
             } else {
-                $from[] = (count($from) == 0 ? " (" : " INTERSECT") . "SELECT mb.id
+                $from[] = (count($from) == 0 ? " (" : " INTERSECT") . " SELECT mb.id
                     FROM motherboard mb
                     WHERE mb.id NOT IN (SELECT motherboard_id FROM motherboard_io_port mip
                         WHERE mip.io_port_id = :idPort" . $key . ")";
