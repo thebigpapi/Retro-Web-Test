@@ -43,9 +43,8 @@ class MotherboardRepository extends ServiceEntityRepository
         foreach ($expansionSlots as $key => $slot) {
             $fromLength = count($from);
             if (isset($slot['count'])) {
-                $from[] = (count($from) == 0 ? " (" : " INTERSECT") . " SELECT mb.id
-                    FROM motherboard mb
-                    JOIN motherboard_expansion_slot mex ON mb.id=mex.motherboard_id
+                $from[] = (count($from) == 0 ? " (" : " INTERSECT") . " SELECT mex.motherboard_id
+                    FROM motherboard_expansion_slot mex
                     WHERE mex.expansion_slot_id=:idSlot" . $key . " AND (
                         (mex.count=:slotCount" . $key . " AND :signSlot" . $key . "= '=') OR
                         (mex.count>:slotCount" . $key . " AND :signSlot" . $key . "= '>') OR
@@ -53,11 +52,13 @@ class MotherboardRepository extends ServiceEntityRepository
                         (mex.count<=:slotCount" . $key . " AND :signSlot" . $key . "= '<=') OR
                         (mex.count>=:slotCount" . $key . " AND :signSlot" . $key . "= '>='))";
             } else {
-                $from[] = (count($from) == 0 ? " (" : " INTERSECT") . " SELECT mb.id
-                    FROM motherboard mb
-                    WHERE mb.id NOT IN (SELECT motherboard_id FROM motherboard_expansion_slot mex
-                        WHERE mex.expansion_slot_id = :idSlot" . $key . ")";
+                $from[] = (count($from) == 0 ? " (" : " INTERSECT") . " SELECT mb.id FROM motherboard mb
+                LEFT JOIN (SELECT *
+                FROM motherboard_expansion_slot sub_mex
+                WHERE sub_mex.expansion_slot_id=:idSlot$key ) as mex ON mex.motherboard_id=mb.id 
+                WHERE expansion_slot_id is NULL";
             }
+            
         }
         return $from;
     }
@@ -66,9 +67,8 @@ class MotherboardRepository extends ServiceEntityRepository
     {
         foreach ($ioPorts as $key => $port) {
             if (isset($port['count'])) {
-                $from[] = (count($from) == 0 ? " (" : " INTERSECT") . " SELECT mb.id
-                    FROM motherboard mb
-                    JOIN motherboard_io_port mip ON mb.id = mip.motherboard_id
+                $from[] = (count($from) == 0 ? " (" : " INTERSECT") . " SELECT mip.motherboard_id
+                    FROM motherboard_io_port mip 
                     WHERE mip.io_port_id = :idPort" . $key . " AND (
                     (mip.count=:portCount" . $key . " AND :signPort" . $key . "= '=') OR
                     (mip.count>:portCount" . $key . " AND :signPort" . $key . "= '>') OR
@@ -76,11 +76,13 @@ class MotherboardRepository extends ServiceEntityRepository
                     (mip.count<=:portCount" . $key . " AND :signPort" . $key . "= '<=') OR
                     (mip.count>=:portCount" . $key . " AND :signPort" . $key . "= '>='))";
             } else {
-                $from[] = (count($from) == 0 ? " (" : " INTERSECT") . " SELECT mb.id
-                    FROM motherboard mb
-                    WHERE mb.id NOT IN (SELECT motherboard_id FROM motherboard_io_port mip
-                        WHERE mip.io_port_id = :idPort" . $key . ")";
+                $from[] = (count($from) == 0 ? " (" : " INTERSECT") . " SELECT mb.id FROM motherboard mb
+                LEFT JOIN (SELECT *
+                FROM motherboard_io_port sub_mip
+                WHERE sub_mip.io_port_id=:idPort$key ) as mip ON mip.motherboard_id=mb.id 
+                WHERE io_port_id is NULL";
             }
+
         }
 
         return $from;
@@ -88,9 +90,8 @@ class MotherboardRepository extends ServiceEntityRepository
     private function expansionChipsToSQL(array $expansionChips, array $from): array
     {
         foreach ($expansionChips as $key => $chip) {
-            $from[] = (count($from) == 0 ? " (" : " INTERSECT") . " SELECT mb.id
-                    FROM motherboard mb
-                    JOIN motherboard_expansion_chip mec ON mb.id=mec.motherboard_id
+            $from[] = (count($from) == 0 ? " (" : " INTERSECT") . " SELECT mec.motherboard_id
+                    FROM motherboard_expansion_chip mec
                     WHERE mec.expansion_chip_id=:idChip" . $key;
         }
         return $from;
@@ -98,9 +99,8 @@ class MotherboardRepository extends ServiceEntityRepository
     private function dramTypesToSQL(array $dramTypes, array $from): array
     {
         foreach ($dramTypes as $key => $type) {
-            $from[] = (count($from) == 0 ? " (" : " INTERSECT") . " SELECT mb.id
-                FROM motherboard mb
-                JOIN motherboard_dram_type mdt ON mb.id=mdt.motherboard_id
+            $from[] = (count($from) == 0 ? " (" : " INTERSECT") . " SELECT mdt.motherboard_id
+                FROM motherboard_dram_type mdt
                 WHERE mdt.dram_type_id=:idType" . $key;
         }
         return $from;
