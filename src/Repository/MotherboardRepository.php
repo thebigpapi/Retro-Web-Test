@@ -43,7 +43,7 @@ class MotherboardRepository extends ServiceEntityRepository
         foreach ($expansionSlots as $key => $slot) {
             $fromLength = count($from);
             if (isset($slot['count'])) {
-                $from[] = (count($from) == 0 ? " (" : " INTERSECT") . " SELECT mex.motherboard_id
+                $from[] = (count($from) == 0 ? " (" : " INTERSECT") . " SELECT mex.motherboard_id as id
                     FROM motherboard_expansion_slot mex
                     WHERE mex.expansion_slot_id=:idSlot" . $key . " AND (
                         (mex.count=:slotCount" . $key . " AND :signSlot" . $key . "= '=') OR
@@ -52,7 +52,7 @@ class MotherboardRepository extends ServiceEntityRepository
                         (mex.count<=:slotCount" . $key . " AND :signSlot" . $key . "= '<=') OR
                         (mex.count>=:slotCount" . $key . " AND :signSlot" . $key . "= '>='))";
             } else {
-                $from[] = (count($from) == 0 ? " (" : " INTERSECT") . " SELECT mb.id FROM motherboard mb
+                $from[] = (count($from) == 0 ? " (" : " INTERSECT") . " SELECT mb.id as id FROM motherboard mb
                 LEFT JOIN (SELECT *
                 FROM motherboard_expansion_slot sub_mex
                 WHERE sub_mex.expansion_slot_id=:idSlot$key ) as mex ON mex.motherboard_id=mb.id 
@@ -67,7 +67,7 @@ class MotherboardRepository extends ServiceEntityRepository
     {
         foreach ($ioPorts as $key => $port) {
             if (isset($port['count'])) {
-                $from[] = (count($from) == 0 ? " (" : " INTERSECT") . " SELECT mip.motherboard_id
+                $from[] = (count($from) == 0 ? " (" : " INTERSECT") . " SELECT mip.motherboard_id as id
                     FROM motherboard_io_port mip 
                     WHERE mip.io_port_id = :idPort" . $key . " AND (
                     (mip.count=:portCount" . $key . " AND :signPort" . $key . "= '=') OR
@@ -76,7 +76,7 @@ class MotherboardRepository extends ServiceEntityRepository
                     (mip.count<=:portCount" . $key . " AND :signPort" . $key . "= '<=') OR
                     (mip.count>=:portCount" . $key . " AND :signPort" . $key . "= '>='))";
             } else {
-                $from[] = (count($from) == 0 ? " (" : " INTERSECT") . " SELECT mb.id FROM motherboard mb
+                $from[] = (count($from) == 0 ? " (" : " INTERSECT") . " SELECT mb.id as id FROM motherboard mb
                 LEFT JOIN (SELECT *
                 FROM motherboard_io_port sub_mip
                 WHERE sub_mip.io_port_id=:idPort$key ) as mip ON mip.motherboard_id=mb.id 
@@ -90,7 +90,7 @@ class MotherboardRepository extends ServiceEntityRepository
     private function expansionChipsToSQL(array $expansionChips, array $from): array
     {
         foreach ($expansionChips as $key => $chip) {
-            $from[] = (count($from) == 0 ? " (" : " INTERSECT") . " SELECT mec.motherboard_id
+            $from[] = (count($from) == 0 ? " (" : " INTERSECT") . " SELECT mec.motherboard_id as id
                     FROM motherboard_expansion_chip mec
                     WHERE mec.expansion_chip_id=:idChip" . $key;
         }
@@ -99,7 +99,7 @@ class MotherboardRepository extends ServiceEntityRepository
     private function dramTypesToSQL(array $dramTypes, array $from): array
     {
         foreach ($dramTypes as $key => $type) {
-            $from[] = (count($from) == 0 ? " (" : " INTERSECT") . " SELECT mdt.motherboard_id
+            $from[] = (count($from) == 0 ? " (" : " INTERSECT") . " SELECT mdt.motherboard_id as id
                 FROM motherboard_dram_type mdt
                 WHERE mdt.dram_type_id=:idType" . $key;
         }
@@ -280,8 +280,8 @@ class MotherboardRepository extends ServiceEntityRepository
         }
 
         // Turning from and where arrays to SQL statements
-        $fromSql = !empty($from) ? "mot.id in " . implode(" ", $from) . ")" : "";
-        $whereSQL = (!empty($where)) ? implode(" AND ", $where) . (!empty($from) ? " AND" : "") : "";
+        $fromSql = !empty($from) ? "JOIN " . implode(" ", $from) . ") as io_slot_chip ON mot.id=io_slot_chip.id" : "";
+        $whereSQL = (!empty($where)) ? " WHERE " .implode(" AND ", $where) : "";
         //dd($from);
         // Building SQL query
         $sql = "
@@ -289,7 +289,8 @@ class MotherboardRepository extends ServiceEntityRepository
             LEFT JOIN manufacturer man1 ON mot.manufacturer_id = man1.id
             LEFT JOIN chipset chp ON mot.chipset_id = chp.id
             LEFT JOIN manufacturer man2 ON chp.manufacturer_id = man2.id
-            WHERE $whereSQL $fromSql ORDER BY man1_name ASC, mot.name ASC LIMIT 10000";
+            $fromSql
+            $whereSQL ORDER BY man1_name ASC, mot.name ASC LIMIT 10000";
         return $sql;
     }
 
