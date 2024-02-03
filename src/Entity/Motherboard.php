@@ -26,7 +26,7 @@ class Motherboard
     #[Assert\Length(max: 255, maxMessage: 'Dimensions is longer than {{ limit }} characters, try to make it shorter.')]
     private ?string $dimensions = null;
 
-    #[ORM\ManyToOne(targetEntity: Manufacturer::class, inversedBy: 'motherboards', fetch: 'EAGER')]
+    #[ORM\ManyToOne(targetEntity: Manufacturer::class, inversedBy: 'motherboards')]
     private $manufacturer;
 
     #[ORM\ManyToOne(targetEntity: Chipset::class, inversedBy: 'motherboards')]

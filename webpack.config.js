@@ -34,10 +34,6 @@ Encore
         from: './assets/styles/audit',
         to: 'css/[path][name].[ext]',
     })
-    .copyFiles({
-        from: './assets/html/',
-        to: 'html/[path][name].[ext]',
-    })
     /*
      * ENTRY CONFIG
      *

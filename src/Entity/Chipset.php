@@ -21,6 +21,7 @@ class Chipset
     private $id;
 
     #[ORM\ManyToOne(targetEntity: Manufacturer::class, inversedBy: 'chipsets')]
+    #[Assert\NotBlank(message: 'Manufacturer cannot be blank')]
     private $manufacturer;
 
     #[ORM\OneToMany(targetEntity: Motherboard::class, mappedBy: 'chipset')]

@@ -29,13 +29,20 @@ if (ioPortsBtn = document.getElementById('ExpansionCard_ioPorts_collection')?.pr
 }
 
 if (miscSpecs = document.getElementById('ExpansionCard_miscSpecs')) {
-    if(saveretbtn = document.getElementById("js-save")){
+    const listElement = document.getElementById('specs-collection');
+    if(saveretbtn = document.getElementById("js-save"))
         saveretbtn.addEventListener('click', () => submit(miscSpecs, "action-saveAndReturn"), false);
-    }
-    if(savecontbtn = document.getElementById("js-save-continue")){
+    if(savecontbtn = document.getElementById("js-save-continue"))
         savecontbtn.addEventListener('click', () => submit(miscSpecs, "action-saveAndContinue"), false);
-    }
-    setupForm(true);
+    if(update_btn = document.getElementById("update-specs-btn"))
+        update_btn.addEventListener('click', () => saveAsJson(miscSpecs));
+    if(template_btn = document.getElementById("set-template-btn"))
+        template_btn.addEventListener('click', () => applyTemplate(miscSpecs));
+    if(item_btn = document.getElementById("specs-add-item-btn"))
+        item_btn.addEventListener('click', () => addSpec(listElement));
+    if(table_btn = document.getElementById("specs-add-table-btn"))
+        table_btn.addEventListener('click', () => addTable(listElement));
+    setupForm(listElement, false);
 }
 function submit(el, name){
     saveAsJson(el);
@@ -47,76 +54,38 @@ function setMsg(msg){
         label.innerHTML = msg;
 }
 //ExpansionCard_miscSpecs_table_collection_0
-function setupForm(firstRun = false) {
-    console.log("setupForm");
-    const update_btn = document.getElementById("update-specs-btn");
-    const template_btn = document.getElementById("set-template-btn");
-    let container = document.getElementById("formatted-specs");
-
-    if (!firstRun) {
-        container.children[0].remove();
+function setupForm(listElement, clear) {
+    if(clear){
+        listElement.innerHTML = "";
     }
-
     miscSpecsJson = JSON.parse(miscSpecs.value);
-
     if (miscSpecsJson.length === 0) {
         miscSpecsJson = {};
+        return false;
     }
-    addForm(container).then((form) => {
-        for (const key of Object.keys(miscSpecsJson)) {
-            if (typeof miscSpecsJson[key] === "object") {
-                addTable(form, key, miscSpecsJson[key]);
-            } else {
-                addSpec(form, key, miscSpecsJson[key]);
-            }
+    for (const key of Object.keys(miscSpecsJson)) {
+        if (typeof miscSpecsJson[key] === "object") {
+            addTable(listElement, key, miscSpecsJson[key]);
+        } else {
+            addSpec(listElement, key, miscSpecsJson[key]);
         }
-        if (firstRun) {
-            update_btn.addEventListener('click', () => saveAsJson(miscSpecs));
-            template_btn.addEventListener('click', () => applyTemplate(miscSpecs));
-        }
-    });
+    }
+    return true;
 }
-async function addForm(miscSpecsParent) {
-    console.log("addForm");
-    let form = document.createElement("div");
-    form.classList.add("form-widget");
-
-
-    const resp = await fetch("build/html/jsonKeyValueForm.html", { cache: "force-cache" });
-    const html = await resp.text();
-    form.innerHTML = html;
-
-    const buttons = form.getElementsByTagName('button');
-    buttons[0].addEventListener('click', () => addSpec(form));
-    buttons[1].addEventListener('click', () => addTable(form));
-    miscSpecsParent.appendChild(form)
-    return form;
-}
-async function addSpec(form, key = null, value = null) {
-    console.log("addSpec");
-    let empty_badge = document.getElementById('ExpansionCard_miscSpecs_emptybadge');
-    empty_badge.innerHTML = "";
-    const listElement = form.querySelectorAll('[data-empty-collection]')[0];
-
+function addSpec(listElement, key = null, value = null) {
+    document.getElementById('ExpansionCard_miscSpecs_emptybadge').innerHTML = "";
     const elementId = miscSpecsListCounter;
     miscSpecsIds.push(elementId);
     miscSpecsListCounter++;
-    //Creating the element
     const element = document.createElement("div");
-    element.classList.add(["field-collection-item", "field-collection-item-complex", "field-collection-item-first", "field-collection-item-last"])
-    const resp = await fetch("build/html/jsonKeyValueFormElement.html", { cache: "force-cache" });
-    const html = (await resp.text()).replace(new RegExp('{id}', 'gi'), elementId);
-    element.innerHTML = html;
-
-    //Adding the element to the html
+    let specsHtml = document.getElementById('specs-template-item').innerHTML.replace(new RegExp('{id}', 'gi'), elementId);
+    element.innerHTML = specsHtml;
     listElement.appendChild(element);
-
     if (key) {
         document.getElementById(`ExpansionCard_miscSpecs_${elementId}_key`).value = key;
         document.getElementById(`ExpansionCard_miscSpecs_${elementId}_value`).value = value;
 
     }
-
     const deleteBtn = document.getElementById(`ExpansionCard_miscSpecs_${elementId}_deletebtn`);
     deleteBtn.addEventListener('click', () => {
         miscSpecsIds.splice(miscSpecsIds.indexOf(elementId), 1);
@@ -126,39 +95,25 @@ async function addSpec(form, key = null, value = null) {
 
 }
 
-async function addTable(form, key=null, values = null) {
-    console.log("addTable");
-    let empty_badge = document.getElementById('ExpansionCard_miscSpecs_emptybadge');
-    empty_badge.innerHTML = "";
-    const listElement = form.querySelectorAll('[data-empty-collection]')[0];
-
+async function addTable(listElement, key=null, values = null) {
+    document.getElementById('ExpansionCard_miscSpecs_emptybadge').innerHTML = "";
     const elementId = miscSpecsTableListCounter;
     miscSpecsTableIds[elementId]={counter:0,ids:[]};
     miscSpecsTableListCounter++;
-    //Creating the element
     const element = document.createElement("div");
-    element.classList.add(["field-collection-item", "field-collection-item-complex", "field-collection-item-first", "field-collection-item-last"])
-   
-    const resp = await fetch("build/html/jsonKeyValueFormTableElement.html");//, { cache: "force-cache" });
-    const html = (await resp.text()).replace(new RegExp('{id}', 'gi'), elementId);
-    element.innerHTML = html;
-    //console.log(html);
-    //Adding the element to the html
+    let specsHtml = document.getElementById('specs-template-table').innerHTML.replace(new RegExp('{id}', 'gi'), elementId);
+    element.innerHTML = specsHtml;
     listElement.appendChild(element);
+    const elementContainer = document.getElementById("specs-table-collection-" + elementId);
 
-    const button = element.getElementsByTagName('button')[0];
-    button.addEventListener('click', () => addTableSpec(element, elementId));
+    const addBtn = document.getElementById(`ExpansionCard_miscSpecs_table_${elementId}_addbtn`);
+    addBtn.addEventListener('click', () => addTableSpec(elementContainer, elementId));
 
     if (key) {
         document.getElementById(`ExpansionCard_miscSpecs_table_${elementId}_name`).value = key;
-
-        if (values) {
-            for (const subKey of Object.keys(values)) {
-                addTableSpec(element, elementId, subKey, values[subKey]);
-            }
-        }
-        //document.getElementById(`ExpansionCard_miscSpecs_${elementId}_value`).value = value;
-
+        if (values)
+            for (const subKey of Object.keys(values))
+                addTableSpec(elementContainer, elementId, subKey, values[subKey]);
     }
 
     const deleteBtn = document.getElementById(`ExpansionCard_miscSpecs_table_${elementId}_deletebtn`);
@@ -170,25 +125,17 @@ async function addTable(form, key=null, values = null) {
 }
 
 
-async function addTableSpec(form, tableId, key = null, value = null) {
-    console.log("addTableSpec" + tableId);
-    let empty_badge = document.getElementById('ExpansionCard_miscSpecs_emptybadge_' + tableId);
-    empty_badge.innerHTML = "";
-    const listElement = form.querySelectorAll('[data-empty-collection]')[0];
+async function addTableSpec(listElement, tableId, key = null, value = null) {
 
+    console.log("addTableSpec" + tableId, listElement);
+    document.getElementById('ExpansionCard_miscSpecs_emptybadge_' + tableId).innerHTML = "";
     const elementId = miscSpecsTableIds[tableId]['counter'];
     miscSpecsTableIds[tableId]['ids'].push(elementId);
     miscSpecsTableIds[tableId]['counter']++;
-    //Creating the element
     const element = document.createElement("div");
-    element.classList.add(["field-collection-item", "field-collection-item-complex", "field-collection-item-first", "field-collection-item-last"])
-    const resp = await fetch("build/html/jsonKeyValueFormTableFormElement.html");//, { cache: "force-cache" });
-    const html = (await resp.text()).replace(new RegExp('{id1}', 'gi'), tableId).replace(new RegExp('{id2}', 'gi'), elementId);
-    element.innerHTML = html;
-
-    //Adding the element to the html
+    let specsHtml = document.getElementById('specs-template-table-item').innerHTML.replace(new RegExp('{id1}', 'gi'), tableId).replace(new RegExp('{id2}', 'gi'), elementId);
+    element.innerHTML = specsHtml;
     listElement.appendChild(element);
-
     if (key) {
         document.getElementById(`ExpansionCard_miscSpecs_table_${tableId}_${elementId}_key`).value = key;
         document.getElementById(`ExpansionCard_miscSpecs_table_${tableId}_${elementId}_value`).value = value;
@@ -204,7 +151,8 @@ async function addTableSpec(form, tableId, key = null, value = null) {
 }
 
 async function applyTemplate(miscSpecs) {
-    console.log("applyTemplate");
+    const listElement = document.getElementById('specs-collection');
+    
     let typeCollection = document.getElementById('ExpansionCard_type_collection').children[0].children[0];
     if(typeCollection.innerHTML == "Empty"){
         setMsg("No card types are present!");
@@ -228,7 +176,7 @@ async function applyTemplate(miscSpecs) {
         .then((text) => {
             const obj = JSON.parse(text);
             miscSpecs.textContent = JSON.stringify(obj, null, 4);
-            setupForm();
+            setupForm(listElement, true);
             setMsg("Applied template with " + Object.keys(obj).length + " specs");
         })
         .catch((error) => {
