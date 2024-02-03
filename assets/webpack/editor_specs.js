@@ -28,7 +28,9 @@ if (ioPortsBtn = document.getElementById('ExpansionCard_ioPorts_collection')?.pr
     })
 }
 
-if (miscSpecs = document.getElementById('ExpansionCard_miscSpecs')) {
+if ((miscSpecs = document.getElementById('ExpansionCard_miscSpecs')) ||
+    (miscSpecs = document.getElementById('ExpansionChip_miscSpecs')) ||
+    (miscSpecs = document.getElementById('ExpansionCardType_template'))) {
     const listElement = document.getElementById('specs-collection');
     if(saveretbtn = document.getElementById("js-save"))
         saveretbtn.addEventListener('click', () => submit(miscSpecs, "action-saveAndReturn"), false);
@@ -53,7 +55,7 @@ function setMsg(msg){
     if(label = document.getElementById('specs-form-label'))
         label.innerHTML = msg;
 }
-//ExpansionCard_miscSpecs_table_collection_0
+//MiscSpecs_table_collection_0
 function setupForm(listElement, clear) {
     if(clear){
         listElement.innerHTML = "";
@@ -73,7 +75,7 @@ function setupForm(listElement, clear) {
     return true;
 }
 function addSpec(listElement, key = null, value = null) {
-    document.getElementById('ExpansionCard_miscSpecs_emptybadge').innerHTML = "";
+    document.getElementById('MiscSpecs_emptybadge').innerHTML = "";
     const elementId = miscSpecsListCounter;
     miscSpecsIds.push(elementId);
     miscSpecsListCounter++;
@@ -82,21 +84,21 @@ function addSpec(listElement, key = null, value = null) {
     element.innerHTML = specsHtml;
     listElement.appendChild(element);
     if (key) {
-        document.getElementById(`ExpansionCard_miscSpecs_${elementId}_key`).value = key;
-        document.getElementById(`ExpansionCard_miscSpecs_${elementId}_value`).value = value;
+        document.getElementById(`MiscSpecs_${elementId}_key`).value = key;
+        document.getElementById(`MiscSpecs_${elementId}_value`).value = value;
 
     }
-    const deleteBtn = document.getElementById(`ExpansionCard_miscSpecs_${elementId}_deletebtn`);
+    const deleteBtn = document.getElementById(`MiscSpecs_${elementId}_deletebtn`);
     deleteBtn.addEventListener('click', () => {
         miscSpecsIds.splice(miscSpecsIds.indexOf(elementId), 1);
-        const element = document.getElementById(`ExpansionCard_miscSpecs_${elementId}-contents`);
+        const element = document.getElementById(`MiscSpecs_${elementId}-contents`);
         element.parentNode.parentNode.remove();
     });
 
 }
 
 async function addTable(listElement, key=null, values = null) {
-    document.getElementById('ExpansionCard_miscSpecs_emptybadge').innerHTML = "";
+    document.getElementById('MiscSpecs_emptybadge').innerHTML = "";
     const elementId = miscSpecsTableListCounter;
     miscSpecsTableIds[elementId]={counter:0,ids:[]};
     miscSpecsTableListCounter++;
@@ -106,20 +108,20 @@ async function addTable(listElement, key=null, values = null) {
     listElement.appendChild(element);
     const elementContainer = document.getElementById("specs-table-collection-" + elementId);
 
-    const addBtn = document.getElementById(`ExpansionCard_miscSpecs_table_${elementId}_addbtn`);
+    const addBtn = document.getElementById(`MiscSpecs_table_${elementId}_addbtn`);
     addBtn.addEventListener('click', () => addTableSpec(elementContainer, elementId));
 
     if (key) {
-        document.getElementById(`ExpansionCard_miscSpecs_table_${elementId}_name`).value = key;
+        document.getElementById(`MiscSpecs_table_${elementId}_name`).value = key;
         if (values)
             for (const subKey of Object.keys(values))
                 addTableSpec(elementContainer, elementId, subKey, values[subKey]);
     }
 
-    const deleteBtn = document.getElementById(`ExpansionCard_miscSpecs_table_${elementId}_deletebtn`);
+    const deleteBtn = document.getElementById(`MiscSpecs_table_${elementId}_deletebtn`);
     deleteBtn.addEventListener('click', () => {
         delete miscSpecsTableIds[elementId];
-        const element = document.getElementById(`ExpansionCard_miscSpecs_table_${elementId}-contents`);
+        const element = document.getElementById(`MiscSpecs_table_${elementId}-contents`);
         element.parentNode.parentNode.remove();
     });
 }
@@ -128,7 +130,7 @@ async function addTable(listElement, key=null, values = null) {
 async function addTableSpec(listElement, tableId, key = null, value = null) {
 
     console.log("addTableSpec" + tableId, listElement);
-    document.getElementById('ExpansionCard_miscSpecs_emptybadge_' + tableId).innerHTML = "";
+    document.getElementById('MiscSpecs_emptybadge_' + tableId).innerHTML = "";
     const elementId = miscSpecsTableIds[tableId]['counter'];
     miscSpecsTableIds[tableId]['ids'].push(elementId);
     miscSpecsTableIds[tableId]['counter']++;
@@ -137,14 +139,14 @@ async function addTableSpec(listElement, tableId, key = null, value = null) {
     element.innerHTML = specsHtml;
     listElement.appendChild(element);
     if (key) {
-        document.getElementById(`ExpansionCard_miscSpecs_table_${tableId}_${elementId}_key`).value = key;
-        document.getElementById(`ExpansionCard_miscSpecs_table_${tableId}_${elementId}_value`).value = value;
+        document.getElementById(`MiscSpecs_table_${tableId}_${elementId}_key`).value = key;
+        document.getElementById(`MiscSpecs_table_${tableId}_${elementId}_value`).value = value;
 
     }
-    const deleteBtn = document.getElementById(`ExpansionCard_miscSpecs_table_${tableId}_${elementId}_deletebtn`);
+    const deleteBtn = document.getElementById(`MiscSpecs_table_${tableId}_${elementId}_deletebtn`);
     deleteBtn.addEventListener('click', () => {
         miscSpecsTableIds[tableId]['ids'].splice(miscSpecsTableIds[tableId]['ids'].indexOf(elementId), 1);
-        const element = document.getElementById(`ExpansionCard_miscSpecs_table_${tableId}_${elementId}-contents`);
+        const element = document.getElementById(`MiscSpecs_table_${tableId}_${elementId}-contents`);
         element.parentNode.parentNode.remove();
     });
 
@@ -152,7 +154,7 @@ async function addTableSpec(listElement, tableId, key = null, value = null) {
 
 async function applyTemplate(miscSpecs) {
     const listElement = document.getElementById('specs-collection');
-    
+
     let typeCollection = document.getElementById('ExpansionCard_type_collection').children[0].children[0];
     if(typeCollection.innerHTML == "Empty"){
         setMsg("No card types are present!");
@@ -190,20 +192,20 @@ function saveAsJson(miscSpecs) {
     let msg = "Set ";
     let spec_cnt = 0, table_cnt = 0;
     for (const id of miscSpecsIds) {
-        const key = document.getElementById(`ExpansionCard_miscSpecs_${id}_key`)?.value;
-        let value = document.getElementById(`ExpansionCard_miscSpecs_${id}_value`)?.value;
+        const key = document.getElementById(`MiscSpecs_${id}_key`)?.value;
+        let value = document.getElementById(`MiscSpecs_${id}_value`)?.value;
         if (key) {
             jsonMap[key]=value;
             spec_cnt++;
         }
     }
     for (const id of Object.keys(miscSpecsTableIds)) {
-        const tableName = document.getElementById(`ExpansionCard_miscSpecs_table_${id}_name`)?.value;
+        const tableName = document.getElementById(`MiscSpecs_table_${id}_name`)?.value;
         if (tableName && miscSpecsTableIds[id]['ids'].length) {
             const subObject = {};
             for (const subId of miscSpecsTableIds[id]['ids']) {
-                const key = document.getElementById(`ExpansionCard_miscSpecs_table_${id}_${subId}_key`)?.value;
-                let value = document.getElementById(`ExpansionCard_miscSpecs_table_${id}_${subId}_value`)?.value;
+                const key = document.getElementById(`MiscSpecs_table_${id}_${subId}_key`)?.value;
+                let value = document.getElementById(`MiscSpecs_table_${id}_${subId}_value`)?.value;
                 if (key) {
                     subObject[key]=value;
                     spec_cnt++;
@@ -235,8 +237,6 @@ function saveAsJson(miscSpecs) {
 
 function addListenersToIoPortForm(ioPortId) {
     const ioPortInterfaceSignalSelect = document.getElementById(ioPortId + '_ioPortInterfaceSignal');
-    //const ioPortInterfaceSelect = document.getElementById(ioPortId + '_ioPortInterface');
-    //const ioPortSignalsSelect = document.getElementById(ioPortId + '_ioPortSignals');
     ioPortInterfaceSignalSelect.addEventListener('change', event => ioPortInterfaceSignalChange(event, ioPortId));
 }
 

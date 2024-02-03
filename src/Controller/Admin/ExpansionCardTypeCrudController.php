@@ -24,6 +24,8 @@ class ExpansionCardTypeCrudController extends AbstractCrudController
             ->showEntityActionsInlined()
             ->setEntityLabelInSingular('expansion card type')
             ->setEntityLabelInPlural('<img class=ea-entity-icon src=/build/icons/tag.svg width=48 height=48>Expansion card types')
+            ->overrideTemplate('crud/edit', 'admin/crud/edit_chip.html.twig')
+            ->overrideTemplate('crud/new', 'admin/crud/new_chip.html.twig')
             ->setPaginatorPageSize(100);
     }
     public function configureActions(Actions $actions): Actions

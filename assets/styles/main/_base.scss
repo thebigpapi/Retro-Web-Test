@@ -411,11 +411,17 @@ main {
 		background: var(--form-control-bg);
 		color: $accent-frg-light;
 		box-sizing: border-box;
+		&.dropdown{
+			min-height: 0;
+		}
 
 		&:hover,
 		&:active {
 			transition: ease-in-out $anim-duration box-shadow;
 			box-shadow: 0px 0px 2px $shadow-light;
+			&.dropdown{
+				box-shadow: none;
+			}
 		}
 
 		@media (prefers-color-scheme: dark) {

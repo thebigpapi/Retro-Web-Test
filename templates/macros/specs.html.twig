@@ -1,0 +1,20 @@
+<div class="textarea" style="border-top: none;">
+    {% if entity.getSimpleMiscSpecs() is not empty %}
+    <ul>
+        {% for spec_key, spec_value in entity.getSimpleMiscSpecs() %}
+        <li>{{spec_key}}: {{spec_value}}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    {% if entity.getTableMiscSpecs() is not empty %}
+    <div class="spec-section">
+        {% for spec_key, spec_value in entity.getTableMiscSpecs() %}
+            <table><thead><tr><th colspan="2">{{spec_key}}</th><tr></thead>
+            {% for key, value in spec_value %}
+                <tr><td>{{key}}</td><td>{{value}}</td></tr>
+            {% endfor %}
+            </table>
+        {% endfor %}
+    </div>
+    {% endif %}
+</div>

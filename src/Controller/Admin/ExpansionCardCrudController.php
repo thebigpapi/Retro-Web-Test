@@ -5,7 +5,6 @@ namespace App\Controller\Admin;
 use App\Entity\ExpansionCard;
 use App\Form\Type\ExpansionCardAliasType;
 use App\Form\Type\ExpansionCardBiosType;
-use App\Form\Type\LargeFileExpansionCardType;
 use App\Form\Type\ExpansionCardDocumentationType;
 use App\Form\Type\ExpansionCardImageType;
 use App\Form\Type\ExpansionCardIdRedirectionType;

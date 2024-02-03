@@ -30,6 +30,9 @@ class ExpansionChip extends Chip
     #[ORM\ManyToMany(targetEntity: ExpansionCard::class, mappedBy: 'expansionChips')]
     private Collection $expansionCards;
 
+    #[ORM\Column]
+    private array $miscSpecs = [];
+
     #[ORM\Column(type: 'datetime', mapped: false)]
     private $lastEdited;
 
@@ -221,6 +224,53 @@ class ExpansionChip extends Chip
                 $expansionCard->removeExpansionChip($this);
             }
         }
+
+        return $this;
+    }
+    public function getMiscSpecs(): array
+    {
+        return $this->miscSpecs;
+    }
+    public function getMiscSpecsFormatted(): array
+    {
+        $output = [];
+        foreach($this->miscSpecs as $spec){
+            $new = str_replace("\"","",json_encode($spec));
+            $new = str_replace(":",": ",$new);
+            array_push($output, substr($new, 1, -1));
+        }
+        return $output;
+    }
+    public function getSimpleMiscSpecs(): array
+    {
+        $output = [];
+        foreach($this->miscSpecs as $key => $value){
+            if(!is_array($value))
+                $output[$key] = $value;
+        }
+        return $output;
+    }
+    public function getTableMiscSpecs(): array
+    {
+        $output = [];
+        foreach($this->miscSpecs as $key => $value){
+            if(is_array($value))
+                $output[$key] = $value;
+        }
+        return $this->sortMiscSpecTables($output);
+    }
+    function sortMiscSpecTables($arrays) {
+        $lengths = array_map('count', $arrays);
+        arsort($lengths);
+        $return = array();
+        foreach(array_keys($lengths) as $k)
+            $return[$k] = $arrays[$k];
+        return $return;
+    }
+
+    public function setMiscSpecs(array $miscSpecs): static
+    {
+        $this->miscSpecs = $miscSpecs;
 
         return $this;
     }

@@ -8,6 +8,7 @@ use App\Form\Type\PciDeviceIdType;
 use App\Form\Type\LargeFileExpansionChipType;
 use App\Form\Type\ChipDocumentationType;
 use App\Form\Type\ChipImageType;
+use App\EasyAdmin\TextJsonField;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Controller\Admin\Filter\ChipImageFilter;
 use App\Controller\Admin\Filter\ChipDocFilter;
@@ -66,6 +67,8 @@ class ExpansionChipCrudController extends AbstractCrudController
             ->showEntityActionsInlined()
             ->setEntityLabelInSingular('expansion chip')
             ->setEntityLabelInPlural('<img class=ea-entity-icon src=/build/icons/chip.svg width=48 height=48>Expansion chips')
+            ->overrideTemplate('crud/edit', 'admin/crud/edit_chip.html.twig')
+            ->overrideTemplate('crud/new', 'admin/crud/new_chip.html.twig')
             ->setPaginatorPageSize(100);
     }
     public function configureFilters(Filters $filters): Filters
@@ -125,6 +128,12 @@ class ExpansionChipCrudController extends AbstractCrudController
             ->setFormTypeOption('error_bubbling', false)
             ->setColumns(6)
             ->renderExpanded()
+            ->onlyOnForms();
+        yield FormField::addTab('Specs')
+            ->setIcon('fa fa-info')
+            ->onlyOnForms();
+        yield TextJsonField::new('miscSpecs', 'Misc specs')
+            ->setColumns(12)
             ->onlyOnForms();
         yield FormField::addTab('Attachments')
             ->setIcon('fa fa-download')

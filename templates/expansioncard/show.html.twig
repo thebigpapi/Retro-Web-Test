@@ -119,6 +119,17 @@
 					</div>
 					<div class="tag-container">{% for size in expansioncard.getRamSize() %}<span class="text-block">{{ size.getValueWithUnit()}}</span>{% endfor %}</div>
 					{% endif %}
+					<!-- Memory connectors -->
+					{% if expansioncard.getExpansionCardMemoryConnectors() is not empty %}
+					<div class="quick-spec-head">
+						<img src="{{ absolute_url(asset('build/icons/ram.svg')) }}" alt="ram" width="24" height="24">RAM connectors
+					</div>
+					<div class="tag-container">
+						{% for slot in expansioncard.getExpansionCardMemoryConnectors()|sort((a, b) => a.getMemoryConnector().getName() <=> b.getMemoryConnector().getName()) %}
+								<span class="text-block"><b>{{ slot.getCount() }}x&nbsp;</b>{{ slot.getMemoryConnector().getName() }}</span>
+						{% endfor %}
+					</div>
+					{% endif %}
 					<!-- PSU connectors -->
 					{% if expansioncard.getPowerConnectors() is not empty %}
 					<div class="quick-spec-head">
@@ -138,7 +149,7 @@
 					<div>{{ expansioncard.getWidth() ?: '[unknown]' }} mm (width) x {{ expansioncard.getLength() ?: '[unknown]' }} mm (length) x {{ expansioncard.getHeight() ?: '[unknown]' }} mm (height)</div>
 					{% endif %}
 				</div>
-				<div class="full-spec">
+				<div class="full-spec two">
 					<!-- IO ports -->
 					<div class="full-spec-head"><img src="{{ absolute_url(asset('build/icons/rs232.svg')) }}" alt="portint" width="24" height="24"><b>I/O ports (external)</b></div>
 					<div class="list-table">
@@ -174,15 +185,6 @@
 							{% endfor %}
 						{% else %}<div class="list-table-head"></div><div>N/A</div>{% endif %}
 					</div>
-					<!-- Memory connectors -->
-					<div class="full-spec-head"><img src="{{ absolute_url(asset('build/icons/ram.svg')) }}" alt="card" width="24" height="24"><b>Memory connectors</b></div>
-					<div class="list-table">
-						{% if expansioncard.getExpansionCardMemoryConnectors() is not empty %}
-							{% for slot in expansioncard.getExpansionCardMemoryConnectors()|sort((a, b) => a.getMemoryConnector().getName() <=> b.getMemoryConnector().getName()) %}
-								<div class="list-table-head"><b>{{ slot.getCount() }}x&nbsp;</b></div><div>{{ slot.getMemoryConnector().getName() }}</div>
-							{% endfor %}
-						{% else %}<div class="list-table-head"></div><div>N/A</div>{% endif %}
-					</div>
 				</div>
 				{% include 'macros/aliases.html.twig' with {'entity':expansioncard.getExpansionCardAliases(), 'msg': 'Also known as:'} %}
 				{% include 'macros/notes.html.twig' with {'entity': expansioncard} %}
@@ -190,28 +192,24 @@
 			</div>
 			<div class="show-expchips" id="sh-specs">
 				{% if expansioncard.getMiscSpecs() is not empty %}
-					<div class="textarea" style="border-top: none;">
-						{% if expansioncard.getSimpleMiscSpecs() is not empty %}
-						<ul>
-							{% for spec_key, spec_value in expansioncard.getSimpleMiscSpecs() %}
-							<li>{{spec_key}}: {{spec_value}}</li>
-							{% endfor %}
-						</ul>
-						{% endif %}
-						{% if expansioncard.getTableMiscSpecs() is not empty %}
-						<div class="spec-section">
-							{% for spec_key, spec_value in expansioncard.getTableMiscSpecs() %}
-								<table><thead><tr><th colspan="2">{{spec_key}}</th><tr></thead>
-								{% for key, value in spec_value %}
-									<tr><td>{{key}}</td><td>{{value}}</td></tr>
-								{% endfor %}
-								</table>
-							{% endfor %}
-						</div>
-						{% endif %}
-					</div>
+					{% include 'macros/specs.html.twig' with {'entity':expansioncard} %}
 				{% else %}
-				<div>No features.</div>
+					<div>No additional specs.</div>
+				{% endif %}
+				{% if expansioncard.getExpansionChips() is not empty %}
+					<div style="padding: 6px 0px;"><b style="font-size:20px;">Chip specifications </b><small>(click to expand)</small></div>
+					{% for chip in expansioncard.getExpansionChips()|filter(a => a.getMiscSpecs() is not empty)%}
+						<div class="dropdown">
+							<label class="dropdown-header">
+								<img src="{{ absolute_url(asset('build/icons/chip.svg')) }}" alt="chip" width="24" height="24">
+								<span><i>{{chip.getNameWithManufacturer()}}</i></span>
+								<input class="dropdown" type="checkbox" />
+							</label>
+							<div class="dropdown-contents">
+								{% include 'macros/specs.html.twig' with {'entity':chip} %}
+							</div>
+						</div>
+					{% endfor %}
 				{% endif %}
 			</div>
 			<!-- BIOSes -->
