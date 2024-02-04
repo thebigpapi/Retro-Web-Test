@@ -6,6 +6,7 @@ use App\Entity\Motherboard;
 use App\Controller\Admin\Filter\MotherboardImageFilter;
 use App\Controller\Admin\Filter\MotherboardBiosFilter;
 use App\Entity\MotherboardAlias;
+use App\Entity\MotherboardBios;
 use App\Entity\MotherboardExpansionSlot;
 use App\Entity\MotherboardIoPort;
 use App\Entity\MotherboardMaxRam;
@@ -246,15 +247,16 @@ class MotherboardCrudController extends AbstractCrudController
             ->setColumns('col-sm-12 col-lg-6 col-xxl-4')
             ->renderExpanded()
             ->onlyOnForms();
+        //eats 10MB for no reason
         yield IntegerField::new('maxcpu', 'CPU socket count')
             ->setFormTypeOption('error_bubbling', false)
             ->onlyOnForms();
         yield FormField::addPanel('Chipset and chips')
             ->onlyOnForms();
-        yield CollectionField::new('expansionChips', 'Expansion chips')
-            ->setEntryType(ExpansionChipType::class)
-            ->renderExpanded()
-            ->setColumns('col-sm-12 col-lg-8 col-xxl-6')
+        // big memory leaker
+        yield AssociationField::new('expansionChips', 'Expansion chips')
+            ->autocomplete()
+            ->setColumns('col-sm-12 col-lg-8 col-xxl-6 multi-widget-trw')
             ->onlyOnForms();
         yield AssociationField::new('chipset')
             ->setFormTypeOption('placeholder', 'Type to select a chipset ...')
@@ -291,6 +293,7 @@ class MotherboardCrudController extends AbstractCrudController
         yield FormField::addTab('BIOS images')
             ->setIcon('fa fa-download')
             ->onlyOnForms();
+        // big memory leaker
         yield CollectionField::new('motherboardBios', 'BIOS images')
             ->setEntryType(MotherboardBiosType::class)
             ->setFormTypeOption('error_bubbling', false)
@@ -301,6 +304,7 @@ class MotherboardCrudController extends AbstractCrudController
         yield FormField::addTab('Other attachments')
             ->setIcon('fa fa-download')
             ->onlyOnForms();
+        // very small and uncommon memory leak
         yield CollectionField::new('images', 'Images')
             ->setEntryType(MotherboardImageTypeForm::class)
             ->setColumns('col-sm-12 col-lg-8 col-xxl-6')

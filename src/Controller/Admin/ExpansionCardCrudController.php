@@ -177,16 +177,11 @@ class ExpansionCardCrudController extends AbstractCrudController
             ->onlyOnForms();
         yield FormField::addPanel('Memory and chips')->onlyOnForms();
         yield AssociationField::new('ramSize', 'Supported RAM size')
-            //->setEntryType(MaxRamType::class)
-            //->setFormTypeOption('error_bubbling', false)
             ->setColumns('col-sm-12 col-lg-6 col-xxl-4 multi-widget-trw')
-            //->renderExpanded()
             ->autocomplete()
             ->onlyOnForms();
         yield AssociationField::new('dramType', 'Supported RAM types')
-            //->setEntryType(DramTypeType::class)
             ->setColumns('col-sm-12 col-lg-6 col-xxl-4 multi-widget-trw')
-            //->renderExpanded()
             ->autocomplete()
             ->onlyOnForms();
         yield AssociationField::new('expansionChips', 'Expansion chips')

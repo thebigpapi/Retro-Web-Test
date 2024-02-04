@@ -11,9 +11,16 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use App\Entity\Manufacturer;
 use App\Entity\MotherboardBios;
 use Vich\UploaderBundle\Form\Type\VichFileType;
+use Doctrine\ORM\EntityManagerInterface;
 
 class MotherboardBiosType extends AbstractType
 {
+    private EntityManagerInterface $entityManager;
+
+    public function __construct(EntityManagerInterface $entityManager)
+    {
+        $this->entityManager = $entityManager;
+    }
     /**
      * @return void
      */
@@ -26,6 +33,7 @@ class MotherboardBiosType extends AbstractType
                 'label' => false,
                 'multiple' => false,
                 'expanded' => false,
+                'choices' => $options['biosManufacturers'],
                 'attr' => ['data-ea-widget' => 'ea-autocomplete'],
                 'placeholder' => 'Type to select a manufacturer ...',
             ])
@@ -83,6 +91,7 @@ class MotherboardBiosType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => MotherboardBios::class,
+            'biosManufacturers' => $this->entityManager->getRepository(Manufacturer::class)->findAllBiosManufacturer(),
         ]);
     }
 }

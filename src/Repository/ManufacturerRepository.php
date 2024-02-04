@@ -116,14 +116,22 @@ class ManufacturerRepository extends ServiceEntityRepository
     {
         $entityManager = $this->getEntityManager();
 
-        $query = $entityManager->createQuery(
-            'SELECT DISTINCT man
-            FROM App\Entity\MotherboardBios bios, App\Entity\Manufacturer man 
-            WHERE bios.manufacturer=man 
-            ORDER BY man.name ASC'
+        $rsm = new ResultSetMapping();
+
+        $rsm->addEntityResult('App\Entity\Manufacturer', 'man');
+        $rsm->addFieldResult('man', 'id', 'id');
+        $rsm->addFieldResult('man', 'name', 'name');
+
+        $query = $entityManager->createNativeQuery(
+            'SELECT distinct man.id, man.name
+            FROM (SELECT distinct man.* FROM manufacturer man JOIN motherboard mobo ON mobo.manufacturer_id = man.id
+            UNION SELECT distinct man.* FROM manufacturer man JOIN motherboard_bios bios ON bios.manufacturer_id = man.id) as man
+            ORDER BY man.name;',
+            $rsm
         );
 
-        return $query->getResult();
+        return $query->setCacheable(true)
+            ->getResult();
     }
 
     /**

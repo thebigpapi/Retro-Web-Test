@@ -1,5 +1,5 @@
-if(updatechipsbtn = document.getElementById('Motherboard_chipset'))
-    updatechipsbtn.addEventListener("change", updateChips);
+/*if(updatechipsbtn = document.getElementById('Motherboard_chipset'))
+    updatechipsbtn.addEventListener("change", updateChips);*/
 if(updatechipsetbtn = document.getElementById('update-chipset-btn'))
     updatechipsetbtn.addEventListener("click", updateChipset);
 if(resetchipsetbtn = document.getElementById('reset-chipset-btn'))
@@ -27,30 +27,20 @@ function resetChipset() {
         }
     }
 }
+function getElementIdsFromElements(elements) {
+    return [].slice.call(elements).map(el => el.children[0].children[0].id.replace('-contents', ''));
+}
 function updateChipset() {
     let params = [];
     let cnt = 0;
     // read expansion chips
-    let chips = document.getElementById('Motherboard_expansionChips');
-    if(!chips){
-        chips = document.getElementById('Motherboard_expansionChips_collection').children[0].children[0];
-        if(chips.innerHTML != "Empty"){
-            chips = chips.children[0].children[0];
-        }
-    }
-    let chip_cnt = chips.childElementCount;
-    while(chip_cnt > 0){
-        if(document.getElementById("Motherboard_expansionChips_" + cnt)){
-            let element = document.getElementById("Motherboard_expansionChips_" + cnt);
-            if(element.value)
-                params.push(element.value);
-            chip_cnt--;
-        }
-        cnt++;
-    }
-    if(params.length > 0){
+    let chips = document.getElementById('Motherboard_expansionChips_autocomplete');
+    console.log(chips.tomselect.getValue())
+    if(chips.childElementCount > 0)
+        for(let item of chips.children)
+            params.push(parseInt(item.getAttribute('value')));
+    if(params.length > 0)
         setChipset(params);
-    }
     else{
         setMessage("Error: no expansion chips listed!");
         return;
@@ -83,28 +73,14 @@ function setChipset(values){
 // expansion chip functions
 function updateChips() {
     let params = [];
-    let cnt = 0;
     // read chipset
     let chipset = document.getElementById('Motherboard_chipset');
     let chipset_value = chipset.value;
     // read expansion chips
-    let chips = document.getElementById('Motherboard_expansionChips');
-    if(!chips){
-        chips = document.getElementById('Motherboard_expansionChips_collection').children[0].children[0];
-        if(chips.innerHTML != "Empty"){
-            chips = chips.children[0].children[0];
-        }
-    }
-    let chip_cnt = chips.childElementCount;
-    while(chip_cnt > 0){
-        if(document.getElementById("Motherboard_expansionChips_" + cnt)){
-            let element = document.getElementById("Motherboard_expansionChips_" + cnt);
-            if(element.value)
-                params.push(element.value);
-            chip_cnt--;
-        }
-        cnt++;
-    }
+    let chips = document.getElementById('Motherboard_expansionChips_autocomplete');
+    if(chips.childElementCount > 0)
+        for(let item of chips.children)
+            params.push(parseInt(item.getAttribute('value')));
     if(chipset_value){
         setChips(chipset_value, params.length);
     }
@@ -123,7 +99,7 @@ function setChips(value, verify){
     xhr.onload = function () {
         if(xhr.status === 200) {
             chipsArray = JSON.parse(xhr.responseText);
-            if(verify > 0)
+            if(verify < 0)
                 verifyChips(chipsArray);
             else{
                 addChips(chipsArray);
@@ -133,33 +109,21 @@ function setChips(value, verify){
     }
 }
 function addChips(values){
-    let add = document.getElementById('Motherboard_expansionChips_collection').previousElementSibling;
-    let getFirst = true;
-    let chip_cnt = 0;
+    let chips = document.getElementById('Motherboard_expansionChips_autocomplete');
+    chips.tomselect.registerOptionGroup(values);
     for(const chip in values){
-        add.click();
-        if(getFirst)
-            chip_cnt = identifyFirstSelect('Motherboard_expansionChips');
-        getFirst = false;
-        let chip_select = document.getElementById('Motherboard_expansionChips_' + chip_cnt);
-        chip_select.tomselect.setValue(chip);
-        chip_cnt++;
+        console.log(chip);
+        chips.tomselect.addOption(chip);
     }
+    chips.tomselect.sync();
 }
 function verifyChips(array){
-    let chips_container = document.getElementById('Motherboard_expansionChips');
-    let chip_cnt = chips_container.childElementCount;
     let cnt = 0;
     let chip_array = [];
-    while(chip_cnt > 0){
-        if(document.getElementById("Motherboard_expansionChips_" + cnt)){
-            let element = document.getElementById("Motherboard_expansionChips_" + cnt);
-            if(element.value)
-                chip_array.push(element.value);
-            chip_cnt--;
-        }
-        cnt++;
-    }
+    let chips = document.getElementById('Motherboard_expansionChips_autocomplete');
+    if(chips.childElementCount > 0)
+        for(let item of chips.children)
+            chip_array.push(parseInt(item.getAttribute('value')));
     let post = JSON.stringify(chip_array)
     let newChipsArray = {};
     let url = window.location.origin + "/dashboard/filterchips";
