@@ -496,4 +496,11 @@ class MotherboardController extends AbstractController
             $output['sign'] = '<=';
         return $output;
     }
+
+    #[Route('/motherboards/help', name: 'mobohelp')]
+    public function searchHelp(): Response {
+        return $this->render('motherboard/help.html.twig', [
+            'controller_name' => 'MotherboardController',
+        ]);
+    }
 }

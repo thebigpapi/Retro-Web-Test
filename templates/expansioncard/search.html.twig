@@ -26,47 +26,67 @@
 {% block body %}
 	{{ form_start(form, {'method': 'POST', 'name': 'search_expansioncard', 'action':path("expansioncardsearch"), 'attr':{'onkeydown': 'return event.key != \'Enter\'', 'data-live-action': path('expansioncardlivewrapper')}}) }}
 	<fieldset id="search-fieldset">
-		<div class="title">Search for expansion cards</div>
+		<div class="title">
+			<img src="{{ absolute_url(asset('build/icons/card.svg')) }}" alt="card" width="32" height="32">
+			Search for expansion cards
+		</div>
 		<section class="search-form-grid">
 			<div class="search-form-entry">
-				<label class="search-form-label" for="search_manufacturer" title="This is where you select the manufacturer name and enter the expansion card part number.">
-					<span>Manufacturer and name</span>
-					<img src="{{ absolute_url(asset('build/icons/help.svg')) }}" alt="" width="16" height="16">
+				<label class="search-form-label" for="search_manufacturer">
+					<span>Manufacturer</span>
 				</label>
 				<div class="search-form-widget">
 					<div>{{ form_widget(form.manufacturer) }}</div>
-					<div>{{ form_widget(form.name, {'attr': {'placeholder': 'Name or Part number (without manufacturer) ...'}}) }}</div>
 				</div>
 			</div>
 			<div class="search-form-entry">
-				<label class="search-form-label" for="search_type" title="This is where you select the card type.">
-					<span>Card type</span>
-					<img src="{{ absolute_url(asset('build/icons/help.svg')) }}" alt="" width="16" height="16">
+				<label class="search-form-label" for="search_name">
+					<span>Name</span>
 				</label>
 				<div class="search-form-widget">
-					<div>{{ form_widget(form.type) }}</div>
+					<div>{{ form_widget(form.name, {'attr': {'placeholder': 'Name or Part number (without manufacturer) ...'}}) }}</div>
 				</div>
 			</div>
-			<div class="search-form-filter">
-				<label class="search-form-label" title="Type in the search box to thin down the result list.">
-					<span>Expansion chips</span>
-					<img src="{{ absolute_url(asset('build/icons/help.svg')) }}" alt="" width="16" height="16">
-					{% include 'macros/buttons.html.twig' with {'type':'add', 'action': 'expansionChips'} %}
-				</label>
-				<div class="search-form-widget filter-list" id="expansionChips-fields-list" data-widget-counter="{{ form.expansionChips|length }}" data-prototype="
-					{{ form_widget(form.expansionChips.vars.prototype, {'attr': {'style': 'width:50%'}})|e }}
-					{% include 'macros/buttons.html.twig' with {'type':'del'} %}</div>">
-					{% for expchip in form.expansionChips %}
-						<div class="editor-row">
-							{{ form_widget(expchip, {'attr': {'style': 'width:50%'}}) }}
-							{% include 'macros/buttons.html.twig' with {'type':'del'} %}
-							{{ form_errors(expchip) }}
-						</div>
-					{% endfor %}
-				</div>
-			</div>
+			{% include 'macros/searchitems.html.twig' with {'datatarget': 'expansioncards', 'dataresetids': 'search_manufacturer', 'search_with_images' : true} %}
 		</section>
-		{% include 'macros/searchitems.html.twig' with {'datatarget': 'expansioncards', 'dataresetids': 'search_manufacturer', 'search_with_images' : true} %}
+		<div class="dropdown">
+			<label class="dropdown-header">
+				<img src="{{ absolute_url(asset('build/icons/search.svg')) }}" alt="search" width="24" height="24">
+				<span>Advanced search<small class="dropdown-tooltip"> (click to expand)</small></span>
+				<input class="dropdown" type="checkbox" />
+			</label>
+			<div class="dropdown-contents">
+				<section class="search-form-grid">
+					<div class="search-form-entry">
+						<label class="search-form-label" for="search_type" title="This is where you select the card type.">
+							<span>Card type</span>
+							<img src="{{ absolute_url(asset('build/icons/help.svg')) }}" alt="" width="16" height="16">
+						</label>
+						<div class="search-form-widget">
+							<div>{{ form_widget(form.type) }}</div>
+						</div>
+					</div>
+					<div class="search-form-filter">
+						<label class="search-form-label" title="Type in the search box to thin down the result list.">
+							<span>Expansion chips</span>
+							<img src="{{ absolute_url(asset('build/icons/help.svg')) }}" alt="" width="16" height="16">
+							{% include 'macros/buttons.html.twig' with {'type':'add', 'action': 'expansionChips'} %}
+						</label>
+						<div class="search-form-widget filter-list" id="expansionChips-fields-list" data-widget-counter="{{ form.expansionChips|length }}" data-prototype="
+							{{ form_widget(form.expansionChips.vars.prototype, {'attr': {'style': 'width:50%'}})|e }}
+							{% include 'macros/buttons.html.twig' with {'type':'del'} %}</div>">
+							{% for expchip in form.expansionChips %}
+								<div class="editor-row">
+									{{ form_widget(expchip, {'attr': {'style': 'width:50%'}}) }}
+									{% include 'macros/buttons.html.twig' with {'type':'del'} %}
+									{{ form_errors(expchip) }}
+								</div>
+							{% endfor %}
+						</div>
+					</div>
+				</section>
+			</div>
+		</div>
 	</fieldset>
 	{{ form_end(form, {render_rest: false}) }}
 	<!-- Search results -->

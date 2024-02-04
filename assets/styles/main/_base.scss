@@ -97,6 +97,10 @@ div.page-header {
 	.ml-4 {
 		margin-left: 1rem;
 	}
+	div.ml-4{
+		display: flex;
+		align-items: center;
+	}
 	div.navbar-anchor{
 		margin-left: 1rem;
 		display: flex;
@@ -345,8 +349,11 @@ main {
 		text-align: center;
 		font-size: 24px;
 		padding: 20px;
-		font-family: $header-font;
-		font-weight: bold;
+		font-family: $monospace-font;
+		//font-weight: bold;
+		img{
+			padding-right: 5px;
+		}
 
 		img:hover+div.errors-div {
 			display: block;

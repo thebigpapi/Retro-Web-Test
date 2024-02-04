@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Search boards (help) - TRW{% endblock %}
+
+{% block metatags %}
+	<meta name="description" content="Help page for the motherboard search function.">
+	<link rel="alternate" hreflang="x-default" href="{{ absolute_url(path('mobohelp')) }}"/>
+{% endblock %}
+{% block subnav %}
+<li class="flex navbar-li">
+    <div class="flex items-center">
+        <svg class="navbar-svg" viewBox="0 0 24 44" preserveAspectRatio="none" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M.293 0l22 22-22 22h1.414l22-22-22-22H.293z"></path>
+        </svg>
+        <a class="ml-4" href="{{ path('mobosearch') }}">
+			<img src="{{ absolute_url(asset('build/icons/motherboard.svg')) }}" width="24" height="24" alt="mobo">
+            <code class="text-pink-500">Motherboards</code>
+        </a>
+    </div>
+</li>
+<li class="flex">
+    <div class="flex">
+        <svg class="navbar-svg" viewBox="0 0 24 44" preserveAspectRatio="none" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M.293 0l22 22-22 22h1.414l22-22-22-22H.293z"></path>
+        </svg>
+        <div class="ml-4">
+            <img src="{{ absolute_url(asset('build/icons/help.svg')) }}" width="24" height="24" alt="help">
+            <code class="navbar-code">Help page</code>
+        </div>
+    </div>
+</li>
+{% endblock %}
+{% block body %}
+farts
+{% endblock %}
