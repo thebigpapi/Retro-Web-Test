@@ -105,6 +105,9 @@
 					{% else %}
 					<div>None/Integrated in the CPU</div>
 					{% endif %}
+					<!-- Form factor -->
+					<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/board.svg')) }}" alt="mobo" width="24" height="24">Form factor</div>
+					<div>{{ motherboard.getFormFactor() ? motherboard.getFormFactor().getName() : 'Unknown' }}</div>
 				</div>
 				<div class="quick-spec-table">
 					<!-- Supported RAM types -->
@@ -125,6 +128,17 @@
 					{% else %}
 					<div>Unknown</div>
 					{% endif %}
+					<!-- Memory connectors -->
+					{% if motherboard.getMotherboardMemoryConnectors() is not empty %}
+					<div class="quick-spec-head">
+						<img src="{{ absolute_url(asset('build/icons/ram.svg')) }}" alt="ram" width="24" height="24">RAM connectors
+					</div>
+					<div class="tag-container">
+						{% for slot in motherboard.getMotherboardMemoryConnectors()|sort((a, b) => a.getMemoryConnector().getName() <=> b.getMemoryConnector().getName()) %}
+								<span class="text-block"><b>{{ slot.getCount() }}x&nbsp;</b>{{ slot.getMemoryConnector().getName() }}</span>
+						{% endfor %}
+					</div>
+					{% endif %}
 					<!-- PSU connectors -->
 					<div class="quick-spec-head">
 						<img src="{{ absolute_url(asset('build/icons/power.svg')) }}" alt="pwr" width="24" height="24">PSU connector
@@ -135,9 +149,6 @@
 					{% else %}
 					<div>Unknown</div>
 					{% endif %}
-					<!-- Form factor -->
-					<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/board.svg')) }}" alt="mobo" width="24" height="24">Form factor</div>
-					<div>{{ motherboard.getFormFactor() ? motherboard.getFormFactor().getName() : 'Unknown' }}</div>
 					<!-- Dimensions -->
 					<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/dimension.svg')) }}" alt="dim" width="24" height="24">Dimensions</div>
 					<div>{{ motherboard.getDimensions() ?: 'Unknown' }}</div>
@@ -171,14 +182,6 @@
 							{% endfor %}
 						{% else %}<div class="list-table-head"></div><div>N/A</div>{% endif %}
 					</div>
-					<div class="full-spec-head"><img src="{{ absolute_url(asset('build/icons/ram.svg')) }}" alt="card" width="24" height="24"><b>Memory connectors</b></div>
-					<div class="list-table">
-						{% if motherboard.getMotherboardMemoryConnectors() is not empty %}
-							{% for slot in motherboard.getMotherboardMemoryConnectors()|sort((a, b) => a.getMemoryConnector().getName() <=> b.getMemoryConnector().getName()) %}
-								<div class="list-table-head"><b>{{ slot.getCount() }}x&nbsp;</b></div><div>{{ slot.getMemoryConnector().getName() }}</div>
-							{% endfor %}
-						{% else %}<div class="list-table-head"></div><div>N/A</div>{% endif %}
-					</div>
 				</div>
 				{% include 'macros/aliases.html.twig' with {'entity':motherboard.getMotherboardAliases(), 'msg': 'Also known as:'} %}
 				{% include 'macros/notes.html.twig' with {'entity': motherboard} %}
@@ -188,7 +191,7 @@
 
 			<!-- Chips -->
 			<div class="show-expchips" id="sh-expchips">
-				<div class="quick-spec-table wide">
+				<div class="quick-spec-table">
 					<!-- Chipset -->
 					<div class="quick-spec-head">
 						<img src="{{ absolute_url(asset('build/icons/chipset.svg')) }}" alt="chipset" width="24" height="24">Chipset
@@ -240,8 +243,6 @@
 							<div class="list-table-head"></div><div>N/A</div>
 						{% endif %}
 					</div>
-					<div class="full-spec-head"></div>
-					<div class="list-table"></div>
 					<div class="full-spec-head"></div>
 					<div class="list-table"></div>
 				</div>

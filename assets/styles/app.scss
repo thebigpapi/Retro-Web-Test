@@ -1150,10 +1150,7 @@ div.quick-spec-split {
 div.quick-spec-table {
     display: grid;
     padding: 5px;
-    grid-template-columns: [first] 11rem [second] auto [end];
-    &.wide {
-        grid-template-columns: [first] 15rem [second] auto [end];
-    }
+    grid-template-columns: [first] max-content [second] auto [end];
 
     @media (max-width: 500px) {
         padding: 3px;
@@ -1188,7 +1185,8 @@ div.quick-spec-table {
 
     div.quick-spec-head {
         font-style: italic;
-        padding-right: 10px;
+        padding-right: 1rem;
+        max-width: 15rem;
 
         a {
             font-style: normal;
@@ -1212,10 +1210,7 @@ div.quick-spec-table {
 div.full-spec {
     display: grid;
     grid-template-rows: [first] 2.5rem [second] auto [end];
-    grid-template-columns: [first] 33% [second] 33% [third] 33% [end];
-    &.two{
-        grid-template-columns: [first] 50% [second] 50% [end];
-    }
+    grid-template-columns: [first] 50% [second] 50% [end];
 
     &.search{
         grid-template-columns: repeat(auto-fill, minmax($form-breakpoint - 45px, 1fr));

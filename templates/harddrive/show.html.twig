@@ -90,9 +90,25 @@
 						<div>{{ harddrive.getCapacityFormatted() }}</div>
 						<!-- Buffer -->
 						<div class="quick-spec-head">
-							<img src="{{ absolute_url(asset('build/icons/hdd.svg')) }}" alt="486" width="24" height="24">Buffer size
+							<img src="{{ absolute_url(asset('build/icons/ram.svg')) }}" alt="ram" width="24" height="24">Buffer size
 						</div>
 						<div>{{ harddrive.getBufferFormatted() }}</div>
+					</div>
+					<div class="quick-spec-table">
+						<!-- Cylinders/Heads/Sectors -->
+						{% if harddrive.getCylinders() is not empty or harddrive.getHeads() is not empty or harddrive.getSectors() is not empty%}
+						<div class="quick-spec-head">
+							<img src="{{ absolute_url(asset('build/icons/platter.svg')) }}" alt="486" width="24" height="24">Cyl./Heads/Sectors
+						</div>
+						<div>{{ harddrive.getCylinders() ?: 'Unknown' }} / {{ harddrive.getHeads() ?: 'unknown' }} / {{ harddrive.getSectors() ?: 'Unknown' }}</div>
+						{% endif %}
+						<!-- Platters -->
+						{% if harddrive.getPlatters() is not empty %}
+						<div class="quick-spec-head">
+							<img src="{{ absolute_url(asset('build/icons/platter.svg')) }}" alt="486" width="24" height="24">Platter count
+						</div>
+						<div>{{ harddrive.getPlatters() }}</div>
+						{% endif %}
 						<!-- Random seek -->
 						<div class="quick-spec-head">
 							<img src="{{ absolute_url(asset('build/icons/speed.svg')) }}" alt="486" width="24" height="24">Random seek
@@ -103,28 +119,6 @@
 							<img src="{{ absolute_url(asset('build/icons/speed.svg')) }}" alt="486" width="24" height="24">Track-to-track seek
 						</div>
 						<div>{{ harddrive.getTrackSeek() ~ ' ms' ?: 'Unknown' }}</div>
-					</div>
-					<div class="quick-spec-table">
-						<!-- Cylinders -->
-						<div class="quick-spec-head">
-							<img src="{{ absolute_url(asset('build/icons/platter.svg')) }}" alt="486" width="24" height="24">Cylinders
-						</div>
-						<div>{{ harddrive.getCylinders() ?: 'Unknown' }}</div>
-						<!-- Heads -->
-						<div class="quick-spec-head">
-							<img src="{{ absolute_url(asset('build/icons/platter.svg')) }}" alt="486" width="24" height="24">Heads
-						</div>
-						<div>{{ harddrive.getHeads() ?: 'Unknown' }}</div>
-						<!-- Sectors -->
-						<div class="quick-spec-head">
-							<img src="{{ absolute_url(asset('build/icons/platter.svg')) }}" alt="486" width="24" height="24">Sectors
-						</div>
-						<div>{{ harddrive.getSectors() ?: 'Unknown' }}</div>
-						<!-- Platters -->
-						<div class="quick-spec-head">
-							<img src="{{ absolute_url(asset('build/icons/platter.svg')) }}" alt="486" width="24" height="24">Platters
-						</div>
-						<div>{{ harddrive.getPlatters() ?: 'Unknown' }}</div>
 						<!-- RPM -->
 						<div class="quick-spec-head">
 							<img src="{{ absolute_url(asset('build/icons/speed.svg')) }}" alt="486" width="24" height="24">RPM
