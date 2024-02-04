@@ -236,4 +236,9 @@ class Processor extends ProcessingUnit
 
         return $this;
     }
+    public function getAllDocs(): Collection
+    {
+        $docs = $this->getPlatform()?->getEntityDocumentations()->toArray() ?? [];
+        return new ArrayCollection($docs);
+    }
 }

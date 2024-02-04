@@ -115,6 +115,8 @@
 					<div class="toolbar">
 						<a class='button-widget' href="{{ absolute_url(path('app_homepage')) }}motherboards/?platform1={{ family.getId() }}&amp;showImages=1">
 							<img src='{{ absolute_url(asset('build/icons/hardware.svg')) }}' alt='' width='16' height='16' style='vertical-align:middle;padding:3px;'>See all compatible boards</a>
+						<a class='button-widget' href="{{ absolute_url(path('app_homepage')) }}cpus/?platformIds%5B0%5D={{ family.getId() }}">
+							<img src='{{ absolute_url(asset('build/icons/486.svg')) }}' alt='' width='16' height='16' style='vertical-align:middle;padding:3px;'>See all CPUs for this family</a>
 						</div>
 					</div>
 				</div>

@@ -22,6 +22,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class ProcessorPlatformTypeCrudController extends AbstractCrudController
@@ -144,6 +145,9 @@ class ProcessorPlatformTypeCrudController extends AbstractCrudController
             ->setFormTypeOption('error_bubbling', false)
             ->setColumns(6)
             ->onlyOnForms();
+        yield BooleanField::new('entityDocumentations', 'Docs')
+            ->renderAsSwitch(false)
+            ->onlyOnIndex();
     }
     public function viewFamily(AdminContext $context)
     {

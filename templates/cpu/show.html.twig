@@ -240,6 +240,8 @@
 				</div>
 			</div>
 			{% include 'macros/aliases.html.twig' with {'entity':cpu.getChipAliases(), 'msg': 'Other part numbers/S-Specs:'} %}
+			<!-- MANUALS -->
+			{% include 'macros/manuals.html.twig' with {'entity': cpu.getAllDocs(), 'audit_entity':'App-Entity-EntityDocumentation'} %}
 		</div>
 	</div>
 	<!-- IMAGES -->
