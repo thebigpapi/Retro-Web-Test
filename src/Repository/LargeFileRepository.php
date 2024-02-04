@@ -65,7 +65,7 @@ class LargeFileRepository extends ServiceEntityRepository
 
         return $query->getResult();
     }
-    
+
     public function findByDriver(array $criterias): array
     {
 
@@ -81,6 +81,14 @@ class LargeFileRepository extends ServiceEntityRepository
                 $whereArray[] = "(LOWER(drv.name) LIKE :nameLike$key OR LOWER(drv.fileVersion) LIKE :nameLike$key OR LOWER(drv.file_name) LIKE :nameLike$key)";
                 $valuesArray["nameLike$key"] = "%" . strtolower($val) . "%";
             }
+        }
+        if (array_key_exists('file_name', $criterias)) {
+            $whereArray[] = "(LOWER(drv.file_name) LIKE LOWER(:fileName))";
+            $valuesArray["fileName"] = "%" . $criterias['file_name'] . "%";
+        }
+        if (array_key_exists('version', $criterias)) {
+            $whereArray[] = "(drv.fileVersion LIKE :version)";
+            $valuesArray["version"] = "%" . $criterias['version'] . "%";
         }
         if (array_key_exists('osFlags', $criterias)) {
             foreach ($criterias['osFlags'] as $key => $value) {

@@ -265,4 +265,11 @@ class BiosController extends AbstractController
         }
         return new JsonResponse([]);
     }
+
+    #[Route('/bios/help', name: 'bioshelp')]
+    public function searchHelp(): Response {
+        return $this->render('bios/help.html.twig', [
+            'controller_name' => 'BiosController',
+        ]);
+    }
 }

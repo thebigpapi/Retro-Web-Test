@@ -47,7 +47,7 @@
 					<div>{{ form_widget(form.name, {'attr': {'placeholder': 'Name or Part number (without manufacturer) ...'}}) }}</div>
 				</div>
 			</div>
-			{% include 'macros/searchitems.html.twig' with {'datatarget': 'cpus', 'dataresetids': 'search_cpuManufacturer', 'search_with_images' : true} %}
+			{% include 'macros/searchitems.html.twig' with {'datatarget': 'cpus', 'dataresetids': 'search_cpuManufacturer search_cpuSpeed search_fsbSpeed', 'search_with_images' : true} %}
 		</section>
 		<div class="dropdown">
 			<label class="dropdown-header">
@@ -58,14 +58,30 @@
 			<div class="dropdown-contents">
 				<section class="search-form-grid">
 					<div class="search-form-entry">
-						<label class="search-form-label" for="search_cpuManufacturer">
-							<span>CPU and bus speed</span>
+						<label class="search-form-label" for="search_cpuSpeed">
+							<span>CPU frequency</span>
 						</label>
 						<div class="search-form-widget">
 							<div>{{ form_widget(form.cpuSpeed) }}</div>
+						</div>
+					</div>
+					<div class="search-form-entry">
+						<label class="search-form-label" for="search_fsbSpeed">
+							<span>Bus speed</span>
+						</label>
+						<div class="search-form-widget">
 							<div>{{ form_widget(form.fsbSpeed) }}</div>
 						</div>
 					</div>
+					<div class="search-form-entry">
+						<label class="search-form-label">
+							<span></span>
+						</label>
+						<a class='button-widget' href="{{path("cpuhelp")}}" style="margin-right: 5px">
+							<img src='{{ absolute_url(asset('build/icons/search.svg')) }}' alt='' width='16' height='16' style='vertical-align:middle;padding:3px;'>How do I use the search page?</a>
+					</div>
+				</section>
+				<section class="search-form-grid bordertop">
 					<div class="search-form-filter">
 						<label class="search-form-label" title="">
 							<span>Sockets</span>
@@ -85,7 +101,7 @@
 					</div>
 					<div class="search-form-filter">
 						<label class="search-form-label" title="">
-							<span>Platforms</span>
+							<span>Families</span>
 							{% include 'macros/buttons.html.twig' with {'type':'add', 'action': 'platforms'} %}
 						</label>
 						<div class="search-form-widget filter-list" id="platforms-fields-list" data-widget-counter="{{ form.platforms|length }}" data-prototype="

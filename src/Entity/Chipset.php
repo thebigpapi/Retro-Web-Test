@@ -104,9 +104,12 @@ class Chipset
     }
     public function getNameCachedSearch(): string
     {
-        $fullName = $this->getManufacturer()->getName();
-        if($this->getId() == null)
+        $fullName = $this->getManufacturer()?->getName();
+        if($this->getId() == null){
+            if($fullName == "")
+                return "Not identified";
             return "any " . $fullName . " chipset";
+        }
         if ($this->part_no) {
             $fullName .= " $this->part_no";
             if ($this->name) {
@@ -127,7 +130,7 @@ class Chipset
     }
     public function getNameWithoutParts(): string
     {
-        $fullName = $this->getManufacturer()->getName();
+        $fullName = $this->getManufacturer()?->getName();
         if ($this->part_no) {
             $fullName .= " $this->part_no";
             if ($this->name) {

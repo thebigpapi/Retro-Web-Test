@@ -885,6 +885,11 @@ div.search-errors, input.search-errors{
 span.search-errors-label{
     color:red;
 }
+div.search-help-container{
+    img{
+        max-width: 16px;
+    }
+}
 
 /* results */
 div.results {

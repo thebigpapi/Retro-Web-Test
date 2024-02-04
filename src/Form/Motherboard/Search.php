@@ -55,6 +55,9 @@ class Search extends AbstractType
             }
         );
         $chipsets = array_merge($chipsets, $allchipsets);
+        $notIdentified = new Chipset;
+        $notIdentified->setName("Not identified");
+        array_unshift($chipsets, $notIdentified);
         return $chipsets;
     }
 
@@ -75,7 +78,6 @@ class Search extends AbstractType
         usort($options['formFactors'], function (FormFactor $a, FormFactor $b) {
             return strnatcasecmp($a->getName() ?? '', $b->getName() ?? '');
         });
-
         //now the form is being built
         $builder
             ->add('name', TextType::class, [
@@ -100,7 +102,7 @@ class Search extends AbstractType
                 'expanded' => false,
                 'required' => false,
                 'choice_attr' => function ($choice, string $key, mixed $value) {
-                    if($choice == "Not identified")
+                    if($choice->getId() == null)
                         return ['data-id' => 'NULL' ];
                     if(strpos($choice, "any") && strpos($choice, "chipset"))
                         return ['data-id' => 0 . $choice->getManufacturer()->getId() ];

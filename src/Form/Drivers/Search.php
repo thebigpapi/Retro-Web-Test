@@ -21,6 +21,12 @@ class Search extends AbstractType
             ->add('name', TextType::class, [
                 'required' => false,
             ])
+            ->add('file_name', TextType::class, [
+                'required' => false,
+            ])
+            ->add('version', TextType::class, [
+                'required' => false,
+            ])
             ->add('osFlags', CollectionType::class, [
                 'entry_type' => OsFlagType::class,
                 'allow_add' => true,

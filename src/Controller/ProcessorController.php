@@ -208,4 +208,11 @@ class ProcessorController extends AbstractController
 
         return $form;
     }
+
+    #[Route('/cpus/help', name: 'cpuhelp')]
+    public function searchHelp(): Response {
+        return $this->render('cpu/help.html.twig', [
+            'controller_name' => 'ProcessorController',
+        ]);
+    }
 }

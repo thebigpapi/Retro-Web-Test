@@ -95,11 +95,20 @@ class DriversController extends AbstractController
     }
     public function getCriteriaDriver(Request $request){
         $criterias = array();
+
         $name = htmlentities($request->query->get('name') ?? '');
-        if ($name) {
+        if ($name)
             $criterias['name'] = "$name";
-        }
-        $osIds = $request->query->get('osFlagIds') ?? $request->request->get('osFlagIds');
+
+        $fileName = htmlentities($request->query->get('fileName') ?? '');
+        if ($fileName)
+            $criterias['file_name'] = "$fileName";
+
+        $version = htmlentities($request->query->get('version') ?? '');
+        if ($version)
+            $criterias['version'] = "$version";
+
+        $osIds = $request->query->all('osFlagIds') ?? $request->request->all('osFlagIds');
         $chipArray = null;
         if ($osIds) {
             if (is_array($osIds)) {
@@ -121,6 +130,8 @@ class DriversController extends AbstractController
         $parameters['itemsPerPage'] = $tempItems > 0 ? $tempItems : $this->getParameter('app.pagination.max');
 
         $parameters['name'] = $form['name']->getData();
+        $parameters['fileName'] = $form['file_name']->getData();
+        $parameters['version'] = $form['version']->getData();
         $osFlags = $form['osFlags']->getData();
         if ($osFlags) {
             $parameters['osFlagIds'] = array();

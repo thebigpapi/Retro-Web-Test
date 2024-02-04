@@ -58,18 +58,16 @@
 			<div class="dropdown-contents">
 				<section class="search-form-grid">
 					<div class="search-form-entry">
-						<label class="search-form-label" for="search_type" title="This is where you select the card type.">
+						<label class="search-form-label" for="search_type">
 							<span>Card type</span>
-							<img src="{{ absolute_url(asset('build/icons/help.svg')) }}" alt="" width="16" height="16">
 						</label>
 						<div class="search-form-widget">
 							<div>{{ form_widget(form.type) }}</div>
 						</div>
 					</div>
 					<div class="search-form-filter">
-						<label class="search-form-label" title="Type in the search box to thin down the result list.">
+						<label class="search-form-label">
 							<span>Expansion chips</span>
-							<img src="{{ absolute_url(asset('build/icons/help.svg')) }}" alt="" width="16" height="16">
 							{% include 'macros/buttons.html.twig' with {'type':'add', 'action': 'expansionChips'} %}
 						</label>
 						<div class="search-form-widget filter-list" id="expansionChips-fields-list" data-widget-counter="{{ form.expansionChips|length }}" data-prototype="

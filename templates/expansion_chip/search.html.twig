@@ -58,9 +58,8 @@
 			<div class="dropdown-contents">
 				<section class="search-form-grid">
 					<div class="search-form-entry">
-						<label class="search-form-label" for="search_type" title="This is where you select the chip type.">
+						<label class="search-form-label" for="search_type">
 							<span>Chip type</span>
-							<img src="{{ absolute_url(asset('build/icons/help.svg')) }}" alt="" width="16" height="16">
 						</label>
 						<div class="search-form-widget">
 							<div>{{ form_widget(form.type) }}</div>
@@ -73,13 +72,6 @@
 						<div class="search-form-widget">
 							<div>{{ form_widget(form.deviceId) }}</div>
 						</div>
-					</div>
-					<div class="search-form-entry">
-						<label class="search-form-label">
-							<span></span>
-						</label>
-						<a class='button-widget' href="{{path("mobohelp")}}">
-							<img src='{{ absolute_url(asset('build/icons/search.svg')) }}' alt='' width='16' height='16' style='vertical-align:middle;padding:3px;'>How do I use the search page?</a>
 					</div>
 				</section>
 			</div>

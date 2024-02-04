@@ -250,4 +250,11 @@ class HardDriveController extends AbstractController
 
         return $form;
     }
+
+    #[Route('/harddrives/help', name: 'hddhelp')]
+    public function searchHelp(): Response {
+        return $this->render('harddrive/help.html.twig', [
+            'controller_name' => 'HardDriveController',
+        ]);
+    }
 }
