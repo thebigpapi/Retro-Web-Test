@@ -40,6 +40,7 @@ class MotherboardBiosCrudController extends AbstractCrudController
     {
         return $crud
             ->showEntityActionsInlined()
+            ->setPaginatorPageSize(100)
             ->setEntityLabelInPlural('<img class=ea-entity-icon src=/build/icons/awchip.svg width=48 height=48>Motherboard BIOSes');
     }
     public function configureFilters(Filters $filters): Filters
