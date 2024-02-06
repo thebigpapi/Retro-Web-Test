@@ -30,6 +30,8 @@ use App\Entity\Creditor;
 use App\Entity\License;
 use App\Entity\StorageDeviceInterface;
 use App\Entity\StorageDeviceSize;
+use App\Entity\StorageDeviceImage;
+use App\Entity\StorageDeviceDocumentation;
 use App\Entity\ExpansionSlotInterface;
 use App\Entity\ExpansionSlotSignal;
 use App\Entity\IoPortInterface;
@@ -40,6 +42,11 @@ use App\Entity\ExpansionSlotInterfaceSignal;
 use App\Entity\MotherboardImage;
 use App\Entity\MotherboardBios;
 use App\Entity\Manual;
+use App\Entity\ChipsetDocumentation;
+use App\Entity\ChipDocumentation;
+use App\Entity\ChipImage;
+use App\Entity\ExpansionCardDocumentation;
+use App\Entity\ExpansionCardImage;
 use App\Entity\User;
 use App\Repository\MotherboardRepository;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
@@ -130,6 +137,8 @@ class DashboardController extends AbstractDashboardController
             MenuItem::linkToCrud('Expansion slots', 'exp_slot.svg', ExpansionSlotInterfaceSignal::class),
             MenuItem::linkToCrud('Expansion slot connectors', 'pci_slot_smol.svg', ExpansionSlotInterface::class),
             MenuItem::linkToCrud('Expansion slot signals', 'pci_slot_electric.svg', ExpansionSlotSignal::class),
+            MenuItem::linkToCrud('Images', 'search_image.svg', ExpansionCardImage::class),
+            MenuItem::linkToCrud('Documentation', 'manual.svg', ExpansionCardDocumentation::class),
         ]);
         yield MenuItem::subMenu('CPU related', '486.svg')->setSubItems([
             MenuItem::linkToCrud('CPU families', '486.svg', ProcessorPlatformType::class),
@@ -140,6 +149,8 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::subMenu('Storage related', 'hdd.svg')->setSubItems([
             MenuItem::linkToCrud('Interface', 'io.svg', StorageDeviceInterface::class),
             MenuItem::linkToCrud('Physical size', 'dimension.svg', StorageDeviceSize::class),
+            MenuItem::linkToCrud('Images', 'search_image.svg', StorageDeviceImage::class),
+            MenuItem::linkToCrud('Documentation', 'manual.svg', StorageDeviceDocumentation::class),
         ])->setPermission('ROLE_ADMIN');
         yield MenuItem::subMenu('Memory related', 'ram.svg')->setSubItems([
             MenuItem::linkToCrud('Memory connectors', 'ram.svg', MemoryConnector::class),
@@ -147,9 +158,14 @@ class DashboardController extends AbstractDashboardController
             MenuItem::linkToCrud('RAM size', 'ram_multi.svg', MaxRam::class),
             MenuItem::linkToCrud('RAM type', 'ram.svg', DramType::class),
         ])->setPermission('ROLE_ADMIN');
+        yield MenuItem::subMenu('Chip related', 'chip.svg')->setSubItems([
+            MenuItem::linkToCrud('Expansion chip types', 'chip_alias.svg', ExpansionChipType::class)->setPermission('ROLE_ADMIN'),
+            MenuItem::linkToCrud('Images', 'search_image.svg', ChipImage::class),
+            MenuItem::linkToCrud('Chip documentation', 'manual.svg', ChipDocumentation::class),
+            MenuItem::linkToCrud('Chipset documentation', 'manual.svg', ChipsetDocumentation::class),
+        ])->setPermission('ROLE_ADMIN');
         yield MenuItem::subMenu('Misc', 'misc.svg')->setSubItems([
             MenuItem::linkToCrud('PSU connectors', 'power.svg', PSUConnector::class),
-            MenuItem::linkToCrud('Expansion chip types', 'chip_alias.svg', ExpansionChipType::class)->setPermission('ROLE_ADMIN'),
             MenuItem::linkToCrud('OS flags', 'os/1998win.svg', OsFlag::class)->setPermission('ROLE_ADMIN'),
             MenuItem::linkToCrud('Form factors', 'dimension.svg', FormFactor::class)->setPermission('ROLE_ADMIN'),
             MenuItem::linkToCrud('Known Issues', 'misc.svg', KnownIssue::class)->setPermission('ROLE_ADMIN'),

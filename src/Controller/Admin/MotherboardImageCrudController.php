@@ -13,7 +13,6 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\UrlField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
 use Vich\UploaderBundle\Form\Type\VichImageType;
 
@@ -41,7 +40,7 @@ class MotherboardImageCrudController extends AbstractCrudController
     {
         return $crud
             ->showEntityActionsInlined()
-            ->setPaginatorPageSize(100)
+            ->setPaginatorPageSize(50)
             ->setEntityLabelInPlural('<img class=ea-entity-icon src=/build/icons/search_image.svg width=48 height=48>Motherboard images');
     }
     public function configureFilters(Filters $filters): Filters
@@ -75,6 +74,8 @@ class MotherboardImageCrudController extends AbstractCrudController
             ->setFormTypeOption('allow_delete',false)
             ->setColumns('col-sm-4 col-lg-4 col-xxl-4')
             ->onlyOnForms();
+        yield DateField::new('updated_at', 'Last edited')
+            ->hideOnForm();
     }
     public function viewLogs(AdminContext $context)
     {

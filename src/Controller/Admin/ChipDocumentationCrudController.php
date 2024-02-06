@@ -2,7 +2,7 @@
 
 namespace App\Controller\Admin;
 
-use App\Entity\ExpansionCardImage;
+use App\Entity\ChipDocumentation;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
@@ -13,15 +13,14 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
-use Vich\UploaderBundle\Form\Type\VichImageType;
+use EasyCorp\Bundle\EasyAdminBundle\Field\UrlField;
+use Vich\UploaderBundle\Form\Type\VichFileType;
 
-class ExpansionCardImageCrudController extends AbstractCrudController
+class ChipDocumentationCrudController extends AbstractCrudController
 {
     public static function getEntityFqcn(): string
     {
-        return ExpansionCardImage::class;
+        return ChipDocumentation::class;
     }
     public function configureActions(Actions $actions): Actions
     {
@@ -41,45 +40,32 @@ class ExpansionCardImageCrudController extends AbstractCrudController
     {
         return $crud
             ->showEntityActionsInlined()
-            ->setPaginatorPageSize(50)
-            ->setEntityLabelInPlural('<img class=ea-entity-icon src=/build/icons/search_image.svg width=48 height=48>Expansion card images');
+            ->setPaginatorPageSize(100)
+            ->setEntityLabelInPlural('<img class=ea-entity-icon src=/build/icons/manual.svg width=48 height=48>Chip documentation');
     }
     public function configureFilters(Filters $filters): Filters
     {
         return parent::configureFilters($filters)
-            ->add('creditor')
-            ->add('type')
-            ->add('description')
+            ->add('link_name')
+            ->add('language')
             ->add('updated_at');
     }
     public function configureFields(string $pageName): iterable
     {
         yield IdField::new('id')->hideOnForm();
-        yield TextField::new('expansionCard')->hideOnForm();
-        yield AssociationField::new('expansionCard')
+        yield TextField::new('chip')->hideOnForm();
+        yield AssociationField::new('chip')
             ->autocomplete()
             ->onlyOnForms();
-        yield AssociationField::new('creditor', 'Creditor')
-            ->autocomplete()
-            ->setColumns(4);
-        yield ChoiceField::new('type')
-            ->setColumns('col-sm-6 col-lg-6 col-xxl-4')
-            ->setFormTypeOption('choices', [
-                'Schema' => '1',
-                'Photo front' => '2',
-                'Photo back' => '3',
-                'Photo misc' => '4',
-                'Schema misc' => '5',
-            ])
-            ->onlyOnForms();
-        yield TextField::new('description', 'Notes')
+        yield TextField::new('link_name', 'Title')
             ->setColumns('col-sm-4 col-lg-4 col-xxl-4');
-        yield ImageField::new('file_name', 'Image')
-            ->setCustomOption('link','expansioncard/image')
-            ->setCustomOption('thumb_link','media/cache/resolve/show_thumb/expansioncard/image')
+        yield AssociationField::new('language', 'Language')
+            ->setColumns(4);
+        yield UrlField::new('file_name')
+            ->setCustomOption('link','chip/documentation/')
             ->hideOnForm();
-        yield TextField::new('imageFile')
-            ->setFormType(VichImageType::class)
+        yield TextField::new('manualFile')
+            ->setFormType(VichFileType::class)
             ->setFormTypeOption('allow_delete',false)
             ->setColumns('col-sm-4 col-lg-4 col-xxl-4')
             ->onlyOnForms();

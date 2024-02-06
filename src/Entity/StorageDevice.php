@@ -79,6 +79,10 @@ class StorageDevice
         $this->interfaces = new ArrayCollection();
         $this->powerConnectors = new ArrayCollection();
     }
+    public function __toString(): string
+    {
+        return $this->getNameWithManufacturer();
+    }
 
     public function getId(): ?int
     {

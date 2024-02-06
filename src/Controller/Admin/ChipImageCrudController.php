@@ -2,7 +2,7 @@
 
 namespace App\Controller\Admin;
 
-use App\Entity\ExpansionCardImage;
+use App\Entity\ChipImage;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
@@ -14,14 +14,13 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use Vich\UploaderBundle\Form\Type\VichImageType;
 
-class ExpansionCardImageCrudController extends AbstractCrudController
+class ChipImageCrudController extends AbstractCrudController
 {
     public static function getEntityFqcn(): string
     {
-        return ExpansionCardImage::class;
+        return ChipImage::class;
     }
     public function configureActions(Actions $actions): Actions
     {
@@ -42,41 +41,30 @@ class ExpansionCardImageCrudController extends AbstractCrudController
         return $crud
             ->showEntityActionsInlined()
             ->setPaginatorPageSize(50)
-            ->setEntityLabelInPlural('<img class=ea-entity-icon src=/build/icons/search_image.svg width=48 height=48>Expansion card images');
+            ->setEntityLabelInPlural('<img class=ea-entity-icon src=/build/icons/search_image.svg width=48 height=48>Chip images');
     }
     public function configureFilters(Filters $filters): Filters
     {
         return parent::configureFilters($filters)
             ->add('creditor')
-            ->add('type')
             ->add('description')
             ->add('updated_at');
     }
     public function configureFields(string $pageName): iterable
     {
         yield IdField::new('id')->hideOnForm();
-        yield TextField::new('expansionCard')->hideOnForm();
-        yield AssociationField::new('expansionCard')
+        yield TextField::new('chip')->hideOnForm();
+        yield AssociationField::new('chip')
             ->autocomplete()
             ->onlyOnForms();
         yield AssociationField::new('creditor', 'Creditor')
             ->autocomplete()
             ->setColumns(4);
-        yield ChoiceField::new('type')
-            ->setColumns('col-sm-6 col-lg-6 col-xxl-4')
-            ->setFormTypeOption('choices', [
-                'Schema' => '1',
-                'Photo front' => '2',
-                'Photo back' => '3',
-                'Photo misc' => '4',
-                'Schema misc' => '5',
-            ])
-            ->onlyOnForms();
         yield TextField::new('description', 'Notes')
             ->setColumns('col-sm-4 col-lg-4 col-xxl-4');
         yield ImageField::new('file_name', 'Image')
-            ->setCustomOption('link','expansioncard/image')
-            ->setCustomOption('thumb_link','media/cache/resolve/show_thumb/expansioncard/image')
+            ->setCustomOption('link','chip/image')
+            ->setCustomOption('thumb_link','media/cache/show_thumb/chip/image')
             ->hideOnForm();
         yield TextField::new('imageFile')
             ->setFormType(VichImageType::class)

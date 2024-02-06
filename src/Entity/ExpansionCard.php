@@ -147,6 +147,10 @@ class ExpansionCard
         $this->pciDevs = new ArrayCollection();
         $this->knownIssues = new ArrayCollection();
     }
+    public function __toString(): string
+    {
+        return $this->getPrettyTitle();
+    }
 
     public function getId(): ?int
     {

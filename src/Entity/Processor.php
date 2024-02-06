@@ -51,6 +51,10 @@ class Processor extends ProcessingUnit
         $this->voltages = new ArrayCollection();
         $this->documentations = new ArrayCollection();
     }
+    public function __toString(): string
+    {
+        return $this->getName();
+    }
     public function getNameWithPlatform()
     {
         $inner = array();
