@@ -62,7 +62,7 @@ class StorageDeviceDocumentationCrudController extends AbstractCrudController
         yield AssociationField::new('language', 'Language')
             ->setColumns(4);
         yield UrlField::new('file_name')
-            ->setCustomOption('link','motherboard/manual/')
+            ->setCustomOption('link','storage/documentation/')
             ->hideOnForm();
         yield TextField::new('manualFile')
             ->setFormType(VichFileType::class)

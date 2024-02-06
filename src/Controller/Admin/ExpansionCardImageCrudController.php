@@ -76,7 +76,7 @@ class ExpansionCardImageCrudController extends AbstractCrudController
             ->setColumns('col-sm-4 col-lg-4 col-xxl-4');
         yield ImageField::new('file_name', 'Image')
             ->setCustomOption('link','expansioncard/image')
-            ->setCustomOption('thumb_link','media/cache/resolve/show_thumb/expansioncard/image')
+            ->setCustomOption('thumb_link','media/cache/show_thumb/expansioncard/image')
             ->hideOnForm();
         yield TextField::new('imageFile')
             ->setFormType(VichImageType::class)

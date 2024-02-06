@@ -73,8 +73,8 @@ class StorageDeviceImageCrudController extends AbstractCrudController
         yield TextField::new('description', 'Notes')
             ->setColumns('col-sm-4 col-lg-4 col-xxl-4');
         yield ImageField::new('file_name', 'Image')
-            ->setCustomOption('link','storagedevice/image')
-            ->setCustomOption('thumb_link','media/cache/show_thumb/storagedevice/image')
+            ->setCustomOption('link','storage/image')
+            ->setCustomOption('thumb_link','media/cache/show_thumb/storage/image')
             ->hideOnForm();
         yield TextField::new('imageFile')
             ->setFormType(VichImageType::class)
