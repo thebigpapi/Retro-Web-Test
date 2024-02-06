@@ -20,6 +20,7 @@ class MotherboardBios
 
     #[ORM\ManyToOne(targetEntity: Motherboard::class, inversedBy: 'motherboardBios')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Assert\NotBlank(message:'Motherboard cannot be blank')]
     private $motherboard;
 
     /**

@@ -22,7 +22,7 @@ use App\Form\Type\MotherboardExpansionSlotType;
 use App\Form\Type\KnownIssueMotherboardType;
 use App\Form\Type\ExpansionChipType;
 use App\Form\Type\LargeFileMotherboardType;
-use App\Form\Type\MotherboardBiosType;
+use App\Controller\Admin\Type\MotherboardBiosCrudType;
 use App\Form\Type\ManualType;
 use App\Form\Type\MiscFileType;
 use App\Form\Type\CpuSocketType;
@@ -247,7 +247,6 @@ class MotherboardCrudController extends AbstractCrudController
             ->setColumns('col-sm-12 col-lg-6 col-xxl-4')
             ->renderExpanded()
             ->onlyOnForms();
-        //eats 10MB for no reason
         yield IntegerField::new('maxcpu', 'CPU socket count')
             ->setFormTypeOption('error_bubbling', false)
             ->onlyOnForms();
@@ -295,7 +294,7 @@ class MotherboardCrudController extends AbstractCrudController
             ->onlyOnForms();
         // big memory leaker
         yield CollectionField::new('motherboardBios', 'BIOS images')
-            ->setEntryType(MotherboardBiosType::class)
+            ->useEntryCrudForm(MotherboardBiosCrudType::class)
             ->setFormTypeOption('error_bubbling', false)
             ->addCssClass('mobo-bios')
             ->setColumns(12)

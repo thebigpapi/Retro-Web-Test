@@ -178,7 +178,30 @@ div.show-nav-ea {
 		}
 	}
 }
-
+div.vich-download-flex{
+	display: flex;
+	flex-direction: column;
+	div.row-flex{
+		display: flex;
+		flex-direction: row;
+	}
+}
+/* mobo bios */
+div.padright{
+	padding-left: 0;
+	padding-right: 5px;
+}
+div.mobo-bios{
+	div.row{
+		padding: 0px 10px;
+	}
+}
+@media screen and (min-width: 1400px) {
+	div.col-xxl-2-5{
+		flex:0 0 auto;
+		width:21%
+	}
+}
 @media screen and (min-width: 768px) {
 	#Motherboard_motherboardBios_collection>div>div>div {
 		.ea-vich-file {

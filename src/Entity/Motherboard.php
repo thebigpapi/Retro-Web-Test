@@ -143,6 +143,10 @@ class Motherboard
         $this->miscFiles = new ArrayCollection();
         $this->motherboardMemoryConnectors = new ArrayCollection();
     }
+    public function __toString(): string
+    {
+        return $this->getPrettyTitle();
+    }
     public function getId(): ?int
     {
         return $this->id;

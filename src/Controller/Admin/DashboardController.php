@@ -37,6 +37,9 @@ use App\Entity\IoPortInterfaceSignal;
 use App\Entity\IoPortSignal;
 use App\Entity\MemoryConnector;
 use App\Entity\ExpansionSlotInterfaceSignal;
+use App\Entity\MotherboardImage;
+use App\Entity\MotherboardBios;
+use App\Entity\Manual;
 use App\Entity\User;
 use App\Repository\MotherboardRepository;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
@@ -45,19 +48,16 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\UX\Chartjs\Builder\ChartBuilderInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Config\UserMenu;
 use Symfony\Component\Security\Core\User\UserInterface;
 use App\BranchLoader\GitLoader;
 
 class DashboardController extends AbstractDashboardController
 {
-    private ChartBuilderInterface $chartBuilder;
     private MotherboardRepository $motherboardRepository;
     private GitLoader $git;
-    public function __construct(MotherboardRepository $motherboardRepository, ChartBuilderInterface $chartBuilder, GitLoader $git)
+    public function __construct(MotherboardRepository $motherboardRepository, GitLoader $git)
     {
-        $this->chartBuilder = $chartBuilder;
         $this->motherboardRepository = $motherboardRepository;
         $this->git = $git;
     }
@@ -118,6 +118,9 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::subMenu('Motherboard related', 'board.svg')->setSubItems([
             MenuItem::linkToCrud('Expansion slots', 'card.svg', ExpansionSlot::class),
             MenuItem::linkToCrud('I/O ports', 'rs232.svg', IoPort::class),
+            MenuItem::linkToCrud('Images', 'search_image.svg', MotherboardImage::class),
+            MenuItem::linkToCrud('BIOSes', 'awchip.svg', MotherboardBios::class)->setController(MotherboardBiosCrudController::class),
+            MenuItem::linkToCrud('Manuals', 'manual.svg', Manual::class),
         ])->setPermission('ROLE_ADMIN');
         yield MenuItem::subMenu('Expansion card related', 'card.svg')->setSubItems([
             MenuItem::linkToCrud('Types', 'tag.svg', ExpansionCardType::class),

@@ -96,6 +96,14 @@
 					{% else %}
 					<div>Unknown</div>
 					{% endif %}
+					<!-- Form factor -->
+					<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/board.svg')) }}" alt="mobo" width="24" height="24">Form factor</div>
+					<div>{{ motherboard.getFormFactor() ? motherboard.getFormFactor().getName() : 'Unknown' }}</div>
+					<!-- Dimensions -->
+					<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/dimension.svg')) }}" alt="dim" width="24" height="24">Dimensions</div>
+					<div>{{ motherboard.getDimensions() ?: 'Unknown' }}</div>
+				</div>
+				<div class="quick-spec-table">
 					<!-- Cache -->
 					<div class="quick-spec-head">
 						<img src="{{ absolute_url(asset('build/icons/chip.svg')) }}" alt="chip" width="24" height="24">Cache
@@ -105,26 +113,21 @@
 					{% else %}
 					<div>None/Integrated in the CPU</div>
 					{% endif %}
-					<!-- Form factor -->
-					<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/board.svg')) }}" alt="mobo" width="24" height="24">Form factor</div>
-					<div>{{ motherboard.getFormFactor() ? motherboard.getFormFactor().getName() : 'Unknown' }}</div>
-				</div>
-				<div class="quick-spec-table">
-					<!-- Supported RAM types -->
-					<div class="quick-spec-head">
-						<img src="{{ absolute_url(asset('build/icons/ram.svg')) }}" alt="ram" width="24" height="24">RAM type{% if motherboard.getDramType()|length > 1 %}s{% endif %}
-					</div>
-					{% if motherboard.getDramType() is not empty %}
-					<div class="tag-container">{% for dram in motherboard.getDramType() %}<span class="text-block">{{ dram.getName() }}</span>{% endfor %}</div>
-					{% else %}
-					<div>Unknown</div>
-					{% endif %}
 					<!-- Max system RAM -->
 					<div class="quick-spec-head">
 						<img src="{{ absolute_url(asset('build/icons/ram_multi.svg')) }}" alt="ram" width="24" height="24">Max RAM size
 					</div>
 					{% if motherboard.getMotherboardMaxRams() is not empty %}
 					<div class="tag-container">{% for maxRam in motherboard.getMotherboardMaxRams() %}<span class="text-block">{{ maxRam.getMaxRam().getValueWithUnit()}}{% if maxRam.getNote() is not null %}<i>({{ maxRam.getNote()}})</i>{% endif %}</span>{% endfor %}</div>
+					{% else %}
+					<div>Unknown</div>
+					{% endif %}
+					<!-- Supported RAM types -->
+					<div class="quick-spec-head">
+						<img src="{{ absolute_url(asset('build/icons/ram.svg')) }}" alt="ram" width="24" height="24">RAM type{% if motherboard.getDramType()|length > 1 %}s{% endif %}
+					</div>
+					{% if motherboard.getDramType() is not empty %}
+					<div class="tag-container">{% for dram in motherboard.getDramType() %}<span class="text-block">{{ dram.getName() }}</span>{% endfor %}</div>
 					{% else %}
 					<div>Unknown</div>
 					{% endif %}
@@ -149,9 +152,6 @@
 					{% else %}
 					<div>Unknown</div>
 					{% endif %}
-					<!-- Dimensions -->
-					<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/dimension.svg')) }}" alt="dim" width="24" height="24">Dimensions</div>
-					<div>{{ motherboard.getDimensions() ?: 'Unknown' }}</div>
 				</div>
 			</div>
 			<div class="full-spec">
