@@ -258,6 +258,9 @@
     <button id="reset-chipset-btn" class="btn btn-secondary" type="button">
         <span class="btn-label" style="text-wrap:nowrap;"><i class="fa fa-refresh"></i> <span class="action-label">Reset</span></span>
     </button>
+    <button id="update-chips-btn" class="btn btn-secondary" type="button">
+        <span class="btn-label" style="text-wrap:nowrap;"><i class="fa fa-refresh"></i> <span class="action-label">Set chips</span></span>
+    </button>
     <span id="update-chipset-label"></span>
 </div>
 {{ form_widget(form)}}
@@ -271,3 +274,6 @@
 {% block _ExpansionCardType_template_widget %}
     {% include 'admin/macros/specs.html.twig' with {'entity': '', 'form': form} %}
 {% endblock _ExpansionCardType_template_widget %}
+{% block _ExpansionCard_ioPorts_entry_count_widget %}
+    {{ form_widget(form)}}<span>x</span>
+{% endblock _ExpansionCard_ioPorts_entry_count_widget %}

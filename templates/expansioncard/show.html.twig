@@ -92,7 +92,12 @@
 						<a href="{{ path('expansion_slot_show', {id: expansioncard.getExpansionSlotInterfaceSignal().getId()}) }}"
 						>{{ expansioncard.getExpansionSlotInterfaceSignal().getName() }}</a>
 					{% else %}
-						{{ expansioncard.getExpansionSlotInterface().getName() }} {{ expansioncard.getExpansionSlotSignal().getName() }}
+						{{ expansioncard.getExpansionSlotInterface().getName() }} 
+						<div class="tag-container">
+						{% for slotSignal in expansioncard.getExpansionSlotSignals()|sort((a, b) => a.getName() <=> b.getName()) %}
+								<span class="text-block">{{ slotSignal.getName() }}</span>
+						{% endfor %}
+						</div>
 					{% endif %}
 					</div>
 					<!-- Expansion Chips -->

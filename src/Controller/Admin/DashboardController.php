@@ -131,7 +131,7 @@ class DashboardController extends AbstractDashboardController
         ])->setPermission('ROLE_ADMIN');
         yield MenuItem::subMenu('Expansion card related', 'card.svg')->setSubItems([
             MenuItem::linkToCrud('Types', 'tag.svg', ExpansionCardType::class),
-            MenuItem::linkToCrud('I/O ports', 'rs232.svg', IoPortInterfaceSignal::class),
+            MenuItem::linkToCrud('I/O ports', 'rs232.svg', IoPortInterfaceSignal::class)->setController(IoPortInterfaceSignalCrudController::class),
             MenuItem::linkToCrud('I/O port connectors', 'connector.svg', IoPortInterface::class),
             MenuItem::linkToCrud('I/O port signals', 'rs232_electric.svg', IoPortSignal::class),
             MenuItem::linkToCrud('Expansion slots', 'exp_slot.svg', ExpansionSlotInterfaceSignal::class),

@@ -56,6 +56,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\UrlField;
 use EasyCorp\Bundle\EasyAdminBundle\Security\Permission;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -155,6 +156,8 @@ class MotherboardCrudController extends AbstractCrudController
         yield TextField::new('name')
             ->hideOnForm();
         yield AssociationField::new('chipset','Chipset')
+            ->formatValue(function ($value, $entity) {return $entity->getChipsetWithoutParts();})
+            ->setCustomOption('link','chipset.getId')
             ->onlyOnIndex();
         yield BooleanField::new('isExpansionChips','Exp.chips')
             ->renderAsSwitch(false)
@@ -178,17 +181,16 @@ class MotherboardCrudController extends AbstractCrudController
         yield TextField::new('slug')
             ->setColumns('col-sm-6 col-lg-6 col-xxl-4')
             ->onlyOnForms();
-        yield FormField::addRow();
-        yield CollectionField::new('motherboardAliases', 'Alternative names')
-            ->useEntryCrudForm(MotherboardAliasCrudController::class)
-            ->renderExpanded()
-            ->setColumns('col-sm-12 col-lg-6 col-xxl-4')
-            ->onlyOnForms();
         yield CollectionField::new('redirections', 'Redirections')
             ->setEntryType(MotherboardIdRedirectionType::class)
             ->renderExpanded()
             ->setFormTypeOption('error_bubbling', false)
-            ->setColumns('col-sm-12 col-lg-6 col-xxl-4')
+            ->setColumns('col-sm-6 col-lg-6 col-xxl-4')
+            ->onlyOnForms();
+        yield CollectionField::new('motherboardAliases', 'Alternative names')
+            ->useEntryCrudForm(MotherboardAliasCrudController::class)
+            ->renderExpanded()
+            ->setColumns('col-sm-12 col-lg-12 col-xxl-8')
             ->onlyOnForms();
         yield FormField::addPanel('Memory')->onlyOnForms();
         yield CollectionField::new('motherboardMaxRams', 'Supported RAM size')
@@ -263,8 +265,9 @@ class MotherboardCrudController extends AbstractCrudController
             ->setColumns('col-sm-12 col-lg-8 col-xxl-6 multi-widget-trw')
             ->onlyOnForms();*/
         yield AssociationField::new('chipset')
-            ->setFormTypeOption('placeholder', 'Type to select a chipset ...')
-            ->setFormTypeOption('choice_label', 'getNameCached')
+            //->setFormTypeOption('placeholder', 'Type to select a chipset ...')
+            ->autocomplete()
+            //->setFormTypeOption('choice_label', 'getNameCached')
             ->setFormTypeOption('required', false)
             ->setColumns('col-sm-12 col-lg-8 col-xxl-6')
             ->onlyOnForms();

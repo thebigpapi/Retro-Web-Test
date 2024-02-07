@@ -18,8 +18,12 @@ class MotherboardAliasCrudController extends AbstractCrudController
     {
         yield AssociationField::new('manufacturer', 'Manufacturer')
             ->autocomplete()
-            ->setColumns(12);
+            ->setFormTypeOption('label',false)
+            ->setFormTypeOption('attr',['placeholder' => 'Type to select a manufacturer ...'])
+            ->setColumns(4);
         yield TextField::new('name', 'Name')
-            ->setColumns(12);
+            ->setFormTypeOption('label',false)
+            ->setFormTypeOption('attr',['placeholder' => 'Name:'])
+            ->setColumns(8);
     }
 }

@@ -193,6 +193,10 @@ class Motherboard
     {
         return $this->chipset;
     }
+    public function getChipsetWithoutParts(): ?string
+    {
+        return $this->getChipset()?->getNameWithoutParts();
+    }
     public function setChipset(?Chipset $chipset): self
     {
         $this->chipset = $chipset;

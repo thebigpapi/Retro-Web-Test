@@ -39,6 +39,22 @@ $border-dark: #cdcdcd;
 	border-image-slice: 1;
 	border-image-source: linear-gradient(to right, $color, transparent);
 }
+img.ea-entity-icon{
+	margin:0px 6px;
+}
+div.content-header-title > h1.title{
+	font-weight: 500;
+}
+.ea-dark-scheme{
+	--body-bg:#222;
+	--sidebar-bg:#303030;
+	--button-secondary-bg:#525252;
+	--table-cell-border-color: #404040;
+	--form-control-bg: #404040;
+	--sidebar-menu-active-item-bg:#404040;
+	--sidebar-menu-active-item-color:#60a5fa;
+	--sidebar-menu-color:#b5b5b5;
+}
 #main-menu .menu .submenu {
 	margin-top: 0;
 	a {
@@ -186,129 +202,6 @@ div.vich-download-flex{
 		flex-direction: row;
 	}
 }
-/* mobo bios */
-div.padright{
-	padding-left: 0;
-	padding-right: 5px;
-}
-div.mobo-bios{
-	div.row{
-		padding: 0px 10px;
-	}
-}
-@media screen and (min-width: 1400px) {
-	div.col-xxl-2-5{
-		flex:0 0 auto;
-		width:21%
-	}
-}
-@media screen and (min-width: 768px) {
-	#Motherboard_motherboardBios_collection>div>div>div {
-		.ea-vich-file {
-			display: flex;
-		}
-
-		display:block;
-
-		div.form-widget-compound>div {
-			display: grid;
-			grid-template-columns: [first] 21% [second] 5px [third] 21% [fourth] 5px [fifth] 21% [sixth] 5px [seventh] 9% [eight] 5px [ninth] 7% [tenth] 5px [eleventh] 200px [end];
-
-			>div {
-				display: grid;
-			}
-
-			@media screen and (max-width: 1400px) {
-				grid-template-columns: [first] 30% [second] 5px [third] 50% [fourth] 5px [fifth] 20% [sixth] 5px [end];
-
-				>div:nth-child(1) {
-					grid-column-start: 1;
-					grid-column-end: 2;
-					grid-row-start: 1;
-					grid-row-end: 1;
-				}
-
-				>div:nth-child(2) {
-					grid-column-start: 2;
-					grid-column-end: 3;
-					grid-row-start: 1;
-					grid-row-end: 1;
-				}
-
-				>div:nth-child(3) {
-					grid-column-start: 3;
-					grid-column-end: 4;
-					grid-row-start: 1;
-					grid-row-end: 1;
-				}
-
-				>div:nth-child(4) {
-					grid-column-start: 4;
-					grid-column-end: 5;
-					grid-row-start: 1;
-					grid-row-end: 1;
-				}
-
-				>div:nth-child(7) {
-					grid-column-start: 5;
-					grid-column-end: 6;
-					grid-row-start: 1;
-					grid-row-end: 1;
-				}
-
-				>div:nth-child(8) {
-					grid-column-start: 6;
-					grid-column-end: 7;
-					grid-row-start: 1;
-					grid-row-end: 1;
-				}
-
-				>div:nth-child(11) {
-					grid-column-start: 1;
-					grid-column-end: 2;
-					grid-row-start: 2;
-					grid-row-end: 2;
-				}
-
-				>div:nth-child(12) {
-					grid-column-start: 2;
-					grid-column-end: 3;
-					grid-row-start: 2;
-					grid-row-end: 2;
-				}
-
-				>div:nth-child(5) {
-					grid-column-start: 3;
-					grid-column-end: 4;
-					grid-row-start: 2;
-					grid-row-end: 2;
-				}
-
-				>div:nth-child(6) {
-					grid-column-start: 4;
-					grid-column-end: 5;
-					grid-row-start: 2;
-					grid-row-end: 2;
-				}
-
-				>div:nth-child(9) {
-					grid-column-start: 5;
-					grid-column-end: 6;
-					grid-row-start: 2;
-					grid-row-end: 2;
-				}
-
-				>div:nth-child(10) {
-					grid-column-start: 6;
-					grid-column-end: 7;
-					grid-row-start: 2;
-					grid-row-end: 2;
-				}
-			}
-		}
-	}
-}
-
 #Motherboard_motherboardIoPorts_collection>div>div>div,
 #Motherboard_motherboardExpansionSlots_collection>div>div>div,
 #Motherboard_motherboardMemoryConnectors_collection>div>div>div {
@@ -426,20 +319,6 @@ div.mobo-bios{
 	}
 }
 
-div.mobo-buttons {
-	display: flex;
-	flex-wrap: wrap;
-	justify-content: right;
-	row-gap: 1em;
-	flex-direction: row;
-	padding-right: 10px;
-}
-div.hide-actions{
-	button.action-saveAndContinue, button.action-saveAndReturn{
-		display: none;
-	}
-}
-
 body:not(.ea-content-width-full) .content-wrapper {
 	max-width: none;
 }
@@ -472,7 +351,16 @@ body:not(.ea-content-width-full) .content-wrapper {
 
 	}
 }
-
+/* hide save buttons when JS is used */
+div.hide-actions{
+	button.action-saveAndContinue, button.action-saveAndReturn{
+		display: none;
+	}
+	button{
+		margin-top: 5px;
+	}
+}
+/* driver editor stuff */
 div.driver-messages {
 	padding-right: 10px;
 
@@ -488,6 +376,7 @@ div.driver-messages {
 		display: none;
 	}
 }
+/* misc specs styling */
 div.card-specs-grid textarea{
 	min-height: 30rem;
 }
@@ -505,6 +394,7 @@ div.specs-elements{
 		flex-grow: 6;
 	}
 }
+/* form customization bongaloo */
 div.multi-widget-trw{
 	div.ts-wrapper{
 		background-color: #ffffff;
@@ -528,6 +418,39 @@ div.multi-widget-trw{
 		align-items: flex-start;
 	}
 }
+div.count-css > div{
+	display: flex;
+	align-items: center;
+	span{
+		padding: 0px 6px;
+		font-size: 1.1rem;
+	}
+}
+div.padright{
+	padding-left: 0;
+	padding-right: 5px;
+}
+div.nopadright{
+	padding-right: 0;
+}
+div.nopadleft{
+	padding-left: 0;
+}
+div.mobo-bios{
+	div.row{
+		padding: 0px 10px;
+	}
+}
+@media screen and (min-width: 1400px) {
+	div.col-xxl-2-5{
+		flex:0 0 auto;
+		width:21%
+	}
+}
+.ea-vich-image {
+	padding-right: 10px;
+}
+/* ts multi select and delete buttons */
 i.red{
 	color: var(--link-danger-color);
 }
@@ -565,10 +488,6 @@ div.clear-button-trw{
 	white-space: initial;
 }
 
-.ea-vich-image {
-	padding-right: 10px;
-}
-
 .shide {
 	margin: 0px 5px;
 	transition: ease-in-out 0.1s background-color;
@@ -577,21 +496,4 @@ div.clear-button-trw{
 	&:hover {
 		background-color: $btn-hover-dark;
 	}
-}
-
-img.ea-entity-icon{
-	margin:0px 6px;
-}
-div.content-header-title > h1.title{
-	font-weight: 500;
-}
-.ea-dark-scheme{
-	--body-bg:#222;
-	--sidebar-bg:#303030;
-	--button-secondary-bg:#525252;
-	--table-cell-border-color: #404040;
-	--form-control-bg: #404040;
-	--sidebar-menu-active-item-bg:#404040;
-	--sidebar-menu-active-item-color:#60a5fa;
-	--sidebar-menu-color:#b5b5b5;
 }

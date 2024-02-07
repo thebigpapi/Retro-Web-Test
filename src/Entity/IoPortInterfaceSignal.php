@@ -49,8 +49,9 @@ class IoPortInterfaceSignal
         return array(
             'id' => $this->id,
             'name' => $this->name,
-            'signal'=> $this->getSignalIds(),
-            'interface'=> $this->interface->getId(),
+            'signals'=> $this->getSignalArray(),
+            'interfaceId'=> $this->interface->getId(),
+            'interfaceName'=> $this->interface->getName(),
 
         );
     }
@@ -59,11 +60,11 @@ class IoPortInterfaceSignal
     {
         return $this->id;
     }
-    public function getSignalIds(): ?array
+    public function getSignalArray(): ?array
     {
         $signals = [];
         foreach($this->signals as $signal){
-            array_push($signals, $signal->getId());
+            $signals[$signal->getId()] = $signal->getName();
         }
         return $signals;
     }

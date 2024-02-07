@@ -21,6 +21,7 @@ if (ioPortsBtn = document.getElementById('ExpansionCard_ioPorts_collection')?.pr
                 if (ioPortsListened.includes(ioPort)) {
                     continue;
                 }
+                console.log(ioPort);
                 addListenersToIoPortForm(ioPort);
                 ioPortsListened.push(ioPort);
             }
@@ -237,7 +238,8 @@ function saveAsJson(miscSpecs) {
 /* I/O port stuff from here downwards */
 
 function addListenersToIoPortForm(ioPortId) {
-    const ioPortPresetSelect = document.getElementById(ioPortId + '_ioPortInterfaceSignal');
+    console.log(ioPortId);
+    const ioPortPresetSelect = document.getElementById(ioPortId + '_ioPortInterfaceSignal_autocomplete');
     ioPortPresetSelect.addEventListener('change', event => ioPortPresetChange(event, ioPortId));
 }
 
@@ -286,20 +288,20 @@ function ioPortPresetChange(event, ioPortId) {
         })
         .then((text) => {
             const res = JSON.parse(text);
-            const intefaceId = res[0].interface;
-            const signalIds = res[0].signal
+            const intefaceId = res[0].interfaceId;
+            const intefaceName = res[0].interfaceName;
+            const signalIds = res[0].signals
 
-            const ioPortInterfaceSelect = document.getElementById(ioPortId + '_ioPortInterface');
-            const ioPortSignalsSelect = document.getElementById(ioPortId + '_ioPortSignals');
+            const ioPortInterfaceSelect = document.getElementById(ioPortId + '_ioPortInterface_autocomplete');
+            const ioPortSignalsSelect = document.getElementById(ioPortId + '_ioPortSignals_autocomplete');
 
-            ioPortInterfaceSelect.value = intefaceId;
-            Array.from(ioPortSignalsSelect.options).forEach(function (option) {
-                if (signalIds.includes(parseInt(option.value))) {
-                    option.selected = true;
-                } else {
-                    option.selected = false;
-                }
-            });
+            ioPortInterfaceSelect.tomselect.addOption({entityId: intefaceId, entityAsString: intefaceName});
+            ioPortInterfaceSelect.tomselect.addItem(intefaceId);
+            ioPortSignalsSelect.tomselect.clear();
+            for(const signal in signalIds){
+                ioPortSignalsSelect.tomselect.addOption({entityId: signal, entityAsString: signalIds[signal]});
+                ioPortSignalsSelect.tomselect.addItem(signal);
+            }
             ioPortInterfaceSelect.tomselect.sync();
             ioPortSignalsSelect.tomselect.sync();
         })

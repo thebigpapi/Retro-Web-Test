@@ -16,6 +16,7 @@ use App\Form\Type\PciDeviceIdType;
 use App\Form\Type\KnownIssueExpansionCardType;
 use App\EasyAdmin\TextJsonField;
 use Doctrine\ORM\EntityManagerInterface;
+use App\Controller\Admin\Type\IoPortInterfaceSignalCrudType;
 use App\Controller\Admin\Filter\ExpansionCardImageFilter;
 use App\Controller\Admin\Filter\ChipDocFilter;
 use App\Controller\Admin\Filter\ChipDriverFilter;
@@ -102,7 +103,7 @@ class ExpansionCardCrudController extends AbstractCrudController
         yield TextField::new('name', 'Name')
             ->setColumns('col-sm-6 col-lg-6 col-xxl-4');
         yield TextField::new('slug')
-            ->setColumns('col-sm-4 col-lg-4 col-xxl-4')
+            ->setColumns('col-sm-6 col-lg-6 col-xxl-4')
             ->onlyOnForms();
         yield ArrayField::new('type','Type')->onlyOnIndex();
         // index
@@ -120,19 +121,19 @@ class ExpansionCardCrudController extends AbstractCrudController
         yield CollectionField::new('type','Type')
             ->setEntryType(ExpansionCardTypeType::class)
             ->renderExpanded()
-            ->setColumns('col-sm-12 col-lg-6 col-xxl-4')
+            ->setColumns('col-sm-6 col-lg-6 col-xxl-4')
             ->onlyOnForms();
         yield AssociationField::new('expansionSlotInterfaceSignal','Expansion slot preset')
             ->autocomplete()
             //->setFormTypeOption('placeholder', 'Type to select a slot preset ...')
             ->setFormTypeOption('required', true)
-            ->setColumns('col-sm-12 col-lg-6 col-xxl-2')
+            ->setColumns('col-sm-6 col-lg-6 col-xxl-2')
             ->onlyOnForms();
         yield AssociationField::new('expansionSlotInterface','Expansion slot connector')
             ->autocomplete()
             ->setFormTypeOption('required', true)
             ->setFormTypeOption('attr',['placeholder' => 'Type to select a connector ...'])
-            ->setColumns('col-sm-12 col-lg-6 col-xxl-2')
+            ->setColumns('col-sm-6 col-lg-6 col-xxl-2')
             ->onlyOnForms();
         yield AssociationField::new('expansionSlotSignals','Expansion slot signals')
             //->setFormTypeOption('placeholder', 'Type to select a signal ...')
@@ -140,16 +141,16 @@ class ExpansionCardCrudController extends AbstractCrudController
             ->autocomplete()
             ->setColumns('col-sm-12 col-lg-6 col-xxl-4 multi-widget-trw')
             ->onlyOnForms();
-        yield IntegerField::new('width', 'Width (in mm)')
-            ->setColumns('col-sm-2 col-lg-2 col-xxl-1');
-        yield IntegerField::new('height', 'Height (in mm)')
-            ->setColumns('col-sm-2 col-lg-2 col-xxl-1');
-        yield IntegerField::new('length', 'Length (in mm)')
-            ->setColumns('col-sm-2 col-lg-2 col-xxl-1');
+        yield IntegerField::new('width', 'Width (mm)')
+            ->setColumns('col-sm-2 col-lg-3 col-xxl-1');
+        yield IntegerField::new('height', 'Height (mm)')
+            ->setColumns('col-sm-2 col-lg-3 col-xxl-1');
+        yield IntegerField::new('length', 'Length (mm)')
+            ->setColumns('col-sm-2 col-lg-3 col-xxl-1');
         yield IntegerField::new('slotCount', 'Slot height')
-            ->setColumns('col-sm-2 col-lg-2 col-xxl-1');
+            ->setColumns('col-sm-2 col-lg-3 col-xxl-1');
         yield TextField::new('fccid','FCC ID')
-            ->setColumns('col-sm-12 col-lg-6 col-xxl-2')
+            ->setColumns('col-sm-4 col-lg-6 col-xxl-2')
             ->onlyOnForms();
         yield CollectionField::new('pciDevs', 'Device ID')
             ->setEntryType(PciDeviceIdType::class)
@@ -193,7 +194,7 @@ class ExpansionCardCrudController extends AbstractCrudController
             ->onlyOnForms();
         yield FormField::addPanel('Connections')->onlyOnForms();
         yield CollectionField::new('ioPorts', 'I/O ports')
-            ->setEntryType(ExpansionCardIoPortType::class)
+            ->useEntryCrudForm(IoPortInterfaceSignalCrudType::class)
             ->setFormTypeOption('error_bubbling', false)
             ->setColumns('col-sm-12 col-lg-6 col-xxl-4')
             ->renderExpanded()
