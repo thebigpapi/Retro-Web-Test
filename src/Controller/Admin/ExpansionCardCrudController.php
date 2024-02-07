@@ -117,17 +117,24 @@ class ExpansionCardCrudController extends AbstractCrudController
         yield BooleanField::new('getDrivers','Drivers')
             ->renderAsSwitch(false)
             ->onlyOnIndex();
+        yield CollectionField::new('type','Type')
+            ->setEntryType(ExpansionCardTypeType::class)
+            ->renderExpanded()
+            ->setColumns('col-sm-12 col-lg-6 col-xxl-4')
+            ->onlyOnForms();
         yield AssociationField::new('expansionSlotInterfaceSignal','Expansion slot preset')
-            ->setFormTypeOption('placeholder', 'Type to select a slot preset ...')
+            ->autocomplete()
+            //->setFormTypeOption('placeholder', 'Type to select a slot preset ...')
             ->setFormTypeOption('required', true)
-            ->setColumns('col-sm-12 col-lg-6 col-xxl-4')
+            ->setColumns('col-sm-12 col-lg-6 col-xxl-2')
             ->onlyOnForms();
-        yield AssociationField::new('expansionSlotInterface','Interface connector')
+        yield AssociationField::new('expansionSlotInterface','Expansion slot connector')
+            ->autocomplete()
             ->setFormTypeOption('required', true)
-            ->setFormTypeOption('placeholder', 'Type to select a connector ...')
-            ->setColumns('col-sm-12 col-lg-6 col-xxl-4')
+            ->setFormTypeOption('attr',['placeholder' => 'Type to select a connector ...'])
+            ->setColumns('col-sm-12 col-lg-6 col-xxl-2')
             ->onlyOnForms();
-        yield AssociationField::new('expansionSlotSignals','Interface signal')
+        yield AssociationField::new('expansionSlotSignals','Expansion slot signals')
             //->setFormTypeOption('placeholder', 'Type to select a signal ...')
             ->setFormTypeOption('required', true)
             ->autocomplete()
@@ -141,10 +148,12 @@ class ExpansionCardCrudController extends AbstractCrudController
             ->setColumns('col-sm-2 col-lg-2 col-xxl-1');
         yield IntegerField::new('slotCount', 'Slot height')
             ->setColumns('col-sm-2 col-lg-2 col-xxl-1');
-        yield CollectionField::new('expansionCardAliases', 'Alternative names')
-            ->setEntryType(ExpansionCardAliasType::class)
-            ->setFormTypeOption('error_bubbling', false)
-            ->setColumns('col-sm-12 col-lg-6 col-xxl-4')
+        yield TextField::new('fccid','FCC ID')
+            ->setColumns('col-sm-12 col-lg-6 col-xxl-2')
+            ->onlyOnForms();
+        yield CollectionField::new('pciDevs', 'Device ID')
+            ->setEntryType(PciDeviceIdType::class)
+            ->setColumns('col-sm-12 col-lg-6 col-xxl-2')
             ->renderExpanded()
             ->onlyOnForms();
         yield CollectionField::new('redirections', 'Redirections')
@@ -153,18 +162,11 @@ class ExpansionCardCrudController extends AbstractCrudController
             ->setFormTypeOption('error_bubbling', false)
             ->setColumns('col-sm-12 col-lg-6 col-xxl-4')
             ->onlyOnForms();
-        yield CollectionField::new('type','Type')
-            ->setEntryType(ExpansionCardTypeType::class)
-            ->renderExpanded()
-            ->setColumns('col-sm-12 col-lg-6 col-xxl-4')
-            ->onlyOnForms();
-        yield CollectionField::new('pciDevs', 'Device ID')
-            ->setEntryType(PciDeviceIdType::class)
+        yield CollectionField::new('expansionCardAliases', 'Alternative names')
+            ->setEntryType(ExpansionCardAliasType::class)
+            ->setFormTypeOption('error_bubbling', false)
             ->setColumns('col-sm-12 col-lg-6 col-xxl-4')
             ->renderExpanded()
-            ->onlyOnForms();
-        yield TextField::new('fccid','FCC ID')
-            ->setColumns('col-sm-12 col-lg-6 col-xxl-4')
             ->onlyOnForms();
         yield CollectionField::new('knownIssues', 'Known issues')
             ->setEntryType(KnownIssueExpansionCardType::class)

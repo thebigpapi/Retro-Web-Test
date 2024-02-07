@@ -32,6 +32,8 @@ if ((miscSpecs = document.getElementById('ExpansionCard_miscSpecs')) ||
     (miscSpecs = document.getElementById('ExpansionChip_miscSpecs')) ||
     (miscSpecs = document.getElementById('ExpansionCardType_template'))) {
     const listElement = document.getElementById('specs-collection');
+    if(expSlotPresetSelect = document.getElementById('ExpansionCard_expansionSlotInterfaceSignal_autocomplete'))
+        expSlotPresetSelect.addEventListener('change', event => expSlotPresetChange(event));
     if(saveretbtn = document.getElementById("js-save"))
         saveretbtn.addEventListener('click', () => submit(miscSpecs, "action-saveAndReturn"), false);
     if(savecontbtn = document.getElementById("js-save-continue"))
@@ -129,7 +131,7 @@ async function addTable(listElement, key=null, values = null) {
 
 async function addTableSpec(listElement, tableId, key = null, value = null) {
 
-    console.log("addTableSpec" + tableId, listElement);
+    //console.log("addTableSpec" + tableId, listElement);
     document.getElementById('MiscSpecs_emptybadge_' + tableId).innerHTML = "";
     const elementId = miscSpecsTableIds[tableId]['counter'];
     miscSpecsTableIds[tableId]['ids'].push(elementId);
@@ -186,9 +188,8 @@ async function applyTemplate(miscSpecs) {
         });
 }
 function saveAsJson(miscSpecs) {
-    console.log("saveAsJson");
     const jsonMap = {};
-    console.log(miscSpecsIds);
+    //console.log(miscSpecsIds);
     let msg = "Set ";
     let spec_cnt = 0, table_cnt = 0;
     for (const id of miscSpecsIds) {
@@ -236,11 +237,44 @@ function saveAsJson(miscSpecs) {
 /* I/O port stuff from here downwards */
 
 function addListenersToIoPortForm(ioPortId) {
-    const ioPortInterfaceSignalSelect = document.getElementById(ioPortId + '_ioPortInterfaceSignal');
-    ioPortInterfaceSignalSelect.addEventListener('change', event => ioPortInterfaceSignalChange(event, ioPortId));
+    const ioPortPresetSelect = document.getElementById(ioPortId + '_ioPortInterfaceSignal');
+    ioPortPresetSelect.addEventListener('change', event => ioPortPresetChange(event, ioPortId));
 }
 
-function ioPortInterfaceSignalChange(event, ioPortId) {
+function expSlotPresetChange(event) {
+    const url = `${window.location.origin}/dashboard/getexpslots/${event.target.value}`;
+
+    fetch(url, { cache: "force-cache" })
+        .then((response) => {
+            if (!response.ok) {
+                throw new Error(`HTTP error: ${response.status}`)
+            }
+            return response.text();
+        })
+        .then((text) => {
+            const res = JSON.parse(text);
+            const intefaceId = res[0].interfaceId;
+            const intefaceName = res[0].interfaceName;
+            const signalIds = res[0].signals
+            const expSlotInterfaceSelect = document.getElementById('ExpansionCard_expansionSlotInterface_autocomplete');
+            const expSlotSignalsSelect = document.getElementById('ExpansionCard_expansionSlotSignals_autocomplete');
+
+            expSlotInterfaceSelect.tomselect.addOption({entityId: intefaceId, entityAsString: intefaceName});
+            expSlotInterfaceSelect.tomselect.addItem(intefaceId);
+            expSlotSignalsSelect.tomselect.clear();
+            for(const signal in signalIds){
+                expSlotSignalsSelect.tomselect.addOption({entityId: signal, entityAsString: signalIds[signal]});
+                expSlotSignalsSelect.tomselect.addItem(signal);
+            }
+            expSlotInterfaceSelect.tomselect.sync();
+            expSlotSignalsSelect.tomselect.sync();
+        })
+        .catch((error) => {
+            console.log(`Could not fetch expslot : ${error}`);
+        });
+}
+
+function ioPortPresetChange(event, ioPortId) {
     const url = `${window.location.origin}/dashboard/getioports/${event.target.value}`;
 
     fetch(url, { cache: "force-cache" })

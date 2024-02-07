@@ -40,10 +40,28 @@ class ExpansionSlotInterfaceSignal
     {
         return $this->name;
     }
+    public function jsonSerialize()
+    {
+        return array(
+            'id' => $this->id,
+            'name' => $this->name,
+            'signals'=> $this->getSignalArray(),
+            'interfaceId'=> $this->interface->getId(),
+            'interfaceName'=> $this->interface->getName(),
+        );
+    }
 
     public function getId(): ?int
     {
         return $this->id;
+    }
+    public function getSignalArray(): ?array
+    {
+        $signals = [];
+        foreach($this->signals as $signal){
+            $signals[$signal->getId()] = $signal->getName();
+        }
+        return $signals;
     }
     public function getName(): ?string
     {

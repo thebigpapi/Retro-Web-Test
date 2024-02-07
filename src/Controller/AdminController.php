@@ -6,6 +6,7 @@ use App\Entity\CpuSocket;
 use App\Entity\ExpansionCardType;
 use App\Entity\IoPortInterface;
 use App\Entity\IoPortInterfaceSignal;
+use App\Entity\ExpansionSlotInterfaceSignal;
 use App\Entity\IoPortSignal;
 use App\Entity\ProcessorPlatformType;
 use App\Repository\CdDriveRepository;
@@ -17,6 +18,7 @@ use App\Repository\FloppyDriveRepository;
 use App\Repository\HardDriveRepository;
 use App\Repository\IoPortInterfaceRepository;
 use App\Repository\IoPortInterfaceSignalRepository;
+use App\Repository\ExpansionSlotInterfaceSignalRepository;
 use App\Repository\IoPortSignalRepository;
 use App\Repository\MotherboardRepository;
 use App\Repository\ProcessorRepository;
@@ -199,6 +201,29 @@ class AdminController extends AbstractDashboardController
         }
 
         return new JsonResponse(array_map(fn (IoPortInterfaceSignal $ioport) => $ioport->jsonSerialize(), $ioports));
+    }
+
+    #[Route('/dashboard/getexpslots/{id}', name:'get_expslots', methods:['GET'], requirements: ['id' => '\d+'])]
+    public function getExpSlots(Request $request, ExpansionSlotInterfaceSignalRepository $expansionSlotInterfaceSignalRepository, ?int $id = null): JsonResponse
+    {
+        $expslots = [];
+        if ($id) {
+            $slot = $expansionSlotInterfaceSignalRepository->find($id);
+            if (!$slot) {
+                return new Response('', 404);
+            }
+            $expslots = [$slot];
+        } else {
+            $filtersJson = $request->query->get('filters');
+            if (!$filtersJson) {
+                $expslots =$expansionSlotInterfaceSignalRepository->findAll();
+            } else {
+                $filters = json_decode($filtersJson, true);
+                $expslots = $expansionSlotInterfaceSignalRepository->findBy($filters);
+            }
+        }
+
+        return new JsonResponse(array_map(fn (ExpansionSlotInterfaceSignal $slot) => $slot->jsonSerialize(), $expslots));
     }
 
     #[Route('/dashboard/getioportinterfaces/{id}', name:'get_ioportinterfaces', methods:['GET'], requirements: ['id' => '\d+'])]

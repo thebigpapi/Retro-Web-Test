@@ -114,7 +114,6 @@ function addChips(addArray){
         console.log(chip, addArray[chip]);
         chips.tomselect.addOption({entityId: chip, entityAsString: addArray[chip]});
         chips.tomselect.addItem(chip);
-        chips.tomselect.sync();
     }
     chips.tomselect.sync();
 }
@@ -126,7 +125,6 @@ function removeChips(deleteArray){
             el.children[0].children[0].click();
         }
     }
-    console.log(deleteArray);
 }
 function verifyChips(addArray){
     let cnt = 0;
@@ -136,7 +134,7 @@ function verifyChips(addArray){
         for(let item of chips.children)
             chip_array.push(parseInt(item.getAttribute('value')));
     let post = JSON.stringify(chip_array)
-    let newChipsArray = {};
+    let deleteArray = {};
     let url = window.location.origin + "/dashboard/filterchips";
     let xhr = new XMLHttpRequest()
     xhr.open('POST', url, true)
