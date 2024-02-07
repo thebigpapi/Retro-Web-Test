@@ -18,9 +18,6 @@ class ExpansionSlotSignal
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
-    #[ORM\OneToMany(mappedBy: 'expansionSlotSignal', targetEntity: ExpansionCard::class)]
-    private Collection $expansionCards;
-
     #[ORM\ManyToMany(targetEntity: ExpansionSlotInterfaceSignal::class, mappedBy: 'signals')]
     private Collection $expansionSlotInterfaceSignals;
 
@@ -33,12 +30,15 @@ class ExpansionSlotSignal
     #[ORM\Column(length: 4096, nullable: true)]
     private ?string $description = null;
 
+    #[ORM\ManyToMany(targetEntity: ExpansionCard::class, mappedBy: 'expansionSlotSignals')]
+    private Collection $expansionCards;
+
     public function __construct()
     {
-        $this->expansionCards = new ArrayCollection();
         $this->expansionSlotInterfaceSignals = new ArrayCollection();
         $this->entityImages = new ArrayCollection();
         $this->entityDocumentations = new ArrayCollection();
+        $this->expansionCards = new ArrayCollection();
     }
 
     public function __toString(): string
@@ -59,36 +59,6 @@ class ExpansionSlotSignal
     public function setName(string $name): static
     {
         $this->name = $name;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, ExpansionCard>
-     */
-    public function getExpansionCards(): Collection
-    {
-        return $this->expansionCards;
-    }
-
-    public function addExpansionCard(ExpansionCard $expansionCard): static
-    {
-        if (!$this->expansionCards->contains($expansionCard)) {
-            $this->expansionCards->add($expansionCard);
-            $expansionCard->setExpansionSlotSignal($this);
-        }
-
-        return $this;
-    }
-
-    public function removeExpansionCard(ExpansionCard $expansionCard): static
-    {
-        if ($this->expansionCards->removeElement($expansionCard)) {
-            // set the owning side to null (unless already changed)
-            if ($expansionCard->getExpansionSlotSignal() === $this) {
-                $expansionCard->setExpansionSlotSignal(null);
-            }
-        }
 
         return $this;
     }
@@ -188,6 +158,33 @@ class ExpansionSlotSignal
     public function setDescription(?string $description): static
     {
         $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ExpansionCard>
+     */
+    public function getExpansionCards(): Collection
+    {
+        return $this->expansionCards;
+    }
+
+    public function addExpansionCard(ExpansionCard $expansionCard): static
+    {
+        if (!$this->expansionCards->contains($expansionCard)) {
+            $this->expansionCards->add($expansionCard);
+            $expansionCard->addExpansionSlotSignal($this);
+        }
+
+        return $this;
+    }
+
+    public function removeExpansionCard(ExpansionCard $expansionCard): static
+    {
+        if ($this->expansionCards->removeElement($expansionCard)) {
+            $expansionCard->removeExpansionSlotSignal($this);
+        }
 
         return $this;
     }

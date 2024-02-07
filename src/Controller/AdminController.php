@@ -99,13 +99,13 @@ class AdminController extends AbstractDashboardController
     public function filterChips(Request $request, ExpansionChipRepository $expansionChipRepository): JsonResponse
     {
         $chips = json_decode($request->getContent());
-        $newchips = array();
+        $deletechips = array();
         foreach($chips as $chip){
             $chipEntity = $expansionChipRepository->findById($chip)[0];
-            if($chipEntity->getExpansionChipType()->getId() != 30)
-                $newchips[$chip] = $chipEntity->getNameWithManufacturer();
+            if($chipEntity->getExpansionChipType()->getId() == 30)
+                array_push($deletechips, $chip);
         }
-        return new JsonResponse($newchips);
+        return new JsonResponse($deletechips);
     }
     #[Route('/admin/updatechipset', name:'update_chipsets_cached_name')]
     public function updateChipsetsCachedName(): Response

@@ -1,5 +1,5 @@
-/*if(updatechipsbtn = document.getElementById('Motherboard_chipset'))
-    updatechipsbtn.addEventListener("change", updateChips);*/
+if(updatechipsbtn = document.getElementById('Motherboard_chipset'))
+    updatechipsbtn.addEventListener("change", updateChips);
 if(updatechipsetbtn = document.getElementById('update-chipset-btn'))
     updatechipsetbtn.addEventListener("click", updateChipset);
 if(resetchipsetbtn = document.getElementById('reset-chipset-btn'))
@@ -99,7 +99,7 @@ function setChips(value, verify){
     xhr.onload = function () {
         if(xhr.status === 200) {
             chipsArray = JSON.parse(xhr.responseText);
-            if(verify < 0)
+            if(verify > 0)
                 verifyChips(chipsArray);
             else{
                 addChips(chipsArray);
@@ -108,16 +108,27 @@ function setChips(value, verify){
         }
     }
 }
-function addChips(values){
+function addChips(addArray){
     let chips = document.getElementById('Motherboard_expansionChips_autocomplete');
-    chips.tomselect.registerOptionGroup(values);
-    for(const chip in values){
-        console.log(chip);
-        chips.tomselect.addOption(chip);
+    for(const chip in addArray){
+        console.log(chip, addArray[chip]);
+        chips.tomselect.addOption({entityId: chip, entityAsString: addArray[chip]});
+        chips.tomselect.addItem(chip);
+        chips.tomselect.sync();
     }
     chips.tomselect.sync();
 }
-function verifyChips(array){
+function removeChips(deleteArray){
+    let container = document.getElementById('Motherboard_expansionChips_autocomplete-ts-control');
+    for(const value of deleteArray){
+        let el = container.querySelector(`[data-value="${value}"]`);
+        if(el){
+            el.children[0].children[0].click();
+        }
+    }
+    console.log(deleteArray);
+}
+function verifyChips(addArray){
     let cnt = 0;
     let chip_array = [];
     let chips = document.getElementById('Motherboard_expansionChips_autocomplete');
@@ -133,28 +144,20 @@ function verifyChips(array){
     xhr.send(post);
     xhr.onload = function () {
         if(xhr.status === 200) {
-            newChipsArray = JSON.parse(xhr.responseText);
-            let removecnt = 0;
-            let addcnt = Object.keys(array).length;
-            for(let i=0; i<cnt;i++){
-                let element = document.getElementById("Motherboard_expansionChips_" + i);
-                if(element && !Object.keys(newChipsArray).includes(element.value)){
-                    document.getElementById("Motherboard_expansionChips_" + i + "_deletebtn").click();
-                    removecnt++;
-                }
-            }
-            addChips(array);
-            if(removecnt == 0){
-                if(addcnt == 0)
+            deleteArray = JSON.parse(xhr.responseText);
+            removeChips(deleteArray);
+            addChips(addArray);
+            if(deleteArray.length == 0){
+                if(addArray.length == 0)
                     setMessage("Expansion chips unchanged");
                 else
-                    setMessage("Expansion chips added: " + addcnt);
+                    setMessage("Expansion chips added: " + addArray.length);
             }
             else{
-                if(addcnt == 0)
-                    setMessage("Expansion chips removed: " + removecnt);
+                if(addArray.length == 0)
+                    setMessage("Expansion chips removed: " + deleteArray.length);
                 else
-                    setMessage("Expansion chips removed: " + removecnt + ", added: " + addcnt);
+                    setMessage("Expansion chips removed: " + deleteArray.length + ", added: " + addArray.length);
             }
         }
     }

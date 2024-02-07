@@ -91,13 +91,6 @@ class ExpansionCard
     )]
     private ?ExpansionSlotInterface $expansionSlotInterface = null;
 
-    #[ORM\ManyToOne(inversedBy: 'expansionCards')]
-    #[ORM\JoinColumn(nullable: false)]
-    #[Assert\NotBlank(
-        message: 'Signal cannot be blank'
-    )]
-    private ?ExpansionSlotSignal $expansionSlotSignal = null;
-
     #[ORM\OneToMany(mappedBy: 'expansionCard', targetEntity: PciDeviceId::class,  orphanRemoval: true, cascade: ['persist'])]
     private Collection $pciDevs;
     #[ORM\Column]
@@ -128,6 +121,9 @@ class ExpansionCard
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $fccid = null;
 
+    #[ORM\ManyToMany(targetEntity: ExpansionSlotSignal::class, inversedBy: 'expansionCards')]
+    private Collection $expansionSlotSignals;
+
     public function __construct()
     {
         $this->expansionChips = new ArrayCollection();
@@ -146,6 +142,7 @@ class ExpansionCard
         $this->ioPorts = new ArrayCollection();
         $this->pciDevs = new ArrayCollection();
         $this->knownIssues = new ArrayCollection();
+        $this->expansionSlotSignals = new ArrayCollection();
     }
     public function __toString(): string
     {
@@ -655,18 +652,6 @@ class ExpansionCard
         return $this;
     }
 
-    public function getExpansionSlotSignal(): ?ExpansionSlotSignal
-    {
-        return $this->expansionSlotSignal;
-    }
-
-    public function setExpansionSlotSignal(?ExpansionSlotSignal $expansionSlotSignal): static
-    {
-        $this->expansionSlotSignal = $expansionSlotSignal;
-
-        return $this;
-    }
-
     /**
      * @return Collection<int, PciDeviceId>
      */
@@ -836,6 +821,30 @@ class ExpansionCard
     public function setFccid(?string $fccid): static
     {
         $this->fccid = $fccid;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ExpansionSlotSignal>
+     */
+    public function getExpansionSlotSignals(): Collection
+    {
+        return $this->expansionSlotSignals;
+    }
+
+    public function addExpansionSlotSignal(ExpansionSlotSignal $expansionSlotSignal): static
+    {
+        if (!$this->expansionSlotSignals->contains($expansionSlotSignal)) {
+            $this->expansionSlotSignals->add($expansionSlotSignal);
+        }
+
+        return $this;
+    }
+
+    public function removeExpansionSlotSignal(ExpansionSlotSignal $expansionSlotSignal): static
+    {
+        $this->expansionSlotSignals->removeElement($expansionSlotSignal);
 
         return $this;
     }

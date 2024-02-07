@@ -127,10 +127,11 @@ class ExpansionCardCrudController extends AbstractCrudController
             ->setFormTypeOption('placeholder', 'Type to select a connector ...')
             ->setColumns('col-sm-12 col-lg-6 col-xxl-4')
             ->onlyOnForms();
-        yield AssociationField::new('expansionSlotSignal','Interface signal')
-            ->setFormTypeOption('placeholder', 'Type to select a signal ...')
+        yield AssociationField::new('expansionSlotSignals','Interface signal')
+            //->setFormTypeOption('placeholder', 'Type to select a signal ...')
             ->setFormTypeOption('required', true)
-            ->setColumns('col-sm-12 col-lg-6 col-xxl-4')
+            ->autocomplete()
+            ->setColumns('col-sm-12 col-lg-6 col-xxl-4 multi-widget-trw')
             ->onlyOnForms();
         yield IntegerField::new('width', 'Width (in mm)')
             ->setColumns('col-sm-2 col-lg-2 col-xxl-1');

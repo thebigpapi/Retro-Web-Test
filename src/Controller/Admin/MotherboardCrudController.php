@@ -257,6 +257,11 @@ class MotherboardCrudController extends AbstractCrudController
             ->autocomplete()
             ->setColumns('col-sm-12 col-lg-8 col-xxl-6 multi-widget-trw')
             ->onlyOnForms();
+        /*yield CollectionField::new('expansionChips', 'Expansion chips')
+            ->setEntryType(ExpansionChipType::class)
+            ->renderExpanded()
+            ->setColumns('col-sm-12 col-lg-8 col-xxl-6 multi-widget-trw')
+            ->onlyOnForms();*/
         yield AssociationField::new('chipset')
             ->setFormTypeOption('placeholder', 'Type to select a chipset ...')
             ->setFormTypeOption('choice_label', 'getNameCached')
