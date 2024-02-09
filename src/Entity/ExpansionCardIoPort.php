@@ -28,9 +28,9 @@ class ExpansionCardIoPort
     #[ORM\ManyToMany(targetEntity: IoPortSignal::class, inversedBy: 'expansionCards')]
     private Collection $ioPortSignals;
 
-    #[Assert\PositiveOrZero(message: "I/O port count should be 0 or above")]
-    #[Assert\LessThan(100, message: "I/O port count should be below 100")]
-    #[Assert\NotBlank(message:'I/O port count cannot be blank')]
+    #[Assert\Positive(message: "> 0!")]
+    #[Assert\LessThan(100, message: "< 100!")]
+    #[Assert\NotBlank(message:'Blank!')]
     #[ORM\Column]
     private ?int $count = null;
 

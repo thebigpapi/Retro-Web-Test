@@ -126,12 +126,12 @@ class DashboardController extends AbstractDashboardController
             MenuItem::linkToCrud('Expansion slots', 'card.svg', ExpansionSlot::class),
             MenuItem::linkToCrud('I/O ports', 'rs232.svg', IoPort::class),
             MenuItem::linkToCrud('Images', 'search_image.svg', MotherboardImage::class),
-            MenuItem::linkToCrud('BIOSes', 'awchip.svg', MotherboardBios::class)->setController(MotherboardBiosCrudController::class),
+            MenuItem::linkToCrud('BIOSes', 'awchip.svg', MotherboardBios::class),
             MenuItem::linkToCrud('Manuals', 'manual.svg', Manual::class),
         ])->setPermission('ROLE_ADMIN');
         yield MenuItem::subMenu('Expansion card related', 'card.svg')->setSubItems([
             MenuItem::linkToCrud('Types', 'tag.svg', ExpansionCardType::class),
-            MenuItem::linkToCrud('I/O ports', 'rs232.svg', IoPortInterfaceSignal::class)->setController(IoPortInterfaceSignalCrudController::class),
+            MenuItem::linkToCrud('I/O ports', 'rs232.svg', IoPortInterfaceSignal::class),
             MenuItem::linkToCrud('I/O port connectors', 'connector.svg', IoPortInterface::class),
             MenuItem::linkToCrud('I/O port signals', 'rs232_electric.svg', IoPortSignal::class),
             MenuItem::linkToCrud('Expansion slots', 'exp_slot.svg', ExpansionSlotInterfaceSignal::class),

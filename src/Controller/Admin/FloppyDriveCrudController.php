@@ -5,15 +5,15 @@ namespace App\Controller\Admin;
 use App\Entity\FloppyDrive;
 use App\Entity\StorageDeviceAlias;
 use App\Form\Type\KnownIssueFddType;
-use App\Form\Type\StorageDeviceAliasType;
-use App\Form\Type\StorageDeviceDocumentationType;
-use App\Form\Type\StorageDeviceIdRedirectionType;
-use App\Form\Type\StorageDeviceImageTypeForm;
 use App\Form\Type\StorageDeviceInterfaceType;
 use App\Form\Type\PSUConnectorType;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Controller\Admin\Filter\StorageImageFilter;
 use App\Controller\Admin\Filter\StorageDocFilter;
+use App\Controller\Admin\Type\StorageDevice\AliasCrudType;
+use App\Controller\Admin\Type\StorageDevice\DocumentationCrudType;
+use App\Controller\Admin\Type\StorageDevice\IdRedirectionCrudType;
+use App\Controller\Admin\Type\StorageDevice\ImageCrudType;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
@@ -175,17 +175,17 @@ class FloppyDriveCrudController extends AbstractCrudController
             ->setColumns('col-sm-6 col-lg-6 col-xxl-4')
             ->renderExpanded()
             ->onlyOnForms();
-        yield CollectionField::new('storageDeviceAliases', 'Alternative names')
-            ->setEntryType(StorageDeviceAliasType::class)
-            ->renderExpanded()
-            ->setFormTypeOption('error_bubbling', false)
-            ->setColumns('col-sm-6 col-lg-6 col-xxl-4')
-            ->onlyOnForms();
         yield CollectionField::new('redirections', 'Redirections')
-            ->setEntryType(StorageDeviceIdRedirectionType::class)
+            ->useEntryCrudForm(IdRedirectionCrudType::class)
             ->renderExpanded()
             ->setFormTypeOption('error_bubbling', false)
             ->setColumns('col-sm-12 col-lg-6 col-xxl-4')
+            ->onlyOnForms();
+        yield CollectionField::new('storageDeviceAliases', 'Alternative names')
+            ->useEntryCrudForm(AliasCrudType::class)
+            ->renderExpanded()
+            ->setFormTypeOption('error_bubbling', false)
+            ->setColumns('col-sm-12 col-lg-12 col-xxl-6')
             ->onlyOnForms();
         yield CodeEditorField::new('description')
             ->setLanguage('markdown')
@@ -194,13 +194,13 @@ class FloppyDriveCrudController extends AbstractCrudController
             ->setIcon('fa fa-download')
             ->onlyOnForms();
         yield CollectionField::new('storageDeviceImages', 'Images')
-            ->setEntryType(StorageDeviceImageTypeForm::class)
+            ->useEntryCrudForm(ImageCrudType::class)
             ->setColumns('col-sm-12 col-lg-8 col-xxl-6')
             ->setFormTypeOption('error_bubbling', false)
             ->renderExpanded()
             ->onlyOnForms();
         yield CollectionField::new('storageDeviceDocumentations', 'Documentation')
-            ->setEntryType(StorageDeviceDocumentationType::class)
+            ->useEntryCrudForm(DocumentationCrudType::class)
             ->setFormTypeOption('error_bubbling', false)
             ->setColumns(6)
             ->renderExpanded()

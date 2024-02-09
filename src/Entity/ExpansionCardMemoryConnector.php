@@ -24,9 +24,9 @@ class ExpansionCardMemoryConnector
     private ?MemoryConnector $memoryConnector = null;
 
     #[ORM\Column(type: 'integer')]
-    #[Assert\PositiveOrZero(message: "Memory connector count should be 0 or above")]
-    #[Assert\LessThan(100, message: "Memory connector count should be below 100")]
-    #[Assert\NotBlank(message:'Memory connector count cannot be blank')]
+    #[Assert\Positive(message: "Count > 0!")]
+    #[Assert\LessThan(100, message: "Count < 100!")]
+    #[Assert\NotBlank(message:'Count blank!')]
     private ?int $count = null;
 
     public function getId(): ?int

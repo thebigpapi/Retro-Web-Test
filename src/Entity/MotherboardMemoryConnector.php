@@ -23,9 +23,9 @@ class MotherboardMemoryConnector
     #[Assert\NotBlank(message:'Memory connector type cannot be blank')]
     private ?MemoryConnector $memoryConnector = null;
 
-    #[Assert\PositiveOrZero(message: "Memory connector count should be 0 or above")]
-    #[Assert\LessThan(100, message: "Memory connector count should be below 100")]
-    #[Assert\NotBlank(message:'Memory connector count cannot be blank')]
+    #[Assert\Positive(message: "Count > 0!")]
+    #[Assert\LessThan(100, message: "Count < 100!")]
+    #[Assert\NotBlank(message:'Count blank!')]
     #[ORM\Column(type: 'integer')]
     private ?int $count = null;
 

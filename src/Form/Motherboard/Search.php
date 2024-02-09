@@ -4,8 +4,6 @@ namespace App\Form\Motherboard;
 
 use App\Entity\Chipset;
 use App\Form\Type\DramTypeType;
-use App\Form\Type\ExpansionSlotSearchType;
-use App\Form\Type\IoPortSearchType;
 use App\Form\Type\ExpansionChipType;
 use App\Form\Type\ItemsPerPageType;
 use Symfony\Component\Form\AbstractType;

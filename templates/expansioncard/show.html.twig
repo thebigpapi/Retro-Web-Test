@@ -56,107 +56,113 @@
 		<div class="internal-content">
 			<!-- DESCRIPRION -->
 			<div class="show-general" id="sh-general">
-				<div class="quick-spec-table">
-					<!-- Type -->
-					<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/tag.svg')) }}" alt="type" width="24" height="24">Type</div>
-					{% if expansioncard.getType() is not empty %}
-					<div class="tag-container">
-						{% for type in expansioncard.getType() %}
-						<span class="text-block">{{ type }}</span>
-						{% endfor %}
-					</div>
-					{% else %}
-					<div>Unknown</div>
-					{% endif %}
-					<!-- Device ID -->
-					<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/tag.svg')) }}" alt="date" width="24" height="24">PCI ID</div>
-					<div class="tag-container">
-					{% if expansioncard.getPciDevs() is not empty %}
-						{% for device in expansioncard.getPciDevs() %}
-							<span class="text-block">{{device.getDev()}}</span>
-						{% endfor %}
-					{% elseif expansioncard.getExpansionChips()|filter(a => a.pciDevs is not empty) is not empty %}
-						{% for chip in expansioncard.getExpansionChips()|filter(a => a.pciDevs is not empty) %}
-							{% for device in chip.getPciDevs() %}
+				<div class="quick-spec-split">
+					<div class="quick-spec-table">
+						<!-- Type -->
+						<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/tag.svg')) }}" alt="type" width="24" height="24">Type</div>
+						{% if expansioncard.getType() is not empty %}
+						<div class="tag-container">
+							{% for type in expansioncard.getType() %}
+							<span class="text-block">{{ type }}</span>
+							{% endfor %}
+						</div>
+						{% else %}
+						<div>Unknown</div>
+						{% endif %}
+						<!-- Device ID -->
+						<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/tag.svg')) }}" alt="date" width="24" height="24">PCI ID</div>
+						<div class="tag-container">
+						{% if expansioncard.getPciDevs() is not empty %}
+							{% for device in expansioncard.getPciDevs() %}
 								<span class="text-block">{{device.getDev()}}</span>
 							{% endfor %}
-						{% endfor %}
-					{% else %}
-						<div>None</div>
-					{% endif %}
-					</div>
-					<!-- Expansion Slot -->
-					{% if expansioncard.getExpansionSlotInterfaceSignal() is not empty %}
-					<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/io.svg')) }}" alt="interface" width="24" height="24">Interface</div>
-					<div><a href="{{ path('expansion_slot_show', {id: expansioncard.getExpansionSlotInterfaceSignal().getId()}) }}"
-						>{{ expansioncard.getExpansionSlotInterfaceSignal().getName() }}</a>
-					</div>
-					{% endif %}
-					{% if expansioncard.getExpansionSlotInterface() is not empty %}
-					<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/pci_slot_smol.svg')) }}" alt="interface" width="24" height="24">Slot connector</div>
-					<div>{{ expansioncard.getExpansionSlotInterface().getName() }}</a></div>
-					{% endif %}
-					{% if expansioncard.getExpansionSlotSignals() is not empty %}
-					<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/exp_slot.svg')) }}" alt="interface" width="24" height="24">Signals</div>
-					<div class="tag-container">
-						{% for slotSignal in expansioncard.getExpansionSlotSignals()|sort((a, b) => a.getName() <=> b.getName()) %}
-							<span class="text-block">{{ slotSignal.getName() }}</span>
-						{% endfor %}
-					</div>
-					{% endif %}
-					<!-- Expansion Chips -->
-					{% if expansioncard.getExpansionChips() is not empty %}
-						{% for type in expansionchiptype %}
-							{% for chip in expansioncard.getExpansionChips()|filter(a => a.getType().getName() == type.getName())%}
-								{% if loop.first %}<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/chip.svg')) }}" alt="chip" width="24" height="24">{{chip.getType().getName()}} chips</div><div class="tag-container">{% endif %}
-								<a href="{{ path('expansion_chip_show', {id: chip.getId()}) }}"><span class="text-block">{{ chip.getNameWithManufacturer() }}</span></a>
-								{% if loop.index == expansioncard.getExpansionChips()|filter(a => a.getType().getName() == type.getName())|length %}</div>{% endif %}
+						{% elseif expansioncard.getExpansionChips()|filter(a => a.pciDevs is not empty) is not empty %}
+							{% for chip in expansioncard.getExpansionChips()|filter(a => a.pciDevs is not empty) %}
+								{% for device in chip.getPciDevs() %}
+									<span class="text-block">{{device.getDev()}}</span>
+								{% endfor %}
 							{% endfor %}
-						{% endfor %}
-					{% endif %}
-					<!-- Supported RAM types -->
-					{% if expansioncard.getDramType() is not empty %}
-					<div class="quick-spec-head">
-						<img src="{{ absolute_url(asset('build/icons/ram.svg')) }}" alt="ram" width="24" height="24">RAM type{% if expansioncard.getDramType()|length > 1 %}s{% endif %}
+						{% else %}
+							<div>None</div>
+						{% endif %}
+						</div>
+						<!-- Expansion Slot -->
+						{% if expansioncard.getExpansionSlotInterfaceSignal() is not empty %}
+						<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/pci_slot_smol.svg')) }}" alt="interface" width="24" height="24">Interface</div>
+						<div><a href="{{ path('expansion_slot_show', {id: expansioncard.getExpansionSlotInterfaceSignal().getId()}) }}"
+							>{{ expansioncard.getExpansionSlotInterfaceSignal().getName() }}</a>
+						</div>
+						{% endif %}
+						{% if expansioncard.getExpansionSlotInterface() is not empty %}
+						<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/exp_slot.svg')) }}" alt="connector" width="24" height="24">Slot connector</div>
+						<div>{{ expansioncard.getExpansionSlotInterface().getName() }}</a></div>
+						{% endif %}
+						{% if expansioncard.getExpansionSlotSignals() is not empty %}
+						<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/signal.svg')) }}" alt="signal" width="24" height="24">Slot signals</div>
+						<div class="tag-container">
+							{% for slotSignal in expansioncard.getExpansionSlotSignals()|sort((a, b) => a.getName() <=> b.getName()) %}
+								<span class="text-block">{{ slotSignal.getName() }}</span>
+							{% endfor %}
+						</div>
+						{% endif %}
+						<!-- Expansion Chips -->
+						{% if expansioncard.getExpansionChips() is not empty %}
+							{% for type in expansionchiptype %}
+								{% for chip in expansioncard.getExpansionChips()|filter(a => a.getType().getName() == type.getName())%}
+									{% if loop.first %}<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/chip.svg')) }}" alt="chip" width="24" height="24">{{chip.getType().getName()}} chips</div><div class="tag-container">{% endif %}
+									<a href="{{ path('expansion_chip_show', {id: chip.getId()}) }}"><span class="text-block">{{ chip.getNameWithManufacturer() }}</span></a>
+									{% if loop.index == expansioncard.getExpansionChips()|filter(a => a.getType().getName() == type.getName())|length %}</div>{% endif %}
+								{% endfor %}
+							{% endfor %}
+						{% endif %}
 					</div>
-					<div class="tag-container">{% for dram in expansioncard.getDramType() %}<span class="text-block">{{ dram.getName() }}</span>{% endfor %}</div>
-					{% endif %}
-					<!-- Max card RAM -->
-					{% if expansioncard.getRamSize() is not empty %}
-					<div class="quick-spec-head">
-						<img src="{{ absolute_url(asset('build/icons/ram_multi.svg')) }}" alt="ram" width="24" height="24">Max RAM size
+					<div class="quick-spec-table">
+						<!-- Supported RAM types -->
+						{% if expansioncard.getDramType() is not empty %}
+						<div class="quick-spec-head">
+							<img src="{{ absolute_url(asset('build/icons/ram.svg')) }}" alt="ram" width="24" height="24">RAM type{% if expansioncard.getDramType()|length > 1 %}s{% endif %}
+						</div>
+						<div class="tag-container">{% for dram in expansioncard.getDramType() %}<span class="text-block">{{ dram.getName() }}</span>{% endfor %}</div>
+						{% endif %}
+						<!-- Max card RAM -->
+						{% if expansioncard.getRamSize() is not empty %}
+						<div class="quick-spec-head">
+							<img src="{{ absolute_url(asset('build/icons/ram_multi.svg')) }}" alt="ram" width="24" height="24">Max RAM size
+						</div>
+						<div class="tag-container">{% for size in expansioncard.getRamSize() %}<span class="text-block">{{ size.getValueWithUnit()}}</span>{% endfor %}</div>
+						{% endif %}
+						<!-- Memory connectors -->
+						{% if expansioncard.getExpansionCardMemoryConnectors() is not empty %}
+						<div class="quick-spec-head">
+							<img src="{{ absolute_url(asset('build/icons/ram.svg')) }}" alt="ram" width="24" height="24">RAM connectors
+						</div>
+						<div class="tag-container">
+							{% for slot in expansioncard.getExpansionCardMemoryConnectors()|sort((a, b) => a.getMemoryConnector().getName() <=> b.getMemoryConnector().getName()) %}
+									<span class="text-block"><b>{{ slot.getCount() }}x&nbsp;</b>{{ slot.getMemoryConnector().getName() }}</span>
+							{% endfor %}
+						</div>
+						{% endif %}
+						<!-- PSU connectors -->
+						{% if expansioncard.getPowerConnectors() is not empty %}
+						<div class="quick-spec-head">
+							<img src="{{ absolute_url(asset('build/icons/power.svg')) }}" alt="pwr" width="24" height="24">Power connector
+						</div>
+						<div class="tag-container">{% for power in expansioncard.getPowerConnectors() %}
+							<a href="{{ path('psu_connector_show', {id: power.getId()}) }}"><span class="text-block">{{ power.getName() }}</span></a>{% endfor %}</div>
+						{% endif %}
+						<!-- Slot height-->
+						{% if expansioncard.getSlotCount() is not null %}
+						<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/card.svg')) }}" alt="dim" width="24" height="24">Slot height</div>
+						<div>{{ expansioncard.getSlotCount() }}</div>
+						{% endif %}
+						<!-- Dimensions -->
+						{% if expansioncard.getWidth() is not null or expansioncard.getLength() is not null or expansioncard.getHeight() is not null %}
+						<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/dimension.svg')) }}" alt="dim" width="24" height="24">Dimensions</div>
+						<div>{{ expansioncard.getWidth() ? expansioncard.getWidth() ~ " mm (width)" }}
+						{{ expansioncard.getLength() ? (expansioncard.getWidth() ? " x ") ~ expansioncard.getLength() ~ "mm (length)" }}
+						{{ expansioncard.getHeight() ? (expansioncard.getLength() or expansioncard.getWidth() ? " x ") ~ expansioncard.getHeight() ~ "mm (height)" }}</div>
+						{% endif %}
 					</div>
-					<div class="tag-container">{% for size in expansioncard.getRamSize() %}<span class="text-block">{{ size.getValueWithUnit()}}</span>{% endfor %}</div>
-					{% endif %}
-					<!-- Memory connectors -->
-					{% if expansioncard.getExpansionCardMemoryConnectors() is not empty %}
-					<div class="quick-spec-head">
-						<img src="{{ absolute_url(asset('build/icons/ram.svg')) }}" alt="ram" width="24" height="24">RAM connectors
-					</div>
-					<div class="tag-container">
-						{% for slot in expansioncard.getExpansionCardMemoryConnectors()|sort((a, b) => a.getMemoryConnector().getName() <=> b.getMemoryConnector().getName()) %}
-								<span class="text-block"><b>{{ slot.getCount() }}x&nbsp;</b>{{ slot.getMemoryConnector().getName() }}</span>
-						{% endfor %}
-					</div>
-					{% endif %}
-					<!-- PSU connectors -->
-					{% if expansioncard.getPowerConnectors() is not empty %}
-					<div class="quick-spec-head">
-						<img src="{{ absolute_url(asset('build/icons/power.svg')) }}" alt="pwr" width="24" height="24">Power connector
-					</div>
-					<div class="tag-container">{% for power in expansioncard.getPowerConnectors() %}
-						<a href="{{ path('psu_connector_show', {id: power.getId()}) }}"><span class="text-block">{{ power.getName() }}</span></a>{% endfor %}</div>
-					{% endif %}
-					<!-- Slot height-->
-					{% if expansioncard.getSlotCount() is not null %}
-					<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/dimension.svg')) }}" alt="dim" width="24" height="24">Slot height</div>
-					<div>{{ expansioncard.getSlotCount() }}</div>
-					{% endif %}
-					<!-- Dimensions -->
-					{% if expansioncard.getWidth() is not null or expansioncard.getLength() is not null or expansioncard.getHeight() is not null %}
-					<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/dimension.svg')) }}" alt="dim" width="24" height="24">Dimensions</div>
-					<div>{{ expansioncard.getWidth() ?: '[unknown]' }} mm (width) x {{ expansioncard.getLength() ?: '[unknown]' }} mm (length) x {{ expansioncard.getHeight() ?: '[unknown]' }} mm (height)</div>
-					{% endif %}
 				</div>
 				<div class="full-spec">
 					<!-- IO ports -->

@@ -240,7 +240,7 @@
     {% endif %}
 {% endblock ea_crud_widget %}
 
-{# added update CPU button #}
+{# motherboard editor #}
 {% block _Motherboard_maxcpu_widget %}
 {{ form_widget(form)}}
 <div style="padding-top:10px;">
@@ -265,6 +265,32 @@
 </div>
 {{ form_widget(form)}}
 {% endblock _Motherboard_chipset_widget %}
+{% block _Motherboard_motherboardIoPorts_entry_count_widget %}
+    {{ form_widget(form)}}<span>x</span>
+{% endblock _Motherboard_motherboardIoPorts_entry_count_widget %}
+{% block _Motherboard_motherboardExpansionSlots_entry_count_widget %}
+    {{ form_widget(form)}}<span>x</span>
+{% endblock _Motherboard_motherboardExpansionSlots_entry_count_widget %}
+{% block _Motherboard_motherboardMemoryConnectors_entry_count_widget %}
+    {{ form_widget(form)}}<span>x</span>
+{% endblock _Motherboard_motherboardMemoryConnectors_entry_count_widget %}
+{% block _Motherboard_motherboardBios_widget %}
+<div class="bios-bot-csv-box">
+    <div>
+        <span>CSV input</span>
+        <input id="bios-bot-input" type="file">
+        <button id="read-file-btn" type="button" class="btn btn-secondary">Get strings</button>
+    </div>
+    <div>
+        <span>Bulk upload</span>
+        <input  id="bios-bulk-upload" type="file" multiple="">
+        <button id="bulk-upload-btn" type="button" class="btn btn-secondary">Set files</button>
+    </div>
+    <span id="bios-form-label"></span>
+</div>
+{{ form_widget(form)}}
+{% endblock _Motherboard_motherboardBios_widget %}
+{# expansion card editor #}
 {% block _ExpansionCard_miscSpecs_widget %}
     {% include 'admin/macros/specs.html.twig' with {'entity': 'card', 'form': form} %}
 {% endblock _ExpansionCard_miscSpecs_widget %}
@@ -277,3 +303,6 @@
 {% block _ExpansionCard_ioPorts_entry_count_widget %}
     {{ form_widget(form)}}<span>x</span>
 {% endblock _ExpansionCard_ioPorts_entry_count_widget %}
+{% block _ExpansionCard_expansionCardMemoryConnectors_entry_count_widget %}
+    {{ form_widget(form)}}<span>x</span>
+{% endblock _ExpansionCard_expansionCardMemoryConnectors_entry_count_widget %}

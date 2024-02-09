@@ -2,9 +2,9 @@
 
 namespace App\Controller\Admin;
 
+use App\Controller\Admin\Type\EntityDocumentationCrudType;
+use App\Controller\Admin\Type\EntityImageCrudType;
 use App\Entity\ExpansionSlotSignal;
-use App\Form\Type\EntityDocumentationType;
-use App\Form\Type\EntityImageType;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CodeEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
@@ -50,12 +50,12 @@ class ExpansionSlotSignalCrudController extends AbstractCrudController
             ->setIcon('fa fa-download')
             ->onlyOnForms();
         yield CollectionField::new('entityImages', 'Images')
-            ->setEntryType(EntityImageType::class)
+            ->useEntryCrudForm(EntityImageCrudType::class)
             ->renderExpanded()
             ->setFormTypeOption('error_bubbling', false)
             ->setColumns(6);
         yield CollectionField::new('entityDocumentations', 'Documentation')
-            ->setEntryType(EntityDocumentationType::class)
+            ->useEntryCrudForm(EntityDocumentationCrudType::class)
             ->renderExpanded()
             ->setFormTypeOption('error_bubbling', false)
             ->setColumns(6)

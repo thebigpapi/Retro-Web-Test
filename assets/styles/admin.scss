@@ -202,122 +202,6 @@ div.vich-download-flex{
 		flex-direction: row;
 	}
 }
-#Motherboard_motherboardIoPorts_collection>div>div>div,
-#Motherboard_motherboardExpansionSlots_collection>div>div>div,
-#Motherboard_motherboardMemoryConnectors_collection>div>div>div {
-	display: block;
-	div.accordion-body.trw{
-		padding: 0px 10px;
-	}
-	/*div.invalid-feedback {
-		width: 10px;
-	}*/
-
-	div.form-widget-compound>div {
-		display: flex;
-		flex-direction: row;
-		align-items: center;
-
-		>div:nth-child(1) {
-			flex-grow: 1;
-			width: 8%;
-
-			input {
-				max-width: 45px;
-			}
-
-			>div {
-				overflow: visible;
-				white-space: nowrap;
-			}
-		}
-
-		>div:nth-child(2):before {
-			color: var(--form-input-text-color);
-			content: 'x';
-			line-height: 50px;
-			padding-left: 3px;
-		}
-
-		>div:nth-child(3) {
-			flex-grow: 10;
-			width: 50%;
-		}
-
-		>div:nth-child(4) {
-			display: none;
-		}
-	}
-}
-
-@media screen and (min-width: 1400px) {
-
-	#Motherboard_images_collection>div>div>div,
-	#Processor_images_collection>div>div>div {
-		div.form-widget-compound>div {
-			display: grid;
-
-			>div:nth-child(1) {
-				grid-column-start: 1;
-				grid-column-end: 2;
-				grid-row-start: 1;
-				grid-row-end: 2;
-				max-width: 300px;
-			}
-
-			>div:nth-child(2) {
-				grid-column-start: 4;
-				grid-column-end: 4;
-				grid-row-start: 1;
-				grid-row-end: 1;
-			}
-
-			>div:nth-child(3) {
-				grid-column-start: 2;
-				grid-column-end: 3;
-				grid-row-start: 1;
-				grid-row-end: 1;
-			}
-
-			>div:nth-child(4) {
-				grid-column-start: 4;
-				grid-column-end: 4;
-				grid-row-start: 1;
-				grid-row-end: 1;
-			}
-
-			>div:nth-child(5) {
-				grid-column-start: 2;
-				grid-column-end: 3;
-				grid-row-start: 1;
-				grid-row-end: 1;
-				margin-top: 63px;
-			}
-
-			>div:nth-child(6) {
-				grid-column-start: 4;
-				grid-column-end: 4;
-				grid-row-start: 1;
-				grid-row-end: 1;
-			}
-
-			>div:nth-child(7) {
-				grid-column-start: 2;
-				grid-column-end: 3;
-				grid-row-start: 1;
-				grid-row-end: 1;
-				margin-top: 126px;
-			}
-
-			>div:nth-child(8) {
-				grid-column-start: 4;
-				grid-column-end: 4;
-				grid-row-start: 1;
-				grid-row-end: 1;
-			}
-		}
-	}
-}
 
 body:not(.ea-content-width-full) .content-wrapper {
 	max-width: none;
@@ -420,10 +304,19 @@ div.multi-widget-trw{
 }
 div.count-css > div{
 	display: flex;
+	flex-wrap: wrap;
 	align-items: center;
 	span{
+		flex: 1 0 30%;
 		padding: 0px 6px;
 		font-size: 1.1rem;
+	}
+	input{
+		flex: 1 0 70%;
+	}
+	div.invalid-feedback{
+		display: flex;
+		flex-basis: 100%;
 	}
 }
 div.padright{

@@ -3,16 +3,16 @@
 namespace App\Controller\Admin;
 
 use App\Entity\ExpansionChip;
-use App\Form\Type\ChipAliasType;
 use App\Form\Type\PciDeviceIdType;
-use App\Form\Type\LargeFileExpansionChipType;
-use App\Form\Type\ChipDocumentationType;
-use App\Form\Type\ChipImageType;
 use App\EasyAdmin\TextJsonField;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Controller\Admin\Filter\ChipImageFilter;
 use App\Controller\Admin\Filter\ChipDocFilter;
 use App\Controller\Admin\Filter\ChipDriverFilter;
+use App\Controller\Admin\Type\Chip\AliasCrudType;
+use App\Controller\Admin\Type\Chip\DocumentationCrudType;
+use App\Controller\Admin\Type\Chip\ImageCrudType;
+use App\Controller\Admin\Type\Chip\LargeFileCrudType;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
@@ -124,7 +124,7 @@ class ExpansionChipCrudController extends AbstractCrudController
             ->setLanguage('markdown')
             ->onlyOnForms();
         yield CollectionField::new('chipAliases', 'Chip aliases')
-            ->setEntryType(ChipAliasType::class)
+            ->useEntryCrudForm(AliasCrudType::class)
             ->setFormTypeOption('error_bubbling', false)
             ->setColumns(6)
             ->renderExpanded()
@@ -139,18 +139,18 @@ class ExpansionChipCrudController extends AbstractCrudController
             ->setIcon('fa fa-download')
             ->onlyOnForms();
         yield CollectionField::new('documentations', 'Documentation')
-            ->setEntryType(ChipDocumentationType::class)
+            ->useEntryCrudForm(DocumentationCrudType::class)
             ->setFormTypeOption('error_bubbling', false)
             ->setColumns(6)
             ->renderExpanded()
             ->onlyOnForms();
         yield CollectionField::new('images', 'Images')
-            ->setEntryType(ChipImageType::class)
+            ->useEntryCrudForm(ImageCrudType::class)
             ->setColumns(6)
             ->renderExpanded()
             ->onlyOnForms();
         yield CollectionField::new('drivers', 'Drivers')
-            ->setEntryType(LargeFileExpansionChipType::class)
+            ->useEntryCrudForm(LargeFileCrudType::class)
             ->setColumns(6)
             ->renderExpanded()
             ->onlyOnForms();

@@ -119,6 +119,7 @@ class Motherboard
     private $miscFiles;
 
     #[ORM\OneToMany(mappedBy: 'motherboard', targetEntity: MotherboardMemoryConnector::class, orphanRemoval: true, cascade: ['persist'])]
+    #[Assert\Valid()]
     private Collection $motherboardMemoryConnectors;
     public function __construct()
     {

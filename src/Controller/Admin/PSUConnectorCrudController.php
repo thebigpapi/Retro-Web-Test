@@ -2,9 +2,9 @@
 
 namespace App\Controller\Admin;
 
+use App\Controller\Admin\Type\EntityDocumentationCrudType;
+use App\Controller\Admin\Type\EntityImageCrudType;
 use App\Entity\PSUConnector;
-use App\Form\Type\EntityDocumentationType;
-use App\Form\Type\EntityImageType;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
@@ -74,13 +74,13 @@ class PSUConnectorCrudController extends AbstractCrudController
             ->setIcon('fa fa-download')
             ->onlyOnForms();
         yield CollectionField::new('entityImages', 'Images')
-            ->setEntryType(EntityImageType::class)
+            ->useEntryCrudForm(EntityImageCrudType::class)
             ->renderExpanded()
             ->setFormTypeOption('error_bubbling', false)
             ->setColumns(6)
             ->onlyOnForms();
         yield CollectionField::new('entityDocumentations', 'Documentation')
-            ->setEntryType(EntityDocumentationType::class)
+            ->useEntryCrudForm(EntityDocumentationCrudType::class)
             ->renderExpanded()
             ->setFormTypeOption('error_bubbling', false)
             ->setColumns(6)

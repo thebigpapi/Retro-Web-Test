@@ -2,9 +2,9 @@
 
 namespace App\Controller\Admin;
 
+use App\Controller\Admin\Type\EntityDocumentationCrudType;
 use App\Entity\ProcessorPlatformType;
 use App\Form\Type\DramTypeType;
-use App\Form\Type\EntityDocumentationType;
 use App\Form\Type\InstructionSetType;
 use App\Form\Type\ProcessorPlatformTypeForm;
 use App\Form\Type\CPUIDType;
@@ -140,7 +140,7 @@ class ProcessorPlatformTypeCrudController extends AbstractCrudController
             ->setIcon('fa fa-download')
             ->onlyOnForms();
         yield CollectionField::new('entityDocumentations', 'Documentation')
-            ->setEntryType(EntityDocumentationType::class)
+            ->useEntryCrudForm(EntityDocumentationCrudType::class)
             ->renderExpanded()
             ->setFormTypeOption('error_bubbling', false)
             ->setColumns(6)

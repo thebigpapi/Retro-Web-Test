@@ -2,11 +2,11 @@
 
 namespace App\Controller\Admin;
 
+use App\Controller\Admin\Type\EntityImageCrudType;
+use App\Controller\Admin\Type\Manufacturer\BiosCodeCrudType;
 use App\Entity\Manufacturer;
-use App\Form\Type\ManufacturerBiosManufacturerCodeType;
 use App\Form\Type\PciVendorIdType;
 use App\Form\Type\ManufacturerCodeType;
-use App\Form\Type\EntityImageType;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
@@ -78,7 +78,7 @@ class ManufacturerCrudController extends AbstractCrudController
         yield ArrayField::new('getBiosCodes', 'BIOS codes')
             ->hideOnForm();
         yield CollectionField::new('biosCodes', 'BIOS codes')
-            ->setEntryType(ManufacturerBiosManufacturerCodeType::class)
+            ->useEntryCrudForm(BiosCodeCrudType::class)
             ->setColumns('col-sm-6 col-lg-6 col-xxl-4')
             ->renderExpanded()
             ->onlyOnForms();
@@ -91,7 +91,7 @@ class ManufacturerCrudController extends AbstractCrudController
             ->setIcon('fa fa-download')
             ->onlyOnForms();
         yield CollectionField::new('entityImages', 'Images')
-            ->setEntryType(EntityImageType::class)
+            ->useEntryCrudForm(EntityImageCrudType::class)
             ->renderExpanded()
             ->setFormTypeOption('error_bubbling', false)
             ->setColumns(6)

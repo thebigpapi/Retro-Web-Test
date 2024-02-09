@@ -2,9 +2,9 @@
 
 namespace App\Controller\Admin;
 
+use App\Controller\Admin\Type\LargeFile\ExpansionChipCrudType;
 use App\Entity\LargeFile;
 use App\Form\Type\OsFlagType;
-use App\Form\Type\ExpansionChipLargeFileType;
 use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
@@ -16,7 +16,6 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ArrayField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CodeEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
@@ -157,8 +156,8 @@ class LargeFileCrudController extends AbstractCrudController
         yield FormField::addTab('Associations')
             ->setIcon('fa fa-info')
             ->onlyOnForms();
-        yield CollectionField::new('expansionChips', 'Expansion chips')
-            ->setEntryType(ExpansionChipLargeFileType::class)
+        yield CollectionField::new('expansionchips', 'Expansion chips')
+            ->useEntryCrudForm(ExpansionChipCrudType::class)
             ->renderExpanded()
             ->setColumns('col-sm-12 col-lg-8 col-xxl-6')
             ->onlyOnForms();

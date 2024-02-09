@@ -5,12 +5,12 @@ namespace App\Controller\Admin;
 use App\Entity\ChipAlias;
 use App\Entity\Processor;
 use App\Entity\ProcessorVoltage;
-use App\Form\Type\ChipAliasType;
-use App\Form\Type\ChipImageType;
 use App\Form\Type\CpuSocketType;
 use App\Form\Type\ProcessorVoltageType;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Controller\Admin\Filter\ChipImageFilter;
+use App\Controller\Admin\Type\Chip\AliasCrudType;
+use App\Controller\Admin\Type\Chip\ImageCrudType;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
@@ -194,7 +194,7 @@ class ProcessorCrudController extends AbstractCrudController
             ->onlyOnForms();
         yield FormField::addPanel('Other')->onlyOnForms();
         yield CollectionField::new('chipAliases', 'Chip aliases')
-            ->setEntryType(ChipAliasType::class)
+            ->useEntryCrudForm(AliasCrudType::class)
             ->setFormTypeOption('error_bubbling', false)
             ->setColumns(6)
             ->renderExpanded()
@@ -203,8 +203,9 @@ class ProcessorCrudController extends AbstractCrudController
             ->setIcon('fa fa-download')
             ->onlyOnForms();
         yield CollectionField::new('images', 'Images')
-            ->setEntryType(ChipImageType::class)
-            ->setColumns(12)
+            ->useEntryCrudForm(ImageCrudType::class)
+            ->setFormTypeOption('error_bubbling', false)
+            ->setColumns(6)
             ->renderExpanded()
             ->onlyOnForms();
     }

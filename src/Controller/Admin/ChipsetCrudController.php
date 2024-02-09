@@ -5,14 +5,14 @@ namespace App\Controller\Admin;
 use App\Entity\Chipset;
 use App\Entity\ChipsetAlias;
 use App\Entity\ChipsetBiosCode;
-use App\Form\Type\ChipsetAliasType;
-use App\Form\Type\ChipsetBiosCodeType;
-use App\Form\Type\ChipsetDocumentationType;
 use App\Form\Type\ExpansionChipType;
-use App\Form\Type\LargeFileChipsetType;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Controller\Admin\Filter\ChipDocFilter;
 use App\Controller\Admin\Filter\ChipDriverFilter;
+use App\Controller\Admin\Type\Chipset\AliasCrudType;
+use App\Controller\Admin\Type\Chipset\BiosCodeCrudType;
+use App\Controller\Admin\Type\Chipset\DocumentationCrudType;
+use App\Controller\Admin\Type\Chipset\LargeFileCrudType;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
@@ -166,29 +166,29 @@ class ChipsetCrudController extends AbstractCrudController
             ->setColumns(4)
             ->renderExpanded()
             ->onlyOnForms();
-        yield CollectionField::new('chipsetAliases', 'Chipset aliases')
-            ->setEntryType(ChipsetAliasType::class)
+        yield CollectionField::new('biosCodes', 'BIOS codes')
+            ->useEntryCrudForm(BiosCodeCrudType::class)
             ->setFormTypeOption('error_bubbling', false)
             ->setColumns(4)
             ->renderExpanded()
             ->onlyOnForms();
-        yield CollectionField::new('biosCodes', 'BIOS codes')
-            ->setEntryType(ChipsetBiosCodeType::class)
+        yield CollectionField::new('chipsetAliases', 'Chipset aliases')
+            ->useEntryCrudForm(AliasCrudType::class)
             ->setFormTypeOption('error_bubbling', false)
-            ->setColumns(4)
+            ->setColumns(12)
             ->renderExpanded()
             ->onlyOnForms();
         yield FormField::addTab('Attachments')
             ->setIcon('fa fa-download')
             ->onlyOnForms();
         yield CollectionField::new('documentations', 'Documentation')
-            ->setEntryType(ChipsetDocumentationType::class)
+            ->useEntryCrudForm(DocumentationCrudType::class)
             ->renderExpanded()
             ->setFormTypeOption('error_bubbling', false)
             ->setColumns(6)
             ->onlyOnForms();
         yield CollectionField::new('drivers', 'Drivers')
-            ->setEntryType(LargeFileChipsetType::class)
+            ->useEntryCrudForm(LargeFileCrudType::class)
             ->renderExpanded()
             ->setColumns(6)
             ->onlyOnForms();
