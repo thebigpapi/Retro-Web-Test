@@ -2,7 +2,7 @@
 
 namespace App\Controller\Admin;
 
-use App\Entity\MotherboardAlias;
+use App\Entity\StorageDeviceAlias;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
@@ -13,11 +13,11 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 
-class MotherboardAliasCrudController extends AbstractCrudController
+class StorageDeviceAliasCrudController extends AbstractCrudController
 {
     public static function getEntityFqcn(): string
     {
-        return MotherboardAlias::class;
+        return StorageDeviceAlias::class;
     }
     public function configureActions(Actions $actions): Actions
     {
@@ -38,13 +38,14 @@ class MotherboardAliasCrudController extends AbstractCrudController
         return $crud
             ->showEntityActionsInlined()
             ->setPaginatorPageSize(100)
-            ->setEntityLabelInPlural('<img class=ea-entity-icon src=/build/icons/board_alias.svg width=48 height=48>Motherboard aliases');
+            ->setEntityLabelInPlural('<img class=ea-entity-icon src=/build/icons/tag.svg width=48 height=48>Storage device aliases');
     }
     public function configureFilters(Filters $filters): Filters
     {
         return parent::configureFilters($filters)
             ->add('manufacturer')
-            ->add('name');
+            ->add('name')
+            ->add('partNumber');
     }
     public function configureFields(string $pageName): iterable
     {
@@ -52,6 +53,8 @@ class MotherboardAliasCrudController extends AbstractCrudController
         yield AssociationField::new('manufacturer')
             ->autocomplete()
             ->setFormTypeOption('attr',['placeholder' => 'Type to select a manufacturer ...']);
+        yield TextField::new('partNumber', 'Part number')
+            ->setFormTypeOption('attr',['placeholder' => 'Part number:']);
         yield TextField::new('name')
             ->setFormTypeOption('attr',['placeholder' => 'Name:']);
     }

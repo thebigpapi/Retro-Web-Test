@@ -2,7 +2,7 @@
 
 namespace App\Controller\Admin;
 
-use App\Entity\MotherboardAlias;
+use App\Entity\ExpansionCardAlias;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
@@ -13,11 +13,11 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 
-class MotherboardAliasCrudController extends AbstractCrudController
+class ExpansionCardAliasCrudController extends AbstractCrudController
 {
     public static function getEntityFqcn(): string
     {
-        return MotherboardAlias::class;
+        return ExpansionCardAlias::class;
     }
     public function configureActions(Actions $actions): Actions
     {
@@ -38,7 +38,7 @@ class MotherboardAliasCrudController extends AbstractCrudController
         return $crud
             ->showEntityActionsInlined()
             ->setPaginatorPageSize(100)
-            ->setEntityLabelInPlural('<img class=ea-entity-icon src=/build/icons/board_alias.svg width=48 height=48>Motherboard aliases');
+            ->setEntityLabelInPlural('<img class=ea-entity-icon src=/build/icons/tag.svg width=48 height=48>Expansion card aliases');
     }
     public function configureFilters(Filters $filters): Filters
     {

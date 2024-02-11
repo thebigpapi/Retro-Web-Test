@@ -2,7 +2,7 @@
 
 namespace App\Controller\Admin;
 
-use App\Entity\MotherboardAlias;
+use App\Entity\EntityImage;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
@@ -12,12 +12,15 @@ use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
+use Vich\UploaderBundle\Form\Type\VichImageType;
 
-class MotherboardAliasCrudController extends AbstractCrudController
+class EntityImageCrudController extends AbstractCrudController
 {
     public static function getEntityFqcn(): string
     {
-        return MotherboardAlias::class;
+        return EntityImage::class;
     }
     public function configureActions(Actions $actions): Actions
     {
@@ -37,23 +40,35 @@ class MotherboardAliasCrudController extends AbstractCrudController
     {
         return $crud
             ->showEntityActionsInlined()
-            ->setPaginatorPageSize(100)
-            ->setEntityLabelInPlural('<img class=ea-entity-icon src=/build/icons/board_alias.svg width=48 height=48>Motherboard aliases');
+            ->setPaginatorPageSize(50)
+            ->setEntityLabelInPlural('<img class=ea-entity-icon src=/build/icons/search_image.svg width=48 height=48>Entity images');
     }
     public function configureFilters(Filters $filters): Filters
     {
         return parent::configureFilters($filters)
-            ->add('manufacturer')
-            ->add('name');
+            ->add('creditor')
+            ->add('description')
+            ->add('updated_at');
     }
     public function configureFields(string $pageName): iterable
     {
         yield IdField::new('id')->hideOnForm();
-        yield AssociationField::new('manufacturer')
+        yield AssociationField::new('creditor', 'Creditor')
             ->autocomplete()
-            ->setFormTypeOption('attr',['placeholder' => 'Type to select a manufacturer ...']);
-        yield TextField::new('name')
-            ->setFormTypeOption('attr',['placeholder' => 'Name:']);
+            ->setColumns(4);
+        yield TextField::new('description', 'Notes')
+            ->setColumns('col-sm-4 col-lg-4 col-xxl-4');
+        yield ImageField::new('file_name', 'Image')
+            ->setCustomOption('link','misc/image')
+            ->setCustomOption('thumb_link','media/cache/show_thumb/misc/image')
+            ->hideOnForm();
+        yield TextField::new('imageFile')
+            ->setFormType(VichImageType::class)
+            ->setFormTypeOption('allow_delete',false)
+            ->setColumns('col-sm-4 col-lg-4 col-xxl-4')
+            ->onlyOnForms();
+        yield DateField::new('updated_at', 'Last edited')
+            ->hideOnForm();
     }
     public function viewLogs(AdminContext $context)
     {

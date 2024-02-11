@@ -2,7 +2,7 @@
 
 namespace App\Controller\Admin;
 
-use App\Entity\MotherboardAlias;
+use App\Entity\EntityDocumentation;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
@@ -12,12 +12,15 @@ use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\UrlField;
+use Vich\UploaderBundle\Form\Type\VichFileType;
 
-class MotherboardAliasCrudController extends AbstractCrudController
+class EntityDocumentationCrudController extends AbstractCrudController
 {
     public static function getEntityFqcn(): string
     {
-        return MotherboardAlias::class;
+        return EntityDocumentation::class;
     }
     public function configureActions(Actions $actions): Actions
     {
@@ -38,22 +41,32 @@ class MotherboardAliasCrudController extends AbstractCrudController
         return $crud
             ->showEntityActionsInlined()
             ->setPaginatorPageSize(100)
-            ->setEntityLabelInPlural('<img class=ea-entity-icon src=/build/icons/board_alias.svg width=48 height=48>Motherboard aliases');
+            ->setEntityLabelInPlural('<img class=ea-entity-icon src=/build/icons/manual.svg width=48 height=48>Entity docs');
     }
     public function configureFilters(Filters $filters): Filters
     {
         return parent::configureFilters($filters)
-            ->add('manufacturer')
-            ->add('name');
+            ->add('link_name')
+            ->add('language')
+            ->add('updated_at');
     }
     public function configureFields(string $pageName): iterable
     {
         yield IdField::new('id')->hideOnForm();
-        yield AssociationField::new('manufacturer')
-            ->autocomplete()
-            ->setFormTypeOption('attr',['placeholder' => 'Type to select a manufacturer ...']);
-        yield TextField::new('name')
-            ->setFormTypeOption('attr',['placeholder' => 'Name:']);
+        yield TextField::new('link_name', 'Title')
+            ->setColumns('col-sm-4 col-lg-4 col-xxl-4');
+        yield AssociationField::new('language', 'Language')
+            ->setColumns(4);
+        yield UrlField::new('file_name')
+            ->setCustomOption('link','misc/documentation/')
+            ->hideOnForm();
+        yield TextField::new('manualFile')
+            ->setFormType(VichFileType::class)
+            ->setFormTypeOption('allow_delete',false)
+            ->setColumns('col-sm-4 col-lg-4 col-xxl-4')
+            ->onlyOnForms();
+        yield DateField::new('updated_at', 'Last edited')
+            ->hideOnForm();
     }
     public function viewLogs(AdminContext $context)
     {
