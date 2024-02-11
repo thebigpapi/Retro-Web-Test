@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Form\Motherboard;
+namespace App\Form\Type;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\AbstractType;

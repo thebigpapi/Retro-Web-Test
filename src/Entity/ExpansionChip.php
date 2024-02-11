@@ -48,7 +48,7 @@ class ExpansionChip extends Chip
     }
     public function __toString(): string
     {
-        return $this->getNameWithManufacturer();
+        return $this->getNameWithManufacturer() . $this->getAllAliases();
     }
     public function getId(): ?int
     {
@@ -81,6 +81,16 @@ class ExpansionChip extends Chip
             return $name . " " . $this->partNumber . " (" . $this->name . ")";
         }
         return $name . " " . $this->partNumber;
+    }
+    public function getAllAliases(): string
+    {
+        if($this->getChipAliases()->isEmpty())
+            return "";
+        $aliases = " [";
+        foreach($this->getChipAliases() as $alias){
+            $aliases .= $alias->getPartNumber() ? $alias->getPartNumber() . ", ": "";
+        }
+        return substr($aliases, 0, -2) . "]";
     }
     public function getManufacturerAndPN()
     {
