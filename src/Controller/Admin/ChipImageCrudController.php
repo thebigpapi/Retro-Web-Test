@@ -14,6 +14,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
+use Symfony\Component\Validator\Constraints\File;
 use Vich\UploaderBundle\Form\Type\VichImageType;
 
 class ChipImageCrudController extends AbstractCrudController
@@ -66,9 +67,20 @@ class ChipImageCrudController extends AbstractCrudController
             ->setCustomOption('link','chip/image')
             ->setCustomOption('thumb_link','media/cache/show_thumb/chip/image')
             ->hideOnForm();
-        yield TextField::new('imageFile')
+        yield TextField::new('imageFile', 'JPG or GIF')
             ->setFormType(VichImageType::class)
             ->setFormTypeOption('allow_delete',false)
+            ->setFormTypeOption('constraints',[
+                new File([
+                    'maxSize' => '8192k',
+                    'mimeTypes' => [
+                        'image/jpeg',
+                        'image/pjpeg',
+                        'image/gif',
+                    ],
+                    'mimeTypesMessage' => 'Please upload a valid JPG or GIF image',
+                ])
+            ])
             ->setColumns('col-sm-4 col-lg-4 col-xxl-4')
             ->onlyOnForms();
         yield DateField::new('updated_at', 'Last edited')

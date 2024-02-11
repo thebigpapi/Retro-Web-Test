@@ -6,11 +6,11 @@ use App\Entity\ChipAlias;
 use App\Entity\Processor;
 use App\Entity\ProcessorVoltage;
 use App\Form\Type\CpuSocketType;
-use App\Form\Type\ProcessorVoltageType;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Controller\Admin\Filter\ChipImageFilter;
 use App\Controller\Admin\Type\Chip\AliasCrudType;
 use App\Controller\Admin\Type\Chip\ImageCrudType;
+use App\Controller\Admin\Type\Chip\VoltageCrudType;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
@@ -187,8 +187,8 @@ class ProcessorCrudController extends AbstractCrudController
             ->setColumns(6)
             ->renderExpanded()
             ->onlyOnForms();
-        yield CollectionField::new('voltages', 'Voltage (in V)')
-            ->setEntryType(ProcessorVoltageType::class)
+        yield CollectionField::new('voltages', 'Voltage')
+            ->useEntryCrudForm(VoltageCrudType::class)
             ->setColumns(6)
             ->renderExpanded()
             ->onlyOnForms();

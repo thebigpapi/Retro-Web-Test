@@ -14,6 +14,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\UrlField;
+use Symfony\Component\Validator\Constraints\File;
 use Vich\UploaderBundle\Form\Type\VichFileType;
 
 class MotherboardBiosCrudController extends AbstractCrudController
@@ -78,6 +79,25 @@ class MotherboardBiosCrudController extends AbstractCrudController
         yield TextField::new('romFile')
             ->setFormType(VichFileType::class)
             ->setFormTypeOption('allow_delete',false)
+            ->setFormTypeOption('constraints',[
+                new File([
+                    'maxSize' => '32Mi',
+                    'mimeTypes' => [
+                        'application/x-binary',
+                        'application/octet-stream',
+                        'application/mac-binary',
+                        'application/macbinary',
+                        'application/x-macbinary',
+                        'application/x-compressed',
+                        'application/x-zip-compressed',
+                        'application/zip',
+                        'multipart/x-zip',
+                        'application/x-lzh-compressed',
+                        'application/x-dosexec',
+                    ],
+                    'mimeTypesMessage' => 'Please upload a valid BIN, ZIP or EXE file',
+                ])
+            ])
             ->setColumns('col-sm-4 col-lg-4 col-xxl-4')
             ->onlyOnForms();
         yield DateField::new('updated_at', 'Last edited')

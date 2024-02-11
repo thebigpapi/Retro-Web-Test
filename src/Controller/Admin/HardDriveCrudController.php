@@ -4,7 +4,6 @@ namespace App\Controller\Admin;
 
 use App\Entity\HardDrive;
 use App\Entity\StorageDeviceAlias;
-use App\Form\Type\AudioFileType;
 use App\Form\Type\KnownIssueHddType;
 use App\Form\Type\StorageDeviceInterfaceType;
 use App\Form\Type\PSUConnectorType;
@@ -13,6 +12,7 @@ use App\Controller\Admin\Filter\StorageImageFilter;
 use App\Controller\Admin\Filter\StorageDocFilter;
 use App\Controller\Admin\Filter\StorageAudioFilter;
 use App\Controller\Admin\Type\StorageDevice\AliasCrudType;
+use App\Controller\Admin\Type\StorageDevice\AudioCrudType;
 use App\Controller\Admin\Type\StorageDevice\DocumentationCrudType;
 use App\Controller\Admin\Type\StorageDevice\IdRedirectionCrudType;
 use App\Controller\Admin\Type\StorageDevice\ImageCrudType;
@@ -233,7 +233,7 @@ class HardDriveCrudController extends AbstractCrudController
             ->renderExpanded()
             ->onlyOnForms();
         yield CollectionField::new('audioFiles', 'Audio files')
-            ->setEntryType(AudioFileType::class)
+            ->useEntryCrudForm(AudioCrudType::class)
             ->setFormTypeOption('error_bubbling', false)
             ->setColumns(6)
             ->renderExpanded()

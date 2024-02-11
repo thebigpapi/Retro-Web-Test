@@ -3,7 +3,6 @@
 namespace App\Controller\Admin;
 
 use App\Entity\ExpansionChip;
-use App\Form\Type\PciDeviceIdType;
 use App\EasyAdmin\TextJsonField;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Controller\Admin\Filter\ChipImageFilter;
@@ -13,6 +12,7 @@ use App\Controller\Admin\Type\Chip\AliasCrudType;
 use App\Controller\Admin\Type\Chip\DocumentationCrudType;
 use App\Controller\Admin\Type\Chip\ImageCrudType;
 use App\Controller\Admin\Type\Chip\LargeFileCrudType;
+use App\Controller\Admin\Type\PciDeviceCrudType;
 use Doctrine\ORM\Query\Expr\Andx;
 use Doctrine\ORM\Query\Expr\Orx;
 use EasyCorp\Bundle\EasyAdminBundle\Collection\FieldCollection;
@@ -121,7 +121,7 @@ class ExpansionChipCrudController extends AbstractCrudController
             ->setColumns(6)
             ->onlyOnForms();
         yield CollectionField::new('pciDevs', 'Device ID')
-            ->setEntryType(PciDeviceIdType::class)
+            ->useEntryCrudForm(PciDeviceCrudType::class)
             ->setColumns(4)
             ->renderExpanded()
             ->onlyOnForms();

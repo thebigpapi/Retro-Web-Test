@@ -15,6 +15,7 @@ use App\Controller\Admin\Type\Motherboard\ImageCrudType;
 use App\Controller\Admin\Type\Motherboard\LargeFileCrudType;
 use App\Controller\Admin\Type\Motherboard\ManualCrudType;
 use App\Controller\Admin\Type\Motherboard\MemoryConnectorCrudType;
+use App\Controller\Admin\Type\MiscFileCrudType;
 use App\Entity\MotherboardAlias;
 use App\Entity\MotherboardExpansionSlot;
 use App\Entity\MotherboardIoPort;
@@ -24,7 +25,6 @@ use App\Form\Type\DramTypeType;
 use App\Form\Type\CacheSizeType;
 use App\Form\Type\PSUConnectorType;
 use App\Form\Type\KnownIssueMotherboardType;
-use App\Form\Type\MiscFileType;
 use App\Form\Type\CpuSocketType;
 use App\Form\Type\ProcessorPlatformTypeForm;
 use App\Form\Type\ProcessorSpeedType;
@@ -308,7 +308,7 @@ class MotherboardCrudController extends AbstractCrudController
             ->renderExpanded()
             ->onlyOnForms();
         yield CollectionField::new('miscFiles', 'Misc files')
-            ->setEntryType(MiscFileType::class)
+            ->useEntryCrudForm(MiscFileCrudType::class)
             ->setFormTypeOption('error_bubbling', false)
             ->setColumns(6)
             ->renderExpanded()

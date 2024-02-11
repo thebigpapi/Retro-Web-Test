@@ -15,6 +15,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
+use Symfony\Component\Validator\Constraints\File;
 use Vich\UploaderBundle\Form\Type\VichImageType;
 class StorageDeviceImageCrudController extends AbstractCrudController
 {
@@ -76,9 +77,21 @@ class StorageDeviceImageCrudController extends AbstractCrudController
             ->setCustomOption('link','storage/image')
             ->setCustomOption('thumb_link','media/cache/show_thumb/storage/image')
             ->hideOnForm();
-        yield TextField::new('imageFile')
+        yield TextField::new('imageFile', 'JPG, GIF or SVG')
             ->setFormType(VichImageType::class)
             ->setFormTypeOption('allow_delete',false)
+            ->setFormTypeOption('constraints',[
+                new File([
+                    'maxSize' => '8192k',
+                    'mimeTypes' => [
+                        'image/jpeg',
+                        'image/pjpeg',
+                        'image/gif',
+                        'image/svg+xml',
+                    ],
+                    'mimeTypesMessage' => 'Please upload a valid JPG, GIF or SVG image',
+                ])
+            ])
             ->setColumns('col-sm-4 col-lg-4 col-xxl-4')
             ->onlyOnForms();
         yield DateField::new('updated_at', 'Last edited')

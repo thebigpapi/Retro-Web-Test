@@ -14,6 +14,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\UrlField;
+use Symfony\Component\Validator\Constraints\File;
 use Vich\UploaderBundle\Form\Type\VichFileType;
 
 class ExpansionCardDocumentationCrudController extends AbstractCrudController
@@ -67,6 +68,16 @@ class ExpansionCardDocumentationCrudController extends AbstractCrudController
         yield TextField::new('manualFile')
             ->setFormType(VichFileType::class)
             ->setFormTypeOption('allow_delete',false)
+            ->setFormTypeOption('constraints',[
+                new File([
+                    'maxSize' => '32Mi',
+                    'mimeTypes' => [
+                        'application/pdf',
+                        'application/x-pdf',
+                    ],
+                    'mimeTypesMessage' => 'Please upload a valid PDF document',
+                ])
+            ])
             ->setColumns('col-sm-4 col-lg-4 col-xxl-4')
             ->onlyOnForms();
         yield DateField::new('updated_at', 'Last edited')

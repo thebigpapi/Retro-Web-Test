@@ -20,7 +20,7 @@ class ImageCrudType extends AbstractCrudController
     public function configureFields(string $pageName): iterable
     {
         yield FormField::addColumn(6);
-        yield TextField::new('imageFile', 'JPG, PNG or SVG')
+        yield TextField::new('imageFile', 'JPG or GIF')
             ->setFormType(VichImageType::class)
             ->setFormTypeOption('allow_delete',false)
             ->setFormTypeOption('constraints',[
@@ -29,11 +29,9 @@ class ImageCrudType extends AbstractCrudController
                     'mimeTypes' => [
                         'image/jpeg',
                         'image/pjpeg',
-                        'image/png',
                         'image/gif',
-                        'image/svg+xml',
                     ],
-                    'mimeTypesMessage' => 'Please upload a valid image',
+                    'mimeTypesMessage' => 'Please upload a valid JPG or GIF image',
                 ])
             ])
             ->setColumns(12)

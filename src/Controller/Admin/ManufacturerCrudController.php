@@ -4,9 +4,9 @@ namespace App\Controller\Admin;
 
 use App\Controller\Admin\Type\EntityImageCrudType;
 use App\Controller\Admin\Type\Manufacturer\BiosCodeCrudType;
+use App\Controller\Admin\Type\Manufacturer\CodeCrudType;
+use App\Controller\Admin\Type\Manufacturer\PciVendorCrudType;
 use App\Entity\Manufacturer;
-use App\Form\Type\PciVendorIdType;
-use App\Form\Type\ManufacturerCodeType;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
@@ -64,14 +64,14 @@ class ManufacturerCrudController extends AbstractCrudController
         yield ArrayField::new('getPciVendorIds', 'Vendor ID')
             ->hideOnForm();
         yield CollectionField::new('manufacturerCodes', 'Codes')
-            ->setEntryType(ManufacturerCodeType::class)
+            ->useEntryCrudForm(CodeCrudType::class)
             ->setColumns('col-sm-6 col-lg-6 col-xxl-4')
             ->renderExpanded()
             ->onlyOnForms();
         yield ArrayField::new('manufacturerCodes', 'Codes')
             ->onlyOnDetail();
         yield CollectionField::new('pciVendorIds', 'Vendor ID')
-            ->setEntryType(PciVendorIdType::class)
+            ->useEntryCrudForm(PciVendorCrudType::class)
             ->setColumns('col-sm-6 col-lg-6 col-xxl-4')
             ->renderExpanded()
             ->onlyOnForms();

@@ -8,6 +8,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
+use Symfony\Component\Validator\Constraints\File;
 use Vich\UploaderBundle\Form\Type\VichFileType;
 
 class EntityDocumentationCrudType extends AbstractCrudController
@@ -42,7 +43,16 @@ class EntityDocumentationCrudType extends AbstractCrudController
         yield TextField::new('manualFile', 'PDF file')
             ->setFormType(VichFileType::class)
             ->setFormTypeOption('allow_delete',false)
-            ->setFormTypeOption('download_label',false)
+            ->setFormTypeOption('constraints',[
+                new File([
+                    'maxSize' => '32Mi',
+                    'mimeTypes' => [
+                        'application/pdf',
+                        'application/x-pdf',
+                    ],
+                    'mimeTypesMessage' => 'Please upload a valid PDF document',
+                ])
+            ])
             ->setColumns(12)
             ->onlyOnForms();
     }

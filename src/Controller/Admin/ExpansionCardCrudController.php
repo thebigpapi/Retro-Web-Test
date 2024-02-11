@@ -5,7 +5,6 @@ namespace App\Controller\Admin;
 use App\Entity\ExpansionCard;
 use App\Form\Type\ExpansionCardTypeType;
 use App\Form\Type\PSUConnectorType;
-use App\Form\Type\PciDeviceIdType;
 use App\Form\Type\KnownIssueExpansionCardType;
 use App\EasyAdmin\TextJsonField;
 use Doctrine\ORM\EntityManagerInterface;
@@ -21,6 +20,7 @@ use App\Controller\Admin\Type\ExpansionCard\DocumentationCrudType;
 use App\Controller\Admin\Type\ExpansionCard\IdRedirectionCrudType;
 use App\Controller\Admin\Type\ExpansionCard\ImageCrudType;
 use App\Controller\Admin\Type\ExpansionCard\LargeFileCrudType;
+use App\Controller\Admin\Type\PciDeviceCrudType;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
@@ -151,7 +151,7 @@ class ExpansionCardCrudController extends AbstractCrudController
             ->setColumns('col-sm-4 col-lg-6 col-xxl-2')
             ->onlyOnForms();
         yield CollectionField::new('pciDevs', 'Device ID')
-            ->setEntryType(PciDeviceIdType::class)
+            ->useEntryCrudForm(PciDeviceCrudType::class)
             ->setColumns('col-sm-12 col-lg-6 col-xxl-2')
             ->renderExpanded()
             ->onlyOnForms();

@@ -2,12 +2,12 @@
 
 namespace App\Controller\Admin;
 
+use App\Controller\Admin\Type\Chip\CPUIDCrudType;
 use App\Controller\Admin\Type\EntityDocumentationCrudType;
 use App\Entity\ProcessorPlatformType;
 use App\Form\Type\DramTypeType;
 use App\Form\Type\InstructionSetType;
 use App\Form\Type\ProcessorPlatformTypeForm;
-use App\Form\Type\CPUIDType;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
@@ -125,7 +125,7 @@ class ProcessorPlatformTypeCrudController extends AbstractCrudController
             ->renderExpanded()
             ->onlyOnForms();
         yield CollectionField::new('cpuid', 'CPUID')
-            ->setEntryType(CPUIDType::class)
+            ->useEntryCrudForm(CPUIDCrudType::class)
             ->setColumns(4)
             ->renderExpanded()
             ->onlyOnForms();

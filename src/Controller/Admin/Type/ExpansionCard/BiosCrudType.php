@@ -5,6 +5,7 @@ namespace App\Controller\Admin\Type\ExpansionCard;
 use App\Entity\ExpansionCardBios;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
+use Symfony\Component\Validator\Constraints\File;
 use Vich\UploaderBundle\Form\Type\VichFileType;
 
 class BiosCrudType extends AbstractCrudController
@@ -29,6 +30,25 @@ class BiosCrudType extends AbstractCrudController
             ->setFormTypeOption('allow_delete',false)
             //->setFormTypeOption('download_label',false)
             ->setFormTypeOption('label',false)
+            ->setFormTypeOption('constraints',[
+                new File([
+                    'maxSize' => '32Mi',
+                    'mimeTypes' => [
+                        'application/x-binary',
+                        'application/octet-stream',
+                        'application/mac-binary',
+                        'application/macbinary',
+                        'application/x-macbinary',
+                        'application/x-compressed',
+                        'application/x-zip-compressed',
+                        'application/zip',
+                        'multipart/x-zip',
+                        'application/x-lzh-compressed',
+                        'application/x-dosexec',
+                    ],
+                    'mimeTypesMessage' => 'Please upload a valid BIN, ZIP or EXE file',
+                ])
+            ])
             ->setColumns('col-sm-12 col-lg-12 col-xxl-6')
             ->onlyOnForms();
     }
