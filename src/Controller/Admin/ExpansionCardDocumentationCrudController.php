@@ -42,7 +42,8 @@ class ExpansionCardDocumentationCrudController extends AbstractCrudController
         return $crud
             ->showEntityActionsInlined()
             ->setPaginatorPageSize(100)
-            ->setEntityLabelInPlural('<img class=ea-entity-icon src=/build/icons/manual.svg width=48 height=48>Expansion card documentation');
+            ->setEntityLabelInPlural('<img class=ea-entity-icon src=/build/icons/manual.svg width=48 height=48>Expansion card documentation')
+            ->setDefaultSort(['updated_at' => 'DESC']);
     }
     public function configureFilters(Filters $filters): Filters
     {
@@ -54,7 +55,12 @@ class ExpansionCardDocumentationCrudController extends AbstractCrudController
     public function configureFields(string $pageName): iterable
     {
         yield IdField::new('id')->hideOnForm();
-        yield TextField::new('expansionCard')->hideOnForm();
+        yield UrlField::new('expansionCard.getId', 'Expansion card')
+            ->setCustomOption('link','expansioncards/')
+            ->formatValue(function ($value, $entity) {
+                return $entity->getExpansionCard()->getPrettyTitle() ?: '[unknown]';
+            })
+            ->hideOnForm();
         yield AssociationField::new('expansionCard')
             ->autocomplete()
             ->onlyOnForms();

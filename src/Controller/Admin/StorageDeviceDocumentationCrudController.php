@@ -42,7 +42,8 @@ class StorageDeviceDocumentationCrudController extends AbstractCrudController
         return $crud
             ->showEntityActionsInlined()
             ->setPaginatorPageSize(100)
-            ->setEntityLabelInPlural('<img class=ea-entity-icon src=/build/icons/manual.svg width=48 height=48>Storage device documentation');
+            ->setEntityLabelInPlural('<img class=ea-entity-icon src=/build/icons/manual.svg width=48 height=48>Storage device documentation')
+            ->setDefaultSort(['updated_at' => 'DESC']);
     }
     public function configureFilters(Filters $filters): Filters
     {
@@ -54,9 +55,14 @@ class StorageDeviceDocumentationCrudController extends AbstractCrudController
     public function configureFields(string $pageName): iterable
     {
         yield IdField::new('id')->hideOnForm();
-        yield TextField::new('storageDevice')->hideOnForm();
+        yield UrlField::new('storageDevice.getId', 'Storage device')
+            ->setCustomOption('link','storage/')
+            ->formatValue(function ($value, $entity) {
+                return $entity->getStorageDevice()->getNameWithManufacturer() ?: '[unknown]';
+            })
+            ->hideOnForm();
         yield AssociationField::new('storageDevice')
-            ->autocomplete()
+            ->setDisabled()
             ->onlyOnForms();
         yield TextField::new('link_name', 'Title')
             ->setColumns('col-sm-4 col-lg-4 col-xxl-4');

@@ -42,7 +42,8 @@ class ChipDocumentationCrudController extends AbstractCrudController
         return $crud
             ->showEntityActionsInlined()
             ->setPaginatorPageSize(100)
-            ->setEntityLabelInPlural('<img class=ea-entity-icon src=/build/icons/manual.svg width=48 height=48>Chip documentation');
+            ->setEntityLabelInPlural('<img class=ea-entity-icon src=/build/icons/manual.svg width=48 height=48>Chip documentation')
+            ->setDefaultSort(['updated_at' => 'DESC']);
     }
     public function configureFilters(Filters $filters): Filters
     {

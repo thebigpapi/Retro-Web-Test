@@ -15,6 +15,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\UrlField;
 use Symfony\Component\Validator\Constraints\File;
 use Vich\UploaderBundle\Form\Type\VichImageType;
 
@@ -43,7 +44,8 @@ class ExpansionCardImageCrudController extends AbstractCrudController
         return $crud
             ->showEntityActionsInlined()
             ->setPaginatorPageSize(50)
-            ->setEntityLabelInPlural('<img class=ea-entity-icon src=/build/icons/search_image.svg width=48 height=48>Expansion card images');
+            ->setEntityLabelInPlural('<img class=ea-entity-icon src=/build/icons/search_image.svg width=48 height=48>Expansion card images')
+            ->setDefaultSort(['updated_at' => 'DESC']);
     }
     public function configureFilters(Filters $filters): Filters
     {
@@ -56,7 +58,12 @@ class ExpansionCardImageCrudController extends AbstractCrudController
     public function configureFields(string $pageName): iterable
     {
         yield IdField::new('id')->hideOnForm();
-        yield TextField::new('expansionCard')->hideOnForm();
+        yield UrlField::new('expansionCard.getId', 'Expansion card')
+            ->setCustomOption('link','expansioncards/')
+            ->formatValue(function ($value, $entity) {
+                return $entity->getExpansionCard()->getPrettyTitle() ?: '[unknown]';
+            })
+            ->hideOnForm();
         yield AssociationField::new('expansionCard')
             ->autocomplete()
             ->onlyOnForms();

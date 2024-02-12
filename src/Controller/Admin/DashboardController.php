@@ -174,8 +174,8 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::subMenu('Chip related', 'chip.svg')->setSubItems([
             MenuItem::linkToCrud('Expansion chip types', 'chip_alias.svg', ExpansionChipType::class)->setPermission('ROLE_ADMIN'),
             MenuItem::section('Advanced'),
-            MenuItem::linkToCrud('Images', 'search_image.svg', ChipImage::class)->setController(ChipImageCrudController::class),
             MenuItem::linkToCrud('Chip aliases', 'chip_alias.svg', ChipAlias::class)->setController(ChipAliasCrudController::class),
+            MenuItem::linkToCrud('Chip images', 'search_image.svg', ChipImage::class)->setController(ChipImageCrudController::class),
             MenuItem::linkToCrud('Chip docs', 'manual.svg', ChipDocumentation::class)->setController(ChipDocumentationCrudController::class),
             MenuItem::linkToCrud('Chipset aliases', 'chip_alias.svg', ChipsetAlias::class)->setController(ChipsetAliasCrudController::class),
             MenuItem::linkToCrud('Chipset docs', 'manual.svg', ChipsetDocumentation::class)->setController(ChipsetDocumentationCrudController::class),

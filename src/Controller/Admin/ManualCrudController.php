@@ -42,7 +42,8 @@ class ManualCrudController extends AbstractCrudController
         return $crud
             ->showEntityActionsInlined()
             ->setPaginatorPageSize(100)
-            ->setEntityLabelInPlural('<img class=ea-entity-icon src=/build/icons/manual.svg width=48 height=48>Motherboard manuals');
+            ->setEntityLabelInPlural('<img class=ea-entity-icon src=/build/icons/manual.svg width=48 height=48>Motherboard manuals')
+            ->setDefaultSort(['updated_at' => 'DESC']);
     }
     public function configureFilters(Filters $filters): Filters
     {
@@ -54,7 +55,12 @@ class ManualCrudController extends AbstractCrudController
     public function configureFields(string $pageName): iterable
     {
         yield IdField::new('id')->hideOnForm();
-        yield TextField::new('motherboard')->hideOnForm();
+        yield UrlField::new('motherboard.getId', 'Motherboard')
+            ->setCustomOption('link','motherboards/')
+            ->formatValue(function ($value, $entity) {
+                return $entity->getMotherboard()->getPrettyTitle() ?: '[unknown]';
+            })
+            ->hideOnForm();
         yield AssociationField::new('motherboard')
             ->autocomplete()
             ->onlyOnForms();

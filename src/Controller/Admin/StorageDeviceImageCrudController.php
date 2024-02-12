@@ -15,6 +15,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\UrlField;
 use Symfony\Component\Validator\Constraints\File;
 use Vich\UploaderBundle\Form\Type\VichImageType;
 class StorageDeviceImageCrudController extends AbstractCrudController
@@ -42,7 +43,8 @@ class StorageDeviceImageCrudController extends AbstractCrudController
         return $crud
             ->showEntityActionsInlined()
             ->setPaginatorPageSize(50)
-            ->setEntityLabelInPlural('<img class=ea-entity-icon src=/build/icons/search_image.svg width=48 height=48>Storage device images');
+            ->setEntityLabelInPlural('<img class=ea-entity-icon src=/build/icons/search_image.svg width=48 height=48>Storage device images')
+            ->setDefaultSort(['updated_at' => 'DESC']);
     }
     public function configureFilters(Filters $filters): Filters
     {
@@ -54,9 +56,14 @@ class StorageDeviceImageCrudController extends AbstractCrudController
     public function configureFields(string $pageName): iterable
     {
         yield IdField::new('id')->hideOnForm();
-        yield TextField::new('storageDevice')->hideOnForm();
+        yield UrlField::new('storageDevice.getId', 'Storage device')
+            ->setCustomOption('link','storage/')
+            ->formatValue(function ($value, $entity) {
+                return $entity->getStorageDevice()->getNameWithManufacturer() ?: '[unknown]';
+            })
+            ->hideOnForm();
         yield AssociationField::new('storageDevice')
-            ->autocomplete()
+            ->setDisabled()
             ->onlyOnForms();
         yield AssociationField::new('creditor', 'Creditor')
             ->autocomplete()

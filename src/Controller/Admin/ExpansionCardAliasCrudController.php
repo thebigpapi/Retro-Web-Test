@@ -12,6 +12,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\UrlField;
 
 class ExpansionCardAliasCrudController extends AbstractCrudController
 {
@@ -49,6 +50,15 @@ class ExpansionCardAliasCrudController extends AbstractCrudController
     public function configureFields(string $pageName): iterable
     {
         yield IdField::new('id')->hideOnForm();
+        yield UrlField::new('expansionCard.getId', 'Expansion card')
+            ->setCustomOption('link','expansioncards/')
+            ->formatValue(function ($value, $entity) {
+                return $entity->getExpansionCard()->getPrettyTitle() ?: '[unknown]';
+            })
+            ->hideOnForm();
+        yield AssociationField::new('expansionCard')
+            ->autocomplete()
+            ->onlyOnForms();
         yield AssociationField::new('manufacturer')
             ->autocomplete()
             ->setFormTypeOption('attr',['placeholder' => 'Type to select a manufacturer ...']);

@@ -211,7 +211,7 @@
 				{% else %}
 					<div>No additional specs.</div>
 				{% endif %}
-				{% if expansioncard.getExpansionChips() is not empty %}
+				{% if expansioncard.getExpansionChips()|filter(a => a.getMiscSpecs() is not empty) is not empty %}
 					<div style="padding: 6px 0px;"><b style="font-size:20px;">Chip specifications </b><small>(click to expand)</small></div>
 					{% for chip in expansioncard.getExpansionChips()|filter(a => a.getMiscSpecs() is not empty)%}
 						<div class="dropdown-trw">
@@ -247,7 +247,7 @@
 								<div>Note</div>
 								<div>File</div>
 							</div>
-							{% for bios in expansioncard.getExpansionCardBios()|sort((a, b) => b.boardVersion <=> a.boardVersion) %}
+							{% for bios in expansioncard.getExpansionCardBios()|sort((a, b) => b.version <=> a.version) %}
 							<div class="list-entry centered {% if loop.index is divisible by(2) %}alt{% endif %}">
 								<div class="header-label">Version</div>
 								<div>{{ bios.getVersion() }}</div>
@@ -264,8 +264,8 @@
 									{% endif %}
 								</div>
 							</div>
+							{% endfor %}
 						</div>
-						{% endfor %}
 					{% endif %}
 				</div>
 			</div>

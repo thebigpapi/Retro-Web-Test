@@ -12,6 +12,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\UrlField;
 
 class MotherboardAliasCrudController extends AbstractCrudController
 {
@@ -49,6 +50,15 @@ class MotherboardAliasCrudController extends AbstractCrudController
     public function configureFields(string $pageName): iterable
     {
         yield IdField::new('id')->hideOnForm();
+        yield UrlField::new('motherboard.getId', 'Motherboard')
+            ->setCustomOption('link','motherboards/')
+            ->formatValue(function ($value, $entity) {
+                return $entity->getMotherboard()->getPrettyTitle() ?: '[unknown]';
+            })
+            ->hideOnForm();
+        yield AssociationField::new('motherboard')
+            ->autocomplete()
+            ->onlyOnForms();
         yield AssociationField::new('manufacturer')
             ->autocomplete()
             ->setFormTypeOption('attr',['placeholder' => 'Type to select a manufacturer ...']);

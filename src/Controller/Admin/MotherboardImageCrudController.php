@@ -14,6 +14,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\UrlField;
 use Symfony\Component\Validator\Constraints\File;
 use Vich\UploaderBundle\Form\Type\VichImageType;
 
@@ -42,7 +43,8 @@ class MotherboardImageCrudController extends AbstractCrudController
         return $crud
             ->showEntityActionsInlined()
             ->setPaginatorPageSize(50)
-            ->setEntityLabelInPlural('<img class=ea-entity-icon src=/build/icons/search_image.svg width=48 height=48>Motherboard images');
+            ->setEntityLabelInPlural('<img class=ea-entity-icon src=/build/icons/search_image.svg width=48 height=48>Motherboard images')
+            ->setDefaultSort(['updated_at' => 'DESC']);
     }
     public function configureFilters(Filters $filters): Filters
     {
@@ -55,7 +57,12 @@ class MotherboardImageCrudController extends AbstractCrudController
     public function configureFields(string $pageName): iterable
     {
         yield IdField::new('id')->hideOnForm();
-        yield TextField::new('motherboard')->hideOnForm();
+        yield UrlField::new('motherboard.getId', 'Motherboard')
+            ->setCustomOption('link','motherboards/')
+            ->formatValue(function ($value, $entity) {
+                return $entity->getMotherboard()->getPrettyTitle() ?: '[unknown]';
+            })
+            ->hideOnForm();
         yield AssociationField::new('motherboard')
             ->autocomplete()
             ->onlyOnForms();

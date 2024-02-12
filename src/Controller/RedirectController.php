@@ -2,6 +2,11 @@
 
 namespace App\Controller;
 
+use App\Repository\CdDriveRepository;
+use App\Repository\ExpansionChipRepository;
+use App\Repository\FloppyDriveRepository;
+use App\Repository\HardDriveRepository;
+use App\Repository\ProcessorRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\Response;
@@ -121,15 +126,38 @@ class RedirectController extends AbstractController
     }
 
 
-    /* #[Route(path: '/{lang}/chipsets/index/{letter}', requirements: ['lang' => 'de|en|es|fr|it|nl|ro|ru', 'letter' => '\w'])]
-    public function redirectLangChipsetIndex(Request $request, string $letter)
+    #[Route(path: '/storage/{id}')]
+    public function redirectStorage($id, HardDriveRepository $hardDriveRepository, CdDriveRepository $cdDriveRepository, FloppyDriveRepository $floppyDriveRepository)
     {
-        return $this->redirect($this->generateUrl('chipsetindex', array_merge(
-            $request->query->all(),
-            array("letter" => $letter)
-        )));
-    }*/
-    
+        $hdd = $hardDriveRepository->find($id);
+        if (!$hdd) {
+            $cdd = $cdDriveRepository->find($id);
+            if (!$cdd) {
+                $fdd = $floppyDriveRepository->find($id);
+                if (!$fdd) {
+                    throw $this->createNotFoundException('No storage device found for id ' . $id);
+                }
+                return $this->redirect($this->generateUrl('floppy_drive_show', array("id" => $id)));
+            }
+            return $this->redirect($this->generateUrl('cd_drive_show', array("id" => $id)));
+        }
+        return $this->redirect($this->generateUrl('hard_drive_show', array("id" => $id)));
+    }
+
+    #[Route(path: '/chip/{id}')]
+    public function redirectChip($id, ExpansionChipRepository $expansionChipRepository, ProcessorRepository $processorRepository)
+    {
+        $chip = $expansionChipRepository->find($id);
+        if (!$chip) {
+            $chip = $processorRepository->find($id);
+            if (!$chip) {
+                throw $this->createNotFoundException('No chip found for id ' . $id);
+            }
+            return $this->redirect($this->generateUrl('cpu_show', array("id" => $id)));
+        }
+        return $this->redirect($this->generateUrl('expansion_chip_show', array("id" => $id)));
+    }
+
     /* credits redirect */
     #[Route(path: '/credits', methods: ['GET'])]
     public function redirectCredits(Request $request)
