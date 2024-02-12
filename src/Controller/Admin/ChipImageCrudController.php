@@ -64,6 +64,7 @@ class ChipImageCrudController extends AbstractCrudController
             ->hideOnForm();
         yield AssociationField::new('chip')
             ->autocomplete()
+            ->setDisabled()
             ->onlyOnForms();
         yield AssociationField::new('creditor', 'Creditor')
             ->autocomplete()

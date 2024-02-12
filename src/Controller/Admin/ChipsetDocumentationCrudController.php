@@ -55,7 +55,12 @@ class ChipsetDocumentationCrudController extends AbstractCrudController
     public function configureFields(string $pageName): iterable
     {
         yield IdField::new('id')->hideOnForm();
-        yield TextField::new('chipset')->hideOnForm();
+        yield UrlField::new('chipset.getId', 'Chip')
+            ->setCustomOption('link','chipsets/')
+            ->formatValue(function ($value, $entity) {
+                return $entity->getChipset()->getNameWithoutParts() ?: '[unknown]';
+            })
+            ->hideOnForm();
         yield AssociationField::new('chipset')
             ->autocomplete()
             ->onlyOnForms();

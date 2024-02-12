@@ -12,6 +12,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\UrlField;
 
 class ChipsetAliasCrudController extends AbstractCrudController
 {
@@ -50,6 +51,15 @@ class ChipsetAliasCrudController extends AbstractCrudController
     public function configureFields(string $pageName): iterable
     {
         yield IdField::new('id')->hideOnForm();
+        yield UrlField::new('chipset.getId', 'Chip')
+            ->setCustomOption('link','chipsets/')
+            ->formatValue(function ($value, $entity) {
+                return $entity->getChipset()->getNameWithoutParts() ?: '[unknown]';
+            })
+            ->hideOnForm();
+        yield AssociationField::new('chipset')
+            ->autocomplete()
+            ->onlyOnForms();
         yield AssociationField::new('manufacturer')
             ->autocomplete()
             ->setFormTypeOption('attr',['placeholder' => 'Type to select a manufacturer ...']);

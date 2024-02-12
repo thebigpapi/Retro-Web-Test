@@ -58,6 +58,7 @@ class StorageDeviceAliasCrudController extends AbstractCrudController
             })
             ->hideOnForm();
         yield AssociationField::new('storageDevice')
+            ->autocomplete()
             ->setDisabled()
             ->onlyOnForms();
         yield AssociationField::new('manufacturer')

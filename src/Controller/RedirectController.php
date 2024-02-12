@@ -153,7 +153,7 @@ class RedirectController extends AbstractController
             if (!$chip) {
                 throw $this->createNotFoundException('No chip found for id ' . $id);
             }
-            return $this->redirect($this->generateUrl('cpu_show', array("id" => $id)));
+            return $this->redirect($this->generateUrl('processor_show', array("id" => $id)));
         }
         return $this->redirect($this->generateUrl('expansion_chip_show', array("id" => $id)));
     }

@@ -62,6 +62,7 @@ class StorageDeviceDocumentationCrudController extends AbstractCrudController
             })
             ->hideOnForm();
         yield AssociationField::new('storageDevice')
+            ->autocomplete()
             ->setDisabled()
             ->onlyOnForms();
         yield TextField::new('link_name', 'Title')

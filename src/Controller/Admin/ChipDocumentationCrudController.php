@@ -55,9 +55,15 @@ class ChipDocumentationCrudController extends AbstractCrudController
     public function configureFields(string $pageName): iterable
     {
         yield IdField::new('id')->hideOnForm();
-        yield TextField::new('chip')->hideOnForm();
+        yield UrlField::new('chip.getId', 'Chip')
+            ->setCustomOption('link','chip/')
+            ->formatValue(function ($value, $entity) {
+                return $entity->getChip()->getNameWithManufacturer() ?: '[unknown]';
+            })
+            ->hideOnForm();
         yield AssociationField::new('chip')
             ->autocomplete()
+            ->setDisabled()
             ->onlyOnForms();
         yield TextField::new('link_name', 'Title')
             ->setColumns('col-sm-4 col-lg-4 col-xxl-4');
