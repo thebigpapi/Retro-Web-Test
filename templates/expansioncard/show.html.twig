@@ -214,7 +214,7 @@
 				{% if expansioncard.getExpansionChips() is not empty %}
 					<div style="padding: 6px 0px;"><b style="font-size:20px;">Chip specifications </b><small>(click to expand)</small></div>
 					{% for chip in expansioncard.getExpansionChips()|filter(a => a.getMiscSpecs() is not empty)%}
-						<div class="dropdown">
+						<div class="dropdown-trw">
 							<label class="dropdown-header">
 								<img src="{{ absolute_url(asset('build/icons/chip.svg')) }}" alt="chip" width="24" height="24">
 								<span><i>{{chip.getNameWithManufacturer()}}</i></span>
