@@ -81,11 +81,17 @@
 						<img src="{{ absolute_url(asset('build/icons/dimension.svg')) }}" alt="cpu" width="24" height="24">Form factor
 					</div>
 					<div>{{ floppydrive.getPhysicalSize() }}</div>
-					<!-- Density -->
+					<!-- Type -->
 					<div class="quick-spec-head">
-						<img src="{{ absolute_url(asset('build/icons/floppy.svg')) }}" alt="cpu" width="24" height="24">Density
+						<img src="{{ absolute_url(asset('build/icons/floppy.svg')) }}" alt="cpu" width="24" height="24">Type
 					</div>
-					<div>{{ floppydrive.getDensity() }}</div>
+					{% if floppydrive.getType() is not empty %}
+					<div class="tag-container">{% for type in floppydrive.getType() %}
+						<span class="text-block">{{ type.getName() }}</span>{% endfor %}
+					</div>
+					{% else %}
+					<div>Unknown</div>
+					{% endif %}
 				</div>
 				{% include 'macros/aliases.html.twig' with {'entity':floppydrive.getStorageDeviceAliases(), 'msg': 'Also known as:'} %}
 				{% include 'macros/notes.html.twig' with {'entity': floppydrive} %}

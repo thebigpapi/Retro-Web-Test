@@ -204,11 +204,11 @@ class ExpansionCardCrudController extends AbstractCrudController
             ->setColumns('col-sm-12 col-lg-6 col-xxl-4')
             ->renderExpanded()
             ->onlyOnForms();
-        yield CollectionField::new('expansionCardMemoryConnectors', 'Memory connectors')
+        /*yield CollectionField::new('expansionCardMemoryConnectors', 'Memory connectors')
             ->useEntryCrudForm(MemoryConnectorCrudType::class)
             ->setColumns('col-sm-12 col-lg-6 col-xxl-4')
             ->renderExpanded()
-            ->onlyOnForms();
+            ->onlyOnForms();*/
         yield CollectionField::new('powerConnectors', 'Power connectors')
             ->setEntryType(PSUConnectorType::class)
             ->setColumns('col-sm-12 col-lg-6 col-xxl-4')

@@ -14,6 +14,7 @@ use App\Controller\Admin\Type\StorageDevice\AliasCrudType;
 use App\Controller\Admin\Type\StorageDevice\DocumentationCrudType;
 use App\Controller\Admin\Type\StorageDevice\IdRedirectionCrudType;
 use App\Controller\Admin\Type\StorageDevice\ImageCrudType;
+use App\Form\Type\FloppyDriveTypeType;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
@@ -108,12 +109,12 @@ class FloppyDriveCrudController extends AbstractCrudController
             ->add('name')
             ->add('partNumber')
             ->add('storageDeviceAliases')
+            ->add('type')
             ->add(StorageImageFilter::new('images'))
             ->add(StorageDocFilter::new('documentations'))
             ->add('interfaces')
             ->add('powerConnectors')
             ->add('physicalSize')
-            ->add('density')
             ->add('lastEdited');
     }
     public function configureFields(string $pageName): iterable
@@ -139,25 +140,16 @@ class FloppyDriveCrudController extends AbstractCrudController
         yield AssociationField::new('physicalSize', 'Physical size')
             ->setColumns('col-sm-6 col-lg-6 col-xxl-4')
             ->onlyOnForms();
-        yield TextField::new('density')
+        yield ArrayField::new('type')
             ->onlyOnIndex();
         yield TextField::new('isStorageDeviceImage','Images')
             ->onlyOnIndex();
         yield CollectionField::new('storageDeviceDocumentations','Docs')
             ->onlyOnIndex();
-        yield ChoiceField::new('density')
+        yield CollectionField::new('type')
+            ->setEntryType(FloppyDriveTypeType::class)
             ->setColumns('col-sm-6 col-lg-6 col-xxl-4')
-            ->setFormTypeOption('placeholder', 'Select a density ...')
-            ->setFormTypeOption('choices', [
-                'Single density (5.25 inch SD)' => 'Single density (5.25 inch SD)',
-                'Double density (5.25 inch DD)' => 'Double density (5.25 inch DD)',
-                'Quad density (5.25 inch QD)' => 'Quad density (5.25 inch QD)',
-                'High density (5.25 inch HD)' => 'High density (5.25 inch HD)',
-                'Double density (3.5 inch DD)' => 'Double density (3.5 inch DD)',
-                'High density (3.5 inch HD)' => 'High density (3.5 inch HD)',
-                'Extra-high density (3.5 inch ED)' => 'Extra-high density (3.5 inch ED)',
-                'Triple density (3.5 inch TD)' => 'Triple density (3.5 inch TD)'
-            ])
+            ->renderExpanded()
             ->onlyOnForms();
         yield FormField::addRow();
         yield CollectionField::new('interfaces', 'Interface')
@@ -304,7 +296,7 @@ class FloppyDriveCrudController extends AbstractCrudController
         $fdd->setName($old->getName());
         $fdd->setPartNumber($old->getPartNumber());
         $fdd->setPhysicalSize($old->getPhysicalSize());
-        $fdd->setDensity($old->getDensity());
+        //$fdd->setDensity($old->getDensity());
         $fdd->setDescription($old->getDescription());
         $fdd->setLastEdited(new \DateTime('now'));
         foreach ($old->getStorageDeviceAliases() as $alias){

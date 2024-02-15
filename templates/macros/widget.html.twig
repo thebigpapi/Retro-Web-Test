@@ -145,7 +145,7 @@
     <div class="list-entry centered head">
 		<div>Name</div>
 		<div>Aliases</div>
-        <div>Density</div>
+        <div>Type</div>
 	</div>
 	{% for fdd in entity %}
 	<div class="list-entry centered bios {% if loop.index is divisible by(2) %}alt{% endif %}">
@@ -157,8 +157,14 @@
 				<span>{{ alias.getFullAliasName() }}{% if not loop.last %} |{% endif %}</span>
 			{% endfor %}
 		{% endif %}</div>
-        <div class="header-label">Density</div>
-		<div>{{ fdd.getDensity() }}</div>
+        <div class="header-label">Type</div>
+		<div>
+		{% if fdd.getType() is not empty %}
+			<div class="tag-container">{% for type in fdd.getType() %}
+				<span class="text-block">{{ type.getName() }}</span>{% endfor %}
+			</div>
+		{% endif %}
+		</div>
 	</div>
 	{% endfor %}
 {% endif %}

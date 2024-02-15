@@ -45,6 +45,7 @@ dh_auditor:
                 App\Entity\ExpansionSlotInterfaceSignal: ~
                 App\Entity\ExpansionSlotSignal: ~
                 App\Entity\FloppyDrive: ~
+                App\Entity\FloppyDriveType: ~
                 App\Entity\FormFactor: ~
                 App\Entity\HardDrive: ~
                 App\Entity\InstructionSet: ~

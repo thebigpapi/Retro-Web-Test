@@ -63,6 +63,7 @@ use App\Entity\ChipsetAlias;
 use App\Entity\EntityDocumentation;
 use App\Entity\EntityImage;
 use App\Entity\ExpansionCardAlias;
+use App\Entity\FloppyDriveType;
 use App\Entity\MotherboardAlias;
 use App\Entity\StorageDeviceAlias;
 
@@ -160,6 +161,7 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::subMenu('Storage related', 'hdd.svg')->setSubItems([
             MenuItem::linkToCrud('Interface', 'io.svg', StorageDeviceInterface::class),
             MenuItem::linkToCrud('Physical size', 'dimension.svg', StorageDeviceSize::class),
+            MenuItem::linkToCrud('Floppy drive type', 'floppy.svg', FloppyDriveType::class),
             MenuItem::section('Advanced'),
             MenuItem::linkToCrud('Aliases', 'tag.svg', StorageDeviceAlias::class)->setController(StorageDeviceAliasCrudController::class),
             MenuItem::linkToCrud('Images', 'search_image.svg', StorageDeviceImage::class)->setController(StorageDeviceImageCrudController::class),

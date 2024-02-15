@@ -271,12 +271,12 @@ class MotherboardCrudController extends AbstractCrudController
             ->setColumns('col-sm-12 col-lg-6 col-xxl-4')
             ->renderExpanded()
             ->onlyOnForms();
-        yield CollectionField::new('motherboardMemoryConnectors', 'Memory connectors')
+        /*yield CollectionField::new('motherboardMemoryConnectors', 'Memory connectors')
             ->useEntryCrudForm(MemoryConnectorCrudType::class)
             ->setFormTypeOption('error_bubbling', false)
             ->setColumns('col-sm-12 col-lg-6 col-xxl-4')
             ->renderExpanded()
-            ->onlyOnForms();
+            ->onlyOnForms();*/
         yield CollectionField::new('psuConnectors', 'PSU connectors')
             ->setEntryType(PSUConnectorType::class)
             ->setColumns('col-sm-12 col-lg-6 col-xxl-4')
