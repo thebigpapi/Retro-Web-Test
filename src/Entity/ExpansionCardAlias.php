@@ -25,6 +25,11 @@ class ExpansionCardAlias
     #[Assert\NotBlank(message: 'Alias name cannot be blank')]
     private ?string $name = null;
 
+    public function __toString(): string
+    {
+        return $this->getFullAliasName();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
