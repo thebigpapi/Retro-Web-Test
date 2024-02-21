@@ -7,19 +7,19 @@
 
 {% block body %}<h2 class="title">Where do you want to go today?</h2>
 	<div class="index-buttons"><div class="main">
-		<a href="{{ path("motherboard_search") }}" class="index-button0"><span class="image-block"><span>
+		<a href="{{ path("mobosearch") }}" class="index-button0"><span class="image-block"><span>
 			<span class="img"></span>
 			<span>Motherboards</span> <span>({{moboCount}}&nbsp;entries)</span><!--
 		--></span></span></a>
-		<a href="{{ path("bios_search") }}" class="index-button1"><span class="image-block"><span>
+		<a href="{{ path("biossearch") }}" class="index-button1"><span class="image-block"><span>
 			<span class="img"></span>
 			<span>BIOS images</span> <span>({{biosCount}}&nbsp;files)</span><!--
 		--></span></span></a>
-		<a href="{{ path("chipset_search") }}" class="index-button2"><span class="image-block"><span>
+		<a href="{{ path("chipsetsearch") }}" class="index-button2"><span class="image-block"><span>
 			<span class="img"></span>
 			<span>Chipsets</span> <span>({{chipCount}}&nbsp;entries)</span><!--
 		--></span></span></a>
-		<a href="{{ path("driver_search") }}" class="index-button3"><span class="image-block"><span>
+		<a href="{{ path("driversearch") }}" class="index-button3"><span class="image-block"><span>
 			<span class="img"></span>
 			<span>Drivers</span> <span>({{driverCount}}&nbsp;files)</span><!--
 		--></span></span></a>
@@ -30,7 +30,7 @@
         {% for motherboard in latestMotherboards %}
 			<li>
 				<a href="{{ path("motherboard_show", {id:motherboard.getId()}) }}">
-					{{ motherboard.getManufacturerShortNameIfExist() }}&nbsp;{{ motherboard.name }}
+					{{ motherboard.getManufacturer().getName() }}&nbsp;{{ motherboard.name }}
 				</a>
 			</li>	
 		{% endfor %}

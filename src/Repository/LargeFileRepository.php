@@ -19,6 +19,22 @@ class LargeFileRepository extends ServiceEntityRepository
         parent::__construct($registry, LargeFile::class);
     }
 
+    /**
+      * @return LargeFile[] Returns an array of LargeFile objects
+      */
+    public function findAllOptimized(): array 
+    {
+        $entityManager = $this->getEntityManager();
+        $query = $entityManager->createQuery(
+            "SELECT lf, lang, mtf, ofgs
+            FROM App\Entity\LargeFile lf
+            JOIN lf.osFlags as ofgs
+            ORDER BY lf.name ASC"
+        );
+
+        return $query->getResult();
+    }
+
     // /**
     //  * @return LargeFile[] Returns an array of LargeFile objects
     //  */
@@ -35,44 +51,68 @@ class LargeFileRepository extends ServiceEntityRepository
         ;
     }
     */
+
     public function findAllAlphabetic(string $letter): array
     {
         $entityManager = $this->getEntityManager();
         $likematch = "$letter%";
         $query = $entityManager->createQuery(
-                "SELECT drv
-                FROM App\Entity\LargeFile drv 
-                WHERE drv.name like :likeMatch
-                ORDER BY drv.name ASC"
-            )->setParameter('likeMatch', $likematch);
+            "SELECT drv.id, UPPER(drv.name) drvNameSort, drv.lastEdited
+                FROM App\Entity\LargeFile drv
+                WHERE UPPER(drv.name) like :likeMatch
+                ORDER BY drvNameSort ASC"
+        )->setParameter('likeMatch', $likematch);
 
         return $query->getResult();
     }
-    public function findByDriver(array $criteria): array
+
+    public function findByDriver(array $criterias): array
     {
-        
+
         $entityManager = $this->getEntityManager();
 
         $whereArray = array();
         $valuesArray = array();
 
         // Checking values in criteria and creating WHERE statements
-        if (array_key_exists('name', $criteria)) {
-            $whereArray[] = "(LOWER(drv.name) LIKE :nameLike OR LOWER(drv.fileVersion) LIKE :nameLike)";
-            $valuesArray["nameLike"] = "%" . strtolower($criteria['name']) . "%";
+        if (array_key_exists('name', $criterias)) {
+            $multicrit = explode(" ", $criterias['name']);
+            foreach ($multicrit as $key => $val) {
+                $whereArray[] = "(LOWER(drv.name) LIKE :nameLike$key OR LOWER(drv.fileVersion) LIKE :nameLike$key OR LOWER(drv.file_name) LIKE :nameLike$key)";
+                $valuesArray["nameLike$key"] = "%" . strtolower($val) . "%";
+            }
+        }
+        if (array_key_exists('file_name', $criterias)) {
+            $whereArray[] = "(LOWER(drv.file_name) LIKE LOWER(:fileName))";
+            $valuesArray["fileName"] = "%" . $criterias['file_name'] . "%";
+        }
+        if (array_key_exists('version', $criterias)) {
+            $whereArray[] = "(drv.fileVersion LIKE :version)";
+            $valuesArray["version"] = "%" . $criterias['version'] . "%";
+        }
+        if (array_key_exists('osFlags', $criterias)) {
+            foreach ($criterias['osFlags'] as $key => $value) {
+                $whereArray[] = "(drv.id in (select drv$key.id from App\Entity\LargeFile drv$key JOIN drv$key.osFlags os$key where os$key.id=:idOs$key))";
+                $valuesArray["idOs$key"] = $value;
+        }
         }
 
         // Building where statement
         $whereString = implode(" AND ", $whereArray);
 
         // Building query
-        $query = $entityManager->createQuery(
-            "SELECT drv
-            FROM App\Entity\LargeFile drv
-            WHERE $whereString
-            ORDER BY drv.name ASC"
-        );
-        
+        if($whereArray == []){
+            return [];
+        }
+        else{
+            $query = $entityManager->createQuery(
+                "SELECT drv
+                FROM App\Entity\LargeFile drv
+                WHERE $whereString
+                ORDER BY drv.name ASC, drv.file_name ASC"
+            )->setMaxResults(1000);
+        }
+
         // Setting values
         foreach ($valuesArray as $key => $value) {
             $query->setParameter($key, $value);
@@ -86,15 +126,12 @@ class LargeFileRepository extends ServiceEntityRepository
             ->getQuery()
             ->getSingleScalarResult();
     }
-    /*
-    public function findOneBySomeField($value): ?LargeFile
+    public function findLatest()
     {
         return $this->createQueryBuilder('l')
-            ->andWhere('l.exampleField = :val')
-            ->setParameter('val', $value)
+            ->orderBy('l.lastEdited', 'DESC')
+            ->setMaxResults(25)
             ->getQuery()
-            ->getOneOrNullResult()
-        ;
+            ->getResult();
     }
-    */
 }

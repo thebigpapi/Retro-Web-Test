@@ -5,95 +5,81 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\InstructionSetRepository")
- */
+#[ORM\Entity(repositoryClass: 'App\Repository\InstructionSetRepository')]
 class InstructionSet
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    #[ORM\Column(type: 'string', length: 255)]
+    #[Assert\Length(max: 255, maxMessage: 'Name is longer than {{ limit }} characters, try to make it shorter.')]
     private $name;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\ProcessingUnit", mappedBy="instructionSets")
-     */
-    private $processingUnits;
+    #[ORM\ManyToMany(targetEntity: ProcessorPlatformType::class, mappedBy: 'instructionSets')]
+    private $processorPlatformTypes;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\InstructionSet", inversedBy="childInstructionSets")
-     */
+    #[ORM\ManyToMany(targetEntity: InstructionSet::class, inversedBy: 'childInstructionSets')]
     private $compatibleWith;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\InstructionSet", mappedBy="compatibleWith")
-     */
+    #[ORM\ManyToMany(targetEntity: InstructionSet::class, mappedBy: 'compatibleWith')]
     private $childInstructionSets;
 
     public function __construct()
     {
-        $this->processingUnits = new ArrayCollection();
+        $this->processorPlatformTypes = new ArrayCollection();
         $this->compatibleWith = new ArrayCollection();
         $this->childInstructionSets = new ArrayCollection();
     }
-
+    public function __toString(): string
+    {
+        return $this->name;
+    }
     public function getId(): ?int
     {
         return $this->id;
     }
-
     public function getName(): ?string
     {
         return $this->name;
     }
-
     public function setName(string $name): self
     {
         $this->name = $name;
 
         return $this;
     }
-
     /**
-     * @return Collection|ProcessingUnit[]
+     * @return Collection|ProcessorPlatformType[]
      */
-    public function getProcessingUnits(): Collection
+    public function getPlatforms(): Collection
     {
-        return $this->processingUnits;
+        return $this->processorPlatformTypes;
     }
-    
-
-    public function addProcessingUnit(ProcessingUnit $processingUnit): self
+    public function addPlatform(ProcessorPlatformType $processorPlatformType): self
     {
-        if (!$this->processingUnits->contains($processingUnit)) {
-            $this->processingUnits[] = $processingUnit;
-            $processingUnit->addInstructionSet($this);
+        if (!$this->processorPlatformTypes->contains($processorPlatformType)) {
+            $this->processorPlatformTypes[] = $processorPlatformType;
+            $processorPlatformType->addInstructionSet($this);
         }
 
         return $this;
     }
-
-    public function removeProcessingUnit(ProcessingUnit $processingUnit): self
+    public function removePlatform(ProcessorPlatformType $processorPlatformType): self
     {
-        if ($this->processingUnits->contains($processingUnit)) {
-            $this->processingUnits->removeElement($processingUnit);
+        if ($this->processorPlatformTypes->contains($processorPlatformType)) {
+            $this->processorPlatformTypes->removeElement($processorPlatformType);
             // set the owning side to null (unless already changed)
-            if ($processingUnit->getInstructionSets() === $this) {
-                $processingUnit->removeInstructionSet($this);
+            if ($processorPlatformType->getInstructionSets() === $this) {
+                $processorPlatformType->removeInstructionSet($this);
             }
         }
 
         return $this;
     }
-
     /**
      * @return Collection|self[]
      */
@@ -101,7 +87,6 @@ class InstructionSet
     {
         return $this->compatibleWith;
     }
-
     public function addCompatibleWith(self $compatibleWith): self
     {
         if (!$this->compatibleWith->contains($compatibleWith)) {
@@ -110,7 +95,6 @@ class InstructionSet
 
         return $this;
     }
-
     public function removeCompatibleWith(self $compatibleWith): self
     {
         if ($this->compatibleWith->contains($compatibleWith)) {
@@ -119,7 +103,6 @@ class InstructionSet
 
         return $this;
     }
-
     /**
      * @return Collection|self[]
      */
@@ -127,7 +110,6 @@ class InstructionSet
     {
         return $this->childInstructionSets;
     }
-
     public function addChildInstructionSet(self $childInstructionSet): self
     {
         if (!$this->childInstructionSets->contains($childInstructionSet)) {
@@ -137,7 +119,6 @@ class InstructionSet
 
         return $this;
     }
-
     public function removeChildInstructionSet(self $childInstructionSet): self
     {
         if ($this->childInstructionSets->contains($childInstructionSet)) {

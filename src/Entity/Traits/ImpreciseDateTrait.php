@@ -6,15 +6,12 @@ use Doctrine\ORM\Mapping as ORM;
 use DateTime;
 use DateTimeInterface;
 
-trait ImpreciseDateTrait {
-    /**
-     * @ORM\Column(type="date", nullable=true)
-     */
+trait ImpreciseDateTrait
+{
+    #[ORM\Column(type: 'date', nullable: true)]
     private ?DateTime $releaseDate = null;
 
-    /**
-     * @ORM\Column(type="string", length=1, nullable=true)
-     */
+    #[ORM\Column(type: 'string', length: 1, nullable: true)]
     private ?string $datePrecision = null;
 
     public function getReleaseDate(): ?DateTimeInterface
@@ -38,8 +35,7 @@ trait ImpreciseDateTrait {
                     $date->setDate($releaseDate->format("Y"), $releaseDate->format("m"), $releaseDate->format("d"));
             }
             $this->releaseDate = $date;
-        }
-        else {
+        } else {
             $this->releaseDate = null;
         }
 
@@ -52,14 +48,14 @@ trait ImpreciseDateTrait {
             switch ($this->getDatePrecision()) {
                 case "m":
                     return $this->releaseDate->format("Y-m");
-                    break;
                 case "y":
                     return $this->releaseDate->format("Y");
-                    break;
                 default:
                     return $this->releaseDate->format("Y-m-d");
             }
-        } else return null;
+        } else {
+            return null;
+        }
     }
 
     public function getDatePrecision(): ?string
@@ -86,5 +82,4 @@ trait ImpreciseDateTrait {
 
         return $this;
     }
-
 }

@@ -1,237 +1,235 @@
 {% extends 'base.html.twig' %}
-{% from 'macros/largeFile.html.twig' import link as driverLink %}
-{% from 'macros/largeFile.html.twig' import header as driverHeader %}
-
 
 {% block title %}
-	{{ motherboard.getManufacturer() ? motherboard.getManufacturer().getShortNameIfExist() : 'Unknown' }} {{ motherboard.getName() }}
+	{{ motherboard.getPrettyTitle() }}
 {% endblock %}
 
 {% block body %}
 <!-- TITLE/ALIASES -->
 <h2 class="title">
-	{{ motherboard.getManufacturer() ? motherboard.getManufacturer().getShortNameIfExist() : 'Unknown' }} {{ motherboard.getName() }}
+	{{ motherboard.getPrettyTitle() }}
 </h2>
-{% if motherboard.getMotherboardAliases() is not empty %}
-	<p class="string-alias">
-		<b>
-			<span class="text-block" style="border: none; padding-right: 0;">Also known as:</span>
-			{% for alias in motherboard.getMotherboardAliases() %}
-				<span class="text-block" {% if alias.getManufacturer() is not null %}>{{ alias.getManufacturer().getShortNameIfExist() }}
-				{% else %}
-					>Unknown
-				{% endif %}
-				{{ alias.getName() }}</span>
-			{% if not loop.last %}
-				<span class="separator">&nbsp;|&nbsp;</span>
-			{% endif %}
-		{% endfor %}
-	</p>
-</b></p>{% endif %}
 <!-- IMAGES -->
-<div class="show-images">
+<div class="show-images" id="sh-images">
 	<div class="ie-fix">
 		{% if motherboard.getImages() is not empty %}
-			{% for image in motherboard.getImages()|sort((a, b) => a.motherboardImageType <=> b.motherboardImageType) %}
+			{% for image in motherboard.getImages()|sort((a, b) => a.getFileName() <=> b.getFileName())|sort((a, b) => a.motherboardImageType <=> b.motherboardImageType) %}
 				{% include 'macros/images.html.twig' with {'type':'motherboard', 'entity': image, 'index': loop.index, 'length': loop.length} %}
 			{% endfor %}
 		{% else %}
-			<span class="show-image">
-				<img src={{ absolute_url(asset('build/images/motherboard/image-missing.webp')) }} title="no images available :(">
-			</span>
+			<div class="show-image">
+				<img src={{ absolute_url(asset('build/images/missing/board-missing.jpg')) }} title="no images available :(" style="width:100%;">
+			</div>
 		{% endif %}
 	</div>
 </div>
 <div class="show-data">
+<!-- DATA -->
 <table class="stbl">
-<tr>
-	<td>
-		<div style="width:170px;"><i>Form factor:<i></div>
-	</td>
-	<td style="width: 100%;">
-		{% if motherboard.getFormFactor() is not null %}
-			{{ motherboard.getFormFactor().getName() }}
-		{% else %}
-			Unknown
-		{% endif %}
-	</td>
-</tr>
-<tr>
-	<td><i>PSU connectors:</i></td>
-	<td>{% if motherboard.getPsuConnectors() is not empty %}{% for psu in motherboard.getPsuConnectors() %}{{ psu.getName() }}{% if not loop.last %}, {% endif %}{% endfor %}{% else %}Unknown{% endif %}</td>
-</tr>
-{% if motherboard.getChipset() is not null %}
-	<tr>
-		<td><i>Chipset:</i></td>
-		<td>
-			{% if motherboard.getChipset().getEncyclopediaLink() is not null %}
-				<a href="{{ motherboard.getChipset().getEncyclopediaLink() }}">
-					{{ motherboard.getChipset().getFullName() }}
-				</a>
-			{% else %}
-				{{ motherboard.getChipset().getFullName() }}
-			{% endif %}
-		</td>
-	</tr>
-	{% if motherboard.getChipset().getChipsetParts() is not empty %}
-	<tr>
-		<td><i>Chipset parts</i></td>
-		<td>
-		{% for chipPart in motherboard.getChipset().getChipsetParts() %}
-			<span class="text-block">{{ chipPart.getFullName() }}</span>
-		{% endfor %}
-		</td>
-	</tr>
+	{% if motherboard.getChipset() is not null %}
+		<tr>
+			<td><i>Chipset</i></td>
+			<td>
+				{% if motherboard.getChipset() is not null %}
+					<div><a href="{{ path('chipset_show', {id: motherboard.getChipset().getId()}) }}">{{ motherboard.getChipset().getNameWithoutParts() }}</a></div>
+				{% else %}
+					<div>Unknown</div>
+				{% endif %}
+			</td>
+		</tr>
 	{% endif %}
-{% endif %}
-{% if motherboard.getDimensions() is not null %}
-	<tr>
-		<td><i>Dimensions:</i></td>
-		<td>{{ motherboard.getDimensions() }}</td>
-	</tr>
-{% endif %}
-{% if motherboard.getCpuSockets() is not empty %}
-	<tr>
-		<td><i>CPU socket:</i></td>
-		<td>
-			{% if motherboard.getCpuSockets() is not empty %}
-				{% for socket in motherboard.getCpuSockets() %}
-					<span class="text-block">{{ socket.getNameAndType}}</span>
+	{% if motherboard.getCpuSockets() is not empty %}
+		<tr>
+			<td><i>CPU socket</i></td>
+			<td>
+				{% if motherboard.getCpuSockets() is not empty %}
+					{% for socket in motherboard.getCpuSockets() %}
+						<span class="text-block">{{ socket.getNameAndType}}</span>
+					{% endfor %}
+				{% endif %}
+			</td>
+		</tr>
+	{% endif %}
+	{% if motherboard.getProcessorPlatformTypes() is not empty %}
+		<tr>
+			<td><i>CPU family</i></td>
+			<td>
+				{% if motherboard.getProcessorPlatformTypes() is not empty %}
+					{% for platform in motherboard.getProcessorPlatformTypes() %}
+						<span class="text-block">{{ platform.getName() }}</span>
+					{% endfor %}
+				{% endif %}
+			</td>
+		</tr>
+	{% endif %}
+	{% if motherboard.getCpuSpeed() is not empty %}
+		<tr>
+			<td><i>FSB speed</i></td>
+			<td>
+				{% for frequency in motherboard.getCpuSpeed()|sort((a, b) => a.value <=> b.value) %}
+					<span class="text-block">{{ frequency.getValueWithUnit() }}</span>
 				{% endfor %}
+			</td>
+		</tr>
+	{% endif %}
+	<tr>
+		<td><i>Cache</i></td>
+		<td>{% if motherboard.getCacheSize() is not empty %}
+				{% for cache in motherboard.getCacheSize()|sort((a, b) => a.value <=> b.value) %}<span class="text-block">{{ cache.getValueWithUnit()}}</span>{% endfor %}</div>
+			{% else %}
+				None/Integrated in the CPU
 			{% endif %}
-		</td>
+			{% for cache in motherboard.getCacheSize()|sort((a, b) => a.value <=> b.value) %}
+				<span class="text-block" {% if cache.getValue() > 1048575 %}>{{ cache.getValue() / 1048576 }}
+					MB<!--
+				-->{% elseif cache.getValue() > 1023 %}
+					>{{ cache.getValue() / 1024}}
+					KB<!--
+				-->{% else %}
+					>{{ cache.getValue()}}
+					B<!--
+				-->{% endif %}
+			</span>
+		{% endfor %}</tr></td>
 	</tr>
-{% endif %}
-{% if motherboard.getProcessorPlatformTypes() is not empty %}
-	<tr>
-		<td><i>CPU platform:</i></td>
-		<td>
-			{% if motherboard.getProcessorPlatformTypes() is not empty %}
-				{% for platform in motherboard.getProcessorPlatformTypes() %}
-					<span class="text-block">{{ platform.getName() }}</span>
-				{% endfor %}
-			{% endif %}
-		</td>
-	</tr>
-{% endif %}
-{% if motherboard.getCpuSpeed() is not empty %}
-	<tr>
-		<td><i>Supported FSB speeds:</i></td>
-		<td>
-			{% for frequency in motherboard.getCpuSpeed()|sort((a, b) => a.value <=> b.value) %}
-				<span class="text-block">{{ frequency.getValueWithUnit() }}</span>
-			{% endfor %}
-		</td>
-	</tr>
-{% endif %}
-{% if motherboard.getCacheSize() is not empty %}<tr>
-<td><i>Cache:</i></td>
-<td>
-	{% for cache in motherboard.getCacheSize()|sort((a, b) => a.value <=> b.value) %}
-		<span class="text-block" {% if cache.getValue() > 1048575 %}>{{ cache.getValue() / 1048576 }}
-			MB<!--
-		-->{% elseif cache.getValue() > 1023 %}
-			>{{ cache.getValue() / 1024}}
-			KB<!--
-		-->{% else %}
-			>{{ cache.getValue()}}
-			B<!--
-		-->{% endif %}
-	</span>
-{% endfor %}</tr></td></tr>{% endif %}
-{% if motherboard.getMotherboardMaxRams() is not empty %}
-	<tr>
-		<td><i>Supported RAM size:</i></td>
-		<td>
-			{% if motherboard.getMotherboardMaxRams() is not empty %}
-				{% for maxRam in motherboard.getMotherboardMaxRams()|sort((a, b) => a.getMaxRam().getValue() <=> b.getMaxRam().getValue()) %}
-					{% if maxRam.getMaxRam() is not null %}
-						<span class="text-block" {% if maxRam.getMaxRam().getValue() > 1048575 %}>{{ maxRam.getMaxRam().getValue() / 1048576 }}
-							GB<!--
-					-->{% elseif maxRam.getMaxRam().getValue() > 1023 %}
-							>{{ maxRam.getMaxRam().getValue() / 1024 }}
-							MB<!--
-					-->{% else %}
-							>{{ maxRam.getMaxRam().getValue() }}
-							KB<!--
-					-->{% endif %}
-						{% if maxRam.getNote() is not null %}
-							({{ maxRam.getNote()}})
+	{% if motherboard.getMotherboardMaxRams() is not empty %}
+		<tr>
+			<td><i>Max RAM size</i></td>
+			<td>
+				{% if motherboard.getMotherboardMaxRams() is not empty %}
+					{% for maxRam in motherboard.getMotherboardMaxRams()|sort((a, b) => a.getMaxRam().getValue() <=> b.getMaxRam().getValue()) %}
+						{% if maxRam.getMaxRam() is not null %}
+							<span class="text-block" {% if maxRam.getMaxRam().getValue() > 1048575 %}>{{ maxRam.getMaxRam().getValue() / 1048576 }}
+								GB<!--
+						-->{% elseif maxRam.getMaxRam().getValue() > 1023 %}
+								>{{ maxRam.getMaxRam().getValue() / 1024 }}
+								MB<!--
+						-->{% else %}
+								>{{ maxRam.getMaxRam().getValue() }}
+								KB<!--
+						-->{% endif %}
+							{% if maxRam.getNote() is not null %}
+								({{ maxRam.getNote()}})
+							{% endif %}
+						</span>
 						{% endif %}
-					</span>
-					{% endif %}
+					{% endfor %}
+				{% endif %}
+			</td>
+		</tr>
+	{% endif %}
+	{% if motherboard.getDramType() is not empty %}
+		<tr>
+			<td><i>RAM type</i></td>
+			<td>{% if motherboard.getDramType() is not empty %}
+				{% for dram in motherboard.getDramType() %}
+					<span class="text-block">{{ dram.getName() }}</span>
 				{% endfor %}
 			{% endif %}
-		</td>
-	</tr>
-{% endif %}
-{% if motherboard.getDramType() is not empty %}
-	<tr>
-		<td><i>Supported RAM types:</i></td>
-		<td>{% if motherboard.getDramType() is not empty %}
-			{% for dram in motherboard.getDramType() %}
-				<span class="text-block">{{ dram.getName() }}</span>
-			{% endfor %}
-		{% endif %}
-	</tr>
-{% endif %}
-</table>
-<!-- DRIVERS -->
-<div class="scroll-div">
-		<img src="{{ absolute_url(asset('build/icons/show/hardware.gif')) }}" alt="" style="vertical-align: middle;padding-bottom: 10px;">
-		<b>Drivers:</b>
-		{% if motherboard.getAllDrivers() is not empty %}
-		<table class="stbl"><tr class="stbl-head">{{ driverHeader() }}</tr>
-		{% for driver in motherboard.getAllDrivers() %}{{ driverLink(driver.largeFile) }}{% endfor %}
-		</table>
-		{% else %}
-			<span>not available</span>
-		{% endif %}
-</div>
-<!-- BIOS -->
-
-<div class="scroll-div">
-	<img src="{{ absolute_url(asset('build/icons/show/chip.gif')) }}" alt="" style="vertical-align: middle;padding-bottom: 10px;">
-	<b>BIOS images:</b>
-	{% if motherboard.getMotherboardBios() is not empty %}
-	<table class="stbl"><tr class="stbl-head">
-	<th>Manuf.</th>
-	<th>POST String</th>
-	<th>Note</th>
-	<th>Core Ver.</th>
-	<th>BIOS Ver.</th></tr>
-	{% for bios in motherboard.getMotherboardBios()|sort((a, b) => b.boardVersion <=> a.boardVersion)|sort((a, b) => a.manufacturer <=> b.manufacturer) %}
-	<tr style="text-align:center;">
-		<td>{{ bios.getManufacturer().getShortNameIfExist() }}</td>
-		<td>
-			<span class="string-bios">{{ bios.getPostString() }}</span>
-		</td>
-		<td>
-			<span>{{ bios.getNote() }}</span>
-		</td>
-		<td>{{ bios.getCoreVersion() }}</td>
-		<td>
-			{% if bios.getFileName() is not null %}
-				<a href="{{ vich_uploader_asset(bios, 'romFile') }}">
-					<img src="{{ absolute_url(asset('build/icons/dw.gif')) }}" alt="" width="16" height="16" style="vertical-align: middle;">
-					{% if bios.getBoardVersion() is not null %}
-						{{ bios.getBoardVersion() }}
-					{% else %}
-						???
-					{% endif %}
+		</tr>
+	{% endif %}
+	<!-- Expansion Chips -->
+	{% if motherboard.getExpansionChips() is not empty %}
+		{% for chip in motherboard.getExpansionChips()|filter(a => a.getType().getName() == "Chipset part")%}
+			{% if loop.first %}
+			<tr><td><i>Chipset parts</i></td>
+			<td>
+				<div class="tag-container">
+			{% endif %}
+				<a href="{{ path('expansion_chip_show', {id: chip.getId()}) }}">
+					<span class="text-block">{{ chip.getNameWithManufacturer() }}</span>
 				</a>
+			{% if loop.index == motherboard.getExpansionChips()|filter(a => a.getType().getName() == "Chipset part")|length %}</div></td></tr>{% endif %}
+		{% endfor %}
+		{% for type in expansionchiptype %}
+			{% for chip in motherboard.getExpansionChips()|filter(a => a.getType().getName() !=  "Chipset part")|filter(a => a.getType().getName() == type.getName())%}
+				{% if loop.first %}
+				<tr><td><i>{{chip.getType().getName()}} chips</i></td>
+				<td><div class="tag-container">{% endif %}
+				<a href="{{ path('expansion_chip_show', {id: chip.getId()}) }}">
+					<span class="text-block">{{ chip.getNameWithManufacturer() }}</span>
+				</a>
+				{% if loop.index == motherboard.getExpansionChips()|filter(a => a.getType().getName() == type.getName())|length %}</div></td></tr>{% endif %}
+			{% endfor %}
+		{% endfor %}
+	{% endif %}
+	<tr>
+		<td><i>PSU connectors:</i></td>
+		<td>{% if motherboard.getPsuConnectors() is not empty %}{% for psu in motherboard.getPsuConnectors() %}{{ psu.getName() }}{% if not loop.last %}, {% endif %}{% endfor %}{% else %}Unknown{% endif %}</td>
+	</tr>
+	{% if motherboard.getDimensions() is not null %}
+		<tr>
+			<td><i>Dimensions:</i></td>
+			<td>{{ motherboard.getDimensions() }}</td>
+		</tr>
+	{% endif %}
+	<tr>
+		<td>
+			<div style="width:170px;"><i>Form factor:<i></div>
+		</td>
+		<td style="width: 100%;">
+			{% if motherboard.getFormFactor() is not null %}
+				{{ motherboard.getFormFactor().getName() }}
 			{% else %}
-				{{ bios.getBoardVersion() }}
+				Unknown
 			{% endif %}
 		</td>
-		
 	</tr>
-	{% endfor %}
-	</table>
-	{% else %}
-		<span>not available</span>
+</table>
+{% include 'macros/drivers.html.twig' with {'entity': motherboard.getAllDrivers()} %}
+<!-- BIOSes -->
+<div class="scroll-div">
+	{% set bfile_cnt = 0 %}
+	{% if motherboard.getMotherboardBios() is not empty %}
+		{% for bios in motherboard.getMotherboardBios() %}
+			{% if bios.getFileName() is not null %}{% set bfile_cnt = bfile_cnt + 1 %}{% endif %}
+		{% endfor %}
+	{% endif %}
+	<img src="{{ absolute_url(asset('build/icons/show/awchip.gif')) }}" alt="" style="vertical-align: middle;padding-bottom: 10px;">
+	<b>BIOS images:</b>
+	<span>{{ bfile_cnt }} file{% if bfile_cnt != 1 %}s{% endif %} available</span>
+	{% if motherboard.getMotherboardBios() is not empty %}
+		{% for biosVen,biosList in motherboard.getMotherboardBiosByVendor() %}
+		<p class="bios-vendor-header"><em>Vendor:</em>&nbsp;{{ biosVen }} [{{ biosList|length }} entr{% if biosList|length > 1 %}ies{% else %}y{% endif %}]</p>
+		<table class="stbl">
+			<tr class="stbl-head">
+				<th>POST string</th>
+				<th>Note</th>
+				<th>Core Ver.</th>
+				<th>BIOS Ver.</th>
+				<th>Last edit</th>
+			</tr>
+			{% for bios in biosList|sort((a, b) => b.boardVersion <=> a.boardVersion) %}
+			<tr style="text-align:center;">
+				<td class="monospace">{{ bios.getPostString() }}</td>
+				<td>{{ bios.getNote() }}</td>
+				<td>{{ bios.getCoreVersion() }}</td>
+				<td>
+					{% if bios.getFileName() is not null %}
+						<a class="combo" href="{{ vich_uploader_asset(bios, 'romFile') }}">
+							<img src="{{ absolute_url(asset('build/icons/dw.gif')) }}" alt="" width="16" height="16">
+							<span>
+							{% if bios.getBoardVersion() is not null %}
+								{{ bios.getBoardVersion() }}
+							{% else %}
+								[unknown]
+							{% endif %}
+							</span>
+						</a>
+					{% else %}
+						{{ bios.getBoardVersion() }}
+					{% endif %}
+				</td>
+				<td>
+					<i>{{ bios.getUpdatedAt()|date("Y-m-d")}}</i>
+				</td>
+			</tr>
+			{% endfor %}
+		</table>
+		{% endfor %}
 	{% endif %}
 </div>
+
 {% if motherboard.getManuals() is not empty %}
 <table class="stbl"><tr>
 	<td><img src="{{ absolute_url(asset('build/icons/show/manual.gif')) }}" alt="" style="vertical-align: middle;padding-bottom: 10px;"><b>Manuals:</b></td>
@@ -282,96 +280,8 @@
 {% endif %}
 </td>
 </tr></table></div>
-{% if motherboard.getVideoChipset() is not null or motherboard.getMaxVideoRam() is not null or motherboard.getAudioChipset() is not null %}
-<table>
-{% if motherboard.getVideoChipset() is not null %}
-<tr><td>Video Chipset:</td><td>{{ motherboard.getVideoChipset().getNameWithManufacturer() }}
-{% if  motherboard.getMaxVideoRam() is not null %}
-	({{  motherboard.getMaxVideoRam().getValueWithUnit() }}
-	max VRAM)
-{% endif %}</td>
-</tr>
-{% endif %}
-{% if motherboard.getAudioChipset() is not null %}
-<tr><td>Audio Chipset:</td><td>{{ motherboard.getAudioChipset().getNameWithManufacturer() }}
-</td></tr>{% endif %}
-</table>{% endif %}
-{% if motherboard.getKnownIssues() is not empty %}
-				<div style="padding-top:10px;padding-left: 5px;">
-					<h3><b>Known issues:</b></h3>	
-					<div class="notes">
-{% apply markdown_to_html %}{% for issue in motherboard.getKnownIssues()|sort %}
-* {{ issue.getName() }}
-
-     {{ issue.getDescription() }}
-
-{% endfor %}{% endapply %}
-					</div>
-				</div>			
-				{% endif %}
-{% if motherboard.note is not null %}<div style="padding-top:10px"><div><b>Notes:</b></div><div class="notes" style="word-wrap: break-word;overflow: auto; overflow-y: hidden; width:96%;padding-top:6px;padding-bottom:20px;margin:auto;">{% apply markdown_to_html %}{{ motherboard.note }}{% endapply %}</div></div>{% endif %}</div>
-<div class="show-cpus">{% if motherboard.getProcessors() is not empty %}<b>{% trans %}Supported CPUs:{% endtrans %}</b>{% if motherboard.getMaxCpu() is not null %}({% trans %}max CPUs:{% endtrans %}{{ motherboard.getMaxCpu()}}){% endif %}<div class="scroll-div"><table class="stbl"><tr class="stbl-head"><th>Model</th><th>Speed</th><th>FSB</th><th>Voltages</th><th>L1 Cache</th><th>L2 Cache</th><th>L3 Cache</th><th>Core</th><th>Process</th><th>TDP</th><th>Part Number</th></tr>{% for processor in motherboard.getSortedProcessors() %}<tr style="text-align:center;">
-<td>{{ processor.manufacturer.getShortNameIfExist() }}&nbsp;{{ processor.getName() }}</td>
-<td>{{ processor.speed.getValueWithUnit() }}</td>
-<td>{{ processor.fsb.getValueWithUnit() }}</td>
-<td>{{ processor.getVoltagesWithValue()}}</td>
-<td>
-	{% if processor.l1 is not null %}
-		{{ processor.l1.getValueWithUnit()}}
-		{% if processor.l1CacheMethod is not null %}
-			({{ processor.l1CacheMethod.getName()}})
-		{% endif %}
-	{% else %}
-		-
-	{% endif %}
-</td>
-<td>
-	{% if processor.l2 is not null %}
-		{{ processor.l2.getValueWithUnit()}}
-		{% if processor.l2CacheRatio is not null %}
-			({{ processor.l2CacheRatio.getName()}})
-		{% endif %}
-	{% else %}
-		-
-	{% endif %}
-</td>
-<td>
-	{% if processor.l3 is not null %}
-		{{ processor.l3.getValueWithUnit()}}
-		{% if processor.l3CacheRatio is not null %}
-			({{ processor.l3CacheRatio.getName()}})
-		{% endif %}
-	{% else %}
-		-
-	{% endif %}
-</td>
-<td>
-	{% if processor.core is not null %}
-		{{ processor.core }}
-	{% else %}
-		-
-	{% endif %}
-</td>
-<td>
-	{% if processor.processNode is not null %}
-		{{ processor.processNode }}nm
-	{% else %}
-		-
-	{% endif %}
-</td>
-<td>
-	{% if processor.tdp is not null %}
-		{{ processor.tdp }}W
-	{% else %}
-		-
-	{% endif %}
-</td>
-<td>{{ processor.partNumber}}</td></tr>{% endfor %}</table></div>{% endif %}{% if motherboard.getCoprocessors() is not empty %}<b>{% trans %}Supported NPUs:{% endtrans %}</b><div class="scroll-div"><table class="stbl"><tr class="stbl-head"><th>Model</th><th>Speed</th><th>FSB</th><th>Part Number</th></tr>{% for copro in motherboard.getCoprocessors()|sort((a, b) => a.getPartNumber() <=> b.getPartNumber()) %}<tr style="text-align:center;">
-<td>{{ copro.manufacturer.getShortNameIfExist() }}&nbsp;{{ copro.getName() }}</td>
-<td>{{ copro.speed.getValueWithUnit() }}</td>
-<td>{{ copro.fsb.getValueWithUnit() }}</td>
-<td>{{ copro.partNumber}}</td></tr>{% endfor %}</table></div>{% endif %}<br></div>
-
+{% include 'macros/aliases.html.twig' with {'entity':motherboard.getMotherboardAliases(), 'msg': 'Also known as:'} %}
+{% include 'macros/notes.html.twig' with {'entity': motherboard} %}
 <div class="disclaimer">
 	<p><b>Disclaimer</b></p>
 	<p>The info found in this page might not be entirely correct. Feel free to amend this page by logging in, contacting us on Discord or via email.</p>

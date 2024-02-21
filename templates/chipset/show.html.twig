@@ -1,169 +1,87 @@
 {% extends 'base.html.twig' %}
-{% from 'macros/largeFile.html.twig' import link as driverLink %}
-{% from 'macros/largeFile.html.twig' import header as driverHeader %}
 
 {% block title %}
-	{{ chipset.getManufacturer() ? chipset.getManufacturer().getShortNameIfExist() : 'Unknown' }} {{ chipset.getPartNo() }}
-{% endblock %}
-{% block metatags %}
-	<meta name="description" content="Chipset:{{ chipset.getFullName() }} {{ chipset.getParts()}} Release date:{% if chipset.getReleaseDate() is not null %}{{ chipset.getReleaseDate() }}{% else %}unknown{% endif %}">
-{% endblock %}
-
-{% block opengraph %}
-	{% apply spaceless %}
-	{% if chipset.getChipsetParts() is not empty %}
-		{% for chipPart in chipset.getChipsetParts()|filter(chipPart => chipPart.getImages() is not empty)|slice(0,1) %}
-			{% for image in chipPart.getImages()|slice(0,1) %}
-				<meta property="og:image" content="{{ vich_uploader_asset(image, 'imageFile')}}">
-			{% endfor %}
-		{% endfor %}
-	{% else %}
-		<meta property="og:image" content="{{ absolute_url(asset('build/images/logo.webp')) }}">
-	{% endif %}
-	<meta property="og:title" content="{{ chipset.getFullName() }}">
-	<meta property="og:description" content="Get chipset info, images and drivers for {{ chipset.getFullName() }}!">
-	{% endapply %}
-	<link rel="alternate" hreflang="x-default" href="{{ absolute_url(path('chipset_show', {id: chipset.getId()})) }}"/>
+	{{ chipset.getNameWithoutParts() }}
 {% endblock %}
 
 {% block body %}
 <!-- MANUF./NAME/PART NO. -->
-<div class="title">{{ chipset.getFullName() }}</div>
-
-<div class="main-strip">
-	<div class="internal-container">
-		{% include 'macros/navbar.html.twig' with {'type':'show', 'entity': chipset, 'entityName': 'chipset', 'count':2} %}
-		<div class="internal-content">
-			<!-- DESCRIPRION -->
-			<div class="show-general" id="sh-general">
-				{% if chipset.getChipsetParts() is not empty %}
-					<div class="tag-container">
-						<span>Chipset parts:</span>
-						{% for part in chipset.getChipsetParts() %}
-							<span class="text-block">{{ part.getFullName() }}</span>
-						{% endfor %}
-					</div>
-				{% endif %}
-				<div>
-					<span>Release date: {{ chipset.getReleaseDate() ? chipset.getReleaseDate() : 'Unknown' }}</span>
-					{% if chipset.getEncyclopediaLink() is not null %}
-					<a class='button-widget' href="{{ chipset.getEncyclopediaLink() }}">
-	    				<img src='{{ absolute_url(asset('build/icons/show/data.svg')) }}' alt='' width='16' height='16' style='vertical-align:middle;padding:3px;'>Encyclopedia link</a>
-					{% endif %}
-					<a class='button-widget' href="{{ absolute_url(path('app_homepage')) }}motherboards/?chipsetId={{ chipset.getId() }}&amp;showImages=1">
-	    				<img src='{{ absolute_url(asset('build/icons/show/hardware.svg')) }}' alt='' width='16' height='16' style='vertical-align:middle;padding:3px;'>See all boards with this chipset</a>
-					<a class='button-widget' href="{{ absolute_url(path('app_homepage')) }}bios/?chipsetId={{ chipset.getId() }}">
-	    				<img src='{{ absolute_url(asset('build/icons/dw.svg')) }}' alt='' width='16' height='16' style='vertical-align:middle;padding:3px;'>See all BIOSes for this chipset</a>
-				</div>
-				<div class="chipset-textarea">
-				{% if chipset.getDescription() is not empty %}
-					{% apply markdown_to_html %}{{ chipset.getDescription() }}{% endapply %}
-				{% endif %}
-				{% if chipset.getChipsetParts() is not empty %}
-					<hr>
-					<h1>Documented parts</h1>
-					<ul class="chipset-toc">
-						{% for chipPart in chipset.getChipsetParts()|filter(chipPart => chipPart.getDescription() is not empty) %}
-						<li><a href="#{{ chipPart.getShortNamePN() }}">{{ chipPart.getShortName() }}</a></li>
-						{% endfor %}	
-					</ul>				
-					{% for chipPart in chipset.getChipsetParts()|filter(chipPart => chipPart.getDescription() is not empty) %}
-						<hr><a name="{{ chipPart.getShortNamePN() }}"></a>
-						{% apply markdown_to_html %}{{ chipPart.getDescription() }}{% endapply %}
-					{% endfor %}
-				{% endif %}
-				</div>
-			</div>
-			<div class="show-downloads" id="sh-downloads">
-				<!-- DRIVERS -->
-				<div>
-					<img src="{{ absolute_url(asset('build/icons/show/hardware.svg')) }}" alt="" width="32" style="vertical-align: middle;padding-bottom: 10px;">
-					<span><b>Drivers: </b></span>
-					{% if chipset.getDrivers() is not empty %}
-					<span>{{ chipset.getDrivers.count() }}{% if chipset.getDrivers.count() == 1 %} entry{% else %} entries{% endif %}</span>
-					<div class="show-table drv" style="display:block;">
-						<div class="show-downloads-head">{{ driverHeader() }}</div>
-						{% for driver in chipset.getDrivers() %}
-							<div class="show-table-row">{{ driverLink(driver.largeFile) }}</div>
-						{% endfor %}
-					</div>
-					{% else %}
-					<span>not available</span>
-					{% endif %}
-				</div>
-				<!-- CHIPSET PART DOCS -->
-				<div>
-					<img src="{{ absolute_url(asset('build/icons/show/manual.svg')) }}" alt="" width="32" style="vertical-align: middle;padding-bottom: 10px;">
-					<span><b>Documentation: </b></span>
-					{% set docCount = 0 %}
-					{% if chipset.getDocumentations() is not empty %}
-						{% set moreDocCount = chipset.getDocumentations.count() %}
-					{% else %}
-						{% set moreDocCount = 0 %}
-					{% endif %}
-					{% if chipset.getChipsetParts() is not empty %}
-						<!-- CHIPSET PART DOC COUNT -->
-						{% for chipPart in chipset.getChipsetParts()|filter(chipPart => chipPart.getDocumentations() is not empty) %}
-							{% set docCount = docCount + chipPart.getDocumentations().count() %}
-						{% endfor %}
-					{% endif %}
-					{% set moreDocCount = docCount + moreDocCount %}
-					{% if moreDocCount > 0 %}
-						<span>{{ moreDocCount }}&nbsp;{% if moreDocCount == 1 %}file{% else %}files{% endif %}</span>
-					{% else %}
-							<span>not available</span>
-					{% endif %}
-					{% if moreDocCount > 0 %}
-						<div><div><div>
-							<ul style="list-style-type: none;">
-							<!-- CHIPSET PART DOCS -->
-							{% if  chipset.getChipsetParts() is not empty %}{% for chipPart in chipset.getChipsetParts()|filter(chipPart => chipPart.getDocumentations() is not empty) %}
-								{% for documentation in chipPart.getDocumentations()|sort((a, b) => a.getLinkName <=> b.getLinkName) %}
-								<li><a href="{{ vich_uploader_asset(documentation, 'manualFile') }}">
-									<img src="{{ absolute_url(asset('build/icons/dw.svg')) }}" alt="" width="16" height="16" style="vertical-align: middle;">
-									{{ documentation.getLinkName() }}</a>({{ documentation.getLanguage().getName()}})</li>
-								{% endfor %}{% endfor %}
-							{% endif %}
-							<!-- MORE CHIPSET DOCS -->
-							{% if chipset.getDocumentations() is not empty %}
-								{% for documentation in chipset.getDocumentations()|sort((a, b) => a.getLinkName <=> b.getLinkName) %}
-									<li><a href="{{ vich_uploader_asset(documentation, 'manualFile') }}">
-										<img src="{{ absolute_url(asset('build/icons/dw.svg')) }}" alt="" width="16" height="16" style="vertical-align: middle;">
-										{{ documentation.getLinkName() }}</a>({{ documentation.getLanguage().getName()}})</li>
-								{% endfor %}
-							{% endif %}
-							</ul>
-						</div></div></div>
-					{% endif %}
-				</div>
-			</div>
+<h2 class="title">{{ chipset.getNameWithoutParts() }}</h2>
+<!-- IMAGES -->
+{% if chipset.getExpansionChips() is not empty %}
+	{% set lpindex = 0 %}
+	{% set lplen = 0 %}
+	{% for chipPart in chipset.getExpansionChips()|filter(chipPart => chipPart.getImages() is not empty) %}
+		{% for image in chipPart.getImages() %}
+			{% set lplen = lplen + 1 %}
+		{% endfor %}
+	{% endfor %}
+	{% if lplen > 0 %}
+		<div class="show-images" id="sh-images">
+			{% for chipPart in chipset.getExpansionChips()|filter(chipPart => chipPart.getImages() is not empty) %}
+				{% for image in chipPart.getImages()|sort((a, b) => a.getFileName() <=> b.getFileName()) %}
+					{% set lpindex = lpindex + 1 %}
+					{% include 'macros/images.html.twig' with {'type':'chipset', 'entity': image, 'index': lpindex, 'length': lplen} %}
+				{% endfor %}
+			{% endfor %}
+		</div>
+	{% else %}
+	<div class="show-images" id="sh-images">
+		<div class="show-image">
+			<img src={{ absolute_url(asset('build/images/missing/chipset-missing.jpg')) }} title="no images available :(" style="width:100%;">
 		</div>
 	</div>
-
-	<!-- IMAGES -->
-	{% if chipset.getChipsetParts() is not empty %}
-		{% set lpindex = 0 %}
-		{% set lplen = 0 %}
-		{% for chipPart in chipset.getChipsetParts()|filter(chipPart => chipPart.getImages() is not empty) %}
-			{% for image in chipPart.getImages() %}
-				{% set lplen = lplen + 1 %}
-			{% endfor %}
-		{% endfor %}
-		{% if lplen > 0 %}
-			<div class="show-images" id="sh-images">
-				{% for chipPart in chipset.getChipsetParts()|filter(chipPart => chipPart.getImages() is not empty) %}
-					{% for image in chipPart.getImages() %}
-						{% set lpindex = lpindex + 1 %}
-						{% include 'macros/images.html.twig' with {'type':'chipset', 'entity': image, 'index': lpindex, 'length': lplen} %}
-					{% endfor %}
-				{% endfor %}
-			</div>
-		{% endif %}
-	{#{% else %}
-		<div class="show-image"><p style="font-size:20px;height:100px;">no images available :(</p></div>#}
 	{% endif %}
-
+{% else %}
+<div class="show-images" id="sh-images">
+	<div class="show-image">
+		<img src={{ absolute_url(asset('build/images/missing/chipset-missing.jpg')) }} title="no images available :(" style="width:100%;">
+	</div>
 </div>
+{% endif %}
+<!-- DATA -->
+<div class="show-data">
+	<table class="stbl">
+		<tr>
+			<td><i>Chipset parts</i></td>
+			<td>
+				{% if chipset.getExpansionChips() is not empty %}
+					<div class="tag-container">
+						{% for part in chipset.getExpansionChips() %}
+							<a href="{{ path('expansion_chip_show', {id: part.getId()}) }}"><span class="text-block">{{ part.getNameWithManufacturer() }}</span></a>
+						{% endfor %}
+					</div>
+				{% else %}<div>Unknown</div>{% endif %}
+			</td>
+		</tr>
+		<tr>
+			<td><i>Release date</i></td>
+			<td>{{ chipset.getReleaseDate() ? chipset.getReleaseDateString() : 'Unknown' }}</td>
+		</tr>
+	</table>
+	{% include 'macros/aliases.html.twig' with {'entity':chipset.getChipsetAliases(), 'msg': 'Also known as:'} %}
+	{% include 'macros/notes.html.twig' with {'entity': chipset} %}
+	{% include 'macros/drivers.html.twig' with {'entity': chipset.getAllDrivers()} %}
+	{% include 'macros/manuals.html.twig' with {'entity': chipset.getDocumentations(), 'audit_entity':'App-Entity-ChipsetDocumentation'} %}
+	<!-- CHIPSET PART DOCS -->
+	<div class="scroll-div">
+		{% if chipset.getExpansionChips() is not empty %}
+			{% set dcount = false %}
+			{% for chipPart in chipset.getExpansionChips()|filter(chipPart => chipPart.getDescription() is not empty) %}{% set dcount = true %}{% endfor %}
+			{% if dcount == true %}
+				<hr>
+				<h1>Documented parts</h1>
+				<ul class="chipset-toc">
+					{% for chipPart in chipset.getExpansionChips()|filter(chipPart => chipPart.getDescription() is not empty) %}
+					<li><a href="{{ path("expansion_chip_show", {id:chipPart.getId()}) }}">{{ chipPart.getNameWithManufacturer() }}{% if chipPart.getChipAliases() is not empty %}&nbsp;(known as:{% for cp in chipPart.getChipAliases() %}
+					{{ cp.getManufacturer().getName() }}&nbsp;{{ cp.getPartNumber() }} {{ cp.getName() ? '[' ~ cp.getName() ~ ']' }}{% if not loop.last%}, {% endif %}{% endfor %}){% endif %}</a></li>
+					{% endfor %}
+				</ul>
+			{% endif %}
+		{% endif %}
+	</div>
+</div>
+
 <div class="disclaimer">
 	<p><b>Disclaimer</b></p>
 	<p>The info found in this page might not be entirely correct. Feel free to amend this page by logging in, contacting us on Discord or via email.</p>

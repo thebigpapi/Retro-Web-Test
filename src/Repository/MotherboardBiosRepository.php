@@ -39,87 +39,118 @@ class MotherboardBiosRepository extends ServiceEntityRepository
 
     public function findBios(array $criterias)
     {
-        $query = $this->createQueryBuilder('b');
-        $query->join('b.motherboard', 'm');
+        $entityManager = $this->getEntityManager();
+
+        $whereArray = array();
+        $valuesArray = array();
 
         if (array_key_exists('file_present', $criterias)) {
-            $query->andWhere($query->expr()->isNotNull('b.file_name'));
+            $whereArray[] = "bios.file_name IS NOT NULL";
         }
-
         if (array_key_exists('manufacturer_id', $criterias)) {
-            $query->andWhere('b.manufacturer = :manufacturer_id')
-                ->setParameter('manufacturer_id', $criterias['manufacturer_id']);
+            $whereArray[] = "(bios.manufacturer = :manufacturer_id)";
+            $valuesArray["manufacturer_id"] = (int)$criterias['manufacturer_id'];
         }
-
-        if (array_key_exists('motherboard_manufacturer_ids', $criterias)) {
-            $cpt = 0;
-            $str = "";
-            foreach ($criterias['motherboard_manufacturer_ids'] as $key => $id) {
-                if (array_key_last($criterias['motherboard_manufacturer_ids']) == $key) {
-                    $str = "$str m.manufacturer = :manufacturer_id$cpt";
-                } else {
-                    $str = "$str m.manufacturer = :manufacturer_id$cpt OR ";
-                }
-                $cpt++;
-            }
-
-            $query->andWhere("($str)");
-            $cpt = 0;
-            foreach ($criterias['motherboard_manufacturer_ids'] as $key => $id) {
-                $query->setParameter("manufacturer_id$cpt", $id);
-            }
+        if (array_key_exists('mbmanufacturer_id', $criterias)) {
+            $whereArray[] = "(m.manufacturer = :mbmanufacturer_id)";
+            $valuesArray["mbmanufacturer_id"] = (int)$criterias['mbmanufacturer_id'];
         }
-
         if (array_key_exists('chipset_id', $criterias)) {
-            $query->andWhere('m.chipset = :chipset_id')
-                ->setParameter('chipset_id', $criterias['chipset_id']);
+            $whereArray[] = "(m.chipset = :chipset_id)";
+            $valuesArray["chipset_id"] = (int)$criterias['chipset_id'];
         }
-
         if (array_key_exists('core_version', $criterias)) {
-            $query->andWhere('b.coreVersion = :coreVersion')
-                ->setParameter('coreVersion', $criterias['core_version']);
+            $whereArray[] = "(LOWER(bios.coreVersion) LIKE LOWER(:coreVersion))";
+            $valuesArray["coreVersion"] = "%" . $criterias['core_version'] . "%";
+        }
+        if (array_key_exists('post_string', $criterias)) {
+            $whereArray[] = "(LOWER(bios.postString) LIKE LOWER(:postString))";
+            $valuesArray["postString"] = "%" . $criterias['post_string'] . "%";
+        }
+        if (array_key_exists('file_name', $criterias)) {
+            $whereArray[] = "(LOWER(bios.file_name) LIKE LOWER(:fileName))";
+            $valuesArray["fileName"] = "%" . $criterias['file_name'] . "%";
+        }
+        if (array_key_exists('expansionChips', $criterias)) {
+            foreach ($criterias['expansionChips'] as $key => $value) {
+                $whereArray[] = "(m.id in (select m$key.id from App\Entity\Motherboard m$key JOIN m$key.expansionChips ec$key where ec$key.id=:idChip$key))";
+                $valuesArray["idChip$key"] = $value;
+        }
         }
 
-        if (
-            array_key_exists('post_string', $criterias)
-            &&
-            !array_key_exists('motherboard_manufacturer_ids', $criterias)
-        ) {
-            $query->andWhere($query->expr()->like('b.postString', ':postString'))
-                ->setParameter('postString', '%' . $criterias['post_string'] . '%');
+        // Building where statement
+        $whereString = implode(" AND ", $whereArray);
+
+        // Building query
+        if($whereArray == []){
+            return [];
+        }
+        else{
+            $query = $entityManager->createQuery(
+                "SELECT man.name as manName, m.id, m.name, bios, bman.name as bmanName
+                FROM App\Entity\MotherboardBios bios JOIN bios.manufacturer bman JOIN bios.motherboard m JOIN m.manufacturer man LEFT JOIN m.expansionChips mec
+                WHERE $whereString
+                ORDER BY man.name ASC, m.name ASC, bios.coreVersion ASC, manName ASC"
+            );
         }
 
-        return $query->orderBy('b.postString', 'ASC')
-            ->getQuery()
-            ->getResult();
+        // Setting values
+        foreach ($valuesArray as $key => $value) {
+            $query->setParameter($key, $value);
+        }
+        return $query->getResult();
     }
-
-    // /**
-    //  * @return MotherboardBios[] Returns an array of MotherboardBios objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    public function findByString(string $string)
     {
-        return $this->createQueryBuilder('m')
-            ->andWhere('m.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('m.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
+        $entityManager = $this->getEntityManager();
+        // Building query
+        if($string == ''){
+            return [];
+        }
+        else{
+            $query = $entityManager->createQuery(
+                "SELECT man.name as manufacturer, m.id, m.name, bios.coreVersion as core, bman.name as vendor, bios.boardVersion as version, bios.file_name as file
+                FROM App\Entity\MotherboardBios bios JOIN bios.manufacturer bman JOIN bios.motherboard m JOIN m.manufacturer man
+                WHERE (LOWER(bios.postString) LIKE LOWER(:postString))"
+            )->setParameter("postString", "%" . $string . "%");
+        }
+        return $query->getResult();
     }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?MotherboardBios
+    public function findByFilename(string $filename1, string $filename2)
     {
-        return $this->createQueryBuilder('m')
-            ->andWhere('m.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        $entityManager = $this->getEntityManager();
+        // Building query
+        if($filename1 == '' && $filename2 == ''){
+            return [];
+        }
+        $whereArray = array();
+        $valuesArray = array();
+        if($filename1 == $filename2){
+            $fname = pathinfo($filename1);
+            $whereArray[] = "(LOWER(bios.file_name) LIKE LOWER(:fname1) AND LOWER(bios.file_name) LIKE LOWER(:fext1))";
+            $valuesArray["fname1"] = "%" . $fname['filename'] . "%";
+            $valuesArray["fext1"] = "%" . $fname['extension'] . "%";
+        }
+        else{
+            $fname1 = pathinfo($filename1);
+            $fname2 = pathinfo($filename2);
+            $whereArray[] = "((LOWER(bios.file_name) LIKE LOWER(:fname1) AND LOWER(bios.file_name) LIKE LOWER(:fext1)) 
+                OR (LOWER(bios.file_name) LIKE LOWER(:fname2) AND LOWER(bios.file_name) LIKE LOWER(:fext2)))";
+            $valuesArray["fname1"] = "%" . $fname1['filename'] . "%";
+            $valuesArray["fext1"] = "%" . $fname1['extension'] . "%";
+            $valuesArray["fname2"] = "%" . $fname2['filename'] . "%";
+            $valuesArray["fext2"] = "%" . $fname2['extension'] . "%";
+        }
+        $whereString = implode(" AND ", $whereArray);
+        $query = $entityManager->createQuery(
+            "SELECT man.name as manufacturer, m.id, m.name, bios.coreVersion as core, bman.name as vendor, bios.boardVersion as version, bios.file_name as file
+            FROM App\Entity\MotherboardBios bios JOIN bios.manufacturer bman JOIN bios.motherboard m JOIN m.manufacturer man
+            WHERE $whereString"
+        );
+        //dd($whereString);
+        foreach ($valuesArray as $key => $value) {
+            $query->setParameter($key, $value);
+        }
+        return $query->getResult();
     }
-    */
 }

@@ -2,168 +2,173 @@
 
 namespace App\Entity;
 
+use App\Entity\Traits\ImpreciseDateTrait;
+use App\Repository\ChipsetRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\ChipsetRepository")
- */
+#[ORM\Entity(repositoryClass: ChipsetRepository::class)]
 class Chipset
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
+    use ImpreciseDateTrait;
+
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Manufacturer", inversedBy="chipsets")
-     */
+    #[ORM\ManyToOne(targetEntity: Manufacturer::class, inversedBy: 'chipsets')]
+    #[Assert\NotBlank(message: 'Manufacturer cannot be blank')]
     private $manufacturer;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Motherboard", mappedBy="chipset")
-     */
+    #[ORM\OneToMany(targetEntity: Motherboard::class, mappedBy: 'chipset')]
     private $motherboards;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[Assert\Length(max: 255, maxMessage: 'Name is longer than {{ limit }} characters, try to make it shorter.')]
     private $name;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\ChipsetPart", inversedBy="chipsets")
-     * @var ArrayCollection<ChipsetPart>
-     */
-    private $chipsetParts;
+    #[ORM\OneToMany(targetEntity: ChipsetAlias::class, mappedBy: 'chipset', orphanRemoval: true, cascade: ['persist'])]
+    #[Assert\Valid()]
+    private $chipsetAliases;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @var ArrayCollection<ExpansionChip>
      */
+    #[ORM\ManyToMany(targetEntity: ExpansionChip::class, inversedBy: 'chipsets')]
+    private $expansionChips;
+
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[Assert\Length(max: 255, maxMessage: 'Encyclopedia link is longer than {{ limit }} characters, try to make it shorter.')]
     private $encyclopedia_link;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $release_date;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[Assert\Length(max: 255, maxMessage: 'Part number is longer than {{ limit }} characters, try to make it shorter.')]
     private $part_no;
 
-    /**
-     * @ORM\OneToMany(
-     *   targetEntity="App\Entity\ChipsetBiosCode",
-     *   mappedBy="chipset",
-     *   orphanRemoval=true, cascade={"persist"}
-     * )
-     */
+    #[ORM\OneToMany(targetEntity: ChipsetBiosCode::class, mappedBy: 'chipset', orphanRemoval: true, cascade: ['persist'])]
+    #[Assert\Valid()]
     private $biosCodes;
 
-    /**
-     * @ORM\OneToMany(targetEntity=LargeFileChipset::class, mappedBy="chipset", orphanRemoval=true, cascade={"persist"})
-     */
+    #[ORM\OneToMany(targetEntity: LargeFileChipset::class, mappedBy: 'chipset', orphanRemoval: true, cascade: ['persist'])]
     private $drivers;
 
-    /**
-     * @ORM\Column(type="string", length=8192, nullable=true)
-     */
+    #[ORM\Column(type: 'string', length: 8192, nullable: true)]
+    #[Assert\Length(max: 8192, maxMessage: 'Description is longer than {{ limit }} characters, try to make it shorter.')]
     private $description;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\ChipsetDocumentation", mappedBy="chipset", orphanRemoval=true, cascade={"persist"})
-     */
+    #[ORM\OneToMany(targetEntity: ChipsetDocumentation::class, mappedBy: 'chipset', orphanRemoval: true, cascade: ['persist'])]
+    #[Assert\Valid()]
     private $documentations;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    private ?\DateTimeInterface $lastEdited = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $cachedName = null;
 
     public function __construct()
     {
         $this->motherboards = new ArrayCollection();
-        $this->chipsetParts = new ArrayCollection();
+        $this->chipsetAliases = new ArrayCollection();
+        $this->expansionChips = new ArrayCollection();
         $this->biosCodes = new ArrayCollection();
         $this->drivers = new ArrayCollection();
         $this->documentations = new ArrayCollection();
+        $this->lastEdited = new \DateTime('now');
     }
-
+    public function __toString(): string
+    {
+        return $this->getNameCached();
+    }
     public function getId(): ?int
     {
         return $this->id;
     }
-
     public function getManufacturer(): ?Manufacturer
     {
         return $this->manufacturer;
     }
-
     public function setManufacturer(?Manufacturer $manufacturer): self
     {
         $this->manufacturer = $manufacturer;
 
         return $this;
     }
-
-    public function getFullReference(): string
+    public function getNameCached(): string
     {
-        $fullName = "";
+        return $this->getNameWithoutParts() . " " . $this->getPartsCached();
+    }
+    public function getNameCachedSearch(): string
+    {
+        $fullName = $this->getManufacturer()?->getName();
+        if($this->getId() == null){
+            if($fullName == "")
+                return "Not identified";
+            return "any " . $fullName . " chipset";
+        }
         if ($this->part_no) {
-            $fullName = $fullName . " $this->part_no";
+            $fullName .= " $this->part_no";
             if ($this->name) {
-                $fullName = $fullName . " ($this->name)";
+                $fullName .= " ($this->name)";
             }
+            $fullName .= " " . $this->getPartsCached();
         } else {
             if ($this->name) {
-                $fullName = $fullName . " $this->name";
+                $fullName .= " $this->name";
+                if(strtolower($this->name) != "unidentified")
+                    $fullName .= " " . $this->getPartsCached();
             } else {
-                $fullName = $fullName . " Unidentified";
+                $fullName .= " unidentified";
             }
         }
-        return "$fullName";
+        $fullName = strlen($fullName) > 80 ? substr($fullName,0,80)."..." : $fullName;
+        return $fullName;
     }
-
-    public function getFullNameParts(): string
+    public function getNameWithoutParts(): string
     {
-        if ($this->getManufacturer()) {
-            $manufacturer = $this->getManufacturer()->getShortNameIfExist();
+        $fullName = $this->getManufacturer()?->getName();
+        if ($this->part_no) {
+            $fullName .= " $this->part_no";
+            if ($this->name) {
+                $fullName .= " ($this->name)";
+            }
         } else {
-            $manufacturer = "";
+            if ($this->name) {
+                $fullName .= " $this->name";
+            } else {
+                $fullName .= " Unidentified";
+            }
         }
-
-        $fullName = $manufacturer . $this->getFullReference() . ' ' . $this->getParts();
-        return "$fullName";
+        return $fullName;
     }
-
-    public function getFullName(): string
-    {
-        if ($this->getManufacturer()) {
-            $manufacturer = $this->getManufacturer()->getShortNameIfExist();
-        } else {
-            $manufacturer = "";
-        }
-
-        $fullName = $manufacturer . $this->getFullReference();
-        return "$fullName";
-    }
-
     public function getParts(): string
     {
-        $chipset = "";
-        foreach ($this->chipsetParts as $key => $part) {
-            if ($key === array_key_last($this->chipsetParts->getValues())) {
-                $chipset = $chipset . $part->getShortNamePN();
+        $parts = "";
+        if($this->expansionChips->isEmpty()){
+            return "[no parts]";
+        }
+        foreach ($this->expansionChips as $key => $part) {
+            if ($key === array_key_last($this->expansionChips->getValues())) {
+                $parts .= $part->getManufacturerAndPN();
             } else {
-                $chipset = $chipset . $part->getShortNamePN() . ", ";
+                $parts .= $part->getManufacturerAndPN() . ", ";
             }
         }
-        if ($chipset) {
-            $chipset = "[$chipset]";
+        if ($parts) {
+            $parts = "[$parts]";
         }
 
 
-        return "$chipset";
+        return "$parts";
     }
-
+    public function getPartsCached(): string
+    {
+        return ($this->getCachedName() != "") ? $this->getCachedName() : "[uncached parts]";
+    }
     /**
      * @return Collection|Motherboard[]
      */
@@ -171,7 +176,6 @@ class Chipset
     {
         return $this->motherboards;
     }
-
     public function addMotherboard(Motherboard $motherboard): self
     {
         if (!$this->motherboards->contains($motherboard)) {
@@ -181,7 +185,6 @@ class Chipset
 
         return $this;
     }
-
     public function removeMotherboard(Motherboard $motherboard): self
     {
         if ($this->motherboards->contains($motherboard)) {
@@ -194,96 +197,74 @@ class Chipset
 
         return $this;
     }
-
     public function getName(): ?string
     {
         return $this->name;
     }
-
     public function setName(?string $name): self
     {
         $this->name = $name;
 
         return $this;
     }
-
     /**
-     * @return Collection|ChipsetPart[]
+     * @return Collection|ExpansionChip[]
      */
-    public function getChipsetParts(): Collection
+    public function getExpansionChips(): Collection
     {
-        $sortedChips = $this->chipsetParts->toArray();
+        $sortedChips = $this->expansionChips->toArray();
 
         $res = usort($sortedChips, function ($a, $b) {
-            return ($a->getRank() <=> $b->getRank());
+            return ($a->getNameWithManufacturer() <=> $b->getNameWithManufacturer());
         });
 
         if ($res) {
             return new ArrayCollection($sortedChips);
         } else {
-            return $this->chipsetParts;
+            return $this->expansionChips;
         }
     }
-
-    public function addChipsetPart(ChipsetPart $chipsetPart): self
+    public function addExpansionChip(ExpansionChip $expansionChip): self
     {
-        if (!$this->chipsetParts->contains($chipsetPart)) {
-            $this->chipsetParts[] = $chipsetPart;
-            $chipsetPart->addChipset($this);
+        if (!$this->expansionChips->contains($expansionChip)) {
+            $this->expansionChips[] = $expansionChip;
+            $expansionChip->addChipset($this);
         }
 
         return $this;
     }
-
-    public function removeChipsetPart(ChipsetPart $chipsetPart): self
+    public function removeExpansionChip(ExpansionChip $expansionChip): self
     {
-        if ($this->chipsetParts->contains($chipsetPart)) {
-            $this->chipsetParts->removeElement($chipsetPart);
+        if ($this->expansionChips->contains($expansionChip)) {
+            $this->expansionChips->removeElement($expansionChip);
             // set the owning side to null (unless already changed)
-            if ($chipsetPart->getChipsets()->contains($this)) {
-                $chipsetPart->removeChipset($this);
+            if ($expansionChip->getChipsets()->contains($this)) {
+                $expansionChip->removeChipset($this);
             }
         }
 
         return $this;
     }
-
     public function getEncyclopediaLink(): ?string
     {
         return $this->encyclopedia_link;
     }
-
     public function setEncyclopediaLink(?string $encyclopedia_link): self
     {
         $this->encyclopedia_link = $encyclopedia_link;
 
         return $this;
     }
-
-    public function getReleaseDate(): ?string
-    {
-        return $this->release_date;
-    }
-
-    public function setReleaseDate(?string $release_date): self
-    {
-        $this->release_date = $release_date;
-
-        return $this;
-    }
-
     public function getPartNo(): ?string
     {
         return $this->part_no;
     }
-
     public function setPartNo(?string $part_no): self
     {
         $this->part_no = $part_no;
 
         return $this;
     }
-
     /**
      * @return Collection|ChipsetBiosCode[]
      */
@@ -291,7 +272,6 @@ class Chipset
     {
         return $this->biosCodes;
     }
-
     public function addBiosCode(ChipsetBiosCode $biosCode): self
     {
         if (!$this->biosCodes->contains($biosCode)) {
@@ -301,7 +281,6 @@ class Chipset
 
         return $this;
     }
-
     public function removeBiosCode(ChipsetBiosCode $biosCode): self
     {
         if ($this->biosCodes->contains($biosCode)) {
@@ -314,7 +293,6 @@ class Chipset
 
         return $this;
     }
-
     /**
      * @return Collection|LargeFileChipset[]
      */
@@ -322,7 +300,14 @@ class Chipset
     {
         return $this->drivers;
     }
-
+    public function getAllDrivers(): Collection
+    {
+        $drivers = $this->drivers->toArray();
+        foreach ($this->getExpansionChips() as $expansionChip) {
+            $drivers = array_merge($drivers, $expansionChip->getDrivers()->toArray());
+        }
+        return new ArrayCollection($drivers);
+    }
     public function addDriver(LargeFileChipset $driver): self
     {
         if (!$this->drivers->contains($driver)) {
@@ -332,7 +317,6 @@ class Chipset
 
         return $this;
     }
-
     public function removeDriver(LargeFileChipset $driver): self
     {
         if ($this->drivers->removeElement($driver)) {
@@ -344,12 +328,10 @@ class Chipset
 
         return $this;
     }
-
     public function getDescription(): ?string
     {
         return $this->description;
     }
-
     public function setDescription(?string $description): self
     {
         $this->description = $description;
@@ -363,8 +345,7 @@ class Chipset
     {
         return $this->documentations;
     }
-
-    public function addManual(ChipsetDocumentation $documentation): self
+    public function addDocumentation(ChipsetDocumentation $documentation): self
     {
         if (!$this->documentations->contains($documentation)) {
             $this->documentations[] = $documentation;
@@ -373,8 +354,7 @@ class Chipset
 
         return $this;
     }
-
-    public function removeManual(ChipsetDocumentation $documentation): self
+    public function removeDocumentation(ChipsetDocumentation $documentation): self
     {
         if ($this->documentations->contains($documentation)) {
             $this->documentations->removeElement($documentation);
@@ -383,6 +363,76 @@ class Chipset
                 $documentation->setChipset(null);
             }
         }
+
+        return $this;
+    }
+    /**
+     * @return Collection|ChipsetAlias[]
+     */
+    public function getChipsetAliases(): Collection
+    {
+        return $this->chipsetAliases;
+    }
+    public function addChipsetAlias(ChipsetAlias $chipsetAlias): self
+    {
+        if (!$this->chipsetAliases->contains($chipsetAlias)) {
+            $this->chipsetAliases[] = $chipsetAlias;
+            $chipsetAlias->setChipset($this);
+        }
+
+        return $this;
+    }
+    public function removeChipsetAlias(ChipsetAlias $chipsetAlias): self
+    {
+        if ($this->chipsetAliases->contains($chipsetAlias)) {
+            $this->chipsetAliases->removeElement($chipsetAlias);
+            // set the owning side to null (unless already changed)
+            if ($chipsetAlias->getChipset() === $this) {
+                $chipsetAlias->setChipset(null);
+            }
+        }
+
+        return $this;
+    }
+    public function addAlias(Manufacturer $manuf, ?string $name, string $partNumber): self
+    {
+        $ca = new ChipsetAlias();
+        $ca->setManufacturer($manuf);
+        $ca->setChipset($this);
+        $ca->setName($name);
+        $ca->setPartNumber($partNumber);
+
+        return $this->addChipsetAlias($ca);
+    }
+
+    public function getLastEdited(): ?\DateTimeInterface
+    {
+        return $this->lastEdited;
+    }
+
+    public function setLastEdited(\DateTimeInterface $lastEdited): self
+    {
+        $this->lastEdited = $lastEdited;
+        return $this;
+    }
+    public function updateLastEdited()
+    {
+        $this->lastEdited = new \DateTime('now');
+    }
+
+    public function getMetaDescription(): string
+    {
+        return "Get info, documentation and more about the " . $this->getNameWithoutParts() . " chipset.";
+    }
+
+    public function getCachedName(): ?string
+    {
+        return $this->cachedName;
+    }
+
+    public function updateCachedName(): self
+    {
+        $this->cachedName = $this->getParts();
 
         return $this;
     }

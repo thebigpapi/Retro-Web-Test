@@ -29,40 +29,131 @@ class ProcessorRepository extends ServiceEntityRepository
 
         $query = $entityManager->createQuery(
             'SELECT DISTINCT cpu
-            FROM App\Entity\Processor cpu, App\Entity\Manufacturer man 
-            WHERE cpu.manufacturer=man 
+            FROM App\Entity\Processor cpu, App\Entity\Manufacturer man
+            WHERE cpu.manufacturer=man
             ORDER BY cpu.name ASC'
         );
 
         return $query->getResult();
     }
-
-    // /**
-    //  * @return Processor[] Returns an array of Processor objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    /**
+     * @return Processor[]
+     */
+    public function findAllAlphabetic(string $letter): array
     {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('p.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
+        $entityManager = $this->getEntityManager();
+        if (empty($letter)) {
+            $query = $entityManager->createQuery(
+                "SELECT 'Unknown' as manName, cpu.id, UPPER(cpu.name) cpuNameSort, cpu.lastEdited
+                FROM App\Entity\Processor cpu
+                WHERE cpu.manufacturer IS NULL
+                ORDER BY cpuNameSort ASC");
+        } else {
+            $likematch = "$letter%";
+            $query = $entityManager->createQuery(
+                "SELECT cpu.id, UPPER(man.name) manNameSort, UPPER(cpu.name) cpuNameSort, cpu.lastEdited
+                FROM App\Entity\Processor cpu, App\Entity\Manufacturer man
+                WHERE cpu.manufacturer=man AND UPPER(man.name) like :likeMatch
+                ORDER BY manNameSort ASC, cpuNameSort ASC"
+                )->setParameter('likeMatch', $likematch);
+        }
 
-    /*
-    public function findOneBySomeField($value): ?Processor
-    {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        return $query->getResult();
     }
-    */
+    /**
+     * @return Processor[]
+     */
+    public function findByCPU(array $criteria): array
+    {
+
+        $entityManager = $this->getEntityManager();
+
+        $whereArray = array();
+        $whereArrayPlatform = array();
+        $whereArraySocket = array();
+        $valuesArray = array();
+
+        // Checking values in criteria and creating WHERE statements
+        if (array_key_exists('manufacturer', $criteria)) {
+            $whereArray[] = "(man.id = :manufacturerId OR alias.manufacturer = :manufacturerId)";
+            $valuesArray["manufacturerId"] = (int)$criteria['manufacturer'];
+        }
+        if (array_key_exists('cpuSpeed', $criteria)) {
+            $whereArray[] = "(p.speed = :cpuSpeedId)";
+            $valuesArray["cpuSpeedId"] = (int)$criteria['cpuSpeed'];
+        }
+        if (array_key_exists('fsbSpeed', $criteria)) {
+            $whereArray[] = "(p.fsb = :fsbSpeedId)";
+            $valuesArray["fsbSpeedId"] = (int)$criteria['fsbSpeed'];
+        }
+        if (array_key_exists('sockets', $criteria)) {
+            foreach ($criteria['sockets'] as $key => $val) {
+                $whereArraySocket[] = "(cs.id = :socketId$key)";
+                $valuesArray["socketId$key"] = $val;
+            }
+            $whereArray[] = implode(" OR ", $whereArraySocket);
+        }
+
+        if (array_key_exists('platforms', $criteria)) {
+            foreach ($criteria['platforms'] as $key => $val) {
+                $whereArrayPlatform[] = "(cpu.platform = :platformId$key)";
+                $valuesArray["platformId$key"] = $val;
+            }
+            $whereArray[] = implode(" OR ", $whereArrayPlatform);
+        }
+
+        if (array_key_exists('name', $criteria)) {
+            $multicrit = explode(" ", $criteria['name']);
+            foreach ($multicrit as $key => $val) {
+                $whereArray[] = "(LOWER(cpu.name) LIKE :nameLike$key 
+                    OR LOWER(cpu.partNumber) LIKE :nameLike$key 
+                    OR LOWER(alias.name) LIKE :nameLike$key 
+                    OR LOWER(alias.partNumber) LIKE :nameLike$key)";
+                $valuesArray["nameLike$key"] = "%" . strtolower($val) . "%";
+            }
+        }
+        // Building where statement
+        $whereString = implode(" AND ", $whereArray);
+
+        // Building query
+        if($whereArray == []){
+            return [];
+        }
+        else{
+            $query = $entityManager->createQuery(
+                "SELECT cpu
+                FROM App\Entity\Processor cpu JOIN cpu.manufacturer man LEFT OUTER JOIN cpu.chipAliases alias INNER JOIN App\Entity\ProcessingUnit p with p.id = cpu.id join p.sockets as cs
+                WHERE $whereString
+                ORDER BY man.name ASC, cpu.name ASC, cpu.partNumber ASC"
+            );
+        }
+
+        // Setting values
+        foreach ($valuesArray as $key => $value) {
+            $query->setParameter($key, $value);
+        }
+
+        return $query->getResult();
+    }
+    public function getCount(): int
+    {
+        return $this->createQueryBuilder('m')
+            ->select('count(m.id)')
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+    /**
+     * @return Processor[]
+     */
+    public function findAllByCreditor(int $cid): array
+    {
+        $entityManager = $this->getEntityManager();
+        $dql   = "SELECT DISTINCT cpu
+        FROM App:Processor cpu
+        JOIN cpu.images mi LEFT JOIN mi.creditor c
+        WHERE c.id = :cid
+        ORDER BY cpu.name ASC";
+        $query = $entityManager->createQuery($dql)->setParameter(":cid", $cid);
+        return $query->getResult();
+    }
 }

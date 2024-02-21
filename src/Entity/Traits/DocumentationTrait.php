@@ -3,45 +3,44 @@
 namespace App\Entity\Traits;
 
 use App\Entity\Language;
+use App\Repository\ManualRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Vich\UploaderBundle\Entity\File as EmbeddedFile;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\ManualRepository")
- * @Vich\Uploadable
- */
+#[Vich\Uploadable]
+#[ORM\Entity(repositoryClass: ManualRepository::class)]
 trait DocumentationTrait
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     * @var string|null
-     */
+    #[ORM\Column(type: 'string', length: 255)]
+    #[Assert\Length(max:255, maxMessage: 'File name is longer than {{ limit }} characters.')]
+    #[Assert\Regex(
+        pattern: '/^[\w\s,\/\-_#\$%&\*!\?:;\.\+\=\\\[\]\{\}\(\)]+$/',
+        match: true,
+        message: 'The name uses invalid characters',
+    )]
     private $file_name;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    #[ORM\Column(type: 'string', length: 255)]
+    #[Assert\Length(max:255, maxMessage: 'Documentation title is longer than {{ limit }} characters.')]
+    #[Assert\NotBlank(
+        message: 'Documentation title cannot be blank'
+    )]
     private $link_name;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Language", inversedBy="manuals")
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\ManyToOne(targetEntity: 'App\Entity\Language', inversedBy: 'manuals')]
+    #[ORM\JoinColumn(nullable: false)]
     private $language;
 
-    /**
-     * @ORM\Column(type="datetime")
-     */
+    #[ORM\Column(type: 'datetime')]
     private $updated_at;
 
 
@@ -110,5 +109,14 @@ trait DocumentationTrait
         $this->updated_at = $updated_at;
 
         return $this;
+    }
+    #[Assert\Callback]
+    public function validate(ExecutionContextInterface $context, mixed $payload): void
+    {
+        if(null === $this->manualFile && null === $this->file_name) {
+            $context->buildViolation('File is not uploaded!')
+                ->atPath('manualFile')
+                ->addViolation();
+        }
     }
 }

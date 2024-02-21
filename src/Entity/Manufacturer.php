@@ -8,144 +8,121 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\ManufacturerRepository")
- * @UniqueEntity(fields={"name", "shortName"})
- * @ORM\ChangeTrackingPolicy("DEFERRED_EXPLICIT")
- */
+#[ORM\Entity(repositoryClass: 'App\Repository\ManufacturerRepository')]
+#[UniqueEntity(fields: ['name', 'fullName'])]
+#[ORM\ChangeTrackingPolicy('DEFERRED_EXPLICIT')]
 class Manufacturer
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
-    /**
-     * @ORM\Column(type="string", length=255, unique=true)
-     * @Assert\NotBlank
-     */
+    #[ORM\Column(type: 'string', length: 255, nullable: true, unique: true)]
+    #[Assert\Length(max: 255, maxMessage: 'Full name is longer than {{ limit }} characters, try to make it shorter.')]
+    private $fullName;
+
+    #[ORM\Column(type: 'string', length: 255, unique: true)]
+    #[Assert\Length(max: 255, maxMessage: 'Name is longer than {{ limit }} characters, try to make it shorter.')]
     private $name;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true, unique=true)
-     */
-    private $shortName;
-
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Motherboard", mappedBy="manufacturer")
-     */
+    #[ORM\OneToMany(targetEntity: Motherboard::class, mappedBy: 'manufacturer')]
     private $motherboards;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Chipset", mappedBy="manufacturer")
-     */
+    #[ORM\OneToMany(targetEntity: Chipset::class, mappedBy: 'manufacturer')]
     private $chipsets;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Processor", mappedBy="manufacturer")
-     */
-    private $processors;
+    #[ORM\OneToMany(targetEntity: ChipsetAlias::class, mappedBy: 'manufacturer')]
+    private $chipsetAliases;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\VideoChipset", mappedBy="manufacturer")
-     */
-    private $videoChipsets;
-
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\AudioChipset", mappedBy="manufacturer")
-     */
-    private $audioChipsets;
-
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\ChipsetPart", mappedBy="manufacturer")
-     */
-    private $chipsetParts;
-
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\MotherboardAlias", mappedBy="manufacturer")
-     */
+    #[ORM\OneToMany(targetEntity: MotherboardAlias::class, mappedBy: 'manufacturer')]
     private $motherboardAliases;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Chip", mappedBy="manufacturer")
-     */
+    #[ORM\OneToMany(targetEntity: Chip::class, mappedBy: 'manufacturer')]
     private $chips;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\ChipAlias", mappedBy="manufacturer")
-     */
+    #[ORM\OneToMany(targetEntity: ChipAlias::class, mappedBy: 'manufacturer')]
     private $chipAliases;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\ManufacturerBiosManufacturerCode", mappedBy="manufacturer", orphanRemoval=true, cascade={"persist"})
-     */
+    #[ORM\OneToMany(targetEntity: ManufacturerBiosManufacturerCode::class, mappedBy: 'manufacturer', orphanRemoval: true, cascade: ['persist'])]
     private $biosCodes;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\ChipsetBiosCode", mappedBy="biosManufacturer")
-     */
+    #[ORM\OneToMany(targetEntity: ChipsetBiosCode::class, mappedBy: 'biosManufacturer')]
     private $chipsetBiosCodes;
 
-    /**
-     * @ORM\OneToMany(targetEntity=OsFlag::class, mappedBy="manufacturer")
-     */
+    #[ORM\OneToMany(targetEntity: OsFlag::class, mappedBy: 'manufacturer')]
     private $osFlags;
+
+    #[ORM\OneToMany(mappedBy: 'manufacturer', targetEntity: PciVendorId::class, orphanRemoval: true, cascade: ['persist'])]
+    private Collection $pciVendorIds;
+
+    #[ORM\Column(length: 7, nullable: true)]
+    private ?string $fccid = null;
+
+    #[ORM\OneToMany(mappedBy: 'manufacturer', targetEntity: StorageDevice::class)]
+    private Collection $storageDevices;
+
+    #[ORM\OneToMany(mappedBy: 'manufacturer', targetEntity: ManufacturerCode::class, orphanRemoval: true, cascade: ['persist'])]
+    private Collection $manufacturerCodes;
+
+    #[ORM\Column(length: 8192, nullable: true)]
+    private ?string $description = null;
+
+    #[ORM\OneToMany(mappedBy: 'manufacturer', targetEntity: EntityImage::class, orphanRemoval: true, cascade: ['persist'])]
+    private Collection $entityImages;
+
+    #[ORM\OneToMany(mappedBy: 'manufacturer', targetEntity: ExpansionCardAlias::class)]
+    private Collection $expansionCardAliases;
+
+    #[ORM\OneToMany(mappedBy: 'manufacturer', targetEntity: ExpansionCard::class)]
+    private Collection $expansionCards;
 
     public function __construct()
     {
         $this->motherboards = new ArrayCollection();
         $this->chipsets = new ArrayCollection();
-        $this->processors = new ArrayCollection();
-        $this->videoChipsets = new ArrayCollection();
-        $this->audioChipsets = new ArrayCollection();
-        $this->chipsetParts = new ArrayCollection();
+        $this->chipsetAliases = new ArrayCollection();
         $this->motherboardAliases = new ArrayCollection();
         $this->chips = new ArrayCollection();
         $this->chipAliases = new ArrayCollection();
         $this->biosCodes = new ArrayCollection();
         $this->chipsetBiosCodes = new ArrayCollection();
         $this->osFlags = new ArrayCollection();
+        $this->pciVendorIds = new ArrayCollection();
+        $this->storageDevices = new ArrayCollection();
+        $this->manufacturerCodes = new ArrayCollection();
+        $this->entityImages = new ArrayCollection();
+        $this->expansionCardAliases = new ArrayCollection();
+        $this->expansionCards = new ArrayCollection();
     }
-
+    public function __toString(): string
+    {
+        return $this->name;
+    }
     public function getId(): ?int
     {
         return $this->id;
     }
-
     public function getName(): string
     {
         return $this->name;
     }
-
     public function setName(string $name): self
     {
         $this->name = $name;
 
         return $this;
     }
-
-    public function getShortName(): ?string
+    public function getFullName(): ?string
     {
-        return $this->shortName;
+        return $this->fullName;
     }
-
-    public function setShortName(?string $shortName): self
+    public function setFullName(?string $fullName): self
     {
-        $this->shortName = $shortName;
+        $this->fullName = $fullName;
 
         return $this;
     }
-
-    public function getShortNameIfExist(): ?string
-    {
-        if ($this->shortName) {
-            return $this->shortName;
-        }
-        return $this->name;
-    }
-
     /**
      * @return Collection|Motherboard[]
      */
@@ -153,7 +130,6 @@ class Manufacturer
     {
         return $this->motherboards;
     }
-
     public function addMotherboard(Motherboard $motherboard): self
     {
         if (!$this->motherboards->contains($motherboard)) {
@@ -163,7 +139,6 @@ class Manufacturer
 
         return $this;
     }
-
     public function removeMotherboard(Motherboard $motherboard): self
     {
         if ($this->motherboards->contains($motherboard)) {
@@ -176,7 +151,6 @@ class Manufacturer
 
         return $this;
     }
-
     /**
      * @return Collection|Chipset[]
      */
@@ -184,7 +158,6 @@ class Manufacturer
     {
         return $this->chipsets;
     }
-
     public function addChipset(Chipset $chipset): self
     {
         if (!$this->chipsets->contains($chipset)) {
@@ -194,7 +167,6 @@ class Manufacturer
 
         return $this;
     }
-
     public function removeChipset(Chipset $chipset): self
     {
         if ($this->chipsets->contains($chipset)) {
@@ -209,123 +181,28 @@ class Manufacturer
     }
 
     /**
-     * @return Collection|Processor[]
+     * @return Collection|ChipsetAlias[]
      */
-    public function getProcessors(): Collection
+    public function getChipsetAlias(): Collection
     {
-        return $this->processors;
+        return $this->motherboardAliases;
     }
-
-    public function addProcessor(Processor $processor): self
+    public function addChipsetAlias(ChipsetAlias $chipsetAlias): self
     {
-        if (!$this->processors->contains($processor)) {
-            $this->processors[] = $processor;
-            $processor->setManufacturer($this);
+        if (!$this->chipsetAliases->contains($chipsetAlias)) {
+            $this->chipsetAliases[] = $chipsetAlias;
+            $chipsetAlias->setManufacturer($this);
         }
 
         return $this;
     }
-
-    public function removeProcessor(Processor $processor): self
+    public function removeChipsetAlias(ChipsetAlias $chipsetAlias): self
     {
-        if ($this->processors->contains($processor)) {
-            $this->processors->removeElement($processor);
+        if ($this->chipsetAliases->contains($chipsetAlias)) {
+            $this->chipsetAliases->removeElement($chipsetAlias);
             // set the owning side to null (unless already changed)
-            if ($processor->getManufacturer() === $this) {
-                $processor->setManufacturer(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|VideoChipset[]
-     */
-    public function getVideoChipsets(): Collection
-    {
-        return $this->videoChipsets;
-    }
-
-    public function addVideoChipset(VideoChipset $videoChipset): self
-    {
-        if (!$this->videoChipsets->contains($videoChipset)) {
-            $this->videoChipsets[] = $videoChipset;
-            $videoChipset->setManufacturer($this);
-        }
-
-        return $this;
-    }
-
-    public function removeVideoChipset(VideoChipset $videoChipset): self
-    {
-        if ($this->videoChipsets->contains($videoChipset)) {
-            $this->videoChipsets->removeElement($videoChipset);
-            // set the owning side to null (unless already changed)
-            if ($videoChipset->getManufacturer() === $this) {
-                $videoChipset->setManufacturer(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|AudioChipset[]
-     */
-    public function getAudioChipsets(): Collection
-    {
-        return $this->audioChipsets;
-    }
-
-    public function addAudioChipset(AudioChipset $audioChipset): self
-    {
-        if (!$this->audioChipsets->contains($audioChipset)) {
-            $this->audioChipsets[] = $audioChipset;
-            $audioChipset->setManufacturer($this);
-        }
-
-        return $this;
-    }
-
-    public function removeAudioChipset(AudioChipset $audioChipset): self
-    {
-        if ($this->audioChipsets->contains($audioChipset)) {
-            $this->audioChipsets->removeElement($audioChipset);
-            // set the owning side to null (unless already changed)
-            if ($audioChipset->getManufacturer() === $this) {
-                $audioChipset->setManufacturer(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|ChipsetPart[]
-     */
-    public function getChipsetParts(): Collection
-    {
-        return $this->chipsetParts;
-    }
-
-    public function addChipsetPart(ChipsetPart $chipsetPart): self
-    {
-        if (!$this->chipsetParts->contains($chipsetPart)) {
-            $this->chipsetParts[] = $chipsetPart;
-            $chipsetPart->setManufacturer($this);
-        }
-
-        return $this;
-    }
-
-    public function removeChipsetPart(ChipsetPart $chipsetPart): self
-    {
-        if ($this->chipsetParts->contains($chipsetPart)) {
-            $this->chipsetParts->removeElement($chipsetPart);
-            // set the owning side to null (unless already changed)
-            if ($chipsetPart->getManufacturer() === $this) {
-                $chipsetPart->setManufacturer(null);
+            if ($chipsetAlias->getManufacturer() === $this) {
+                $chipsetAlias->setManufacturer(null);
             }
         }
 
@@ -339,7 +216,6 @@ class Manufacturer
     {
         return $this->motherboardAliases;
     }
-
     public function addMotherboardAlias(MotherboardAlias $motherboardAlias): self
     {
         if (!$this->motherboardAliases->contains($motherboardAlias)) {
@@ -349,7 +225,6 @@ class Manufacturer
 
         return $this;
     }
-
     public function removeMotherboardAlias(MotherboardAlias $motherboardAlias): self
     {
         if ($this->motherboardAliases->contains($motherboardAlias)) {
@@ -362,7 +237,6 @@ class Manufacturer
 
         return $this;
     }
-
     /**
      * @return Collection|Chip[]
      */
@@ -370,7 +244,6 @@ class Manufacturer
     {
         return $this->chips;
     }
-
     public function addChip(Chip $chip): self
     {
         if (!$this->chips->contains($chip)) {
@@ -380,7 +253,6 @@ class Manufacturer
 
         return $this;
     }
-
     public function removeChip(Chip $chip): self
     {
         if ($this->chips->contains($chip)) {
@@ -393,7 +265,6 @@ class Manufacturer
 
         return $this;
     }
-
     /**
      * @return Collection|ChipAlias[]
      */
@@ -401,7 +272,6 @@ class Manufacturer
     {
         return $this->chipAliases;
     }
-
     public function addChipAlias(ChipAlias $chipAlias): self
     {
         if (!$this->chipAliases->contains($chipAlias)) {
@@ -411,7 +281,6 @@ class Manufacturer
 
         return $this;
     }
-
     public function removeChipAlias(ChipAlias $chipAlias): self
     {
         if ($this->chipAliases->contains($chipAlias)) {
@@ -424,7 +293,6 @@ class Manufacturer
 
         return $this;
     }
-
     /**
      * @return Collection|ManufacturerBiosManufacturerCode[]
      */
@@ -432,7 +300,6 @@ class Manufacturer
     {
         return $this->biosCodes;
     }
-
     public function addBiosCode(ManufacturerBiosManufacturerCode $biosCode): self
     {
         if (!$this->biosCodes->contains($biosCode)) {
@@ -442,7 +309,6 @@ class Manufacturer
 
         return $this;
     }
-
     public function removeBiosCode(ManufacturerBiosManufacturerCode $biosCode): self
     {
         if ($this->biosCodes->contains($biosCode)) {
@@ -455,7 +321,6 @@ class Manufacturer
 
         return $this;
     }
-
     /**
      * @return Collection|ChipsetBiosCode[]
      */
@@ -463,7 +328,6 @@ class Manufacturer
     {
         return $this->chipsetBiosCodes;
     }
-
     public function addChipsetBiosCode(ChipsetBiosCode $chipsetBiosCode): self
     {
         if (!$this->chipsetBiosCodes->contains($chipsetBiosCode)) {
@@ -473,7 +337,6 @@ class Manufacturer
 
         return $this;
     }
-
     public function removeChipsetBiosCode(ChipsetBiosCode $chipsetBiosCode): self
     {
         if ($this->chipsetBiosCodes->contains($chipsetBiosCode)) {
@@ -486,7 +349,6 @@ class Manufacturer
 
         return $this;
     }
-
     /**
      * @return Collection|OsFlag[]
      */
@@ -494,7 +356,6 @@ class Manufacturer
     {
         return $this->osFlags;
     }
-
     public function addOsFlag(OsFlag $osFlag): self
     {
         if (!$this->osFlags->contains($osFlag)) {
@@ -504,13 +365,216 @@ class Manufacturer
 
         return $this;
     }
-
     public function removeOsFlag(OsFlag $osFlag): self
     {
         if ($this->osFlags->removeElement($osFlag)) {
             // set the owning side to null (unless already changed)
             if ($osFlag->getManufacturer() === $this) {
                 $osFlag->setManufacturer(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, PciVendorId>
+     */
+    public function getPciVendorIds(): Collection
+    {
+        return $this->pciVendorIds;
+    }
+
+    public function addPciVendorId(PciVendorId $pciVendorId): self
+    {
+        if (!$this->pciVendorIds->contains($pciVendorId)) {
+            $this->pciVendorIds->add($pciVendorId);
+            $pciVendorId->setManufacturer($this);
+        }
+
+        return $this;
+    }
+
+    public function removePciVendorId(PciVendorId $pciVendorId): self
+    {
+        if ($this->pciVendorIds->removeElement($pciVendorId)) {
+            // set the owning side to null (unless already changed)
+            if ($pciVendorId->getManufacturer() === $this) {
+                $pciVendorId->setManufacturer(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getFccid(): ?string
+    {
+        return $this->fccid;
+    }
+
+    public function setFccid(?string $fccid): self
+    {
+        $this->fccid = $fccid;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, StorageDevice>
+     */
+    public function getStorageDevices(): Collection
+    {
+        return $this->storageDevices;
+    }
+
+    public function addStorageDevice(StorageDevice $storageDevice): self
+    {
+        if (!$this->storageDevices->contains($storageDevice)) {
+            $this->storageDevices->add($storageDevice);
+            $storageDevice->setManufacturer($this);
+        }
+
+        return $this;
+    }
+
+    public function removeStorageDevice(StorageDevice $storageDevice): self
+    {
+        if ($this->storageDevices->removeElement($storageDevice)) {
+            // set the owning side to null (unless already changed)
+            if ($storageDevice->getManufacturer() === $this) {
+                $storageDevice->setManufacturer(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ManufacturerCode>
+     */
+    public function getManufacturerCodes(): Collection
+    {
+        return $this->manufacturerCodes;
+    }
+
+    public function addManufacturerCode(ManufacturerCode $manufacturerCode): self
+    {
+        if (!$this->manufacturerCodes->contains($manufacturerCode)) {
+            $this->manufacturerCodes->add($manufacturerCode);
+            $manufacturerCode->setManufacturer($this);
+        }
+
+        return $this;
+    }
+
+    public function removeManufacturerCode(ManufacturerCode $manufacturerCode): self
+    {
+        if ($this->manufacturerCodes->removeElement($manufacturerCode)) {
+            // set the owning side to null (unless already changed)
+            if ($manufacturerCode->getManufacturer() === $this) {
+                $manufacturerCode->setManufacturer(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(?string $description): self
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, EntityImage>
+     */
+    public function getEntityImages(): Collection
+    {
+        return $this->entityImages;
+    }
+
+    public function addEntityImage(EntityImage $entityImage): self
+    {
+        if (!$this->entityImages->contains($entityImage)) {
+            $this->entityImages->add($entityImage);
+            $entityImage->setManufacturer($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEntityImage(EntityImage $entityImage): self
+    {
+        if ($this->entityImages->removeElement($entityImage)) {
+            // set the owning side to null (unless already changed)
+            if ($entityImage->getManufacturer() === $this) {
+                $entityImage->setManufacturer(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ExpansionCardAlias>
+     */
+    public function getExpansionCardAliases(): Collection
+    {
+        return $this->expansionCardAliases;
+    }
+
+    public function addExpansionCardAlias(ExpansionCardAlias $expansionCardAlias): static
+    {
+        if (!$this->expansionCardAliases->contains($expansionCardAlias)) {
+            $this->expansionCardAliases->add($expansionCardAlias);
+            $expansionCardAlias->setManufacturer($this);
+        }
+
+        return $this;
+    }
+
+    public function removeExpansionCardAlias(ExpansionCardAlias $expansionCardAlias): static
+    {
+        if ($this->expansionCardAliases->removeElement($expansionCardAlias)) {
+            // set the owning side to null (unless already changed)
+            if ($expansionCardAlias->getManufacturer() === $this) {
+                $expansionCardAlias->setManufacturer(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ExpansionCard>
+     */
+    public function getExpansionCards(): Collection
+    {
+        return $this->expansionCards;
+    }
+
+    public function addExpansionCard(ExpansionCard $expansionCard): static
+    {
+        if (!$this->expansionCards->contains($expansionCard)) {
+            $this->expansionCards->add($expansionCard);
+            $expansionCard->setManufacturer($this);
+        }
+
+        return $this;
+    }
+
+    public function removeExpansionCard(ExpansionCard $expansionCard): static
+    {
+        if ($this->expansionCards->removeElement($expansionCard)) {
+            // set the owning side to null (unless already changed)
+            if ($expansionCard->getManufacturer() === $this) {
+                $expansionCard->setManufacturer(null);
             }
         }
 

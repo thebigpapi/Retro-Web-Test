@@ -4,9 +4,11 @@ namespace App\Repository;
 
 use App\Entity\Manufacturer;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\NativeQuery;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Generator;
+use Symfony\Component\Clock\NativeClock;
 
 /**
  * @method Manufacturer|null find($id, $lockMode = null, $lockVersion = null)
@@ -25,6 +27,43 @@ class ManufacturerRepository extends ServiceEntityRepository
     /**
      * @return Manufacturer[]
      */
+    public function findAllManufacturerCaseInsensitiveSorted(array $criterias = []): array
+    {
+        $entityManager = $this->getEntityManager();
+
+        $rsm = new ResultSetMapping();
+
+        $whereString = "";
+        if (array_key_exists('name', $criterias)) {
+            $whereString = "WHERE realname ILIKE :name";
+        }
+
+        $rsm->addEntityResult('App\Entity\Manufacturer', 'man');
+        $rsm->addFieldResult('man', 'id', 'id');
+        $rsm->addFieldResult('man', 'name', 'name');
+        $rsm->addFieldResult('man', 'fccid', 'fccid');
+        $rsm->addJoinedEntityResult('App\Entity\PciVendorId', 'pv', 'man', 'pciVendorIds');
+        $rsm->addFieldResult('pv', 'pvid', 'id');
+        $rsm->addFieldResult('pv', 'ven', 'ven');
+
+        $query = $entityManager->createNativeQuery(
+            "SELECT * FROM (SELECT distinct man.id, man.name, man.fccid, pv.id as pvid, pv.ven
+            FROM manufacturer man LEFT JOIN pci_vendor_id pv ON pv.manufacturer_id=man.id) as req
+            $whereString 
+            ORDER BY man.name;",
+            $rsm
+        );
+
+        if (array_key_exists('name', $criterias)) {
+            $query->setParameter(':name', '%' . $criterias['name'] . '%');
+        }
+
+        return $query->getResult();
+    }
+
+    /**
+     * @return Manufacturer[]
+     */
     public function findAllMotherboardManufacturer(): array
     {
         $entityManager = $this->getEntityManager();
@@ -34,13 +73,12 @@ class ManufacturerRepository extends ServiceEntityRepository
         $rsm->addEntityResult('App\Entity\Manufacturer', 'man');
         $rsm->addFieldResult('man', 'id', 'id');
         $rsm->addFieldResult('man', 'name', 'name');
-        $rsm->addFieldResult('man', 'short_name', 'shortName');
 
         $query = $entityManager->createNativeQuery(
-            'SELECT distinct manufacturer.id, manufacturer.name, manufacturer.short_name, upper(coalesce(manufacturer.short_name, manufacturer.name)) as realname
-            FROM motherboard_alias alias FULL OUTER JOIN motherboard mobo ON mobo.id=alias.motherboard_id, manufacturer
-            WHERE manufacturer.id=coalesce(alias.manufacturer_id, mobo.manufacturer_id)
-            ORDER BY realname;',
+            'SELECT distinct man.id, man.name
+            FROM (SELECT distinct man.* FROM manufacturer man JOIN motherboard mobo ON mobo.manufacturer_id = man.id
+            UNION SELECT distinct man.* FROM manufacturer man JOIN motherboard_alias alias ON alias.manufacturer_id = man.id) as man
+            ORDER BY man.name;',
             $rsm
         );
 
@@ -60,12 +98,11 @@ class ManufacturerRepository extends ServiceEntityRepository
         $rsm->addEntityResult('App\Entity\Manufacturer', 'man');
         $rsm->addFieldResult('man', 'id', 'id');
         $rsm->addFieldResult('man', 'name', 'name');
-        $rsm->addFieldResult('man', 'short_name', 'shortName');
 
         $query = $entityManager->createNativeQuery(
-            'SELECT DISTINCT man.id, man.name, man.short_name, COALESCE(man.short_name, man.name) realName
-            FROM chipset chip JOIN manufacturer man on chip.manufacturer_id=man.id 
-            ORDER BY realName ASC',
+            'SELECT DISTINCT man.id, man.name
+            FROM chipset chip JOIN manufacturer man on chip.manufacturer_id=man.id
+            ORDER BY man.name ASC',
             $rsm
         );
 
@@ -79,25 +116,33 @@ class ManufacturerRepository extends ServiceEntityRepository
     {
         $entityManager = $this->getEntityManager();
 
-        $query = $entityManager->createQuery(
-            'SELECT DISTINCT man
-            FROM App\Entity\MotherboardBios bios, App\Entity\Manufacturer man 
-            WHERE bios.manufacturer=man 
-            ORDER BY man.name ASC'
+        $rsm = new ResultSetMapping();
+
+        $rsm->addEntityResult('App\Entity\Manufacturer', 'man');
+        $rsm->addFieldResult('man', 'id', 'id');
+        $rsm->addFieldResult('man', 'name', 'name');
+
+        $query = $entityManager->createNativeQuery(
+            'SELECT distinct man.id, man.name
+            FROM (SELECT distinct man.* FROM manufacturer man JOIN motherboard mobo ON mobo.manufacturer_id = man.id
+            UNION SELECT distinct man.* FROM manufacturer man JOIN motherboard_bios bios ON bios.manufacturer_id = man.id) as man
+            ORDER BY man.name;',
+            $rsm
         );
 
-        return $query->getResult();
+        return $query->setCacheable(true)
+            ->getResult();
     }
 
     /**
      * @return array
      */
-    public function findAllBiosManufacturer2(): array
+    public function findAllBiosManufacturerAdv(): array
     {
         $conn = $this->getEntityManager()
             ->getConnection();
-        $sql = 'SELECT COALESCE(m.short_name, m.name) as biosMan, COALESCE(m2.short_name, m2.name) as moboMan, mbmc.code from manufacturer m 
-        JOIN manufacturer_bios_manufacturer_code mbmc on m.id = mbmc.bios_manufacturer_id
+        $sql = 'SELECT m.name as biosMan, m2.name as moboMan, mbmc.code
+        FROM manufacturer m JOIN manufacturer_bios_manufacturer_code mbmc on m.id = mbmc.bios_manufacturer_id
         JOIN manufacturer m2 on mbmc.manufacturer_id = m2.id
         ORDER BY biosMan, code;';
         $stmt = $conn->prepare($sql);
@@ -118,8 +163,8 @@ class ManufacturerRepository extends ServiceEntityRepository
     {
         $conn = $this->getEntityManager()
             ->getConnection();
-        $sql = 'SELECT COALESCE(m.short_name, m.name) as chipsetMan, concat(c.part_no, concat(\' \', c.name)) as chipsetName, cbc.code from manufacturer m 
-        JOIN chipset_bios_code cbc on m.id = cbc.bios_manufacturer_id
+        $sql = 'SELECT m.name as chipsetMan, concat(c.part_no, concat(\' \', c.name)) as chipsetName, cbc.code
+        FROM manufacturer m JOIN chipset_bios_code cbc on m.id = cbc.bios_manufacturer_id
         JOIN chipset c on cbc.chipset_id = c.id
         ORDER BY chipsetMan, code;';
         $stmt = $conn->prepare($sql);
@@ -127,10 +172,37 @@ class ManufacturerRepository extends ServiceEntityRepository
 
         $data = array();
         foreach ($res->fetchAllAssociative() as $row) {
-            $data[$row["chipsetman"]][] = array($row["chipsetname"], $row["code"]);
+            $data[$row["chipsetman"]][] = array($row["code"], $row["chipsetname"]);
         }
 
         return $data;
+    }
+    public function formatManufacterQuery(string $entity): array
+    {
+        $entityManager = $this->getEntityManager();
+        $rsm = new ResultSetMapping();
+        $rsm->addEntityResult('App\Entity\Manufacturer', 'man');
+        $rsm->addFieldResult('man', 'id', 'id');
+        $rsm->addFieldResult('man', 'name', 'name');
+        return $entityManager->createNativeQuery(
+            'SELECT distinct man.id, man.name
+            FROM (SELECT distinct man.* FROM manufacturer man JOIN ' . $entity . ' entity ON entity.manufacturer_id = man.id
+            UNION SELECT distinct man.* FROM manufacturer man JOIN ' . $entity . '_alias alias ON alias.manufacturer_id = man.id) as man
+            ORDER BY man.name;',
+            $rsm
+        )->setCacheable(true)->getResult();
+    }
+    public function formatManufacterQueryStorage(string $entity): array
+    {
+        $entityManager = $this->getEntityManager();
+
+        $query = $entityManager->createQuery(
+            'SELECT DISTINCT man
+            FROM App\Entity' . $entity .' entity, App\Entity\Manufacturer man, App\Entity\StorageDeviceAlias alias
+            WHERE entity.manufacturer=man OR (alias.manufacturer=man AND alias.storageDevice=entity)
+            ORDER BY man.name ASC'
+        );
+        return $query->getResult();
     }
 
     /**
@@ -153,63 +225,45 @@ class ManufacturerRepository extends ServiceEntityRepository
     /**
      * @return Manufacturer[]
      */
-    public function findAllAudioChipManufacturer(): array
+    public function findAllExpansionChipManufacturer(): array
     {
         $entityManager = $this->getEntityManager();
 
         $query = $entityManager->createQuery(
             'SELECT DISTINCT man
-            FROM App\Entity\AudioChipset ac, App\Entity\Manufacturer man 
+            FROM App\Entity\ExpansionChip ac, App\Entity\Manufacturer man 
             WHERE ac.manufacturer=man 
             ORDER BY man.name ASC'
         );
 
         return $query->getResult();
     }
-
     /**
      * @return Manufacturer[]
      */
-    public function findAllVideoChipManufacturer(): array
+    public function findAllExpansionCardManufacturer(): array
     {
-        $entityManager = $this->getEntityManager();
-
-        $query = $entityManager->createQuery(
-            'SELECT DISTINCT man
-            FROM App\Entity\VideoChipset vc, App\Entity\Manufacturer man 
-            WHERE vc.manufacturer=man 
-            ORDER BY man.name ASC'
-        );
-
-        return $query->getResult();
+        return $this->formatManufacterQuery('expansion_card');
     }
-
-    // /**
-    //  * @return Manufacturer[] Returns an array of Manufacturer objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    /**
+     * @return Manufacturer[]
+     */
+    public function findAllHddManufacturer(): array
     {
-        return $this->createQueryBuilder('m')
-            ->andWhere('m.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('m.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
+        return $this->formatManufacterQueryStorage('\HardDrive');
     }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?Manufacturer
+    /**
+     * @return Manufacturer[]
+     */
+    public function findAllCddManufacturer(): array
     {
-        return $this->createQueryBuilder('m')
-            ->andWhere('m.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        return $this->formatManufacterQueryStorage('\CdDrive');
     }
-    */
+    /**
+     * @return Manufacturer[]
+     */
+    public function findAllFddManufacturer(): array
+    {
+        return $this->formatManufacterQueryStorage('\FloppyDrive');
+    }
 }
