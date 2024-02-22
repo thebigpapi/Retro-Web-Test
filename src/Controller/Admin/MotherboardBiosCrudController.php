@@ -3,6 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Entity\MotherboardBios;
+use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
@@ -53,6 +54,7 @@ class MotherboardBiosCrudController extends AbstractCrudController
             ->add('note')
             ->add('boardVersion')
             ->add('coreVersion')
+            ->add('hash')
             ->add('updated_at');
     }
     public function configureFields(string $pageName): iterable
@@ -82,6 +84,8 @@ class MotherboardBiosCrudController extends AbstractCrudController
         yield UrlField::new('file_name')
             ->setCustomOption('link','motherboard/bios/')
             ->hideOnForm();
+        yield TextField::new('hash')
+            ->setDisabled();
         yield TextField::new('romFile')
             ->setFormType(VichFileType::class)
             ->setFormTypeOption('allow_delete',false)
@@ -114,5 +118,13 @@ class MotherboardBiosCrudController extends AbstractCrudController
         $entityId = $context->getEntity()->getInstance()->getId();
         $entity = str_replace("\\", "-",$context->getEntity()->getFqcn());
         return $this->redirectToRoute('dh_auditor_show_entity_history', array('id' => $entityId, 'entity' => $entity));
+    }
+    /**
+     * @param Motherboard $entityInstance
+     */
+    public function updateEntity(EntityManagerInterface $entityManager, $entityInstance): void
+    {
+        $entityInstance->updateHash();
+        parent::updateEntity($entityManager, $entityInstance);
     }
 }

@@ -54,6 +54,9 @@ class MotherboardBios
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     #[Assert\Length(max: 255, maxMessage: 'BIOS note is longer than {{ limit }} characters, try to make it shorter.')]
     private $note;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $hash = null;
     public function __construct()
     {
         $this->updated_at = new \DateTime('now');
@@ -163,5 +166,24 @@ class MotherboardBios
                 ->atPath('manufacturer')
                 ->addViolation();
         }
+    }
+
+    public function getHash(): ?string
+    {
+        return $this->hash;
+    }
+
+    public function setHash(?string $hash): static
+    {
+        $this->hash = $hash;
+
+        return $this;
+    }
+    public function updateHash()
+    {
+        if($this->romFile){
+            $this->setHash(hash_file('sha256', $this->romFile->getPathname()));
+        }
+        //dd($this->boardVersion);
     }
 }

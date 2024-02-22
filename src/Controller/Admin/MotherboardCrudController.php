@@ -485,6 +485,7 @@ class MotherboardCrudController extends AbstractCrudController
     public function updateEntity(EntityManagerInterface $entityManager, $entityInstance): void
     {
         $entityInstance->updateLastEdited();
+        $entityInstance->updateHashAll();
         parent::updateEntity($entityManager, $entityInstance);
     }
 }

@@ -983,4 +983,10 @@ class Motherboard
 
         return $this;
     }
+    public function updateHashAll()
+    {
+        foreach($this->motherboardBios as $item){
+            $item->updateHash();
+        }
+    }
 }
