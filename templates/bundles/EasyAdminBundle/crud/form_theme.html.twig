@@ -295,11 +295,14 @@
     {% include 'admin/macros/specs.html.twig' with {'entity': 'card', 'form': form} %}
 {% endblock _ExpansionCard_miscSpecs_widget %}
 {% block _ExpansionChip_miscSpecs_widget %}
-    {% include 'admin/macros/specs.html.twig' with {'entity': '', 'form': form} %}
+    {% include 'admin/macros/specs.html.twig' with {'entity': 'card', 'form': form} %}
 {% endblock _ExpansionChip_miscSpecs_widget %}
 {% block _ExpansionCardType_template_widget %}
     {% include 'admin/macros/specs.html.twig' with {'entity': '', 'form': form} %}
 {% endblock _ExpansionCardType_template_widget %}
+{% block _ExpansionChipType_template_widget %}
+    {% include 'admin/macros/specs.html.twig' with {'entity': '', 'form': form} %}
+{% endblock _ExpansionChipType_template_widget %}
 {% block _ExpansionCard_ioPorts_entry_count_widget %}
     {{ form_widget(form)}}<span>x</span>
 {% endblock _ExpansionCard_ioPorts_entry_count_widget %}

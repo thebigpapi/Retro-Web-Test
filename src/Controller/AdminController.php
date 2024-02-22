@@ -14,6 +14,7 @@ use App\Repository\ChipsetRepository;
 use App\Repository\CpuSocketRepository;
 use App\Repository\ExpansionCardTypeRepository;
 use App\Repository\ExpansionChipRepository;
+use App\Repository\ExpansionChipTypeRepository;
 use App\Repository\FloppyDriveRepository;
 use App\Repository\HardDriveRepository;
 use App\Repository\IoPortInterfaceRepository;
@@ -168,7 +169,6 @@ class AdminController extends AbstractDashboardController
             throw new Exception("Missing or wrong expansion card type id list");
         }
         $templates = array_map(fn (ExpansionCardType $expansionCardType) => $expansionCardType->getTemplate(), $expansionCardTypeRepository->findBy(['id' => $ids]));
-       
         $templatesMerged = [];
 
         foreach ($templates as $template) {
@@ -178,6 +178,13 @@ class AdminController extends AbstractDashboardController
         }
 
         return new JsonResponse($templatesMerged);
+    }
+    #[Route('/dashboard/getexpansionchiptemplate/{id}', name:'get_expansion_chip_template', methods:['GET'],  requirements: ['id' => '\d+'])]
+    public function getExpansionChipTemplate(int $id, ExpansionChipTypeRepository $expansionChipTypeRepository): JsonResponse
+    {
+        $chipType = $expansionChipTypeRepository->find($id);
+
+        return new JsonResponse($chipType->getTemplate());
     }
 
     #[Route('/dashboard/getioports/{id}', name:'get_ioports', methods:['GET'], requirements: ['id' => '\d+'])]

@@ -31,7 +31,8 @@ if (ioPortsBtn = document.getElementById('ExpansionCard_ioPorts_collection')?.pr
 
 if ((miscSpecs = document.getElementById('ExpansionCard_miscSpecs')) ||
     (miscSpecs = document.getElementById('ExpansionChip_miscSpecs')) ||
-    (miscSpecs = document.getElementById('ExpansionCardType_template'))) {
+    (miscSpecs = document.getElementById('ExpansionCardType_template')) ||
+    (miscSpecs = document.getElementById('ExpansionChipType_template'))) {
     const listElement = document.getElementById('specs-collection');
     if(expSlotPresetSelect = document.getElementById('ExpansionCard_expansionSlotInterfaceSignal_autocomplete'))
         expSlotPresetSelect.addEventListener('change', event => expSlotPresetChange(event));
@@ -155,7 +156,7 @@ async function addTableSpec(listElement, tableId, key = null, value = null) {
 
 }
 
-async function applyTemplate(miscSpecs) {
+async function applyTemplateCard(miscSpecs) {
     const listElement = document.getElementById('specs-collection');
 
     let typeCollection = document.getElementById('ExpansionCard_type_collection').children[0].children[0];
@@ -170,6 +171,36 @@ async function applyTemplate(miscSpecs) {
     }
 
     const url = `${window.location.origin}/dashboard/getexpansioncardtemplate?ids=${JSON.stringify(types)}`;
+
+    fetch(url, { cache: "force-cache" })
+        .then((response) => {
+            if (!response.ok) {
+                throw new Error(`HTTP error: ${response.status}`)
+            }
+            return response.text();
+        })
+        .then((text) => {
+            const obj = JSON.parse(text);
+            miscSpecs.textContent = JSON.stringify(obj, null, 4);
+            setupForm(listElement, true);
+            setMsg("Applied template with " + Object.keys(obj).length + " specs");
+        })
+        .catch((error) => {
+            console.log(`Could not fetch template : ${error}`);
+        });
+}
+async function applyTemplate(miscSpecs) {
+    if(miscSpecs.id == 'ExpansionChip_miscSpecs')
+        applyTemplateChip(miscSpecs)
+    else{
+        applyTemplateCard(miscSpecs)
+    }
+        
+}
+async function applyTemplateChip(miscSpecs) {
+    const listElement = document.getElementById('specs-collection');
+    let type = document.getElementById('ExpansionChip_type').value;
+    const url = `${window.location.origin}/dashboard/getexpansionchiptemplate/${type}`;
 
     fetch(url, { cache: "force-cache" })
         .then((response) => {
