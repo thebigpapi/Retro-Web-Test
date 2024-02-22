@@ -26,9 +26,6 @@ class ExpansionCard
     #[ORM\ManyToMany(targetEntity: ExpansionChip::class, inversedBy: 'expansionCards')]
     private Collection $expansionChips;
 
-    #[ORM\ManyToMany(targetEntity: PSUConnector::class, inversedBy: 'expansionCards')]
-    private Collection $powerConnectors;
-
     #[ORM\Column(length: 4096, nullable: true)]
     #[Assert\Length(max: 4096, maxMessage: 'Description is longer than {{ limit }} characters, try to make it shorter.')]
     private ?string $description = null;
@@ -131,7 +128,6 @@ class ExpansionCard
     public function __construct()
     {
         $this->expansionChips = new ArrayCollection();
-        $this->powerConnectors = new ArrayCollection();
         $this->documentations = new ArrayCollection();
         $this->drivers = new ArrayCollection();
         $this->images = new ArrayCollection();
@@ -211,30 +207,6 @@ class ExpansionCard
     public function removeExpansionChip(ExpansionChip $expansionChip): static
     {
         $this->expansionChips->removeElement($expansionChip);
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, PSUConnector>
-     */
-    public function getPowerConnectors(): Collection
-    {
-        return $this->powerConnectors;
-    }
-
-    public function addPowerConnector(PSUConnector $powerConnector): static
-    {
-        if (!$this->powerConnectors->contains($powerConnector)) {
-            $this->powerConnectors->add($powerConnector);
-        }
-
-        return $this;
-    }
-
-    public function removePowerConnector(PSUConnector $powerConnector): static
-    {
-        $this->powerConnectors->removeElement($powerConnector);
 
         return $this;
     }

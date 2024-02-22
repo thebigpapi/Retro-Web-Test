@@ -132,7 +132,7 @@
 						<div class="tag-container">{% for size in expansioncard.getRamSize() %}<span class="text-block">{{ size.getValueWithUnit()}}</span>{% endfor %}</div>
 						{% endif %}
 						<!-- Memory connectors -->
-						{% if expansioncard.getExpansionCardMemoryConnectors() is not empty %}
+						{#% if expansioncard.getExpansionCardMemoryConnectors() is not empty %}
 						<div class="quick-spec-head">
 							<img src="{{ absolute_url(asset('build/icons/ram.svg')) }}" alt="ram" width="24" height="24">RAM connectors
 						</div>
@@ -141,14 +141,17 @@
 									<span class="text-block"><b>{{ slot.getCount() }}x&nbsp;</b>{{ slot.getMemoryConnector().getName() }}</span>
 							{% endfor %}
 						</div>
-						{% endif %}
+						{% endif %#}
 						<!-- PSU connectors -->
-						{% if expansioncard.getPowerConnectors() is not empty %}
+						{% if expansioncard.getExpansionCardPowerConnectors() is not empty %}
 						<div class="quick-spec-head">
-							<img src="{{ absolute_url(asset('build/icons/power.svg')) }}" alt="pwr" width="24" height="24">Power connector
+							<img src="{{ absolute_url(asset('build/icons/power.svg')) }}" alt="power" width="24" height="24">Power connectors
 						</div>
-						<div class="tag-container">{% for power in expansioncard.getPowerConnectors() %}
-							<a href="{{ path('psu_connector_show', {id: power.getId()}) }}"><span class="text-block">{{ power.getName() }}</span></a>{% endfor %}</div>
+						<div class="tag-container">
+							{% for conn in expansioncard.getExpansionCardPowerConnectors()|sort((a, b) => a.getPowerConnector().getName() <=> b.getPowerConnector().getName()) %}
+									<span class="text-block"><b>{{ conn.getCount() }}x&nbsp;</b><a href="{{ path('psu_connector_show', {id: conn.getPowerConnector().getId()}) }}">{{ conn.getPowerConnector().getName() }}</a></span>
+							{% endfor %}
+						</div>
 						{% endif %}
 						<!-- Slot height-->
 						{% if expansioncard.getSlotCount() is not null %}
