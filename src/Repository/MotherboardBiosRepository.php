@@ -100,56 +100,19 @@ class MotherboardBiosRepository extends ServiceEntityRepository
         }
         return $query->getResult();
     }
-    public function findByString(string $string)
+    public function findByHash(string $hash)
     {
         $entityManager = $this->getEntityManager();
         // Building query
-        if($string == ''){
+        if($hash == ''){
             return [];
         }
         else{
             $query = $entityManager->createQuery(
                 "SELECT man.name as manufacturer, m.id, m.name, bios.coreVersion as core, bman.name as vendor, bios.boardVersion as version, bios.file_name as file
                 FROM App\Entity\MotherboardBios bios JOIN bios.manufacturer bman JOIN bios.motherboard m JOIN m.manufacturer man
-                WHERE (LOWER(bios.postString) LIKE LOWER(:postString))"
-            )->setParameter("postString", "%" . $string . "%");
-        }
-        return $query->getResult();
-    }
-    public function findByFilename(string $filename1, string $filename2)
-    {
-        $entityManager = $this->getEntityManager();
-        // Building query
-        if($filename1 == '' && $filename2 == ''){
-            return [];
-        }
-        $whereArray = array();
-        $valuesArray = array();
-        if($filename1 == $filename2){
-            $fname = pathinfo($filename1);
-            $whereArray[] = "(LOWER(bios.file_name) LIKE LOWER(:fname1) AND LOWER(bios.file_name) LIKE LOWER(:fext1))";
-            $valuesArray["fname1"] = "%" . $fname['filename'] . "%";
-            $valuesArray["fext1"] = "%" . $fname['extension'] . "%";
-        }
-        else{
-            $fname1 = pathinfo($filename1);
-            $fname2 = pathinfo($filename2);
-            $whereArray[] = "((LOWER(bios.file_name) LIKE LOWER(:fname1) AND LOWER(bios.file_name) LIKE LOWER(:fext1)) 
-                OR (LOWER(bios.file_name) LIKE LOWER(:fname2) AND LOWER(bios.file_name) LIKE LOWER(:fext2)))";
-            $valuesArray["fname1"] = "%" . $fname1['filename'] . "%";
-            $valuesArray["fext1"] = "%" . $fname1['extension'] . "%";
-            $valuesArray["fname2"] = "%" . $fname2['filename'] . "%";
-            $valuesArray["fext2"] = "%" . $fname2['extension'] . "%";
-        }
-        $whereString = implode(" AND ", $whereArray);
-        $query = $entityManager->createQuery(
-            "SELECT man.name as manufacturer, m.id, m.name, bios.coreVersion as core, bman.name as vendor, bios.boardVersion as version, bios.file_name as file
-            FROM App\Entity\MotherboardBios bios JOIN bios.manufacturer bman JOIN bios.motherboard m JOIN m.manufacturer man
-            WHERE $whereString"
-        );
-        //dd($whereString);
-        foreach ($valuesArray as $key => $value) {
-            $query->setParameter($key, $value);
+                WHERE (bios.hash LIKE :hash256)"
+            )->setParameter("hash256", "%" . $hash . "%");
         }
         return $query->getResult();
     }

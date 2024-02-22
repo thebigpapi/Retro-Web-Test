@@ -265,6 +265,16 @@ class BiosController extends AbstractController
         }
         return new JsonResponse([]);
     }
+    #[Route('/bios/bot/hash', name:'bios_bot_hash', methods:['POST', 'GET'])]
+    public function getBIOSListHash(Request $request, MotherboardBiosRepository $motherboardBiosRepository): JsonResponse
+    {
+        $list = json_decode($request->request->get('list'));
+        $output = [];
+        foreach($list as $file => $hash){
+            $output[$file] = $motherboardBiosRepository->findByHash($hash);
+        }
+        return new JsonResponse($output);
+    }
 
     #[Route('/bios/help', name: 'bioshelp')]
     public function searchHelp(): Response {
