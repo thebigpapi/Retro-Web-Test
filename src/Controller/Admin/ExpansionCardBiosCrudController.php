@@ -2,8 +2,8 @@
 
 namespace App\Controller\Admin;
 
-use App\Controller\Admin\Filter\ExpansionCardImageTypeFilter;
-use App\Entity\ExpansionCardImage;
+use App\Entity\ExpansionCardBios;
+use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
@@ -14,17 +14,15 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\UrlField;
 use Symfony\Component\Validator\Constraints\File;
-use Vich\UploaderBundle\Form\Type\VichImageType;
+use Vich\UploaderBundle\Form\Type\VichFileType;
 
-class ExpansionCardImageCrudController extends AbstractCrudController
+class ExpansionCardBiosCrudController extends AbstractCrudController
 {
     public static function getEntityFqcn(): string
     {
-        return ExpansionCardImage::class;
+        return ExpansionCardBios::class;
     }
     public function configureActions(Actions $actions): Actions
     {
@@ -44,16 +42,19 @@ class ExpansionCardImageCrudController extends AbstractCrudController
     {
         return $crud
             ->showEntityActionsInlined()
-            ->setPaginatorPageSize(50)
-            ->setEntityLabelInPlural('<img class=ea-entity-icon src=/build/icons/search_image.svg width=48 height=48>Expansion card images')
+            ->setPaginatorPageSize(100)
+            ->setEntityLabelInPlural('<img class=ea-entity-icon src=/build/icons/awchip.svg width=48 height=48>Expansion card BIOSes')
             ->setDefaultSort(['updated_at' => 'DESC']);
     }
     public function configureFilters(Filters $filters): Filters
     {
         return parent::configureFilters($filters)
-            ->add('creditor')
-            ->add(ExpansionCardImageTypeFilter::new('type'))
-            ->add('description')
+            ->add('manufacturer')
+            ->add('postString')
+            ->add('note')
+            ->add('boardVersion')
+            ->add('coreVersion')
+            ->add('hash')
             ->add('updated_at');
     }
     public function configureFields(string $pageName): iterable
@@ -62,46 +63,42 @@ class ExpansionCardImageCrudController extends AbstractCrudController
         yield UrlField::new('expansionCard.getId', 'Expansion card')
             ->setCustomOption('link','expansioncards/')
             ->formatValue(function ($value, $entity) {
-                return $entity->getExpansionCard()->getPrettyTitle() ?: '[unknown]';
+                return $entity->getMotherboard()->getPrettyTitle() ?: '[unknown]';
             })
             ->hideOnForm();
         yield AssociationField::new('expansionCard')
             ->autocomplete()
             ->onlyOnForms();
-        yield AssociationField::new('creditor', 'Creditor')
-            ->autocomplete()
-            ->setColumns(4);
-        yield ChoiceField::new('type')
-            ->setColumns('col-sm-6 col-lg-6 col-xxl-4')
-            ->setFormTypeOption('choices', [
-                'Schema' => '1',
-                'Photo front' => '2',
-                'Photo back' => '3',
-                'Photo misc' => '4',
-                'Schema misc' => '5',
-            ])
+        yield TextField::new('note')
+            ->setColumns('col-sm-4 col-lg-4 col-xxl-4')
             ->onlyOnForms();
-        yield TextField::new('getTypeFormatted', 'Type')
-            ->onlyOnIndex();
-        yield TextField::new('description', 'Notes')
+        yield TextField::new('version', 'Version')
             ->setColumns('col-sm-4 col-lg-4 col-xxl-4');
-        yield ImageField::new('file_name', 'Image')
-            ->setCustomOption('link','expansioncard/image')
-            ->setCustomOption('thumb_link','media/cache/show_thumb/expansioncard/image')
+        yield UrlField::new('file_name')
+            ->setCustomOption('link','motherboard/bios/')
             ->hideOnForm();
-        yield TextField::new('imageFile', 'JPG, GIF or SVG')
-            ->setFormType(VichImageType::class)
+        yield TextField::new('hash')
+            ->setDisabled();
+        yield TextField::new('romFile')
+            ->setFormType(VichFileType::class)
             ->setFormTypeOption('allow_delete',false)
             ->setFormTypeOption('constraints',[
                 new File([
-                    'maxSize' => '8192k',
+                    'maxSize' => '32Mi',
                     'mimeTypes' => [
-                        'image/jpeg',
-                        'image/pjpeg',
-                        'image/gif',
-                        'image/svg+xml',
+                        'application/x-binary',
+                        'application/octet-stream',
+                        'application/mac-binary',
+                        'application/macbinary',
+                        'application/x-macbinary',
+                        'application/x-compressed',
+                        'application/x-zip-compressed',
+                        'application/zip',
+                        'multipart/x-zip',
+                        'application/x-lzh-compressed',
+                        'application/x-dosexec',
                     ],
-                    'mimeTypesMessage' => 'Please upload a valid JPG, GIF or SVG image',
+                    'mimeTypesMessage' => 'Please upload a valid BIN, ZIP or EXE file',
                 ])
             ])
             ->setColumns('col-sm-4 col-lg-4 col-xxl-4')
@@ -114,5 +111,13 @@ class ExpansionCardImageCrudController extends AbstractCrudController
         $entityId = $context->getEntity()->getInstance()->getId();
         $entity = str_replace("\\", "-",$context->getEntity()->getFqcn());
         return $this->redirectToRoute('dh_auditor_show_entity_history', array('id' => $entityId, 'entity' => $entity));
+    }
+    /**
+     * @param ExpansionCardBios $entityInstance
+     */
+    public function updateEntity(EntityManagerInterface $entityManager, $entityInstance): void
+    {
+        $entityInstance->updateHash();
+        parent::updateEntity($entityManager, $entityInstance);
     }
 }

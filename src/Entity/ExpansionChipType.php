@@ -23,6 +23,9 @@ class ExpansionChipType
     #[ORM\OneToMany(targetEntity: ExpansionChip::class, mappedBy: 'type', orphanRemoval: true, cascade: ['persist'])]
     private $expansionChips;
 
+    #[ORM\Column]
+    private array $template = [];
+
     public function __construct()
     {
         $this->expansionChips = new ArrayCollection();
@@ -75,5 +78,20 @@ class ExpansionChipType
         }
 
         return $this;
+    }
+    public function getTemplate(): array
+    {
+        return $this->template;
+    }
+
+    public function setTemplate(array $template): static
+    {
+        $this->template = $template;
+
+        return $this;
+    }
+    public function getTemplateAsText(): string
+    {
+        return json_encode($this->template, \JSON_PARTIAL_OUTPUT_ON_ERROR);
     }
 }

@@ -184,6 +184,5 @@ class MotherboardBios
         if($this->romFile){
             $this->setHash(hash_file('sha256', $this->romFile->getPathname()));
         }
-        //dd($this->boardVersion);
     }
 }

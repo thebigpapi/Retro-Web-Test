@@ -120,7 +120,7 @@ class MotherboardBiosCrudController extends AbstractCrudController
         return $this->redirectToRoute('dh_auditor_show_entity_history', array('id' => $entityId, 'entity' => $entity));
     }
     /**
-     * @param Motherboard $entityInstance
+     * @param MotherboardBios $entityInstance
      */
     public function updateEntity(EntityManagerInterface $entityManager, $entityInstance): void
     {

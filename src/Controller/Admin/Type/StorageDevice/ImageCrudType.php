@@ -46,9 +46,9 @@ class ImageCrudType extends AbstractCrudController
             ->setFormTypeOption('choices',[
                 'Schema' => '1',
                 'Top photo' => '2',
-                'Bottom photo' => '5',
                 'Front photo' => '3',
                 'Back photo' => '4',
+                'Bottom photo' => '5',
                 'Misc' => '6',
             ])
             ->setColumns(12);

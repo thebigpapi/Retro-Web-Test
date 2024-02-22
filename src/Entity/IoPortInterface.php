@@ -36,6 +36,9 @@ class IoPortInterface
     #[ORM\Column(length: 4096, nullable: true)]
     private ?string $description = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $partNumber = null;
+
     public function __construct()
     {
         $this->expansionCardIoPorts = new ArrayCollection();
@@ -202,6 +205,18 @@ class IoPortInterface
     public function setDescription(?string $description): static
     {
         $this->description = $description;
+
+        return $this;
+    }
+
+    public function getPartNumber(): ?string
+    {
+        return $this->partNumber;
+    }
+
+    public function setPartNumber(?string $partNumber): static
+    {
+        $this->partNumber = $partNumber;
 
         return $this;
     }

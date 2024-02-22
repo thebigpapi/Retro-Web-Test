@@ -40,6 +40,9 @@ class PSUConnector
     #[ORM\ManyToMany(targetEntity: ExpansionCard::class, mappedBy: 'powerConnectors')]
     private Collection $expansionCards;
 
+    #[ORM\OneToMany(mappedBy: 'powerConnector', targetEntity: ExpansionCardPowerConnector::class)]
+    private Collection $expansionCardPowerConnectors;
+
     public function __construct()
     {
         $this->motherboards = new ArrayCollection();
@@ -47,6 +50,7 @@ class PSUConnector
         $this->entityImages = new ArrayCollection();
         $this->storageDevices = new ArrayCollection();
         $this->expansionCards = new ArrayCollection();
+        $this->expansionCardPowerConnectors = new ArrayCollection();
     }
     public function __toString(): string
     {
@@ -209,6 +213,36 @@ class PSUConnector
             // set the owning side to null (unless already changed)
             if ($expansionCard->getExpansionChips()->contains($this)) {
                 $expansionCard->removePowerConnector($this);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ExpansionCardPowerConnector>
+     */
+    public function getExpansionCardPowerConnectors(): Collection
+    {
+        return $this->expansionCardPowerConnectors;
+    }
+
+    public function addExpansionCardPowerConnector(ExpansionCardPowerConnector $expansionCardPowerConnector): static
+    {
+        if (!$this->expansionCardPowerConnectors->contains($expansionCardPowerConnector)) {
+            $this->expansionCardPowerConnectors->add($expansionCardPowerConnector);
+            $expansionCardPowerConnector->setPowerConnector($this);
+        }
+
+        return $this;
+    }
+
+    public function removeExpansionCardPowerConnector(ExpansionCardPowerConnector $expansionCardPowerConnector): static
+    {
+        if ($this->expansionCardPowerConnectors->removeElement($expansionCardPowerConnector)) {
+            // set the owning side to null (unless already changed)
+            if ($expansionCardPowerConnector->getPowerConnector() === $this) {
+                $expansionCardPowerConnector->setPowerConnector(null);
             }
         }
 

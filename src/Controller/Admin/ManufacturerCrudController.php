@@ -10,6 +10,7 @@ use App\Entity\Manufacturer;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ArrayField;
@@ -49,6 +50,15 @@ class ManufacturerCrudController extends AbstractCrudController
             ->setEntityLabelInSingular('manufacturer')
             ->setEntityLabelInPlural('<img class=ea-entity-icon src=/build/icons/factory.svg width=48 height=48>Manufacturers')
             ->setPaginatorPageSize(100);
+    }
+    public function configureFilters(Filters $filters): Filters
+    {
+        return parent::configureFilters($filters)
+            ->add('name')
+            ->add('fullName')
+            ->add('pciVendorIds')
+            ->add('manufacturerCodes')
+            ->add('biosCodes');
     }
     public function configureFields(string $pageName): iterable
     {

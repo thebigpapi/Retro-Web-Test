@@ -63,6 +63,7 @@ use App\Entity\ChipsetAlias;
 use App\Entity\EntityDocumentation;
 use App\Entity\EntityImage;
 use App\Entity\ExpansionCardAlias;
+use App\Entity\ExpansionCardBios;
 use App\Entity\FloppyDriveType;
 use App\Entity\MotherboardAlias;
 use App\Entity\StorageDeviceAlias;
@@ -150,6 +151,7 @@ class DashboardController extends AbstractDashboardController
             MenuItem::section('Advanced')->setPermission('ROLE_ADMIN'),
             MenuItem::linkToCrud('Aliases', 'tag.svg', ExpansionCardAlias::class)->setController(ExpansionCardAliasCrudController::class)->setPermission('ROLE_ADMIN'),
             MenuItem::linkToCrud('Images', 'search_image.svg', ExpansionCardImage::class)->setController(ExpansionCardImageCrudController::class)->setPermission('ROLE_ADMIN'),
+            MenuItem::linkToCrud('BIOSes', 'awchip.svg', ExpansionCardBios::class)->setController(ExpansionCardBiosCrudController::class),
             MenuItem::linkToCrud('Documentation', 'manual.svg', ExpansionCardDocumentation::class)->setController(ExpansionCardDocumentationCrudController::class)->setPermission('ROLE_ADMIN'),
         ]);
         yield MenuItem::subMenu('CPU related', '486.svg')->setSubItems([
@@ -168,7 +170,7 @@ class DashboardController extends AbstractDashboardController
             MenuItem::linkToCrud('Documentation', 'manual.svg', StorageDeviceDocumentation::class)->setController(StorageDeviceDocumentationCrudController::class),
         ])->setPermission('ROLE_ADMIN');
         yield MenuItem::subMenu('Memory related', 'ram.svg')->setSubItems([
-            MenuItem::linkToCrud('Memory connectors', 'ram.svg', MemoryConnector::class),
+            //MenuItem::linkToCrud('Memory connectors', 'ram.svg', MemoryConnector::class),
             MenuItem::linkToCrud('Cache size', 'chip.svg', CacheSize::class),
             MenuItem::linkToCrud('RAM size', 'ram_multi.svg', MaxRam::class),
             MenuItem::linkToCrud('RAM type', 'ram.svg', DramType::class),

@@ -124,6 +124,10 @@ class ExpansionCard
     #[ORM\ManyToMany(targetEntity: ExpansionSlotSignal::class, inversedBy: 'expansionCards')]
     private Collection $expansionSlotSignals;
 
+    #[ORM\OneToMany(mappedBy: 'expansionCard', targetEntity: ExpansionCardPowerConnector::class, orphanRemoval: true, cascade: ['persist'])]
+    #[Assert\Valid()]
+    private Collection $expansionCardPowerConnectors;
+
     public function __construct()
     {
         $this->expansionChips = new ArrayCollection();
@@ -143,6 +147,7 @@ class ExpansionCard
         $this->pciDevs = new ArrayCollection();
         $this->knownIssues = new ArrayCollection();
         $this->expansionSlotSignals = new ArrayCollection();
+        $this->expansionCardPowerConnectors = new ArrayCollection();
     }
     public function __toString(): string
     {
@@ -845,6 +850,42 @@ class ExpansionCard
     public function removeExpansionSlotSignal(ExpansionSlotSignal $expansionSlotSignal): static
     {
         $this->expansionSlotSignals->removeElement($expansionSlotSignal);
+
+        return $this;
+    }
+    public function updateHashAll()
+    {
+        foreach($this->expansionCardBios as $item){
+            $item->updateHash();
+        }
+    }
+
+    /**
+     * @return Collection<int, ExpansionCardPowerConnector>
+     */
+    public function getExpansionCardPowerConnectors(): Collection
+    {
+        return $this->expansionCardPowerConnectors;
+    }
+
+    public function addExpansionCardPowerConnector(ExpansionCardPowerConnector $expansionCardPowerConnector): static
+    {
+        if (!$this->expansionCardPowerConnectors->contains($expansionCardPowerConnector)) {
+            $this->expansionCardPowerConnectors->add($expansionCardPowerConnector);
+            $expansionCardPowerConnector->setExpansionCard($this);
+        }
+
+        return $this;
+    }
+
+    public function removeExpansionCardPowerConnector(ExpansionCardPowerConnector $expansionCardPowerConnector): static
+    {
+        if ($this->expansionCardPowerConnectors->removeElement($expansionCardPowerConnector)) {
+            // set the owning side to null (unless already changed)
+            if ($expansionCardPowerConnector->getExpansionCard() === $this) {
+                $expansionCardPowerConnector->setExpansionCard(null);
+            }
+        }
 
         return $this;
     }

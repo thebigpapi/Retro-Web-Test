@@ -20,6 +20,7 @@ use App\Controller\Admin\Type\ExpansionCard\DocumentationCrudType;
 use App\Controller\Admin\Type\ExpansionCard\IdRedirectionCrudType;
 use App\Controller\Admin\Type\ExpansionCard\ImageCrudType;
 use App\Controller\Admin\Type\ExpansionCard\LargeFileCrudType;
+use App\Controller\Admin\Type\ExpansionCard\PowerConnectorCrudType;
 use App\Controller\Admin\Type\PciDeviceCrudType;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
@@ -209,8 +210,8 @@ class ExpansionCardCrudController extends AbstractCrudController
             ->setColumns('col-sm-12 col-lg-6 col-xxl-4')
             ->renderExpanded()
             ->onlyOnForms();*/
-        yield CollectionField::new('powerConnectors', 'Power connectors')
-            ->setEntryType(PSUConnectorType::class)
+        yield CollectionField::new('expansionCardPowerConnectors', 'Power connectors')
+            ->useEntryCrudForm(PowerConnectorCrudType::class)
             ->setColumns('col-sm-12 col-lg-6 col-xxl-4')
             ->renderExpanded()
             ->onlyOnForms();
@@ -263,6 +264,7 @@ class ExpansionCardCrudController extends AbstractCrudController
     public function updateEntity(EntityManagerInterface $entityManager, $entityInstance): void
     {
         $entityInstance->updateLastEdited();
+        $entityInstance->updateHashAll();
         parent::updateEntity($entityManager, $entityInstance);
     }
 }

@@ -119,6 +119,18 @@ class StorageDeviceImage
 
         return $this;
     }
+    public function getTypeFormatted(): string
+    {
+        switch($this->type){
+            case 1: return "Schema";
+            case 2: return "Top photo";
+            case 3: return "Front photo";
+            case 4: return "Back photo";
+            case 5: return "Bottom photo";
+            case 6: return "Misc";
+            default: return "";
+        }
+    }
     public function getImageFile(): ?File
     {
         return $this->imageFile;

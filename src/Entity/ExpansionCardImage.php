@@ -126,6 +126,18 @@ class ExpansionCardImage
 
         return $this;
     }
+
+    public function getTypeFormatted(): string
+    {
+        switch($this->type){
+            case 1: return "Schema";
+            case 2: return "Photo front";
+            case 3: return "Photo back";
+            case 4: return "Photo misc";
+            case 5: return "Schema misc";
+            default: return "";
+        }
+    }
     #[Assert\Callback]
     public function validate(ExecutionContextInterface $context, mixed $payload): void
     {

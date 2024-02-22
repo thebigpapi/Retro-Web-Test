@@ -41,6 +41,9 @@ class ExpansionCardBios
 
     #[ORM\Column(type: 'datetime')]
     private $updated_at;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $hash = null;
     public function __construct()
     {
         $this->updated_at = new \DateTime('now');
@@ -124,6 +127,24 @@ class ExpansionCardBios
             $context->buildViolation('File is not uploaded!')
                 ->atPath('romFile')
                 ->addViolation();
+        }
+    }
+
+    public function getHash(): ?string
+    {
+        return $this->hash;
+    }
+
+    public function setHash(?string $hash): static
+    {
+        $this->hash = $hash;
+
+        return $this;
+    }
+    public function updateHash()
+    {
+        if($this->romFile){
+            $this->setHash(hash_file('sha256', $this->romFile->getPathname()));
         }
     }
 }

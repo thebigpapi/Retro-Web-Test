@@ -2,6 +2,7 @@
 
 namespace App\Controller\Admin;
 
+use App\Controller\Admin\Filter\StorageDeviceImageTypeFilter;
 use App\Entity\StorageDeviceImage;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
@@ -50,6 +51,7 @@ class StorageDeviceImageCrudController extends AbstractCrudController
     {
         return parent::configureFilters($filters)
             ->add('creditor')
+            ->add(StorageDeviceImageTypeFilter::new('type'))
             ->add('description')
             ->add('updated_at');
     }
@@ -78,7 +80,10 @@ class StorageDeviceImageCrudController extends AbstractCrudController
                 'Back photo' => '4',
                 'Misc' => '6',
             ])
-            ->setColumns(4);
+            ->setColumns(4)
+            ->onlyOnForms();
+        yield TextField::new('getTypeFormatted', 'Type')
+            ->onlyOnIndex();
         yield TextField::new('description', 'Notes')
             ->setColumns('col-sm-4 col-lg-4 col-xxl-4');
         yield ImageField::new('file_name', 'Image')
