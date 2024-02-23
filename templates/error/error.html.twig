@@ -11,6 +11,9 @@
 				<p>The page you were looking for couldn't be found.</p>
 				<p>You can go back to the homepage by clicking
 					<a href="{{ path('app_homepage') }}">here</a>.</p>
+				<div style="background-color:#d43934;color:#e0e0e0;padding:5px 10px 5px;border-radius:4px;">
+					<p>{{ message }}</p>
+				</div>
 			</div>
 			<img style="" src="{{ absolute_url(asset('build/images/search404.gif')) }}" alt="error">
 		{% elseif code == 403 %}

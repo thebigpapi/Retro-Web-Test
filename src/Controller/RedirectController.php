@@ -126,7 +126,7 @@ class RedirectController extends AbstractController
     }
 
 
-    #[Route(path: '/storage/{id}')]
+    #[Route(path: '/storage/{id}', name:'storage_show', requirements:['id' => '\d+'])]
     public function redirectStorage($id, HardDriveRepository $hardDriveRepository, CdDriveRepository $cdDriveRepository, FloppyDriveRepository $floppyDriveRepository)
     {
         $hdd = $hardDriveRepository->find($id);
