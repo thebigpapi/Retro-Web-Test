@@ -281,7 +281,7 @@ a.button-widget, span.button-widget {
 	padding: 3px 5px;
 	border: solid thin $border-light;
 	border-radius: 5px;
-	box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.3);
+	//box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.3);
 	background: $body-bkg-light;
 	color: $accent-frg-light;
 	display: flex;
@@ -312,7 +312,7 @@ a.button-widget, span.button-widget {
 	@media (prefers-color-scheme: dark) {
 		background: $accent-bkg-dark;
 		color: $accent-frg-dark;
-		border-color: $border-dark;
+		border-color: transparent;
 	}
 
 	@include noselect();
@@ -323,7 +323,18 @@ a.button-widget, span.button-widget {
 	}
 }
 a.button-widget-new{
+    color: $active-link-light;
     @include noselect();
+    &:hover, span:hover {
+		color: rgb(215, 133, 0);
+
+		@media (prefers-color-scheme: dark) {
+			color: rgb(247, 207, 62);
+		}
+	}
+    span{
+        transition: ease-in-out 0.1s color;
+    }
     i.fa{
         position: relative;
         top: 5px;
@@ -554,6 +565,7 @@ aside.hamburger-sidebar {
 div.dropdown-trw{
     border: 1px solid #b5b5b5;
     border-radius: 4px;
+    margin-top: 10px;
     @media (prefers-color-scheme: dark) {
         border: 1px solid #878787;
     }
@@ -561,16 +573,15 @@ div.dropdown-trw{
         display: flex;
         align-items: center;
         padding: 3px;
-        border-bottom: 1px solid #b5b5b5;
         user-select: none;
         font-style: italic;
         transition: ease-in-out $anim-duration background-color;
-        @media (prefers-color-scheme: dark) {
-            border-bottom: 1px solid #878787;
-        }
         &:hover{
             transition: ease-in-out $anim-duration background-color;
-            background-color: #0979c3;
+            background-color: #5eb3ec;
+            @media (prefers-color-scheme: dark) {
+                background-color: #0979c3;
+            }
         }
         span{
             flex-grow: 1;
@@ -604,6 +615,10 @@ div.dropdown-trw{
             }
         }
         &:has(input:checked){
+            border-bottom: 1px solid #b5b5b5;
+            @media (prefers-color-scheme: dark) {
+                border-bottom: 1px solid #878787;
+            }
             & + div.dropdown-contents{
                 display: block;
             }
@@ -751,7 +766,7 @@ div.search-form-header {
 	}
 }
 
-div.search-form-entry {
+div.search-form-entry, div.search-form-filter {
 	display: flex;
 	flex-wrap: wrap;
     label.search-form-label {
@@ -798,8 +813,8 @@ div.search-form-entry {
 			background-color: $accent-bkg-light;
 
 			@media (prefers-color-scheme: dark) {
-				background-color: $accent-bkg-dark;
-				border-color: $border-dark;
+				background-color: #404040;
+				border-color: transparent;
 			}
 
 			-webkit-transition: .4s;
@@ -847,7 +862,6 @@ div.search-form-entry {
 		div {
 			display: flex;
 			flex-wrap: wrap;
-			width: 100%;
 
 			input {
 				width: 100%;
@@ -873,14 +887,25 @@ div.search-form-entry {
         }
         div.search-form-widget-flex{
             margin-top: auto;
-            column-gap: 2px;
+            justify-content: space-evenly;
+        }
+        div.upper{
+            padding-bottom: 5px;
         }
 
 		input,
 		select {
 			padding-left: 8px;
 		}
+        @media (prefers-color-scheme: dark) {
+            .ts-control{
+                border: 1px solid transparent;
+            }
+        }
 	}
+}
+div.search-form-entry div.search-form-widget div {
+	width: 100%;
 }
 
 #search-fieldset>div.search-form-entry {

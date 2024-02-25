@@ -62,8 +62,8 @@
 							<span>CPU socket</span>
 						</label>
 						<div class="search-form-widget">
-							<div id="setcpu1">{{ form_widget(form.cpuSocket1, {'attr': {'data-target-id': 'search_platform1'}}) }}</div>
-							<div id="setcpup1">{{ form_widget(form.platform1, {'attr': {'aria-label': "CPU family"}}) }}</div>
+							<div class="upper">{{ form_widget(form.cpuSocket1, {'attr': {'data-target-id': 'search_platform1'}}) }}</div>
+							<div>{{ form_widget(form.platform1, {'attr': {'aria-label': "CPU family"}}) }}</div>
 						</div>
 					</div>
 
@@ -72,8 +72,8 @@
 							<span>2nd CPU socket</span>
 						</label>
 						<div class="search-form-widget">
-							<div id="setcpu3">{{ form_widget(form.cpuSocket2, {'attr': {'data-action': "change->search#search", 'data-target-id': 'search_platform2'}}) }}</div>
-							<div id="setcpup3">{{ form_widget(form.platform2, {'attr': {'aria-label': "Secondary CPU family"}}) }}</div>
+							<div class="upper">{{ form_widget(form.cpuSocket2, {'attr': {'data-action': "change->search#search", 'data-target-id': 'search_platform2'}}) }}</div>
+							<div>{{ form_widget(form.platform2, {'attr': {'aria-label': "Secondary CPU family"}}) }}</div>
 						</div>
 					</div>
 					<div class="search-form-entry">
