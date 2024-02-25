@@ -1,48 +1,58 @@
 <!-- Search toolbar -->
 <div class="search-form-entry">
-	<label class="search-form-label">
-		<span>Actions</span>
-	</label>
 	<div class="search-form-widget toolbar toolbar-main thin">
-		<button type="button" onclick="document.getElementById('rst-btn').click();return false;">
-			<img src="{{ absolute_url(asset('build/icons/reset.svg')) }}" alt="reset" width="24" height="24">
-			<span>Reset</span>
-		</button>
-		<button id="search-paginate-id" type="button" data-paginate="1" data-target="{{ datatarget }}">
-			<img src="{{ absolute_url(asset('build/icons/search.svg')) }}" alt="search" width="24" height="24">
-			<span>Search</span>
-		</button>
-		<input id="rst-btn" type="reset" value="reset" data-reset-ids='{{ dataresetids }}'>
-		<input id="pagination_redir" type="button" data-results-id='search_liveResults' value="1">
-		{% if search_with_images is defined %}
-			<div class="search-form-entry" style="padding-bottom:8px;">
+		<div class="search-form-widget-grid">
+			<!-- Labels -->
+			{% if search_with_images is defined %}
 				<label for="search_searchWithImages" class="search-form-label file" title="If unchecked, only show a list, without any thumbnails.">
 					<span>Show images</span>
 				</label>
-				<label class="search-form-widget">
-					{{ form_widget(form.searchWithImages, {'attr': {'style': 'width:25px;height:25px'}}) }}
-					<span class="slider"></span>
-				</label>
-			</div>
-		{% endif %}
-		{% if bios_list is defined %}
-			<div class="search-form-entry" style="padding-bottom:8px;width:12rem">
+			{% endif %}
+			{% if bios_list is defined %}
 				<label class="search-form-label file" title="If checked, only BIOS entries with files attached will be shown">
 					<span>Files only</span>
 				</label>
-				<label class="search-form-widget">
-					{{ form_widget(form.file_present, {'attr': {'style': 'width:25px;height:25px'}}) }}
-					<span class="slider"></span>
-				</label>
-			</div>
-		{% endif %}
-			<div class="search-form-entry" style="padding-bottom:4px;">
-				<label for="search_itemsPerPage" class="search-form-label">
-					<span>Items/page</span>
-				</label>
+			{% endif %}
+			<label for="search_itemsPerPage" class="search-form-label">
+				<span>Items/page</span>
+			</label>
+			<!-- Widgets -->
+			{% if search_with_images is defined %}
+				<div class="search-form-entry slider">
+					<label class="search-form-widget">
+						{{ form_widget(form.searchWithImages, {'attr': {'style': 'width:25px;height:25px'}}) }}
+						<span class="slider"></span>
+					</label>
+				</div>
+			{% endif %}
+			{% if bios_list is defined %}
+				<div class="search-form-entry slider">
+					<label class="search-form-widget">
+						{{ form_widget(form.file_present, {'attr': {'style': 'width:25px;height:25px'}}) }}
+						<span class="slider"></span>
+					</label>
+				</div>
+			{% endif %}
+			<div class="search-form-entry items">
 				<div class="search-form-widget">
 					{{ form_widget(form.itemsPerPage) }}
 				</div>
 			</div>
+		</div>
+		<!-- Actions -->
+		<div class="search-form-widget-flex">
+			<span></span>
+			<span></span>
+			<button type="button" onclick="document.getElementById('rst-btn').click();return false;">
+				<img src="{{ absolute_url(asset('build/icons/reset.svg')) }}" alt="reset" width="24" height="24">
+				<span>Reset</span>
+			</button>
+			<button id="search-paginate-id" type="button" data-paginate="1" data-target="{{ datatarget }}">
+				<img src="{{ absolute_url(asset('build/icons/search.svg')) }}" alt="search" width="24" height="24">
+				<span>Search</span>
+			</button>
+		</div>
+		<input id="rst-btn" type="reset" value="reset" data-reset-ids='{{ dataresetids }}'>
+		<input id="pagination_redir" type="button" data-results-id='search_liveResults' value="1">
 	</div>
 </div>

@@ -322,6 +322,23 @@ a.button-widget, span.button-widget {
 		padding-right: 3px;
 	}
 }
+a.button-widget-new{
+    @include noselect();
+    i.fa{
+        position: relative;
+        top: 5px;
+        line-height: 1rem;
+        font-size:28px;
+        font-weight: 500;
+        font-family: $header-font;
+        font-style: normal;
+        font-variant: normal;
+        text-rendering: auto;
+    }
+    i.fa-add:before, i.fa-plus:before {
+        content: "\2b";
+    }
+}
 
 .monospace {
 	font-family: $monospace-font;
@@ -642,11 +659,9 @@ div.toolbar {
         display: flex;
         flex-wrap: nowrap;
         align-items: end;
-        button{
-            height: 50px;
-        }
+        padding-bottom: 0;
+        padding-top: 0;
     }
-
 	&.toolbar-thin {
 		padding-bottom: 5px;
 		padding-top: 5px;
@@ -750,6 +765,10 @@ div.search-form-entry {
         &.file {
             padding-bottom: 2px;
         }
+        &.flex{
+            display: flex;
+            justify-content: space-between;
+        }
         >span {
             font-style: italic;
             flex-grow: 1;
@@ -829,7 +848,6 @@ div.search-form-entry {
 			display: flex;
 			flex-wrap: wrap;
 			width: 100%;
-			padding-bottom: 5px;
 
 			input {
 				width: 100%;
@@ -841,6 +859,22 @@ div.search-form-entry {
 				width: auto;
 			}
 		}
+        div.search-form-widget-grid{
+            display: grid;
+            padding-bottom: 0;
+            div.slider{
+                padding-bottom:0;
+                margin-left: 1rem;
+            }
+            div.items{
+                padding-bottom:0;
+                margin-left: 0.8rem;
+            }
+        }
+        div.search-form-widget-flex{
+            margin-top: auto;
+            column-gap: 2px;
+        }
 
 		input,
 		select {
@@ -861,8 +895,9 @@ div.search-form-widget select.tomselected {
 div.editor-row {
 	display: flex;
 	flex-wrap: wrap;
+    width: auto;
 	gap: 5px;
-	padding: 5px;
+	padding: 2px;
 	align-items: center;
 
 	@media (max-width: 500px) {

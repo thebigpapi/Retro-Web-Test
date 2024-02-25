@@ -95,7 +95,7 @@
 						</div>
 					</div>
 					<div class="search-form-filter">
-						<label class="search-form-label">
+						<label class="search-form-label flex">
 							<span>Expansion slots</span>
 							{% include 'macros/buttons.html.twig' with {'type':'add', 'action': 'motherboardExpansionSlots'} %}
 						</label>
@@ -115,7 +115,7 @@
 					</div>
 
 					<div class="search-form-filter">
-						<label class="search-form-label">
+						<label class="search-form-label flex">
 							<span>I/O ports</span>
 							{% include 'macros/buttons.html.twig' with {'type':'add', 'action': 'motherboardIoPorts'} %}
 						</label>
@@ -135,8 +135,8 @@
 					</div>
 				</section>
 				<section class="search-form-grid bordertop">
-					<div class="search-form-filter">
-						<label class="search-form-label" title="Type in the search box to thin down the result list.">
+					<div class="search-form-entry">
+						<label class="search-form-label flex" title="Type in the search box to thin down the result list.">
 							<span>Expansion chips</span>
 							{% include 'macros/buttons.html.twig' with {'type':'add', 'action': 'expansionChips'} %}
 						</label>
@@ -152,8 +152,8 @@
 							{% endfor %}
 						</div>
 					</div>
-					<div class="search-form-filter">
-						<label class="search-form-label" title="">
+					<div class="search-form-entry">
+						<label class="search-form-label flex" title="">
 							<span>RAM type</span>
 							{% include 'macros/buttons.html.twig' with {'type':'add', 'action': 'dramTypes'} %}
 						</label>
