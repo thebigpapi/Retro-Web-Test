@@ -97,7 +97,6 @@ class LargeFileCrudController extends AbstractCrudController
             ->add('fileVersion')
             ->add('file_name',)
             ->add('osFlags')
-            ->add('subdirectory')
             ->add('lastEdited');
     }
     public function configureFields(string $pageName): iterable
@@ -110,18 +109,7 @@ class LargeFileCrudController extends AbstractCrudController
             ->setColumns(4);
         yield TextField::new('fileVersion', 'Version')
             ->setColumns(4);
-        yield ChoiceField::new('subdirectory', 'Type')
-            ->setChoices([
-                'apps' => 'apps',
-                'drivers' => 'drivers',
-            ])
-            ->setFormTypeOption('placeholder', 'Type to select a type ...')
-            ->setFormTypeOption('autocomplete', 'off')
-            ->setColumns(4)
-            ->onlyOnForms();
-        yield TextField::new('subdirectory', 'Type')
-            ->onlyOnIndex();
-        yield TextField::new('getSizeFormatted', 'size')
+        yield TextField::new('getSizeFormatted', 'Size')
             ->onlyOnIndex();
         yield DateField::new('release_date', 'Release Date')
             ->setFormTypeOption('attr', ['style'=>'width:100%;'])
@@ -245,7 +233,6 @@ class LargeFileCrudController extends AbstractCrudController
         $driver = new LargeFile();
         $driver->setName($old->getName());
         $driver->setFileVersion($old->getFileVersion());
-        $driver->setSubdirectory($old->getSubdirectory());
         $driver->setReleaseDate($old->getReleaseDate());
         $driver->setDatePrecision($old->getDatePrecision());
         $driver->setNote($old->getNote());

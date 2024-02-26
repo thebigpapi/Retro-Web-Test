@@ -46,9 +46,6 @@ class LargeFile
     #[ORM\Column(type: 'datetime')]
     private $updated_at;
 
-    #[ORM\Column(type: 'string', length: 255)]
-    private $subdirectory;
-
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     #[Assert\Length(max: 255, maxMessage: 'Version is longer than {{ limit }} characters, try to make it shorter.')]
     private $fileVersion;
@@ -142,16 +139,6 @@ class LargeFile
     public function setUpdatedAt(\DateTimeInterface $updated_at): self
     {
         $this->updated_at = $updated_at;
-
-        return $this;
-    }
-    public function getSubdirectory(): ?string
-    {
-        return $this->subdirectory;
-    }
-    public function setSubdirectory(string $subdirectory): self
-    {
-        $this->subdirectory = $subdirectory;
 
         return $this;
     }
