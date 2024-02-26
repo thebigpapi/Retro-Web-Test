@@ -1,0 +1,37 @@
+<div class="perks">
+	<p><b>Last edited {{ entity_label }}</b></p>
+	<div id="index-datetime" class="perks-list">
+	{% for item in entity %}
+		<div class="perk">
+			<a href="{{ path(path, {id:item.getId()}) }}">
+				<div class="perk-image">
+				{% if item.getImages() is not empty %}
+					{% set imgtype_count = 0 %}
+                    {% if type == 'motherboard' %}
+                        {% for image in item.getImages()|filter(a => a.motherboardImageType.id in [1, 2])|sort((a, b) => a.getFileName() <=> b.getFileName())|sort((a, b) => b.motherboardImageType <=> a.motherboardImageType)|slice(0, 1) %}
+                            <img src="{% if vich_uploader_asset(image, 'imageFile') | ext != "svg" %}
+                                {{ vich_uploader_asset(image, 'imageFile') | imagine_filter('show_thumb') }}{% else %}
+                                {{ vich_uploader_asset(image, 'imageFile')}}{% endif %}" alt="" loading="lazy" width="250" height="200" title="{% if image.description %}{{ image.description }}{% endif %}">
+                                {% set imgtype_count = imgtype_count + 1 %}
+                        {% endfor %}
+                    {% else %}
+                        {% for image in item.getImages()|filter(a => a.type in [1, 2])|sort((a, b) => a.getFileName() <=> b.getFileName())|sort((a, b) => b.type <=> a.type)|slice(0, 1) %}
+                            <img src="{% if vich_uploader_asset(image, 'imageFile') | ext != "svg" %}
+                                {{ vich_uploader_asset(image, 'imageFile') | imagine_filter('show_thumb') }}{% else %}
+                                {{ vich_uploader_asset(image, 'imageFile')}}{% endif %}" alt="" loading="lazy" width="250" height="200" title="{% if image.description %}{{ image.description }}{% endif %}">
+                                {% set imgtype_count = imgtype_count + 1 %}
+                        {% endfor %}
+                    {% endif %}
+					{% if imgtype_count == 0 %}
+						<img src="{{ absolute_url(asset('build/images/missing/card-missing.jpg')) }}" loading="lazy" width="250" height="200" title="no images available :(">
+					{% endif %}
+				{% else %}
+					<img src="{{ absolute_url(asset('build/images/missing/card-missing.jpg')) }}" alt="missing image" loading="lazy" width="250" height="200" title="no images available :(">
+				{% endif %}</div>
+				<div class="perk-name">{{ item.getFullName() }}</div>
+				<div class="perk-date">{{ item.getLastEdited()|date("Y-m-d\\TH:i:s", "GMT") }}Z</div>
+			</a>
+		</div>
+	{% endfor %}
+	</div>
+</div>

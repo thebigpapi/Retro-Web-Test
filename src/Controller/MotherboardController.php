@@ -79,6 +79,7 @@ class MotherboardController extends AbstractController
         FormFactorRepository $formFactorRepository,
         ProcessorPlatformTypeRepository $processorPlatformTypeRepository
     ): Response {
+        $latestMotherboards = $motherboardRepository->findLatest(8);
         $form = $this->_searchFormHandler($request, $manufacturerRepository, $cpuSocketRepository,
             $formFactorRepository, $processorPlatformTypeRepository);
 
@@ -92,6 +93,7 @@ class MotherboardController extends AbstractController
         if (empty($criterias)) {
             return $this->render('motherboard/search.html.twig', [
                 'form' => $form->createView(),
+                'latestMotherboards' => $latestMotherboards,
             ]);
         }
 

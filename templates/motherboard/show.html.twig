@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-	{{ motherboard.getPrettyTitle() }} - The Retro Web
+	{{ motherboard.getFullName() }} - The Retro Web
 {% endblock %}
 
 {% block metatags %}
@@ -18,8 +18,8 @@
 	<meta name="twitter:card" content="summary">
 	<meta property="og:site_name" content="The Retro Web">
 	<meta property="og:type" content="website">
-	<meta name="twitter:title" content="{{ motherboard.getPrettyTitle() }}">
-	<meta property="og:title" content="{{ motherboard.getPrettyTitle() }}">
+	<meta name="twitter:title" content="{{ motherboard.getFullName() }}">
+	<meta property="og:title" content="{{ motherboard.getFullName() }}">
 	<meta name="twitter:description" content="{{ motherboard.getMetaDescription() }}">
 	<meta property="og:description" content="{{ motherboard.getMetaDescription() }}">
 	<meta property="og:url" content="{{ absolute_url(path('motherboard_show_slug', {slug: motherboard.getSlug()})) }}">
@@ -59,7 +59,7 @@
 
 {% block body %}
 <!-- TITLE/ALIASES -->
-<div class="title">{{ motherboard.getPrettyTitle() }}</div>
+<div class="title">{{ motherboard.getFullName() }}</div>
 <div class="main-strip">
 	<div class="internal-container">
 		{% include 'macros/navbar.html.twig' with {'entity': motherboard, 'entityName': 'Motherboard', 'name': 'board'} %}
@@ -317,14 +317,14 @@
 			</div>
 			<!-- Documentation -->
 			<div class="show-downloads" id="sh-docs">
-				{% include 'macros/manuals.html.twig' with {'entity': motherboard.getManuals(), 'audit_entity':'App-Entity-Manual', 'chips': motherboard.getChipDocs()} %}
+				{% include 'macros/manuals.html.twig' with {'entity': motherboard.getManuals(), 'entity_label':'board', 'audit_entity':'App-Entity-Manual', 'chips': motherboard.getChipDocs()} %}
 				<!-- MISC FILES -->
+				{% if motherboard.getMiscFiles() is not empty %}
 				<div class="show-downloads-group">
 					<div class="show-downloads-group-header">
 						<img src="{{ absolute_url(asset('build/icons/miscfile.svg')) }}" alt="doc" width="32" height="32">
 						<span>{{ motherboard.getMiscFiles.count() }} other file{% if motherboard.getMiscFiles.count() != 1 %}s{% endif %} available</span>
 					</div>
-					{% if motherboard.getMiscFiles() is not empty %}
 					<div class="plain-list w300p table">
 						<div class="list-entry centered head">
 							<div>File</div>
@@ -341,8 +341,8 @@
 						</div>
 						{% endfor %}
 					</div>
-					{% endif %}
 				</div>
+				{% endif %}
 			</div>
 		</div>
 	</div>

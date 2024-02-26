@@ -1,10 +1,10 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-	{{ expansioncard.getPrettyTitle() }}
+	{{ expansioncard.getFullName() }}
 {% endblock %}
 {% block metatags %}
-	<meta name="description" content="Expansion card:{{ expansioncard.getPrettyTitle() }}">
+	<meta name="description" content="Expansion card:{{ expansioncard.getFullName() }}">
 {% endblock %}
 {% block extra_javascripts %}
 	<script src="/build/js/show.js" defer></script>
@@ -12,8 +12,8 @@
 
 {% block opengraph %}
 	{% apply spaceless %}
-	<meta property="og:title" content="{{ expansioncard.getPrettyTitle() }}">
-	<meta property="og:description" content="Get info, images and drivers for the {{ expansioncard.getPrettyTitle() }} expansion card">
+	<meta property="og:title" content="{{ expansioncard.getFullName() }}">
+	<meta property="og:description" content="Get info, images and drivers for the {{ expansioncard.getFullName() }} expansion card">
 	{% if expansioncard.getImages() is not empty %}
 		{% for image in expansioncard.getImages()|sort((a, b) => a.getFileName() <=> b.getFileName())|slice(0, 1) %}
 			<meta name="twitter:image" content="{{ vich_uploader_asset(image, 'imageFile')}}">
@@ -49,7 +49,7 @@
 {% endblock %}
 {% block body %}
 <!-- MANUF./NAME/PART NO. -->
-<div class="title">{{ expansioncard.getPrettyTitle() }}</div>
+<div class="title">{{ expansioncard.getFullName() }}</div>
 <div class="main-strip">
 	<div class="internal-container">
 		{% include 'macros/navbar.html.twig' with {'entity': expansioncard, 'entityName': 'ExpansionCard', 'name': 'card'} %}
@@ -278,7 +278,7 @@
 			</div>
 			<!-- Documentation -->
 			<div class="show-downloads" id="sh-docs">
-				{% include 'macros/manuals.html.twig' with {'entity': expansioncard.getDocumentations(), 'chips': expansioncard.getChipDocs(), 'audit_entity':'App-Entity-ExpansionCardDocumentation'} %}
+				{% include 'macros/manuals.html.twig' with {'entity': expansioncard.getDocumentations(), 'chips': expansioncard.getChipDocs(), 'entity_label':'card', 'audit_entity':'App-Entity-ExpansionCardDocumentation'} %}
 			</div>
 		</div>
 	</div>

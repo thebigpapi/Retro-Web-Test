@@ -63,7 +63,7 @@ class MotherboardBiosCrudController extends AbstractCrudController
         yield UrlField::new('motherboard.getId', 'Motherboard')
             ->setCustomOption('link','motherboards/')
             ->formatValue(function ($value, $entity) {
-                return $entity->getMotherboard()->getPrettyTitle() ?: '[unknown]';
+                return $entity->getMotherboard()->getFullName();
             })
             ->hideOnForm();
         yield AssociationField::new('motherboard')

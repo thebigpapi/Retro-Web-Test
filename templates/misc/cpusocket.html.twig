@@ -85,7 +85,7 @@
 				</div>
 				{% include 'macros/notes.html.twig' with {'entity': socket} %}
 				<!-- MANUALS -->
-				{% include 'macros/manuals.html.twig' with {'entity': socket.getEntityDocumentations(), 'audit_entity':'App-Entity-EntityDocumentation'} %}
+				{% include 'macros/manuals.html.twig' with {'entity': socket.getEntityDocumentations(), 'entity_label':'', 'audit_entity':'App-Entity-EntityDocumentation'} %}
 			</div>
 		</div>
 	</div>

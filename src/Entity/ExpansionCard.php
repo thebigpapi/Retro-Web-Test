@@ -147,7 +147,7 @@ class ExpansionCard
     }
     public function __toString(): string
     {
-        return $this->getPrettyTitle();
+        return $this->getFullName();
     }
 
     public function getId(): ?int
@@ -166,7 +166,7 @@ class ExpansionCard
 
         return $this;
     }
-    public function getPrettyTitle(): string
+    public function getFullName(): string
     {
         $strBuilder = "";
         $mfgData = $this->getManufacturer();

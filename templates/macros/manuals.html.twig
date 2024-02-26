@@ -1,21 +1,21 @@
-<div class="show-downloads-group">
-	{% set allDocs = entity %}
-    {% if not(allDocs is empty and chips is defined and chips is not empty) %}
-	<div class="show-downloads-group-header">
-		<img src="{{ absolute_url(asset('build/icons/manual.svg')) }}" alt="doc" width="32" height="32">
-		<span>{{ allDocs|length }} document{% if allDocs|length != 1 %}s{% endif %} available</span>
-	</div>
-    {% endif %}
-	{% if allDocs is not empty %}
+{% macro manual(entity, audit_entity, chips) %}
+    {% if entity is not empty %}
 	<div class="plain-list w300p table">
         <div class="list-entry centered head">
+            {% if chips == true %}<div>Chip</div>{% endif %}
             <div>Language</div>
             <div>Release date</div>
             <div>File</div>
             <div>Last edit</div>
         </div>
-        {% for manual in allDocs|sort((a, b) => a.getLinkName <=> b.getLinkName) %}
+        {% for manual in entity|sort((a, b) => a.getLinkName <=> b.getLinkName) %}
         <div class="list-entry centered {% if loop.index is divisible by(2) %}alt{% endif %}">
+            {% if chips == true %}
+                <div class="header-label">Chip</div>
+                <div>
+                    <a href="{{ path('expansion_chip_show', {'id': manual.getChip().getId()}) }}">{{ manual.getChip().getNameWithManufacturer()}}</a>
+                </div>
+            {% endif %}
             <div class="header-label">Language</div>
             <div>{{ manual.getLanguage().getName()}}</div>
             <div class="header-label">Release date</div>
@@ -38,49 +38,27 @@
         {% endfor %}
     </div>
     {% endif %}
-    {% if chips is defined and chips is not empty %}
-    <div style="height:15px;"></div>
-        {% set allDocs = chips %}
+{% endmacro %}
+<div class="show-downloads-group">
+    {% if entity is not empty %}
         <div class="show-downloads-group-header">
             <img src="{{ absolute_url(asset('build/icons/manual.svg')) }}" alt="doc" width="32" height="32">
-            <span>{{ allDocs|length }} chip document{% if allDocs|length != 1 %}s{% endif %} available</span>
+            <span>{{ entity|length }} {{ entity_label }} document{% if entity|length != 1 %}s{% endif %} available</span>
         </div>
-        {% if allDocs is not empty %}
-        <div class="plain-list w300p table">
-            <div class="list-entry centered head">
-                <div>Chip</div>
-                <div>Language</div>
-                <div>Release date</div>
-                <div>File</div>
-                <div>Last edit</div>
-            </div>
-            {% for manual in allDocs|sort((a, b) => a.getLinkName <=> b.getLinkName) %}
-            <div class="list-entry centered {% if loop.index is divisible by(2) %}alt{% endif %}">
-                <div class="header-label">Chip</div>
-                <div>
-                    <a href="{{ path('expansion_chip_show', {'id': manual.getChip().getId()}) }}">{{ manual.getChip().getNameWithManufacturer()}}</a>
-                </div>
-                <div class="header-label">Language</div>
-                <div>{{ manual.getLanguage().getName()}}</div>
-                <div class="header-label">Release date</div>
-                <div>{{ manual.getReleaseDateString()}}</div>
-                <div class="header-label">File</div>
-                <div>
-                    <a class="combo" href="{{ vich_uploader_asset(manual, 'manualFile') }}">
-                        <img src="{{ absolute_url(asset('build/icons/dw.svg')) }}" alt="" width="16" height="16">
-                        <span>{{ manual.getLinkName() }}</span>
-                    </a>
-                </div>
-                <div class="header-label">Last edit</div>
-                <div>
-                    <a href="{{ path('dh_auditor_show_entity_history', { 'entity': 'App-Entity-ChipDocumentation', 'id': manual.getId() }) }}">
-                        <img src="{{ absolute_url(asset('build/icons/calendar.svg')) }}" alt="pwr" width="16" height="16">
-                    </a>
-                    <i>{{ manual.getUpdatedAt()|date("Y-m-d")}}</i>
-                </div>
-            </div>
-            {% endfor %}
+        {{ _self.manual(entity, audit_entity, false)}}
+    {% else %}
+        <div class="show-downloads-group-header">
+            <img src="{{ absolute_url(asset('build/icons/manual.svg')) }}" alt="doc" width="32" height="32">
+            <span>No {% if chips is defined and chips is not empty %}{{ entity_label }}{% endif %} documents available</span>
         </div>
-        {% endif %}
+    {% endif %}
+
+    {% if chips is defined and chips is not empty %}
+        <div style="height:15px;"></div>
+        <div class="show-downloads-group-header">
+            <img src="{{ absolute_url(asset('build/icons/chip_manual.svg')) }}" alt="chipdoc" width="32" height="32">
+            <span>{{ chips|length }} chip document{% if chips|length != 1 %}s{% endif %} available</span>
+        </div>
+        {{ _self.manual(chips, audit_entity, true)}}
     {% endif %}
 </div>

@@ -49,11 +49,8 @@ class ExpansionCardBiosCrudController extends AbstractCrudController
     public function configureFilters(Filters $filters): Filters
     {
         return parent::configureFilters($filters)
-            ->add('manufacturer')
-            ->add('postString')
             ->add('note')
-            ->add('boardVersion')
-            ->add('coreVersion')
+            ->add('version')
             ->add('hash')
             ->add('updated_at');
     }
@@ -63,7 +60,7 @@ class ExpansionCardBiosCrudController extends AbstractCrudController
         yield UrlField::new('expansionCard.getId', 'Expansion card')
             ->setCustomOption('link','expansioncards/')
             ->formatValue(function ($value, $entity) {
-                return $entity->getMotherboard()->getPrettyTitle() ?: '[unknown]';
+                return $entity->getExpansionCard()->getFullName();
             })
             ->hideOnForm();
         yield AssociationField::new('expansionCard')

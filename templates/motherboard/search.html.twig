@@ -183,6 +183,9 @@
 	{{ form_end(form, {render_rest: false}) }}
 	<!-- Search results -->
 	<section id="search_liveResults">
+	{% if latestMotherboards is defined %}
+		{% include 'macros/lastedited.html.twig' with {'entity': latestMotherboards, 'type':'motherboard', 'entity_label':'boards', 'path': 'motherboard_show'} %}
+	{% endif %}
 	{% if motherboards is defined %}
 		{% include 'motherboard/result.html.twig' with {'motherboards': motherboards, 'show_images': show_images, 'route': true} %}
 	{% endif %}

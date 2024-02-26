@@ -113,7 +113,7 @@
 				</div>
 				{% include 'macros/aliases.html.twig' with {'entity':cddrive.getStorageDeviceAliases(), 'msg': 'Also known as:'} %}
 				{% include 'macros/notes.html.twig' with {'entity': cddrive} %}
-				{% include 'macros/manuals.html.twig' with {'entity': cddrive.getStorageDeviceDocumentations(), 'audit_entity':'App-Entity-StorageDeviceDocumentation'} %}
+				{% include 'macros/manuals.html.twig' with {'entity': cddrive.getStorageDeviceDocumentations(), 'entity_label':'', 'audit_entity':'App-Entity-StorageDeviceDocumentation'} %}
 				<div id="index-datetime"><div class="div-datetime">Last updated <span class="perk-date">{{ cddrive.getLastEdited()|date("Y-m-d\\TH:i:s", "GMT") }}Z</span></div></div>
 			</div>
 		</div>

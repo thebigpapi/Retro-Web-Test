@@ -146,7 +146,7 @@ class Motherboard
     }
     public function __toString(): string
     {
-        return $this->getPrettyTitle();
+        return $this->getFullName();
     }
     public function getId(): ?int
     {
@@ -875,7 +875,7 @@ class Motherboard
         return $this;
     }
 
-    public function getPrettyTitle(): string
+    public function getFullName(): string
     {
         $strBuilder = "";
         $mfgData = $this->getManufacturer();
@@ -890,7 +890,7 @@ class Motherboard
 
     public function getMetaDescription(): string
     {
-        $strBuilder = $this->getPrettyTitle();
+        $strBuilder = $this->getFullName();
         $strBuilder .= " is a motherboard based on the ";
         $chipData = $this->getChipset();
         if ($chipData != null) {

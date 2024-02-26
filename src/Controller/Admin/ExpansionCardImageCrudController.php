@@ -62,7 +62,7 @@ class ExpansionCardImageCrudController extends AbstractCrudController
         yield UrlField::new('expansionCard.getId', 'Expansion card')
             ->setCustomOption('link','expansioncards/')
             ->formatValue(function ($value, $entity) {
-                return $entity->getExpansionCard()->getPrettyTitle() ?: '[unknown]';
+                return $entity->getExpansionCard()->getFullName();
             })
             ->hideOnForm();
         yield AssociationField::new('expansionCard')

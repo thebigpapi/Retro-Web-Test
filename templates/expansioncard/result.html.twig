@@ -23,7 +23,7 @@
 								<img src="{{ absolute_url(asset('build/images/missing/card-missing.jpg')) }}" loading="lazy" width="250" height="200" title="no images available :(">
 							{% endif %}
 							</div>
-							<div class="perk-name">{{ expansioncard.getPrettyTitle() }}</div>
+							<div class="perk-name">{{ expansioncard.getFullName() }}</div>
 							<div class="perk-alias">
 								{% if expansioncard.getExpansionCardAliases() is not empty %}<span class="results-alias">
 									<small>Alias: {% for alias in expansioncard.getExpansionCardAliases() %}{{ alias.getFullAliasName() }}{% if not loop.last %}, {% endif %}{% endfor %}</small>

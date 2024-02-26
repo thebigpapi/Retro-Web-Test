@@ -436,4 +436,12 @@ class Chipset
 
         return $this;
     }
+    public function getChipDocs(): Collection
+    {
+        $docs = [];
+        foreach ($this->getExpansionChips() as $expansionChip) {
+            $docs = array_merge($docs, $expansionChip->getDocumentations()->toArray());
+        }
+        return new ArrayCollection($docs);
+    }
 }

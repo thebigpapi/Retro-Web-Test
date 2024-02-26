@@ -1,9 +1,4 @@
-<div class="show-downloads-group">
-    <div class="show-downloads-group-header">
-        <img src="{{ absolute_url(asset('build/icons/hardware.svg')) }}" alt="drv" width="32" height="32">
-        <span>{{ entity.count() }} driver{% if entity.count() != 1 %}s{% endif %} available</span>
-    </div>
-    {% if entity is not empty %}
+{% macro driver(entity) %}
     <div class="plain-list w300p table">
         <div class="list-entry centered head">
             <div>Name</div>
@@ -41,6 +36,43 @@
         </div>
         {% endfor %}
     </div>
+{% endmacro %}
+<div class="show-downloads-group">
+    {% if entity is not empty %}
+        {% set recommended = 0 %}
+        {% for itm in entity|filter(a => a.isRecommended == true) %}
+            {% set recommended = recommended + 1 %}
+        {% endfor %}
+        {% set total = entity.count() %}
+        {% if total - recommended == 0 or recommended == 0 %}
+            <!-- contains only one type, show as is -->
+            <div class="show-downloads-group-header">
+                <img src="{{ absolute_url(asset('build/icons/hardware.svg')) }}" alt="drv" width="32" height="32">
+                <span>{{ total }} driver{% if total != 1 %}s{% endif %} available</span>
+            </div>
+            {{ _self.driver(entity)}}
+        {% else %}
+            <!-- contains both recommended and not recommended -->
+            <div class="show-downloads-group-header">
+                <img src="{{ absolute_url(asset('build/icons/hardware.svg')) }}" alt="drv" width="32" height="32">
+                <span>{{ recommended }} recommended driver{% if recommended != 1 %}s{% endif %} available</span>
+            </div>
+            {{ _self.driver(entity|filter(a => a.isRecommended == true))}}
+            <div class="dropdown-trw">
+                <label class="dropdown-header">
+                    <img src="{{ absolute_url(asset('build/icons/hardware.svg')) }}" alt="chip" width="24" height="24">
+                    <span><i>Other drivers (click to expand)</i></span>
+                    <input class="dropdown" type="checkbox" />
+                </label>
+                <div class="dropdown-contents">
+                    {{ _self.driver(entity|filter(a => a.isRecommended == false))}}
+                </div>
+            </div>
+        {% endif %}
     {% else %}
+        <div class="show-downloads-group-header">
+            <img src="{{ absolute_url(asset('build/icons/hardware.svg')) }}" alt="drv" width="32" height="32">
+            <span>No drivers available</span>
+        </div>
     {% endif %}
 </div>
