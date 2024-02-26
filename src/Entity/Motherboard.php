@@ -196,7 +196,7 @@ class Motherboard
     }
     public function getChipsetWithoutParts(): ?string
     {
-        return $this->getChipset()?->getNameWithoutParts();
+        return $this->getChipset()?->getFullName();
     }
     public function setChipset(?Chipset $chipset): self
     {
@@ -894,7 +894,7 @@ class Motherboard
         $strBuilder .= " is a motherboard based on the ";
         $chipData = $this->getChipset();
         if ($chipData != null) {
-            $strBuilder .= $chipData->getNameWithoutParts();
+            $strBuilder .= $chipData->getFullName();
         } else {
             $strBuilder .= "[Unidentified]";
         }

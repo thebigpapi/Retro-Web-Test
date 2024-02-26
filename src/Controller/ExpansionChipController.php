@@ -35,6 +35,7 @@ class ExpansionChipController extends AbstractController
     #[Route(path: '/expansion-chips/', name: 'expansionchipsearch', methods: ['GET'])]
     public function searchResultExpansionChip(Request $request, PaginatorInterface $paginator, ExpansionChipRepository $expansionChipRepository, ManufacturerRepository $manufacturerRepository, ExpansionChipTypeRepository $expansionChipTypeRepository)
     {
+        $latestChips = $expansionChipRepository->findLatest(8);
         $form = $this->_searchFormHandlerExpansionChip($request, $manufacturerRepository, $expansionChipTypeRepository);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -47,6 +48,7 @@ class ExpansionChipController extends AbstractController
         if (empty($criterias)) {
             return $this->render('expansion_chip/search.html.twig', [
                 'form' => $form->createView(),
+                'latestChips' => $latestChips,
             ]);
         }
         $data = $expansionChipRepository->findByExpansionChip($criterias);

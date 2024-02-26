@@ -75,7 +75,7 @@ Expansion chips:
 						<img src="{{ absolute_url(asset('build/images/missing/chip-missing.jpg')) }}" loading="lazy" width="250" height="200" title="no images available :(">
 					{% endif %}</div>
 					<a href="{{ path("expansion_chip_show", {id:chip.getId()}) }}" title="Click to visit page">
-						<div class="perk-name">{{ chip.getNameWithManufacturer() }}</div>
+						<div class="perk-name">{{ chip.getFullName() }}</div>
 					</a>
 				</div>
 			{% endfor %}
@@ -108,7 +108,7 @@ CPUs:
 						<img src="{{ absolute_url(asset('build/images/missing/chip-missing.jpg')) }}" loading="lazy" width="250" height="200" title="no images available :(">
 					{% endif %}</div>
 					<a href="{{ path("processor_show", {id:cpu.getId()}) }}" title="Click to visit page">
-						<div class="perk-name">{{ cpu.getNameWithManufacturer() }}</div>
+						<div class="perk-name">{{ cpu.getFullName() }}</div>
 					</a>
 				</div>
 			{% endfor %}
@@ -143,7 +143,7 @@ HDDs:
 							<img src="{{ absolute_url(asset('build/images/missing/hdd-missing.jpg')) }}" loading="lazy" width="250" height="200" title="no images available :(">
 						{% endif %}</div>
 						<a href="{{ path("hard_drive_show", {id: hdd.getId()}) }}" title="Click to visit page">
-							<div class="perk-name">{{ hdd.getNameWithManufacturer() }}</div>
+							<div class="perk-name">{{ hdd.getFullName() }}</div>
 						</a>
 					</div>
 				{% endfor %}
@@ -177,7 +177,7 @@ Optical drives:
 							<img src="{{ absolute_url(asset('build/images/missing/cdd-missing.jpg')) }}" loading="lazy" width="250" height="200" title="no images available :(">
 						{% endif %}</div>
 						<a href="{{ path("cd_drive_show", {id: cdd.getId()}) }}" title="Click to visit page">
-							<div class="perk-name">{{ cdd.getNameWithManufacturer() }}</div>
+							<div class="perk-name">{{ cdd.getFullName() }}</div>
 						</a>
 					</div>
 				{% endfor %}
@@ -211,7 +211,7 @@ Floppy drives:
 							<img src="{{ absolute_url(asset('build/images/missing/fdd-missing.jpg')) }}" loading="lazy" width="250" height="200" title="no images available :(">
 						{% endif %}</div>
 						<a href="{{ path("floppy_drive_show", {id: fdd.getId()}) }}" title="Click to visit page">
-							<div class="perk-name">{{ fdd.getNameWithManufacturer() }}</div>
+							<div class="perk-name">{{ fdd.getFullName() }}</div>
 						</a>
 					</div>
 				{% endfor %}

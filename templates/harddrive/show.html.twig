@@ -1,10 +1,10 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-	{{ harddrive.getNameWithManufacturer() }}
+	{{ harddrive.getFullName() }}
 {% endblock %}
 {% block metatags %}
-	<meta name="description" content="Expansion chip:{{ harddrive.getNameWithManufacturer() }}">
+	<meta name="description" content="Expansion chip:{{ harddrive.getFullName() }}">
 {% endblock %}
 {% block extra_javascripts %}
 	<script src="/build/js/show.js" defer></script>
@@ -13,8 +13,8 @@
 
 {% block opengraph %}
 	{% apply spaceless %}
-	<meta property="og:title" content="{{ harddrive.getNameWithManufacturer() }}">
-	<meta property="og:description" content="Get info, images and documentation for the {{ harddrive.getNameWithManufacturer() }} hard drive">
+	<meta property="og:title" content="{{ harddrive.getFullName() }}">
+	<meta property="og:description" content="Get info, images and documentation for the {{ harddrive.getFullName() }} hard drive">
 	{% if harddrive.getStorageDeviceImages() is not empty %}
 		{% for image in harddrive.getStorageDeviceImages()|filter(a => a.type in ["1", "2"])|sort((a, b) => a.getFileName() <=> b.getFileName())|sort((a, b) => b.getType <=> a.getType)|slice(0, 1) %}
 			<meta name="twitter:image" content="{{ vich_uploader_asset(image, 'imageFile')}}">
@@ -50,7 +50,7 @@
 {% endblock %}
 {% block body %}
 <!-- MANUF./NAME/PART NO. -->
-<div class="title">{{ harddrive.getNameWithManufacturer() }}</div>
+<div class="title">{{ harddrive.getFullName() }}</div>
 <div class="main-strip">
 	<div class="internal-container">
 		{% include 'macros/navbar.html.twig' with {'entity': harddrive, 'entityName': 'HardDrive', 'name': 'hard drive'} %}

@@ -1,10 +1,10 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-	{{ floppydrive.getNameWithManufacturer() }}
+	{{ floppydrive.getFullName() }}
 {% endblock %}
 {% block metatags %}
-	<meta name="description" content="Expansion chip:{{ floppydrive.getNameWithManufacturer() }}">
+	<meta name="description" content="Expansion chip:{{ floppydrive.getFullName() }}">
 {% endblock %}
 {% block extra_javascripts %}
 	<script src="/build/js/show.js" defer></script>
@@ -12,8 +12,8 @@
 
 {% block opengraph %}
 	{% apply spaceless %}
-	<meta property="og:title" content="{{ floppydrive.getNameWithManufacturer() }}">
-	<meta property="og:description" content="Get info, images and documentation for the {{ floppydrive.getNameWithManufacturer() }} floppy drive">
+	<meta property="og:title" content="{{ floppydrive.getFullName() }}">
+	<meta property="og:description" content="Get info, images and documentation for the {{ floppydrive.getFullName() }} floppy drive">
 	{% if floppydrive.getStorageDeviceImages() is not empty %}
 		{% for image in floppydrive.getStorageDeviceImages()|sort((a, b) => a.getFileName() <=> b.getFileName())|slice(0, 1) %}
 			<meta name="twitter:image" content="{{ vich_uploader_asset(image, 'imageFile')}}">
@@ -49,7 +49,7 @@
 {% endblock %}
 {% block body %}
 <!-- MANUF./NAME/PART NO. -->
-<div class="title">{{ floppydrive.getNameWithManufacturer() }}</div>
+<div class="title">{{ floppydrive.getFullName() }}</div>
 <div class="main-strip">
 	<div class="internal-container">
 		{% include 'macros/navbar.html.twig' with {'entity': floppydrive, 'entityName': 'FloppyDrive', 'name': 'floppy drive'} %}

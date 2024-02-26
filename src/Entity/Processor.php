@@ -55,21 +55,6 @@ class Processor extends ProcessingUnit
     {
         return $this->getName();
     }
-    public function getNameWithPlatform()
-    {
-        $inner = array();
-        if($this->core != "")
-            array_push($inner, $this->core);
-        if($this->fsb != "")
-            array_push($inner, $this->fsb->getValueWithUnit());
-        if($this->getVoltagesWithValue() != "")
-            array_push($inner, $this->getVoltagesWithValue());
-        if($this->ProcessNode != "")
-            array_push($inner, ($this->ProcessNode ? $this->ProcessNode . 'nm' : ''));
-        if($this->tdp != "")
-            array_push($inner, ($this->tdp ? $this->tdp . 'W' : ''));
-        return implode(" ", array($this->getManufacturer()->getName(), $this->partNumber, "[" . implode(", ", $inner) . "]"));
-    }
     public function getL2(): ?CacheSize
     {
         return $this->L2;
@@ -170,7 +155,7 @@ class Processor extends ProcessingUnit
     {
         return $this->tdp ? $this->tdp . "W" : "";
     }
-    public function getNameWithManufacturer()
+    public function getFullName(): string
     {
         $fullName = $this->getNameOnlyPartNumber();
         if ($this->name) {
@@ -178,7 +163,7 @@ class Processor extends ProcessingUnit
         }
         return "$fullName";
     }
-    public function getNameOnlyPartNumber()
+    public function getNameOnlyPartNumber(): string
     {
         $fullName = $this->partNumber;
         if ($this->getManufacturer()) {

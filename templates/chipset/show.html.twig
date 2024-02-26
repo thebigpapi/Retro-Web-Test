@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{ chipset.getNameWithoutParts() }} - The Retro Web{% endblock %}
+{% block title %}{{ chipset.getFullName() }} - The Retro Web{% endblock %}
 {% block metatags %}
 	<meta name="description" content="{{ chipset.getMetaDescription() }}">
 	<link rel="canonical" hreflang="x-default" href="{{ absolute_url(path('chipset_show', {id: chipset.getId()})) }}"/>
@@ -14,8 +14,8 @@
 		<meta name="twitter:card" content="summary">
 		<meta property="og:site_name" content="The Retro Web">
 		<meta property="og:type" content="website">
-		<meta name="twitter:title" content="{{ chipset.getNameWithoutParts() }}">
-		<meta property="og:title" content="{{ chipset.getNameWithoutParts() }}">
+		<meta name="twitter:title" content="{{ chipset.getFullName() }}">
+		<meta property="og:title" content="{{ chipset.getFullName() }}">
 		<meta name="twitter:description" content="{{ chipset.getMetaDescription() }}">
 		<meta property="og:description" content="{{ chipset.getMetaDescription() }}">
 		<meta property="og:url" content="{{ absolute_url(path('chipset_show', {id: chipset.getId()})) }}">
@@ -55,7 +55,7 @@
 {% endblock %}
 {% block body %}
 <!-- MANUF./NAME/PART NO. -->
-<div class="title">{{ chipset.getNameWithoutParts() }}</div>
+<div class="title">{{ chipset.getFullName() }}</div>
 <div class="main-strip">
 	<div class="internal-container">
 		{% include 'macros/navbar.html.twig' with {'entity': chipset, 'entityName': 'Chipset', 'name': 'chipset'} %}
@@ -70,7 +70,7 @@
 					{% if chipset.getExpansionChips() is not empty %}
 					<div class="tag-container">
 						{% for part in chipset.getExpansionChips() %}
-							<a href="{{ path('expansion_chip_show', {id: part.getId()}) }}"><span class="text-block">{{ part.getNameWithManufacturer() }}</span></a>
+							<a href="{{ path('expansion_chip_show', {id: part.getId()}) }}"><span class="text-block">{{ part.getFullName() }}</span></a>
 						{% endfor %}
 					</div>
 					{% else %}<div>Unknown</div>{% endif %}
@@ -107,7 +107,7 @@
 						<h1>Documented parts</h1>
 						<ul class="chipset-toc">
 							{% for chipPart in chipset.getExpansionChips()|filter(chipPart => chipPart.getDescription() is not empty) %}
-							<li><a href="{{ path("expansion_chip_show", {id:chipPart.getId()}) }}">{{ chipPart.getNameWithManufacturer() }}{% if chipPart.getChipAliases() is not empty %}&nbsp;(known as:{% for cp in chipPart.getChipAliases() %}
+							<li><a href="{{ path("expansion_chip_show", {id:chipPart.getId()}) }}">{{ chipPart.getFullName() }}{% if chipPart.getChipAliases() is not empty %}&nbsp;(known as:{% for cp in chipPart.getChipAliases() %}
 							{{ cp.getManufacturer().getName() }}&nbsp;{{ cp.getPartNumber() }} {{ cp.getName() ? '[' ~ cp.getName() ~ ']' }}{% if not loop.last%}, {% endif %}{% endfor %}){% endif %}</a></li>
 							{% endfor %}
 						</ul>

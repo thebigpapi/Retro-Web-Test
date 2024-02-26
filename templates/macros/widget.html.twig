@@ -33,10 +33,10 @@
 	{% for chipset in entity %}
 	<div class="list-entry centered bios {% if loop.index is divisible by(2) %}alt{% endif %}{% if chipset.getExpansionChips() is empty %} nows{% endif %}">
 		<div class="header-label">Name</div>
-		<div><a class="result-link" href="{{ path("chipset_show", {id: chipset.getId()}) }}">{{ chipset.getNameWithoutParts() }}</a></div>
+		<div><a class="result-link" href="{{ path("chipset_show", {id: chipset.getId()}) }}">{{ chipset.getFullName() }}</a></div>
 		<div class="header-label">Parts</div>
 		<div>{% for chipPart in chipset.getExpansionChips() %}
-			<span class="text-block" style="margin-right: 5px;">{{ chipPart.getNameWithManufacturer() }}</span>
+			<span class="text-block" style="margin-right: 5px;">{{ chipPart.getFullName() }}</span>
 		{% endfor %}</div>
 		<div class="header-label">Aliases</div>
 		<div>{% if chipset.getChipsetAliases() is not empty %}
@@ -59,7 +59,7 @@
 	{% for chip in entity %}
 	<div class="list-entry centered bios {% if loop.index is divisible by(2) %}alt{% endif %}">
 		<div class="header-label">Name</div>
-		<div><a class="result-link" href="{{ path("expansion_chip_show", {id: chip.getId()}) }}">{{ chip.getNameWithManufacturer() }}</a></div>
+		<div><a class="result-link" href="{{ path("expansion_chip_show", {id: chip.getId()}) }}">{{ chip.getFullName() }}</a></div>
 		<div class="header-label">Type</div>
 		<div>{{ chip.getType() }}</div>
 		<div class="header-label">Aliases</div>
@@ -108,7 +108,7 @@
 	{% for hdd in entity %}
 	<div class="list-entry centered bios {% if loop.index is divisible by(2) %}alt{% endif %}">
 		<div class="header-label">Name</div>
-		<div><a class="result-link" href="{{ path("hard_drive_show", {id: hdd.getId()}) }}">{{ hdd.getNameWithManufacturer() }}</a></div>
+		<div><a class="result-link" href="{{ path("hard_drive_show", {id: hdd.getId()}) }}">{{ hdd.getFullName() }}</a></div>
 		<div class="header-label">Aliases</div>
 		<div>{% if hdd.getStorageDeviceAliases() is not empty %}
 			{% for alias in hdd.getStorageDeviceAliases() %}
@@ -129,7 +129,7 @@
 	{% for cdd in entity %}
 	<div class="list-entry centered bios {% if loop.index is divisible by(2) %}alt{% endif %}">
 		<div class="header-label">Name</div>
-		<div><a class="result-link" href="{{ path("cd_drive_show", {id: cdd.getId()}) }}">{{ cdd.getNameWithManufacturer() }}</a></div>
+		<div><a class="result-link" href="{{ path("cd_drive_show", {id: cdd.getId()}) }}">{{ cdd.getFullName() }}</a></div>
 		<div class="header-label">Aliases</div>
 		<div>{% if cdd.getStorageDeviceAliases() is not empty %}
 			{% for alias in cdd.getStorageDeviceAliases() %}
@@ -150,7 +150,7 @@
 	{% for fdd in entity %}
 	<div class="list-entry centered bios {% if loop.index is divisible by(2) %}alt{% endif %}">
 		<div class="header-label">Name</div>
-		<div><a class="result-link" href="{{ path("floppy_drive_show", {id: fdd.getId()}) }}">{{ fdd.getNameWithManufacturer() }}</a></div>
+		<div><a class="result-link" href="{{ path("floppy_drive_show", {id: fdd.getId()}) }}">{{ fdd.getFullName() }}</a></div>
 		<div class="header-label">Aliases</div>
 		<div>{% if fdd.getStorageDeviceAliases() is not empty %}
 			{% for alias in fdd.getStorageDeviceAliases() %}
@@ -182,7 +182,7 @@
 	<div class="list-entry centered bios {% if loop.index is divisible by(2) %}alt{% endif %}">
 		<div class="header-label">Name</div>
 		<div>
-			<a class="result-link" href="{{ path("processor_show", {id: cpu.getId()}) }}">{{ cpu.getNameWithManufacturer() }}</a>
+			<a class="result-link" href="{{ path("processor_show", {id: cpu.getId()}) }}">{{ cpu.getFullName() }}</a>
 			{% if cpu.getChipAliases() is not empty %}
 				<button class='alias-collapsible' onclick="this.classList.toggle('active');displayalias({{loop.index}})">View aliases</button>
 				<div class="cpu-aliases-box" id="cpu-alias-box-{{loop.index}}">

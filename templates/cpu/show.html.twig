@@ -1,16 +1,16 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-	{{ cpu.getNameWithManufacturer() }}
+	{{ cpu.getFullName() }}
 {% endblock %}
 {% block metatags %}
-	<meta name="description" content="CPU:{{ cpu.getNameWithManufacturer() }}">
+	<meta name="description" content="CPU:{{ cpu.getFullName() }}">
 {% endblock %}
 
 {% block opengraph %}
 	{% apply spaceless %}
-	<meta property="og:title" content="{{ cpu.getNameWithManufacturer() }}">
-	<meta property="og:description" content="Get CPU info and images for {{ cpu.getNameWithManufacturer() }}!">
+	<meta property="og:title" content="{{ cpu.getFullName() }}">
+	<meta property="og:description" content="Get CPU info and images for {{ cpu.getFullName() }}!">
 	{% if cpu.getImages() is not empty %}
 		{% for image in cpu.getImages()|sort((a, b) => a.getFileName() <=> b.getFileName())|slice(0, 1) %}
 			<meta name="twitter:image" content="{{ vich_uploader_asset(image, 'imageFile')}}">
@@ -47,7 +47,7 @@
 
 {% block body %}
 <!-- MANUF./NAME/PART NO. -->
-<div class="title">{{ cpu.getNameWithManufacturer() }}</div>
+<div class="title">{{ cpu.getFullName() }}</div>
 <div class="main-strip">
 	<div class="internal-container">
 		{% include 'macros/navbar.html.twig' with {'entity': cpu, 'entityName': 'Processor', 'name': 'CPU'} %}

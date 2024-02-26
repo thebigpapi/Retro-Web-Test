@@ -5,29 +5,77 @@
 		<div class="perk">
 			<a href="{{ path(path, {id:item.getId()}) }}">
 				<div class="perk-image">
-				{% if item.getImages() is not empty %}
-					{% set imgtype_count = 0 %}
-                    {% if type == 'motherboard' %}
+                {# motherboards #}
+                {% if type == 'motherboard' %}
+                    {% if item.getImages() is not empty %}
+                        {% set imgtype_count = 0 %}
                         {% for image in item.getImages()|filter(a => a.motherboardImageType.id in [1, 2])|sort((a, b) => a.getFileName() <=> b.getFileName())|sort((a, b) => b.motherboardImageType <=> a.motherboardImageType)|slice(0, 1) %}
                             <img src="{% if vich_uploader_asset(image, 'imageFile') | ext != "svg" %}
                                 {{ vich_uploader_asset(image, 'imageFile') | imagine_filter('show_thumb') }}{% else %}
                                 {{ vich_uploader_asset(image, 'imageFile')}}{% endif %}" alt="" loading="lazy" width="250" height="200" title="{% if image.description %}{{ image.description }}{% endif %}">
                                 {% set imgtype_count = imgtype_count + 1 %}
                         {% endfor %}
+                        {% if imgtype_count == 0 %}
+                            <img src="{{ absolute_url(asset('build/images/missing/board-missing.jpg')) }}" loading="lazy" width="250" height="200" title="no images available :(">
+                        {% endif %}
                     {% else %}
+                        <img src="{{ absolute_url(asset('build/images/missing/board-missing.jpg')) }}" alt="missing image" loading="lazy" width="250" height="200" title="no images available :(">
+                    {% endif %}
+                {% endif %}
+                {# exp cards #}
+                {% if type == 'card' %}
+                    {% if item.getImages() is not empty %}
+                        {% set imgtype_count = 0 %}
                         {% for image in item.getImages()|filter(a => a.type in [1, 2])|sort((a, b) => a.getFileName() <=> b.getFileName())|sort((a, b) => b.type <=> a.type)|slice(0, 1) %}
                             <img src="{% if vich_uploader_asset(image, 'imageFile') | ext != "svg" %}
                                 {{ vich_uploader_asset(image, 'imageFile') | imagine_filter('show_thumb') }}{% else %}
                                 {{ vich_uploader_asset(image, 'imageFile')}}{% endif %}" alt="" loading="lazy" width="250" height="200" title="{% if image.description %}{{ image.description }}{% endif %}">
                                 {% set imgtype_count = imgtype_count + 1 %}
                         {% endfor %}
+                        {% if imgtype_count == 0 %}
+                            <img src="{{ absolute_url(asset('build/images/missing/card-missing.jpg')) }}" loading="lazy" width="250" height="200" title="no images available :(">
+                        {% endif %}
+                    {% else %}
+                        <img src="{{ absolute_url(asset('build/images/missing/card-missing.jpg')) }}" alt="missing image" loading="lazy" width="250" height="200" title="no images available :(">
                     {% endif %}
-					{% if imgtype_count == 0 %}
-						<img src="{{ absolute_url(asset('build/images/missing/card-missing.jpg')) }}" loading="lazy" width="250" height="200" title="no images available :(">
-					{% endif %}
-				{% else %}
-					<img src="{{ absolute_url(asset('build/images/missing/card-missing.jpg')) }}" alt="missing image" loading="lazy" width="250" height="200" title="no images available :(">
-				{% endif %}</div>
+                {% endif %}
+                {# chips #}
+                {% if type == 'chip' %}
+                    {% if item.getImages() is not empty %}
+                        {% set imgcount = 0 %}
+                        {% for image in item.getImages()|sort((a, b) => a.getFileName() <=> b.getFileName())|slice(0, 1) %}
+                            {% set imgcount = imgcount + 1 %}
+                            <img src="{% if vich_uploader_asset(image, 'imageFile') | ext != "svg" %}
+                            {{ vich_uploader_asset(image, 'imageFile') | imagine_filter('show_thumb') }}{% else %}
+                            {{ vich_uploader_asset(image, 'imageFile')}}{% endif %}" alt="" loading="lazy" width="250" height="200" title="{% if image.description %}{{ image.description }}{% endif %}">
+                        {% endfor %}
+                        {% if imgcount == 0 %}<img src="{{ absolute_url(asset('build/images/missing/chip-missing.jpg')) }}" loading="lazy" width="250" height="200" title="no images available :(">{% endif %}
+                    {% else %}
+                        <img src="{{ absolute_url(asset('build/images/missing/chip-missing.jpg')) }}" loading="lazy" width="250" height="200" title="no images available :(">
+                    {% endif %}
+                {% endif %}
+                {# chipsets #}
+                {% if type == 'chipset' %}
+                    {% if item.getExpansionChips() is not empty %}
+                        {% set imgcount = 0 %}
+                        {% for chipPart in item.getExpansionChips() %}
+                        {% if chipPart.getImages() is not empty %}
+                            {% set imgcount = imgcount + 1 %}
+                            {% for image in chipPart.getImages()|sort((a, b) => a.getFileName() <=> b.getFileName())|slice(0, 1) %}
+                                {% if imgcount < 2 %}
+                                <img src="{% if vich_uploader_asset(image, 'imageFile') | ext != "svg" %}
+                            {{ vich_uploader_asset(image, 'imageFile') | imagine_filter('show_thumb') }}{% else %}
+                            {{ vich_uploader_asset(image, 'imageFile')}}{% endif %}" alt="" loading="lazy" width="250" height="200" title="{% if image.description %}{{ image.description }}{% endif %}">
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
+                        {% endfor %}
+                        {% if imgcount == 0 %}<img src="{{ absolute_url(asset('build/images/missing/chipset-missing.jpg')) }}" loading="lazy" width="250" height="200" title="no images available :(">{% endif %}
+                    {% else %}
+                        <img src="{{ absolute_url(asset('build/images/missing/chipset-missing.jpg')) }}" loading="lazy" width="250" height="200" title="no images available :(">
+                    {% endif %}
+                {% endif %}
+                </div>
 				<div class="perk-name">{{ item.getFullName() }}</div>
 				<div class="perk-date">{{ item.getLastEdited()|date("Y-m-d\\TH:i:s", "GMT") }}Z</div>
 			</a>

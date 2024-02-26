@@ -89,6 +89,9 @@
 	{{ form_end(form, {render_rest: false}) }}
 	<!-- Search results -->
 	<section id="search_liveResults">
+	{% if latestCards is defined %}
+		{% include 'macros/lastedited.html.twig' with {'entity': latestCards, 'type':'card', 'entity_label':'expansion cards', 'path': 'expansioncard_show'} %}
+	{% endif %}
 	{% if expansioncards is defined %}
 		{% include 'expansioncard/result.html.twig' with {'expansioncards': expansioncards, 'show_images': show_images, 'route': true} %}
 	{% endif %}

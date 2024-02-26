@@ -48,7 +48,7 @@ class ExpansionChip extends Chip
     }
     public function __toString(): string
     {
-        return $this->getNameWithManufacturer() . $this->getAllAliases();
+        return $this->getFullName() . $this->getAllAliases();
     }
     public function getId(): ?int
     {
@@ -74,7 +74,7 @@ class ExpansionChip extends Chip
 
         return $this;
     }
-    public function getNameWithManufacturer()
+    public function getFullName(): string
     {
         $name = $this->getManufacturer()?->getName() ?? "[unknown]";
         if ($this->name) {

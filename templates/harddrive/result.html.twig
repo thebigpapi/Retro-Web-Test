@@ -25,7 +25,7 @@
 								<img src="{{ absolute_url(asset('build/images/missing/hdd-missing.jpg')) }}" loading="lazy" width="250" height="200" title="no images available :(">
 							{% endif %}
 							</div>
-							<div class="perk-name">{{ hdd.getNameWithManufacturer() }}</div>
+							<div class="perk-name">{{ hdd.getFullName() }}</div>
 							<div class="perk-alias">
 								{% if hdd.getStorageDeviceAliases() is not empty %}<span class="results-alias">
 									<small>Alias: {% for alias in hdd.getStorageDeviceAliases() %}{{ alias.getFullAliasName() }}{% if not loop.last %}, {% endif %}{% endfor %}</small>

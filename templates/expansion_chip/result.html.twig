@@ -23,7 +23,7 @@
 								<img src="{{ absolute_url(asset('build/images/missing/chip-missing.jpg')) }}" loading="lazy" width="250" height="200" title="no images available :(">
 							{% endif %}
 							</div>
-							<div class="perk-name">{{ expansionchip.getNameWithManufacturer() }}</div>
+							<div class="perk-name">{{ expansionchip.getFullName() }}</div>
 							<div class="perk-alias">
 								{% if expansionchip.getChipAliases() is not empty %}<span class="results-alias">
 									<small>Alias: {% for alias in expansionchip.getChipAliases() %}{{ alias.getFullAliasName() }}{% if not loop.last %}, {% endif %}{% endfor %}</small>

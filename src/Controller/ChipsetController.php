@@ -34,6 +34,7 @@ class ChipsetController extends AbstractController
     #[Route(path: '/chipsets/', name: 'chipsetsearch', methods: ['GET'])]
     public function searchResultChipset(Request $request, PaginatorInterface $paginator, ChipsetRepository $chipsetRepository, ManufacturerRepository $manufacturerRepository)
     {
+        $latestChipsets = $chipsetRepository->findLatest(8);
         $form = $this->_searchFormHandlerChipset($request, $manufacturerRepository);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -46,6 +47,7 @@ class ChipsetController extends AbstractController
         if (empty($criterias)) {
             return $this->render('chipset/search.html.twig', [
                 'form' => $form->createView(),
+                'latestChipsets' => $latestChipsets,
             ]);
         }
 

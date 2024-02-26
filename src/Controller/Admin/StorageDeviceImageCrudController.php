@@ -61,7 +61,7 @@ class StorageDeviceImageCrudController extends AbstractCrudController
         yield UrlField::new('storageDevice.getId', 'Storage device')
             ->setCustomOption('link','storage/')
             ->formatValue(function ($value, $entity) {
-                return $entity->getStorageDevice()->getNameWithManufacturer() ?: '[unknown]';
+                return $entity->getStorageDevice()->getFullName() ?: '[unknown]';
             })
             ->hideOnForm();
         yield AssociationField::new('storageDevice')

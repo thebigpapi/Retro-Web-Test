@@ -164,4 +164,15 @@ class ChipsetRepository extends ServiceEntityRepository
         )->getResult();
         return $result;
     }
+    /**
+     * @return Chipset[]
+     */
+    public function findLatest(int $maxCount = 12)
+    {
+        return $this->createQueryBuilder('c')
+            ->orderBy('c.lastEdited', 'DESC')
+            ->setMaxResults($maxCount)
+            ->getQuery()
+            ->getResult();
+    }
 }

@@ -100,7 +100,7 @@ class Chipset
     }
     public function getNameCached(): string
     {
-        return $this->getNameWithoutParts() . " " . $this->getPartsCached();
+        return $this->getFullName() . " " . $this->getPartsCached();
     }
     public function getNameCachedSearch(): string
     {
@@ -128,7 +128,7 @@ class Chipset
         $fullName = strlen($fullName) > 80 ? substr($fullName,0,80)."..." : $fullName;
         return $fullName;
     }
-    public function getNameWithoutParts(): string
+    public function getFullName(): string
     {
         $fullName = $this->getManufacturer()?->getName();
         if ($this->part_no) {
@@ -215,7 +215,7 @@ class Chipset
         $sortedChips = $this->expansionChips->toArray();
 
         $res = usort($sortedChips, function ($a, $b) {
-            return ($a->getNameWithManufacturer() <=> $b->getNameWithManufacturer());
+            return ($a->getFullName() <=> $b->getFullName());
         });
 
         if ($res) {
@@ -422,7 +422,7 @@ class Chipset
 
     public function getMetaDescription(): string
     {
-        return "Get info, documentation and more about the " . $this->getNameWithoutParts() . " chipset.";
+        return "Get info, documentation and more about the " . $this->getFullName() . " chipset.";
     }
 
     public function getCachedName(): ?string

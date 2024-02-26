@@ -1,10 +1,10 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-	{{ expansion_chip.getNameWithManufacturer() }}
+	{{ expansion_chip.getFullName() }}
 {% endblock %}
 {% block metatags %}
-	<meta name="description" content="Expansion chip:{{ expansion_chip.getNameWithManufacturer() }}">
+	<meta name="description" content="Expansion chip:{{ expansion_chip.getFullName() }}">
 {% endblock %}
 {% block extra_javascripts %}
 	<script src="/build/js/show.js" defer></script>
@@ -12,8 +12,8 @@
 
 {% block opengraph %}
 	{% apply spaceless %}
-	<meta property="og:title" content="{{ expansion_chip.getNameWithManufacturer() }}">
-	<meta property="og:description" content="Get info, images and drivers for the {{ expansion_chip.getNameWithManufacturer() }} expansion chip">
+	<meta property="og:title" content="{{ expansion_chip.getFullName() }}">
+	<meta property="og:description" content="Get info, images and drivers for the {{ expansion_chip.getFullName() }} expansion chip">
 	{% if expansion_chip.getImages() is not empty %}
 		{% for image in expansion_chip.getImages()|sort((a, b) => a.getFileName() <=> b.getFileName())|slice(0, 1) %}
 			<meta name="twitter:image" content="{{ vich_uploader_asset(image, 'imageFile')}}">
@@ -49,7 +49,7 @@
 {% endblock %}
 {% block body %}
 <!-- MANUF./NAME/PART NO. -->
-<div class="title">{{ expansion_chip.getNameWithManufacturer() }}</div>
+<div class="title">{{ expansion_chip.getFullName() }}</div>
 <div class="main-strip">
 	<div class="internal-container">
 		{% include 'macros/navbar.html.twig' with {'entity': expansion_chip, 'entityName': 'ExpansionChip', 'name': 'chip'} %}

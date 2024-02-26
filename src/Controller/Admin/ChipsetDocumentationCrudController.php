@@ -58,7 +58,7 @@ class ChipsetDocumentationCrudController extends AbstractCrudController
         yield UrlField::new('chipset.getId', 'Chip')
             ->setCustomOption('link','chipsets/')
             ->formatValue(function ($value, $entity) {
-                return $entity->getChipset()->getNameWithoutParts() ?: '[unknown]';
+                return $entity->getChipset()->getFullName() ?: '[unknown]';
             })
             ->hideOnForm();
         yield AssociationField::new('chipset')

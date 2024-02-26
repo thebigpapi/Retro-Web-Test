@@ -110,7 +110,7 @@
 							{% for type in expansionchiptype %}
 								{% for chip in expansioncard.getExpansionChips()|filter(a => a.getType().getName() == type.getName())%}
 									{% if loop.first %}<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/chip.svg')) }}" alt="chip" width="24" height="24">{{chip.getType().getName()}} chips</div><div class="tag-container">{% endif %}
-									<a href="{{ path('expansion_chip_show', {id: chip.getId()}) }}"><span class="text-block">{{ chip.getNameWithManufacturer() }}</span></a>
+									<a href="{{ path('expansion_chip_show', {id: chip.getId()}) }}"><span class="text-block">{{ chip.getFullName() }}</span></a>
 									{% if loop.index == expansioncard.getExpansionChips()|filter(a => a.getType().getName() == type.getName())|length %}</div>{% endif %}
 								{% endfor %}
 							{% endfor %}
@@ -220,7 +220,7 @@
 						<div class="dropdown-trw">
 							<label class="dropdown-header">
 								<img src="{{ absolute_url(asset('build/icons/chip.svg')) }}" alt="chip" width="24" height="24">
-								<span><i>{{chip.getNameWithManufacturer()}}</i></span>
+								<span><i>{{chip.getFullName()}}</i></span>
 								<input class="dropdown" type="checkbox" />
 							</label>
 							<div class="dropdown-contents">

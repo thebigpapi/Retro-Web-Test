@@ -71,6 +71,7 @@ class ExpansionCardController extends AbstractController
     #[Route(path: '/expansioncards/', name: 'expansioncardsearch', methods: ['GET'])]
     public function searchResultExpansionCard(Request $request, PaginatorInterface $paginator, ExpansionCardRepository $expansionCardRepository, ManufacturerRepository $manufacturerRepository, ExpansionCardTypeRepository $expansionCardTypeRepository)
     {
+        $latestCards = $expansionCardRepository->findLatest(8);
         $form = $this->_searchFormHandlerExpansionCard($request, $manufacturerRepository, $expansionCardTypeRepository);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -83,6 +84,7 @@ class ExpansionCardController extends AbstractController
         if (empty($criterias)) {
             return $this->render('expansioncard/search.html.twig', [
                 'form' => $form->createView(),
+                'latestCards' => $latestCards,
             ]);
         }
         $data = $expansionCardRepository->findByExpansionCard($criterias);

@@ -81,7 +81,7 @@ class StorageDevice
     }
     public function __toString(): string
     {
-        return $this->getNameWithManufacturer();
+        return $this->getFullName();
     }
 
     public function getId(): ?int
@@ -371,7 +371,7 @@ class StorageDevice
     {
         $this->lastEdited = new \DateTime('now');
     }
-    public function getNameWithManufacturer()
+    public function getFullName()
     {
         $result = $this->manufacturer ? $this->getManufacturer()->getName() : "Unidentified";
         $result .= " " . $this->partNumber;

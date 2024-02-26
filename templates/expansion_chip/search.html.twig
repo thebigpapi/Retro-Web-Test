@@ -80,6 +80,9 @@
 	{{ form_end(form, {render_rest: false}) }}
 	<!-- Search results -->
 	<section id="search_liveResults">
+	{% if latestChips is defined %}
+		{% include 'macros/lastedited.html.twig' with {'entity': latestChips, 'type':'chip', 'entity_label':'chips', 'path': 'expansion_chip_show'} %}
+	{% endif %}
 	{% if expansionchips is defined %}
 		{% include 'expansion_chip/result.html.twig' with {'expansionchips': expansionchips, 'show_images': show_images, 'route': true} %}
 	{% endif %}
