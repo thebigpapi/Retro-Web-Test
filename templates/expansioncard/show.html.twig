@@ -289,7 +289,7 @@
 		{% set lpindex = 0 %}
 		{% for image in expansioncard.getImages()|sort((a, b) => a.getFileName() <=> b.getFileName())|sort((a, b) => a.getType <=> b.getType) %}
 			{% set lpindex = lpindex + 1 %}
-			{% include 'macros/images.html.twig' with {'type':'expansionchip', 'entity': image, 'index': lpindex, 'length': expansioncard.getImages()|length} %}
+			{% include 'macros/images.html.twig' with {'type':'motherboard', 'entity': image, 'index': lpindex, 'length': expansioncard.getImages()|length} %}
 		{% endfor %}
 	{% else %}
 		<div class="show-images">
