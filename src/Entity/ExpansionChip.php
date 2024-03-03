@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Entity\Chipset;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -30,7 +31,7 @@ class ExpansionChip extends Chip
     #[ORM\ManyToMany(targetEntity: ExpansionCard::class, mappedBy: 'expansionChips')]
     private Collection $expansionCards;
 
-    #[ORM\Column]
+    #[ORM\Column(type: Types::JSON, options: ['jsonb' => true])]
     private array $miscSpecs = [];
 
     #[ORM\Column(type: 'datetime', mapped: false)]

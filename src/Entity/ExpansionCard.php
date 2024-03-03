@@ -90,7 +90,7 @@ class ExpansionCard
 
     #[ORM\OneToMany(mappedBy: 'expansionCard', targetEntity: PciDeviceId::class,  orphanRemoval: true, cascade: ['persist'])]
     private Collection $pciDevs;
-    #[ORM\Column]
+    #[ORM\Column(type: Types::JSON, options: ['jsonb' => true])]
     private array $miscSpecs = [];
 
     #[ORM\ManyToMany(targetEntity: KnownIssue::class, inversedBy: 'expansionCards')]
