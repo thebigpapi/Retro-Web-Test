@@ -156,4 +156,15 @@ class ProcessorRepository extends ServiceEntityRepository
         $query = $entityManager->createQuery($dql)->setParameter(":cid", $cid);
         return $query->getResult();
     }
+    /**
+     * @return Processor[]
+     */
+    public function findLatest(int $maxCount = 12)
+    {
+        return $this->createQueryBuilder('cpu')
+            ->orderBy('cpu.lastEdited', 'DESC')
+            ->setMaxResults($maxCount)
+            ->getQuery()
+            ->getResult();
+    }
 }

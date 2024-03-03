@@ -53,6 +53,9 @@
 	{{ form_end(form, {render_rest: false}) }}
 	<!-- Search results -->
 	<section id="search_liveResults">
+	{% if latestFdds is defined %}
+		{% include 'macros/lastedited.html.twig' with {'entity': latestFdds, 'type':'fdd', 'entity_label':'floppy drives', 'path': 'floppy_drive_show'} %}
+	{% endif %}
 	{% if fdds is defined %}
 		{% include 'floppydrive/result.html.twig' with {'fdds': fdds, 'show_images': show_images, 'route': true} %}
 	{% endif %}

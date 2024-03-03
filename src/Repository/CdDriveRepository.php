@@ -129,4 +129,15 @@ class CdDriveRepository extends ServiceEntityRepository
 
         return $query->getResult();
     }
+    /**
+     * @return CdDrive[]
+     */
+    public function findLatest(int $maxCount = 12)
+    {
+        return $this->createQueryBuilder('cdd')
+            ->orderBy('cdd.lastEdited', 'DESC')
+            ->setMaxResults($maxCount)
+            ->getQuery()
+            ->getResult();
+    }
 }

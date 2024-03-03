@@ -22,7 +22,7 @@ class LargeFileRepository extends ServiceEntityRepository
     /**
       * @return LargeFile[] Returns an array of LargeFile objects
       */
-    public function findAllOptimized(): array 
+    public function findAllOptimized(): array
     {
         $entityManager = $this->getEntityManager();
         $query = $entityManager->createQuery(
@@ -34,23 +34,6 @@ class LargeFileRepository extends ServiceEntityRepository
 
         return $query->getResult();
     }
-
-    // /**
-    //  * @return LargeFile[] Returns an array of LargeFile objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('l')
-            ->andWhere('l.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('l.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
 
     public function findAllAlphabetic(string $letter): array
     {
@@ -126,11 +109,14 @@ class LargeFileRepository extends ServiceEntityRepository
             ->getQuery()
             ->getSingleScalarResult();
     }
-    public function findLatest()
+    /**
+      * @return LargeFile[] Returns an array of LargeFile objects
+      */
+    public function findLatest(int $maxCount = 24)
     {
         return $this->createQueryBuilder('l')
             ->orderBy('l.lastEdited', 'DESC')
-            ->setMaxResults(25)
+            ->setMaxResults($maxCount)
             ->getQuery()
             ->getResult();
     }

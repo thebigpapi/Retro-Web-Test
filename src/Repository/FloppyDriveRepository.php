@@ -128,4 +128,15 @@ class FloppyDriveRepository extends ServiceEntityRepository
 
         return $query->getResult();
     }
+    /**
+     * @return FloppyDrive[]
+     */
+    public function findLatest(int $maxCount = 12)
+    {
+        return $this->createQueryBuilder('fdd')
+            ->orderBy('fdd.lastEdited', 'DESC')
+            ->setMaxResults($maxCount)
+            ->getQuery()
+            ->getResult();
+    }
 }

@@ -31,9 +31,9 @@ class CdDriveController extends AbstractController
                 throw $this->createNotFoundException(
                     'No optical drive found for id ' . $id
                 );
-            } 
+            }
             return $this->redirect($this->generateUrl('cd_drive_show', array("id" => $idRedirection)));
-        } 
+        }
         return $this->render('cddrive/show.html.twig', [
             'cddrive' => $cdd,
             'controller_name' => 'CdDriveController',
@@ -42,6 +42,7 @@ class CdDriveController extends AbstractController
     #[Route(path: '/cddrives/', name: 'cddsearch', methods: ['GET'])]
     public function searchResultCdd(Request $request, PaginatorInterface $paginator, CdDriveRepository $cddRepository, ManufacturerRepository $manufacturerRepository)
     {
+        $latestCdds = $cddRepository->findLatest(8);
         $form = $this->_searchFormHandlerCdd($request, $manufacturerRepository);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -54,6 +55,7 @@ class CdDriveController extends AbstractController
         if (empty($criterias)) {
             return $this->render('cddrive/search.html.twig', [
                 'form' => $form->createView(),
+                'latestCdds' => $latestCdds,
             ]);
         }
 

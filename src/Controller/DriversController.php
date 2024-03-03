@@ -32,6 +32,7 @@ class DriversController extends AbstractController
     #[Route('/drivers/', name:'driversearch', methods:['GET'])]
     public function searchResultDriver(Request $request, PaginatorInterface $paginator, LargeFileRepository $driverRepository): Response
     {
+        $latestDrivers = $driverRepository->findLatest(14);
         $form = $this->_searchFormHandlerDrivers($request);
         if ($form->isSubmitted() && $form->isValid()) {
             return $this->redirect($this->generateUrl('driversearch', $this->searchFormToParam($request, $form)));
@@ -42,6 +43,7 @@ class DriversController extends AbstractController
         if (empty($criterias)) {
             return $this->render('drivers/search.html.twig', [
                 'form' => $form->createView(),
+                'latestDrivers' => $latestDrivers,
             ]);
         }
         $data = $driverRepository->findByDriver($criterias);

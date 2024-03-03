@@ -123,6 +123,9 @@
 	{{ form_end(form, {render_rest: false}) }}
 	<!-- Search results -->
 	<section id="search_liveResults">
+	{% if latestCpus is defined %}
+		{% include 'macros/lastedited.html.twig' with {'entity': latestCpus, 'type':'cpu', 'entity_label':'CPUs', 'path': 'processor_show'} %}
+	{% endif %}
 	{% if cpus is defined %}
 		{% include 'cpu/result.html.twig' with {'cpus': cpus, 'show_images': show_images, 'route': true} %}
 	{% endif %}

@@ -160,4 +160,15 @@ class HardDriveRepository extends ServiceEntityRepository
 
         return $query->getResult();
     }
+    /**
+     * @return HardDrive[]
+     */
+    public function findLatest(int $maxCount = 12)
+    {
+        return $this->createQueryBuilder('hdd')
+            ->orderBy('hdd.lastEdited', 'DESC')
+            ->setMaxResults($maxCount)
+            ->getQuery()
+            ->getResult();
+    }
 }

@@ -248,7 +248,7 @@
 	<div class="show-images" id="sh-images">
 	{% if cpu.getImages() is not empty %}
 		{% set lpindex = 0 %}
-		{% for image in cpu.getImages()|sort((a, b) => a.getFileName() <=> b.getFileName()) %}
+		{% for image in cpu.getImages()|sort((a, b) => a.getFileName() <=> b.getFileName())|sort((a, b) => a.sort <=> b.sort) %}
 			{% set lpindex = lpindex + 1 %}
 			{% include 'macros/images.html.twig' with {'type':'expansionchip', 'entity': image, 'index': lpindex, 'length': cpu.getImages()|length} %}
 		{% endfor %}

@@ -31,9 +31,9 @@ class HardDriveController extends AbstractController
                 throw $this->createNotFoundException(
                     'No hard drive found for id ' . $id
                 );
-            } 
+            }
             return $this->redirect($this->generateUrl('hard_drive_show', array("id" => $idRedirection)));
-        } 
+        }
 
         return $this->render('harddrive/show.html.twig', [
             'harddrive' => $hdd,
@@ -43,6 +43,7 @@ class HardDriveController extends AbstractController
     #[Route(path: '/harddrives/', name: 'hddsearch', methods: ['GET'])]
     public function searchResultHdd(Request $request, PaginatorInterface $paginator, HardDriveRepository $hddRepository, ManufacturerRepository $manufacturerRepository)
     {
+        $latestHdds = $hddRepository->findLatest(8);
         $form = $this->_searchFormHandlerHdd($request, $manufacturerRepository);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -55,6 +56,7 @@ class HardDriveController extends AbstractController
         if (empty($criterias)) {
             return $this->render('harddrive/search.html.twig', [
                 'form' => $form->createView(),
+                'latestHdds' => $latestHdds,
             ]);
         }
 

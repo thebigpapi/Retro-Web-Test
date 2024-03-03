@@ -36,6 +36,7 @@ class ProcessorController extends AbstractController
     #[Route('/cpus/', name:'cpusearch', methods: ['GET', 'POST'])]
     public function searchResultCpu(Request $request, PaginatorInterface $paginator, ManufacturerRepository $manufacturerRepository, ProcessorRepository $cpuRepository, CpuSpeedRepository $cpuSpeedRepository): Response
     {
+        $latestCpus = $cpuRepository->findLatest(8);
         $form = $this->_searchFormHandlerCpu($request, $manufacturerRepository, $cpuSpeedRepository);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -48,6 +49,7 @@ class ProcessorController extends AbstractController
         if (empty($criterias)) {
             return $this->render('cpu/search.html.twig', [
                 'form' => $form->createView(),
+                'latestCpus' => $latestCpus,
             ]);
         }
 

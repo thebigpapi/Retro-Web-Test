@@ -31,9 +31,9 @@ class FloppyDriveController extends AbstractController
                 throw $this->createNotFoundException(
                     'No floppy drive found for id ' . $id
                 );
-            } 
+            }
             return $this->redirect($this->generateUrl('floppy_drive_show', array("id" => $idRedirection)));
-        } 
+        }
         return $this->render('floppydrive/show.html.twig', [
             'floppydrive' => $fdd,
             'controller_name' => 'FloppyDriveController',
@@ -43,6 +43,7 @@ class FloppyDriveController extends AbstractController
     #[Route(path: '/floppydrives/', name: 'fddsearch', methods: ['GET'])]
     public function searchResultFdd(Request $request, PaginatorInterface $paginator, FloppyDriveRepository $fddRepository, ManufacturerRepository $manufacturerRepository)
     {
+        $latestFdds = $fddRepository->findLatest(8);
         $form = $this->_searchFormHandlerFdd($request, $manufacturerRepository);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -55,6 +56,7 @@ class FloppyDriveController extends AbstractController
         if (empty($criterias)) {
             return $this->render('floppydrive/search.html.twig', [
                 'form' => $form->createView(),
+                'latestFdds' => $latestFdds,
             ]);
         }
 
