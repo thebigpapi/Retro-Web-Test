@@ -279,14 +279,13 @@
     <div>
         <span>CSV input</span>
         <input id="bios-bot-input" type="file">
-        <button id="read-file-btn" type="button" class="btn btn-secondary">Get strings</button>
+        <span id="bios-form-label"></span>
     </div>
     <div>
         <span>Bulk upload</span>
         <input  id="bios-bulk-upload" type="file" multiple="">
         <button id="bulk-upload-btn" type="button" class="btn btn-secondary">Set files</button>
     </div>
-    <span id="bios-form-label"></span>
 </div>
 {{ form_widget(form)}}
 {% endblock _Motherboard_motherboardBios_widget %}

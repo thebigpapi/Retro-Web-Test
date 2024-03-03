@@ -116,4 +116,13 @@ class MotherboardBiosRepository extends ServiceEntityRepository
         }
         return $query->getResult();
     }
+    public function findLatest(int $maxCount = 24)
+    {
+        $entityManager = $this->getEntityManager();
+        return $entityManager->createQuery(
+            "SELECT man.name as manName, m.id, m.name, bios, bman.name as bmanName
+            FROM App\Entity\MotherboardBios bios JOIN bios.manufacturer bman JOIN bios.motherboard m JOIN m.manufacturer man
+            ORDER BY bios.updated_at DESC"
+        )->setMaxResults($maxCount)->getResult();
+    }
 }

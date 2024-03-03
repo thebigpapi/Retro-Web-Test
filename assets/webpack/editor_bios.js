@@ -1,15 +1,25 @@
-if(readfile = document.getElementById('read-file-btn'))
-    readfile.addEventListener("click", readFile);
 if(readfile = document.getElementById('bulk-upload-btn'))
     readfile.addEventListener("click", bulkUpload);
-
+let manufArray = {};
 function setMsg(msg){
     if(label = document.getElementById('bios-form-label'))
         label.innerHTML = msg;
 }
-
+function getManufacturers(){
+    let url = window.location.origin + "/dashboard/getbiosmanufacturers";
+    let xhr = new XMLHttpRequest()
+    xhr.open('GET', url, true)
+    xhr.setRequestHeader('Content-type', 'application/json; charset=UTF-8')
+    xhr.send();
+    xhr.onload = function () {
+        if(xhr.status === 200) {
+            manufArray = JSON.parse(xhr.responseText);
+        }
+    }
+}
 function bulkUpload(){
     try{
+        getManufacturers();
         let add = document.getElementById('Motherboard_motherboardBios_collection').previousElementSibling;
         let input = document.getElementById('bios-bulk-upload');
         let bioses = document.getElementById('Motherboard_motherboardBios');
@@ -121,10 +131,10 @@ function processFile(csv){
                         document.getElementById("Motherboard_motherboardBios_" + cnt + "_postString").value = found[3].slice(1,-1);
                         document.getElementById("Motherboard_motherboardBios_" + cnt + "_boardVersion").value = found[4].slice(1,-1);
                         document.getElementById("Motherboard_motherboardBios_" + cnt + "_coreVersion").value = found[2].slice(1,-1);
-                        let select = document.getElementById("Motherboard_motherboardBios_" + cnt + "_manufacturer");
-                        const options = Array.from(select.options);
-                        const optionToSelect = options.find(item => found[1].slice(1,-1).includes(item.text));
-                        select.value = optionToSelect.value;
+                        manufacturer = found[1].slice(1,-1);
+                        let select = document.getElementById("Motherboard_motherboardBios_" + cnt + "_manufacturer_autocomplete");
+                        select.tomselect.addOption({entityId: manufArray[manufacturer], entityAsString: manufacturer});
+                        select.tomselect.addItem(manufArray[manufacturer]);
                         select.tomselect.sync();
                     }
                 }

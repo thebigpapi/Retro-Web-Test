@@ -123,6 +123,52 @@
 	{{ form_end(form, {render_rest: false}) }}
 	<!-- Search results -->
 	<section id="search_liveResults">
+	{% if latestBios is defined %}
+	<div class="perks">
+		<p><b>Last edited BIOSes</b></p>
+		<div class="results lst">
+			<div class="plain-list w300p table">
+				<div class="list-entry centered head">
+					<div>Motherboard</div>
+					<div>POST string</div>
+					<div>Type</div>
+					<div>Version</div>
+					<div>File</div>
+				</div>
+				{% for b in latestBios %}
+				<div class="list-entry centered bios {% if loop.index is divisible by(2) %}alt{% endif %}">
+					<div class="header-label">Motherboard</div>
+					<div>
+						<a class="result-link" href="{{ path("motherboard_show", {id: b["id"]}) }}">
+							{{ b["manName"]}}&nbsp;{{ b["name"] }}
+						</a>
+					</div>
+					<div class="header-label">POST string</div>
+					<div class="monospace">{{ b[0].getPostString() }}</div>
+					<div class="header-label">Type</div>
+					<div>{{ b["bmanName"] }} {{ b[0].getCoreVersion() }}</div>
+					<div class="header-label">Version</div>
+					<div>{{ b[0].getBoardVersion() ?: "[unknown]" }}</div>
+					<div class="header-label">File</div>
+					<div>
+						{% if b[0].getFileName() is not null %}
+							<a class="combo" href="{{ vich_uploader_asset(b[0], 'romFile') }}">
+								<img src="{{ absolute_url(asset('build/icons/dw.svg')) }}" alt="" width="16" height="16">
+								<span>
+									{% set fname = b[0].getFileName() %}
+									{{ fname|slice(0, fname|length - 27) ~ fname[fname|length - 4 :] }}
+								</span>
+							</a>
+						{% else %}
+							<span>N/A</span>
+						{% endif %}
+					</div>
+				</div>
+				{% endfor %}
+			</div>
+		</div>
+	</div>
+	{% endif %}
 	{% if bios is defined %}
 		{% include 'bios/result.html.twig' with {'bios': bios, 'route': true} %}
 	{% endif %}

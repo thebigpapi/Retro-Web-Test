@@ -21,6 +21,7 @@ use App\Repository\IoPortInterfaceRepository;
 use App\Repository\IoPortInterfaceSignalRepository;
 use App\Repository\ExpansionSlotInterfaceSignalRepository;
 use App\Repository\IoPortSignalRepository;
+use App\Repository\ManufacturerRepository;
 use App\Repository\MotherboardRepository;
 use App\Repository\ProcessorRepository;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
@@ -179,6 +180,17 @@ class AdminController extends AbstractDashboardController
 
         return new JsonResponse($templatesMerged);
     }
+
+    #[Route('/dashboard/getbiosmanufacturers', name:'get_bios_manufacturers', methods:['GET'])]
+    public function getBiosManufacturers(ManufacturerRepository $manufacturerRepository): JsonResponse
+    {
+        $list = array();
+        foreach($manufacturerRepository->findAllBiosManufacturer() as $item){
+            $list[$item->getName()] = $item->getId();
+        }
+        return new JsonResponse($list);
+    }
+
     #[Route('/dashboard/getexpansionchiptemplate/{id}', name:'get_expansion_chip_template', methods:['GET'],  requirements: ['id' => '\d+'])]
     public function getExpansionChipTemplate(int $id, ExpansionChipTypeRepository $expansionChipTypeRepository): JsonResponse
     {
