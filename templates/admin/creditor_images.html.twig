@@ -51,6 +51,39 @@
 	No motherboards
 {% endif %}
 </div>
+<div class="show-expcards" id="sh-expcards">
+Expansion cards:
+{% if expansion_cards is defined and expansion_cards is not empty %}
+	<div class="results">
+		{{ knp_pagination_render(expansion_cards, 'macros/pagination.html.twig') }}
+		<div class="perks">
+			<div id="index-datetime" class="perks-list">
+			{% for card in expansion_cards %}
+				<div class="perk">
+					<div class="perk-image">
+					{% if card.getImages() is not empty %}
+						{% set imgtype_count = 0 %}
+						{% for image in card.getImages()|sort((a, b) => a.getFileName() <=> b.getFileName())|slice(0, 1) %}
+							<a href="{{ vich_uploader_asset(image, 'imageFile')}}" class="glightbox"><img src="
+								{{ vich_uploader_asset(image, 'imageFile') | imagine_filter('show_thumb') }}" alt="" loading="lazy" width="250" height="200" title="Click to preview image"></a>
+							{% set imgtype_count = imgtype_count + 1 %}
+						{% endfor %}
+						{% if imgtype_count == 0 %}
+							<img src="{{ absolute_url(asset('build/images/missing/card-missing.jpg')) }}" loading="lazy" width="250" height="200" title="no images available :(">
+						{% endif %}
+					{% else %}
+						<img src="{{ absolute_url(asset('build/images/missing/card-missing.jpg')) }}" loading="lazy" width="250" height="200" title="no images available :(">
+					{% endif %}</div>
+					<a href="{{ path("expansioncard_show", {id:card.getId()}) }}" title="Click to visit page">
+						<div class="perk-name">{{ card.getFullName() }}</div>
+					</a>
+				</div>
+			{% endfor %}
+			</div>
+		</div>
+		{{ knp_pagination_render(expansion_cards, 'macros/pagination.html.twig') }}
+	</div>
+{% else %}none{% endif %}
 <div class="show-expchips" id="sh-expchips">
 Expansion chips:
 {% if chips is defined and chips is not empty %}

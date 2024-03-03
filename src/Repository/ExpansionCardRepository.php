@@ -123,4 +123,19 @@ class ExpansionCardRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    /**
+     * @return ExpansionCard[]
+     */
+    public function findAllByCreditor(int $cid): array
+    {
+        $entityManager = $this->getEntityManager();
+        $dql   = "SELECT DISTINCT ec
+        FROM App:ExpansionCard ec
+        JOIN ec.images eci LEFT JOIN eci.creditor c
+        WHERE c.id = :cid
+        ORDER BY ec.name ASC";
+        $query = $entityManager->createQuery($dql)->setParameter(":cid", $cid);
+        return $query->getResult();
+    }
 }

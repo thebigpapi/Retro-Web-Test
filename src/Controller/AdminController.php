@@ -12,6 +12,7 @@ use App\Entity\ProcessorPlatformType;
 use App\Repository\CdDriveRepository;
 use App\Repository\ChipsetRepository;
 use App\Repository\CpuSocketRepository;
+use App\Repository\ExpansionCardRepository;
 use App\Repository\ExpansionCardTypeRepository;
 use App\Repository\ExpansionChipRepository;
 use App\Repository\ExpansionChipTypeRepository;
@@ -394,6 +395,7 @@ class AdminController extends AbstractDashboardController
         HardDriveRepository $hddRepository,
         CdDriveRepository $cddRepository,
         FloppyDriveRepository $fddRepository,
+        ExpansionCardRepository $expansionCardRepository,
         PaginatorInterface $paginatorInterface,
         Request $request
     ): Response
@@ -434,6 +436,12 @@ class AdminController extends AbstractDashboardController
             $request->query->getInt('page', 1),
             50
         );
+        $expansion_card_data = $expansionCardRepository->findAllByCreditor($id);
+        $expansion_cards =  $paginatorInterface->paginate(
+            $expansion_card_data,
+            $request->query->getInt('page', 1),
+            50
+        );
         return $this->render('admin/creditor_images.html.twig', [
             'motherboards' => $boards,
             'chips' => $chips,
@@ -442,6 +450,7 @@ class AdminController extends AbstractDashboardController
             'cdds' => $cdds,
             'fdds' => $fdds,
             'name' => $name,
+            'expansion_cards' => $expansion_cards,
         ]);
     }
 }
