@@ -82,7 +82,7 @@ class CreditorCrudController extends AbstractCrudController
         $name = $context->getEntity()->getInstance()->getName();
         $targetUrl = $adminUrlGenerator
             ->setController(self::class)
-            ->setRoute('dashboard_creditor_images', ['id' => $id, 'name' => $name])
+            ->setRoute('dashboard_creditor_images_boards', ['id' => $id, 'name' => $name])
             ->setEntityId($id)
             ->generateUrl();
         return $this->redirect($targetUrl);
