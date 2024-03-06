@@ -17,7 +17,7 @@ class StorageDeviceInterface
     private $id;
 
     #[ORM\Column(type: 'string', length: 255)]
-    #[Assert\Length(max: 255, maxMessage: 'Name is longer than {{ limit }} characters, try to make it shorter.')]
+    #[Assert\Length(max: 255, maxMessage: 'Name is longer than {{ limit }} characters.')]
     private $name;
 
     #[ORM\ManyToMany(targetEntity: StorageDevice::class, mappedBy: 'interfaces')]

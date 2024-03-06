@@ -28,7 +28,7 @@ class Chipset
     private $motherboards;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    #[Assert\Length(max: 255, maxMessage: 'Name is longer than {{ limit }} characters, try to make it shorter.')]
+    #[Assert\Length(max: 255, maxMessage: 'Name is longer than {{ limit }} characters.')]
     private $name;
 
     #[ORM\OneToMany(targetEntity: ChipsetAlias::class, mappedBy: 'chipset', orphanRemoval: true, cascade: ['persist'])]
@@ -42,11 +42,11 @@ class Chipset
     private $expansionChips;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    #[Assert\Length(max: 255, maxMessage: 'Encyclopedia link is longer than {{ limit }} characters, try to make it shorter.')]
+    #[Assert\Length(max: 255, maxMessage: 'Encyclopedia link is longer than {{ limit }} characters.')]
     private $encyclopedia_link;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    #[Assert\Length(max: 255, maxMessage: 'Part number is longer than {{ limit }} characters, try to make it shorter.')]
+    #[Assert\Length(max: 255, maxMessage: 'Part number is longer than {{ limit }} characters.')]
     private $part_no;
 
     #[ORM\OneToMany(targetEntity: ChipsetBiosCode::class, mappedBy: 'chipset', orphanRemoval: true, cascade: ['persist'])]
@@ -57,7 +57,7 @@ class Chipset
     private $drivers;
 
     #[ORM\Column(type: 'string', length: 8192, nullable: true)]
-    #[Assert\Length(max: 8192, maxMessage: 'Description is longer than {{ limit }} characters, try to make it shorter.')]
+    #[Assert\Length(max: 8192, maxMessage: 'Description is longer than {{ limit }} characters.')]
     private $description;
 
     #[ORM\OneToMany(targetEntity: ChipsetDocumentation::class, mappedBy: 'chipset', orphanRemoval: true, cascade: ['persist'])]

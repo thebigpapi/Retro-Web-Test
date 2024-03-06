@@ -20,14 +20,14 @@ class ExpansionCard
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Assert\Length(max: 255, maxMessage: 'Name is longer than {{ limit }} characters, try to make it shorter.')]
+    #[Assert\Length(max: 255, maxMessage: 'Name is longer than {{ limit }} characters.')]
     private ?string $name = null;
 
     #[ORM\ManyToMany(targetEntity: ExpansionChip::class, inversedBy: 'expansionCards')]
     private Collection $expansionChips;
 
     #[ORM\Column(length: 4096, nullable: true)]
-    #[Assert\Length(max: 4096, maxMessage: 'Description is longer than {{ limit }} characters, try to make it shorter.')]
+    #[Assert\Length(max: 4096, maxMessage: 'Description is longer than {{ limit }} characters.')]
     private ?string $description = null;
 
     #[ORM\OneToMany(mappedBy: 'expansionCard', targetEntity: LargeFileExpansionCard::class, orphanRemoval: true, cascade: ['persist'])]
@@ -59,7 +59,7 @@ class ExpansionCard
     private $lastEdited;
 
     #[ORM\Column(type: 'string', length: 80, unique: true)]
-    #[Assert\Length(max: 80, maxMessage: 'Slug is longer than {{ limit }} characters, try to make it shorter.')]
+    #[Assert\Length(max: 80, maxMessage: 'Slug is longer than {{ limit }} characters.')]
     #[Assert\Regex('/^[a-z0-9-_.,]+$/i', message: 'Slug uses problematic characters. Only alphanumeric, ".", ",", "-" and "_" are allowed.')]
     private $slug;
 

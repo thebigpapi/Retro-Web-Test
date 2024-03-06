@@ -29,7 +29,7 @@ class MotherboardImage
     private $motherboard;
 
     #[ORM\Column(type: 'string', length: 255)]
-    #[Assert\Length(max: 255, maxMessage: 'Image file name is longer than {{ limit }} characters, try to make it shorter.')]
+    #[Assert\Length(max: 255, maxMessage: 'Image file name is longer than {{ limit }} characters.')]
     private $file_name;
 
     /**
@@ -39,7 +39,7 @@ class MotherboardImage
     private File|null $imageFile = null;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    #[Assert\Length(max: 255, maxMessage: 'Image description is longer than {{ limit }} characters, try to make it shorter.')]
+    #[Assert\Length(max: 255, maxMessage: 'Image description is longer than {{ limit }} characters.')]
     private string|null $description;
 
     #[ORM\Column(type: 'datetime')]

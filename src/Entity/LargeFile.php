@@ -31,13 +31,13 @@ class LargeFile
         match: true,
         message: 'The name uses invalid characters',
     )]
-    #[Assert\Length(max: 255, maxMessage: 'Name is longer than {{ limit }} characters, try to make it shorter.')]
+    #[Assert\Length(max: 255, maxMessage: 'Name is longer than {{ limit }} characters.')]
     private $name;
     /**
      * @var string|null
      */
     #[ORM\Column(type: 'string', length: 255)]
-    #[Assert\Length(max: 255, maxMessage: 'File name is longer than {{ limit }} characters, try to make it shorter.')]
+    #[Assert\Length(max: 255, maxMessage: 'File name is longer than {{ limit }} characters.')]
     private $file_name;
 
     #[Vich\UploadableField(mapping: 'largefile', fileNameProperty: 'file_name', size: 'size')]
@@ -47,7 +47,7 @@ class LargeFile
     private $updated_at;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    #[Assert\Length(max: 255, maxMessage: 'Version is longer than {{ limit }} characters, try to make it shorter.')]
+    #[Assert\Length(max: 255, maxMessage: 'Version is longer than {{ limit }} characters.')]
     private $fileVersion;
 
     #[ORM\ManyToMany(targetEntity: OsFlag::class, inversedBy: 'largeFiles')]
@@ -60,7 +60,7 @@ class LargeFile
     private $chipsets;
 
     #[ORM\Column(type: 'string', length: 4096, nullable: true)]
-    #[Assert\Length(max: 4096, maxMessage: 'Note is longer than {{ limit }} characters, try to make it shorter.')]
+    #[Assert\Length(max: 4096, maxMessage: 'Note is longer than {{ limit }} characters.')]
     private $note;
 
     #[ORM\Column(type: 'integer', nullable: true)]

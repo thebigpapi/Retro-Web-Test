@@ -17,7 +17,7 @@ class ExpansionChipType
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Assert\Length(max:255, maxMessage: 'Name is longer than {{ limit }} characters, try to make it shorter.')]
+    #[Assert\Length(max:255, maxMessage: 'Name is longer than {{ limit }} characters.')]
     private ?string $name = null;
 
     #[ORM\OneToMany(targetEntity: ExpansionChip::class, mappedBy: 'type', orphanRemoval: true, cascade: ['persist'])]

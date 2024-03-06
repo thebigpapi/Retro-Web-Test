@@ -37,7 +37,7 @@ class AudioFile
     private File|null $audioFile = null;
 
     #[ORM\Column(type: 'string', length: 255)]
-    #[Assert\Length(max:255, maxMessage: 'File name is longer than {{ limit }} characters, try to make it shorter.')]
+    #[Assert\Length(max:255, maxMessage: 'File name is longer than {{ limit }} characters.')]
     private $file_name;
 
     public function getId(): ?int

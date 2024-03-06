@@ -30,29 +30,29 @@ class MotherboardBios
     private File|null $romFile = null;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    #[Assert\Length(max: 255, maxMessage: 'BIOS file name is longer than {{ limit }} characters, try to make it shorter.')]
+    #[Assert\Length(max: 255, maxMessage: 'BIOS file name is longer than {{ limit }} characters.')]
     private string|null $file_name = null;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    #[Assert\Length(max: 255, maxMessage: 'BIOS POST string is longer than {{ limit }} characters, try to make it shorter.')]
+    #[Assert\Length(max: 255, maxMessage: 'BIOS POST string is longer than {{ limit }} characters.')]
     private $postString;
 
     #[ORM\ManyToOne(targetEntity: Manufacturer::class)]
     private $manufacturer;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    #[Assert\Length(max: 255, maxMessage: 'BIOS board version is longer than {{ limit }} characters, try to make it shorter.')]
+    #[Assert\Length(max: 255, maxMessage: 'BIOS board version is longer than {{ limit }} characters.')]
     private $boardVersion;
 
     #[ORM\Column(type: 'datetime')]
     private $updated_at;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    #[Assert\Length(max: 255, maxMessage: 'BIOS core version is longer than {{ limit }} characters, try to make it shorter.')]
+    #[Assert\Length(max: 255, maxMessage: 'BIOS core version is longer than {{ limit }} characters.')]
     private $coreVersion;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    #[Assert\Length(max: 255, maxMessage: 'BIOS note is longer than {{ limit }} characters, try to make it shorter.')]
+    #[Assert\Length(max: 255, maxMessage: 'BIOS note is longer than {{ limit }} characters.')]
     private $note;
 
     #[ORM\Column(length: 255, nullable: true)]
