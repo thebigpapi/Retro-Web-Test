@@ -10,21 +10,20 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Vich\UploaderBundle\Mapping\PropertyMappingFactory;
 
 #[AsCommand(
-    name: 'app:file-scrubber',
-    description: 'Add a short description for your command',
+    name: 'app:hash-check',
+    description: 'Hashes BIOS files',
 )]
-class FileScrubberCommand extends Command
+class FileHasherCommand extends Command
 {
 
     private int $filesToUpdate = 0;
+    private int $total = 0;
     private const FILES_TO_UPDATE_TRESHOLD = 100;
 
     public function __construct(
@@ -39,21 +38,30 @@ class FileScrubberCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $io = new SymfonyStyle($input, $output);        
+        $io = new SymfonyStyle($input, $output);
 
         $this->checkBioses($this->motherboardBiosRepository, $io);
         $this->checkBioses($this->expansionCardBiosRepository, $io);
 
-        $io->success("Done scrubbing files");
+        $io->success("Done hashing files");
 
         return Command::SUCCESS;
     }
 
     private function checkBioses(EntityRepository $entityRepository, SymfonyStyle $io) {
         $bioses = $entityRepository->findAll();
+        $this->total = count($bioses);
+        $current = 0;
+        $step = 0;
 
         foreach ($bioses as $bios) {
             $this->checkBios($bios, $io, $this->entityManagerInterface);
+            $step += 1;
+            if ($step == 500) {
+                $current += $step;
+                $io->writeln((int)(($current / $this->total) * 100) . "%");
+                $step = 0;
+            }
             if ($this->filesToUpdate > $this::FILES_TO_UPDATE_TRESHOLD) {
                 $this->filesToUpdate = 0;
                 $this->entityManagerInterface->flush();
@@ -63,35 +71,26 @@ class FileScrubberCommand extends Command
     }
 
     private function checkBios(MotherboardBios|ExpansionCardBios $bios, SymfonyStyle $io, EntityManagerInterface $entityManagerInterface) {
-        if (($fileName = $bios->getFileName()) === null) {
-            $io->warning($bios::class . " with id " . $bios->getId() . " has no file registered");
+        $fileName = $bios->getFileName();
+        if($fileName === null)
             return;
-        }
-
         $mappings = $this->vichFactory->fromObject($bios);
         $pathPrefix = array_shift($mappings)->getUploadDestination();
-        
         $filePath = implode('/', [$pathPrefix, $fileName]);
 
         if (!file_exists($filePath)) {
-            $io->error($bios::class . " with id " . $bios->getId() . " has missing file. Database has filename " . $filePath . ", but no file was found for this path.");
+            $io->writeln($bios::class . "\\" . $bios->getId() . " missing file on disk! (expected at " . $filePath . ")");
             return;
         }
-
         $hash = hash_file('sha256', $filePath);
-
         if (($biosHash = $bios->getHash()) === null) {
-            $io->warning($bios::class . " with id " . $bios->getId() . " had missing hash. Setting hash to " . $hash);
             $bios->setHash($hash);
             $entityManagerInterface->persist($bios);
             $this->filesToUpdate++;
             return;
         }
-
         if ($biosHash !== $hash) {
-            $io->error($bios::class . " with id " . $bios->getId() . " has hash mismatch. Database has hash " . $biosHash . ", File has hash " . $hash);
+            $io->writeln($bios::class . "\\" . $bios->getId() . " hash mismatch!\nExpected: " . $biosHash . "\nActual: " . $hash);
         }
-
-        $io->success($bios::class . " with id " . $bios->getId() . " is OK");
     }
 }
