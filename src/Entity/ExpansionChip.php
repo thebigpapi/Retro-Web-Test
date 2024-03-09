@@ -32,7 +32,7 @@ class ExpansionChip extends Chip
     private Collection $expansionCards;
 
     #[ORM\Column(type: Types::JSON, options: ['jsonb' => true])]
-    private array $miscSpecs = [];
+    private ?array $miscSpecs = [];
 
     #[ORM\Column(type: 'datetime', mapped: false)]
     private $lastEdited;
@@ -240,12 +240,12 @@ class ExpansionChip extends Chip
     }
     public function getMiscSpecs(): array
     {
-        return $this->miscSpecs;
+        return $this->miscSpecs ?? [];
     }
     public function getMiscSpecsFormatted(): array
     {
         $output = [];
-        foreach($this->miscSpecs as $spec){
+        foreach($this->getMiscSpecs() as $spec){
             $new = str_replace("\"","",json_encode($spec));
             $new = str_replace(":",": ",$new);
             array_push($output, substr($new, 1, -1));
@@ -255,7 +255,7 @@ class ExpansionChip extends Chip
     public function getSimpleMiscSpecs(): array
     {
         $output = [];
-        foreach($this->miscSpecs as $key => $value){
+        foreach($this->getMiscSpecs() as $key => $value){
             if(!is_array($value))
                 $output[$key] = $value;
         }
@@ -264,7 +264,7 @@ class ExpansionChip extends Chip
     public function getTableMiscSpecs(): array
     {
         $output = [];
-        foreach($this->miscSpecs as $key => $value){
+        foreach($this->getMiscSpecs() as $key => $value){
             if(is_array($value))
                 $output[$key] = $value;
         }
