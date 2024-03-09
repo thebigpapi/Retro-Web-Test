@@ -4,7 +4,7 @@
         <div>Version</div>
         <div>Size</div>
         <div>File name</div>
-		<div>Last edited</div>
+		<div>Release date</div>
     </div>
     {% for driver in entity %}
         <div class="list-entry centered bios {% if loop.index is divisible by(2) %}alt{% endif %}">
@@ -20,10 +20,7 @@
 			</div>
 			<div class="header-label">Last edited</div>
 			<div>
-				<a href="{{ path('dh_auditor_show_entity_history', { 'entity': 'App-Entity-LargeFile', 'id': driver.getId() }) }}">
-					<img src="{{ absolute_url(asset('build/icons/calendar.svg')) }}" alt="pwr" width="16" height="16">
-				</a>
-				<i>{{ driver.getLastEdited()|date("Y-m-d") }}</i>
+				<i>{{ driver.getReleaseDateString() }}</i>
 			</div>
         </div>
     {% endfor %}

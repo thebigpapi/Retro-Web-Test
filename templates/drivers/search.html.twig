@@ -99,6 +99,7 @@
 					<div>Version</div>
 					<div>Size</div>
 					<div>File name</div>
+					<div>Release date</div>
 					<div>Last edited</div>
 				</div>
 				{% for driver in latestDrivers %}
@@ -113,6 +114,8 @@
 						<div><a class="combo" href="{{ vich_uploader_asset(driver, 'file')}}">
 							<img src="{{ absolute_url(asset('build/icons/dw.svg')) }}" alt="" width="16" style="vertical-align: middle;">{{ driver.getFileNameSimple() }}</a>
 						</div>
+						<div class="header-label">Release date</div>
+						<div>{{driver.getReleaseDateString()}}</div>
 						<div class="header-label">Last edited</div>
 						<div>
 							<a href="{{ path('dh_auditor_show_entity_history', { 'entity': 'App-Entity-LargeFile', 'id': driver.getId() }) }}">
