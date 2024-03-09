@@ -22,6 +22,11 @@
         <label for="tab-nav-4"><img src="{{ absolute_url(asset('build/icons/hardware.svg')) }}" alt="" width="24" height="24">Drivers</label>
         <input type="radio" name="tabs" id="tab-nav-5" data-tab="sh-docs">
         <label for="tab-nav-5"><img src="{{ absolute_url(asset('build/icons/manual.svg')) }}" alt="" width="24" height="24">Documentation</label>
+    {% elseif entityName == "ExpansionChip" %}
+        <input type="radio" name="tabs" id="tab-nav-1" data-tab="sh-general" checked>
+        <label for="tab-nav-1"><img src="{{ absolute_url(asset('build/icons/data.svg')) }}" alt="" width="24" height="24">Description</label>
+        <input type="radio" name="tabs" id="tab-nav-2" data-tab="sh-specs">
+        <label for="tab-nav-2"><img src="{{ absolute_url(asset('build/icons/tag.svg')) }}" alt="" width="24" height="24">Specs</label>
     {% elseif entityName == "Chipset" %}
         <input type="radio" name="tabs" id="tab-nav-1" data-tab="sh-general" checked>
         <label for="tab-nav-1"><img src="{{ absolute_url(asset('build/icons/data.svg')) }}" alt="" width="24" height="24">Description</label>

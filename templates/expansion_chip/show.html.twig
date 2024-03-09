@@ -93,10 +93,6 @@
 							<img src='{{ absolute_url(asset('build/icons/card.svg')) }}' alt='' width='16' height='16' style='vertical-align:middle;padding:3px;'>See all cards with this chip</a>
 					</div>
 				</div>
-				{% if expansion_chip.getMiscSpecs() is not empty %}
-					<h3>Specifications:</h3>
-					{% include 'macros/specs.html.twig' with {'entity':expansion_chip} %}
-				{% endif %}
 				{% include 'macros/aliases.html.twig' with {'entity':expansion_chip.getChipAliases(), 'msg': 'Also known as:'} %}
 				{% include 'macros/notes.html.twig' with {'entity': expansion_chip} %}
 				<!-- DRIVERS -->
@@ -104,6 +100,12 @@
 				<!-- MANUALS -->
 				{% include 'macros/manuals.html.twig' with {'entity': expansion_chip.getDocumentations(), 'entity_label':'chip', 'audit_entity':'App-Entity-ChipDocumentation'} %}
 				<div id="index-datetime"><div class="div-datetime">Last updated <span class="perk-date">{{ expansion_chip.getLastEdited()|date("Y-m-d\\TH:i:s", "GMT") }}Z</span></div></div>
+			</div>
+			<div class="show-expchips" id="sh-specs">
+				{% if expansion_chip.getMiscSpecs() is not empty %}
+					<h3>Specifications:</h3>
+					{% include 'macros/specs.html.twig' with {'entity':expansion_chip} %}
+				{% endif %}
 			</div>
 		</div>
 	</div>
