@@ -59,6 +59,10 @@ class MotherboardBiosRepository extends ServiceEntityRepository
             $whereArray[] = "(m.chipset = :chipset_id)";
             $valuesArray["chipset_id"] = (int)$criterias['chipset_id'];
         }
+        if (array_key_exists('bios_version', $criterias)) {
+            $whereArray[] = "(LOWER(bios.boardVersion) LIKE LOWER(:biosVersion))";
+            $valuesArray["biosVersion"] = "%" . $criterias['bios_version'] . "%";
+        }
         if (array_key_exists('core_version', $criterias)) {
             $whereArray[] = "(LOWER(bios.coreVersion) LIKE LOWER(:coreVersion))";
             $valuesArray["coreVersion"] = "%" . $criterias['core_version'] . "%";

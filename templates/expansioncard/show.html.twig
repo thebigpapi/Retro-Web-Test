@@ -206,7 +206,7 @@
 				</div>
 				{% include 'macros/aliases.html.twig' with {'entity':expansioncard.getExpansionCardAliases(), 'msg': 'Also known as:'} %}
 				{% include 'macros/notes.html.twig' with {'entity': expansioncard} %}
-				<div id="index-datetime"><div class="div-datetime">Last edited <span class="perk-date">{{ expansioncard.getLastEdited()|date("Y-m-d\\TH:i:s", "GMT") }}Z</span></div></div>
+				<div id="index-datetime"><div class="div-datetime">Last updated <span class="perk-date">{{ expansioncard.getLastEdited()|date("Y-m-d\\TH:i:s", "GMT") }}Z</span></div></div>
 			</div>
 			<div class="show-expchips" id="sh-specs">
 				{% if expansioncard.getMiscSpecs() is not empty %}

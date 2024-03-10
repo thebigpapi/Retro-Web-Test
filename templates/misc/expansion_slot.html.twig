@@ -61,6 +61,9 @@
 					<!-- Mechanical -->
 					<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/rs232.svg')) }}" alt="conn" width="24" height="24">Connector</div>
 					<div>{{ expansion_slot.getInterface() ? expansion_slot.getInterface().getName() : 'Unknown'}}</div>
+					<!-- Mechanical p/n -->
+					<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/tag.svg')) }}" alt="conn" width="24" height="24">Conn. part number</div>
+					<div>{{ expansion_slot.getInterface() ? expansion_slot.getInterface().getPartNumber() : 'Unknown'}}</div>
 					<!-- Electrical -->
 					<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/io.svg')) }}" alt="signal" width="24" height="24">Electrical interfaces</div>
 					{% if expansion_slot.getSignals() is not empty %}
