@@ -92,6 +92,10 @@ class BiosController extends AbstractController
         if ($postString) {
             $criterias['post_string'] = "$postString";
         }
+        $biosVersion = htmlentities($request->query->get('biosVersion') ?? '');
+        if ($biosVersion) {
+            $criterias['bios_version'] = "$biosVersion";
+        }
         $coreVersion = htmlentities($request->query->get('coreVersion') ?? '');
         if ($coreVersion) {
             $criterias['core_version'] = "$coreVersion";
@@ -146,6 +150,9 @@ class BiosController extends AbstractController
 
         if ($postString = $form['post_string']->getData()) {
             $parameters['postString'] = $postString;
+        }
+        if ($biosVersion = $form['bios_version']->getData()) {
+            $parameters['biosVersion'] = $biosVersion;
         }
         if ($coreVersion = $form['core_version']->getData()) {
             $parameters['coreVersion'] = $coreVersion;

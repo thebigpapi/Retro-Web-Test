@@ -75,11 +75,19 @@
 					</div>
 
 					<div class="search-form-entry">
+						<label class="search-form-label" for="search_bios_version">
+							<span>BIOS version</span>
+						</label>
+						<div class="search-form-widget">
+							<div>{{ form_widget(form.bios_version) }}</div>
+						</div>
+					</div>
+					<div class="search-form-entry">
 						<label class="search-form-label" for="search_core_version">
 							<span>Core version</span>
 						</label>
 						<div class="search-form-widget">
-							<div>{{ form_widget(form.core_version, {'attr': {'style': 'width:15%', 'size': '50'}}) }}</div>
+							<div>{{ form_widget(form.core_version) }}</div>
 						</div>
 					</div>
 					<div class="search-form-entry">
@@ -134,7 +142,7 @@
 					<div>Type</div>
 					<div>Version</div>
 					<div>File</div>
-					<div style="min-width:7rem">Last edited</div>
+					<div style="min-width:7rem">Last updated</div>
 				</div>
 				{% for b in latestBios %}
 				<div class="list-entry centered bios {% if loop.index is divisible by(2) %}alt{% endif %}">
@@ -164,7 +172,7 @@
 							<span>N/A</span>
 						{% endif %}
 					</div>
-					<div class="header-label">Last edited</div>
+					<div class="header-label">Last updated</div>
 					<div>
 						<a href="{{ path('dh_auditor_show_entity_history', { 'entity': 'App-Entity-MotherboardBios', 'id': b[0].getId() }) }}">
 							<img src="{{ absolute_url(asset('build/icons/calendar.svg')) }}" alt="pwr" width="16" height="16">

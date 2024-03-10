@@ -62,6 +62,9 @@ class Search extends AbstractType
             ->add('post_string', TextType::class, [
                 'required' => false,
             ])
+            ->add('bios_version', TextType::class, [
+                'required' => false,
+            ])
             ->add('core_version', TextType::class, [
                 'required' => false,
             ])
