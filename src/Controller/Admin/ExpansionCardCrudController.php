@@ -76,7 +76,7 @@ class ExpansionCardCrudController extends AbstractCrudController
         return $crud
             ->showEntityActionsInlined()
             ->setEntityLabelInSingular('expansion card')
-            ->setEntityLabelInPlural('<img class=ea-entity-icon src=/build/icons/chip.svg width=48 height=48>Expansion cards')
+            ->setEntityLabelInPlural('<img class=ea-entity-icon src=/build/icons/card.svg width=48 height=48>Expansion cards')
             ->overrideTemplate('crud/edit', 'admin/crud/edit_card.html.twig')
             ->overrideTemplate('crud/new', 'admin/crud/new_card.html.twig')
             ->setPaginatorPageSize(100);
@@ -88,6 +88,8 @@ class ExpansionCardCrudController extends AbstractCrudController
             ->add('name')
             ->add('expansionCardAliases')
             ->add('type')
+            ->add('expansionSlotInterfaceSignal')
+            ->add('expansionChips')
             ->add(ExpansionCardImageFilter::new('images'))
             ->add(ChipDocFilter::new('documentations'))
             ->add(ExpansionCardBiosFilter::new('expansionCardBios'))
@@ -106,15 +108,20 @@ class ExpansionCardCrudController extends AbstractCrudController
         yield TextField::new('slug')
             ->setColumns('col-sm-6 col-lg-6 col-xxl-4')
             ->onlyOnForms();
-        yield ArrayField::new('type','Type')->onlyOnIndex();
-        // index
-        yield TextField::new('isExpansionCardImage','Images')
+        yield ArrayField::new('type','Type')
             ->onlyOnIndex();
-        yield BooleanField::new('isExpansionCardBios','BIOS')
+        yield TextField::new('expansionSlotInterfaceSignal','Slot')
+            ->onlyOnIndex();
+        yield BooleanField::new('expansionChips', 'Exp.chips')
             ->renderAsSwitch(false)
             ->onlyOnIndex();
         yield BooleanField::new('getDocumentations','Docs')
             ->renderAsSwitch(false)
+            ->onlyOnIndex();
+        yield BooleanField::new('isExpansionCardBios','BIOS')
+            ->renderAsSwitch(false)
+            ->onlyOnIndex();
+        yield TextField::new('isExpansionCardImage','Images')
             ->onlyOnIndex();
         yield BooleanField::new('getDrivers','Drivers')
             ->renderAsSwitch(false)
@@ -141,13 +148,17 @@ class ExpansionCardCrudController extends AbstractCrudController
             ->setColumns('col-sm-12 col-lg-6 col-xxl-4 multi-widget-trw')
             ->onlyOnForms();
         yield IntegerField::new('width', 'Width (mm)')
-            ->setColumns('col-sm-2 col-lg-3 col-xxl-1');
+            ->setColumns('col-sm-2 col-lg-3 col-xxl-1')
+            ->onlyOnForms();
         yield IntegerField::new('height', 'Height (mm)')
-            ->setColumns('col-sm-2 col-lg-3 col-xxl-1');
+            ->setColumns('col-sm-2 col-lg-3 col-xxl-1')
+            ->onlyOnForms();
         yield IntegerField::new('length', 'Length (mm)')
-            ->setColumns('col-sm-2 col-lg-3 col-xxl-1');
+            ->setColumns('col-sm-2 col-lg-3 col-xxl-1')
+            ->onlyOnForms();
         yield IntegerField::new('slotCount', 'Slot height')
-            ->setColumns('col-sm-2 col-lg-3 col-xxl-1');
+            ->setColumns('col-sm-2 col-lg-3 col-xxl-1')
+            ->onlyOnForms();
         yield TextField::new('fccid','FCC ID')
             ->setColumns('col-sm-4 col-lg-6 col-xxl-2')
             ->onlyOnForms();

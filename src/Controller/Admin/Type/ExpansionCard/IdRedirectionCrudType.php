@@ -19,11 +19,10 @@ class IdRedirectionCrudType extends AbstractCrudController
         yield ChoiceField::new('sourceType', 'Source type')
             ->setFormTypeOption('label',false)
             ->setFormTypeOption('choices',[
-                'UH19' => 'uh19',
-                'TH99' => 'th99',
                 'Slug' => 'uh19_slug',
+                'TH99' => 'th99',
+                'UH19' => 'uh19',
             ])
-            ->setFormTypeOption('data', 'uh19_slug')
             ->setFormTypeOption('placeholder', false)
             ->renderAsNativeWidget()
             ->setColumns(4);
