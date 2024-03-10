@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Enum\KnownIssueType;
 use App\Entity\KnownIssue;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -22,11 +23,12 @@ class KnownIssueRepository extends ServiceEntityRepository
     /**
      * @return KnownIssue[] Returns an array of KnownIssue objects
      */
-    public function findAllByType($value)
+    public function findAllByType(KnownIssueType $type)
     {
         return $this->createQueryBuilder('k')
-            ->andWhere('k.type = :val')
-            ->setParameter('val', $value)
+            //->andWhere('k.type = :val')
+            ->andWhere('BIT_AND(k.type, :val) > 0')
+            ->setParameter('val', $type->value)
             ->orderBy('k.name', 'ASC')
             ->getQuery()
             ->getResult()

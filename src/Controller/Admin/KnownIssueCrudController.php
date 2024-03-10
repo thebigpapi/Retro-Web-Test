@@ -2,6 +2,7 @@
 
 namespace App\Controller\Admin;
 
+use App\Entity\Enum\KnownIssueType;
 use App\Entity\KnownIssue;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
@@ -45,17 +46,18 @@ class KnownIssueCrudController extends AbstractCrudController
         yield IdField::new('id')
             ->onlyOnIndex();
         yield TextField::new('name', 'Name');
-        yield ChoiceField::new('type')
+        yield ChoiceField::new('types')
             ->setColumns('col-sm-6 col-lg-6 col-xxl-4')
             ->setFormTypeOption('placeholder', 'Select a type ...')
             ->setFormTypeOption('choices', [
-                'Motherboards' => 1,
-                'Expansion cards' => 2,
-                'Hard drives' => 3,
-                'Optical drives' => 4,
-                'Floppy drives' => 5,
-                'CPUs' => 6
+                'Motherboards' => KnownIssueType::Motherboards,
+                'Expansion cards' => KnownIssueType::ExpansionCards,
+                'Hard drives' => KnownIssueType::HardDrives,
+                'Optical drives' => KnownIssueType::OpticalDrives,
+                'Floppy drives' => KnownIssueType::FloppyDrives,
+                'CPUs' => KnownIssueType::CPUs
             ])
+            ->setFormTypeOption('multiple', true)
             ->onlyOnForms();
         yield TextField::new('getTypeFormatted', 'Type')
             ->onlyOnIndex();
@@ -70,5 +72,9 @@ class KnownIssueCrudController extends AbstractCrudController
         $entityId = $context->getEntity()->getInstance()->getId();
         $entity = str_replace("\\", "-",$context->getEntity()->getFqcn());
         return $this->redirectToRoute('dh_auditor_show_entity_history', array('id' => $entityId, 'entity' => $entity));
+    }
+
+    public function prePersist() {
+        dd("hi");
     }
 }

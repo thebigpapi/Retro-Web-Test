@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Entity\Enum\KnownIssueType;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
@@ -146,6 +147,30 @@ class KnownIssue
         $this->type = $type;
 
         return $this;
+    }
+
+    /**
+     * @param KnownIssueType[] $types
+     */
+    public function setTypes(array $types): static
+    {
+        $this->type = array_sum(array_column($types, 'value'));
+
+        return $this;
+    }
+
+    /**
+     * @return KnownIssueType[]
+     */
+    public function getTypes(): array
+    {
+        $result = [];
+        foreach (array_column(KnownIssueType::cases(), 'value') as $type) {
+            if ($this->type & $type) {
+                $result[] = KnownIssueType::from($type);
+            }
+        }
+        return $result;
     }
 
     /**

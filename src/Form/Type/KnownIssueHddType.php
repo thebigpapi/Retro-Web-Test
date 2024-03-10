@@ -2,6 +2,7 @@
 
 namespace App\Form\Type;
 
+use App\Entity\Enum\KnownIssueType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -27,7 +28,7 @@ class KnownIssueHddType extends AbstractType
         $resolver->setDefaults([
             'class' => KnownIssue::class,
             'choice_label' => 'name',
-            'choices' => $this->entityManager->getRepository(KnownIssue::class)->findAllByType(3),
+            'choices' => $this->entityManager->getRepository(KnownIssue::class)->findAllByType(KnownIssueType::HardDrives),
             'multiple' => false,
             'expanded' => false,
             'attr' => ['data-ea-widget' => 'ea-autocomplete']
