@@ -13,6 +13,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CodeEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
+use EasyCorp\Bundle\EasyAdminBundle\Field\ArrayField;
 
 class KnownIssueCrudController extends AbstractCrudController
 {
@@ -59,7 +60,7 @@ class KnownIssueCrudController extends AbstractCrudController
             ])
             ->setFormTypeOption('multiple', true)
             ->onlyOnForms();
-        yield TextField::new('getTypeFormatted', 'Type')
+        yield ArrayField::new('getTypesString', 'Type')
             ->onlyOnIndex();
         yield TextField::new('description', 'Description')
             ->hideOnForm();
@@ -72,9 +73,5 @@ class KnownIssueCrudController extends AbstractCrudController
         $entityId = $context->getEntity()->getInstance()->getId();
         $entity = str_replace("\\", "-",$context->getEntity()->getFqcn());
         return $this->redirectToRoute('dh_auditor_show_entity_history', array('id' => $entityId, 'entity' => $entity));
-    }
-
-    public function prePersist() {
-        dd("hi");
     }
 }

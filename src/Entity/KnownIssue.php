@@ -125,30 +125,6 @@ class KnownIssue
         return $this;
     }
 
-    public function getType(): ?int
-    {
-        return $this->type;
-    }
-    public function getTypeFormatted(): string
-    {
-        switch($this->type){
-            case 1: return "Motherboards";
-            case 2: return "Expansion cards";
-            case 3: return "Hard drives";
-            case 4: return "Optical drives";
-            case 5: return "Floppy drives";
-            case 6: return "CPUs";
-            default: return "";
-        }
-    }
-
-    public function setType(?int $type): static
-    {
-        $this->type = $type;
-
-        return $this;
-    }
-
     /**
      * @param KnownIssueType[] $types
      */
@@ -168,6 +144,17 @@ class KnownIssue
         foreach (array_column(KnownIssueType::cases(), 'value') as $type) {
             if ($this->type & $type) {
                 $result[] = KnownIssueType::from($type);
+            }
+        }
+        return $result;
+    }
+
+    public function getTypesString(): array
+    {
+        $result = [];
+        foreach (array_column(KnownIssueType::cases(), 'value') as $type) {
+            if ($this->type & $type) {
+                $result[] = KnownIssueType::from($type)->name;
             }
         }
         return $result;
