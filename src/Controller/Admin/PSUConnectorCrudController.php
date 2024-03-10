@@ -10,6 +10,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
+use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CodeEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
@@ -54,8 +55,8 @@ class PSUConnectorCrudController extends AbstractCrudController
     {
         return $crud
             ->showEntityActionsInlined()
-            ->setEntityLabelInSingular('PSU connector')
-            ->setEntityLabelInPlural('<img class=ea-entity-icon src=/build/icons/power.svg width=48 height=48>PSU connectors')
+            ->setEntityLabelInSingular('power connector')
+            ->setEntityLabelInPlural('<img class=ea-entity-icon src=/build/icons/power.svg width=48 height=48>Power connectors')
             ->setPaginatorPageSize(100);
     }
     public function configureFields(string $pageName): iterable
@@ -77,14 +78,16 @@ class PSUConnectorCrudController extends AbstractCrudController
             ->useEntryCrudForm(EntityImageCrudType::class)
             ->renderExpanded()
             ->setFormTypeOption('error_bubbling', false)
-            ->setColumns(6)
-            ->onlyOnForms();
+            ->setColumns(6);
         yield CollectionField::new('entityDocumentations', 'Documentation')
             ->useEntryCrudForm(EntityDocumentationCrudType::class)
             ->renderExpanded()
             ->setFormTypeOption('error_bubbling', false)
             ->setColumns(6)
             ->onlyOnForms();
+        yield BooleanField::new('entityDocumentations', 'Documentation')
+            ->renderAsSwitch(false)
+            ->onlyOnIndex();
     }
     public function viewConn(AdminContext $context)
     {

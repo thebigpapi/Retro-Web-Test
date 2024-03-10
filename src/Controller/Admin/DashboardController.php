@@ -37,7 +37,7 @@ use App\Entity\ExpansionSlotSignal;
 use App\Entity\IoPortInterface;
 use App\Entity\IoPortInterfaceSignal;
 use App\Entity\IoPortSignal;
-use App\Entity\MemoryConnector;
+//use App\Entity\MemoryConnector;
 use App\Entity\ExpansionSlotInterfaceSignal;
 use App\Entity\MotherboardImage;
 use App\Entity\MotherboardBios;
@@ -132,6 +132,7 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Expansion chips', 'chip.svg', ExpansionChip::class);
         yield MenuItem::section('Auxiliary items');
         yield MenuItem::subMenu('Motherboard related', 'board.svg')->setSubItems([
+            MenuItem::linkToCrud('Form factors', 'dimension.svg', FormFactor::class),
             MenuItem::linkToCrud('Expansion slots', 'card.svg', ExpansionSlot::class),
             MenuItem::linkToCrud('I/O ports', 'rs232.svg', IoPort::class),
             MenuItem::section('Advanced'),
@@ -141,19 +142,13 @@ class DashboardController extends AbstractDashboardController
             MenuItem::linkToCrud('Manuals', 'manual.svg', Manual::class)->setController(ManualCrudController::class),
         ])->setPermission('ROLE_ADMIN');
         yield MenuItem::subMenu('Expansion card related', 'card.svg')->setSubItems([
-            MenuItem::linkToCrud('Types', 'tag.svg', ExpansionCardType::class)->setPermission('ROLE_ADMIN'),
-            MenuItem::linkToCrud('I/O ports', 'rs232.svg', IoPortInterfaceSignal::class),
-            MenuItem::linkToCrud('I/O port connectors', 'connector.svg', IoPortInterface::class),
-            MenuItem::linkToCrud('I/O port signals', 'rs232_electric.svg', IoPortSignal::class),
-            MenuItem::linkToCrud('Expansion slots', 'exp_slot.svg', ExpansionSlotInterfaceSignal::class),
-            MenuItem::linkToCrud('Expansion slot connectors', 'pci_slot_smol.svg', ExpansionSlotInterface::class),
-            MenuItem::linkToCrud('Expansion slot signals', 'pci_slot_electric.svg', ExpansionSlotSignal::class),
-            MenuItem::section('Advanced')->setPermission('ROLE_ADMIN'),
+            MenuItem::linkToCrud('Types', 'tag.svg', ExpansionCardType::class),
+            MenuItem::section('Advanced'),
             MenuItem::linkToCrud('Aliases', 'tag.svg', ExpansionCardAlias::class)->setController(ExpansionCardAliasCrudController::class)->setPermission('ROLE_ADMIN'),
             MenuItem::linkToCrud('Images', 'search_image.svg', ExpansionCardImage::class)->setController(ExpansionCardImageCrudController::class)->setPermission('ROLE_ADMIN'),
             MenuItem::linkToCrud('BIOSes', 'awchip.svg', ExpansionCardBios::class)->setController(ExpansionCardBiosCrudController::class),
             MenuItem::linkToCrud('Documentation', 'manual.svg', ExpansionCardDocumentation::class)->setController(ExpansionCardDocumentationCrudController::class)->setPermission('ROLE_ADMIN'),
-        ]);
+        ])->setPermission('ROLE_ADMIN');
         yield MenuItem::subMenu('CPU related', '486.svg')->setSubItems([
             MenuItem::linkToCrud('CPU families', '486.svg', ProcessorPlatformType::class),
             MenuItem::linkToCrud('Sockets', 'cpupins.svg', CpuSocket::class),
@@ -169,6 +164,15 @@ class DashboardController extends AbstractDashboardController
             MenuItem::linkToCrud('Images', 'search_image.svg', StorageDeviceImage::class)->setController(StorageDeviceImageCrudController::class),
             MenuItem::linkToCrud('Documentation', 'manual.svg', StorageDeviceDocumentation::class)->setController(StorageDeviceDocumentationCrudController::class),
         ])->setPermission('ROLE_ADMIN');
+        yield MenuItem::subMenu('Connectors', 'rs232.svg')->setSubItems([
+            MenuItem::linkToCrud('Power connectors', 'power.svg', PSUConnector::class),
+            MenuItem::linkToCrud('I/O ports', 'rs232.svg', IoPortInterfaceSignal::class),
+            MenuItem::linkToCrud('I/O port connectors', 'connector.svg', IoPortInterface::class),
+            MenuItem::linkToCrud('I/O port signals', 'rs232_electric.svg', IoPortSignal::class),
+            MenuItem::linkToCrud('Expansion slots', 'exp_slot.svg', ExpansionSlotInterfaceSignal::class),
+            MenuItem::linkToCrud('Expansion slot connectors', 'pci_slot_smol.svg', ExpansionSlotInterface::class),
+            MenuItem::linkToCrud('Expansion slot signals', 'pci_slot_electric.svg', ExpansionSlotSignal::class),
+        ]);
         yield MenuItem::subMenu('Memory related', 'ram.svg')->setSubItems([
             //MenuItem::linkToCrud('Memory connectors', 'ram.svg', MemoryConnector::class),
             MenuItem::linkToCrud('Cache size', 'chip.svg', CacheSize::class),
@@ -185,13 +189,11 @@ class DashboardController extends AbstractDashboardController
             MenuItem::linkToCrud('Chipset docs', 'manual.svg', ChipsetDocumentation::class)->setController(ChipsetDocumentationCrudController::class),
         ])->setPermission('ROLE_ADMIN');
         yield MenuItem::subMenu('Misc', 'misc.svg')->setSubItems([
-            MenuItem::linkToCrud('PSU connectors', 'power.svg', PSUConnector::class),
-            MenuItem::linkToCrud('OS flags', 'os/1998win.svg', OsFlag::class)->setPermission('ROLE_ADMIN'),
-            MenuItem::linkToCrud('Form factors', 'dimension.svg', FormFactor::class)->setPermission('ROLE_ADMIN'),
-            MenuItem::linkToCrud('Known Issues', 'misc.svg', KnownIssue::class)->setPermission('ROLE_ADMIN'),
             MenuItem::linkToCrud('Manufacturers', 'factory.svg', Manufacturer::class),
+            MenuItem::linkToCrud('Known Issues', 'misc.svg', KnownIssue::class)->setPermission('ROLE_ADMIN'),
             MenuItem::linkToCrud('Creditors', 'creditor.svg', Creditor::class),
             MenuItem::linkToCrud('Licenses', 'license.svg', License::class)->setPermission('ROLE_ADMIN'),
+            MenuItem::linkToCrud('OS flags', 'os/1998win.svg', OsFlag::class)->setPermission('ROLE_ADMIN'),
             MenuItem::section('Advanced')->setPermission('ROLE_ADMIN'),
             MenuItem::linkToCrud('Entity images', 'search_image.svg', EntityImage::class)->setController(EntityImageCrudController::class)->setPermission('ROLE_ADMIN'),
             MenuItem::linkToCrud('Entity docs', 'manual.svg', EntityDocumentation::class)->setController(EntityDocumentationCrudController::class)->setPermission('ROLE_ADMIN'),
