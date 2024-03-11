@@ -158,8 +158,10 @@ class CdDriveCrudController extends AbstractCrudController
         yield TextField::new('trayType')
             ->onlyOnIndex();
         yield TextField::new('isStorageDeviceImage','Images')
+            ->setCustomOption('imageTypes', true)
             ->onlyOnIndex();
         yield CollectionField::new('storageDeviceDocumentations','Docs')
+            ->setCustomOption('byCount', true)
             ->onlyOnIndex();
         yield ChoiceField::new('trayType')
             ->setColumns('col-sm-4 col-lg-3 col-xxl-2')

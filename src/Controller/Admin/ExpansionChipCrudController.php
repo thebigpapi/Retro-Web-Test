@@ -110,10 +110,13 @@ class ExpansionChipCrudController extends AbstractCrudController
         yield ArrayField::new('getPciDevsLimited', 'Device ID')
             ->hideOnForm();
         yield CollectionField::new('images','Images')
+            ->setCustomOption('byCount', true)
             ->onlyOnIndex();
         yield CollectionField::new('documentations','Docs')
+            ->setCustomOption('byCount', true)
             ->onlyOnIndex();
         yield CollectionField::new('drivers','Drivers')
+            ->setCustomOption('byCount', true)
             ->onlyOnIndex();
         // editor
         yield AssociationField::new('type','Type')

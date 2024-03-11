@@ -156,14 +156,17 @@ class MotherboardCrudController extends AbstractCrudController
             ->formatValue(function ($value, $entity) {return $entity->getChipsetWithoutParts();})
             ->setCustomOption('link','chipset.getId')
             ->onlyOnIndex();
-        yield BooleanField::new('isExpansionChips','Exp.chips')
-            ->renderAsSwitch(false)
+        yield CollectionField::new('expansionChips','Exp.chips')
+            ->setCustomOption('byCount', true)
             ->onlyOnIndex();
         yield CollectionField::new('manuals','Manual')
+            ->setCustomOption('byCount', true)
             ->onlyOnIndex();
         yield CollectionField::new('motherboardBios','BIOS')
+            ->setCustomOption('byCount', true)
             ->onlyOnIndex();
         yield TextField::new('isImages','Images')
+            ->setCustomOption('imageTypes', true)
             ->onlyOnIndex();
         yield DateField::new('lastEdited', 'Last edit')
             ->hideOnForm();

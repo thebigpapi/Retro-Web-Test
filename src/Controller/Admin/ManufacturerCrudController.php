@@ -79,7 +79,7 @@ class ManufacturerCrudController extends AbstractCrudController
             ->renderExpanded()
             ->onlyOnForms();
         yield ArrayField::new('manufacturerCodes', 'Codes')
-            ->onlyOnDetail();
+            ->hideOnForm();
         yield CollectionField::new('pciVendorIds', 'Vendor ID')
             ->useEntryCrudForm(PciVendorCrudType::class)
             ->setColumns('col-sm-6 col-lg-6 col-xxl-4')
@@ -102,10 +102,10 @@ class ManufacturerCrudController extends AbstractCrudController
             ->onlyOnForms();
         yield CollectionField::new('entityImages', 'Images')
             ->useEntryCrudForm(EntityImageCrudType::class)
+            ->setCustomOption('byCount', true)
             ->renderExpanded()
             ->setFormTypeOption('error_bubbling', false)
-            ->setColumns(6)
-            ->onlyOnForms();
+            ->setColumns(6);
     }
     public function viewManufacturer(AdminContext $context)
     {

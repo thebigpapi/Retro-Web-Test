@@ -141,13 +141,10 @@ class ProcessorPlatformTypeCrudController extends AbstractCrudController
             ->onlyOnForms();
         yield CollectionField::new('entityDocumentations', 'Documentation')
             ->useEntryCrudForm(EntityDocumentationCrudType::class)
+            ->setCustomOption('byCount', true)
             ->renderExpanded()
             ->setFormTypeOption('error_bubbling', false)
-            ->setColumns(6)
-            ->onlyOnForms();
-        yield BooleanField::new('entityDocumentations', 'Docs')
-            ->renderAsSwitch(false)
-            ->onlyOnIndex();
+            ->setColumns(6);
     }
     public function viewFamily(AdminContext $context)
     {

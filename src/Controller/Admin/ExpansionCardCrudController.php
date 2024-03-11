@@ -24,7 +24,6 @@ use App\Controller\Admin\Type\ExpansionCard\PowerConnectorCrudType;
 use App\Controller\Admin\Type\PciDeviceCrudType;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
-use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
@@ -112,19 +111,20 @@ class ExpansionCardCrudController extends AbstractCrudController
             ->onlyOnIndex();
         yield TextField::new('expansionSlotInterfaceSignal','Slot')
             ->onlyOnIndex();
-        yield BooleanField::new('expansionChips', 'Exp.chips')
-            ->renderAsSwitch(false)
+        yield CollectionField::new('expansionChips', 'Exp.chips')
+            ->setCustomOption('byCount', true)
             ->onlyOnIndex();
-        yield BooleanField::new('getDocumentations','Docs')
-            ->renderAsSwitch(false)
+        yield CollectionField::new('getDocumentations','Docs')
+            ->setCustomOption('byCount', true)
             ->onlyOnIndex();
-        yield BooleanField::new('isExpansionCardBios','BIOS')
-            ->renderAsSwitch(false)
+        yield CollectionField::new('expansionCardBios','BIOS')
+            ->setCustomOption('byCount', true)
             ->onlyOnIndex();
         yield TextField::new('isExpansionCardImage','Images')
+            ->setCustomOption('imageTypes', true)
             ->onlyOnIndex();
-        yield BooleanField::new('getDrivers','Drivers')
-            ->renderAsSwitch(false)
+        yield CollectionField::new('getDrivers','Drivers')
+            ->setCustomOption('byCount', true)
             ->onlyOnIndex();
         yield CollectionField::new('type','Type')
             ->setEntryType(ExpansionCardTypeType::class)

@@ -166,10 +166,13 @@ class HardDriveCrudController extends AbstractCrudController
         yield NumberField::new('spindleSpeed', 'RPM')
             ->setColumns('col-sm-4 col-lg-3 col-xxl-2');
         yield TextField::new('isStorageDeviceImage','Images')
+            ->setCustomOption('imageTypes', true)
             ->onlyOnIndex();
         yield CollectionField::new('storageDeviceDocumentations','Docs')
+            ->setCustomOption('byCount', true)
             ->onlyOnIndex();
         yield CollectionField::new('audioFiles','Audio')
+            ->setCustomOption('byCount', true)
             ->onlyOnIndex();
         yield NumberField::new('platters')
             ->setColumns('col-sm-4 col-lg-3 col-xxl-2')

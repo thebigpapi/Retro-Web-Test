@@ -10,7 +10,6 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
-use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CodeEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
@@ -76,18 +75,16 @@ class PSUConnectorCrudController extends AbstractCrudController
             ->onlyOnForms();
         yield CollectionField::new('entityImages', 'Images')
             ->useEntryCrudForm(EntityImageCrudType::class)
+            ->setCustomOption('byCount', true)
             ->renderExpanded()
             ->setFormTypeOption('error_bubbling', false)
             ->setColumns(6);
         yield CollectionField::new('entityDocumentations', 'Documentation')
             ->useEntryCrudForm(EntityDocumentationCrudType::class)
+            ->setCustomOption('byCount', true)
             ->renderExpanded()
             ->setFormTypeOption('error_bubbling', false)
-            ->setColumns(6)
-            ->onlyOnForms();
-        yield BooleanField::new('entityDocumentations', 'Documentation')
-            ->renderAsSwitch(false)
-            ->onlyOnIndex();
+            ->setColumns(6);
     }
     public function viewConn(AdminContext $context)
     {

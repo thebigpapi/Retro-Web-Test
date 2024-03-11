@@ -23,7 +23,6 @@ use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ArrayField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CodeEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
@@ -143,8 +142,10 @@ class FloppyDriveCrudController extends AbstractCrudController
         yield ArrayField::new('type')
             ->onlyOnIndex();
         yield TextField::new('isStorageDeviceImage','Images')
+            ->setCustomOption('imageTypes', true)
             ->onlyOnIndex();
         yield CollectionField::new('storageDeviceDocumentations','Docs')
+            ->setCustomOption('byCount', true)
             ->onlyOnIndex();
         yield CollectionField::new('type')
             ->setEntryType(FloppyDriveTypeType::class)

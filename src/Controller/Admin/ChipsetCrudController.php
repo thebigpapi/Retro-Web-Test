@@ -15,7 +15,6 @@ use App\Controller\Admin\Type\Chipset\DocumentationCrudType;
 use App\Controller\Admin\Type\Chipset\LargeFileCrudType;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
-use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
@@ -145,9 +144,10 @@ class ChipsetCrudController extends AbstractCrudController
             ->setColumns(4)
             ->hideOnIndex();
         yield CollectionField::new('documentations', 'Docs')
+            ->setCustomOption('byCount', true)
             ->onlyOnIndex();
-        yield BooleanField::new('getDrivers', 'Drivers')
-            ->renderAsSwitch(false)
+        yield CollectionField::new('getDrivers', 'Drivers')
+            ->setCustomOption('byCount', true)
             ->onlyOnIndex();
         yield ArrayField::new('drivers', 'Drivers (this entity)')
             ->onlyOnDetail();

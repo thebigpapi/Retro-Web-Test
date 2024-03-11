@@ -10,7 +10,6 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
@@ -60,18 +59,16 @@ class ExpansionSlotInterfaceCrudController extends AbstractCrudController
             ->onlyOnForms();
         yield CollectionField::new('entityImages', 'Images')
             ->useEntryCrudForm(EntityImageCrudType::class)
+            ->setCustomOption('byCount', true)
             ->renderExpanded()
             ->setFormTypeOption('error_bubbling', false)
             ->setColumns(6);
         yield CollectionField::new('entityDocumentations', 'Documentation')
             ->useEntryCrudForm(EntityDocumentationCrudType::class)
+            ->setCustomOption('byCount', true)
             ->renderExpanded()
             ->setFormTypeOption('error_bubbling', false)
-            ->setColumns(6)
-            ->onlyOnForms();
-        yield BooleanField::new('entityDocumentations', 'Documentation')
-            ->renderAsSwitch(false)
-            ->onlyOnIndex();
+            ->setColumns(6);
     }
     public function configureCrud(Crud $crud): Crud
     {

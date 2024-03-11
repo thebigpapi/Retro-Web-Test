@@ -133,8 +133,8 @@ class ProcessorCrudController extends AbstractCrudController
             ->hideOnForm();
         yield IntegerField::new('ProcessNode', 'Process')
             ->hideOnForm();
-        yield BooleanField::new('getImages','Images')
-            ->renderAsSwitch(false)
+        yield CollectionField::new('getImages','Images')
+            ->setCustomOption('byCount', true)
             ->onlyOnIndex();
         yield AssociationField::new('platform', 'Family')
             ->setFormTypeOption('placeholder', 'Type to select a family ...')
