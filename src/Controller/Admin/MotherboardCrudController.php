@@ -307,6 +307,7 @@ class MotherboardCrudController extends AbstractCrudController
             ->onlyOnForms();
         yield CollectionField::new('manuals', 'Documentation')
             ->useEntryCrudForm(ManualCrudType::class)
+            ->setFormTypeOption('error_bubbling', false)
             ->setColumns(6)
             ->renderExpanded()
             ->onlyOnForms();
@@ -318,6 +319,7 @@ class MotherboardCrudController extends AbstractCrudController
             ->onlyOnForms();
         yield CollectionField::new('drivers', 'Drivers')
             ->useEntryCrudForm(LargeFileCrudType::class)
+            ->setFormTypeOption('error_bubbling', false)
             ->renderExpanded()
             ->setColumns(6)
             ->onlyOnForms();

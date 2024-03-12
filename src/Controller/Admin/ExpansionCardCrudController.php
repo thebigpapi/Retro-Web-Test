@@ -252,6 +252,7 @@ class ExpansionCardCrudController extends AbstractCrudController
             ->onlyOnForms();
         yield CollectionField::new('drivers', 'Drivers')
             ->useEntryCrudForm(LargeFileCrudType::class)
+            ->setFormTypeOption('error_bubbling', false)
             ->setColumns(6)
             ->renderExpanded()
             ->onlyOnForms();

@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 #[Vich\Uploadable]
 #[ORM\Entity(repositoryClass: 'App\Repository\ChipImageRepository')]
@@ -125,5 +126,14 @@ class ChipImage
         $this->sort = $sort;
 
         return $this;
+    }
+    #[Assert\Callback]
+    public function validate(ExecutionContextInterface $context, mixed $payload): void
+    {
+        if(null === $this->imageFile && null === $this->file_name) {
+            $context->buildViolation('Image is not uploaded!')
+                ->atPath('imageFile')
+                ->addViolation();
+        }
     }
 }

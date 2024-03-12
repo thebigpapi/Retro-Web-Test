@@ -54,6 +54,7 @@ class Chipset
     private $biosCodes;
 
     #[ORM\OneToMany(targetEntity: LargeFileChipset::class, mappedBy: 'chipset', orphanRemoval: true, cascade: ['persist'])]
+    #[Assert\Valid()]
     private $drivers;
 
     #[ORM\Column(type: 'string', length: 8192, nullable: true)]

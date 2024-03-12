@@ -31,6 +31,7 @@ class ExpansionCard
     private ?string $description = null;
 
     #[ORM\OneToMany(mappedBy: 'expansionCard', targetEntity: LargeFileExpansionCard::class, orphanRemoval: true, cascade: ['persist'])]
+    #[Assert\Valid()]
     private Collection $drivers;
 
     #[ORM\OneToMany(targetEntity: ExpansionCardDocumentation::class, mappedBy: 'expansionCard', orphanRemoval: true, cascade: ['persist'])]

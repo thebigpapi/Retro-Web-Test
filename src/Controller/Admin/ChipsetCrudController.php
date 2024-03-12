@@ -189,6 +189,7 @@ class ChipsetCrudController extends AbstractCrudController
             ->onlyOnForms();
         yield CollectionField::new('drivers', 'Drivers')
             ->useEntryCrudForm(LargeFileCrudType::class)
+            ->setFormTypeOption('error_bubbling', false)
             ->renderExpanded()
             ->setColumns(6)
             ->onlyOnForms();

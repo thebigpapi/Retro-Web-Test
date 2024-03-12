@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use App\Repository\LargeFileMotherboardRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 #[ORM\Entity(repositoryClass: LargeFileMotherboardRepository::class)]
 class LargeFileMotherboard
@@ -57,5 +59,14 @@ class LargeFileMotherboard
         $this->isRecommended = $isRecommended;
 
         return $this;
+    }
+    #[Assert\Callback]
+    public function validate(ExecutionContextInterface $context, mixed $payload): void
+    {
+        if(null === $this->largeFile && $this->isRecommended) {
+            $context->buildViolation('Driver is not selected!')
+                ->atPath('largeFile')
+                ->addViolation();
+        }
     }
 }

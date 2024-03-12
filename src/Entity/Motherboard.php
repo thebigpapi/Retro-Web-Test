@@ -97,6 +97,7 @@ class Motherboard
     private $cpuSockets;
 
     #[ORM\OneToMany(targetEntity: LargeFileMotherboard::class, mappedBy: 'motherboard', orphanRemoval: true, cascade: ['persist'])]
+    #[Assert\Valid()]
     private $drivers;
 
     #[ORM\OneToMany(targetEntity: MotherboardIdRedirection::class, mappedBy: 'destination', orphanRemoval: true, cascade: ['persist'])]
