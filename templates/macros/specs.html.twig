@@ -11,7 +11,17 @@
         {% for spec_key, spec_value in entity.getTableMiscSpecs() %}
             <table><thead><tr><th colspan="2">{{spec_key}}</th><tr></thead>
             {% for key, value in spec_value %}
-                <tr><td>{{key}}</td><td>{{value}}</td></tr>
+                <tr>
+                    <td>{{key}}</td>
+                    <td>{% if value == 'true' %}
+                        <input type="checkbox" disabled checked/>
+                    {% elseif value == 'false' %}
+                        <input type="checkbox" disabled/>
+                    {% else %}
+                        {{value}}
+                    {% endif %}
+                    </td>
+                </tr>
             {% endfor %}
             </table>
         {% endfor %}
