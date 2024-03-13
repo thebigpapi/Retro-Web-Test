@@ -82,15 +82,15 @@ class FileCheckerCommand extends Command
             $this->checkEntity($entity, $io);
         }
     }
-    private function checkEntity($bios, SymfonyStyle $io) {
-        $fileName = $bios->getFileName();
+    private function checkEntity($entity, SymfonyStyle $io) {
+        $fileName = $entity->getFileName();
         if($fileName === null)
             return;
-        $mappings = $this->vichFactory->fromObject($bios);
+        $mappings = $this->vichFactory->fromObject($entity);
         $pathPrefix = array_shift($mappings)->getUploadDestination();
         $filePath = implode('/', [$pathPrefix, $fileName]);
         if (!file_exists($filePath)) {
-            $io->writeln($bios::class . "\\" . $bios->getId() . " missing file on disk! (expected at " . $filePath . ")");
+            $io->writeln($entity::class . "\\" . $entity->getId() . " missing file on disk! (expected at " . $filePath . ")");
         }
     }
 }

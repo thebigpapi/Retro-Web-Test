@@ -51,16 +51,15 @@ class FileHasherCommand extends Command
     private function checkBioses(EntityRepository $entityRepository, SymfonyStyle $io) {
         $bioses = $entityRepository->findAll();
         $this->total = count($bioses);
-        $current = 0;
+        $current = -1;
         $step = 0;
 
         foreach ($bioses as $bios) {
             $this->checkBios($bios, $io, $this->entityManagerInterface);
             $step += 1;
-            if ($step == 500) {
-                $current += $step;
-                $io->writeln((int)(($current / $this->total) * 100) . "%");
-                $step = 0;
+            if((int)(($step / $this->total) * 100) > $current){
+                $current += 1;
+                $io->write($current . "%...");
             }
             if ($this->filesToUpdate > $this::FILES_TO_UPDATE_TRESHOLD) {
                 $this->filesToUpdate = 0;

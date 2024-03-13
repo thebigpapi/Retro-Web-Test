@@ -168,6 +168,8 @@ class MotherboardCrudController extends AbstractCrudController
         yield TextField::new('isImages','Images')
             ->setCustomOption('imageTypes', true)
             ->onlyOnIndex();
+        yield IntegerField::new('score','Score')
+            ->onlyOnIndex();
         yield DateField::new('lastEdited', 'Last edit')
             ->hideOnForm();
         // edit items
@@ -491,6 +493,7 @@ class MotherboardCrudController extends AbstractCrudController
     {
         $entityInstance->updateLastEdited();
         $entityInstance->updateHashAll();
+        $entityInstance->updateScore();
         parent::updateEntity($entityManager, $entityInstance);
     }
 }

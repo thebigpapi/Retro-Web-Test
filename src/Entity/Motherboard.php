@@ -122,6 +122,10 @@ class Motherboard
     #[ORM\OneToMany(mappedBy: 'motherboard', targetEntity: MotherboardMemoryConnector::class, orphanRemoval: true, cascade: ['persist'])]
     #[Assert\Valid()]
     private Collection $motherboardMemoryConnectors;
+
+    #[ORM\Column(nullable: true)]
+    private ?int $score = null;
+
     public function __construct()
     {
         $this->motherboardMaxRams = new ArrayCollection();
@@ -990,16 +994,30 @@ class Motherboard
             $item->updateHash();
         }
     }
+
+    public function getScore(): ?int
+    {
+        return $this->score;
+    }
+
+    public function setScore(?int $score): static
+    {
+        $this->score = $score;
+
+        return $this;
+    }
+
     public function getExpansionChipsScore(): int
     {
         if(!$this->expansionChips->isEmpty()){
             foreach($this->expansionChips as $chip)
                 if($chip->getType()->getId() != 30)
-                    return 10;
-            return 5;
+                    return 5;
+            return 2;
         }
         return 0;
     }
+
     public function getImagesScore(): int
     {
         $score = 0;
@@ -1008,15 +1026,16 @@ class Motherboard
             foreach($this->images as $image){
                 $typeId = $image->getMotherboardImageType()?->getId();
                 if($typeId == 2)
-                    $types[$typeId] = 10;
+                    $types[$typeId] = 7;
                 else
-                    $types[$typeId] = 5;
+                    $types[$typeId] = 2;
             }
             foreach($types as $t)
                 $score += $t;
         }
         return $score;
     }
+
     public function getBiosScore(): int
     {
         $score = 0;
@@ -1025,65 +1044,69 @@ class Motherboard
             foreach($this->motherboardBios as $bios){
                 $max = 0;
                 if($bios->getManufacturer() !== null)
-                    $max += 5;
+                    $max += 3;
                 if($bios->getPostString() != "")
-                    $max += 10;
+                    $max += 6;
                 if($bios->getFileName() != "")
-                    $max += 10;
+                    $max += 6;
                 if($score < $max)
                     $score = $max;
-                if($score == 25)
+                if($score == 15)
                     return $score;
             }
         }
         return $score;
     }
-    public function getMotherboardScore(): float
+
+    public function calculateScore(): int
     {
         $score = array();
         $final = 0;
         if(isset($this->manufacturer))
-            $score['manufacturer'] = 10;
+            $score['manufacturer'] = 5;
         if(isset($this->formFactor))
-            $score['formFactor'] = 10;
+            $score['formFactor'] = 4;
         if(isset($this->dimensions))
             $score['dimensions'] = 1;
-        /*if(isset($this->note))
-            $score['note'] = 5;*/
         if(isset($this->chipset))
-            $score['chipset'] = 10;
-        if(!$this->knownIssues->isEmpty())
-            $score['knownIssues'] = 3;
+            $score['chipset'] = 5;
         if(!$this->cpuSockets->isEmpty())
-            $score['cpuSockets'] = 10;
+            $score['cpuSockets'] = 5;
         if(!$this->processorPlatformTypes->isEmpty())
-            $score['cpuFamilies'] = 10;
+            $score['cpuFamilies'] = 5;
         if(!$this->cpuSpeed->isEmpty())
-            $score['fsb'] = 10;
+            $score['fsb'] = 4;
         if(!$this->dramType->isEmpty())
-            $score['ramTypes'] = 10;
+            $score['ramTypes'] = 5;
         if(!$this->motherboardMaxRams->isEmpty())
-            $score['maxram'] = 10;
-        if(!$this->cacheSize->isEmpty())
-            $score['cache'] = 5;
+            $score['maxram'] = 4;
         if(!$this->motherboardIoPorts->isEmpty())
-            $score['ioPorts'] = 10;
+            $score['ioPorts'] = 5;
         if(!$this->motherboardExpansionSlots->isEmpty())
-            $score['expansionSlots'] = 10;
+            $score['expansionSlots'] = 5;
         if(!$this->psuConnectors->isEmpty())
-            $score['powerConnectors'] = 10;
-        $score['expansionChips'] = $this->getExpansionChipsScore(); // max:10
+            $score['powerConnectors'] = 5;
+        $score['expansionChips'] = $this->getExpansionChipsScore(); // max:5
         // attachments
         if(!$this->manuals->isEmpty())
-            $score['manuals'] = 20;
+            $score['manuals'] = 10;
         if(!$this->getAllDrivers()->isEmpty())
-            $score['drivers'] = 6;
-        $score['bios'] = $this->getBiosScore(); //max: 25
-        $score['images'] = $this->getImagesScore(); // max:30
-        dump($score);
+            $score['drivers'] = 2;
+        $score['bios'] = $this->getBiosScore(); //max: 15
+        $score['images'] = $this->getImagesScore(); // max:15
+        //dump($score);
         foreach($score as $s)
             $final += $s;
-        dump($final);
-        return number_format((float)($final * 10)/210, 2, '.', '');
+        //dump($final);
+        return $final;
     }
+
+    public function updateScore()
+    {
+        $newScore = $this->calculateScore();
+        $oldScore = $this->getScore();
+        if($newScore != $oldScore)
+            $this->setScore($newScore);
+    }
+
 }
