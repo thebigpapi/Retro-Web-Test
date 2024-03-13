@@ -37,9 +37,6 @@ class PSUConnector
     #[ORM\ManyToMany(targetEntity: StorageDevice::class, mappedBy: 'powerConnectors')]
     private Collection $storageDevices;
 
-    #[ORM\ManyToMany(targetEntity: ExpansionCard::class, mappedBy: 'powerConnectors')]
-    private Collection $expansionCards;
-
     #[ORM\OneToMany(mappedBy: 'powerConnector', targetEntity: ExpansionCardPowerConnector::class)]
     private Collection $expansionCardPowerConnectors;
 
@@ -49,7 +46,6 @@ class PSUConnector
         $this->entityDocumentations = new ArrayCollection();
         $this->entityImages = new ArrayCollection();
         $this->storageDevices = new ArrayCollection();
-        $this->expansionCards = new ArrayCollection();
         $this->expansionCardPowerConnectors = new ArrayCollection();
     }
     public function __toString(): string
@@ -186,34 +182,6 @@ class PSUConnector
     {
         if ($this->storageDevices->removeElement($storageDevice)) {
             $storageDevice->removePowerConnector($this);
-        }
-
-        return $this;
-    }
-        /**
-     * @return Collection|ExpansionCard[]
-     */
-    public function getExpansionCards(): Collection
-    {
-        return $this->expansionCards;
-    }
-    public function addExpansionCard(ExpansionCard $expansionCard): self
-    {
-        if (!$this->expansionCards->contains($expansionCard)) {
-            $this->expansionCards[] = $expansionCard;
-            $expansionCard->addPowerConnector($this);
-        }
-
-        return $this;
-    }
-    public function removeExpansionCard(ExpansionCard $expansionCard): self
-    {
-        if ($this->expansionCards->contains($expansionCard)) {
-            $this->expansionCards->removeElement($expansionCard);
-            // set the owning side to null (unless already changed)
-            if ($expansionCard->getExpansionChips()->contains($this)) {
-                $expansionCard->removePowerConnector($this);
-            }
         }
 
         return $this;

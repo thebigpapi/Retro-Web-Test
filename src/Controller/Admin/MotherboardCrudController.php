@@ -137,6 +137,7 @@ class MotherboardCrudController extends AbstractCrudController
             ->add('knownIssues')
             ->add('psuConnectors')
             ->add('dimensions')
+            ->add('score')
             ->add('lastEdited');
     }
     public function configureFields(string $pageName): iterable
