@@ -69,6 +69,34 @@
 						{% else %}
 						<div>Unknown</div>
 						{% endif %}
+						<!-- Expansion Slot preset -->
+						{% if expansioncard.getExpansionSlotInterfaceSignal() is not empty %}
+						<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/pci_slot_smol.svg')) }}" alt="interface" width="24" height="24">Interface</div>
+						<div><a href="{{ path('expansion_slot_show', {id: expansioncard.getExpansionSlotInterfaceSignal().getId()}) }}"
+							>{{ expansioncard.getExpansionSlotInterfaceSignal().getName() }}</a>
+						</div>
+						{% endif %}
+						<!-- Expansion Slot connector -->
+						{% if expansioncard.getExpansionSlotInterface() is not empty %}
+						<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/exp_slot.svg')) }}" alt="connector" width="24" height="24">Slot connector</div>
+						<div>{{ expansioncard.getExpansionSlotInterface().getName() }}</a></div>
+						{% endif %}
+						<!-- Expansion Slot signal -->
+						{% if expansioncard.getExpansionSlotSignals() is not empty %}
+						<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/signal.svg')) }}" alt="signal" width="24" height="24">Slot signals</div>
+						<div class="tag-container">
+							{% for slotSignal in expansioncard.getExpansionSlotSignals()|sort((a, b) => a.getName() <=> b.getName()) %}
+								<span class="text-block">{{ slotSignal.getName() }}</span>
+							{% endfor %}
+						</div>
+						{% endif %}
+						<!-- Slot height-->
+						{% if expansioncard.getSlotCount() is not null %}
+						<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/card.svg')) }}" alt="dim" width="24" height="24">Slot height</div>
+						<div>{{ expansioncard.getSlotCount() }}</div>
+						{% endif %}
+					</div>
+					<div class="quick-spec-table">
 						<!-- Device ID -->
 						<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/tag.svg')) }}" alt="date" width="24" height="24">PCI ID</div>
 						<div class="tag-container">
@@ -86,37 +114,9 @@
 							<div>None</div>
 						{% endif %}
 						</div>
-						<!-- Expansion Slot -->
-						{% if expansioncard.getExpansionSlotInterfaceSignal() is not empty %}
-						<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/pci_slot_smol.svg')) }}" alt="interface" width="24" height="24">Interface</div>
-						<div><a href="{{ path('expansion_slot_show', {id: expansioncard.getExpansionSlotInterfaceSignal().getId()}) }}"
-							>{{ expansioncard.getExpansionSlotInterfaceSignal().getName() }}</a>
-						</div>
-						{% endif %}
-						{% if expansioncard.getExpansionSlotInterface() is not empty %}
-						<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/exp_slot.svg')) }}" alt="connector" width="24" height="24">Slot connector</div>
-						<div>{{ expansioncard.getExpansionSlotInterface().getName() }}</a></div>
-						{% endif %}
-						{% if expansioncard.getExpansionSlotSignals() is not empty %}
-						<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/signal.svg')) }}" alt="signal" width="24" height="24">Slot signals</div>
-						<div class="tag-container">
-							{% for slotSignal in expansioncard.getExpansionSlotSignals()|sort((a, b) => a.getName() <=> b.getName()) %}
-								<span class="text-block">{{ slotSignal.getName() }}</span>
-							{% endfor %}
-						</div>
-						{% endif %}
-						<!-- Expansion Chips -->
-						{% if expansioncard.getExpansionChips() is not empty %}
-							{% for type in expansionchiptype %}
-								{% for chip in expansioncard.getExpansionChips()|filter(a => a.getType().getName() == type.getName())%}
-									{% if loop.first %}<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/chip.svg')) }}" alt="chip" width="24" height="24">{{chip.getType().getName()}} chips</div><div class="tag-container">{% endif %}
-									<a href="{{ path('expansion_chip_show', {id: chip.getId()}) }}"><span class="text-block">{{ chip.getFullName() }}</span></a>
-									{% if loop.index == expansioncard.getExpansionChips()|filter(a => a.getType().getName() == type.getName())|length %}</div>{% endif %}
-								{% endfor %}
-							{% endfor %}
-						{% endif %}
-					</div>
-					<div class="quick-spec-table">
+						<!-- FCC ID -->
+						<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/factory.svg')) }}" alt="fcc" width="24" height="24">FCC ID</div>
+						<div>{{ expansioncard.getFccId() ?: 'unknown' }}</div>
 						<!-- Supported RAM types -->
 						{% if expansioncard.getDramType() is not empty %}
 						<div class="quick-spec-head">
@@ -153,17 +153,14 @@
 							{% endfor %}
 						</div>
 						{% endif %}
-						<!-- Slot height-->
-						{% if expansioncard.getSlotCount() is not null %}
-						<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/card.svg')) }}" alt="dim" width="24" height="24">Slot height</div>
-						<div>{{ expansioncard.getSlotCount() }}</div>
-						{% endif %}
 						<!-- Dimensions -->
-						{% if expansioncard.getWidth() is not null or expansioncard.getLength() is not null or expansioncard.getHeight() is not null %}
 						<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/dimension.svg')) }}" alt="dim" width="24" height="24">Dimensions</div>
-						<div>{{ expansioncard.getWidth() ? expansioncard.getWidth() ~ " mm (width)" }}
-						{{ expansioncard.getLength() ? (expansioncard.getWidth() ? " x ") ~ expansioncard.getLength() ~ "mm (length)" }}
-						{{ expansioncard.getHeight() ? (expansioncard.getLength() or expansioncard.getWidth() ? " x ") ~ expansioncard.getHeight() ~ "mm (height)" }}</div>
+						{% if expansioncard.getWidth() is not null or expansioncard.getLength() is not null or expansioncard.getHeight() is not null %}
+							<div>{{ expansioncard.getWidth() ? expansioncard.getWidth() ~ " mm (width)" }}
+							{{ expansioncard.getLength() ? (expansioncard.getWidth() ? " x ") ~ expansioncard.getLength() ~ "mm (length)" }}
+							{{ expansioncard.getHeight() ? (expansioncard.getLength() or expansioncard.getWidth() ? " x ") ~ expansioncard.getHeight() ~ "mm (height)" }}</div>
+						{% else %}
+						<div>unknown</div>
 						{% endif %}
 					</div>
 				</div>
@@ -209,11 +206,27 @@
 				<div id="index-datetime"><div class="div-datetime">Last updated <span class="perk-date">{{ expansioncard.getLastEdited()|date("Y-m-d\\TH:i:s", "GMT") }}Z</span></div></div>
 			</div>
 			<div class="show-expchips" id="sh-specs">
+				<!-- Expansion chips -->
+				{% if expansioncard.getExpansionChips() is not empty %}
+				<div class="quick-spec-table">
+					{% for type in expansionchiptype %}
+						{% for chip in expansioncard.getExpansionChips()|filter(a => a.getType().getName() == type.getName())%}
+							{% if loop.first %}<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/chip.svg')) }}" alt="chip" width="24" height="24">{{chip.getType().getName()}} chips</div><div class="tag-container">{% endif %}
+							<a href="{{ path('expansion_chip_show', {id: chip.getId()}) }}"><span class="text-block">{{ chip.getFullName() }}</span></a>
+							{% if loop.index == expansioncard.getExpansionChips()|filter(a => a.getType().getName() == type.getName())|length %}</div>{% endif %}
+						{% endfor %}
+					{% endfor %}
+				</div>
+				{% else %}
+					<div>No chips</div>
+				{% endif %}
+				<!-- Card specs -->
 				{% if expansioncard.getMiscSpecs() is not empty %}
 					{% include 'macros/specs.html.twig' with {'entity':expansioncard} %}
 				{% else %}
-					<div>No additional specs.</div>
+					<div>No card specs</div>
 				{% endif %}
+				<!-- Expansion chips specs -->
 				{% if expansioncard.getExpansionChips()|filter(a => a.getMiscSpecs() is not empty) is not empty %}
 					<div style="padding: 6px 0px;"><b style="font-size:20px;">Chip specifications </b><small>(click to expand)</small></div>
 					{% for chip in expansioncard.getExpansionChips()|filter(a => a.getMiscSpecs() is not empty)%}
