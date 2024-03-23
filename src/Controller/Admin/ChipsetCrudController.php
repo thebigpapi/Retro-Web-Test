@@ -87,6 +87,7 @@ class ChipsetCrudController extends AbstractCrudController
             ->add(Crud::PAGE_EDIT, $eview)
             ->add(Crud::PAGE_DETAIL, $elogs)
             ->add(Crud::PAGE_DETAIL, $eview)
+            ->remove(Crud::PAGE_INDEX, Action::BATCH_DELETE)
             ->setPermission(Action::DELETE, 'ROLE_ADMIN');
     }
     public function configureCrud(Crud $crud): Crud

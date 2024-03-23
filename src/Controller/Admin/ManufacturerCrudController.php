@@ -19,12 +19,23 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CodeEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class ManufacturerCrudController extends AbstractCrudController
 {
     public static function getEntityFqcn(): string
     {
         return Manufacturer::class;
+    }
+    protected function getRedirectResponseAfterSave(AdminContext $context, string $action): RedirectResponse
+    {
+        $submitButtonName = $context->getRequest()->request->all()['ea']['newForm']['btn'];
+
+        if (Action::SAVE_AND_RETURN === $submitButtonName) {
+            $entityId = $context->getEntity()->getInstance()->getId();
+            return $this->redirectToRoute('manufacturer_show', array('id' => $entityId));
+        }
+        return parent::getRedirectResponseAfterSave($context, $action);
     }
     public function configureActions(Actions $actions): Actions
     {
@@ -41,6 +52,7 @@ class ManufacturerCrudController extends AbstractCrudController
             ->add(Crud::PAGE_EDIT, $eview)
             ->add(Crud::PAGE_DETAIL, $elogs)
             ->add(Crud::PAGE_DETAIL, $eview)
+            ->remove(Crud::PAGE_INDEX, Action::BATCH_DELETE)
             ->setPermission(Action::DELETE, 'ROLE_ADMIN');
     }
     public function configureCrud(Crud $crud): Crud

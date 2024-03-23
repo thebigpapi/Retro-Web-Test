@@ -13,6 +13,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CodeEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
@@ -43,9 +44,8 @@ class IoPortInterfaceSignalCrudController extends AbstractCrudController
             ->add(Crud::PAGE_EDIT, $elogs)
             ->add(Crud::PAGE_INDEX, $view)
             ->add(Crud::PAGE_EDIT, $eview)
-            ->setPermission(Action::DELETE, 'ROLE_ADMIN')
-            ->setPermission(Action::EDIT, 'ROLE_ADMIN')
-            ->setPermission(Action::INDEX, 'ROLE_ADMIN');
+            ->remove(Crud::PAGE_INDEX, Action::BATCH_DELETE)
+            ->setPermission(Action::DELETE, 'ROLE_ADMIN');
     }
     public function configureCrud(Crud $crud): Crud
     {
@@ -64,13 +64,16 @@ class IoPortInterfaceSignalCrudController extends AbstractCrudController
     }
     public function configureFields(string $pageName): iterable
     {
+        yield IdField::new('id')
+            ->onlyOnIndex();
         yield TextField::new('name', 'Name')
             ->setColumns('col-sm-6 col-lg-6 col-xxl-4');
-        yield CollectionField::new('signals','Electrical interface')
+        yield AssociationField::new('interface','Connector')
+            ->setFormTypeOption('placeholder' , 'Select a connector...')
+            ->setColumns('col-sm-6 col-lg-6 col-xxl-4');
+        yield CollectionField::new('signals','Electrical interfaces')
             ->setEntryType(IoPortSignalType::class)
             ->renderExpanded()
-            ->setColumns('col-sm-6 col-lg-6 col-xxl-4');
-        yield AssociationField::new('interface','Mechanical interface')
             ->setColumns('col-sm-6 col-lg-6 col-xxl-4');
         yield CodeEditorField::new('description')
             ->setLanguage('markdown')

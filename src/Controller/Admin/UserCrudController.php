@@ -35,9 +35,10 @@ class UserCrudController extends AbstractCrudController
             ->add(Crud::PAGE_INDEX, $logs)
             ->add(Crud::PAGE_EDIT, $elogs)
             ->add(Crud::PAGE_INDEX, $reset)
-            ->setPermission(Action::DELETE, 'ROLE_ADMIN')
-            ->setPermission(Action::EDIT, 'ROLE_ADMIN')
-            ->setPermission(Action::INDEX, 'ROLE_ADMIN');
+            ->remove(Crud::PAGE_INDEX, Action::BATCH_DELETE)
+            ->setPermission(Action::DELETE, 'ROLE_SUPER_ADMIN')
+            ->setPermission(Action::EDIT, 'ROLE_SUPER_ADMIN')
+            ->setPermission(Action::INDEX, 'ROLE_SUPER_ADMIN');
     }
     public function configureCrud(Crud $crud): Crud
     {

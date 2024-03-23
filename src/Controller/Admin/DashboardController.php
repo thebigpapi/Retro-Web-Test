@@ -167,11 +167,11 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::subMenu('Connectors', 'rs232.svg')->setSubItems([
             MenuItem::linkToCrud('Power connectors', 'power.svg', PSUConnector::class),
             MenuItem::linkToCrud('I/O ports', 'rs232.svg', IoPortInterfaceSignal::class),
-            MenuItem::linkToCrud('I/O port connectors', 'connector.svg', IoPortInterface::class),
-            MenuItem::linkToCrud('I/O port signals', 'rs232_electric.svg', IoPortSignal::class),
+            MenuItem::linkToCrud('I/O port connectors', 'connector.svg', IoPortInterface::class)->setPermission('ROLE_ADMIN'),
+            MenuItem::linkToCrud('I/O port signals', 'rs232_electric.svg', IoPortSignal::class)->setPermission('ROLE_ADMIN'),
             MenuItem::linkToCrud('Expansion slots', 'exp_slot.svg', ExpansionSlotInterfaceSignal::class),
-            MenuItem::linkToCrud('Expansion slot connectors', 'pci_slot_smol.svg', ExpansionSlotInterface::class),
-            MenuItem::linkToCrud('Expansion slot signals', 'pci_slot_electric.svg', ExpansionSlotSignal::class),
+            MenuItem::linkToCrud('Expansion slot connectors', 'pci_slot_smol.svg', ExpansionSlotInterface::class)->setPermission('ROLE_ADMIN'),
+            MenuItem::linkToCrud('Expansion slot signals', 'pci_slot_electric.svg', ExpansionSlotSignal::class)->setPermission('ROLE_ADMIN'),
         ]);
         yield MenuItem::subMenu('Memory related', 'ram.svg')->setSubItems([
             //MenuItem::linkToCrud('Memory connectors', 'ram.svg', MemoryConnector::class),
