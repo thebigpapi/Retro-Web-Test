@@ -1,16 +1,16 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-	{{ cpu.getNameWithManufacturer() }}
+	{{ cpu.getFullName() }}
 {% endblock %}
 {% block metatags %}
-	<meta name="description" content="CPU:{{ cpu.getNameWithManufacturer() }}">
+	<meta name="description" content="CPU:{{ cpu.getFullName() }}">
 {% endblock %}
 
 {% block opengraph %}
 	{% apply spaceless %}
-	<meta property="og:title" content="{{ cpu.getNameWithManufacturer() }}">
-	<meta property="og:description" content="Get CPU info and images for {{ cpu.getNameWithManufacturer() }}!">
+	<meta property="og:title" content="{{ cpu.getFullName() }}">
+	<meta property="og:description" content="Get CPU info and images for {{ cpu.getFullName() }}!">
 	{% if cpu.getImages() is not empty %}
 		{% for image in cpu.getImages()|sort((a, b) => a.getFileName() <=> b.getFileName())|slice(0, 1) %}
 			<meta name="twitter:image" content="{{ vich_uploader_asset(image, 'imageFile')}}">
@@ -23,13 +23,34 @@
 {% block extra_javascripts %}
 	<script src="/build/js/show.js" defer></script>
 {% endblock %}
+{% block subnav %}
+<li class="flex navbar-li">
+    <div class="flex items-center">
+        <svg class="navbar-svg" viewBox="0 0 24 44" preserveAspectRatio="none" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M.293 0l22 22-22 22h1.414l22-22-22-22H.293z"></path>
+        </svg>
+        <a class="ml-4" href="{{ path('cpusearch') }}">
+			<img src="{{ absolute_url(asset('build/icons/486dx.svg')) }}" width="24" height="24" alt="cpu">
+            <code class="text-pink-500">CPUs</code>
+        </a>
+    </div>
+</li>
+<li class="flex">
+    <div class="flex">
+        <svg class="navbar-svg" viewBox="0 0 24 44" preserveAspectRatio="none" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M.293 0l22 22-22 22h1.414l22-22-22-22H.293z"></path>
+        </svg>
+        <code class="navbar-code">ID: {{cpu.getId()}}</code>
+    </div>
+</li>
+{% endblock %}
 
 {% block body %}
 <!-- MANUF./NAME/PART NO. -->
-<div class="title">{{ cpu.getNameWithManufacturer() }}</div>
+<div class="title">{{ cpu.getFullName() }}</div>
 <div class="main-strip">
 	<div class="internal-container">
-		{% include 'macros/navbar.html.twig' with {'entity': cpu, 'entityName': 'Processor', 'name': 'CPU'} %}
+		{% include 'macros/navbar.html.twig' with {'entity': cpu, 'entityName': 'Processor', 'name': 'CPU', 'role': 'ROLE_USER'} %}
 		<div class="internal-content">
 			<div class="quick-spec-split">
 				<div class="quick-spec-table">
@@ -201,16 +222,33 @@
 					{% else %}
 						<div>Unknown</div>
 					{% endif %}
+					<!-- CPUID -->
+
+					{% if cpu.getPlatform() is not empty %}
+						{% if cpu.getPlatform().getCpuid() is not empty %}
+						<div class="quick-spec-head">
+							<img src="{{ absolute_url(asset('build/icons/tag.svg')) }}" alt="tag" width="24" height="24">CPUID
+						</div>
+						<div class="tag-container">
+								{% for id in cpu.getPlatform().getCpuid()|sort((a, b) => a.name <=> b.name) %}
+									<span class="text-block">{{ id.getValue()}}</span>
+								{% endfor %}
+						</div>
+						{% endif %}
+					{% endif %}
+					<!-- TDP -->
 				</div>
 			</div>
 			{% include 'macros/aliases.html.twig' with {'entity':cpu.getChipAliases(), 'msg': 'Other part numbers/S-Specs:'} %}
+			<!-- MANUALS -->
+			{% include 'macros/manuals.html.twig' with {'entity': cpu.getAllDocs(), 'entity_label':'', 'audit_entity':'App-Entity-EntityDocumentation'} %}
 		</div>
 	</div>
 	<!-- IMAGES -->
 	<div class="show-images" id="sh-images">
 	{% if cpu.getImages() is not empty %}
 		{% set lpindex = 0 %}
-		{% for image in cpu.getImages()|sort((a, b) => a.getFileName() <=> b.getFileName()) %}
+		{% for image in cpu.getImages()|sort((a, b) => a.getFileName() <=> b.getFileName())|sort((a, b) => a.sort <=> b.sort) %}
 			{% set lpindex = lpindex + 1 %}
 			{% include 'macros/images.html.twig' with {'type':'expansionchip', 'entity': image, 'index': lpindex, 'length': cpu.getImages()|length} %}
 		{% endfor %}

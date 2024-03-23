@@ -2,11 +2,9 @@
 
 namespace App\Controller\Admin;
 
+use App\Controller\Admin\Type\LargeFile\ExpansionChipCrudType;
 use App\Entity\LargeFile;
-use App\Entity\LargeFileMediaTypeFlag;
-use App\Form\Type\LanguageType;
 use App\Form\Type\OsFlagType;
-use App\Form\Type\LargeFileMediaTypeFlagType;
 use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
@@ -18,9 +16,9 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ArrayField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CodeEditorField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
@@ -36,6 +34,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Security\Permission;
 use EasyCorp\Bundle\EasyAdminBundle\Config\KeyValueStore;
 use EasyCorp\Bundle\EasyAdminBundle\Collection\FieldCollection;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Response;
 
 class LargeFileCrudController extends AbstractCrudController
 {
@@ -78,6 +77,7 @@ class LargeFileCrudController extends AbstractCrudController
             ->add(Crud::PAGE_EDIT, $elogs)
             ->add(Crud::PAGE_INDEX, $view)
             ->add(Crud::PAGE_EDIT, $eview)
+            ->remove(Crud::PAGE_INDEX, Action::BATCH_DELETE)
             ->setPermission(Action::DELETE, 'ROLE_ADMIN');
     }
     public function configureCrud(Crud $crud): Crud
@@ -96,35 +96,28 @@ class LargeFileCrudController extends AbstractCrudController
         return parent::configureFilters($filters)
             ->add('name')
             ->add('fileVersion')
-            ->add('file_name')
-            ->add('subdirectory')
+            ->add('file_name',)
+            ->add('osFlags')
             ->add('lastEdited');
     }
     public function configureFields(string $pageName): iterable
     {
+        yield FormField::addTab('Basic Data')
+            ->setIcon('fa fa-info')
+            ->onlyOnForms();
         yield IdField::new('id')->onlyOnIndex();
         yield TextField::new('name', 'Name')
             ->setColumns(4);
         yield TextField::new('fileVersion', 'Version')
             ->setColumns(4);
-        yield ChoiceField::new('subdirectory', 'Type')
-            ->setChoices([
-                'apps' => 'apps',
-                'drivers' => 'drivers',
-            ])
-            ->setFormTypeOption('placeholder', 'Type to select a type ...')
-            ->setFormTypeOption('autocomplete', 'off')
-            ->setColumns(4)
-            ->onlyOnForms();
-        yield TextField::new('subdirectory', 'Type')
+        yield TextField::new('getSizeFormatted', 'Size')
             ->onlyOnIndex();
-        yield AssociationField::new('dumpQualityFlag','Quality')
-            ->setFormTypeOption('placeholder', 'Type to select a quality ...')
-            ->setColumns(4)
-            ->onlyOnForms();
         yield DateField::new('release_date', 'Release Date')
             ->setFormTypeOption('attr', ['style'=>'width:100%;'])
-            ->setColumns(2);
+            ->setColumns(2)
+            ->onlyOnForms();
+        yield TextField::new('getReleaseDateString', 'Release Date')
+            ->onlyOnIndex();
         yield ChoiceField::new('datePrecision', 'Display date format (optional)')
             ->setChoices([
                 'Year, month and day' => 'd',
@@ -139,18 +132,6 @@ class LargeFileCrudController extends AbstractCrudController
             ->setFormTypeOption('allow_delete', false)
             ->setColumns(4)
             ->onlyOnForms();
-        yield CollectionField::new('languages', 'Language')
-            ->setEntryType(LanguageType::class)
-            ->setColumns(4)
-            ->renderExpanded()
-            ->onlyOnForms();
-        yield CollectionField::new('mediaTypeFlags', 'Media type flags')
-            ->setEntryType(LargeFileMediaTypeFlagType::class)
-            ->setColumns(4)
-            ->renderExpanded()
-            ->onlyOnForms();
-        yield ArrayField::new('getMediaTypeFlags', 'Media type flags')
-            ->onlyOnIndex();
         yield ArrayField::new('getOsFlags', 'OS flags')
             ->onlyOnIndex();
         yield CollectionField::new('osFlags', 'OS flags')
@@ -161,8 +142,14 @@ class LargeFileCrudController extends AbstractCrudController
         yield CodeEditorField::new('note')
             ->setLanguage('markdown')
             ->onlyOnForms();
-        yield DateField::new('lastEdited')
-            ->hideOnForm();
+        yield FormField::addTab('Associations')
+            ->setIcon('fa fa-info')
+            ->onlyOnForms();
+        yield CollectionField::new('expansionchips', 'Expansion chips')
+            ->useEntryCrudForm(ExpansionChipCrudType::class)
+            ->renderExpanded()
+            ->setColumns('col-sm-12 col-lg-8 col-xxl-6')
+            ->onlyOnForms();
     }
     public function viewDriver(AdminContext $context)
     {
@@ -175,6 +162,10 @@ class LargeFileCrudController extends AbstractCrudController
         $entity = str_replace("\\", "-",$context->getEntity()->getFqcn());
         return $this->redirectToRoute('dh_auditor_show_entity_history', array('id' => $entityId, 'entity' => $entity));
     }
+
+    /**
+     * @return KeyValueStore|Response
+     */
     public function new(AdminContext $context)
     {
         $event = new BeforeCrudActionEvent($context);
@@ -243,23 +234,12 @@ class LargeFileCrudController extends AbstractCrudController
         $driver = new LargeFile();
         $driver->setName($old->getName());
         $driver->setFileVersion($old->getFileVersion());
-        $driver->setSubdirectory($old->getSubdirectory());
-        $driver->setDumpQualityFlag($old->getDumpQualityFlag());
         $driver->setReleaseDate($old->getReleaseDate());
         $driver->setDatePrecision($old->getDatePrecision());
         $driver->setNote($old->getNote());
         $driver->setLastEdited(new \DateTime('now'));
-        foreach ($old->getLanguages() as $lang){
-            $driver->addLanguage($lang);
-        }
         foreach ($old->getOsFlags() as $flag){
             $driver->addOsFlag($flag);
-        }
-        foreach ($old->getMediaTypeFlags() as $media){
-            $newMedia = new LargeFileMediaTypeFlag();
-            $newMedia->setCount($media->getCount());
-            $newMedia->setMediaTypeFlag($media->getMediaTypeFlag());
-            $driver->addMediaTypeFlag($newMedia);
         }
         return $driver;
     }

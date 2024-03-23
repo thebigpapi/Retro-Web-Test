@@ -3,13 +3,26 @@
 namespace App\Controller;
 
 use App\Entity\CpuSocket;
+use App\Entity\ExpansionCardType;
+use App\Entity\IoPortInterface;
+use App\Entity\IoPortInterfaceSignal;
+use App\Entity\ExpansionSlotInterfaceSignal;
+use App\Entity\IoPortSignal;
 use App\Entity\ProcessorPlatformType;
 use App\Repository\CdDriveRepository;
 use App\Repository\ChipsetRepository;
 use App\Repository\CpuSocketRepository;
+use App\Repository\ExpansionCardRepository;
+use App\Repository\ExpansionCardTypeRepository;
 use App\Repository\ExpansionChipRepository;
+use App\Repository\ExpansionChipTypeRepository;
 use App\Repository\FloppyDriveRepository;
 use App\Repository\HardDriveRepository;
+use App\Repository\IoPortInterfaceRepository;
+use App\Repository\IoPortInterfaceSignalRepository;
+use App\Repository\ExpansionSlotInterfaceSignalRepository;
+use App\Repository\IoPortSignalRepository;
+use App\Repository\ManufacturerRepository;
 use App\Repository\MotherboardRepository;
 use App\Repository\ProcessorRepository;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
@@ -17,11 +30,13 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
+use Exception;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
@@ -82,7 +97,7 @@ class AdminController extends AbstractDashboardController
         $chips = array();
 
         foreach($chipsetRepository->findById($chipset)[0]->getExpansionChips() as $chip){
-            $chips[$chip->getId()] = $chip->getNameWithManufacturer();
+            $chips[$chip->getId()] = $chip->getFullName();
         }
         return new JsonResponse($chips);
     }
@@ -90,13 +105,13 @@ class AdminController extends AbstractDashboardController
     public function filterChips(Request $request, ExpansionChipRepository $expansionChipRepository): JsonResponse
     {
         $chips = json_decode($request->getContent());
-        $newchips = array();
+        $deletechips = array();
         foreach($chips as $chip){
             $chipEntity = $expansionChipRepository->findById($chip)[0];
-            if($chipEntity->getExpansionChipType()->getId() != 30)
-                $newchips[$chip] = $chipEntity->getNameWithManufacturer();
+            if($chipEntity->getExpansionChipType()->getId() == 30)
+                array_push($deletechips, $chip);
         }
-        return new JsonResponse($newchips);
+        return new JsonResponse($deletechips);
     }
     #[Route('/admin/updatechipset', name:'update_chipsets_cached_name')]
     public function updateChipsetsCachedName(): Response
@@ -145,6 +160,126 @@ class AdminController extends AbstractDashboardController
             'username' => $user->getUsername(),
             'password' => $password,
         ]);
+    }
+
+    #[Route('/dashboard/getexpansioncardtemplate/', name:'get_expansion_card_template', methods:['GET'])]
+    public function getExpansioncardTemplate(Request $request, ExpansionCardTypeRepository $expansionCardTypeRepository): JsonResponse
+    {
+        $templates = [];
+        $filtersJson = $request->query->get('ids');
+        $ids = json_decode($filtersJson ?? "", true);
+        if (!$ids) {
+            throw new Exception("Missing or wrong expansion card type id list");
+        }
+        $templates = array_map(fn (ExpansionCardType $expansionCardType) => $expansionCardType->getTemplate(), $expansionCardTypeRepository->findBy(['id' => $ids]));
+        $templatesMerged = [];
+
+        foreach ($templates as $template) {
+            foreach ($template as $key => $value) {
+                $templatesMerged[$key] = $value;
+            }
+        }
+
+        return new JsonResponse($templatesMerged);
+    }
+
+    #[Route('/dashboard/getbiosmanufacturers', name:'get_bios_manufacturers', methods:['GET'])]
+    public function getBiosManufacturers(ManufacturerRepository $manufacturerRepository): JsonResponse
+    {
+        $list = array();
+        foreach($manufacturerRepository->findAllBiosManufacturer() as $item){
+            $list[$item->getName()] = $item->getId();
+        }
+        return new JsonResponse($list);
+    }
+
+    #[Route('/dashboard/getexpansionchiptemplate/{id}', name:'get_expansion_chip_template', methods:['GET'],  requirements: ['id' => '\d+'])]
+    public function getExpansionChipTemplate(int $id, ExpansionChipTypeRepository $expansionChipTypeRepository): JsonResponse
+    {
+        $chipType = $expansionChipTypeRepository->find($id);
+
+        return new JsonResponse($chipType->getTemplate());
+    }
+
+    #[Route('/dashboard/getioports/{id}', name:'get_ioports', methods:['GET'], requirements: ['id' => '\d+'])]
+    public function getIoPorts(Request $request, IoPortInterfaceSignalRepository $ioPortInterfaceSignalRepository, ?int $id = null): JsonResponse
+    {
+        $ioports = [];
+        if ($id) {
+            $ioport = $ioPortInterfaceSignalRepository->find($id);
+            if (!$ioport) {
+                return new Response('', 404);
+            }
+            $ioports = [$ioport];
+        } else {
+            $filtersJson = $request->query->get('filters');
+            if (!$filtersJson) {
+                $ioports =$ioPortInterfaceSignalRepository->findAll();
+            } else {
+                $filters = json_decode($filtersJson, true);
+                $ioports = $ioPortInterfaceSignalRepository->findBy($filters);
+            }
+        }
+
+        return new JsonResponse(array_map(fn (IoPortInterfaceSignal $ioport) => $ioport->jsonSerialize(), $ioports));
+    }
+
+    #[Route('/dashboard/getexpslots/{id}', name:'get_expslots', methods:['GET'], requirements: ['id' => '\d+'])]
+    public function getExpSlots(Request $request, ExpansionSlotInterfaceSignalRepository $expansionSlotInterfaceSignalRepository, ?int $id = null): JsonResponse
+    {
+        $expslots = [];
+        if ($id) {
+            $slot = $expansionSlotInterfaceSignalRepository->find($id);
+            if (!$slot) {
+                return new Response('', 404);
+            }
+            $expslots = [$slot];
+        } else {
+            $filtersJson = $request->query->get('filters');
+            if (!$filtersJson) {
+                $expslots =$expansionSlotInterfaceSignalRepository->findAll();
+            } else {
+                $filters = json_decode($filtersJson, true);
+                $expslots = $expansionSlotInterfaceSignalRepository->findBy($filters);
+            }
+        }
+
+        return new JsonResponse(array_map(fn (ExpansionSlotInterfaceSignal $slot) => $slot->jsonSerialize(), $expslots));
+    }
+
+    #[Route('/dashboard/getioportinterfaces/{id}', name:'get_ioportinterfaces', methods:['GET'], requirements: ['id' => '\d+'])]
+    public function getIoPortInterfaces(IoPortInterfaceRepository $ioPortInterfaceRepository, ?int $id = null): JsonResponse
+    {
+        $interfaces = [];
+        if ($id) {
+            $interface = $ioPortInterfaceRepository->find($id);
+            if (!$interface) {
+                return new Response('', 404);
+            }
+            $interfaces = [$interface];
+        } else {
+            $interfaces =$ioPortInterfaceRepository->findAll();
+        }
+
+        return new JsonResponse(array_map(fn (IoPortInterface $interface) => $interface->jsonSerialize(), $interfaces));
+    }
+
+    #[Route('/dashboard/getioportsignals/{id}', name:'get_ioportsignals', methods:['GET'], requirements: ['id' => '\d+'])]
+    public function getIoPortSignals(IoPortSignalRepository $ioPortSignalRepository, ?int $id = null): JsonResponse
+    {
+        $signals = [];
+        if ($id) {
+            $signal = $ioPortSignalRepository->find($id);
+            if (!$signal) {
+                return new Response('', 404);
+            }
+            $signals = [$signal];
+        } else {
+            $signals =$ioPortSignalRepository->findAll();
+            
+        }
+
+        return new JsonResponse(array_map(fn (IoPortSignal $signal) => $signal->jsonSerialize(), $signals));
     }
 
     /**
@@ -251,63 +386,374 @@ class AdminController extends AbstractDashboardController
             'form' => $form->createView(),
         ]);
     }
-    #[Route('/dashboard/creditorimages/{id}/{name}', name:'dashboard_creditor_images', requirements: ['id' => '\d+'])]
-    public function creditorImages(
+    #[Route('/dashboard/creditorimages/boards/{id}/{name}', name:'dashboard_creditor_images_boards', requirements: ['id' => '\d+'])]
+    public function creditorImagesBoards(
         int $id,
         string $name,
         MotherboardRepository $motherboardRepository,
-        ExpansionChipRepository $expansionChipRepository,
-        ProcessorRepository $processorRepository,
-        HardDriveRepository $hddRepository,
-        CdDriveRepository $cddRepository,
-        FloppyDriveRepository $fddRepository,
         PaginatorInterface $paginatorInterface,
+        AdminUrlGenerator $adminUrlGenerator,
         Request $request
     ): Response
     {
         $board_data = $motherboardRepository->findAllByCreditor($id);
-        $boards = $paginatorInterface->paginate(
-            $board_data,
-            $request->query->getInt('page', 1),
-            50
-        );
-        $chip_data = $expansionChipRepository->findAllByCreditor($id);
-        $chips = $paginatorInterface->paginate(
-            $chip_data,
-            $request->query->getInt('page', 1),
-            50
-        );
-        $cpu_data = $processorRepository->findAllByCreditor($id);
-        $cpus = $paginatorInterface->paginate(
-            $cpu_data,
-            $request->query->getInt('page', 1),
-            50
-        );
-        $hdd_data = $hddRepository->findAllByCreditor($id);
-        $hdds = $paginatorInterface->paginate(
-            $hdd_data,
-            $request->query->getInt('page', 1),
-            50
-        );
-        $cdd_data = $cddRepository->findAllByCreditor($id);
-        $cdds = $paginatorInterface->paginate(
-            $cdd_data,
-            $request->query->getInt('page', 1),
-            50
-        );
-        $fdd_data = $fddRepository->findAllByCreditor($id);
-        $fdds = $paginatorInterface->paginate(
-            $fdd_data,
-            $request->query->getInt('page', 1),
-            50
-        );
-        return $this->render('admin/creditor_images.html.twig', [
+        $boards = $paginatorInterface->paginate($board_data, $request->query->getInt('page', 1), 50);
+        $targetUrlCards = $adminUrlGenerator
+            ->setController(self::class)
+            ->setRoute('dashboard_creditor_images_cards', ['id' => $id, 'name' => $name])
+            ->setEntityId($id)
+            ->generateUrl();
+        $targetUrlChips = $adminUrlGenerator
+            ->setController(self::class)
+            ->setRoute('dashboard_creditor_images_chips', ['id' => $id, 'name' => $name])
+            ->setEntityId($id)
+            ->generateUrl();
+        $targetUrlCpus = $adminUrlGenerator
+            ->setController(self::class)
+            ->setRoute('dashboard_creditor_images_cpus', ['id' => $id, 'name' => $name])
+            ->setEntityId($id)
+            ->generateUrl();
+        $targetUrlHdds = $adminUrlGenerator
+            ->setController(self::class)
+            ->setRoute('dashboard_creditor_images_hdds', ['id' => $id, 'name' => $name])
+            ->setEntityId($id)
+            ->generateUrl();
+        $targetUrlCdds = $adminUrlGenerator
+            ->setController(self::class)
+            ->setRoute('dashboard_creditor_images_cdds', ['id' => $id, 'name' => $name])
+            ->setEntityId($id)
+            ->generateUrl();
+        $targetUrlFdds = $adminUrlGenerator
+            ->setController(self::class)
+            ->setRoute('dashboard_creditor_images_fdds', ['id' => $id, 'name' => $name])
+            ->setEntityId($id)
+            ->generateUrl();
+        return $this->render('admin/creditor/boards.html.twig', [
             'motherboards' => $boards,
+            'urlCards' => $targetUrlCards,
+            'urlChips' => $targetUrlChips,
+            'urlCpus' => $targetUrlCpus,
+            'urlHdds' => $targetUrlHdds,
+            'urlCdds' => $targetUrlCdds,
+            'urlFdds' => $targetUrlFdds,
+            'name' => $name,
+        ]);
+    }
+    #[Route('/dashboard/creditorimages/cards/{id}/{name}', name:'dashboard_creditor_images_cards', requirements: ['id' => '\d+'])]
+    public function creditorImagesCards(
+        int $id,
+        string $name,
+        ExpansionCardRepository $expansionCardRepository,
+        PaginatorInterface $paginatorInterface,
+        AdminUrlGenerator $adminUrlGenerator,
+        Request $request
+    ): Response
+    {
+        $card_data = $expansionCardRepository->findAllByCreditor($id);
+        $cards =  $paginatorInterface->paginate($card_data, $request->query->getInt('page', 1), 50);
+        $targetUrlBoards = $adminUrlGenerator
+            ->setController(self::class)
+            ->setRoute('dashboard_creditor_images_boards', ['id' => $id, 'name' => $name])
+            ->setEntityId($id)
+            ->generateUrl();
+        $targetUrlChips = $adminUrlGenerator
+            ->setController(self::class)
+            ->setRoute('dashboard_creditor_images_chips', ['id' => $id, 'name' => $name])
+            ->setEntityId($id)
+            ->generateUrl();
+        $targetUrlCpus = $adminUrlGenerator
+            ->setController(self::class)
+            ->setRoute('dashboard_creditor_images_cpus', ['id' => $id, 'name' => $name])
+            ->setEntityId($id)
+            ->generateUrl();
+        $targetUrlHdds = $adminUrlGenerator
+            ->setController(self::class)
+            ->setRoute('dashboard_creditor_images_hdds', ['id' => $id, 'name' => $name])
+            ->setEntityId($id)
+            ->generateUrl();
+        $targetUrlCdds = $adminUrlGenerator
+            ->setController(self::class)
+            ->setRoute('dashboard_creditor_images_cdds', ['id' => $id, 'name' => $name])
+            ->setEntityId($id)
+            ->generateUrl();
+        $targetUrlFdds = $adminUrlGenerator
+            ->setController(self::class)
+            ->setRoute('dashboard_creditor_images_fdds', ['id' => $id, 'name' => $name])
+            ->setEntityId($id)
+            ->generateUrl();
+        return $this->render('admin/creditor/cards.html.twig', [
+            'cards' => $cards,
+            'urlBoards' => $targetUrlBoards,
+            'urlChips' => $targetUrlChips,
+            'urlCpus' => $targetUrlCpus,
+            'urlHdds' => $targetUrlHdds,
+            'urlCdds' => $targetUrlCdds,
+            'urlFdds' => $targetUrlFdds,
+            'name' => $name,
+        ]);
+    }
+    #[Route('/dashboard/creditorimages/chips/{id}/{name}', name:'dashboard_creditor_images_chips', requirements: ['id' => '\d+'])]
+    public function creditorImagesChips(
+        int $id,
+        string $name,
+        ExpansionChipRepository $expansionChipRepository,
+        PaginatorInterface $paginatorInterface,
+        AdminUrlGenerator $adminUrlGenerator,
+        Request $request
+    ): Response
+    {
+        $chip_data = $expansionChipRepository->findAllByCreditor($id);
+        $chips = $paginatorInterface->paginate($chip_data, $request->query->getInt('page', 1), 50);
+        $targetUrlBoards = $adminUrlGenerator
+            ->setController(self::class)
+            ->setRoute('dashboard_creditor_images_boards', ['id' => $id, 'name' => $name])
+            ->setEntityId($id)
+            ->generateUrl();
+        $targetUrlCards = $adminUrlGenerator
+            ->setController(self::class)
+            ->setRoute('dashboard_creditor_images_cards', ['id' => $id, 'name' => $name])
+            ->setEntityId($id)
+            ->generateUrl();
+        $targetUrlCpus = $adminUrlGenerator
+            ->setController(self::class)
+            ->setRoute('dashboard_creditor_images_cpus', ['id' => $id, 'name' => $name])
+            ->setEntityId($id)
+            ->generateUrl();
+        $targetUrlHdds = $adminUrlGenerator
+            ->setController(self::class)
+            ->setRoute('dashboard_creditor_images_hdds', ['id' => $id, 'name' => $name])
+            ->setEntityId($id)
+            ->generateUrl();
+        $targetUrlCdds = $adminUrlGenerator
+            ->setController(self::class)
+            ->setRoute('dashboard_creditor_images_cdds', ['id' => $id, 'name' => $name])
+            ->setEntityId($id)
+            ->generateUrl();
+        $targetUrlFdds = $adminUrlGenerator
+            ->setController(self::class)
+            ->setRoute('dashboard_creditor_images_fdds', ['id' => $id, 'name' => $name])
+            ->setEntityId($id)
+            ->generateUrl();
+        return $this->render('admin/creditor/chips.html.twig', [
             'chips' => $chips,
+            'urlBoards' => $targetUrlBoards,
+            'urlCards' => $targetUrlCards,
+            'urlCpus' => $targetUrlCpus,
+            'urlHdds' => $targetUrlHdds,
+            'urlCdds' => $targetUrlCdds,
+            'urlFdds' => $targetUrlFdds,
+            'name' => $name,
+        ]);
+    }
+    #[Route('/dashboard/creditorimages/cpus/{id}/{name}', name:'dashboard_creditor_images_cpus', requirements: ['id' => '\d+'])]
+    public function creditorImagesCpus(
+        int $id,
+        string $name,
+        ProcessorRepository $processorRepository,
+        PaginatorInterface $paginatorInterface,
+        AdminUrlGenerator $adminUrlGenerator,
+        Request $request
+    ): Response
+    {
+        $cpu_data = $processorRepository->findAllByCreditor($id);
+        $cpus = $paginatorInterface->paginate($cpu_data, $request->query->getInt('page', 1), 50);
+        $targetUrlBoards = $adminUrlGenerator
+            ->setController(self::class)
+            ->setRoute('dashboard_creditor_images_boards', ['id' => $id, 'name' => $name])
+            ->setEntityId($id)
+            ->generateUrl();
+        $targetUrlCards = $adminUrlGenerator
+            ->setController(self::class)
+            ->setRoute('dashboard_creditor_images_cards', ['id' => $id, 'name' => $name])
+            ->setEntityId($id)
+            ->generateUrl();
+        $targetUrlChips = $adminUrlGenerator
+            ->setController(self::class)
+            ->setRoute('dashboard_creditor_images_chips', ['id' => $id, 'name' => $name])
+            ->setEntityId($id)
+            ->generateUrl();
+        $targetUrlHdds = $adminUrlGenerator
+            ->setController(self::class)
+            ->setRoute('dashboard_creditor_images_hdds', ['id' => $id, 'name' => $name])
+            ->setEntityId($id)
+            ->generateUrl();
+        $targetUrlCdds = $adminUrlGenerator
+            ->setController(self::class)
+            ->setRoute('dashboard_creditor_images_cdds', ['id' => $id, 'name' => $name])
+            ->setEntityId($id)
+            ->generateUrl();
+        $targetUrlFdds = $adminUrlGenerator
+            ->setController(self::class)
+            ->setRoute('dashboard_creditor_images_fdds', ['id' => $id, 'name' => $name])
+            ->setEntityId($id)
+            ->generateUrl();
+        return $this->render('admin/creditor/cpus.html.twig', [
             'cpus' => $cpus,
+            'urlBoards' => $targetUrlBoards,
+            'urlCards' => $targetUrlCards,
+            'urlChips' => $targetUrlChips,
+            'urlHdds' => $targetUrlHdds,
+            'urlCdds' => $targetUrlCdds,
+            'urlFdds' => $targetUrlFdds,
+            'name' => $name,
+        ]);
+    }
+    #[Route('/dashboard/creditorimages/hdds/{id}/{name}', name:'dashboard_creditor_images_hdds', requirements: ['id' => '\d+'])]
+    public function creditorImagesHdds(
+        int $id,
+        string $name,
+        HardDriveRepository $hddRepository,
+        PaginatorInterface $paginatorInterface,
+        AdminUrlGenerator $adminUrlGenerator,
+        Request $request
+    ): Response
+    {
+        $hdd_data = $hddRepository->findAllByCreditor($id);
+        $hdds = $paginatorInterface->paginate($hdd_data, $request->query->getInt('page', 1), 50);
+        $targetUrlBoards = $adminUrlGenerator
+            ->setController(self::class)
+            ->setRoute('dashboard_creditor_images_boards', ['id' => $id, 'name' => $name])
+            ->setEntityId($id)
+            ->generateUrl();
+        $targetUrlCards = $adminUrlGenerator
+            ->setController(self::class)
+            ->setRoute('dashboard_creditor_images_cards', ['id' => $id, 'name' => $name])
+            ->setEntityId($id)
+            ->generateUrl();
+        $targetUrlChips = $adminUrlGenerator
+            ->setController(self::class)
+            ->setRoute('dashboard_creditor_images_chips', ['id' => $id, 'name' => $name])
+            ->setEntityId($id)
+            ->generateUrl();
+        $targetUrlCpus = $adminUrlGenerator
+            ->setController(self::class)
+            ->setRoute('dashboard_creditor_images_cpus', ['id' => $id, 'name' => $name])
+            ->setEntityId($id)
+            ->generateUrl();
+        $targetUrlCdds = $adminUrlGenerator
+            ->setController(self::class)
+            ->setRoute('dashboard_creditor_images_cdds', ['id' => $id, 'name' => $name])
+            ->setEntityId($id)
+            ->generateUrl();
+        $targetUrlFdds = $adminUrlGenerator
+            ->setController(self::class)
+            ->setRoute('dashboard_creditor_images_fdds', ['id' => $id, 'name' => $name])
+            ->setEntityId($id)
+            ->generateUrl();
+        return $this->render('admin/creditor/hdds.html.twig', [
             'hdds' => $hdds,
+            'urlBoards' => $targetUrlBoards,
+            'urlCards' => $targetUrlCards,
+            'urlChips' => $targetUrlChips,
+            'urlCpus' => $targetUrlCpus,
+            'urlCdds' => $targetUrlCdds,
+            'urlFdds' => $targetUrlFdds,
+            'name' => $name,
+        ]);
+    }
+    #[Route('/dashboard/creditorimages/cdds/{id}/{name}', name:'dashboard_creditor_images_cdds', requirements: ['id' => '\d+'])]
+    public function creditorImagesCdds(
+        int $id,
+        string $name,
+        CdDriveRepository $cddRepository,
+        PaginatorInterface $paginatorInterface,
+        AdminUrlGenerator $adminUrlGenerator,
+        Request $request
+    ): Response
+    {
+        $cdd_data = $cddRepository->findAllByCreditor($id);
+        $cdds = $paginatorInterface->paginate($cdd_data, $request->query->getInt('page', 1), 50);
+        $targetUrlBoards = $adminUrlGenerator
+            ->setController(self::class)
+            ->setRoute('dashboard_creditor_images_boards', ['id' => $id, 'name' => $name])
+            ->setEntityId($id)
+            ->generateUrl();
+        $targetUrlCards = $adminUrlGenerator
+            ->setController(self::class)
+            ->setRoute('dashboard_creditor_images_cards', ['id' => $id, 'name' => $name])
+            ->setEntityId($id)
+            ->generateUrl();
+        $targetUrlChips = $adminUrlGenerator
+            ->setController(self::class)
+            ->setRoute('dashboard_creditor_images_chips', ['id' => $id, 'name' => $name])
+            ->setEntityId($id)
+            ->generateUrl();
+        $targetUrlCpus = $adminUrlGenerator
+            ->setController(self::class)
+            ->setRoute('dashboard_creditor_images_cpus', ['id' => $id, 'name' => $name])
+            ->setEntityId($id)
+            ->generateUrl();
+        $targetUrlHdds = $adminUrlGenerator
+            ->setController(self::class)
+            ->setRoute('dashboard_creditor_images_hdds', ['id' => $id, 'name' => $name])
+            ->setEntityId($id)
+            ->generateUrl();
+        $targetUrlFdds = $adminUrlGenerator
+            ->setController(self::class)
+            ->setRoute('dashboard_creditor_images_fdds', ['id' => $id, 'name' => $name])
+            ->setEntityId($id)
+            ->generateUrl();
+        return $this->render('admin/creditor/cdds.html.twig', [
             'cdds' => $cdds,
+            'urlBoards' => $targetUrlBoards,
+            'urlCards' => $targetUrlCards,
+            'urlChips' => $targetUrlChips,
+            'urlCpus' => $targetUrlCpus,
+            'urlHdds' => $targetUrlHdds,
+            'urlFdds' => $targetUrlFdds,
+            'name' => $name,
+        ]);
+    }
+    #[Route('/dashboard/creditorimages/fdds/{id}/{name}', name:'dashboard_creditor_images_fdds', requirements: ['id' => '\d+'])]
+    public function creditorImagesFdds(
+        int $id,
+        string $name,
+        FloppyDriveRepository $fddRepository,
+        PaginatorInterface $paginatorInterface,
+        AdminUrlGenerator $adminUrlGenerator,
+        Request $request
+    ): Response
+    {
+        $fdd_data = $fddRepository->findAllByCreditor($id);
+        $fdds = $paginatorInterface->paginate($fdd_data, $request->query->getInt('page', 1), 50);
+        $targetUrlBoards = $adminUrlGenerator
+            ->setController(self::class)
+            ->setRoute('dashboard_creditor_images_boards', ['id' => $id, 'name' => $name])
+            ->setEntityId($id)
+            ->generateUrl();
+        $targetUrlCards = $adminUrlGenerator
+            ->setController(self::class)
+            ->setRoute('dashboard_creditor_images_cards', ['id' => $id, 'name' => $name])
+            ->setEntityId($id)
+            ->generateUrl();
+        $targetUrlChips = $adminUrlGenerator
+            ->setController(self::class)
+            ->setRoute('dashboard_creditor_images_chips', ['id' => $id, 'name' => $name])
+            ->setEntityId($id)
+            ->generateUrl();
+        $targetUrlCpus = $adminUrlGenerator
+            ->setController(self::class)
+            ->setRoute('dashboard_creditor_images_cpus', ['id' => $id, 'name' => $name])
+            ->setEntityId($id)
+            ->generateUrl();
+        $targetUrlHdds = $adminUrlGenerator
+            ->setController(self::class)
+            ->setRoute('dashboard_creditor_images_hdds', ['id' => $id, 'name' => $name])
+            ->setEntityId($id)
+            ->generateUrl();
+        $targetUrlCdds = $adminUrlGenerator
+            ->setController(self::class)
+            ->setRoute('dashboard_creditor_images_cdds', ['id' => $id, 'name' => $name])
+            ->setEntityId($id)
+            ->generateUrl();
+        return $this->render('admin/creditor/fdds.html.twig', [
             'fdds' => $fdds,
+            'urlBoards' => $targetUrlBoards,
+            'urlCards' => $targetUrlCards,
+            'urlChips' => $targetUrlChips,
+            'urlCpus' => $targetUrlCpus,
+            'urlHdds' => $targetUrlHdds,
+            'urlCdds' => $targetUrlCdds,
             'name' => $name,
         ]);
     }

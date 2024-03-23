@@ -24,6 +24,7 @@ class FormFactorCrudController extends AbstractCrudController
             ->remove(Crud::PAGE_NEW, Action::SAVE_AND_ADD_ANOTHER)
             ->add(Crud::PAGE_INDEX, $logs)
             ->add(Crud::PAGE_EDIT, $elogs)
+            ->remove(Crud::PAGE_INDEX, Action::BATCH_DELETE)
             ->setPermission(Action::DELETE, 'ROLE_ADMIN')
             ->setPermission(Action::EDIT, 'ROLE_ADMIN')
             ->setPermission(Action::INDEX, 'ROLE_ADMIN');

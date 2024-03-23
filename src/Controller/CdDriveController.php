@@ -13,7 +13,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -31,9 +31,9 @@ class CdDriveController extends AbstractController
                 throw $this->createNotFoundException(
                     'No optical drive found for id ' . $id
                 );
-            } 
+            }
             return $this->redirect($this->generateUrl('cd_drive_show', array("id" => $idRedirection)));
-        } 
+        }
         return $this->render('cddrive/show.html.twig', [
             'cddrive' => $cdd,
             'controller_name' => 'CdDriveController',
@@ -42,6 +42,7 @@ class CdDriveController extends AbstractController
     #[Route(path: '/cddrives/', name: 'cddsearch', methods: ['GET'])]
     public function searchResultCdd(Request $request, PaginatorInterface $paginator, CdDriveRepository $cddRepository, ManufacturerRepository $manufacturerRepository)
     {
+        $latestCdds = $cddRepository->findLatest(8);
         $form = $this->_searchFormHandlerCdd($request, $manufacturerRepository);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -49,11 +50,12 @@ class CdDriveController extends AbstractController
         }
         //get criterias
         $criterias = $this->getCriteriaCdd($request);
-        $showImages = boolval(htmlentities($request->query->get('showImages')));
+        $showImages = boolval(htmlentities($request->query->get('showImages') ?? ''));
         $maxItems = $request->query->getInt('itemsPerPage', $request->request->getInt('itemsPerPage', $this->getParameter('app.pagination.max')));
         if (empty($criterias)) {
             return $this->render('cddrive/search.html.twig', [
                 'form' => $form->createView(),
+                'latestCdds' => $latestCdds,
             ]);
         }
 
@@ -82,7 +84,7 @@ class CdDriveController extends AbstractController
     public function liveResultsCdd(Request $request, PaginatorInterface $paginator, CdDriveRepository $cddRepository): Response
     {
         $criterias = $this->getCriteriaCdd($request);
-        $showImages = boolval(htmlentities($request->query->get('showImages')));
+        $showImages = boolval(htmlentities($request->query->get('showImages') ?? ''));
         $maxItems = $request->query->getInt('itemsPerPage', $request->request->getInt('itemsPerPage', $this->getParameter('app.pagination.max')));
         $data = $cddRepository->findByCdd($criterias);
         $cdds = $paginator->paginate(

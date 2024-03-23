@@ -19,14 +19,14 @@ class Motherboard
     private $id;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    #[Assert\Length(max: 255, maxMessage: 'Name is longer than {{ limit }} characters, try to make it shorter.')]
+    #[Assert\Length(max: 255, maxMessage: 'Name is longer than {{ limit }} characters.')]
     private ?string $name = null;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    #[Assert\Length(max: 255, maxMessage: 'Dimensions is longer than {{ limit }} characters, try to make it shorter.')]
+    #[Assert\Length(max: 255, maxMessage: 'Dimensions is longer than {{ limit }} characters.')]
     private ?string $dimensions = null;
 
-    #[ORM\ManyToOne(targetEntity: Manufacturer::class, inversedBy: 'motherboards', fetch: 'EAGER')]
+    #[ORM\ManyToOne(targetEntity: Manufacturer::class, inversedBy: 'motherboards')]
     private $manufacturer;
 
     #[ORM\ManyToOne(targetEntity: Chipset::class, inversedBy: 'motherboards')]
@@ -78,7 +78,7 @@ class Motherboard
     private $maxVideoRam;
 
     #[ORM\Column(type: 'string', length: 2048, nullable: true)]
-    #[Assert\Length(max: 2048, maxMessage: 'Notes is longer than {{ limit }} characters, try to make it shorter.')]
+    #[Assert\Length(max: 2048, maxMessage: 'Notes is longer than {{ limit }} characters.')]
     private ?string $note = null;
 
     #[ORM\Column(type: 'datetime')]
@@ -97,6 +97,7 @@ class Motherboard
     private $cpuSockets;
 
     #[ORM\OneToMany(targetEntity: LargeFileMotherboard::class, mappedBy: 'motherboard', orphanRemoval: true, cascade: ['persist'])]
+    #[Assert\Valid()]
     private $drivers;
 
     #[ORM\OneToMany(targetEntity: MotherboardIdRedirection::class, mappedBy: 'destination', orphanRemoval: true, cascade: ['persist'])]
@@ -110,13 +111,21 @@ class Motherboard
     private $expansionChips;
 
     #[ORM\Column(type: 'string', length: 80, unique: true)]
-    #[Assert\Length(max: 80, maxMessage: 'Slug is longer than {{ limit }} characters, try to make it shorter.')]
+    #[Assert\Length(max: 80, maxMessage: 'Slug is longer than {{ limit }} characters.')]
     #[Assert\Regex('/^[a-z0-9-_.,]+$/i', message: 'Slug uses problematic characters. Only alphanumeric, ".", ",", "-" and "_" are allowed.')]
     private $slug;
 
     #[ORM\OneToMany(mappedBy: 'motherboard', targetEntity: MiscFile::class, orphanRemoval: true, cascade: ['persist'])]
     #[Assert\Valid()]
     private $miscFiles;
+
+    #[ORM\OneToMany(mappedBy: 'motherboard', targetEntity: MotherboardMemoryConnector::class, orphanRemoval: true, cascade: ['persist'])]
+    #[Assert\Valid()]
+    private Collection $motherboardMemoryConnectors;
+
+    #[ORM\Column(nullable: true)]
+    private ?int $score = null;
+
     public function __construct()
     {
         $this->motherboardMaxRams = new ArrayCollection();
@@ -138,6 +147,11 @@ class Motherboard
         $this->psuConnectors = new ArrayCollection();
         $this->expansionChips = new ArrayCollection();
         $this->miscFiles = new ArrayCollection();
+        $this->motherboardMemoryConnectors = new ArrayCollection();
+    }
+    public function __toString(): string
+    {
+        return $this->getFullName();
     }
     public function getId(): ?int
     {
@@ -184,6 +198,10 @@ class Motherboard
     public function getChipset(): ?Chipset
     {
         return $this->chipset;
+    }
+    public function getChipsetWithoutParts(): ?string
+    {
+        return $this->getChipset()?->getFullName();
     }
     public function setChipset(?Chipset $chipset): self
     {
@@ -481,6 +499,14 @@ class Motherboard
     {
         return $this->manuals;
     }
+    public function getChipDocs(): Collection
+    {
+        $docs = [];
+        foreach ($this->getExpansionChips() as $expansionChip) {
+            $docs = array_merge($docs, $expansionChip->getDocumentations()->toArray());
+        }
+        return new ArrayCollection($docs);
+    }
     public function addManual(Manual $manual): self
     {
         if (!$this->manuals->contains($manual)) {
@@ -697,15 +723,11 @@ class Motherboard
      */
     public function getAllDrivers(): Collection
     {
-        $drivers = array_merge($this->getDrivers()->toArray(), $this->getChipset()?->getDrivers()->toArray() ?? []);
+        $drivers = $this->getDrivers()->toArray();
         foreach ($this->getExpansionChips() as $expansionChip) {
             $drivers = array_merge($drivers, $expansionChip->getDrivers()->toArray());
         }
-        if($this->getChipset()){
-            foreach ($this->getChipset()->getExpansionChips() as $chipsetParts) {
-                $drivers = array_merge($drivers, $chipsetParts->getDrivers()->toArray());
-            }
-        }
+        $drivers = array_merge($drivers, $this->getChipset()?->getDrivers()->toArray() ?? []);
         return new ArrayCollection($drivers);
     }
     /**
@@ -858,7 +880,7 @@ class Motherboard
         return $this;
     }
 
-    public function getPrettyTitle(): string
+    public function getFullName(): string
     {
         $strBuilder = "";
         $mfgData = $this->getManufacturer();
@@ -873,11 +895,11 @@ class Motherboard
 
     public function getMetaDescription(): string
     {
-        $strBuilder = $this->getPrettyTitle();
+        $strBuilder = $this->getFullName();
         $strBuilder .= " is a motherboard based on the ";
         $chipData = $this->getChipset();
         if ($chipData != null) {
-            $strBuilder .= $chipData->getNameWithoutParts();
+            $strBuilder .= $chipData->getFullName();
         } else {
             $strBuilder .= "[Unidentified]";
         }
@@ -936,4 +958,155 @@ class Motherboard
             array_push($arr, $val);
         }
     }
+
+    /**
+     * @return Collection<int, MotherboardMemoryConnector>
+     */
+    public function getMotherboardMemoryConnectors(): Collection
+    {
+        return $this->motherboardMemoryConnectors;
+    }
+
+    public function addMotherboardMemoryConnector(MotherboardMemoryConnector $motherboardMemoryConnector): self
+    {
+        if (!$this->motherboardMemoryConnectors->contains($motherboardMemoryConnector)) {
+            $this->motherboardMemoryConnectors->add($motherboardMemoryConnector);
+            $motherboardMemoryConnector->setMotherboard($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMotherboardMemoryConnector(MotherboardMemoryConnector $motherboardMemoryConnector): self
+    {
+        if ($this->motherboardMemoryConnectors->removeElement($motherboardMemoryConnector)) {
+            // set the owning side to null (unless already changed)
+            if ($motherboardMemoryConnector->getMotherboard() === $this) {
+                $motherboardMemoryConnector->setMotherboard(null);
+            }
+        }
+
+        return $this;
+    }
+    public function updateHashAll()
+    {
+        foreach($this->motherboardBios as $item){
+            $item->updateHash();
+        }
+    }
+
+    public function getScore(): ?int
+    {
+        return $this->score;
+    }
+
+    public function setScore(?int $score): static
+    {
+        $this->score = $score;
+
+        return $this;
+    }
+
+    public function getExpansionChipsScore(): int
+    {
+        if(!$this->expansionChips->isEmpty()){
+            foreach($this->expansionChips as $chip)
+                if($chip->getType()->getId() != 30)
+                    return 5;
+            return 2;
+        }
+        return 0;
+    }
+
+    public function getImagesScore(): int
+    {
+        $score = 0;
+        $types = array();
+        if(!$this->images->isEmpty()){
+            foreach($this->images as $image){
+                $typeId = $image->getMotherboardImageType()?->getId();
+                if($typeId == 2)
+                    $types[$typeId] = 7;
+                else
+                    $types[$typeId] = 2;
+            }
+            foreach($types as $t)
+                $score += $t;
+        }
+        return $score;
+    }
+
+    public function getBiosScore(): int
+    {
+        $score = 0;
+        $max = 0;
+        if(!$this->motherboardBios->isEmpty()){
+            foreach($this->motherboardBios as $bios){
+                $max = 0;
+                if($bios->getManufacturer() !== null)
+                    $max += 3;
+                if($bios->getPostString() != "")
+                    $max += 6;
+                if($bios->getFileName() != "")
+                    $max += 6;
+                if($score < $max)
+                    $score = $max;
+                if($score == 15)
+                    return $score;
+            }
+        }
+        return $score;
+    }
+
+    public function calculateScore(): int
+    {
+        $score = array();
+        $final = 0;
+        if(isset($this->manufacturer))
+            $score['manufacturer'] = 5;
+        if(isset($this->formFactor))
+            $score['formFactor'] = 4;
+        if(isset($this->dimensions))
+            $score['dimensions'] = 1;
+        if(isset($this->chipset))
+            $score['chipset'] = 5;
+        if(!$this->cpuSockets->isEmpty())
+            $score['cpuSockets'] = 5;
+        if(!$this->processorPlatformTypes->isEmpty())
+            $score['cpuFamilies'] = 5;
+        if(!$this->cpuSpeed->isEmpty())
+            $score['fsb'] = 4;
+        if(!$this->dramType->isEmpty())
+            $score['ramTypes'] = 5;
+        if(!$this->motherboardMaxRams->isEmpty())
+            $score['maxram'] = 4;
+        if(!$this->motherboardIoPorts->isEmpty())
+            $score['ioPorts'] = 5;
+        if(!$this->motherboardExpansionSlots->isEmpty())
+            $score['expansionSlots'] = 5;
+        if(!$this->psuConnectors->isEmpty())
+            $score['powerConnectors'] = 5;
+        $score['expansionChips'] = $this->getExpansionChipsScore(); // max:5
+        // attachments
+        if(!$this->manuals->isEmpty())
+            $score['manuals'] = 10;
+        if(!$this->getAllDrivers()->isEmpty())
+            $score['drivers'] = 2;
+        $score['bios'] = $this->getBiosScore(); //max: 15
+        $score['images'] = $this->getImagesScore(); // max:15
+        //dump($score);
+        foreach($score as $s)
+            $final += $s;
+        //dump($final);
+        return $final;
+    }
+
+    public function updateScore()
+    {
+        $newScore = $this->calculateScore();
+        $oldScore = $this->getScore();
+        if($newScore != $oldScore)
+            $this->setScore($newScore);
+    }
+
 }

@@ -3,19 +3,27 @@
 namespace App\Controller\Admin;
 
 use App\Entity\ExpansionChip;
-use App\Form\Type\ChipAliasType;
-use App\Form\Type\PciDeviceIdType;
-use App\Form\Type\LargeFileExpansionChipType;
-use App\Form\Type\ChipDocumentationType;
-use App\Form\Type\ChipImageType;
+use App\EasyAdmin\TextJsonField;
 use Doctrine\ORM\EntityManagerInterface;
+use App\Controller\Admin\Filter\ChipImageFilter;
+use App\Controller\Admin\Filter\ChipDocFilter;
+use App\Controller\Admin\Filter\ChipDriverFilter;
+use App\Controller\Admin\Type\Chip\AliasCrudType;
+use App\Controller\Admin\Type\Chip\DocumentationCrudType;
+use App\Controller\Admin\Type\Chip\ImageCrudType;
+use App\Controller\Admin\Type\Chip\LargeFileCrudType;
+use App\Controller\Admin\Type\PciDeviceCrudType;
+use Doctrine\ORM\Query\Expr\Andx;
+use Doctrine\ORM\Query\Expr\Orx;
+use EasyCorp\Bundle\EasyAdminBundle\Collection\FieldCollection;
+use EasyCorp\Bundle\EasyAdminBundle\Collection\FilterCollection;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
-use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ArrayField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
@@ -23,7 +31,11 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\CodeEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Option\EA;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
+use EasyCorp\Bundle\EasyAdminBundle\Factory\ControllerFactory;
+use EasyCorp\Bundle\EasyAdminBundle\Factory\PaginatorFactory;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class ExpansionChipCrudController extends AbstractCrudController
@@ -55,6 +67,7 @@ class ExpansionChipCrudController extends AbstractCrudController
             ->add(Crud::PAGE_EDIT, $elogs)
             ->add(Crud::PAGE_INDEX, $view)
             ->add(Crud::PAGE_EDIT, $eview)
+            ->remove(Crud::PAGE_INDEX, Action::BATCH_DELETE)
             ->setPermission(Action::DELETE, 'ROLE_ADMIN');
     }
     public function configureCrud(Crud $crud): Crud
@@ -63,6 +76,8 @@ class ExpansionChipCrudController extends AbstractCrudController
             ->showEntityActionsInlined()
             ->setEntityLabelInSingular('expansion chip')
             ->setEntityLabelInPlural('<img class=ea-entity-icon src=/build/icons/chip.svg width=48 height=48>Expansion chips')
+            ->overrideTemplate('crud/edit', 'admin/crud/edit_chip.html.twig')
+            ->overrideTemplate('crud/new', 'admin/crud/new_chip.html.twig')
             ->setPaginatorPageSize(100);
     }
     public function configureFilters(Filters $filters): Filters
@@ -71,6 +86,9 @@ class ExpansionChipCrudController extends AbstractCrudController
             ->add('manufacturer')
             ->add('name')
             ->add('partNumber')
+            ->add(ChipImageFilter::new('images'))
+            ->add(ChipDocFilter::new('documentations'))
+            ->add(ChipDriverFilter::new('drivers'))
             ->add('chipAliases')
             ->add('pciDevs')
             ->add('type');
@@ -78,15 +96,12 @@ class ExpansionChipCrudController extends AbstractCrudController
     public function configureFields(string $pageName): iterable
     {
         yield FormField::addTab('Basic Data')
-            ->setIcon('info')
+            ->setIcon('fa fa-info')
             ->onlyOnForms();
         yield IdField::new('id')->onlyOnIndex();
-        yield TextField::new('getManufacturer','Manufacturer')
-            ->hideOnForm();
         yield AssociationField::new('manufacturer','Manufacturer')
             ->setFormTypeOption('placeholder', 'Type to select a manufacturer ...')
-            ->setColumns(4)
-            ->onlyOnForms();
+            ->setColumns(4);
         yield TextField::new('partNumber', 'Part number')
             ->setColumns(4);
         yield TextField::new('name', 'Name')
@@ -95,14 +110,14 @@ class ExpansionChipCrudController extends AbstractCrudController
         // index
         yield ArrayField::new('getPciDevsLimited', 'Device ID')
             ->hideOnForm();
-        yield BooleanField::new('getImages','Images')
-            ->renderAsSwitch(false)
+        yield CollectionField::new('images','Images')
+            ->setCustomOption('byCount', true)
             ->onlyOnIndex();
-        yield BooleanField::new('getDocumentations','Docs')
-            ->renderAsSwitch(false)
+        yield CollectionField::new('documentations','Docs')
+            ->setCustomOption('byCount', true)
             ->onlyOnIndex();
-        yield BooleanField::new('getDrivers','Drivers')
-            ->renderAsSwitch(false)
+        yield CollectionField::new('drivers','Drivers')
+            ->setCustomOption('byCount', true)
             ->onlyOnIndex();
         // editor
         yield AssociationField::new('type','Type')
@@ -110,35 +125,46 @@ class ExpansionChipCrudController extends AbstractCrudController
             ->setColumns(6)
             ->onlyOnForms();
         yield CollectionField::new('pciDevs', 'Device ID')
-            ->setEntryType(PciDeviceIdType::class)
-            ->setColumns(6)
+            ->useEntryCrudForm(PciDeviceCrudType::class)
+            ->setColumns(4)
             ->renderExpanded()
             ->onlyOnForms();
+        yield IntegerField::new('sort', 'Image sort')
+            ->setFormTypeOption('required', true)
+            ->setColumns(2);
         yield CodeEditorField::new('description')
             ->setLanguage('markdown')
             ->onlyOnForms();
         yield CollectionField::new('chipAliases', 'Chip aliases')
-            ->setEntryType(ChipAliasType::class)
+            ->useEntryCrudForm(AliasCrudType::class)
             ->setFormTypeOption('error_bubbling', false)
             ->setColumns(6)
             ->renderExpanded()
             ->onlyOnForms();
+        yield FormField::addTab('Specs')
+            ->setIcon('fa fa-info')
+            ->onlyOnForms();
+        yield TextJsonField::new('miscSpecs', 'Misc specs')
+            ->setColumns(12)
+            ->onlyOnForms();
         yield FormField::addTab('Attachments')
-            ->setIcon('download')
+            ->setIcon('fa fa-download')
             ->onlyOnForms();
         yield CollectionField::new('documentations', 'Documentation')
-            ->setEntryType(ChipDocumentationType::class)
+            ->useEntryCrudForm(DocumentationCrudType::class)
             ->setFormTypeOption('error_bubbling', false)
             ->setColumns(6)
             ->renderExpanded()
             ->onlyOnForms();
         yield CollectionField::new('images', 'Images')
-            ->setEntryType(ChipImageType::class)
+            ->useEntryCrudForm(ImageCrudType::class)
+            ->setFormTypeOption('error_bubbling', false)
             ->setColumns(6)
             ->renderExpanded()
             ->onlyOnForms();
         yield CollectionField::new('drivers', 'Drivers')
-            ->setEntryType(LargeFileExpansionChipType::class)
+            ->useEntryCrudForm(LargeFileCrudType::class)
+            ->setFormTypeOption('error_bubbling', false)
             ->setColumns(6)
             ->renderExpanded()
             ->onlyOnForms();
@@ -163,5 +189,43 @@ class ExpansionChipCrudController extends AbstractCrudController
     {
         $entityInstance->updateLastEdited();
         parent::updateEntity($entityManager, $entityInstance);
+    }
+    public function autocomplete(AdminContext $context): JsonResponse
+    {
+        $queryBuilder = $this->createIndexQueryBuilder($context->getSearch(), $context->getEntity(), FieldCollection::new([]), FilterCollection::new());
+        $autocompleteContext = $context->getRequest()->get(AssociationField::PARAM_AUTOCOMPLETE_CONTEXT);
+
+        /** @var CrudControllerInterface $controller */
+        $controller = $this->container->get(ControllerFactory::class)->getCrudControllerInstance($autocompleteContext[EA::CRUD_CONTROLLER_FQCN], Action::INDEX, $context->getRequest());
+        /** @var FieldDto|null $field */
+        $field = FieldCollection::new($controller->configureFields($autocompleteContext['originatingPage']))->getByProperty($autocompleteContext['propertyName']);
+        /** @var \Closure|null $queryBuilderCallable */
+        $queryBuilderCallable = $field?->getCustomOption(AssociationField::OPTION_QUERY_BUILDER_CALLABLE);
+
+        if (null !== $queryBuilderCallable) {
+            $queryBuilderCallable($queryBuilder);
+        }
+
+        $queryBuilder->leftJoin('entity.chipAliases', 'alias');
+        $queryBuilder->leftJoin('entity.manufacturer', 'man');
+        if($queryBuilder->getDQLPart('where') != null){
+            $newParts = array();
+            foreach($queryBuilder->getDQLPart('where')?->getParts() as $part){
+                $arr = $part->getParts();
+                $parameter = substr($arr[1], strpos($arr[1], ':query'));
+                array_pop($arr);
+                array_push($arr, "LOWER(alias.partNumber) LIKE " . $parameter);
+                array_push($arr, "LOWER(man.name) LIKE " . $parameter);
+                array_push($newParts, $arr);
+            }
+            $partsArray = new Andx();
+            foreach($newParts as $newPart){
+                $partsArray->add(new Orx($newPart));
+            }
+            $queryBuilder->add('where', $partsArray);
+        }
+
+        $paginator = $this->container->get(PaginatorFactory::class)->create($queryBuilder);
+        return JsonResponse::fromJsonString($paginator->getResultsAsJson());
     }
 }

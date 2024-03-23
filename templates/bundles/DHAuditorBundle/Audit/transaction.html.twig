@@ -17,32 +17,51 @@
     'App\\Entity\\Creditor' : 'Creditors',
     'App\\Entity\\DramType' : 'RAM types',
     'App\\Entity\\EntityDocumentation' : 'Entity documentation',
-    'App\\Entity\\EntityImage' : 'Entity image',
+    'App\\Entity\\EntityImage' : 'Entity images',
     'App\\Entity\\ExpansionChip' : 'Expansion chips',
     'App\\Entity\\ExpansionChipType' : 'Expansion chip types',
+    'App\\Entity\\ExpansionCard' : 'Expansion cards',
+    'App\\Entity\\ExpansionCardAlias' : 'Expansion card aliases',
+    'App\\Entity\\ExpansionCardType' : 'Expansion card types',
+    'App\\Entity\\ExpansionCardBios' : 'Expansion card BIOSes',
+    'App\\Entity\\ExpansionCardIdRedirection' : 'Expansion card URL redirects',
+    'App\\Entity\\ExpansionCardImage' : 'Expansion card images',
+    'App\\Entity\\ExpansionCardDocumentation' : 'Expansion card docs',
+    'App\\Entity\\ExpansionCardIoPort' : 'Expansion card I/O ports',
+    'App\\Entity\\ExpansionCardMemoryConnector' : 'Expansion card mem. connectors',
+    'App\\Entity\\ExpansionCardPowerConnector' : 'Expansion card power connectors',
     'App\\Entity\\ExpansionSlot' : 'Expansion slots',
+    'App\\Entity\\ExpansionSlotInterface' : 'Expansion slot interfaces',
+    'App\\Entity\\ExpansionSlotInterfaceSignal' : 'Expansion slot presets',
+    'App\\Entity\\ExpansionSlotSignal' : 'Expansion slot signals',
     'App\\Entity\\FloppyDrive' : 'Floppy drives',
+    'App\\Entity\\FloppyDriveType' : 'Floppy drive types',
     'App\\Entity\\FormFactor' : 'Form factors',
     'App\\Entity\\HardDrive' : 'Hard drives',
     'App\\Entity\\InstructionSet' : 'Instruction sets',
     'App\\Entity\\IoPort' : 'I/O ports',
+    'App\\Entity\\IoPortInterface' : 'I/O port interfaces',
+    'App\\Entity\\IoPortInterfaceSignal' : 'I/O port presets',
+    'App\\Entity\\IoPortSignal' : 'I/O port signals',
+    'App\\Entity\\MemoryConnector' : 'Memory connectors',
     'App\\Entity\\KnownIssue' : 'Known issues',
     'App\\Entity\\LargeFile' : 'Drivers',
     'App\\Entity\\LargeFileChipset' : 'Chipset drivers',
     'App\\Entity\\LargeFileExpansionChip' : 'Expansion chip drivers',
-    'App\\Entity\\LargeFileMediaTypeFlag' : 'Driver media flags',
+    'App\\Entity\\LargeFileExpansionCard' : 'Expansion card drivers',
     'App\\Entity\\LargeFileMotherboard' : 'Motherboard drivers',
     'App\\Entity\\License' : 'Licenses',
     'App\\Entity\\Manual' : 'Motherboard docs',
     'App\\Entity\\Manufacturer' : 'Manufacturers',
+    'App\\Entity\\ManufacturerCode' : 'Manufacturer codes',
     'App\\Entity\\ManufacturerBiosManufacturerCode' : 'BIOS manufacturer codes',
     'App\\Entity\\MaxRam' : 'RAM sizes',
-    'App\\Entity\\MediaTypeFlag' : 'Media flags',
     'App\\Entity\\MiscFile' : 'Misc files',
     'App\\Entity\\Motherboard' : 'Motherboards',
     'App\\Entity\\MotherboardAlias' : 'Motherboard aliases',
     'App\\Entity\\MotherboardBios' : 'Motherboard BIOSes',
     'App\\Entity\\MotherboardExpansionSlot' : 'Motherboard expansion slots',
+    'App\\Entity\\MotherboardMemoryConnector' : 'Motherboard memory connectors',
     'App\\Entity\\MotherboardIdRedirection' : 'Motherboard URL redirects',
     'App\\Entity\\MotherboardImage' : 'Motherboard images',
     'App\\Entity\\MotherboardIoPort' : 'Motherboard I/O ports',
@@ -56,25 +75,22 @@
     'App\\Entity\\StorageDeviceDocumentation' : 'Storage device docs',
     'App\\Entity\\StorageDeviceImage' : 'Storage device images',
     'App\\Entity\\StorageDeviceInterface' : 'Storage device interfaces',
+    'App\\Entity\\StorageDeviceMiscFile' : 'Storage device misc files',
     'App\\Entity\\StorageDeviceSize' : 'Storage device physical sizes',
     'App\\Entity\\User' : 'Users'
 }
 %}
-{% block dh_auditor_header %}
-<nav class="bg-white border border-gray-200 rounded flex" aria-label="Breadcrumb">
-    <ol role="list" class="max-w-screen-xl w-full mx-auto px-4 flex space-x-4 sm:px-6 lg:px-6">
-        <li class="flex">
+{% block subnav %}
+        <li class="flex items-center justify-between navbar-li">
             <div class="flex items-center">
-                <a href="{{ path('dh_auditor_list_audits') }}" class="text-gray-400 hover:text-gray-500 flex space-x-1">
-                    <!-- Heroicon name: solid/home -->
-                    <svg class="flex-shrink-0 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                        <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
-                    </svg>
-                    <span>{% trans from 'auditor' %}audit.header.home{% endtrans %}</span>
+                <svg class="navbar-svg" viewBox="0 0 24 44" preserveAspectRatio="none" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path d="M.293 0l22 22-22 22h1.414l22-22-22-22H.293z" />
+                </svg>
+                <a class="ml-4 text-gray-500 hover:text-gray-700" href="{{ path('dh_auditor_list_audits') }}">
+                    <code class="text-pink-500">Logs</code>
                 </a>
             </div>
         </li>
-
         <li class="flex flex-grow items-center justify-between">
             <div class="flex items-center">
                 <svg class="flex-shrink-0 w-6 h-full text-gray-200" viewBox="0 0 24 44" preserveAspectRatio="none" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -95,8 +111,6 @@
                 <span class="bg-purple-500 rounded text-sm text-white px-2 py-1 no-wrap audit-mobile-600-hide no-wrap">{% trans with { '%count%': amount } from 'auditor' %}audit.audit_details.operations_count{% endtrans %}</span>
             </div>
         </li>
-    </ol>
-</nav>
 <div>
     <span class="bg-purple-500 rounded text-sm text-white px-2 py-1 no-wrap audit-mobile-600 no-wrap">{% trans with { '%count%': amount } from 'auditor' %}audit.audit_details.operations_count{% endtrans %}</span>
 </div>

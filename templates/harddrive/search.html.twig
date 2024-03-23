@@ -11,46 +11,77 @@
 	<script src="/build/js/search.js" defer></script>
 {% endblock %}
 {% block subnav %}
-<a href="{{ path('hddsearch') }}" class="nav-link active">
-	<span class="navbar-label">Hard drive</span>
-</a>
-<a href="{{ path('cddsearch') }}" class="nav-link">
-	<span class="navbar-label">Optical drive</span>
-</a>
-<a href="{{ path('fddsearch') }}" class="nav-link">
-	<span class="navbar-label">Floppy drive</span>
-</a>
+<li class="flex navbar-li">
+    <div class="flex items-center">
+        <svg class="navbar-svg" viewBox="0 0 24 44" preserveAspectRatio="none" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M.293 0l22 22-22 22h1.414l22-22-22-22H.293z"></path>
+        </svg>
+        <a class="ml-4" href="{{ path('hddsearch') }}">
+			<img src="{{ absolute_url(asset('build/icons/harddrive.svg')) }}" width="24" height="24" alt="hdd">
+            <code class="text-pink-500">Hard drives</code>
+        </a>
+    </div>
+</li>
 {% endblock %}
 {% block body %}
 	{{ form_start(form, {'method': 'POST', 'name': 'search_hdd', 'action':path("hddsearch"), 'attr':{'onkeydown': 'return event.key != \'Enter\'', 'data-live-action': path('hddlivewrapper')}}) }}
 	<fieldset id="search-fieldset">
-		<div class="title">Search for a hard drive</div>
-		<section class="search-form-grid" style="display:flex;justify-content:center;flex-wrap:wrap;">
+		<div class="title">
+			<img src="{{ absolute_url(asset('build/icons/harddrive.svg')) }}" alt="hdd" width="32" height="32">
+			Search for a hard drive
+		</div>
+		<section class="search-form-grid">
 			<div class="search-form-entry" >
-				<label class="search-form-label" for="search_hddManufacturer" title="This is where you select the manufacturer name and enter the hard drive part number.">
-					<span>Manufacturer and name</span>
-					<img src="{{ absolute_url(asset('build/icons/help.svg')) }}" alt="" width="16" height="16">
+				<label class="search-form-label" for="search_hddManufacturer">
+					<span>Manufacturer</span>
 				</label>
 				<div class="search-form-widget">
 					<div>{{ form_widget(form.hddManufacturer) }}</div>
+				</div>
+			</div>
+			<div class="search-form-entry" >
+				<label class="search-form-label" for="search_name">
+					<span>Name</span>
+				</label>
+				<div class="search-form-widget">
 					<div>{{ form_widget(form.name, {'attr': {'placeholder': 'Name or Part number (without manufacturer) ...'}}) }}</div>
 				</div>
 			</div>
-			<div class="search-form-entry">
-				<label class="search-form-label" for="search_capacity" title="By default, it is in Megabytes. Operators can be used (like '>128MB')">
-					<span>Capacity</span>
-					<img src="{{ absolute_url(asset('build/icons/help.svg')) }}" alt="" width="16" height="16">
-				</label>
-				<div class="search-form-widget">
-					<div>{{ form_widget(form.capacity) }}</div>
-				</div>
-			</div>
+			{% include 'macros/searchitems.html.twig' with {'datatarget': 'harddrives', 'dataresetids': 'search_hddManufacturer', 'search_with_images' : true} %}
 		</section>
-		{% include 'macros/searchitems.html.twig' with {'datatarget': 'harddrives', 'dataresetids': 'search_hddManufacturer', 'search_with_images' : true} %}
+		<div class="dropdown-trw">
+			<label class="dropdown-header">
+				<img src="{{ absolute_url(asset('build/icons/search.svg')) }}" alt="search" width="24" height="24">
+				<span>Advanced search<small class="dropdown-tooltip"> (click to expand)</small></span>
+				<input class="dropdown" type="checkbox" />
+			</label>
+			<div class="dropdown-contents">
+				<section class="search-form-grid">
+					<div class="search-form-entry">
+						<label class="search-form-label" for="search_capacity">
+							<span>Capacity</span>
+						</label>
+						<div class="search-form-widget">
+							<div>{{ form_widget(form.capacity) }}</div>
+						</div>
+					</div>
+					<div class="search-form-entry">
+						<label class="search-form-label">
+							<span></span>
+						</label>
+						<a class='button-widget' href="{{path("hddhelp")}}" style="margin-right: 5px">
+							<img src='{{ absolute_url(asset('build/icons/search.svg')) }}' alt='' width='16' height='16' style='vertical-align:middle;padding:3px;'>How do I use the search page?</a>
+					</div>
+				</section>
+			</div>
+		</div>
 	</fieldset>
 	{{ form_end(form, {render_rest: false}) }}
 	<!-- Search results -->
 	<section id="search_liveResults">
+	{% if latestHdds is defined %}
+		{% include 'macros/lastedited.html.twig' with {'entity': latestHdds, 'type':'hdd', 'entity_label':'hard drives', 'path': 'hard_drive_show'} %}
+	{% endif %}
 	{% if hdds is defined %}
 		{% include 'harddrive/result.html.twig' with {'hdds': hdds, 'show_images': show_images, 'route': true} %}
 	{% endif %}

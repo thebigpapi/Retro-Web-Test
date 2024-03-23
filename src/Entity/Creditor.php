@@ -16,11 +16,11 @@ class Creditor
     private $id;
 
     #[ORM\Column(type: 'string', length: 255)]
-    #[Assert\Length(max: 255, maxMessage: 'Name is longer than {{ limit }} characters, try to make it shorter.')]
+    #[Assert\Length(max: 255, maxMessage: 'Name is longer than {{ limit }} characters.')]
     private $name;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    #[Assert\Length(max: 255, maxMessage: 'Website link is longer than {{ limit }} characters, try to make it shorter.')]
+    #[Assert\Length(max: 255, maxMessage: 'Website link is longer than {{ limit }} characters.')]
     private $website;
 
     #[ORM\OneToMany(targetEntity: MotherboardImage::class, mappedBy: 'creditor')]
@@ -39,12 +39,21 @@ class Creditor
     #[ORM\OneToMany(mappedBy: 'creditor', targetEntity: EntityImage::class)]
     private Collection $entityImages;
 
+    #[ORM\OneToMany(mappedBy: 'creditor', targetEntity: ExpansionCardImage::class)]
+    private Collection $cardImages;
+
+
     public function __construct()
     {
         $this->chipImages = new ArrayCollection();
         $this->motherboardImages = new ArrayCollection();
         $this->storageDeviceImages = new ArrayCollection();
         $this->entityImages = new ArrayCollection();
+        $this->cardImages = new ArrayCollection();
+    }
+    public function __toString(): string
+    {
+        return $this->name;
     }
     public function getId(): ?int
     {
@@ -199,6 +208,36 @@ class Creditor
             // set the owning side to null (unless already changed)
             if ($entityImage->getCreditor() === $this) {
                 $entityImage->setCreditor(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, EntityImage>
+     */
+    public function getCardImages(): Collection
+    {
+        return $this->cardImages;
+    }
+
+    public function addCardImage(ExpansionCardImage $expansionCardImage): self
+    {
+        if (!$this->cardImages->contains($expansionCardImage)) {
+            $this->cardImages->add($expansionCardImage);
+            $expansionCardImage->setCreditor($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCardImage(ExpansionCardImage $expansionCardImage): self
+    {
+        if ($this->cardImages->removeElement($expansionCardImage)) {
+            // set the owning side to null (unless already changed)
+            if ($expansionCardImage->getCreditor() === $this) {
+                $expansionCardImage->setCreditor(null);
             }
         }
 

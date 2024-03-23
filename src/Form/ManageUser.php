@@ -10,6 +10,9 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 class ManageUser extends AbstractType
 {
+    /**
+     * @return void
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder

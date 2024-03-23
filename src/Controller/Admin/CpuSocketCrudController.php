@@ -2,9 +2,9 @@
 
 namespace App\Controller\Admin;
 
+use App\Controller\Admin\Type\EntityDocumentationCrudType;
+use App\Controller\Admin\Type\EntityImageCrudType;
 use App\Entity\CpuSocket;
-use App\Form\Type\EntityDocumentationType;
-use App\Form\Type\EntityImageType;
 use App\Form\Type\ProcessorPlatformTypeForm;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
@@ -48,6 +48,7 @@ class CpuSocketCrudController extends AbstractCrudController
             ->add(Crud::PAGE_EDIT, $elogs)
             ->add(Crud::PAGE_INDEX, $view)
             ->add(Crud::PAGE_EDIT, $eview)
+            ->remove(Crud::PAGE_INDEX, Action::BATCH_DELETE)
             ->setPermission(Action::DELETE, 'ROLE_ADMIN')
             ->setPermission(Action::EDIT, 'ROLE_ADMIN')
             ->setPermission(Action::INDEX, 'ROLE_ADMIN');
@@ -63,7 +64,7 @@ class CpuSocketCrudController extends AbstractCrudController
     public function configureFields(string $pageName): iterable
     {
         yield FormField::addTab('Basic Data')
-            ->setIcon('info')
+            ->setIcon('fa fa-info')
             ->onlyOnForms();
         yield IdField::new('id')
             ->onlyOnIndex();
@@ -81,16 +82,16 @@ class CpuSocketCrudController extends AbstractCrudController
             ->setLanguage('markdown')
             ->onlyOnForms();
         yield FormField::addTab('Attachments')
-            ->setIcon('download')
+            ->setIcon('fa fa-download')
             ->onlyOnForms();
         yield CollectionField::new('entityImages', 'Images')
-            ->setEntryType(EntityImageType::class)
+            ->useEntryCrudForm(EntityImageCrudType::class)
             ->renderExpanded()
             ->setFormTypeOption('error_bubbling', false)
             ->setColumns(6)
             ->onlyOnForms();
         yield CollectionField::new('entityDocumentations', 'Documentation')
-            ->setEntryType(EntityDocumentationType::class)
+            ->useEntryCrudForm(EntityDocumentationCrudType::class)
             ->renderExpanded()
             ->setFormTypeOption('error_bubbling', false)
             ->setColumns(6)

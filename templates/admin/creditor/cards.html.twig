@@ -1,0 +1,47 @@
+{% extends '@EasyAdmin/page/content.html.twig' %}
+{% block page_title %}Expansion cards with images from: {{name}}{% endblock %}
+{% block page_content %}
+    <div class="show-nav-ea">
+        <label onclick="window.location.href = '{{ urlBoards }}';"><img src="{{ absolute_url(asset('build/icons/board.svg')) }}" alt="" width="24" height="24">Motherboards</label>
+        <input type="radio" name="tabs" checked>
+        <label><img src="{{ absolute_url(asset('build/icons/card.svg')) }}" alt="" width="24" height="24">Expansion cards</label>
+        <label onclick="window.location.href = '{{ urlChips }}';"><img src="{{ absolute_url(asset('build/icons/chip.svg')) }}" alt="" width="24" height="24">Chips</label>
+        <label onclick="window.location.href = '{{ urlCpus }}';"><img src="{{ absolute_url(asset('build/icons/486.svg')) }}" alt="" width="24" height="24">CPUs</label>
+        <label onclick="window.location.href = '{{ urlHdds }}';"><img src="{{ absolute_url(asset('build/icons/hdd.svg')) }}" alt="" width="24" height="24">Hard drives</label>
+        <label onclick="window.location.href = '{{ urlCdds }}';"><img src="{{ absolute_url(asset('build/icons/cd_drive.svg')) }}" alt="" width="24" height="24">Optical drives</label>
+        <label onclick="window.location.href = '{{ urlFdds }}';"><img src="{{ absolute_url(asset('build/icons/floppy_drive.svg')) }}" alt="" width="24" height="24">Floppy drives</label>
+    </div>
+    {% if cards is defined and cards is not empty %}
+        <div class="results">
+            {{ knp_pagination_render(cards, 'macros/pagination.html.twig') }}
+            <div class="perks">
+                <div id="index-datetime" class="perks-list">
+                {% for card in cards %}
+                    <div class="perk">
+                        <div class="perk-image">
+                        {% if card.getImages() is not empty %}
+                            {% set imgtype_count = 0 %}
+                            {% for image in card.getImages()|sort((a, b) => a.getFileName() <=> b.getFileName())|slice(0, 1) %}
+                                <a href="{{ vich_uploader_asset(image, 'imageFile')}}" class="glightbox"><img src="
+                                    {{ vich_uploader_asset(image, 'imageFile') | imagine_filter('show_thumb') }}" alt="" loading="lazy" width="250" height="200" title="Click to preview image"></a>
+                                {% set imgtype_count = imgtype_count + 1 %}
+                            {% endfor %}
+                            {% if imgtype_count == 0 %}
+                                <img src="{{ absolute_url(asset('build/images/missing/card-missing.jpg')) }}" loading="lazy" width="250" height="200" title="no images available :(">
+                            {% endif %}
+                        {% else %}
+                            <img src="{{ absolute_url(asset('build/images/missing/card-missing.jpg')) }}" loading="lazy" width="250" height="200" title="no images available :(">
+                        {% endif %}</div>
+                        <a href="{{ path("expansioncard_show", {id:card.getId()}) }}" title="Click to visit page">
+                            <div class="perk-name">{{ card.getFullName() }}</div>
+                        </a>
+                    </div>
+                {% endfor %}
+                </div>
+            </div>
+            {{ knp_pagination_render(cards, 'macros/pagination.html.twig') }}
+        </div>
+    {% else %}
+        No images
+    {% endif %}
+{% endblock %}

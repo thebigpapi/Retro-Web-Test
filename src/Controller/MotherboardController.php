@@ -13,12 +13,12 @@ use App\Repository\MotherboardIdRedirectionRepository;
 use App\Repository\MotherboardRepository;
 use App\Repository\ProcessorPlatformTypeRepository;
 use App\Repository\ExpansionChipTypeRepository;
-use App\Repository\PSUConnectorRepository;
+
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\ClickableInterface;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\Routing\Annotation\Route;
+
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
@@ -37,7 +37,7 @@ class MotherboardController extends AbstractController
 
     public function addArrayCriteria(Request $request, array &$criterias, string $htmlId, string $sqlId): void
     {
-        $entityIds = $request->query->get($htmlId) ?? $request->request->get($htmlId);
+        $entityIds = $request->query->all($htmlId) ?? $request->request->all($htmlId);
         $entityArray = null;
         if ($entityIds) {
             if (is_array($entityIds)) {
@@ -79,6 +79,7 @@ class MotherboardController extends AbstractController
         FormFactorRepository $formFactorRepository,
         ProcessorPlatformTypeRepository $processorPlatformTypeRepository
     ): Response {
+        $latestMotherboards = $motherboardRepository->findLatest(8);
         $form = $this->_searchFormHandler($request, $manufacturerRepository, $cpuSocketRepository,
             $formFactorRepository, $processorPlatformTypeRepository);
 
@@ -92,9 +93,10 @@ class MotherboardController extends AbstractController
         if (empty($criterias)) {
             return $this->render('motherboard/search.html.twig', [
                 'form' => $form->createView(),
+                'latestMotherboards' => $latestMotherboards,
             ]);
         }
-        
+
         $data = $motherboardRepository->findByWithJoin($criterias);
         $motherboards = $paginator->paginate(
             $data,
@@ -374,11 +376,14 @@ class MotherboardController extends AbstractController
         if ($form['platform2']->getData()) {
             $parameters['platform2'] = $form['platform2']->getData()->getId();
         }
-
         $slots = $form['motherboardExpansionSlots']->getData();
         if ($slots) {
             $parameters['expansionSlotsIds'] = array();
+            $loopCount = 0;
             foreach ($slots as $slot) {
+                if($loopCount >= 6)
+                    break;
+                $loopCount++;
                 $countArray = $this->convertCount($slot['count']);
                 if ($countArray['value'] !== 0) {
                     $slotCount = array('id' => $slot['expansion_slot']->getId(), 'count' => $countArray['value'], 'sign' => $countArray['sign']);
@@ -393,7 +398,11 @@ class MotherboardController extends AbstractController
         $ports = $form['motherboardIoPorts']->getData();
         if ($ports) {
             $parameters['ioPortsIds'] = array();
+            $loopCount = 0;
             foreach ($ports as $port) {
+                if($loopCount >= 6)
+                    break;
+                $loopCount++;
                 $countArray = $this->convertCount($port['count']);
                 if ($countArray['value'] !== 0) {
                     $portCount = array('id' => $port['io_port']->getId(), 'count' => $countArray['value'], 'sign' => $countArray['sign']);
@@ -408,7 +417,11 @@ class MotherboardController extends AbstractController
         $expchips = $form['expansionChips']->getData();
         if ($expchips) {
             $parameters['expansionChipIds'] = array();
+            $loopCount = 0;
             foreach ($expchips as $chip) {
+                if($loopCount >= 6)
+                    break;
+                $loopCount++;
                 array_push($parameters['expansionChipIds'], $chip->getId());
             }
         }
@@ -421,28 +434,6 @@ class MotherboardController extends AbstractController
         }
         return $parameters;
     }
-
-    /* #[Route('/motherboards/index/{letter}', name: "moboindex", requirements: ['letter' => '\w|[?]'], methods: ['GET'])]
-    public function index(
-        PaginatorInterface $paginator,
-        string $letter,
-        MotherboardRepository $motherboardRepository,
-        Request $request
-    ): Response {
-        $letter === "?" ? $letter = "" : "";
-        $data = $motherboardRepository->findAllAlphabetic($letter);
-
-        $motherboards = $paginator->paginate(
-            $data,
-            $request->query->getInt('page', 1),
-            $this->getParameter('app.pagination.max')
-        );
-
-        return $this->render('motherboard/index.html.twig', [
-            'motherboards' => $motherboards,
-            'letter' => $letter,
-        ]);
-    } */
 
     private function _searchFormHandler(
         Request $request,
@@ -507,45 +498,10 @@ class MotherboardController extends AbstractController
             $output['sign'] = '<=';
         return $output;
     }
-    #[Route('/cpufamily/{id}', name: 'cpufamily_show', requirements: ['id' => '\d+'])]
-    public function showFamily(int $id, ProcessorPlatformTypeRepository $processorPlatformTypeRepository): Response {
-        $family = $processorPlatformTypeRepository->find($id);
 
-        if (!$family) {
-            throw $this->createNotFoundException(
-                'No CPU family found for id ' . $id
-            );
-        }
-        return $this->render('misc/cpufamily.html.twig', [
-            'family' => $family,
-            'controller_name' => 'MotherboardController',
-        ]);
-    }
-    #[Route('/cpusocket/{id}', name: 'cpusocket_show', requirements: ['id' => '\d+'])]
-    public function showSocket(int $id, CpuSocketRepository $cpuSocketRepository): Response {
-        $socket = $cpuSocketRepository->find($id);
-
-        if (!$socket) {
-            throw $this->createNotFoundException(
-                'No CPU socket found for id ' . $id
-            );
-        }
-        return $this->render('misc/cpusocket.html.twig', [
-            'socket' => $socket,
-            'controller_name' => 'MotherboardController',
-        ]);
-    }
-    #[Route('/psu-connector/{id}', name: 'psu_connector_show', requirements: ['id' => '\d+'])]
-    public function showPsuConnector(int $id, PSUConnectorRepository $psuConnectorRepository): Response {
-        $conn = $psuConnectorRepository->find($id);
-
-        if (!$conn) {
-            throw $this->createNotFoundException(
-                'No PSU connector found for id ' . $id
-            );
-        }
-        return $this->render('misc/psu_connector.html.twig', [
-            'psu_connector' => $conn,
+    #[Route('/motherboards/help', name: 'mobohelp')]
+    public function searchHelp(): Response {
+        return $this->render('motherboard/help.html.twig', [
             'controller_name' => 'MotherboardController',
         ]);
     }

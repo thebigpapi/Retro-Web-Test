@@ -16,7 +16,7 @@ class MotherboardImageType
     private $id;
 
     #[ORM\Column(type: 'string', length: 255)]
-    #[Assert\Length(max: 255, maxMessage: 'Name is longer than {{ limit }} characters, try to make it shorter.')]
+    #[Assert\Length(max: 255, maxMessage: 'Name is longer than {{ limit }} characters.')]
     private $name;
 
     #[ORM\OneToMany(targetEntity: MotherboardImage::class, mappedBy: 'motherboardImageType')]
@@ -25,6 +25,10 @@ class MotherboardImageType
     public function __construct()
     {
         $this->motherboardImages = new ArrayCollection();
+    }
+    public function __toString(): string
+    {
+        return $this->getName();
     }
     public function getId(): ?int
     {

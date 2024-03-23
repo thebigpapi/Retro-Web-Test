@@ -17,11 +17,14 @@ class ExpansionChipType
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Assert\Length(max:255, maxMessage: 'Name is longer than {{ limit }} characters, try to make it shorter.')]
+    #[Assert\Length(max:255, maxMessage: 'Name is longer than {{ limit }} characters.')]
     private ?string $name = null;
 
     #[ORM\OneToMany(targetEntity: ExpansionChip::class, mappedBy: 'type', orphanRemoval: true, cascade: ['persist'])]
     private $expansionChips;
+
+    #[ORM\Column]
+    private array $template = [];
 
     public function __construct()
     {
@@ -75,5 +78,20 @@ class ExpansionChipType
         }
 
         return $this;
+    }
+    public function getTemplate(): array
+    {
+        return $this->template;
+    }
+
+    public function setTemplate(array $template): static
+    {
+        $this->template = $template;
+
+        return $this;
+    }
+    public function getTemplateAsText(): string
+    {
+        return json_encode($this->template, \JSON_PARTIAL_OUTPUT_ON_ERROR);
     }
 }

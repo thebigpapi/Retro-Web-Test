@@ -14,28 +14,28 @@ class HardDrive extends StorageDevice
     #[Assert\Positive(message: "Capacity should be above 0")]
     private $capacity;
 
-    #[ORM\Column(type: 'smallint', nullable: true)]
-    #[Assert\LessThan(65535, message: "Cylinders should be smaller than 65535")]
+    #[ORM\Column(type: 'integer', nullable: true)]
+    #[Assert\LessThan(65536, message: "Cylinders should be smaller than 65536")]
     #[Assert\Positive(message: "Cylinders should be above 0")]
     private $cylinders;
 
     #[ORM\Column(type: 'smallint', nullable: true)]
-    #[Assert\LessThan(65535, message: "Heads should be smaller than 65535")]
+    #[Assert\LessThan(32768, message: "Heads should be smaller than 32768")]
     #[Assert\Positive(message: "Heads should be above 0")]
     private $heads;
 
     #[ORM\Column(type: 'smallint', nullable: true)]
-    #[Assert\LessThan(65535, message: "Sectors per track should be smaller than 65535")]
+    #[Assert\LessThan(32768, message: "Sectors per track should be smaller than 32768")]
     #[Assert\Positive(message: "Sectors per track should be above 0")]
     private $sectors;
 
-    #[ORM\Column(type: 'smallint', nullable: true)]
-    #[Assert\LessThan(65535, message: "RPM should be smaller than 65535")]
+    #[ORM\Column(type: 'integer', nullable: true)]
+    #[Assert\LessThan(65536, message: "RPM should be smaller than 65536")]
     #[Assert\Positive(message: "RPM should be above 0")]
     private $spindleSpeed;
 
     #[ORM\Column(type: 'smallint', nullable: true)]
-    #[Assert\LessThan(65535, message: "Platter count should be smaller than 65535")]
+    #[Assert\LessThan(32768, message: "Platter count should be smaller than 32768")]
     #[Assert\Positive(message: "Platter count should be above 0")]
     private $platters;
 

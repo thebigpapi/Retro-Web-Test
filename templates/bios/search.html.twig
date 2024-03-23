@@ -11,43 +11,32 @@
 	<script src="/build/js/search.js" defer></script>
 {% endblock %}
 {% block subnav %}
-<a href="{{ path('mobosearch') }}" class="nav-link">
-	<span class="navbar-label">Motherboard</span>
-</a>
-<a href="{{ path('biossearch') }}" class="nav-link active">
-	<span class="navbar-label">BIOS</span>
-</a>
+<li class="flex navbar-li">
+    <div class="flex items-center">
+        <svg class="navbar-svg" viewBox="0 0 24 44" preserveAspectRatio="none" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M.293 0l22 22-22 22h1.414l22-22-22-22H.293z"></path>
+        </svg>
+        <a class="ml-4" href="{{ path('biossearch') }}">
+			<img src="{{ absolute_url(asset('build/icons/awchip.svg')) }}" width="24" height="24" alt="bios">
+            <code class="text-pink-500">BIOS images</code>
+        </a>
+    </div>
+</li>
 {% endblock %}
 {% block body %}
 	{{ form_start(form, {'method': 'POST', 'name': 'search', 'action':path("biossearch"), 'attr':{'onkeydown': 'return event.key != \'Enter\'', 'data-live-action': path('bioslivewrapper')}}) }}
 	<fieldset id="search-fieldset">
-		<div class="title">Search for a BIOS</div>
+		<div class="title">
+			<img src="{{ absolute_url(asset('build/icons/awchip.svg')) }}" alt="chip" width="32" height="32">
+			Search for a BIOS
+		</div>
 		<section class="search-form-grid">
 			<div class="search-form-entry">
-				<label class="search-form-label" for="search_manufacturer" title="This is the BIOS manufacturer (e.g: AMI, Award, Phoenix)">
+				<label class="search-form-label" for="search_manufacturer">
 					<span>BIOS manufacturer</span>
-					<img src="{{ absolute_url(asset('build/icons/help.svg')) }}" alt="" width="16" height="16">
 				</label>
 				<div class="search-form-widget">
 					<div id="setmanuf">{{ form_widget(form.manufacturer, {'attr': {'class': 'sform'}}) }}</div>
-				</div>
-			</div>
-			<div class="search-form-entry">
-				<label class="search-form-label" for="search_moboManufacturer" title="This is the motherboard manufacturer (e.g: ASUS, Gigabyte)">
-					<span>Motherboard manufacturer</span>
-					<img src="{{ absolute_url(asset('build/icons/help.svg')) }}" alt="" width="16" height="16">
-				</label>
-				<div class="search-form-widget">
-					<div id="setmanuf">{{ form_widget(form.moboManufacturer, {'attr': {'class': 'sform'}}) }}</div>
-				</div>
-			</div>
-			<div class="search-form-entry">
-				<label class="search-form-label" for="search_chipset" title="Select a chipset from the list by typing its name">
-					<span>Chipset</span>
-					<img src="{{ absolute_url(asset('build/icons/help.svg')) }}" alt="" width="16" height="16">
-				</label>
-				<div class="search-form-widget">
-					<div class="search-chipset-ts">{{ form_widget(form.chipset) }}</div>
 				</div>
 			</div>
 			<div class="search-form-entry">
@@ -58,48 +47,144 @@
 					<div>{{ form_widget(form.post_string) }}</div>
 				</div>
 			</div>
-
-			<div class="search-form-entry">
-				<label class="search-form-label" for="search_core_version" title="This is the version of the BIOS's core (e.g. 4.51pg)">
-					<span>Core version</span>
-					<img src="{{ absolute_url(asset('build/icons/help.svg')) }}" alt="" width="16" height="16">
-				</label>
-				<div class="search-form-widget">
-					<div>{{ form_widget(form.core_version, {'attr': {'style': 'width:15%', 'size': '50'}}) }}</div>
-				</div>
-			</div>
-			<div class="search-form-entry">
-				<label class="search-form-label" for="search_file_name" title="This is the name of the uploaded file">
-					<span>File name</span>
-					<img src="{{ absolute_url(asset('build/icons/help.svg')) }}" alt="" width="16" height="16">
-				</label>
-				<div class="search-form-widget">
-					<div>{{ form_widget(form.file_name, {'attr': {'style': 'width:15%', 'size': '50'}}) }}</div>
-				</div>
-			</div>
-			<div class="search-form-filter">
-				<label class="search-form-label" title="">
-					<span>Expansion chips</span>
-					{% include 'macros/buttons.html.twig' with {'type':'add', 'action': 'expansionChips'} %}
-				</label>
-				<div class="search-form-widget filter-list" id="expansionChips-fields-list" data-widget-counter="{{ form.expansionChips|length }}" data-prototype="
-					{{ form_widget(form.expansionChips.vars.prototype, {'attr': {'style': 'width:50%'}})|e }}
-					{% include 'macros/buttons.html.twig' with {'type':'del'} %}</div>">
-					{% for expchip in form.expansionChips %}
-						<div class="editor-row">
-							{{ form_widget(expchip, {'attr': {'style': 'width:50%'}}) }}
-							{% include 'macros/buttons.html.twig' with {'type':'del'} %}
-							{{ form_errors(expchip) }}
-						</div>
-					{% endfor %}
-				</div>
-			</div>
+			{% include 'macros/searchitems.html.twig' with {'datatarget': 'bios', 'dataresetids': 'search_chipsetManufacturer', 'bios_list' : true} %}
 		</section>
-		{% include 'macros/searchitems.html.twig' with {'datatarget': 'bios', 'dataresetids': 'search_chipsetManufacturer', 'bios_list' : true} %}
+		<div class="dropdown-trw">
+			<label class="dropdown-header">
+				<img src="{{ absolute_url(asset('build/icons/search.svg')) }}" alt="search" width="24" height="24">
+				<span>Advanced search<small class="dropdown-tooltip"> (click to expand)</small></span>
+				<input class="dropdown" type="checkbox" />
+			</label>
+			<div class="dropdown-contents">
+				<section class="search-form-grid">
+					<div class="search-form-entry">
+						<label class="search-form-label" for="search_moboManufacturer">
+							<span>Motherboard manufacturer</span>
+						</label>
+						<div class="search-form-widget">
+							<div id="setmanuf">{{ form_widget(form.moboManufacturer, {'attr': {'class': 'sform'}}) }}</div>
+						</div>
+					</div>
+					<div class="search-form-entry">
+						<label class="search-form-label" for="search_chipset">
+							<span>Chipset</span>
+						</label>
+						<div class="search-form-widget">
+							<div class="search-chipset-ts">{{ form_widget(form.chipset) }}</div>
+						</div>
+					</div>
+
+					<div class="search-form-entry">
+						<label class="search-form-label" for="search_bios_version">
+							<span>BIOS version</span>
+						</label>
+						<div class="search-form-widget">
+							<div>{{ form_widget(form.bios_version) }}</div>
+						</div>
+					</div>
+					<div class="search-form-entry">
+						<label class="search-form-label" for="search_core_version">
+							<span>Core version</span>
+						</label>
+						<div class="search-form-widget">
+							<div>{{ form_widget(form.core_version) }}</div>
+						</div>
+					</div>
+					<div class="search-form-entry">
+						<label class="search-form-label" for="search_file_name">
+							<span>File name</span>
+						</label>
+						<div class="search-form-widget">
+							<div>{{ form_widget(form.file_name, {'attr': {'style': 'width:15%', 'size': '50'}}) }}</div>
+						</div>
+					</div>
+					<div class="search-form-entry">
+						<label class="search-form-label flex" title="">
+							<span>Expansion chips</span>
+							{% include 'macros/buttons.html.twig' with {'type':'add', 'action': 'expansionChips'} %}
+						</label>
+						<div class="search-form-widget filter-list" id="expansionChips-fields-list" data-widget-counter="{{ form.expansionChips|length }}" data-prototype="
+							{{ form_widget(form.expansionChips.vars.prototype, {'attr': {'style': 'width:50%'}})|e }}
+							{% include 'macros/buttons.html.twig' with {'type':'del'} %}</div>">
+							{% for expchip in form.expansionChips %}
+								<div class="editor-row">
+									{{ form_widget(expchip, {'attr': {'style': 'width:50%'}}) }}
+									{% include 'macros/buttons.html.twig' with {'type':'del'} %}
+									{{ form_errors(expchip) }}
+								</div>
+							{% endfor %}
+						</div>
+					</div>
+					<div class="search-form-entry">
+						<label class="search-form-label">
+							<span></span>
+						</label>
+						<a class='button-widget' href="{{path("bioshelp")}}" style="margin-right: 5px">
+							<img src='{{ absolute_url(asset('build/icons/search.svg')) }}' alt='' width='16' height='16' style='vertical-align:middle;padding:3px;'>How do I use the search page?</a>
+						<a class='button-widget' href="{{path("bios_list")}}">
+							<img src='{{ absolute_url(asset('build/icons/awchip.svg')) }}' alt='' width='16' height='16' style='vertical-align:middle;padding:3px;'>BIOS IDs list</a>
+					</div>
+				</section>
+			</div>
+		</div>
 	</fieldset>
 	{{ form_end(form, {render_rest: false}) }}
 	<!-- Search results -->
 	<section id="search_liveResults">
+	{% if latestBios is defined %}
+	<div class="perks">
+		<p><b>Last edited BIOSes</b></p>
+		<div class="results lst">
+			<div class="plain-list w300p table">
+				<div class="list-entry centered head">
+					<div>Motherboard</div>
+					<div>POST string</div>
+					<div>Type</div>
+					<div>Version</div>
+					<div>File</div>
+					<div style="min-width:7rem">Last updated</div>
+				</div>
+				{% for b in latestBios %}
+				<div class="list-entry centered bios {% if loop.index is divisible by(2) %}alt{% endif %}">
+					<div class="header-label">Motherboard</div>
+					<div>
+						<a class="result-link" href="{{ path("motherboard_show", {id: b["id"]}) }}">
+							{{ b["manName"]}}&nbsp;{{ b["name"] }}
+						</a>
+					</div>
+					<div class="header-label">POST string</div>
+					<div class="monospace">{{ b[0].getPostString() }}</div>
+					<div class="header-label">Type</div>
+					<div>{{ b["bmanName"] }} {{ b[0].getCoreVersion() }}</div>
+					<div class="header-label">Version</div>
+					<div>{{ b[0].getBoardVersion() ?: "[unknown]" }}</div>
+					<div class="header-label">File</div>
+					<div>
+						{% if b[0].getFileName() is not null %}
+							<a class="combo" href="{{ vich_uploader_asset(b[0], 'romFile') }}">
+								<img src="{{ absolute_url(asset('build/icons/dw.svg')) }}" alt="" width="16" height="16">
+								<span>
+									{% set fname = b[0].getFileName() %}
+									{{ fname|slice(0, fname|length - 27) ~ fname[fname|length - 4 :] }}
+								</span>
+							</a>
+						{% else %}
+							<span>N/A</span>
+						{% endif %}
+					</div>
+					<div class="header-label">Last updated</div>
+					<div>
+						<a href="{{ path('dh_auditor_show_entity_history', { 'entity': 'App-Entity-MotherboardBios', 'id': b[0].getId() }) }}">
+							<img src="{{ absolute_url(asset('build/icons/calendar.svg')) }}" alt="pwr" width="16" height="16">
+						</a>
+						<i>{{ b[0].getUpdatedAt()|date("Y-m-d")}}</i>
+					</div>
+				</div>
+				{% endfor %}
+			</div>
+		</div>
+	</div>
+	{% endif %}
 	{% if bios is defined %}
 		{% include 'bios/result.html.twig' with {'bios': bios, 'route': true} %}
 	{% endif %}

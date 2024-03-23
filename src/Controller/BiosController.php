@@ -4,7 +4,7 @@ namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -18,9 +18,10 @@ use App\Repository\MotherboardBiosRepository;
 class BiosController extends AbstractController
 {
     #[Route(path: '/bios/', name: 'biossearch', methods: ['GET', 'POST'])]
-    public function searchResultBios(Request $request, PaginatorInterface $paginator, ExpansionChipRepository $expansionChipRepository, MotherboardBiosRepository $motherboardBiosRepository, ManufacturerRepository $manufacturerRepository)
+    public function searchResultBios(Request $request, PaginatorInterface $paginator, MotherboardBiosRepository $motherboardBiosRepository, ManufacturerRepository $manufacturerRepository)
     {
-        $form = $this->_searchFormHandlerBios($request, $expansionChipRepository, $manufacturerRepository);
+        $latestBios = $motherboardBiosRepository->findLatest(14);
+        $form = $this->_searchFormHandlerBios($request, $manufacturerRepository);
 
         if ($form->isSubmitted() && $form->isValid()) {
             return $this->redirect($this->generateUrl('biossearch', $this->searchFormToParamBios($request, $form)));
@@ -31,6 +32,7 @@ class BiosController extends AbstractController
         if (empty($criterias)) {
             return $this->render('bios/search.html.twig', [
                 'form' => $form->createView(),
+                'latestBios' => $latestBios,
             ]);
         }
         $data = $motherboardBiosRepository->findBios($criterias);
@@ -47,9 +49,9 @@ class BiosController extends AbstractController
     }
 
     #[Route('/bios/live', name: 'bioslivewrapper')]
-    public function liveSearchBios(Request $request, ExpansionChipRepository $expansionChipRepository, ManufacturerRepository $manufacturerRepository): Response
+    public function liveSearchBios(Request $request, ManufacturerRepository $manufacturerRepository): Response
     {
-        $form = $this->_searchFormHandlerBios($request, $expansionChipRepository, $manufacturerRepository);
+        $form = $this->_searchFormHandlerBios($request, $manufacturerRepository);
 
         return $this->redirect($this->generateUrl('bioslivesearch', $this->searchFormToParamBios($request, $form)));
     }
@@ -90,6 +92,10 @@ class BiosController extends AbstractController
         if ($postString) {
             $criterias['post_string'] = "$postString";
         }
+        $biosVersion = htmlentities($request->query->get('biosVersion') ?? '');
+        if ($biosVersion) {
+            $criterias['bios_version'] = "$biosVersion";
+        }
         $coreVersion = htmlentities($request->query->get('coreVersion') ?? '');
         if ($coreVersion) {
             $criterias['core_version'] = "$coreVersion";
@@ -120,7 +126,7 @@ class BiosController extends AbstractController
         } elseif ($chipsetId == "NULL") {
             $criterias['chipset_id'] = null;
         }
-        $chipIds = $request->query->get('expansionChipIds') ?? $request->request->get('expansionChipIds');
+        $chipIds = $request->query->all('expansionChipIds') ?? $request->request->all('expansionChipIds');
         $chipArray = null;
         if ($chipIds) {
             if (is_array($chipIds)) {
@@ -145,6 +151,9 @@ class BiosController extends AbstractController
         if ($postString = $form['post_string']->getData()) {
             $parameters['postString'] = $postString;
         }
+        if ($biosVersion = $form['bios_version']->getData()) {
+            $parameters['biosVersion'] = $biosVersion;
+        }
         if ($coreVersion = $form['core_version']->getData()) {
             $parameters['coreVersion'] = $coreVersion;
         }
@@ -160,7 +169,10 @@ class BiosController extends AbstractController
         $expchips = $form['expansionChips']->getData();
         if ($expchips) {
             $parameters['expansionChipIds'] = array();
+            $loopCount = 0;
             foreach ($expchips as $chip) {
+                if($loopCount >= 6)
+                    break;
                 if($chip != null)
                     array_push($parameters['expansionChipIds'], $chip->getId());
             }
@@ -185,19 +197,13 @@ class BiosController extends AbstractController
 
         return $parameters;
     }
-    private function _searchFormHandlerBios(Request $request, ExpansionChipRepository $expansionChipRepository, ManufacturerRepository $manufacturerRepository): FormInterface
+    private function _searchFormHandlerBios(Request $request, ManufacturerRepository $manufacturerRepository): FormInterface
     {
-        $chipsetManufacturers = $manufacturerRepository->findAllChipsetManufacturer();
         $biosManufacturers = $manufacturerRepository->findAllBiosManufacturer();
         $moboManufacturers = $manufacturerRepository->findAllMotherboardManufacturer();
-        $expansionChip = $expansionChipRepository->findAll();
-        $unidentifiedMan = new Manufacturer();
-        $unidentifiedMan->setName("Not identified");
         $form = $this->createForm(Search::class, array(), [
             'biosManufacturers' => $biosManufacturers,
             'moboManufacturers' => $moboManufacturers,
-            'expansionChips' => $expansionChip,
-            'chipsetManufacturers' => $chipsetManufacturers
         ]);
 
         $form->handleRequest($request);
@@ -210,10 +216,35 @@ class BiosController extends AbstractController
     {
         $biosCodes = $manufacturerRepository->findAllBiosManufacturerAdv();
         $chipdata = $manufacturerRepository->findAllChipsetBiosManufacturer();
+        $chipCodes = [];
+        foreach($chipdata as $manuf => $arr){
+            $key = "";
+            $val = "";
+            $code = [];
+            foreach($arr as $row){
+                if($row[0] == $key){
+                    if($row[1] != $val){
+                        if($val == "")
+                            $val = $row[0] . ": " . $manuf . " ";
+                        $val .= ", " . $row[1];
+                    }
+                }
+                else{
+                    if($val != ""){
+                        array_push($code, $val);
+                        $val = "";
+                    }
+                    if($val == "")
+                        $val = $row[0] . ": " . $manuf . " " . $row[1];
+                }
+                $key = $row[0];
+            }
+            $chipCodes[$manuf] = $code;
+        }
         return $this->render('bios/list.html.twig', [
             'controller_name' => 'MainController',
             'biosCodes' => $biosCodes,
-            'chipCodes' => $chipdata,
+            'chipCodes' => $chipCodes,
         ]);
     }
     #[Route('/bios/bot/string', name:'bios_bot_string', methods:['POST'])]
@@ -233,5 +264,22 @@ class BiosController extends AbstractController
                 return new JsonResponse($boards);
         }
         return new JsonResponse([]);
+    }
+    #[Route('/bios/bot/hash', name:'bios_bot_hash', methods:['POST', 'GET'])]
+    public function getBIOSListHash(Request $request, MotherboardBiosRepository $motherboardBiosRepository): JsonResponse
+    {
+        $list = json_decode($request->request->get('list'));
+        $output = [];
+        foreach($list as $file => $hash){
+            $output[$file] = $motherboardBiosRepository->findByHash($hash);
+        }
+        return new JsonResponse($output);
+    }
+
+    #[Route('/bios/help', name: 'bioshelp')]
+    public function searchHelp(): Response {
+        return $this->render('bios/help.html.twig', [
+            'controller_name' => 'BiosController',
+        ]);
     }
 }

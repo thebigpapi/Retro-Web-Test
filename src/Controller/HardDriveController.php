@@ -13,7 +13,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -31,9 +31,9 @@ class HardDriveController extends AbstractController
                 throw $this->createNotFoundException(
                     'No hard drive found for id ' . $id
                 );
-            } 
+            }
             return $this->redirect($this->generateUrl('hard_drive_show', array("id" => $idRedirection)));
-        } 
+        }
 
         return $this->render('harddrive/show.html.twig', [
             'harddrive' => $hdd,
@@ -43,6 +43,7 @@ class HardDriveController extends AbstractController
     #[Route(path: '/harddrives/', name: 'hddsearch', methods: ['GET'])]
     public function searchResultHdd(Request $request, PaginatorInterface $paginator, HardDriveRepository $hddRepository, ManufacturerRepository $manufacturerRepository)
     {
+        $latestHdds = $hddRepository->findLatest(8);
         $form = $this->_searchFormHandlerHdd($request, $manufacturerRepository);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -50,11 +51,12 @@ class HardDriveController extends AbstractController
         }
         //get criterias
         $criterias = $this->getCriteriaHdd($request);
-        $showImages = boolval(htmlentities($request->query->get('showImages')));
+        $showImages = boolval(htmlentities($request->query->get('showImages') ?? ''));
         $maxItems = $request->query->getInt('itemsPerPage', $request->request->getInt('itemsPerPage', $this->getParameter('app.pagination.max')));
         if (empty($criterias)) {
             return $this->render('harddrive/search.html.twig', [
                 'form' => $form->createView(),
+                'latestHdds' => $latestHdds,
             ]);
         }
 
@@ -82,7 +84,7 @@ class HardDriveController extends AbstractController
     public function liveResultsHdd(Request $request, PaginatorInterface $paginator, HardDriveRepository $hddRepository): Response
     {
         $criterias = $this->getCriteriaHdd($request);
-        $showImages = boolval(htmlentities($request->query->get('showImages')));
+        $showImages = boolval(htmlentities($request->query->get('showImages') ?? ''));
         $maxItems = $request->query->getInt('itemsPerPage', $request->request->getInt('itemsPerPage', $this->getParameter('app.pagination.max')));
         $data = $hddRepository->findByHdd($criterias);
         $hdds = $paginator->paginate(
@@ -249,5 +251,12 @@ class HardDriveController extends AbstractController
         $form->handleRequest($request);
 
         return $form;
+    }
+
+    #[Route('/harddrives/help', name: 'hddhelp')]
+    public function searchHelp(): Response {
+        return $this->render('harddrive/help.html.twig', [
+            'controller_name' => 'HardDriveController',
+        ]);
     }
 }

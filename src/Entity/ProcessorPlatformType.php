@@ -16,7 +16,7 @@ class ProcessorPlatformType
     private $id;
 
     #[ORM\Column(type: 'string', length: 255)]
-    #[Assert\Length(max: 255, maxMessage: 'Name is longer than {{ limit }} characters, try to make it shorter.')]
+    #[Assert\Length(max: 255, maxMessage: 'Name is longer than {{ limit }} characters.')]
     private $name;
 
     #[ORM\ManyToMany(targetEntity: Motherboard::class, mappedBy: 'processorPlatformTypes')]
@@ -62,6 +62,9 @@ class ProcessorPlatformType
     #[ORM\ManyToMany(targetEntity: DramType::class, inversedBy: 'processorPlatformTypes')]
     private Collection $dramType;
 
+    #[ORM\OneToMany(mappedBy: 'processorPlatformType', targetEntity: CPUID::class, orphanRemoval: true, cascade: ['persist'])]
+    private Collection $cpuid;
+
     public function __construct()
     {
         $this->motherboards = new ArrayCollection();
@@ -72,6 +75,7 @@ class ProcessorPlatformType
         $this->instructionSets = new ArrayCollection();
         $this->entityDocumentations = new ArrayCollection();
         $this->dramType = new ArrayCollection();
+        $this->cpuid = new ArrayCollection();
     }
     public function __toString(): string
     {
@@ -407,6 +411,36 @@ class ProcessorPlatformType
     public function removeDramType(DramType $dramType): self
     {
         $this->dramType->removeElement($dramType);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, CPUID>
+     */
+    public function getCpuid(): Collection
+    {
+        return $this->cpuid;
+    }
+
+    public function addCpuid(CPUID $cpuid): static
+    {
+        if (!$this->cpuid->contains($cpuid)) {
+            $this->cpuid->add($cpuid);
+            $cpuid->setProcessorPlatformType($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCpuid(CPUID $cpuid): static
+    {
+        if ($this->cpuid->removeElement($cpuid)) {
+            // set the owning side to null (unless already changed)
+            if ($cpuid->getProcessorPlatformType() === $this) {
+                $cpuid->setProcessorPlatformType(null);
+            }
+        }
 
         return $this;
     }

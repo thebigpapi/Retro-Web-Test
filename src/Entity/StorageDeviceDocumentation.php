@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Entity\Traits\DocumentationTrait;
+use App\Entity\Traits\ImpreciseDateTrait;
 use App\Repository\StorageDeviceDocumentationRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
@@ -13,6 +14,7 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
 class StorageDeviceDocumentation
 {
     use DocumentationTrait;
+    use ImpreciseDateTrait;
 
     #[Vich\UploadableField(mapping:'storageDoc', fileNameProperty:'file_name')]
     private File|null $manualFile = null;

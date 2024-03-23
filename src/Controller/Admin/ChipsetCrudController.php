@@ -5,12 +5,14 @@ namespace App\Controller\Admin;
 use App\Entity\Chipset;
 use App\Entity\ChipsetAlias;
 use App\Entity\ChipsetBiosCode;
-use App\Form\Type\ChipsetAliasType;
-use App\Form\Type\ChipsetBiosCodeType;
-use App\Form\Type\ChipsetDocumentationType;
 use App\Form\Type\ExpansionChipType;
-use App\Form\Type\LargeFileChipsetType;
 use Doctrine\ORM\EntityManagerInterface;
+use App\Controller\Admin\Filter\ChipDocFilter;
+use App\Controller\Admin\Filter\ChipDriverFilter;
+use App\Controller\Admin\Type\Chipset\AliasCrudType;
+use App\Controller\Admin\Type\Chipset\BiosCodeCrudType;
+use App\Controller\Admin\Type\Chipset\DocumentationCrudType;
+use App\Controller\Admin\Type\Chipset\LargeFileCrudType;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
@@ -39,6 +41,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Security\Permission;
 use EasyCorp\Bundle\EasyAdminBundle\Config\KeyValueStore;
 use EasyCorp\Bundle\EasyAdminBundle\Collection\FieldCollection;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Response;
 
 class ChipsetCrudController extends AbstractCrudController
 {
@@ -58,7 +61,7 @@ class ChipsetCrudController extends AbstractCrudController
 
         if (Action::SAVE_AND_RETURN === $submitButtonName) {
             $entityId = $context->getEntity()->getInstance()->getId();
-            return $this->redirectToRoute('chipset_show', array('id'=>$entityId));
+            return $this->redirectToRoute('chipset_show', array('id' => $entityId));
         }
         return parent::getRedirectResponseAfterSave($context, $action);
     }
@@ -73,7 +76,7 @@ class ChipsetCrudController extends AbstractCrudController
         $view = Action::new('view', 'View')->linkToCrudAction('viewChipset');
         $eview = Action::new('eview', 'View')->linkToCrudAction('viewChipset')->setIcon('fa fa-magnifying-glass');
         $logs = Action::new('logs', 'Logs')->linkToCrudAction('viewLogs');
-        $elogs= Action::new('elogs', 'Logs')->linkToCrudAction('viewLogs')->setIcon('fa fa-history');
+        $elogs = Action::new('elogs', 'Logs')->linkToCrudAction('viewLogs')->setIcon('fa fa-history');
         return $actions
             ->add(Crud::PAGE_NEW, Action::SAVE_AND_CONTINUE)
             ->remove(Crud::PAGE_NEW, Action::SAVE_AND_ADD_ANOTHER)
@@ -82,6 +85,9 @@ class ChipsetCrudController extends AbstractCrudController
             ->add(Crud::PAGE_EDIT, $elogs)
             ->add(Crud::PAGE_INDEX, $view)
             ->add(Crud::PAGE_EDIT, $eview)
+            ->add(Crud::PAGE_DETAIL, $elogs)
+            ->add(Crud::PAGE_DETAIL, $eview)
+            ->remove(Crud::PAGE_INDEX, Action::BATCH_DELETE)
             ->setPermission(Action::DELETE, 'ROLE_ADMIN');
     }
     public function configureCrud(Crud $crud): Crud
@@ -99,6 +105,8 @@ class ChipsetCrudController extends AbstractCrudController
             ->add('manufacturer')
             ->add('name')
             ->add('part_no')
+            ->add(ChipDocFilter::new('documentations'))
+            ->add(ChipDriverFilter::new('drivers'))
             ->add('expansionChips')
             ->add('chipsetAliases')
             ->add('lastEdited');
@@ -106,22 +114,24 @@ class ChipsetCrudController extends AbstractCrudController
     public function configureFields(string $pageName): iterable
     {
         yield FormField::addTab('Basic Data')
-            ->setIcon('info')
+            ->setIcon('fa fa-info')
             ->onlyOnForms();
-        yield IdField::new('id')->onlyOnIndex();
-        yield TextField::new('getManufacturer','Manufacturer')
-            ->hideOnForm();
-        yield AssociationField::new('manufacturer','Manufacturer')
-            ->setColumns(4)
-            ->onlyOnForms();
+        yield IdField::new('id')->hideOnForm();
+        yield AssociationField::new('manufacturer', 'Manufacturer')
+            ->setColumns(4);
         yield TextField::new('part_no', 'Part number')
             ->setColumns(4);
         yield TextField::new('name', 'Name')
             ->setColumns(4);
         yield ArrayField::new('getPartsCached', 'Parts')
-            ->hideOnForm();
+            ->onlyOnIndex();
+        yield ArrayField::new('expansionChips', 'Parts')
+            ->onlyOnDetail();
         yield DateField::new('release_date', 'Release Date')
-            ->setColumns(2);
+            ->setColumns(2)
+            ->onlyOnForms();
+        yield TextField::new('getReleaseDateString', 'Release Date')
+            ->hideOnForm();
         yield ChoiceField::new('datePrecision', 'Display date format (optional)')
             ->setChoices([
                 'Year, month and day' => 'd',
@@ -134,6 +144,18 @@ class ChipsetCrudController extends AbstractCrudController
         yield UrlField::new('encyclopedia_link', 'Link')
             ->setColumns(4)
             ->hideOnIndex();
+        yield CollectionField::new('documentations', 'Docs')
+            ->setCustomOption('byCount', true)
+            ->onlyOnIndex();
+        yield CollectionField::new('getDrivers', 'Drivers')
+            ->setCustomOption('byCount', true)
+            ->onlyOnIndex();
+        yield ArrayField::new('drivers', 'Drivers (this entity)')
+            ->onlyOnDetail();
+        yield ArrayField::new('documentations', 'Documentation   __(this entity)')
+            ->onlyOnDetail();
+        yield TextField::new('description')
+            ->onlyOnDetail();
         yield DateField::new('lastEdited', 'Last edit')
             ->setFormTypeOption('disabled', 'disabled')
             ->setColumns(4);
@@ -145,29 +167,30 @@ class ChipsetCrudController extends AbstractCrudController
             ->setColumns(4)
             ->renderExpanded()
             ->onlyOnForms();
-        yield CollectionField::new('chipsetAliases', 'Chipset aliases')
-            ->setEntryType(ChipsetAliasType::class)
+        yield CollectionField::new('biosCodes', 'BIOS codes')
+            ->useEntryCrudForm(BiosCodeCrudType::class)
             ->setFormTypeOption('error_bubbling', false)
             ->setColumns(4)
             ->renderExpanded()
             ->onlyOnForms();
-        yield CollectionField::new('biosCodes', 'BIOS codes')
-            ->setEntryType(ChipsetBiosCodeType::class)
+        yield CollectionField::new('chipsetAliases', 'Chipset aliases')
+            ->useEntryCrudForm(AliasCrudType::class)
             ->setFormTypeOption('error_bubbling', false)
-            ->setColumns(4)
+            ->setColumns(12)
             ->renderExpanded()
             ->onlyOnForms();
         yield FormField::addTab('Attachments')
-            ->setIcon('download')
+            ->setIcon('fa fa-download')
             ->onlyOnForms();
         yield CollectionField::new('documentations', 'Documentation')
-            ->setEntryType(ChipsetDocumentationType::class)
+            ->useEntryCrudForm(DocumentationCrudType::class)
             ->renderExpanded()
             ->setFormTypeOption('error_bubbling', false)
             ->setColumns(6)
             ->onlyOnForms();
         yield CollectionField::new('drivers', 'Drivers')
-            ->setEntryType(LargeFileChipsetType::class)
+            ->useEntryCrudForm(LargeFileCrudType::class)
+            ->setFormTypeOption('error_bubbling', false)
             ->renderExpanded()
             ->setColumns(6)
             ->onlyOnForms();
@@ -175,14 +198,18 @@ class ChipsetCrudController extends AbstractCrudController
     public function viewChipset(AdminContext $context)
     {
         $chipsetId = $context->getEntity()->getInstance()->getId();
-        return $this->redirectToRoute('chipset_show', array('id'=>$chipsetId));
+        return $this->redirectToRoute('chipset_show', array('id' => $chipsetId));
     }
     public function viewLogs(AdminContext $context)
     {
         $entityId = $context->getEntity()->getInstance()->getId();
-        $entity = str_replace("\\", "-",$context->getEntity()->getFqcn());
+        $entity = str_replace("\\", "-", $context->getEntity()->getFqcn());
         return $this->redirectToRoute('dh_auditor_show_entity_history', array('id' => $entityId, 'entity' => $entity));
     }
+
+    /**
+     * @return KeyValueStore|Response
+     */
     public function new(AdminContext $context)
     {
         $event = new BeforeCrudActionEvent($context);
@@ -257,17 +284,17 @@ class ChipsetCrudController extends AbstractCrudController
         $chipset->setEncyclopediaLink($old->getEncyclopediaLink());
         $chipset->setDescription($old->getDescription());
         $chipset->setLastEdited(new \DateTime('now'));
-        foreach ($old->getExpansionChips() as $chip){
+        foreach ($old->getExpansionChips() as $chip) {
             $chipset->addExpansionChip($chip);
         }
-        foreach ($old->getChipsetAliases() as $alias){
+        foreach ($old->getChipsetAliases() as $alias) {
             $newAlias = new ChipsetAlias();
             $newAlias->setManufacturer($alias->getManufacturer());
             $newAlias->setName($alias->getName());
             $newAlias->setPartNumber($alias->getPartNumber());
             $chipset->addChipsetAlias($newAlias);
         }
-        foreach ($old->getBiosCodes() as $code){
+        foreach ($old->getBiosCodes() as $code) {
             $newCode = new ChipsetBiosCode();
             $newCode->setBiosManufacturer($code->getBiosManufacturer());
             $newCode->setCode($code->getCode());

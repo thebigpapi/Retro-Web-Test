@@ -10,11 +10,6 @@
 {% endblock %}
 
 {% block body %}
-{#<!-- ============= when it's ready
-<a href="#">
-	<img src="{{ absolute_url(asset('build/images/index/card.webp')) }}" alt="cards" width="210" height="180">
-	<div>Expansion cards</div><div>[WIP]</div>
-</a> -->#}
 
 <div class="perks">
 	<p><b>Search motherboard by model</b></p>
@@ -69,6 +64,15 @@
 			</a>
 		</div>
 		<div class="perk">
+			<a href="{{ path("expansioncardsearch") }}">
+				<div class="perk-image">
+					<img src="{{ absolute_url(asset('build/icons/card.svg')) }}" alt="card" loading="lazy" width="120" height="100">
+				</div>
+				<div class="perk-name">Expansion cards</div>
+				<div class="perk-alias">{{expcardCount}}&nbsp;entries</div>
+			</a>
+		</div>
+		<div class="perk">
 			<a href="{{ path("cpusearch") }}">
 				<div class="perk-image">
 					<img src="{{ absolute_url(asset('build/icons/486dx.svg')) }}" alt="cpu" loading="lazy" width="120" height="100">
@@ -116,96 +120,6 @@
 	</a>
 	</div>
 </div>
-
-<!-- Last edited boards -->
-<div class="perks">
-	<p><b>Last edited boards</b></p>
-	<div id="index-datetime" class="perks-list">
-	{% for motherboard in latestMotherboards %}
-		<div class="perk">
-			<a href="{{ path("motherboard_show", {id:motherboard.getId()}) }}">
-				<div class="perk-image">
-				{% if motherboard.getImages() is not empty %}
-					{% set imgtype_count = 0 %}
-					{% for image in motherboard.getImages()|filter(a => a.motherboardImageType.id in [1, 2])|sort((a, b) => a.getFileName() <=> b.getFileName())|sort((a, b) => b.motherboardImageType <=> a.motherboardImageType)|slice(0, 1) %}
-						<img src="{% if vich_uploader_asset(image, 'imageFile') | ext != "svg" %}
-							{{ vich_uploader_asset(image, 'imageFile') | imagine_filter('show_thumb') }}{% else %}
-							{{ vich_uploader_asset(image, 'imageFile')}}{% endif %}" alt="" loading="lazy" width="250" height="200" title="{% if image.description %}{{ image.description }}{% endif %}">
-							{% set imgtype_count = imgtype_count + 1 %}
-					{% endfor %}
-					{% if imgtype_count == 0 %}
-						<img src="{{ absolute_url(asset('build/images/missing/board-missing.jpg')) }}" loading="lazy" width="250" height="200" title="no images available :(">
-					{% endif %}
-				{% else %}
-					<img src="{{ absolute_url(asset('build/images/missing/board-missing.jpg')) }}" alt="missing image" loading="lazy" width="250" height="200" title="no images available :(">
-				{% endif %}</div>
-				<div class="perk-name">{{ motherboard.getManufacturerName() }}&nbsp;{{ motherboard.name }}</div>
-				<div class="perk-date">{{ motherboard.getLastEdited()|date("Y-m-d\\TH:i:s", "GMT") }}Z</div>
-			</a>
-		</div>
-	{% endfor %}
-	</div>
-</div>
-
-{#<div class="side-by-side">
-	<!-- Last edited boards -->
-	<div class="perks">
-		<p><b>Last edited boards</b></p>
-		<div id="index-datetime" class="perks-list perks-tiny">
-        {% for motherboard in latestMotherboards %}
-			<div class="perk">
-				<a href="{{ path("motherboard_show", {id:motherboard.getId()}) }}">
-					<div class="perk-image">
-					{% if motherboard.getImages() is not empty %}
-						{% set imgtype_count = 0 %}
-						{% for image in motherboard.getImages()|filter(a => a.motherboardImageType.id in [1, 2])|sort((a, b) => a.getFileName() <=> b.getFileName())|sort((a, b) => b.motherboardImageType <=> a.motherboardImageType)|slice(0, 1) %}
-							<img src="{% if vich_uploader_asset(image, 'imageFile') | ext != "svg" %}
-								{{ vich_uploader_asset(image, 'imageFile') | imagine_filter('show_thumb') }}{% else %}
-								{{ vich_uploader_asset(image, 'imageFile')}}{% endif %}" alt="" loading="lazy" width="250" height="200" title="{% if image.description %}{{ image.description }}{% endif %}">
-								{% set imgtype_count = imgtype_count + 1 %}
-						{% endfor %}
-						{% if imgtype_count == 0 %}
-							<img src="{{ absolute_url(asset('build/images/missing/board-missing.jpg')) }}" loading="lazy" width="250" height="200" title="no images available :(">
-						{% endif %}
-					{% else %}
-						<img src="{{ absolute_url(asset('build/images/missing/board-missing.jpg')) }}" alt="missing image" loading="lazy" width="250" height="200" title="no images available :(">
-					{% endif %}</div>
-					<div class="perk-name">{{ motherboard.getManufacturerName() }}&nbsp;{{ motherboard.name }}</div>
-					<div class="perk-date">{{ motherboard.getLastEdited()|date("Y-m-d\\TH:i:s", "GMT") }}Z</div>
-				</a>
-			</div>
-		{% endfor %}
-		</div>
-	</div>
-
-	<!-- Last edited chips -->
-	<div class="perks">
-		<p><b>Last edited expansion chips</b></p>
-		<div id="indexchips-datetime" class="perks-list perks-tiny">
-        {% for expansionchip in latestChips %}
-			<div class="perk">
-				<a href="{{ path("expansion_chip_show", {id: expansionchip.getId()}) }}" title="Click to visit page">
-					<div class="perk-image">
-					{% if expansionchip.getImages() is not empty %}
-						{% set imgcount = 0 %}
-						{% for image in expansionchip.getImages()|sort((a, b) => a.getFileName() <=> b.getFileName())|slice(0, 1) %}
-							{% set imgcount = imgcount + 1 %}
-							<img src="{% if vich_uploader_asset(image, 'imageFile') | ext != "svg" %}
-							{{ vich_uploader_asset(image, 'imageFile') | imagine_filter('show_thumb') }}{% else %}
-							{{ vich_uploader_asset(image, 'imageFile')}}{% endif %}" alt="" loading="lazy" width="250" height="200" title="{% if image.description %}{{ image.description }}{% endif %}">
-						{% endfor %}
-						{% if imgcount == 0 %}<img src="{{ absolute_url(asset('build/images/missing/chip-missing.jpg')) }}" loading="lazy" width="250" height="200" title="no images available :(">{% endif %}
-					{% else %}
-						<img src="{{ absolute_url(asset('build/images/missing/chip-missing.jpg')) }}" loading="lazy" width="250" height="200" title="no images available :(">
-					{% endif %}
-					</div>
-					<div class="perk-name">{{ expansionchip.getNameWithManufacturer() }}</div>
-					<div class="perk-date">{{ expansionchip.getLastEdited()|date("Y-m-d\\TH:i:s", "GMT") }}Z</div>
-				</a>
-			</div>
-		{% endfor %}
-		</div>
-	</div>	
-
-<div>#}
+{% include 'macros/lastedited.html.twig' with {'entity': latestMotherboards, 'type':'motherboard', 'entity_label':'boards', 'path': 'motherboard_show'} %}
+{% include 'macros/lastedited.html.twig' with {'entity': latestCards, 'type':'card', 'entity_label':'expansion cards', 'path': 'expansioncard_show'} %}
 {% endblock %}

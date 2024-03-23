@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Entity\Traits\DocumentationTrait;
+use App\Entity\Traits\ImpreciseDateTrait;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
@@ -12,6 +13,7 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
 class ChipDocumentation
 {
     use DocumentationTrait;
+    use ImpreciseDateTrait;
 
     /**
      * NOTE: This is not a mapped field of entity metadata, just a simple property.

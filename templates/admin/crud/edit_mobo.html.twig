@@ -47,16 +47,17 @@
         {{ custom_page_title is null
             ? ea.crud.defaultPageTitle(null, null, ea.i18n.translationParameters)|trans|raw
             : custom_page_title|trans|raw }}
+    #{{ entity.getInstance().getId() }}
     {%- endapply -%}
 {% endblock %}
 
 {% block page_actions %}
-    <div class="mobo-buttons">
+    {% for action in entity.actions %}
+        {% if loop.first %}
         <button id="get-slug-btn" class="btn btn-secondary" type="button">
             <span class="btn-label"><i class="fa fa-external-link"></i> <span class="action-label">Get slug</span></span>
         </button>
-    </div>
-    {% for action in entity.actions %}
+        {% endif %}
         {{ include(action.templatePath, { action: action }, with_context = false) }}
     {% endfor %}
 {% endblock %}

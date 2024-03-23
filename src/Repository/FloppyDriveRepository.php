@@ -60,7 +60,7 @@ class FloppyDriveRepository extends ServiceEntityRepository
             }
         }
         if (array_key_exists('manufacturer', $criteria)) {
-            $whereArray[] = "(man.id = :manufacturerId)";
+            $whereArray[] = "(man.id = :manufacturerId OR alias.manufacturer = :manufacturerId)";
             $valuesArray["manufacturerId"] = (int)$criteria['manufacturer'];
         }
 
@@ -127,5 +127,16 @@ class FloppyDriveRepository extends ServiceEntityRepository
         }
 
         return $query->getResult();
+    }
+    /**
+     * @return FloppyDrive[]
+     */
+    public function findLatest(int $maxCount = 12)
+    {
+        return $this->createQueryBuilder('fdd')
+            ->orderBy('fdd.lastEdited', 'DESC')
+            ->setMaxResults($maxCount)
+            ->getQuery()
+            ->getResult();
     }
 }

@@ -3,7 +3,6 @@
 namespace App\Form\Type;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -17,16 +16,16 @@ class ExpansionChipType extends AbstractType
     {
         $this->entityManager = $entityManager;
     }
-    private function getExpChipRepository(): EntityRepository
-    {
-        return $this->entityManager->getRepository(ExpansionChip::class);
-    }
+
+    /**
+     * @return void
+     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
             'class' => ExpansionChip::class,
-            'choice_label' => 'getNameWithManufacturer',
-            'choices' => $this->getExpChipRepository()->findByPopularity(),
+            'choice_label' => 'getFullName',
+            //'choices' =>  $this->entityManager->getRepository(ExpansionChip::class)->findByPopularity(),
             'multiple' => false,
             'expanded' => false,
             'attr' => ['data-ea-widget' => 'ea-autocomplete'],

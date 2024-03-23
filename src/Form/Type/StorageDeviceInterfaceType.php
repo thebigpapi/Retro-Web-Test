@@ -9,6 +9,9 @@ use App\Entity\StorageDeviceInterface;
 
 class StorageDeviceInterfaceType extends AbstractType
 {
+    /**
+     * @return void
+     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([

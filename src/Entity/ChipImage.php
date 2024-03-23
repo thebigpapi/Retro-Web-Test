@@ -2,11 +2,13 @@
 
 namespace App\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 #[Vich\Uploadable]
 #[ORM\Entity(repositoryClass: 'App\Repository\ChipImageRepository')]
@@ -22,7 +24,7 @@ class ChipImage
     private $chip;
 
     #[ORM\Column(type: 'string', length: 255)]
-    #[Assert\Length(max:255, maxMessage: 'File name is longer than {{ limit }} characters, try to make it shorter.')]
+    #[Assert\Length(max:255, maxMessage: 'File name is longer than {{ limit }} characters.')]
     private $file_name;
 
     /**
@@ -32,7 +34,7 @@ class ChipImage
     private File|null $imageFile = null;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    #[Assert\Length(max:255, maxMessage: 'Description is longer than {{ limit }} characters, try to make it shorter.')]
+    #[Assert\Length(max:255, maxMessage: 'Description is longer than {{ limit }} characters.')]
     private $description;
 
     #[ORM\Column(type: 'datetime')]
@@ -40,6 +42,11 @@ class ChipImage
 
     #[ORM\ManyToOne(targetEntity: Creditor::class, inversedBy: 'chipImages')]
     private $creditor;
+
+    #[ORM\Column(type: Types::SMALLINT)]
+    #[Assert\NotBlank(message: 'Sort position cannot be blank')]
+    #[Assert\Positive(message: "Sort position should be above 0")]
+    private ?int $sort = null;
 
     public function getId(): ?int
     {
@@ -107,5 +114,26 @@ class ChipImage
         }
 
         return $this;
+    }
+
+    public function getSort(): ?int
+    {
+        return $this->sort;
+    }
+
+    public function setSort(int $sort): static
+    {
+        $this->sort = $sort;
+
+        return $this;
+    }
+    #[Assert\Callback]
+    public function validate(ExecutionContextInterface $context, mixed $payload): void
+    {
+        if(null === $this->imageFile && null === $this->file_name) {
+            $context->buildViolation('Image is not uploaded!')
+                ->atPath('imageFile')
+                ->addViolation();
+        }
     }
 }

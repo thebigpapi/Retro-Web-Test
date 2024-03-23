@@ -16,7 +16,7 @@ class CpuSocket
     private $id;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    #[Assert\Length(max: 255, maxMessage: 'Name is longer than {{ limit }} characters, try to make it shorter.')]
+    #[Assert\Length(max: 255, maxMessage: 'Name is longer than {{ limit }} characters.')]
     private $name;
 
     #[ORM\ManyToMany(targetEntity: ProcessorPlatformType::class, inversedBy: 'cpuSockets')]
@@ -26,7 +26,7 @@ class CpuSocket
     private $motherboards;
 
     #[ORM\Column(type: 'string', length: 255)]
-    #[Assert\Length(max: 255, maxMessage: 'Type is longer than {{ limit }} characters, try to make it shorter.')]
+    #[Assert\Length(max: 255, maxMessage: 'Type is longer than {{ limit }} characters.')]
     private $type;
 
     #[ORM\ManyToMany(targetEntity: ProcessingUnit::class, mappedBy: 'sockets')]

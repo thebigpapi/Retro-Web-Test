@@ -3,9 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\CpuSocket;
-use App\Entity\Processor;
 use App\Entity\Manufacturer;
-use App\Entity\ProcessorPlatformType;
 use App\Form\Processor\Search;
 use App\Repository\CpuSpeedRepository;
 use App\Repository\ProcessorRepository;
@@ -14,7 +12,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Knp\Component\Pager\PaginatorInterface;
 
 class ProcessorController extends AbstractController
@@ -38,6 +36,7 @@ class ProcessorController extends AbstractController
     #[Route('/cpus/', name:'cpusearch', methods: ['GET', 'POST'])]
     public function searchResultCpu(Request $request, PaginatorInterface $paginator, ManufacturerRepository $manufacturerRepository, ProcessorRepository $cpuRepository, CpuSpeedRepository $cpuSpeedRepository): Response
     {
+        $latestCpus = $cpuRepository->findLatest(8);
         $form = $this->_searchFormHandlerCpu($request, $manufacturerRepository, $cpuSpeedRepository);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -45,11 +44,12 @@ class ProcessorController extends AbstractController
         }
         //get criterias
         $criterias = $this->getCriteriaCpu($request);
-        $showImages = boolval(htmlentities($request->query->get('showImages')));
+        $showImages = boolval(htmlentities($request->query->get('showImages') ?? ''));
         $maxItems = $request->query->getInt('itemsPerPage', $request->request->getInt('itemsPerPage', $this->getParameter('app.pagination.max')));
         if (empty($criterias)) {
             return $this->render('cpu/search.html.twig', [
                 'form' => $form->createView(),
+                'latestCpus' => $latestCpus,
             ]);
         }
 
@@ -65,7 +65,6 @@ class ProcessorController extends AbstractController
             'show_images' => $showImages,
             'cpus' => $cpus,
         ]);
-        
     }
     #[Route('/cpus/live', name: 'cpulivewrapper')]
     public function liveSearchCpu(Request $request, ManufacturerRepository $manufacturerRepository, CpuSpeedRepository $cpuSpeedRepository): Response
@@ -78,7 +77,7 @@ class ProcessorController extends AbstractController
     public function liveResultsCpu(Request $request, PaginatorInterface $paginator, ProcessorRepository $cpuRepository): Response
     {
         $criterias = $this->getCriteriaCpu($request);
-        $showImages = boolval(htmlentities($request->query->get('showImages')));
+        $showImages = boolval(htmlentities($request->query->get('showImages') ?? ''));
         $maxItems = $request->query->getInt('itemsPerPage', $request->request->getInt('itemsPerPage', $this->getParameter('app.pagination.max')));
         $data = $cpuRepository->findByCPU($criterias);
             $cpus = $paginator->paginate(
@@ -119,7 +118,7 @@ class ProcessorController extends AbstractController
     }
     public function addArrayCriteria(Request $request, array &$criterias, string $htmlId, string $sqlId): void
     {
-        $entityIds = $request->query->get($htmlId) ?? $request->request->get($htmlId);
+        $entityIds = $request->query->all($htmlId) ?? $request->request->all($htmlId);
         $entityArray = null;
         if ($entityIds) {
             if (is_array($entityIds)) {
@@ -158,9 +157,26 @@ class ProcessorController extends AbstractController
             $parameters['fsbSpeedId'] = $form['fsbSpeed']->getData()->getId();
         }
 
-        $parameters['socketIds'] = array_map(fn(CpuSocket $socket) => $socket->getId(), array_filter($form['sockets']->getData(), fn(?CpuSocket $socket) => $socket !== null));
-
-        $parameters['platformIds'] = array_map(fn(ProcessorPlatformType $platform) => $platform->getId(), array_filter($form['platforms']->getData(), fn(?ProcessorPlatformType $platform) => $platform !== null));
+        $sockets = array_filter($form['sockets']->getData(), fn(?CpuSocket $socket) => $socket !== null);
+        if (!empty($sockets)) {
+            $parameters['socketIds'] = array();
+            $loopCount = 0;
+            foreach ($sockets  as $socket) {
+                if($loopCount >= 6)
+                    break;
+                array_push($parameters['socketIds'], $socket->getId());
+            }
+        }
+        $platforms = $form['platforms']->getData();
+        if ($platforms) {
+            $parameters['platformIds'] = array();
+            $loopCount = 0;
+            foreach ($platforms  as $platform) {
+                if($loopCount >= 6)
+                    break;
+                array_push($parameters['platformIds'], $platform->getId());
+            }
+        }
 
         $parameters['page'] = intval($request->request->get('page') ?? $request->query->get('page') ?? 1);
         $parameters['domTarget'] = $request->request->get('domTarget') ?? $request->query->get('domTarget') ?? "";
@@ -195,31 +211,10 @@ class ProcessorController extends AbstractController
         return $form;
     }
 
-    /* #[Route('/cpus/index/{letter}', name:'processorindex', requirements:['letter' => '\w|[?]'], methods:["GET"])]
-    public function indexCpu(Request $request, PaginatorInterface $paginator, string $letter, ProcessorRepository $cpuRepository): Response
-    {
-        if ($letter === "?") {
-            $letter = "";
-        }
-        $data = $cpuRepository->findAllAlphabetic($letter);
-
-        usort(
-            $data,
-            function (Processor $a, Processor $b) {
-                return strcmp($a->getName(), $b->getName());
-            }
-        );
-
-        $cpus = $paginator->paginate(
-            $data,
-            $request->query->getInt('page', 1),
-            $this->getParameter('app.pagination.max')
-        );
-
-        return $this->render('cpu/index.html.twig', [
-            'cpus' => $cpus,
-            'cpu_count' => count($data),
-            'letter' => $letter,
+    #[Route('/cpus/help', name: 'cpuhelp')]
+    public function searchHelp(): Response {
+        return $this->render('cpu/help.html.twig', [
+            'controller_name' => 'ProcessorController',
         ]);
-    } */
+    }
 }

@@ -17,6 +17,9 @@ class GitDataCollector extends DataCollector
         $this->gitLoader = $gitLoader;
     }
 
+    /**
+     * @return void
+     */
     public function collect(Request $request, Response $response, \Throwable $exception = null)
     {
         // We add the git informations in $data[]
@@ -38,6 +41,9 @@ class GitDataCollector extends DataCollector
         return 'app.git_data_collector';
     }
 
+    /**
+     * @return void
+     */
     public function reset()
     {
         $this->data = array();

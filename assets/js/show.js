@@ -1,5 +1,14 @@
 const trw_tabs = ["tab-nav-1", "tab-nav-2", "tab-nav-3", "tab-nav-4", "tab-nav-5"];
-const trw_pageElements = ["sh-general", "sh-expchips", "sh-downloads", "sh-bios", "sh-driver", "sh-docs"];
+const trw_pageElements = ["sh-general", "sh-specs", "sh-expchips", "sh-downloads", "sh-bios", "sh-driver", "sh-docs"];
+const easyadmin = {
+    "#expchips": "tab-chips",
+    "#bios": "tab-bios",
+    "#general": "tab-connectors",
+    "#docs": "tab-other-attachments",
+    "#general": "tab-features",
+    "#specs": "tab-specs",
+    "#bios": "tab-firmware",
+}
 
 update_tab_selection();
 
@@ -27,11 +36,21 @@ function update_tab_selection() {
             }
             return;
         }
+        //easyadmin tabs
+        if (window.location.href.indexOf(easyadmin[anchorName]) != -1) {
+            inner_switch_tab(element);
+            let tabLabel = find_tab_label(element);
+            if (tabLabel) {
+                tabLabel.checked = true;
+            }
+            return;
+        }
     }
 }
 
 function find_tab_label(tabContainer) {
     for (const tabId of trw_tabs) {
+        //console.log(tabId, tabContainer);
         let tabLabel = document.getElementById(tabId);
         if (tabLabel && tabLabel.hasAttribute("data-tab") && tabLabel.getAttribute("data-tab") === tabContainer) {
             return tabLabel;

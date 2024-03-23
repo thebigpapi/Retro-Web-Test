@@ -4,13 +4,18 @@ namespace App\Controller\Admin;
 
 use App\Entity\FloppyDrive;
 use App\Entity\StorageDeviceAlias;
-use App\Form\Type\KnownIssueType;
-use App\Form\Type\StorageDeviceAliasType;
-use App\Form\Type\StorageDeviceDocumentationType;
-use App\Form\Type\StorageDeviceIdRedirectionType;
-use App\Form\Type\StorageDeviceImageTypeForm;
+use App\Form\Type\KnownIssueFddType;
 use App\Form\Type\StorageDeviceInterfaceType;
+use App\Form\Type\PSUConnectorType;
 use Doctrine\ORM\EntityManagerInterface;
+use App\Controller\Admin\Filter\StorageImageFilter;
+use App\Controller\Admin\Filter\StorageDocFilter;
+use App\Controller\Admin\Type\MiscFileCrudType;
+use App\Controller\Admin\Type\StorageDevice\AliasCrudType;
+use App\Controller\Admin\Type\StorageDevice\DocumentationCrudType;
+use App\Controller\Admin\Type\StorageDevice\IdRedirectionCrudType;
+use App\Controller\Admin\Type\StorageDevice\ImageCrudType;
+use App\Form\Type\FloppyDriveTypeType;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
@@ -19,7 +24,6 @@ use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ArrayField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CodeEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
@@ -38,6 +42,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Security\Permission;
 use EasyCorp\Bundle\EasyAdminBundle\Config\KeyValueStore;
 use EasyCorp\Bundle\EasyAdminBundle\Collection\FieldCollection;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Response;
 
 class FloppyDriveCrudController extends AbstractCrudController
 {    private $adminUrlGenerator;
@@ -104,93 +109,98 @@ class FloppyDriveCrudController extends AbstractCrudController
             ->add('name')
             ->add('partNumber')
             ->add('storageDeviceAliases')
+            ->add('type')
+            ->add(StorageImageFilter::new('images'))
+            ->add(StorageDocFilter::new('documentations'))
             ->add('interfaces')
+            ->add('powerConnectors')
             ->add('physicalSize')
-            ->add('density')
             ->add('lastEdited');
     }
     public function configureFields(string $pageName): iterable
     {
         yield FormField::addTab('Basic Data')
-            ->setIcon('info')
+            ->setIcon('fa fa-info')
             ->onlyOnForms();
         // index items
         yield IdField::new('id')
             ->onlyOnIndex();
-        yield TextField::new('manufacturer.name','Manufacturer')
-            ->hideOnForm();
-        yield TextField::new('name')
-            ->hideOnForm();
-        yield TextField::new('partNumber')
-            ->hideOnForm();
-        yield ArrayField::new('interfaces', 'Interface')
-            ->onlyOnIndex();
-        // editor items
         yield AssociationField::new('manufacturer','Manufacturer')
             ->setFormTypeOption('required', false)
-            ->setColumns('col-sm-6 col-lg-6 col-xxl-4')
-            ->onlyOnForms();
+            ->setColumns('col-sm-6 col-lg-6 col-xxl-4');
+
+        // editor items
+
         yield TextField::new('name')
-            ->setColumns('col-sm-6 col-lg-6 col-xxl-4')
-            ->onlyOnForms();
+            ->setColumns('col-sm-6 col-lg-6 col-xxl-4');
         yield TextField::new('partNumber')
-            ->setColumns('col-sm-6 col-lg-6 col-xxl-4')
-            ->onlyOnForms();
+            ->setColumns('col-sm-6 col-lg-6 col-xxl-4');
+        yield ArrayField::new('interfaces', 'Interface')
+            ->onlyOnIndex();
         yield AssociationField::new('physicalSize', 'Physical size')
             ->setColumns('col-sm-6 col-lg-6 col-xxl-4')
             ->onlyOnForms();
-        yield TextField::new('density')
+        yield ArrayField::new('type')
             ->onlyOnIndex();
-        yield ChoiceField::new('density')
-            ->setColumns('col-sm-6 col-lg-6 col-xxl-4')
-            ->setFormTypeOption('placeholder', 'Select a density ...')
-            ->setFormTypeOption('choices', [
-                'Single density (5.25 inch SD)' => 'Single density (5.25 inch SD)',
-                'Double density (5.25 inch DD)' => 'Double density (5.25 inch DD)',
-                'Quad density (5.25 inch QD)' => 'Quad density (5.25 inch QD)',
-                'Double density (3.5 inch DD)' => 'Double density (3.5 inch DD)',
-                'High density (3.5 inch HD)' => 'High density (3.5 inch HD)',
-                'Extra-high density (3.5 inch ED)' => 'Extra-high density (3.5 inch ED)',
-                'Triple density (3.5 inch TD)' => 'Triple density (3.5 inch TD)'
-            ])
-            ->onlyOnForms();
-        yield FormField::addRow();
-        yield CollectionField::new('knownIssues', 'Known issues')
-            ->setEntryType(KnownIssueType::class)
+        yield TextField::new('isStorageDeviceImage','Images')
+            ->setCustomOption('imageTypes', true)
+            ->onlyOnIndex();
+        yield CollectionField::new('storageDeviceDocumentations','Docs')
+            ->setCustomOption('byCount', true)
+            ->onlyOnIndex();
+        yield CollectionField::new('type')
+            ->setEntryType(FloppyDriveTypeType::class)
             ->setColumns('col-sm-6 col-lg-6 col-xxl-4')
             ->renderExpanded()
             ->onlyOnForms();
+        yield FormField::addRow();
         yield CollectionField::new('interfaces', 'Interface')
             ->setEntryType(StorageDeviceInterfaceType::class)
             ->setColumns('col-sm-6 col-lg-6 col-xxl-4')
             ->renderExpanded()
             ->onlyOnForms();
-        yield CollectionField::new('storageDeviceAliases', 'Alternative names')
-            ->setEntryType(StorageDeviceAliasType::class)
+        yield CollectionField::new('powerConnectors', 'Power connectors')
+            ->setEntryType(PSUConnectorType::class)
+            ->setColumns('col-sm-12 col-lg-6 col-xxl-4')
             ->renderExpanded()
-            ->setFormTypeOption('error_bubbling', false)
+            ->onlyOnForms();
+        yield CollectionField::new('knownIssues', 'Known issues')
+            ->setEntryType(KnownIssueFddType::class)
             ->setColumns('col-sm-6 col-lg-6 col-xxl-4')
+            ->renderExpanded()
             ->onlyOnForms();
         yield CollectionField::new('redirections', 'Redirections')
-            ->setEntryType(StorageDeviceIdRedirectionType::class)
+            ->useEntryCrudForm(IdRedirectionCrudType::class)
             ->renderExpanded()
             ->setFormTypeOption('error_bubbling', false)
             ->setColumns('col-sm-12 col-lg-6 col-xxl-4')
+            ->onlyOnForms();
+        yield CollectionField::new('storageDeviceAliases', 'Alternative names')
+            ->useEntryCrudForm(AliasCrudType::class)
+            ->renderExpanded()
+            ->setFormTypeOption('error_bubbling', false)
+            ->setColumns('col-sm-12 col-lg-12 col-xxl-6')
             ->onlyOnForms();
         yield CodeEditorField::new('description')
             ->setLanguage('markdown')
             ->onlyOnForms();
         yield FormField::addTab('Attachments')
-            ->setIcon('download')
+            ->setIcon('fa fa-download')
             ->onlyOnForms();
         yield CollectionField::new('storageDeviceImages', 'Images')
-            ->setEntryType(StorageDeviceImageTypeForm::class)
+            ->useEntryCrudForm(ImageCrudType::class)
             ->setColumns('col-sm-12 col-lg-8 col-xxl-6')
             ->setFormTypeOption('error_bubbling', false)
             ->renderExpanded()
             ->onlyOnForms();
         yield CollectionField::new('storageDeviceDocumentations', 'Documentation')
-            ->setEntryType(StorageDeviceDocumentationType::class)
+            ->useEntryCrudForm(DocumentationCrudType::class)
+            ->setFormTypeOption('error_bubbling', false)
+            ->setColumns(6)
+            ->renderExpanded()
+            ->onlyOnForms();
+        yield CollectionField::new('storageDeviceMiscFiles', 'Misc files')
+            ->useEntryCrudForm(MiscFileCrudType::class)
             ->setFormTypeOption('error_bubbling', false)
             ->setColumns(6)
             ->renderExpanded()
@@ -221,6 +231,9 @@ class FloppyDriveCrudController extends AbstractCrudController
         return $this->redirect($url);
     }
 
+    /**
+     * @return KeyValueStore|Response
+     */
     public function new(AdminContext $context)
     {
         $event = new BeforeCrudActionEvent($context);
@@ -291,7 +304,7 @@ class FloppyDriveCrudController extends AbstractCrudController
         $fdd->setName($old->getName());
         $fdd->setPartNumber($old->getPartNumber());
         $fdd->setPhysicalSize($old->getPhysicalSize());
-        $fdd->setDensity($old->getDensity());
+        //$fdd->setDensity($old->getDensity());
         $fdd->setDescription($old->getDescription());
         $fdd->setLastEdited(new \DateTime('now'));
         foreach ($old->getStorageDeviceAliases() as $alias){

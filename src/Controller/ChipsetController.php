@@ -10,7 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Knp\Component\Pager\PaginatorInterface;
 
 class ChipsetController extends AbstractController
@@ -34,6 +34,7 @@ class ChipsetController extends AbstractController
     #[Route(path: '/chipsets/', name: 'chipsetsearch', methods: ['GET'])]
     public function searchResultChipset(Request $request, PaginatorInterface $paginator, ChipsetRepository $chipsetRepository, ManufacturerRepository $manufacturerRepository)
     {
+        $latestChipsets = $chipsetRepository->findLatest(8);
         $form = $this->_searchFormHandlerChipset($request, $manufacturerRepository);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -41,11 +42,12 @@ class ChipsetController extends AbstractController
         }
         //get criterias
         $criterias = $this->getCriteriaChipset($request);
-        $showImages = boolval(htmlentities($request->query->get('showImages')));
+        $showImages = boolval(htmlentities($request->query->get('showImages') ?? ''));
         $maxItems = $request->query->getInt('itemsPerPage', $request->request->getInt('itemsPerPage', $this->getParameter('app.pagination.max')));
         if (empty($criterias)) {
             return $this->render('chipset/search.html.twig', [
                 'form' => $form->createView(),
+                'latestChipsets' => $latestChipsets,
             ]);
         }
 
@@ -80,7 +82,7 @@ class ChipsetController extends AbstractController
         ChipsetRepository $chipsetRepository
     ): Response {
         $criterias = $this->getCriteriaChipset($request);
-        $showImages = boolval(htmlentities($request->query->get('showImages')));
+        $showImages = boolval(htmlentities($request->query->get('showImages') ?? ''));
         $maxItems = $request->query->getInt('itemsPerPage', $request->request->getInt('itemsPerPage', $this->getParameter('app.pagination.max')));
         $data = $chipsetRepository->findByChipset($criterias);
         $chipsets = $paginator->paginate(

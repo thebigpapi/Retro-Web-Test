@@ -3,16 +3,20 @@
 namespace App\Controller\Admin;
 
 use App\Entity\HardDrive;
-use App\Entity\StorageDevice;
 use App\Entity\StorageDeviceAlias;
-use App\Form\Type\AudioFileType;
-use App\Form\Type\KnownIssueType;
-use App\Form\Type\StorageDeviceAliasType;
-use App\Form\Type\StorageDeviceDocumentationType;
-use App\Form\Type\StorageDeviceIdRedirectionType;
-use App\Form\Type\StorageDeviceImageTypeForm;
+use App\Form\Type\KnownIssueHddType;
 use App\Form\Type\StorageDeviceInterfaceType;
+use App\Form\Type\PSUConnectorType;
 use Doctrine\ORM\EntityManagerInterface;
+use App\Controller\Admin\Filter\StorageImageFilter;
+use App\Controller\Admin\Filter\StorageDocFilter;
+use App\Controller\Admin\Filter\StorageAudioFilter;
+use App\Controller\Admin\Type\MiscFileCrudType;
+use App\Controller\Admin\Type\StorageDevice\AliasCrudType;
+use App\Controller\Admin\Type\StorageDevice\AudioCrudType;
+use App\Controller\Admin\Type\StorageDevice\DocumentationCrudType;
+use App\Controller\Admin\Type\StorageDevice\IdRedirectionCrudType;
+use App\Controller\Admin\Type\StorageDevice\ImageCrudType;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
@@ -21,7 +25,6 @@ use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ArrayField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CodeEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
@@ -41,6 +44,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Security\Permission;
 use EasyCorp\Bundle\EasyAdminBundle\Config\KeyValueStore;
 use EasyCorp\Bundle\EasyAdminBundle\Collection\FieldCollection;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Response;
 
 class HardDriveCrudController extends AbstractCrudController
 {
@@ -106,7 +110,11 @@ class HardDriveCrudController extends AbstractCrudController
             ->add('name')
             ->add('partNumber')
             ->add('storageDeviceAliases')
+            ->add(StorageImageFilter::new('images'))
+            ->add(StorageDocFilter::new('documentations'))
+            ->add(StorageAudioFilter::new('audio'))
             ->add('interfaces')
+            ->add('powerConnectors')
             ->add('physicalSize')
             ->add('capacity')
             ->add('cylinders')
@@ -122,23 +130,18 @@ class HardDriveCrudController extends AbstractCrudController
     public function configureFields(string $pageName): iterable
     {
         yield FormField::addTab('Basic Data')
-            ->setIcon('info')
+            ->setIcon('fa fa-info')
             ->onlyOnForms();
         // index items
         yield IdField::new('id')
             ->onlyOnIndex();
-        yield TextField::new('manufacturer.name','Manufacturer')
-            ->hideOnForm();
+        yield AssociationField::new('manufacturer','Manufacturer')
+            ->setFormTypeOption('required', false)
+            ->setColumns('col-sm-6 col-lg-6 col-xxl-4');
         yield TextField::new('name')
             ->hideOnForm();
         yield TextField::new('partNumber')
             ->hideOnForm();
-
-        // editor items
-        yield AssociationField::new('manufacturer','Manufacturer')
-            ->setFormTypeOption('required', false)
-            ->setColumns('col-sm-6 col-lg-6 col-xxl-4')
-            ->onlyOnForms();
         yield TextField::new('name')
             ->setColumns('col-sm-6 col-lg-6 col-xxl-4')
             ->onlyOnForms();
@@ -163,6 +166,15 @@ class HardDriveCrudController extends AbstractCrudController
             ->onlyOnForms();
         yield NumberField::new('spindleSpeed', 'RPM')
             ->setColumns('col-sm-4 col-lg-3 col-xxl-2');
+        yield TextField::new('isStorageDeviceImage','Images')
+            ->setCustomOption('imageTypes', true)
+            ->onlyOnIndex();
+        yield CollectionField::new('storageDeviceDocumentations','Docs')
+            ->setCustomOption('byCount', true)
+            ->onlyOnIndex();
+        yield CollectionField::new('audioFiles','Audio')
+            ->setCustomOption('byCount', true)
+            ->onlyOnIndex();
         yield NumberField::new('platters')
             ->setColumns('col-sm-4 col-lg-3 col-xxl-2')
             ->onlyOnForms();
@@ -179,48 +191,59 @@ class HardDriveCrudController extends AbstractCrudController
             ->setColumns('col-sm-6 col-lg-6 col-xxl-4')
             ->onlyOnForms();
         yield FormField::addRow();
-        yield CollectionField::new('knownIssues', 'Known issues')
-            ->setEntryType(KnownIssueType::class)
-            ->setColumns('col-sm-6 col-lg-6 col-xxl-4')
-            ->renderExpanded()
-            ->onlyOnForms();
         yield CollectionField::new('interfaces', 'Interface')
             ->setEntryType(StorageDeviceInterfaceType::class)
             ->setColumns('col-sm-6 col-lg-6 col-xxl-4')
             ->renderExpanded()
             ->onlyOnForms();
-        yield CollectionField::new('storageDeviceAliases', 'Alternative names')
-            ->setEntryType(StorageDeviceAliasType::class)
+        yield CollectionField::new('powerConnectors', 'Power connectors')
+            ->setEntryType(PSUConnectorType::class)
+            ->setColumns('col-sm-12 col-lg-6 col-xxl-4')
             ->renderExpanded()
-            ->setFormTypeOption('error_bubbling', false)
+            ->onlyOnForms();
+        yield CollectionField::new('knownIssues', 'Known issues')
+            ->setEntryType(KnownIssueHddType::class)
             ->setColumns('col-sm-6 col-lg-6 col-xxl-4')
+            ->renderExpanded()
             ->onlyOnForms();
         yield CollectionField::new('redirections', 'Redirections')
-            ->setEntryType(StorageDeviceIdRedirectionType::class)
+            ->useEntryCrudForm(IdRedirectionCrudType::class)
             ->renderExpanded()
             ->setFormTypeOption('error_bubbling', false)
             ->setColumns('col-sm-12 col-lg-6 col-xxl-4')
+            ->onlyOnForms();
+        yield CollectionField::new('storageDeviceAliases', 'Alternative names')
+            ->useEntryCrudForm(AliasCrudType::class)
+            ->renderExpanded()
+            ->setFormTypeOption('error_bubbling', false)
+            ->setColumns('col-sm-12 col-lg-12 col-xxl-6')
             ->onlyOnForms();
         yield CodeEditorField::new('description')
             ->setLanguage('markdown')
             ->onlyOnForms();
         yield FormField::addTab('Attachments')
-            ->setIcon('download')
+            ->setIcon('fa fa-download')
             ->onlyOnForms();
         yield CollectionField::new('storageDeviceImages', 'Images')
-            ->setEntryType(StorageDeviceImageTypeForm::class)
+            ->useEntryCrudForm(ImageCrudType::class)
             ->setColumns('col-sm-12 col-lg-8 col-xxl-6')
             ->setFormTypeOption('error_bubbling', false)
             ->renderExpanded()
             ->onlyOnForms();
         yield CollectionField::new('storageDeviceDocumentations', 'Documentation')
-            ->setEntryType(StorageDeviceDocumentationType::class)
+            ->useEntryCrudForm(DocumentationCrudType::class)
             ->setFormTypeOption('error_bubbling', false)
             ->setColumns(6)
             ->renderExpanded()
             ->onlyOnForms();
         yield CollectionField::new('audioFiles', 'Audio files')
-            ->setEntryType(AudioFileType::class)
+            ->useEntryCrudForm(AudioCrudType::class)
+            ->setFormTypeOption('error_bubbling', false)
+            ->setColumns(6)
+            ->renderExpanded()
+            ->onlyOnForms();
+        yield CollectionField::new('storageDeviceMiscFiles', 'Misc files')
+            ->useEntryCrudForm(MiscFileCrudType::class)
             ->setFormTypeOption('error_bubbling', false)
             ->setColumns(6)
             ->renderExpanded()
@@ -251,6 +274,9 @@ class HardDriveCrudController extends AbstractCrudController
         return $this->redirect($url);
     }
 
+    /**
+     * @return KeyValueStore|Response
+     */
     public function new(AdminContext $context)
     {
         $event = new BeforeCrudActionEvent($context);

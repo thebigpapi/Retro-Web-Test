@@ -59,6 +59,10 @@ class MotherboardBiosRepository extends ServiceEntityRepository
             $whereArray[] = "(m.chipset = :chipset_id)";
             $valuesArray["chipset_id"] = (int)$criterias['chipset_id'];
         }
+        if (array_key_exists('bios_version', $criterias)) {
+            $whereArray[] = "(LOWER(bios.boardVersion) LIKE LOWER(:biosVersion))";
+            $valuesArray["biosVersion"] = "%" . $criterias['bios_version'] . "%";
+        }
         if (array_key_exists('core_version', $criterias)) {
             $whereArray[] = "(LOWER(bios.coreVersion) LIKE LOWER(:coreVersion))";
             $valuesArray["coreVersion"] = "%" . $criterias['core_version'] . "%";
@@ -99,6 +103,31 @@ class MotherboardBiosRepository extends ServiceEntityRepository
             $query->setParameter($key, $value);
         }
         return $query->getResult();
+    }
+    public function findByHash(string $hash)
+    {
+        $entityManager = $this->getEntityManager();
+        // Building query
+        if($hash == ''){
+            return [];
+        }
+        else{
+            $query = $entityManager->createQuery(
+                "SELECT man.name as manufacturer, m.id, m.name, bios.coreVersion as core, bman.name as vendor, bios.boardVersion as version, bios.file_name as file
+                FROM App\Entity\MotherboardBios bios JOIN bios.manufacturer bman JOIN bios.motherboard m JOIN m.manufacturer man
+                WHERE (bios.hash LIKE :hash256)"
+            )->setParameter("hash256", "%" . $hash . "%");
+        }
+        return $query->getResult();
+    }
+    public function findLatest(int $maxCount = 24)
+    {
+        $entityManager = $this->getEntityManager();
+        return $entityManager->createQuery(
+            "SELECT man.name as manName, m.id, m.name, bios, bman.name as bmanName
+            FROM App\Entity\MotherboardBios bios JOIN bios.manufacturer bman JOIN bios.motherboard m JOIN m.manufacturer man
+            ORDER BY bios.updated_at DESC"
+        )->setMaxResults($maxCount)->getResult();
     }
     public function findByString(string $string)
     {

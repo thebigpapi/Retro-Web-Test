@@ -2,6 +2,7 @@
 
 namespace App\Form\Type;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -12,6 +13,16 @@ use Symfony\Component\Form\ChoiceList\View\ChoiceView;
 
 class OsFlagType extends AbstractType
 {
+    private EntityManagerInterface $entityManager;
+
+    public function __construct(EntityManagerInterface $entityManager)
+    {
+        $this->entityManager = $entityManager;
+    }
+
+    /**
+     * @return void
+     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
@@ -20,18 +31,12 @@ class OsFlagType extends AbstractType
             'multiple' => false,
             'expanded' => false,
             'attr' => ['data-ea-widget' => 'ea-autocomplete'],
+            'choices' => $this->entityManager->getRepository(OsFlag::class)->findByPopularity(),
         ]);
     }
 
     public function getParent(): ?string
     {
         return EntityType::class;
-    }
-
-    public function finishView(FormView $view, FormInterface $form, array $options)
-    {
-        usort($view->vars['choices'], function (ChoiceView $a, ChoiceView $b) {
-            return ($a->data->getName() <=> $b->data->getName());
-        });
     }
 }

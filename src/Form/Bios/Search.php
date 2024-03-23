@@ -17,9 +17,6 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use App\Entity\Manufacturer;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use Symfony\Component\Form\FormEvents;
-use Symfony\Component\Form\FormEvent;
-use Symfony\Component\Form\FormInterface;
 
 class Search extends AbstractType
 {
@@ -28,10 +25,6 @@ class Search extends AbstractType
     public function __construct(EntityManagerInterface $entityManager)
     {
         $this->entityManager = $entityManager;
-    }
-    private function getManufacturerRepository(): EntityRepository
-    {
-        return $this->entityManager->getRepository(Manufacturer::class);
     }
     private function getChipsets(): array
     {
@@ -59,10 +52,17 @@ class Search extends AbstractType
         $chipsets = array_merge($chipsets, $allchipsets);
         return $chipsets;
     }
+
+    /**
+     * @return void
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
             ->add('post_string', TextType::class, [
+                'required' => false,
+            ])
+            ->add('bios_version', TextType::class, [
                 'required' => false,
             ])
             ->add('core_version', TextType::class, [
@@ -133,13 +133,14 @@ class Search extends AbstractType
             ]);
     }
 
+    /**
+     * @return void
+     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
             'biosManufacturers' => array(),
             'moboManufacturers' => array(),
-            'expansionChips' => array(),
-            'chipsetManufacturers' => array(),
         ]);
     }
 }

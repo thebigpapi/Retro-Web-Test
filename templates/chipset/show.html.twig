@@ -1,8 +1,6 @@
 {% extends 'base.html.twig' %}
-{% from 'macros/largeFile.html.twig' import link as driverLink %}
-{% from 'macros/largeFile.html.twig' import header as driverHeader %}
 
-{% block title %}{{ chipset.getNameWithoutParts() }} - The Retro Web{% endblock %}
+{% block title %}{{ chipset.getFullName() }} - The Retro Web{% endblock %}
 {% block metatags %}
 	<meta name="description" content="{{ chipset.getMetaDescription() }}">
 	<link rel="canonical" hreflang="x-default" href="{{ absolute_url(path('chipset_show', {id: chipset.getId()})) }}"/>
@@ -16,8 +14,8 @@
 		<meta name="twitter:card" content="summary">
 		<meta property="og:site_name" content="The Retro Web">
 		<meta property="og:type" content="website">
-		<meta name="twitter:title" content="{{ chipset.getNameWithoutParts() }}">
-		<meta property="og:title" content="{{ chipset.getNameWithoutParts() }}">
+		<meta name="twitter:title" content="{{ chipset.getFullName() }}">
+		<meta property="og:title" content="{{ chipset.getFullName() }}">
 		<meta name="twitter:description" content="{{ chipset.getMetaDescription() }}">
 		<meta property="og:description" content="{{ chipset.getMetaDescription() }}">
 		<meta property="og:url" content="{{ absolute_url(path('chipset_show', {id: chipset.getId()})) }}">
@@ -35,19 +33,32 @@
 	{% endapply %}
 {% endblock %}
 {% block subnav %}
-<a href="{{ path('expansionchipsearch') }}" class="nav-link">
-	<span class="navbar-label">Expansion chip</span>
-</a>
-<a href="{{ path('chipsetsearch') }}" class="nav-link active">
-	<span class="navbar-label">Chipset</span>
-</a>
+<li class="flex navbar-li">
+    <div class="flex items-center">
+        <svg class="navbar-svg" viewBox="0 0 24 44" preserveAspectRatio="none" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M.293 0l22 22-22 22h1.414l22-22-22-22H.293z"></path>
+        </svg>
+        <a class="ml-4" href="{{ path('chipsetsearch') }}">
+			<img src="{{ absolute_url(asset('build/icons/chipsetfull.svg')) }}" width="24" height="24" alt="chipset">
+            <code class="text-pink-500">Chipsets</code>
+        </a>
+    </div>
+</li>
+<li class="flex">
+    <div class="flex">
+        <svg class="navbar-svg" viewBox="0 0 24 44" preserveAspectRatio="none" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M.293 0l22 22-22 22h1.414l22-22-22-22H.293z"></path>
+        </svg>
+        <code class="navbar-code">ID: {{chipset.getId()}}</code>
+    </div>
+</li>
 {% endblock %}
 {% block body %}
 <!-- MANUF./NAME/PART NO. -->
-<div class="title">{{ chipset.getNameWithoutParts() }}</div>
+<div class="title">{{ chipset.getFullName() }}</div>
 <div class="main-strip">
 	<div class="internal-container">
-		{% include 'macros/navbar.html.twig' with {'entity': chipset, 'entityName': 'Chipset', 'name': 'chipset'} %}
+		{% include 'macros/navbar.html.twig' with {'entity': chipset, 'entityName': 'Chipset', 'name': 'chipset', 'role': 'ROLE_USER'} %}
 		<div class="internal-content">
 			<!-- DESCRIPRION -->
 			<div class="show-general" id="sh-general">
@@ -59,7 +70,7 @@
 					{% if chipset.getExpansionChips() is not empty %}
 					<div class="tag-container">
 						{% for part in chipset.getExpansionChips() %}
-							<a href="{{ path('expansion_chip_show', {id: part.getId()}) }}"><span class="text-block">{{ part.getNameWithManufacturer() }}</span></a>
+							<a href="{{ path('expansion_chip_show', {id: part.getId()}) }}"><span class="text-block">{{ part.getFullName() }}</span></a>
 						{% endfor %}
 					</div>
 					{% else %}<div>Unknown</div>{% endif %}
@@ -76,18 +87,18 @@
 					<div class="toolbar">
 						{% if chipset.getEncyclopediaLink() is not null %}
 						<a class='button-widget' href="{{ chipset.getEncyclopediaLink() }}">
-							<img src='{{ absolute_url(asset('build/icons/data.svg')) }}' alt='' width='16' height='16' style='vertical-align:middle;padding:3px;'>Encyclopedia link</a>
+							<img src='{{ absolute_url(asset('build/icons/www.svg')) }}' alt='' width='16' height='16' style='vertical-align:middle;padding:3px;'>Encyclopedia link</a>
 						{% endif %}
 						<a class='button-widget' href="{{ absolute_url(path('app_homepage')) }}motherboards/?chipsetId={{ chipset.getId() }}&amp;showImages=1">
-							<img src='{{ absolute_url(asset('build/icons/hardware.svg')) }}' alt='' width='16' height='16' style='vertical-align:middle;padding:3px;'>See all boards with this chipset</a>
+							<img src='{{ absolute_url(asset('build/icons/board.svg')) }}' alt='' width='16' height='16' style='vertical-align:middle;padding:3px;'>See all boards with this chipset</a>
 						<a class='button-widget' href="{{ absolute_url(path('app_homepage')) }}bios/?chipsetId={{ chipset.getId() }}">
-							<img src='{{ absolute_url(asset('build/icons/dw.svg')) }}' alt='' width='16' height='16' style='vertical-align:middle;padding:3px;'>See all BIOSes for this chipset</a>
+							<img src='{{ absolute_url(asset('build/icons/awchip.svg')) }}' alt='' width='16' height='16' style='vertical-align:middle;padding:3px;'>See all BIOSes for this chipset</a>
 						</div>
 					</div>
 				</div>
 				{% include 'macros/aliases.html.twig' with {'entity':chipset.getChipsetAliases(), 'msg': 'Also known as:'} %}
 				{% include 'macros/notes.html.twig' with {'entity': chipset} %}
-				<div class="chipset-textarea">
+				<div class="textarea">
 				{% if chipset.getExpansionChips() is not empty %}
 					{% set dcount = false %}
 					{% for chipPart in chipset.getExpansionChips()|filter(chipPart => chipPart.getDescription() is not empty) %}{% set dcount = true %}{% endfor %}
@@ -96,7 +107,7 @@
 						<h1>Documented parts</h1>
 						<ul class="chipset-toc">
 							{% for chipPart in chipset.getExpansionChips()|filter(chipPart => chipPart.getDescription() is not empty) %}
-							<li><a href="{{ path("expansion_chip_show", {id:chipPart.getId()}) }}">{{ chipPart.getNameWithManufacturer() }}{% if chipPart.getChipAliases() is not empty %}&nbsp;(known as:{% for cp in chipPart.getChipAliases() %}
+							<li><a href="{{ path("expansion_chip_show", {id:chipPart.getId()}) }}">{{ chipPart.getFullName() }}{% if chipPart.getChipAliases() is not empty %}&nbsp;(known as:{% for cp in chipPart.getChipAliases() %}
 							{{ cp.getManufacturer().getName() }}&nbsp;{{ cp.getPartNumber() }} {{ cp.getName() ? '[' ~ cp.getName() ~ ']' }}{% if not loop.last%}, {% endif %}{% endfor %}){% endif %}</a></li>
 							{% endfor %}
 						</ul>
@@ -107,104 +118,8 @@
 			</div>
 
 			<div class="show-downloads" id="sh-downloads">
-				<!-- DRIVERS -->
-				<div class="show-downloads-group">
-					<div class="show-downloads-group-header">
-						<img src="{{ absolute_url(asset('build/icons/hardware.svg')) }}" alt="drv" width="32" height="32">
-						<span>{{ chipset.getDrivers.count() }} driver{% if chipset.getDrivers.count() != 1 %}s{% endif %} available</span>
-					</div>
-					{% if chipset.getDrivers() is not empty %}
-					<div class="plain-list w300p table">
-						<div class="list-entry centered head">
-							<div>Language</div>
-							<div>Media type</div>
-							<div>OS support</div>
-							<div>Name</div>
-							<div>Version</div>
-						</div>
-						{% for driver in chipset.getDrivers() %}
-						<div class="list-entry centered {% if loop.index is divisible by(2) %}alt{% endif %}">
-							<div class="header-label">Language</div>
-							<div>
-								<div class="tag-container">
-								{% for lang in driver.largeFile.getLanguages() %}
-								<span class="combo">
-									<img src="{{ asset('build/icons/language/' ~ lang.getIsoCode ~ '.svg') }}" alt="{{lang.getOriginalName()}}" title="{{lang.getOriginalName()}}" class="lang-flag{% if loop.length > 4 %}-lrg{% endif %}">
-								</span>
-								{% endfor %}
-								</div>
-							</div>
-							<div class="header-label">Media type</div>
-							<div>
-								{% for relation in driver.largeFile.getMediaTypeFlags() %}
-								<span class="combo">
-									<b>{{relation.getCount()}}x</b>
-									<img src="{{ vich_uploader_asset(relation.getMediaTypeFlag(), 'icon')}}" alt="{{relation.getMediaTypeFlag().getName()}}" title="{{relation.getMediaTypeFlag().getName()}}" width="32">
-								</span>
-								{% endfor %}
-							</div>
-							<div class="header-label">OS support</div>
-							<div>
-								<div class="tag-container">
-								{% for os in driver.largeFile.getOsFlags()|sort((a, b) => a.getName <=> b.getName)|sort((a, b) => a.getVersion <=> b.getVersion) %}
-								<span class="text-block">
-									<img src="{{ asset('build/icons/os/' ~ os.getVersion ~ '.svg') }}" alt="{{os.getVersion}}"  width="16">
-									<span>{{os.getName()}}</span>
-								</span>
-								{% endfor %}
-								</div>
-							</div>
-							<div class="header-label">Name</div>
-							<div><a href="{{ path("driver_show", {id: driver.largeFile.getId()}) }}">{{driver.largeFile.getName()}}</a></div>
-							<div class="header-label">Version</div>
-							<div>
-								<a class="combo" href="{{ vich_uploader_asset(driver.largeFile, 'file')}}">
-									<img src="{{ absolute_url(asset('build/icons/dw.svg')) }}" alt="" width="16">
-									<span>{{ driver.largeFile.getFileVersion() ? driver.largeFile.getFileVersion() : 'Unknown' }}</span>
-								</a>
-							</div>
-						</div>
-						{% endfor %}
-					</div>
-					{% else %}
-					{% endif %}
-				</div>
-
-				<!-- MANUALS -->
-				<div class="show-downloads-group">
-					{% set allDocs = chipset.getDocumentations() %}
-					{% if chipset.getExpansionChips() is not empty %}
-						<!-- CHIPSET PART DOC COUNT -->
-						{% for chipPart in chipset.getExpansionChips() %}
-							{% set allDocs = allDocs|merge(chipPart.getDocumentations()) %}
-						{% endfor %}
-					{% endif %}
-					<div class="show-downloads-group-header">
-						<img src="{{ absolute_url(asset('build/icons/manual.svg')) }}" alt="doc" width="32" height="32">
-						<span>{{ allDocs|length }} document{% if allDocs|length != 1 %}s{% endif %} available</span>
-					</div>
-					{% if allDocs is not empty %}
-					<div class="plain-list w300p table">
-						<div class="list-entry centered head">
-							<div>Language</div>
-							<div>File</div>
-						</div>
-						{% for manual in allDocs|sort((a, b) => a.getLinkName <=> b.getLinkName) %}
-						<div class="list-entry centered {% if loop.index is divisible by(2) %}alt{% endif %}">
-							<div class="header-label">Language</div>
-							<div>{{ manual.getLanguage().getName()}}</div>
-							<div class="header-label">File</div>
-							<div>
-								<a class="combo" href="{{ vich_uploader_asset(manual, 'manualFile') }}">
-									<img src="{{ absolute_url(asset('build/icons/dw.svg')) }}" alt="" width="16" height="16">
-									<span>{{ manual.getLinkName() }}</span>
-								</a>
-							</div>
-						</div>
-						{% endfor %}
-					</div>
-					{% endif %}
-				</div>
+				{% include 'macros/drivers.html.twig' with {'entity': chipset.getAllDrivers()} %}
+				{% include 'macros/manuals.html.twig' with {'entity': chipset.getDocumentations(), 'entity_label':'chipset', 'audit_entity':'App-Entity-ChipsetDocumentation', 'chips': chipset.getChipDocs()} %}
 			</div>
 		</div>
 	</div>

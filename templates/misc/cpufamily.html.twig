@@ -17,13 +17,34 @@
 	{% endapply %}
 	<link rel="alternate" hreflang="x-default" href="{{ absolute_url(path('cpufamily_show', {id: family.getId()})) }}"/>
 {% endblock %}
+{% block subnav %}
+<li class="flex navbar-li">
+    <div class="flex items-center">
+        <svg class="navbar-svg" viewBox="0 0 24 44" preserveAspectRatio="none" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M.293 0l22 22-22 22h1.414l22-22-22-22H.293z"></path>
+        </svg>
+        <div class="navbar-anchor">
+			<img src="{{ absolute_url(asset('build/icons/486.svg')) }}" width="24" height="24" alt="cpu">
+            <code class="text-pink-500">CPU families</code>
+        </div>
+    </div>
+</li>
+<li class="flex">
+    <div class="flex">
+        <svg class="navbar-svg" viewBox="0 0 24 44" preserveAspectRatio="none" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M.293 0l22 22-22 22h1.414l22-22-22-22H.293z"></path>
+        </svg>
+        <code class="navbar-code">ID: {{family.getId()}}</code>
+    </div>
+</li>
+{% endblock %}
 
 {% block body %}
 <!-- MANUF./NAME/PART NO. -->
 <div class="title">{{ family.getName() }}</div>
 <div class="main-strip">
 	<div class="internal-container">
-		{% include 'macros/navbar.html.twig' with {'entity': family, 'entityName': 'ProcessorPlatformType', 'name': 'family'} %}
+		{% include 'macros/navbar.html.twig' with {'entity': family, 'entityName': 'ProcessorPlatformType', 'name': 'family', 'role': 'ROLE_ADMIN'} %}
 		<div class="internal-content">
 			<!-- DESCRIPRION -->
 			<div class="show-general" id="sh-general">
@@ -51,6 +72,17 @@
 						None
 					{% endif %}
 					</div>
+					<!-- CPUID -->
+					{% if family.getCpuid() is not empty %}
+						<div class="quick-spec-head">
+							<img src="{{ absolute_url(asset('build/icons/tag.svg')) }}" alt="tag" width="24" height="24">CPUID
+						</div>
+						<div class="tag-container">
+								{% for id in family.getCpuid()|sort((a, b) => a.name <=> b.name) %}
+									<span class="text-block">{{ id.getValue()}}</span>
+								{% endfor %}
+						</div>
+						{% endif %}
 					<!-- Compatible with family -->
 					{% if family.getCompatibleWith() is not empty %}
 						<div class="quick-spec-head">
@@ -83,39 +115,14 @@
 					<div class="toolbar">
 						<a class='button-widget' href="{{ absolute_url(path('app_homepage')) }}motherboards/?platform1={{ family.getId() }}&amp;showImages=1">
 							<img src='{{ absolute_url(asset('build/icons/hardware.svg')) }}' alt='' width='16' height='16' style='vertical-align:middle;padding:3px;'>See all compatible boards</a>
+						<a class='button-widget' href="{{ absolute_url(path('app_homepage')) }}cpus/?platformIds%5B0%5D={{ family.getId() }}">
+							<img src='{{ absolute_url(asset('build/icons/486.svg')) }}' alt='' width='16' height='16' style='vertical-align:middle;padding:3px;'>See all CPUs for this family</a>
 						</div>
 					</div>
 				</div>
 				{% include 'macros/notes.html.twig' with {'entity': family} %}
 				<!-- MANUALS -->
-				<div class="show-downloads-group">
-					{% set allDocs = family.getEntityDocumentations() %}
-					<div class="show-downloads-group-header">
-						<img src="{{ absolute_url(asset('build/icons/manual.svg')) }}" alt="doc" width="32" height="32">
-						<span>{{ allDocs|length }} document{% if allDocs|length != 1 %}s{% endif %} available</span>
-					</div>
-					{% if allDocs is not empty %}
-					<div class="plain-list w300p table">
-						<div class="list-entry centered head">
-							<div>Language</div>
-							<div>File</div>
-						</div>
-						{% for manual in allDocs|sort((a, b) => a.getLinkName <=> b.getLinkName) %}
-						<div class="list-entry centered {% if loop.index is divisible by(2) %}alt{% endif %}">
-							<div class="header-label">Language</div>
-							<div>{{ manual.getLanguage().getName()}}</div>
-							<div class="header-label">File</div>
-							<div>
-								<a class="combo" href="{{ vich_uploader_asset(manual, 'manualFile') }}">
-									<img src="{{ absolute_url(asset('build/icons/dw.svg')) }}" alt="" width="16" height="16">
-									<span>{{ manual.getLinkName() }}</span>
-								</a>
-							</div>
-						</div>
-						{% endfor %}
-					</div>
-					{% endif %}
-				</div>
+				{% include 'macros/manuals.html.twig' with {'entity': family.getEntityDocumentations(), 'entity_label':'', 'audit_entity':'App-Entity-EntityDocumentation'} %}
 			</div>
 		</div>
 	</div>

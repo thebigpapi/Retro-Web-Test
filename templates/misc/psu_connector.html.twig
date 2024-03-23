@@ -26,46 +26,40 @@
 	{% endapply %}
 	<link rel="alternate" hreflang="x-default" href="{{ absolute_url(path('cpusocket_show', {id: psu_connector.getId()})) }}"/>
 {% endblock %}
+{% block subnav %}
+<li class="flex navbar-li">
+    <div class="flex items-center">
+        <svg class="navbar-svg" viewBox="0 0 24 44" preserveAspectRatio="none" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M.293 0l22 22-22 22h1.414l22-22-22-22H.293z"></path>
+        </svg>
+        <div class="navbar-anchor">
+			<img src="{{ absolute_url(asset('build/icons/power.svg')) }}" width="24" height="24" alt="power">
+            <code class="text-pink-500">Power connectors</code>
+        </div>
+    </div>
+</li>
+<li class="flex">
+    <div class="flex">
+        <svg class="navbar-svg" viewBox="0 0 24 44" preserveAspectRatio="none" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M.293 0l22 22-22 22h1.414l22-22-22-22H.293z"></path>
+        </svg>
+        <code class="navbar-code">ID: {{psu_connector.getId()}}</code>
+    </div>
+</li>
+{% endblock %}
 
 {% block body %}
 <!-- MANUF./NAME/PART NO. -->
 <div class="title">{{ psu_connector.getName() }}</div>
 <div class="main-strip">
 	<div class="internal-container">
-		{% include 'macros/navbar.html.twig' with {'entity': psu_connector, 'entityName': 'PSUConnector', 'name': 'connector'} %}
+		{% include 'macros/navbar.html.twig' with {'entity': psu_connector, 'entityName': 'PSUConnector', 'name': 'connector', 'role': 'ROLE_USER'} %}
 		<div class="internal-content">
 			<!-- DESCRIPRION -->
 			<div class="show-general" id="sh-general">
 				{% include 'macros/notes.html.twig' with {'entity': psu_connector} %}
 				<!-- MANUALS -->
-				<div class="show-downloads-group">
-					{% set allDocs = psu_connector.getEntityDocumentations() %}
-					<div class="show-downloads-group-header">
-						<img src="{{ absolute_url(asset('build/icons/manual.svg')) }}" alt="doc" width="32" height="32">
-						<span>{{ allDocs|length }} document{% if allDocs|length != 1 %}s{% endif %} available</span>
-					</div>
-					{% if allDocs is not empty %}
-					<div class="plain-list w300p table">
-						<div class="list-entry centered head">
-							<div>Language</div>
-							<div>File</div>
-						</div>
-						{% for manual in allDocs|sort((a, b) => a.getLinkName <=> b.getLinkName) %}
-						<div class="list-entry centered {% if loop.index is divisible by(2) %}alt{% endif %}">
-							<div class="header-label">Language</div>
-							<div>{{ manual.getLanguage().getName()}}</div>
-							<div class="header-label">File</div>
-							<div>
-								<a class="combo" href="{{ vich_uploader_asset(manual, 'manualFile') }}">
-									<img src="{{ absolute_url(asset('build/icons/dw.svg')) }}" alt="" width="16" height="16">
-									<span>{{ manual.getLinkName() }}</span>
-								</a>
-							</div>
-						</div>
-						{% endfor %}
-					</div>
-					{% endif %}
-				</div>
+				{% include 'macros/manuals.html.twig' with {'entity': psu_connector.getEntityDocumentations(), 'entity_label':'', 'audit_entity':'App-Entity-EntityDocumentation'} %}
 			</div>
 		</div>
 	</div>

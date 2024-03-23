@@ -19,11 +19,11 @@ class StorageDevice
     protected $id;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    #[Assert\Length(max: 255, maxMessage: 'Name is longer than {{ limit }} characters, try to make it shorter.')]
+    #[Assert\Length(max: 255, maxMessage: 'Name is longer than {{ limit }} characters.')]
     protected $name;
 
     #[ORM\Column(type: 'string', length: 255)]
-    #[Assert\Length(max: 255, maxMessage: 'Part number is longer than {{ limit }} characters, try to make it shorter.')]
+    #[Assert\Length(max: 255, maxMessage: 'Part number is longer than {{ limit }} characters.')]
     protected $partNumber;
 
     #[ORM\Column(length: 4096, nullable: true)]
@@ -64,6 +64,13 @@ class StorageDevice
     #[ORM\ManyToMany(targetEntity: StorageDeviceInterface::class, inversedBy: 'storageDevices')]
     private Collection $interfaces;
 
+    #[ORM\ManyToMany(targetEntity: PSUConnector::class, inversedBy: 'storageDevices')]
+    private Collection $powerConnectors;
+
+    #[ORM\OneToMany(mappedBy: 'storageDevice', targetEntity: StorageDeviceMiscFile::class, orphanRemoval: true, cascade: ['persist'])]
+    #[Assert\Valid()]
+    private Collection $storageDeviceMiscFiles;
+
     public function __construct()
     {
         $this->knownIssues = new ArrayCollection();
@@ -74,6 +81,12 @@ class StorageDevice
         $this->redirections = new ArrayCollection();
         $this->lastEdited = new \DateTime('now');
         $this->interfaces = new ArrayCollection();
+        $this->powerConnectors = new ArrayCollection();
+        $this->storageDeviceMiscFiles = new ArrayCollection();
+    }
+    public function __toString(): string
+    {
+        return $this->getFullName();
     }
 
     public function getId(): ?int
@@ -242,6 +255,31 @@ class StorageDevice
 
         return $this;
     }
+    public function isStorageDeviceImage(): string
+    {
+        if(isset($this->storageDeviceImages))
+            $types = array(
+                1 => 0,
+                2 => 0,
+                3 => 0,
+                4 => 0,
+                5 => 0,
+                6 => 0,
+            );
+        foreach($this->storageDeviceImages as $image){
+            $types[(int)$image->getType()] += 1;
+        }
+        if(($types[1])){
+            if(!($types[2] || $types[3] || $types[4] || $types[5] || $types[6]))
+                return "Schema only";
+            else return "Schema and photo";
+        }
+        else{
+            if(!($types[2] || $types[3] || $types[4] || $types[5] || $types[6]))
+                return "None";
+            else return "Photo only";
+        }
+    }
 
     public function getPhysicalSize(): ?StorageDeviceSize
     {
@@ -338,7 +376,7 @@ class StorageDevice
     {
         $this->lastEdited = new \DateTime('now');
     }
-    public function getNameWithManufacturer()
+    public function getFullName()
     {
         $result = $this->manufacturer ? $this->getManufacturer()->getName() : "Unidentified";
         $result .= " " . $this->partNumber;
@@ -366,6 +404,60 @@ class StorageDevice
     public function removeInterface(StorageDeviceInterface $interface): self
     {
         $this->interfaces->removeElement($interface);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, PSUConnector>
+     */
+    public function getPowerConnectors(): Collection
+    {
+        return $this->powerConnectors;
+    }
+
+    public function addPowerConnector(PSUConnector $powerConnector): self
+    {
+        if (!$this->powerConnectors->contains($powerConnector)) {
+            $this->powerConnectors->add($powerConnector);
+        }
+
+        return $this;
+    }
+
+    public function removePowerConnector(PSUConnector $powerConnector): self
+    {
+        $this->powerConnectors->removeElement($powerConnector);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, StorageDeviceMiscFile>
+     */
+    public function getStorageDeviceMiscFiles(): Collection
+    {
+        return $this->storageDeviceMiscFiles;
+    }
+
+    public function addStorageDeviceMiscFile(StorageDeviceMiscFile $storageDeviceMiscFile): static
+    {
+        if (!$this->storageDeviceMiscFiles->contains($storageDeviceMiscFile)) {
+            $this->storageDeviceMiscFiles->add($storageDeviceMiscFile);
+            $storageDeviceMiscFile->setStorageDevice($this);
+        }
+
+        return $this;
+    }
+
+    public function removeStorageDeviceMiscFile(StorageDeviceMiscFile $storageDeviceMiscFile): static
+    {
+        if ($this->storageDeviceMiscFiles->removeElement($storageDeviceMiscFile)) {
+            // set the owning side to null (unless already changed)
+            if ($storageDeviceMiscFile->getStorageDevice() === $this) {
+                $storageDeviceMiscFile->setStorageDevice(null);
+            }
+        }
 
         return $this;
     }

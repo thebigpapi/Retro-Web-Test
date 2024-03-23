@@ -29,10 +29,10 @@
 								<img src="{{ absolute_url(asset('build/images/missing/chipset-missing.jpg')) }}" loading="lazy" width="250" height="200" title="no images available :(">
 							{% endif %}
 							</div>
-							<div class="perk-name">{{ chipset.getNameWithoutParts() }}</div>
+							<div class="perk-name">{{ chipset.getFullName() }}</div>
 							<div class="perk-alias">
 								{% if chipset.getExpansionChips() is not empty %}<span class="results-alias">
-									<small>Parts: {% for chipPart in chipset.getExpansionChips() %}{{ chipPart.getNameWithManufacturer() }}{% if not loop.last %}, {% endif %}{% endfor %}</small>
+									<small>Parts: {% for chipPart in chipset.getExpansionChips() %}{{ chipPart.getFullName() }}{% if not loop.last %}, {% endif %}{% endfor %}</small>
 								</span>{% endif %}
 							</div>
 							<div class="perk-alias">

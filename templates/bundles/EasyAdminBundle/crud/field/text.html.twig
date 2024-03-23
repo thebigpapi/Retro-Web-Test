@@ -1,0 +1,20 @@
+{# @var ea \EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext #}
+{# @var field \EasyCorp\Bundle\EasyAdminBundle\Dto\FieldDto #}
+{# @var entity \EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto #}
+{% if field.customOptions.get('imageTypes') %}
+    {% if field.formattedValue == "Schema and photo" %}
+        <span class="badge badge-success" title="{{ field.value }}">Schema + photo</span>
+    {% elseif field.formattedValue == "Schema only" %}
+        <span class="badge badge-warning" title="{{ field.value }}">Schema only</span>
+    {% elseif field.formattedValue == "Photo only" %}
+        <span class="badge badge-info" title="{{ field.value }}">Photo only</span>
+    {% else %}
+        <span class="badge badge-secondary">Empty</span>
+    {% endif %}
+{% else %}
+    {% if ea.crud.currentAction == 'detail' %}
+        <span title="{{ field.value }}">{{ field.formattedValue|raw|nl2br }}</span>
+    {% else %}
+        <span {% if field.customOptions.get('wrapped') %}class="badge badge-secondary"{% endif %} title="{{ field.value }}">{{ field.formattedValue|raw }}</span>
+    {% endif %}
+{% endif %}

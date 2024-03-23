@@ -22,7 +22,10 @@ abstract class IdRedirection
     private $source;
 
     #[ORM\Column(type: 'string', length: 255)]
-    #[Assert\Length(max: 255, maxMessage: 'Source is longer than {{ limit }} characters, try to make it shorter.')]
+    #[Assert\Length(max: 255, maxMessage: 'Source is longer than {{ limit }} characters.')]
+    #[Assert\NotBlank(
+        message: 'Source type cannot be blank'
+    )]
     private $sourceType;
 
     public function __construct()
@@ -39,7 +42,7 @@ abstract class IdRedirection
         return $this->source;
     }
 
-    public function setSource(string $source): self
+    public function setSource(?string $source): self
     {
         $this->source = $source;
 
@@ -51,7 +54,7 @@ abstract class IdRedirection
         return $this->sourceType;
     }
 
-    public function setSourceType(string $sourceType): self
+    public function setSourceType(?string $sourceType): self
     {
         $this->sourceType = $sourceType;
 

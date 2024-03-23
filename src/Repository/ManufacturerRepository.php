@@ -4,9 +4,11 @@ namespace App\Repository;
 
 use App\Entity\Manufacturer;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\NativeQuery;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Generator;
+use Symfony\Component\Clock\NativeClock;
 
 /**
  * @method Manufacturer|null find($id, $lockMode = null, $lockVersion = null)
@@ -114,14 +116,22 @@ class ManufacturerRepository extends ServiceEntityRepository
     {
         $entityManager = $this->getEntityManager();
 
-        $query = $entityManager->createQuery(
-            'SELECT DISTINCT man
-            FROM App\Entity\MotherboardBios bios, App\Entity\Manufacturer man 
-            WHERE bios.manufacturer=man 
-            ORDER BY man.name ASC'
+        $rsm = new ResultSetMapping();
+
+        $rsm->addEntityResult('App\Entity\Manufacturer', 'man');
+        $rsm->addFieldResult('man', 'id', 'id');
+        $rsm->addFieldResult('man', 'name', 'name');
+
+        $query = $entityManager->createNativeQuery(
+            'SELECT distinct man.id, man.name
+            FROM (SELECT distinct man.* FROM manufacturer man JOIN motherboard mobo ON mobo.manufacturer_id = man.id
+            UNION SELECT distinct man.* FROM manufacturer man JOIN motherboard_bios bios ON bios.manufacturer_id = man.id) as man
+            ORDER BY man.name;',
+            $rsm
         );
 
-        return $query->getResult();
+        return $query->setCacheable(true)
+            ->getResult();
     }
 
     /**
@@ -162,10 +172,37 @@ class ManufacturerRepository extends ServiceEntityRepository
 
         $data = array();
         foreach ($res->fetchAllAssociative() as $row) {
-            $data[$row["chipsetman"]][] = array($row["chipsetname"], $row["code"]);
+            $data[$row["chipsetman"]][] = array($row["code"], $row["chipsetname"]);
         }
 
         return $data;
+    }
+    public function formatManufacterQuery(string $entity): array
+    {
+        $entityManager = $this->getEntityManager();
+        $rsm = new ResultSetMapping();
+        $rsm->addEntityResult('App\Entity\Manufacturer', 'man');
+        $rsm->addFieldResult('man', 'id', 'id');
+        $rsm->addFieldResult('man', 'name', 'name');
+        return $entityManager->createNativeQuery(
+            'SELECT distinct man.id, man.name
+            FROM (SELECT distinct man.* FROM manufacturer man JOIN ' . $entity . ' entity ON entity.manufacturer_id = man.id
+            UNION SELECT distinct man.* FROM manufacturer man JOIN ' . $entity . '_alias alias ON alias.manufacturer_id = man.id) as man
+            ORDER BY man.name;',
+            $rsm
+        )->setCacheable(true)->getResult();
+    }
+    public function formatManufacterQueryStorage(string $entity): array
+    {
+        $entityManager = $this->getEntityManager();
+
+        $query = $entityManager->createQuery(
+            'SELECT DISTINCT man
+            FROM App\Entity' . $entity .' entity, App\Entity\Manufacturer man, App\Entity\StorageDeviceAlias alias
+            WHERE entity.manufacturer=man OR (alias.manufacturer=man AND alias.storageDevice=entity)
+            ORDER BY man.name ASC'
+        );
+        return $query->getResult();
     }
 
     /**
@@ -204,49 +241,29 @@ class ManufacturerRepository extends ServiceEntityRepository
     /**
      * @return Manufacturer[]
      */
+    public function findAllExpansionCardManufacturer(): array
+    {
+        return $this->formatManufacterQuery('expansion_card');
+    }
+    /**
+     * @return Manufacturer[]
+     */
     public function findAllHddManufacturer(): array
     {
-        $entityManager = $this->getEntityManager();
-
-        $query = $entityManager->createQuery(
-            'SELECT DISTINCT man
-            FROM App\Entity\HardDrive hdd, App\Entity\Manufacturer man
-            WHERE hdd.manufacturer=man
-            ORDER BY man.name ASC'
-        );
-
-        return $query->getResult();
+        return $this->formatManufacterQueryStorage('\HardDrive');
     }
     /**
      * @return Manufacturer[]
      */
     public function findAllCddManufacturer(): array
     {
-        $entityManager = $this->getEntityManager();
-
-        $query = $entityManager->createQuery(
-            'SELECT DISTINCT man
-            FROM App\Entity\CdDrive cdd, App\Entity\Manufacturer man
-            WHERE cdd.manufacturer=man
-            ORDER BY man.name ASC'
-        );
-
-        return $query->getResult();
+        return $this->formatManufacterQueryStorage('\CdDrive');
     }
     /**
      * @return Manufacturer[]
      */
     public function findAllFddManufacturer(): array
     {
-        $entityManager = $this->getEntityManager();
-
-        $query = $entityManager->createQuery(
-            'SELECT DISTINCT man
-            FROM App\Entity\FloppyDrive fdd, App\Entity\Manufacturer man
-            WHERE fdd.manufacturer=man
-            ORDER BY man.name ASC'
-        );
-
-        return $query->getResult();
+        return $this->formatManufacterQueryStorage('\FloppyDrive');
     }
 }

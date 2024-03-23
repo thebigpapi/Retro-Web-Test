@@ -2,8 +2,10 @@
 
 namespace App\Entity;
 
+use App\Entity\Enum\KnownIssueType;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -16,23 +18,30 @@ class KnownIssue
     private $id;
 
     #[ORM\Column(type: 'string', length: 255)]
-    #[Assert\Length(max: 255, maxMessage: 'Name is longer than {{ limit }} characters, try to make it shorter.')]
+    #[Assert\Length(max: 255, maxMessage: 'Name is longer than {{ limit }} characters.')]
     private $name;
 
     #[ORM\ManyToMany(targetEntity: Motherboard::class, mappedBy: 'knownIssues')]
     private $motherboards;
 
     #[ORM\Column(type: 'string', length: 512, nullable: true)]
-    #[Assert\Length(max: 512, maxMessage: 'Description is longer than {{ limit }} characters, try to make it shorter.')]
+    #[Assert\Length(max: 512, maxMessage: 'Description is longer than {{ limit }} characters.')]
     private $description;
 
     #[ORM\ManyToMany(targetEntity: StorageDevice::class, mappedBy: 'knownIssues')]
     private Collection $storageDevices;
 
+    #[ORM\Column(type: Types::SMALLINT, nullable: true)]
+    private ?int $type = null;
+
+    #[ORM\ManyToMany(targetEntity: ExpansionCard::class, mappedBy: 'knownIssues')]
+    private Collection $expansionCards;
+
     public function __construct()
     {
         $this->motherboards = new ArrayCollection();
         $this->storageDevices = new ArrayCollection();
+        $this->expansionCards = new ArrayCollection();
     }
 
     public function __toString(): string
@@ -111,6 +120,68 @@ class KnownIssue
     {
         if ($this->storageDevices->removeElement($storageDevice)) {
             $storageDevice->removeKnownIssue($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param KnownIssueType[] $types
+     */
+    public function setTypes(array $types): static
+    {
+        $this->type = array_sum(array_column($types, 'value'));
+
+        return $this;
+    }
+
+    /**
+     * @return KnownIssueType[]
+     */
+    public function getTypes(): array
+    {
+        $result = [];
+        foreach (array_column(KnownIssueType::cases(), 'value') as $type) {
+            if ($this->type & $type) {
+                $result[] = KnownIssueType::from($type);
+            }
+        }
+        return $result;
+    }
+
+    public function getTypesString(): array
+    {
+        $result = [];
+        foreach (array_column(KnownIssueType::cases(), 'value') as $type) {
+            if ($this->type & $type) {
+                $result[] = KnownIssueType::from($type)->name;
+            }
+        }
+        return $result;
+    }
+
+    /**
+     * @return Collection<int, ExpansionCard>
+     */
+    public function getExpansionCards(): Collection
+    {
+        return $this->expansionCards;
+    }
+
+    public function addExpansionCard(ExpansionCard $expansionCard): static
+    {
+        if (!$this->expansionCards->contains($expansionCard)) {
+            $this->expansionCards->add($expansionCard);
+            $expansionCard->addKnownIssue($this);
+        }
+
+        return $this;
+    }
+
+    public function removeExpansionCard(ExpansionCard $expansionCard): static
+    {
+        if ($this->expansionCards->removeElement($expansionCard)) {
+            $expansionCard->removeKnownIssue($this);
         }
 
         return $this;

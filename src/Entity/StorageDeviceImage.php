@@ -24,14 +24,14 @@ class StorageDeviceImage
     private $storageDevice;
 
     #[ORM\Column(type: 'string', length: 255)]
-    #[Assert\Length(max:255, maxMessage: 'File name is longer than {{ limit }} characters, try to make it shorter.')]
+    #[Assert\Length(max:255, maxMessage: 'File name is longer than {{ limit }} characters.')]
     private $file_name;
 
     #[Vich\UploadableField(mapping:'storageimage', fileNameProperty:'file_name')]
     private File|null $imageFile = null;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    #[Assert\Length(max:255, maxMessage: 'Description is longer than {{ limit }} characters, try to make it shorter.')]
+    #[Assert\Length(max:255, maxMessage: 'Description is longer than {{ limit }} characters.')]
     private $description;
 
     #[ORM\Column(type: 'datetime')]
@@ -118,6 +118,18 @@ class StorageDeviceImage
         $this->type = $type;
 
         return $this;
+    }
+    public function getTypeFormatted(): string
+    {
+        switch($this->type){
+            case 1: return "Schema";
+            case 2: return "Top photo";
+            case 3: return "Front photo";
+            case 4: return "Back photo";
+            case 5: return "Bottom photo";
+            case 6: return "Misc";
+            default: return "";
+        }
     }
     public function getImageFile(): ?File
     {

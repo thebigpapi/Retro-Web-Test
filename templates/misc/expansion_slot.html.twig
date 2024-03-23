@@ -1,0 +1,106 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	{{ expansion_slot.getName() }}
+{% endblock %}
+{% block metatags %}
+	<meta name="description" content="Connector :{{ expansion_slot.getName() }}">
+{% endblock %}
+{% block extra_javascripts %}
+	<script src="/build/js/show.js" defer></script>
+{% endblock %}
+
+{% block opengraph %}
+	{% apply spaceless %}
+	<meta property="og:title" content="{{ expansion_slot.getName() }}">
+	<meta property="og:description" content="Get connector info for {{ expansion_slot.getName() }}!">
+	{% if expansion_slot.getInterface() is not empty %}
+		{% for image in expansion_slot.getInterface().getEntityImages()|sort((a, b) => a.getFileName() <=> b.getFileName())|slice(0, 1) %}
+			<meta name="twitter:image" content="{{ vich_uploader_asset(image, 'imageFile')}}">
+			<meta property="og:image" content="{{ vich_uploader_asset(image, 'imageFile')}}">
+		{% endfor %}
+	{% else %}
+		<meta name="twitter:image" content="{{ absolute_url(asset('build/images/missing/not-available.jpg')) }}">
+		<meta property="og:image" content="{{ absolute_url(asset('build/images/missing/not-available.jpg')) }}">
+	{% endif %}
+	{% endapply %}
+	<link rel="alternate" hreflang="x-default" href="{{ absolute_url(path('expansion_slot_show', {id: expansion_slot.getId()})) }}"/>
+{% endblock %}
+{% block subnav %}
+<li class="flex navbar-li">
+    <div class="flex items-center">
+        <svg class="navbar-svg" viewBox="0 0 24 44" preserveAspectRatio="none" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M.293 0l22 22-22 22h1.414l22-22-22-22H.293z"></path>
+        </svg>
+        <div class="navbar-anchor">
+			<img src="{{ absolute_url(asset('build/icons/exp_slot.svg')) }}" width="24" height="24" alt="port">
+            <code class="text-pink-500">Expansion slots</code>
+        </div>
+    </div>
+</li>
+<li class="flex">
+    <div class="flex">
+        <svg class="navbar-svg" viewBox="0 0 24 44" preserveAspectRatio="none" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M.293 0l22 22-22 22h1.414l22-22-22-22H.293z"></path>
+        </svg>
+        <code class="navbar-code">ID: {{expansion_slot.getId()}}</code>
+    </div>
+</li>
+{% endblock %}
+
+{% block body %}
+<!-- MANUF./NAME/PART NO. -->
+<div class="title">{{ expansion_slot.getName() }}</div>
+<div class="main-strip">
+	<div class="internal-container">
+		{% include 'macros/navbar.html.twig' with {'entity': expansion_slot, 'entityName': 'ExpansionSlotInterfaceSignal', 'name': 'connector', 'role': 'ROLE_USER'} %}
+		<div class="internal-content">
+			<!-- DESCRIPRION -->
+			<div class="show-general" id="sh-general">
+				<div class="quick-spec-table">
+					<!-- Mechanical -->
+					<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/rs232.svg')) }}" alt="conn" width="24" height="24">Connector</div>
+					<div>{{ expansion_slot.getInterface() ? expansion_slot.getInterface().getName() : 'Unknown'}}</div>
+					<!-- Mechanical p/n -->
+					<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/tag.svg')) }}" alt="conn" width="24" height="24">Conn. part number</div>
+					<div>{{ expansion_slot.getInterface() ? expansion_slot.getInterface().getPartNumber() : 'Unknown'}}</div>
+					<!-- Electrical -->
+					<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/io.svg')) }}" alt="signal" width="24" height="24">Electrical interfaces</div>
+					{% if expansion_slot.getSignals() is not empty %}
+					<div class="tag-container">{% for signal in expansion_slot.getSignals() %}<span class="text-block">{{ signal.getName()}}</span>{% endfor %}</div>
+					{% else %}
+					<div>Unknown</div>
+					{% endif %}
+				</div>
+				{% include 'macros/notes.html.twig' with {'entity': expansion_slot} %}
+				{% if expansion_slot.getInterface() is not empty %}
+					{% include 'macros/notes.html.twig' with {'title': 'Connector notes', 'entity': expansion_slot.getInterface()} %}
+				{% endif %}
+				{% include 'macros/notes.html.twig' with {'title': 'Electrical interface notes', 'entity': expansion_slot.getSignals()} %}
+				<!-- MANUALS -->
+				{% include 'macros/manuals.html.twig' with {'entity': expansion_slot.getAllDocs(), 'entity_label':'', 'audit_entity':'App-Entity-EntityDocumentation'} %}
+			</div>
+		</div>
+	</div>
+
+	<!-- IMAGES -->
+	<div class="show-images" id="sh-images">
+	{% if expansion_slot.getAllImages() is not empty %}
+		{% set lpindex = 0 %}
+		{% for image in expansion_slot.getAllImages()|sort((a, b) => a.getFileName() <=> b.getFileName()) %}
+			{% set lpindex = lpindex + 1 %}
+			{% include 'macros/images.html.twig' with {'type':'connector', 'entity': image, 'index': lpindex, 'length': expansion_slot.getAllImages()|length} %}
+		{% endfor %}
+	{% else %}
+		<div class="show-images">
+			<img src={{ absolute_url(asset('build/images/missing/not-available.jpg')) }} title="no images available :(" style="width:100%;">
+		</div>
+	{% endif %}
+	</div>
+
+</div>
+<div class="disclaimer">
+	<p><b>Disclaimer</b></p>
+	<p>The info found in this page might not be entirely correct. Check out <a href="{{ path('app_contributions') }}">this guide</a> to learn how you can improve it.</p>
+</div>
+{% endblock %}

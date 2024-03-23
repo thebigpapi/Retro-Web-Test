@@ -31,13 +31,13 @@ class LargeFile
         match: true,
         message: 'The name uses invalid characters',
     )]
-    #[Assert\Length(max: 255, maxMessage: 'Name is longer than {{ limit }} characters, try to make it shorter.')]
+    #[Assert\Length(max: 255, maxMessage: 'Name is longer than {{ limit }} characters.')]
     private $name;
     /**
      * @var string|null
      */
     #[ORM\Column(type: 'string', length: 255)]
-    #[Assert\Length(max: 255, maxMessage: 'File name is longer than {{ limit }} characters, try to make it shorter.')]
+    #[Assert\Length(max: 255, maxMessage: 'File name is longer than {{ limit }} characters.')]
     private $file_name;
 
     #[Vich\UploadableField(mapping: 'largefile', fileNameProperty: 'file_name', size: 'size')]
@@ -46,26 +46,9 @@ class LargeFile
     #[ORM\Column(type: 'datetime')]
     private $updated_at;
 
-    #[ORM\ManyToOne(targetEntity: DumpQualityFlag::class, inversedBy: 'largeFiles')]
-    #[ORM\JoinColumn(nullable: false)]
-    #[Assert\NotBlank(
-        message: 'Flag cannot be blank'
-    )]
-    private $dumpQualityFlag;
-
-    #[ORM\ManyToMany(targetEntity: Language::class, inversedBy: 'largeFiles')]
-    private $languages;
-
-    #[ORM\Column(type: 'string', length: 255)]
-    private $subdirectory;
-
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    #[Assert\Length(max: 255, maxMessage: 'Version is longer than {{ limit }} characters, try to make it shorter.')]
+    #[Assert\Length(max: 255, maxMessage: 'Version is longer than {{ limit }} characters.')]
     private $fileVersion;
-
-    #[ORM\OneToMany(targetEntity: LargeFileMediaTypeFlag::class, mappedBy: 'largeFile', orphanRemoval: true, cascade: ['persist'])]
-    #[Assert\Valid()]
-    private $mediaTypeFlags;
 
     #[ORM\ManyToMany(targetEntity: OsFlag::class, inversedBy: 'largeFiles')]
     private $osFlags;
@@ -77,27 +60,33 @@ class LargeFile
     private $chipsets;
 
     #[ORM\Column(type: 'string', length: 4096, nullable: true)]
-    #[Assert\Length(max: 4096, maxMessage: 'Note is longer than {{ limit }} characters, try to make it shorter.')]
+    #[Assert\Length(max: 4096, maxMessage: 'Note is longer than {{ limit }} characters.')]
     private $note;
 
     #[ORM\Column(type: 'integer', nullable: true)]
     private $size;
 
-    #[ORM\OneToMany(targetEntity: LargeFileExpansionChip::class, mappedBy: 'largeFile', orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: LargeFileExpansionChip::class, mappedBy: 'largeFile', orphanRemoval: true, cascade: ['persist'])]
     private $expansionchips;
+
+    #[ORM\OneToMany(targetEntity: LargeFileExpansionCard::class, mappedBy: 'largeFile', orphanRemoval: true, cascade: ['persist'])]
+    private $expansionCards;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $lastEdited = null;
 
     public function __construct()
     {
-        $this->languages = new ArrayCollection();
-        $this->mediaTypeFlags = new ArrayCollection();
         $this->osFlags = new ArrayCollection();
         $this->motherboards = new ArrayCollection();
         $this->chipsets = new ArrayCollection();
         $this->expansionchips = new ArrayCollection();
+        $this->expansionCards = new ArrayCollection();
         $this->lastEdited = new \DateTime('now');
+    }
+    public function __toString(): string
+    {
+        return $this->getNameWithTags();
     }
     public function getId(): ?int
     {
@@ -123,6 +112,13 @@ class LargeFile
 
         return $this;
     }
+    public function getFileNameSimple(): string
+    {
+        $filename = $this->file_name;
+        $ext = pathinfo($filename, PATHINFO_EXTENSION);
+        $file = pathinfo($filename, PATHINFO_FILENAME);
+        return substr($file, 0, -23) . '.' . $ext;
+    }
     public function getFile(): ?File
     {
         return $this->file;
@@ -146,47 +142,6 @@ class LargeFile
 
         return $this;
     }
-    public function getDumpQualityFlag(): ?DumpQualityFlag
-    {
-        return $this->dumpQualityFlag;
-    }
-    public function setDumpQualityFlag(?DumpQualityFlag $dumpQualityFlag): self
-    {
-        $this->dumpQualityFlag = $dumpQualityFlag;
-
-        return $this;
-    }
-    /**
-     * @return Collection|Language[]
-     */
-    public function getLanguages(): Collection
-    {
-        return $this->languages;
-    }
-    public function addLanguage(Language $language): self
-    {
-        if (!$this->languages->contains($language)) {
-            $this->languages[] = $language;
-        }
-
-        return $this;
-    }
-    public function removeLanguage(Language $language): self
-    {
-        $this->languages->removeElement($language);
-
-        return $this;
-    }
-    public function getSubdirectory(): ?string
-    {
-        return $this->subdirectory;
-    }
-    public function setSubdirectory(string $subdirectory): self
-    {
-        $this->subdirectory = $subdirectory;
-
-        return $this;
-    }
     public function getFileVersion(): ?string
     {
         return $this->fileVersion;
@@ -194,33 +149,6 @@ class LargeFile
     public function setFileVersion(?string $fileVersion): self
     {
         $this->fileVersion = $fileVersion;
-
-        return $this;
-    }
-    /**
-     * @return Collection|LargeFileMediaTypeFlag[]
-     */
-    public function getMediaTypeFlags(): Collection
-    {
-        return $this->mediaTypeFlags;
-    }
-    public function addMediaTypeFlag(LargeFileMediaTypeFlag $mediaTypeFlag): self
-    {
-        if (!$this->mediaTypeFlags->contains($mediaTypeFlag)) {
-            $this->mediaTypeFlags[] = $mediaTypeFlag;
-            $mediaTypeFlag->setLargeFile($this);
-        }
-
-        return $this;
-    }
-    public function removeMediaTypeFlag(LargeFileMediaTypeFlag $mediaTypeFlag): self
-    {
-        if ($this->mediaTypeFlags->removeElement($mediaTypeFlag)) {
-            // set the owning side to null (unless already changed)
-            if ($mediaTypeFlag->getLargeFile() === $this) {
-                $mediaTypeFlag->setLargeFile(null);
-            }
-        }
 
         return $this;
     }
@@ -250,37 +178,7 @@ class LargeFile
     }
     public function getNameWithTags(): string
     {
-        $tmp = $this->getLanguages();
-        $langs = "";
-        foreach ($tmp as $key => $language) {
-            if (array_key_last($tmp->toArray()) == $key) {
-                $langs .= $language->getIsoCode();
-            } else {
-                $langs .= $language->getIsoCode() . ", ";
-            }
-        }
-
-        $tmp = $this->getOsFlags();
-        $osTags = "";
-        foreach ($tmp as $key => $os) {
-            if (array_key_last($tmp->toArray()) == $key) {
-                $osTags .=  $os->getVersion();
-            } else {
-                $osTags .=  $os->getVersion() . ", ";
-            }
-        }
-
-        $tmp = $this->getMediaTypeFlags();
-        $mediaTypeTags = "";
-        foreach ($tmp as $key => $media) {
-            if (array_key_last($tmp->toArray()) == $key) {
-                $mediaTypeTags .=  $media->getMediaTypeFlag()->getTagName();
-            } else {
-                $mediaTypeTags .=  $media->getMediaTypeFlag()->getTagName() . ", ";
-            }
-        }
-
-        return $this->getName() . " " . $this->getFileVersion() ?? "" . " [" . $langs . "] [" . $mediaTypeTags . "] [" . $osTags . "]";
+        return $this->getName() . " " . $this->getFileVersion() ?? "";
     }
     /**
      * @return Collection|LargeFileMotherboard[]
@@ -356,6 +254,13 @@ class LargeFile
 
         return $this;
     }
+    public function getSizeFormatted(): string
+    {
+        $size = $this->size;
+        $base = log($size) / log(1024);
+        $suffix = array("", "KB", "MB", "GB", "TB");
+        return round(pow(1024, $base - floor($base)), 1) . $suffix[floor($base)];
+    }
     /**
      * @return Collection|LargeFileExpansionChip[]
      */
@@ -418,6 +323,33 @@ class LargeFile
         }
 
         return $strBuilder;
+    }
+    /**
+     * @return Collection|LargeFileExpansionCard[]
+     */
+    public function getExpansionCards(): ?Collection
+    {
+        return $this->expansionchips;
+    }
+    public function addExpansionCard(LargeFileExpansionCard $largeFileExpansionCard): self
+    {
+        if (!$this->expansionchips->contains($largeFileExpansionCard)) {
+            $this->expansionchips[] = $largeFileExpansionCard;
+            $largeFileExpansionCard->setLargeFile($this);
+        }
+
+        return $this;
+    }
+    public function removeExpansionCard(LargeFileExpansionCard $largeFileExpansionCard): self
+    {
+        if ($this->expansionchips->removeElement($largeFileExpansionCard)) {
+            // set the owning side to null (unless already changed)
+            if ($largeFileExpansionCard->getLargeFile() === $this) {
+                $largeFileExpansionCard->setLargeFile(null);
+            }
+        }
+
+        return $this;
     }
     #[Assert\Callback]
     public function validate(ExecutionContextInterface $context, mixed $payload): void

@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -17,11 +18,11 @@ abstract class Chip
     protected $id;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    #[Assert\Length(max: 255, maxMessage: 'Name is longer than {{ limit }} characters, try to make it shorter.')]
+    #[Assert\Length(max: 32, maxMessage: 'String is longer than {{ limit }} characters.')]
     protected $name;
 
     #[ORM\Column(type: 'string', length: 255)]
-    #[Assert\Length(max: 255, maxMessage: 'Part number is longer than {{ limit }} characters, try to make it shorter.')]
+    #[Assert\Length(max: 255, maxMessage: 'String is longer than {{ limit }} characters.')]
     protected $partNumber;
 
     #[ORM\ManyToOne(targetEntity: Manufacturer::class, inversedBy: 'chips', fetch: 'EAGER')]
@@ -45,6 +46,11 @@ abstract class Chip
 
     #[ORM\Column(type: 'datetime')]
     private $lastEdited;
+
+    #[ORM\Column(type: Types::SMALLINT)]
+    #[Assert\NotBlank(message: 'Sort position cannot be blank')]
+    #[Assert\Positive(message: "Sort position should be above 0")]
+    private ?int $sort = null;
 
 
     public function __construct()
@@ -243,5 +249,27 @@ abstract class Chip
     public function updateLastEdited()
     {
         $this->lastEdited = new \DateTime('now');
+    }
+
+    public function getSort(): ?int
+    {
+        return $this->sort;
+    }
+
+    public function setSort(int $sort): static
+    {
+        $this->sort = $sort;
+
+        return $this;
+    }
+    public function getAllVendors(): Collection
+    {
+        $vendors = $this->getManufacturer()?->getPciVendorIds()->toArray() ?? [];
+        foreach($this->getChipAliases() as $alias){
+            $aliasVendors = $alias->getManufacturer()?->getPciVendorIds()->toArray() ?? [];
+            if(count($aliasVendors) > 0)
+                $vendors = array_merge($vendors, $aliasVendors);
+        }
+        return new ArrayCollection($vendors);
     }
 }

@@ -1,6 +1,27 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}Contributions - The Retro Web{% endblock %}
+{% block subnav %}
+<li class="flex navbar-li">
+    <div class="flex items-center">
+        <svg class="navbar-svg" viewBox="0 0 24 44" preserveAspectRatio="none" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M.293 0l22 22-22 22h1.414l22-22-22-22H.293z"></path>
+        </svg>
+        <a class="ml-4" href="{{ path('app_info') }}">
+			<img src="{{ absolute_url(asset('build/icons/about.svg')) }}" width="24" height="24" alt="info">
+            <code class="text-pink-500">Info</code>
+        </a>
+    </div>
+</li>
+<li class="flex">
+    <div class="flex">
+        <svg class="navbar-svg" viewBox="0 0 24 44" preserveAspectRatio="none" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M.293 0l22 22-22 22h1.414l22-22-22-22H.293z"></path>
+        </svg>
+        <code class="navbar-code">Contributions</code>
+    </div>
+</li>
+{% endblock %}
 
 {% block body %}
 <div class="title"><b>Contributions</b></div>

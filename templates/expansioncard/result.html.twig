@@ -1,0 +1,51 @@
+{% if route is defined and route == true %}{% set typeid = 'route-results' %}{% else %}{% set typeid = domTarget %}{% endif %}
+<div id="{{ typeid }}">
+{% if expansioncards is defined and expansioncards is not empty %}
+	<div class="results{% if not show_images %} lst{% endif %}">
+		{{ knp_pagination_render(expansioncards, 'macros/pagination_async.html.twig') }}
+		{% if show_images %}
+			<div class="perks">
+				<div id="index-datetime" class="perks-list">
+				{% for expansioncard in expansioncards %}
+					<div class="perk">
+						<a href="{{ path("expansioncard_show", {id: expansioncard.getId()}) }}">
+							<div class="perk-image">
+							{% if expansioncard.getImages() is not empty %}
+								{% set imgcount = 0 %}
+								{% for image in expansioncard.getImages()|sort((a, b) => a.getFileName() <=> b.getFileName())|slice(0, 1) %}
+									{% set imgcount = imgcount + 1 %}
+									<img src="{% if vich_uploader_asset(image, 'imageFile') | ext != "svg" %}
+									{{ vich_uploader_asset(image, 'imageFile') | imagine_filter('show_thumb') }}{% else %}
+									{{ vich_uploader_asset(image, 'imageFile')}}{% endif %}" alt="" loading="lazy" width="250" height="200" title="{% if image.description %}{{ image.description }}{% endif %}">
+								{% endfor %}
+								{% if imgcount == 0 %}<img src="{{ absolute_url(asset('build/images/missing/card-missing.jpg')) }}" loading="lazy" width="250" height="200" title="no images available :(">{% endif %}
+							{% else %}
+								<img src="{{ absolute_url(asset('build/images/missing/card-missing.jpg')) }}" loading="lazy" width="250" height="200" title="no images available :(">
+							{% endif %}
+							</div>
+							<div class="perk-name">{{ expansioncard.getFullName() }}</div>
+							<div class="perk-alias">
+								{% if expansioncard.getExpansionCardAliases() is not empty %}<span class="results-alias">
+									<small>Alias: {% for alias in expansioncard.getExpansionCardAliases() %}{{ alias.getFullAliasName() }}{% if not loop.last %}, {% endif %}{% endfor %}</small>
+								</span>{% endif %}
+							</div>
+						</a>
+					</div>
+				{% endfor %}
+				</div>
+			</div>
+		{% else %}
+			<div class="plain-list w300p table">
+				{% include 'macros/widget.html.twig' with {'type':'expansioncard-results', 'entity': expansioncards} %}
+			</div>
+		{% endif %}
+		{{ knp_pagination_render(expansioncards, 'macros/pagination_async.html.twig') }}
+	</div>
+{% else %}
+	No results
+{% endif %}
+{% if params is defined %}
+<div id="search-params-id" style="display:none;">{{params}}</div>
+{% endif %}
+</div>
+

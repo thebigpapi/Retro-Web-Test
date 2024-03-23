@@ -75,7 +75,7 @@ class ProcessorRepository extends ServiceEntityRepository
 
         // Checking values in criteria and creating WHERE statements
         if (array_key_exists('manufacturer', $criteria)) {
-            $whereArray[] = "(man.id = :manufacturerId)";
+            $whereArray[] = "(man.id = :manufacturerId OR alias.manufacturer = :manufacturerId)";
             $valuesArray["manufacturerId"] = (int)$criteria['manufacturer'];
         }
         if (array_key_exists('cpuSpeed', $criteria)) {
@@ -155,5 +155,16 @@ class ProcessorRepository extends ServiceEntityRepository
         ORDER BY cpu.name ASC";
         $query = $entityManager->createQuery($dql)->setParameter(":cid", $cid);
         return $query->getResult();
+    }
+    /**
+     * @return Processor[]
+     */
+    public function findLatest(int $maxCount = 12)
+    {
+        return $this->createQueryBuilder('cpu')
+            ->orderBy('cpu.lastEdited', 'DESC')
+            ->setMaxResults($maxCount)
+            ->getQuery()
+            ->getResult();
     }
 }

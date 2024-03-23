@@ -2,7 +2,7 @@
 
 namespace App\Controller\Admin\Filter;
 
-use App\Form\Type\Admin\MotherboardImageFilterType;
+use App\Form\Type\Admin\SchemaPhotoImageFilterType;
 use Doctrine\ORM\QueryBuilder;
 use EasyCorp\Bundle\EasyAdminBundle\Contracts\Filter\FilterInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto;
@@ -20,33 +20,39 @@ class MotherboardImageFilter implements FilterInterface
             ->setFilterFqcn(__CLASS__)
             ->setProperty($propertyName)
             ->setLabel($label)
-            ->setFormType(MotherboardImageFilterType::class);
+            ->setFormType(SchemaPhotoImageFilterType::class);
     }
 
     public function apply(QueryBuilder $queryBuilder, FilterDataDto $filterDataDto, ?FieldDto $fieldDto, EntityDto $entityDto): void
     {
-        if ('schema' === $filterDataDto->getValue()) {
+        if ('any' === $filterDataDto->getValue()) {
+            $queryBuilder
+                ->leftjoin('entity.images', 'moboimage')
+                ->andWhere('moboimage.id is not null');
+        }
+        if ('schemaonly' === $filterDataDto->getValue()) {
             $queryBuilder
                 ->leftjoin('entity.images', 'moboimage')
                 ->andWhere('moboimage.id is not null')
                 ->andWhere('entity.id not in (select mot.id from App\Entity\Motherboard mot join mot.images mi where mi.motherboardImageType between 2 and 4)');
         }
-        if ('photo' === $filterDataDto->getValue()) {
+        if ('schema' === $filterDataDto->getValue()) {
+            $queryBuilder
+                ->leftjoin('entity.images', 'moboimage')
+                ->andWhere('moboimage.id is not null')
+                ->andWhere("moboimage.motherboardImageType in (1,5)");
+        }
+        if ('photoonly' === $filterDataDto->getValue()) {
             $queryBuilder
                 ->leftjoin('entity.images', 'moboimage')
                 ->andWhere('moboimage.id is not null')
                 ->andWhere('entity.id not in (select mot.id from App\Entity\Motherboard mot join mot.images mi where mi.motherboardImageType=1 or mi.motherboardImageType=5)');
         }
-        if ('schemaphoto' === $filterDataDto->getValue()) {
+        if ('photo' === $filterDataDto->getValue()) {
             $queryBuilder
                 ->leftjoin('entity.images', 'moboimage')
                 ->andWhere('moboimage.id is not null')
-                ->andWhere('entity.id in (
-                    select mot.id from App\Entity\Motherboard mot join mot.images mi where mi.motherboardImageType between 2 and 4)
-                ')
-                ->andWhere('entity.id in (
-                    select mot1.id from App\Entity\Motherboard mot1 join mot1.images mi1 where mi1.motherboardImageType=1 or mi1.motherboardImageType=5)
-                ');
+                ->andWhere("moboimage.motherboardImageType between 2 and 4");
         }
         if ('none' === $filterDataDto->getValue()) {
             $queryBuilder

@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\OsFlag;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query\ResultSetMapping;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -19,32 +20,25 @@ class OsFlagRepository extends ServiceEntityRepository
         parent::__construct($registry, OsFlag::class);
     }
 
-    // /**
-    //  * @return OsFlag[] Returns an array of OsFlag objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('o')
-            ->andWhere('o.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('o.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
+    /**
+    * @return OsFlag[] Returns an array of OsFlag objects
     */
+    public function findByPopularity()
+    {
+        $entityManager = $this->getEntityManager();
 
-    /*
-    public function findOneBySomeField($value): ?OsFlag
-    {
-        return $this->createQueryBuilder('o')
-            ->andWhere('o.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        $rsm = new ResultSetMapping();
+        $rsm->addEntityResult('App\Entity\OsFlag', 'os');
+        //$rsm->addJoinedEntityResult('App\Entity\LargeFile', 'mos', 'os', 'osFlags');
+        $rsm->addFieldResult('os', 'id', 'id');
+        $rsm->addFieldResult('os', 'name', 'name');
+
+        $query = $entityManager->createNativeQuery(
+            "SELECT os.id, count(mos.os_flag_id) as popularity, os.name
+            FROM os_flag os LEFT JOIN large_file_os_flag mos ON os.id=mos.os_flag_id GROUP BY os.id, os.name
+            ORDER BY popularity DESC;",
+            $rsm
+        );
+        return $query->getResult();
     }
-    */
 }

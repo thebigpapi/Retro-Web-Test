@@ -7,12 +7,25 @@
 	<link rel="alternate" hreflang="x-default" href="{{ absolute_url(path('bios_list')) }}"/>
 {% endblock %}
 {% block subnav %}
-<a href="{{ path('mobosearch') }}" class="nav-link">
-	<span class="navbar-label">Motherboard</span>
-</a>
-<a href="{{ path('biossearch') }}" class="nav-link active">
-	<span class="navbar-label">BIOS</span>
-</a>
+<li class="flex navbar-li">
+    <div class="flex items-center">
+        <svg class="navbar-svg" viewBox="0 0 24 44" preserveAspectRatio="none" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M.293 0l22 22-22 22h1.414l22-22-22-22H.293z"></path>
+        </svg>
+        <a class="ml-4" href="{{ path('biossearch') }}">
+			<img src="{{ absolute_url(asset('build/icons/awchip.svg')) }}" width="24" height="24" alt="bios">
+            <code class="text-pink-500">BIOS images</code>
+        </a>
+    </div>
+</li>
+<li class="flex">
+    <div class="flex">
+        <svg class="navbar-svg" viewBox="0 0 24 44" preserveAspectRatio="none" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M.293 0l22 22-22 22h1.414l22-22-22-22H.293z"></path>
+        </svg>
+        <code class="navbar-code">Chipset and manufacturer IDs</code>
+    </div>
+</li>
 {% endblock %}
 {% block body %}
 	<div class="title">List of BIOS manufacturer and chipset codes</div>
@@ -30,14 +43,11 @@
 	</div>
 	{% endfor %}
 	{% for manufacturer, codes in chipCodes %}
-	<div class="grid-list2">
+	<div class="grid-list">
 		<p><b>{{manufacturer}} chipset IDs</b></p>
-		<ul>
+		<ul class="block">
 			{% for code in codes %}
-				<li>
-					{{ code[1] }}:
-					{% if manufacturer != "Other" %}{{manufacturer}}{% endif %} {{ code[0] }}
-				</li>
+				<li>{{ code }}</li>
 			{% endfor %}
 		</ul>
 	</div>

@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Repository\MotherboardImageRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -10,7 +11,7 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[Vich\Uploadable]
-#[ORM\Entity(repositoryClass: 'App\Repository\MotherboardImageRepository')]
+#[ORM\Entity(repositoryClass: MotherboardImageRepository::class)]
 class MotherboardImage
 {
     #[ORM\Id]
@@ -28,7 +29,7 @@ class MotherboardImage
     private $motherboard;
 
     #[ORM\Column(type: 'string', length: 255)]
-    #[Assert\Length(max: 255, maxMessage: 'Image file name is longer than {{ limit }} characters, try to make it shorter.')]
+    #[Assert\Length(max: 255, maxMessage: 'Image file name is longer than {{ limit }} characters.')]
     private $file_name;
 
     /**
@@ -38,7 +39,7 @@ class MotherboardImage
     private File|null $imageFile = null;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    #[Assert\Length(max: 255, maxMessage: 'Image description is longer than {{ limit }} characters, try to make it shorter.')]
+    #[Assert\Length(max: 255, maxMessage: 'Image description is longer than {{ limit }} characters.')]
     private string|null $description;
 
     #[ORM\Column(type: 'datetime')]

@@ -61,9 +61,11 @@ let static_selects = [
 let dynamic_selects = [
     'motherboardExpansionSlots-fields-list',
     'motherboardIoPorts-fields-list',
+    'motherboardMemoryConnectors-fields-list',
     'expansionChips-fields-list',
     'dramTypes-fields-list',
     'sockets-fields-list',
+    'osFlags-fields-list',
     'platforms-fields-list'
 ];
 
@@ -130,10 +132,10 @@ function updateFields(params) {
     let complex_cnt = 0;
     let complex_arr = [];
     for (const [key, value] of Object.entries(params)) {
-        if (key.includes("expansionChipIds") || key.includes("dramTypeIds") || key.includes("socketIds") || key.includes("platformIds")) {
+        if (key.includes("osFlagIds") || key.includes("expansionChipIds") || key.includes("dramTypeIds") || key.includes("socketIds") || key.includes("platformIds")) {
             updateMultiSelect(key, value);
         }
-        else if (key.includes("expansionSlotsIds") || key.includes("ioPortsIds")) {
+        else if (key.includes("expansionSlotsIds") || key.includes("ioPortsIds") || key.includes("memoryConnectorsIds")) {
             complex_cnt++;
             let first_split = key.split("Ids%5B");
             let second_split = first_split[1].split("%5D%5B");
@@ -145,7 +147,7 @@ function updateFields(params) {
             }
         }
         else if (static_fields.includes(key))
-            document.getElementById("search_" + key).value = value;
+            document.getElementById("search_" + key).value = decodeURI(value);
         else if (key.includes("Id")) {
             updateSelect(key.substring(0, key.length - 2), value);
         }
@@ -222,6 +224,15 @@ function updateMultiSelectCount(type, pos, arr) {
         select.tomselect.sync();
         box.value = sign + arr["count"];
     }
+    else if (type == "memoryConnectors") {
+        let add = document.getElementById("motherboardMemoryConnectors-add-id");
+        add.click();
+        let select = document.getElementById("search_motherboardMemoryConnectors_" + pos + "_io_port");
+        let box = document.getElementById("search_motherboardMemoryConnectors_" + pos + "_count");
+        select.value = arr["id"];
+        select.tomselect.sync();
+        box.value = sign + arr["count"];
+    }
     else return false;
 
 }
@@ -265,6 +276,8 @@ form.addEventListener("keydown", (e) => {
 
 function paginate(newPageIdx, target) {
     var redirElem = document.getElementById('pagination_redir');
+    if(validate())
+        return false;
     if (redirElem) {
         redirElem.setAttribute("value", newPageIdx);
         if (el = document.getElementById("route-results"))
@@ -273,6 +286,61 @@ function paginate(newPageIdx, target) {
         redirElem.click();
     }
     return false;
+}
+function validate(){
+    state = false;
+    errors = [];
+    for(let elementId of dynamic_selects)
+        if(element = document.getElementById(elementId)){
+            for(let item of element.children){
+                if(item.children[0].tagName.toLowerCase() === 'input'){
+                    if(item.children[0].value == ""){
+                        errors[item.children[0].getAttribute('id')] = "Count cannot be empty!";
+                        state = true;
+                    }
+                    if(isNaN(parseInt(item.children[0].value.replace(/>|<|=/,'')))){
+                        errors[item.children[0].getAttribute('id')] = "Count input is invalid!";
+                        state = true;
+                    }
+                }
+                if(item.children[0].tagName.toLowerCase() === 'select' && item.children[0].value == ""){
+                    errors[item.children[0].getAttribute('id')] = "Field cannot be empty!";
+                    state = true;
+                }
+                if(item.children[1].tagName.toLowerCase() === 'select' && item.children[1].value == ""){
+                    errors[item.children[1].getAttribute('id')] = "Field cannot be empty!";
+                    state = true;
+                }
+            }
+        }
+    let labels = document.getElementsByClassName('search-errors-label');
+    let elements = document.getElementsByClassName('search-errors');
+    while(labels.length > 0){
+        labels[0].parentNode.parentNode.removeChild(labels[0].parentNode);
+    }
+    for (var i = 0; i < elements.length; i++) {
+        elements[i].classList.remove('search-errors');
+    }
+    if(Object.keys(errors).length > 0){
+        for(let [key, value] of Object.entries(errors)){
+            let element = document.getElementById(key);
+            if(element.tagName.toLowerCase() === "select")
+                element.nextElementSibling.children[0].classList.add("search-errors");
+            else
+                element.classList.add("search-errors");
+            let labelContainer = document.createElement('div');
+            let label = document.createElement('span');
+            let dud = document.createElement('div');
+            label.classList.add("search-errors-label");
+            label.innerHTML = value;
+            labelContainer.appendChild(label);
+            labelContainer.appendChild(dud);
+            element.parentNode.after(labelContainer);
+            console.log(label, element.parentNode)
+            console.log(key, value);
+        }
+    }
+    return state;
 }
 
 function reset() {
@@ -378,6 +446,11 @@ function expand(idx) {
         new TomSelect('#search_motherboardIoPorts_' + (counter - 1) + '_io_port', settings);
         el.tomselect.sync();
     }
+    if (idx == "motherboardMemoryConnectors-fields-list") {
+        el = document.getElementById('search_motherboardMemoryConnectors_' + (counter - 1) + '_io_port');
+        new TomSelect('#search_motherboardMemoryConnectors_' + (counter - 1) + '_io_port', settings);
+        el.tomselect.sync();
+    }
     if (idx == "expansionChips-fields-list") {
         el = document.getElementById('search_expansionChips_' + (counter - 1));
         new TomSelect('#search_expansionChips_' + (counter - 1), settings);
@@ -396,6 +469,11 @@ function expand(idx) {
     if (idx == "platforms-fields-list") {
         el = document.getElementById('search_platforms_' + (counter - 1));
         new TomSelect('#search_platforms_' + (counter - 1), {});
+        el.tomselect.sync();
+    }
+    if (idx == "osFlags-fields-list") {
+        el = document.getElementById('search_osFlags_' + (counter - 1));
+        new TomSelect('#search_osFlags_' + (counter - 1), settings);
         el.tomselect.sync();
     }
 }

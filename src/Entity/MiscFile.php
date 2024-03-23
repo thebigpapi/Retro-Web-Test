@@ -112,6 +112,13 @@ class MiscFile
 
         return $this;
     }
+    public function getFileNameSimple(): string
+    {
+        $filename = $this->file_name;
+        $ext = pathinfo($filename, PATHINFO_EXTENSION);
+        $file = pathinfo($filename, PATHINFO_FILENAME);
+        return substr($file, 0, -23) . '.' . $ext;
+    }
     #[Assert\Callback]
     public function validate(ExecutionContextInterface $context, mixed $payload): void
     {

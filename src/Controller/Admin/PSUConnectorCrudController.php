@@ -2,9 +2,9 @@
 
 namespace App\Controller\Admin;
 
+use App\Controller\Admin\Type\EntityDocumentationCrudType;
+use App\Controller\Admin\Type\EntityImageCrudType;
 use App\Entity\PSUConnector;
-use App\Form\Type\EntityDocumentationType;
-use App\Form\Type\EntityImageType;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
@@ -46,22 +46,21 @@ class PSUConnectorCrudController extends AbstractCrudController
             ->add(Crud::PAGE_EDIT, $elogs)
             ->add(Crud::PAGE_INDEX, $view)
             ->add(Crud::PAGE_EDIT, $eview)
-            ->setPermission(Action::DELETE, 'ROLE_ADMIN')
-            ->setPermission(Action::EDIT, 'ROLE_ADMIN')
-            ->setPermission(Action::INDEX, 'ROLE_ADMIN');
+            ->remove(Crud::PAGE_INDEX, Action::BATCH_DELETE)
+            ->setPermission(Action::DELETE, 'ROLE_ADMIN');
     }
     public function configureCrud(Crud $crud): Crud
     {
         return $crud
             ->showEntityActionsInlined()
-            ->setEntityLabelInSingular('PSU connector')
-            ->setEntityLabelInPlural('<img class=ea-entity-icon src=/build/icons/power.svg width=48 height=48>PSU connectors')
+            ->setEntityLabelInSingular('power connector')
+            ->setEntityLabelInPlural('<img class=ea-entity-icon src=/build/icons/power.svg width=48 height=48>Power connectors')
             ->setPaginatorPageSize(100);
     }
     public function configureFields(string $pageName): iterable
     {
         yield FormField::addTab('Basic Data')
-            ->setIcon('info')
+            ->setIcon('fa fa-info')
             ->onlyOnForms();
         yield IdField::new('id')
             ->onlyOnIndex();
@@ -71,20 +70,20 @@ class PSUConnectorCrudController extends AbstractCrudController
             ->setLanguage('markdown')
             ->onlyOnForms();
         yield FormField::addTab('Attachments')
-            ->setIcon('download')
+            ->setIcon('fa fa-download')
             ->onlyOnForms();
         yield CollectionField::new('entityImages', 'Images')
-            ->setEntryType(EntityImageType::class)
+            ->useEntryCrudForm(EntityImageCrudType::class)
+            ->setCustomOption('byCount', true)
             ->renderExpanded()
             ->setFormTypeOption('error_bubbling', false)
-            ->setColumns(6)
-            ->onlyOnForms();
+            ->setColumns(6);
         yield CollectionField::new('entityDocumentations', 'Documentation')
-            ->setEntryType(EntityDocumentationType::class)
+            ->useEntryCrudForm(EntityDocumentationCrudType::class)
+            ->setCustomOption('byCount', true)
             ->renderExpanded()
             ->setFormTypeOption('error_bubbling', false)
-            ->setColumns(6)
-            ->onlyOnForms();
+            ->setColumns(6);
     }
     public function viewConn(AdminContext $context)
     {

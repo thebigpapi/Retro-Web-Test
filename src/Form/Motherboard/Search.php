@@ -4,8 +4,6 @@ namespace App\Form\Motherboard;
 
 use App\Entity\Chipset;
 use App\Form\Type\DramTypeType;
-use App\Form\Type\ExpansionSlotSearchType;
-use App\Form\Type\IoPortSearchType;
 use App\Form\Type\ExpansionChipType;
 use App\Form\Type\ItemsPerPageType;
 use Symfony\Component\Form\AbstractType;
@@ -55,9 +53,15 @@ class Search extends AbstractType
             }
         );
         $chipsets = array_merge($chipsets, $allchipsets);
+        $notIdentified = new Chipset;
+        $notIdentified->setName("Not identified");
+        array_unshift($chipsets, $notIdentified);
         return $chipsets;
     }
 
+    /**
+     * @return void
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         // sorting some fields before adding them to the form
@@ -72,7 +76,6 @@ class Search extends AbstractType
         usort($options['formFactors'], function (FormFactor $a, FormFactor $b) {
             return strnatcasecmp($a->getName() ?? '', $b->getName() ?? '');
         });
-
         //now the form is being built
         $builder
             ->add('name', TextType::class, [
@@ -97,7 +100,7 @@ class Search extends AbstractType
                 'expanded' => false,
                 'required' => false,
                 'choice_attr' => function ($choice, string $key, mixed $value) {
-                    if($choice == "Not identified")
+                    if($choice->getId() == null)
                         return ['data-id' => 'NULL' ];
                     if(strpos($choice, "any") && strpos($choice, "chipset"))
                         return ['data-id' => 0 . $choice->getManufacturer()->getId() ];
@@ -205,6 +208,9 @@ class Search extends AbstractType
             ]);
     }
 
+    /**
+     * @return void
+     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([

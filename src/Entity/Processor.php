@@ -19,7 +19,7 @@ class Processor extends ProcessingUnit
     private $L3;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    #[Assert\Length(max: 255, maxMessage: 'Core is longer than {{ limit }} characters, try to make it shorter.')]
+    #[Assert\Length(max: 255, maxMessage: 'Core is longer than {{ limit }} characters.')]
     private $core;
 
     #[ORM\Column(type: 'float', nullable: true)]
@@ -51,20 +51,9 @@ class Processor extends ProcessingUnit
         $this->voltages = new ArrayCollection();
         $this->documentations = new ArrayCollection();
     }
-    public function getNameWithPlatform()
+    public function __toString(): string
     {
-        $inner = array();
-        if($this->core != "")
-            array_push($inner, $this->core);
-        if($this->fsb != "")
-            array_push($inner, $this->fsb->getValueWithUnit());
-        if($this->getVoltagesWithValue() != "")
-            array_push($inner, $this->getVoltagesWithValue());
-        if($this->ProcessNode != "")
-            array_push($inner, ($this->ProcessNode ? $this->ProcessNode . 'nm' : ''));
-        if($this->tdp != "")
-            array_push($inner, ($this->tdp ? $this->tdp . 'W' : ''));
-        return implode(" ", array($this->getManufacturer()->getName(), $this->partNumber, "[" . implode(", ", $inner) . "]"));
+        return $this->getName();
     }
     public function getL2(): ?CacheSize
     {
@@ -166,7 +155,7 @@ class Processor extends ProcessingUnit
     {
         return $this->tdp ? $this->tdp . "W" : "";
     }
-    public function getNameWithManufacturer()
+    public function getFullName(): string
     {
         $fullName = $this->getNameOnlyPartNumber();
         if ($this->name) {
@@ -174,7 +163,7 @@ class Processor extends ProcessingUnit
         }
         return "$fullName";
     }
-    public function getNameOnlyPartNumber()
+    public function getNameOnlyPartNumber(): string
     {
         $fullName = $this->partNumber;
         if ($this->getManufacturer()) {
@@ -235,5 +224,10 @@ class Processor extends ProcessingUnit
         $this->L3shared = $L3shared;
 
         return $this;
+    }
+    public function getAllDocs(): Collection
+    {
+        $docs = $this->getPlatform()?->getEntityDocumentations()->toArray() ?? [];
+        return new ArrayCollection($docs);
     }
 }

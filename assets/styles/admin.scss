@@ -39,6 +39,22 @@ $border-dark: #cdcdcd;
 	border-image-slice: 1;
 	border-image-source: linear-gradient(to right, $color, transparent);
 }
+img.ea-entity-icon{
+	margin:0px 6px;
+}
+div.content-header-title > h1.title{
+	font-weight: 500;
+}
+.ea-dark-scheme{
+	--body-bg:#222;
+	--sidebar-bg:#303030;
+	--button-secondary-bg:#525252;
+	--table-cell-border-color: #404040;
+	--form-control-bg: #404040;
+	--sidebar-menu-active-item-bg:#404040;
+	--sidebar-menu-active-item-color:#60a5fa;
+	--sidebar-menu-color:#b5b5b5;
+}
 #main-menu .menu .submenu {
 	margin-top: 0;
 	a {
@@ -178,237 +194,16 @@ div.show-nav-ea {
 		}
 	}
 }
-
-@media screen and (min-width: 768px) {
-	#Motherboard_motherboardBios_collection>div>div>div {
-		.ea-vich-file {
-			display: flex;
-		}
-
-		display:block;
-
-		div.form-widget-compound>div {
-			display: grid;
-			grid-template-columns: [first] 21% [second] 5px [third] 21% [fourth] 5px [fifth] 21% [sixth] 5px [seventh] 9% [eight] 5px [ninth] 7% [tenth] 5px [eleventh] 200px [end];
-
-			>div {
-				display: grid;
-			}
-
-			@media screen and (max-width: 1400px) {
-				grid-template-columns: [first] 30% [second] 5px [third] 50% [fourth] 5px [fifth] 20% [sixth] 5px [end];
-
-				>div:nth-child(1) {
-					grid-column-start: 1;
-					grid-column-end: 2;
-					grid-row-start: 1;
-					grid-row-end: 1;
-				}
-
-				>div:nth-child(2) {
-					grid-column-start: 2;
-					grid-column-end: 3;
-					grid-row-start: 1;
-					grid-row-end: 1;
-				}
-
-				>div:nth-child(3) {
-					grid-column-start: 3;
-					grid-column-end: 4;
-					grid-row-start: 1;
-					grid-row-end: 1;
-				}
-
-				>div:nth-child(4) {
-					grid-column-start: 4;
-					grid-column-end: 5;
-					grid-row-start: 1;
-					grid-row-end: 1;
-				}
-
-				>div:nth-child(7) {
-					grid-column-start: 5;
-					grid-column-end: 6;
-					grid-row-start: 1;
-					grid-row-end: 1;
-				}
-
-				>div:nth-child(8) {
-					grid-column-start: 6;
-					grid-column-end: 7;
-					grid-row-start: 1;
-					grid-row-end: 1;
-				}
-
-				>div:nth-child(11) {
-					grid-column-start: 1;
-					grid-column-end: 2;
-					grid-row-start: 2;
-					grid-row-end: 2;
-				}
-
-				>div:nth-child(12) {
-					grid-column-start: 2;
-					grid-column-end: 3;
-					grid-row-start: 2;
-					grid-row-end: 2;
-				}
-
-				>div:nth-child(5) {
-					grid-column-start: 3;
-					grid-column-end: 4;
-					grid-row-start: 2;
-					grid-row-end: 2;
-				}
-
-				>div:nth-child(6) {
-					grid-column-start: 4;
-					grid-column-end: 5;
-					grid-row-start: 2;
-					grid-row-end: 2;
-				}
-
-				>div:nth-child(9) {
-					grid-column-start: 5;
-					grid-column-end: 6;
-					grid-row-start: 2;
-					grid-row-end: 2;
-				}
-
-				>div:nth-child(10) {
-					grid-column-start: 6;
-					grid-column-end: 7;
-					grid-row-start: 2;
-					grid-row-end: 2;
-				}
-			}
-		}
-	}
-}
-
-#Motherboard_motherboardIoPorts_collection>div>div>div,
-#Motherboard_motherboardExpansionSlots_collection>div>div>div {
-	display: block;
-	div.accordion-body.trw{
-		padding: 0px 10px;
-	}
-	/*div.invalid-feedback {
-		width: 10px;
-	}*/
-
-	div.form-widget-compound>div {
+div.vich-download-flex{
+	display: flex;
+	flex-direction: column;
+	div.row-flex{
 		display: flex;
 		flex-direction: row;
-		align-items: center;
-
-		>div:nth-child(1) {
-			flex-grow: 1;
-			width: 8%;
-
-			input {
-				max-width: 45px;
-			}
-
-			>div {
-				overflow: visible;
-				white-space: nowrap;
-			}
-		}
-
-		>div:nth-child(2):before {
-			color: var(--form-input-text-color);
-			content: 'x';
-			line-height: 50px;
-			padding-left: 3px;
-		}
-
-		>div:nth-child(3) {
-			flex-grow: 10;
-			width: 50%;
-		}
-
-		>div:nth-child(4) {
-			display: none;
+		@media screen and (max-width: 1400px) {
+			flex-direction: column;
 		}
 	}
-}
-
-@media screen and (min-width: 1400px) {
-
-	#Motherboard_images_collection>div>div>div,
-	#Processor_images_collection>div>div>div {
-		div.form-widget-compound>div {
-			display: grid;
-
-			>div:nth-child(1) {
-				grid-column-start: 1;
-				grid-column-end: 2;
-				grid-row-start: 1;
-				grid-row-end: 2;
-				max-width: 300px;
-			}
-
-			>div:nth-child(2) {
-				grid-column-start: 4;
-				grid-column-end: 4;
-				grid-row-start: 1;
-				grid-row-end: 1;
-			}
-
-			>div:nth-child(3) {
-				grid-column-start: 2;
-				grid-column-end: 3;
-				grid-row-start: 1;
-				grid-row-end: 1;
-			}
-
-			>div:nth-child(4) {
-				grid-column-start: 4;
-				grid-column-end: 4;
-				grid-row-start: 1;
-				grid-row-end: 1;
-			}
-
-			>div:nth-child(5) {
-				grid-column-start: 2;
-				grid-column-end: 3;
-				grid-row-start: 1;
-				grid-row-end: 1;
-				margin-top: 63px;
-			}
-
-			>div:nth-child(6) {
-				grid-column-start: 4;
-				grid-column-end: 4;
-				grid-row-start: 1;
-				grid-row-end: 1;
-			}
-
-			>div:nth-child(7) {
-				grid-column-start: 2;
-				grid-column-end: 3;
-				grid-row-start: 1;
-				grid-row-end: 1;
-				margin-top: 126px;
-			}
-
-			>div:nth-child(8) {
-				grid-column-start: 4;
-				grid-column-end: 4;
-				grid-row-start: 1;
-				grid-row-end: 1;
-			}
-		}
-	}
-}
-
-div.mobo-buttons {
-	display: flex;
-	flex-wrap: wrap;
-	justify-content: right;
-	row-gap: 1em;
-	flex-direction: row;
-	padding-right: 10px;
 }
 
 body:not(.ea-content-width-full) .content-wrapper {
@@ -443,7 +238,16 @@ body:not(.ea-content-width-full) .content-wrapper {
 
 	}
 }
-
+/* hide save buttons when JS is used */
+div.hide-actions{
+	button.action-saveAndContinue, button.action-saveAndReturn{
+		display: none;
+	}
+	button{
+		margin-top: 5px;
+	}
+}
+/* driver editor stuff */
 div.driver-messages {
 	padding-right: 10px;
 
@@ -459,15 +263,125 @@ div.driver-messages {
 		display: none;
 	}
 }
+/* misc specs styling */
+div.card-specs-grid textarea{
+	min-height: 30rem;
+}
+div.specs-elements{
+	display: flex;
+	gap: 5px;
+	padding: 0;
+	label{
+		display: none;
+	}
+	div.first{
+		flex-grow: 4;
+	}
+	div.second{
+		flex-grow: 6;
+	}
+}
+/* form customization bongaloo */
+div.multi-widget-trw{
+	div.ts-wrapper{
+		background-color: #ffffff;
+		@media (prefers-color-scheme: dark) {
+			background-color: #252525;
+		}
+	}
+	.ts-wrapper.multi .ts-control>div.item{
+			font-size: 15px;
+			padding: 4px 6px;
+			width:85%;
+			a.remove{
+				border-left: 1px solid transparent;
+				margin-left: auto;
+				i{font-size: 19px;}
+			}
+	}
+	div.ts-control{
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+	}
+}
+div.count-css > div{
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	span{
+		flex: 1 0 30%;
+		padding: 0px 6px;
+		font-size: 1.1rem;
+	}
+	input{
+		flex: 1 0 70%;
+	}
+	div.invalid-feedback{
+		display: flex;
+		flex-basis: 100%;
+	}
+}
+div.padright{
+	padding-left: 0;
+	padding-right: 5px;
+}
+div.nopadright{
+	padding-right: 0;
+}
+div.nopadleft{
+	padding-left: 0;
+}
+div.mobo-bios{
+	div.row{
+		padding: 0px 10px;
+	}
+}
+@media screen and (min-width: 1400px) {
+	div.col-xxl-2-5{
+		flex:0 0 auto;
+		width:21%
+	}
+}
+.ea-vich-image {
+	padding-right: 10px;
+}
+/* ts multi select and delete buttons */
+i.red{
+	color: var(--link-danger-color);
+}
+.ts-wrapper.multi .ts-control>div.clear-button {
+	box-shadow: none;
+}
+.plugin-clear_button.ts-wrapper .clear-button, .plugin-clear_button.ts-wrapper.multi .clear-button {
+	background: transparent!important;
+}
+.plugin-clear_button.ts-wrapper .clear-button:hover, .plugin-clear_button.ts-wrapper.multi .clear-button:hover {
+    background: transparent!important;
+	i.red{
+		color: $btn-hover-light;
+		@media (prefers-color-scheme: dark) {
+			color: $btn-hover-dark;
+		}
+	}
+}
+.ts-wrapper.plugin-remove_button .item .remove:hover {
+	background: transparent;
+	i.red{
+		color: $btn-hover-light;
+		@media (prefers-color-scheme: dark) {
+			color: $btn-hover-dark;
+		}
+	}
+}
+div.clear-button-trw{
+	border: none !important;
+}
 
 .form-widget .form-select,
 .form-widget input.form-control,
 .form-widget textarea.form-control {
 	white-space: initial;
-}
-
-.ea-vich-image {
-	padding-right: 10px;
 }
 
 .shide {
@@ -478,8 +392,4 @@ div.driver-messages {
 	&:hover {
 		background-color: $btn-hover-dark;
 	}
-}
-
-img.ea-entity-icon{
-	margin:0px 6px;
 }

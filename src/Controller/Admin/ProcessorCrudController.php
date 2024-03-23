@@ -5,15 +5,15 @@ namespace App\Controller\Admin;
 use App\Entity\ChipAlias;
 use App\Entity\Processor;
 use App\Entity\ProcessorVoltage;
-use App\Form\Type\ChipAliasType;
-use App\Form\Type\ChipImageType;
 use App\Form\Type\CpuSocketType;
-use App\Form\Type\ProcessorVoltageType;
 use Doctrine\ORM\EntityManagerInterface;
+use App\Controller\Admin\Filter\ChipImageFilter;
+use App\Controller\Admin\Type\Chip\AliasCrudType;
+use App\Controller\Admin\Type\Chip\ImageCrudType;
+use App\Controller\Admin\Type\Chip\VoltageCrudType;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
@@ -21,7 +21,6 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\ArrayField;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
@@ -38,6 +37,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Security\Permission;
 use EasyCorp\Bundle\EasyAdminBundle\Config\KeyValueStore;
 use EasyCorp\Bundle\EasyAdminBundle\Collection\FieldCollection;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Response;
 
 class ProcessorCrudController extends AbstractCrudController
 {
@@ -81,6 +81,7 @@ class ProcessorCrudController extends AbstractCrudController
             ->add(Crud::PAGE_EDIT, $elogs)
             ->add(Crud::PAGE_INDEX, $view)
             ->add(Crud::PAGE_EDIT, $eview)
+            ->remove(Crud::PAGE_INDEX, Action::BATCH_DELETE)
             ->setPermission(Action::DELETE, 'ROLE_ADMIN');
     }
     public function configureCrud(Crud $crud): Crud
@@ -98,6 +99,7 @@ class ProcessorCrudController extends AbstractCrudController
             ->add('name')
             ->add('partNumber')
             ->add('chipAliases')
+            ->add(ChipImageFilter::new('images'))
             ->add('sockets')
             ->add('platform')
             ->add('core')
@@ -110,20 +112,19 @@ class ProcessorCrudController extends AbstractCrudController
     public function configureFields(string $pageName): iterable
     {
         yield FormField::addTab('Basic Data')
-            ->setIcon('info')
+            ->setIcon('fa fa-info')
             ->onlyOnForms();
         yield IdField::new('id')
             ->onlyOnIndex();
-        yield TextField::new('getManufacturer','Manufacturer')
-            ->hideOnForm();
         yield AssociationField::new('manufacturer','Manufacturer')
             ->setFormTypeOption('placeholder', 'Type to select a manufacturer ...')
-            ->setColumns(4)
-            ->onlyOnForms();
+            ->setColumns(4);
         yield TextField::new('partNumber', 'Name')
             ->setColumns(4);
         yield TextField::new('name', 'Part number')
             ->setColumns(4);
+        yield AssociationField::new('platform', 'Family')
+            ->hideOnForm();
         yield TextField::new('core', 'Core')
             ->hideOnForm();
         yield TextField::new('speed', 'Speed')
@@ -131,12 +132,11 @@ class ProcessorCrudController extends AbstractCrudController
         yield TextField::new('fsb', 'FSB')
             ->setFormTypeOption('required', false)
             ->hideOnForm();
-        yield IntegerField::new('tdp', 'TDP')
-            ->hideOnForm();
         yield IntegerField::new('ProcessNode', 'Process')
             ->hideOnForm();
-        yield ArrayField::new('getVoltages', 'Voltage')
-            ->hideOnForm();
+        yield CollectionField::new('getImages','Images')
+            ->setCustomOption('byCount', true)
+            ->onlyOnIndex();
         yield AssociationField::new('platform', 'Family')
             ->setFormTypeOption('placeholder', 'Type to select a family ...')
             ->setColumns(2)
@@ -188,28 +188,27 @@ class ProcessorCrudController extends AbstractCrudController
             ->setColumns(6)
             ->renderExpanded()
             ->onlyOnForms();
-        yield CollectionField::new('voltages', 'Voltage (in V)')
-            ->setEntryType(ProcessorVoltageType::class)
+        yield CollectionField::new('voltages', 'Voltage')
+            ->useEntryCrudForm(VoltageCrudType::class)
             ->setColumns(6)
             ->renderExpanded()
             ->onlyOnForms();
         yield FormField::addPanel('Other')->onlyOnForms();
         yield CollectionField::new('chipAliases', 'Chip aliases')
-            ->setEntryType(ChipAliasType::class)
+            ->useEntryCrudForm(AliasCrudType::class)
             ->setFormTypeOption('error_bubbling', false)
             ->setColumns(6)
             ->renderExpanded()
             ->onlyOnForms();
         yield FormField::addTab('Attachments')
-            ->setIcon('download')
+            ->setIcon('fa fa-download')
             ->onlyOnForms();
         yield CollectionField::new('images', 'Images')
-            ->setEntryType(ChipImageType::class)
-            ->setColumns(12)
+            ->useEntryCrudForm(ImageCrudType::class)
+            ->setFormTypeOption('error_bubbling', false)
+            ->setColumns(6)
             ->renderExpanded()
             ->onlyOnForms();
-        yield DateField::new('lastEdited', 'Last edit')
-            ->hideOnForm();
     }
     public function viewCPU(AdminContext $context)
     {
@@ -222,6 +221,10 @@ class ProcessorCrudController extends AbstractCrudController
         $entity = str_replace("\\", "-",$context->getEntity()->getFqcn());
         return $this->redirectToRoute('dh_auditor_show_entity_history', array('id' => $entityId, 'entity' => $entity));
     }
+
+    /**
+     * @return KeyValueStore|Response
+     */
     public function new(AdminContext $context)
     {
         $event = new BeforeCrudActionEvent($context);

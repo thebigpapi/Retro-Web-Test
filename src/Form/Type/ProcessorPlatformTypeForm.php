@@ -12,20 +12,9 @@ use Symfony\Component\Form\FormView;
 
 class ProcessorPlatformTypeForm extends AbstractType
 {
-    /*public function buildForm(FormBuilderInterface $builder, array $options)
-    {
-        $builder
-            ->add('chipset_part', EntityType::class, [
-                'class' => ChipsetPart::class,
-                'choice_label' => 'getFullName',
-                'multiple' => false,
-                'expanded' => false,
-                ])
-            ->add('index',NumberType::class, [
-                'required' => true,
-            ]);
-    }*/
-
+    /**
+     * @return void
+     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
@@ -42,6 +31,10 @@ class ProcessorPlatformTypeForm extends AbstractType
     {
         return EntityType::class;
     }
+
+    /**
+     * @return void
+     */
     public function finishView(FormView $view, FormInterface $form, array $options)
     {
         usort($view->vars['choices'], function (ChoiceView $a, ChoiceView $b) {

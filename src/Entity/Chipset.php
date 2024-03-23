@@ -21,13 +21,14 @@ class Chipset
     private $id;
 
     #[ORM\ManyToOne(targetEntity: Manufacturer::class, inversedBy: 'chipsets')]
+    #[Assert\NotBlank(message: 'Manufacturer cannot be blank')]
     private $manufacturer;
 
     #[ORM\OneToMany(targetEntity: Motherboard::class, mappedBy: 'chipset')]
     private $motherboards;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    #[Assert\Length(max: 255, maxMessage: 'Name is longer than {{ limit }} characters, try to make it shorter.')]
+    #[Assert\Length(max: 255, maxMessage: 'Name is longer than {{ limit }} characters.')]
     private $name;
 
     #[ORM\OneToMany(targetEntity: ChipsetAlias::class, mappedBy: 'chipset', orphanRemoval: true, cascade: ['persist'])]
@@ -41,11 +42,11 @@ class Chipset
     private $expansionChips;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    #[Assert\Length(max: 255, maxMessage: 'Encyclopedia link is longer than {{ limit }} characters, try to make it shorter.')]
+    #[Assert\Length(max: 255, maxMessage: 'Encyclopedia link is longer than {{ limit }} characters.')]
     private $encyclopedia_link;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    #[Assert\Length(max: 255, maxMessage: 'Part number is longer than {{ limit }} characters, try to make it shorter.')]
+    #[Assert\Length(max: 255, maxMessage: 'Part number is longer than {{ limit }} characters.')]
     private $part_no;
 
     #[ORM\OneToMany(targetEntity: ChipsetBiosCode::class, mappedBy: 'chipset', orphanRemoval: true, cascade: ['persist'])]
@@ -53,10 +54,11 @@ class Chipset
     private $biosCodes;
 
     #[ORM\OneToMany(targetEntity: LargeFileChipset::class, mappedBy: 'chipset', orphanRemoval: true, cascade: ['persist'])]
+    #[Assert\Valid()]
     private $drivers;
 
     #[ORM\Column(type: 'string', length: 8192, nullable: true)]
-    #[Assert\Length(max: 8192, maxMessage: 'Description is longer than {{ limit }} characters, try to make it shorter.')]
+    #[Assert\Length(max: 8192, maxMessage: 'Description is longer than {{ limit }} characters.')]
     private $description;
 
     #[ORM\OneToMany(targetEntity: ChipsetDocumentation::class, mappedBy: 'chipset', orphanRemoval: true, cascade: ['persist'])]
@@ -99,13 +101,16 @@ class Chipset
     }
     public function getNameCached(): string
     {
-        return $this->getNameWithoutParts() . " " . $this->getPartsCached();
+        return $this->getFullName() . " " . $this->getPartsCached();
     }
     public function getNameCachedSearch(): string
     {
-        $fullName = $this->getManufacturer()->getName();
-        if($this->getId() == null)
+        $fullName = $this->getManufacturer()?->getName();
+        if($this->getId() == null){
+            if($fullName == "")
+                return "Not identified";
             return "any " . $fullName . " chipset";
+        }
         if ($this->part_no) {
             $fullName .= " $this->part_no";
             if ($this->name) {
@@ -124,9 +129,9 @@ class Chipset
         $fullName = strlen($fullName) > 80 ? substr($fullName,0,80)."..." : $fullName;
         return $fullName;
     }
-    public function getNameWithoutParts(): string
+    public function getFullName(): string
     {
-        $fullName = $this->getManufacturer()->getName();
+        $fullName = $this->getManufacturer()?->getName();
         if ($this->part_no) {
             $fullName .= " $this->part_no";
             if ($this->name) {
@@ -211,7 +216,7 @@ class Chipset
         $sortedChips = $this->expansionChips->toArray();
 
         $res = usort($sortedChips, function ($a, $b) {
-            return ($a->getNameWithManufacturer() <=> $b->getNameWithManufacturer());
+            return ($a->getFullName() <=> $b->getFullName());
         });
 
         if ($res) {
@@ -295,6 +300,14 @@ class Chipset
     public function getDrivers(): Collection
     {
         return $this->drivers;
+    }
+    public function getAllDrivers(): Collection
+    {
+        $drivers = $this->drivers->toArray();
+        foreach ($this->getExpansionChips() as $expansionChip) {
+            $drivers = array_merge($drivers, $expansionChip->getDrivers()->toArray());
+        }
+        return new ArrayCollection($drivers);
     }
     public function addDriver(LargeFileChipset $driver): self
     {
@@ -410,7 +423,7 @@ class Chipset
 
     public function getMetaDescription(): string
     {
-        return "Get info, documentation and more about the " . $this->getNameWithoutParts() . " chipset.";
+        return "Get info, documentation and more about the " . $this->getFullName() . " chipset.";
     }
 
     public function getCachedName(): ?string
@@ -423,5 +436,13 @@ class Chipset
         $this->cachedName = $this->getParts();
 
         return $this;
+    }
+    public function getChipDocs(): Collection
+    {
+        $docs = [];
+        foreach ($this->getExpansionChips() as $expansionChip) {
+            $docs = array_merge($docs, $expansionChip->getDocumentations()->toArray());
+        }
+        return new ArrayCollection($docs);
     }
 }

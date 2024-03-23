@@ -1,0 +1,105 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	{{ manufacturer.getName() }}
+{% endblock %}
+{% block metatags %}
+	<meta name="description" content="{{ manufacturer.getName() }}">
+{% endblock %}
+{% block extra_javascripts %}
+	<script src="/build/js/show.js" defer></script>
+{% endblock %}
+
+{% block opengraph %}
+	{% apply spaceless %}
+	<meta property="og:title" content="{{ manufacturer.getName() }}">
+	<meta property="og:description" content="Get manufacturer info for {{ manufacturer.getName() }}!">
+	{% endapply %}
+	<link rel="alternate" hreflang="x-default" href="{{ absolute_url(path('manufacturer_show', {id: manufacturer.getId()})) }}"/>
+{% endblock %}
+{% block subnav %}
+<li class="flex navbar-li">
+    <div class="flex items-center">
+        <svg class="navbar-svg" viewBox="0 0 24 44" preserveAspectRatio="none" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M.293 0l22 22-22 22h1.414l22-22-22-22H.293z"></path>
+        </svg>
+        <div class="navbar-anchor">
+			<img src="{{ absolute_url(asset('build/icons/factory.svg')) }}" width="24" height="24" alt="manuf">
+            <code class="text-pink-500">Manufacturers</code>
+        </div>
+    </div>
+</li>
+<li class="flex">
+    <div class="flex">
+        <svg class="navbar-svg" viewBox="0 0 24 44" preserveAspectRatio="none" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M.293 0l22 22-22 22h1.414l22-22-22-22H.293z"></path>
+        </svg>
+        <code class="navbar-code">ID: {{manufacturer.getId()}}</code>
+    </div>
+</li>
+{% endblock %}
+
+{% block body %}
+<!-- MANUF./NAME/PART NO. -->
+<div class="title">{{ manufacturer.getName() }}</div>
+<div class="main-strip">
+	<div class="internal-container">
+		{% include 'macros/navbar.html.twig' with {'entity': manufacturer, 'entityName': 'Manufacturer', 'name': 'manufacturer', 'role': 'ROLE_USER'} %}
+		<div class="internal-content">
+			<!-- DESCRIPRION -->
+			<div class="show-general" id="sh-general">
+				<div class="quick-spec-table">
+					<!-- Codes -->
+					<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/tag.svg')) }}" alt="code" width="24" height="24">Codes</div>
+					{% if manufacturer.getManufacturerCodes() is not empty %}
+					<div class="tag-container">{% for code in manufacturer.getManufacturerCodes() %}
+						<span class="text-block">{{ code.getValue() }}</span>{% endfor %}
+					</div>
+					{% else %}
+					<div>Unknown</div>
+					{% endif %}
+					<!-- BIOS Codes -->
+					<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/awchip.svg')) }}" alt="bios" width="24" height="24">BIOS codes</div>
+					{% if manufacturer.getBiosCodes() is not empty %}
+					<div class="tag-container">{% for code in manufacturer.getBiosCodes() %}
+						<span class="text-block">{{ code.getBiosManufacturer() }}: {{ code.getCode() }}</span>{% endfor %}
+					</div>
+					{% else %}
+					<div>Unknown</div>
+					{% endif %}
+					<!-- Vendor ID -->
+					<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/tag.svg')) }}" alt="date" width="24" height="24">Device ID</div>
+					<div class="tag-container">
+					{% if manufacturer.getPciVendorIds() is not empty %}
+						{% for ven in manufacturer.getPciVendorIds() %}
+							<span class="text-block">{{ven.getVen()}}</span>
+						{% endfor %}
+					{% else %}
+						<div>Unknown</div>
+					{% endif %}
+					</div>
+				</div>
+				{% include 'macros/notes.html.twig' with {'entity': manufacturer} %}
+			</div>
+		</div>
+	</div>
+	<!-- IMAGES -->
+	<div class="show-images" id="sh-images">
+	{% if manufacturer.getEntityImages() is not empty %}
+		{% set lpindex = 0 %}
+		{% for image in manufacturer.getEntityImages()|sort((a, b) => a.getFileName() <=> b.getFileName()) %}
+			{% set lpindex = lpindex + 1 %}
+			{% include 'macros/images.html.twig' with {'type':'manufacturer', 'entity': image, 'index': lpindex, 'length': manufacturer.getEntityImages()|length} %}
+		{% endfor %}
+	{% else %}
+		<div class="show-images">
+			<img src={{ absolute_url(asset('build/images/missing/chip-missing.jpg')) }} title="no images available :(" style="width:100%;">
+		</div>
+	{% endif %}
+	</div>
+</div>
+<div class="disclaimer">
+	<p><b>Disclaimer</b></p>
+	<p>The info found in this page might not be entirely correct. Check out <a href="{{ path('app_contributions') }}">this guide</a> to learn how you can improve it.</p>
+</div>
+{% endblock %}

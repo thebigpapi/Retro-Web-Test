@@ -29,32 +29,51 @@ dh_auditor:
                 App\Entity\DramType: ~
                 App\Entity\EntityDocumentation: ~
                 App\Entity\EntityImage: ~
+                App\Entity\ExpansionCard: ~
+                App\Entity\ExpansionCardAlias: ~
+                App\Entity\ExpansionCardBios: ~
+                App\Entity\ExpansionCardDocumentation: ~
+                App\Entity\ExpansionCardIdRedirection: ~
+                App\Entity\ExpansionCardImage: ~
+                App\Entity\ExpansionCardIoPort: ~
+                App\Entity\ExpansionCardMemoryConnector: ~
+                App\Entity\ExpansionCardPowerConnector: ~
+                App\Entity\ExpansionCardType: ~
                 App\Entity\ExpansionChip: ~
                 App\Entity\ExpansionChipType: ~
                 App\Entity\ExpansionSlot: ~
+                App\Entity\ExpansionSlotInterface: ~
+                App\Entity\ExpansionSlotInterfaceSignal: ~
+                App\Entity\ExpansionSlotSignal: ~
                 App\Entity\FloppyDrive: ~
+                App\Entity\FloppyDriveType: ~
                 App\Entity\FormFactor: ~
                 App\Entity\HardDrive: ~
                 App\Entity\InstructionSet: ~
                 App\Entity\IoPort: ~
+                App\Entity\IoPortInterface: ~
+                App\Entity\IoPortInterfaceSignal: ~
+                App\Entity\IoPortSignal: ~
                 App\Entity\KnownIssue: ~
                 App\Entity\LargeFile: ~
                 App\Entity\LargeFileChipset: ~
+                App\Entity\LargeFileExpansionCard: ~
                 App\Entity\LargeFileExpansionChip: ~
-                App\Entity\LargeFileMediaTypeFlag: ~
                 App\Entity\LargeFileMotherboard: ~
                 App\Entity\License: ~
                 App\Entity\Manual: ~
                 App\Entity\Manufacturer: ~
+                App\Entity\ManufacturerCode: ~
                 App\Entity\ManufacturerBiosManufacturerCode: ~
                 App\Entity\MaxRam: ~
-                App\Entity\MediaTypeFlag: ~
+                App\Entity\MemoryConnector: ~
                 App\Entity\MiscFile: ~
                 App\Entity\Motherboard: ~
                 App\Entity\MotherboardAlias: ~
                 App\Entity\MotherboardBios: ~
                 App\Entity\MotherboardExpansionSlot: ~
                 App\Entity\MotherboardIdRedirection: ~
+                App\Entity\MotherboardMemoryConnector: ~
                 App\Entity\MotherboardImage: ~
                 App\Entity\MotherboardIoPort: ~
                 App\Entity\MotherboardMaxRam: ~
@@ -67,6 +86,7 @@ dh_auditor:
                 App\Entity\StorageDeviceDocumentation: ~
                 App\Entity\StorageDeviceImage: ~
                 App\Entity\StorageDeviceInterface: ~
+                App\Entity\StorageDeviceMiscFile: ~
                 App\Entity\StorageDeviceSize: ~
                 App\Entity\User:
                     roles:

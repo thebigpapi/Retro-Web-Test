@@ -1,0 +1,68 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Search for CPUs (help) - TRW{% endblock %}
+
+{% block metatags %}
+	<meta name="description" content="Help page for the CPU search function.">
+	<link rel="alternate" hreflang="x-default" href="{{ absolute_url(path('cpuhelp')) }}"/>
+{% endblock %}
+{% block subnav %}
+<li class="flex navbar-li">
+    <div class="flex items-center">
+        <svg class="navbar-svg" viewBox="0 0 24 44" preserveAspectRatio="none" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M.293 0l22 22-22 22h1.414l22-22-22-22H.293z"></path>
+        </svg>
+        <a class="ml-4" href="{{ path('cpusearch') }}">
+			<img src="{{ absolute_url(asset('build/icons/486.svg')) }}" width="24" height="24" alt="cpu">
+            <code class="text-pink-500">CPUs</code>
+        </a>
+    </div>
+</li>
+<li class="flex">
+    <div class="flex">
+        <svg class="navbar-svg" viewBox="0 0 24 44" preserveAspectRatio="none" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M.293 0l22 22-22 22h1.414l22-22-22-22H.293z"></path>
+        </svg>
+        <div class="ml-4">
+            <img src="{{ absolute_url(asset('build/icons/help.svg')) }}" width="24" height="24" alt="help">
+            <code class="navbar-code">Help page</code>
+        </div>
+    </div>
+</li>
+{% endblock %}
+{% block body %}
+<div class="title">
+    <img src="{{ absolute_url(asset('build/icons/486.svg')) }}" width="32" height="32" alt="cpu">
+    CPU search guide
+</div>
+<div class="search-help-container">The search page is comprised out of three types of fields:
+{% apply markdown_to_html %}
+- text fields
+- dynamic select fields
+    * up to 100 items will be rendered in the list at once
+    * if more than 100 items exist in the list they will remain hidden until you start typing, at which point the list is instantly filtered and updated with the remaining entries
+- widgets with dynamic select fields
+    * you can add and remove select fields using the <span style="color:#3dabf5">+ Add a new item</span> and <div style="display: inline-block;"><a class="button-widget"><img src="/build/icons/delete.svg"><span>Del</span></a></div> buttons, respectively.
+    * the select fields work in the same way as described above
+{% endapply %}
+</div>
+<div class="search-help-container">In the CPU search page, you will have a few filters which you can apply:
+{% apply markdown_to_html %}
+- Manufacturer
+    * if selected, it will match all the CPUs with that manufacturer
+- Name
+    * if filled, it matches all CPUs with that name
+    * DOES NOT match the manufacturer!
+- CPU frequency
+    * if selected, it will match all CPUs with that speed
+- Bus speed
+    * if selected, it will match all CPUs with that bus speed
+
+### Note on widgets: a maximum of 6 widgets can be added, due to query complexity constraints, each widget acts like a logical AND for your search filters.
+- Sockets
+    * if added, it will match all the CPUs which contain that socket
+- Families
+    * if added, it will match all the CPUs which contain that CPU family
+{% endapply %}
+</div>
+{% endblock %}

@@ -36,6 +36,7 @@ class CreditorCrudController extends AbstractCrudController
             ->add(Crud::PAGE_EDIT, $elogs)
             ->add(Crud::PAGE_INDEX, $view)
             ->add(Crud::PAGE_EDIT, $eview)
+            ->remove(Crud::PAGE_INDEX, Action::BATCH_DELETE)
             ->setPermission(Action::DELETE, 'ROLE_ADMIN');
     }
     public function configureCrud(Crud $crud): Crud
@@ -82,7 +83,7 @@ class CreditorCrudController extends AbstractCrudController
         $name = $context->getEntity()->getInstance()->getName();
         $targetUrl = $adminUrlGenerator
             ->setController(self::class)
-            ->setRoute('dashboard_creditor_images', ['id' => $id, 'name' => $name])
+            ->setRoute('dashboard_creditor_images_boards', ['id' => $id, 'name' => $name])
             ->setEntityId($id)
             ->generateUrl();
         return $this->redirect($targetUrl);

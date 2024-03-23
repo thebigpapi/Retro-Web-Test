@@ -17,6 +17,9 @@ class ChipsetNameCacheSubscriber implements EventSubscriberInterface
     {
     }
 
+    /**
+     * @return array
+     */
     public static function getSubscribedEvents()
     {
         return [

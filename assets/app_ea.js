@@ -4,5 +4,6 @@ import './webpack/editor_chips';
 import './webpack/editor_cpus';
 import './webpack/editor_bios';
 import './webpack/editor_misc';
+import './webpack/editor_specs.js'
 import './webpack/logs.js';
 import './webpack/drivers.js';

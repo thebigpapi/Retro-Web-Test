@@ -92,7 +92,7 @@ class HardDriveRepository extends ServiceEntityRepository
                 $whereArray[] = "hdd.capacity" . $capvalue['sign'] . $capvalue['value'];
         }
         if (array_key_exists('manufacturer', $criteria)) {
-            $whereArray[] = "(man.id = :manufacturerId)";
+            $whereArray[] = "(man.id = :manufacturerId OR alias.manufacturer = :manufacturerId)";
             $valuesArray["manufacturerId"] = (int)$criteria['manufacturer'];
         }
 
@@ -159,5 +159,16 @@ class HardDriveRepository extends ServiceEntityRepository
         }
 
         return $query->getResult();
+    }
+    /**
+     * @return HardDrive[]
+     */
+    public function findLatest(int $maxCount = 12)
+    {
+        return $this->createQueryBuilder('hdd')
+            ->orderBy('hdd.lastEdited', 'DESC')
+            ->setMaxResults($maxCount)
+            ->getQuery()
+            ->getResult();
     }
 }

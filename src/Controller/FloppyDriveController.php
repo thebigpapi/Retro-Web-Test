@@ -13,7 +13,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -31,9 +31,9 @@ class FloppyDriveController extends AbstractController
                 throw $this->createNotFoundException(
                     'No floppy drive found for id ' . $id
                 );
-            } 
+            }
             return $this->redirect($this->generateUrl('floppy_drive_show', array("id" => $idRedirection)));
-        } 
+        }
         return $this->render('floppydrive/show.html.twig', [
             'floppydrive' => $fdd,
             'controller_name' => 'FloppyDriveController',
@@ -43,6 +43,7 @@ class FloppyDriveController extends AbstractController
     #[Route(path: '/floppydrives/', name: 'fddsearch', methods: ['GET'])]
     public function searchResultFdd(Request $request, PaginatorInterface $paginator, FloppyDriveRepository $fddRepository, ManufacturerRepository $manufacturerRepository)
     {
+        $latestFdds = $fddRepository->findLatest(8);
         $form = $this->_searchFormHandlerFdd($request, $manufacturerRepository);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -50,11 +51,12 @@ class FloppyDriveController extends AbstractController
         }
         //get criterias
         $criterias = $this->getCriteriaFdd($request);
-        $showImages = boolval(htmlentities($request->query->get('showImages')));
+        $showImages = boolval(htmlentities($request->query->get('showImages') ?? ''));
         $maxItems = $request->query->getInt('itemsPerPage', $request->request->getInt('itemsPerPage', $this->getParameter('app.pagination.max')));
         if (empty($criterias)) {
             return $this->render('floppydrive/search.html.twig', [
                 'form' => $form->createView(),
+                'latestFdds' => $latestFdds,
             ]);
         }
 
@@ -82,7 +84,7 @@ class FloppyDriveController extends AbstractController
     public function liveResultsFdd(Request $request, PaginatorInterface $paginator, FloppyDriveRepository $fddRepository): Response
     {
         $criterias = $this->getCriteriaFdd($request);
-        $showImages = boolval(htmlentities($request->query->get('showImages')));
+        $showImages = boolval(htmlentities($request->query->get('showImages') ?? ''));
         $maxItems = $request->query->getInt('itemsPerPage', $request->request->getInt('itemsPerPage', $this->getParameter('app.pagination.max')));
         $data = $fddRepository->findByFdd($criterias);
         $fdds = $paginator->paginate(

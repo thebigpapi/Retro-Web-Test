@@ -151,9 +151,6 @@ class ChipsetRepository extends ServiceEntityRepository
             ->getQuery()
             ->getSingleScalarResult();
     }
-    /**
-     * @return Chipset[] Returns an array of sockets and count of board for each socket
-     */
     public function getChipsetDocCount(): array
     {
         $entityManager = $this->getEntityManager();
@@ -166,5 +163,16 @@ class ChipsetRepository extends ServiceEntityRepository
             $rsm
         )->getResult();
         return $result;
+    }
+    /**
+     * @return Chipset[]
+     */
+    public function findLatest(int $maxCount = 12)
+    {
+        return $this->createQueryBuilder('c')
+            ->orderBy('c.lastEdited', 'DESC')
+            ->setMaxResults($maxCount)
+            ->getQuery()
+            ->getResult();
     }
 }

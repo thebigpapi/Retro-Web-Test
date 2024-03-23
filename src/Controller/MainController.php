@@ -7,12 +7,13 @@ use App\Repository\ExpansionChipRepository;
 use App\Repository\FloppyDriveRepository;
 use App\Repository\HardDriveRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use App\Repository\MotherboardRepository;
 use App\Repository\MotherboardBiosRepository;
 use App\Repository\ChipsetRepository;
 use App\Repository\ProcessorRepository;
 use App\Repository\LargeFileRepository;
+use App\Repository\ExpansionCardRepository;
 use Symfony\Component\HttpFoundation\Response;
 
 class MainController extends AbstractController
@@ -27,18 +28,20 @@ class MainController extends AbstractController
         HardDriveRepository $hddRepository,
         CdDriveRepository $cddRepository,
         FloppyDriveRepository $fddRepository,
-        ExpansionChipRepository $expansionChipRepository
+        ExpansionChipRepository $expansionChipRepository,
+        ExpansionCardRepository $expansionCardRepository
     ): Response
     {
-        $latestMotherboards = $motherboardRepository->findLatest(6);
-        $latestChips = $expansionChipRepository->findLatest(6);
+        $latestMotherboards = $motherboardRepository->findLatest(8);
+        $latestCards = $expansionCardRepository->findLatest(8);
         return $this->render('main/index.html.twig', [
             'controller_name' => 'MainController',
             'latestMotherboards' => $latestMotherboards,
-            'latestChips' => $latestChips,
+            'latestCards' => $latestCards,
             'moboCount' => $motherboardRepository->getCount(),
             'chipCount' => $chipsetRepository->getCount(),
             'expchipCount' => $expansionChipRepository->getCount(),
+            'expcardCount' => $expansionCardRepository->getCount(),
             'cpuCount' => $cpuRepository->getCount(),
             'biosCount' => $motherboardBiosRepository->getCount(),
             'driverCount' => $largeFileRepository->getCount(),

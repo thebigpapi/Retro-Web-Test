@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Enum\KnownIssueType;
 use App\Entity\KnownIssue;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -19,32 +20,18 @@ class KnownIssueRepository extends ServiceEntityRepository
         parent::__construct($registry, KnownIssue::class);
     }
 
-    // /**
-    //  * @return KnownIssue[] Returns an array of KnownIssue objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    /**
+     * @return KnownIssue[] Returns an array of KnownIssue objects
+     */
+    public function findAllByType(KnownIssueType $type)
     {
         return $this->createQueryBuilder('k')
-            ->andWhere('k.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('k.id', 'ASC')
-            ->setMaxResults(10)
+            //->andWhere('k.type = :val')
+            ->andWhere('BIT_AND(k.type, :val) > 0')
+            ->setParameter('val', $type->value)
+            ->orderBy('k.name', 'ASC')
             ->getQuery()
             ->getResult()
         ;
     }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?KnownIssue
-    {
-        return $this->createQueryBuilder('k')
-            ->andWhere('k.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

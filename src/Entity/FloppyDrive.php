@@ -3,25 +3,46 @@
 namespace App\Entity;
 
 use App\Repository\FloppyDriveRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: FloppyDriveRepository::class)]
 class FloppyDrive extends StorageDevice
 {
-    #[ORM\Column(type: 'string', length: 255)]
-    private $density;
 
     #[ORM\Column(type: 'datetime', mapped: false)]
     private $lastEdited;
 
-    public function getDensity(): ?string
+    #[ORM\ManyToMany(targetEntity: FloppyDriveType::class, inversedBy: 'floppyDrives')]
+    private Collection $type;
+
+    public function __construct()
     {
-        return $this->density;
+        parent::__construct();
+        $this->type = new ArrayCollection();
     }
 
-    public function setDensity(string $density): self
+    /**
+     * @return Collection<int, FloppyDriveType>
+     */
+    public function getType(): Collection
     {
-        $this->density = $density;
+        return $this->type;
+    }
+
+    public function addType(FloppyDriveType $type): static
+    {
+        if (!$this->type->contains($type)) {
+            $this->type->add($type);
+        }
+
+        return $this;
+    }
+
+    public function removeType(FloppyDriveType $type): static
+    {
+        $this->type->removeElement($type);
 
         return $this;
     }

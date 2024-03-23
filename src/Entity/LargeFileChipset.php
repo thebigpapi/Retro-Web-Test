@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use App\Repository\LargeFileChipsetRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 #[ORM\Entity(repositoryClass: LargeFileChipsetRepository::class)]
 class LargeFileChipset
@@ -23,6 +25,12 @@ class LargeFileChipset
 
     #[ORM\Column(type: 'boolean')]
     private $isRecommended;
+    public function __toString(): string
+    {
+        if($this->getLargeFile())
+            return $this->getLargeFile()->getNameWithTags();
+        return "null";
+    }
 
     public function getId(): ?int
     {
@@ -57,5 +65,14 @@ class LargeFileChipset
         $this->isRecommended = $isRecommended;
 
         return $this;
+    }
+    #[Assert\Callback]
+    public function validate(ExecutionContextInterface $context, mixed $payload): void
+    {
+        if($this->isRecommended && $this->largeFile === null) {
+            $context->buildViolation('Driver is not selected!')
+                ->atPath('largeFile')
+                ->addViolation();
+        }
     }
 }

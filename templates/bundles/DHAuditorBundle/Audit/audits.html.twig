@@ -3,23 +3,19 @@
 {% import '@DHAuditor/Audit/helpers/helper.html.twig' as helper %}
 
 {% block dh_auditor_header %}
-    <nav class="bg-white border border-gray-200 rounded flex" aria-label="Breadcrumb">
-        <ol role="list" class="max-w-screen-xl w-full mx-auto px-4 flex space-x-4 sm:px-6 lg:px-6">
-            <li class="flex">
-                <div class="flex items-center h-11">
-                    <a href="{{ path('dh_auditor_list_audits') }}" class="text-gray-400 hover:text-gray-500 flex space-x-1">
-                        <!-- Heroicon name: solid/home -->
-                        <svg class="flex-shrink-0 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                            <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
-                        </svg>
-                        <span>{% trans from 'auditor' %}audit.header.home{% endtrans %}</span>
-                    </a>
-                </div>
-            </li>
-        </ol>
-    </nav>
 {% endblock %}
-
+{% block subnav %}
+        <li class="flex items-center justify-between navbar-li">
+            <div class="flex items-center">
+                <svg class="navbar-svg" viewBox="0 0 24 44" preserveAspectRatio="none" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path d="M.293 0l22 22-22 22h1.414l22-22-22-22H.293z" />
+                </svg>
+                <a class="ml-4 text-gray-500 hover:text-gray-700" href="{{ path('dh_auditor_list_audits') }}">
+                    <code class="text-pink-500">Logs</code>
+                </a>
+            </div>
+        </li>
+{% endblock %}
 {% block dh_auditor_content %}
 {% set icons = {
     'audio_file' : 'audio.svg',
@@ -30,7 +26,7 @@
     'chip_image' : 'chip_image.svg',
     'chipset' : 'chipsetfull.svg',
     'chipset_alias' : 'chipset_alias.svg',
-    'chipset_bios_code' : 'awchip.svg',
+    'chipset_bios_code' : 'chipset_bios.svg',
     'chipset_documentation' : 'chipset_docs.svg',
     'cpu_socket' : 'cpupins.svg',
     'cpu_speed' : 'speed.svg',
@@ -40,33 +36,52 @@
     'entity_documentation' : 'manual.svg',
     'expansion_chip' : 'chip.svg',
     'expansion_chip_type' : 'chip_alias.svg',
-    'expansion_slot' : 'card.svg',
+    'expansion_card' : 'card.svg',
+    'expansion_card_bios' : 'card_bios.svg',
+    'expansion_card_alias' : 'card_tag.svg',
+    'expansion_card_documentation' : 'card_doc.svg',
+    'expansion_card_id_redirection' : 'card_id.svg',
+    'expansion_card_image' : 'card_image.svg',
+    'expansion_card_type' : 'card_tag.svg',
+    'expansion_card_io_port' : 'card.svg',
+    'expansion_card_memory_connector' : 'ram.svg',
+    'expansion_card_power_connector' : 'power.svg',
+    'expansion_slot' : 'pci_slot.svg',
+    'expansion_slot_interface' : 'pci_slot.svg',
+    'expansion_slot_interface_signal' : 'pci_slot.svg',
+    'expansion_slot_signal' : 'pci_slot.svg',
     'floppy_drive' : 'floppy_drive.svg',
+    'floppy_drive_type' : 'floppy_drive.svg',
     'form_factor' : 'dimension.svg',
     'hard_drive' : 'hdd.svg',
     'instruction_set' : '486.svg',
     'io_port' : 'rs232.svg',
+    'io_port_interface' : 'rs232.svg',
+    'io_port_interface_signal' : 'rs232.svg',
+    'io_port_signal' : 'rs232.svg',
+    'memory_connector' : 'ram.svg',
     'known_issue' : 'chip.svg',
     'large_file' : 'hardware.svg',
     'large_file_chipset' : 'chipset_drivers.svg',
     'large_file_expansion_chip' : 'chip_drivers.svg',
-    'large_file_media_type_flag' : 'driver_mediatype.svg',
+    'large_file_expansion_card' : 'card_drivers.svg',
     'large_file_motherboard' : 'board_drivers.svg',
     'license' : 'license.svg',
     'manual' : 'board_docs.svg',
     'manufacturer' : 'factory.svg',
+    'manufacturer_code' : 'factory.svg',
     'manufacturer_bios_manufacturer_code' : 'awchip_codes.svg',
     'max_ram' : 'ram_multi.svg',
-    'media_type_flag' : 'mediatype.svg',
     'misc_file' : 'miscfile.svg',
     'motherboard' : 'board.svg',
     'motherboard_alias' : 'board_alias.svg',
     'motherboard_bios' : 'awchip.svg',
-    'motherboard_expansion_slot' : 'card.svg',
-    'motherboard_id_redirection' : 'www.svg',
+    'motherboard_expansion_slot' : 'board_slot.svg',
+    'motherboard_id_redirection' : 'board_id.svg',
     'motherboard_image' : 'board_image.svg',
-    'motherboard_io_port' : 'rs232.svg',
-    'motherboard_max_ram' : 'ram_multi.svg',
+    'motherboard_io_port' : 'board_port.svg',
+    'motherboard_memory_connector' : 'board_ram.svg',
+    'motherboard_max_ram' : 'board_maxram.svg',
     'os_flag' : 'os/1998win.svg',
     'psuconnector' : 'power.svg',
     'processor' : '486dx.svg',
@@ -76,6 +91,7 @@
     'storage_device_documentation' : 'hdd_docs.svg',
     'storage_device_image' : 'hdd_image.svg',
     'storage_device_interface' : 'io.svg',
+    'storage_device_misc_file' : 'miscfile.svg',
     'storage_device_size' : 'hdd_dimension.svg',
     'user' : 'user.svg'
 }%}
@@ -98,21 +114,41 @@
     'entity_documentation' : 'Entity documentations',
     'expansion_chip' : 'Expansion chips',
     'expansion_chip_type' : 'Expansion chip types',
+    'expansion_card' : 'Expansion cards',
+    'expansion_card_bios' : 'Expansion card BIOSes',
+    'expansion_card_alias' : 'Expansion card aliases',
+    'expansion_card_documentation' : 'Expansion card docs',
+    'expansion_card_id_redirection' : 'Expansion card URL redirects',
+    'expansion_card_image' : 'Expansion card images',
+    'expansion_card_type' : 'Expansion card types',
+    'expansion_card_io_port' : 'Expansion card I/O ports',
+    'expansion_card_memory_connector' : 'Expansion card memory connectors',
+    'expansion_card_power_connector' : 'Expansion card power connectors',
     'expansion_slot' : 'Expansion slots',
+    'expansion_slot_interface' : 'Expansion slot interfaces',
+    'expansion_slot_interface_signal' : 'Expansion slot presets',
+    'expansion_slot_signal' : 'Expansion slot signals',
     'floppy_drive' : 'Floppy drives',
+    'floppy_drive_type' : 'Floppy drive types',
     'form_factor' : 'Form factors',
     'hard_drive' : 'Hard drives',
     'instruction_set' : 'Instruction sets',
     'io_port' : 'I/O ports',
+    'io_port_interface' : 'I/O port interfaces',
+    'io_port_interface_signal' : 'I/O port presets',
+    'io_port_signal' : 'I/O port signals',
+    'memory_connector' : 'Memory connectors',
     'known_issue' : 'Known issues',
     'large_file' : 'Drivers',
     'large_file_chipset' : 'Chipset drivers',
     'large_file_expansion_chip' : 'Expansion chip drivers',
+    'large_file_expansion_card' : 'Expansion card drivers',
     'large_file_media_type_flag' : 'Driver media flags',
     'large_file_motherboard' : 'Motherboard drivers',
     'license' : 'Licenses',
     'manual' : 'Motherboard docs',
     'manufacturer' : 'Manufacturers',
+    'manufacturer_code' : 'Manufacturer codes',
     'manufacturer_bios_manufacturer_code' : 'BIOS manufacturer codes',
     'max_ram' : 'RAM sizes',
     'media_type_flag' : 'Media flags',
@@ -124,6 +160,7 @@
     'motherboard_id_redirection' : 'Motherboard URL redirects',
     'motherboard_image' : 'Motherboard images',
     'motherboard_io_port' : 'Motherboard I/O ports',
+    'motherboard_memory_connector' : 'Motherboard memory connectors',
     'motherboard_max_ram' : 'Motherboard RAM sizes',
     'os_flag' : 'OS flags',
     'psuconnector' : 'PSU connectors',
@@ -134,6 +171,7 @@
     'storage_device_documentation' : 'Storage device docs',
     'storage_device_image' : 'Storage device images',
     'storage_device_interface' : 'Storage device interfaces',
+    'storage_device_misc_file' : 'Storage device misc files',
     'storage_device_size' : 'Storage device physical sizes',
     'user' : 'Users'
 }

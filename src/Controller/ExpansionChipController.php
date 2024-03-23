@@ -11,7 +11,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Knp\Component\Pager\PaginatorInterface;
 
 class ExpansionChipController extends AbstractController
@@ -35,6 +35,7 @@ class ExpansionChipController extends AbstractController
     #[Route(path: '/expansion-chips/', name: 'expansionchipsearch', methods: ['GET'])]
     public function searchResultExpansionChip(Request $request, PaginatorInterface $paginator, ExpansionChipRepository $expansionChipRepository, ManufacturerRepository $manufacturerRepository, ExpansionChipTypeRepository $expansionChipTypeRepository)
     {
+        $latestChips = $expansionChipRepository->findLatest(8);
         $form = $this->_searchFormHandlerExpansionChip($request, $manufacturerRepository, $expansionChipTypeRepository);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -42,11 +43,12 @@ class ExpansionChipController extends AbstractController
         }
         //get criterias
         $criterias = $this->getCriteriaExpansionChip($request);
-        $showImages = boolval(htmlentities($request->query->get('showImages')));
+        $showImages = boolval(htmlentities($request->query->get('showImages') ?? ''));
         $maxItems = $request->query->getInt('itemsPerPage', $request->request->getInt('itemsPerPage', $this->getParameter('app.pagination.max')));
         if (empty($criterias)) {
             return $this->render('expansion_chip/search.html.twig', [
                 'form' => $form->createView(),
+                'latestChips' => $latestChips,
             ]);
         }
         $data = $expansionChipRepository->findByExpansionChip($criterias);
@@ -82,7 +84,7 @@ class ExpansionChipController extends AbstractController
         ExpansionChipRepository $expansionChipRepository
     ): Response {
         $criterias = $this->getCriteriaExpansionChip($request);
-        $showImages = boolval(htmlentities($request->query->get('showImages')));
+        $showImages = boolval(htmlentities($request->query->get('showImages') ?? ''));
         $maxItems = $request->query->getInt('itemsPerPage', $request->request->getInt('itemsPerPage', $this->getParameter('app.pagination.max')));
         $data = $expansionChipRepository->findByExpansionChip($criterias);
         $expansionChips = $paginator->paginate(
