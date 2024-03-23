@@ -49,7 +49,7 @@
 <div class="title">{{ driver.getName() }}</div>	
 <div class="main-strip">
 	<div class="internal-container">
-		{% include 'macros/navbar.html.twig' with {'entity': driver, 'entityName': 'LargeFile', 'name': 'driver'} %}
+		{% include 'macros/navbar.html.twig' with {'entity': driver, 'entityName': 'LargeFile', 'name': 'driver', 'role': 'ROLE_USER'} %}
 		<div class="internal-content">
 			<!-- DESCRIPRION -->
 			<div class="quick-spec-split">

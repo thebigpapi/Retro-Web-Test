@@ -62,7 +62,7 @@
 <div class="title">{{ motherboard.getFullName() }}</div>
 <div class="main-strip">
 	<div class="internal-container">
-		{% include 'macros/navbar.html.twig' with {'entity': motherboard, 'entityName': 'Motherboard', 'name': 'board'} %}
+		{% include 'macros/navbar.html.twig' with {'entity': motherboard, 'entityName': 'Motherboard', 'name': 'board', 'role': 'ROLE_USER'} %}
 		<!-- GENERAL -->
 		<div class="internal-content">
 			<div class="show-general" id="sh-general">

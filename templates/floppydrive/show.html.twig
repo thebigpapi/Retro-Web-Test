@@ -52,7 +52,7 @@
 <div class="title">{{ floppydrive.getFullName() }}</div>
 <div class="main-strip">
 	<div class="internal-container">
-		{% include 'macros/navbar.html.twig' with {'entity': floppydrive, 'entityName': 'FloppyDrive', 'name': 'floppy drive'} %}
+		{% include 'macros/navbar.html.twig' with {'entity': floppydrive, 'entityName': 'FloppyDrive', 'name': 'floppy drive', 'role': 'ROLE_USER'} %}
 		<div class="internal-content">
 			<!-- DESCRIPRION -->
 			<div class="show-general" id="sh-general">
