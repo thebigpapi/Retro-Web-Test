@@ -86,6 +86,7 @@ dh_auditor:
                 App\Entity\StorageDeviceDocumentation: ~
                 App\Entity\StorageDeviceImage: ~
                 App\Entity\StorageDeviceInterface: ~
+                App\Entity\StorageDeviceMiscFile: ~
                 App\Entity\StorageDeviceSize: ~
                 App\Entity\User:
                     roles:

@@ -67,6 +67,10 @@ class StorageDevice
     #[ORM\ManyToMany(targetEntity: PSUConnector::class, inversedBy: 'storageDevices')]
     private Collection $powerConnectors;
 
+    #[ORM\OneToMany(mappedBy: 'storageDevice', targetEntity: StorageDeviceMiscFile::class, orphanRemoval: true, cascade: ['persist'])]
+    #[Assert\Valid()]
+    private Collection $storageDeviceMiscFiles;
+
     public function __construct()
     {
         $this->knownIssues = new ArrayCollection();
@@ -78,6 +82,7 @@ class StorageDevice
         $this->lastEdited = new \DateTime('now');
         $this->interfaces = new ArrayCollection();
         $this->powerConnectors = new ArrayCollection();
+        $this->storageDeviceMiscFiles = new ArrayCollection();
     }
     public function __toString(): string
     {
@@ -423,6 +428,36 @@ class StorageDevice
     public function removePowerConnector(PSUConnector $powerConnector): self
     {
         $this->powerConnectors->removeElement($powerConnector);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, StorageDeviceMiscFile>
+     */
+    public function getStorageDeviceMiscFiles(): Collection
+    {
+        return $this->storageDeviceMiscFiles;
+    }
+
+    public function addStorageDeviceMiscFile(StorageDeviceMiscFile $storageDeviceMiscFile): static
+    {
+        if (!$this->storageDeviceMiscFiles->contains($storageDeviceMiscFile)) {
+            $this->storageDeviceMiscFiles->add($storageDeviceMiscFile);
+            $storageDeviceMiscFile->setStorageDevice($this);
+        }
+
+        return $this;
+    }
+
+    public function removeStorageDeviceMiscFile(StorageDeviceMiscFile $storageDeviceMiscFile): static
+    {
+        if ($this->storageDeviceMiscFiles->removeElement($storageDeviceMiscFile)) {
+            // set the owning side to null (unless already changed)
+            if ($storageDeviceMiscFile->getStorageDevice() === $this) {
+                $storageDeviceMiscFile->setStorageDevice(null);
+            }
+        }
 
         return $this;
     }

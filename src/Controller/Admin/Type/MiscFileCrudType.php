@@ -18,7 +18,7 @@ class MiscFileCrudType extends AbstractCrudController
     {
         yield TextField::new('link_name')
             ->setFormTypeOption('label',false)
-            ->setFormTypeOption('attr',['placeholder' => 'Name:'])
+            ->setFormTypeOption('attr',['placeholder' => 'Title:'])
             ->setColumns('col-sm-12 col-lg-12 col-xxl-4');
         yield TextField::new('miscFile')
             ->setFormType(VichFileType::class)

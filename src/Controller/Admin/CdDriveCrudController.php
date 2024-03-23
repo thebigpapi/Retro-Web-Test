@@ -11,6 +11,7 @@ use App\Form\Type\PSUConnectorType;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Controller\Admin\Filter\StorageImageFilter;
 use App\Controller\Admin\Filter\StorageDocFilter;
+use App\Controller\Admin\Type\MiscFileCrudType;
 use App\Controller\Admin\Type\StorageDevice\AliasCrudType;
 use App\Controller\Admin\Type\StorageDevice\DocumentationCrudType;
 use App\Controller\Admin\Type\StorageDevice\IdRedirectionCrudType;
@@ -214,6 +215,12 @@ class CdDriveCrudController extends AbstractCrudController
             ->onlyOnForms();
         yield CollectionField::new('storageDeviceDocumentations', 'Documentation')
             ->useEntryCrudForm(DocumentationCrudType::class)
+            ->setFormTypeOption('error_bubbling', false)
+            ->setColumns(6)
+            ->renderExpanded()
+            ->onlyOnForms();
+        yield CollectionField::new('storageDeviceMiscFiles', 'Misc files')
+            ->useEntryCrudForm(MiscFileCrudType::class)
             ->setFormTypeOption('error_bubbling', false)
             ->setColumns(6)
             ->renderExpanded()

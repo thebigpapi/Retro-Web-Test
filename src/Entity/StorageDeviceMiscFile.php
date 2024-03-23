@@ -2,7 +2,7 @@
 
 namespace App\Entity;
 
-use App\Repository\MiscFileRepository;
+use App\Repository\StorageDeviceMiscFileRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -11,15 +11,15 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[Vich\Uploadable]
-#[ORM\Entity(repositoryClass: MiscFileRepository::class)]
-class MiscFile
+#[ORM\Entity(repositoryClass: StorageDeviceMiscFileRepository::class)]
+class StorageDeviceMiscFile
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[Vich\UploadableField(mapping: 'miscfile', fileNameProperty: 'file_name')]
+    #[Vich\UploadableField(mapping: 'storagemiscfile', fileNameProperty: 'file_name')]
     private File|null $miscFile = null;
 
     #[ORM\Column(type: 'string', length: 255)]
@@ -38,27 +38,15 @@ class MiscFile
     )]
     private $link_name;
 
-    #[ORM\ManyToOne(targetEntity: Motherboard::class, inversedBy: 'miscFiles')]
-    private $motherboard;
-
     #[ORM\Column(type: 'datetime')]
     private $updated_at;
+
+    #[ORM\ManyToOne(targetEntity: StorageDevice::class, inversedBy: 'storageDeviceMiscFiles')]
+    private $storageDevice;
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getMotherboard(): ?Motherboard
-    {
-        return $this->motherboard;
-    }
-
-    public function setMotherboard(?Motherboard $motherboard): self
-    {
-        $this->motherboard = $motherboard;
-
-        return $this;
     }
 
     public function getFileName(): ?string
@@ -109,6 +97,17 @@ class MiscFile
     public function setUpdatedAt(\DateTimeInterface $updated_at): self
     {
         $this->updated_at = $updated_at;
+
+        return $this;
+    }
+    public function getStorageDevice(): ?StorageDevice
+    {
+        return $this->storageDevice;
+    }
+
+    public function setStorageDevice(?StorageDevice $storageDevice): static
+    {
+        $this->storageDevice = $storageDevice;
 
         return $this;
     }
