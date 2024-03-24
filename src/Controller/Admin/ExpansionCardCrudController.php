@@ -196,11 +196,9 @@ class ExpansionCardCrudController extends AbstractCrudController
             ->onlyOnForms();
         yield AssociationField::new('ramSize', 'Supported RAM size')
             ->setColumns('col-sm-12 col-lg-6 col-xxl-4 multi-widget-trw')
-            ->autocomplete()
             ->onlyOnForms();
         yield AssociationField::new('dramType', 'Supported RAM types')
             ->setColumns('col-sm-12 col-lg-6 col-xxl-4 multi-widget-trw')
-            ->autocomplete()
             ->onlyOnForms();
         yield FormField::addTab('Specs')
             ->setIcon('fa fa-info')
