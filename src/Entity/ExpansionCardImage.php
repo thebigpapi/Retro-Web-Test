@@ -135,6 +135,7 @@ class ExpansionCardImage
             case 3: return "Photo back";
             case 4: return "Photo misc";
             case 5: return "Schema misc";
+            case 6: return "Photo bracket";
             default: return "";
         }
     }
