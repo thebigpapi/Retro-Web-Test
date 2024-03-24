@@ -80,6 +80,7 @@ class ExpansionCardImageCrudController extends AbstractCrudController
                 'Photo back' => '3',
                 'Photo misc' => '4',
                 'Schema misc' => '5',
+                'Photo bracket' => '6',
             ])
             ->onlyOnForms();
         yield TextField::new('getTypeFormatted', 'Type')

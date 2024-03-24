@@ -81,10 +81,10 @@
                 {% if type == 'chipset' %}
                     {% if item.getExpansionChips() is not empty %}
                         {% set imgcount = 0 %}
-                        {% for chipPart in item.getExpansionChips() %}
+                        {% for chipPart in item.getExpansionChips()|sort((a, b) => a.sort <=> b.sort) %}
                         {% if chipPart.getImages() is not empty %}
                             {% set imgcount = imgcount + 1 %}
-                            {% for image in chipPart.getImages()|sort((a, b) => a.getFileName() <=> b.getFileName())|slice(0, 1) %}
+                            {% for image in chipPart.getImages()|sort((a, b) => a.getFileName() <=> b.getFileName())|sort((a, b) => a.sort <=> b.sort)|slice(0, 1) %}
                                 {% if imgcount < 2 %}
                                 <img src="{% if vich_uploader_asset(image, 'imageFile') | ext != "svg" %}
                             {{ vich_uploader_asset(image, 'imageFile') | imagine_filter('show_thumb') }}{% else %}

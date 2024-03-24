@@ -177,9 +177,17 @@
 								{% if port.getIoPortInterfaceSignal() is not empty %}
 									<a href="{{ path('io_port_show', {id: port.getIoPortInterfaceSignal().getId()}) }}">{{ port.getIoPortInterfaceSignal().getName() }}</a>
 								{% else %}
-									{{ port.getIoPortInterface().getName() }}{% if port.ioPortSignals() is not empty %}&nbsp;({% for type in port.ioPortSignals() %}{{type.getName()}}{% if not loop.last %}, {% endif %}{% endfor %}){% endif %}
+									{{ port.getIoPortInterface().getName() }}
 								{% endif %}
 								</div>
+								{% if port.ioPortSignals() is not empty %}
+									<div class="list-table-head"></div>
+									<ul style="margin-top:0;margin-bottom:0">
+									{% for type in port.ioPortSignals() %}
+										<li>{{type.getName()}}</li>
+									{% endfor %}
+									</ul>
+								{% endif %}
 							{% endfor %}
 						{% else %}<div class="list-table-head"></div><div>N/A</div>{% endif %}
 					</div>
@@ -194,9 +202,17 @@
 								{% if port.getIoPortInterfaceSignal() is not empty %}
 									<a href="{{ path('io_port_show', {id: port.getIoPortInterfaceSignal().getId()}) }}">{{ port.getIoPortInterfaceSignal().getName() }}</a>
 								{% else %}
-									{{ port.getIoPortInterface().getName() }}{% if port.ioPortSignals() is not empty %}&nbsp;({% for type in port.ioPortSignals() %}{{type.getName()}}{% if not loop.last %}, {% endif %}{% endfor %}){% endif %}
+									{{ port.getIoPortInterface().getName() }}
 								{% endif %}
 								</div>
+								{% if port.ioPortSignals() is not empty %}
+									<div class="list-table-head"></div>
+									<ul style="margin-top:0;margin-bottom:0">
+									{% for type in port.ioPortSignals() %}
+										<li>{{type.getName()}}</li>
+									{% endfor %}
+									</ul>
+								{% endif %}
 							{% endfor %}
 						{% else %}<div class="list-table-head"></div><div>N/A</div>{% endif %}
 					</div>

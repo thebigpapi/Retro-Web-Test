@@ -45,6 +45,7 @@ class BiosCrudType extends AbstractCrudController
                         'multipart/x-zip',
                         'application/x-lzh-compressed',
                         'application/x-dosexec',
+                        'application/x-ibm-rom',
                     ],
                     'mimeTypesMessage' => 'Please upload a valid BIN, ZIP or EXE file',
                 ])

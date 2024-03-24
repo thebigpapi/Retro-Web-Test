@@ -79,7 +79,8 @@ class ExpansionCardCrudController extends AbstractCrudController
             ->setEntityLabelInPlural('<img class=ea-entity-icon src=/build/icons/card.svg width=48 height=48>Expansion cards')
             ->overrideTemplate('crud/edit', 'admin/crud/edit_card.html.twig')
             ->overrideTemplate('crud/new', 'admin/crud/new_card.html.twig')
-            ->setPaginatorPageSize(100);
+            ->setPaginatorPageSize(100)
+            ->setDefaultSort(['lastEdited' => 'DESC']);
     }
     public function configureFilters(Filters $filters): Filters
     {
@@ -196,11 +197,9 @@ class ExpansionCardCrudController extends AbstractCrudController
             ->onlyOnForms();
         yield AssociationField::new('ramSize', 'Supported RAM size')
             ->setColumns('col-sm-12 col-lg-6 col-xxl-4 multi-widget-trw')
-            ->autocomplete()
             ->onlyOnForms();
         yield AssociationField::new('dramType', 'Supported RAM types')
             ->setColumns('col-sm-12 col-lg-6 col-xxl-4 multi-widget-trw')
-            ->autocomplete()
             ->onlyOnForms();
         yield FormField::addTab('Specs')
             ->setIcon('fa fa-info')
