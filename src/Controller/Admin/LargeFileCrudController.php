@@ -89,7 +89,7 @@ class LargeFileCrudController extends AbstractCrudController
             ->setEntityLabelInPlural('<img class=ea-entity-icon src=/build/icons/hardware.svg width=48 height=48>Drivers')
             ->overrideTemplate('crud/edit', 'admin/crud/edit_driver.html.twig')
             ->overrideTemplate('crud/new', 'admin/crud/new_driver.html.twig')
-            ->setDefaultSort(['lastEdited' => 'DESC']);
+            ->setDefaultSort(['id' => 'DESC']);
     }
     public function configureFilters(Filters $filters): Filters
     {

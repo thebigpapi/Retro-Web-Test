@@ -33,6 +33,8 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Option\EA;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
+use EasyCorp\Bundle\EasyAdminBundle\Contracts\Controller\CrudControllerInterface;
+use EasyCorp\Bundle\EasyAdminBundle\Dto\FieldDto;
 use EasyCorp\Bundle\EasyAdminBundle\Factory\ControllerFactory;
 use EasyCorp\Bundle\EasyAdminBundle\Factory\PaginatorFactory;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -78,7 +80,8 @@ class ExpansionChipCrudController extends AbstractCrudController
             ->setEntityLabelInPlural('<img class=ea-entity-icon src=/build/icons/chip.svg width=48 height=48>Expansion chips')
             ->overrideTemplate('crud/edit', 'admin/crud/edit_chip.html.twig')
             ->overrideTemplate('crud/new', 'admin/crud/new_chip.html.twig')
-            ->setPaginatorPageSize(100);
+            ->setPaginatorPageSize(100)
+            ->setDefaultSort(['lastEdited' => 'DESC']);
     }
     public function configureFilters(Filters $filters): Filters
     {
