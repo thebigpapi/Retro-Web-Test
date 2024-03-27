@@ -124,8 +124,7 @@ class ManufacturerRepository extends ServiceEntityRepository
 
         $query = $entityManager->createNativeQuery(
             'SELECT distinct man.id, man.name
-            FROM (SELECT distinct man.* FROM manufacturer man JOIN motherboard mobo ON mobo.manufacturer_id = man.id
-            UNION SELECT distinct man.* FROM manufacturer man JOIN motherboard_bios bios ON bios.manufacturer_id = man.id) as man
+            FROM (SELECT distinct man.* FROM manufacturer man JOIN motherboard_bios bios ON bios.manufacturer_id = man.id) as man
             ORDER BY man.name;',
             $rsm
         );

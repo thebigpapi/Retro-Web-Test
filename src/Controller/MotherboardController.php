@@ -462,14 +462,11 @@ class MotherboardController extends AbstractController
 
         $procPlatformTypes = $processorPlatformTypeRepository->findBy(array(), array('name' => 'ASC'));
 
-        $biosManufacturers = $manufacturerRepository->findAllBiosManufacturer();
-
         $form = $this->createForm(Search::class, array(), [
             'moboManufacturers' => $moboManufacturers,
             'chipsetManufacturers' => $chipsetManufacturers,
             'formFactors' => $formFactors,
             'procPlatformTypes' => $procPlatformTypes,
-            'bios' => $biosManufacturers,
             'cpuSockets' => $cpuSockets,
         ]);
 
