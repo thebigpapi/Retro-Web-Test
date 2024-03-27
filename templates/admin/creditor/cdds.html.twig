@@ -21,7 +21,7 @@
                             <div class="perk-image">
                             {% if cdd.getStorageDeviceImages() is not empty %}
                                 {% set imgtype_count = 0 %}
-                                {% for image in cdd.getStorageDeviceImages()|sort((a, b) => a.getFileName() <=> b.getFileName())|slice(0, 1) %}
+                                {% for image in cdd.getStorageDeviceImages()|filter(a => a.type in ["1", "2", "3"])|sort((a, b) => a.getFileName() <=> b.getFileName())|sort((a, b) => b.getType <=> a.getType)|slice(0, 1) %}
                                     <a href="{{ vich_uploader_asset(image, 'imageFile')}}" class="glightbox"><img src="{% if vich_uploader_asset(image, 'imageFile') | ext != "svg" %}
                                         {{ vich_uploader_asset(image, 'imageFile') | imagine_filter('show_thumb') }}{% else %}
                                         {{ vich_uploader_asset(image, 'imageFile')}}{% endif %}" alt="" loading="lazy" width="250" height="200" title="Click to preview image"></a>
@@ -40,7 +40,7 @@
                     {% endfor %}
                     </div>
                 </div>
-            {{ knp_pagination_render(hdds, 'macros/pagination.html.twig') }}
+            {{ knp_pagination_render(cdds, 'macros/pagination.html.twig') }}
         </div>
     {% else %}
         No images
