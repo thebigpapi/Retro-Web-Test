@@ -53,7 +53,7 @@ class Processor extends ProcessingUnit
     }
     public function __toString(): string
     {
-        return $this->getName();
+        return $this->getName() ?: "";
     }
     public function getL2(): ?CacheSize
     {
