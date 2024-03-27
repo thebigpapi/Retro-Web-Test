@@ -101,7 +101,8 @@ class HardDriveCrudController extends AbstractCrudController
             ->showEntityActionsInlined()
             ->setEntityLabelInSingular('hard drive')
             ->setEntityLabelInPlural('<img class=ea-entity-icon src=/build/icons/harddrive.svg width=48 height=48>Hard drives')
-            ->setPaginatorPageSize(100);
+            ->setPaginatorPageSize(100)
+            ->setDefaultSort(['lastEdited' => 'DESC']);
     }
     public function configureFilters(Filters $filters): Filters
     {

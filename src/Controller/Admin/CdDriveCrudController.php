@@ -101,7 +101,8 @@ class CdDriveCrudController extends AbstractCrudController
             ->showEntityActionsInlined()
             ->setEntityLabelInSingular('optical drive')
             ->setEntityLabelInPlural('<img class=ea-entity-icon src=/build/icons/cd_drive.svg width=48 height=48>Optical drives')
-            ->setPaginatorPageSize(100);
+            ->setPaginatorPageSize(100)
+            ->setDefaultSort(['lastEdited' => 'DESC']);
     }
     public function configureFilters(Filters $filters): Filters
     {
