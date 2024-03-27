@@ -172,7 +172,7 @@ async function applyTemplateCard(miscSpecs) {
 
     const url = `${window.location.origin}/dashboard/getexpansioncardtemplate?ids=${JSON.stringify(types)}`;
 
-    fetch(url, { cache: "force-cache" })
+    fetch(url, { cache: "default" })
         .then((response) => {
             if (!response.ok) {
                 throw new Error(`HTTP error: ${response.status}`)
@@ -202,7 +202,7 @@ async function applyTemplateChip(miscSpecs) {
     let type = document.getElementById('ExpansionChip_type').value;
     const url = `${window.location.origin}/dashboard/getexpansionchiptemplate/${type}`;
 
-    fetch(url, { cache: "force-cache" })
+    fetch(url, { cache: "default" })
         .then((response) => {
             if (!response.ok) {
                 throw new Error(`HTTP error: ${response.status}`)
@@ -277,7 +277,7 @@ function addListenersToIoPortForm(ioPortId) {
 function expSlotPresetChange(event) {
     const url = `${window.location.origin}/dashboard/getexpslots/${event.target.value}`;
 
-    fetch(url, { cache: "force-cache" })
+    fetch(url, { cache: "default" })
         .then((response) => {
             if (!response.ok) {
                 throw new Error(`HTTP error: ${response.status}`)
@@ -310,7 +310,7 @@ function expSlotPresetChange(event) {
 function ioPortPresetChange(event, ioPortId) {
     const url = `${window.location.origin}/dashboard/getioports/${event.target.value}`;
 
-    fetch(url, { cache: "force-cache" })
+    fetch(url, { cache: "default" })
         .then((response) => {
             if (!response.ok) {
                 throw new Error(`HTTP error: ${response.status}`)
@@ -319,6 +319,7 @@ function ioPortPresetChange(event, ioPortId) {
         })
         .then((text) => {
             const res = JSON.parse(text);
+            alert(text);
             const intefaceId = res[0].interfaceId;
             const intefaceName = res[0].interfaceName;
             const signalIds = res[0].signals
