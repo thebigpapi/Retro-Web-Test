@@ -319,7 +319,6 @@ function ioPortPresetChange(event, ioPortId) {
         })
         .then((text) => {
             const res = JSON.parse(text);
-            alert(text);
             const intefaceId = res[0].interfaceId;
             const intefaceName = res[0].interfaceName;
             const signalIds = res[0].signals
