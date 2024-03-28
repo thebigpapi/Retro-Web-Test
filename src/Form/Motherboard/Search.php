@@ -216,7 +216,6 @@ class Search extends AbstractType
         $resolver->setDefaults([
             'moboManufacturers' => array(),
             'chipsetManufacturers' => array(),
-            'bios' => array(),
             'formFactors' => array(),
             'procPlatformTypes' => array(),
             'cpuSockets' => array(),

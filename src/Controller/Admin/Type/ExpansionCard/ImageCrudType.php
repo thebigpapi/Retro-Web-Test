@@ -48,6 +48,7 @@ class ImageCrudType extends AbstractCrudController
                 'Photo front' => '2',
                 'Photo back' => '3',
                 'Photo misc' => '4',
+                'Photo bracket' => '6',
                 'Schema misc' => '5',
             ])
             ->setColumns(12);

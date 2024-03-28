@@ -2,6 +2,7 @@
 
 namespace App\Controller\Admin;
 
+use App\Controller\Admin\Type\LargeFile\ExpansionCardCrudType;
 use App\Controller\Admin\Type\LargeFile\ExpansionChipCrudType;
 use App\Entity\LargeFile;
 use App\Form\Type\OsFlagType;
@@ -89,7 +90,7 @@ class LargeFileCrudController extends AbstractCrudController
             ->setEntityLabelInPlural('<img class=ea-entity-icon src=/build/icons/hardware.svg width=48 height=48>Drivers')
             ->overrideTemplate('crud/edit', 'admin/crud/edit_driver.html.twig')
             ->overrideTemplate('crud/new', 'admin/crud/new_driver.html.twig')
-            ->setDefaultSort(['lastEdited' => 'DESC']);
+            ->setDefaultSort(['id' => 'DESC']);
     }
     public function configureFilters(Filters $filters): Filters
     {
@@ -147,6 +148,11 @@ class LargeFileCrudController extends AbstractCrudController
             ->onlyOnForms();
         yield CollectionField::new('expansionchips', 'Expansion chips')
             ->useEntryCrudForm(ExpansionChipCrudType::class)
+            ->renderExpanded()
+            ->setColumns('col-sm-12 col-lg-8 col-xxl-6')
+            ->onlyOnForms();
+        yield CollectionField::new('expansionCards', 'Expansion cards')
+            ->useEntryCrudForm(ExpansionCardCrudType::class)
             ->renderExpanded()
             ->setColumns('col-sm-12 col-lg-8 col-xxl-6')
             ->onlyOnForms();

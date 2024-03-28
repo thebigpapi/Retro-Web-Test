@@ -3,8 +3,8 @@
 namespace App\Controller\Admin;
 
 use App\Entity\ExpansionCard;
+use App\Entity\PciDeviceId;
 use App\Form\Type\ExpansionCardTypeType;
-use App\Form\Type\PSUConnectorType;
 use App\Form\Type\KnownIssueExpansionCardType;
 use App\EasyAdmin\TextJsonField;
 use Doctrine\ORM\EntityManagerInterface;
@@ -22,6 +22,10 @@ use App\Controller\Admin\Type\ExpansionCard\ImageCrudType;
 use App\Controller\Admin\Type\ExpansionCard\LargeFileCrudType;
 use App\Controller\Admin\Type\ExpansionCard\PowerConnectorCrudType;
 use App\Controller\Admin\Type\PciDeviceCrudType;
+use App\Entity\ExpansionCardAlias;
+use App\Entity\ExpansionCardIoPort;
+use App\Entity\ExpansionCardPowerConnector;
+use App\Entity\LargeFileExpansionCard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
@@ -32,12 +36,24 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\ArrayField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CodeEditorField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
-use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
+use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
+use EasyCorp\Bundle\EasyAdminBundle\Event\AfterCrudActionEvent;
+use EasyCorp\Bundle\EasyAdminBundle\Event\AfterEntityPersistedEvent;
+use EasyCorp\Bundle\EasyAdminBundle\Event\BeforeCrudActionEvent;
+use EasyCorp\Bundle\EasyAdminBundle\Event\BeforeEntityPersistedEvent;
+use EasyCorp\Bundle\EasyAdminBundle\Exception\ForbiddenActionException;
+use EasyCorp\Bundle\EasyAdminBundle\Exception\InsufficientEntityPermissionException;
+use EasyCorp\Bundle\EasyAdminBundle\Factory\EntityFactory;
+use EasyCorp\Bundle\EasyAdminBundle\Security\Permission;
+use EasyCorp\Bundle\EasyAdminBundle\Config\KeyValueStore;
+use EasyCorp\Bundle\EasyAdminBundle\Collection\FieldCollection;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Response;
 
 class ExpansionCardCrudController extends AbstractCrudController
 {
@@ -57,6 +73,12 @@ class ExpansionCardCrudController extends AbstractCrudController
     }
     public function configureActions(Actions $actions): Actions
     {
+        $duplicate = Action::new('duplicate', 'Clone')->setIcon('fa fa-copy')->linkToUrl(
+            fn (ExpansionCard $entity) => $this->container->get(AdminUrlGenerator::class)
+                ->setAction(Action::NEW)
+                ->set('duplicate', $entity->getId())
+                ->generateUrl()
+        );
         $view = Action::new('view', 'View')->linkToCrudAction('viewExpCard');
         $eview = Action::new('eview', 'View')->linkToCrudAction('viewExpCard')->setIcon('fa fa-magnifying-glass');
         $logs = Action::new('logs', 'Logs')->linkToCrudAction('viewLogs');
@@ -64,6 +86,7 @@ class ExpansionCardCrudController extends AbstractCrudController
         return $actions
             ->add(Crud::PAGE_NEW, Action::SAVE_AND_CONTINUE)
             ->remove(Crud::PAGE_NEW, Action::SAVE_AND_ADD_ANOTHER)
+            ->add(Crud::PAGE_EDIT, $duplicate)
             ->add(Crud::PAGE_INDEX, $logs)
             ->add(Crud::PAGE_EDIT, $elogs)
             ->add(Crud::PAGE_INDEX, $view)
@@ -269,6 +292,143 @@ class ExpansionCardCrudController extends AbstractCrudController
         $entityId = $context->getEntity()->getInstance()->getId();
         $entity = str_replace("\\", "-",$context->getEntity()->getFqcn());
         return $this->redirectToRoute('dh_auditor_show_entity_history', array('id' => $entityId, 'entity' => $entity));
+    }
+        /**
+     * @return KeyValueStore|Response
+     */
+    public function new(AdminContext $context)
+    {
+        $event = new BeforeCrudActionEvent($context);
+        $this->container->get('event_dispatcher')->dispatch($event);
+        if ($event->isPropagationStopped()) {
+            return $event->getResponse();
+        }
+
+        if (!$this->isGranted(Permission::EA_EXECUTE_ACTION, ['action' => Action::NEW, 'entity' => null])) {
+            throw new ForbiddenActionException($context);
+        }
+
+        if (!$context->getEntity()->isAccessible()) {
+            throw new InsufficientEntityPermissionException($context);
+        }
+
+        $context->getEntity()->setInstance($this->createEntity($context->getEntity()->getFqcn()));
+        $this->container->get(EntityFactory::class)->processFields($context->getEntity(), FieldCollection::new($this->configureFields(Crud::PAGE_NEW)));
+        $context->getCrud()->setFieldAssets($this->getFieldAssets($context->getEntity()->getFields()));
+        $this->container->get(EntityFactory::class)->processActions($context->getEntity(), $context->getCrud()->getActionsConfig());
+        if ($context->getRequest()->query->has('duplicate')) {
+            $className = $this->getEntityFqcn();
+            $entityManager = $this->container->get('doctrine')->getManagerForClass($className);
+            $oldentity = $entityManager->find($className, $context->getRequest()->query->get('duplicate'));
+            /** @var ExpansionCard $cloned */
+            $cloned = $this->makeNewExpansionCard($oldentity);
+            $context->getEntity()->setInstance($cloned);
+        }
+        $newForm = $this->createNewForm($context->getEntity(), $context->getCrud()->getNewFormOptions(), $context);
+        $entityInstance = $newForm->getData();
+        $newForm->handleRequest($context->getRequest());
+        $context->getEntity()->setInstance($entityInstance);
+
+        if ($newForm->isSubmitted() && $newForm->isValid()) {
+            $this->processUploadedFiles($newForm);
+
+            $event = new BeforeEntityPersistedEvent($entityInstance);
+            $this->container->get('event_dispatcher')->dispatch($event);
+            $entityInstance = $event->getEntityInstance();
+
+            $this->persistEntity($this->container->get('doctrine')->getManagerForClass($context->getEntity()->getFqcn()), $entityInstance);
+
+            $this->container->get('event_dispatcher')->dispatch(new AfterEntityPersistedEvent($entityInstance));
+            $context->getEntity()->setInstance($entityInstance);
+
+            return $this->getRedirectResponseAfterSave($context, Action::NEW);
+        }
+
+        $responseParameters = $this->configureResponseParameters(KeyValueStore::new([
+            'pageName' => Crud::PAGE_NEW,
+            'templateName' => 'crud/new',
+            'entity' => $context->getEntity(),
+            'new_form' => $newForm,
+        ]));
+
+        $event = new AfterCrudActionEvent($context, $responseParameters);
+        $this->container->get('event_dispatcher')->dispatch($event);
+        if ($event->isPropagationStopped()) {
+            return $event->getResponse();
+        }
+
+        return $responseParameters;
+    }
+    public function makeNewExpansionCard(ExpansionCard $old): ExpansionCard
+    {
+        $card = new ExpansionCard();
+        $card->setName($old->getName());
+        $card->setManufacturer($old->getManufacturer());
+        $card->setSlug($old->getSlug());
+        $card->setExpansionSlotInterfaceSignal($old->getExpansionSlotInterfaceSignal());
+        $card->setExpansionSlotInterface($old->getExpansionSlotInterface());
+        $card->setWidth($old->getWidth());
+        $card->setHeight($old->getHeight());
+        $card->setLength($old->getLength());
+        $card->setSlotCount($old->getSlotCount());
+        $card->setFccid($old->getFccid());
+        $card->setDescription($old->getDescription());
+        $card->setMiscSpecs($old->getMiscSpecs());
+        $card->setLastEdited(new \DateTime('now'));
+        foreach ($old->getType() as $typ){
+            $card->addType($typ);
+        }
+        foreach ($old->getPciDevs() as $dev) {
+            $newDev = new PciDeviceId();
+            $newDev->setDev($dev->getDev());
+            $card->addPciDev($newDev);
+        }
+        foreach ($old->getExpansionSlotSignals() as $sig){
+            $card->addExpansionSlotSignal($sig);
+        }
+        foreach ($old->getKnownIssues() as $issue){
+            $card->addKnownIssue($issue);
+        }
+
+        foreach ($old->getExpansionCardAliases() as $alias) {
+            $newAlias = new ExpansionCardAlias();
+            $newAlias->setManufacturer($alias->getManufacturer());
+            $newAlias->setName($alias->getName());
+            $card->addExpansionCardAlias($newAlias);
+        }
+        foreach ($old->getExpansionChips() as $chip) {
+            $card->addExpansionChip($chip);
+        }
+        foreach ($old->getDramType() as $ram){
+            $card->addDramType($ram);
+        }
+        foreach ($old->getRamSize() as $max){
+            $card->addRamSize($max);
+        }
+        foreach ($old->getExpansionCardPowerConnectors() as $pwr){
+            $newPwr = new ExpansionCardPowerConnector();
+            $newPwr->setCount($pwr->getCount());
+            $newPwr->setPowerConnector($pwr->getPowerConnector());
+            $card->addExpansionCardPowerConnector($newPwr);
+        }
+        foreach ($old->getIoPorts() as $port){
+            $newPort = new ExpansionCardIoPort();
+            $newPort->setCount($port->getCount());
+            $newPort->setIoPortInterfaceSignal($port->getIoPortInterfaceSignal());
+            $newPort->setIoPortInterface($port->getIoPortInterface());
+            $newPort->setIsInternal($port->isIsInternal());
+            foreach ($port->getIoPortSignals() as $sig){
+                $newPort->addIoPortSignal($sig);
+            }
+            $card->addIoPort($newPort);
+        }
+        foreach ($old->getDrivers() as $drv){
+            $newDrv = new LargeFileExpansionCard();
+            $newDrv->setIsRecommended($drv->getIsRecommended());
+            $newDrv->setLargeFile($drv->getLargeFile());
+            $card->addDriver($newDrv);
+        }
+        return $card;
     }
     /**
      * @param ExpansionCard $entityInstance

@@ -329,12 +329,12 @@ class LargeFile
      */
     public function getExpansionCards(): ?Collection
     {
-        return $this->expansionchips;
+        return $this->expansionCards;
     }
     public function addExpansionCard(LargeFileExpansionCard $largeFileExpansionCard): self
     {
-        if (!$this->expansionchips->contains($largeFileExpansionCard)) {
-            $this->expansionchips[] = $largeFileExpansionCard;
+        if (!$this->expansionCards->contains($largeFileExpansionCard)) {
+            $this->expansionCards[] = $largeFileExpansionCard;
             $largeFileExpansionCard->setLargeFile($this);
         }
 
@@ -342,7 +342,7 @@ class LargeFile
     }
     public function removeExpansionCard(LargeFileExpansionCard $largeFileExpansionCard): self
     {
-        if ($this->expansionchips->removeElement($largeFileExpansionCard)) {
+        if ($this->expansionCards->removeElement($largeFileExpansionCard)) {
             // set the owning side to null (unless already changed)
             if ($largeFileExpansionCard->getLargeFile() === $this) {
                 $largeFileExpansionCard->setLargeFile(null);

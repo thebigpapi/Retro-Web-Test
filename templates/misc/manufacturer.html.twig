@@ -49,6 +49,9 @@
 			<!-- DESCRIPRION -->
 			<div class="show-general" id="sh-general">
 				<div class="quick-spec-table">
+					<!-- Full name -->
+					<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/factory.svg')) }}" alt="code" width="24" height="24">Full name</div>
+					<div>{{ manufacturer.getFullName() ?: 'Unknown'}}</div>
 					<!-- Codes -->
 					<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/tag.svg')) }}" alt="code" width="24" height="24">Codes</div>
 					{% if manufacturer.getManufacturerCodes() is not empty %}
@@ -68,7 +71,7 @@
 					<div>Unknown</div>
 					{% endif %}
 					<!-- Vendor ID -->
-					<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/tag.svg')) }}" alt="date" width="24" height="24">Device ID</div>
+					<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/tag.svg')) }}" alt="date" width="24" height="24">Vendor ID</div>
 					<div class="tag-container">
 					{% if manufacturer.getPciVendorIds() is not empty %}
 						{% for ven in manufacturer.getPciVendorIds() %}

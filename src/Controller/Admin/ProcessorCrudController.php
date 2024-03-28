@@ -90,7 +90,8 @@ class ProcessorCrudController extends AbstractCrudController
             ->showEntityActionsInlined()
             ->setEntityLabelInSingular('CPU')
             ->setEntityLabelInPlural('<img class=ea-entity-icon src=/build/icons/486dx.svg width=48 height=48>CPUs')
-            ->setPaginatorPageSize(100);
+            ->setPaginatorPageSize(100)
+            ->setDefaultSort(['id' => 'DESC']);
     }
     public function configureFilters(Filters $filters): Filters
     {
@@ -255,6 +256,9 @@ class ProcessorCrudController extends AbstractCrudController
         }
         $newForm = $this->createNewForm($context->getEntity(), $context->getCrud()->getNewFormOptions(), $context);
         $entityInstance = $newForm->getData();
+        // set CPU sort = 1 always
+        if($entityInstance->getSort() != 1)
+            $entityInstance->setSort(1);
         $newForm->handleRequest($context->getRequest());
         $context->getEntity()->setInstance($entityInstance);
 
@@ -324,7 +328,7 @@ class ProcessorCrudController extends AbstractCrudController
         }
         return $cpu;
     }
-            /**
+    /**
      * @param Processor $entityInstance
      */
     public function updateEntity(EntityManagerInterface $entityManager, $entityInstance): void
