@@ -53,7 +53,8 @@ if ((miscSpecs = document.getElementById('ExpansionCard_miscSpecs')) ||
 function submit(el, name){
     saveAsJson(el);
     let save = document.getElementsByClassName(name)[0];
-    save.click();
+    if(save.getAttribute('data-valid') == "true")
+        save.click();
 }
 function setMsg(msg){
     if(label = document.getElementById('specs-form-label'))

@@ -76,18 +76,19 @@ class ChipImageCrudController extends AbstractCrudController
             ->setCustomOption('link','chip/image')
             ->setCustomOption('thumb_link','media/cache/show_thumb/chip/image')
             ->hideOnForm();
-        yield TextField::new('imageFile', 'JPG or GIF')
+        yield TextField::new('imageFile', 'JPG, PNG or GIF')
             ->setFormType(VichImageType::class)
             ->setFormTypeOption('allow_delete',false)
             ->setFormTypeOption('constraints',[
                 new File([
-                    'maxSize' => '8192k',
+                    'maxSize' => '8192ki',
                     'mimeTypes' => [
                         'image/jpeg',
                         'image/pjpeg',
+                        'image/png',
                         'image/gif',
                     ],
-                    'mimeTypesMessage' => 'Please upload a valid JPG or GIF image',
+                    'mimeTypesMessage' => 'Please upload a valid JPG, PNG or GIF image',
                 ])
             ])
             ->setColumns('col-sm-4 col-lg-4 col-xxl-4')

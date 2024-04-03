@@ -47,7 +47,7 @@ class BiosCrudType extends AbstractCrudController
             ->setFormTypeOption('constraints',[
                 new File([
                     'maxSize' => '32Mi',
-                    'mimeTypes' => [
+                    /*'mimeTypes' => [
                         'application/x-binary',
                         'application/octet-stream',
                         'application/mac-binary',
@@ -61,7 +61,7 @@ class BiosCrudType extends AbstractCrudController
                         'application/x-dosexec',
                         'application/x-ibm-rom',
                     ],
-                    'mimeTypesMessage' => 'Please upload a valid BIN, ZIP or EXE file',
+                    'mimeTypesMessage' => 'Please upload a valid BIN, ZIP or EXE file',*/
                 ])
             ])
             ->setColumns('col-sm-12 col-lg-5 col-xxl-2-5 padright')

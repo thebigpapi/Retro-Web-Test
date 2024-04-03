@@ -91,19 +91,20 @@ class ExpansionCardImageCrudController extends AbstractCrudController
             ->setCustomOption('link','expansioncard/image')
             ->setCustomOption('thumb_link','media/cache/show_thumb/expansioncard/image')
             ->hideOnForm();
-        yield TextField::new('imageFile', 'JPG, GIF or SVG')
+        yield TextField::new('imageFile', 'JPG, PNG, GIF or SVG')
             ->setFormType(VichImageType::class)
             ->setFormTypeOption('allow_delete',false)
             ->setFormTypeOption('constraints',[
                 new File([
-                    'maxSize' => '8192k',
+                    'maxSize' => '8192ki',
                     'mimeTypes' => [
                         'image/jpeg',
                         'image/pjpeg',
+                        'image/png',
                         'image/gif',
                         'image/svg+xml',
                     ],
-                    'mimeTypesMessage' => 'Please upload a valid JPG, GIF or SVG image',
+                    'mimeTypesMessage' => 'Please upload a valid JPG, PNG, GIF or SVG image',
                 ])
             ])
             ->setColumns('col-sm-4 col-lg-4 col-xxl-4')

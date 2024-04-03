@@ -54,16 +54,16 @@
     <div class="hide-actions">
     {% for action in entity.actions %}
         {% if loop.first %}
-        <button id="get-slug-btn-card" class="btn btn-secondary" type="button">
+        <button id="get-slug-btn" data-entity="ExpansionCard" class="btn btn-secondary" type="button">
             <span class="btn-label"><i class="fa fa-external-link"></i> <span class="action-label">Get slug</span></span>
         </button>
         {% endif %}
         {{ include(action.templatePath, { action: action }, with_context = false) }}
         {% if loop.last %}
-        <button id="js-save-continue" class="btn btn-secondary action-save" type="button">
+        <button id="js-save-continue" data-entity="ExpansionCard" class="btn btn-secondary action-save" type="button">
             <span class="btn-label"><i class="action-icon far fa-edit"></i> <span class="action-label">Save and continue editing</span></span>
         </button>
-        <button id="js-save" class="btn btn-primary action-save" type="button">
+        <button id="js-save" data-entity="ExpansionCard" class="btn btn-primary action-save" type="button">
             <span class="btn-label"><span class="action-label">Save changes</span></span>
         </button>
         {% endif %}
