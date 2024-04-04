@@ -157,7 +157,7 @@
 					<!-- IO ports -->
 					<div class="full-spec-head"><img src="{{ absolute_url(asset('build/icons/rs232.svg')) }}" alt="portint" width="24" height="24"><b>I/O ports</b></div>
 					<div class="list-table">
-						{% if expansioncard.getIoPorts() %}
+						{% if expansioncard.getIoPorts() is not empty %}
 							{% for port in expansioncard.getIoPorts()|sort((a, b) => a.getIoPortName() <=> b.getIoPortName()) %}
 								<div class="list-table-head">
 									<b>{{ port.getCount() }}x&nbsp;</b>
