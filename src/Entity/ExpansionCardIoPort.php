@@ -34,9 +34,6 @@ class ExpansionCardIoPort
     #[ORM\Column]
     private ?int $count = null;
 
-    #[ORM\Column]
-    private ?bool $isInternal = null;
-
     #[ORM\ManyToOne(inversedBy: 'expansionCardIoPorts')]
     private ?IoPortInterfaceSignal $ioPortInterfaceSignal = null;
 
@@ -110,18 +107,6 @@ class ExpansionCardIoPort
         return $this;
     }
 
-    public function isIsInternal(): ?bool
-    {
-        return $this->isInternal;
-    }
-
-    public function setIsInternal(bool $isInternal): static
-    {
-        $this->isInternal = $isInternal;
-
-        return $this;
-    }
-
     public function getIoPortInterfaceSignal(): ?IoPortInterfaceSignal
     {
         return $this->ioPortInterfaceSignal;
@@ -132,5 +117,12 @@ class ExpansionCardIoPort
         $this->ioPortInterfaceSignal = $ioPortInterfaceSignal;
 
         return $this;
+    }
+    public function getIoPortName(): string
+    {
+        $name = $this->ioPortInterfaceSignal ? $this->ioPortInterfaceSignal->getName(): "";
+        if($name == "")
+            return $this->ioPortInterface->getName();
+        return $name;
     }
 }

@@ -127,7 +127,7 @@
 						<!-- Max card RAM -->
 						{% if expansioncard.getRamSize() is not empty %}
 						<div class="quick-spec-head">
-							<img src="{{ absolute_url(asset('build/icons/ram_multi.svg')) }}" alt="ram" width="24" height="24">Max RAM size
+							<img src="{{ absolute_url(asset('build/icons/ram_multi.svg')) }}" alt="ram" width="24" height="24">RAM size
 						</div>
 						<div class="tag-container">{% for size in expansioncard.getRamSize() %}<span class="text-block">{{ size.getValueWithUnit()}}</span>{% endfor %}</div>
 						{% endif %}
@@ -142,17 +142,6 @@
 							{% endfor %}
 						</div>
 						{% endif %#}
-						<!-- PSU connectors -->
-						{% if expansioncard.getExpansionCardPowerConnectors() is not empty %}
-						<div class="quick-spec-head">
-							<img src="{{ absolute_url(asset('build/icons/power.svg')) }}" alt="power" width="24" height="24">Power connectors
-						</div>
-						<div class="tag-container">
-							{% for conn in expansioncard.getExpansionCardPowerConnectors()|sort((a, b) => a.getPowerConnector().getName() <=> b.getPowerConnector().getName()) %}
-									<span class="text-block"><b>{{ conn.getCount() }}x&nbsp;</b><a href="{{ path('psu_connector_show', {id: conn.getPowerConnector().getId()}) }}">{{ conn.getPowerConnector().getName() }}</a></span>
-							{% endfor %}
-						</div>
-						{% endif %}
 						<!-- Dimensions -->
 						<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/dimension.svg')) }}" alt="dim" width="24" height="24">Dimensions</div>
 						{% if expansioncard.getWidth() is not null or expansioncard.getLength() is not null or expansioncard.getHeight() is not null %}
@@ -166,53 +155,35 @@
 				</div>
 				<div class="full-spec">
 					<!-- IO ports -->
-					<div class="full-spec-head"><img src="{{ absolute_url(asset('build/icons/rs232.svg')) }}" alt="portint" width="24" height="24"><b>I/O ports (external)</b></div>
+					<div class="full-spec-head"><img src="{{ absolute_url(asset('build/icons/rs232.svg')) }}" alt="portint" width="24" height="24"><b>I/O ports</b></div>
 					<div class="list-table">
-						{% if expansioncard.getIoPorts()|filter(port => not port.isInternal) is not empty %}
-							{% for port in expansioncard.getIoPorts()|sort((a, b) => a.getIoPortInterface().getName() <=> b.getIoPortInterface().getName())|filter(port => not port.isInternal) %}
+						{% if expansioncard.getIoPorts() %}
+							{% for port in expansioncard.getIoPorts()|sort((a, b) => a.getIoPortName() <=> b.getIoPortName()) %}
 								<div class="list-table-head">
 									<b>{{ port.getCount() }}x&nbsp;</b>
 								</div>
-								<div>
 								{% if port.getIoPortInterfaceSignal() is not empty %}
-									<a href="{{ path('io_port_show', {id: port.getIoPortInterfaceSignal().getId()}) }}">{{ port.getIoPortInterfaceSignal().getName() }}</a>
+									<div><a href="{{ path('io_port_show', {id: port.getIoPortInterfaceSignal().getId()}) }}">{{ port.getIoPortInterfaceSignal().getName() }}</a></div>
+									{% if port.getIoPortInterface() is not empty %}
+										<div class="list-table-head"></div>
+										<ul style="margin-top:0;margin-bottom:0;list-style:none;padding:0;">
+											<li>{{ port.getIoPortInterface().getName() }}{% if port.getIoPortSignals() is not empty %}{% for type in port.ioPortSignals() %}, {{type.getName()}}{% endfor %}{% endif %}</li>
+										</ul>
+									{% endif %}
 								{% else %}
-									{{ port.getIoPortInterface().getName() }}
-								{% endif %}
-								</div>
-								{% if port.ioPortSignals() is not empty %}
-									<div class="list-table-head"></div>
-									<ul style="margin-top:0;margin-bottom:0">
-									{% for type in port.ioPortSignals() %}
-										<li>{{type.getName()}}</li>
-									{% endfor %}
-									</ul>
+									<div>{{ port.getIoPortInterface().getName() }}{% if port.getIoPortSignals() is not empty %}{% for type in port.ioPortSignals() %}, {{type.getName()}}{% endfor %}{% endif %}</div>
 								{% endif %}
 							{% endfor %}
 						{% else %}<div class="list-table-head"></div><div>N/A</div>{% endif %}
 					</div>
-					<div class="full-spec-head"><img src="{{ absolute_url(asset('build/icons/rs232.svg')) }}" alt="portint" width="24" height="24"><b>I/O ports (internal)</b></div>
+					<div class="full-spec-head"><img src="{{ absolute_url(asset('build/icons/power.svg')) }}" alt="power" width="24" height="24"><b>Power connectors</b></div>
 					<div class="list-table">
-						{% if expansioncard.getIoPorts()|filter(port => port.isInternal) is not empty %}
-							{% for port in expansioncard.getIoPorts()|sort((a, b) => a.getIoPortInterface().getName() <=> b.getIoPortInterface().getName())|filter(port => port.isInternal) %}
+						{% if expansioncard.getExpansionCardPowerConnectors() is not empty %}
+							{% for conn in expansioncard.getExpansionCardPowerConnectors()|sort((a, b) => a.getPowerConnector().getName() <=> b.getPowerConnector().getName()) %}
 								<div class="list-table-head">
-									<b>{{ port.getCount() }}x&nbsp;</b>
+									<b>{{ conn.getCount() }}x&nbsp;</b>
 								</div>
-								<div>
-								{% if port.getIoPortInterfaceSignal() is not empty %}
-									<a href="{{ path('io_port_show', {id: port.getIoPortInterfaceSignal().getId()}) }}">{{ port.getIoPortInterfaceSignal().getName() }}</a>
-								{% else %}
-									{{ port.getIoPortInterface().getName() }}
-								{% endif %}
-								</div>
-								{% if port.ioPortSignals() is not empty %}
-									<div class="list-table-head"></div>
-									<ul style="margin-top:0;margin-bottom:0">
-									{% for type in port.ioPortSignals() %}
-										<li>{{type.getName()}}</li>
-									{% endfor %}
-									</ul>
-								{% endif %}
+								<div><a href="{{ path('psu_connector_show', {id: conn.getPowerConnector().getId()}) }}">{{ conn.getPowerConnector().getName() }}</a></div>
 							{% endfor %}
 						{% else %}<div class="list-table-head"></div><div>N/A</div>{% endif %}
 					</div>
@@ -221,7 +192,7 @@
 				{% include 'macros/notes.html.twig' with {'entity': expansioncard} %}
 				<div id="index-datetime"><div class="div-datetime">Last updated <span class="perk-date">{{ expansioncard.getLastEdited()|date("Y-m-d\\TH:i:s", "GMT") }}Z</span></div></div>
 			</div>
-			<div class="show-expchips" id="sh-specs">
+			<div class="show-expchips" id="sh-expchips">
 				<!-- Expansion chips -->
 				{% if expansioncard.getExpansionChips() is not empty %}
 				<div class="quick-spec-table">

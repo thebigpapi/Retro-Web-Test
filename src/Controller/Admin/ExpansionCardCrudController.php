@@ -416,7 +416,6 @@ class ExpansionCardCrudController extends AbstractCrudController
             $newPort->setCount($port->getCount());
             $newPort->setIoPortInterfaceSignal($port->getIoPortInterfaceSignal());
             $newPort->setIoPortInterface($port->getIoPortInterface());
-            $newPort->setIsInternal($port->isIsInternal());
             foreach ($port->getIoPortSignals() as $sig){
                 $newPort->addIoPortSignal($sig);
             }
