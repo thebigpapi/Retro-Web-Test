@@ -22,7 +22,7 @@
     #{{ entity.getInstance().getId() }}
     <div>
         {% if entity.getInstance().getManufacturer() is defined %}
-            {{ entity.getInstance().getManufacturer().getName() }}
+            {{ entity.getInstance().getManufacturer() ? entity.getInstance().getManufacturer().getName() : '[unknown]' }}
         {% endif %}
         {% if entity.getInstance().getPartNumber() is defined %}
             {{ entity.getInstance().getPartNumber() }}

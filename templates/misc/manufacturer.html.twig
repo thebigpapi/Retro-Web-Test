@@ -96,7 +96,13 @@
 		{% endfor %}
 	{% else %}
 		<div class="show-images">
-			<img src={{ absolute_url(asset('build/images/missing/not-available.jpg')) }} title="no images available :(" style="width:100%;">
+			{% if is_granted('ROLE_USER') %}
+				<a href="{{ ea_url().setDashboard('App\\Controller\\Admin\\DashboardController').setController('App\\Controller\\Admin\\ManufacturerCrudController').setAction('edit').setEntityId(manufacturer.getId())}}">
+					<img src={{ absolute_url(asset('build/images/missing/not-available.jpg')) }} title="Click to edit this entry" style="width:100%;">
+				</a>
+			{% else %}
+				<img src={{ absolute_url(asset('build/images/missing/not-available.jpg')) }} title="no images available :(" style="width:100%;">
+			{% endif %}
 		</div>
 	{% endif %}
 	</div>

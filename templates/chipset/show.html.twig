@@ -55,7 +55,13 @@
 {% endblock %}
 {% block body %}
 <!-- MANUF./NAME/PART NO. -->
-<div class="title">{{ chipset.getFullName() }}</div>
+<div class="title">
+	{% if chipset.getManufacturer() is not empty %}
+		<a href="{{ path('manufacturer_show', {id: chipset.getManufacturer().getId()}) }}">{{ chipset.getManufacturer().getName() }}</a>&nbsp;{{ chipset.getNameWithoutManuf() }}
+	{% else %}
+		{{ chipset.getFullName() }}
+	{% endif %}
+</div>
 <div class="main-strip">
 	<div class="internal-container">
 		{% include 'macros/navbar.html.twig' with {'entity': chipset, 'entityName': 'Chipset', 'name': 'chipset', 'role': 'ROLE_USER'} %}

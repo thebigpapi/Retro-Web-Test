@@ -358,6 +358,12 @@ main {
 		img:hover+div.errors-div {
 			display: block;
 		}
+		a{
+			color: $body-frg-light;
+			@media (prefers-color-scheme: dark) {
+				color: $body-frg-dark;
+			}
+		}
 	}
 
 	a {

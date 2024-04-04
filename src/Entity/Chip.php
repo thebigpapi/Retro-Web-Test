@@ -94,6 +94,13 @@ abstract class Chip
 
         return $this;
     }
+    public function getNameWithoutManuf(): string
+    {
+        if ($this->name) {
+            return $this->partNumber . " (" . $this->name . ")";
+        }
+        return $this->partNumber;
+    }
     /**
      * @return Collection|ChipAlias[]
      */

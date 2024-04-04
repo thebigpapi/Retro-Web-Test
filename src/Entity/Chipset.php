@@ -260,6 +260,13 @@ class Chipset
     {
         return $this->getPartNo();
     }
+    public function getNameWithoutManuf(): string
+    {
+        if ($this->name) {
+            return $this->part_no . " (" . $this->name . ")";
+        }
+        return $this->part_no;
+    }
     public function getPartNo(): ?string
     {
         return $this->part_no;

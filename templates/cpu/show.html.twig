@@ -47,7 +47,13 @@
 
 {% block body %}
 <!-- MANUF./NAME/PART NO. -->
-<div class="title">{{ cpu.getFullName() }}</div>
+<div class="title">
+	{% if cpu.getManufacturer() is not empty %}
+		<a href="{{ path('manufacturer_show', {id: cpu.getManufacturer().getId()}) }}">{{ cpu.getManufacturer().getName() }}</a>&nbsp;{{ cpu.getNameWithoutManuf() }}
+	{% else %}
+		{{ cpu.getFullName() }}
+	{% endif %}
+</div>
 <div class="main-strip">
 	<div class="internal-container">
 		{% include 'macros/navbar.html.twig' with {'entity': cpu, 'entityName': 'Processor', 'name': 'CPU', 'role': 'ROLE_USER'} %}
@@ -254,7 +260,13 @@
 		{% endfor %}
 	{% else %}
 		<div class="show-images">
-			<img src={{ absolute_url(asset('build/images/missing/cpu-missing.jpg')) }} title="no images available :(" style="width:100%;">
+			{% if is_granted('ROLE_USER') %}
+				<a href="{{ ea_url().setDashboard('App\\Controller\\Admin\\DashboardController').setController('App\\Controller\\Admin\\ProcessorCrudController').setAction('edit').setEntityId(cpu.getId())}}">
+					<img src={{ absolute_url(asset('build/images/missing/cpu-missing.jpg')) }} title="Click to edit this entry" style="width:100%;">
+				</a>
+			{% else %}
+				<img src={{ absolute_url(asset('build/images/missing/cpu-missing.jpg')) }} title="no images available :(" style="width:100%;">
+			{% endif %}
 		</div>
 	{% endif %}
 	</div>

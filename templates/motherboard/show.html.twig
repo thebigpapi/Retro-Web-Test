@@ -59,7 +59,13 @@
 
 {% block body %}
 <!-- TITLE/ALIASES -->
-<div class="title">{{ motherboard.getFullName() }}</div>
+<div class="title">
+	{% if motherboard.getManufacturer() is not empty %}
+		<a href="{{ path('manufacturer_show', {id: motherboard.getManufacturer().getId()}) }}">{{ motherboard.getManufacturer().getName() }}</a>&nbsp;{{ motherboard.getName() }}
+	{% else %}
+		{{ motherboard.getFullName() }}
+	{% endif %}
+</div>
 <div class="main-strip">
 	<div class="internal-container">
 		{% include 'macros/navbar.html.twig' with {'entity': motherboard, 'entityName': 'Motherboard', 'name': 'board', 'role': 'ROLE_USER'} %}
@@ -330,7 +336,13 @@
 		{% endfor %}
 	{% else %}
 		<div class="show-image">
-			<img src={{ absolute_url(asset('build/images/missing/board-missing.jpg')) }} title="no images available :(" style="width:100%;">
+			{% if is_granted('ROLE_USER') %}
+				<a href="{{ ea_url().setDashboard('App\\Controller\\Admin\\DashboardController').setController('App\\Controller\\Admin\\MotherboardCrudController').setAction('edit').setEntityId(motherboard.getId())}}">
+					<img src={{ absolute_url(asset('build/images/missing/board-missing.jpg')) }} title="Click to edit this entry" style="width:100%;">
+				</a>
+			{% else %}
+				<img src={{ absolute_url(asset('build/images/missing/board-missing.jpg')) }} title="no images available :(" style="width:100%;">
+			{% endif %}
 		</div>
 	{% endif %}
 	</div>
