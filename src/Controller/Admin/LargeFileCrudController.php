@@ -6,6 +6,7 @@ use App\Controller\Admin\Type\LargeFile\ExpansionCardCrudType;
 use App\Controller\Admin\Type\LargeFile\ExpansionChipCrudType;
 use App\Entity\LargeFile;
 use App\Form\Type\OsFlagType;
+use App\Form\Type\OsArchitectureType;
 use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
@@ -138,6 +139,11 @@ class LargeFileCrudController extends AbstractCrudController
             ->onlyOnIndex();
         yield CollectionField::new('osFlags', 'OS flags')
             ->setEntryType(OsFlagType::class)
+            ->setColumns(4)
+            ->renderExpanded()
+            ->onlyOnForms();
+        yield CollectionField::new('osArchitecture', 'OS architectures')
+            ->setEntryType(OsArchitectureType::class)
             ->setColumns(4)
             ->renderExpanded()
             ->onlyOnForms();

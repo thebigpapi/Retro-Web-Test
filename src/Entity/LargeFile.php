@@ -75,6 +75,9 @@ class LargeFile
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $lastEdited = null;
 
+    #[ORM\ManyToMany(targetEntity: OsArchitecture::class, inversedBy: 'largeFiles')]
+    private Collection $osArchitecture;
+
     public function __construct()
     {
         $this->osFlags = new ArrayCollection();
@@ -83,6 +86,7 @@ class LargeFile
         $this->expansionchips = new ArrayCollection();
         $this->expansionCards = new ArrayCollection();
         $this->lastEdited = new \DateTime('now');
+        $this->osArchitecture = new ArrayCollection();
     }
     public function __toString(): string
     {
@@ -359,5 +363,29 @@ class LargeFile
                 ->atPath('file')
                 ->addViolation();
         }
+    }
+
+    /**
+     * @return Collection<int, OsArchitecture>
+     */
+    public function getOsArchitecture(): Collection
+    {
+        return $this->osArchitecture;
+    }
+
+    public function addOsArchitecture(OsArchitecture $osArchitecture): static
+    {
+        if (!$this->osArchitecture->contains($osArchitecture)) {
+            $this->osArchitecture->add($osArchitecture);
+        }
+
+        return $this;
+    }
+
+    public function removeOsArchitecture(OsArchitecture $osArchitecture): static
+    {
+        $this->osArchitecture->removeElement($osArchitecture);
+
+        return $this;
     }
 }

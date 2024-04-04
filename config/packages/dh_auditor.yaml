@@ -77,6 +77,7 @@ dh_auditor:
                 App\Entity\MotherboardImage: ~
                 App\Entity\MotherboardIoPort: ~
                 App\Entity\MotherboardMaxRam: ~
+                App\Entity\OsArchitecture: ~
                 App\Entity\OsFlag: ~
                 App\Entity\Processor: ~
                 App\Entity\ProcessorPlatformType: ~

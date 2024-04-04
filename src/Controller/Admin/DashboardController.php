@@ -66,6 +66,7 @@ use App\Entity\ExpansionCardAlias;
 use App\Entity\ExpansionCardBios;
 use App\Entity\FloppyDriveType;
 use App\Entity\MotherboardAlias;
+use App\Entity\OsArchitecture;
 use App\Entity\StorageDeviceAlias;
 
 class DashboardController extends AbstractDashboardController
@@ -188,12 +189,16 @@ class DashboardController extends AbstractDashboardController
             MenuItem::linkToCrud('Chipset aliases', 'chip_alias.svg', ChipsetAlias::class)->setController(ChipsetAliasCrudController::class),
             MenuItem::linkToCrud('Chipset docs', 'manual.svg', ChipsetDocumentation::class)->setController(ChipsetDocumentationCrudController::class),
         ])->setPermission('ROLE_ADMIN');
+        yield MenuItem::subMenu('Driver related', 'hardware.svg')->setSubItems([
+            MenuItem::linkToCrud('OS flags', '1998win.svg', OsFlag::class),
+            MenuItem::linkToCrud('OS architectures', '486.svg', OsArchitecture::class),
+        ])->setPermission('ROLE_ADMIN');
         yield MenuItem::subMenu('Misc', 'misc.svg')->setSubItems([
             MenuItem::linkToCrud('Manufacturers', 'factory.svg', Manufacturer::class),
             MenuItem::linkToCrud('Known Issues', 'misc.svg', KnownIssue::class)->setPermission('ROLE_ADMIN'),
             MenuItem::linkToCrud('Creditors', 'creditor.svg', Creditor::class),
             MenuItem::linkToCrud('Licenses', 'license.svg', License::class)->setPermission('ROLE_ADMIN'),
-            MenuItem::linkToCrud('OS flags', 'os/1998win.svg', OsFlag::class)->setPermission('ROLE_ADMIN'),
+            
             MenuItem::section('Advanced')->setPermission('ROLE_ADMIN'),
             MenuItem::linkToCrud('Entity images', 'search_image.svg', EntityImage::class)->setController(EntityImageCrudController::class)->setPermission('ROLE_ADMIN'),
             MenuItem::linkToCrud('Entity docs', 'manual.svg', EntityDocumentation::class)->setController(EntityDocumentationCrudController::class)->setPermission('ROLE_ADMIN'),
