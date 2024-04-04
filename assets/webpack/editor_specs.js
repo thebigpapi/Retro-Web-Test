@@ -291,17 +291,17 @@ function expSlotPresetChange(event) {
             const intefaceName = res[0].interfaceName;
             const signalIds = res[0].signals
             const expSlotInterfaceSelect = document.getElementById('ExpansionCard_expansionSlotInterface_autocomplete');
-            const expSlotSignalsSelect = document.getElementById('ExpansionCard_expansionSlotSignals_autocomplete');
+            //const expSlotSignalsSelect = document.getElementById('ExpansionCard_expansionSlotSignals_autocomplete');
 
             expSlotInterfaceSelect.tomselect.addOption({entityId: intefaceId, entityAsString: intefaceName});
             expSlotInterfaceSelect.tomselect.addItem(intefaceId);
-            expSlotSignalsSelect.tomselect.clear();
-            for(const signal in signalIds){
+            //expSlotSignalsSelect.tomselect.clear();
+            /*for(const signal in signalIds){
                 expSlotSignalsSelect.tomselect.addOption({entityId: signal, entityAsString: signalIds[signal]});
                 expSlotSignalsSelect.tomselect.addItem(signal);
-            }
+            }*/
             expSlotInterfaceSelect.tomselect.sync();
-            expSlotSignalsSelect.tomselect.sync();
+            //expSlotSignalsSelect.tomselect.sync();
         })
         .catch((error) => {
             console.log(`Could not fetch expslot : ${error}`);
