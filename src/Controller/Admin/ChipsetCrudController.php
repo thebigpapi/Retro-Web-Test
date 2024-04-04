@@ -166,13 +166,13 @@ class ChipsetCrudController extends AbstractCrudController
             ->onlyOnForms();
         yield CollectionField::new('expansionChips', 'Parts')
             ->setEntryType(ExpansionChipType::class)
-            ->setColumns(4)
+            ->setColumns('col-sm-12 col-lg-6 col-xxl-4')
             ->renderExpanded()
             ->onlyOnForms();
         yield CollectionField::new('biosCodes', 'BIOS codes')
             ->useEntryCrudForm(BiosCodeCrudType::class)
             ->setFormTypeOption('error_bubbling', false)
-            ->setColumns(4)
+            ->setColumns('col-sm-12 col-lg-6 col-xxl-4')
             ->renderExpanded()
             ->onlyOnForms();
         yield CollectionField::new('chipsetAliases', 'Chipset aliases')

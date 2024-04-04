@@ -253,3 +253,7 @@
 {% block _ExpansionCard_expansionCardPowerConnectors_entry_count_widget %}
     {{ form_widget(form)}}<span>x</span>
 {% endblock _ExpansionCard_expansionCardPowerConnectors_entry_count_widget %}
+{% block _Chipset_expansionChips_entry_widget %}
+{{ form_widget(form, {'attr': {'class': "widget90"}})}}
+<a href="{{ ea_url().setDashboard('App\\Controller\\Admin\\DashboardController').setController('App\\Controller\\Admin\\ExpansionChipCrudController').setAction('edit').setEntityId(form.vars.value)}}">Edit</a>
+{% endblock _Chipset_expansionChips_entry_widget %}
