@@ -291,17 +291,17 @@ function expSlotPresetChange(event) {
             const intefaceName = res[0].interfaceName;
             const signalIds = res[0].signals
             const expSlotInterfaceSelect = document.getElementById('ExpansionCard_expansionSlotInterface_autocomplete');
-            //const expSlotSignalsSelect = document.getElementById('ExpansionCard_expansionSlotSignals_autocomplete');
+            const expSlotSignalsSelect = document.getElementById('ExpansionCard_expansionSlotSignals_autocomplete');
 
             expSlotInterfaceSelect.tomselect.addOption({entityId: intefaceId, entityAsString: intefaceName});
             expSlotInterfaceSelect.tomselect.addItem(intefaceId);
-            //expSlotSignalsSelect.tomselect.clear();
-            /*for(const signal in signalIds){
+            expSlotSignalsSelect.tomselect.clear();
+            for(const signal in signalIds){
                 expSlotSignalsSelect.tomselect.addOption({entityId: signal, entityAsString: signalIds[signal]});
                 expSlotSignalsSelect.tomselect.addItem(signal);
-            }*/
+            }
             expSlotInterfaceSelect.tomselect.sync();
-            //expSlotSignalsSelect.tomselect.sync();
+            expSlotSignalsSelect.tomselect.sync();
         })
         .catch((error) => {
             console.log(`Could not fetch expslot : ${error}`);
@@ -325,17 +325,17 @@ function ioPortPresetChange(event, ioPortId) {
             const signalIds = res[0].signals
 
             const ioPortInterfaceSelect = document.getElementById(ioPortId + '_ioPortInterface_autocomplete');
-            const ioPortSignalsSelect = document.getElementById(ioPortId + '_ioPortSignals_autocomplete');
+            //const ioPortSignalsSelect = document.getElementById(ioPortId + '_ioPortSignals_autocomplete');
 
             ioPortInterfaceSelect.tomselect.addOption({entityId: intefaceId, entityAsString: intefaceName});
             ioPortInterfaceSelect.tomselect.addItem(intefaceId);
-            ioPortSignalsSelect.tomselect.clear();
+            /*ioPortSignalsSelect.tomselect.clear();
             for(const signal in signalIds){
                 ioPortSignalsSelect.tomselect.addOption({entityId: signal, entityAsString: signalIds[signal]});
                 ioPortSignalsSelect.tomselect.addItem(signal);
-            }
+            }*/
             ioPortInterfaceSelect.tomselect.sync();
-            ioPortSignalsSelect.tomselect.sync();
+            //ioPortSignalsSelect.tomselect.sync();
         })
         .catch((error) => {
             console.log(`Could not fetch ioport : ${error}`);
