@@ -35,6 +35,16 @@ class IoPortInterfaceCrudController extends AbstractCrudController
             ->setPermission(Action::EDIT, 'ROLE_ADMIN')
             ->setPermission(Action::INDEX, 'ROLE_ADMIN');
     }
+    public function configureCrud(Crud $crud): Crud
+    {
+        return $crud
+            ->showEntityActionsInlined()
+            ->setEntityLabelInSingular('I/O port connector')
+            ->setEntityLabelInPlural('<img class=ea-entity-icon src=/build/icons/connector.svg width=48 height=48>I/O port connectors')
+            ->overrideTemplate('crud/edit', 'admin/crud/edit.html.twig')
+            ->overrideTemplate('crud/new', 'admin/crud/new.html.twig')
+            ->setPaginatorPageSize(100);
+    }
     public function configureFilters(Filters $filters): Filters
     {
         return parent::configureFilters($filters)
@@ -70,14 +80,6 @@ class IoPortInterfaceCrudController extends AbstractCrudController
             ->renderExpanded()
             ->setFormTypeOption('error_bubbling', false)
             ->setColumns(6);
-    }
-    public function configureCrud(Crud $crud): Crud
-    {
-        return $crud
-            ->showEntityActionsInlined()
-            ->setEntityLabelInSingular('I/O port connector')
-            ->setEntityLabelInPlural('<img class=ea-entity-icon src=/build/icons/connector.svg width=48 height=48>I/O port connectors')
-            ->setPaginatorPageSize(100);
     }
     public function viewLogs(AdminContext $context)
     {

@@ -100,8 +100,8 @@ class ExpansionCardCrudController extends AbstractCrudController
             ->showEntityActionsInlined()
             ->setEntityLabelInSingular('expansion card')
             ->setEntityLabelInPlural('<img class=ea-entity-icon src=/build/icons/card.svg width=48 height=48>Expansion cards')
-            ->overrideTemplate('crud/edit', 'admin/crud/edit_card.html.twig')
-            ->overrideTemplate('crud/new', 'admin/crud/new_card.html.twig')
+            ->overrideTemplate('crud/edit', 'admin/crud/edit_slug.html.twig')
+            ->overrideTemplate('crud/new', 'admin/crud/new_slug.html.twig')
             ->setPaginatorPageSize(100)
             ->setDefaultSort(['lastEdited' => 'DESC']);
     }

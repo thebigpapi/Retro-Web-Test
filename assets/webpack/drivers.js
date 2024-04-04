@@ -1,25 +1,21 @@
 
 let form = document.getElementById('edit-LargeFile-form');
-if(!form)
+let formtype = "edit-LargeFile-form";
+if(!form){
     form = document.getElementById('new-LargeFile-form');
-if(form){
-    let submitreturn_btn = document.getElementsByClassName('action-saveAndReturn btn btn-primary action-save')[0];
-    if(submitreturn_btn)
-        submitreturn_btn.addEventListener("click", function(event){
-            submit(event, "saveAndReturn", submitreturn_btn.getAttribute('form'));
-        }, false);
-    let submitcontinue_btn = document.getElementsByClassName('action-saveAndContinue btn btn-secondary action-save')[0];
-    if(submitcontinue_btn)
-        submitcontinue_btn.addEventListener("click", function(event){
-            submit(event, "saveAndContinue", submitcontinue_btn.getAttribute('form'));
-        }, false);
+    formtype = "new-LargeFile-form";
 }
-function submit(event, type, formtype) {
+if(form){
+    if(saveretbtn = document.getElementById("js-save"))
+        saveretbtn.addEventListener('click', () => submit("saveAndReturn"), false);
+    if(savecontbtn = document.getElementById("js-save-continue"))
+        savecontbtn.addEventListener('click', () => submit("saveAndContinue"), false);
+}
+function submit(type) {
         let file_name = document.getElementById('LargeFile_file_file_new_file_name');
         if(file_name.innerHTML != ""){
             let date = new Date()
             let bytesLoaded = 0
-            event.preventDefault()
             let xhr = new XMLHttpRequest();
             xhr.open("POST", window.location.href);
             xhr.onprogress = function (e) {
@@ -92,6 +88,7 @@ function submit(event, type, formtype) {
                     document.getElementById("driver-message-err").setAttribute("style","display:inline;");
                 }
             }
+            console.log(formtype);
             let formData = new FormData(document.getElementById(formtype));
             formData.append("ea[newForm][btn]", type);
             if(type == "saveAndReturn" && document.getElementById('new-LargeFile-form'))
@@ -100,6 +97,18 @@ function submit(event, type, formtype) {
             if(type == "saveAndContinue"){
                 window.onbeforeunload = null;
                 window.location.reload();
+            }
+        }
+        else{
+            let save = document.getElementsByClassName("action-" + type)[0];
+            if(save.getAttribute('data-valid') == "true"){
+                saveretbtn.setAttribute("disabled", "disabled");
+                savecontbtn.setAttribute("disabled", "disabled");
+                save.click();
+                if(document.getElementsByClassName('badge-danger').length > 0){
+                    saveretbtn.removeAttribute("disabled");
+                    savecontbtn.removeAttribute("disabled");
+                }
             }
         }
     }

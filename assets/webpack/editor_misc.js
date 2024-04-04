@@ -1,18 +1,18 @@
-// admin navbar buttons
-if(slugbtn = document.getElementById('get-slug-btn'))
-    slugbtn.addEventListener("click", () => getSlug(slugbtn.getAttribute('data-entity')), false);
-if(saveretbtn = document.getElementById("js-save"))
-    saveretbtn.addEventListener('click', () => submit(saveretbtn.getAttribute('data-entity'), "action-saveAndReturn"), false);
-if(savecontbtn = document.getElementById("js-save-continue"))
-    savecontbtn.addEventListener('click', () => submit(savecontbtn.getAttribute('data-entity'), "action-saveAndContinue"), false);
 msg = [];
-entityImages = ['images', 'storageDeviceImages'];
-entityDocs = ['manuals', 'documentations', 'storageDeviceDocumentations'];
+entityImages = ['images', 'storageDeviceImages', 'entityImages'];
+entityDocs = ['manuals', 'documentations', 'storageDeviceDocumentations', 'entityDocumentations'];
 entityBios = ['motherboardBios', 'expansionCardBios'];
 entityFile = ['miscFiles', 'storageDeviceMiscFiles', 'audioFiles']
 allowedImages = ['image/jpeg', 'image/pjpeg', 'image/png', 'image/gif', 'image/svg+xml'];
 allowedDocs = ['application/pdf', 'application/x-pdf'];
 allowedAudio = ['audio/mpeg', 'audio/ogg'];
+// admin navbar buttons
+if(slugbtn = document.getElementById('get-slug-btn'))
+    slugbtn.addEventListener("click", () => getSlug(slugbtn.getAttribute('data-entity')), false);
+if(saveretbtn = document.getElementById("js-save"))
+    saveretbtn.addEventListener('click', () => submit("action-saveAndReturn"), false);
+if(savecontbtn = document.getElementById("js-save-continue"))
+    savecontbtn.addEventListener('click', () => submit("action-saveAndContinue"), false);
 function getSlug(entity){
     let manuf = document.getElementById(entity + '_manufacturer');
     let name = document.getElementById(entity + '_name');
@@ -33,12 +33,20 @@ function calculateSize(bytes){
     else                          { bytes = "0 bytes"; }
     return bytes;
 }
-function submit(entity, name){
+function submit(name){
+    entity = saveretbtn.getAttribute('data-entity');
     let save = document.getElementsByClassName(name)[0];
     if(!validateFiles(entity, save))
         return;
-    if(entity != "ExpansionCard" && entity != "ExpansionChip"){
+    if(entity != "ExpansionCard" && entity != "ExpansionChip" && entity != "LargeFile"){
+        saveretbtn.setAttribute("disabled", "disabled");
+        savecontbtn.setAttribute("disabled", "disabled");
         save.click();
+        // if validation fails, enable buttons again
+        if(document.getElementsByClassName('badge-danger').length > 0){
+            saveretbtn.removeAttribute("disabled");
+            savecontbtn.removeAttribute("disabled");
+        }
     }
 }
 function validateFiles(entity, save){
@@ -67,24 +75,23 @@ function validateFiles(entity, save){
 }
 function validateEntityUpload(entity, type, message, maxSize){
     let entityList = document.getElementsByClassName(entity + "_" + type + "_cssid")
-    console.log(entityList)
     if(entityList.length == 0)
         return true;
     for(let i=0; i<entityList.length; ++i){
         if(file = entityList[i].querySelectorAll("input[type=file]")[0].files[0]){
-            console.log(file.type);
             if(file.size > maxSize){
-                msg.push(message + " " + file.name + " is too big (" + calculateSize(file.size) + ")");
+                msg.push(message + " [" + file.name + "] is too big (" + calculateSize(file.size) + ")");
             }
             if(entityImages.includes(type) && !allowedImages.includes(file.type)){
-                msg.push(message + " " + file.name + " is not allowed (JPG, PNG, GIF and SVG only)");
+                msg.push(message + " [" + file.name + "] is not allowed (JPG, PNG, GIF and SVG only)");
             }
             if(entityDocs.includes(type) && !allowedDocs.includes(file.type)){
-                msg.push(message + " " + file.name + " is not allowed (PDF only)");
+                msg.push(message + " [" + file.name + "] is not allowed (PDF only)");
             }
             if(type == "audioFiles" && !allowedAudio.includes(file.type)){
-                msg.push(message + " " + file.name + " is not allowed (MP3 and OGG only)");
+                msg.push(message + " [" + file.name + "] is not allowed (MP3 and OGG only)");
             }
         }
     }
+    console.log("Checked: " + entity + " => " + type);
 }

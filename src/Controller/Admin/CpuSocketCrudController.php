@@ -59,6 +59,8 @@ class CpuSocketCrudController extends AbstractCrudController
             ->showEntityActionsInlined()
             ->setEntityLabelInSingular('socket')
             ->setEntityLabelInPlural('<img class=ea-entity-icon src=/build/icons/cpupins.svg width=48 height=48>Sockets')
+            ->overrideTemplate('crud/edit', 'admin/crud/edit.html.twig')
+            ->overrideTemplate('crud/new', 'admin/crud/new.html.twig')
             ->setPaginatorPageSize(100);
     }
     public function configureFields(string $pageName): iterable

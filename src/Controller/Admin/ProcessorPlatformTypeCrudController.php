@@ -67,6 +67,8 @@ class ProcessorPlatformTypeCrudController extends AbstractCrudController
             ->showEntityActionsInlined()
             ->setEntityLabelInSingular('CPU family')
             ->setEntityLabelInPlural('<img class=ea-entity-icon src=/build/icons/486.svg width=48 height=48>CPU families')
+            ->overrideTemplate('crud/edit', 'admin/crud/edit.html.twig')
+            ->overrideTemplate('crud/new', 'admin/crud/new.html.twig')
             ->setPaginatorPageSize(100);
     }
     public function configureFilters(Filters $filters): Filters

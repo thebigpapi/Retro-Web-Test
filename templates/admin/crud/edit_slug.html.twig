@@ -2,12 +2,9 @@
 {% block page_actions %}
     {% set data_entity = entity.fqcn|split("\\")|last %}
     <div class="hide-actions">
-        <div class="driver-messages">
-            <img id="driver-message-err" src="{{ absolute_url(asset('build/icons/warning.svg')) }}" alt="warning" width="25" height="25">
-            <span id="message"></span>
-            <label for="progressBar"></label>
-            <progress hidden="true" id="progressBar"></progress>
-        </div>
+        <button id="get-slug-btn" data-entity="{{ data_entity }}" class="btn btn-secondary" type="button">
+            <span class="btn-label"><i class="fa fa-external-link"></i> <span class="action-label">Get slug</span></span>
+        </button>
         {% for action in entity.actions %}
             {{ include(action.templatePath, { action: action }, with_context = false) }}
         {% endfor %}

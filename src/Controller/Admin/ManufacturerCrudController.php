@@ -61,6 +61,8 @@ class ManufacturerCrudController extends AbstractCrudController
             ->showEntityActionsInlined()
             ->setEntityLabelInSingular('manufacturer')
             ->setEntityLabelInPlural('<img class=ea-entity-icon src=/build/icons/factory.svg width=48 height=48>Manufacturers')
+            ->overrideTemplate('crud/edit', 'admin/crud/edit.html.twig')
+            ->overrideTemplate('crud/new', 'admin/crud/new.html.twig')
             ->setPaginatorPageSize(100);
     }
     public function configureFilters(Filters $filters): Filters

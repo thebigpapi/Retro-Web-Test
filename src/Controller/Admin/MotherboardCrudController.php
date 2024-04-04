@@ -113,8 +113,8 @@ class MotherboardCrudController extends AbstractCrudController
             ->setPaginatorPageSize(100)
             ->setEntityLabelInSingular('motherboard')
             ->setEntityLabelInPlural('<img class=ea-entity-icon src=/build/icons/board.svg width=48 height=48>Motherboards')
-            ->overrideTemplate('crud/edit', 'admin/crud/edit_mobo.html.twig')
-            ->overrideTemplate('crud/new', 'admin/crud/new_mobo.html.twig')
+            ->overrideTemplate('crud/edit', 'admin/crud/edit_slug.html.twig')
+            ->overrideTemplate('crud/new', 'admin/crud/new_slug.html.twig')
             ->setDefaultSort(['lastEdited' => 'DESC']);
     }
     public function configureFilters(Filters $filters): Filters

@@ -34,6 +34,16 @@ class ExpansionSlotSignalCrudController extends AbstractCrudController
             ->setPermission(Action::EDIT, 'ROLE_ADMIN')
             ->setPermission(Action::INDEX, 'ROLE_ADMIN');
     }
+    public function configureCrud(Crud $crud): Crud
+    {
+        return $crud
+            ->showEntityActionsInlined()
+            ->setEntityLabelInSingular('expansion slot signal')
+            ->setEntityLabelInPlural('<img class=ea-entity-icon src=/build/icons/pci_slot_electric.svg width=48 height=48>Expansion slot signals')
+            ->overrideTemplate('crud/edit', 'admin/crud/edit.html.twig')
+            ->overrideTemplate('crud/new', 'admin/crud/new.html.twig')
+            ->setPaginatorPageSize(100);
+    }
     public function configureFields(string $pageName): iterable
     {
         yield FormField::addTab('Basic Data')
@@ -62,14 +72,6 @@ class ExpansionSlotSignalCrudController extends AbstractCrudController
             ->setFormTypeOption('error_bubbling', false)
             ->setColumns(6);
 
-    }
-    public function configureCrud(Crud $crud): Crud
-    {
-        return $crud
-            ->showEntityActionsInlined()
-            ->setEntityLabelInSingular('expansion slot signal')
-            ->setEntityLabelInPlural('<img class=ea-entity-icon src=/build/icons/pci_slot_electric.svg width=48 height=48>Expansion slot signals')
-            ->setPaginatorPageSize(100);
     }
     public function viewLogs(AdminContext $context)
     {
