@@ -256,6 +256,10 @@ class Chipset
 
         return $this;
     }
+    public function getPartNumber(): ?string
+    {
+        return $this->getPartNo();
+    }
     public function getPartNo(): ?string
     {
         return $this->part_no;

@@ -16,3 +16,20 @@
         </button>
     </div>
 {% endblock %}
+{% block content_title %}
+    {%- apply spaceless -%}
+        {% set custom_page_title = ea.crud.customPageTitle(pageName, entity ? entity.instance : null, ea.i18n.translationParameters) %}
+        {{ custom_page_title is null
+            ? ea.crud.defaultPageTitle(null, null, ea.i18n.translationParameters)|trans|raw
+            : custom_page_title|trans|raw }}
+    #{{ entity.getInstance().getId() }}
+    <div>
+        {% if entity.getInstance().getManufacturer() is defined %}
+            {{ entity.getInstance().getManufacturer().getName() }}
+        {% endif %}
+        {% if entity.getInstance().getName() is defined %}
+            {{ entity.getInstance().getName() }}
+        {% endif %}
+    </div>
+    {%- endapply -%}
+{% endblock %}
