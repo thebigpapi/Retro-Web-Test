@@ -10,7 +10,11 @@ use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
+use Vich\UploaderBundle\Form\Type\VichImageType;
 
 class OsFlagCrudController extends AbstractCrudController
 {
@@ -50,7 +54,17 @@ class OsFlagCrudController extends AbstractCrudController
             ->setFormTypeOption('placeholder', 'Type to select a manufacturer ...')
             ->onlyOnForms();
         yield TextField::new('name', 'Name');
-        yield TextField::new('version', 'Version');
+        yield IntegerField::new('sort', 'Sort');
+        yield TextField::new('file_name')
+            ->setFormTypeOption('disabled','disabled')
+            ->onlyOnForms();
+        yield ImageField::new('file_name', 'Image')
+            ->setCustomOption('link','misc/osicon')
+            ->hideOnForm();
+        yield TextareaField::new('icon')
+            ->setFormType(VichImageType::class)
+            ->setFormTypeOption('allow_delete', false)
+            ->onlyOnForms();
     }
     public function viewLogs(AdminContext $context)
     {

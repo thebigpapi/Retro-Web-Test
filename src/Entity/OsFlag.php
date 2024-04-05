@@ -6,8 +6,12 @@ use App\Repository\OsFlagRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Symfony\Component\Validator\Constraints as Assert;
 
+#[Vich\Uploadable]
 #[ORM\Entity(repositoryClass: OsFlagRepository::class)]
 class OsFlag
 {
@@ -21,8 +25,15 @@ class OsFlag
     private $name;
 
     #[ORM\Column(type: 'string', length: 255)]
-    #[Assert\Length(max: 255, maxMessage: 'Version is longer than {{ limit }} characters.')]
-    private $version;
+    #[Assert\Length(max: 255, maxMessage: 'File name is longer than {{ limit }} characters, try to make it shorter.')]
+    private $file_name;
+
+    /**
+     * NOTE: This is not a mapped field of entity metadata, just a simple property.
+     */
+    #[Vich\UploadableField(mapping: 'osicon', fileNameProperty: 'file_name')]
+    private File|null $icon = null;
+
 
     #[ORM\ManyToOne(targetEntity: Manufacturer::class, inversedBy: 'osFlags')]
     #[ORM\JoinColumn(nullable: true)]
@@ -30,6 +41,13 @@ class OsFlag
 
     #[ORM\ManyToMany(targetEntity: LargeFile::class, mappedBy: 'osFlags')]
     private $largeFiles;
+
+    #[ORM\Column(type: 'datetime')]
+    private $updated_at;
+
+    #[ORM\Column]
+    private ?int $sort = null;
+
 
     public function __construct()
     {
@@ -50,16 +68,6 @@ class OsFlag
     public function setName(string $name): self
     {
         $this->name = $name;
-
-        return $this;
-    }
-    public function getVersion(): ?string
-    {
-        return $this->version;
-    }
-    public function setVersion(string $version): self
-    {
-        $this->version = $version;
 
         return $this;
     }
@@ -97,4 +105,51 @@ class OsFlag
 
         return $this;
     }
+    public function getFileName(): ?string
+    {
+        return $this->file_name;
+    }
+    public function setFileName(?string $file_name): self
+    {
+        $this->file_name = $file_name;
+
+        return $this;
+    }
+    public function getIcon(): ?File
+    {
+        return $this->icon;
+    }
+    public function setIcon(?File $icon): self
+    {
+        $this->icon = $icon;
+        if ($this->icon instanceof UploadedFile) {
+            $this->updated_at = new \DateTime('now');
+        }
+
+        return $this;
+    }
+    public function getUpdatedAt(): ?\DateTimeInterface
+    {
+        return $this->updated_at;
+    }
+    public function setUpdatedAt(\DateTimeInterface $updated_at): self
+    {
+        $this->updated_at = $updated_at;
+
+        return $this;
+    }
+
+    public function getSort(): ?int
+    {
+        return $this->sort;
+    }
+
+    public function setSort(int $sort): static
+    {
+        $this->sort = $sort;
+
+        return $this;
+    }
+
+
 }

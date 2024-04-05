@@ -72,11 +72,11 @@
 				</div>
 				<div class="quick-spec-table">
 				<!-- Supported OS -->
-					<div class="quick-spec-head">Supported OS</div>
-					<div class="tag-container"><ul style="padding:0;margin:0">
-						{% for os in driver.getOsFlags()|sort((a, b) => a.getName <=> b.getName)|sort((a, b) => a.getVersion <=> b.getVersion) %}
-						<li><span class="text-block" style="font-size: 0.9rem;padding:6px 8px;">
-							<img src="{{ asset('build/icons/os/' ~ os.getVersion ~ '.svg') }}" alt="{{os.getVersion}}"  width="28">
+					<div class="quick-spec-head">OS support</div>
+					<div class="tag-container"><ul style="padding:0;margin:0;list-style:none;">
+						{% for os in driver.getOsFlags()|sort((a, b) => a.getName <=> b.getName)|sort((a, b) => a.getSort <=> b.getSort) %}
+						<li><span class="text-block" style="font-size: 0.9rem;padding:6px 8px; margin:1px;">
+							<img src="{{ vich_uploader_asset(os, 'icon')}}" width="32">
 							<span>{{os.getName()}}</span>
 						</span></li>
 						{% endfor %}

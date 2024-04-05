@@ -198,7 +198,6 @@ class DashboardController extends AbstractDashboardController
             MenuItem::linkToCrud('Known Issues', 'misc.svg', KnownIssue::class)->setPermission('ROLE_ADMIN'),
             MenuItem::linkToCrud('Creditors', 'creditor.svg', Creditor::class),
             MenuItem::linkToCrud('Licenses', 'license.svg', License::class)->setPermission('ROLE_ADMIN'),
-            
             MenuItem::section('Advanced')->setPermission('ROLE_ADMIN'),
             MenuItem::linkToCrud('Entity images', 'search_image.svg', EntityImage::class)->setController(EntityImageCrudController::class)->setPermission('ROLE_ADMIN'),
             MenuItem::linkToCrud('Entity docs', 'manual.svg', EntityDocumentation::class)->setController(EntityDocumentationCrudController::class)->setPermission('ROLE_ADMIN'),

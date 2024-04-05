@@ -16,9 +16,9 @@
             <div class="header-label">OS support</div>
             <div>
                 <div class="tag-container">
-                {% for os in driver.largeFile.getOsFlags()|sort((a, b) => a.getName <=> b.getName)|sort((a, b) => a.getVersion <=> b.getVersion) %}
+                {% for os in driver.largeFile.getOsFlags()|sort((a, b) => a.getName <=> b.getName)|sort((a, b) => a.getSort <=> b.getSort) %}
                 <span class="text-block">
-                    <img src="{{ asset('build/icons/os/' ~ os.getVersion ~ '.svg') }}" alt="{{os.getVersion}}"  width="16">
+                    <img src="{{ vich_uploader_asset(os, 'icon')}}" width="16">
                     <span>{{os.getName()}}</span>
                 </span>
                 {% endfor %}
