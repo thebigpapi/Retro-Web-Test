@@ -231,6 +231,49 @@
 </div>
 {{ form_widget(form)}}
 {% endblock _Motherboard_motherboardBios_widget %}
+
+{% block _Motherboard_manuals_entry_releaseDate_widget %}
+<div class="releasedate-cssid" data-entity="{{ form.vars.id[:-12] }}">
+    <div style="display:none;">{{ form_widget(form)}}</div>
+    <input type="number" placeholder="yyyy" min="1970" max="2100">
+    <input type="number" placeholder="mm" min="1" max="12">
+    <input type="number" placeholder="dd" min="1" max="31">
+</div>
+{% endblock _Motherboard_manuals_entry_releaseDate_widget %}
+{% block _Motherboard_manuals_entry_datePrecision_widget %}
+    <div style="display:none;">{{ form_widget(form)}}</div>
+{% endblock _Motherboard_manuals_entry_datePrecision_widget %}
+
+{# chipset editor #}
+{% block _Chipset_expansionChips_entry_widget %}
+{{ form_widget(form, {'attr': {'class': "widget90"}})}}
+<a href="{{ ea_url().setDashboard('App\\Controller\\Admin\\DashboardController').setController('App\\Controller\\Admin\\ExpansionChipCrudController').setAction('edit').setEntityId(form.vars.value)}}">Edit</a>
+{% endblock _Chipset_expansionChips_entry_widget %}
+
+{% block _Chipset_releaseDate_widget %}
+<div class="releasedate-cssid" data-entity="{{ form.vars.id[:-12] }}">
+    <div style="display:none;">{{ form_widget(form)}}</div>
+    <input type="number" placeholder="yyyy" min="1970" max="2100">
+    <input type="number" placeholder="mm" min="1" max="12">
+    <input type="number" placeholder="dd" min="1" max="31">
+</div>
+{% endblock _Chipset_releaseDate_widget %}
+{% block _Chipset_datePrecision_widget %}
+    <div style="display:none;">{{ form_widget(form)}}</div>
+{% endblock _Chipset_datePrecision_widget %}
+
+{% block _Chipset_documentations_entry_releaseDate_widget %}
+<div class="releasedate-cssid" data-entity="{{ form.vars.id[:-12] }}">
+    <div style="display:none;">{{ form_widget(form)}}</div>
+    <input type="number" placeholder="yyyy" min="1970" max="2100">
+    <input type="number" placeholder="mm" min="1" max="12">
+    <input type="number" placeholder="dd" min="1" max="31">
+</div>
+{% endblock _Chipset_documentations_entry_releaseDate_widget %}
+{% block _Chipset_documentations_entry_datePrecision_widget %}
+    <div style="display:none;">{{ form_widget(form)}}</div>
+{% endblock _Chipset_documentations_entry_datePrecision_widget %}
+
 {# expansion card editor #}
 {% block _ExpansionCard_miscSpecs_widget %}
     {% include 'admin/macros/specs.html.twig' with {'entity': 'card', 'form': form} %}
@@ -253,7 +296,158 @@
 {% block _ExpansionCard_expansionCardPowerConnectors_entry_count_widget %}
     {{ form_widget(form)}}<span>x</span>
 {% endblock _ExpansionCard_expansionCardPowerConnectors_entry_count_widget %}
-{% block _Chipset_expansionChips_entry_widget %}
-{{ form_widget(form, {'attr': {'class': "widget90"}})}}
-<a href="{{ ea_url().setDashboard('App\\Controller\\Admin\\DashboardController').setController('App\\Controller\\Admin\\ExpansionChipCrudController').setAction('edit').setEntityId(form.vars.value)}}">Edit</a>
-{% endblock _Chipset_expansionChips_entry_widget %}
+
+{% block _ExpansionCard_documentations_entry_releaseDate_widget %}
+<div class="releasedate-cssid" data-entity="{{ form.vars.id[:-12] }}">
+    <div style="display:none;">{{ form_widget(form)}}</div>
+    <input type="number" placeholder="yyyy" min="1970" max="2100">
+    <input type="number" placeholder="mm" min="1" max="12">
+    <input type="number" placeholder="dd" min="1" max="31">
+</div>
+{% endblock _ExpansionCard_documentations_entry_releaseDate_widget %}
+{% block _ExpansionCard_documentations_entry_datePrecision_widget %}
+    <div style="display:none;">{{ form_widget(form)}}</div>
+{% endblock _ExpansionCard_documentations_entry_datePrecision_widget %}
+
+{# driver editor #}
+{% block _LargeFile_releaseDate_widget %}
+<div class="releasedate-cssid" data-entity="LargeFile">
+    <div style="display:none;">{{ form_widget(form)}}</div>
+    <input type="number" placeholder="yyyy" min="1970" max="2100">
+    <input type="number" placeholder="mm" min="1" max="12">
+    <input type="number" placeholder="dd" min="1" max="31">
+</div>
+{% endblock _LargeFile_releaseDate_widget %}
+{% block _LargeFile_datePrecision_widget %}
+    <div style="display:none;">{{ form_widget(form)}}</div>
+{% endblock _LargeFile_datePrecision_widget %}
+
+{# hdd editor #}
+{% block _HardDrive_storageDeviceDocumentations_entry_releaseDate_widget %}
+<div class="releasedate-cssid" data-entity="{{ form.vars.id[:-12] }}">
+    <div style="display:none;">{{ form_widget(form)}}</div>
+    <input type="number" placeholder="yyyy" min="1970" max="2100">
+    <input type="number" placeholder="mm" min="1" max="12">
+    <input type="number" placeholder="dd" min="1" max="31">
+</div>
+{% endblock _HardDrive_storageDeviceDocumentations_entry_releaseDate_widget %}
+{% block _HardDrive_storageDeviceDocumentations_entry_datePrecision_widget %}
+    <div style="display:none;">{{ form_widget(form)}}</div>
+{% endblock _HardDrive_storageDeviceDocumentations_entry_datePrecision_widget %}
+
+{# cdd editor #}
+{% block _CdDrive_storageDeviceDocumentations_entry_releaseDate_widget %}
+<div class="releasedate-cssid" data-entity="{{ form.vars.id[:-12] }}">
+    <div style="display:none;">{{ form_widget(form)}}</div>
+    <input type="number" placeholder="yyyy" min="1970" max="2100">
+    <input type="number" placeholder="mm" min="1" max="12">
+    <input type="number" placeholder="dd" min="1" max="31">
+</div>
+{% endblock _CdDrive_storageDeviceDocumentations_entry_releaseDate_widget %}
+{% block _CdDrive_storageDeviceDocumentations_entry_datePrecision_widget %}
+    <div style="display:none;">{{ form_widget(form)}}</div>
+{% endblock _CdDrive_storageDeviceDocumentations_entry_datePrecision_widget %}
+
+{# fdd editor #}
+{% block _FloppyDrive_storageDeviceDocumentations_entry_releaseDate_widget %}
+<div class="releasedate-cssid" data-entity="{{ form.vars.id[:-12] }}">
+    <div style="display:none;">{{ form_widget(form)}}</div>
+    <input type="number" placeholder="yyyy" min="1970" max="2100">
+    <input type="number" placeholder="mm" min="1" max="12">
+    <input type="number" placeholder="dd" min="1" max="31">
+</div>
+{% endblock _FloppyDrive_storageDeviceDocumentations_entry_releaseDate_widget %}
+{% block _FloppyDrive_storageDeviceDocumentations_entry_datePrecision_widget %}
+    <div style="display:none;">{{ form_widget(form)}}</div>
+{% endblock _FloppyDrive_storageDeviceDocumentations_entry_datePrecision_widget %}
+
+{# cpu socket editor #}
+{% block _CpuSocket_entityDocumentations_entry_releaseDate_widget %}
+<div class="releasedate-cssid" data-entity="{{ form.vars.id[:-12] }}">
+    <div style="display:none;">{{ form_widget(form)}}</div>
+    <input type="number" placeholder="yyyy" min="1970" max="2100">
+    <input type="number" placeholder="mm" min="1" max="12">
+    <input type="number" placeholder="dd" min="1" max="31">
+</div>
+{% endblock _CpuSocket_entityDocumentations_entry_releaseDate_widget %}
+{% block _CpuSocket_entityDocumentations_entry_datePrecision_widget %}
+    <div style="display:none;">{{ form_widget(form)}}</div>
+{% endblock _CpuSocket_entityDocumentations_entry_datePrecision_widget %}
+
+{# cpu family editor #}
+{% block _ProcessorPlatformType_entityDocumentations_entry_releaseDate_widget %}
+<div class="releasedate-cssid" data-entity="{{ form.vars.id[:-12] }}">
+    <div style="display:none;">{{ form_widget(form)}}</div>
+    <input type="number" placeholder="yyyy" min="1970" max="2100">
+    <input type="number" placeholder="mm" min="1" max="12">
+    <input type="number" placeholder="dd" min="1" max="31">
+</div>
+{% endblock _ProcessorPlatformType_entityDocumentations_entry_releaseDate_widget %}
+{% block _ProcessorPlatformType_entityDocumentations_entry_datePrecision_widget %}
+    <div style="display:none;">{{ form_widget(form)}}</div>
+{% endblock _ProcessorPlatformType_entityDocumentations_entry_datePrecision_widget %}
+
+{# psu connector editor #}
+{% block _PSUConnector_entityDocumentations_entry_releaseDate_widget %}
+<div class="releasedate-cssid" data-entity="{{ form.vars.id[:-12] }}">
+    <div style="display:none;">{{ form_widget(form)}}</div>
+    <input type="number" placeholder="yyyy" min="1970" max="2100">
+    <input type="number" placeholder="mm" min="1" max="12">
+    <input type="number" placeholder="dd" min="1" max="31">
+</div>
+{% endblock _PSUConnector_entityDocumentations_entry_releaseDate_widget %}
+{% block _PSUConnector_entityDocumentations_entry_datePrecision_widget %}
+    <div style="display:none;">{{ form_widget(form)}}</div>
+{% endblock _PSUConnector_entityDocumentations_entry_datePrecision_widget %}
+
+{# expansion slot interface editor #}
+{% block _ExpansionSlotInterface_entityDocumentations_entry_releaseDate_widget %}
+<div class="releasedate-cssid" data-entity="{{ form.vars.id[:-12] }}">
+    <div style="display:none;">{{ form_widget(form)}}</div>
+    <input type="number" placeholder="yyyy" min="1970" max="2100">
+    <input type="number" placeholder="mm" min="1" max="12">
+    <input type="number" placeholder="dd" min="1" max="31">
+</div>
+{% endblock _ExpansionSlotInterface_entityDocumentations_entry_releaseDate_widget %}
+{% block _ExpansionSlotInterface_entityDocumentations_entry_datePrecision_widget %}
+    <div style="display:none;">{{ form_widget(form)}}</div>
+{% endblock _ExpansionSlotInterface_entityDocumentations_entry_datePrecision_widget %}
+
+{# expansion slot signal editor #}
+{% block _ExpansionSlotSignal_entityDocumentations_entry_releaseDate_widget %}
+<div class="releasedate-cssid" data-entity="{{ form.vars.id[:-12] }}">
+    <div style="display:none;">{{ form_widget(form)}}</div>
+    <input type="number" placeholder="yyyy" min="1970" max="2100">
+    <input type="number" placeholder="mm" min="1" max="12">
+    <input type="number" placeholder="dd" min="1" max="31">
+</div>
+{% endblock _ExpansionSlotSignal_entityDocumentations_entry_releaseDate_widget %}
+{% block _ExpansionSlotSignal_entityDocumentations_entry_datePrecision_widget %}
+    <div style="display:none;">{{ form_widget(form)}}</div>
+{% endblock _ExpansionSlotSignal_entityDocumentations_entry_datePrecision_widget %}
+
+{# io port interface editor #}
+{% block _IoPortInterface_entityDocumentations_entry_releaseDate_widget %}
+<div class="releasedate-cssid" data-entity="{{ form.vars.id[:-12] }}">
+    <div style="display:none;">{{ form_widget(form)}}</div>
+    <input type="number" placeholder="yyyy" min="1970" max="2100">
+    <input type="number" placeholder="mm" min="1" max="12">
+    <input type="number" placeholder="dd" min="1" max="31">
+</div>
+{% endblock _IoPortInterface_entityDocumentations_entry_releaseDate_widget %}
+{% block _IoPortInterface_entityDocumentations_entry_datePrecision_widget %}
+    <div style="display:none;">{{ form_widget(form)}}</div>
+{% endblock _IoPortInterface_entityDocumentations_entry_datePrecision_widget %}
+
+{# io port signal editor #}
+{% block _IoPortSignal_entityDocumentations_entry_releaseDate_widget %}
+<div class="releasedate-cssid" data-entity="{{ form.vars.id[:-12] }}">
+    <div style="display:none;">{{ form_widget(form)}}</div>
+    <input type="number" placeholder="yyyy" min="1970" max="2100">
+    <input type="number" placeholder="mm" min="1" max="12">
+    <input type="number" placeholder="dd" min="1" max="31">
+</div>
+{% endblock _IoPortSignal_entityDocumentations_entry_releaseDate_widget %}
+{% block _IoPortSignal_entityDocumentations_entry_datePrecision_widget %}
+    <div style="display:none;">{{ form_widget(form)}}</div>
+{% endblock _IoPortSignal_entityDocumentations_entry_datePrecision_widget %}

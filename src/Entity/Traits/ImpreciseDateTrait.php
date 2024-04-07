@@ -23,17 +23,7 @@ trait ImpreciseDateTrait
     {
         if ($releaseDate) {
             $date = new DateTime();
-
-            switch ($this->getDatePrecision()) {
-                case "m":
-                    $date->setDate($releaseDate->format("Y"), $releaseDate->format("m"), "1");
-                    break;
-                case "y":
-                    $date->setDate($releaseDate->format("Y"), "1", "1");
-                    break;
-                default:
-                    $date->setDate($releaseDate->format("Y"), $releaseDate->format("m"), $releaseDate->format("d"));
-            }
+            $date->setDate($releaseDate->format("Y"), $releaseDate->format("m"), $releaseDate->format("d"));
             $this->releaseDate = $date;
         } else {
             $this->releaseDate = null;

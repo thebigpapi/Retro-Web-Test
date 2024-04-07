@@ -13,6 +13,7 @@ if(saveretbtn = document.getElementById("js-save"))
     saveretbtn.addEventListener('click', () => submit("action-saveAndReturn"), false);
 if(savecontbtn = document.getElementById("js-save-continue"))
     savecontbtn.addEventListener('click', () => submit("action-saveAndContinue"), false);
+getDate();
 function getSlug(entity){
     let manuf = document.getElementById(entity + '_manufacturer');
     let name = document.getElementById(entity + '_name');
@@ -36,6 +37,8 @@ function calculateSize(bytes){
 function submit(name){
     entity = saveretbtn.getAttribute('data-entity');
     let save = document.getElementsByClassName(name)[0];
+    if(!setDate())
+        return;
     if(!validateFiles(entity, save))
         return;
     if(entity != "ExpansionCard" && entity != "ExpansionChip" && entity != "LargeFile"){
@@ -94,4 +97,65 @@ function validateEntityUpload(entity, type, message, maxSize){
         }
     }
     console.log("Checked: " + entity + " => " + type);
+}
+function getDate(){
+    for(let widget of document.getElementsByClassName("releasedate-cssid")){
+        let entity = widget.getAttribute("data-entity");
+        let releaseDate = document.getElementById(entity + "_releaseDate").value;
+        let datePrecision = document.getElementById(entity + "_datePrecision").value;
+        let yearSel = widget.querySelectorAll("input[type=number]")[0];
+        let monthSel = widget.querySelectorAll("input[type=number]")[1];
+        let daySel = widget.querySelectorAll("input[type=number]")[2];
+        console.log(datePrecision);
+        yearSel.value = releaseDate.substring(0,4);
+        if(datePrecision == "m" || datePrecision == "d"){
+            monthSel.value = releaseDate.substring(5,7);
+            if(datePrecision == "d")
+                daySel.value = releaseDate.substring(8,10);
+        }
+    }
+}
+function setDate(){
+    for(let widget of document.getElementsByClassName("releasedate-cssid")){
+        console.log("hello??!?!")
+        let entity = widget.getAttribute("data-entity");
+        let yearSel = widget.querySelectorAll("input[type=number]")[0].value;
+        let monthSel = parseInt(widget.querySelectorAll("input[type=number]")[1].value);
+        let daySel = parseInt(widget.querySelectorAll("input[type=number]")[2].value);
+        let month = 1;
+        let day = 1;
+        let releaseDate = document.getElementById(entity + "_releaseDate");
+        let datePrecision = document.getElementById(entity + "_datePrecision");
+        if(!yearSel){
+            return true;
+        }
+        if(yearSel < 1970 || yearSel > 2100){
+            alert("Invalid release date year!");
+            return false;
+        }
+        if(monthSel){
+            if(monthSel < 1 || monthSel > 12){
+                alert("Invalid release date month!");
+                return false;
+            }
+            if(daySel){
+                datePrecision.value = "d";
+                month = monthSel;
+                day = daySel;
+                if(daySel < 1 || daySel > 31){
+                    alert("Invalid release date day!");
+                    return false;
+                }
+            }
+            else{
+                datePrecision.value = "m";
+                month = monthSel;
+            }
+        }
+        else
+            datePrecision.value = "y";
+        releaseDate.value = yearSel + "-" + (month > 9 ? "" : "0") + month + "-" + (day > 9 ? "" : "0" ) + day;
+        console.log(yearSel + "-" + (month > 9 ? "" : "0") + month + "-" + (day > 9 ? "" : "0" ) + day);
+    }
+    return true;
 }

@@ -110,30 +110,22 @@ class LargeFileCrudController extends AbstractCrudController
             ->onlyOnForms();
         yield IdField::new('id')->onlyOnIndex();
         yield TextField::new('name', 'Name')
-            ->setColumns(4);
+            ->setColumns(3);
         yield TextField::new('fileVersion', 'Version')
-            ->setColumns(4);
+            ->setColumns(3);
         yield TextField::new('getSizeFormatted', 'Size')
             ->onlyOnIndex();
-        yield DateField::new('release_date', 'Release Date')
+        yield DateField::new('releaseDate', 'Release Date')
             ->setFormTypeOption('attr', ['style'=>'width:100%;'])
+            ->renderAsText()
             ->setColumns(2)
             ->onlyOnForms();
         yield TextField::new('getReleaseDateString', 'Release Date')
             ->onlyOnIndex();
-        yield ChoiceField::new('datePrecision', 'Display date format (optional)')
-            ->setChoices([
-                'Year, month and day' => 'd',
-                'Year and month' => 'm',
-                'Year only' => 'y',
-            ])
-            ->setFormTypeOption('placeholder', 'Type to select a format ...')
-            ->setColumns(2)
-            ->onlyOnForms();
         yield TextareaField::new('file', 'File')
             ->setFormType(VichFileType::class)
             ->setFormTypeOption('allow_delete', false)
-            ->setColumns(4)
+            ->setColumns(3)
             ->onlyOnForms();
         yield ArrayField::new('getOsFlags', 'OS flags')
             ->onlyOnIndex();
@@ -150,6 +142,15 @@ class LargeFileCrudController extends AbstractCrudController
         yield CodeEditorField::new('note')
             ->setLanguage('markdown')
             ->onlyOnForms();
+            yield ChoiceField::new('datePrecision', '')
+            ->setChoices([
+                'Year, month and day' => 'd',
+                'Year and month' => 'm',
+                'Year only' => 'y',
+            ])
+            ->renderAsNativeWidget()
+            ->setColumns(2)
+            ->onlyOnForms();
         yield FormField::addTab('Associations')
             ->setIcon('fa fa-info')
             ->onlyOnForms();
@@ -163,6 +164,7 @@ class LargeFileCrudController extends AbstractCrudController
             ->renderExpanded()
             ->setColumns('col-sm-12 col-lg-8 col-xxl-6')
             ->onlyOnForms();
+
     }
     public function viewDriver(AdminContext $context)
     {
@@ -261,6 +263,7 @@ class LargeFileCrudController extends AbstractCrudController
      */
     public function updateEntity(EntityManagerInterface $entityManager, $entityInstance): void
     {
+        //dd($entityInstance->getReleaseDateString());
         $entityInstance->updateLastEdited();
         parent::updateEntity($entityManager, $entityInstance);
     }

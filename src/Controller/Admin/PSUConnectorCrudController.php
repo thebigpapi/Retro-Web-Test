@@ -55,6 +55,8 @@ class PSUConnectorCrudController extends AbstractCrudController
             ->showEntityActionsInlined()
             ->setEntityLabelInSingular('power connector')
             ->setEntityLabelInPlural('<img class=ea-entity-icon src=/build/icons/power.svg width=48 height=48>Power connectors')
+            ->overrideTemplate('crud/edit', 'admin/crud/edit.html.twig')
+            ->overrideTemplate('crud/new', 'admin/crud/new.html.twig')
             ->setPaginatorPageSize(100);
     }
     public function configureFields(string $pageName): iterable
