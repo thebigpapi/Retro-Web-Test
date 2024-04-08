@@ -80,13 +80,12 @@ function setMsg(msg){
         label.innerHTML = msg;
 }
 function bulkUpload(){
-    //try{
+    try{
         let input = document.getElementById('image-bulk-upload');
         let entity = input.getAttribute("data-entity");
         let add = document.getElementById(entity + '_collection').previousElementSibling;
         let images = document.getElementsByClassName(entity + "_cssid");
         let creditor = document.getElementById('image-bulk-upload-creditors');
-        console.log(creditor)
         let inputCnt = input.files.length;
         let cnt = 0;
         let typeList = {};
@@ -146,8 +145,8 @@ function bulkUpload(){
             }
             setMsg(msg + msgCreditor);
         }
-    //}
-    //catch(error){
-    //    setMsg(error);
-    //}
+    }
+    catch(error){
+        setMsg(error);
+    }
 }
