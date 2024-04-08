@@ -12,6 +12,7 @@ if(form){
         savecontbtn.addEventListener('click', () => submit("saveAndContinue"), false);
 }
 function submit(type) {
+    setArch();
     let file_name = document.getElementById('LargeFile_file_file_new_file_name');
     if(file_name.innerHTML != ""){
         let date = new Date()
@@ -111,4 +112,15 @@ function submit(type) {
             }
         }
     }
+}
+function setArch(){
+    let arch = document.getElementsByClassName("LargeFile_osArchitecture_cssid");
+    if(arch.length > 0)
+        return;
+    let addbtn = document.getElementById("LargeFile_osArchitecture_collection").previousElementSibling;
+    addbtn.click();
+    let id = arch[0].getAttribute("data-id");
+    let archSelect = document.getElementById("LargeFile_osArchitecture_" + id);
+    archSelect.value = 1;
+    archSelect.tomselect.sync();
 }

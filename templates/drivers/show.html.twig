@@ -71,7 +71,14 @@
 					</div>
 				</div>
 				<div class="quick-spec-table">
-				<!-- Supported OS -->
+					<!-- Supported OS -->
+					<div class="quick-spec-head">OS architecture</div>
+					<div class="tag-container">
+						{% for arch in driver.getOsArchitecture() %}
+						<span class="text-block">{{arch.getName()}}</span>
+						{% endfor %}
+					</div>
+					<!-- Supported OS -->
 					<div class="quick-spec-head">OS support</div>
 					<div class="tag-container"><ul style="padding:0;margin:0;list-style:none;">
 						{% for os in driver.getOsFlags()|sort((a, b) => a.getName <=> b.getName)|sort((a, b) => a.getSort <=> b.getSort) %}
