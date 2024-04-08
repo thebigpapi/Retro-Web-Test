@@ -303,6 +303,12 @@
 {% block _ExpansionChip_images_widget %}
     {% include 'admin/macros/widgets.html.twig' with {'type': 'image', 'form': form} %}
 {% endblock _ExpansionChip_images_widget %}
+{% block _ExpansionChip_documentations_entry_releaseDate_widget %}
+    {% include 'admin/macros/widgets.html.twig' with {'type': 'date', 'form': form} %}
+{% endblock _ExpansionChip_documentations_entry_releaseDate_widget %}
+{% block _ExpansionChip_documentations_entry_datePrecision_widget %}
+    <div style="display:none;">{{ form_widget(form)}}</div>
+{% endblock _ExpansionChip_documentations_entry_datePrecision_widget %}
 
 {# driver editor #}
 {% block _LargeFile_releaseDate_widget %}
