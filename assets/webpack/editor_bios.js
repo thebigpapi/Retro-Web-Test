@@ -37,7 +37,7 @@ function bulkUpload(){
             setMsg("Error: No files have been selected!");
             return;
         }
-        console.log(input.files);
+        //console.log(input.files);
         let cnt = 1;
         for (let i = 0; i < input.files.length; i++) {
             add.click();
@@ -126,7 +126,7 @@ function processFile(csv){
                 }
                 if(name != ""){
                     let found = csv.find(item => item[0].includes(name));
-                    console.log(name, found);
+                    //console.log(name, found);
                     if(found){
                         document.getElementById("Motherboard_motherboardBios_" + cnt + "_postString").value = found[3].slice(1,-1);
                         document.getElementById("Motherboard_motherboardBios_" + cnt + "_boardVersion").value = found[4].slice(1,-1);

@@ -153,14 +153,14 @@ class ExpansionChipCrudController extends AbstractCrudController
         yield FormField::addTab('Attachments')
             ->setIcon('fa fa-download')
             ->onlyOnForms();
-        yield CollectionField::new('documentations', 'Documentation')
-            ->useEntryCrudForm(DocumentationCrudType::class)
+        yield CollectionField::new('images', 'Images')
+            ->useEntryCrudForm(ImageCrudType::class)
             ->setFormTypeOption('error_bubbling', false)
             ->setColumns(6)
             ->renderExpanded()
             ->onlyOnForms();
-        yield CollectionField::new('images', 'Images')
-            ->useEntryCrudForm(ImageCrudType::class)
+        yield CollectionField::new('documentations', 'Documentation')
+            ->useEntryCrudForm(DocumentationCrudType::class)
             ->setFormTypeOption('error_bubbling', false)
             ->setColumns(6)
             ->renderExpanded()

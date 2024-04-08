@@ -12,6 +12,7 @@ use App\Entity\ProcessorPlatformType;
 use App\Repository\CdDriveRepository;
 use App\Repository\ChipsetRepository;
 use App\Repository\CpuSocketRepository;
+use App\Repository\CreditorRepository;
 use App\Repository\ExpansionCardRepository;
 use App\Repository\ExpansionCardTypeRepository;
 use App\Repository\ExpansionChipRepository;
@@ -189,6 +190,16 @@ class AdminController extends AbstractDashboardController
         $list = array();
         foreach($manufacturerRepository->findAllBiosManufacturer() as $item){
             $list[$item->getName()] = $item->getId();
+        }
+        return new JsonResponse($list);
+    }
+
+    #[Route('/dashboard/getcreditors', name:'get_creditors', methods:['GET'])]
+    public function getCreditors(CreditorRepository $creditorRepository): JsonResponse
+    {
+        $list = array();
+        foreach($creditorRepository->findAllCreditors() as $item){
+            $list[$item->getId()] = $item->getName();
         }
         return new JsonResponse($list);
     }

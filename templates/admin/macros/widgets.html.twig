@@ -1,0 +1,23 @@
+{% if type == "image" %}
+    <div class="col-md-12 image-bulk-box">
+        <div class="bulk-box-primary">
+            <span class="bulk-box-label">Bulk upload</span>
+            <input class="image-input" id="image-bulk-upload" type="file" multiple="" data-entity="{{ form.vars.id }}">
+            <span id="image-bulk-upload-label"></span>
+        </div>
+        <div class="bulk-box-secondary">
+            <span class="bulk-box-label">Creditor</span>
+            <select class="form-select tomselected" id="image-bulk-upload-creditors" data-ea-widget="ea-autocomplete" ></select>
+            <button class="btn btn-secondary" id="image-bulk-upload-btn" type="button">Set files</button>
+        </div>
+    </div>
+    {{ form_widget(form)}}
+{% endif %}
+{% if type == "date" %}
+    <div class="releasedate-cssid" data-entity="{{ form.vars.id[:-12] }}">
+        <div style="display:none;">{{ form_widget(form)}}</div>
+        <input type="number" placeholder="yyyy" min="1970" max="2100">
+        <input type="number" placeholder="mm" min="1" max="12">
+        <input type="number" placeholder="dd" min="1" max="31">
+    </div>
+{% endif %}

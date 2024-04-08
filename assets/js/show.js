@@ -41,7 +41,6 @@ function update_tab_selection() {
     //easyadmin tabs
     for (const el of Object.keys(easyadmin)) {
         if (window.location.href.indexOf(el) != -1) {
-            console.log(el, easyadmin[el])
             inner_switch_tab(easyadmin[el]);
             let tabLabel = find_tab_label(easyadmin[el]);
             if (tabLabel) {
@@ -54,7 +53,6 @@ function update_tab_selection() {
 
 function find_tab_label(tabContainer) {
     for (const tabId of trw_tabs) {
-        //console.log(tabId, tabContainer);
         let tabLabel = document.getElementById(tabId);
         if (tabLabel && tabLabel.hasAttribute("data-tab") && tabLabel.getAttribute("data-tab") === tabContainer) {
             return tabLabel;

@@ -52,6 +52,7 @@ class ImageCrudType extends AbstractCrudController
                 'Photo bracket' => '6',
                 'Schema misc' => '5',
             ])
+            ->setFormTypeOption('empty_data', '1')
             ->setColumns(12);
         yield TextField::new('description', 'Notes')
             ->setColumns('col-sm-4 col-lg-4 col-xxl-4')

@@ -268,6 +268,29 @@ div.widget90 {
 	display: inline-block !important;
 }
 
+div.image-bulk-box{
+	padding:5px;
+	span.bulk-box-label{
+		width:75px;
+		display: inline-block;
+	}
+	input.image-input{
+		padding: 30px 30px;
+		border: 1px dashed black;
+		@media (prefers-color-scheme: dark) {
+			border: 1px dashed white;
+		}
+	}
+	div.bulk-box-secondary{
+		display: flex;
+		column-gap: 5px;
+		padding-top: 5px;
+		& > div{
+			width:50%;
+		}
+	}
+}
+
 /* misc specs styling */
 div.card-specs-grid textarea{
 	min-height: 30rem;

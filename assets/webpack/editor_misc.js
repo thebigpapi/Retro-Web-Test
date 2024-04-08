@@ -106,7 +106,6 @@ function getDate(){
         let yearSel = widget.querySelectorAll("input[type=number]")[0];
         let monthSel = widget.querySelectorAll("input[type=number]")[1];
         let daySel = widget.querySelectorAll("input[type=number]")[2];
-        console.log(datePrecision);
         yearSel.value = releaseDate.substring(0,4);
         if(datePrecision == "m" || datePrecision == "d"){
             monthSel.value = releaseDate.substring(5,7);
@@ -117,7 +116,6 @@ function getDate(){
 }
 function setDate(){
     for(let widget of document.getElementsByClassName("releasedate-cssid")){
-        console.log("hello??!?!")
         let entity = widget.getAttribute("data-entity");
         let yearSel = widget.querySelectorAll("input[type=number]")[0].value;
         let monthSel = parseInt(widget.querySelectorAll("input[type=number]")[1].value);
@@ -155,7 +153,6 @@ function setDate(){
         else
             datePrecision.value = "y";
         releaseDate.value = yearSel + "-" + (month > 9 ? "" : "0") + month + "-" + (day > 9 ? "" : "0" ) + day;
-        console.log(yearSel + "-" + (month > 9 ? "" : "0") + month + "-" + (day > 9 ? "" : "0" ) + day);
     }
     return true;
 }
