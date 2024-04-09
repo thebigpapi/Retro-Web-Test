@@ -12,6 +12,7 @@ use App\Controller\Admin\Type\Chip\AliasCrudType;
 use App\Controller\Admin\Type\Chip\DocumentationCrudType;
 use App\Controller\Admin\Type\Chip\ImageCrudType;
 use App\Controller\Admin\Type\Chip\LargeFileCrudType;
+use App\Controller\Admin\Type\ExpansionCard\BiosCrudType;
 use App\Controller\Admin\Type\PciDeviceCrudType;
 use Doctrine\ORM\Query\Expr\Andx;
 use Doctrine\ORM\Query\Expr\Orx;
@@ -167,6 +168,12 @@ class ExpansionChipCrudController extends AbstractCrudController
             ->onlyOnForms();
         yield CollectionField::new('drivers', 'Drivers')
             ->useEntryCrudForm(LargeFileCrudType::class)
+            ->setFormTypeOption('error_bubbling', false)
+            ->setColumns(6)
+            ->renderExpanded()
+            ->onlyOnForms();
+        yield CollectionField::new('expansionChipBios', 'Firmware')
+            ->useEntryCrudForm(BiosCrudType::class)
             ->setFormTypeOption('error_bubbling', false)
             ->setColumns(6)
             ->renderExpanded()

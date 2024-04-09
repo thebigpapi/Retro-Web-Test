@@ -238,49 +238,48 @@
 			</div>
 			<!-- BIOSes -->
 			<div class="show-downloads" id="sh-bios">
+				{% set chipBios =  expansioncard.getExpansionChips()|filter(a => a.getExpansionChipBios() is not empty) %}
+				{% set cardBios =  expansioncard.getExpansionCardBios() %}
 				<div class="show-downloads-group">
+				{% if cardBios is not empty %}
 					<div class="show-downloads-group-header">
-						<img src="{{ absolute_url(asset('build/icons/awchip.svg')) }}" alt="" width="32" height="32">
-						{% set bfile_cnt = 0 %}
-						{% if expansioncard.getExpansionCardBios() is not empty %}
-							{% for bios in expansioncard.getExpansionCardBios() %}
-								{% if bios.getFileName() is not null %}{% set bfile_cnt = bfile_cnt + 1 %}{% endif %}
-							{% endfor %}
-						{% endif %}
-						<span>{{ bfile_cnt }} file{% if bfile_cnt != 1 %}s{% endif %} available</span>
+						<img src="{{ absolute_url(asset('build/icons/awchip.svg')) }}" alt="bios" width="32" height="32">
+						<span>{{ cardBios|length }} card BIOS file{% if cardBios|length != 1 %}s{% endif %} available</span>
 					</div>
-					{% if expansioncard.getExpansionCardBios() is not empty %}
-						<div class="plain-list w300p table">
-							<div class="list-entry centered head">
-								<div>Version</div>
-								<div>Note</div>
-								<div>File</div>
-							</div>
-							{% for bios in expansioncard.getExpansionCardBios()|sort((a, b) => b.version <=> a.version) %}
-							<div class="list-entry centered {% if loop.index is divisible by(2) %}alt{% endif %}">
-								<div class="header-label">Version</div>
-								<div>{{ bios.getVersion() }}</div>
-								<div class="header-label">Note</div>
-								<div>{{ bios.getNote() }}</div>
-								<div class="header-label">File</div>
-								<div>
-									{% if bios.getFileName() is not null %}
-										<a class="combo" href="{{ vich_uploader_asset(bios, 'romFile') }}">
-											<img src="{{ absolute_url(asset('build/icons/dw.svg')) }}" alt="" width="16" height="16">
-											{% set fname = bios.getFileName() %}
-											<span>{{ fname|slice(0, fname|length - 27) ~ fname[fname|length - 4 :] }}</span>
-										</a>
-									{% endif %}
-								</div>
-							</div>
-							{% endfor %}
-						</div>
-					{% endif %}
+					{% include 'macros/bios.html.twig' with {'entity': cardBios, 'entity_label':'chip', 'audit_entity':'App-Entity-ExpansionChipBios'} %}
+				{% else %}
+					<div class="show-downloads-group-header">
+						<img src="{{ absolute_url(asset('build/icons/awchip.svg')) }}" alt="biosc" width="32" height="32">
+						<span>No {% if chipBios is not empty %}card{% endif %} BIOS files available</span>
+					</div>
+				{% endif %}
 				</div>
+
+				{% if chipBios is not empty %}
+				<div class="show-downloads-group last">
+					<div style="height:15px;"></div>
+					<div class="show-downloads-group-header">
+						<img src="{{ absolute_url(asset('build/icons/awchip.svg')) }}" alt="chipbios" width="32" height="32">
+						<span>{{ chipBios|length }} chip{% if chipBios|length != 1 %}s{% endif %} with BIOS files available </span><div><i>Warning: might not be fully compatible with this card, use at your own risk</i></div>
+					</div>
+					{% for chip in chipBios %}
+						<div class="dropdown-trw">
+							<label class="dropdown-header">
+								<img src="{{ absolute_url(asset('build/icons/chip.svg')) }}" alt="chip" width="24" height="24">
+								<span><i>{{chip.getFullName()}}</i></span>
+								<input class="dropdown" type="checkbox" />
+							</label>
+							<div class="dropdown-contents">
+								{% include 'macros/bios.html.twig' with {'entity': chip.getExpansionChipBios(), 'entity_label':'chip', 'audit_entity':'App-Entity-ExpansionChipBios'} %}
+							</div>
+						</div>
+					{% endfor %}
+				</div>
+				{% endif %}
 			</div>
 			<!-- DRIVERS -->
 			<div class="show-downloads" id="sh-driver">
-				{% include 'macros/drivers.html.twig' with {'entity': expansioncard.getAllDrivers()} %}
+				{% include 'macros/drivers.html.twig' with {'entity': expansioncard.getAllDrivers(), 'css': 'last'} %}
 			</div>
 			<!-- Documentation -->
 			<div class="show-downloads" id="sh-docs">

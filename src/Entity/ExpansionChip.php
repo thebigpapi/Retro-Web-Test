@@ -35,6 +35,10 @@ class ExpansionChip extends Chip
     #[ORM\Column(type: Types::JSON, options: ['jsonb' => true])]
     private ?array $miscSpecs = [];
 
+    #[ORM\OneToMany(mappedBy: 'expansionChip', targetEntity: ExpansionChipBios::class, orphanRemoval: true, cascade: ['persist'])]
+    #[Assert\Valid()]
+    private Collection $expansionChipBios;
+
     #[ORM\Column(type: 'datetime', mapped: false)]
     private $lastEdited;
 
@@ -47,6 +51,7 @@ class ExpansionChip extends Chip
         $this->drivers = new ArrayCollection();
         $this->documentations = new ArrayCollection();
         $this->expansionCards = new ArrayCollection();
+        $this->expansionChipBios = new ArrayCollection();
     }
     public function __toString(): string
     {
@@ -238,6 +243,42 @@ class ExpansionChip extends Chip
         }
 
         return $this;
+    }
+    /**
+     * @return Collection<int, ExpansionChipBios>
+     */
+    public function getExpansionChipBios(): Collection
+    {
+        return $this->expansionChipBios;
+    }
+
+    public function addExpansionChipBio(ExpansionChipBios $expansionChipBio): static
+    {
+        if (!$this->expansionChipBios->contains($expansionChipBio)) {
+            $this->expansionChipBios->add($expansionChipBio);
+            $expansionChipBio->setExpansionChip($this);
+        }
+
+        return $this;
+    }
+
+    public function removeExpansionChipBio(ExpansionChipBios $expansionChipBio): static
+    {
+        if ($this->expansionChipBios->removeElement($expansionChipBio)) {
+            // set the owning side to null (unless already changed)
+            if ($expansionChipBio->getExpansionChip() === $this) {
+                $expansionChipBio->setExpansionChip(null);
+            }
+        }
+
+        return $this;
+    }
+    public function isExpansionChipBios(): bool
+    {
+        if(isset($this->expansionChipBios))
+            if(count($this->expansionChipBios) > 0)
+                return true;
+        return false;
     }
     public function getMiscSpecs(): array
     {

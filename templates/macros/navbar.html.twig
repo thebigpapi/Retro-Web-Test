@@ -27,7 +27,9 @@
         <label for="tab-nav-1"><img src="{{ absolute_url(asset('build/icons/data.svg')) }}" alt="" width="24" height="24">Description</label>
         <input type="radio" name="tabs" id="tab-nav-2" data-tab="sh-specs">
         <label for="tab-nav-2"><img src="{{ absolute_url(asset('build/icons/tag.svg')) }}" alt="" width="24" height="24">Specs</label>
-    {% elseif entityName == "Chipset" %}
+        <input type="radio" name="tabs" id="tab-nav-3" data-tab="sh-downloads">
+        <label for="tab-nav-3"><img src="{{ absolute_url(asset('build/icons/dw.svg')) }}" alt="" width="24" height="24">Downloads</label>
+    {% elseif entityName == "Chipset"%}
         <input type="radio" name="tabs" id="tab-nav-1" data-tab="sh-general" checked>
         <label for="tab-nav-1"><img src="{{ absolute_url(asset('build/icons/data.svg')) }}" alt="" width="24" height="24">Description</label>
         <input type="radio" name="tabs" id="tab-nav-3" data-tab="sh-downloads">

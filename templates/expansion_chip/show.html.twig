@@ -95,23 +95,41 @@
 					<div class="toolbar">
 						<a class='button-widget' href="{{ absolute_url(path('app_homepage')) }}motherboards/?expansionChipIds%5B0%5D={{ expansion_chip.getId() }}&amp;showImages=1">
 							<img src='{{ absolute_url(asset('build/icons/board.svg')) }}' alt='' width='16' height='16' style='vertical-align:middle;padding:3px;'>See all boards with this chip</a>
-						<a class='button-widget' href="{{ absolute_url(path('app_homepage')) }}expansioncards/?expansionChipIds%5B0%5D={{ expansion_chip.getId() }}&amp;showImages=1">
+						<a class='button-widget' href="{{ absolute_url(path('app_homepage')) }}expansion_chips/?expansionChipIds%5B0%5D={{ expansion_chip.getId() }}&amp;showImages=1">
 							<img src='{{ absolute_url(asset('build/icons/card.svg')) }}' alt='' width='16' height='16' style='vertical-align:middle;padding:3px;'>See all cards with this chip</a>
 					</div>
 				</div>
 				{% include 'macros/aliases.html.twig' with {'entity':expansion_chip.getChipAliases(), 'msg': 'Also known as:'} %}
 				{% include 'macros/notes.html.twig' with {'entity': expansion_chip} %}
-				<!-- DRIVERS -->
-				{% include 'macros/drivers.html.twig' with {'entity': expansion_chip.getDrivers()} %}
-				<!-- MANUALS -->
-				{% include 'macros/manuals.html.twig' with {'entity': expansion_chip.getDocumentations(), 'entity_label':'chip', 'audit_entity':'App-Entity-ChipDocumentation'} %}
 				<div id="index-datetime"><div class="div-datetime">Last updated <span class="perk-date">{{ expansion_chip.getLastEdited()|date("Y-m-d\\TH:i:s", "GMT") }}Z</span></div></div>
 			</div>
 			<div class="show-expchips" id="sh-specs">
 				{% if expansion_chip.getMiscSpecs() is not empty %}
 					<h3>Specifications:</h3>
 					{% include 'macros/specs.html.twig' with {'entity':expansion_chip} %}
+				{% else %}
+					<span>No chip specs</span>
 				{% endif %}
+			</div>
+			<div class="show-downloads" id="sh-downloads">
+				<!-- DRIVERS -->
+				{% include 'macros/drivers.html.twig' with {'entity': expansion_chip.getDrivers(), 'css': ''} %}
+				<!-- MANUALS -->
+				{% include 'macros/manuals.html.twig' with {'entity': expansion_chip.getDocumentations(), 'entity_label':'chip', 'audit_entity':'App-Entity-ChipDocumentation'} %}
+				<!-- BIOSes -->
+				<div class="show-downloads-group last">
+					<div class="show-downloads-group-header">
+						<img src="{{ absolute_url(asset('build/icons/awchip.svg')) }}" alt="" width="32" height="32">
+						{% set bfile_cnt = 0 %}
+						{% if expansion_chip.getExpansionChipBios() is not empty %}
+							{% for bios in expansion_chip.getExpansionChipBios() %}
+								{% if bios.getFileName() is not null %}{% set bfile_cnt = bfile_cnt + 1 %}{% endif %}
+							{% endfor %}
+						{% endif %}
+						<span>{{ bfile_cnt }} file{% if bfile_cnt != 1 %}s{% endif %} available</span>
+					</div>
+					{% include 'macros/bios.html.twig' with {'entity': expansion_chip.getExpansionChipBios(), 'entity_label':'chip', 'audit_entity':'App-Entity-ExpansionChipBios'} %}
+				</div>
 			</div>
 		</div>
 	</div>

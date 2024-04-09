@@ -1170,6 +1170,9 @@ div.main-strip {
             div.show-downloads-group {
                 padding: 10px;
                 border-bottom: solid thin $border-dark;
+                &.last{
+                    border-bottom: none;
+                }
 
                 @media (max-width: 500px) {
                     padding: 3px;

@@ -192,7 +192,7 @@
 				{% include 'macros/aliases.html.twig' with {'entity':motherboard.getMotherboardAliases(), 'msg': 'Also known as:'} %}
 				{% include 'macros/notes.html.twig' with {'entity': motherboard} %}
 				<div id="index-datetime"><div class="div-datetime">Last updated <span class="perk-date">{{ motherboard.getLastEdited()|date("Y-m-d\\TH:i:s", "GMT") }}Z</span></div></div>
-				<div class="score">Score is {{ motherboard.getScore() / 10 }}/10</div>
+				<div class="score">Board info score is {{ motherboard.getScore() / 10 }}/10</div>
 			</div>
 
 			<!-- Chips -->
@@ -256,7 +256,7 @@
 
 			<!-- BIOSes -->
 			<div class="show-downloads" id="sh-bios">
-				<div class="show-downloads-group">
+				<div class="show-downloads-group last">
 					<div class="show-downloads-group-header">
 						<img src="{{ absolute_url(asset('build/icons/awchip.svg')) }}" alt="" width="32" height="32">
 						{% set bfile_cnt = 0 %}
@@ -319,7 +319,7 @@
 			</div>
 			<!-- DRIVERS -->
 			<div class="show-downloads" id="sh-driver">
-				{% include 'macros/drivers.html.twig' with {'entity': motherboard.getAllDrivers()} %}
+				{% include 'macros/drivers.html.twig' with {'entity': motherboard.getAllDrivers(), 'css': 'last'} %}
 			</div>
 			<!-- Documentation -->
 			<div class="show-downloads" id="sh-docs">

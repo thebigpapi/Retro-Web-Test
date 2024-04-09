@@ -37,7 +37,7 @@
         {% endfor %}
     </div>
 {% endmacro %}
-<div class="show-downloads-group">
+<div class="show-downloads-group {{css}}">
     {% if entity is not empty %}
         {% set recommended = 0 %}
         {% for itm in entity|filter(a => a.isRecommended == true) %}
@@ -55,7 +55,7 @@
             <!-- contains both recommended and not recommended -->
             <div class="show-downloads-group-header">
                 <img src="{{ absolute_url(asset('build/icons/hardware.svg')) }}" alt="drv" width="32" height="32">
-                <span>{{ recommended }} recommended driver{% if recommended != 1 %}s{% endif %} available</span>
+                <span>{{ recommended }} known good driver{% if recommended != 1 %}s{% endif %} available</span>
             </div>
             {{ _self.driver(entity|filter(a => a.isRecommended == true))}}
             <div class="dropdown-trw">

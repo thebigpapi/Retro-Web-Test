@@ -1,5 +1,5 @@
 {% if entity is not empty %}
-<div class="show-downloads-group">
+<div class="show-downloads-group last">
     <div class="show-downloads-group-header">
         <img src="{{ absolute_url(asset('build/icons/miscfile.svg')) }}" alt="doc" width="32" height="32">
         <span>{{ entity.count() }} other file{% if entity.count() != 1 %}s{% endif %} available</span>
