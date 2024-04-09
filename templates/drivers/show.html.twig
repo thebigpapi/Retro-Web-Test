@@ -52,45 +52,75 @@
 		{% include 'macros/navbar.html.twig' with {'entity': driver, 'entityName': 'LargeFile', 'name': 'driver', 'role': 'ROLE_USER'} %}
 		<div class="internal-content">
 			<!-- DESCRIPRION -->
-			<div class="quick-spec-split">
-				<div class="quick-spec-table">
-					<!-- Release Date -->
-					<div class="quick-spec-head">Release Date</div>
-					<div>{{ driver.getReleaseDateString() ? driver.getReleaseDateString() : 'Unknown' }}</div>
-					<!-- Version -->
-					<div class="quick-spec-head">Version</div>
-					<div>{{ driver.getFileVersion() ? driver.getFileVersion() : 'Unknown' }}</div>
-					<div class="quick-spec-head">Size</div>
-					<div>{{driver.getSize() ? driver.getSizeFormatted() : "<i>unknown</i>" }}</div>
-					<!-- File -->
-					<div class="quick-spec-head">File</div>
-					<div><a href="{{ vich_uploader_asset(driver, 'file')}}">
-						<img src="{{ absolute_url(asset('build/icons/dw.svg')) }}" alt="" width="16" style="vertical-align: middle;">
-							{{ driver.getFileNameSimple() }}
-						</a>
+			<div class="show-general" id="sh-general">
+				<div class="quick-spec-split">
+					<div class="quick-spec-table">
+						<!-- Release Date -->
+						<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/calendar.svg')) }}" alt="date" width="24" height="24">Release Date</div>
+						<div class="perk-date-simple">{{ driver.getReleaseDateString() ? driver.getReleaseDateString() : 'Unknown' }}</div>
+						<!-- Version -->
+						<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/tag.svg')) }}" alt="chip" width="24" height="24">Version</div>
+						<div>{{ driver.getFileVersion() ? driver.getFileVersion() : 'Unknown' }}</div>
+						<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/file.svg')) }}" alt="chip" width="24" height="24">Size</div>
+						<div>{{driver.getSize() ? driver.getSizeFormatted() : "<i>unknown</i>" }}</div>
+						<!-- File -->
+						<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/mediatype.svg')) }}" alt="file" width="24" height="24">File</div>
+						<div><a href="{{ vich_uploader_asset(driver, 'file')}}">
+							<img src="{{ absolute_url(asset('build/icons/dw.svg')) }}" alt="" width="16" style="vertical-align: middle;">
+								{{ driver.getFileNameSimple() }}
+							</a>
+						</div>
+					</div>
+					<div class="quick-spec-table">
+						<!-- Supported OS -->
+						<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/486.svg')) }}" alt="arch" width="24" height="24">OS architecture</div>
+						<div class="tag-container">
+							{% for arch in driver.getOsArchitecture() %}
+							<span class="text-block">{{arch.getName()}}</span>
+							{% endfor %}
+						</div>
+						<!-- Supported OS -->
+						<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/1998win.svg')) }}" alt="os" width="24" height="24">OS support</div>
+						<div class="tag-container"><ul>
+							{% for os in driver.getOsFlags()|sort((a, b) => a.getName <=> b.getName)|sort((a, b) => a.getSort <=> b.getSort) %}
+							<li><span class="text-block" style="font-size: 0.9rem;padding:6px 8px; margin:1px;">
+								<img src="{{ vich_uploader_asset(os, 'icon')}}" width="32">
+								<span>{{os.getName()}}</span>
+							</span></li>
+							{% endfor %}
+						</ul></div>
 					</div>
 				</div>
+				<div id="index-datetime"><div class="div-datetime">Last updated <span class="perk-date">{{ driver.getLastEdited()|date("Y-m-d\\TH:i:s", "GMT") }}Z</span></div></div>
+			</div>
+			<div class="show-expchips" id="sh-expchips">
+				<!-- Expansion chips -->
 				<div class="quick-spec-table">
-					<!-- Supported OS -->
-					<div class="quick-spec-head">OS architecture</div>
-					<div class="tag-container">
-						{% for arch in driver.getOsArchitecture() %}
-						<span class="text-block">{{arch.getName()}}</span>
+					<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/chip.svg')) }}" alt="chip" width="24" height="24">Expansion chips</div>
+					<div class="tag-container"><ul>
+					{% if driver.getExpansionChips() is not empty %}
+						{% for chip in driver.getExpansionChips() %}
+							<li><a href="{{ path('expansion_chip_show', {id: chip.getExpansionChip().getId()}) }}"><span class="text-block">{{ chip.getExpansionChip().getFullName() }}</span></a></li>
 						{% endfor %}
-					</div>
-					<!-- Supported OS -->
-					<div class="quick-spec-head">OS support</div>
-					<div class="tag-container"><ul style="padding:0;margin:0;list-style:none;">
-						{% for os in driver.getOsFlags()|sort((a, b) => a.getName <=> b.getName)|sort((a, b) => a.getSort <=> b.getSort) %}
-						<li><span class="text-block" style="font-size: 0.9rem;padding:6px 8px; margin:1px;">
-							<img src="{{ vich_uploader_asset(os, 'icon')}}" width="32">
-							<span>{{os.getName()}}</span>
-						</span></li>
+					{% else %}
+						<div>None</div>
+					{% endif %}
+					</ul></div>
+				</div>
+				<!-- Expansion cards -->
+				<div class="quick-spec-table">
+					<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/card.svg')) }}" alt="card" width="24" height="24">Expansion cards</div>
+					<div class="tag-container"><ul>
+					{% if driver.getExpansionCards() is not empty %}
+						{% for card in driver.getExpansionCards() %}
+							<li><a href="{{ path('expansioncard_show', {id: card.getExpansionCard().getId()}) }}"><span class="text-block">{{ card.getExpansionCard().getFullName() }}</span></a></li>
 						{% endfor %}
+					{% else %}
+						<div>None</div>
+					{% endif %}
 					</ul></div>
 				</div>
 			</div>
-			<div id="index-datetime"><div class="div-datetime">Last updated <span class="perk-date">{{ driver.getLastEdited()|date("Y-m-d\\TH:i:s", "GMT") }}Z</span></div></div>
 		</div>
 		{% if driver.getNote() is not empty %}
 			{% apply markdown_to_html %}{{ driver.getNote() }}{% endapply %}

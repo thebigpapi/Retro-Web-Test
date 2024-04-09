@@ -1338,6 +1338,14 @@ div.tag-container {
     gap: 3px;
     flex-wrap: wrap;
     align-items: center;
+    ul{
+        padding: 0;
+        margin: 0;
+        list-style: none;
+        li{
+            margin:3px;
+        }
+    }
 }
 
 span.text-block {

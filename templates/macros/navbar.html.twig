@@ -32,6 +32,11 @@
         <label for="tab-nav-1"><img src="{{ absolute_url(asset('build/icons/data.svg')) }}" alt="" width="24" height="24">Description</label>
         <input type="radio" name="tabs" id="tab-nav-3" data-tab="sh-downloads">
         <label for="tab-nav-3"><img src="{{ absolute_url(asset('build/icons/dw.svg')) }}" alt="" width="24" height="24">Downloads</label>
+    {% elseif entityName == "LargeFile" %}
+        <input type="radio" name="tabs" id="tab-nav-1" data-tab="sh-general" checked>
+        <label for="tab-nav-1"><img src="{{ absolute_url(asset('build/icons/data.svg')) }}" alt="" width="24" height="24">Description</label>
+        <input type="radio" name="tabs" id="tab-nav-3" data-tab="sh-expchips">
+        <label for="tab-nav-3"><img src="{{ absolute_url(asset('build/icons/chip.svg')) }}" alt="" width="24" height="24">Associations</label>
     {% endif %}
     <input type="radio" name="tabsh" id="tab-nav-h" data-URL="{{ path('dh_auditor_show_entity_history', {id:entity.getId(), entity:'App-Entity-' ~ entityName}) }}">
     <label for="tab-nav-h"><img src="{{ absolute_url(asset('build/icons/calendar.svg')) }}" alt="" width="24" height="24">Logs</label>
