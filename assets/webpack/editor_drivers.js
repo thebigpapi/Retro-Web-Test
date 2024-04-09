@@ -82,7 +82,9 @@ function submit(type) {
                 document.getElementById("message").innerHTML = xhr.statusText
                 let img = document.getElementById("driver-message-err");
                 img.setAttribute("style","display:inline;");
-                img.setAttribute("title", doc.getElementsByClassName('break-long-words exception-message')[0].innerHTML);
+                let errorDiv = document.getElementById("driver-error-div");
+                errorDiv.setAttribute("style", "display: block;")
+                errorDiv.children[0].innerHTML = doc.getElementsByClassName('break-long-words exception-message')[0].innerHTML;
             }
             else {
                 document.getElementById("message").innerHTML = xhr.statusText

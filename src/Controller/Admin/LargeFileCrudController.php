@@ -110,33 +110,33 @@ class LargeFileCrudController extends AbstractCrudController
             ->onlyOnForms();
         yield IdField::new('id')->onlyOnIndex();
         yield TextField::new('name', 'Name')
-            ->setColumns(3);
+            ->setColumns('col-sm-6 col-lg-4 col-xxl-3');
         yield TextField::new('fileVersion', 'Version')
-            ->setColumns(3);
+            ->setColumns('col-sm-6 col-lg-4 col-xxl-3');
         yield TextField::new('getSizeFormatted', 'Size')
             ->onlyOnIndex();
         yield DateField::new('releaseDate', 'Release Date')
             ->setFormTypeOption('attr', ['style'=>'width:100%;'])
             ->renderAsText()
-            ->setColumns(2)
+            ->setColumns('col-sm-6 col-lg-4 col-xxl-3')
             ->onlyOnForms();
         yield TextField::new('getReleaseDateString', 'Release Date')
             ->onlyOnIndex();
         yield TextareaField::new('file', 'File')
             ->setFormType(VichFileType::class)
             ->setFormTypeOption('allow_delete', false)
-            ->setColumns(3)
+            ->setColumns('col-sm-6 col-lg-4 col-xxl-3')
             ->onlyOnForms();
-        yield ArrayField::new('getOsFlags', 'OS flags')
-            ->onlyOnIndex();
-        yield CollectionField::new('osFlags', 'OS flags')
-            ->setEntryType(OsFlagType::class)
-            ->setColumns(4)
+        yield CollectionField::new('osArchitecture', 'OS architecture')
+            ->setEntryType(OsArchitectureType::class)
+            ->setColumns('col-sm-6 col-lg-4 col-xxl-3')
             ->renderExpanded()
             ->onlyOnForms();
-        yield CollectionField::new('osArchitecture', 'OS architectures')
-            ->setEntryType(OsArchitectureType::class)
-            ->setColumns(4)
+        yield ArrayField::new('getOsFlags', 'OS support')
+            ->onlyOnIndex();
+        yield CollectionField::new('osFlags', 'OS support')
+            ->setEntryType(OsFlagType::class)
+            ->setColumns('col-sm-6 col-lg-4 col-xxl-3')
             ->renderExpanded()
             ->onlyOnForms();
         yield CodeEditorField::new('note')
@@ -157,12 +157,12 @@ class LargeFileCrudController extends AbstractCrudController
         yield CollectionField::new('expansionchips', 'Expansion chips')
             ->useEntryCrudForm(ExpansionChipCrudType::class)
             ->renderExpanded()
-            ->setColumns('col-sm-12 col-lg-8 col-xxl-6')
+            ->setColumns('col-sm-12 col-lg-12 col-xxl-6')
             ->onlyOnForms();
         yield CollectionField::new('expansionCards', 'Expansion cards')
             ->useEntryCrudForm(ExpansionCardCrudType::class)
             ->renderExpanded()
-            ->setColumns('col-sm-12 col-lg-8 col-xxl-6')
+            ->setColumns('col-sm-12 col-lg-12 col-xxl-6')
             ->onlyOnForms();
 
     }

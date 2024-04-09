@@ -317,6 +317,19 @@
 {% block _LargeFile_datePrecision_widget %}
     <div style="display:none;">{{ form_widget(form)}}</div>
 {% endblock _LargeFile_datePrecision_widget %}
+{% block _LargeFile_note_widget %}
+    <div class="driver-messages">
+        <img id="driver-message-err" src="{{ absolute_url(asset('build/icons/warning.svg')) }}" alt="warning" width="25" height="25">
+        <span id="message"></span>
+        <label for="progressBar"></label>
+        <progress hidden="true" id="progressBar"></progress>
+        <div id="driver-error-div" style="display:none;">
+            <div style="background-color:#d43934;color:#e0e0e0;padding:5px 10px 5px;border-radius:4px;">
+			</div>
+        </div>
+    </div>
+    {{ form_widget(form)}}
+{% endblock _LargeFile_note_widget %}
 
 {# hdd editor #}
 {% block _HardDrive_storageDeviceImages_widget %}

@@ -75,19 +75,27 @@
 						<!-- Supported OS -->
 						<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/486.svg')) }}" alt="arch" width="24" height="24">OS architecture</div>
 						<div class="tag-container">
+						{% if driver.getOsArchitecture() is not empty %}
 							{% for arch in driver.getOsArchitecture() %}
 							<span class="text-block">{{arch.getName()}}</span>
 							{% endfor %}
+						{% else %}
+							<div>Unknown</div>
+						{% endif %}
 						</div>
 						<!-- Supported OS -->
 						<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/1998win.svg')) }}" alt="os" width="24" height="24">OS support</div>
 						<div class="tag-container"><ul>
+						{% if driver.getOsFlags() is not empty %}
 							{% for os in driver.getOsFlags()|sort((a, b) => a.getName <=> b.getName)|sort((a, b) => a.getSort <=> b.getSort) %}
 							<li><span class="text-block" style="font-size: 0.9rem;padding:6px 8px; margin:1px;">
 								<img src="{{ vich_uploader_asset(os, 'icon')}}" width="32">
 								<span>{{os.getName()}}</span>
 							</span></li>
 							{% endfor %}
+						{% else %}
+							<div>Unknown</div>
+						{% endif %}
 						</ul></div>
 					</div>
 				</div>
