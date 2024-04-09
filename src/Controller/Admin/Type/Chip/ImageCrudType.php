@@ -44,6 +44,7 @@ class ImageCrudType extends AbstractCrudController
             ->setColumns(12);
         yield NumberField::new('sort', 'Sort position')
             ->setFormTypeOption('required', true)
+            ->setFormTypeOption('empty_data', '1')
             ->setColumns(12);
         yield TextField::new('description', 'Notes')
             ->setColumns('col-sm-4 col-lg-4 col-xxl-4')

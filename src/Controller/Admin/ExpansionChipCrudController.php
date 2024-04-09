@@ -134,7 +134,8 @@ class ExpansionChipCrudController extends AbstractCrudController
             ->renderExpanded()
             ->onlyOnForms();
         yield IntegerField::new('sort', 'Sort position')
-            ->setFormTypeOption('required', true)
+            ->setFormTypeOption('required', false)
+            ->setFormTypeOption('empty_data', '1')
             ->setColumns(2);
         yield CodeEditorField::new('description')
             ->setLanguage('markdown')
