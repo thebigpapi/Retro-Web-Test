@@ -50,7 +50,6 @@ class ChipsetDocumentationCrudController extends AbstractCrudController
     {
         return parent::configureFilters($filters)
             ->add('link_name')
-            ->add('language')
             ->add('updated_at');
     }
     public function configureFields(string $pageName): iterable
@@ -65,10 +64,7 @@ class ChipsetDocumentationCrudController extends AbstractCrudController
         yield AssociationField::new('chipset')
             ->autocomplete()
             ->onlyOnForms();
-        yield TextField::new('link_name', 'Title')
-            ->setColumns('col-sm-4 col-lg-4 col-xxl-4');
-        yield AssociationField::new('language', 'Language')
-            ->setColumns(4);
+        yield TextField::new('link_name', 'Title');
         yield UrlField::new('file_name')
             ->setCustomOption('link','chipset/documentation/')
             ->hideOnForm();
@@ -85,7 +81,6 @@ class ChipsetDocumentationCrudController extends AbstractCrudController
                     'mimeTypesMessage' => 'Please upload a valid PDF document',
                 ])
             ])
-            ->setColumns('col-sm-4 col-lg-4 col-xxl-4')
             ->onlyOnForms();
         yield DateField::new('updated_at', 'Last edited')
             ->hideOnForm();

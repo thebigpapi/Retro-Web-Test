@@ -3,7 +3,6 @@
 	<div class="plain-list w300p table">
         <div class="list-entry centered head">
             {% if chips == true %}<div>Chip</div>{% endif %}
-            <div>Language</div>
             <div>Release date</div>
             <div>File</div>
             <div>Last edit</div>
@@ -16,8 +15,6 @@
                     <a href="{{ path('expansion_chip_show', {'id': manual.getChip().getId()}) }}">{{ manual.getChip().getFullName()}}</a>
                 </div>
             {% endif %}
-            <div class="header-label">Language</div>
-            <div>{{ manual.getLanguage().getName()}}</div>
             <div class="header-label">Release date</div>
             <div>{{ manual.getReleaseDateString()}}</div>
             <div class="header-label">File</div>

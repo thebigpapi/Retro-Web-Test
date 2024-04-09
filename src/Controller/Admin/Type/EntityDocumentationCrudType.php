@@ -19,13 +19,11 @@ class EntityDocumentationCrudType extends AbstractCrudController
     }
     public function configureFields(string $pageName): iterable
     {
-        yield AssociationField::new('language', 'Language')
-            ->setFormTypeOption('label',false)
-            ->setColumns('col-sm-12 col-lg-12 col-xxl-4');
-        yield TextField::new('link_name')
-            ->setFormTypeOption('label',false)
-            ->setFormTypeOption('attr',['placeholder' => 'Title:'])
-            ->setColumns('col-sm-12 col-lg-12 col-xxl-8');
+        yield TextField::new('link_name', 'Title')
+            ->setColumns(12);
+        yield DateField::new('releaseDate', 'Release date')
+            ->renderAsText()
+            ->setColumns(12);
         yield TextField::new('manualFile', 'PDF file')
             ->setFormType(VichFileType::class)
             ->setFormTypeOption('allow_delete',false)
@@ -41,9 +39,6 @@ class EntityDocumentationCrudType extends AbstractCrudController
             ])
             ->setColumns(12)
             ->onlyOnForms();
-        yield DateField::new('releaseDate', 'Release date')
-            ->renderAsText()
-            ->setColumns(12);
         yield ChoiceField::new('datePrecision')
             ->setFormTypeOption('label',false)
             ->setChoices([
