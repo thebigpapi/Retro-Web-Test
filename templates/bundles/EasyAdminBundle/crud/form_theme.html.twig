@@ -182,6 +182,17 @@
     </div>
 {% endblock %}
 
+{% macro driver(form) %}
+    <div>
+        <a class="btn btn-link field-collection-add-button" href="{{ ea_url().setDashboard('App\\Controller\\Admin\\DashboardController')
+        .setController('App\\Controller\\Admin\\LargeFileCrudController')
+        .setAction('new')
+        .setEntityId('')|replace({'&entityId=': ''})}}" target="_blank">
+        <i class="fa fa-plus pr-1"></i> Create a new driver</a>
+    </div>
+    {{ form_widget(form)}}
+{% endmacro %}
+
 {# motherboard editor #}
 {% block _Motherboard_maxcpu_widget %}
 {{ form_widget(form)}}
@@ -241,11 +252,16 @@
 {% block _Motherboard_images_widget %}
     {% include 'admin/macros/widgets.html.twig' with {'type': 'image', 'form': form} %}
 {% endblock _Motherboard_images_widget %}
+{% block _Motherboard_drivers_widget %}
+    {{ _self.driver(form)}}
+{% endblock _Motherboard_drivers_widget %}
 
 {# chipset editor #}
 {% block _Chipset_expansionChips_entry_widget %}
 {{ form_widget(form, {'attr': {'class': "widget90"}})}}
-<a href="{{ ea_url().setDashboard('App\\Controller\\Admin\\DashboardController').setController('App\\Controller\\Admin\\ExpansionChipCrudController').setAction('edit').setEntityId(form.vars.value)}}">Edit</a>
+<a href="{{ ea_url().setDashboard('App\\Controller\\Admin\\DashboardController')
+.setController('App\\Controller\\Admin\\ExpansionChipCrudController')
+.setAction('edit').setEntityId(form.vars.value)}}">Edit</a>
 {% endblock _Chipset_expansionChips_entry_widget %}
 
 {% block _Chipset_releaseDate_widget %}
@@ -261,6 +277,9 @@
 {% block _Chipset_documentations_entry_datePrecision_widget %}
     <div style="display:none;">{{ form_widget(form)}}</div>
 {% endblock _Chipset_documentations_entry_datePrecision_widget %}
+{% block _Chipset_drivers_widget %}
+    {{ _self.driver(form)}}
+{% endblock _Chipset_drivers_widget %}
 
 {# expansion card editor #}
 {% block _ExpansionCard_miscSpecs_widget %}
@@ -293,6 +312,9 @@
 {% block _ExpansionCard_images_widget %}
     {% include 'admin/macros/widgets.html.twig' with {'type': 'image', 'form': form} %}
 {% endblock _ExpansionCard_images_widget %}
+{% block _ExpansionCard_drivers_widget %}
+    {{ _self.driver(form)}}
+{% endblock _ExpansionCard_drivers_widget %}
 
 {# cpu editor #}
 {% block _Processor_images_widget %}
@@ -309,6 +331,16 @@
 {% block _ExpansionChip_documentations_entry_datePrecision_widget %}
     <div style="display:none;">{{ form_widget(form)}}</div>
 {% endblock _ExpansionChip_documentations_entry_datePrecision_widget %}
+{% block _ExpansionChip_drivers_widget %}
+    <div>
+        <a class="btn btn-link field-collection-add-button" href="{{ ea_url().setDashboard('App\\Controller\\Admin\\DashboardController')
+        .setController('App\\Controller\\Admin\\LargeFileCrudController')
+        .setAction('new')
+        .setEntityId('')|replace({'&entityId=': ''})}}" target="_blank">
+        <i class="fa fa-plus pr-1"></i> Create a new driver</a>
+    </div>
+    {{ form_widget(form)}}
+{% endblock _ExpansionChip_drivers_widget %}
 
 {# driver editor #}
 {% block _LargeFile_releaseDate_widget %}
