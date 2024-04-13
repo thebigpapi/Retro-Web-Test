@@ -2,6 +2,8 @@
 
 namespace App\Form\ExpansionCard;
 
+use App\Entity\ExpansionSlotInterfaceSignal;
+use App\Form\Type\DramTypeType;
 use App\Form\Type\ItemsPerPageType;
 use App\Form\Type\ExpansionChipType;
 use Symfony\Component\Form\AbstractType;
@@ -37,7 +39,25 @@ class Search extends AbstractType
                 'choices' => $options['expansionCardManufacturers'],
                 'placeholder' => 'Type to select a manufacturer ...'
             ])
-            ->add('type', ChoiceType::class, [
+            ->add('cardTypes', CollectionType::class, [
+                'entry_type' => ExpansionCardTypeType::class,
+                'allow_add' => true,
+                'allow_delete' => true,
+                'label' => false,
+            ])
+            ->add('expansionChips', CollectionType::class, [
+                'entry_type' => ExpansionChipType::class,
+                'allow_add' => true,
+                'allow_delete' => true,
+                'label' => false,
+            ])
+            ->add('dramTypes', CollectionType::class, [
+                'entry_type' => DramTypeType::class,
+                'allow_add' => true,
+                'allow_delete' => true,
+                'label' => false,
+            ])
+            ->add('cardExpansionSlot', ChoiceType::class, [
                 'choice_label' => 'name',
                 'multiple' => false,
                 'expanded' => false,
@@ -45,11 +65,11 @@ class Search extends AbstractType
                 'choice_attr' => function ($choice, string $key, mixed $value) {
                     return ['data-id' => $choice->getId() ];
                 },
-                'choices' => $options['expansionCardTypes'],
-                'placeholder' => 'Type to select a type ...'
+                'choices' => $options['expansionCardExpansionSlots'],
+                'placeholder' => 'Type to select an expansion slot ...'
             ])
-            ->add('expansionChips', CollectionType::class, [
-                'entry_type' => ExpansionChipType::class,
+            ->add('cardIoPorts', CollectionType::class, [
+                'entry_type' => IoPortSearchType::class,
                 'allow_add' => true,
                 'allow_delete' => true,
                 'label' => false,
@@ -74,6 +94,7 @@ class Search extends AbstractType
         $resolver->setDefaults([
             'expansionCardManufacturers' => array(),
             'expansionCardTypes' => array(),
+            'expansionCardExpansionSlots' => array(),
         ]);
     }
 }
