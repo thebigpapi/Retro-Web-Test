@@ -921,6 +921,18 @@ div.search-form-entry, div.search-form-filter {
         }
 	}
 }
+div.search-buttons{
+    display: flex;
+    flex-direction: row;
+    column-gap: 5px;
+    padding: 5px;
+    a{
+        padding: 5px 5px;
+    }
+    button{
+        width: fit-content;
+    }
+}
 div.search-form-entry div.search-form-widget div {
 	width: 100%;
 }

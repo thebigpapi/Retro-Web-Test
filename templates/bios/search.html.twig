@@ -115,16 +115,17 @@
 							{% endfor %}
 						</div>
 					</div>
-					<div class="search-form-entry">
-						<label class="search-form-label">
-							<span></span>
-						</label>
-						<a class='button-widget' href="{{path("bioshelp")}}" style="margin-right: 5px">
-							<img src='{{ absolute_url(asset('build/icons/search.svg')) }}' alt='' width='16' height='16' style='vertical-align:middle;padding:3px;'>How do I use the search page?</a>
-						<a class='button-widget' href="{{path("bios_list")}}">
-							<img src='{{ absolute_url(asset('build/icons/awchip.svg')) }}' alt='' width='16' height='16' style='vertical-align:middle;padding:3px;'>BIOS IDs list</a>
-					</div>
 				</section>
+				<div class="search-buttons">
+					<a class='button-widget' href="{{path("bioshelp")}}">
+						<img src='{{ absolute_url(asset('build/icons/search.svg')) }}' alt='' width='24' height='24' style='vertical-align:middle;padding:3px;'>How do I use the search page?</a>
+					<a class='button-widget' href="{{path("bios_list")}}">
+						<img src='{{ absolute_url(asset('build/icons/awchip.svg')) }}' alt='' width='24' height='24' style='vertical-align:middle;padding:3px;'>BIOS IDs list</a>
+					<button type="button" onclick="document.getElementById('rst-btn').click();return false;">
+						<img src="{{ absolute_url(asset('build/icons/reset.svg')) }}" alt="reset" width="24" height="24">
+						<span>Reset</span>
+					</button>
+				</div>
 			</div>
 		</div>
 	</fieldset>

@@ -169,14 +169,18 @@
 							{% endfor %}
 						</div>
 					</div>
-					<div class="search-form-entry">
-						<label class="search-form-label">
-							<span></span>
-						</label>
-						<a class='button-widget' href="{{path("mobohelp")}}">
-							<img src='{{ absolute_url(asset('build/icons/search.svg')) }}' alt='' width='16' height='16' style='vertical-align:middle;padding:3px;'>How do I use the search page?</a>
-					</div>
 				</section>
+				<div class="search-buttons">
+					<label class="search-form-label">
+						<span></span>
+					</label>
+					<a class='button-widget' href="{{path("mobohelp")}}">
+						<img src='{{ absolute_url(asset('build/icons/search.svg')) }}' alt='' width='24' height='24' style='vertical-align:middle;padding:3px;'>How do I use the search page?</a>
+					<button type="button" onclick="document.getElementById('rst-btn').click();return false;">
+						<img src="{{ absolute_url(asset('build/icons/reset.svg')) }}" alt="reset" width="24" height="24">
+						<span>Reset</span>
+					</button>
+				</div>
 			</div>
 		</div>
 	</fieldset>
