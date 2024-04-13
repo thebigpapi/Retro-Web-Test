@@ -15,7 +15,7 @@
 	<meta property="og:title" content="{{ expansion_chip.getFullName() }}">
 	<meta property="og:description" content="Get info, images and drivers for the {{ expansion_chip.getFullName() }} expansion chip">
 	{% if expansion_chip.getImages() is not empty %}
-		{% for image in expansion_chip.getImages()|sort((a, b) => a.getFileName() <=> b.getFileName())|slice(0, 1) %}
+		{% for image in expansion_chip.getImages()|sort((a, b) => a.getFileName() <=> b.getFileName())|sort((a, b) => a.sort <=> b.sort)|slice(0, 1) %}
 			<meta name="twitter:image" content="{{ vich_uploader_asset(image, 'imageFile')}}">
 			<meta property="og:image" content="{{ vich_uploader_asset(image, 'imageFile')}}">
 		{% endfor %}

@@ -15,7 +15,7 @@
 	<meta property="og:title" content="{{ expansioncard.getFullName() }}">
 	<meta property="og:description" content="Get info, images and drivers for the {{ expansioncard.getFullName() }} expansion card">
 	{% if expansioncard.getImages() is not empty %}
-		{% for image in expansioncard.getImages()|sort((a, b) => a.getFileName() <=> b.getFileName())|slice(0, 1) %}
+		{% for image in expansioncard.getImages()|filter(a => a.type in ["1", "2"])|sort((a, b) => a.getFileName() <=> b.getFileName())|sort((a, b) => b.type <=> a.type)|slice(0, 1) %}
 			<meta name="twitter:image" content="{{ vich_uploader_asset(image, 'imageFile')}}">
 			<meta property="og:image" content="{{ vich_uploader_asset(image, 'imageFile')}}">
 		{% endfor %}
@@ -180,7 +180,7 @@
 									<div>{{ port.getIoPortInterface().getName() }}{% if port.getIoPortSignals() is not empty %}{% for type in port.ioPortSignals() %}, {{type.getName()}}{% endfor %}{% endif %}</div>
 								{% endif %}
 							{% endfor %}
-						{% else %}<div class="list-table-head"></div><div>N/A</div>{% endif %}
+						{% else %}<div class="list-table-head"></div><div><span class='badge badge-secondary'>Empty</span></div>{% endif %}
 					</div>
 					<div class="full-spec-head"><img src="{{ absolute_url(asset('build/icons/power.svg')) }}" alt="power" width="24" height="24"><b>Power connectors</b></div>
 					<div class="list-table">
@@ -191,7 +191,7 @@
 								</div>
 								<div><a href="{{ path('psu_connector_show', {id: conn.getPowerConnector().getId()}) }}">{{ conn.getPowerConnector().getName() }}</a></div>
 							{% endfor %}
-						{% else %}<div class="list-table-head"></div><div>N/A</div>{% endif %}
+						{% else %}<div class="list-table-head"></div><div><span class='badge badge-secondary'>Empty</span></div>{% endif %}
 					</div>
 				</div>
 				{% include 'macros/aliases.html.twig' with {'entity':expansioncard.getExpansionCardAliases(), 'msg': 'Also known as:'} %}

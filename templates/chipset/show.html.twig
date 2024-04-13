@@ -20,8 +20,8 @@
 		<meta property="og:description" content="{{ chipset.getMetaDescription() }}">
 		<meta property="og:url" content="{{ absolute_url(path('chipset_show', {id: chipset.getId()})) }}">
 		{% if chipset.getExpansionChips() is not empty %}
-			{% for chipPart in chipset.getExpansionChips()|filter(chipPart => chipPart.getImages() is not empty)|slice(0,1) %}
-				{% for image in chipPart.getImages()|slice(0,1) %}
+			{% for chipPart in chipset.getExpansionChips()|filter(chipPart => chipPart.getImages() is not empty)|sort((a, b) => a.sort <=> b.sort)|slice(0, 1) %}
+				{% for image in chipPart.getImages()|sort((a, b) => a.sort <=> b.sort)|slice(0, 1) %}
 					<meta property="og:image" content="{{ vich_uploader_asset(image, 'imageFile')}}">
 					<meta name="twitter:image" content="{{ vich_uploader_asset(image, 'imageFile')}}">
 				{% endfor %}

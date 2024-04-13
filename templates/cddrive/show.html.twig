@@ -15,7 +15,7 @@
 	<meta property="og:title" content="{{ cddrive.getFullName() }}">
 	<meta property="og:description" content="Get info, images and documentation for the {{ cddrive.getFullName() }} optical drive">
 	{% if cddrive.getStorageDeviceImages() is not empty %}
-		{% for image in cddrive.getStorageDeviceImages()|sort((a, b) => a.getFileName() <=> b.getFileName())|slice(0, 1) %}
+		{% for image in cddrive.getStorageDeviceImages()|filter(a => a.type in ["1", "2", "3"])|sort((a, b) => a.getFileName() <=> b.getFileName())|sort((a, b) => b.getType <=> a.getType)|slice(0, 1) %}
 			<meta name="twitter:image" content="{{ vich_uploader_asset(image, 'imageFile')}}">
 			<meta property="og:image" content="{{ vich_uploader_asset(image, 'imageFile')}}">
 		{% endfor %}
