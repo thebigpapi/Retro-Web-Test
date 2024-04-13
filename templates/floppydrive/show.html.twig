@@ -68,35 +68,35 @@
 						<img src="{{ absolute_url(asset('build/icons/io.svg')) }}" alt="cpu" width="24" height="24">Interface{% if floppydrive.getInterfaces()|length > 1 %}s{% endif %}
 					</div>
 					{% if floppydrive.getInterfaces() is not empty %}
-					<div class="tag-container">{% for interface in floppydrive.getInterfaces() %}<span class="text-block">{{ interface.getName}}</span>{% endfor %}</div>
+						<div class="tag-container">{% for interface in floppydrive.getInterfaces() %}<span class="text-block">{{ interface.getName}}</span>{% endfor %}</div>
 					{% else %}
-					<div>Unknown</div>
+						<div><span class='badge badge-secondary'>Empty</span></div>
 					{% endif %}
 					<!-- Power connectors -->
 					<div class="quick-spec-head">
 						<img src="{{ absolute_url(asset('build/icons/power.svg')) }}" alt="pwr" width="24" height="24">Power connector
 					</div>
 					{% if floppydrive.getPowerConnectors() is not empty %}
-					<div class="tag-container">{% for power in floppydrive.getPowerConnectors() %}
-						<a href="{{ path('psu_connector_show', {id: power.getId()}) }}"><span class="text-block">{{ power.getName() }}</span></a>{% endfor %}</div>
+						<div class="tag-container">{% for power in floppydrive.getPowerConnectors() %}
+							<a href="{{ path('psu_connector_show', {id: power.getId()}) }}"><span class="text-block">{{ power.getName() }}</span></a>{% endfor %}</div>
 					{% else %}
-					<div>Unknown</div>
+						<div><span class='badge badge-secondary'>Empty</span></div>
 					{% endif %}
 					<!-- Size -->
 					<div class="quick-spec-head">
 						<img src="{{ absolute_url(asset('build/icons/dimension.svg')) }}" alt="cpu" width="24" height="24">Form factor
 					</div>
-					<div>{{ floppydrive.getPhysicalSize() }}</div>
+					<div>{{ floppydrive.getPhysicalSize() ?: "<span class='badge badge-secondary'>Empty</span>" }}</div>
 					<!-- Type -->
 					<div class="quick-spec-head">
 						<img src="{{ absolute_url(asset('build/icons/floppy.svg')) }}" alt="cpu" width="24" height="24">Type
 					</div>
 					{% if floppydrive.getType() is not empty %}
-					<div class="tag-container">{% for type in floppydrive.getType() %}
-						<span class="text-block">{{ type.getName() }}</span>{% endfor %}
-					</div>
+						<div class="tag-container">{% for type in floppydrive.getType() %}
+							<span class="text-block">{{ type.getName() }}</span>{% endfor %}
+						</div>
 					{% else %}
-					<div>Unknown</div>
+						<div><span class='badge badge-secondary'>Empty</span></div>
 					{% endif %}
 				</div>
 				{% include 'macros/aliases.html.twig' with {'entity':floppydrive.getStorageDeviceAliases(), 'msg': 'Also known as:'} %}

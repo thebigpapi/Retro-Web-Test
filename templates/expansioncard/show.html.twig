@@ -67,13 +67,13 @@
 						<!-- Type -->
 						<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/tag.svg')) }}" alt="type" width="24" height="24">Type</div>
 						{% if expansioncard.getType() is not empty %}
-						<div class="tag-container">
-							{% for type in expansioncard.getType() %}
-							<span class="text-block">{{ type }}</span>
-							{% endfor %}
-						</div>
+							<div class="tag-container">
+								{% for type in expansioncard.getType() %}
+								<span class="text-block">{{ type }}</span>
+								{% endfor %}
+							</div>
 						{% else %}
-						<div>Unknown</div>
+							<div><span class='badge badge-secondary'>Empty</span></div>
 						{% endif %}
 						<!-- Expansion Slot preset -->
 						{% if expansioncard.getExpansionSlotInterfaceSignal() is not empty %}
@@ -117,12 +117,12 @@
 								{% endfor %}
 							{% endfor %}
 						{% else %}
-							<div>None</div>
+							<div><span class='badge badge-secondary'>Empty</span></div>
 						{% endif %}
 						</div>
 						<!-- FCC ID -->
 						<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/factory.svg')) }}" alt="fcc" width="24" height="24">FCC ID</div>
-						<div>{{ expansioncard.getFccId() ?: 'unknown' }}</div>
+						<div>{{ expansioncard.getFccId() ?: "<span class='badge badge-secondary'>Empty</span>" }}</div>
 						<!-- Supported RAM types -->
 						{% if expansioncard.getDramType() is not empty %}
 						<div class="quick-spec-head">
@@ -155,7 +155,7 @@
 							{{ expansioncard.getLength() ? (expansioncard.getWidth() ? " x ") ~ expansioncard.getLength() ~ "mm (length)" }}
 							{{ expansioncard.getHeight() ? (expansioncard.getLength() or expansioncard.getWidth() ? " x ") ~ expansioncard.getHeight() ~ "mm (height)" }}</div>
 						{% else %}
-						<div>unknown</div>
+							<div><span class='badge badge-secondary'>Empty</span></div>
 						{% endif %}
 					</div>
 				</div>

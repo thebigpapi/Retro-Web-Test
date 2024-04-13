@@ -29,7 +29,7 @@
 						<div class="perk-alias">
 							{% if motherboard.getMotherboardAliases() is not empty %}{% for alias in motherboard.getMotherboardAliases() %}
 								<span class="results-alias">
-									<small>{% if alias.getManufacturer() is not null %}{{ alias.getManufacturer().getName() }}{% else %}Unknown{% endif %}&nbsp;{{ alias.name }}{% if not loop.last %} |{% endif %}</small>
+									<small>{{ alias.getFullAliasName() }}{% if not loop.last %} |{% endif %}</small>
 								</span>
 							{% endfor %}{% endif %}
 						</div>

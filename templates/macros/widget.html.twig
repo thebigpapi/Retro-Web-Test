@@ -11,11 +11,11 @@
             <div class="header-label">Name</div>
             <div><a class="result-link" href="{{ path("driver_show", {id: driver.getId()}) }}">{{ driver.getName() }}</a></div>
             <div class="header-label">Version</div>
-            <div>{{ driver.getFileVersion() ? driver.getFileVersion() : 'Unknown' }}</div>
+            <div>{{ driver.getFileVersion() ? driver.getFileVersion() : "<span class='badge badge-secondary'>Empty</span>" }}</div>
 			<div class="header-label">Release date</div>
-			<div>{{ driver.getReleaseDate() ? driver.getReleaseDateString() : 'Unknown' }}</div>
+			<div>{{ driver.getReleaseDate() ? driver.getReleaseDateString() : "<span class='badge badge-secondary'>Empty</span>" }}</div>
             <div class="header-label">Size</div>
-            <div>{{driver.getSize() ? driver.getSizeFormatted() : "<i>unknown</i>" }}</div>
+            <div>{{driver.getSize() ? driver.getSizeFormatted() : "<span class='badge badge-secondary'>Empty</span>" }}</div>
             <div class="header-label">File name</div>
             <div><a class="combo" href="{{ vich_uploader_asset(driver, 'file')}}">
 				<img src="{{ absolute_url(asset('build/icons/dw.svg')) }}" alt="" width="16" style="vertical-align: middle;">{{ driver.getFileNameSimple() }}</a>
@@ -43,9 +43,9 @@
 			{% for alias in chipset.getChipsetAliases() %}
 				<span>{{ alias.getFullAliasName() }}{% if not loop.last %} |{% endif %}</span>
 			{% endfor %}
-		{% endif %}</div>
+		{% else %}<span class='badge badge-secondary'>Empty</span>{% endif %}</div>
         <div class="header-label">Release date</div>
-		<div>{{ chipset.getReleaseDate() ? chipset.getReleaseDateString() : 'Unknown' }}</div>
+		<div>{{ chipset.getReleaseDate() ? chipset.getReleaseDateString() : "<span class='badge badge-secondary'>Empty</span>" }}</div>
 	</div>
 	{% endfor %}
 {% endif %}
@@ -193,7 +193,7 @@
 			{% endif %}
 		</div>
 		<div class="header-label">Family</div>
-		<div>{{ cpu.getPlatform() ? cpu.getPlatform().getName() : 'Unknown' }}</div>
+		<div>{{ cpu.getPlatform() ? cpu.getPlatform().getName() : "<span class='badge badge-secondary'>Empty</span>" }}</div>
         <div class="header-label">Speed/FSB</div>
         {% if cpu.getSpeed != cpu.getFsb() %}
             <div>{{ cpu.getSpeed().getValueWithUnit() }}/{{ cpu.getFsb().getValueWithUnit() }}</div>
@@ -202,24 +202,24 @@
         {% endif %}
         <div class="header-label">Package</div>
         {% if cpu.getSockets() is not empty %}
-		<div><div class="tag-container">
-			{% for socket in cpu.getSockets() %}<span class="text-block">{{ socket.getNameAndType}}</span>{% endfor %}
-		</div></div>
+			<div><div class="tag-container">
+				{% for socket in cpu.getSockets() %}<span class="text-block">{{ socket.getNameAndType}}</span>{% endfor %}
+			</div></div>
 		{% else %}
-		<div>Unknown</div>
+			<div><span class='badge badge-secondary'>Empty</span></div>
 		{% endif %}
 		<div class="header-label">Voltage</div>
 		{% if cpu.getVoltages() is not empty %}
-		<div><div class="tag-container">
-			{% for voltage in cpu.getVoltages() %}<span class="text-block">{{ voltage.getValueWithUnit()}}</span>{% endfor %}
-		</div></div>
+			<div><div class="tag-container">
+				{% for voltage in cpu.getVoltages() %}<span class="text-block">{{ voltage.getValueWithUnit()}}</span>{% endfor %}
+			</div></div>
 		{% else %}
-		<div>Unknown</div>
+			<div><span class='badge badge-secondary'>Empty</span></div>
 		{% endif %}
         <div class="header-label">TDP</div>
-		<div>{{ cpu.getTdpWithValue() ? cpu.getTdpWithValue() : 'Unknown' }}</div>
+		<div>{{ cpu.getTdpWithValue() ? cpu.getTdpWithValue() : "<span class='badge badge-secondary'>Empty</span>" }}</div>
         <div class="header-label">Process node</div>
-		<div>{{ cpu.getProcessNodeWithValue() ? cpu.getProcessNodeWithValue() : 'Unknown' }}</div>
+		<div>{{ cpu.getProcessNodeWithValue() ? cpu.getProcessNodeWithValue() : "<span class='badge badge-secondary'>Empty</span>" }}</div>
 	</div>
 	{% endfor %}
 {% endif %}

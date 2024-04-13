@@ -60,16 +60,16 @@
 				<div class="quick-spec-table">
 					<!-- Mechanical -->
 					<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/rs232.svg')) }}" alt="conn" width="24" height="24">Connector</div>
-					<div>{{ io_port.getInterface() ? io_port.getInterface().getName() : 'Unknown'}}</div>
+					<div>{{ io_port.getInterface() ? (io_port.getInterface().getName() ?: "<span class='badge badge-secondary'>Empty</span>") : "<span class='badge badge-secondary'>Empty</span>"}}</div>
 					<!-- Mechanical p/n -->
 					<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/tag.svg')) }}" alt="conn" width="24" height="24">Conn. part number</div>
-					<div>{{ io_port.getInterface() ? io_port.getInterface().getPartNumber() : 'Unknown'}}</div>
+					<div>{{ io_port.getInterface() ? (io_port.getInterface().getPartNumber() ?: "<span class='badge badge-secondary'>Empty</span>") : "<span class='badge badge-secondary'>Empty</span>"}}</div>
 					<!-- Electrical -->
 					<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/io.svg')) }}" alt="signal" width="24" height="24">Electrical interfaces</div>
 					{% if io_port.getSignals() is not empty %}
-					<div class="tag-container">{% for signal in io_port.getSignals() %}<span class="text-block">{{ signal.getName()}}</span>{% endfor %}</div>
+						<div class="tag-container">{% for signal in io_port.getSignals() %}<span class="text-block">{{ signal.getName()}}</span>{% endfor %}</div>
 					{% else %}
-					<div>Unknown</div>
+						<div><span class='badge badge-secondary'>Empty</span></div>
 					{% endif %}
 				</div>
 				{% include 'macros/notes.html.twig' with {'entity': io_port} %}

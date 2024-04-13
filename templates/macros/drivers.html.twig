@@ -12,7 +12,7 @@
             <div class="header-label">Name</div>
             <div><a href="{{ path("driver_show", {id: driver.largeFile.getId()}) }}">{{driver.largeFile.getName()}}</a></div>
             <div class="header-label">Version</div>
-            <div>{{ driver.largeFile.getFileVersion() ? driver.largeFile.getFileVersion() : '<i>unknown</i>' }}</div>
+            <div>{{ driver.largeFile.getFileVersion() ? driver.largeFile.getFileVersion() : "<span class='badge badge-secondary'>Empty</span>" }}</div>
             <div class="header-label">OS support</div>
             <div>
                 <div class="tag-container">
@@ -22,10 +22,11 @@
                     <span>{{os.getName()}}</span>
                 </span>
                 {% endfor %}
+                {% if driver.largeFile.getOsFlags() is empty %}<span class='badge badge-secondary'>Empty</span>{% endif %}
                 </div>
             </div>
             <div class="header-label">Size</div>
-            <div>{{driver.largeFile.getSize() ? driver.largeFile.getSizeFormatted() : "<i>unknown</i>" }}</div>
+            <div>{{driver.largeFile.getSize() ? driver.largeFile.getSizeFormatted() : "<span class='badge badge-secondary'>Empty</span>" }}</div>
             <div class="header-label">Filename</div>
             <div>
                 <a class="combo" href="{{ vich_uploader_asset(driver.largeFile, 'file')}}">

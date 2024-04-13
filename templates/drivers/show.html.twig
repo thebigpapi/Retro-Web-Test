@@ -57,12 +57,12 @@
 					<div class="quick-spec-table">
 						<!-- Release Date -->
 						<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/calendar.svg')) }}" alt="date" width="24" height="24">Release Date</div>
-						<div class="perk-date-simple">{{ driver.getReleaseDateString() ? driver.getReleaseDateString() : 'Unknown' }}</div>
+						<div class="perk-date-simple">{{ driver.getReleaseDateString() ? driver.getReleaseDateString() : "<span class='badge badge-secondary'>Empty</span>" }}</div>
 						<!-- Version -->
 						<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/tag.svg')) }}" alt="chip" width="24" height="24">Version</div>
-						<div>{{ driver.getFileVersion() ? driver.getFileVersion() : 'Unknown' }}</div>
+						<div>{{ driver.getFileVersion() ? driver.getFileVersion() : "<span class='badge badge-secondary'>Empty</span>" }}</div>
 						<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/file.svg')) }}" alt="chip" width="24" height="24">Size</div>
-						<div>{{driver.getSize() ? driver.getSizeFormatted() : "<i>unknown</i>" }}</div>
+						<div>{{driver.getSize() ? driver.getSizeFormatted() : "<span class='badge badge-secondary'>Empty</span>" }}</div>
 						<!-- File -->
 						<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/mediatype.svg')) }}" alt="file" width="24" height="24">File</div>
 						<div><a href="{{ vich_uploader_asset(driver, 'file')}}">
@@ -80,7 +80,7 @@
 							<span class="text-block">{{arch.getName()}}</span>
 							{% endfor %}
 						{% else %}
-							<div>Unknown</div>
+							<span class='badge badge-secondary'>Empty</span>
 						{% endif %}
 						</div>
 						<!-- Supported OS -->
@@ -94,7 +94,7 @@
 							</span></li>
 							{% endfor %}
 						{% else %}
-							<div>Unknown</div>
+							<span class='badge badge-secondary'>Empty</span>
 						{% endif %}
 						</ul></div>
 					</div>

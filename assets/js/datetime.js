@@ -40,7 +40,7 @@ function getDatesSimple(){
                         options["day"] = 'numeric';
                     }
                 }
-                element.innerHTML = "<span title=" + dateIso + ">" +  date.toLocaleDateString('en-US', options) + "</span>"
+                element.innerHTML = "<span title=" + dateIso + ">" +  date.toLocaleDateString('en-GB', options) + "</span>"
             } catch (error) {
                 console.debug("Can't format date for current element -> ", element);
             }

@@ -107,11 +107,11 @@
 						<div class="header-label">Name</div>
 						<div><a class="result-link" href="{{ path("driver_show", {id: driver.getId()}) }}">{{ driver.getName() }}</a></div>
 						<div class="header-label">Version</div>
-						<div>{{ driver.getFileVersion() ? driver.getFileVersion() : 'Unknown' }}</div>
+						<div>{{ driver.getFileVersion() ? driver.getFileVersion() : "<span class='badge badge-secondary'>Empty</span>" }}</div>
 						<div class="header-label">Release date</div>
-						<div>{{ driver.getReleaseDate() ? driver.getReleaseDateString() : 'Unknown' }}</div>
+						<div class="perk-date-simple">{{ driver.getReleaseDate() ? driver.getReleaseDateString() : "<span class='badge badge-secondary'>Empty</span>" }}</div>
 						<div class="header-label">Size</div>
-						<div>{{driver.getSize() ? driver.getSizeFormatted() : "<i>unknown</i>" }}</div>
+						<div>{{driver.getSize() ? driver.getSizeFormatted() : "<span class='badge badge-secondary'>Empty</span>" }}</div>
 						<div class="header-label">File name</div>
 						<div><a class="combo" href="{{ vich_uploader_asset(driver, 'file')}}">
 							<img src="{{ absolute_url(asset('build/icons/dw.svg')) }}" alt="" width="16" style="vertical-align: middle;">{{ driver.getFileNameSimple() }}</a>

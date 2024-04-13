@@ -351,6 +351,23 @@ a.button-widget-new{
     }
 }
 
+span.badge{
+    &.badge-secondary{
+        background-color: #e2e8f0;
+        box-shadow: var(--badge-secondary-box-shadow);
+        color: var(--badge-secondary-color);
+        @media (prefers-color-scheme: dark) {
+            background-color: #373737;
+            //color: var(--text-color);
+        }
+    }
+    font-size: var(--font-size-xs);
+    font-family: var(--font-family-base);
+    border-radius: var(--border-radius);
+    box-shadow: var(--badge-box-shadow);
+    color: var(--text-color);
+    padding: 1px 5px;
+}
 .monospace {
 	font-family: $monospace-font;
 }

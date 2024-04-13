@@ -70,25 +70,25 @@
 							<img src="{{ absolute_url(asset('build/icons/io.svg')) }}" alt="cpu" width="24" height="24">Interface{% if harddrive.getInterfaces()|length > 1 %}s{% endif %}
 						</div>
 						{% if harddrive.getInterfaces() is not empty %}
-						<div class="tag-container">{% for interface in harddrive.getInterfaces() %}<span class="text-block">{{ interface.getName}}</span>{% endfor %}</div>
+							<div class="tag-container">{% for interface in harddrive.getInterfaces() %}<span class="text-block">{{ interface.getName}}</span>{% endfor %}</div>
 						{% else %}
-						<div>Unknown</div>
+							<div><span class='badge badge-secondary'>Empty</span></div>
 						{% endif %}
 						<!-- Power connectors -->
 						<div class="quick-spec-head">
 							<img src="{{ absolute_url(asset('build/icons/power.svg')) }}" alt="pwr" width="24" height="24">Power connector
 						</div>
 						{% if harddrive.getPowerConnectors() is not empty %}
-						<div class="tag-container">{% for power in harddrive.getPowerConnectors() %}
-							<a href="{{ path('psu_connector_show', {id: power.getId()}) }}"><span class="text-block">{{ power.getName() }}</span></a>{% endfor %}</div>
+							<div class="tag-container">{% for power in harddrive.getPowerConnectors() %}
+								<a href="{{ path('psu_connector_show', {id: power.getId()}) }}"><span class="text-block">{{ power.getName() }}</span></a>{% endfor %}</div>
 						{% else %}
-						<div>Unknown</div>
+							<div><span class='badge badge-secondary'>Empty</span></div>
 						{% endif %}
 						<!-- Size -->
 						<div class="quick-spec-head">
 							<img src="{{ absolute_url(asset('build/icons/dimension.svg')) }}" alt="cpu" width="24" height="24">Form factor
 						</div>
-						<div>{{ harddrive.getPhysicalSize() }}</div>
+						<div>{{ harddrive.getPhysicalSize() ?: "<span class='badge badge-secondary'>Empty</span>" }}</div>
 						<!-- Capacity -->
 						<div class="quick-spec-head">
 							<img src="{{ absolute_url(asset('build/icons/hdd.svg')) }}" alt="cpu" width="24" height="24">Capacity
@@ -106,7 +106,7 @@
 						<div class="quick-spec-head">
 							<img src="{{ absolute_url(asset('build/icons/platter.svg')) }}" alt="486" width="24" height="24">Cyl./Heads/Sectors
 						</div>
-						<div>{{ harddrive.getCylinders() ?: 'Unknown' }} / {{ harddrive.getHeads() ?: 'unknown' }} / {{ harddrive.getSectors() ?: 'Unknown' }}</div>
+						<div>{{ harddrive.getCylinders() ?: "<span class='badge badge-secondary'>Empty</span>" }} / {{ harddrive.getHeads() ?: "<span class='badge badge-secondary'>Empty</span>" }} / {{ harddrive.getSectors() ?: "<span class='badge badge-secondary'>Empty</span>" }}</div>
 						{% endif %}
 						<!-- Platters -->
 						{% if harddrive.getPlatters() is not empty %}
@@ -119,17 +119,17 @@
 						<div class="quick-spec-head">
 							<img src="{{ absolute_url(asset('build/icons/speed.svg')) }}" alt="486" width="24" height="24">Random seek
 						</div>
-						<div>{{ harddrive.getRandomSeek() ~ ' ms' ?: 'Unknown' }}</div>
+						<div>{{ harddrive.getRandomSeek() ? harddrive.getRandomSeek() ~ ' ms' : "<span class='badge badge-secondary'>Empty</span>" }}</div>
 						<!-- Track-to-track seek -->
 						<div class="quick-spec-head">
 							<img src="{{ absolute_url(asset('build/icons/speed.svg')) }}" alt="486" width="24" height="24">Track-to-track seek
 						</div>
-						<div>{{ harddrive.getTrackSeek() ~ ' ms' ?: 'Unknown' }}</div>
+						<div>{{ harddrive.getTrackSeek() ?  harddrive.getTrackSeek() ~ ' ms' : "<span class='badge badge-secondary'>Empty</span>" }}</div>
 						<!-- RPM -->
 						<div class="quick-spec-head">
 							<img src="{{ absolute_url(asset('build/icons/speed.svg')) }}" alt="486" width="24" height="24">RPM
 						</div>
-						<div>{{ harddrive.getSpindleSpeed() ?: 'Unknown' }}</div>
+						<div>{{ harddrive.getSpindleSpeed() ?: "<span class='badge badge-secondary'>Empty</span>" }}</div>
 					</div>
 				</div>
 				{% include 'macros/aliases.html.twig' with {'entity':harddrive.getStorageDeviceAliases(), 'msg': 'Also known as:'} %}

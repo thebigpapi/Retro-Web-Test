@@ -51,24 +51,24 @@
 				<div class="quick-spec-table">
 					<!-- Full name -->
 					<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/factory.svg')) }}" alt="code" width="24" height="24">Full name</div>
-					<div>{{ manufacturer.getFullName() ?: 'Unknown'}}</div>
+					<div>{{ manufacturer.getFullName() ?: "<span class='badge badge-secondary'>Empty</span>"}}</div>
 					<!-- Codes -->
 					<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/tag.svg')) }}" alt="code" width="24" height="24">Codes</div>
 					{% if manufacturer.getManufacturerCodes() is not empty %}
-					<div class="tag-container">{% for code in manufacturer.getManufacturerCodes() %}
-						<span class="text-block">{{ code.getValue() }}</span>{% endfor %}
-					</div>
+						<div class="tag-container">{% for code in manufacturer.getManufacturerCodes() %}
+							<span class="text-block">{{ code.getValue() }}</span>{% endfor %}
+						</div>
 					{% else %}
-					<div>Unknown</div>
+						<div><span class='badge badge-secondary'>Empty</span></div>
 					{% endif %}
 					<!-- BIOS Codes -->
 					<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/awchip.svg')) }}" alt="bios" width="24" height="24">BIOS codes</div>
 					{% if manufacturer.getBiosCodes() is not empty %}
-					<div class="tag-container">{% for code in manufacturer.getBiosCodes() %}
-						<span class="text-block">{{ code.getBiosManufacturer() }}: {{ code.getCode() }}</span>{% endfor %}
-					</div>
+						<div class="tag-container">{% for code in manufacturer.getBiosCodes() %}
+							<span class="text-block">{{ code.getBiosManufacturer() }}: {{ code.getCode() }}</span>{% endfor %}
+						</div>
 					{% else %}
-					<div>Unknown</div>
+						<div><span class='badge badge-secondary'>Empty</span></div>
 					{% endif %}
 					<!-- Vendor ID -->
 					<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/tag.svg')) }}" alt="date" width="24" height="24">Vendor ID</div>
@@ -78,7 +78,7 @@
 							<span class="text-block">{{ven.getVen()}}</span>
 						{% endfor %}
 					{% else %}
-						<div>Unknown</div>
+						<div><span class='badge badge-secondary'>Empty</span></div>
 					{% endif %}
 					</div>
 					<!-- Actions -->

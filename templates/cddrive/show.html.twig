@@ -69,19 +69,20 @@
 							<img src="{{ absolute_url(asset('build/icons/io.svg')) }}" alt="cpu" width="24" height="24">Interface{% if cddrive.getInterfaces()|length > 1 %}s{% endif %}
 						</div>
 						{% if cddrive.getInterfaces() is not empty %}
-						<div class="tag-container">{% for interface in cddrive.getInterfaces() %}<span class="text-block">{{ interface.getName}}</span>{% endfor %}</div>
+							<div class="tag-container">{% for interface in cddrive.getInterfaces() %}<span class="text-block">{{ interface.getName}}</span>{% endfor %}</div>
 						{% else %}
-						<div>Unknown</div>
+							<div><span class='badge badge-secondary'>Empty</span></div>
 						{% endif %}
 						<!-- Power connectors -->
 						<div class="quick-spec-head">
 							<img src="{{ absolute_url(asset('build/icons/power.svg')) }}" alt="pwr" width="24" height="24">Power connector
 						</div>
 						{% if cddrive.getPowerConnectors() is not empty %}
-						<div class="tag-container">{% for power in cddrive.getPowerConnectors() %}
-							<a href="{{ path('psu_connector_show', {id: power.getId()}) }}"><span class="text-block">{{ power.getName() }}</span></a>{% endfor %}</div>
+							<div class="tag-container">{% for power in cddrive.getPowerConnectors() %}
+								<a href="{{ path('psu_connector_show', {id: power.getId()}) }}"><span class="text-block">{{ power.getName() }}</span></a>{% endfor %}
+							</div>
 						{% else %}
-						<div>Unknown</div>
+							<div><span class='badge badge-secondary'>Empty</span></div>
 						{% endif %}
 						<!-- Size -->
 						<div class="quick-spec-head">
@@ -99,22 +100,22 @@
 						<div class="quick-spec-head">
 							<img src="{{ absolute_url(asset('build/icons/cd.svg')) }}" alt="cdr" width="24" height="24">CD read speed
 						</div>
-						<div>{{ cddrive.getCdReadSpeed() ~ 'x' ?: 'Unknown' }}</div>
+						<div>{{ cddrive.getCdReadSpeed() ? cddrive.getCdReadSpeed() ~ 'x' : "<span class='badge badge-secondary'>Empty</span>" }}</div>
 						<!-- CD write -->
 						<div class="quick-spec-head">
 							<img src="{{ absolute_url(asset('build/icons/cd.svg')) }}" alt="cdw" width="24" height="24">CD write speed
 						</div>
-						<div>{{ cddrive.getCdWriteSpeed() ~ 'x' ?: 'Unknown' }}</div>
+						<div>{{ cddrive.getCdWriteSpeed() ? cddrive.getCdWriteSpeed() ~ 'x' : "<span class='badge badge-secondary'>Empty</span>" }}</div>
 						<!-- DVD read -->
 						<div class="quick-spec-head">
 							<img src="{{ absolute_url(asset('build/icons/dvd.svg')) }}" alt="dvdr" width="24" height="24">DVD read speed
 						</div>
-						<div>{{ cddrive.getDvdReadSpeed() ~ 'x' ?: 'Unknown' }}</div>
+						<div>{{ cddrive.getDvdReadSpeed() ? cddrive.getDvdReadSpeed() ~ 'x' : "<span class='badge badge-secondary'>Empty</span>" }}</div>
 						<!-- DVD write speed -->
 						<div class="quick-spec-head">
 							<img src="{{ absolute_url(asset('build/icons/dvd.svg')) }}" alt="dvdw" width="24" height="24">DVD write speed
 						</div>
-						<div>{{ cddrive.getDvdWriteSpeed() ~ 'x' ?: 'Unknown' }}</div>
+						<div>{{ cddrive.getDvdWriteSpeed() ? cddrive.getDvdWriteSpeed() ~ 'x' : "<span class='badge badge-secondary'>Empty</span>" }}</div>
 					</div>
 				</div>
 				{% include 'macros/aliases.html.twig' with {'entity':cddrive.getStorageDeviceAliases(), 'msg': 'Also known as:'} %}
