@@ -12,7 +12,7 @@
 							<div class="perk-image">
 							{% if expansioncard.getImages() is not empty %}
 								{% set imgcount = 0 %}
-								{% for image in expansioncard.getImages()|sort((a, b) => a.getFileName() <=> b.getFileName())|slice(0, 1) %}
+								{% for image in expansioncard.getImages()|filter(a => a.type in ["1", "2"])|sort((a, b) => a.getFileName() <=> b.getFileName())|sort((a, b) => b.type <=> a.type)|slice(0, 1) %}
 									{% set imgcount = imgcount + 1 %}
 									<img src="{% if vich_uploader_asset(image, 'imageFile') | ext != "svg" %}
 									{{ vich_uploader_asset(image, 'imageFile') | imagine_filter('show_thumb') }}{% else %}
