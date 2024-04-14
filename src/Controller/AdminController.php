@@ -8,6 +8,7 @@ use App\Entity\IoPortInterface;
 use App\Entity\IoPortInterfaceSignal;
 use App\Entity\ExpansionSlotInterfaceSignal;
 use App\Entity\IoPortSignal;
+use App\Entity\LargeFile;
 use App\Entity\ProcessorPlatformType;
 use App\Repository\CdDriveRepository;
 use App\Repository\ChipsetRepository;
@@ -25,6 +26,8 @@ use App\Repository\ExpansionSlotInterfaceSignalRepository;
 use App\Repository\IoPortSignalRepository;
 use App\Repository\ManufacturerRepository;
 use App\Repository\MotherboardRepository;
+use App\Repository\OsArchitectureRepository;
+use App\Repository\OsFlagRepository;
 use App\Repository\ProcessorRepository;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -40,6 +43,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use Exception;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 
 class AdminController extends AbstractDashboardController
 {
@@ -194,6 +198,25 @@ class AdminController extends AbstractDashboardController
         return new JsonResponse($list);
     }
 
+    #[Route('/dashboard/getdriverfields', name:'get_driver_fields', methods:['GET'])]
+    public function getDriverFields(OsFlagRepository $osFlagRepository, OsArchitectureRepository $osArchitectureRepository, CsrfTokenManagerInterface $csrfTokenManager): JsonResponse
+    {
+        $listFlags = array();
+        $listArchs = array();
+        $token = $csrfTokenManager->getToken('ea-action-new')->getValue();
+        $osFlags = $osFlagRepository->findAll();
+        $osArchs = $osArchitectureRepository->findAll();
+        foreach($osFlags as $flag)
+            $listFlags[$flag->getName()] = $flag->getId();
+        foreach($osArchs as $arch)
+            $listArchs[$arch->getName()] = $arch->getId();
+        return new JsonResponse([
+            $listFlags,
+            $listArchs,
+            $token
+        ]);
+    }
+
     #[Route('/dashboard/getcreditors', name:'get_creditors', methods:['GET'])]
     public function getCreditors(CreditorRepository $creditorRepository): JsonResponse
     {
@@ -287,7 +310,6 @@ class AdminController extends AbstractDashboardController
             $signals = [$signal];
         } else {
             $signals =$ioPortSignalRepository->findAll();
-            
         }
 
         return new JsonResponse(array_map(fn (IoPortSignal $signal) => $signal->jsonSerialize(), $signals));

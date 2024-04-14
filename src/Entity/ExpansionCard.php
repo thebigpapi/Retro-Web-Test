@@ -862,4 +862,13 @@ class ExpansionCard
 
         return $this;
     }
+    public function getChipsWithDrivers(): array
+    {
+        $driverChips = [];
+        foreach($this->expansionChips as $chip){
+            if(!$chip->getDrivers()->isEmpty())
+                array_push($driverChips, $chip->getFullName());
+        }
+        return $driverChips;
+    }
 }

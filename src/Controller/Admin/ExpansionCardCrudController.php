@@ -52,6 +52,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Factory\EntityFactory;
 use EasyCorp\Bundle\EasyAdminBundle\Security\Permission;
 use EasyCorp\Bundle\EasyAdminBundle\Config\KeyValueStore;
 use EasyCorp\Bundle\EasyAdminBundle\Collection\FieldCollection;
+use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -211,26 +212,6 @@ class ExpansionCardCrudController extends AbstractCrudController
         yield CodeEditorField::new('description')
             ->setLanguage('markdown')
             ->onlyOnForms();
-        yield FormField::addTab('Chips')
-            ->setIcon('fa fa-microchip')
-            ->onlyOnForms();
-        yield AssociationField::new('expansionChips', 'Expansion chips')
-            ->autocomplete()
-            ->setColumns('col-sm-12 col-lg-6 col-xxl-4 multi-widget-trw')
-            ->onlyOnForms();
-        yield AssociationField::new('ramSize', 'Supported RAM size')
-            ->setColumns('col-sm-12 col-lg-6 col-xxl-4 multi-widget-trw')
-            ->onlyOnForms();
-        yield AssociationField::new('dramType', 'Supported RAM types')
-            ->setColumns('col-sm-12 col-lg-6 col-xxl-4 multi-widget-trw')
-            ->onlyOnForms();
-        yield FormField::addTab('Specs')
-            ->setIcon('fa fa-info')
-            ->onlyOnForms();
-        yield TextJsonField::new('miscSpecs', 'Misc specs')
-            ->setFormTypeOption('label', false)
-            ->setColumns(12)
-            ->onlyOnForms();
         yield FormField::addTab('Connectors')
             ->setIcon('fa fa-plug')
             ->onlyOnForms();
@@ -249,7 +230,24 @@ class ExpansionCardCrudController extends AbstractCrudController
             ->setColumns('col-sm-12 col-lg-6 col-xxl-4')
             ->renderExpanded()
             ->onlyOnForms();
-        yield FormField::addTab('Firmware')
+        yield FormField::addTab('Chips/specs')
+            ->setIcon('fa fa-microchip')
+            ->onlyOnForms();
+        yield AssociationField::new('expansionChips', 'Expansion chips')
+            ->autocomplete()
+            ->setColumns('col-sm-12 col-lg-6 col-xxl-4 multi-widget-trw')
+            ->onlyOnForms();
+        yield AssociationField::new('ramSize', 'Supported RAM size')
+            ->setColumns('col-sm-12 col-lg-6 col-xxl-4 multi-widget-trw')
+            ->onlyOnForms();
+        yield AssociationField::new('dramType', 'Supported RAM types')
+            ->setColumns('col-sm-12 col-lg-6 col-xxl-4 multi-widget-trw')
+            ->onlyOnForms();
+        yield TextJsonField::new('miscSpecs', 'Misc specs')
+            ->setFormTypeOption('label', false)
+            ->setColumns(12)
+            ->onlyOnForms();
+        yield FormField::addTab('BIOS')
             ->setIcon('fa fa-download')
             ->onlyOnForms();
         yield CollectionField::new('expansionCardBios', 'Firmware / BIOS images')
@@ -258,7 +256,29 @@ class ExpansionCardCrudController extends AbstractCrudController
             ->setColumns(12)
             ->renderExpanded()
             ->onlyOnForms();
-        yield FormField::addTab('Other attachments')
+        yield FormField::addTab('Drivers')
+            ->setIcon('fa fa-download')
+            ->onlyOnForms();
+        yield CollectionField::new('drivers', 'Drivers')
+            ->useEntryCrudForm(LargeFileCrudType::class)
+            ->setFormTypeOption('error_bubbling', false)
+            ->setColumns(6)
+            ->renderExpanded()
+            ->onlyOnForms();
+        yield ArrayField::new('getChipsWithDrivers', 'Expansion chips with drivers')
+            ->setCssClass("field-collection processed")
+            ->setDisabled()
+            ->onlyOnForms();
+        yield FormField::addTab('Docs')
+            ->setIcon('fa fa-file-pdf')
+            ->onlyOnForms();
+        yield CollectionField::new('documentations', 'Documentation')
+            ->useEntryCrudForm(DocumentationCrudType::class)
+            ->setFormTypeOption('error_bubbling', false)
+            ->setColumns(6)
+            ->renderExpanded()
+            ->onlyOnForms();
+        yield FormField::addTab('Images')
             ->setIcon('fa fa-download')
             ->onlyOnForms();
         yield CollectionField::new('images', 'Images')
@@ -267,18 +287,7 @@ class ExpansionCardCrudController extends AbstractCrudController
             ->setColumns(6)
             ->renderExpanded()
             ->onlyOnForms();
-        yield CollectionField::new('documentations', 'Documentation')
-            ->useEntryCrudForm(DocumentationCrudType::class)
-            ->setFormTypeOption('error_bubbling', false)
-            ->setColumns(6)
-            ->renderExpanded()
-            ->onlyOnForms();
-        yield CollectionField::new('drivers', 'Drivers')
-            ->useEntryCrudForm(LargeFileCrudType::class)
-            ->setFormTypeOption('error_bubbling', false)
-            ->setColumns(6)
-            ->renderExpanded()
-            ->onlyOnForms();
+
         yield DateField::new('lastEdited', 'Last edit')
             ->hideOnForm();
     }

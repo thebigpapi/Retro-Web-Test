@@ -1,6 +1,46 @@
 
 let form = document.getElementById('edit-LargeFile-form');
 let formtype = "edit-LargeFile-form";
+//initialize tom-select
+var settings = {
+    plugins: {
+        dropdown_input: {},
+    },
+    render: {
+        option: function (data, escape) {
+            return '<div>' + escape(data.text) + '</div>';
+        },
+        item: function (data, escape) {
+            return '<div>' + escape(data.text) + '</div>';
+        },
+        option_create: function (data, escape) {
+            return '<div class="create">Add <strong>' + escape(data.input) + '</strong>&hellip;</div>';
+        },
+        no_results: function (data, escape) {
+            return '<div class="no-results">No results found for "' + escape(data.input) + '"</div>';
+        },
+        not_loading: function (data, escape) {
+            // no default content
+        },
+        optgroup: function (data) {
+            let optgroup = document.createElement('div');
+            optgroup.className = 'optgroup';
+            optgroup.appendChild(data.options);
+            return optgroup;
+        },
+        optgroup_header: function (data, escape) {
+            return '<div class="optgroup-header">' + escape(data.label) + '</div>';
+        },
+        loading: function (data, escape) {
+            return '<div class="spinner"></div>';
+        },
+        dropdown: function () {
+            return '<div></div>';
+        }
+    }
+};
+let fieldList = ["name", "version", "os-support", "os-arch", "date", "precision", "releasedate", "file"]
+let createDriverBtn = document.getElementById('create-driver-btn');
 if(!form){
     form = document.getElementById('new-LargeFile-form');
     formtype = "new-LargeFile-form";
@@ -11,6 +51,217 @@ if(form){
     if(savecontbtn = document.getElementById("js-save-continue"))
         savecontbtn.addEventListener('click', () => submit("saveAndContinue"), false);
 }
+if(createDriverBtn){
+    createDriverBtn.addEventListener('click', () => createContainer(), false);
+}
+// JS driver editor
+function createContainer(){
+    let template = document.getElementById('create-driver-template');
+    let container = document.getElementById('create-driver-container');
+    if(container.innerHTML == "")
+        container.innerHTML = template.innerHTML;
+    else
+        alert("Can only add one driver at a time!");
+    populateFields();
+    let save = document.getElementById('create-driver-save');
+    save.addEventListener('click', () => JSsubmit(), false);
+}
+function populateFields(){
+    for(const item of fieldList){
+        let el = document.getElementsByClassName("newdriver-" + item + "-cssid")[0];
+        el.setAttribute("id", "newdriver-" + item)
+    }
+    driverForm=document.createElement('FORM');
+    driverForm.name='LargeFile';
+    driverForm.method='POST';
+    driverForm.action='#';
+    driverForm.setAttribute("onsubmit", "event.preventDefault();console.log('aaahahah');");
+    driverForm.setAttribute("id", "newdriver-form");
+    driverForm.setAttribute("data-token", "");
+    document.body.appendChild(driverForm);
+    let list = [];
+    let url = window.location.origin + "/dashboard/getdriverfields";
+    let xhr = new XMLHttpRequest()
+    xhr.open('GET', url, true)
+    xhr.setRequestHeader('Content-type', 'application/json; charset=UTF-8')
+    xhr.send();
+    xhr.onload = function () {
+        if(xhr.status === 200) {
+            list = JSON.parse(xhr.responseText);
+            console.log(list);
+            let os = document.getElementById("newdriver-os-support");
+            let osArch = document.getElementById("newdriver-os-arch");
+            for(const key of Object.keys(list[0])){
+                let op = new Option(key, list[0][key]);
+                os.add(op);
+            }
+            for(const key of Object.keys(list[1])){
+                let op = new Option(key, list[1][key]);
+                osArch.add(op);
+            }
+            osArch.setAttribute('id', "newdriver-os-arch");
+            new TomSelect('#newdriver-os-support', settings);
+            new TomSelect('#newdriver-os-arch', settings);
+            osArch.tomselect.addOption({entityId: 1, entityAsString: "x86"})
+            osArch.tomselect.addItem(1);
+            os.tomselect.sync();
+            osArch.tomselect.sync();
+            driverForm.setAttribute("data-token", list[2]);
+            console.log(list[0]);
+        }
+    }
+}
+function setDate(){
+    let widget = document.getElementById("newdriver-releasedate");
+    let yearSel = widget.querySelectorAll("input[type=number]")[0].value;
+    let monthSel = parseInt(widget.querySelectorAll("input[type=number]")[1].value);
+    let daySel = parseInt(widget.querySelectorAll("input[type=number]")[2].value);
+    let month = 1;
+    let day = 1;
+    let releaseDate = document.getElementById("newdriver-date");
+    let datePrecision = document.getElementById("newdriver-precision");
+    if(!yearSel){
+        return true;
+    }
+    if(yearSel < 1970 || yearSel > 2100){
+        alert("Invalid release date year!");
+        return false;
+    }
+    if(monthSel){
+        if(monthSel < 1 || monthSel > 12){
+            alert("Invalid release date month!");
+            return false;
+        }
+        if(daySel){
+            datePrecision.innerHTML = "d";
+            month = monthSel;
+            day = daySel;
+            if(daySel < 1 || daySel > 31){
+                alert("Invalid release date day!");
+                return false;
+            }
+        }
+        else{
+            datePrecision.innerHTML = "m";
+            month = monthSel;
+        }
+    }
+    else
+        datePrecision.innerHTML = "y";
+    releaseDate.innerHTML = yearSel + "-" + (month > 9 ? "" : "0") + month + "-" + (day > 9 ? "" : "0" ) + day;
+}
+function JSsubmit(){
+    hideMessage();
+    let name = document.getElementById("newdriver-name");
+    let version = document.getElementById("newdriver-version");
+    let os = getSelectValues(document.getElementById("newdriver-os-support"));
+    let osArch = getSelectValues(document.getElementById("newdriver-os-arch"));
+    let releaseDate = document.getElementById("newdriver-date");
+    let datePrecision = document.getElementById("newdriver-precision");
+    let file = document.getElementById("newdriver-file");
+    if(name.value == ""){
+        alert("Driver name field is empty!");
+        return;
+    }
+    if(file.files.length < 1){
+        alert("Driver has no file attached!");
+        return;
+    }
+    if(!setDate()){
+        return;
+    }
+    let template = document.getElementById('create-driver-template');
+    let url = template.getAttribute("data-url");
+    let driverForm = document.getElementById("newdriver-form");
+    let formData = new FormData(driverForm);
+    //grabbing the token
+    let xhr = new XMLHttpRequest();
+    xhr.open("GET", url);
+    //xhr.setRequestHeader('Content-type', 'application/json; charset=UTF-8')
+    xhr.send();
+    xhr.onload = function () {
+        if(xhr.status === 200) {
+            let parser = new DOMParser();
+            let parsedResponse = parser.parseFromString(xhr.responseText, "text/html");
+            let token = parsedResponse.getElementById("LargeFile__token").value;
+            formData.append("ea[newForm][btn]", "saveAndReturn");
+            formData.append("LargeFile[name]", name.value);
+            formData.append("LargeFile[fileVersion]", version.value);
+            formData.append("LargeFile[releaseDate]", releaseDate.innerHTML);
+            formData.append("LargeFile[datePrecision]", datePrecision.innerHTML);
+            for(let i=0; i<os.length; i++){
+                formData.append("LargeFile[osFlags][" + (i+1) + "]", os[i]);
+            }
+            for(let i=0; i<osArch.length; i++){
+                formData.append("LargeFile[osArchitecture][" + (i+1) + "]", osArch[i]);
+            }
+            formData.append("LargeFile[_token]", token);
+            formData.append("LargeFile[file][file]", file.files[0]);
+            console.log(formData);
+            showMessage("Uploading ...", false);
+            fetch(url, {
+                redirect: 'manual',
+                method: "POST",
+                body: formData
+            }).then((res) => {
+                if(res.status == 0){
+                    showMessage("Uploaded!", false);
+                    console.log(res);
+                    addDriver();
+                }
+                else if(res.status == 422){
+                    showMessage("Error " + res.status + " " + res.statusText, true);
+                    let entity = template.getAttribute("data-entity");
+                    let driverAddBtn = document.getElementById(entity + "_collection").previousElementSibling;
+                    let drivers = document.getElementsByClassName(entity + "_cssid");
+                    console.log(driverAddBtn);
+                    driverAddBtn.click();
+                }
+                else{
+                    console.log("Not OK", res)
+                }
+            }).catch((error) => {
+                console.log("Issue: " + error);
+            });
+            console.log("JSsubmit end")
+        }
+        else{
+            console.log("something went wrong lol")
+        }
+    }
+}
+function getSelectValues(select) {
+    let result = [];
+    let options = select && select.options;
+    let opt;
+    for (var i=0, iLen=options.length; i<iLen; i++) {
+        opt = options[i];
+        if (opt.selected) {
+            result.push(opt.value || opt.text);
+        }
+    }
+    return result;
+}
+function showMessage(message, warning){
+    let msg = document.getElementById("newdriver-message");
+    let img = document.getElementById("newdriver-message-img");
+    msg.innerHTML = message
+    if(warning)
+        img.setAttribute("style","display:inline;");
+    /*let errorDiv = document.getElementById("driver-error-div");
+    errorDiv.setAttribute("style", "display: block;")
+    errorDiv.children[0].innerHTML = doc.getElementsByClassName('break-long-words exception-message')[0].innerHTML;*/
+}
+function hideMessage(){
+    let msg = document.getElementById("newdriver-message");
+    let img = document.getElementById("newdriver-message-img");
+    img.setAttribute("style","display:none;");
+    msg.innerHTML = "";
+    /*let errorDiv = document.getElementById("driver-error-div");
+    errorDiv.setAttribute("style", "display: block;")
+    errorDiv.children[0].innerHTML = doc.getElementsByClassName('break-long-words exception-message')[0].innerHTML;*/
+}
+// main driver editor
 function submit(type) {
     setArch();
     let file_name = document.getElementById('LargeFile_file_file_new_file_name');

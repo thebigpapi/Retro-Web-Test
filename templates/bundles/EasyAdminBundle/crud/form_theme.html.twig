@@ -181,15 +181,91 @@
         <div class="small" id="{{ form.file.vars.id }}_new_file_name"></div>
     </div>
 {% endblock %}
-
-{% macro driver(form) %}
-    <div>
-        <a class="btn btn-link field-collection-add-button" href="{{ ea_url().setDashboard('App\\Controller\\Admin\\DashboardController')
+{% macro driver_template(entity) %}
+    <button id="create-driver-btn" data-entity="" class="btn btn-secondary" type="button" style="margin:10px 0px;">
+        <span class="btn-label"><span class="action-label">New driver</span></span>
+    </button>
+    <div id="create-driver-container" class="accordion"></div>
+    <div id="create-driver-template" data-url="{{ ea_url().setDashboard('App\\Controller\\Admin\\DashboardController')
         .setController('App\\Controller\\Admin\\LargeFileCrudController')
         .setAction('new')
-        .setEntityId('')|replace({'&entityId=': ''})}}" target="_blank">
-        <i class="fa fa-plus pr-1"></i> Create a new driver</a>
+        .setEntityId('')|replace({'&entityId=': ''})}}" data-token="{{ csrf_token('authenticate') }}" data-entity="{{entity}}" class="accordion" style="display: none;">
+        <div class="form-widget-compound">
+            <div class="accordion-item">
+                <div class="accordion-body trw">
+                    <div class="accordion-body-widget">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="field-text form-group">
+                                    <label for="ExpansionCard_documentations_1_link_name" class="form-control-label">Name</label>
+                                    <div class="form-widget">
+                                        <input type="text" form="newdriver-form" class="newdriver-name-cssid form-control">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="field-text form-group">
+                                    <label for="ExpansionCard_documentations_1_link_name" class="form-control-label">Version</label>
+                                    <div class="form-widget">
+                                        <input type="text" form="newdriver-form" class="newdriver-version-cssid form-control">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="field-text form-group">
+                                    <label for="ExpansionCard_documentations_1_link_name" class="form-control-label">OS support</label>
+                                    <div class="form-widget">
+                                        <select multiple="multiple" form="newdriver-form" class="newdriver-os-support-cssid form-select"></select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="field-text form-group">
+                                    <label for="ExpansionCard_documentations_1_link_name" class="form-control-label">OS architecture</label>
+                                    <div class="form-widget">
+                                        <select multiple="multiple" form="newdriver-form" class="newdriver-os-arch-cssid form-select"></select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="field-text form-group">
+                                    <label for="ExpansionCard_documentations_1_link_name" class="form-control-label">Release date</label>
+                                    <div class="form-widget">
+                                        <div class="newdriver-date-cssid" style=""></div>
+                                        <div class="newdriver-precision-cssid" style=""></div>
+                                        <div class="newdriver-releasedate-cssid" data-entity="">
+                                            <input type="number" placeholder="yyyy" min="1970" max="2100">
+                                            <input type="number" placeholder="mm" min="1" max="12">
+                                            <input type="number" placeholder="dd" min="1" max="31">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="field-text form-group">
+                                    <label for="ExpansionCard_documentations_1_link_name" class="form-control-label">File</label>
+                                    <div class="form-widget">
+                                        <input type="file" form="newdriver-form" class="newdriver-file-cssid form-control">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <button id="create-driver-save" data-entity="" class="btn btn-primary action-save" type="button">
+                                    <span class="btn-label"><span class="action-label">Save and add to list</span></span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+    <div class="driver-messages">
+        <img id="newdriver-message-img" src="{{ absolute_url(asset('build/icons/warning.svg')) }}" alt="warning" width="25" height="25">
+        <span id="newdriver-message"></span>
+    </div>
+{% endmacro %}
+{% macro driver(form) %}
     {{ form_widget(form)}}
 {% endmacro %}
 
@@ -315,6 +391,10 @@
 {% block _ExpansionCard_drivers_widget %}
     {{ _self.driver(form)}}
 {% endblock _ExpansionCard_drivers_widget %}
+{% block _ExpansionCard_getChipsWithDrivers_widget %}
+    {{ form_widget(form)}}
+    {{ _self.driver_template("ExpansionCard_drivers")}}
+{% endblock _ExpansionCard_getChipsWithDrivers_widget %}
 
 {# cpu editor #}
 {% block _Processor_images_widget %}
