@@ -8,6 +8,7 @@ const easyadmin = {
     "tab-features": "sh-general",
     "tab-specs": "sh-expchips",
     "tab-firmware": "sh-bios",
+    "tab-drivers": "sh-driver",
     "tab-attachments": "sh-downloads",
 }
 

@@ -80,36 +80,32 @@ function populateFields(){
     driverForm.setAttribute("data-token", "");
     document.body.appendChild(driverForm);
     let list = [];
-    let url = window.location.origin + "/dashboard/getdriverfields";
-    let xhr = new XMLHttpRequest()
-    xhr.open('GET', url, true)
-    xhr.setRequestHeader('Content-type', 'application/json; charset=UTF-8')
-    xhr.send();
-    xhr.onload = function () {
-        if(xhr.status === 200) {
-            list = JSON.parse(xhr.responseText);
-            console.log(list);
-            let os = document.getElementById("newdriver-os-support");
-            let osArch = document.getElementById("newdriver-os-arch");
-            for(const key of Object.keys(list[0])){
-                let op = new Option(key, list[0][key]);
-                os.add(op);
-            }
-            for(const key of Object.keys(list[1])){
-                let op = new Option(key, list[1][key]);
-                osArch.add(op);
-            }
-            osArch.setAttribute('id', "newdriver-os-arch");
-            new TomSelect('#newdriver-os-support', settings);
-            new TomSelect('#newdriver-os-arch', settings);
-            osArch.tomselect.addOption({entityId: 1, entityAsString: "x86"})
-            osArch.tomselect.addItem(1);
-            os.tomselect.sync();
-            osArch.tomselect.sync();
-            driverForm.setAttribute("data-token", list[2]);
-            console.log(list[0]);
+    fetch(window.location.origin + "/dashboard/getdriverfields", {
+        redirect: 'follow',
+        method: "GET",
+    })
+    .then(response => response.text())
+    .then((responseText) => {
+        list = JSON.parse(responseText);
+        let os = document.getElementById("newdriver-os-support");
+        let osArch = document.getElementById("newdriver-os-arch");
+        for(const key of Object.keys(list[0])){
+            let op = new Option(key, list[0][key]);
+            os.add(op);
         }
-    }
+        for(const key of Object.keys(list[1])){
+            let op = new Option(key, list[1][key]);
+            osArch.add(op);
+        }
+        osArch.setAttribute('id', "newdriver-os-arch");
+        new TomSelect('#newdriver-os-support', settings);
+        new TomSelect('#newdriver-os-arch', settings);
+        osArch.tomselect.addOption({entityId: 1, entityAsString: "x86"})
+        osArch.tomselect.addItem(1);
+        os.tomselect.sync();
+        osArch.tomselect.sync();
+        driverForm.setAttribute("data-token", list[2]);
+    }).catch(err => console.log("Driver fields request failed: " + err));
 }
 function setDate(){
     let widget = document.getElementById("newdriver-releasedate");
@@ -149,86 +145,91 @@ function setDate(){
     else
         datePrecision.innerHTML = "y";
     releaseDate.innerHTML = yearSel + "-" + (month > 9 ? "" : "0") + month + "-" + (day > 9 ? "" : "0" ) + day;
+    return true;
 }
 function JSsubmit(){
     hideMessage();
-    let name = document.getElementById("newdriver-name");
-    let version = document.getElementById("newdriver-version");
+    let name = document.getElementById("newdriver-name").value;
+    let version = document.getElementById("newdriver-version").value;
     let os = getSelectValues(document.getElementById("newdriver-os-support"));
     let osArch = getSelectValues(document.getElementById("newdriver-os-arch"));
-    let releaseDate = document.getElementById("newdriver-date");
-    let datePrecision = document.getElementById("newdriver-precision");
     let file = document.getElementById("newdriver-file");
     if(name.value == ""){
         alert("Driver name field is empty!");
         return;
     }
-    if(file.files.length < 1){
+    /*if(file.files.length < 1){
         alert("Driver has no file attached!");
         return;
-    }
+    }*/
     if(!setDate()){
         return;
     }
-    let template = document.getElementById('create-driver-template');
-    let url = template.getAttribute("data-url");
+    let container = document.getElementById('create-driver-container');
+    let url = container.getAttribute("data-url");
     let driverForm = document.getElementById("newdriver-form");
     let formData = new FormData(driverForm);
     //grabbing the token
-    let xhr = new XMLHttpRequest();
-    xhr.open("GET", url);
-    //xhr.setRequestHeader('Content-type', 'application/json; charset=UTF-8')
-    xhr.send();
-    xhr.onload = function () {
-        if(xhr.status === 200) {
-            let parser = new DOMParser();
-            let parsedResponse = parser.parseFromString(xhr.responseText, "text/html");
-            let token = parsedResponse.getElementById("LargeFile__token").value;
-            formData.append("ea[newForm][btn]", "saveAndReturn");
-            formData.append("LargeFile[name]", name.value);
-            formData.append("LargeFile[fileVersion]", version.value);
-            formData.append("LargeFile[releaseDate]", releaseDate.innerHTML);
-            formData.append("LargeFile[datePrecision]", datePrecision.innerHTML);
-            for(let i=0; i<os.length; i++){
-                formData.append("LargeFile[osFlags][" + (i+1) + "]", os[i]);
-            }
-            for(let i=0; i<osArch.length; i++){
-                formData.append("LargeFile[osArchitecture][" + (i+1) + "]", osArch[i]);
-            }
-            formData.append("LargeFile[_token]", token);
-            formData.append("LargeFile[file][file]", file.files[0]);
-            console.log(formData);
-            showMessage("Uploading ...", false);
-            fetch(url, {
-                redirect: 'manual',
-                method: "POST",
-                body: formData
-            }).then((res) => {
-                if(res.status == 0){
-                    showMessage("Uploaded!", false);
-                    console.log(res);
-                    addDriver();
-                }
-                else if(res.status == 422){
-                    showMessage("Error " + res.status + " " + res.statusText, true);
-                    let entity = template.getAttribute("data-entity");
-                    let driverAddBtn = document.getElementById(entity + "_collection").previousElementSibling;
-                    let drivers = document.getElementsByClassName(entity + "_cssid");
-                    console.log(driverAddBtn);
-                    driverAddBtn.click();
-                }
-                else{
-                    console.log("Not OK", res)
-                }
-            }).catch((error) => {
-                console.log("Issue: " + error);
-            });
-            console.log("JSsubmit end")
+    fetch(url, {
+        redirect: 'follow',
+        method: "GET",
+    })
+    .then(response => response.text())
+    .then((responseText) => {
+        let parser = new DOMParser();
+        let parsedResponse = parser.parseFromString(responseText, "text/html");
+        let token = parsedResponse.getElementById("LargeFile__token").value;
+        //setting up the form data
+        formData.append("ea[newForm][btn]", "saveAndReturn");
+        formData.append("LargeFile[name]", name);
+        formData.append("LargeFile[fileVersion]", version);
+        formData.append("LargeFile[releaseDate]", document.getElementById("newdriver-date").innerHTML);
+        formData.append("LargeFile[datePrecision]", document.getElementById("newdriver-precision").innerHTML);
+        for(let i=0; i<os.length; i++){
+            formData.append("LargeFile[osFlags][" + (i+1) + "]", os[i]);
         }
-        else{
-            console.log("something went wrong lol")
+        for(let i=0; i<osArch.length; i++){
+            formData.append("LargeFile[osArchitecture][" + (i+1) + "]", osArch[i]);
         }
-    }
+        formData.append("LargeFile[_token]", token);
+        formData.append("LargeFile[file][file]", file.files[0]);
+        //upload begins
+        showMessage("Uploading ...", false);
+        fetch(url, {
+            redirect: 'manual',
+            method: "POST",
+            body: formData
+        }).then((res) => {
+            if(res.status == 0){
+                showMessage("Uploaded!", false);
+                addDriver(container.getAttribute("data-entity"), name, version);
+                container.innerHTML = "";
+                showMessage("Added to list succesfully!", false);
+            }
+            else if(res.status == 422){
+                showMessage("Error " + res.status + ": " + res.statusText, true);
+            }
+            else{
+                console.log("Something exploded: " + res)
+            }
+        }).catch(err => console.log("Driver upload failed: " + err));
+    }).catch(err => console.log("Driver form request failed: " + err));
+}
+function addDriver(entity, name, version){
+    let driverAddBtn = document.getElementById(entity + "_collection").previousElementSibling;
+    driverAddBtn.click();
+    let drivers = document.getElementsByClassName(entity + "_cssid");
+    let driverSelect = drivers[drivers.length - 1].querySelector("select");
+    fetch(window.location.origin + "/dashboard/finddriver?" + new URLSearchParams({"name": name, "version" : version}), {
+        redirect: 'follow',
+        method: "GET"
+    }).then(response => response.text())
+    .then((res) => {
+        result = JSON.parse(res);
+        driverSelect.tomselect.addOption({entityId: Object.values(result)[0], entityAsString: Object.keys(result)[0]})
+        driverSelect.tomselect.addItem(Object.values(result)[0]);
+        driverSelect.tomselect.sync();
+    }).catch(err => console.log("Driver find failed: " + err));
 }
 function getSelectValues(select) {
     let result = [];

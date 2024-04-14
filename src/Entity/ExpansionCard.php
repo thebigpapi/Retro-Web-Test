@@ -862,6 +862,7 @@ class ExpansionCard
 
         return $this;
     }
+
     public function getChipsWithDrivers(): array
     {
         $driverChips = [];

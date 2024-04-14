@@ -152,6 +152,19 @@ class ExpansionChipCrudController extends AbstractCrudController
         yield TextJsonField::new('miscSpecs', 'Misc specs')
             ->setColumns(12)
             ->onlyOnForms();
+        yield FormField::addTab('Drivers')
+            ->setIcon('fa fa-download')
+            ->onlyOnForms();
+        yield CollectionField::new('drivers', 'Drivers')
+            ->useEntryCrudForm(LargeFileCrudType::class)
+            ->setFormTypeOption('error_bubbling', false)
+            ->setColumns(6)
+            ->renderExpanded()
+            ->onlyOnForms();
+        yield ArrayField::new('getChipsWithDrivers', '')
+            ->setCssClass("field-collection processed")
+            ->setDisabled()
+            ->onlyOnForms();
         yield FormField::addTab('Attachments')
             ->setIcon('fa fa-download')
             ->onlyOnForms();
@@ -163,12 +176,6 @@ class ExpansionChipCrudController extends AbstractCrudController
             ->onlyOnForms();
         yield CollectionField::new('documentations', 'Documentation')
             ->useEntryCrudForm(DocumentationCrudType::class)
-            ->setFormTypeOption('error_bubbling', false)
-            ->setColumns(6)
-            ->renderExpanded()
-            ->onlyOnForms();
-        yield CollectionField::new('drivers', 'Drivers')
-            ->useEntryCrudForm(LargeFileCrudType::class)
             ->setFormTypeOption('error_bubbling', false)
             ->setColumns(6)
             ->renderExpanded()

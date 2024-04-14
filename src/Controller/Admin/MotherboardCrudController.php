@@ -44,6 +44,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Event\BeforeEntityPersistedEvent;
 use EasyCorp\Bundle\EasyAdminBundle\Exception\ForbiddenActionException;
 use EasyCorp\Bundle\EasyAdminBundle\Exception\InsufficientEntityPermissionException;
 use EasyCorp\Bundle\EasyAdminBundle\Factory\EntityFactory;
+use EasyCorp\Bundle\EasyAdminBundle\Field\ArrayField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
@@ -291,7 +292,7 @@ class MotherboardCrudController extends AbstractCrudController
         yield FormField::addTab('BIOS images')
             ->setIcon('fa fa-download')
             ->onlyOnForms();
-        yield CollectionField::new('motherboardBios', 'BIOS images')
+        yield CollectionField::new('motherboardBios', 'BIOS')
             ->useEntryCrudForm(BiosCrudType::class)
             ->setFormTypeOption('error_bubbling', false)
             ->setFormTypeOption('label', false)
@@ -299,14 +300,21 @@ class MotherboardCrudController extends AbstractCrudController
             ->setColumns(12)
             ->renderExpanded()
             ->onlyOnForms();
-        yield FormField::addTab('Other attachments')
+        yield FormField::addTab('Drivers')
             ->setIcon('fa fa-download')
             ->onlyOnForms();
-        yield CollectionField::new('images', 'Images')
-            ->useEntryCrudForm(ImageCrudType::class)
-            ->setColumns('col-sm-12 col-lg-8 col-xxl-6')
+        yield CollectionField::new('drivers', 'Drivers')
+            ->useEntryCrudForm(LargeFileCrudType::class)
             ->setFormTypeOption('error_bubbling', false)
             ->renderExpanded()
+            ->setColumns(6)
+            ->onlyOnForms();
+        yield ArrayField::new('getChipsWithDrivers', 'Expansion chips with drivers')
+            ->setCssClass("field-collection processed")
+            ->setDisabled()
+            ->onlyOnForms();
+        yield FormField::addTab('Docs')
+            ->setIcon('fa fa-file-pdf')
             ->onlyOnForms();
         yield CollectionField::new('manuals', 'Documentation')
             ->useEntryCrudForm(ManualCrudType::class)
@@ -320,11 +328,14 @@ class MotherboardCrudController extends AbstractCrudController
             ->setColumns(6)
             ->renderExpanded()
             ->onlyOnForms();
-        yield CollectionField::new('drivers', 'Drivers')
-            ->useEntryCrudForm(LargeFileCrudType::class)
+        yield FormField::addTab('Images')
+            ->setIcon('fa fa-download')
+            ->onlyOnForms();
+        yield CollectionField::new('images', 'Images')
+            ->useEntryCrudForm(ImageCrudType::class)
+            ->setColumns('col-sm-12 col-lg-8 col-xxl-6')
             ->setFormTypeOption('error_bubbling', false)
             ->renderExpanded()
-            ->setColumns(6)
             ->onlyOnForms();
     }
 

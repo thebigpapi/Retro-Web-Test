@@ -327,4 +327,9 @@ class ExpansionChip extends Chip
 
         return $this;
     }
+
+    public function getChipsWithDrivers(): array
+    {
+        return [];
+    }
 }

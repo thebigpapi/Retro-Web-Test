@@ -172,14 +172,8 @@ class ChipsetCrudController extends AbstractCrudController
             ->setColumns(12)
             ->renderExpanded()
             ->onlyOnForms();
-        yield FormField::addTab('Attachments')
+        yield FormField::addTab('Drivers')
             ->setIcon('fa fa-download')
-            ->onlyOnForms();
-        yield CollectionField::new('documentations', 'Documentation')
-            ->useEntryCrudForm(DocumentationCrudType::class)
-            ->renderExpanded()
-            ->setFormTypeOption('error_bubbling', false)
-            ->setColumns(6)
             ->onlyOnForms();
         yield CollectionField::new('drivers', 'Drivers')
             ->useEntryCrudForm(LargeFileCrudType::class)
@@ -187,6 +181,20 @@ class ChipsetCrudController extends AbstractCrudController
             ->renderExpanded()
             ->setColumns(6)
             ->onlyOnForms();
+        yield ArrayField::new('getChipsWithDrivers', 'Chipset parts with drivers')
+            ->setCssClass("field-collection processed")
+            ->setDisabled()
+            ->onlyOnForms();
+        yield FormField::addTab('Docs')
+            ->setIcon('fa fa-file-pdf')
+            ->onlyOnForms();
+        yield CollectionField::new('documentations', 'Documentation')
+            ->useEntryCrudForm(DocumentationCrudType::class)
+            ->renderExpanded()
+            ->setFormTypeOption('error_bubbling', false)
+            ->setColumns(6)
+            ->onlyOnForms();
+
         yield ChoiceField::new('datePrecision', '')
             ->setChoices([
                 'Year, month and day' => 'd',
