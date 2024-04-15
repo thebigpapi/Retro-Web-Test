@@ -101,8 +101,10 @@ class AdminController extends AbstractDashboardController
     public function findDriver(Request $request, LargeFileRepository $largeFileRepository): JsonResponse
     {
         $criteria['name'] = $request->query->get('name');
-        if($request->query->get('version'))
-            $criteria['version'] = $request->query->get('version');
+        $criteria['version'] = $request->query->get('version');
+        $os = $request->query->get('os');
+        if($os != "")
+            $criteria["osFlags"] = explode(",", $request->query->get('os'));
         $driver = $largeFileRepository->findByDriver($criteria);
         $list = array();
         foreach($driver as $drv){

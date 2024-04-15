@@ -154,14 +154,14 @@ function JSsubmit(){
     let os = getSelectValues(document.getElementById("newdriver-os-support"));
     let osArch = getSelectValues(document.getElementById("newdriver-os-arch"));
     let file = document.getElementById("newdriver-file");
-    if(name.value == ""){
+    if(name == ""){
         alert("Driver name field is empty!");
         return;
     }
-    /*if(file.files.length < 1){
+    if(file.files.length < 1){
         alert("Driver has no file attached!");
         return;
-    }*/
+    }
     if(!setDate()){
         return;
     }
@@ -202,7 +202,7 @@ function JSsubmit(){
         }).then((res) => {
             if(res.status == 0){
                 showMessage("Uploaded!", false);
-                addDriver(container.getAttribute("data-entity"), name, version);
+                addDriver(container.getAttribute("data-entity"), name, version, os);
                 container.innerHTML = "";
                 showMessage("Added to list succesfully!", false);
             }
@@ -215,12 +215,12 @@ function JSsubmit(){
         }).catch(err => console.log("Driver upload failed: " + err));
     }).catch(err => console.log("Driver form request failed: " + err));
 }
-function addDriver(entity, name, version){
+function addDriver(entity, name, version, os){
     let driverAddBtn = document.getElementById(entity + "_collection").previousElementSibling;
     driverAddBtn.click();
     let drivers = document.getElementsByClassName(entity + "_cssid");
     let driverSelect = drivers[drivers.length - 1].querySelector("select");
-    fetch(window.location.origin + "/dashboard/finddriver?" + new URLSearchParams({"name": name, "version" : version}), {
+    fetch(window.location.origin + "/dashboard/finddriver?" + new URLSearchParams({"name": name, "version" : version, "os": os}), {
         redirect: 'follow',
         method: "GET"
     }).then(response => response.text())
