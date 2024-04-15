@@ -56,15 +56,9 @@ class IoPortSignalCrudController extends AbstractCrudController
         yield CodeEditorField::new('description')
             ->setLanguage('markdown')
             ->onlyOnForms();
-        yield FormField::addTab('Attachments')
-            ->setIcon('fa fa-download')
+        yield FormField::addTab('Docs')
+            ->setIcon('fa fa-file-pdf')
             ->onlyOnForms();
-        yield CollectionField::new('entityImages', 'Images')
-            ->useEntryCrudForm(EntityImageCrudType::class)
-            ->setCustomOption('byCount', true)
-            ->renderExpanded()
-            ->setFormTypeOption('error_bubbling', false)
-            ->setColumns(6);
         yield CollectionField::new('entityDocumentations', 'Documentation')
             ->useEntryCrudForm(EntityDocumentationCrudType::class)
             ->setCustomOption('byCount', true)

@@ -51,13 +51,13 @@ class EntityImage
     private ?IoPortInterface $ioPortInterface = null;
 
     #[ORM\ManyToOne(inversedBy: 'entityImages')]
-    private ?IoPortSignal $ioPortSignal = null;
-
-    #[ORM\ManyToOne(inversedBy: 'entityImages')]
-    private ?ExpansionSlotSignal $expansionSlotSignal = null;
-
-    #[ORM\ManyToOne(inversedBy: 'entityImages')]
     private ?ExpansionSlotInterface $expansionSlotInterface = null;
+
+    #[ORM\ManyToOne(inversedBy: 'entityImages')]
+    private ?IoPortInterfaceSignal $ioPortInterfaceSignal = null;
+
+    #[ORM\ManyToOne(inversedBy: 'entityImages')]
+    private ?ExpansionSlotInterfaceSignal $expansionSlotInterfaceSignal = null;
 
     public function getId(): ?int
     {
@@ -176,30 +176,6 @@ class EntityImage
         return $this;
     }
 
-    public function getIoPortSignal(): ?IoPortSignal
-    {
-        return $this->ioPortSignal;
-    }
-
-    public function setIoPortSignal(?IoPortSignal $ioPortSignal): static
-    {
-        $this->ioPortSignal = $ioPortSignal;
-
-        return $this;
-    }
-
-    public function getExpansionSlotSignal(): ?ExpansionSlotSignal
-    {
-        return $this->expansionSlotSignal;
-    }
-
-    public function setExpansionSlotSignal(?ExpansionSlotSignal $expansionSlotSignal): static
-    {
-        $this->expansionSlotSignal = $expansionSlotSignal;
-
-        return $this;
-    }
-
     public function getExpansionSlotInterface(): ?ExpansionSlotInterface
     {
         return $this->expansionSlotInterface;
@@ -208,6 +184,30 @@ class EntityImage
     public function setExpansionSlotInterface(?ExpansionSlotInterface $expansionSlotInterface): static
     {
         $this->expansionSlotInterface = $expansionSlotInterface;
+
+        return $this;
+    }
+
+    public function getIoPortInterfaceSignal(): ?IoPortInterfaceSignal
+    {
+        return $this->ioPortInterfaceSignal;
+    }
+
+    public function setIoPortInterfaceSignal(?IoPortInterfaceSignal $ioPortInterfaceSignal): static
+    {
+        $this->ioPortInterfaceSignal = $ioPortInterfaceSignal;
+
+        return $this;
+    }
+
+    public function getExpansionSlotInterfaceSignal(): ?ExpansionSlotInterfaceSignal
+    {
+        return $this->expansionSlotInterfaceSignal;
+    }
+
+    public function setExpansionSlotInterfaceSignal(?ExpansionSlotInterfaceSignal $expansionSlotInterfaceSignal): static
+    {
+        $this->expansionSlotInterfaceSignal = $expansionSlotInterfaceSignal;
 
         return $this;
     }

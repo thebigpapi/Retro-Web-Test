@@ -40,12 +40,10 @@
 {% endmacro %}
 <div class="show-downloads-group {{css}}">
     {% if entity is not empty %}
-        {% set recommended = 0 %}
-        {% for itm in entity|filter(a => a.isRecommended == true) %}
-            {% set recommended = recommended + 1 %}
-        {% endfor %}
-        {% set total = entity.count() %}
-        {% if total - recommended == 0 or recommended == 0 %}
+        {% set total = entity|length %}
+        {% set recommended = entity|filter(a => a.isRecommended == true)|length %}
+        {% set otherDrivers = entity|filter(a => a.isRecommended == false)|length %}
+        {% if (recommended == 0 and otherDrivers == total) or (otherDrivers == 0 and recommended == total) %}
             <!-- contains only one type, show as is -->
             <div class="show-downloads-group-header">
                 <img src="{{ absolute_url(asset('build/icons/hardware.svg')) }}" alt="drv" width="32" height="32">
@@ -62,7 +60,7 @@
             <div class="dropdown-trw">
                 <label class="dropdown-header">
                     <img src="{{ absolute_url(asset('build/icons/hardware.svg')) }}" alt="chip" width="24" height="24">
-                    <span><i>Other drivers (click to expand)</i></span>
+                    <span><i>{{ otherDrivers }} other driver{% if otherDrivers != 1 %}s{% endif %} available (click to expand)</i></span>
                     <input class="dropdown" type="checkbox" />
                 </label>
                 <div class="dropdown-contents">

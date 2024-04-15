@@ -36,6 +36,9 @@ class IoPortInterfaceSignal
     #[ORM\ManyToMany(targetEntity: IoPortSignal::class, inversedBy: 'ioPortInterfaceSignals')]
     private Collection $signals;
 
+    #[ORM\OneToMany(mappedBy: 'ioPortInterfaceSignal', targetEntity: EntityImage::class, orphanRemoval: true, cascade: ['persist'])]
+    private Collection $entityImages;
+
 
     public function __toString()
     {
@@ -46,6 +49,7 @@ class IoPortInterfaceSignal
     {
         $this->expansionCardIoPorts = new ArrayCollection();
         $this->signals = new ArrayCollection();
+        $this->entityImages = new ArrayCollection();
     }
 
     public function jsonSerialize()
@@ -180,10 +184,38 @@ class IoPortInterfaceSignal
     }
     public function getAllImages(): Collection
     {
-        $img = $this->getInterface()->getEntityImages()->toArray() ?? [];
-        foreach ($this->getSignals() as $signal) {
-            $img = array_merge($img, $signal->getEntityImages()->toArray());
-        }
+        $img = $this->getEntityImages()->toArray() ?? [];
+        $img = array_merge($img, $this->getInterface()?->getEntityImages()->toArray() ?? []);
         return new ArrayCollection($img);
+    }
+
+    /**
+     * @return Collection<int, EntityImage>
+     */
+    public function getEntityImages(): Collection
+    {
+        return $this->entityImages;
+    }
+
+    public function addEntityImage(EntityImage $entityImage): static
+    {
+        if (!$this->entityImages->contains($entityImage)) {
+            $this->entityImages->add($entityImage);
+            $entityImage->setIoPortInterfaceSignal($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEntityImage(EntityImage $entityImage): static
+    {
+        if ($this->entityImages->removeElement($entityImage)) {
+            // set the owning side to null (unless already changed)
+            if ($entityImage->getIoPortInterfaceSignal() === $this) {
+                $entityImage->setIoPortInterfaceSignal(null);
+            }
+        }
+
+        return $this;
     }
 }

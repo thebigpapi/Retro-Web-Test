@@ -50,11 +50,17 @@
     {% endif %}
 
     {% if chips is defined and chips is not empty %}
+
         <div style="height:15px;"></div>
-        <div class="show-downloads-group-header">
-            <img src="{{ absolute_url(asset('build/icons/chip_manual.svg')) }}" alt="chipdoc" width="32" height="32">
-            <span>{{ chips|length }} chip document{% if chips|length != 1 %}s{% endif %} available</span>
+        <div class="dropdown-trw">
+            <label class="dropdown-header">
+                <img src="{{ absolute_url(asset('build/icons/chip_manual.svg')) }}" alt="chipdoc" width="24" height="24">
+                <span>{{ chips|length }} chip document{% if chips|length != 1 %}s{% endif %} available</span>
+                <input class="dropdown" type="checkbox" />
+            </label>
+            <div class="dropdown-contents">
+                {{ _self.manual(chips, audit_entity, true)}}
+            </div>
         </div>
-        {{ _self.manual(chips, audit_entity, true)}}
     {% endif %}
 </div>

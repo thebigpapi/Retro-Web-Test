@@ -2,6 +2,7 @@
 
 namespace App\Controller\Admin;
 
+use App\Controller\Admin\Type\EntityImageCrudType;
 use App\Entity\IoPortInterfaceSignal;
 use App\Form\Type\IoPortSignalType;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
@@ -13,6 +14,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CodeEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -64,6 +66,9 @@ class IoPortInterfaceSignalCrudController extends AbstractCrudController
     }
     public function configureFields(string $pageName): iterable
     {
+        yield FormField::addTab('Basic Data')
+            ->setIcon('fa fa-info')
+            ->onlyOnForms();
         yield IdField::new('id')
             ->onlyOnIndex();
         yield TextField::new('name', 'Name')
@@ -78,6 +83,15 @@ class IoPortInterfaceSignalCrudController extends AbstractCrudController
         yield CodeEditorField::new('description')
             ->setLanguage('markdown')
             ->onlyOnForms();
+        yield FormField::addTab('Images')
+            ->setIcon('fa fa-download')
+            ->onlyOnForms();
+        yield CollectionField::new('entityImages', 'Images')
+            ->useEntryCrudForm(EntityImageCrudType::class)
+            ->setCustomOption('byCount', true)
+            ->renderExpanded()
+            ->setFormTypeOption('error_bubbling', false)
+            ->setColumns(6);
     }
     public function viewIoPort(AdminContext $context)
     {
