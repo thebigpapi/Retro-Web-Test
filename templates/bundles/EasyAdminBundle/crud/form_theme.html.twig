@@ -246,7 +246,7 @@
 {% endblock _Motherboard_drivers_widget %}
 {% block _Motherboard_getChipsWithDrivers_widget %}
     {{ form_widget(form)}}
-    {% include 'admin/macros/newdriver.html.twig' with {'entity':'Motherboard_drivers'} %}
+    {% include 'admin/macros/newdriver.html.twig' with {'entity':'Motherboard_drivers', 'label': 'board'} %}
 {% endblock _Motherboard_getChipsWithDrivers_widget %}
 
 {# chipset editor #}
@@ -275,7 +275,7 @@
 {% endblock _Chipset_drivers_widget %}
 {% block _Chipset_getChipsWithDrivers_widget %}
     {{ form_widget(form)}}
-    {% include 'admin/macros/newdriver.html.twig' with {'entity':'Chipset_drivers'} %}
+    {% include 'admin/macros/newdriver.html.twig' with {'entity':'Chipset_drivers', 'label': 'chipset'} %}
 {% endblock _Chipset_getChipsWithDrivers_widget %}
 
 {# expansion card editor #}
@@ -314,7 +314,7 @@
 {% endblock _ExpansionCard_drivers_widget %}
 {% block _ExpansionCard_getChipsWithDrivers_widget %}
     {{ form_widget(form)}}
-    {% include 'admin/macros/newdriver.html.twig' with {'entity':'ExpansionCard_drivers'} %}
+    {% include 'admin/macros/newdriver.html.twig' with {'entity':'ExpansionCard_drivers', 'label': 'card'} %}
 {% endblock _ExpansionCard_getChipsWithDrivers_widget %}
 
 {# cpu editor #}
@@ -336,7 +336,7 @@
     {{ form_widget(form)}}
 {% endblock _ExpansionChip_drivers_widget %}
 {% block _ExpansionChip_getChipsWithDrivers_widget %}
-    {% include 'admin/macros/newdriver.html.twig' with {'entity':'ExpansionChip_drivers'} %}
+    {% include 'admin/macros/newdriver.html.twig' with {'entity':'ExpansionChip_drivers', 'label': 'chip'} %}
 {% endblock _ExpansionChip_getChipsWithDrivers_widget %}
 
 {# driver editor #}

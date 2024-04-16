@@ -17,6 +17,7 @@ use App\Controller\Admin\Type\Motherboard\ManualCrudType;
 use App\Controller\Admin\Type\Motherboard\MemoryConnectorCrudType;
 use App\Controller\Admin\Type\MiscFileCrudType;
 use App\Entity\MotherboardAlias;
+use App\Entity\MotherboardBios;
 use App\Entity\MotherboardExpansionSlot;
 use App\Entity\MotherboardIoPort;
 use App\Entity\MotherboardMaxRam;
@@ -467,6 +468,14 @@ class MotherboardCrudController extends AbstractCrudController
             $newConnector->setCount($connector->getCount());
             $newConnector->setMemoryConnector($connector->getMemoryConnector());
             $board->addMotherboardMemoryConnector($newConnector);
+        }
+        foreach ($old->getMotherboardBios() as $bios){
+            $newBios = new MotherboardBios();
+            $newBios->setManufacturer($bios->getManufacturer());
+            $newBios->setPostString($bios->getPostString());
+            $newBios->setNote($bios->getNote());
+            $newBios->setBoardVersion($bios->getBoardVersion());
+            $board->addMotherboardBio($newBios);
         }
         foreach ($old->getPsuConnectors() as $psu){
             $board->addPsuConnector($psu);

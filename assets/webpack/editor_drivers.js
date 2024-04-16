@@ -67,6 +67,7 @@ function createContainer(){
     save.addEventListener('click', () => JSsubmit(), false);
 }
 function populateFields(){
+    showMessage("Setting up, just a sec ...", false);
     for(const item of fieldList){
         let el = document.getElementsByClassName("newdriver-" + item + "-cssid")[0];
         el.setAttribute("id", "newdriver-" + item)
@@ -75,9 +76,7 @@ function populateFields(){
     driverForm.name='LargeFile';
     driverForm.method='POST';
     driverForm.action='#';
-    driverForm.setAttribute("onsubmit", "event.preventDefault();console.log('aaahahah');");
     driverForm.setAttribute("id", "newdriver-form");
-    driverForm.setAttribute("data-token", "");
     document.body.appendChild(driverForm);
     let list = [];
     fetch(window.location.origin + "/dashboard/getdriverfields", {
@@ -105,6 +104,7 @@ function populateFields(){
         os.tomselect.sync();
         osArch.tomselect.sync();
         driverForm.setAttribute("data-token", list[2]);
+        showMessage("", false);
     }).catch(err => console.log("Driver fields request failed: " + err));
 }
 function setDate(){
@@ -210,7 +210,7 @@ function JSsubmit(){
                 showMessage("Error " + res.status + ": " + res.statusText, true);
             }
             else{
-                console.log("Something exploded: " + res)
+                console.log("Something exploded: " + res.text())
             }
         }).catch(err => console.log("Driver upload failed: " + err));
     }).catch(err => console.log("Driver form request failed: " + err));
@@ -249,18 +249,12 @@ function showMessage(message, warning){
     msg.innerHTML = message
     if(warning)
         img.setAttribute("style","display:inline;");
-    /*let errorDiv = document.getElementById("driver-error-div");
-    errorDiv.setAttribute("style", "display: block;")
-    errorDiv.children[0].innerHTML = doc.getElementsByClassName('break-long-words exception-message')[0].innerHTML;*/
 }
 function hideMessage(){
     let msg = document.getElementById("newdriver-message");
     let img = document.getElementById("newdriver-message-img");
     img.setAttribute("style","display:none;");
     msg.innerHTML = "";
-    /*let errorDiv = document.getElementById("driver-error-div");
-    errorDiv.setAttribute("style", "display: block;")
-    errorDiv.children[0].innerHTML = doc.getElementsByClassName('break-long-words exception-message')[0].innerHTML;*/
 }
 // main driver editor
 function submit(type) {

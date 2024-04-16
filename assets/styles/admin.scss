@@ -291,6 +291,14 @@ div.image-bulk-box{
 	}
 }
 
+input.trw-bigfilebox{
+	padding: 25px;
+	width: 100%;
+	border: 1px dashed black;
+	@media (prefers-color-scheme: dark) {
+		border: 1px dashed white;
+	}
+}
 /* misc specs styling */
 div.card-specs-grid textarea{
 	min-height: 30rem;

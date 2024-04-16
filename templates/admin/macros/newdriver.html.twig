@@ -1,5 +1,5 @@
 <button id="create-driver-btn" data-entity="" class="btn btn-secondary" type="button" style="margin:10px 0px;">
-    <span class="btn-label"><span class="action-label">New driver</span></span>
+    <span class="btn-label"><span class="action-label">New {{ label }} driver</span></span>
 </button>
 <div id="create-driver-container" data-url="{{ ea_url().setDashboard('App\\Controller\\Admin\\DashboardController')
     .setController('App\\Controller\\Admin\\LargeFileCrudController')
@@ -15,7 +15,7 @@
                             <div class="field-text form-group">
                                 <label for="ExpansionCard_documentations_1_link_name" class="form-control-label">Name</label>
                                 <div class="form-widget">
-                                    <input type="text" form="newdriver-form" class="newdriver-name-cssid form-control">
+                                    <input type="text" class="newdriver-name-cssid form-control">
                                 </div>
                             </div>
                         </div>
@@ -23,7 +23,7 @@
                             <div class="field-text form-group">
                                 <label for="ExpansionCard_documentations_1_link_name" class="form-control-label">Version</label>
                                 <div class="form-widget">
-                                    <input type="text" form="newdriver-form" class="newdriver-version-cssid form-control">
+                                    <input type="text" class="newdriver-version-cssid form-control">
                                 </div>
                             </div>
                         </div>
@@ -31,7 +31,7 @@
                             <div class="field-text form-group">
                                 <label for="ExpansionCard_documentations_1_link_name" class="form-control-label">OS support</label>
                                 <div class="form-widget">
-                                    <select multiple="multiple" form="newdriver-form" class="newdriver-os-support-cssid form-select"></select>
+                                    <select multiple="multiple" style="height: 30px;" class="newdriver-os-support-cssid form-select"></select>
                                 </div>
                             </div>
                         </div>
@@ -39,7 +39,7 @@
                             <div class="field-text form-group">
                                 <label for="ExpansionCard_documentations_1_link_name" class="form-control-label">OS architecture</label>
                                 <div class="form-widget">
-                                    <select multiple="multiple" form="newdriver-form" class="newdriver-os-arch-cssid form-select"></select>
+                                    <select multiple="multiple" style="height: 30px;" class="newdriver-os-arch-cssid form-select"></select>
                                 </div>
                             </div>
                         </div>
@@ -61,7 +61,7 @@
                             <div class="field-text form-group">
                                 <label for="ExpansionCard_documentations_1_link_name" class="form-control-label">File</label>
                                 <div class="form-widget">
-                                    <input type="file" form="newdriver-form" class="newdriver-file-cssid form-control">
+                                    <input type="file" form="newdriver-form" class="newdriver-file-cssid trw-bigfilebox">
                                 </div>
                             </div>
                         </div>
