@@ -2,8 +2,8 @@
 
 namespace App\Form\ExpansionCard;
 
-use App\Entity\ExpansionSlotInterfaceSignal;
 use App\Form\Type\DramTypeType;
+use App\Form\Type\ExpansionCardTypeType;
 use App\Form\Type\ItemsPerPageType;
 use App\Form\Type\ExpansionChipType;
 use Symfony\Component\Form\AbstractType;
