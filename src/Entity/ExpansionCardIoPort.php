@@ -125,4 +125,11 @@ class ExpansionCardIoPort
             return $this->ioPortInterface->getName();
         return $name;
     }
+    #[Assert\Callback]
+    public function autosetCountIfEmpty(): void
+    {
+        if(null === $this->count && null !== $this->ioPortInterface) {
+            $this->count = 1;
+        }
+    }
 }

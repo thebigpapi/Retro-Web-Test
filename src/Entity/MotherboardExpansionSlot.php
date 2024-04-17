@@ -5,6 +5,7 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use App\Repository\MotherboardExpansionSlotRepository;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 #[ORM\Entity(repositoryClass: MotherboardExpansionSlotRepository::class)]
 class MotherboardExpansionSlot
@@ -24,8 +25,6 @@ class MotherboardExpansionSlot
     private $expansion_slot;
 
     #[Assert\NotBlank(message:'Expansion slot count cannot be blank')]
-    #[Assert\PositiveOrZero(message: "Expansion slot count should be 0 or above")]
-    #[Assert\LessThan(100, message: "Expansion slot count should be below 100")]
     #[ORM\Column(type: 'integer')]
     private $count;
 
@@ -69,5 +68,22 @@ class MotherboardExpansionSlot
         $this->count = $count;
 
         return $this;
+    }
+    #[Assert\Callback]
+    public function autosetCountIfEmpty(ExecutionContextInterface $context): void
+    {
+        if(null === $this->count && null !== $this->expansion_slot) {
+            $this->count = 1;
+        }
+        if($this->count < 1){
+            $context->buildViolation('Should be above 0!')
+                ->atPath('count')
+                ->addViolation();
+        }
+        if($this->count > 99){
+            $context->buildViolation('Should be below 100!')
+                ->atPath('count')
+                ->addViolation();
+        }
     }
 }

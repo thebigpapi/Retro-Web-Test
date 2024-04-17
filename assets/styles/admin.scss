@@ -121,6 +121,12 @@ div.content-header-title > h1.title{
 		// align-self: center;
 	}
 }
+@media (max-width: 1325px){
+	.content-header {
+		flex-direction: column;
+	}
+}
+
 
 .editor-errors {
 	display: flex;

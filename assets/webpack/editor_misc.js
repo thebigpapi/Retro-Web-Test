@@ -37,6 +37,9 @@ function calculateSize(bytes){
 function submit(name){
     entity = saveretbtn.getAttribute('data-entity');
     let save = document.getElementsByClassName(name)[0];
+    let slug = document.getElementById(entity + "_slug");
+    if(slug && slug.value == "")
+        getSlug(entity);
     if(!setDate())
         return;
     if(!validateFiles(entity, save))
@@ -79,7 +82,7 @@ function validateFiles(entity, save){
 function validateEntityUpload(entity, type, message, maxSize){
     let entityList = document.getElementsByClassName(entity + "_" + type + "_cssid")
     if(entityList.length == 0)
-        return true;
+        return;
     for(let i=0; i<entityList.length; ++i){
         if(file = entityList[i].querySelectorAll("input[type=file]")[0].files[0]){
             if(file.size > maxSize){
@@ -93,6 +96,21 @@ function validateEntityUpload(entity, type, message, maxSize){
             }
             if(type == "audioFiles" && !allowedAudio.includes(file.type)){
                 msg.push(message + " [" + file.name + "] is not allowed (MP3 and OGG only)");
+            }
+            if(type.toLowerCase().includes("documentations") || type.toLowerCase().includes("manuals"))
+                if(entityList[i].querySelector('input[id*="_link_name"]').value == "")
+                    msg.push(message + " [" + file.name + "] title is empty");
+        }
+        else{
+            //images
+            if(type.toLowerCase().includes("images") && entityList[i].querySelector('a[class*="ea-lightbox-thumbnail"]') == null)
+                msg.push("Image [" + i + "] is empty");
+            //docs
+            if(type.toLowerCase().includes("documentations") || type.toLowerCase().includes("manuals")){
+                let linkName = entityList[i].querySelector('input[id*="_link_name"]');
+                let fileLink = entityList[i].querySelector('a[id*="_file_link"]');
+                if(linkName.value != "" && fileLink == null)
+                    msg.push("PDF [" + i + "] file is empty");
             }
         }
     }

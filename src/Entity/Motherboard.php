@@ -912,11 +912,6 @@ class Motherboard
         $arr = array();
         foreach($this->motherboardIoPorts as $item){
             $port = $item->getIoPort();
-            if($item->getCount() == 0){
-                $context->buildViolation('I/O port count should be above 0')
-                    ->atPath('motherboardIoPorts')
-                    ->addViolation();
-            }
             if(in_array($port, $arr)){
                 $context->buildViolation('Duplicate I/O port types are not allowed!')
                     ->atPath('motherboardIoPorts')
@@ -931,11 +926,6 @@ class Motherboard
         $arr = array();
         foreach($this->motherboardExpansionSlots as $item){
             $slot = $item->getExpansionSlot();
-            if($item->getCount() == 0){
-                $context->buildViolation('Expansion slot count should be above 0')
-                    ->atPath('motherboardExpansionSlots')
-                    ->addViolation();
-            }
             if(in_array($slot, $arr)){
                 $context->buildViolation('Duplicate expansion slot types are not allowed!')
                     ->atPath('motherboardExpansionSlots')

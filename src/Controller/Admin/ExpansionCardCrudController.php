@@ -262,11 +262,12 @@ class ExpansionCardCrudController extends AbstractCrudController
         yield CollectionField::new('drivers', 'Drivers')
             ->useEntryCrudForm(LargeFileCrudType::class)
             ->setFormTypeOption('error_bubbling', false)
-            ->setColumns(6)
+            ->setColumns('col-sm-12 col-lg-8 col-xxl-6')
             ->renderExpanded()
             ->onlyOnForms();
         yield ArrayField::new('getChipsWithDrivers', 'Expansion chips with drivers')
             ->setCssClass("field-collection processed")
+            ->setColumns('col-sm-12 col-lg-8 col-xxl-6')
             ->setDisabled()
             ->onlyOnForms();
         yield FormField::addTab('Docs')
