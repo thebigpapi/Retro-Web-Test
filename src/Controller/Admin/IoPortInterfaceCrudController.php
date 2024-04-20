@@ -54,7 +54,7 @@ class IoPortInterfaceCrudController extends AbstractCrudController
     public function configureFields(string $pageName): iterable
     {
         yield FormField::addTab('Basic Data')
-            ->setIcon('fa fa-info')
+            ->setIcon('data.svg')
             ->onlyOnForms();
         yield IdField::new('id')
             ->onlyOnIndex();
@@ -65,17 +65,20 @@ class IoPortInterfaceCrudController extends AbstractCrudController
         yield CodeEditorField::new('description')
             ->setLanguage('markdown')
             ->onlyOnForms();
-        yield FormField::addTab('Attachments')
-            ->setIcon('fa fa-download')
+        yield FormField::addTab('Docs')
+            ->setIcon('manual.svg')
             ->onlyOnForms();
-        yield CollectionField::new('entityImages', 'Images')
-            ->useEntryCrudForm(EntityImageCrudType::class)
+        yield CollectionField::new('entityDocumentations', 'Documentation')
+            ->useEntryCrudForm(EntityDocumentationCrudType::class)
             ->setCustomOption('byCount', true)
             ->renderExpanded()
             ->setFormTypeOption('error_bubbling', false)
             ->setColumns(6);
-        yield CollectionField::new('entityDocumentations', 'Documentation')
-            ->useEntryCrudForm(EntityDocumentationCrudType::class)
+        yield FormField::addTab('Images')
+            ->setIcon('search_image.svg')
+            ->onlyOnForms();
+        yield CollectionField::new('entityImages', 'Images')
+            ->useEntryCrudForm(EntityImageCrudType::class)
             ->setCustomOption('byCount', true)
             ->renderExpanded()
             ->setFormTypeOption('error_bubbling', false)

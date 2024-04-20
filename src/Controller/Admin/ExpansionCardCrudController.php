@@ -123,7 +123,7 @@ class ExpansionCardCrudController extends AbstractCrudController
     public function configureFields(string $pageName): iterable
     {
         yield FormField::addTab('Basic Data')
-            ->setIcon('fa fa-info')
+            ->setIcon('data.svg')
             ->onlyOnForms();
         yield IdField::new('id')->onlyOnIndex();
         yield AssociationField::new('manufacturer','Manufacturer')
@@ -212,8 +212,25 @@ class ExpansionCardCrudController extends AbstractCrudController
         yield CodeEditorField::new('description')
             ->setLanguage('markdown')
             ->onlyOnForms();
+        yield FormField::addTab('Chips/specs')
+            ->setIcon('chip.svg')
+            ->onlyOnForms();
+        yield AssociationField::new('expansionChips', 'Expansion chips')
+            ->autocomplete()
+            ->setColumns('col-sm-12 col-lg-6 col-xxl-4 multi-widget-trw')
+            ->onlyOnForms();
+        yield AssociationField::new('ramSize', 'Supported RAM size')
+            ->setColumns('col-sm-12 col-lg-6 col-xxl-4 multi-widget-trw')
+            ->onlyOnForms();
+        yield AssociationField::new('dramType', 'Supported RAM types')
+            ->setColumns('col-sm-12 col-lg-6 col-xxl-4 multi-widget-trw')
+            ->onlyOnForms();
+        yield TextJsonField::new('miscSpecs', 'Misc specs')
+            ->setFormTypeOption('label', false)
+            ->setColumns(12)
+            ->onlyOnForms();
         yield FormField::addTab('Connectors')
-            ->setIcon('fa fa-plug')
+            ->setIcon('rs232.svg')
             ->onlyOnForms();
         yield CollectionField::new('ioPorts', 'I/O ports')
             ->useEntryCrudForm(IoPortInterfaceSignalCrudType::class)
@@ -230,25 +247,8 @@ class ExpansionCardCrudController extends AbstractCrudController
             ->setColumns('col-sm-12 col-lg-6 col-xxl-4')
             ->renderExpanded()
             ->onlyOnForms();
-        yield FormField::addTab('Chips/specs')
-            ->setIcon('fa fa-microchip')
-            ->onlyOnForms();
-        yield AssociationField::new('expansionChips', 'Expansion chips')
-            ->autocomplete()
-            ->setColumns('col-sm-12 col-lg-6 col-xxl-4 multi-widget-trw')
-            ->onlyOnForms();
-        yield AssociationField::new('ramSize', 'Supported RAM size')
-            ->setColumns('col-sm-12 col-lg-6 col-xxl-4 multi-widget-trw')
-            ->onlyOnForms();
-        yield AssociationField::new('dramType', 'Supported RAM types')
-            ->setColumns('col-sm-12 col-lg-6 col-xxl-4 multi-widget-trw')
-            ->onlyOnForms();
-        yield TextJsonField::new('miscSpecs', 'Misc specs')
-            ->setFormTypeOption('label', false)
-            ->setColumns(12)
-            ->onlyOnForms();
         yield FormField::addTab('BIOS')
-            ->setIcon('fa fa-download')
+            ->setIcon('awchip.svg')
             ->onlyOnForms();
         yield CollectionField::new('expansionCardBios', 'Firmware / BIOS images')
             ->useEntryCrudForm(BiosCrudType::class)
@@ -257,7 +257,7 @@ class ExpansionCardCrudController extends AbstractCrudController
             ->renderExpanded()
             ->onlyOnForms();
         yield FormField::addTab('Drivers')
-            ->setIcon('fa fa-download')
+            ->setIcon('hardware.svg')
             ->onlyOnForms();
         yield CollectionField::new('drivers', 'Drivers')
             ->useEntryCrudForm(LargeFileCrudType::class)
@@ -271,7 +271,7 @@ class ExpansionCardCrudController extends AbstractCrudController
             ->setDisabled()
             ->onlyOnForms();
         yield FormField::addTab('Docs')
-            ->setIcon('fa fa-file-pdf')
+            ->setIcon('manual.svg')
             ->onlyOnForms();
         yield CollectionField::new('documentations', 'Documentation')
             ->useEntryCrudForm(DocumentationCrudType::class)
@@ -280,7 +280,7 @@ class ExpansionCardCrudController extends AbstractCrudController
             ->renderExpanded()
             ->onlyOnForms();
         yield FormField::addTab('Images')
-            ->setIcon('fa fa-download')
+            ->setIcon('search_image.svg')
             ->onlyOnForms();
         yield CollectionField::new('images', 'Images')
             ->useEntryCrudForm(ImageCrudType::class)

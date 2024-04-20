@@ -145,7 +145,7 @@ class MotherboardCrudController extends AbstractCrudController
     public function configureFields(string $pageName): iterable
     {
         yield FormField::addTab('Basic Data')
-            ->setIcon('fa fa-info')
+            ->setIcon('data.svg')
             ->onlyOnForms();
         // index items
         yield IdField::new('id')
@@ -231,7 +231,7 @@ class MotherboardCrudController extends AbstractCrudController
             ->setLanguage('markdown')
             ->onlyOnForms();
         yield FormField::addTab('Chips')
-            ->setIcon('fa fa-microchip')
+            ->setIcon('chip.svg')
             ->onlyOnForms();
         yield FormField::addPanel('CPU stuff')->onlyOnForms();
         yield CollectionField::new('cpuSockets', 'CPU sockets')
@@ -265,7 +265,7 @@ class MotherboardCrudController extends AbstractCrudController
             ->setColumns('col-sm-12 col-lg-8 col-xxl-6')
             ->onlyOnForms();
         yield FormField::addTab('Connectors')
-            ->setIcon('fa fa-plug')
+            ->setIcon('rs232.svg')
             ->onlyOnForms();
         yield CollectionField::new('motherboardIoPorts', 'I/O ports')
             ->useEntryCrudForm(IoPortCrudType::class)
@@ -290,8 +290,8 @@ class MotherboardCrudController extends AbstractCrudController
             ->setColumns('col-sm-12 col-lg-6 col-xxl-4')
             ->renderExpanded()
             ->onlyOnForms();
-        yield FormField::addTab('BIOS images')
-            ->setIcon('fa fa-download')
+        yield FormField::addTab('BIOS')
+            ->setIcon('awchip.svg')
             ->onlyOnForms();
         yield CollectionField::new('motherboardBios', 'BIOS')
             ->useEntryCrudForm(BiosCrudType::class)
@@ -302,7 +302,7 @@ class MotherboardCrudController extends AbstractCrudController
             ->renderExpanded()
             ->onlyOnForms();
         yield FormField::addTab('Drivers')
-            ->setIcon('fa fa-download')
+            ->setIcon('hardware.svg')
             ->onlyOnForms();
         yield CollectionField::new('drivers', 'Drivers')
             ->useEntryCrudForm(LargeFileCrudType::class)
@@ -315,7 +315,7 @@ class MotherboardCrudController extends AbstractCrudController
             ->setDisabled()
             ->onlyOnForms();
         yield FormField::addTab('Docs')
-            ->setIcon('fa fa-file-pdf')
+            ->setIcon('manual.svg')
             ->onlyOnForms();
         yield CollectionField::new('manuals', 'Documentation')
             ->useEntryCrudForm(ManualCrudType::class)
@@ -330,7 +330,7 @@ class MotherboardCrudController extends AbstractCrudController
             ->renderExpanded()
             ->onlyOnForms();
         yield FormField::addTab('Images')
-            ->setIcon('fa fa-download')
+            ->setIcon('search_image.svg')
             ->onlyOnForms();
         yield CollectionField::new('images', 'Images')
             ->useEntryCrudForm(ImageCrudType::class)

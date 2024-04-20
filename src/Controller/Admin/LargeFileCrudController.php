@@ -106,7 +106,7 @@ class LargeFileCrudController extends AbstractCrudController
     public function configureFields(string $pageName): iterable
     {
         yield FormField::addTab('Basic Data')
-            ->setIcon('fa fa-info')
+            ->setIcon('data.svg')
             ->onlyOnForms();
         yield IdField::new('id')->onlyOnIndex();
         yield TextField::new('name', 'Name')
@@ -152,7 +152,7 @@ class LargeFileCrudController extends AbstractCrudController
             ->setColumns(2)
             ->onlyOnForms();
         yield FormField::addTab('Associations')
-            ->setIcon('fa fa-info')
+            ->setIcon('chip.svg')
             ->onlyOnForms();
         yield CollectionField::new('expansionchips', 'Expansion chips')
             ->useEntryCrudForm(ExpansionChipCrudType::class)

@@ -116,7 +116,7 @@ class ChipsetCrudController extends AbstractCrudController
     public function configureFields(string $pageName): iterable
     {
         yield FormField::addTab('Basic Data')
-            ->setIcon('fa fa-info')
+            ->setIcon('data.svg')
             ->onlyOnForms();
         yield IdField::new('id')->hideOnForm();
         yield AssociationField::new('manufacturer', 'Manufacturer')
@@ -173,7 +173,7 @@ class ChipsetCrudController extends AbstractCrudController
             ->renderExpanded()
             ->onlyOnForms();
         yield FormField::addTab('Drivers')
-            ->setIcon('fa fa-download')
+            ->setIcon('hardware.svg')
             ->onlyOnForms();
         yield CollectionField::new('drivers', 'Drivers')
             ->useEntryCrudForm(LargeFileCrudType::class)
@@ -186,7 +186,7 @@ class ChipsetCrudController extends AbstractCrudController
             ->setDisabled()
             ->onlyOnForms();
         yield FormField::addTab('Docs')
-            ->setIcon('fa fa-file-pdf')
+            ->setIcon('manual.svg')
             ->onlyOnForms();
         yield CollectionField::new('documentations', 'Documentation')
             ->useEntryCrudForm(DocumentationCrudType::class)

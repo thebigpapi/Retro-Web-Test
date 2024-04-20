@@ -19,6 +19,6 @@ class ExpansionCardCrudType extends AbstractCrudController
         yield AssociationField::new('expansionCard', 'Expansion card')
             ->autocomplete()
             ->setColumns(12);
-        yield BooleanField::new('isRecommended', 'Recommended');
+        yield BooleanField::new('isRecommended', 'Known good');
     }
 }
