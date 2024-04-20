@@ -212,23 +212,6 @@ class ExpansionCardCrudController extends AbstractCrudController
         yield CodeEditorField::new('description')
             ->setLanguage('markdown')
             ->onlyOnForms();
-        yield FormField::addTab('Chips/specs')
-            ->setIcon('chip.svg')
-            ->onlyOnForms();
-        yield AssociationField::new('expansionChips', 'Expansion chips')
-            ->autocomplete()
-            ->setColumns('col-sm-12 col-lg-6 col-xxl-4 multi-widget-trw')
-            ->onlyOnForms();
-        yield AssociationField::new('ramSize', 'Supported RAM size')
-            ->setColumns('col-sm-12 col-lg-6 col-xxl-4 multi-widget-trw')
-            ->onlyOnForms();
-        yield AssociationField::new('dramType', 'Supported RAM types')
-            ->setColumns('col-sm-12 col-lg-6 col-xxl-4 multi-widget-trw')
-            ->onlyOnForms();
-        yield TextJsonField::new('miscSpecs', 'Misc specs')
-            ->setFormTypeOption('label', false)
-            ->setColumns(12)
-            ->onlyOnForms();
         yield FormField::addTab('Connectors')
             ->setIcon('rs232.svg')
             ->onlyOnForms();
@@ -246,6 +229,23 @@ class ExpansionCardCrudController extends AbstractCrudController
             ->useEntryCrudForm(PowerConnectorCrudType::class)
             ->setColumns('col-sm-12 col-lg-6 col-xxl-4')
             ->renderExpanded()
+            ->onlyOnForms();
+        yield FormField::addTab('Chips/specs')
+            ->setIcon('chip.svg')
+            ->onlyOnForms();
+        yield AssociationField::new('expansionChips', 'Expansion chips')
+            ->autocomplete()
+            ->setColumns('col-sm-12 col-lg-6 col-xxl-4 multi-widget-trw')
+            ->onlyOnForms();
+        yield AssociationField::new('ramSize', 'Supported RAM size')
+            ->setColumns('col-sm-12 col-lg-6 col-xxl-4 multi-widget-trw')
+            ->onlyOnForms();
+        yield AssociationField::new('dramType', 'Supported RAM types')
+            ->setColumns('col-sm-12 col-lg-6 col-xxl-4 multi-widget-trw')
+            ->onlyOnForms();
+        yield TextJsonField::new('miscSpecs', 'Misc specs')
+            ->setFormTypeOption('label', false)
+            ->setColumns(12)
             ->onlyOnForms();
         yield FormField::addTab('BIOS')
             ->setIcon('awchip.svg')

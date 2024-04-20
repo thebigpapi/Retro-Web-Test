@@ -53,7 +53,7 @@
 <div class="title">{{ socket.getNameAndType() }}</div>
 <div class="main-strip">
 	<div class="internal-container">
-		{% include 'macros/navbar.html.twig' with {'entity': socket, 'entityName': 'CpuSocket', 'name': 'socket', 'role': 'ROLE_ADMIN'} %}
+		{% include 'macros/navbar.html.twig' with {'entity': socket, 'entityName': 'CpuSocket', 'types': [], 'name': 'socket', 'role': 'ROLE_ADMIN'} %}
 		<div class="internal-content">
 			<!-- DESCRIPRION -->
 			<div class="show-general" id="sh-general">

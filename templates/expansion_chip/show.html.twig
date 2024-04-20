@@ -58,7 +58,7 @@
 </div>
 <div class="main-strip">
 	<div class="internal-container">
-		{% include 'macros/navbar.html.twig' with {'entity': expansion_chip, 'entityName': 'ExpansionChip', 'name': 'chip', 'role': 'ROLE_USER'} %}
+		{% include 'macros/navbar.html.twig' with {'entity': expansion_chip, 'entityName': 'ExpansionChip', 'types': ['specs', 'bios', 'drivers', 'docs'], 'name': 'chip', 'role': 'ROLE_USER'} %}
 		<div class="internal-content">
 			<!-- DESCRIPRION -->
 			<div class="show-general" id="sh-general">
@@ -111,12 +111,8 @@
 					<span>No chip specs</span>
 				{% endif %}
 			</div>
-			<div class="show-downloads" id="sh-downloads">
-				<!-- DRIVERS -->
-				{% include 'macros/drivers.html.twig' with {'entity': expansion_chip.getDrivers(), 'css': ''} %}
-				<!-- MANUALS -->
-				{% include 'macros/manuals.html.twig' with {'entity': expansion_chip.getDocumentations(), 'entity_label':'chip', 'audit_entity':'App-Entity-ChipDocumentation'} %}
-				<!-- BIOSes -->
+			<!-- BIOSes -->
+			<div class="show-downloads" id="sh-bios">
 				<div class="show-downloads-group last">
 					<div class="show-downloads-group-header">
 						<img src="{{ absolute_url(asset('build/icons/awchip.svg')) }}" alt="" width="32" height="32">
@@ -130,6 +126,14 @@
 					</div>
 					{% include 'macros/bios.html.twig' with {'entity': expansion_chip.getExpansionChipBios(), 'entity_label':'chip', 'audit_entity':'App-Entity-ExpansionChipBios'} %}
 				</div>
+			</div>
+			<!-- DRIVERS -->
+			<div class="show-downloads" id="sh-driver">
+				{% include 'macros/drivers.html.twig' with {'entity': expansion_chip.getDrivers(), 'css': ''} %}
+			</div>
+			<!-- Documentation -->
+			<div class="show-downloads" id="sh-docs">
+				{% include 'macros/manuals.html.twig' with {'entity': expansion_chip.getDocumentations(), 'entity_label':'chip', 'audit_entity':'App-Entity-ChipDocumentation'} %}
 			</div>
 		</div>
 	</div>

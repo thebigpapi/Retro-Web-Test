@@ -230,40 +230,6 @@ class MotherboardCrudController extends AbstractCrudController
         yield CodeEditorField::new('note')
             ->setLanguage('markdown')
             ->onlyOnForms();
-        yield FormField::addTab('Chips')
-            ->setIcon('chip.svg')
-            ->onlyOnForms();
-        yield FormField::addPanel('CPU stuff')->onlyOnForms();
-        yield CollectionField::new('cpuSockets', 'CPU sockets')
-            ->setEntryType(CpuSocketType::class)
-            ->setColumns('col-sm-12 col-lg-6 col-xxl-4')
-            ->renderExpanded()
-            ->onlyOnForms();
-        yield CollectionField::new('processorPlatformTypes', 'CPU families')
-            ->setEntryType(ProcessorPlatformTypeForm::class)
-            ->setColumns('col-sm-12 col-lg-6 col-xxl-4')
-            ->setFormTypeOption('row_attr', ['id'=> 'mobo-cpu-families-form'])
-            ->renderExpanded()
-            ->onlyOnForms();
-        yield CollectionField::new('cpuSpeed', 'FSB speed')
-            ->setEntryType(ProcessorSpeedType::class)
-            ->setColumns('col-sm-12 col-lg-6 col-xxl-4')
-            ->renderExpanded()
-            ->onlyOnForms();
-        yield IntegerField::new('maxcpu', 'CPU socket count')
-            ->setFormTypeOption('error_bubbling', false)
-            ->onlyOnForms();
-        yield FormField::addPanel('Chipset and chips')
-            ->onlyOnForms();
-        yield AssociationField::new('expansionChips', 'Expansion chips')
-            ->autocomplete()
-            ->setColumns('col-sm-12 col-lg-8 col-xxl-6 multi-widget-trw')
-            ->onlyOnForms();
-        yield AssociationField::new('chipset')
-            ->autocomplete()
-            ->setFormTypeOption('required', false)
-            ->setColumns('col-sm-12 col-lg-8 col-xxl-6')
-            ->onlyOnForms();
         yield FormField::addTab('Connectors')
             ->setIcon('rs232.svg')
             ->onlyOnForms();
@@ -289,6 +255,41 @@ class MotherboardCrudController extends AbstractCrudController
             ->setEntryType(PSUConnectorType::class)
             ->setColumns('col-sm-12 col-lg-6 col-xxl-4')
             ->renderExpanded()
+            ->onlyOnForms();
+        yield FormField::addTab('Chips')
+            ->setIcon('chip.svg')
+            ->onlyOnForms();
+        yield FormField::addPanel('CPU stuff')->onlyOnForms();
+        yield CollectionField::new('cpuSockets', 'CPU sockets')
+            ->setEntryType(CpuSocketType::class)
+            ->setColumns('col-sm-12 col-lg-6 col-xxl-4')
+            ->renderExpanded()
+            ->onlyOnForms();
+        yield CollectionField::new('processorPlatformTypes', 'CPU families')
+            ->setEntryType(ProcessorPlatformTypeForm::class)
+            ->setColumns('col-sm-12 col-lg-6 col-xxl-3')
+            ->setFormTypeOption('row_attr', ['id'=> 'mobo-cpu-families-form'])
+            ->renderExpanded()
+            ->onlyOnForms();
+        yield CollectionField::new('cpuSpeed', 'FSB speed')
+            ->setEntryType(ProcessorSpeedType::class)
+            ->setColumns('col-sm-12 col-lg-6 col-xxl-2')
+            ->renderExpanded()
+            ->onlyOnForms();
+        yield IntegerField::new('maxcpu', 'CPU socket count')
+            ->setFormTypeOption('error_bubbling', false)
+            ->setColumns('col-sm-4 col-lg-2 col-xxl-2')
+            ->onlyOnForms();
+        yield FormField::addPanel('Chipset and chips')
+            ->onlyOnForms();
+        yield AssociationField::new('expansionChips', 'Expansion chips')
+            ->autocomplete()
+            ->setColumns('col-sm-12 col-lg-8 col-xxl-6 multi-widget-trw')
+            ->onlyOnForms();
+        yield AssociationField::new('chipset')
+            ->autocomplete()
+            ->setFormTypeOption('required', false)
+            ->setColumns('col-sm-12 col-lg-8 col-xxl-6')
             ->onlyOnForms();
         yield FormField::addTab('BIOS')
             ->setIcon('awchip.svg')

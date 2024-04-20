@@ -435,3 +435,10 @@ div.clear-button-trw{
 		background-color: $btn-hover-dark;
 	}
 }
+input.items-placeholder{
+	display: none !important;
+}
+.ts-wrapper.form-select.multi div.clear-button{
+	top: 15px !important;
+    right: 17% !important;
+}

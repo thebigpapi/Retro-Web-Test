@@ -64,7 +64,7 @@
 </div>
 <div class="main-strip">
 	<div class="internal-container">
-		{% include 'macros/navbar.html.twig' with {'entity': chipset, 'entityName': 'Chipset', 'name': 'chipset', 'role': 'ROLE_USER'} %}
+		{% include 'macros/navbar.html.twig' with {'entity': chipset, 'entityName': 'Chipset', 'types': ['drivers', 'docs'], 'name': 'chipset', 'role': 'ROLE_USER'} %}
 		<div class="internal-content">
 			<!-- DESCRIPRION -->
 			<div class="show-general" id="sh-general">
@@ -124,9 +124,12 @@
 				</div>
 				<div id="index-datetime"><div class="div-datetime">Last updated <span class="perk-date">{{ chipset.getLastEdited()|date("Y-m-d\\TH:i:s", "GMT") }}Z</span></div></div>
 			</div>
-
-			<div class="show-downloads" id="sh-downloads">
-				{% include 'macros/drivers.html.twig' with {'entity': chipset.getAllDrivers(), 'css': ''} %}
+			<!-- DRIVERS -->
+			<div class="show-downloads" id="sh-driver">
+				{% include 'macros/drivers.html.twig' with {'entity': chipset.getAllDrivers(), 'css': 'last'} %}
+			</div>
+			<!-- Documentation -->
+			<div class="show-downloads" id="sh-docs">
 				{% include 'macros/manuals.html.twig' with {'entity': chipset.getDocumentations(), 'entity_label':'chipset', 'audit_entity':'App-Entity-ChipsetDocumentation', 'chips': chipset.getChipDocs()} %}
 			</div>
 		</div>
