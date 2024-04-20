@@ -300,17 +300,18 @@ class ExpansionCard
                 3 => 0,
                 4 => 0,
                 5 => 0,
+                6 => 0,
             );
         foreach($this->images as $image){
             $types[(int)$image->getType()] += 1;
         }
         if(($types[1] || $types[5])){
-            if(!($types[2] || $types[3] || $types[4]))
+            if(!($types[2] || $types[3] || $types[4] || $types[6]))
                 return "Schema only";
             else return "Schema and photo";
         }
         else{
-            if(!($types[2] || $types[3] || $types[4]))
+            if(!($types[2] || $types[3] || $types[4] || $types[6]))
                 return "None";
             else return "Photo only";
         }
