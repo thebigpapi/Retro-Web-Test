@@ -11,6 +11,7 @@ use App\Controller\Admin\Filter\ChipImageFilter;
 use App\Controller\Admin\Type\Chip\AliasCrudType;
 use App\Controller\Admin\Type\Chip\ImageCrudType;
 use App\Controller\Admin\Type\Chip\VoltageCrudType;
+use App\Entity\ExpansionChipType;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
@@ -42,10 +43,12 @@ use Symfony\Component\HttpFoundation\Response;
 class ProcessorCrudController extends AbstractCrudController
 {
     private $adminUrlGenerator;
+    private $entityManagerInterface;
 
-    public function __construct(AdminUrlGenerator $adminUrlGenerator)
+    public function __construct(AdminUrlGenerator $adminUrlGenerator, EntityManagerInterface $entityManagerInterface)
     {
         $this->adminUrlGenerator = $adminUrlGenerator;
+        $this->entityManagerInterface = $entityManagerInterface;
     }
     public static function getEntityFqcn(): string
     {
@@ -337,5 +340,15 @@ class ProcessorCrudController extends AbstractCrudController
     {
         $entityInstance->updateLastEdited();
         parent::updateEntity($entityManager, $entityInstance);
+    }
+
+    public function createEntity(string $entityFqcn)
+    {
+        // To save the processors with a "processor" type (which is of id 10);
+        $processorType = $this->entityManagerInterface->getRepository(ExpansionChipType::class)->find(10);
+        $processor = new Processor();
+        $processor->setType($processorType);
+
+        return $processor;
     }
 }

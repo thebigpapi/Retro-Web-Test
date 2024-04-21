@@ -91,7 +91,7 @@ class AdminController extends AbstractDashboardController
         $deletechips = array();
         foreach($chips as $chip){
             $chipEntity = $expansionChipRepository->findById($chip)[0];
-            if($chipEntity->getExpansionChipType()->getId() == 30)
+            if($chipEntity->getType()->getId() == 30)
                 array_push($deletechips, $chip);
         }
         return new JsonResponse($deletechips);

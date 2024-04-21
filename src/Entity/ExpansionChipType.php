@@ -62,7 +62,7 @@ class ExpansionChipType
     {
         if (!$this->expansionChips->contains($expansionChip)) {
             $this->expansionChips[] = $expansionChip;
-            $expansionChip->setExpansionChipType($this);
+            $expansionChip->setType($this);
         }
 
         return $this;
@@ -72,8 +72,8 @@ class ExpansionChipType
         if ($this->expansionChips->contains($expansionChip)) {
             $this->expansionChips->removeElement($expansionChip);
             // set the owning side to null (unless already changed)
-            if ($expansionChip->getExpansionChipType() === $this) {
-                $expansionChip->setExpansionChipType(null);
+            if ($expansionChip->getType() === $this) {
+                $expansionChip->setType(null);
             }
         }
 
