@@ -478,3 +478,7 @@
 {% block _IoPortSignal_entityDocumentations_entry_datePrecision_widget %}
     <div style="display:none;">{{ form_widget(form)}}</div>
 {% endblock _IoPortSignal_entityDocumentations_entry_datePrecision_widget %}
+{% block _HardDrive_capacity_label %}
+    {{ form_label(form)}}
+    <button id="hdd-capacity-convert" type="button" class="btn btn-secondary">Get formatted</button>
+{% endblock _HardDrive_capacity_label %}

@@ -13,6 +13,8 @@ if(saveretbtn = document.getElementById("js-save"))
     saveretbtn.addEventListener('click', () => submit("action-saveAndReturn"), false);
 if(savecontbtn = document.getElementById("js-save-continue"))
     savecontbtn.addEventListener('click', () => submit("action-saveAndContinue"), false);
+if(capacitybtn = document.getElementById("hdd-capacity-convert"))
+    capacitybtn.addEventListener('click', convertCapacity);
 getDate();
 function getSlug(entity){
     let manuf = document.getElementById(entity + '_manufacturer');
@@ -173,4 +175,16 @@ function setDate(){
         releaseDate.value = yearSel + "-" + (month > 9 ? "" : "0") + month + "-" + (day > 9 ? "" : "0" ) + day;
     }
     return true;
+}
+function convertCapacity(){
+    let input = document.getElementById("HardDrive_capacity");
+    let value = input.value;
+    let factor = 1;
+    let numeric = value.replace(/[^0-9.,]+/, '');
+    if(value.includes("GB"))
+        factor = 1000;
+    if(value.includes("TB"))
+        factor = 1000000;
+    console.log(numeric, factor);
+    input.value = (numeric * 0.9539 * factor) | 0;
 }

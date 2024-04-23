@@ -91,14 +91,14 @@
 						<div>{{ harddrive.getPhysicalSize() ?: "<span class='badge badge-secondary'>Empty</span>" }}</div>
 						<!-- Capacity -->
 						<div class="quick-spec-head">
-							<img src="{{ absolute_url(asset('build/icons/hdd.svg')) }}" alt="cpu" width="24" height="24">Capacity
+							<img src="{{ absolute_url(asset('build/icons/hdd.svg')) }}" alt="cpu" width="24" height="24">Capacity (formatted)
 						</div>
 						<div>{{ harddrive.getCapacityFormatted() }}</div>
 						<!-- Buffer -->
 						<div class="quick-spec-head">
 							<img src="{{ absolute_url(asset('build/icons/ram.svg')) }}" alt="ram" width="24" height="24">Buffer size
 						</div>
-						<div>{{ harddrive.getBufferFormatted() }}</div>
+						<div>{{ harddrive.getBuffer() ? harddrive.getBufferFormatted() : "<span class='badge badge-secondary'>Empty</span>" }}</div>
 					</div>
 					<div class="quick-spec-table">
 						<!-- Cylinders/Heads/Sectors -->
