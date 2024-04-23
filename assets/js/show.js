@@ -1,13 +1,17 @@
 const trw_tabs = ["tab-nav-1", "tab-nav-2", "tab-nav-3", "tab-nav-4", "tab-nav-5"];
 const trw_pageElements = ["sh-general", "sh-specs", "sh-expchips", "sh-downloads", "sh-bios", "sh-driver", "sh-docs"];
 const easyadmin = {
-    "#expchips": "tab-chips",
-    "#bios": "tab-bios",
-    "#general": "tab-connectors",
-    "#docs": "tab-other-attachments",
-    "#general": "tab-features",
-    "#specs": "tab-specs",
-    "#bios": "tab-firmware",
+    "tab-basic-data": "sh-general",
+    "tab-chips": "sh-expchips",
+    "tab-connectors": "sh-general",
+    "tab-bios": "sh-bios",
+    "tab-drivers": "sh-driver",
+    "tab-docs": "sh-docs",
+    "tab-images": "sh-general",
+    "tab-other-attachments": "sh-general",
+    "tab-features": "sh-general",
+    "tab-specs": "sh-expchips",
+    "tab-associations": "sh-expchips"
 }
 
 update_tab_selection();
@@ -36,10 +40,12 @@ function update_tab_selection() {
             }
             return;
         }
-        //easyadmin tabs
-        if (window.location.href.indexOf(easyadmin[anchorName]) != -1) {
-            inner_switch_tab(element);
-            let tabLabel = find_tab_label(element);
+    }
+    //easyadmin tabs
+    for (const el of Object.keys(easyadmin)) {
+        if (window.location.href.indexOf(el) != -1) {
+            inner_switch_tab(easyadmin[el]);
+            let tabLabel = find_tab_label(easyadmin[el]);
             if (tabLabel) {
                 tabLabel.checked = true;
             }
@@ -50,7 +56,6 @@ function update_tab_selection() {
 
 function find_tab_label(tabContainer) {
     for (const tabId of trw_tabs) {
-        //console.log(tabId, tabContainer);
         let tabLabel = document.getElementById(tabId);
         if (tabLabel && tabLabel.hasAttribute("data-tab") && tabLabel.getAttribute("data-tab") === tabContainer) {
             return tabLabel;
@@ -70,17 +75,19 @@ function switch_tab(event) {
 }
 
 function inner_switch_tab(tabTarget) {
-    if (document.getElementById(tabTarget))
+    if (document.getElementById(tabTarget)){
         document.getElementById(tabTarget).style.display = 'block';
-
-    trw_pageElements.forEach((element) => {
-        if (element !== tabTarget && document.getElementById(element))
-            document.getElementById(element).style.display = 'none';
-    });
-
-    if (tabTarget !== "sh-general") {
-        change_tag("#" + tabTarget.substring(3));
-    } else {
+        trw_pageElements.forEach((element) => {
+            if (element !== tabTarget && document.getElementById(element))
+                document.getElementById(element).style.display = 'none';
+        });
+        if (tabTarget !== "sh-general") {
+            change_tag("#" + tabTarget.substring(3));
+        } else {
+            change_tag("0");
+        }
+    }
+    else{
         change_tag("0");
     }
 }

@@ -59,10 +59,16 @@
 
 {% block body %}
 <!-- TITLE/ALIASES -->
-<div class="title">{{ motherboard.getFullName() }}</div>
+<div class="title">
+	{% if motherboard.getManufacturer() is not empty %}
+		<a href="{{ path('manufacturer_show', {id: motherboard.getManufacturer().getId()}) }}">{{ motherboard.getManufacturer().getName() }}</a>&nbsp;{{ motherboard.getName() }}
+	{% else %}
+		{{ motherboard.getFullName() }}
+	{% endif %}
+</div>
 <div class="main-strip">
 	<div class="internal-container">
-		{% include 'macros/navbar.html.twig' with {'entity': motherboard, 'entityName': 'Motherboard', 'name': 'board', 'role': 'ROLE_USER'} %}
+		{% include 'macros/navbar.html.twig' with {'entity': motherboard, 'entityName': 'Motherboard', 'types': ['chips', 'bios', 'drivers', 'docs'], 'name': 'board', 'role': 'ROLE_USER'} %}
 		<!-- GENERAL -->
 		<div class="internal-content">
 			<div class="show-general" id="sh-general">
@@ -75,33 +81,33 @@
 					{% if motherboard.getChipset() is not null %}
 						<div><a href="{{ path('chipset_show', {id: motherboard.getChipset().getId()}) }}">{{ motherboard.getChipset().getFullName() }}</a></div>
 					{% else %}
-					<div>Unknown</div>
+						<div><span class='badge badge-secondary'>Empty</span></div>
 					{% endif %}
 					<!-- CPU socket -->
 					<div class="quick-spec-head">
 						<img src="{{ absolute_url(asset('build/icons/cpupins.svg')) }}" alt="cpu" width="24" height="24">CPU socket{% if motherboard.getCpuSockets()|length > 1 %}s{% endif %}
 					</div>
 					{% if motherboard.getCpuSockets() is not empty %}
-					<div class="tag-container">{% for socket in motherboard.getCpuSockets() %}
-						<a href="{{ path('cpusocket_show', {id: socket.getId()}) }}"><span class="text-block">{{ socket.getNameAndType}}</span></a>{% endfor %}</div>
+						<div class="tag-container">{% for socket in motherboard.getCpuSockets() %}
+							<a href="{{ path('cpusocket_show', {id: socket.getId()}) }}"><span class="text-block">{{ socket.getNameAndType}}</span></a>{% endfor %}</div>
 					{% else %}
-					<div>Unknown</div>
+						<div><span class='badge badge-secondary'>Empty</span></div>
 					{% endif %}
 					<!-- FSB speed -->
 					<div class="quick-spec-head">
 						<img src="{{ absolute_url(asset('build/icons/speed.svg')) }}" alt="speed" width="24" height="24">FSB speed{% if motherboard.getCpuSpeed()|length > 1 %}s{% endif %}
 					</div>
 					{% if motherboard.getCpuSpeed() is not empty %}
-					<div class="tag-container">{% for frequency in motherboard.getCpuSpeed()|sort((a, b) => a.value <=> b.value) %}<span class="text-block">{{ frequency.getValueWithUnit() }}</span>{% endfor %}</div>
+						<div class="tag-container">{% for frequency in motherboard.getCpuSpeed()|sort((a, b) => a.value <=> b.value) %}<span class="text-block">{{ frequency.getValueWithUnit() }}</span>{% endfor %}</div>
 					{% else %}
-					<div>Unknown</div>
+						<div><span class='badge badge-secondary'>Empty</span></div>
 					{% endif %}
 					<!-- Form factor -->
 					<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/board.svg')) }}" alt="mobo" width="24" height="24">Form factor</div>
-					<div>{{ motherboard.getFormFactor() ? motherboard.getFormFactor().getName() : 'Unknown' }}</div>
+					<div>{{ motherboard.getFormFactor() ? motherboard.getFormFactor().getName() : "<span class='badge badge-secondary'>Empty</span>" }}</div>
 					<!-- Dimensions -->
 					<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/dimension.svg')) }}" alt="dim" width="24" height="24">Dimensions</div>
-					<div>{{ motherboard.getDimensions() ?: 'Unknown' }}</div>
+					<div>{{ motherboard.getDimensions() ?: "<span class='badge badge-secondary'>Empty</span>" }}</div>
 				</div>
 				<div class="quick-spec-table">
 					<!-- Cache -->
@@ -118,18 +124,18 @@
 						<img src="{{ absolute_url(asset('build/icons/ram_multi.svg')) }}" alt="ram" width="24" height="24">Max RAM size
 					</div>
 					{% if motherboard.getMotherboardMaxRams() is not empty %}
-					<div class="tag-container">{% for maxRam in motherboard.getMotherboardMaxRams() %}<span class="text-block">{{ maxRam.getMaxRam().getValueWithUnit()}}{% if maxRam.getNote() is not null %}<i>({{ maxRam.getNote()}})</i>{% endif %}</span>{% endfor %}</div>
+						<div class="tag-container">{% for maxRam in motherboard.getMotherboardMaxRams() %}<span class="text-block">{{ maxRam.getMaxRam().getValueWithUnit()}}{% if maxRam.getNote() is not null %}<i>({{ maxRam.getNote()}})</i>{% endif %}</span>{% endfor %}</div>
 					{% else %}
-					<div>Unknown</div>
+						<div><span class='badge badge-secondary'>Empty</span></div>
 					{% endif %}
 					<!-- Supported RAM types -->
 					<div class="quick-spec-head">
 						<img src="{{ absolute_url(asset('build/icons/ram.svg')) }}" alt="ram" width="24" height="24">RAM type{% if motherboard.getDramType()|length > 1 %}s{% endif %}
 					</div>
 					{% if motherboard.getDramType() is not empty %}
-					<div class="tag-container">{% for dram in motherboard.getDramType() %}<span class="text-block">{{ dram.getName() }}</span>{% endfor %}</div>
+						<div class="tag-container">{% for dram in motherboard.getDramType() %}<span class="text-block">{{ dram.getName() }}</span>{% endfor %}</div>
 					{% else %}
-					<div>Unknown</div>
+						<div><span class='badge badge-secondary'>Empty</span></div>
 					{% endif %}
 					<!-- Memory connectors -->
 					{% if motherboard.getMotherboardMemoryConnectors() is not empty %}
@@ -147,10 +153,10 @@
 						<img src="{{ absolute_url(asset('build/icons/power.svg')) }}" alt="pwr" width="24" height="24">PSU connector
 					</div>
 					{% if motherboard.getPsuConnectors() is not empty %}
-					<div class="tag-container">{% for psu in motherboard.getPsuConnectors() %}
-						<a href="{{ path('psu_connector_show', {id: psu.getId()}) }}"><span class="text-block">{{ psu.getName() }}</span></a>{% endfor %}</div>
+						<div class="tag-container">{% for psu in motherboard.getPsuConnectors() %}
+							<a href="{{ path('psu_connector_show', {id: psu.getId()}) }}"><span class="text-block">{{ psu.getName() }}</span></a>{% endfor %}</div>
 					{% else %}
-					<div>Unknown</div>
+						<div><span class='badge badge-secondary'>Empty</span></div>
 					{% endif %}
 				</div>
 			</div>
@@ -166,7 +172,7 @@
 								{% else %}{{ port.getIoPort().getName() }}{% endif %}
 								</div>
 							{% endfor %}
-						{% else %}<div class="list-table-head"></div><div>N/A</div>{% endif %}
+						{% else %}<div class="list-table-head"></div><div><span class='badge badge-secondary'>Empty</span></div>{% endif %}
 					</div>
 
 					<div class="full-spec-head"><img src="{{ absolute_url(asset('build/icons/pci_slot_smol.svg')) }}" alt="card" width="24" height="24"><b>Expansion slots</b></div>
@@ -180,13 +186,13 @@
 								{% else %}{{ slot.getExpansionSlot().getName() }}{% endif %}
 								</div>
 							{% endfor %}
-						{% else %}<div class="list-table-head"></div><div>N/A</div>{% endif %}
+						{% else %}<div class="list-table-head"></div><div><span class='badge badge-secondary'>Empty</span></div>{% endif %}
 					</div>
 				</div>
 				{% include 'macros/aliases.html.twig' with {'entity':motherboard.getMotherboardAliases(), 'msg': 'Also known as:'} %}
 				{% include 'macros/notes.html.twig' with {'entity': motherboard} %}
 				<div id="index-datetime"><div class="div-datetime">Last updated <span class="perk-date">{{ motherboard.getLastEdited()|date("Y-m-d\\TH:i:s", "GMT") }}Z</span></div></div>
-				<div class="score">Score is {{ motherboard.getScore() / 10 }}/10</div>
+				<div class="score">Board info score is {{ motherboard.getScore() / 10 }}/10</div>
 			</div>
 
 			<!-- Chips -->
@@ -198,7 +204,7 @@
 					</div>
 					{% if motherboard.getChipset() is not empty %}
 						<div><a href="{{ path('app_homepage') }}chipsets/{{ motherboard.getChipset().getId()}}">{{ motherboard.getChipset().getFullName() }}</a></div>
-					{% else %}<div>Unknown</div>{% endif %}
+					{% else %}<div><span class='badge badge-secondary'>Empty</span></div>{% endif %}
 					<!-- Expansion Chips -->
 					{% if motherboard.getExpansionChips() is not empty %}
 						{% for chip in motherboard.getExpansionChips()|filter(a => a.getType().getName() == "Chipset part")%}
@@ -240,7 +246,7 @@
 							{% endfor %}
 						</ul>
 						{% else %}
-							<div class="list-table-head"></div><div>N/A</div>
+							<div class="list-table-head"></div><div><span class='badge badge-secondary'>Empty</span></div>
 						{% endif %}
 					</div>
 					<div class="full-spec-head"></div>
@@ -250,7 +256,7 @@
 
 			<!-- BIOSes -->
 			<div class="show-downloads" id="sh-bios">
-				<div class="show-downloads-group">
+				<div class="show-downloads-group last">
 					<div class="show-downloads-group-header">
 						<img src="{{ absolute_url(asset('build/icons/awchip.svg')) }}" alt="" width="32" height="32">
 						{% set bfile_cnt = 0 %}
@@ -270,7 +276,7 @@
 								<div>Note</div>
 								<div>Core Ver.</div>
 								<div>BIOS Ver.</div>
-								<div>Last edit</div>
+								<div>Logs</div>
 							</div>
 							{% for bios in biosList|sort((a, b) => b.boardVersion <=> a.boardVersion) %}
 							<div class="list-entry centered {% if loop.index is divisible by(2) %}alt{% endif %}">
@@ -297,12 +303,11 @@
 										{{ bios.getBoardVersion() }}
 									{% endif %}
 								</div>
-								<div class="header-label">Last edit</div>
+								<div class="header-label">Logs</div>
 								<div>
 									<a href="{{ path('dh_auditor_show_entity_history', { 'entity': 'App-Entity-MotherboardBios', 'id': bios.getId() }) }}">
 										<img src="{{ absolute_url(asset('build/icons/calendar.svg')) }}" alt="pwr" width="16" height="16">
 									</a>
-									<i>{{ bios.getUpdatedAt()|date("Y-m-d")}}</i>
 								</div>
 							</div>
 							{% endfor %}
@@ -313,7 +318,7 @@
 			</div>
 			<!-- DRIVERS -->
 			<div class="show-downloads" id="sh-driver">
-				{% include 'macros/drivers.html.twig' with {'entity': motherboard.getAllDrivers()} %}
+				{% include 'macros/drivers.html.twig' with {'entity': motherboard.getAllDrivers(), 'css': 'last'} %}
 			</div>
 			<!-- Documentation -->
 			<div class="show-downloads" id="sh-docs">
@@ -330,7 +335,13 @@
 		{% endfor %}
 	{% else %}
 		<div class="show-image">
-			<img src={{ absolute_url(asset('build/images/missing/board-missing.jpg')) }} title="no images available :(" style="width:100%;">
+			{% if is_granted('ROLE_USER') %}
+				<a href="{{ ea_url().setDashboard('App\\Controller\\Admin\\DashboardController').setController('App\\Controller\\Admin\\MotherboardCrudController').setAction('edit').setEntityId(motherboard.getId())}}">
+					<img src={{ absolute_url(asset('build/images/missing/board-missing.jpg')) }} title="Click to edit this entry" style="width:100%;">
+				</a>
+			{% else %}
+				<img src={{ absolute_url(asset('build/images/missing/board-missing.jpg')) }} title="no images available :(" style="width:100%;">
+			{% endif %}
 		</div>
 	{% endif %}
 	</div>

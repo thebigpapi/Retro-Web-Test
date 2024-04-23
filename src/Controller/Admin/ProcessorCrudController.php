@@ -11,6 +11,7 @@ use App\Controller\Admin\Filter\ChipImageFilter;
 use App\Controller\Admin\Type\Chip\AliasCrudType;
 use App\Controller\Admin\Type\Chip\ImageCrudType;
 use App\Controller\Admin\Type\Chip\VoltageCrudType;
+use App\Entity\ExpansionChipType;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
@@ -42,10 +43,12 @@ use Symfony\Component\HttpFoundation\Response;
 class ProcessorCrudController extends AbstractCrudController
 {
     private $adminUrlGenerator;
+    private $entityManagerInterface;
 
-    public function __construct(AdminUrlGenerator $adminUrlGenerator)
+    public function __construct(AdminUrlGenerator $adminUrlGenerator, EntityManagerInterface $entityManagerInterface)
     {
         $this->adminUrlGenerator = $adminUrlGenerator;
+        $this->entityManagerInterface = $entityManagerInterface;
     }
     public static function getEntityFqcn(): string
     {
@@ -90,6 +93,8 @@ class ProcessorCrudController extends AbstractCrudController
             ->showEntityActionsInlined()
             ->setEntityLabelInSingular('CPU')
             ->setEntityLabelInPlural('<img class=ea-entity-icon src=/build/icons/486dx.svg width=48 height=48>CPUs')
+            ->overrideTemplate('crud/edit', 'admin/crud/edit.html.twig')
+            ->overrideTemplate('crud/new', 'admin/crud/new.html.twig')
             ->setPaginatorPageSize(100)
             ->setDefaultSort(['id' => 'DESC']);
     }
@@ -113,7 +118,7 @@ class ProcessorCrudController extends AbstractCrudController
     public function configureFields(string $pageName): iterable
     {
         yield FormField::addTab('Basic Data')
-            ->setIcon('fa fa-info')
+            ->setIcon('data.svg')
             ->onlyOnForms();
         yield IdField::new('id')
             ->onlyOnIndex();
@@ -201,8 +206,8 @@ class ProcessorCrudController extends AbstractCrudController
             ->setColumns(6)
             ->renderExpanded()
             ->onlyOnForms();
-        yield FormField::addTab('Attachments')
-            ->setIcon('fa fa-download')
+        yield FormField::addTab('Images')
+            ->setIcon('search_image.svg')
             ->onlyOnForms();
         yield CollectionField::new('images', 'Images')
             ->useEntryCrudForm(ImageCrudType::class)
@@ -335,5 +340,15 @@ class ProcessorCrudController extends AbstractCrudController
     {
         $entityInstance->updateLastEdited();
         parent::updateEntity($entityManager, $entityInstance);
+    }
+
+    public function createEntity(string $entityFqcn)
+    {
+        // To save the processors with a "processor" type (which is of id 10);
+        $processorType = $this->entityManagerInterface->getRepository(ExpansionChipType::class)->find(10);
+        $processor = new Processor();
+        $processor->setType($processorType);
+
+        return $processor;
     }
 }

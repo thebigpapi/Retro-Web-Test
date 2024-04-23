@@ -53,7 +53,7 @@
 <div class="title">{{ psu_connector.getName() }}</div>
 <div class="main-strip">
 	<div class="internal-container">
-		{% include 'macros/navbar.html.twig' with {'entity': psu_connector, 'entityName': 'PSUConnector', 'name': 'connector', 'role': 'ROLE_USER'} %}
+		{% include 'macros/navbar.html.twig' with {'entity': psu_connector, 'entityName': 'PSUConnector', 'types': [], 'name': 'connector', 'role': 'ROLE_USER'} %}
 		<div class="internal-content">
 			<!-- DESCRIPRION -->
 			<div class="show-general" id="sh-general">
@@ -74,7 +74,13 @@
 		{% endfor %}
 	{% else %}
 		<div class="show-images">
-			<img src={{ absolute_url(asset('build/images/missing/connector-missing.jpg')) }} title="no images available :(" style="width:100%;">
+			{% if is_granted('ROLE_USER') %}
+				<a href="{{ ea_url().setDashboard('App\\Controller\\Admin\\DashboardController').setController('App\\Controller\\Admin\\PSUConnectorCrudController').setAction('edit').setEntityId(psu_connector.getId())}}">
+					<img src={{ absolute_url(asset('build/images/missing/connector-missing.jpg')) }} title="Click to edit this entry" style="width:100%;">
+				</a>
+			{% else %}
+				<img src={{ absolute_url(asset('build/images/missing/connector-missing.jpg')) }} title="no images available :(" style="width:100%;">
+			{% endif %}
 		</div>
 	{% endif %}
 	</div>

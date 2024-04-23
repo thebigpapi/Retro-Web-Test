@@ -383,6 +383,13 @@ class StorageDevice
         $result .= $this->name ? " (" . $this->name . ")" : "";
         return $result;
     }
+    public function getNameWithoutManuf(): string
+    {
+        if ($this->name) {
+            return $this->partNumber . " (" . $this->name . ")";
+        }
+        return $this->partNumber;
+    }
 
     /**
      * @return Collection<int, StorageDeviceInterface>

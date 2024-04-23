@@ -34,7 +34,7 @@ function updateChipset() {
     let cnt = 0;
     // read expansion chips
     let chips = document.getElementById('Motherboard_expansionChips_autocomplete');
-    console.log(chips.tomselect.getValue())
+    //console.log(chips.tomselect.getValue())
     if(chips.childElementCount > 0)
         for(let item of chips.children)
             params.push(parseInt(item.getAttribute('value')));
@@ -93,7 +93,7 @@ function updateChips() {
         return;
 }
 function setChips(value, verify){
-    console.log(value)
+    //console.log(value)
     // fetch new chips based on chipset
     let post = JSON.stringify(value)
     let chipsArray = {};
@@ -105,7 +105,7 @@ function setChips(value, verify){
     xhr.onload = function () {
         if(xhr.status === 200) {
             chipsArray = JSON.parse(xhr.responseText);
-            console.log(chipsArray, chipsArray.length);
+            //console.log(chipsArray, chipsArray.length);
             if(verify > 0)
                 verifyChips(chipsArray);
             else{
@@ -118,7 +118,7 @@ function setChips(value, verify){
 function addChips(addArray){
     let chips = document.getElementById('Motherboard_expansionChips_autocomplete');
     for(const chip in addArray){
-        console.log(chip, addArray[chip]);
+        //console.log(chip, addArray[chip]);
         chips.tomselect.addOption({entityId: chip, entityAsString: addArray[chip]});
         chips.tomselect.addItem(chip);
     }

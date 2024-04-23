@@ -15,7 +15,7 @@
 	<meta property="og:title" content="{{ cddrive.getFullName() }}">
 	<meta property="og:description" content="Get info, images and documentation for the {{ cddrive.getFullName() }} optical drive">
 	{% if cddrive.getStorageDeviceImages() is not empty %}
-		{% for image in cddrive.getStorageDeviceImages()|sort((a, b) => a.getFileName() <=> b.getFileName())|slice(0, 1) %}
+		{% for image in cddrive.getStorageDeviceImages()|filter(a => a.type in ["1", "2", "3"])|sort((a, b) => a.getFileName() <=> b.getFileName())|sort((a, b) => b.getType <=> a.getType)|slice(0, 1) %}
 			<meta name="twitter:image" content="{{ vich_uploader_asset(image, 'imageFile')}}">
 			<meta property="og:image" content="{{ vich_uploader_asset(image, 'imageFile')}}">
 		{% endfor %}
@@ -49,10 +49,16 @@
 {% endblock %}
 {% block body %}
 <!-- MANUF./NAME/PART NO. -->
-<div class="title">{{ cddrive.getFullName() }}</div>
+<div class="title">
+	{% if cddrive.getManufacturer() is not empty %}
+		<a href="{{ path('manufacturer_show', {id: cddrive.getManufacturer().getId()}) }}">{{ cddrive.getManufacturer().getName() }}</a>&nbsp;{{ cddrive.getNameWithoutManuf() }}
+	{% else %}
+		{{ cddrive.getFullName() }}
+	{% endif %}
+</div>
 <div class="main-strip">
 	<div class="internal-container">
-		{% include 'macros/navbar.html.twig' with {'entity': cddrive, 'entityName': 'CdDrive', 'name': 'optical drive', 'role': 'ROLE_USER'} %}
+		{% include 'macros/navbar.html.twig' with {'entity': cddrive, 'entityName': 'CdDrive', 'types': [], 'name': 'optical drive', 'role': 'ROLE_USER'} %}
 		<div class="internal-content">
 			<!-- DESCRIPRION -->
 			<div class="show-general" id="sh-general">
@@ -63,19 +69,20 @@
 							<img src="{{ absolute_url(asset('build/icons/io.svg')) }}" alt="cpu" width="24" height="24">Interface{% if cddrive.getInterfaces()|length > 1 %}s{% endif %}
 						</div>
 						{% if cddrive.getInterfaces() is not empty %}
-						<div class="tag-container">{% for interface in cddrive.getInterfaces() %}<span class="text-block">{{ interface.getName}}</span>{% endfor %}</div>
+							<div class="tag-container">{% for interface in cddrive.getInterfaces() %}<span class="text-block">{{ interface.getName}}</span>{% endfor %}</div>
 						{% else %}
-						<div>Unknown</div>
+							<div><span class='badge badge-secondary'>Empty</span></div>
 						{% endif %}
 						<!-- Power connectors -->
 						<div class="quick-spec-head">
 							<img src="{{ absolute_url(asset('build/icons/power.svg')) }}" alt="pwr" width="24" height="24">Power connector
 						</div>
 						{% if cddrive.getPowerConnectors() is not empty %}
-						<div class="tag-container">{% for power in cddrive.getPowerConnectors() %}
-							<a href="{{ path('psu_connector_show', {id: power.getId()}) }}"><span class="text-block">{{ power.getName() }}</span></a>{% endfor %}</div>
+							<div class="tag-container">{% for power in cddrive.getPowerConnectors() %}
+								<a href="{{ path('psu_connector_show', {id: power.getId()}) }}"><span class="text-block">{{ power.getName() }}</span></a>{% endfor %}
+							</div>
 						{% else %}
-						<div>Unknown</div>
+							<div><span class='badge badge-secondary'>Empty</span></div>
 						{% endif %}
 						<!-- Size -->
 						<div class="quick-spec-head">
@@ -93,22 +100,22 @@
 						<div class="quick-spec-head">
 							<img src="{{ absolute_url(asset('build/icons/cd.svg')) }}" alt="cdr" width="24" height="24">CD read speed
 						</div>
-						<div>{{ cddrive.getCdReadSpeed() ~ 'x' ?: 'Unknown' }}</div>
+						<div>{{ cddrive.getCdReadSpeed() ? cddrive.getCdReadSpeed() ~ 'x' : "<span class='badge badge-secondary'>Empty</span>" }}</div>
 						<!-- CD write -->
 						<div class="quick-spec-head">
 							<img src="{{ absolute_url(asset('build/icons/cd.svg')) }}" alt="cdw" width="24" height="24">CD write speed
 						</div>
-						<div>{{ cddrive.getCdWriteSpeed() ~ 'x' ?: 'Unknown' }}</div>
+						<div>{{ cddrive.getCdWriteSpeed() ? cddrive.getCdWriteSpeed() ~ 'x' : "<span class='badge badge-secondary'>Empty</span>" }}</div>
 						<!-- DVD read -->
 						<div class="quick-spec-head">
 							<img src="{{ absolute_url(asset('build/icons/dvd.svg')) }}" alt="dvdr" width="24" height="24">DVD read speed
 						</div>
-						<div>{{ cddrive.getDvdReadSpeed() ~ 'x' ?: 'Unknown' }}</div>
+						<div>{{ cddrive.getDvdReadSpeed() ? cddrive.getDvdReadSpeed() ~ 'x' : "<span class='badge badge-secondary'>Empty</span>" }}</div>
 						<!-- DVD write speed -->
 						<div class="quick-spec-head">
 							<img src="{{ absolute_url(asset('build/icons/dvd.svg')) }}" alt="dvdw" width="24" height="24">DVD write speed
 						</div>
-						<div>{{ cddrive.getDvdWriteSpeed() ~ 'x' ?: 'Unknown' }}</div>
+						<div>{{ cddrive.getDvdWriteSpeed() ? cddrive.getDvdWriteSpeed() ~ 'x' : "<span class='badge badge-secondary'>Empty</span>" }}</div>
 					</div>
 				</div>
 				{% include 'macros/aliases.html.twig' with {'entity':cddrive.getStorageDeviceAliases(), 'msg': 'Also known as:'} %}
@@ -130,7 +137,13 @@
 		{% endfor %}
 	{% else %}
 		<div class="show-images">
-			<img src={{ absolute_url(asset('build/images/missing/cdd-missing.jpg')) }} title="no images available :(" style="width:100%;">
+			{% if is_granted('ROLE_USER') %}
+				<a href="{{ ea_url().setDashboard('App\\Controller\\Admin\\DashboardController').setController('App\\Controller\\Admin\\CdDriveCrudController').setAction('edit').setEntityId(cddrive.getId())}}">
+					<img src={{ absolute_url(asset('build/images/missing/cdd-missing.jpg')) }} title="Click to edit this entry" style="width:100%;">
+				</a>
+			{% else %}
+				<img src={{ absolute_url(asset('build/images/missing/cdd-missing.jpg')) }} title="no images available :(" style="width:100%;">
+			{% endif %}
 		</div>
 	{% endif %}
 	</div>

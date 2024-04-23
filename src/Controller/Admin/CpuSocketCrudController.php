@@ -59,12 +59,14 @@ class CpuSocketCrudController extends AbstractCrudController
             ->showEntityActionsInlined()
             ->setEntityLabelInSingular('socket')
             ->setEntityLabelInPlural('<img class=ea-entity-icon src=/build/icons/cpupins.svg width=48 height=48>Sockets')
+            ->overrideTemplate('crud/edit', 'admin/crud/edit.html.twig')
+            ->overrideTemplate('crud/new', 'admin/crud/new.html.twig')
             ->setPaginatorPageSize(100);
     }
     public function configureFields(string $pageName): iterable
     {
         yield FormField::addTab('Basic Data')
-            ->setIcon('fa fa-info')
+            ->setIcon('data.svg')
             ->onlyOnForms();
         yield IdField::new('id')
             ->onlyOnIndex();
@@ -81,17 +83,20 @@ class CpuSocketCrudController extends AbstractCrudController
         yield CodeEditorField::new('description')
             ->setLanguage('markdown')
             ->onlyOnForms();
-        yield FormField::addTab('Attachments')
-            ->setIcon('fa fa-download')
+        yield FormField::addTab('Docs')
+            ->setIcon('manual.svg')
             ->onlyOnForms();
-        yield CollectionField::new('entityImages', 'Images')
-            ->useEntryCrudForm(EntityImageCrudType::class)
+        yield CollectionField::new('entityDocumentations', 'Documentation')
+            ->useEntryCrudForm(EntityDocumentationCrudType::class)
             ->renderExpanded()
             ->setFormTypeOption('error_bubbling', false)
             ->setColumns(6)
             ->onlyOnForms();
-        yield CollectionField::new('entityDocumentations', 'Documentation')
-            ->useEntryCrudForm(EntityDocumentationCrudType::class)
+        yield FormField::addTab('Images')
+            ->setIcon('search_image.svg')
+            ->onlyOnForms();
+        yield CollectionField::new('entityImages', 'Images')
+            ->useEntryCrudForm(EntityImageCrudType::class)
             ->renderExpanded()
             ->setFormTypeOption('error_bubbling', false)
             ->setColumns(6)

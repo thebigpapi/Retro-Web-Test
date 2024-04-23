@@ -36,6 +36,5 @@ class IoPortInterfaceSignalCrudType extends AbstractCrudController
             ->setFormTypeOption('label',false)
             ->setFormTypeOption('attr',['placeholder' => 'Signals:'])
             ->setColumns(12);
-        yield BooleanField::new('isinternal', 'Internal port');
     }
 }

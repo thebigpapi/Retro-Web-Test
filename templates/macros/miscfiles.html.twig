@@ -1,5 +1,5 @@
 {% if entity is not empty %}
-<div class="show-downloads-group">
+<div class="show-downloads-group last">
     <div class="show-downloads-group-header">
         <img src="{{ absolute_url(asset('build/icons/miscfile.svg')) }}" alt="doc" width="32" height="32">
         <span>{{ entity.count() }} other file{% if entity.count() != 1 %}s{% endif %} available</span>
@@ -8,7 +8,7 @@
         <div class="list-entry centered head">
             <div>Title</div>
             <div>File</div>
-            <div>Last edit</div>
+            <div>Logs</div>
         </div>
         {% for miscfile in entity|sort((a, b) => a.getLinkName <=> b.getLinkName) %}
         <div class="list-entry centered {% if loop.index is divisible by(2) %}alt{% endif %}">
@@ -21,12 +21,11 @@
                     <span>{{ miscfile.getFileNameSimple() }}</span>
                 </a>
             </div>
-            <div class="header-label">Last edit</div>
+            <div class="header-label">Logs</div>
             <div>
                 <a href="{{ path('dh_auditor_show_entity_history', { 'entity': audit_entity, 'id': miscfile.getId() }) }}">
                     <img src="{{ absolute_url(asset('build/icons/calendar.svg')) }}" alt="pwr" width="16" height="16">
                 </a>
-                <i>{{ miscfile.getUpdatedAt()|date("Y-m-d")}}</i>
             </div>
         </div>
         {% endfor %}

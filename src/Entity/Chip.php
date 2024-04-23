@@ -52,6 +52,12 @@ abstract class Chip
     #[Assert\Positive(message: "Sort position should be above 0")]
     private ?int $sort = null;
 
+    #[ORM\ManyToOne(targetEntity: ExpansionChipType::class, inversedBy: 'expansionChips')]
+    #[ORM\JoinColumn(nullable: false)]
+    private $type;
+
+    #[ORM\Column(type: Types::JSON, options: ['jsonb' => true])]
+    private ?array $miscSpecs = [];
 
     public function __construct()
     {
@@ -93,6 +99,13 @@ abstract class Chip
         $this->manufacturer = $manufacturer;
 
         return $this;
+    }
+    public function getNameWithoutManuf(): string
+    {
+        if ($this->name) {
+            return $this->partNumber . " (" . $this->name . ")";
+        }
+        return $this->partNumber;
     }
     /**
      * @return Collection|ChipAlias[]
@@ -271,5 +284,64 @@ abstract class Chip
                 $vendors = array_merge($vendors, $aliasVendors);
         }
         return new ArrayCollection($vendors);
+    }
+
+    public function getType(): ?ExpansionChipType
+    {
+        return $this->type;
+    }
+    public function setType(?ExpansionChipType $type): self
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+    public function getMiscSpecs(): array
+    {
+        return $this->miscSpecs ?? [];
+    }
+    public function getMiscSpecsFormatted(): array
+    {
+        $output = [];
+        foreach($this->getMiscSpecs() as $spec){
+            $new = str_replace("\"","",json_encode($spec));
+            $new = str_replace(":",": ",$new);
+            array_push($output, substr($new, 1, -1));
+        }
+        return $output;
+    }
+    public function getSimpleMiscSpecs(): array
+    {
+        $output = [];
+        foreach($this->getMiscSpecs() as $key => $value){
+            if(!is_array($value))
+                $output[$key] = $value;
+        }
+        return $output;
+    }
+    public function getTableMiscSpecs(): array
+    {
+        $output = [];
+        foreach($this->getMiscSpecs() as $key => $value){
+            if(is_array($value))
+                $output[$key] = $value;
+        }
+        return $this->sortMiscSpecTables($output);
+    }
+    function sortMiscSpecTables($arrays) {
+        $lengths = array_map('count', $arrays);
+        arsort($lengths);
+        $return = array();
+        foreach(array_keys($lengths) as $k)
+            $return[$k] = $arrays[$k];
+        return $return;
+    }
+
+    public function setMiscSpecs(array $miscSpecs): static
+    {
+        $this->miscSpecs = $miscSpecs;
+
+        return $this;
     }
 }

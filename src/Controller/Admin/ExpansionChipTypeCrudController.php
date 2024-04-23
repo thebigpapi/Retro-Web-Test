@@ -38,8 +38,8 @@ class ExpansionChipTypeCrudController extends AbstractCrudController
             ->showEntityActionsInlined()
             ->setEntityLabelInSingular('chip type')
             ->setEntityLabelInPlural('<img class=ea-entity-icon src=/build/icons/chip_alias.svg width=48 height=48>Expansion chip types')
-            ->overrideTemplate('crud/edit', 'admin/crud/edit_chip.html.twig')
-            ->overrideTemplate('crud/new', 'admin/crud/new_chip.html.twig')
+            ->overrideTemplate('crud/edit', 'admin/crud/edit.html.twig')
+            ->overrideTemplate('crud/new', 'admin/crud/new.html.twig')
             ->setPaginatorPageSize(100);
     }
     public function configureFields(string $pageName): iterable

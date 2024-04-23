@@ -121,6 +121,12 @@ div.content-header-title > h1.title{
 		// align-self: center;
 	}
 }
+@media (max-width: 1325px){
+	.content-header {
+		flex-direction: column;
+	}
+}
+
 
 .editor-errors {
 	display: flex;
@@ -243,7 +249,7 @@ div.hide-actions{
 	button.action-saveAndContinue, button.action-saveAndReturn{
 		display: none;
 	}
-	button{
+	button, a{
 		margin-top: 5px;
 	}
 }
@@ -261,6 +267,42 @@ div.driver-messages {
 
 	img {
 		display: none;
+	}
+}
+div.widget90 {
+	width:90%;
+	display: inline-block !important;
+}
+
+div.image-bulk-box{
+	padding:5px;
+	span.bulk-box-label{
+		width:75px;
+		display: inline-block;
+	}
+	input.image-input{
+		padding: 30px 30px;
+		border: 1px dashed black;
+		@media (prefers-color-scheme: dark) {
+			border: 1px dashed white;
+		}
+	}
+	div.bulk-box-secondary{
+		display: flex;
+		column-gap: 5px;
+		padding-top: 5px;
+		& > div{
+			width:50%;
+		}
+	}
+}
+
+input.trw-bigfilebox{
+	padding: 25px;
+	width: 100%;
+	border: 1px dashed black;
+	@media (prefers-color-scheme: dark) {
+		border: 1px dashed white;
 	}
 }
 /* misc specs styling */
@@ -392,4 +434,11 @@ div.clear-button-trw{
 	&:hover {
 		background-color: $btn-hover-dark;
 	}
+}
+input.items-placeholder{
+	display: none !important;
+}
+.ts-wrapper.form-select.multi div.clear-button{
+	top: 15px !important;
+    right: 17% !important;
 }

@@ -35,6 +35,16 @@ class ExpansionSlotInterfaceCrudController extends AbstractCrudController
             ->setPermission(Action::EDIT, 'ROLE_ADMIN')
             ->setPermission(Action::INDEX, 'ROLE_ADMIN');
     }
+    public function configureCrud(Crud $crud): Crud
+    {
+        return $crud
+            ->showEntityActionsInlined()
+            ->setEntityLabelInSingular('expansion slot connector')
+            ->setEntityLabelInPlural('<img class=ea-entity-icon src=/build/icons/pci_slot_smol.svg width=48 height=48>Expansion slot connectors')
+            ->overrideTemplate('crud/edit', 'admin/crud/edit.html.twig')
+            ->overrideTemplate('crud/new', 'admin/crud/new.html.twig')
+            ->setPaginatorPageSize(100);
+    }
     public function configureFilters(Filters $filters): Filters
     {
         return parent::configureFilters($filters)
@@ -44,7 +54,7 @@ class ExpansionSlotInterfaceCrudController extends AbstractCrudController
     public function configureFields(string $pageName): iterable
     {
         yield FormField::addTab('Basic Data')
-            ->setIcon('fa fa-info')
+            ->setIcon('data.svg')
             ->onlyOnForms();
         yield IdField::new('id')
             ->onlyOnIndex();
@@ -55,8 +65,17 @@ class ExpansionSlotInterfaceCrudController extends AbstractCrudController
         yield CodeEditorField::new('description')
             ->setLanguage('markdown')
             ->onlyOnForms();
-        yield FormField::addTab('Attachments')
-            ->setIcon('fa fa-download')
+        yield FormField::addTab('Docs')
+            ->setIcon('manual.svg')
+            ->onlyOnForms();
+        yield CollectionField::new('entityDocumentations', 'Documentation')
+            ->useEntryCrudForm(EntityDocumentationCrudType::class)
+            ->setCustomOption('byCount', true)
+            ->renderExpanded()
+            ->setFormTypeOption('error_bubbling', false)
+            ->setColumns(6);
+        yield FormField::addTab('Images')
+            ->setIcon('search_image.svg')
             ->onlyOnForms();
         yield CollectionField::new('entityImages', 'Images')
             ->useEntryCrudForm(EntityImageCrudType::class)
@@ -64,21 +83,8 @@ class ExpansionSlotInterfaceCrudController extends AbstractCrudController
             ->renderExpanded()
             ->setFormTypeOption('error_bubbling', false)
             ->setColumns(6);
-        yield CollectionField::new('entityDocumentations', 'Documentation')
-            ->useEntryCrudForm(EntityDocumentationCrudType::class)
-            ->setCustomOption('byCount', true)
-            ->renderExpanded()
-            ->setFormTypeOption('error_bubbling', false)
-            ->setColumns(6);
     }
-    public function configureCrud(Crud $crud): Crud
-    {
-        return $crud
-            ->showEntityActionsInlined()
-            ->setEntityLabelInSingular('expansion slot connector')
-            ->setEntityLabelInPlural('<img class=ea-entity-icon src=/build/icons/pci_slot_smol.svg width=48 height=48>Expansion slot connectors')
-            ->setPaginatorPageSize(100);
-    }
+
     public function viewLogs(AdminContext $context)
     {
         $entityId = $context->getEntity()->getInstance()->getId();

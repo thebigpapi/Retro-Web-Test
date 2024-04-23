@@ -22,13 +22,13 @@
 				</div>
 
 				<div class="header-label">POST string</div>
-				<div class="monospace">{{ b[0].getPostString() }}</div>
+				<div class="monospace">{{ b[0].getPostString() ?: "<span class='badge badge-secondary'>Empty</span>"}}</div>
 
 				<div class="header-label">Type</div>
 				<div>{{ b["bmanName"] }} {{ b[0].getCoreVersion() }}</div>
 
 				<div class="header-label">Version</div>
-				<div>{{ b[0].getBoardVersion() ?: "[unknown]" }}</div>
+				<div>{{ b[0].getBoardVersion() ?: "<span class='badge badge-secondary'>Empty</span>" }}</div>
 
 				<div class="header-label">File</div>
 				<div>
@@ -41,7 +41,7 @@
 							</span>
 						</a>
 					{% else %}
-						<span>N/A</span>
+						<span class='badge badge-secondary'>Empty</span>
 					{% endif %}
 				</div>
 			</div>

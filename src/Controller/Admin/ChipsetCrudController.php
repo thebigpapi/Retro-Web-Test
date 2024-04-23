@@ -97,6 +97,8 @@ class ChipsetCrudController extends AbstractCrudController
             ->setPaginatorPageSize(100)
             ->setEntityLabelInSingular('chipset')
             ->setEntityLabelInPlural('<img class=ea-entity-icon src=/build/icons/chipset.svg width=48 height=48>Chipsets')
+            ->overrideTemplate('crud/edit', 'admin/crud/edit.html.twig')
+            ->overrideTemplate('crud/new', 'admin/crud/new.html.twig')
             ->setDefaultSort(['lastEdited' => 'DESC']);
     }
     public function configureFilters(Filters $filters): Filters
@@ -114,7 +116,7 @@ class ChipsetCrudController extends AbstractCrudController
     public function configureFields(string $pageName): iterable
     {
         yield FormField::addTab('Basic Data')
-            ->setIcon('fa fa-info')
+            ->setIcon('data.svg')
             ->onlyOnForms();
         yield IdField::new('id')->hideOnForm();
         yield AssociationField::new('manufacturer', 'Manufacturer')
@@ -127,20 +129,11 @@ class ChipsetCrudController extends AbstractCrudController
             ->onlyOnIndex();
         yield ArrayField::new('expansionChips', 'Parts')
             ->onlyOnDetail();
-        yield DateField::new('release_date', 'Release Date')
+        yield DateField::new('releaseDate', 'Release Date')
             ->setColumns(2)
             ->onlyOnForms();
         yield TextField::new('getReleaseDateString', 'Release Date')
             ->hideOnForm();
-        yield ChoiceField::new('datePrecision', 'Display date format (optional)')
-            ->setChoices([
-                'Year, month and day' => 'd',
-                'Year and month' => 'm',
-                'Year only' => 'y',
-            ])
-            ->setFormTypeOption('placeholder', 'Select a format ...')
-            ->setColumns(2)
-            ->onlyOnForms();
         yield UrlField::new('encyclopedia_link', 'Link')
             ->setColumns(4)
             ->hideOnIndex();
@@ -164,13 +157,13 @@ class ChipsetCrudController extends AbstractCrudController
             ->onlyOnForms();
         yield CollectionField::new('expansionChips', 'Parts')
             ->setEntryType(ExpansionChipType::class)
-            ->setColumns(4)
+            ->setColumns('col-sm-12 col-lg-6 col-xxl-4')
             ->renderExpanded()
             ->onlyOnForms();
         yield CollectionField::new('biosCodes', 'BIOS codes')
             ->useEntryCrudForm(BiosCodeCrudType::class)
             ->setFormTypeOption('error_bubbling', false)
-            ->setColumns(4)
+            ->setColumns('col-sm-12 col-lg-6 col-xxl-4')
             ->renderExpanded()
             ->onlyOnForms();
         yield CollectionField::new('chipsetAliases', 'Chipset aliases')
@@ -179,8 +172,21 @@ class ChipsetCrudController extends AbstractCrudController
             ->setColumns(12)
             ->renderExpanded()
             ->onlyOnForms();
-        yield FormField::addTab('Attachments')
-            ->setIcon('fa fa-download')
+        yield FormField::addTab('Drivers')
+            ->setIcon('hardware.svg')
+            ->onlyOnForms();
+        yield CollectionField::new('drivers', 'Drivers')
+            ->useEntryCrudForm(LargeFileCrudType::class)
+            ->setFormTypeOption('error_bubbling', false)
+            ->renderExpanded()
+            ->setColumns(6)
+            ->onlyOnForms();
+        yield ArrayField::new('getChipsWithDrivers', 'Chipset parts with drivers')
+            ->setCssClass("field-collection processed")
+            ->setDisabled()
+            ->onlyOnForms();
+        yield FormField::addTab('Docs')
+            ->setIcon('manual.svg')
             ->onlyOnForms();
         yield CollectionField::new('documentations', 'Documentation')
             ->useEntryCrudForm(DocumentationCrudType::class)
@@ -188,11 +194,15 @@ class ChipsetCrudController extends AbstractCrudController
             ->setFormTypeOption('error_bubbling', false)
             ->setColumns(6)
             ->onlyOnForms();
-        yield CollectionField::new('drivers', 'Drivers')
-            ->useEntryCrudForm(LargeFileCrudType::class)
-            ->setFormTypeOption('error_bubbling', false)
-            ->renderExpanded()
-            ->setColumns(6)
+
+        yield ChoiceField::new('datePrecision', '')
+            ->setChoices([
+                'Year, month and day' => 'd',
+                'Year and month' => 'm',
+                'Year only' => 'y',
+            ])
+            ->setFormTypeOption('placeholder', 'Select a format ...')
+            ->setColumns(2)
             ->onlyOnForms();
     }
     public function viewChipset(AdminContext $context)

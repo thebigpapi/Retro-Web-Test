@@ -44,14 +44,14 @@
 <div class="title">{{ family.getName() }}</div>
 <div class="main-strip">
 	<div class="internal-container">
-		{% include 'macros/navbar.html.twig' with {'entity': family, 'entityName': 'ProcessorPlatformType', 'name': 'family', 'role': 'ROLE_ADMIN'} %}
+		{% include 'macros/navbar.html.twig' with {'entity': family, 'entityName': 'ProcessorPlatformType', 'types': [], 'name': 'family', 'role': 'ROLE_ADMIN'} %}
 		<div class="internal-content">
 			<!-- DESCRIPRION -->
 			<div class="show-general" id="sh-general">
 				<div class="quick-spec-table">
 					<!-- Process -->
 					<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/dimension.svg')) }}" alt="node" width="24" height="24">Process node</div>
-					<div>{{ family.getProcessNodeWithValue() ?: 'Unknown'}}</div>
+					<div>{{ family.getProcessNodeWithValue() ?: "<span class='badge badge-secondary'>Empty</span>"}}</div>
                     <!-- L1 cache -->
 					<div class="quick-spec-head">
 						<img src="{{ absolute_url(asset('build/icons/ram.svg')) }}" alt="ram" width="24" height="24">L1 cache
@@ -105,7 +105,7 @@
 							</ul>
 						</div>
 					{% else %}
-						<div>Unknown</div>
+						<div><span class='badge badge-secondary'>Empty</span></div>
 					{% endif %}
 					<!-- Actions -->
 					<div class="quick-spec-head">

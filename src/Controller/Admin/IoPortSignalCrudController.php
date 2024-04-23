@@ -34,10 +34,20 @@ class IoPortSignalCrudController extends AbstractCrudController
             ->setPermission(Action::EDIT, 'ROLE_ADMIN')
             ->setPermission(Action::INDEX, 'ROLE_ADMIN');
     }
+    public function configureCrud(Crud $crud): Crud
+    {
+        return $crud
+            ->showEntityActionsInlined()
+            ->setEntityLabelInSingular('I/O port signal')
+            ->setEntityLabelInPlural('<img class=ea-entity-icon src=/build/icons/rs232_electric.svg width=48 height=48>I/O port signals')
+            ->overrideTemplate('crud/edit', 'admin/crud/edit.html.twig')
+            ->overrideTemplate('crud/new', 'admin/crud/new.html.twig')
+            ->setPaginatorPageSize(100);
+    }
     public function configureFields(string $pageName): iterable
     {
         yield FormField::addTab('Basic Data')
-            ->setIcon('fa fa-info')
+            ->setIcon('data.svg')
             ->onlyOnForms();
         yield IdField::new('id')
             ->onlyOnIndex();
@@ -46,29 +56,15 @@ class IoPortSignalCrudController extends AbstractCrudController
         yield CodeEditorField::new('description')
             ->setLanguage('markdown')
             ->onlyOnForms();
-        yield FormField::addTab('Attachments')
-            ->setIcon('fa fa-download')
+        yield FormField::addTab('Docs')
+            ->setIcon('manual.svg')
             ->onlyOnForms();
-        yield CollectionField::new('entityImages', 'Images')
-            ->useEntryCrudForm(EntityImageCrudType::class)
-            ->setCustomOption('byCount', true)
-            ->renderExpanded()
-            ->setFormTypeOption('error_bubbling', false)
-            ->setColumns(6);
         yield CollectionField::new('entityDocumentations', 'Documentation')
             ->useEntryCrudForm(EntityDocumentationCrudType::class)
             ->setCustomOption('byCount', true)
             ->renderExpanded()
             ->setFormTypeOption('error_bubbling', false)
             ->setColumns(6);
-    }
-    public function configureCrud(Crud $crud): Crud
-    {
-        return $crud
-            ->showEntityActionsInlined()
-            ->setEntityLabelInSingular('I/O port signal')
-            ->setEntityLabelInPlural('<img class=ea-entity-icon src=/build/icons/rs232_electric.svg width=48 height=48>I/O port signals')
-            ->setPaginatorPageSize(100);
     }
     public function viewLogs(AdminContext $context)
     {

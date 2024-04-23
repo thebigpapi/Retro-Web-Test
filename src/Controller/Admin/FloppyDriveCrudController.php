@@ -41,6 +41,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Factory\EntityFactory;
 use EasyCorp\Bundle\EasyAdminBundle\Security\Permission;
 use EasyCorp\Bundle\EasyAdminBundle\Config\KeyValueStore;
 use EasyCorp\Bundle\EasyAdminBundle\Collection\FieldCollection;
+use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -100,6 +101,8 @@ class FloppyDriveCrudController extends AbstractCrudController
             ->showEntityActionsInlined()
             ->setEntityLabelInSingular('floppy drive')
             ->setEntityLabelInPlural('<img class=ea-entity-icon src=/build/icons/floppy_drive.svg width=48 height=48>Floppy drives')
+            ->overrideTemplate('crud/edit', 'admin/crud/edit.html.twig')
+            ->overrideTemplate('crud/new', 'admin/crud/new.html.twig')
             ->setPaginatorPageSize(100)
             ->setDefaultSort(['lastEdited' => 'DESC']);
     }
@@ -121,7 +124,7 @@ class FloppyDriveCrudController extends AbstractCrudController
     public function configureFields(string $pageName): iterable
     {
         yield FormField::addTab('Basic Data')
-            ->setIcon('fa fa-info')
+            ->setIcon('data.svg')
             ->onlyOnForms();
         // index items
         yield IdField::new('id')
@@ -185,8 +188,17 @@ class FloppyDriveCrudController extends AbstractCrudController
         yield CodeEditorField::new('description')
             ->setLanguage('markdown')
             ->onlyOnForms();
-        yield FormField::addTab('Attachments')
-            ->setIcon('fa fa-download')
+        yield FormField::addTab('Docs')
+            ->setIcon('manual.svg')
+            ->onlyOnForms();
+        yield CollectionField::new('storageDeviceDocumentations', 'Documentation')
+            ->useEntryCrudForm(DocumentationCrudType::class)
+            ->setFormTypeOption('error_bubbling', false)
+            ->setColumns(6)
+            ->renderExpanded()
+            ->onlyOnForms();
+        yield FormField::addTab('Images')
+            ->setIcon('search_image.svg')
             ->onlyOnForms();
         yield CollectionField::new('storageDeviceImages', 'Images')
             ->useEntryCrudForm(ImageCrudType::class)
@@ -194,11 +206,8 @@ class FloppyDriveCrudController extends AbstractCrudController
             ->setFormTypeOption('error_bubbling', false)
             ->renderExpanded()
             ->onlyOnForms();
-        yield CollectionField::new('storageDeviceDocumentations', 'Documentation')
-            ->useEntryCrudForm(DocumentationCrudType::class)
-            ->setFormTypeOption('error_bubbling', false)
-            ->setColumns(6)
-            ->renderExpanded()
+        yield FormField::addTab('Other attachments')
+            ->setIcon('dw.svg')
             ->onlyOnForms();
         yield CollectionField::new('storageDeviceMiscFiles', 'Misc files')
             ->useEntryCrudForm(MiscFileCrudType::class)

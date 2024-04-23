@@ -17,6 +17,7 @@ use App\Controller\Admin\Type\Motherboard\ManualCrudType;
 use App\Controller\Admin\Type\Motherboard\MemoryConnectorCrudType;
 use App\Controller\Admin\Type\MiscFileCrudType;
 use App\Entity\MotherboardAlias;
+use App\Entity\MotherboardBios;
 use App\Entity\MotherboardExpansionSlot;
 use App\Entity\MotherboardIoPort;
 use App\Entity\MotherboardMaxRam;
@@ -44,6 +45,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Event\BeforeEntityPersistedEvent;
 use EasyCorp\Bundle\EasyAdminBundle\Exception\ForbiddenActionException;
 use EasyCorp\Bundle\EasyAdminBundle\Exception\InsufficientEntityPermissionException;
 use EasyCorp\Bundle\EasyAdminBundle\Factory\EntityFactory;
+use EasyCorp\Bundle\EasyAdminBundle\Field\ArrayField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
@@ -113,8 +115,8 @@ class MotherboardCrudController extends AbstractCrudController
             ->setPaginatorPageSize(100)
             ->setEntityLabelInSingular('motherboard')
             ->setEntityLabelInPlural('<img class=ea-entity-icon src=/build/icons/board.svg width=48 height=48>Motherboards')
-            ->overrideTemplate('crud/edit', 'admin/crud/edit_mobo.html.twig')
-            ->overrideTemplate('crud/new', 'admin/crud/new_mobo.html.twig')
+            ->overrideTemplate('crud/edit', 'admin/crud/edit_slug.html.twig')
+            ->overrideTemplate('crud/new', 'admin/crud/new_slug.html.twig')
             ->setDefaultSort(['lastEdited' => 'DESC']);
     }
     public function configureFilters(Filters $filters): Filters
@@ -143,7 +145,7 @@ class MotherboardCrudController extends AbstractCrudController
     public function configureFields(string $pageName): iterable
     {
         yield FormField::addTab('Basic Data')
-            ->setIcon('fa fa-info')
+            ->setIcon('data.svg')
             ->onlyOnForms();
         // index items
         yield IdField::new('id')
@@ -228,42 +230,8 @@ class MotherboardCrudController extends AbstractCrudController
         yield CodeEditorField::new('note')
             ->setLanguage('markdown')
             ->onlyOnForms();
-        yield FormField::addTab('Chips')
-            ->setIcon('fa fa-microchip')
-            ->onlyOnForms();
-        yield FormField::addPanel('CPU stuff')->onlyOnForms();
-        yield CollectionField::new('cpuSockets', 'CPU sockets')
-            ->setEntryType(CpuSocketType::class)
-            ->setColumns('col-sm-12 col-lg-6 col-xxl-4')
-            ->renderExpanded()
-            ->onlyOnForms();
-        yield CollectionField::new('processorPlatformTypes', 'CPU families')
-            ->setEntryType(ProcessorPlatformTypeForm::class)
-            ->setColumns('col-sm-12 col-lg-6 col-xxl-4')
-            ->setFormTypeOption('row_attr', ['id'=> 'mobo-cpu-families-form'])
-            ->renderExpanded()
-            ->onlyOnForms();
-        yield CollectionField::new('cpuSpeed', 'FSB speed')
-            ->setEntryType(ProcessorSpeedType::class)
-            ->setColumns('col-sm-12 col-lg-6 col-xxl-4')
-            ->renderExpanded()
-            ->onlyOnForms();
-        yield IntegerField::new('maxcpu', 'CPU socket count')
-            ->setFormTypeOption('error_bubbling', false)
-            ->onlyOnForms();
-        yield FormField::addPanel('Chipset and chips')
-            ->onlyOnForms();
-        yield AssociationField::new('expansionChips', 'Expansion chips')
-            ->autocomplete()
-            ->setColumns('col-sm-12 col-lg-8 col-xxl-6 multi-widget-trw')
-            ->onlyOnForms();
-        yield AssociationField::new('chipset')
-            ->autocomplete()
-            ->setFormTypeOption('required', false)
-            ->setColumns('col-sm-12 col-lg-8 col-xxl-6')
-            ->onlyOnForms();
         yield FormField::addTab('Connectors')
-            ->setIcon('fa fa-plug')
+            ->setIcon('rs232.svg')
             ->onlyOnForms();
         yield CollectionField::new('motherboardIoPorts', 'I/O ports')
             ->useEntryCrudForm(IoPortCrudType::class)
@@ -288,10 +256,45 @@ class MotherboardCrudController extends AbstractCrudController
             ->setColumns('col-sm-12 col-lg-6 col-xxl-4')
             ->renderExpanded()
             ->onlyOnForms();
-        yield FormField::addTab('BIOS images')
-            ->setIcon('fa fa-download')
+        yield FormField::addTab('Chips')
+            ->setIcon('chip.svg')
             ->onlyOnForms();
-        yield CollectionField::new('motherboardBios', 'BIOS images')
+        yield FormField::addPanel('CPU stuff')->onlyOnForms();
+        yield CollectionField::new('cpuSockets', 'CPU sockets')
+            ->setEntryType(CpuSocketType::class)
+            ->setColumns('col-sm-12 col-lg-6 col-xxl-4')
+            ->renderExpanded()
+            ->onlyOnForms();
+        yield CollectionField::new('processorPlatformTypes', 'CPU families')
+            ->setEntryType(ProcessorPlatformTypeForm::class)
+            ->setColumns('col-sm-12 col-lg-6 col-xxl-3')
+            ->setFormTypeOption('row_attr', ['id'=> 'mobo-cpu-families-form'])
+            ->renderExpanded()
+            ->onlyOnForms();
+        yield CollectionField::new('cpuSpeed', 'FSB speed')
+            ->setEntryType(ProcessorSpeedType::class)
+            ->setColumns('col-sm-12 col-lg-6 col-xxl-2')
+            ->renderExpanded()
+            ->onlyOnForms();
+        yield IntegerField::new('maxcpu', 'CPU socket count')
+            ->setFormTypeOption('error_bubbling', false)
+            ->setColumns('col-sm-4 col-lg-2 col-xxl-2')
+            ->onlyOnForms();
+        yield FormField::addPanel('Chipset and chips')
+            ->onlyOnForms();
+        yield AssociationField::new('expansionChips', 'Expansion chips')
+            ->autocomplete()
+            ->setColumns('col-sm-12 col-lg-8 col-xxl-6 multi-widget-trw')
+            ->onlyOnForms();
+        yield AssociationField::new('chipset')
+            ->autocomplete()
+            ->setFormTypeOption('required', false)
+            ->setColumns('col-sm-12 col-lg-8 col-xxl-6')
+            ->onlyOnForms();
+        yield FormField::addTab('BIOS')
+            ->setIcon('awchip.svg')
+            ->onlyOnForms();
+        yield CollectionField::new('motherboardBios', 'BIOS')
             ->useEntryCrudForm(BiosCrudType::class)
             ->setFormTypeOption('error_bubbling', false)
             ->setFormTypeOption('label', false)
@@ -299,14 +302,21 @@ class MotherboardCrudController extends AbstractCrudController
             ->setColumns(12)
             ->renderExpanded()
             ->onlyOnForms();
-        yield FormField::addTab('Other attachments')
-            ->setIcon('fa fa-download')
+        yield FormField::addTab('Drivers')
+            ->setIcon('hardware.svg')
             ->onlyOnForms();
-        yield CollectionField::new('images', 'Images')
-            ->useEntryCrudForm(ImageCrudType::class)
-            ->setColumns('col-sm-12 col-lg-8 col-xxl-6')
+        yield CollectionField::new('drivers', 'Drivers')
+            ->useEntryCrudForm(LargeFileCrudType::class)
             ->setFormTypeOption('error_bubbling', false)
             ->renderExpanded()
+            ->setColumns(6)
+            ->onlyOnForms();
+        yield ArrayField::new('getChipsWithDrivers', 'Expansion chips with drivers')
+            ->setCssClass("field-collection processed")
+            ->setDisabled()
+            ->onlyOnForms();
+        yield FormField::addTab('Docs')
+            ->setIcon('manual.svg')
             ->onlyOnForms();
         yield CollectionField::new('manuals', 'Documentation')
             ->useEntryCrudForm(ManualCrudType::class)
@@ -320,11 +330,14 @@ class MotherboardCrudController extends AbstractCrudController
             ->setColumns(6)
             ->renderExpanded()
             ->onlyOnForms();
-        yield CollectionField::new('drivers', 'Drivers')
-            ->useEntryCrudForm(LargeFileCrudType::class)
+        yield FormField::addTab('Images')
+            ->setIcon('search_image.svg')
+            ->onlyOnForms();
+        yield CollectionField::new('images', 'Images')
+            ->useEntryCrudForm(ImageCrudType::class)
+            ->setColumns('col-sm-12 col-lg-8 col-xxl-6')
             ->setFormTypeOption('error_bubbling', false)
             ->renderExpanded()
-            ->setColumns(6)
             ->onlyOnForms();
     }
 
@@ -456,6 +469,14 @@ class MotherboardCrudController extends AbstractCrudController
             $newConnector->setCount($connector->getCount());
             $newConnector->setMemoryConnector($connector->getMemoryConnector());
             $board->addMotherboardMemoryConnector($newConnector);
+        }
+        foreach ($old->getMotherboardBios() as $bios){
+            $newBios = new MotherboardBios();
+            $newBios->setManufacturer($bios->getManufacturer());
+            $newBios->setPostString($bios->getPostString());
+            $newBios->setNote($bios->getNote());
+            $newBios->setBoardVersion($bios->getBoardVersion());
+            $board->addMotherboardBio($newBios);
         }
         foreach ($old->getPsuConnectors() as $psu){
             $board->addPsuConnector($psu);

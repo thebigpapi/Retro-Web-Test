@@ -22,6 +22,36 @@
 {% endif %}
 {% endblock form_errors %}
 
+{# custom SVG tab icons #}
+{% block ea_form_tablist_row %}
+    {% set tab_id_option_name = constant('EasyCorp\\Bundle\\EasyAdminBundle\\Field\\FormField::OPTION_TAB_ID') %}
+    {% set tab_is_active_option_name = constant('EasyCorp\\Bundle\\EasyAdminBundle\\Field\\FormField::OPTION_TAB_IS_ACTIVE') %}
+    {% set tab_error_count_option_name = constant('EasyCorp\\Bundle\\EasyAdminBundle\\Field\\FormField::OPTION_TAB_ERROR_COUNT') %}
+    {% set field = form.vars.ea_vars.field %}
+
+    <div class="nav-tabs-custom form-tabs-tablist">
+        <ul class="nav nav-tabs">
+            {% for tab in field.getCustomOption('tabs') %}
+                <li class="nav-item">
+                    <a class="nav-link {% if tab.getCustomOption(tab_is_active_option_name) %}active{% endif %}" href="#{{ tab.getCustomOption(tab_id_option_name) }}" id="tablist-{{ tab.getCustomOption(tab_id_option_name) }}" data-bs-toggle="tab">
+                        {%- if tab.getCustomOption('icon')|default(false) -%}
+                            <img src="/build/icons/{{ tab.getCustomOption('icon')[6:] }}" height="28" width="28" style="margin-right:3px;">
+                        {%- endif -%}
+                        {{ tab.label|trans(domain = ea.i18n.translationDomain)|raw }}
+
+                        {% set tab_error_count = tab.getCustomOption(tab_error_count_option_name)  %}
+                        {%- if tab_error_count > 0 -%}
+                            <span class="badge badge-danger" title="{{ 'form.tab.error_badge_title'|trans({'%count%': tab_error_count}, 'EasyAdminBundle') }}">
+                                {{- tab_error_count -}}
+                            </span>
+                        {%- endif -%}
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endblock ea_form_tablist_row %}
+
 {# relocated add widget button, added IDs for sockets #}
 {% block collection_widget %}
     {# the "is iterable" check is needed because if an object implements __toString() and
@@ -64,7 +94,7 @@
             <i class="far fa-trash-alt"></i>
         </button>
     {% endset %}
-    <div class="field-collection-item {{ is_complex ? 'field-collection-item-complex' }}">
+    <div class="field-collection-item {{ is_complex ? 'field-collection-item-complex' }} {{ form.parent.vars.id }}_cssid" data-id="{{form.vars.name}}">
         {% if is_array_field|default(false) %}
             {{ form_widget(form) }}
             {% if allows_deleting_items and not disabled %}
@@ -231,6 +261,53 @@
 </div>
 {{ form_widget(form)}}
 {% endblock _Motherboard_motherboardBios_widget %}
+
+{% block _Motherboard_manuals_entry_releaseDate_widget %}
+    {% include 'admin/macros/widgets.html.twig' with {'type': 'date', 'form': form} %}
+{% endblock _Motherboard_manuals_entry_releaseDate_widget %}
+{% block _Motherboard_manuals_entry_datePrecision_widget %}
+    <div style="display:none;">{{ form_widget(form)}}</div>
+{% endblock _Motherboard_manuals_entry_datePrecision_widget %}
+{% block _Motherboard_images_widget %}
+    {% include 'admin/macros/widgets.html.twig' with {'type': 'image', 'form': form} %}
+{% endblock _Motherboard_images_widget %}
+{% block _Motherboard_drivers_widget %}
+    {{ form_widget(form)}}
+{% endblock _Motherboard_drivers_widget %}
+{% block _Motherboard_getChipsWithDrivers_widget %}
+    {{ form_widget(form)}}
+    {% include 'admin/macros/newdriver.html.twig' with {'entity':'Motherboard_drivers', 'label': 'board'} %}
+{% endblock _Motherboard_getChipsWithDrivers_widget %}
+
+{# chipset editor #}
+{% block _Chipset_expansionChips_entry_widget %}
+{{ form_widget(form, {'attr': {'class': "widget90"}})}}
+<a href="{{ ea_url().setDashboard('App\\Controller\\Admin\\DashboardController')
+.setController('App\\Controller\\Admin\\ExpansionChipCrudController')
+.setAction('edit').setEntityId(form.vars.value)}}">Edit</a>
+{% endblock _Chipset_expansionChips_entry_widget %}
+
+{% block _Chipset_releaseDate_widget %}
+    {% include 'admin/macros/widgets.html.twig' with {'type': 'date', 'form': form} %}
+{% endblock _Chipset_releaseDate_widget %}
+{% block _Chipset_datePrecision_widget %}
+    <div style="display:none;">{{ form_widget(form)}}</div>
+{% endblock _Chipset_datePrecision_widget %}
+
+{% block _Chipset_documentations_entry_releaseDate_widget %}
+    {% include 'admin/macros/widgets.html.twig' with {'type': 'date', 'form': form} %}
+{% endblock _Chipset_documentations_entry_releaseDate_widget %}
+{% block _Chipset_documentations_entry_datePrecision_widget %}
+    <div style="display:none;">{{ form_widget(form)}}</div>
+{% endblock _Chipset_documentations_entry_datePrecision_widget %}
+{% block _Chipset_drivers_widget %}
+    {{ form_widget(form)}}
+{% endblock _Chipset_drivers_widget %}
+{% block _Chipset_getChipsWithDrivers_widget %}
+    {{ form_widget(form)}}
+    {% include 'admin/macros/newdriver.html.twig' with {'entity':'Chipset_drivers', 'label': 'chipset'} %}
+{% endblock _Chipset_getChipsWithDrivers_widget %}
+
 {# expansion card editor #}
 {% block _ExpansionCard_miscSpecs_widget %}
     {% include 'admin/macros/specs.html.twig' with {'entity': 'card', 'form': form} %}
@@ -253,3 +330,155 @@
 {% block _ExpansionCard_expansionCardPowerConnectors_entry_count_widget %}
     {{ form_widget(form)}}<span>x</span>
 {% endblock _ExpansionCard_expansionCardPowerConnectors_entry_count_widget %}
+{% block _ExpansionCard_documentations_entry_releaseDate_widget %}
+    {% include 'admin/macros/widgets.html.twig' with {'type': 'date', 'form': form} %}
+{% endblock _ExpansionCard_documentations_entry_releaseDate_widget %}
+{% block _ExpansionCard_documentations_entry_datePrecision_widget %}
+    <div style="display:none;">{{ form_widget(form)}}</div>
+{% endblock _ExpansionCard_documentations_entry_datePrecision_widget %}
+{% block _ExpansionCard_images_widget %}
+    {% include 'admin/macros/widgets.html.twig' with {'type': 'image', 'form': form} %}
+{% endblock _ExpansionCard_images_widget %}
+{% block _ExpansionCard_drivers_widget %}
+    {{ form_widget(form)}}
+{% endblock _ExpansionCard_drivers_widget %}
+{% block _ExpansionCard_getChipsWithDrivers_widget %}
+    {{ form_widget(form)}}
+    {% include 'admin/macros/newdriver.html.twig' with {'entity':'ExpansionCard_drivers', 'label': 'card'} %}
+{% endblock _ExpansionCard_getChipsWithDrivers_widget %}
+
+{# cpu editor #}
+{% block _Processor_images_widget %}
+    {% include 'admin/macros/widgets.html.twig' with {'type': 'image', 'form': form} %}
+{% endblock _Processor_images_widget %}
+
+{# expansion chip editor #}
+{% block _ExpansionChip_images_widget %}
+    {% include 'admin/macros/widgets.html.twig' with {'type': 'image', 'form': form} %}
+{% endblock _ExpansionChip_images_widget %}
+{% block _ExpansionChip_documentations_entry_releaseDate_widget %}
+    {% include 'admin/macros/widgets.html.twig' with {'type': 'date', 'form': form} %}
+{% endblock _ExpansionChip_documentations_entry_releaseDate_widget %}
+{% block _ExpansionChip_documentations_entry_datePrecision_widget %}
+    <div style="display:none;">{{ form_widget(form)}}</div>
+{% endblock _ExpansionChip_documentations_entry_datePrecision_widget %}
+{% block _ExpansionChip_drivers_widget %}
+    {{ form_widget(form)}}
+{% endblock _ExpansionChip_drivers_widget %}
+{% block _ExpansionChip_getChipsWithDrivers_widget %}
+    {% include 'admin/macros/newdriver.html.twig' with {'entity':'ExpansionChip_drivers', 'label': 'chip'} %}
+{% endblock _ExpansionChip_getChipsWithDrivers_widget %}
+
+{# driver editor #}
+{% block _LargeFile_releaseDate_widget %}
+    {% include 'admin/macros/widgets.html.twig' with {'type': 'date', 'form': form} %}
+{% endblock _LargeFile_releaseDate_widget %}
+{% block _LargeFile_datePrecision_widget %}
+    <div style="display:none;">{{ form_widget(form)}}</div>
+{% endblock _LargeFile_datePrecision_widget %}
+{% block _LargeFile_note_widget %}
+    <div class="driver-messages">
+        <img id="driver-message-err" src="{{ absolute_url(asset('build/icons/warning.svg')) }}" alt="warning" width="25" height="25">
+        <span id="message"></span>
+        <label for="progressBar"></label>
+        <progress hidden="true" id="progressBar"></progress>
+        <div id="driver-error-div" style="display:none;">
+            <div style="background-color:#d43934;color:#e0e0e0;padding:5px 10px 5px;border-radius:4px;">
+			</div>
+        </div>
+    </div>
+    {{ form_widget(form)}}
+{% endblock _LargeFile_note_widget %}
+
+{# hdd editor #}
+{% block _HardDrive_storageDeviceImages_widget %}
+    {% include 'admin/macros/widgets.html.twig' with {'type': 'image', 'form': form} %}
+{% endblock _HardDrive_storageDeviceImages_widget %}
+{% block _HardDrive_storageDeviceDocumentations_entry_releaseDate_widget %}
+    {% include 'admin/macros/widgets.html.twig' with {'type': 'date', 'form': form} %}
+{% endblock _HardDrive_storageDeviceDocumentations_entry_releaseDate_widget %}
+{% block _HardDrive_storageDeviceDocumentations_entry_datePrecision_widget %}
+    <div style="display:none;">{{ form_widget(form)}}</div>
+{% endblock _HardDrive_storageDeviceDocumentations_entry_datePrecision_widget %}
+
+{# cdd editor #}
+{% block _CdDrive_storageDeviceImages_widget %}
+    {% include 'admin/macros/widgets.html.twig' with {'type': 'image', 'form': form} %}
+{% endblock _CdDrive_storageDeviceImages_widget %}
+{% block _CdDrive_storageDeviceDocumentations_entry_releaseDate_widget %}
+    {% include 'admin/macros/widgets.html.twig' with {'type': 'date', 'form': form} %}
+{% endblock _CdDrive_storageDeviceDocumentations_entry_releaseDate_widget %}
+{% block _CdDrive_storageDeviceDocumentations_entry_datePrecision_widget %}
+    <div style="display:none;">{{ form_widget(form)}}</div>
+{% endblock _CdDrive_storageDeviceDocumentations_entry_datePrecision_widget %}
+
+{# fdd editor #}
+{% block _FloppyDrive_storageDeviceImages_widget %}
+    {% include 'admin/macros/widgets.html.twig' with {'type': 'image', 'form': form} %}
+{% endblock _FloppyDrive_storageDeviceImages_widget %}
+{% block _FloppyDrive_storageDeviceDocumentations_entry_releaseDate_widget %}
+    {% include 'admin/macros/widgets.html.twig' with {'type': 'date', 'form': form} %}
+{% endblock _FloppyDrive_storageDeviceDocumentations_entry_releaseDate_widget %}
+{% block _FloppyDrive_storageDeviceDocumentations_entry_datePrecision_widget %}
+    <div style="display:none;">{{ form_widget(form)}}</div>
+{% endblock _FloppyDrive_storageDeviceDocumentations_entry_datePrecision_widget %}
+
+{# cpu socket editor #}
+{% block _CpuSocket_entityDocumentations_entry_releaseDate_widget %}
+    {% include 'admin/macros/widgets.html.twig' with {'type': 'date', 'form': form} %}
+{% endblock _CpuSocket_entityDocumentations_entry_releaseDate_widget %}
+{% block _CpuSocket_entityDocumentations_entry_datePrecision_widget %}
+    <div style="display:none;">{{ form_widget(form)}}</div>
+{% endblock _CpuSocket_entityDocumentations_entry_datePrecision_widget %}
+
+{# cpu family editor #}
+{% block _ProcessorPlatformType_entityDocumentations_entry_releaseDate_widget %}
+    {% include 'admin/macros/widgets.html.twig' with {'type': 'date', 'form': form} %}
+{% endblock _ProcessorPlatformType_entityDocumentations_entry_releaseDate_widget %}
+{% block _ProcessorPlatformType_entityDocumentations_entry_datePrecision_widget %}
+    <div style="display:none;">{{ form_widget(form)}}</div>
+{% endblock _ProcessorPlatformType_entityDocumentations_entry_datePrecision_widget %}
+
+{# psu connector editor #}
+{% block _PSUConnector_entityDocumentations_entry_releaseDate_widget %}
+    {% include 'admin/macros/widgets.html.twig' with {'type': 'date', 'form': form} %}
+{% endblock _PSUConnector_entityDocumentations_entry_releaseDate_widget %}
+{% block _PSUConnector_entityDocumentations_entry_datePrecision_widget %}
+    <div style="display:none;">{{ form_widget(form)}}</div>
+{% endblock _PSUConnector_entityDocumentations_entry_datePrecision_widget %}
+
+{# expansion slot interface editor #}
+{% block _ExpansionSlotInterface_entityDocumentations_entry_releaseDate_widget %}
+    {% include 'admin/macros/widgets.html.twig' with {'type': 'date', 'form': form} %}
+{% endblock _ExpansionSlotInterface_entityDocumentations_entry_releaseDate_widget %}
+{% block _ExpansionSlotInterface_entityDocumentations_entry_datePrecision_widget %}
+    <div style="display:none;">{{ form_widget(form)}}</div>
+{% endblock _ExpansionSlotInterface_entityDocumentations_entry_datePrecision_widget %}
+
+{# expansion slot signal editor #}
+{% block _ExpansionSlotSignal_entityDocumentations_entry_releaseDate_widget %}
+    {% include 'admin/macros/widgets.html.twig' with {'type': 'date', 'form': form} %}
+{% endblock _ExpansionSlotSignal_entityDocumentations_entry_releaseDate_widget %}
+{% block _ExpansionSlotSignal_entityDocumentations_entry_datePrecision_widget %}
+    <div style="display:none;">{{ form_widget(form)}}</div>
+{% endblock _ExpansionSlotSignal_entityDocumentations_entry_datePrecision_widget %}
+
+{# io port interface editor #}
+{% block _IoPortInterface_entityDocumentations_entry_releaseDate_widget %}
+    {% include 'admin/macros/widgets.html.twig' with {'type': 'date', 'form': form} %}
+{% endblock _IoPortInterface_entityDocumentations_entry_releaseDate_widget %}
+{% block _IoPortInterface_entityDocumentations_entry_datePrecision_widget %}
+    <div style="display:none;">{{ form_widget(form)}}</div>
+{% endblock _IoPortInterface_entityDocumentations_entry_datePrecision_widget %}
+
+{# io port signal editor #}
+{% block _IoPortSignal_entityDocumentations_entry_releaseDate_widget %}
+    {% include 'admin/macros/widgets.html.twig' with {'type': 'date', 'form': form} %}
+{% endblock _IoPortSignal_entityDocumentations_entry_releaseDate_widget %}
+{% block _IoPortSignal_entityDocumentations_entry_datePrecision_widget %}
+    <div style="display:none;">{{ form_widget(form)}}</div>
+{% endblock _IoPortSignal_entityDocumentations_entry_datePrecision_widget %}
+{% block _HardDrive_capacity_label %}
+    {{ form_label(form)}}
+    <button id="hdd-capacity-convert" type="button" class="btn btn-secondary">Get formatted</button>
+{% endblock _HardDrive_capacity_label %}

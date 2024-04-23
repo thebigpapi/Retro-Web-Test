@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\MotherboardIoPortRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 #[ORM\Entity(repositoryClass: MotherboardIoPortRepository::class)]
 class MotherboardIoPort
@@ -23,8 +24,6 @@ class MotherboardIoPort
     #[Assert\NotBlank(message:'I/O port type cannot be blank')]
     private $io_port;
 
-    #[Assert\PositiveOrZero(message: "I/O port count should be 0 or above")]
-    #[Assert\LessThan(100, message: "I/O port count should be below 100")]
     #[Assert\NotBlank(message:'I/O port count cannot be blank')]
     #[ORM\Column(type: 'integer')]
     private $count;
@@ -63,5 +62,22 @@ class MotherboardIoPort
         $this->count = $count;
 
         return $this;
+    }
+    #[Assert\Callback]
+    public function autosetCountIfEmpty(ExecutionContextInterface $context): void
+    {
+        if(null === $this->count && null !== $this->io_port) {
+            $this->count = 1;
+        }
+        if($this->count < 1){
+            $context->buildViolation('Should be above 0!')
+                ->atPath('count')
+                ->addViolation();
+        }
+        if($this->count > 99){
+            $context->buildViolation('Should be below 100!')
+                ->atPath('count')
+                ->addViolation();
+        }
     }
 }

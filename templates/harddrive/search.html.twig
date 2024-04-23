@@ -59,7 +59,7 @@
 				<section class="search-form-grid">
 					<div class="search-form-entry">
 						<label class="search-form-label" for="search_capacity">
-							<span>Capacity</span>
+							<span>Capacity (formatted)</span>
 						</label>
 						<div class="search-form-widget">
 							<div>{{ form_widget(form.capacity) }}</div>
@@ -69,8 +69,14 @@
 						<label class="search-form-label">
 							<span></span>
 						</label>
-						<a class='button-widget' href="{{path("hddhelp")}}" style="margin-right: 5px">
-							<img src='{{ absolute_url(asset('build/icons/search.svg')) }}' alt='' width='16' height='16' style='vertical-align:middle;padding:3px;'>How do I use the search page?</a>
+						<div class="search-buttons">
+							<a class='button-widget' href="{{path("hddhelp")}}" style="margin-right: 5px">
+								<img src='{{ absolute_url(asset('build/icons/search.svg')) }}' alt='' width='24' height='24' style='vertical-align:middle;padding:3px;'>How do I use the search page?</a>
+							<button type="button" onclick="document.getElementById('rst-btn').click();return false;">
+								<img src="{{ absolute_url(asset('build/icons/reset.svg')) }}" alt="reset" width="24" height="24">
+								<span>Reset</span>
+							</button>
+						</div>
 					</div>
 				</section>
 			</div>

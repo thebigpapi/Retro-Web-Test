@@ -35,10 +35,14 @@ class ExpansionSlotInterfaceSignal
     #[ORM\OneToMany(mappedBy: 'expansionSlotInterfaceSignal', targetEntity: ExpansionCard::class)]
     private Collection $expansionCards;
 
+    #[ORM\OneToMany(mappedBy: 'expansionSlotInterfaceSignal', targetEntity: EntityImage::class, orphanRemoval: true, cascade: ['persist'])]
+    private Collection $entityImages;
+
     public function __construct()
     {
         $this->signals = new ArrayCollection();
         $this->expansionCards = new ArrayCollection();
+        $this->entityImages = new ArrayCollection();
     }
     public function __toString(): string
     {
@@ -174,10 +178,38 @@ class ExpansionSlotInterfaceSignal
     }
     public function getAllImages(): Collection
     {
-        $img = $this->getInterface()?->getEntityImages()->toArray() ?? [];
-        foreach ($this->getSignals() as $signal) {
-            $img = array_merge($img, $signal->getEntityImages()->toArray());
-        }
+        $img = $this->getEntityImages()->toArray() ?? [];
+        $img = array_merge($img, $this->getInterface()?->getEntityImages()->toArray() ?? []);
         return new ArrayCollection($img);
+    }
+
+    /**
+     * @return Collection<int, EntityImage>
+     */
+    public function getEntityImages(): Collection
+    {
+        return $this->entityImages;
+    }
+
+    public function addEntityImage(EntityImage $entityImage): static
+    {
+        if (!$this->entityImages->contains($entityImage)) {
+            $this->entityImages->add($entityImage);
+            $entityImage->setExpansionSlotInterfaceSignal($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEntityImage(EntityImage $entityImage): static
+    {
+        if ($this->entityImages->removeElement($entityImage)) {
+            // set the owning side to null (unless already changed)
+            if ($entityImage->getExpansionSlotInterfaceSignal() === $this) {
+                $entityImage->setExpansionSlotInterfaceSignal(null);
+            }
+        }
+
+        return $this;
     }
 }

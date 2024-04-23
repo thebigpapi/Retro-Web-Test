@@ -218,8 +218,8 @@ div.perks {
                     margin: auto;
                     width: auto;
                     height: auto;
-                    max-width: 325px;
-                    max-height: 275px;
+                    max-width: min(325px, 95%);
+                    max-height: min(275px, 95%);
                 }
 
                 a.glightbox {
@@ -351,6 +351,23 @@ a.button-widget-new{
     }
 }
 
+span.badge{
+    &.badge-secondary{
+        background-color: #e2e8f0;
+        box-shadow: var(--badge-secondary-box-shadow);
+        color: var(--badge-secondary-color);
+        @media (prefers-color-scheme: dark) {
+            background-color: #373737;
+            //color: var(--text-color);
+        }
+    }
+    font-size: var(--font-size-xs);
+    font-family: var(--font-family-base);
+    border-radius: var(--border-radius);
+    box-shadow: var(--badge-box-shadow);
+    color: var(--text-color);
+    padding: 1px 5px;
+}
 .monospace {
 	font-family: $monospace-font;
 }
@@ -402,9 +419,6 @@ div.plain-list {
 		@media (prefers-color-scheme: dark) {
 			border-color: $border-dark;
 		}
-		@media (max-width: 500px) {
-			grid-template-columns:none;
-		}
 
 		>div {
 			padding: 3px 0;
@@ -413,6 +427,12 @@ div.plain-list {
 		>div.header-label {
 			font-weight: bold;
 			width: 30%;
+		}
+        @media (max-width: 500px) {
+			grid-template-columns: [first] max-content [second] auto [end];
+            & > div.header-label{
+                width:100%;
+            }
 		}
 
 		div.results-alias {
@@ -904,6 +924,18 @@ div.search-form-entry, div.search-form-filter {
         }
 	}
 }
+div.search-buttons{
+    display: flex;
+    flex-direction: row;
+    column-gap: 5px;
+    padding: 5px;
+    a{
+        padding: 5px 5px;
+    }
+    button{
+        width: fit-content;
+    }
+}
 div.search-form-entry div.search-form-widget div {
 	width: 100%;
 }
@@ -1170,6 +1202,9 @@ div.main-strip {
             div.show-downloads-group {
                 padding: 10px;
                 border-bottom: solid thin $border-dark;
+                &.last{
+                    border-bottom: none;
+                }
 
                 @media (max-width: 500px) {
                     padding: 3px;
@@ -1338,6 +1373,14 @@ div.tag-container {
     gap: 3px;
     flex-wrap: wrap;
     align-items: center;
+    ul{
+        padding: 0;
+        margin: 0;
+        list-style: none;
+        li{
+            margin:3px;
+        }
+    }
 }
 
 span.text-block {

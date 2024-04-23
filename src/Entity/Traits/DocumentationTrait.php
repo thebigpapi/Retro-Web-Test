@@ -2,7 +2,6 @@
 
 namespace App\Entity\Traits;
 
-use App\Entity\Language;
 use App\Repository\ManualRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
@@ -36,10 +35,6 @@ trait DocumentationTrait
     )]
     private $link_name;
 
-    #[ORM\ManyToOne(targetEntity: 'App\Entity\Language', inversedBy: 'manuals')]
-    #[ORM\JoinColumn(nullable: false)]
-    private $language;
-
     #[ORM\Column(type: 'datetime')]
     private $updated_at;
 
@@ -69,18 +64,6 @@ trait DocumentationTrait
     public function setLinkName(string $link_name): self
     {
         $this->link_name = $link_name;
-
-        return $this;
-    }
-
-    public function getLanguage(): ?Language
-    {
-        return $this->language;
-    }
-
-    public function setLanguage(?Language $language): self
-    {
-        $this->language = $language;
 
         return $this;
     }

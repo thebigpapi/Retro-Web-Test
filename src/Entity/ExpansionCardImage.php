@@ -43,6 +43,9 @@ class ExpansionCardImage
     private ?ExpansionCard $expansionCard = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(
+        message: 'Image type cannot be blank'
+    )]
     private ?string $type = null;
 
     public function getId(): ?int

@@ -50,10 +50,16 @@
 {% endblock %}
 {% block body %}
 <!-- MANUF./NAME/PART NO. -->
-<div class="title">{{ harddrive.getFullName() }}</div>
+<div class="title">
+	{% if harddrive.getManufacturer() is not empty %}
+		<a href="{{ path('manufacturer_show', {id: harddrive.getManufacturer().getId()}) }}">{{ harddrive.getManufacturer().getName() }}</a>&nbsp;{{ harddrive.getNameWithoutManuf() }}
+	{% else %}
+		{{ harddrive.getFullName() }}
+	{% endif %}
+</div>
 <div class="main-strip">
 	<div class="internal-container">
-		{% include 'macros/navbar.html.twig' with {'entity': harddrive, 'entityName': 'HardDrive', 'name': 'hard drive', 'role': 'ROLE_USER'} %}
+		{% include 'macros/navbar.html.twig' with {'entity': harddrive, 'entityName': 'HardDrive', 'types': [], 'name': 'hard drive', 'role': 'ROLE_USER'} %}
 		<div class="internal-content">
 			<!-- DESCRIPRION -->
 			<div class="show-general" id="sh-general">
@@ -64,35 +70,35 @@
 							<img src="{{ absolute_url(asset('build/icons/io.svg')) }}" alt="cpu" width="24" height="24">Interface{% if harddrive.getInterfaces()|length > 1 %}s{% endif %}
 						</div>
 						{% if harddrive.getInterfaces() is not empty %}
-						<div class="tag-container">{% for interface in harddrive.getInterfaces() %}<span class="text-block">{{ interface.getName}}</span>{% endfor %}</div>
+							<div class="tag-container">{% for interface in harddrive.getInterfaces() %}<span class="text-block">{{ interface.getName}}</span>{% endfor %}</div>
 						{% else %}
-						<div>Unknown</div>
+							<div><span class='badge badge-secondary'>Empty</span></div>
 						{% endif %}
 						<!-- Power connectors -->
 						<div class="quick-spec-head">
 							<img src="{{ absolute_url(asset('build/icons/power.svg')) }}" alt="pwr" width="24" height="24">Power connector
 						</div>
 						{% if harddrive.getPowerConnectors() is not empty %}
-						<div class="tag-container">{% for power in harddrive.getPowerConnectors() %}
-							<a href="{{ path('psu_connector_show', {id: power.getId()}) }}"><span class="text-block">{{ power.getName() }}</span></a>{% endfor %}</div>
+							<div class="tag-container">{% for power in harddrive.getPowerConnectors() %}
+								<a href="{{ path('psu_connector_show', {id: power.getId()}) }}"><span class="text-block">{{ power.getName() }}</span></a>{% endfor %}</div>
 						{% else %}
-						<div>Unknown</div>
+							<div><span class='badge badge-secondary'>Empty</span></div>
 						{% endif %}
 						<!-- Size -->
 						<div class="quick-spec-head">
 							<img src="{{ absolute_url(asset('build/icons/dimension.svg')) }}" alt="cpu" width="24" height="24">Form factor
 						</div>
-						<div>{{ harddrive.getPhysicalSize() }}</div>
+						<div>{{ harddrive.getPhysicalSize() ?: "<span class='badge badge-secondary'>Empty</span>" }}</div>
 						<!-- Capacity -->
 						<div class="quick-spec-head">
-							<img src="{{ absolute_url(asset('build/icons/hdd.svg')) }}" alt="cpu" width="24" height="24">Capacity
+							<img src="{{ absolute_url(asset('build/icons/hdd.svg')) }}" alt="cpu" width="24" height="24">Capacity (formatted)
 						</div>
 						<div>{{ harddrive.getCapacityFormatted() }}</div>
 						<!-- Buffer -->
 						<div class="quick-spec-head">
 							<img src="{{ absolute_url(asset('build/icons/ram.svg')) }}" alt="ram" width="24" height="24">Buffer size
 						</div>
-						<div>{{ harddrive.getBufferFormatted() }}</div>
+						<div>{{ harddrive.getBuffer() ? harddrive.getBufferFormatted() : "<span class='badge badge-secondary'>Empty</span>" }}</div>
 					</div>
 					<div class="quick-spec-table">
 						<!-- Cylinders/Heads/Sectors -->
@@ -100,7 +106,7 @@
 						<div class="quick-spec-head">
 							<img src="{{ absolute_url(asset('build/icons/platter.svg')) }}" alt="486" width="24" height="24">Cyl./Heads/Sectors
 						</div>
-						<div>{{ harddrive.getCylinders() ?: 'Unknown' }} / {{ harddrive.getHeads() ?: 'unknown' }} / {{ harddrive.getSectors() ?: 'Unknown' }}</div>
+						<div>{{ harddrive.getCylinders() ?: "<span class='badge badge-secondary'>Empty</span>" }} / {{ harddrive.getHeads() ?: "<span class='badge badge-secondary'>Empty</span>" }} / {{ harddrive.getSectors() ?: "<span class='badge badge-secondary'>Empty</span>" }}</div>
 						{% endif %}
 						<!-- Platters -->
 						{% if harddrive.getPlatters() is not empty %}
@@ -113,17 +119,17 @@
 						<div class="quick-spec-head">
 							<img src="{{ absolute_url(asset('build/icons/speed.svg')) }}" alt="486" width="24" height="24">Random seek
 						</div>
-						<div>{{ harddrive.getRandomSeek() ~ ' ms' ?: 'Unknown' }}</div>
+						<div>{{ harddrive.getRandomSeek() ? harddrive.getRandomSeek() ~ ' ms' : "<span class='badge badge-secondary'>Empty</span>" }}</div>
 						<!-- Track-to-track seek -->
 						<div class="quick-spec-head">
 							<img src="{{ absolute_url(asset('build/icons/speed.svg')) }}" alt="486" width="24" height="24">Track-to-track seek
 						</div>
-						<div>{{ harddrive.getTrackSeek() ~ ' ms' ?: 'Unknown' }}</div>
+						<div>{{ harddrive.getTrackSeek() ?  harddrive.getTrackSeek() ~ ' ms' : "<span class='badge badge-secondary'>Empty</span>" }}</div>
 						<!-- RPM -->
 						<div class="quick-spec-head">
 							<img src="{{ absolute_url(asset('build/icons/speed.svg')) }}" alt="486" width="24" height="24">RPM
 						</div>
-						<div>{{ harddrive.getSpindleSpeed() ?: 'Unknown' }}</div>
+						<div>{{ harddrive.getSpindleSpeed() ?: "<span class='badge badge-secondary'>Empty</span>" }}</div>
 					</div>
 				</div>
 				{% include 'macros/aliases.html.twig' with {'entity':harddrive.getStorageDeviceAliases(), 'msg': 'Also known as:'} %}
@@ -173,7 +179,13 @@
 		{% endfor %}
 	{% else %}
 		<div class="show-images">
-			<img src={{ absolute_url(asset('build/images/missing/hdd-missing.jpg')) }} title="no images available :(" style="width:100%;">
+			{% if is_granted('ROLE_USER') %}
+				<a href="{{ ea_url().setDashboard('App\\Controller\\Admin\\DashboardController').setController('App\\Controller\\Admin\\HardDriveCrudController').setAction('edit').setEntityId(harddrive.getId())}}">
+					<img src={{ absolute_url(asset('build/images/missing/hdd-missing.jpg')) }} title="Click to edit this entry" style="width:100%;">
+				</a>
+			{% else %}
+				<img src={{ absolute_url(asset('build/images/missing/hdd-missing.jpg')) }} title="no images available :(" style="width:100%;">
+			{% endif %}
 		</div>
 	{% endif %}
 	</div>

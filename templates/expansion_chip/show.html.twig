@@ -15,7 +15,7 @@
 	<meta property="og:title" content="{{ expansion_chip.getFullName() }}">
 	<meta property="og:description" content="Get info, images and drivers for the {{ expansion_chip.getFullName() }} expansion chip">
 	{% if expansion_chip.getImages() is not empty %}
-		{% for image in expansion_chip.getImages()|sort((a, b) => a.getFileName() <=> b.getFileName())|slice(0, 1) %}
+		{% for image in expansion_chip.getImages()|sort((a, b) => a.getFileName() <=> b.getFileName())|sort((a, b) => a.sort <=> b.sort)|slice(0, 1) %}
 			<meta name="twitter:image" content="{{ vich_uploader_asset(image, 'imageFile')}}">
 			<meta property="og:image" content="{{ vich_uploader_asset(image, 'imageFile')}}">
 		{% endfor %}
@@ -49,10 +49,16 @@
 {% endblock %}
 {% block body %}
 <!-- MANUF./NAME/PART NO. -->
-<div class="title">{{ expansion_chip.getFullName() }}</div>
+<div class="title">
+	{% if expansion_chip.getManufacturer() is not empty %}
+		<a href="{{ path('manufacturer_show', {id: expansion_chip.getManufacturer().getId()}) }}">{{ expansion_chip.getManufacturer().getName() }}</a>&nbsp;{{ expansion_chip.getNameWithoutManuf() }}
+	{% else %}
+		{{ expansion_chip.getFullName() }}
+	{% endif %}
+</div>
 <div class="main-strip">
 	<div class="internal-container">
-		{% include 'macros/navbar.html.twig' with {'entity': expansion_chip, 'entityName': 'ExpansionChip', 'name': 'chip', 'role': 'ROLE_USER'} %}
+		{% include 'macros/navbar.html.twig' with {'entity': expansion_chip, 'entityName': 'ExpansionChip', 'types': ['specs', 'bios', 'drivers', 'docs'], 'name': 'chip', 'role': 'ROLE_USER'} %}
 		<div class="internal-content">
 			<!-- DESCRIPRION -->
 			<div class="show-general" id="sh-general">
@@ -68,7 +74,7 @@
 							<span class="text-block">{{vendor.getVen()}}</span>
 						{% endfor %}
 					{% else %}
-						<div>Unknown</div>
+						<div><span class='badge badge-secondary'>Empty</span></div>
 					{% endif %}
 					</div>
 					<!-- Device ID -->
@@ -79,7 +85,7 @@
 							<span class="text-block">{{device.getDev()}}</span>
 						{% endfor %}
 					{% else %}
-						<div>Unknown</div>
+						<div><span class='badge badge-secondary'>Empty</span></div>
 					{% endif %}
 					</div>
 					<!-- Actions -->
@@ -89,23 +95,45 @@
 					<div class="toolbar">
 						<a class='button-widget' href="{{ absolute_url(path('app_homepage')) }}motherboards/?expansionChipIds%5B0%5D={{ expansion_chip.getId() }}&amp;showImages=1">
 							<img src='{{ absolute_url(asset('build/icons/board.svg')) }}' alt='' width='16' height='16' style='vertical-align:middle;padding:3px;'>See all boards with this chip</a>
-						<a class='button-widget' href="{{ absolute_url(path('app_homepage')) }}expansioncards/?expansionChipIds%5B0%5D={{ expansion_chip.getId() }}&amp;showImages=1">
+						<a class='button-widget' href="{{ absolute_url(path('app_homepage')) }}expansion_chips/?expansionChipIds%5B0%5D={{ expansion_chip.getId() }}&amp;showImages=1">
 							<img src='{{ absolute_url(asset('build/icons/card.svg')) }}' alt='' width='16' height='16' style='vertical-align:middle;padding:3px;'>See all cards with this chip</a>
 					</div>
 				</div>
 				{% include 'macros/aliases.html.twig' with {'entity':expansion_chip.getChipAliases(), 'msg': 'Also known as:'} %}
 				{% include 'macros/notes.html.twig' with {'entity': expansion_chip} %}
-				<!-- DRIVERS -->
-				{% include 'macros/drivers.html.twig' with {'entity': expansion_chip.getDrivers()} %}
-				<!-- MANUALS -->
-				{% include 'macros/manuals.html.twig' with {'entity': expansion_chip.getDocumentations(), 'entity_label':'chip', 'audit_entity':'App-Entity-ChipDocumentation'} %}
 				<div id="index-datetime"><div class="div-datetime">Last updated <span class="perk-date">{{ expansion_chip.getLastEdited()|date("Y-m-d\\TH:i:s", "GMT") }}Z</span></div></div>
 			</div>
 			<div class="show-expchips" id="sh-specs">
 				{% if expansion_chip.getMiscSpecs() is not empty %}
 					<h3>Specifications:</h3>
 					{% include 'macros/specs.html.twig' with {'entity':expansion_chip} %}
+				{% else %}
+					<span>No chip specs</span>
 				{% endif %}
+			</div>
+			<!-- BIOSes -->
+			<div class="show-downloads" id="sh-bios">
+				<div class="show-downloads-group last">
+					<div class="show-downloads-group-header">
+						<img src="{{ absolute_url(asset('build/icons/awchip.svg')) }}" alt="" width="32" height="32">
+						{% set bfile_cnt = 0 %}
+						{% if expansion_chip.getExpansionChipBios() is not empty %}
+							{% for bios in expansion_chip.getExpansionChipBios() %}
+								{% if bios.getFileName() is not null %}{% set bfile_cnt = bfile_cnt + 1 %}{% endif %}
+							{% endfor %}
+						{% endif %}
+						<span>{{ bfile_cnt }} file{% if bfile_cnt != 1 %}s{% endif %} available</span>
+					</div>
+					{% include 'macros/bios.html.twig' with {'entity': expansion_chip.getExpansionChipBios(), 'entity_label':'chip', 'audit_entity':'App-Entity-ExpansionChipBios'} %}
+				</div>
+			</div>
+			<!-- DRIVERS -->
+			<div class="show-downloads" id="sh-driver">
+				{% include 'macros/drivers.html.twig' with {'entity': expansion_chip.getDrivers(), 'css': ''} %}
+			</div>
+			<!-- Documentation -->
+			<div class="show-downloads" id="sh-docs">
+				{% include 'macros/manuals.html.twig' with {'entity': expansion_chip.getDocumentations(), 'entity_label':'chip', 'audit_entity':'App-Entity-ChipDocumentation'} %}
 			</div>
 		</div>
 	</div>
@@ -120,7 +148,13 @@
 		{% endfor %}
 	{% else %}
 		<div class="show-images">
-			<img src={{ absolute_url(asset('build/images/missing/chip-missing.jpg')) }} title="no images available :(" style="width:100%;">
+			{% if is_granted('ROLE_USER') %}
+				<a href="{{ ea_url().setDashboard('App\\Controller\\Admin\\DashboardController').setController('App\\Controller\\Admin\\ExpansionChipCrudController').setAction('edit').setEntityId(expansion_chip.getId())}}">
+					<img src={{ absolute_url(asset('build/images/missing/chip-missing.jpg')) }} title="Click to edit this entry" style="width:100%;">
+				</a>
+			{% else %}
+				<img src={{ absolute_url(asset('build/images/missing/chip-missing.jpg')) }} title="no images available :(" style="width:100%;">
+			{% endif %}
 		</div>
 	{% endif %}
 	</div>

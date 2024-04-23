@@ -53,24 +53,24 @@
 <div class="title">{{ socket.getNameAndType() }}</div>
 <div class="main-strip">
 	<div class="internal-container">
-		{% include 'macros/navbar.html.twig' with {'entity': socket, 'entityName': 'CpuSocket', 'name': 'socket', 'role': 'ROLE_ADMIN'} %}
+		{% include 'macros/navbar.html.twig' with {'entity': socket, 'entityName': 'CpuSocket', 'types': [], 'name': 'socket', 'role': 'ROLE_ADMIN'} %}
 		<div class="internal-content">
 			<!-- DESCRIPRION -->
 			<div class="show-general" id="sh-general">
 				<div class="quick-spec-table">
 					<!-- Type -->
 					<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/cpupins.svg')) }}" alt="node" width="24" height="24">Type</div>
-					<div>{{ socket.getType() ?: 'Unknown'}}</div>
+					<div>{{ socket.getType() ?: "<span class='badge badge-secondary'>Empty</span>"}}</div>
                     <!-- Family-->
 					<div class="quick-spec-head">
 						<img src="{{ absolute_url(asset('build/icons/486.svg')) }}" alt="cpu" width="24" height="24">Families
 					</div>
 					{% if socket.getPlatforms() is not empty %}
-					<div class="tag-container">
-						{% for family in socket.getPlatforms() %}<a href="{{ path('cpufamily_show', {id: family.getId()}) }}"><span class="text-block">{{ family.getName}}</span></a>{% endfor %}
-					</div>
+						<div class="tag-container">
+							{% for family in socket.getPlatforms() %}<a href="{{ path('cpufamily_show', {id: family.getId()}) }}"><span class="text-block">{{ family.getName}}</span></a>{% endfor %}
+						</div>
 					{% else %}
-					<div>Unknown</div>
+						<div><span class='badge badge-secondary'>Empty</span></div>
 					{% endif %}
 					<!-- Actions -->
 					<div class="quick-spec-head">
@@ -100,7 +100,13 @@
 		{% endfor %}
 	{% else %}
 		<div class="show-images">
-			<img src={{ absolute_url(asset('build/images/missing/chip-missing.jpg')) }} title="no images available :(" style="width:100%;">
+			{% if is_granted('ROLE_USER') %}
+				<a href="{{ ea_url().setDashboard('App\\Controller\\Admin\\DashboardController').setController('App\\Controller\\Admin\\CpuSocketCrudController').setAction('edit').setEntityId(socket.getId())}}">
+					<img src={{ absolute_url(asset('build/images/missing/not-available.jpg')) }} title="Click to edit this entry" style="width:100%;">
+				</a>
+			{% else %}
+				<img src={{ absolute_url(asset('build/images/missing/not-available.jpg')) }} title="no images available :(" style="width:100%;">
+			{% endif %}
 		</div>
 	{% endif %}
 	</div>

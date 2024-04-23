@@ -19,6 +19,6 @@ class ExpansionChipCrudType extends AbstractCrudController
         yield AssociationField::new('expansionChip', 'Expansion chip')
             ->autocomplete()
             ->setColumns(12);
-        yield BooleanField::new('isRecommended', 'Recommended');
+        yield BooleanField::new('isRecommended', 'Known good');
     }
 }

@@ -12,20 +12,21 @@
             <div class="header-label">Name</div>
             <div><a href="{{ path("driver_show", {id: driver.largeFile.getId()}) }}">{{driver.largeFile.getName()}}</a></div>
             <div class="header-label">Version</div>
-            <div>{{ driver.largeFile.getFileVersion() ? driver.largeFile.getFileVersion() : '<i>unknown</i>' }}</div>
+            <div>{{ driver.largeFile.getFileVersion() ? driver.largeFile.getFileVersion() : "<span class='badge badge-secondary'>Empty</span>" }}</div>
             <div class="header-label">OS support</div>
             <div>
                 <div class="tag-container">
-                {% for os in driver.largeFile.getOsFlags()|sort((a, b) => a.getName <=> b.getName)|sort((a, b) => a.getVersion <=> b.getVersion) %}
+                {% for os in driver.largeFile.getOsFlags()|sort((a, b) => a.getName <=> b.getName)|sort((a, b) => a.getSort <=> b.getSort) %}
                 <span class="text-block">
-                    <img src="{{ asset('build/icons/os/' ~ os.getVersion ~ '.svg') }}" alt="{{os.getVersion}}"  width="16">
+                    <img src="{{ vich_uploader_asset(os, 'icon')}}" width="16">
                     <span>{{os.getName()}}</span>
                 </span>
                 {% endfor %}
+                {% if driver.largeFile.getOsFlags() is empty %}<span class='badge badge-secondary'>Empty</span>{% endif %}
                 </div>
             </div>
             <div class="header-label">Size</div>
-            <div>{{driver.largeFile.getSize() ? driver.largeFile.getSizeFormatted() : "<i>unknown</i>" }}</div>
+            <div>{{driver.largeFile.getSize() ? driver.largeFile.getSizeFormatted() : "<span class='badge badge-secondary'>Empty</span>" }}</div>
             <div class="header-label">Filename</div>
             <div>
                 <a class="combo" href="{{ vich_uploader_asset(driver.largeFile, 'file')}}">
@@ -37,14 +38,12 @@
         {% endfor %}
     </div>
 {% endmacro %}
-<div class="show-downloads-group">
+<div class="show-downloads-group {{css}}">
     {% if entity is not empty %}
-        {% set recommended = 0 %}
-        {% for itm in entity|filter(a => a.isRecommended == true) %}
-            {% set recommended = recommended + 1 %}
-        {% endfor %}
-        {% set total = entity.count() %}
-        {% if total - recommended == 0 or recommended == 0 %}
+        {% set total = entity|length %}
+        {% set recommended = entity|filter(a => a.isRecommended == true)|length %}
+        {% set otherDrivers = entity|filter(a => a.isRecommended == false)|length %}
+        {% if (recommended == 0 and otherDrivers == total) or (otherDrivers == 0 and recommended == total) %}
             <!-- contains only one type, show as is -->
             <div class="show-downloads-group-header">
                 <img src="{{ absolute_url(asset('build/icons/hardware.svg')) }}" alt="drv" width="32" height="32">
@@ -55,13 +54,13 @@
             <!-- contains both recommended and not recommended -->
             <div class="show-downloads-group-header">
                 <img src="{{ absolute_url(asset('build/icons/hardware.svg')) }}" alt="drv" width="32" height="32">
-                <span>{{ recommended }} recommended driver{% if recommended != 1 %}s{% endif %} available</span>
+                <span>{{ recommended }} known good driver{% if recommended != 1 %}s{% endif %} available</span>
             </div>
             {{ _self.driver(entity|filter(a => a.isRecommended == true))}}
             <div class="dropdown-trw">
                 <label class="dropdown-header">
                     <img src="{{ absolute_url(asset('build/icons/hardware.svg')) }}" alt="chip" width="24" height="24">
-                    <span><i>Other drivers (click to expand)</i></span>
+                    <span><i>{{ otherDrivers }} other driver{% if otherDrivers != 1 %}s{% endif %} available (click to expand)</i></span>
                     <input class="dropdown" type="checkbox" />
                 </label>
                 <div class="dropdown-contents">

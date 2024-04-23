@@ -22,18 +22,15 @@ class ExpansionChip extends Chip
     #[Assert\Valid()]
     private $drivers;
 
-    #[ORM\ManyToOne(targetEntity: ExpansionChipType::class, inversedBy: 'expansionChips')]
-    #[ORM\JoinColumn(nullable: false)]
-    private $type;
-
     #[ORM\Column(length: 8192, nullable: true)]
     private ?string $description = null;
 
     #[ORM\ManyToMany(targetEntity: ExpansionCard::class, mappedBy: 'expansionChips')]
     private Collection $expansionCards;
 
-    #[ORM\Column(type: Types::JSON, options: ['jsonb' => true])]
-    private ?array $miscSpecs = [];
+    #[ORM\OneToMany(mappedBy: 'expansionChip', targetEntity: ExpansionChipBios::class, orphanRemoval: true, cascade: ['persist'])]
+    #[Assert\Valid()]
+    private Collection $expansionChipBios;
 
     #[ORM\Column(type: 'datetime', mapped: false)]
     private $lastEdited;
@@ -47,6 +44,7 @@ class ExpansionChip extends Chip
         $this->drivers = new ArrayCollection();
         $this->documentations = new ArrayCollection();
         $this->expansionCards = new ArrayCollection();
+        $this->expansionChipBios = new ArrayCollection();
     }
     public function __toString(): string
     {
@@ -66,16 +64,7 @@ class ExpansionChip extends Chip
 
         return $this;
     }
-    public function getType(): ?ExpansionChipType
-    {
-        return $this->type;
-    }
-    public function setType(?ExpansionChipType $type): self
-    {
-        $this->type = $type;
-
-        return $this;
-    }
+    
     public function getFullName(): string
     {
         $name = $this->getManufacturer()?->getName() ?? "[unknown]";
@@ -188,18 +177,6 @@ class ExpansionChip extends Chip
         return $this;
     }
 
-    public function setExpansionChipType(?ExpansionChipType $type): self
-    {
-        $this->type = $type;
-
-        return $this;
-    }
-
-    public function getExpansionChipType(): ?ExpansionChipType
-    {
-        return $this->type;
-    }
-
     public function getDescription(): ?string
     {
         return $this->description;
@@ -239,51 +216,45 @@ class ExpansionChip extends Chip
 
         return $this;
     }
-    public function getMiscSpecs(): array
+    /**
+     * @return Collection<int, ExpansionChipBios>
+     */
+    public function getExpansionChipBios(): Collection
     {
-        return $this->miscSpecs ?? [];
-    }
-    public function getMiscSpecsFormatted(): array
-    {
-        $output = [];
-        foreach($this->getMiscSpecs() as $spec){
-            $new = str_replace("\"","",json_encode($spec));
-            $new = str_replace(":",": ",$new);
-            array_push($output, substr($new, 1, -1));
-        }
-        return $output;
-    }
-    public function getSimpleMiscSpecs(): array
-    {
-        $output = [];
-        foreach($this->getMiscSpecs() as $key => $value){
-            if(!is_array($value))
-                $output[$key] = $value;
-        }
-        return $output;
-    }
-    public function getTableMiscSpecs(): array
-    {
-        $output = [];
-        foreach($this->getMiscSpecs() as $key => $value){
-            if(is_array($value))
-                $output[$key] = $value;
-        }
-        return $this->sortMiscSpecTables($output);
-    }
-    function sortMiscSpecTables($arrays) {
-        $lengths = array_map('count', $arrays);
-        arsort($lengths);
-        $return = array();
-        foreach(array_keys($lengths) as $k)
-            $return[$k] = $arrays[$k];
-        return $return;
+        return $this->expansionChipBios;
     }
 
-    public function setMiscSpecs(array $miscSpecs): static
+    public function addExpansionChipBio(ExpansionChipBios $expansionChipBio): static
     {
-        $this->miscSpecs = $miscSpecs;
+        if (!$this->expansionChipBios->contains($expansionChipBio)) {
+            $this->expansionChipBios->add($expansionChipBio);
+            $expansionChipBio->setExpansionChip($this);
+        }
 
         return $this;
+    }
+
+    public function removeExpansionChipBio(ExpansionChipBios $expansionChipBio): static
+    {
+        if ($this->expansionChipBios->removeElement($expansionChipBio)) {
+            // set the owning side to null (unless already changed)
+            if ($expansionChipBio->getExpansionChip() === $this) {
+                $expansionChipBio->setExpansionChip(null);
+            }
+        }
+
+        return $this;
+    }
+    public function isExpansionChipBios(): bool
+    {
+        if(isset($this->expansionChipBios))
+            if(count($this->expansionChipBios) > 0)
+                return true;
+        return false;
+    }
+
+    public function getChipsWithDrivers(): array
+    {
+        return [];
     }
 }

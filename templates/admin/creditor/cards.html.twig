@@ -21,7 +21,7 @@
                         <div class="perk-image">
                         {% if card.getImages() is not empty %}
                             {% set imgtype_count = 0 %}
-                            {% for image in card.getImages()|sort((a, b) => a.getFileName() <=> b.getFileName())|slice(0, 1) %}
+                            {% for image in card.getImages()|filter(a => a.type in ["1", "2"])|sort((a, b) => a.getFileName() <=> b.getFileName())|sort((a, b) => b.type <=> a.type)|slice(0, 1) %}
                                 <a href="{{ vich_uploader_asset(image, 'imageFile')}}" class="glightbox"><img src="
                                     {{ vich_uploader_asset(image, 'imageFile') | imagine_filter('show_thumb') }}" alt="" loading="lazy" width="250" height="200" title="Click to preview image"></a>
                                 {% set imgtype_count = imgtype_count + 1 %}

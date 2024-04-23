@@ -8,10 +8,12 @@ use App\Entity\IoPortInterface;
 use App\Entity\IoPortInterfaceSignal;
 use App\Entity\ExpansionSlotInterfaceSignal;
 use App\Entity\IoPortSignal;
+use App\Entity\LargeFile;
 use App\Entity\ProcessorPlatformType;
 use App\Repository\CdDriveRepository;
 use App\Repository\ChipsetRepository;
 use App\Repository\CpuSocketRepository;
+use App\Repository\CreditorRepository;
 use App\Repository\ExpansionCardRepository;
 use App\Repository\ExpansionCardTypeRepository;
 use App\Repository\ExpansionChipRepository;
@@ -22,8 +24,11 @@ use App\Repository\IoPortInterfaceRepository;
 use App\Repository\IoPortInterfaceSignalRepository;
 use App\Repository\ExpansionSlotInterfaceSignalRepository;
 use App\Repository\IoPortSignalRepository;
+use App\Repository\LargeFileRepository;
 use App\Repository\ManufacturerRepository;
 use App\Repository\MotherboardRepository;
+use App\Repository\OsArchitectureRepository;
+use App\Repository\OsFlagRepository;
 use App\Repository\ProcessorRepository;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -39,12 +44,117 @@ use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use Exception;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 
 class AdminController extends AbstractDashboardController
 {
     public function __construct(private EntityManagerInterface $entityManager)
     {
         $this->entityManager = $entityManager;
+    }
+    // admin routes
+    #[Route('/admin/updatechipset', name:'update_chipsets_cached_name')]
+    public function updateChipsetsCachedName(): Response
+    {
+        $idx = 1;
+        return $this->redirect($this->generateUrl('update_chipsets_cached_name_idx', array("idx" => $idx)));
+    }
+
+    #[Route('/admin/updatechipset/{idx}', name:'update_chipsets_cached_name_idx', requirements: ['idx' => '\d+'])]
+    public function updateChipsetsCachedNameAB(ChipsetRepository $chipsetRepository, int $idx, EntityManagerInterface $entityManager): Response
+    {
+        $run = false;
+        foreach($chipsetRepository->findAll() as $chip){
+            if($chip->getId() >= $idx && $chip->getId() <= ($idx + 100)){
+                $chip->updateCachedName();
+                $entityManager->persist($chip);
+                $entityManager->flush();
+                $run = true;
+            }
+        }
+        if($run == false)
+            return $this->redirect($this->generateUrl('update_chipsets_cached_name_done'));
+        return $this->redirect($this->generateUrl('update_chipsets_cached_name_idx', array("idx" => ($idx + 100))));
+    }
+
+    #[Route('/admin/updatechipset/done', name:'update_chipsets_cached_name_done')]
+    public function updateChipsetsCachedNameDone(): JsonResponse
+    {
+        return new JsonResponse("finished");
+    }
+    // dashboard routes
+
+    #[Route('/dashboard/filterchips', name:'mobo_filter_chips', methods:['POST'])]
+    public function filterChips(Request $request, ExpansionChipRepository $expansionChipRepository): JsonResponse
+    {
+        $chips = json_decode($request->getContent());
+        $deletechips = array();
+        foreach($chips as $chip){
+            $chipEntity = $expansionChipRepository->findById($chip)[0];
+            if($chipEntity->getType()->getId() == 30)
+                array_push($deletechips, $chip);
+        }
+        return new JsonResponse($deletechips);
+    }
+
+    #[Route('/dashboard/finddriver', name:'find_driver', methods:['GET'])]
+    public function findDriver(Request $request, LargeFileRepository $largeFileRepository): JsonResponse
+    {
+        $criteria['name'] = $request->query->get('name');
+        if($request->query->get('version'))
+            $criteria['version'] = $request->query->get('version');
+        $os = $request->query->get('os');
+        if($os != "")
+            $criteria["osFlags"] = explode(",", $request->query->get('os'));
+        $driver = $largeFileRepository->findByDriver($criteria);
+        $list = array();
+        foreach($driver as $drv){
+            $list[$drv->getNameWithTags()] = $drv->getId();
+        }
+        return new JsonResponse(array_slice($list, 0, 1));
+    }
+
+    #[Route('/dashboard/getallchipsets', name:'mobo_get_all_chipsets', methods:['POST'])]
+    public function getAllChipsets(Request $request, ChipsetRepository $chipsetRepository): JsonResponse
+    {
+        $chipsets = array();
+        foreach($chipsetRepository->findAll() as $chipset){
+            $chipsets[$chipset->getId()] = $chipset->getNameCached();
+        }
+        return new JsonResponse($chipsets);
+    }
+
+    #[Route('/dashboard/getbiosmanufacturers', name:'get_bios_manufacturers', methods:['GET'])]
+    public function getBiosManufacturers(ManufacturerRepository $manufacturerRepository): JsonResponse
+    {
+        $list = array();
+        foreach($manufacturerRepository->findAllBiosManufacturer() as $item){
+            $list[$item->getName()] = $item->getId();
+        }
+        return new JsonResponse($list);
+    }
+
+    #[Route('/dashboard/getchips', name:'mobo_get_chips', methods:['POST'])]
+    public function getChips(Request $request, ChipsetRepository $chipsetRepository): JsonResponse
+    {
+        $chipset = json_decode($request->getContent());
+        $chips = array();
+
+        foreach($chipsetRepository->findById($chipset)[0]->getExpansionChips() as $chip){
+            $chips[$chip->getId()] = $chip->getFullName();
+        }
+        return new JsonResponse($chips);
+    }
+
+    #[Route('/dashboard/getchipsets', name:'mobo_get_chipsets', methods:['POST'])]
+    public function getChipsets(Request $request, ChipsetRepository $chipsetRepository): JsonResponse
+    {
+        $chips = json_decode($request->getContent());
+        $chipsets = array();
+        foreach($chipsetRepository->findByChips($chips) as $chipset){
+            $chipsets[$chipset->getId()] = $chipset->getNameCached();
+        }
+        return new JsonResponse($chipsets);
     }
 
     #[Route('/dashboard/getcpufamilies', name:'mobo_get_cpu_families', methods:['POST'])]
@@ -71,94 +181,33 @@ class AdminController extends AbstractDashboardController
         }
         return new JsonResponse($cpuPlatforms);
     }
-    #[Route('/dashboard/getchipsets', name:'mobo_get_chipsets', methods:['POST'])]
-    public function getChipsets(Request $request, ChipsetRepository $chipsetRepository): JsonResponse
-    {
-        $chips = json_decode($request->getContent());
-        $chipsets = array();
-        foreach($chipsetRepository->findByChips($chips) as $chipset){
-            $chipsets[$chipset->getId()] = $chipset->getNameCached();
-        }
-        return new JsonResponse($chipsets);
-    }
-    #[Route('/dashboard/getallchipsets', name:'mobo_get_all_chipsets', methods:['POST'])]
-    public function getAllChipsets(Request $request, ChipsetRepository $chipsetRepository): JsonResponse
-    {
-        $chipsets = array();
-        foreach($chipsetRepository->findAll() as $chipset){
-            $chipsets[$chipset->getId()] = $chipset->getNameCached();
-        }
-        return new JsonResponse($chipsets);
-    }
-    #[Route('/dashboard/getchips', name:'mobo_get_chips', methods:['POST'])]
-    public function getChips(Request $request, ChipsetRepository $chipsetRepository): JsonResponse
-    {
-        $chipset = json_decode($request->getContent());
-        $chips = array();
 
-        foreach($chipsetRepository->findById($chipset)[0]->getExpansionChips() as $chip){
-            $chips[$chip->getId()] = $chip->getFullName();
+    #[Route('/dashboard/getcreditors', name:'get_creditors', methods:['GET'])]
+    public function getCreditors(CreditorRepository $creditorRepository): JsonResponse
+    {
+        $list = array();
+        foreach($creditorRepository->findAllCreditors() as $item){
+            $list[$item->getId()] = $item->getName();
         }
-        return new JsonResponse($chips);
+        return new JsonResponse($list);
     }
-    #[Route('/dashboard/filterchips', name:'mobo_filter_chips', methods:['POST'])]
-    public function filterChips(Request $request, ExpansionChipRepository $expansionChipRepository): JsonResponse
-    {
-        $chips = json_decode($request->getContent());
-        $deletechips = array();
-        foreach($chips as $chip){
-            $chipEntity = $expansionChipRepository->findById($chip)[0];
-            if($chipEntity->getExpansionChipType()->getId() == 30)
-                array_push($deletechips, $chip);
-        }
-        return new JsonResponse($deletechips);
-    }
-    #[Route('/admin/updatechipset', name:'update_chipsets_cached_name')]
-    public function updateChipsetsCachedName(): Response
-    {
-        $idx = 1;
-        return $this->redirect($this->generateUrl('update_chipsets_cached_name_idx', array("idx" => $idx)));
-    }
-    #[Route('/admin/updatechipset/{idx}', name:'update_chipsets_cached_name_idx', requirements: ['idx' => '\d+'])]
-    public function updateChipsetsCachedNameAB(ChipsetRepository $chipsetRepository, int $idx, EntityManagerInterface $entityManager): Response
-    {
-        $run = false;
-        foreach($chipsetRepository->findAll() as $chip){
-            if($chip->getId() >= $idx && $chip->getId() <= ($idx + 100)){
-                $chip->updateCachedName();
-                $entityManager->persist($chip);
-                $entityManager->flush();
-                $run = true;
-            }
-        }
-        if($run == false)
-            return $this->redirect($this->generateUrl('update_chipsets_cached_name_done'));
-        return $this->redirect($this->generateUrl('update_chipsets_cached_name_idx', array("idx" => ($idx + 100))));
-    }
-    #[Route('/admin/updatechipset/done', name:'update_chipsets_cached_name_done')]
-    public function updateChipsetsCachedNameDone(): JsonResponse
-    {
-        return new JsonResponse("finished");
-    }
-    #[Route('/dashboard/settings', name:'admin_user_settings')]
-    public function userIndex(): Response
-    {
-        return $this->render('admin/users/index.html.twig');
-    }
-    #[Route('/dashboard/settings/resetpass/{id}', name: 'admin_reset_pass', requirements: ['id' => '\d+'])]
-    public function resetPasswd(int $id, Request $request, UserPasswordHasherInterface $passwordHasher, EntityManagerInterface $entityManager, UserRepository $userRepository): Response
-    {
-        $user = $userRepository->find($id);
-        $password = $this->randomStr(16);
-        $hashedPassword = $passwordHasher->hashPassword($user, $password);
-        $user->setPassword($hashedPassword);
 
-        $entityManager->persist($user);
-        $entityManager->flush();
-
-        return $this->render('admin/users/password_reset.html.twig', [
-            'username' => $user->getUsername(),
-            'password' => $password,
+    #[Route('/dashboard/getdriverfields', name:'get_driver_fields', methods:['GET'])]
+    public function getDriverFields(OsFlagRepository $osFlagRepository, OsArchitectureRepository $osArchitectureRepository, CsrfTokenManagerInterface $csrfTokenManager): JsonResponse
+    {
+        $listFlags = array();
+        $listArchs = array();
+        $token = $csrfTokenManager->getToken('ea-action-new')->getValue();
+        $osFlags = $osFlagRepository->findAll();
+        $osArchs = $osArchitectureRepository->findAll();
+        foreach($osFlags as $flag)
+            $listFlags[$flag->getName()] = $flag->getId();
+        foreach($osArchs as $arch)
+            $listArchs[$arch->getName()] = $arch->getId();
+        return new JsonResponse([
+            $listFlags,
+            $listArchs,
+            $token
         ]);
     }
 
@@ -183,45 +232,12 @@ class AdminController extends AbstractDashboardController
         return new JsonResponse($templatesMerged);
     }
 
-    #[Route('/dashboard/getbiosmanufacturers', name:'get_bios_manufacturers', methods:['GET'])]
-    public function getBiosManufacturers(ManufacturerRepository $manufacturerRepository): JsonResponse
-    {
-        $list = array();
-        foreach($manufacturerRepository->findAllBiosManufacturer() as $item){
-            $list[$item->getName()] = $item->getId();
-        }
-        return new JsonResponse($list);
-    }
-
     #[Route('/dashboard/getexpansionchiptemplate/{id}', name:'get_expansion_chip_template', methods:['GET'],  requirements: ['id' => '\d+'])]
     public function getExpansionChipTemplate(int $id, ExpansionChipTypeRepository $expansionChipTypeRepository): JsonResponse
     {
         $chipType = $expansionChipTypeRepository->find($id);
 
         return new JsonResponse($chipType->getTemplate());
-    }
-
-    #[Route('/dashboard/getioports/{id}', name:'get_ioports', methods:['GET'], requirements: ['id' => '\d+'])]
-    public function getIoPorts(Request $request, IoPortInterfaceSignalRepository $ioPortInterfaceSignalRepository, ?int $id = null): JsonResponse
-    {
-        $ioports = [];
-        if ($id) {
-            $ioport = $ioPortInterfaceSignalRepository->find($id);
-            if (!$ioport) {
-                return new Response('', 404);
-            }
-            $ioports = [$ioport];
-        } else {
-            $filtersJson = $request->query->get('filters');
-            if (!$filtersJson) {
-                $ioports =$ioPortInterfaceSignalRepository->findAll();
-            } else {
-                $filters = json_decode($filtersJson, true);
-                $ioports = $ioPortInterfaceSignalRepository->findBy($filters);
-            }
-        }
-
-        return new JsonResponse(array_map(fn (IoPortInterfaceSignal $ioport) => $ioport->jsonSerialize(), $ioports));
     }
 
     #[Route('/dashboard/getexpslots/{id}', name:'get_expslots', methods:['GET'], requirements: ['id' => '\d+'])]
@@ -264,6 +280,29 @@ class AdminController extends AbstractDashboardController
         return new JsonResponse(array_map(fn (IoPortInterface $interface) => $interface->jsonSerialize(), $interfaces));
     }
 
+    #[Route('/dashboard/getioports/{id}', name:'get_ioports', methods:['GET'], requirements: ['id' => '\d+'])]
+    public function getIoPorts(Request $request, IoPortInterfaceSignalRepository $ioPortInterfaceSignalRepository, ?int $id = null): JsonResponse
+    {
+        $ioports = [];
+        if ($id) {
+            $ioport = $ioPortInterfaceSignalRepository->find($id);
+            if (!$ioport) {
+                return new Response('', 404);
+            }
+            $ioports = [$ioport];
+        } else {
+            $filtersJson = $request->query->get('filters');
+            if (!$filtersJson) {
+                $ioports =$ioPortInterfaceSignalRepository->findAll();
+            } else {
+                $filters = json_decode($filtersJson, true);
+                $ioports = $ioPortInterfaceSignalRepository->findBy($filters);
+            }
+        }
+
+        return new JsonResponse(array_map(fn (IoPortInterfaceSignal $ioport) => $ioport->jsonSerialize(), $ioports));
+    }
+
     #[Route('/dashboard/getioportsignals/{id}', name:'get_ioportsignals', methods:['GET'], requirements: ['id' => '\d+'])]
     public function getIoPortSignals(IoPortSignalRepository $ioPortSignalRepository, ?int $id = null): JsonResponse
     {
@@ -276,10 +315,31 @@ class AdminController extends AbstractDashboardController
             $signals = [$signal];
         } else {
             $signals =$ioPortSignalRepository->findAll();
-            
         }
 
         return new JsonResponse(array_map(fn (IoPortSignal $signal) => $signal->jsonSerialize(), $signals));
+    }
+
+    #[Route('/dashboard/settings', name:'admin_user_settings')]
+    public function userIndex(): Response
+    {
+        return $this->render('admin/users/index.html.twig');
+    }
+    #[Route('/dashboard/settings/resetpass/{id}', name: 'admin_reset_pass', requirements: ['id' => '\d+'])]
+    public function resetPasswd(int $id, Request $request, UserPasswordHasherInterface $passwordHasher, EntityManagerInterface $entityManager, UserRepository $userRepository): Response
+    {
+        $user = $userRepository->find($id);
+        $password = $this->randomStr(16);
+        $hashedPassword = $passwordHasher->hashPassword($user, $password);
+        $user->setPassword($hashedPassword);
+
+        $entityManager->persist($user);
+        $entityManager->flush();
+
+        return $this->render('admin/users/password_reset.html.twig', [
+            'username' => $user->getUsername(),
+            'password' => $password,
+        ]);
     }
 
     /**
@@ -288,10 +348,8 @@ class AdminController extends AbstractDashboardController
      *                         to select from
      * @return string
      */
-    private function randomStr(
-        int $length,
-        string $keyspace = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
-    ): string {
+    private function randomStr(int $length, string $keyspace = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'): string
+    {
         $str = '';
         $max = mb_strlen($keyspace, '8bit') - 1;
         if ($max < 1) {

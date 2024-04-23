@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\ExpansionCardPowerConnectorRepository;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 #[ORM\Entity(repositoryClass: ExpansionCardPowerConnectorRepository::class)]
 class ExpansionCardPowerConnector
@@ -68,5 +69,12 @@ class ExpansionCardPowerConnector
         $this->expansionCard = $expansionCard;
 
         return $this;
+    }
+    #[Assert\Callback]
+    public function autosetCountIfEmpty(): void
+    {
+        if(null === $this->count && null !== $this->powerConnector) {
+            $this->count = 1;
+        }
     }
 }

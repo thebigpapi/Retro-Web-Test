@@ -28,6 +28,58 @@ use Symfony\Component\HttpFoundation\Response;
 
 class MotherboardController extends AbstractController
 {
+    #[Route('/motherboards/{id}', name: 'motherboard_show', requirements: ['id' => '\d+'])]
+    public function show(
+        int $id,
+        MotherboardRepository $motherboardRepository,
+        MotherboardIdRedirectionRepository $motherboardIdRedirectionRepository
+    ): Response {
+        $motherboard = $motherboardRepository->find($id);
+
+        if (!$motherboard) {
+            $idRedirection = $motherboardIdRedirectionRepository->findRedirection($id, 'uh19');
+
+            if (!$idRedirection) {
+                throw $this->createNotFoundException(
+                    'No $motherboard found for id ' . $id
+                );
+            } else {
+                return $this->redirect($this->generateUrl('motherboard_show', array("id" => $idRedirection)));
+            }
+        }
+
+        return $this->redirect($this->generateUrl('motherboard_show_slug', array("slug" => $motherboard->getSlug())));
+    }
+
+    #[Route('/motherboards/s/{slug}', name: 'motherboard_show_slug')]
+    public function showSlug(
+        string $slug,
+        MotherboardRepository $motherboardRepository,
+        MotherboardIdRedirectionRepository $motherboardIdRedirectionRepository,
+        ExpansionChipTypeRepository $expansionchiptyperep
+    ): Response {
+        $motherboard = $motherboardRepository->findSlug($slug);
+        $expansionchiptype = $expansionchiptyperep->findAll();
+
+        if (!$motherboard) {
+            $idRedirection = $motherboardIdRedirectionRepository->findRedirection($slug, 'uh19_slug');
+
+            if (!$idRedirection) {
+                throw $this->createNotFoundException(
+                    'No $motherboard found for slug ' . $slug
+                );
+            } else {
+                return $this->redirect($this->generateUrl('motherboard_show', array("id" => $idRedirection)));
+            }
+        }
+
+        return $this->render('motherboard/show.html.twig', [
+            'motherboard' => $motherboard,
+            'expansionchiptype' => $expansionchiptype,
+            'controller_name' => 'MotherboardController',
+        ]);
+    }
+
     public function addCriteriaById(Request $request, array &$criterias, string $htmlId, string $sqlId): void
     {
         $entityId = htmlentities($request->query->get($htmlId) ?? ($request->request->get($htmlId) ?? ''));
@@ -162,58 +214,6 @@ class MotherboardController extends AbstractController
             'domTarget' => $request->request->get('domTarget') ?? $request->query->get('domTarget') ?? "",
             'params' => substr($string, 0, -1),
         ]);
-    }
-
-    #[Route('/motherboards/s/{slug}', name: 'motherboard_show_slug')]
-    public function showSlug(
-        string $slug,
-        MotherboardRepository $motherboardRepository,
-        MotherboardIdRedirectionRepository $motherboardIdRedirectionRepository,
-        ExpansionChipTypeRepository $expansionchiptyperep
-    ): Response {
-        $motherboard = $motherboardRepository->findSlug($slug);
-        $expansionchiptype = $expansionchiptyperep->findAll();
-
-        if (!$motherboard) {
-            $idRedirection = $motherboardIdRedirectionRepository->findRedirection($slug, 'uh19_slug');
-
-            if (!$idRedirection) {
-                throw $this->createNotFoundException(
-                    'No $motherboard found for slug ' . $slug
-                );
-            } else {
-                return $this->redirect($this->generateUrl('motherboard_show', array("id" => $idRedirection)));
-            }
-        }
-
-        return $this->render('motherboard/show.html.twig', [
-            'motherboard' => $motherboard,
-            'expansionchiptype' => $expansionchiptype,
-            'controller_name' => 'MotherboardController',
-        ]);
-    }
-
-    #[Route('/motherboards/{id}', name: 'motherboard_show', requirements: ['id' => '\d+'])]
-    public function show(
-        int $id,
-        MotherboardRepository $motherboardRepository,
-        MotherboardIdRedirectionRepository $motherboardIdRedirectionRepository
-    ): Response {
-        $motherboard = $motherboardRepository->find($id);
-
-        if (!$motherboard) {
-            $idRedirection = $motherboardIdRedirectionRepository->findRedirection($id, 'uh19');
-
-            if (!$idRedirection) {
-                throw $this->createNotFoundException(
-                    'No $motherboard found for id ' . $id
-                );
-            } else {
-                return $this->redirect($this->generateUrl('motherboard_show', array("id" => $idRedirection)));
-            }
-        }
-
-        return $this->redirect($this->generateUrl('motherboard_show_slug', array("slug" => $motherboard->getSlug())));
     }
 
     #[Route('/dashboard/motherboard-delete/{id}', name: 'motherboard_delete', requirements: ["id" => "\d+"])]

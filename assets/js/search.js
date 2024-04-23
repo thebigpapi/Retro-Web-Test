@@ -55,13 +55,16 @@ let static_selects = [
     "formFactor",
     "cpuSpeed",
     "type",
-    "fsbSpeed"
+    "fsbSpeed",
+    'cardExpansionSlot'
 ];
 
 let dynamic_selects = [
     'motherboardExpansionSlots-fields-list',
     'motherboardIoPorts-fields-list',
     'motherboardMemoryConnectors-fields-list',
+    'cardIoPorts-fields-list',
+    'cardTypes-fields-list',
     'expansionChips-fields-list',
     'dramTypes-fields-list',
     'sockets-fields-list',
@@ -132,10 +135,16 @@ function updateFields(params) {
     let complex_cnt = 0;
     let complex_arr = [];
     for (const [key, value] of Object.entries(params)) {
-        if (key.includes("osFlagIds") || key.includes("expansionChipIds") || key.includes("dramTypeIds") || key.includes("socketIds") || key.includes("platformIds")) {
+        if (key.includes("osFlagIds") ||
+            key.includes("expansionChipIds") ||
+            key.includes("dramTypeIds") ||
+            key.includes("cardTypeIds") ||
+            key.includes("socketIds") ||
+            key.includes("platformIds")
+            ) {
             updateMultiSelect(key, value);
         }
-        else if (key.includes("expansionSlotsIds") || key.includes("ioPortsIds") || key.includes("memoryConnectorsIds")) {
+        else if (key.includes("cardIoPortIds") || key.includes("expansionSlotsIds") || key.includes("ioPortsIds") || key.includes("memoryConnectorsIds")) {
             complex_cnt++;
             let first_split = key.split("Ids%5B");
             let second_split = first_split[1].split("%5D%5B");
@@ -220,6 +229,15 @@ function updateMultiSelectCount(type, pos, arr) {
         add.click();
         let select = document.getElementById("search_motherboardIoPorts_" + pos + "_io_port");
         let box = document.getElementById("search_motherboardIoPorts_" + pos + "_count");
+        select.value = arr["id"];
+        select.tomselect.sync();
+        box.value = sign + arr["count"];
+    }
+    else if (type == "cardIoPort") {
+        let add = document.getElementById("cardIoPorts-add-id");
+        add.click();
+        let select = document.getElementById("search_cardIoPorts_" + pos + "_io_port");
+        let box = document.getElementById("search_cardIoPorts_" + pos + "_count");
         select.value = arr["id"];
         select.tomselect.sync();
         box.value = sign + arr["count"];
@@ -449,6 +467,16 @@ function expand(idx) {
     if (idx == "motherboardMemoryConnectors-fields-list") {
         el = document.getElementById('search_motherboardMemoryConnectors_' + (counter - 1) + '_io_port');
         new TomSelect('#search_motherboardMemoryConnectors_' + (counter - 1) + '_io_port', settings);
+        el.tomselect.sync();
+    }
+    if (idx == "cardIoPorts-fields-list") {
+        el = document.getElementById('search_cardIoPorts_' + (counter - 1) + '_io_port');
+        new TomSelect('#search_cardIoPorts_' + (counter - 1) + '_io_port', settings);
+        el.tomselect.sync();
+    }
+    if (idx == "cardTypes-fields-list") {
+        el = document.getElementById('search_cardTypes_' + (counter - 1));
+        new TomSelect('#search_cardTypes_' + (counter - 1), settings);
         el.tomselect.sync();
     }
     if (idx == "expansionChips-fields-list") {

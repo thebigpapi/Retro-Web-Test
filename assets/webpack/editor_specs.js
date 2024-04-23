@@ -53,7 +53,8 @@ if ((miscSpecs = document.getElementById('ExpansionCard_miscSpecs')) ||
 function submit(el, name){
     saveAsJson(el);
     let save = document.getElementsByClassName(name)[0];
-    save.click();
+    if(save.getAttribute('data-valid') == "true")
+        save.click();
 }
 function setMsg(msg){
     if(label = document.getElementById('specs-form-label'))
@@ -324,17 +325,17 @@ function ioPortPresetChange(event, ioPortId) {
             const signalIds = res[0].signals
 
             const ioPortInterfaceSelect = document.getElementById(ioPortId + '_ioPortInterface_autocomplete');
-            const ioPortSignalsSelect = document.getElementById(ioPortId + '_ioPortSignals_autocomplete');
+            //const ioPortSignalsSelect = document.getElementById(ioPortId + '_ioPortSignals_autocomplete');
 
             ioPortInterfaceSelect.tomselect.addOption({entityId: intefaceId, entityAsString: intefaceName});
             ioPortInterfaceSelect.tomselect.addItem(intefaceId);
-            ioPortSignalsSelect.tomselect.clear();
+            /*ioPortSignalsSelect.tomselect.clear();
             for(const signal in signalIds){
                 ioPortSignalsSelect.tomselect.addOption({entityId: signal, entityAsString: signalIds[signal]});
                 ioPortSignalsSelect.tomselect.addItem(signal);
-            }
+            }*/
             ioPortInterfaceSelect.tomselect.sync();
-            ioPortSignalsSelect.tomselect.sync();
+            //ioPortSignalsSelect.tomselect.sync();
         })
         .catch((error) => {
             console.log(`Could not fetch ioport : ${error}`);

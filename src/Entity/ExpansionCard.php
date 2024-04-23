@@ -23,7 +23,7 @@ class ExpansionCard
     #[Assert\Length(max: 255, maxMessage: 'Name is longer than {{ limit }} characters.')]
     private ?string $name = null;
 
-    #[ORM\ManyToMany(targetEntity: ExpansionChip::class, inversedBy: 'expansionCards')]
+    #[ORM\ManyToMany(targetEntity: Chip::class, inversedBy: 'expansionCards')]
     private Collection $expansionChips;
 
     #[ORM\Column(length: 4096, nullable: true)]
@@ -189,14 +189,14 @@ class ExpansionCard
     }
 
     /**
-     * @return Collection<int, ExpansionChip>
+     * @return Collection<int, Chip>
      */
     public function getExpansionChips(): Collection
     {
         return $this->expansionChips;
     }
 
-    public function addExpansionChip(ExpansionChip $expansionChip): static
+    public function addExpansionChip(Chip $expansionChip): static
     {
         if (!$this->expansionChips->contains($expansionChip)) {
             $this->expansionChips->add($expansionChip);
@@ -205,7 +205,7 @@ class ExpansionCard
         return $this;
     }
 
-    public function removeExpansionChip(ExpansionChip $expansionChip): static
+    public function removeExpansionChip(Chip $expansionChip): static
     {
         $this->expansionChips->removeElement($expansionChip);
 
@@ -235,6 +235,9 @@ class ExpansionCard
     {
         $drivers = $this->getDrivers()->toArray();
         foreach ($this->getExpansionChips() as $expansionChip) {
+            if (get_class($expansionChip) !== ExpansionChip::class) {
+                continue;
+            }
             $drivers = array_merge($drivers, $expansionChip->getDrivers()->toArray());
         }
         return new ArrayCollection($drivers);
@@ -300,17 +303,18 @@ class ExpansionCard
                 3 => 0,
                 4 => 0,
                 5 => 0,
+                6 => 0,
             );
         foreach($this->images as $image){
             $types[(int)$image->getType()] += 1;
         }
         if(($types[1] || $types[5])){
-            if(!($types[2] || $types[3] || $types[4]))
+            if(!($types[2] || $types[3] || $types[4] || $types[6]))
                 return "Schema only";
             else return "Schema and photo";
         }
         else{
-            if(!($types[2] || $types[3] || $types[4]))
+            if(!($types[2] || $types[3] || $types[4] || $types[6]))
                 return "None";
             else return "Photo only";
         }
@@ -861,5 +865,18 @@ class ExpansionCard
         }
 
         return $this;
+    }
+
+    public function getChipsWithDrivers(): array
+    {
+        $driverChips = [];
+        foreach($this->expansionChips as $chip){
+            if (get_class($chip) !== ExpansionChip::class) {
+                continue;
+            }
+            if(!$chip->getDrivers()->isEmpty())
+                array_push($driverChips, $chip->getFullName());
+        }
+        return $driverChips;
     }
 }

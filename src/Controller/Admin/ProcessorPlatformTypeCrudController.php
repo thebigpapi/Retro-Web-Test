@@ -67,6 +67,8 @@ class ProcessorPlatformTypeCrudController extends AbstractCrudController
             ->showEntityActionsInlined()
             ->setEntityLabelInSingular('CPU family')
             ->setEntityLabelInPlural('<img class=ea-entity-icon src=/build/icons/486.svg width=48 height=48>CPU families')
+            ->overrideTemplate('crud/edit', 'admin/crud/edit.html.twig')
+            ->overrideTemplate('crud/new', 'admin/crud/new.html.twig')
             ->setPaginatorPageSize(100);
     }
     public function configureFilters(Filters $filters): Filters
@@ -84,7 +86,7 @@ class ProcessorPlatformTypeCrudController extends AbstractCrudController
     public function configureFields(string $pageName): iterable
     {
         yield FormField::addTab('Basic Data')
-            ->setIcon('fa fa-info')
+            ->setIcon('data.svg')
             ->onlyOnForms();
         yield IdField::new('id')
             ->hideOnForm();
@@ -137,8 +139,8 @@ class ProcessorPlatformTypeCrudController extends AbstractCrudController
             ->onlyOnForms();
         yield TextField::new('description')
             ->onlyOnDetail();
-        yield FormField::addTab('Attachments')
-            ->setIcon('fa fa-download')
+        yield FormField::addTab('Docs')
+            ->setIcon('manual.svg')
             ->onlyOnForms();
         yield CollectionField::new('entityDocumentations', 'Documentation')
             ->useEntryCrudForm(EntityDocumentationCrudType::class)

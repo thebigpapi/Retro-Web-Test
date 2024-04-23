@@ -21,9 +21,6 @@ class ExpansionSlotSignal
     #[ORM\ManyToMany(targetEntity: ExpansionSlotInterfaceSignal::class, mappedBy: 'signals')]
     private Collection $expansionSlotInterfaceSignals;
 
-    #[ORM\OneToMany(mappedBy: 'expansionSlotSignal', targetEntity: EntityImage::class, orphanRemoval: true, cascade: ['persist'])]
-    private Collection $entityImages;
-
     #[ORM\OneToMany(mappedBy: 'expansionSlotSignal', targetEntity: EntityDocumentation::class, orphanRemoval: true, cascade: ['persist'])]
     private Collection $entityDocumentations;
 
@@ -36,7 +33,6 @@ class ExpansionSlotSignal
     public function __construct()
     {
         $this->expansionSlotInterfaceSignals = new ArrayCollection();
-        $this->entityImages = new ArrayCollection();
         $this->entityDocumentations = new ArrayCollection();
         $this->expansionCards = new ArrayCollection();
     }
@@ -85,36 +81,6 @@ class ExpansionSlotSignal
     {
         if ($this->expansionSlotInterfaceSignals->removeElement($expansionSlotInterfaceSignal)) {
             $expansionSlotInterfaceSignal->removeSignal($this);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, EntityImage>
-     */
-    public function getEntityImages(): Collection
-    {
-        return $this->entityImages;
-    }
-
-    public function addEntityImage(EntityImage $entityImage): static
-    {
-        if (!$this->entityImages->contains($entityImage)) {
-            $this->entityImages->add($entityImage);
-            $entityImage->setExpansionSlotSignal($this);
-        }
-
-        return $this;
-    }
-
-    public function removeEntityImage(EntityImage $entityImage): static
-    {
-        if ($this->entityImages->removeElement($entityImage)) {
-            // set the owning side to null (unless already changed)
-            if ($entityImage->getExpansionSlotSignal() === $this) {
-                $entityImage->setExpansionSlotSignal(null);
-            }
         }
 
         return $this;

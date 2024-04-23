@@ -12,6 +12,7 @@ use App\Controller\Admin\Type\Chip\AliasCrudType;
 use App\Controller\Admin\Type\Chip\DocumentationCrudType;
 use App\Controller\Admin\Type\Chip\ImageCrudType;
 use App\Controller\Admin\Type\Chip\LargeFileCrudType;
+use App\Controller\Admin\Type\ExpansionCard\BiosCrudType;
 use App\Controller\Admin\Type\PciDeviceCrudType;
 use Doctrine\ORM\Query\Expr\Andx;
 use Doctrine\ORM\Query\Expr\Orx;
@@ -78,8 +79,8 @@ class ExpansionChipCrudController extends AbstractCrudController
             ->showEntityActionsInlined()
             ->setEntityLabelInSingular('expansion chip')
             ->setEntityLabelInPlural('<img class=ea-entity-icon src=/build/icons/chip.svg width=48 height=48>Expansion chips')
-            ->overrideTemplate('crud/edit', 'admin/crud/edit_chip.html.twig')
-            ->overrideTemplate('crud/new', 'admin/crud/new_chip.html.twig')
+            ->overrideTemplate('crud/edit', 'admin/crud/edit.html.twig')
+            ->overrideTemplate('crud/new', 'admin/crud/new.html.twig')
             ->setPaginatorPageSize(100)
             ->setDefaultSort(['lastEdited' => 'DESC']);
     }
@@ -99,7 +100,7 @@ class ExpansionChipCrudController extends AbstractCrudController
     public function configureFields(string $pageName): iterable
     {
         yield FormField::addTab('Basic Data')
-            ->setIcon('fa fa-info')
+            ->setIcon('data.svg')
             ->onlyOnForms();
         yield IdField::new('id')->onlyOnIndex();
         yield AssociationField::new('manufacturer','Manufacturer')
@@ -133,7 +134,8 @@ class ExpansionChipCrudController extends AbstractCrudController
             ->renderExpanded()
             ->onlyOnForms();
         yield IntegerField::new('sort', 'Sort position')
-            ->setFormTypeOption('required', true)
+            ->setFormTypeOption('required', false)
+            ->setFormTypeOption('empty_data', '1')
             ->setColumns(2);
         yield CodeEditorField::new('description')
             ->setLanguage('markdown')
@@ -145,13 +147,35 @@ class ExpansionChipCrudController extends AbstractCrudController
             ->renderExpanded()
             ->onlyOnForms();
         yield FormField::addTab('Specs')
-            ->setIcon('fa fa-info')
+            ->setIcon('tag.svg')
             ->onlyOnForms();
         yield TextJsonField::new('miscSpecs', 'Misc specs')
             ->setColumns(12)
             ->onlyOnForms();
-        yield FormField::addTab('Attachments')
-            ->setIcon('fa fa-download')
+        yield FormField::addTab('BIOS')
+            ->setIcon('awchip.svg')
+            ->onlyOnForms();
+        yield CollectionField::new('expansionChipBios', 'Firmware')
+            ->useEntryCrudForm(BiosCrudType::class)
+            ->setFormTypeOption('error_bubbling', false)
+            ->setColumns(6)
+            ->renderExpanded()
+            ->onlyOnForms();
+        yield FormField::addTab('Drivers')
+            ->setIcon('hardware.svg')
+            ->onlyOnForms();
+        yield CollectionField::new('drivers', 'Drivers')
+            ->useEntryCrudForm(LargeFileCrudType::class)
+            ->setFormTypeOption('error_bubbling', false)
+            ->setColumns(6)
+            ->renderExpanded()
+            ->onlyOnForms();
+        yield ArrayField::new('getChipsWithDrivers', '')
+            ->setCssClass("field-collection processed")
+            ->setDisabled()
+            ->onlyOnForms();
+        yield FormField::addTab('Docs')
+            ->setIcon('manual.svg')
             ->onlyOnForms();
         yield CollectionField::new('documentations', 'Documentation')
             ->useEntryCrudForm(DocumentationCrudType::class)
@@ -159,14 +183,11 @@ class ExpansionChipCrudController extends AbstractCrudController
             ->setColumns(6)
             ->renderExpanded()
             ->onlyOnForms();
+        yield FormField::addTab('Images')
+            ->setIcon('search_image.svg')
+            ->onlyOnForms();
         yield CollectionField::new('images', 'Images')
             ->useEntryCrudForm(ImageCrudType::class)
-            ->setFormTypeOption('error_bubbling', false)
-            ->setColumns(6)
-            ->renderExpanded()
-            ->onlyOnForms();
-        yield CollectionField::new('drivers', 'Drivers')
-            ->useEntryCrudForm(LargeFileCrudType::class)
             ->setFormTypeOption('error_bubbling', false)
             ->setColumns(6)
             ->renderExpanded()
@@ -191,6 +212,9 @@ class ExpansionChipCrudController extends AbstractCrudController
     public function updateEntity(EntityManagerInterface $entityManager, $entityInstance): void
     {
         $entityInstance->updateLastEdited();
+        foreach ($entityInstance->getPciDevs() as $dev)
+            if($dev->getDev() == "0000")
+                $dev->setDev("0");
         parent::updateEntity($entityManager, $entityInstance);
     }
     public function autocomplete(AdminContext $context): JsonResponse

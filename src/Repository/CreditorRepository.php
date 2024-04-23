@@ -64,6 +64,29 @@ class CreditorRepository extends ServiceEntityRepository
 
         return $query->getResult();
     }
+        /**
+     * @return Creditor[]
+     */
+    public function findAllCreditors(): array
+    {
+        $entityManager = $this->getEntityManager();
+
+        $rsm = new ResultSetMapping();
+
+        $rsm->addEntityResult('App\Entity\Creditor', 'c');
+        $rsm->addFieldResult('c', 'id', 'id');
+        $rsm->addFieldResult('c', 'name', 'name');
+
+        $query = $entityManager->createNativeQuery(
+            'SELECT c.id, c.name
+            FROM creditor c
+            ORDER BY c.name;',
+            $rsm
+        );
+
+        return $query->setCacheable(true)
+            ->getResult();
+    }
 
     // /**
     //  * @return Creditor[] Returns an array of Creditor objects

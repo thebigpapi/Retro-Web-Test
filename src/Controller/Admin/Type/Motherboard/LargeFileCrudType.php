@@ -19,6 +19,6 @@ class LargeFileCrudType extends AbstractCrudController
         yield AssociationField::new('largeFile', 'Driver')
             ->autocomplete()
             ->setColumns(12);
-        yield BooleanField::new('isRecommended', 'Recommended');
+        yield BooleanField::new('isRecommended', 'Known good');
     }
 }

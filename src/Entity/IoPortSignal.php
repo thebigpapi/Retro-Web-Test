@@ -26,10 +26,6 @@ class IoPortSignal
     #[ORM\ManyToMany(targetEntity: IoPortInterfaceSignal::class, mappedBy: 'signals')]
     private Collection $ioPortInterfaceSignals;
 
-    #[ORM\OneToMany(mappedBy: 'ioPortSignal', targetEntity: EntityImage::class, orphanRemoval: true, cascade: ['persist'])]
-    #[Assert\Valid()]
-    private Collection $entityImages;
-
     #[ORM\OneToMany(mappedBy: 'ioPortSignal', targetEntity: EntityDocumentation::class, orphanRemoval: true, cascade: ['persist'])]
     #[Assert\Valid()]
     private Collection $entityDocumentations;
@@ -41,7 +37,6 @@ class IoPortSignal
     {
         $this->expansionCards = new ArrayCollection();
         $this->ioPortInterfaceSignals = new ArrayCollection();
-        $this->entityImages = new ArrayCollection();
         $this->entityDocumentations = new ArrayCollection();
     }
 
@@ -124,36 +119,6 @@ class IoPortSignal
     {
         if ($this->ioPortInterfaceSignals->removeElement($ioPortInterfaceSignal)) {
             $ioPortInterfaceSignal->removeSignal($this);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, EntityImage>
-     */
-    public function getEntityImages(): Collection
-    {
-        return $this->entityImages;
-    }
-
-    public function addEntityImage(EntityImage $entityImage): static
-    {
-        if (!$this->entityImages->contains($entityImage)) {
-            $this->entityImages->add($entityImage);
-            $entityImage->setIoPortSignal($this);
-        }
-
-        return $this;
-    }
-
-    public function removeEntityImage(EntityImage $entityImage): static
-    {
-        if ($this->entityImages->removeElement($entityImage)) {
-            // set the owning side to null (unless already changed)
-            if ($entityImage->getIoPortSignal() === $this) {
-                $entityImage->setIoPortSignal(null);
-            }
         }
 
         return $this;

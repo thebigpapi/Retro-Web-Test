@@ -59,12 +59,52 @@
 				<section class="search-form-grid">
 					<div class="search-form-entry">
 						<label class="search-form-label" for="search_type">
-							<span>Card type</span>
+							<span>Expansion slot</span>
 						</label>
 						<div class="search-form-widget">
-							<div>{{ form_widget(form.type) }}</div>
+							<div>{{ form_widget(form.cardExpansionSlot) }}</div>
 						</div>
 					</div>
+					<div class="search-form-filter">
+						<label class="search-form-label flex">
+							<span>Type</span>
+							{% include 'macros/buttons.html.twig' with {'type':'add', 'action': 'cardTypes'} %}
+						</label>
+						<div class="search-form-widget filter-list" id="cardTypes-fields-list" data-widget-counter="{{ form.cardTypes|length }}" data-prototype="
+							{{ form_widget(form.cardTypes.vars.prototype)|e }}
+							{% include 'macros/buttons.html.twig' with {'type':'del'} %}">
+							{% for type in form.cardTypes %}
+								<div class="editor-row">
+									{{ form_widget(type) }}
+									{% include 'macros/buttons.html.twig' with {'type':'del'} %}
+									{{ form_errors(type) }}
+								</div>
+								{{ form_errors(port.count) }}
+							{% endfor %}
+						</div>
+					</div>
+
+					<div class="search-form-filter">
+						<label class="search-form-label flex">
+							<span>I/O ports</span>
+							{% include 'macros/buttons.html.twig' with {'type':'add', 'action': 'cardIoPorts'} %}
+						</label>
+						<div class="search-form-widget filter-list" id="cardIoPorts-fields-list" data-widget-counter="{{ form.cardIoPorts|length }}" data-prototype="
+							{{ form_widget(form.cardIoPorts.vars.prototype.count, {'attr': {'class': 'num'}} )|e }} x
+							{{ form_widget(form.cardIoPorts.vars.prototype.io_port)|e }}
+							{% include 'macros/buttons.html.twig' with {'type':'del'} %}">
+							{% for port in form.cardIoPorts %}
+								<div class="editor-row">
+									{{ form_widget(port.count, {'attr': {'class': 'num'}}) }} x
+									{{ form_widget(port.io_port, {'attr': {'style': 'width:50%'}}) }}
+									{% include 'macros/buttons.html.twig' with {'type':'del'} %}
+								</div>
+								{{ form_errors(port.count) }}
+							{% endfor %}
+						</div>
+					</div>
+				</section>
+				<section class="search-form-grid bordertop">
 					<div class="search-form-entry">
 						<label class="search-form-label flex">
 							<span>Expansion chips</span>
@@ -82,7 +122,30 @@
 							{% endfor %}
 						</div>
 					</div>
+					<div class="search-form-entry">
+						<label class="search-form-label flex" title="">
+							<span>RAM type</span>
+							{% include 'macros/buttons.html.twig' with {'type':'add', 'action': 'dramTypes'} %}
+						</label>
+						<div class="search-form-widget filter-list" id="dramTypes-fields-list" data-widget-counter="{{ form.dramTypes|length }}" data-prototype="
+							{{ form_widget(form.dramTypes.vars.prototype, {'attr': {'style': 'width:50%'}})|e }}
+							{% include 'macros/buttons.html.twig' with {'type':'del'} %}</div>">
+							{% for type in form.dramTypes %}
+								<div class="editor-row">
+									{{ form_widget(type, {'attr': {'style': 'width:50%'}}) }}
+									{% include 'macros/buttons.html.twig' with {'type':'del'} %}
+									{{ form_errors(type) }}
+								</div>
+							{% endfor %}
+						</div>
+					</div>
 				</section>
+				<div class="search-buttons">
+					<button type="button" onclick="document.getElementById('rst-btn').click();return false;">
+						<img src="{{ absolute_url(asset('build/icons/reset.svg')) }}" alt="reset" width="24" height="24">
+						<span>Reset</span>
+					</button>
+				</div>
 			</div>
 		</div>
 	</fieldset>

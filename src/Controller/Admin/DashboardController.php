@@ -66,6 +66,7 @@ use App\Entity\ExpansionCardAlias;
 use App\Entity\ExpansionCardBios;
 use App\Entity\FloppyDriveType;
 use App\Entity\MotherboardAlias;
+use App\Entity\OsArchitecture;
 use App\Entity\StorageDeviceAlias;
 
 class DashboardController extends AbstractDashboardController
@@ -94,6 +95,7 @@ class DashboardController extends AbstractDashboardController
         $assets->addWebpackEncoreEntry('app_ea');
         $assets->addHtmlContentToHead('<script type="module">import "/build/js/glightbox.min.js";const lightbox = GLightbox({});</script>');
         $assets->addHtmlContentToHead('<script src="/build/js/show.js" defer></script>');
+        $assets->addHtmlContentToHead('<script src="/build/js/tom-select.complete.min.js" defer></script>');
         $assets->addWebpackEncoreEntry('chart');
         $assets->addCssFile('/build/css/glightbox.min.css');
         return $assets;
@@ -122,14 +124,14 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToRoute('Statistics', 'data.svg', 'dashboard_stats');
         yield MenuItem::section('Main items');
         yield MenuItem::linkToCrud('Motherboards', 'board.svg', Motherboard::class)->setDefaultSort(['lastEdited' => 'DESC']);
+        yield MenuItem::linkToCrud('Expansion chips', 'chip.svg', ExpansionChip::class);
         yield MenuItem::linkToCrud('Chipsets', 'chipset.svg', Chipset::class);
         yield MenuItem::linkToCrud('Expansion cards', 'card.svg', ExpansionCard::class);
         yield MenuItem::linkToCrud('CPUs', '486.svg', Processor::class);
-        yield MenuItem::linkToCrud('Drivers', 'hardware.svg', LargeFile::class);
         yield MenuItem::linkToCrud('Hard drives', 'hdd.svg', HardDrive::class);
         yield MenuItem::linkToCrud('Optical drives', 'cd.svg', CdDrive::class);
         yield MenuItem::linkToCrud('Floppy drives', 'floppy.svg', FloppyDrive::class);
-        yield MenuItem::linkToCrud('Expansion chips', 'chip.svg', ExpansionChip::class);
+        yield MenuItem::linkToCrud('Drivers', 'hardware.svg', LargeFile::class);
         yield MenuItem::section('Auxiliary items');
         yield MenuItem::subMenu('Motherboard related', 'board.svg')->setSubItems([
             MenuItem::linkToCrud('Form factors', 'dimension.svg', FormFactor::class),
@@ -140,6 +142,15 @@ class DashboardController extends AbstractDashboardController
             MenuItem::linkToCrud('Images', 'search_image.svg', MotherboardImage::class)->setController(MotherboardImageCrudController::class),
             MenuItem::linkToCrud('BIOSes', 'awchip.svg', MotherboardBios::class)->setController(MotherboardBiosCrudController::class),
             MenuItem::linkToCrud('Manuals', 'manual.svg', Manual::class)->setController(ManualCrudController::class),
+        ])->setPermission('ROLE_ADMIN');
+        yield MenuItem::subMenu('Chip related', 'chip.svg')->setSubItems([
+            MenuItem::linkToCrud('Expansion chip types', 'chip_alias.svg', ExpansionChipType::class)->setPermission('ROLE_ADMIN'),
+            MenuItem::section('Advanced'),
+            MenuItem::linkToCrud('Chip aliases', 'chip_alias.svg', ChipAlias::class)->setController(ChipAliasCrudController::class),
+            MenuItem::linkToCrud('Chip images', 'search_image.svg', ChipImage::class)->setController(ChipImageCrudController::class),
+            MenuItem::linkToCrud('Chip docs', 'manual.svg', ChipDocumentation::class)->setController(ChipDocumentationCrudController::class),
+            MenuItem::linkToCrud('Chipset aliases', 'chip_alias.svg', ChipsetAlias::class)->setController(ChipsetAliasCrudController::class),
+            MenuItem::linkToCrud('Chipset docs', 'manual.svg', ChipsetDocumentation::class)->setController(ChipsetDocumentationCrudController::class),
         ])->setPermission('ROLE_ADMIN');
         yield MenuItem::subMenu('Expansion card related', 'card.svg')->setSubItems([
             MenuItem::linkToCrud('Types', 'tag.svg', ExpansionCardType::class),
@@ -164,6 +175,10 @@ class DashboardController extends AbstractDashboardController
             MenuItem::linkToCrud('Images', 'search_image.svg', StorageDeviceImage::class)->setController(StorageDeviceImageCrudController::class),
             MenuItem::linkToCrud('Documentation', 'manual.svg', StorageDeviceDocumentation::class)->setController(StorageDeviceDocumentationCrudController::class),
         ])->setPermission('ROLE_ADMIN');
+        yield MenuItem::subMenu('Driver related', 'hardware.svg')->setSubItems([
+            MenuItem::linkToCrud('OS flags', '1998win.svg', OsFlag::class),
+            MenuItem::linkToCrud('OS architectures', '486.svg', OsArchitecture::class),
+        ])->setPermission('ROLE_ADMIN');
         yield MenuItem::subMenu('Connectors', 'rs232.svg')->setSubItems([
             MenuItem::linkToCrud('Power connectors', 'power.svg', PSUConnector::class),
             MenuItem::linkToCrud('I/O ports', 'rs232.svg', IoPortInterfaceSignal::class),
@@ -179,21 +194,11 @@ class DashboardController extends AbstractDashboardController
             MenuItem::linkToCrud('RAM size', 'ram_multi.svg', MaxRam::class),
             MenuItem::linkToCrud('RAM type', 'ram.svg', DramType::class),
         ])->setPermission('ROLE_ADMIN');
-        yield MenuItem::subMenu('Chip related', 'chip.svg')->setSubItems([
-            MenuItem::linkToCrud('Expansion chip types', 'chip_alias.svg', ExpansionChipType::class)->setPermission('ROLE_ADMIN'),
-            MenuItem::section('Advanced'),
-            MenuItem::linkToCrud('Chip aliases', 'chip_alias.svg', ChipAlias::class)->setController(ChipAliasCrudController::class),
-            MenuItem::linkToCrud('Chip images', 'search_image.svg', ChipImage::class)->setController(ChipImageCrudController::class),
-            MenuItem::linkToCrud('Chip docs', 'manual.svg', ChipDocumentation::class)->setController(ChipDocumentationCrudController::class),
-            MenuItem::linkToCrud('Chipset aliases', 'chip_alias.svg', ChipsetAlias::class)->setController(ChipsetAliasCrudController::class),
-            MenuItem::linkToCrud('Chipset docs', 'manual.svg', ChipsetDocumentation::class)->setController(ChipsetDocumentationCrudController::class),
-        ])->setPermission('ROLE_ADMIN');
         yield MenuItem::subMenu('Misc', 'misc.svg')->setSubItems([
             MenuItem::linkToCrud('Manufacturers', 'factory.svg', Manufacturer::class),
             MenuItem::linkToCrud('Known Issues', 'misc.svg', KnownIssue::class)->setPermission('ROLE_ADMIN'),
             MenuItem::linkToCrud('Creditors', 'creditor.svg', Creditor::class),
             MenuItem::linkToCrud('Licenses', 'license.svg', License::class)->setPermission('ROLE_ADMIN'),
-            MenuItem::linkToCrud('OS flags', 'os/1998win.svg', OsFlag::class)->setPermission('ROLE_ADMIN'),
             MenuItem::section('Advanced')->setPermission('ROLE_ADMIN'),
             MenuItem::linkToCrud('Entity images', 'search_image.svg', EntityImage::class)->setController(EntityImageCrudController::class)->setPermission('ROLE_ADMIN'),
             MenuItem::linkToCrud('Entity docs', 'manual.svg', EntityDocumentation::class)->setController(EntityDocumentationCrudController::class)->setPermission('ROLE_ADMIN'),
