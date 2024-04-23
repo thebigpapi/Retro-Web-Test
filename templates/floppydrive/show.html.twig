@@ -63,6 +63,17 @@
 			<!-- DESCRIPRION -->
 			<div class="show-general" id="sh-general">
 				<div class="quick-spec-table">
+					<!-- Type -->
+					<div class="quick-spec-head">
+						<img src="{{ absolute_url(asset('build/icons/floppy.svg')) }}" alt="cpu" width="24" height="24">Type
+					</div>
+					{% if floppydrive.getType() is not empty %}
+						<div class="tag-container">{% for type in floppydrive.getType() %}
+							<span class="text-block">{{ type.getName() }}</span>{% endfor %}
+						</div>
+					{% else %}
+						<div><span class='badge badge-secondary'>Empty</span></div>
+					{% endif %}
 					<!-- Interface -->
 					<div class="quick-spec-head">
 						<img src="{{ absolute_url(asset('build/icons/io.svg')) }}" alt="cpu" width="24" height="24">Interface{% if floppydrive.getInterfaces()|length > 1 %}s{% endif %}
@@ -87,17 +98,6 @@
 						<img src="{{ absolute_url(asset('build/icons/dimension.svg')) }}" alt="cpu" width="24" height="24">Form factor
 					</div>
 					<div>{{ floppydrive.getPhysicalSize() ?: "<span class='badge badge-secondary'>Empty</span>" }}</div>
-					<!-- Type -->
-					<div class="quick-spec-head">
-						<img src="{{ absolute_url(asset('build/icons/floppy.svg')) }}" alt="cpu" width="24" height="24">Type
-					</div>
-					{% if floppydrive.getType() is not empty %}
-						<div class="tag-container">{% for type in floppydrive.getType() %}
-							<span class="text-block">{{ type.getName() }}</span>{% endfor %}
-						</div>
-					{% else %}
-						<div><span class='badge badge-secondary'>Empty</span></div>
-					{% endif %}
 				</div>
 				{% include 'macros/aliases.html.twig' with {'entity':floppydrive.getStorageDeviceAliases(), 'msg': 'Also known as:'} %}
 				{% include 'macros/notes.html.twig' with {'entity': floppydrive} %}

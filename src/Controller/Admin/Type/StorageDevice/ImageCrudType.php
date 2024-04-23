@@ -45,11 +45,11 @@ class ImageCrudType extends AbstractCrudController
             ->setColumns(12);
         yield ChoiceField::new('type', 'Type')
             ->setFormTypeOption('choices',[
-                'Schema' => '1',
                 'Top photo' => '2',
-                'Front photo' => '3',
-                'Back photo' => '4',
                 'Bottom photo' => '5',
+                'Back photo' => '4',
+                'Front photo' => '3',
+                'Schema' => '1',
                 'Misc' => '6',
             ])
             ->setFormTypeOption('empty_data', '6')
