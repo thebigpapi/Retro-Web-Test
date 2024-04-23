@@ -419,9 +419,6 @@ div.plain-list {
 		@media (prefers-color-scheme: dark) {
 			border-color: $border-dark;
 		}
-		@media (max-width: 500px) {
-			grid-template-columns:none;
-		}
 
 		>div {
 			padding: 3px 0;
@@ -430,6 +427,12 @@ div.plain-list {
 		>div.header-label {
 			font-weight: bold;
 			width: 30%;
+		}
+        @media (max-width: 500px) {
+			grid-template-columns: [first] max-content [second] auto [end];
+            & > div.header-label{
+                width:100%;
+            }
 		}
 
 		div.results-alias {
