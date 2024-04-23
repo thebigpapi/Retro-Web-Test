@@ -446,6 +446,9 @@ class ExpansionCardCrudController extends AbstractCrudController
     {
         $entityInstance->updateLastEdited();
         $entityInstance->updateHashAll();
+        foreach ($entityInstance->getPciDevs() as $dev)
+            if($dev->getDev() == "0000")
+                $dev->setDev("0");
         parent::updateEntity($entityManager, $entityInstance);
     }
 }
