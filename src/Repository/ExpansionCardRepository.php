@@ -62,8 +62,8 @@ class ExpansionCardRepository extends ServiceEntityRepository
     {
         foreach ($expansionChips as $key => $chip) {
             $from[] = (count($from) == 0 ? " (" : " INTERSECT") . " SELECT ecexp.expansion_card_id as id
-                    FROM expansion_card_expansion_chip ecexp
-                    WHERE ecexp.expansion_chip_id=:idChip" . $key;
+                    FROM expansion_card_chip ecexp
+                    WHERE ecexp.chip_id=:idChip" . $key;
         }
         return $from;
     }
