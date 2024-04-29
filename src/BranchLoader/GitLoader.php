@@ -46,7 +46,7 @@ class GitLoader
 
         $logExploded = explode(' ', end($gitLogs));
         $logs['author'] = $logExploded[2] ?? 'not defined';
-        $logs['date'] = isset($logExploded[4]) ? date('Y/m/d H:i', $logExploded[4]) : "not defined";
+        $logs['date'] = isset($logExploded[4]) ? date('Y/m/d H:i', intval($logExploded[4])) : "not defined";
 
         return $logs;
     }
