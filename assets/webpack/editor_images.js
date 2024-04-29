@@ -59,14 +59,16 @@ if(readimages){
         if(xhr.status === 200) {
             let creditorSel = document.getElementById("image-bulk-upload-creditors");
             let creditorArray = JSON.parse(xhr.responseText);
-            for(let id in Object.keys(creditorArray)){
+            let emptyOpt = document.createElement('option');
+            emptyOpt.value = "";
+            emptyOpt.innerHTML = "Type to select a creditor ...";
+            creditorSel.appendChild(emptyOpt);
+            console.log(Object.keys(creditorArray));
+            for(let [id, value] of Object.entries(creditorArray)){
+                console.log(id, value);
                 let opt = document.createElement('option');
                 opt.value = id;
-                opt.innerHTML = creditorArray[id];
-                if(id == 0){
-                    opt.value = "";
-                    opt.innerHTML = "Type to select a creditor ...";
-                }
+                opt.innerHTML = value;
                 creditorSel.appendChild(opt);
             }
             new TomSelect('#image-bulk-upload-creditors', settings);
