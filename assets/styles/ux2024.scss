@@ -1,0 +1,371 @@
+@import 'ux2024/fonts';
+@import 'ux2024/colors';
+@import 'ux2024/animation';
+
+@import 'ux2024/skeleton';
+
+$max-card-width: 320px;
+$max-card-width-sm: 180px;
+$sidebar-width: 12em;
+$card-image-aspect-ratio: 75%;
+$paragraph-max-width: 60em;
+$max-page-width: 1920px;
+$max-content-width: 1000px;
+
+header.app-header {
+    box-shadow: $head-shadow;
+    padding: 1em 0.5em;
+    gap: 0.8em;
+
+    button.app-button,
+    a.app-button,
+    input,
+    select {
+        background: $headinput-bkg;
+
+        &:active {
+            background: $headinput-bkg-active;
+        }
+
+        &:focus {
+            background: $headinput-bkg-active;
+        }
+    }
+}
+
+footer.app-footer {
+    box-shadow: $foot-shadow;
+    padding: 1em 0.5em;
+    gap: 0.8em;
+    flex-direction: column;
+    align-items: center;
+
+    div.app-links {
+        display: flex;
+        gap: 1em;
+        align-items: center;
+    }
+
+    button.app-button,
+    a.app-button,
+    input,
+    select {
+        background: $headinput-bkg;
+
+        &:active {
+            background: $headinput-bkg-active;
+        }
+
+        &:focus {
+            background: $headinput-bkg-active;
+        }
+    }
+}
+
+section.app-body {
+    flex-grow: 1;
+    padding: 0.5em;
+    margin-top: 8px;
+    margin-bottom: 8px;
+    margin-left: 8px;
+}
+
+div.app-page {
+    padding: 1em;
+
+    a {
+        transition: $text-color-anim;
+        color: $bodylink-normal;
+
+        &:hover {
+            color: $bodylink-hover;
+        }
+    }
+}
+
+div.app-breadcrumbs {
+    display: block;
+    margin-bottom: 1em;
+
+    span {
+        color: $text-muted;
+    }
+
+    ol {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: row;
+        align-items: center;
+        gap: 0.5em;
+    }
+
+    li::before {
+        color: $text-muted;
+        content: ">";
+    }
+
+    li,
+    li>a {
+        display: flex;
+        align-items: center;
+        gap: 0.5em;
+        // padding: 0.1em 0.3em;
+
+        &>a {
+            span {
+                transition: $text-color-anim;
+                color: $bodylink-normal;
+            }
+
+            &:hover span {
+                color: $bodylink-hover;
+            }
+        }
+
+        svg {
+            flex-shrink: 0;
+            width: 1.5rem;
+            height: 2rem;
+
+            &.home {
+                width: 1.25rem;
+                height: 1.25rem;
+            }
+        }
+    }
+}
+
+div.app-sidebar-hamburger {
+    display: flex;
+    align-items: center;
+    width: 1.5em;
+    color: $text-muted;
+    transition: $text-color-anim;
+
+    &:hover {
+        color: $head-frg;
+    }
+}
+
+div.app-logo a {
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+
+    span {
+        transition: $text-color-anim;
+        color: $navlink-normal;
+        font-weight: $font-weight-bold;
+        font-size: x-large;
+    }
+
+    &:hover span {
+        color: $navlink-hover;
+    }
+}
+
+nav.app-sidebar {
+    color: $navbar-frg;
+    background: $navbar-bkg;
+    padding: 1em 3em 1em 2em;
+    box-shadow: $navbar-shadow;
+    flex-grow: 0;
+    flex-shrink: 0;
+    flex-basis: $sidebar-width;
+
+    h3 {
+        display: block;
+        padding: 0;
+        margin: 0;
+        padding-bottom: 0.5em;
+        font-weight: $font-weight-bold;
+    }
+
+    div.app-navspacer {
+        height: 1em;
+    }
+}
+
+a.app-navlink {
+    display: flex;
+    align-items: center;
+    gap: 0.4em;
+    padding-bottom: 0.2em;
+
+    span {
+        transition: $text-color-anim;
+        color: $navlink-normal;
+    }
+
+    &:hover span {
+        color: $navlink-hover;
+    }
+
+    &.active {
+        color: $navlink-hover;
+    }
+}
+
+button.app-button,
+a.app-button,
+input,
+select {
+    border-radius: 2px;
+    display: flex;
+    align-items: center;
+    gap: 0.6em;
+    padding: 0.4em 0.8em;
+    margin: 0.3em;
+    border: 0;
+    color: inherit;
+    margin: 0;
+    box-shadow: $input-shadow;
+    border-bottom: $input-border-normal;
+    transition: $input-anim;
+
+    &:hover {
+        border-bottom: $input-border-active;
+    }
+
+    &:active {
+        border-bottom: $input-border-active;
+    }
+
+    &:focus {
+        border-bottom: $input-border-active;
+    }
+}
+
+div.app-mainsearch {
+    flex-grow: 1;
+    display: flex;
+    gap: 0.75em;
+    justify-content: center;
+
+    input {
+        flex-grow: 1;
+        max-width: 60%;
+    }
+}
+
+.app-content-title {
+    margin: 0;
+    padding: 0.3em 0;
+    font-size: $font-size-phat;
+    font-weight: $font-weight-phat;
+}
+
+.app-paragraph-heading {
+    margin: 0;
+    padding: 0.2em 0;
+    font-size: x-large;
+    font-weight: $font-weight-bold;
+}
+
+.app-paragraph {
+    text-align: justify;
+    max-width: $paragraph-max-width;
+}
+
+div.app-card,
+div.app-card>a {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    height: 100%;
+
+    div.app-card-image-container {
+        position: relative;
+        width: 100%;
+        display: block;
+        background: $image-bkg;
+        border-radius: 6px;
+
+        &::before {
+            display: block;
+            content: "";
+            width: 100%;
+            padding-top: $card-image-aspect-ratio;
+        }
+
+        div.app-card-image {
+            border-radius: 6px;
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            margin-left: auto;
+            margin-right: auto;
+            overflow: hidden;
+            display: block;
+
+            img,
+            a.glightbox img {
+                border-radius: 6px;
+                width: 100%;
+                height: 100%;
+                object-fit: contain;
+                display: inline-block;
+            }
+
+            a.glightbox {
+                margin: auto;
+            }
+        }
+    }
+
+    div.app-card-text {
+        padding: 0.5em;
+        padding-bottom: 1em;
+
+        .app-card-title {
+            font-weight: $font-weight-bold;
+        }
+
+        .app-card-date {
+            color: $text-muted;
+            font-size: smaller;
+        }
+    }
+}
+
+div.app-cards-autogrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax($max-card-width, 1fr));
+    gap: 1em;
+
+    &.app-cards-autogrid-tiny {
+        grid-template-columns: repeat(auto-fill, minmax($max-card-width-sm, 1fr));
+    }
+}
+
+div.app-cards-column {
+    max-width: $max-card-width;
+    display: flex;
+    gap: 1em;
+    flex-direction: column;
+}
+
+div.app-column-layout {
+    display: flex;
+    gap: 3.5em;
+    flex-direction: row;
+    align-items: center;
+    margin: 0 auto;
+    max-width: $max-content-width;
+
+    .app-column-main {
+        flex: 2 1 auto;
+        padding-bottom: 6em;
+    }
+
+    .app-column-aside {
+        flex: 0 1 auto;
+    }
+}

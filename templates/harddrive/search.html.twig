@@ -11,16 +11,11 @@
 	<script src="/build/js/search.js" defer></script>
 {% endblock %}
 {% block subnav %}
-<li class="flex navbar-li">
-    <div class="flex items-center">
-        <svg class="navbar-svg" viewBox="0 0 24 44" preserveAspectRatio="none" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <path d="M.293 0l22 22-22 22h1.414l22-22-22-22H.293z"></path>
-        </svg>
-        <a class="ml-4" href="{{ path('hddsearch') }}">
-			<img src="{{ absolute_url(asset('build/icons/harddrive.svg')) }}" width="24" height="24" alt="hdd">
-            <code class="text-pink-500">Hard drives</code>
-        </a>
-    </div>
+<li>
+	<a href="{{ path('hddsearch') }}">
+		<img src="{{ absolute_url(asset('build/icons/harddrive.svg')) }}" width="24" height="24" alt="hdd">
+		<span>Hard drives</span>
+	</a>
 </li>
 {% endblock %}
 {% block body %}

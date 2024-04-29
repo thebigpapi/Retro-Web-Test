@@ -26,7 +26,7 @@
 		{% endblock %}
 		{% block stylesheets %}
 			<link href="/build/css/glightbox.min.css" rel="stylesheet">
-			{{ encore_entry_link_tags('app') }}
+			{{ encore_entry_link_tags('app2024') }}
 		{% endblock %}
 		{% block extra_stylesheets %}
 		{% endblock %}
@@ -37,160 +37,160 @@
 		{% block extra_javascripts %}
 		{% endblock %}
 	</head>
-	<body class="content body">
-		<header class="trw-header">
-			<div class="page-header">
-				<nav class="navbar-primary navbar-logo">
-					<a href="{{ path('app_homepage') }}" title="Go to homepage">
-						{% if "now"|date("m") == 12 %}
-							<img src="{{ absolute_url(asset('build/images/trw_christmas.png')) }}" width="40" height="40" alt="logo">
-						{% else %}
-							<img src="{{ absolute_url(asset('build/images/icon.png')) }}" width="40" height="40" alt="logo">
-						{% endif %}
-						<span class="navbar-icon-label">The Retro Web</span>
-					</a>
-				</nav>
-				<nav class="navbar-primary navbar-links">
-					<a href="{{ path('app_support') }}" class="nav-link">
-						<img src="{{ absolute_url(asset('build/icons/support.svg')) }}" width="24" height="24" alt="art">
-						<span class="navbar-label">Support Us</span>
-					</a>
-					<a href="https://blog.theretroweb.com" class="nav-link">
-						<img src="{{ absolute_url(asset('build/icons/articles.svg')) }}" width="24" height="24" alt="art">
-						<span class="navbar-label">Articles</span>
-					</a>
-					{% if is_granted('ROLE_USER') %}
-						<a href="{{ path('dashboard') }}" class="nav-link">
-							<img src="{{ absolute_url(asset('build/icons/settings.svg')) }}" width="24" height="24" alt="admin">
-							<span class="navbar-label">Admin</span>
-						</a>
-						<a href="{{ path('app_logout') }}" class="nav-link">
-							<img src="{{ absolute_url(asset('build/icons/login.svg')) }}" width="24" height="24" alt="logout">
-							<span class="navbar-label"></span>
-						</a>
+	<body>
+		<header class="app-header">
+			<div class="app-sidebar-hamburger">
+				{% include 'macros/hamburger.html.twig' %}
+			</div>
+			<div class="app-logo">
+				<a href="{{ path('app_homepage') }}" title="Go to homepage">
+					{% if "now"|date("m") == 12 %}
+						<img src="{{ absolute_url(asset('build/images/trw_christmas.png')) }}" width="40" height="40" alt="logo">
 					{% else %}
-						<a href="{{ path('app_login') }}" class="nav-link">
-							<img src="{{ absolute_url(asset('build/icons/login.svg')) }}" width="24" height="24" alt="login">
-							<span class="navbar-label"></span>
-						</a>
+						<img src="{{ absolute_url(asset('build/images/icon.png')) }}" width="40" height="40" alt="logo">
 					{% endif %}
-				</nav>
+					<span>The Retro Web</span>
+				</a>
+			</div>
+			<div class="app-mainsearch">
+				<input id="search-box" type="text" placeholder='Name or Part number (without manufacturer) ...'>
+				<button class="app-button" id="search-button" type="submit" data-target="motherboards">
+					<img src="{{ absolute_url(asset('build/icons/search.svg')) }}" alt="search" width="24" height="24">
+					<span>Search</span>
+				</button>
 			</div>
 		</header>
 		{% if "now"|date("m") == 12 %}
 			<div style="background: url('/build/images/lights.png') repeat-x;width:100%;background-size: 160px 20px;color:#191919">.</div>
 		{% endif %}
-		<label class="hamburger-menu">
-			<input type="checkbox" />
-		</label>
-		<aside class="hamburger-sidebar">
-			<nav class="hamburger-sidebar-contents">
-				<a href="{{ path('mobosearch') }}" class="nav-link">
+		<main>
+			<nav class="app-sidebar">
+				<h3>Browse by category</h3>
+				<a href="{{ path('mobosearch') }}" class="app-navlink">
 					<img src="{{ absolute_url(asset('build/icons/motherboard.svg')) }}" width="24" height="24" alt="mobo">
 					<span class="navbar-label">Motherboards</span>
 				</a>
-				<a href="{{ path('biossearch') }}" class="nav-link">
+				<a href="{{ path('biossearch') }}" class="app-navlink">
 					<img src="{{ absolute_url(asset('build/icons/awchip.svg')) }}" width="24" height="24" alt="bios">
 					<span class="navbar-label">BIOS images</span>
 				</a>
-				<a href="{{ path('expansionchipsearch') }}" class="nav-link">
+				<a href="{{ path('expansionchipsearch') }}" class="app-navlink">
 					<img src="{{ absolute_url(asset('build/icons/chip.svg')) }}" width="24" height="24" alt="chip">
 					<span class="navbar-label">Expansion chips</span>
 				</a>
-				<a href="{{ path('chipsetsearch') }}" class="nav-link">
+				<a href="{{ path('chipsetsearch') }}" class="app-navlink">
 					<img src="{{ absolute_url(asset('build/icons/chipsetfull.svg')) }}" width="24" height="24" alt="chipset">
 					<span class="navbar-label">Chipsets</span>
 				</a>
-				<a href="{{ path('expansioncardsearch') }}" class="nav-link">
+				<a href="{{ path('expansioncardsearch') }}" class="app-navlink">
 					<img src="{{ absolute_url(asset('build/icons/card.svg')) }}" width="24" height="24" alt="card">
 					<span class="navbar-label">Expansion cards</span>
 				</a>
-				<a href="{{ path('cpusearch') }}" class="nav-link">
+				<a href="{{ path('cpusearch') }}" class="app-navlink">
 					<img src="{{ absolute_url(asset('build/icons/486dx.svg')) }}" width="24" height="24" alt="cpu">
 					<span class="navbar-label">CPUs</span>
 				</a>
-				<a href="{{ path('hddsearch') }}" class="nav-link">
+				<a href="{{ path('hddsearch') }}" class="app-navlink">
 					<img src="{{ absolute_url(asset('build/icons/harddrive.svg')) }}" width="24" height="24" alt="hdd">
 					<span class="navbar-label">Hard drives</span>
 				</a>
-				<a href="{{ path('cddsearch') }}" class="nav-link">
+				<a href="{{ path('cddsearch') }}" class="app-navlink">
 					<img src="{{ absolute_url(asset('build/icons/cd_drive.svg')) }}" width="24" height="24" alt="cdd">
 					<span class="navbar-label">Optical drives</span>
 				</a>
-				<a href="{{ path('fddsearch') }}" class="nav-link">
+				<a href="{{ path('fddsearch') }}" class="app-navlink">
 					<img src="{{ absolute_url(asset('build/icons/floppy_drive.svg')) }}" width="24" height="24" alt="fdd">
 					<span class="navbar-label">Floppy drives</span>
 				</a>
-				<a href="{{ path('driversearch') }}" class="nav-link">
+				<a href="{{ path('driversearch') }}" class="app-navlink">
 					<img src="{{ absolute_url(asset('build/icons/hardware.svg')) }}" width="24" height="24" alt="driver">
 					<span class="navbar-label">Drivers &amp; software</span>
 				</a>
-			</nav>
-		</aside>
-		<div class="page-header">
-			<nav class="navbar-secondary navbar-subcategories">
-				<ol role="list" class="navbar-ol navbar-li flex">
-				<li class="flex">
-					<div class="flex">
-						<a href="{{ path('app_homepage') }}">
-							<!-- Heroicon name: solid/home -->
-							<svg class="navbar-svg home" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-								<path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"></path>
-							</svg>
-							<span>Home</span>
-						</a>
-					</div>
-				</li>
-				{% block subnav %}{% endblock %}
-				</ol>
-			</nav>
-		</div>
-		<main>
-			<div class="page">
-				{% set maintenance = get_env("MAINTENANCE_MODE")%}
-				{% set time = get_env("MAINTENANCE_TIME")%}
-				{% if maintenance == "planned" %}
-					<div class="maintenance-notification-bar">
-						<div>
-							<strong>Scheduled Maintenance </strong>-
-							TRW will be undergoing scheduled maintenance on {{ time }}. We apologize for any inconvenience.
-						</div>
-					</div>
+				<div class="app-navspacer"></div>
+				<h3>Other pages</h3>
+				<a href="{{ path('app_support') }}" class="app-navlink">
+					<img src="{{ absolute_url(asset('build/icons/support.svg')) }}" width="24" height="24" alt="art">
+					<span class="navbar-label">Support us</span>
+				</a>
+				<a href="https://blog.theretroweb.com" class="app-navlink">
+					<img src="{{ absolute_url(asset('build/icons/articles.svg')) }}" width="24" height="24" alt="art">
+					<span class="navbar-label">Articles</span>
+				</a>
+				{% if is_granted('ROLE_USER') %}
+					<a href="{{ path('dashboard') }}" class="app-navlink">
+						<img src="{{ absolute_url(asset('build/icons/settings.svg')) }}" width="24" height="24" alt="admin">
+						<span class="navbar-label">Admin</span>
+					</a>
+					<a href="{{ path('app_logout') }}" class="app-navlink">
+						<img src="{{ absolute_url(asset('build/icons/login.svg')) }}" width="24" height="24" alt="logout">
+						<span class="navbar-label">Log out</span>
+					</a>
+				{% else %}
+					<a href="{{ path('app_login') }}" class="app-navlink">
+						<img src="{{ absolute_url(asset('build/icons/login.svg')) }}" width="24" height="24" alt="login">
+						<span class="navbar-label">Log in</span>
+					</a>
 				{% endif %}
-				{% if maintenance == "active" %}
-					<div class="maintenance-notification-bar">
-						<div>
-							<img src="{{ absolute_url(asset('build/icons/warning.svg')) }}" alt="warning" width="24" height="24" style="margin-top: -10px;vertical-align: bottom;">
-							<strong>Ongoing Maintenance </strong>-
-							TRW is undergoing scheduled maintenance for approximately {{ time }}. We apologize for any inconvenience.
-						</div>
-					</div>
-				{% endif %}
-				{% block body %}{% endblock %}
-			</div>
-		</main>
-		<footer>
-			<div>
-				<div class="footer-links">
-					<a href="{{ path('app_info') }}">
-						<img src="{{ absolute_url(asset('build/icons/about.svg')) }}" width="16" height="16" alt="about">
-						<span class="navbar-label">Info</span>
-					</a>
-					<a href="https://discord.gg/HWWH7hsk2p">
-						<img src="{{ absolute_url(asset('build/icons/discord.svg')) }}" width="16" height="16" alt="discord">
-						<span class="navbar-label">Join our Discord</span>
-					</a>
-					<a href="mailto:info@theretroweb.com">
-						<img src="{{ absolute_url(asset('build/icons/email.svg')) }}" width="16" height="16" alt="email">
-						<span class="navbar-label">Email us</span>
-					</a>
-					<a href="https://gitlab.com/ultimateretro/ultimateretro">
-						<img src="{{ absolute_url(asset('build/icons/gitlab.svg')) }}" width="16" height="16" alt="gitlab">
-						<span class="navbar-label">Our GitLab repo</span>
-					</a>
+			</nav>
+			<section class="app-body">
+				<div class="app-breadcrumbs">
+					<ol role="list">
+						<li>
+							<a href="{{ path('app_homepage') }}">
+								<!-- Heroicon name: solid/home -->
+								<svg class="navbar-svg home" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+									<path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"></path>
+								</svg>
+								<span>Home</span>
+							</a>
+						</li>
+						{% block subnav %}{% endblock %}
+					</ol>
 				</div>
-				<div class="footer-info">Designed by Deksor, computerguy096 and Zago. (c) 2019-{{ 'now'|date('Y') }} All wrongs reversed.</div>
+				<div class="app-page">
+					{% set maintenance = get_env("MAINTENANCE_MODE")%}
+					{% set time = get_env("MAINTENANCE_TIME")%}
+					{% if maintenance == "planned" %}
+						<div class="maintenance-notification-bar">
+							<div>
+								<strong>Scheduled Maintenance </strong>-
+								TRW will be undergoing scheduled maintenance on {{ time }}. We apologize for any inconvenience.
+							</div>
+						</div>
+					{% endif %}
+					{% if maintenance == "active" %}
+						<div class="maintenance-notification-bar">
+							<div>
+								<img src="{{ absolute_url(asset('build/icons/warning.svg')) }}" alt="warning" width="24" height="24" style="margin-top: -10px;vertical-align: bottom;">
+								<strong>Ongoing Maintenance </strong>-
+								TRW is undergoing scheduled maintenance for approximately {{ time }}. We apologize for any inconvenience.
+							</div>
+						</div>
+					{% endif %}
+					{% block body %}{% endblock %}
+				</div>
+			</section>
+		</main>
+		<footer class="app-footer">
+			<div class="app-links">
+				<a href="{{ path('app_info') }}" class="app-navlink">
+					<img src="{{ absolute_url(asset('build/icons/about.svg')) }}" width="16" height="16" alt="about">
+					<span class="navbar-label">Info</span>
+				</a>
+				<a href="https://discord.gg/HWWH7hsk2p" class="app-navlink">
+					<img src="{{ absolute_url(asset('build/icons/discord.svg')) }}" width="16" height="16" alt="discord">
+					<span class="navbar-label">Join our Discord</span>
+				</a>
+				<a href="mailto:info@theretroweb.com" class="app-navlink">
+					<img src="{{ absolute_url(asset('build/icons/email.svg')) }}" width="16" height="16" alt="email">
+					<span class="navbar-label">Email us</span>
+				</a>
+				<a href="https://gitlab.com/ultimateretro/ultimateretro" class="app-navlink">
+					<img src="{{ absolute_url(asset('build/icons/gitlab.svg')) }}" width="16" height="16" alt="gitlab">
+					<span class="navbar-label">Our GitLab repo</span>
+				</a>
 			</div>
+			<div class="footer-info">Designed by Deksor, computerguy096 and Zago. (c) 2019-{{ 'now'|date('Y') }} All wrongs reversed.</div>
 		</footer>
 	</body>
 </html>

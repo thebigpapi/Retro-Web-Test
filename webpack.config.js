@@ -41,6 +41,7 @@ Encore
      * and one CSS file (e.g. app.css) if your JavaScript imports CSS.
      */
     .addEntry('app', './assets/app.js')
+    .addEntry('app2024', './assets/app2024.js')
     .addEntry('app_ea', './assets/app_ea.js')
     .addEntry('chart', './assets/chart.js')
 

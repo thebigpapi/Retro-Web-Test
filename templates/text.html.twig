@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Some test template - The Retro Web{% endblock %}
+{% block subnav %}{% endblock %}
+
+{% block body %}
+	<div class="app-content-title">
+        {% block textTitle %}{% endblock %}
+    </div>
+	<p class="app-paragraph-heading">
+        {% block textSubtitle %}{% endblock %}
+    </p>
+	<div class="app-paragraph">
+        {% block textContent %}{% endblock %}
+    </div>
+{% endblock %}

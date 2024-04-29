@@ -90,45 +90,30 @@
     'App\\Entity\\User' : 'Users'
 }
 %}
-        <li class="flex {% if id is null %}items-center justify-between{% endif %} navbar-li">
-            <div class="flex items-center">
-                <svg class="navbar-svg" viewBox="0 0 24 44" preserveAspectRatio="none" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                    <path d="M.293 0l22 22-22 22h1.414l22-22-22-22H.293z" />
-                </svg>
-                <a class="ml-4 text-gray-500 hover:text-gray-700" href="{{ path('dh_auditor_list_audits') }}">
-                    <code class="text-pink-500">Logs</code>
-                </a>
-            </div>
-        </li>
-        <li class="flex {% if id is null %}flex-grow items-center justify-between{% endif %} navbar-li">
-            <div class="flex items-center">
-                <svg class="navbar-svg" viewBox="0 0 24 44" preserveAspectRatio="none" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                    <path d="M.293 0l22 22-22 22h1.414l22-22-22-22H.293z" />
-                </svg>
-                <a class="ml-4 text-gray-500 hover:text-gray-700" {% if id is null %}aria-current="page"{% endif %} href="{{ path('dh_auditor_show_entity_history', { 'entity': helper.namespaceToParam(entity) }) }}">
-                    <code class="text-pink-500">{{ titles[entity] }}</code>
-                </a>
-            </div>
-        </li>
-        {% if id is null %}
-            <div>
-                <span class="bg-purple-500 rounded text-sm text-white px-2 py-1 no-wrap audit-mobile-450-hide">{% trans with { '%count%': paginator.results|length } from 'auditor' %}audit.audit_details.operations_count{% endtrans %}</span>
-            </div>
-        {% else %}
-        <li class="flex flex-grow items-center justify-between">
-            <div class="flex items-center">
-                <svg class="navbar-svg" viewBox="0 0 24 44" preserveAspectRatio="none" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                    <path d="M.293 0l22 22-22 22h1.414l22-22-22-22H.293z" />
-                </svg>
-                <a class="ml-4 text-gray-500 hover:text-gray-700" aria-current="page" href="{{ path('dh_auditor_show_entity_history', { 'entity': helper.namespaceToParam(entity), 'id': id }) }}">
-                    <code class="text-pink-500">ID: {{ id }}</code>
-                </a>
-            </div>
-        </li>
-        <li class="flex" style="margin-left: auto;">
-            <span class="bg-purple-500 rounded text-sm text-white px-2 py-1 no-wrap audit-mobile-450-hide">{% trans with { '%count%': paginator.results|length } from 'auditor' %}audit.audit_details.operations_count{% endtrans %}</span>
-        </li>
-        {% endif %}
+<li class="flex {% if id is null %}items-center justify-between{% endif %} navbar-li">
+    <a href="{{ path('dh_auditor_list_audits') }}">
+        <span>Logs</span>
+    </a>
+</li>
+<li class="flex {% if id is null %}flex-grow items-center justify-between{% endif %} navbar-li">
+    <a {% if id is null %}aria-current="page"{% endif %} href="{{ path('dh_auditor_show_entity_history', { 'entity': helper.namespaceToParam(entity) }) }}">
+        <span>{{ titles[entity] }}</span>
+    </a>
+</li>
+{% if id is null %}
+    <div>
+        <span class="bg-purple-500 rounded text-sm text-white px-2 py-1 no-wrap audit-mobile-450-hide">{% trans with { '%count%': paginator.results|length } from 'auditor' %}audit.audit_details.operations_count{% endtrans %}</span>
+    </div>
+{% else %}
+<li>
+    <a aria-current="page" href="{{ path('dh_auditor_show_entity_history', { 'entity': helper.namespaceToParam(entity), 'id': id }) }}">
+        <span>ID: {{ id }}</span>
+    </a>
+</li>
+<li class="flex" style="margin-left: auto;">
+    <span class="bg-purple-500 rounded text-sm text-white px-2 py-1 no-wrap audit-mobile-450-hide">{% trans with { '%count%': paginator.results|length } from 'auditor' %}audit.audit_details.operations_count{% endtrans %}</span>
+</li>
+{% endif %}
 {% endblock %}
 {% block dh_auditor_content %}
 <div class="flow-root">

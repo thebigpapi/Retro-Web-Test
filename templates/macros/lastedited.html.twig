@@ -1,157 +1,181 @@
-<div class="perks">
-	<p><b>Last edited {{ entity_label }}</b></p>
-	<div id="index-datetime" class="perks-list">
-	{% for item in entity %}
-		<div class="perk">
-			<a href="{{ path(path, {id:item.getId()}) }}">
-				<div class="perk-image">
-                {# motherboards #}
-                {% if type == 'motherboard' %}
-                    {% if item.getImages() is not empty %}
-                        {% set imgtype_count = 0 %}
-                        {% if "now"|date("m") == 4 and "now"|date("d") == 1 %}
-                            <img src="{{ absolute_url(asset('build/images/m666.jpg')) }}" loading="lazy" width="250" height="200" title="looks like someone deleted all the images, only this one survived">
-                        {% else %}
-                            {% for image in item.getImages()|filter(a => a.motherboardImageType.id in [1, 2])|sort((a, b) => a.getFileName() <=> b.getFileName())|sort((a, b) => b.motherboardImageType <=> a.motherboardImageType)|slice(0, 1) %}
-                                <img src="{% if vich_uploader_asset(image, 'imageFile') | ext != "svg" %}
-                                    {{ vich_uploader_asset(image, 'imageFile') | imagine_filter('show_thumb') }}{% else %}
-                                    {{ vich_uploader_asset(image, 'imageFile')}}{% endif %}" alt="" loading="lazy" width="250" height="200" title="{% if image.description %}{{ image.description }}{% endif %}">
-                                    {% set imgtype_count = imgtype_count + 1 %}
-                            {% endfor %}
-                            {% if imgtype_count == 0 %}
-                                <img src="{{ absolute_url(asset('build/images/missing/board-missing.jpg')) }}" loading="lazy" width="250" height="200" title="no images available :(">
-                            {% endif %}
-                        {% endif %}
-                    {% else %}
-                        <img src="{{ absolute_url(asset('build/images/missing/board-missing.jpg')) }}" alt="missing image" loading="lazy" width="250" height="200" title="no images available :(">
-                    {% endif %}
-                {% endif %}
-                {# exp cards #}
-                {% if type == 'card' %}
-                    {% if item.getImages() is not empty %}
-                        {% set imgtype_count = 0 %}
-                        {% if "now"|date("m") == 4 and "now"|date("d") == 1 %}
-                            <img src="{{ absolute_url(asset('build/images/m666.jpg')) }}" loading="lazy" width="250" height="200" title="looks like someone deleted all the images, only this one survived">
-                        {% else %}
-                            {% for image in item.getImages()|filter(a => a.type in ["1", "2"])|sort((a, b) => a.getFileName() <=> b.getFileName())|sort((a, b) => b.type <=> a.type)|slice(0, 1) %}
-                                <img src="{% if vich_uploader_asset(image, 'imageFile') | ext != "svg" %}
-                                    {{ vich_uploader_asset(image, 'imageFile') | imagine_filter('show_thumb') }}{% else %}
-                                    {{ vich_uploader_asset(image, 'imageFile')}}{% endif %}" alt="" loading="lazy" width="250" height="200" title="{% if image.description %}{{ image.description }}{% endif %}">
-                                    {% set imgtype_count = imgtype_count + 1 %}
-                            {% endfor %}
-                            {% if imgtype_count == 0 %}
-                                <img src="{{ absolute_url(asset('build/images/missing/card-missing.jpg')) }}" loading="lazy" width="250" height="200" title="no images available :(">
-                            {% endif %}
-                        {% endif %}
-                    {% else %}
-                        <img src="{{ absolute_url(asset('build/images/missing/card-missing.jpg')) }}" alt="missing image" loading="lazy" width="250" height="200" title="no images available :(">
-                    {% endif %}
-                {% endif %}
-                {# chips #}
-                {% if type == 'chip' %}
-                    {% if item.getImages() is not empty %}
-                        {% set imgcount = 0 %}
-                        {% for image in item.getImages()|sort((a, b) => a.getFileName() <=> b.getFileName())|sort((a, b) => a.sort <=> b.sort)|slice(0, 1) %}
-                            {% set imgcount = imgcount + 1 %}
-                            <img src="{% if vich_uploader_asset(image, 'imageFile') | ext != "svg" %}
-                            {{ vich_uploader_asset(image, 'imageFile') | imagine_filter('show_thumb') }}{% else %}
-                            {{ vich_uploader_asset(image, 'imageFile')}}{% endif %}" alt="" loading="lazy" width="250" height="200" title="{% if image.description %}{{ image.description }}{% endif %}">
-                        {% endfor %}
-                        {% if imgcount == 0 %}<img src="{{ absolute_url(asset('build/images/missing/chip-missing.jpg')) }}" loading="lazy" width="250" height="200" title="no images available :(">{% endif %}
-                    {% else %}
-                        <img src="{{ absolute_url(asset('build/images/missing/chip-missing.jpg')) }}" loading="lazy" width="250" height="200" title="no images available :(">
-                    {% endif %}
-                {% endif %}
-                {# cpus #}
-                {% if type == 'cpu' %}
-                    {% if item.getImages() is not empty %}
-                        {% set imgcount = 0 %}
-                        {% for image in item.getImages()|sort((a, b) => a.getFileName() <=> b.getFileName())|sort((a, b) => a.sort <=> b.sort)|slice(0, 1) %}
-                            {% set imgcount = imgcount + 1 %}
-                            <img src="{% if vich_uploader_asset(image, 'imageFile') | ext != "svg" %}
-                            {{ vich_uploader_asset(image, 'imageFile') | imagine_filter('show_thumb') }}{% else %}
-                            {{ vich_uploader_asset(image, 'imageFile')}}{% endif %}" alt="" loading="lazy" width="250" height="200" title="{% if image.description %}{{ image.description }}{% endif %}">
-                        {% endfor %}
-                        {% if imgcount == 0 %}<img src="{{ absolute_url(asset('build/images/missing/cpu-missing.jpg')) }}" loading="lazy" width="250" height="200" title="no images available :(">{% endif %}
-                    {% else %}
-                        <img src="{{ absolute_url(asset('build/images/missing/cpu-missing.jpg')) }}" loading="lazy" width="250" height="200" title="no images available :(">
-                    {% endif %}
-                {% endif %}
-                {# chipsets #}
-                {% if type == 'chipset' %}
-                    {% if item.getExpansionChips() is not empty %}
-                        {% set imgcount = 0 %}
-                        {% for chipPart in item.getExpansionChips()|sort((a, b) => a.sort <=> b.sort)|slice(0, 1) %}
-                        {% if chipPart.getImages() is not empty %}
-                            {% set imgcount = imgcount + 1 %}
-                            {% for image in chipPart.getImages()|sort((a, b) => a.getFileName() <=> b.getFileName())|sort((a, b) => a.sort <=> b.sort)|slice(0, 1) %}
-                                <img src="{% if vich_uploader_asset(image, 'imageFile') | ext != "svg" %}
-                            {{ vich_uploader_asset(image, 'imageFile') | imagine_filter('show_thumb') }}{% else %}
-                            {{ vich_uploader_asset(image, 'imageFile')}}{% endif %}" alt="" loading="lazy" width="250" height="200" title="{% if image.description %}{{ image.description }}{% endif %}">
-                            {% endfor %}
-                        {% endif %}
-                        {% endfor %}
-                        {% if imgcount == 0 %}<img src="{{ absolute_url(asset('build/images/missing/chipset-missing.jpg')) }}" loading="lazy" width="250" height="200" title="no images available :(">{% endif %}
-                    {% else %}
-                        <img src="{{ absolute_url(asset('build/images/missing/chipset-missing.jpg')) }}" loading="lazy" width="250" height="200" title="no images available :(">
-                    {% endif %}
-                {% endif %}
-                {# hdds #}
-                {% if type == 'hdd' %}
-                    {% if item.getStorageDeviceImages() is not empty %}
-                        {% set imgtype_count = 0 %}
-                        {% for image in item.getStorageDeviceImages()|filter(a => a.type in ["1", "2"])|sort((a, b) => a.getFileName() <=> b.getFileName())|sort((a, b) => b.type <=> a.type)|slice(0, 1) %}
-                            <img src="{% if vich_uploader_asset(image, 'imageFile') | ext != "svg" %}
-                                {{ vich_uploader_asset(image, 'imageFile') | imagine_filter('show_thumb') }}{% else %}
-                                {{ vich_uploader_asset(image, 'imageFile')}}{% endif %}" alt="" loading="lazy" width="250" height="200" title="{% if image.description %}{{ image.description }}{% endif %}">
-                                {% set imgtype_count = imgtype_count + 1 %}
-                        {% endfor %}
-                        {% if imgtype_count == 0 %}
-                            <img src="{{ absolute_url(asset('build/images/missing/hdd-missing.jpg')) }}" loading="lazy" width="250" height="200" title="no images available :(">
-                        {% endif %}
-                    {% else %}
-                        <img src="{{ absolute_url(asset('build/images/missing/hdd-missing.jpg')) }}" alt="missing image" loading="lazy" width="250" height="200" title="no images available :(">
-                    {% endif %}
-                {% endif %}
-                {# cdds #}
-                {% if type == 'cdd' %}
-                    {% if item.getStorageDeviceImages() is not empty %}
-                        {% set imgtype_count = 0 %}
-                        {% for image in item.getStorageDeviceImages()|filter(a => a.type in ["1", "2", "3"])|sort((a, b) => a.getFileName() <=> b.getFileName())|sort((a, b) => b.getType <=> a.getType)|slice(0, 1) %}
-                            <img src="{% if vich_uploader_asset(image, 'imageFile') | ext != "svg" %}
-                                {{ vich_uploader_asset(image, 'imageFile') | imagine_filter('show_thumb') }}{% else %}
-                                {{ vich_uploader_asset(image, 'imageFile')}}{% endif %}" alt="" loading="lazy" width="250" height="200" title="{% if image.description %}{{ image.description }}{% endif %}">
-                                {% set imgtype_count = imgtype_count + 1 %}
-                        {% endfor %}
-                        {% if imgtype_count == 0 %}
-                            <img src="{{ absolute_url(asset('build/images/missing/cdd-missing.jpg')) }}" loading="lazy" width="250" height="200" title="no images available :(">
-                        {% endif %}
-                    {% else %}
-                        <img src="{{ absolute_url(asset('build/images/missing/cdd-missing.jpg')) }}" alt="missing image" loading="lazy" width="250" height="200" title="no images available :(">
-                    {% endif %}
-                {% endif %}
-                {# fdds #}
-                {% if type == 'fdd' %}
-                    {% if item.getStorageDeviceImages() is not empty %}
-                        {% set imgtype_count = 0 %}
-                        {% for image in item.getStorageDeviceImages()|filter(a => a.type in ["1", "2", "3"])|sort((a, b) => a.getFileName() <=> b.getFileName())|sort((a, b) => b.getType <=> a.getType)|slice(0, 1) %}
-                            <img src="{% if vich_uploader_asset(image, 'imageFile') | ext != "svg" %}
-                                {{ vich_uploader_asset(image, 'imageFile') | imagine_filter('show_thumb') }}{% else %}
-                                {{ vich_uploader_asset(image, 'imageFile')}}{% endif %}" alt="" loading="lazy" width="250" height="200" title="{% if image.description %}{{ image.description }}{% endif %}">
-                                {% set imgtype_count = imgtype_count + 1 %}
-                        {% endfor %}
-                        {% if imgtype_count == 0 %}
-                            <img src="{{ absolute_url(asset('build/images/missing/fdd-missing.jpg')) }}" loading="lazy" width="250" height="200" title="no images available :(">
-                        {% endif %}
-                    {% else %}
-                        <img src="{{ absolute_url(asset('build/images/missing/fdd-missing.jpg')) }}" alt="missing image" loading="lazy" width="250" height="200" title="no images available :(">
-                    {% endif %}
-                {% endif %}
-                </div>
-				<div class="perk-name">{{ item.getFullName() }}</div>
-				<div class="perk-date">{{ item.getLastEdited()|date("Y-m-d\\TH:i:s", "GMT") }}Z</div>
-			</a>
-		</div>
-	{% endfor %}
-	</div>
+<p class="app-paragraph-heading">Last edited {{ entity_label }}</p>
+<div id="index-datetime" class="app-cards-autogrid">
+{% for item in entity %}
+	{# common variables #}
+	{% set thumbnailUrl = "" %}
+	{% set thumbnailAlt = "" %}
+	{% set defaultImage = "" %}
+	{% set imgtype_count = 0 %}
+	{% set isAprilFools = "now"|date("m") == 4 and "now"|date("d") == 1 %}
+
+	{% if type == 'motherboard' %}
+		{% set defaultImage = absolute_url(asset('build/images/missing/board-missing.jpg')) %}
+		{% if item.getImages() is not empty %}
+			{% if isAprilFools %}
+				{% set thumbnailUrl = absolute_url(asset('build/images/m666.jpg')) %}
+				{% set thumbnailAlt = "looks like someone deleted all the images, only this one survived" %}
+				{% set imgtype_count = 1 %}
+			{% else %}
+				{% for image in item.getImages()|filter(a => a.motherboardImageType.id in [1, 2])|sort((a, b) => a.getFileName() <=> b.getFileName())|sort((a, b) => b.motherboardImageType <=> a.motherboardImageType)|slice(0, 1) %}
+					{% if vich_uploader_asset(image, 'imageFile') | ext != "svg" %}
+						{% set thumbnailUrl = vich_uploader_asset(image, 'imageFile') | imagine_filter('show_thumb') %}
+					{% else %}
+						{% set thumbnailUrl = vich_uploader_asset(image, 'imageFile') %}
+					{% endif %}
+					{% if image.description %}
+						{% set thumbnailAlt = image.description %}
+					{% endif %}
+					{% set imgtype_count = imgtype_count + 1 %}
+				{% endfor %}
+			{% endif %}
+		{% endif %}
+	{% endif %}
+
+	{# exp cards #}
+	{% if type == 'card' %}
+		{% set defaultImage = absolute_url(asset('build/images/missing/card-missing.jpg')) %}
+		{% if item.getImages() is not empty %}
+			{% if isAprilFools %}
+				{% set thumbnailUrl = absolute_url(asset('build/images/m666.jpg')) %}
+				{% set thumbnailAlt = "looks like someone deleted all the images, only this one survived" %}
+				{% set imgtype_count = 1 %}
+			{% else %}
+				{% for image in item.getImages()|filter(a => a.type in ["1", "2"])|sort((a, b) => a.getFileName() <=> b.getFileName())|sort((a, b) => b.type <=> a.type)|slice(0, 1) %}
+					{% if vich_uploader_asset(image, 'imageFile') | ext != "svg" %}
+						{% set thumbnailUrl = vich_uploader_asset(image, 'imageFile') | imagine_filter('show_thumb') %}
+					{% else %}
+						{% set thumbnailUrl = vich_uploader_asset(image, 'imageFile') %}
+					{% endif %}
+					{% if image.description %}
+						{% set thumbnailAlt = image.description %}
+					{% endif %}
+					{% set imgtype_count = imgtype_count + 1 %}
+				{% endfor %}
+			{% endif %}
+		{% endif %}
+	{% endif %}
+
+	{# chips #}
+	{% if type == 'chip' %}
+		{% set defaultImage = absolute_url(asset('build/images/missing/chip-missing.jpg')) %}
+		{% if item.getImages() is not empty %}
+			{% for image in item.getImages()|sort((a, b) => a.getFileName() <=> b.getFileName())|sort((a, b) => a.sort <=> b.sort)|slice(0, 1) %}
+				{% if vich_uploader_asset(image, 'imageFile') | ext != "svg" %}
+					{% set thumbnailUrl = vich_uploader_asset(image, 'imageFile') | imagine_filter('show_thumb') %}
+				{% else %}
+					{% set thumbnailUrl = vich_uploader_asset(image, 'imageFile') %}
+				{% endif %}
+				{% if image.description %}
+					{% set thumbnailAlt = image.description %}
+				{% endif %}
+				{% set imgtype_count = imgtype_count + 1 %}
+			{% endfor %}
+		{% endif %}
+	{% endif %}
+
+	{# cpus #}
+	{% if type == 'cpu' %}
+		{% set defaultImage = absolute_url(asset('build/images/missing/cpu-missing.jpg')) %}
+		{% if item.getImages() is not empty %}
+			{% for image in item.getImages()|sort((a, b) => a.getFileName() <=> b.getFileName())|sort((a, b) => a.sort <=> b.sort)|slice(0, 1) %}
+				{% if vich_uploader_asset(image, 'imageFile') | ext != "svg" %}
+					{% set thumbnailUrl = vich_uploader_asset(image, 'imageFile') | imagine_filter('show_thumb') %}
+				{% else %}
+					{% set thumbnailUrl = vich_uploader_asset(image, 'imageFile') %}
+				{% endif %}
+				{% if image.description %}
+					{% set thumbnailAlt = image.description %}
+				{% endif %}
+				{% set imgtype_count = imgtype_count + 1 %}
+			{% endfor %}
+		{% endif %}
+	{% endif %}
+
+	{# chipsets #}
+	{% if type == 'chipset' %}
+		{% set defaultImage = absolute_url(asset('build/images/missing/chipset-missing.jpg')) %}
+		{% if item.getExpansionChips() is not empty %}
+			{% for chipPart in item.getExpansionChips()|sort((a, b) => a.sort <=> b.sort)|slice(0, 1) %}
+				{% if chipPart.getImages() is not empty %}
+					{% for image in chipPart.getImages()|sort((a, b) => a.getFileName() <=> b.getFileName())|sort((a, b) => a.sort <=> b.sort)|slice(0, 1) %}
+						{% if vich_uploader_asset(image, 'imageFile') | ext != "svg" %}
+							{% set thumbnailUrl = vich_uploader_asset(image, 'imageFile') | imagine_filter('show_thumb') %}
+						{% else %}
+							{% set thumbnailUrl = vich_uploader_asset(image, 'imageFile') %}
+						{% endif %}
+						{% if image.description %}
+							{% set thumbnailAlt = image.description %}
+						{% endif %}
+						{% set imgtype_count = imgtype_count + 1 %}
+					{% endfor %}
+				{% endif %}
+			{% endfor %}
+		{% endif %}
+	{% endif %}
+
+	{# hdds #}
+	{% if type == 'hdd' %}
+		{% set defaultImage = absolute_url(asset('build/images/missing/hdd-missing.jpg')) %}
+		{% if item.getStorageDeviceImages() is not empty %}
+			{% for image in item.getStorageDeviceImages()|filter(a => a.type in ["1", "2"])|sort((a, b) => a.getFileName() <=> b.getFileName())|sort((a, b) => b.type <=> a.type)|slice(0, 1) %}
+				{% if vich_uploader_asset(image, 'imageFile') | ext != "svg" %}
+					{% set thumbnailUrl = vich_uploader_asset(image, 'imageFile') | imagine_filter('show_thumb') %}
+				{% else %}
+					{% set thumbnailUrl = vich_uploader_asset(image, 'imageFile') %}
+				{% endif %}
+				{% if image.description %}
+					{% set thumbnailAlt = image.description %}
+				{% endif %}
+				{% set imgtype_count = imgtype_count + 1 %}
+			{% endfor %}
+		{% endif %}
+	{% endif %}
+
+	{# cdds #}
+	{% if type == 'cdd' %}
+		{% if item.getStorageDeviceImages() is not empty %}
+			{% for image in item.getStorageDeviceImages()|filter(a => a.type in ["1", "2", "3"])|sort((a, b) => a.getFileName() <=> b.getFileName())|sort((a, b) => b.getType <=> a.getType)|slice(0, 1) %}
+				{% if vich_uploader_asset(image, 'imageFile') | ext != "svg" %}
+					{% set thumbnailUrl = vich_uploader_asset(image, 'imageFile') | imagine_filter('show_thumb') %}
+				{% else %}
+					{% set thumbnailUrl = vich_uploader_asset(image, 'imageFile') %}
+				{% endif %}
+				{% if image.description %}
+					{% set thumbnailAlt = image.description %}
+				{% endif %}
+				{% set imgtype_count = imgtype_count + 1 %}
+			{% endfor %}
+		{% endif %}
+	{% endif %}
+
+	{# fdds #}
+	{% if type == 'fdd' %}
+		{% if item.getStorageDeviceImages() is not empty %}
+			{% for image in item.getStorageDeviceImages()|filter(a => a.type in ["1", "2", "3"])|sort((a, b) => a.getFileName() <=> b.getFileName())|sort((a, b) => b.getType <=> a.getType)|slice(0, 1) %}
+				{% if vich_uploader_asset(image, 'imageFile') | ext != "svg" %}
+					{% set thumbnailUrl = vich_uploader_asset(image, 'imageFile') | imagine_filter('show_thumb') %}
+				{% else %}
+					{% set thumbnailUrl = vich_uploader_asset(image, 'imageFile') %}
+				{% endif %}
+				{% if image.description %}
+					{% set thumbnailAlt = image.description %}
+				{% endif %}
+				{% set imgtype_count = imgtype_count + 1 %}
+			{% endfor %}
+		{% endif %}
+	{% endif %}
+
+	{% if imgtype_count == 0 and thumbnailUrl is empty %}
+		{% set thumbnailUrl = defaultImage %}
+		{% set thumbnailAlt = "no images available :(" %}
+	{% endif %}
+
+	{% include 'macros/card.html.twig' with {
+		'url': path(path, {id:item.getId()}),
+		'image': thumbnailUrl,
+		'imageAlt': thumbnailAlt,
+		'title': item.getFullName(),
+		'date': item.getLastEdited()|date("Y-m-d\\TH:i:s\\Z", "GMT")
+	} %}
+{% endfor %}
 </div>
