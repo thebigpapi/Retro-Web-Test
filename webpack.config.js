@@ -41,9 +41,12 @@ Encore
      * and one CSS file (e.g. app.css) if your JavaScript imports CSS.
      */
     .addEntry('app', './assets/app.js')
-    .addEntry('app2024', './assets/app2024.js')
     .addEntry('app_ea', './assets/app_ea.js')
     .addEntry('chart', './assets/chart.js')
+
+    .addStyleEntry('style/ux2024', './assets/styles/ux2024.scss')
+    .addEntry('script/collapse', './assets/js/collapse.js')
+    .addEntry('script/gallery', './assets/js/gallery.js')
 
     // enables the Symfony UX Stimulus bridge (used in assets/bootstrap.js)
     //.enableStimulusBridge('./assets/controllers.json')

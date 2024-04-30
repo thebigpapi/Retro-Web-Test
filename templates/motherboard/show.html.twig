@@ -51,6 +51,36 @@
 <!-- TITLE/ALIASES -->
 <div class="app-column-layout app-column-align-start">
 
+<div class="app-column-aside" id="gallery-container">
+	<div class="app-show-gallery" id="gallery">
+	{% if motherboard.getImages() is not empty %}
+		{% for image in motherboard.getImages()|sort((a, b) => a.getFileName() <=> b.getFileName())|sort((a, b) => a.motherboardImageType <=> b.motherboardImageType) %}
+			{% include 'macros/images.html.twig' with {
+				'type':'motherboard',
+				'entity': image,
+				'index': loop.index,
+				'length': loop.length,
+			} %}
+		{% endfor %}
+	{% else %}
+		{% if is_granted('ROLE_USER') %}
+			{% include 'macros/card.html.twig' with {
+				'url': ea_url().setDashboard('App\\Controller\\Admin\\DashboardController').setController('App\\Controller\\Admin\\MotherboardCrudController').setAction('edit').setEntityId(motherboard.getId()),
+				'image': absolute_url(asset('build/images/missing/board-missing.jpg')),
+				'imageAlt': "Click to edit this entry",
+				'title': "Click to edit this entry",
+			} %}
+		{% else %}
+			{% include 'macros/card.html.twig' with {
+				'image': absolute_url(asset('build/images/missing/board-missing.jpg')),
+				'imageAlt': "No images available :(",
+				'title': "No images available :(",
+			} %}
+		{% endif %}
+	{% endif %}
+	</div>
+</div> {# div.app-column-aside #}
+
 <div class="app-column-main">
 
 <div class="app-content-title"><span>
@@ -410,37 +440,6 @@
 guide</a> to learn how you can improve it.</p>
 
 </div> {# div.app-column-main #}
-
-<div class="app-column-aside">
-	<p class="app-paragraph-heading">Gallery</p>
-	<div class="app-cards-column">
-	{% if motherboard.getImages() is not empty %}
-		{% for image in motherboard.getImages()|sort((a, b) => a.getFileName() <=> b.getFileName())|sort((a, b) => a.motherboardImageType <=> b.motherboardImageType) %}
-			{% include 'macros/images.html.twig' with {
-				'type':'motherboard',
-				'entity': image,
-				'index': loop.index,
-				'length': loop.length,
-			} %}
-		{% endfor %}
-	{% else %}
-		{% if is_granted('ROLE_USER') %}
-			{% include 'macros/card.html.twig' with {
-				'url': ea_url().setDashboard('App\\Controller\\Admin\\DashboardController').setController('App\\Controller\\Admin\\MotherboardCrudController').setAction('edit').setEntityId(motherboard.getId()),
-				'image': absolute_url(asset('build/images/missing/board-missing.jpg')),
-				'imageAlt': "Click to edit this entry",
-				'title': "Click to edit this entry",
-			} %}
-		{% else %}
-			{% include 'macros/card.html.twig' with {
-				'image': absolute_url(asset('build/images/missing/board-missing.jpg')),
-				'imageAlt': "No images available :(",
-				'title': "No images available :(",
-			} %}
-		{% endif %}
-	{% endif %}
-	</div>
-</div> {# div.app-column-aside #}
 
 </div> {# div.app-column-layout #}
 {% endblock %}
