@@ -14,7 +14,14 @@ const easyadmin = {
     "tab-associations": "sh-expchips"
 }
 
+let currentTab = null;
 update_tab_selection();
+if (currentTab == null) {
+    currentTab = document.getElementById("tab-nav-1");
+    let tabTarget = currentTab.dataset.tab;
+    inner_switch_tab(tabTarget);
+    currentTab.setAttribute("checked", true);
+}
 
 trw_tabs.forEach((tabId) => {
     let gentab = document.getElementById(tabId);
@@ -38,6 +45,7 @@ function update_tab_selection() {
             if (tabLabel) {
                 tabLabel.checked = true;
             }
+            currentTab = tabLabel;
             return;
         }
     }
@@ -49,6 +57,7 @@ function update_tab_selection() {
             if (tabLabel) {
                 tabLabel.checked = true;
             }
+            currentTab = tabLabel;
             return;
         }
     }
@@ -71,15 +80,19 @@ function switch_tab(event) {
 
     let tabTarget = event.currentTarget.dataset.tab;
     inner_switch_tab(tabTarget);
-    event.currentTarget.checked = true;
+    event.currentTarget.setAttribute("checked", true);
+    if (currentTab != null) {
+        currentTab.removeAttribute("checked");
+    }
+    currentTab = event.currentTarget;
 }
 
 function inner_switch_tab(tabTarget) {
     if (document.getElementById(tabTarget)){
-        document.getElementById(tabTarget).style.display = 'block';
+        document.getElementById(tabTarget).classList.add("app-show-tab-active");
         trw_pageElements.forEach((element) => {
             if (element !== tabTarget && document.getElementById(element))
-                document.getElementById(element).style.display = 'none';
+                document.getElementById(element).classList.remove("app-show-tab-active");
         });
         if (tabTarget !== "sh-general") {
             change_tag("#" + tabTarget.substring(3));

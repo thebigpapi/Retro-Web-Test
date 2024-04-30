@@ -33,6 +33,7 @@
 		{% block javascripts %}
 			<script src="/build/js/datetime.js" defer></script>
 			<script type="module">import '/build/js/glightbox.min.js';const lightbox = GLightbox({});</script>
+			<script src="/build/js/frontsearch.js" defer></script>
 		{% endblock %}
 		{% block extra_javascripts %}
 		{% endblock %}
@@ -43,7 +44,7 @@
 				{% include 'macros/hamburger.html.twig' %}
 			</div>
 			<div class="app-logo">
-				<a href="{{ path('app_homepage') }}" title="Go to homepage">
+				<a href="{{ path('app_homepage') }}" class="app-icon-and-text" title="Go to homepage">
 					{% if "now"|date("m") == 12 %}
 						<img src="{{ absolute_url(asset('build/images/trw_christmas.png')) }}" width="40" height="40" alt="logo">
 					{% else %}
@@ -54,7 +55,7 @@
 			</div>
 			<div class="app-mainsearch">
 				<input id="search-box" type="text" placeholder='Name or Part number (without manufacturer) ...'>
-				<button class="app-button" id="search-button" type="submit" data-target="motherboards">
+				<button class="app-button app-icon-and-text" id="search-button" type="submit" data-target="motherboards">
 					<img src="{{ absolute_url(asset('build/icons/search.svg')) }}" alt="search" width="24" height="24">
 					<span>Search</span>
 				</button>
@@ -66,67 +67,67 @@
 		<main>
 			<nav class="app-sidebar">
 				<h3>Browse by category</h3>
-				<a href="{{ path('mobosearch') }}" class="app-navlink">
+				<a href="{{ path('mobosearch') }}" class="app-navlink app-icon-and-text">
 					<img src="{{ absolute_url(asset('build/icons/motherboard.svg')) }}" width="24" height="24" alt="mobo">
 					<span class="navbar-label">Motherboards</span>
 				</a>
-				<a href="{{ path('biossearch') }}" class="app-navlink">
+				<a href="{{ path('biossearch') }}" class="app-navlink app-icon-and-text">
 					<img src="{{ absolute_url(asset('build/icons/awchip.svg')) }}" width="24" height="24" alt="bios">
 					<span class="navbar-label">BIOS images</span>
 				</a>
-				<a href="{{ path('expansionchipsearch') }}" class="app-navlink">
+				<a href="{{ path('expansionchipsearch') }}" class="app-navlink app-icon-and-text">
 					<img src="{{ absolute_url(asset('build/icons/chip.svg')) }}" width="24" height="24" alt="chip">
 					<span class="navbar-label">Expansion chips</span>
 				</a>
-				<a href="{{ path('chipsetsearch') }}" class="app-navlink">
+				<a href="{{ path('chipsetsearch') }}" class="app-navlink app-icon-and-text">
 					<img src="{{ absolute_url(asset('build/icons/chipsetfull.svg')) }}" width="24" height="24" alt="chipset">
 					<span class="navbar-label">Chipsets</span>
 				</a>
-				<a href="{{ path('expansioncardsearch') }}" class="app-navlink">
+				<a href="{{ path('expansioncardsearch') }}" class="app-navlink app-icon-and-text">
 					<img src="{{ absolute_url(asset('build/icons/card.svg')) }}" width="24" height="24" alt="card">
 					<span class="navbar-label">Expansion cards</span>
 				</a>
-				<a href="{{ path('cpusearch') }}" class="app-navlink">
+				<a href="{{ path('cpusearch') }}" class="app-navlink app-icon-and-text">
 					<img src="{{ absolute_url(asset('build/icons/486dx.svg')) }}" width="24" height="24" alt="cpu">
 					<span class="navbar-label">CPUs</span>
 				</a>
-				<a href="{{ path('hddsearch') }}" class="app-navlink">
+				<a href="{{ path('hddsearch') }}" class="app-navlink app-icon-and-text">
 					<img src="{{ absolute_url(asset('build/icons/harddrive.svg')) }}" width="24" height="24" alt="hdd">
 					<span class="navbar-label">Hard drives</span>
 				</a>
-				<a href="{{ path('cddsearch') }}" class="app-navlink">
+				<a href="{{ path('cddsearch') }}" class="app-navlink app-icon-and-text">
 					<img src="{{ absolute_url(asset('build/icons/cd_drive.svg')) }}" width="24" height="24" alt="cdd">
 					<span class="navbar-label">Optical drives</span>
 				</a>
-				<a href="{{ path('fddsearch') }}" class="app-navlink">
+				<a href="{{ path('fddsearch') }}" class="app-navlink app-icon-and-text">
 					<img src="{{ absolute_url(asset('build/icons/floppy_drive.svg')) }}" width="24" height="24" alt="fdd">
 					<span class="navbar-label">Floppy drives</span>
 				</a>
-				<a href="{{ path('driversearch') }}" class="app-navlink">
+				<a href="{{ path('driversearch') }}" class="app-navlink app-icon-and-text">
 					<img src="{{ absolute_url(asset('build/icons/hardware.svg')) }}" width="24" height="24" alt="driver">
 					<span class="navbar-label">Drivers &amp; software</span>
 				</a>
 				<div class="app-navspacer"></div>
 				<h3>Other pages</h3>
-				<a href="{{ path('app_support') }}" class="app-navlink">
+				<a href="{{ path('app_support') }}" class="app-navlink app-icon-and-text">
 					<img src="{{ absolute_url(asset('build/icons/support.svg')) }}" width="24" height="24" alt="art">
 					<span class="navbar-label">Support us</span>
 				</a>
-				<a href="https://blog.theretroweb.com" class="app-navlink">
+				<a href="https://blog.theretroweb.com" class="app-navlink app-icon-and-text">
 					<img src="{{ absolute_url(asset('build/icons/articles.svg')) }}" width="24" height="24" alt="art">
 					<span class="navbar-label">Articles</span>
 				</a>
 				{% if is_granted('ROLE_USER') %}
-					<a href="{{ path('dashboard') }}" class="app-navlink">
+					<a href="{{ path('dashboard') }}" class="app-navlink app-icon-and-text">
 						<img src="{{ absolute_url(asset('build/icons/settings.svg')) }}" width="24" height="24" alt="admin">
 						<span class="navbar-label">Admin</span>
 					</a>
-					<a href="{{ path('app_logout') }}" class="app-navlink">
+					<a href="{{ path('app_logout') }}" class="app-navlink app-icon-and-text">
 						<img src="{{ absolute_url(asset('build/icons/login.svg')) }}" width="24" height="24" alt="logout">
 						<span class="navbar-label">Log out</span>
 					</a>
 				{% else %}
-					<a href="{{ path('app_login') }}" class="app-navlink">
+					<a href="{{ path('app_login') }}" class="app-navlink app-icon-and-text">
 						<img src="{{ absolute_url(asset('build/icons/login.svg')) }}" width="24" height="24" alt="login">
 						<span class="navbar-label">Log in</span>
 					</a>
@@ -173,19 +174,19 @@
 		</main>
 		<footer class="app-footer">
 			<div class="app-links">
-				<a href="{{ path('app_info') }}" class="app-navlink">
+				<a href="{{ path('app_info') }}" class="app-navlink app-icon-and-text">
 					<img src="{{ absolute_url(asset('build/icons/about.svg')) }}" width="16" height="16" alt="about">
 					<span class="navbar-label">Info</span>
 				</a>
-				<a href="https://discord.gg/HWWH7hsk2p" class="app-navlink">
+				<a href="https://discord.gg/HWWH7hsk2p" class="app-navlink app-icon-and-text">
 					<img src="{{ absolute_url(asset('build/icons/discord.svg')) }}" width="16" height="16" alt="discord">
 					<span class="navbar-label">Join our Discord</span>
 				</a>
-				<a href="mailto:info@theretroweb.com" class="app-navlink">
+				<a href="mailto:info@theretroweb.com" class="app-navlink app-icon-and-text">
 					<img src="{{ absolute_url(asset('build/icons/email.svg')) }}" width="16" height="16" alt="email">
 					<span class="navbar-label">Email us</span>
 				</a>
-				<a href="https://gitlab.com/ultimateretro/ultimateretro" class="app-navlink">
+				<a href="https://gitlab.com/ultimateretro/ultimateretro" class="app-navlink app-icon-and-text">
 					<img src="{{ absolute_url(asset('build/icons/gitlab.svg')) }}" width="16" height="16" alt="gitlab">
 					<span class="navbar-label">Our GitLab repo</span>
 				</a>

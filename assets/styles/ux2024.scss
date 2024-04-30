@@ -9,8 +9,16 @@ $max-card-width-sm: 180px;
 $sidebar-width: 12em;
 $card-image-aspect-ratio: 75%;
 $paragraph-max-width: 60em;
-$max-page-width: 1920px;
-$max-content-width: 1000px;
+$max-page-width: 2200px;
+$max-content-width: 1200px;
+$corners: 6px;
+$small-corners: 2px;
+$tag-padding: 0.1em 0.6em;
+
+main {
+    // TODO: max-width: $max-page-width;
+    // TODO: margin: 0 auto;
+}
 
 header.app-header {
     box-shadow: $head-shadow;
@@ -42,7 +50,7 @@ footer.app-footer {
 
     div.app-links {
         display: flex;
-        gap: 1em;
+        gap: 2em;
         align-items: center;
     }
 
@@ -151,10 +159,6 @@ div.app-sidebar-hamburger {
 }
 
 div.app-logo a {
-    display: flex;
-    align-items: center;
-    gap: 0.5em;
-
     span {
         transition: $text-color-anim;
         color: $navlink-normal;
@@ -189,10 +193,13 @@ nav.app-sidebar {
     }
 }
 
-a.app-navlink {
+.app-icon-and-text {
     display: flex;
     align-items: center;
-    gap: 0.4em;
+    gap: 1em;
+}
+
+a.app-navlink {
     padding-bottom: 0.2em;
 
     span {
@@ -213,10 +220,7 @@ button.app-button,
 a.app-button,
 input,
 select {
-    border-radius: 2px;
-    display: flex;
-    align-items: center;
-    gap: 0.6em;
+    border-radius: $corners;
     padding: 0.4em 0.8em;
     margin: 0.3em;
     border: 0;
@@ -247,7 +251,7 @@ div.app-mainsearch {
 
     input {
         flex-grow: 1;
-        max-width: 60%;
+        max-width: 35em;
     }
 }
 
@@ -256,6 +260,8 @@ div.app-mainsearch {
     padding: 0.3em 0;
     font-size: $font-size-phat;
     font-weight: $font-weight-phat;
+    display: flex;
+    align-items: center;
 }
 
 .app-paragraph-heading {
@@ -263,6 +269,8 @@ div.app-mainsearch {
     padding: 0.2em 0;
     font-size: x-large;
     font-weight: $font-weight-bold;
+    display: flex;
+    align-items: center;
 }
 
 .app-paragraph {
@@ -339,6 +347,7 @@ div.app-cards-autogrid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax($max-card-width, 1fr));
     gap: 1em;
+    grid-auto-flow: row dense;
 
     &.app-cards-autogrid-tiny {
         grid-template-columns: repeat(auto-fill, minmax($max-card-width-sm, 1fr));
@@ -350,15 +359,23 @@ div.app-cards-column {
     display: flex;
     gap: 1em;
     flex-direction: column;
+
+    &.app-cards-column-tiny {
+        max-width: $max-card-width-sm;
+    }
 }
 
 div.app-column-layout {
     display: flex;
-    gap: 3.5em;
+    gap: 4em;
     flex-direction: row;
     align-items: center;
     margin: 0 auto;
-    max-width: $max-content-width;
+    // TODO: max-width: $max-content-width;
+
+    &.app-column-align-start {
+        align-items: start;
+    }
 
     .app-column-main {
         flex: 2 1 auto;
@@ -366,6 +383,144 @@ div.app-column-layout {
     }
 
     .app-column-aside {
-        flex: 0 1 auto;
+        flex: 2 0 $max-card-width;
+    }
+}
+
+div.app-show-entity {
+    .app-paragraph-heading {
+        padding-top: 1em;
+    }
+}
+
+div.app-show-navbar {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    padding-bottom: 1em;
+    gap: 4px;
+
+    &>input {
+        display: none;
+        visibility: hidden;
+    }
+
+    &>input[checked]+label {
+        color: $bodylink-normal;
+        border-bottom: $input-border-active;
+    }
+
+    &>label {
+        cursor: pointer;
+        display: flex;
+        gap: 0.6em;
+        align-items: center;
+        border-radius: $corners;
+        padding: 0.4em 1.3em;
+        border: 0;
+        border-bottom: $input-border-normal;
+        background: $image-bkg;
+        transition: $text-color-anim, $input-anim;
+
+        &:hover {
+            color: $bodylink-hover;
+        }
+    }
+}
+
+div.app-show-tabnav {
+    div.app-show-tab {
+        flex-grow: 1;
+        display: none;
+        transition: $tab-anim;
+
+        &.app-show-tab-active {
+            display: block;
+        }
+    }
+}
+
+div.app-note {
+    border-radius: 6px;
+    background: $image-bkg;
+    padding: 1em;
+
+    p {
+        margin: 0;
+    }
+
+    .app-note-heading {
+        display: block;
+        font-weight: $font-weight-bold;
+        font-size: large;
+        padding-bottom: 0.5em;
+    }
+}
+
+div.app-note-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax($max-card-width, 1fr));
+    gap: 1em;
+    grid-auto-flow: row dense;
+}
+
+div.app-split {
+    display: flex;
+    align-items: start;
+    gap: 1em;
+
+    &>div {
+        flex: 1 1 0px;
+    }
+}
+
+div.app-item-list {
+    display: grid;
+    column-gap: 0.6em;
+    grid-auto-rows: 1fr;
+    align-items: center;
+    justify-items: start;
+
+    &.app-item-list-flow-col {
+        display: block;
+        column-width: $max-card-width;
+    }
+    
+    &.app-item-list-2cols {
+        grid-template-columns: 1fr 6fr;
+        column-count: 2;
+    }
+
+    .highlight {
+        font-weight: $font-weight-bold;
+    }
+
+    .right {
+        text-align: end;
+        justify-self: end;
+    }
+}
+
+div.app-tags {
+    display: flex;
+    gap: 0.2em;
+    padding: 0.2em 0;
+
+    >* {
+        border-bottom: $input-border-normal;
+        border-radius: $small-corners;
+        padding: $tag-padding;
+    }
+}
+
+.badge {
+    border-bottom: $input-border-normal;
+    border-radius: $small-corners;
+    padding: $tag-padding;
+    margin: 0.2em;
+    margin-left: 0;
+
+    &.badge-secondary {
+        background: $image-bkg;
     }
 }

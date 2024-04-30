@@ -1,8 +1,8 @@
 {% apply spaceless %}
-<div class="show-nav" id="sh-nav">
+<div class="app-show-navbar">
     {% if types is not empty %}
-        <input type="radio" name="tabs" id="tab-nav-1" data-tab="sh-general" checked>
-        <label for="tab-nav-1"><img src="{{ absolute_url(asset('build/icons/data.svg')) }}" alt="" width="24" height="24">Description</label>
+        <input type="radio" name="tabs" id="tab-nav-1" data-tab="sh-general">
+        <label for="tab-nav-1" class="app-icon-and-text"><img src="{{ absolute_url(asset('build/icons/data.svg')) }}" alt="" width="24" height="24">Description</label>
     {% endif %}
     {% if "chips" in types %}
         <input type="radio" name="tabs" id="tab-nav-2" data-tab="sh-expchips">

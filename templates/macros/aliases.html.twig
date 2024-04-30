@@ -1,8 +1,8 @@
 {% if entity is defined and entity is not empty %}
-	<div class="textarea">
-		<h3><b>{{ msg }}</b></h3>
+<p class="app-paragraph-heading">{{ msg }}</p>
+<div>
 {% apply markdown_to_html %}{% for alias in entity|sort %}
 * {{ alias.getFullAliasName() }}
 {% endfor %}{% endapply %}
-			</div>
-			{% endif %}
+</div>
+{% endif %}
