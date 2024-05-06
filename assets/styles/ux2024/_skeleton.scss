@@ -20,7 +20,17 @@ body {
     min-height: 100vh; //glightbox footer fix
 }
 
-header,
+header {
+    color: $head-frg;
+    background: $head-bkg;
+    font-family: $header-font;
+
+    div {
+        padding-left: 0.5em;
+        padding-right: 0.5em;
+    }
+}
+
 footer {
     display: flex;
     align-items: center;

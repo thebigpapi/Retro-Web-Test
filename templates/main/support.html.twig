@@ -9,7 +9,26 @@
 
 {% block body %}
 
-<div class="app-column-layout">
+<div class="app-column-layout app-column-align-start">
+
+<div class="app-column-aside" id="gallery-container">
+<div class="app-show-gallery" id="gallery">
+	{% include 'macros/card.html.twig' with {
+		'url': "https://www.patreon.com/theretroweb",
+		'image': absolute_url(asset('build/icons/patreon.svg')),
+		'imageAlt': "Patreon logo",
+		'title': "Patreon",
+		'date': "The most popular way to support your favorite creators, with pre-established monthly pledges. Some of what you pay goes to Patreon for their own running costs and for paying their team."
+	} %}
+	{% include 'macros/card.html.twig' with {
+		'url': "https://liberapay.com/TheRetroWeb_/",
+		'image': absolute_url(asset('build/icons/liberapay.svg')),
+		'imageAlt': "LiberaPay logo",
+		'title': "LiberaPay",
+		'date': "The most flexible option, where you can set up your own payment scheme. It can be a weekly, monthly or yearly pledge, for the exact amount you want and your favorite currency. No constraints applied."
+	} %}
+</div>
+</div>
 
 <div class="app-column-main">
 	<div class="app-content-title">Support us</div>
@@ -29,23 +48,6 @@
 		
 		{% endapply %}
 	</div>
-</div>
-
-<div class="app-column-aside app-cards-column">
-	{% include 'macros/card.html.twig' with {
-		'url': "https://www.patreon.com/theretroweb",
-		'image': absolute_url(asset('build/icons/patreon.svg')),
-		'imageAlt': "Patreon logo",
-		'title': "Patreon",
-		'date': "The most popular way to support your favorite creators, with pre-established monthly pledges. Some of what you pay goes to Patreon for their own running costs and for paying their team."
-	} %}
-	{% include 'macros/card.html.twig' with {
-		'url': "https://liberapay.com/TheRetroWeb_/",
-		'image': absolute_url(asset('build/icons/liberapay.svg')),
-		'imageAlt': "LiberaPay logo",
-		'title': "LiberaPay",
-		'date': "The most flexible option, where you can set up your own payment scheme. It can be a weekly, monthly or yearly pledge, for the exact amount you want and your favorite currency. No constraints applied."
-	} %}
 </div>
 
 </div>

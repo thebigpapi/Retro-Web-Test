@@ -11,6 +11,6 @@ function resize_gallery_div() {
     var childHeight = child.offsetHeight;
     
     // Set the height of the parent element to match the height of the child
-    if (viewportWidth > 1366) parent.style.height = '';
+    if (viewportWidth > 1439) parent.style.height = '';
     else parent.style.height = childHeight + 'px';
 }

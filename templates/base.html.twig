@@ -41,26 +41,28 @@
 		{% endblock %}
 	</head>
 	<body>
-		<header class="app-header">
-			<div class="app-sidebar-hamburger app-collapsible-trigger" data-target="app-primary-sidebar">
-				{% include 'macros/hamburger.html.twig' %}
-			</div>
-			<div class="app-logo">
-				<a href="{{ path('app_homepage') }}" class="app-icon-and-text" title="Go to homepage">
-					{% if "now"|date("m") == 12 %}
-						<img src="{{ absolute_url(asset('build/images/trw_christmas.png')) }}" width="40" height="40" alt="logo">
-					{% else %}
-						<img src="{{ absolute_url(asset('build/images/icon.png')) }}" width="40" height="40" alt="logo">
-					{% endif %}
-					<span>The Retro Web</span>
-				</a>
-			</div>
-			<div class="app-mainsearch">
-				<input id="search-box" type="text" placeholder='Name or Part number (without manufacturer) ...'>
-				<button class="app-button app-icon-and-text" id="search-button" type="submit" data-target="motherboards">
-					<img src="{{ absolute_url(asset('build/icons/search.svg')) }}" alt="search" width="24" height="24">
-					<span>Search</span>
-				</button>
+		<header>
+			<div class="app-header">
+				<div class="app-sidebar-hamburger app-collapsible-trigger" data-target="app-primary-sidebar">
+					{% include 'macros/hamburger.html.twig' %}
+				</div>
+				<div class="app-logo">
+					<a href="{{ path('app_homepage') }}" class="app-icon-and-text" title="Go to homepage">
+						{% if "now"|date("m") == 12 %}
+							<img src="{{ absolute_url(asset('build/images/trw_christmas.png')) }}" width="40" height="40" alt="logo">
+						{% else %}
+							<img src="{{ absolute_url(asset('build/images/icon.png')) }}" width="40" height="40" alt="logo">
+						{% endif %}
+						<span>The Retro Web</span>
+					</a>
+				</div>
+				<div class="app-mainsearch">
+					<input id="search-box" type="text" placeholder='Name or Part number (without manufacturer) ...'>
+					<button class="app-button app-icon-and-text" id="search-button" type="submit" data-target="motherboards">
+						<img src="{{ absolute_url(asset('build/icons/search.svg')) }}" alt="search" width="24" height="24">
+						<span>Search</span>
+					</button>
+				</div>
 			</div>
 		</header>
 		{% if "now"|date("m") == 12 %}

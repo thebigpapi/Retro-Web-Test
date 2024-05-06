@@ -104,8 +104,8 @@
 		<!-- GENERAL -->
 		<div class="app-show-tab" id="sh-general">
 			<p class="app-paragraph-heading">General info</p>
-			<div class="app-split">
-				<div class="app-item-list app-item-list-2cols">
+			<div class="app-item-grid">
+				<div class="item">
 					<!-- Chipset -->
 					<span class="highlight app-icon-and-text">
 						<img src="{{ absolute_url(asset('build/icons/chipset.svg')) }}" alt="chip" width="24" height="24">
@@ -116,7 +116,9 @@
 					{% else %}
 						<span class='badge badge-secondary'>Empty</span>
 					{% endif %}
+				</div>
 
+				<div class="item">
 					<!-- CPU socket -->
 					<span class="highlight app-icon-and-text">
 						<img src="{{ absolute_url(asset('build/icons/cpupins.svg')) }}" alt="cpu" width="24" height="24">
@@ -131,7 +133,9 @@
 					{% else %}
 						<span class='badge badge-secondary'>Empty</span>
 					{% endif %}
+				</div>
 
+				<div class="item">
 					<!-- Bus speeds -->
 					<span class="highlight app-icon-and-text">
 						<img src="{{ absolute_url(asset('build/icons/speed.svg')) }}" alt="speed" width="24" height="24">
@@ -146,7 +150,9 @@
 					{% else %}
 						<span class='badge badge-secondary'>Empty</span>
 					{% endif %}
+				</div>
 
+				<div class="item">
 					<!-- Form factor -->
 					<span class="highlight app-icon-and-text">
 						<img src="{{ absolute_url(asset('build/icons/board.svg')) }}" alt="mobo" width="24" height="24">
@@ -157,7 +163,9 @@
 					{% else %}
 						<span class='badge badge-secondary'>Empty</span>
 					{% endif %}
+				</div>
 
+				<div class="item">
 					<!-- Dimensions -->
 					<span class="highlight app-icon-and-text">
 						<img src="{{ absolute_url(asset('build/icons/dimension.svg')) }}" alt="dim" width="24" height="24">
@@ -165,7 +173,8 @@
 					</span>
 					<span>{{ motherboard.getDimensions() ?: "<span class='badge badge-secondary'>Empty</span>" }}</span>
 				</div>
-				<div class="app-item-list app-item-list-2cols">
+
+				<div class="item">
 					<!-- Cache -->
 					<span class="highlight app-icon-and-text">
 						<img src="{{ absolute_url(asset('build/icons/chip.svg')) }}" alt="chip" width="24" height="24">
@@ -180,7 +189,9 @@
 					{% else %}
 						<span>None/Integrated in the CPU</span>
 					{% endif %}
+				</div>
 
+				<div class="item">
 					<!-- Max system RAM -->
 					<span class="highlight app-icon-and-text">
 						<img src="{{ absolute_url(asset('build/icons/ram_multi.svg')) }}" alt="ram" width="24" height="24">
@@ -195,7 +206,9 @@
 					{% else %}
 						<span class='badge badge-secondary'>Empty</span>
 					{% endif %}
+				</div>
 
+				<div class="item">
 					<!-- Supported RAM types -->
 					<span class="highlight app-icon-and-text">
 						<img src="{{ absolute_url(asset('build/icons/ram.svg')) }}" alt="ram" width="24" height="24">
@@ -210,9 +223,11 @@
 					{% else %}
 						<span class='badge badge-secondary'>Empty</span>
 					{% endif %}
+				</div>
 
-					<!-- Memory connectors -->
-					{% if motherboard.getMotherboardMemoryConnectors() is not empty %}
+				<!-- Memory connectors -->
+				{% if motherboard.getMotherboardMemoryConnectors() is not empty %}
+				<div class="item">
 					<span class="highlight app-icon-and-text">
 						<img src="{{ absolute_url(asset('build/icons/ram.svg')) }}" alt="ram" width="24" height="24">
 						RAM connectors
@@ -222,8 +237,10 @@
 						<span><b>{{ slot.getCount() }}x&nbsp;</b>{{ slot.getMemoryConnector().getName() }}</span>
 					{% endfor %}
 					</div>
-					{% endif %}
+				</div>
+				{% endif %}
 
+				<div class="item">
 					<!-- PSU connectors -->
 					<span class="highlight app-icon-and-text">
 						<img src="{{ absolute_url(asset('build/icons/power.svg')) }}" alt="pwr" width="24" height="24">
@@ -296,60 +313,96 @@
 
 		<!-- Chips -->
 		<div class="app-show-tab" id="sh-expchips">
-			<div class="quick-spec-table">
+			<p class="app-paragraph-heading">Chipset</p>
+			<div class="app-item-grid">
 				<!-- Chipset -->
-				<div class="quick-spec-head">
-					<img src="{{ absolute_url(asset('build/icons/chipset.svg')) }}" alt="chipset" width="24" height="24">Chipset
-				</div>
-				{% if motherboard.getChipset() is not empty %}
-					<div><a href="{{ path('app_homepage') }}chipsets/{{ motherboard.getChipset().getId()}}">{{ motherboard.getChipset().getFullName() }}</a></div>
-				{% else %}<div><span class='badge badge-secondary'>Empty</span></div>{% endif %}
-				<!-- Expansion Chips -->
-				{% if motherboard.getExpansionChips() is not empty %}
-					{% for chip in motherboard.getExpansionChips()|filter(a => a.getType().getName() == "Chipset part")%}
-						{% if loop.first %}<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/chipset.svg')) }}" alt="chip" width="24" height="24">Chipset parts</div><div class="tag-container">{% endif %}
-							<a href="{{ path('expansion_chip_show', {id: chip.getId()}) }}"><span class="text-block">{{ chip.getFullName() }}</span></a>
-						{% if loop.index == motherboard.getExpansionChips()|filter(a => a.getType().getName() == "Chipset part")|length %}</div>{% endif %}
-					{% endfor %}
-					{% for type in expansionchiptype %}
-						{% for chip in motherboard.getExpansionChips()|filter(a => a.getType().getName() !=  "Chipset part")|filter(a => a.getType().getName() == type.getName())%}
-							{% if loop.first %}<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/chip.svg')) }}" alt="chip" width="24" height="24">{{chip.getType().getName()}} chips</div><div class="tag-container">{% endif %}
-							<a href="{{ path('expansion_chip_show', {id: chip.getId()}) }}"><span class="text-block">{{ chip.getFullName() }}</span></a>
-							{% if loop.index == motherboard.getExpansionChips()|filter(a => a.getType().getName() == type.getName())|length %}</div>{% endif %}
-						{% endfor %}
-					{% endfor %}
-				{% endif %}
-				<!-- Max video RAM -->
-				{% if motherboard.getMaxVideoRam()  is not empty %}
-				<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/ram_multi.svg')) }}" alt="ram" width="24" height="24">Max VRAM size</div>
-				<div>{{  motherboard.getMaxVideoRam().getValueWithUnit() }}</div>
-				{% endif %}
-				{% if motherboard.getMaxCpu() > 1 %}
-				<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/ram_multi.svg')) }}" alt="ram" width="24" height="24">Multi CPU support</div>
-				<div>yes ({{ motherboard.getMaxCpu()}} CPUs)</div>
-				{% endif %}
-			</div>
-			<!-- CPU family -->
-			<div class="full-spec">
-				<div class="full-spec-head">
-					<img src="{{ absolute_url(asset('build/icons/486.svg')) }}" alt="cpu" width="24" height="24"><b>CPU family support</b>
-				</div>
-				<div class="list-table notemplate">
-					{% if motherboard.getProcessorPlatformTypes() is not empty %}
-					<ul>
-						{% for platform in motherboard.getProcessorPlatformTypes() %}
-						<li><a href="{{ path('cpufamily_show', {id: platform.getId()}) }}"><span class="text-block list">{{ platform.getName() }}</span></a></li>
-						{% endfor %}
-						{% for compatible in motherboard.getCompatibleFamilies() %}
-						<li><a href="{{ path('cpufamily_show', {id: compatible.getId()}) }}"><span class="text-block list {% if is_granted('ROLE_USER') %}comp{% endif %}">{{ compatible.getName() }}</span></a></li>
-						{% endfor %}
-					</ul>
+				<div class="item">
+					<span class="highlight app-icon-and-text">
+						<img src="{{ absolute_url(asset('build/icons/chipset.svg')) }}" alt="chipset" width="24" height="24">
+						Chipset
+					</span>
+					{% if motherboard.getChipset() is not empty %}
+						<span><a href="{{ path('app_homepage') }}chipsets/{{ motherboard.getChipset().getId()}}">{{ motherboard.getChipset().getFullName() }}</a></span>
 					{% else %}
-						<div class="list-table-head"></div><div><span class='badge badge-secondary'>Empty</span></div>
+						<span class='badge badge-secondary'>Empty</span>
 					{% endif %}
 				</div>
-				<div class="full-spec-head"></div>
-				<div class="list-table"></div>
+
+				{% if motherboard.getExpansionChips() is not empty %}
+					<!-- Chipset parts -->
+					{% set chipPartList = motherboard.getExpansionChips()|filter(a => a.getType().getName() == "Chipset part") %}
+					<div class="item">
+						<span class="highlight app-icon-and-text">
+							<img src="{{ absolute_url(asset('build/icons/chipset.svg')) }}" alt="chip" width="24" height="24">
+							Chipset parts
+						</span>
+						<div class="app-tags">
+							{% for chip in chipPartList %}
+							<a href="{{ path('expansion_chip_show', {id: chip.getId()}) }}">{{ chip.getFullName() }}</a>
+							{% else %}
+							<span>Empty</span>
+							{% endfor %}
+						</div>
+					</div>
+
+					<!-- Other chips -->
+					{% for type in expansionchiptype %}
+						{% set chipPartList = motherboard.getExpansionChips()|filter(a => a.getType().getName() != "Chipset part")|filter(a => a.getType().getName() == type.getName()) %}
+						{% for chip in chipPartList %}
+							{% if loop.first %}
+							<div class="item">
+								<span class="highlight app-icon-and-text">
+									<img src="{{ absolute_url(asset('build/icons/chip.svg')) }}" alt="chip" width="24" height="24">
+									{{chip.getType().getName()}} chips
+								</span>
+								<div class="app-tags">
+							{% endif %}
+							<a href="{{ path('expansion_chip_show', {id: chip.getId()}) }}">{{ chip.getFullName() }}</a>
+							{% if loop.index == chipPartList|length %}</div></div>{% endif %}
+						{% endfor %}
+					{% endfor %}
+				{% endif %}
+
+				<!-- Max video RAM -->
+				{% if motherboard.getMaxVideoRam() is not empty %}
+					<div class="item">
+						<span class="highlight app-icon-and-text">
+							<img src="{{ absolute_url(asset('build/icons/ram_multi.svg')) }}" alt="ram" width="24" height="24">
+							Max VRAM size
+						</span>
+						<span>{{  motherboard.getMaxVideoRam().getValueWithUnit() }}</span>
+					</div>
+				{% endif %}
+
+				<!-- Multi-processor -->
+				{% if motherboard.getMaxCpu() > 1 %}
+					<div class="item">
+						<span class="highlight app-icon-and-text">
+							<img src="{{ absolute_url(asset('build/icons/ram_multi.svg')) }}" alt="ram" width="24" height="24">
+							Multi CPU support
+						</span>
+						<span>yes ({{ motherboard.getMaxCpu()}} CPUs)</span>
+					</div>
+				{% endif %}
+			</div>
+
+			<p class="app-paragraph-heading app-icon-and-text">
+				<img src="{{ absolute_url(asset('build/icons/486.svg')) }}" alt="cpu" width="24" height="24">
+				CPU family support
+			</p>
+			<div class="app-item-list">
+				{% if motherboard.getProcessorPlatformTypes() is not empty %}
+					{% for platform in motherboard.getProcessorPlatformTypes() %}
+						<a href="{{ path('cpufamily_show', {id: platform.getId()}) }}">{{ platform.getName() }}</a>
+					{% endfor %}
+					{% for compatible in motherboard.getCompatibleFamilies() %}
+						<a
+						{% if is_granted('ROLE_USER') %}class="special"{% endif %}
+						href="{{ path('cpufamily_show', {id: compatible.getId()}) }}">{{ compatible.getName() }}</a>
+					{% endfor %}
+				{% else %}
+					<span class='badge badge-secondary'>Empty</span>
+				{% endif %}
 			</div>
 		</div>
 

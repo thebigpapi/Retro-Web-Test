@@ -9,23 +9,34 @@ $max-card-width-sm: 180px;
 $sidebar-width: 12em;
 $card-image-aspect-ratio: 75%;
 $paragraph-max-width: 60em;
-$max-page-width: 2200px;
+$max-page-width: 2000px;
+$max-header-width: 2000px;
 $max-content-width: 1200px;
 $corners: 6px;
 $small-corners: 2px;
 $tag-padding: 0.1em 0.6em;
+$max-table-column-width: 500px;
+$max-side-gallery-width: 400px;
 
-$content-breakpoint-large: 1366px;
+$content-breakpoint-large: 1439px;
 
 main {
-    // TODO: max-width: $max-page-width;
-    // TODO: margin: 0 auto;
+    max-width: $max-page-width;
+    margin: 0 auto;
+    width: 100%;
 }
 
-header.app-header {
+header {
     box-shadow: $head-shadow;
-    padding: 1em 0.5em;
-    gap: 0.8em;
+    
+    .app-header {
+        margin: 0 auto;
+        display: flex;
+        align-items: center;
+        padding: 1em 0.5em;
+        gap: 0.8em;
+        max-width: $max-header-width;
+    }
 
     button.app-button,
     a.app-button,
@@ -398,11 +409,16 @@ div.app-column-layout {
     }
 
     .app-column-aside {
-        flex: 2 0 $max-card-width;
+        flex: 0 0 $max-side-gallery-width;
         position: relative;
+        transition: $collapse-y-anim;
+
+        @media (max-width: $content-breakpoint-large) {
+            height: 200px;
+        }
 
         div.app-show-gallery {
-            max-width: $max-card-width;
+            // max-width: $max-card-width;
             display: flex;
             gap: 1em;
             flex-direction: column;
@@ -429,7 +445,7 @@ div.app-column-layout {
     }
 }
 
-div.app-show-entity {
+div.app-page {
     .app-paragraph-heading {
         padding-top: 1em;
     }
@@ -516,6 +532,28 @@ div.app-split {
     }
 }
 
+div.app-item-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax($max-table-column-width, 1fr));
+
+    .item {
+        display: grid;
+        grid-template-columns: 1fr 3fr;
+        min-height: 2em;
+        align-content: center;
+        gap: 1em;
+
+        >.highlight {
+            font-weight: $font-weight-bold;
+        }
+
+        >.right {
+            text-align: end;
+            justify-self: end;
+        }
+    }
+}
+
 div.app-item-list {
     display: grid;
     column-gap: 0.6em;
@@ -541,12 +579,22 @@ div.app-item-list {
         text-align: end;
         justify-self: end;
     }
+
+    a.special {
+        color: $speciallink-normal;
+
+        &:hover {
+            color: $speciallink-hover;
+        }
+    }
 }
 
 div.app-tags {
     display: flex;
     gap: 0.2em;
     padding: 0.2em 0;
+    align-items: center;
+    flex-wrap: wrap;
 
     >* {
         border-bottom: $input-border-normal;
@@ -561,6 +609,7 @@ div.app-tags {
     padding: $tag-padding;
     margin: 0.2em;
     margin-left: 0;
+    width: min-content;
 
     &.badge-secondary {
         background: $image-bkg;
