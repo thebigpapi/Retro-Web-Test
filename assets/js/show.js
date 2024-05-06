@@ -43,7 +43,7 @@ function update_tab_selection() {
             inner_switch_tab(element);
             let tabLabel = find_tab_label(element);
             if (tabLabel) {
-                tabLabel.checked = true;
+                tabLabel.setAttribute("checked", true);
             }
             currentTab = tabLabel;
             return;
@@ -55,7 +55,7 @@ function update_tab_selection() {
             inner_switch_tab(easyadmin[el]);
             let tabLabel = find_tab_label(easyadmin[el]);
             if (tabLabel) {
-                tabLabel.checked = true;
+                tabLabel.setAttribute("checked", true);
             }
             currentTab = tabLabel;
             return;
@@ -81,7 +81,7 @@ function switch_tab(event) {
     let tabTarget = event.currentTarget.dataset.tab;
     inner_switch_tab(tabTarget);
     event.currentTarget.setAttribute("checked", true);
-    if (currentTab != null) {
+    if (currentTab != null && currentTab != event.currentTarget) {
         currentTab.removeAttribute("checked");
     }
     currentTab = event.currentTarget;
