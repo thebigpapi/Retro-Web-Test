@@ -47,6 +47,7 @@ Encore
     .addStyleEntry('style/ux2024', './assets/styles/ux2024.scss')
     .addEntry('script/collapse', './assets/js/collapse.js')
     .addEntry('script/gallery', './assets/js/gallery.js')
+    .addEntry('script/navigation', './assets/js/navigation.js')
 
     // enables the Symfony UX Stimulus bridge (used in assets/bootstrap.js)
     //.enableStimulusBridge('./assets/controllers.json')
