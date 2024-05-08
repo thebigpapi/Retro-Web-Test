@@ -26,9 +26,19 @@ main {
     width: 100%;
 }
 
+.monospace {
+    font-family: $monospace-font;
+    font-size: 11pt;
+}
+
+.muted {
+    font-style: italic;
+    color: $text-muted;
+}
+
 header {
     box-shadow: $head-shadow;
-    
+
     .app-header {
         margin: 0 auto;
         display: flex;
@@ -491,9 +501,11 @@ div.app-show-tabnav {
         flex-grow: 1;
         display: none;
         transition: $tab-anim;
+        opacity: 0;
 
         &.app-show-tab-active {
             display: block;
+            opacity: 1;
         }
     }
 }
@@ -614,6 +626,10 @@ div.app-tags {
     &.badge-secondary {
         background: $image-bkg;
     }
+
+    &.badge-small {
+        font-size: small;
+    }
 }
 
 .app-collapsible {
@@ -623,5 +639,51 @@ div.app-tags {
 
     &.animate.app-collapsible-x {
         transition: $collapse-x-anim;
+    }
+}
+
+p.app-table-title {
+    align-items: center;
+}
+
+div.app-table {
+    // display: grid;
+    width: 100%;
+    // border-collapse: collapse;
+
+    div.app-table-header,
+    div.app-table-row {
+        display: grid;
+
+        >div,
+        >span {
+            padding: 0.3em 1em;
+        }
+    }
+
+    div.app-table-header {
+        font-weight: $font-weight-bold;
+        border-bottom: $table-head-border;
+    }
+
+    div.app-table-row-group {
+        &:nth-child(even) {
+            background: $table-alt-bkg;
+        }
+    }
+
+    div.app-table-colspan {
+        padding: 0.3em 1em;
+    }
+
+    .header-label {
+        display: none !important;
+    }
+
+    &.app-specific-bios {
+        div.app-table-header,
+        div.app-table-row {
+            grid-template-columns: 7fr 2fr 2fr 1fr;
+        }
     }
 }

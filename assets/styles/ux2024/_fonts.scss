@@ -1,7 +1,9 @@
-@import url('https://fonts.googleapis.com/css2?family=Titillium+Web:wght@400;600;700&family=Inter&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Titillium+Web:wght@400;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono&display=swap');
 
 $standard-font: "Titillium Web", Tahoma, Verdana, sans-serif;
 $header-font: "Titillium Web", Tahoma, Verdana, sans-serif;
+$monospace-font: "IBM Plex Mono", "Cascadia Code", "Menlo", "Consolas", 'Courier New', Courier, monospace;
 
 $font-weight-regular: 400;
 $font-weight-bold: 600;

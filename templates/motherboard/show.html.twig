@@ -10,7 +10,8 @@
 	<link rel="alternate" hreflang="x-default" href="{{ absolute_url(path('motherboard_show', {id: motherboard.getId()})) }}"/>
 {% endblock %}
 {% block extra_javascripts %}
-	<script src="/build/js/show.js" defer></script>
+	<!--<script src="/build/js/show.js" defer></script>-->
+	{{ encore_entry_script_tags('script/navigation') }}
 {% endblock %}
 
 {% block opengraph %}
@@ -99,10 +100,11 @@
 		'types': ['chips', 'bios', 'drivers', 'docs'],
 		'name': 'board',
 		'role': 'ROLE_USER',
+		'prefix': 'nav-mobo-main',
 	} %}
-	<div class="app-show-tabnav">
+	<div class="app-show-tabnav" id="nav-mobo-main" primary>
 		<!-- GENERAL -->
-		<div class="app-show-tab" id="sh-general">
+		<div class="app-show-tab" id="sh-general" data-anchor="general">
 			<p class="app-paragraph-heading">General info</p>
 			<div class="app-item-grid">
 				<div class="item">
@@ -312,7 +314,7 @@
 		</div>
 
 		<!-- Chips -->
-		<div class="app-show-tab" id="sh-expchips">
+		<div class="app-show-tab" id="sh-expchips" data-anchor="expchips">
 			<p class="app-paragraph-heading">Chipset</p>
 			<div class="app-item-grid">
 				<!-- Chipset -->
@@ -407,75 +409,94 @@
 		</div>
 
 		<!-- BIOSes -->
-		<div class="app-show-tab" id="sh-bios">
-			<div class="show-downloads-group last">
-				<div class="show-downloads-group-header">
-					<img src="{{ absolute_url(asset('build/icons/awchip.svg')) }}" alt="" width="32" height="32">
-					{% set bfile_cnt = 0 %}
-					{% if motherboard.getMotherboardBios() is not empty %}
-						{% for bios in motherboard.getMotherboardBios() %}
-							{% if bios.getFileName() is not null %}{% set bfile_cnt = bfile_cnt + 1 %}{% endif %}
-						{% endfor %}
-					{% endif %}
-					<span>{{ bfile_cnt }} file{% if bfile_cnt != 1 %}s{% endif %} available</span>
+		{% set bfile_cnt = 0 %}
+		{% if motherboard.getMotherboardBios() is not empty %}
+			{% for bios in motherboard.getMotherboardBios() %}
+				{% if bios.getFileName() is not null %}
+					{% set bfile_cnt = bfile_cnt + 1 %}
+				{% endif %}
+			{% endfor %}
+		{% endif %}
+
+		<div class="app-show-tab" id="sh-bios" data-anchor="bios">
+			<p class="app-paragraph-heading app-icon-and-text">
+				<img src="{{ absolute_url(asset('build/icons/awchip.svg')) }}" alt="" width="32" height="32">
+				<span>{{ bfile_cnt }} file{% if bfile_cnt != 1 %}s{% endif %} available</span>
+			</p>
+
+			{% if motherboard.getMotherboardBios() is not empty %}
+				<div class="app-show-navbar" data-target="nav-mobo-bios">
+				{% set tabIndex = 0 %}
+				{% for biosVen, biosList in motherboard.getMotherboardBiosByVendor() %}
+					<input type="radio" name="tabs" id="nav-mobo-bios-tab-{{ tabIndex }}" data-tab="nav-bios-{{ biosVen|lower|replace({' ': ''}) }}">
+					<label for="nav-mobo-bios-tab-{{ tabIndex }}" class="app-icon-and-text"><b>{{ biosVen }}</b>&nbsp;({{ biosList|length }})</label>
+					{% set tabIndex = tabIndex + 1 %}
+				{% endfor %}
 				</div>
-				{% if motherboard.getMotherboardBios() is not empty %}
-					{% for biosVen,biosList in motherboard.getMotherboardBiosByVendor() %}
-					<p class="bios-vendor-header"><em>Vendor:</em>&nbsp;{{ biosVen }} [{{ biosList|length }} entr{% if biosList|length > 1 %}ies{% else %}y{% endif %}]</p>
-					<div class="plain-list w300p table">
-						<div class="list-entry centered head">
-							<div>POST string</div>
-							<div>Note</div>
-							<div>Core Ver.</div>
-							<div>BIOS Ver.</div>
-							<div>Logs</div>
-						</div>
-						{% for bios in biosList|sort((a, b) => b.boardVersion <=> a.boardVersion) %}
-						<div class="list-entry centered {% if loop.index is divisible by(2) %}alt{% endif %}">
-							<div class="header-label">POST string</div>
-							<div class="monospace">{{ bios.getPostString() }}</div>
-							<div class="header-label">Note</div>
-							<div>{{ bios.getNote() }}</div>
-							<div class="header-label">Core version</div>
-							<div>{{ bios.getCoreVersion() }}</div>
-							<div class="header-label">BIOS version</div>
-							<div>
-								{% if bios.getFileName() is not null %}
-									<a class="combo" href="{{ vich_uploader_asset(bios, 'romFile') }}">
-										<img src="{{ absolute_url(asset('build/icons/dw.svg')) }}" alt="" width="16" height="16">
-										<span>
-										{% if bios.getBoardVersion() is not null %}
-											{{ bios.getBoardVersion() }}
-										{% else %}
-											[unknown]
-										{% endif %}
-										</span>
-									</a>
-								{% else %}
-									{{ bios.getBoardVersion() }}
-								{% endif %}
-							</div>
-							<div class="header-label">Logs</div>
-							<div>
-								<a href="{{ path('dh_auditor_show_entity_history', { 'entity': 'App-Entity-MotherboardBios', 'id': bios.getId() }) }}">
-									<img src="{{ absolute_url(asset('build/icons/calendar.svg')) }}" alt="pwr" width="16" height="16">
+
+				<div class="app-show-tabnav" id="nav-mobo-bios">
+				{% for biosVen, biosList in motherboard.getMotherboardBiosByVendor() %}
+				<div class="app-show-tab" id="nav-bios-{{ biosVen|lower|replace({' ': ''}) }}">
+				<div class="app-table app-specific-bios">
+					<div class="app-table-header">
+						<span>POST string</span>
+						{#<span>Note</span>#}
+						<span>Core Ver.</span>
+						<span>BIOS Ver.</span>
+						<span>Logs</span>
+					</div>
+					{% for bios in biosList|sort((a, b) => b.boardVersion <=> a.boardVersion) %}
+					<div class="app-table-row-group">
+					<div class="app-table-row">
+						<div class="header-label">POST string</div>
+						<div class="monospace">{{ bios.getPostString() }}</div>
+						{#<div class="header-label">Note</div>
+						<div>{{ bios.getNote() }}</div>#}
+						<div class="header-label">Core version</div>
+						<div>{{ bios.getCoreVersion() }}</div>
+						<div class="header-label">BIOS version</div>
+						<div>
+							{% if bios.getFileName() is not null %}
+								<a class="app-icon-and-text" href="{{ vich_uploader_asset(bios, 'romFile') }}">
+									<img src="{{ absolute_url(asset('build/icons/dw.svg')) }}" alt="" width="16" height="16">
+									<span>
+									{% if bios.getBoardVersion() is not null %}
+										{{ bios.getBoardVersion() }}
+									{% else %}
+										[unknown]
+									{% endif %}
+									</span>
 								</a>
-							</div>
+							{% else %}
+								{{ bios.getBoardVersion() }}
+							{% endif %}
 						</div>
-						{% endfor %}
+						<div class="header-label">Logs</div>
+						<div>
+							<a href="{{ path('dh_auditor_show_entity_history', { 'entity': 'App-Entity-MotherboardBios', 'id': bios.getId() }) }}">
+								<img src="{{ absolute_url(asset('build/icons/calendar.svg')) }}" alt="pwr" width="16" height="16">
+							</a>
+						</div>
+					</div>
+					{% if bios.getNote() is not empty %}
+					<div class="app-table-colspan muted"><b>Note</b>&nbsp;&nbsp;{{ bios.getNote() }}</div>
+					{% endif %}
 					</div>
 					{% endfor %}
-				{% endif %}
-			</div>
+				</div>
+				</div>
+				{% endfor %}
+				</div>
+			{% endif %}
 		</div>
 
 		<!-- DRIVERS -->
-		<div class="app-show-tab" id="sh-driver">
+		<div class="app-show-tab" id="sh-driver" data-anchor="driver">
 			{% include 'macros/drivers.html.twig' with {'entity': motherboard.getAllDrivers(), 'css': 'last'} %}
 		</div>
 
 		<!-- Documentation -->
-		<div class="app-show-tab" id="sh-docs">
+		<div class="app-show-tab" id="sh-docs" data-anchor="docs">
 			{% include 'macros/manuals.html.twig' with {'entity': motherboard.getManuals(), 'entity_label':'board', 'audit_entity':'App-Entity-Manual', 'chips': motherboard.getChipDocs()} %}
 			{% include 'macros/miscfiles.html.twig' with {'entity': motherboard.getMiscFiles(), 'audit_entity':'App-Entity-MiscFile'} %}
 		</div>
