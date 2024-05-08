@@ -2,6 +2,7 @@
  * Refreshed tab navigation logic for supporting more than a tabbed-div in the same page!
  */
 
+const DEFAULT_TAB = "general";
 
 let boundTabButtons = {}; // contains string references to which app-show-tabnav to use and app-show-tab to show/hide
 let currentTab = {}; // currently displayed app-show-tab and navbar-button for each app-show-tabnav
@@ -34,15 +35,16 @@ function initNav() {
         // get the buttons in the navbar, save their working info and add an event listener
         const tabButtons = tabNavbar.getElementsByTagName("input");
         for (const tabButton of tabButtons) {
-            if (!("tab" in tabButton.dataset))
-                continue;
-
-            boundTabButtons[tabButton.id] = {
-                "trigger": tabButton.id,
-                "context": navContextTargetId,
-                "tab": tabButton.dataset.tab,
-            };
-            tabButton.addEventListener('click', onTabClick);
+            if ("tab" in tabButton.dataset) {
+                boundTabButtons[tabButton.id] = {
+                    "trigger": tabButton.id,
+                    "context": navContextTargetId,
+                    "tab": tabButton.dataset.tab,
+                };
+                tabButton.addEventListener('click', onTabClick);
+            } else if ("url" in tabButton.dataset) {
+                tabButton.addEventListener('click', onTabRedirect);
+            }
         }
     }
 
@@ -74,6 +76,14 @@ function activeTabFromUrl() {
  */
 function onTabClick(event) {
     _onTabChange(event.currentTarget);
+}
+
+/**
+ * @param {Event} event
+ */
+function onTabRedirect(event) {
+    if (!("url" in event.currentTarget.dataset)) return;
+    window.location.href = event.currentTarget.dataset.url;
 }
 
 /**
@@ -171,9 +181,12 @@ function _onTabChange(trigger) {
 
     if (primaryNav.id !== currBtn["context"]) return;
 
+    let anchorLabel = null;
     if ("anchor" in currentTab[currBtn["context"]]["shownDiv"].dataset)
-        setUrlAnchor(currentTab[currBtn["context"]]["shownDiv"].dataset.anchor);
-    else setUrlAnchor();
+        anchorLabel = currentTab[currBtn["context"]]["shownDiv"].dataset.anchor;
+    if (anchorLabel === DEFAULT_TAB)
+        anchorLabel = null;
+    setUrlAnchor(anchorLabel);
 }
 
 // -----
