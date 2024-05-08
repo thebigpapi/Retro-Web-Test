@@ -120,6 +120,25 @@ function selectFirstTab() {
 }
 
 /**
+ * 
+ * @param {string?} tag 
+ */
+function setUrlAnchor(tag = null) {
+    let nextURL = window.location.href;
+    let nextIndex = nextURL.indexOf("#");
+    if (tag === null) {
+        if (nextIndex != -1) {
+            nextURL = nextURL.substring(0, nextIndex);
+            window.history.replaceState({}, '', nextURL);
+        }
+    }
+    else {
+        nextURL = nextURL.substring(0, nextIndex) + '#' + tag;
+        window.history.replaceState({}, '', nextURL);
+    }
+}
+
+/**
  * @param {HTMLElement} trigger
  */
 function _onTabChange(trigger) {
@@ -144,6 +163,17 @@ function _onTabChange(trigger) {
     }
     trigger.setAttribute("checked", true);
     currentTab[currBtn["context"]]["selectedBtn"] = trigger;
+
+    if (primaryNav === null) {
+        setUrlAnchor();
+        return;
+    }
+
+    if (primaryNav.id !== currBtn["context"]) return;
+
+    if ("anchor" in currentTab[currBtn["context"]]["shownDiv"].dataset)
+        setUrlAnchor(currentTab[currBtn["context"]]["shownDiv"].dataset.anchor);
+    else setUrlAnchor();
 }
 
 // -----
