@@ -110,10 +110,10 @@ div.app-page {
 
     a {
         transition: $text-color-anim;
-        color: $bodylink-normal;
+        color: var(--std-link-normal);
 
         &:hover {
-            color: $bodylink-hover;
+            color: var(--std-link-hover);
         }
     }
 }
@@ -151,11 +151,11 @@ div.app-breadcrumbs {
         &>a {
             span {
                 transition: $text-color-anim;
-                color: $bodylink-normal;
+                color: var(--std-link-normal);
             }
 
             &:hover span {
-                color: $bodylink-hover;
+                color: var(--std-link-hover);
             }
         }
 
@@ -204,8 +204,8 @@ div.app-logo a {
 
 nav.app-sidebar {
     z-index: 10;
-    color: $navbar-frg;
-    background: $navbar-bkg;
+    color: var(--side-frg);
+    background: var(--side-bkg);
     padding: 1em 3em 1em 2em;
     box-shadow: $navbar-shadow;
     flex-grow: 0;
@@ -477,7 +477,7 @@ div.app-show-navbar {
     }
 
     &>input[checked]+label {
-        color: $bodylink-normal;
+        color: var(--std-link-normal);
         border-bottom: $input-border-active;
         box-shadow: $button-shadow;
     }
@@ -495,7 +495,7 @@ div.app-show-navbar {
         transition: $text-color-anim, $input-anim, $button-anim;
 
         &:hover {
-            color: $bodylink-hover;
+            color: var(--std-link-hover);
         }
     }
 }
@@ -600,10 +600,10 @@ div.app-item-list {
     }
 
     a.special {
-        color: $speciallink-normal;
+        color: var(--special-link-normal);
 
         &:hover {
-            color: $speciallink-hover;
+            color: var(--special-link-hover);
         }
     }
 }
@@ -657,7 +657,7 @@ div.app-table {
     width: 100%;
     
     >:nth-child(even) {
-        background: $table-alt-bkg;
+        background: var(--table-alt-row);
     }
 
     div.app-table-header,

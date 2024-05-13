@@ -1,6 +1,7 @@
-$text-color-anim: 200ms ease-in-out color;
-$input-anim: 200ms ease-in-out border-bottom, 200ms ease-in-out background;
-$tab-anim: 200ms ease-in-out opacity;
+$text-color-anim: 150ms ease-in-out color;
+$input-anim: 150ms ease-in-out border-bottom, 150ms ease-in-out background;
+$tab-anim: 150ms ease-in-out opacity;
+$button-anim: 150ms ease-in-out box-shadow;
 
-$collapse-y-anim: 200ms ease-in-out height, 200ms ease-in-out transform;
-$collapse-x-anim: 200ms ease-in-out width, 200ms ease-in-out transform;
+$collapse-y-anim: 150ms ease-in-out height, 150ms ease-in-out transform;
+$collapse-x-anim: 150ms ease-in-out width, 150ms ease-in-out transform;

@@ -5,14 +5,14 @@
 html {
     height: 100%;
     font-family: $standard-font;
-    color: $body-frg-light;
-    background: $body-bkg-light;
+    color: var(--main-frg);
+    background: var(--main-bkg);
 }
 
 body {
     font-family: $standard-font;
-    color: $body-frg-light;
-    background: $body-bkg-light;
+    color: var(--main-frg);
+    background: var(--main-bkg);
     margin: 0;
     padding: 0;
     display: flex;
@@ -21,9 +21,9 @@ body {
 }
 
 header {
-    color: $head-frg;
-    background: $head-bkg;
-    font-family: $header-font;
+    font-family: $standard-font;
+    color: var(--head-frg);
+    background: var(--head-bkg);
 
     div {
         padding-left: 0.5em;
@@ -32,11 +32,11 @@ header {
 }
 
 footer {
+    font-family: $standard-font;
+    color: var(--head-frg);
+    background: var(--head-bkg);
     display: flex;
     align-items: center;
-    color: $head-frg;
-    background: $head-bkg;
-    font-family: $header-font;
 
     div {
         padding-left: 0.5em;
