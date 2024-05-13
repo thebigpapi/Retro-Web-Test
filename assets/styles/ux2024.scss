@@ -32,8 +32,12 @@ main {
 }
 
 .muted {
-    font-style: italic;
+    // font-style: italic;
     color: $text-muted;
+}
+
+.app-emoji {
+    font-size: 2em;
 }
 
 header {
@@ -135,7 +139,7 @@ div.app-breadcrumbs {
 
     li::before {
         color: $text-muted;
-        content: ">";
+        content: "\276D";
     }
 
     li,
@@ -143,7 +147,6 @@ div.app-breadcrumbs {
         display: flex;
         align-items: center;
         gap: 0.5em;
-        // padding: 0.1em 0.3em;
 
         &>a {
             span {
@@ -229,7 +232,7 @@ nav.app-sidebar {
 .app-icon-and-text {
     display: flex;
     align-items: center;
-    gap: 1em;
+    gap: 0.4em;
 }
 
 a.app-navlink {
@@ -428,10 +431,11 @@ div.app-column-layout {
         }
 
         div.app-show-gallery {
-            // max-width: $max-card-width;
             display: flex;
             gap: 1em;
             flex-direction: column;
+            max-height: 1080px;
+            overflow: scroll;
 
             &.app-cards-column-tiny {
                 max-width: $max-card-width-sm;
@@ -440,7 +444,6 @@ div.app-column-layout {
             @media (max-width: $content-breakpoint-large) {
                 flex-direction: row;
                 max-width: unset;
-                overflow: scroll;
                 position: absolute;
                 top: 0;
                 left: 0;
@@ -476,6 +479,7 @@ div.app-show-navbar {
     &>input[checked]+label {
         color: $bodylink-normal;
         border-bottom: $input-border-active;
+        box-shadow: $button-shadow;
     }
 
     &>label {
@@ -488,7 +492,7 @@ div.app-show-navbar {
         border: 0;
         border-bottom: $input-border-normal;
         background: $image-bkg;
-        transition: $text-color-anim, $input-anim;
+        transition: $text-color-anim, $input-anim, $button-anim;
 
         &:hover {
             color: $bodylink-hover;
@@ -551,9 +555,12 @@ div.app-item-grid {
     .item {
         display: grid;
         grid-template-columns: 1fr 3fr;
-        min-height: 2em;
+        min-height: 2.5em;
         align-content: center;
         gap: 1em;
+        border-bottom: 1px solid rgba(44, 44, 44, 0.1);
+        padding-left: 0.3em;
+        padding-right: 0.3em;
 
         >.highlight {
             font-weight: $font-weight-bold;
@@ -647,9 +654,11 @@ p.app-table-title {
 }
 
 div.app-table {
-    // display: grid;
     width: 100%;
-    // border-collapse: collapse;
+    
+    >:nth-child(even) {
+        background: $table-alt-bkg;
+    }
 
     div.app-table-header,
     div.app-table-row {
@@ -658,18 +667,13 @@ div.app-table {
         >div,
         >span {
             padding: 0.3em 1em;
+            align-content: center;
         }
     }
 
     div.app-table-header {
         font-weight: $font-weight-bold;
         border-bottom: $table-head-border;
-    }
-
-    div.app-table-row-group {
-        &:nth-child(even) {
-            background: $table-alt-bkg;
-        }
     }
 
     div.app-table-colspan {
@@ -684,6 +688,20 @@ div.app-table {
         div.app-table-header,
         div.app-table-row {
             grid-template-columns: 7fr 2fr 2fr 1fr;
+        }
+    }
+
+    &.app-specific-driver {
+        div.app-table-header,
+        div.app-table-row {
+            grid-template-columns: 1fr 2fr 1fr;
+        }
+    }
+
+    &.app-specific-doc {
+        div.app-table-header,
+        div.app-table-row {
+            grid-template-columns: 2fr 5fr 1fr;
         }
     }
 }

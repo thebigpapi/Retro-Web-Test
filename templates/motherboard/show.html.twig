@@ -350,6 +350,7 @@
 					<!-- Other chips -->
 					{% for type in expansionchiptype %}
 						{% set chipPartList = motherboard.getExpansionChips()|filter(a => a.getType().getName() != "Chipset part")|filter(a => a.getType().getName() == type.getName()) %}
+						{% set lastLoopIdx = chipPartList|length %}
 						{% for chip in chipPartList %}
 							{% if loop.first %}
 							<div class="item">
@@ -360,7 +361,10 @@
 								<div class="app-tags">
 							{% endif %}
 							<a href="{{ path('expansion_chip_show', {id: chip.getId()}) }}">{{ chip.getFullName() }}</a>
-							{% if loop.index == chipPartList|length %}</div></div>{% endif %}
+							{% if loop.index == lastLoopIdx %}
+								</div>
+							</div>
+							{% endif %}
 						{% endfor %}
 					{% endfor %}
 				{% endif %}
@@ -419,10 +423,11 @@
 		{% endif %}
 
 		<div class="app-show-tab" id="sh-bios" data-anchor="bios">
-			<p class="app-paragraph-heading app-icon-and-text">
+			{# We could rely just on the counters from the nav tabs? #}
+			{# <p class="app-paragraph-heading app-icon-and-text">
 				<img src="{{ absolute_url(asset('build/icons/awchip.svg')) }}" alt="" width="32" height="32">
 				<span>{{ bfile_cnt }} file{% if bfile_cnt != 1 %}s{% endif %} available</span>
-			</p>
+			</p> #}
 
 			{% if motherboard.getMotherboardBios() is not empty %}
 				<div class="app-show-navbar" data-target="nav-mobo-bios">
@@ -440,20 +445,18 @@
 				<div class="app-table app-specific-bios">
 					<div class="app-table-header">
 						<span>POST string</span>
-						{#<span>Note</span>#}
 						<span>Core Ver.</span>
 						<span>BIOS Ver.</span>
 						<span>Logs</span>
 					</div>
 					{% for bios in biosList|sort((a, b) => b.boardVersion <=> a.boardVersion) %}
+					{% set hasContent = bios.getPostString() is not empty or bios.getCoreVersion() is not empty or bios.getBoardVersion() is not empty %}
 					<div class="app-table-row-group">
 					<div class="app-table-row">
 						<div class="header-label">POST string</div>
-						<div class="monospace">{{ bios.getPostString() }}</div>
-						{#<div class="header-label">Note</div>
-						<div>{{ bios.getNote() }}</div>#}
+						<div class="monospace">{{ bios.getPostString() ?: "-" }}</div>
 						<div class="header-label">Core version</div>
-						<div>{{ bios.getCoreVersion() }}</div>
+						<div>{{ bios.getCoreVersion() ?: "-" }}</div>
 						<div class="header-label">BIOS version</div>
 						<div>
 							{% if bios.getFileName() is not null %}
@@ -468,7 +471,7 @@
 									</span>
 								</a>
 							{% else %}
-								{{ bios.getBoardVersion() }}
+								{{ bios.getBoardVersion() ?: "-" }}
 							{% endif %}
 						</div>
 						<div class="header-label">Logs</div>
@@ -479,7 +482,9 @@
 						</div>
 					</div>
 					{% if bios.getNote() is not empty %}
-					<div class="app-table-colspan muted"><b>Note</b>&nbsp;&nbsp;{{ bios.getNote() }}</div>
+					<div class="app-table-colspan muted"><b>Note</b>&nbsp;{{ bios.getNote() }}</div>
+					{% elseif not hasContent %}
+					<div class="app-table-colspan muted"><b>Placeholder!</b>&nbsp;No further information available about this board's BIOS</div>
 					{% endif %}
 					</div>
 					{% endfor %}
@@ -487,6 +492,11 @@
 				</div>
 				{% endfor %}
 				</div>
+			{% else %}
+			<div class="app-icon-and-text">
+				<span class="app-emoji">&#x1F615;</span>
+				<span>No BIOS available</span>
+			</div>
 			{% endif %}
 		</div>
 
