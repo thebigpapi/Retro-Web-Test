@@ -11,19 +11,8 @@
 
 {% block body %}
 
-<div class="perks">
-	<p><b>Search motherboard by model</b></p>
-	<fieldset class="search-bar">
-		<input id="search-box" type="text" placeholder='Name or Part number (without manufacturer) ...'>
-		<button id="search-button" type="submit" data-target="motherboards">
-			<img src="{{ absolute_url(asset('build/icons/search.svg')) }}" alt="search" width="24" height="24">
-			<span>Search</span>
-		</button>
-	</fieldset>
-</div>
-
 <!-- DB stats -->
-<div class="perks">
+{# <div class="perks">
 	<p><b>Browse by category</b></p>
 	<div class="perks-list perks-tiny">
 		<div class="perk">
@@ -118,7 +107,7 @@
 		</div>
 	</a>
 	</div>
-</div>
+</div> #}
 {% include 'macros/lastedited.html.twig' with {'entity': latestMotherboards, 'type':'motherboard', 'entity_label':'boards', 'path': 'motherboard_show'} %}
 {% include 'macros/lastedited.html.twig' with {'entity': latestCards, 'type':'card', 'entity_label':'expansion cards', 'path': 'expansioncard_show'} %}
 {% endblock %}

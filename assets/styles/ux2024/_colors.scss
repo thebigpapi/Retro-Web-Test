@@ -1,0 +1,62 @@
+@use 'sass:color';
+
+// Starting with blue and white from old palette
+// Used random generator at coolors.co
+$palette-light-pos1: #0979C3; // Honolulu Blue
+$palette-light-pos2: #F9F9F9; // Seasalt
+$palette-light-pos3: #008f70; // Viridian
+$palette-light-pos4: #FB8F67; // Coral
+$palette-light-pos5: #885053; // Rose taupe
+
+// Generic colors for text and body
+$main-frg-light: #212121;
+$main-bkg-light: #f9f9f9;
+$head-frg: #f9f9f9;
+$head-bkg: #2c2c2c;
+$side-frg: #d0d0d0;
+$side-bkg: #212121;
+$link-hover: color.scale($palette-light-pos1, $lightness: 30%);
+$special-hover: color.scale($palette-light-pos3, $lightness: 20%);
+$table-alt-row: color.scale($main-bkg-light, $lightness: -5%);
+
+:root {
+    --main-bkg: #{$palette-light-pos2};
+    --main-frg: #{$main-frg-light};
+    --head-bkg: #{$head-bkg};
+    --head-frg: #{$palette-light-pos2};
+    --side-bkg: #{$side-bkg};
+    --side-frg: #{$side-frg};
+
+    --layout-shadow: rgba(0, 0, 0, 0.66);
+    --element-shadow: rgba(33, 33, 33, 0.33);
+
+    --std-link-normal: #{$palette-light-pos1};
+    --std-link-hover: #{$link-hover};
+
+    --special-link-normal: #{$palette-light-pos3};
+    --special-link-hover: #{$special-hover};
+
+    --table-alt-row: #{$table-alt-row};
+}
+
+$head-shadow: 0px 4px 6px 0px var(--layout-shadow);
+$foot-shadow: 0px -4px 6px 0px var(--layout-shadow);
+$navbar-shadow: 2px 0px 4px 0px var(--layout-shadow);
+$input-shadow: 0px 4px 6px 0px var(--element-shadow);
+$button-shadow: 0px 2px 2px 0px var(--element-shadow);
+
+$navlink-normal: #d0d0d0;
+$navlink-hover: #3dabf5;
+
+$headinput-bkg: #3e3e3e;
+$headinput-bkg-active: #666565;
+$input-border-normal: 2px solid #767676;
+$input-border-active: 2px solid #3dabf5;
+
+$card-border-normal: 1px solid #767676;
+
+$text-muted: #898989;
+$image-bkg: #e3e3e3;
+
+$table-alt-bkg: #8850531f;
+$table-head-border: 1px solid #767676;

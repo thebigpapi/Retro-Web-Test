@@ -1,44 +1,55 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Support Us - The Retro Web{% endblock %}
+{% block title %}Support us - The Retro Web{% endblock %}
 {% block subnav %}
-<li class="flex navbar-li">
-    <div class="flex">
-        <svg class="navbar-svg" viewBox="0 0 24 44" preserveAspectRatio="none" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <path d="M.293 0l22 22-22 22h1.414l22-22-22-22H.293z"></path>
-        </svg>
-        <code class="navbar-code">Support Us</code>
-    </div>
+<li>
+	<span>Support us</span>
 </li>
 {% endblock %}
 
 {% block body %}
-	<div class="title">Support Us</div>
-	<div class="perks">
-		<p><b>Help us keeping this project alive!</b></p>
-	</div>
-	<div>{% apply markdown_to_html %}We are a small scale operation, completely homebrew. We're building this website to help people like you finding information and resources that would be otherwise hard to find on the Internet. Consider it more like a fun side-project.
-This is the reason we decided not to profit on this website, yet. If you decide to donate, be aware that we're not putting your money straight in our pockets, but it all goes to paying bills for keeping this place alive (namely, hosting space and domain). If we'll ever consider splitting some of the revenue among authors and contributors, we'll let you know.
 
-If you like our website, we would greatly appreciate your financial help for keeping it online and in working order. There are two ways you can help support us:
-{% endapply %}</div>
-	<div class="perks">
-		<div class="perks-list">
-			<div class="perk">
-				<a href="https://www.patreon.com/theretroweb">
-					<div class="perk-image"><img src="{{ absolute_url(asset('build/icons/patreon.svg')) }}" width="24" height="24" alt="liberapay"></div>
-					<div class="perk-name">Patreon</div>
-					<div class="perk-date">The most popular way to support your favorite creators, with pre-established monthly pledges. Some of what you pay goes to Patreon for their own running costs and for paying their team.</div>
-				</a>
-			</div>
-			<div class="perk">
-				<a href="https://liberapay.com/TheRetroWeb_/">
-					<div class="perk-image"><img src="{{ absolute_url(asset('build/icons/liberapay.svg')) }}" width="24" height="24" alt="liberapay"></div>
-					<div class="perk-name">LiberaPay</div>
-					<div class="perk-date">The most flexible option, where you can set up your own payment scheme. It can be a weekly, monthly or yearly pledge, for the exact amount you want and your favorite currency. No constraints applied.</div>
-				</a>
-			</div>
-		</div>
+<div class="app-column-layout app-column-align-start">
+
+<div class="app-column-aside" id="gallery-container">
+<div class="app-show-gallery" id="gallery">
+	{% include 'macros/card.html.twig' with {
+		'url': "https://www.patreon.com/theretroweb",
+		'image': absolute_url(asset('build/icons/patreon.svg')),
+		'imageAlt': "Patreon logo",
+		'title': "Patreon",
+		'date': "The most popular way to support your favorite creators, with pre-established monthly pledges. Some of what you pay goes to Patreon for their own running costs and for paying their team."
+	} %}
+	{% include 'macros/card.html.twig' with {
+		'url': "https://liberapay.com/TheRetroWeb_/",
+		'image': absolute_url(asset('build/icons/liberapay.svg')),
+		'imageAlt': "LiberaPay logo",
+		'title': "LiberaPay",
+		'date': "The most flexible option, where you can set up your own payment scheme. It can be a weekly, monthly or yearly pledge, for the exact amount you want and your favorite currency. No constraints applied."
+	} %}
+</div>
+</div>
+
+<div class="app-column-main">
+	<div class="app-content-title">Support us</div>
+	<p class="app-paragraph-heading">Help us keeping this project alive!</p>
+	<div class="app-paragraph">
+		{% apply markdown_to_html %}
+		We are a small scale operation, completely homebrew. We're building this website to help people like you finding
+		information and resources that would be otherwise hard to find on the Internet. Consider it more like a fun
+		side-project.
+
+		This is the reason we decided not to profit on this website, yet. If you decide to donate, be aware that we're
+		not putting your money straight in our pockets, but it all goes to paying bills for keeping this place alive
+		(namely, hosting space and domain). If we'll ever consider splitting some of the revenue among authors and
+		contributors, we'll let you know.
+
+		If you like our website, we would greatly appreciate your financial help for keeping it online and in working order.
+		
+		{% endapply %}
 	</div>
+</div>
+
+</div>
 
 {% endblock %}

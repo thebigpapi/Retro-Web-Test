@@ -1,44 +1,55 @@
 {% apply spaceless %}
-<div class="show-nav" id="sh-nav">
+{% set tabIndex = 0 %}
+<div class="app-show-navbar" data-target="{{ prefix }}">
     {% if types is not empty %}
-        <input type="radio" name="tabs" id="tab-nav-1" data-tab="sh-general" checked>
-        <label for="tab-nav-1"><img src="{{ absolute_url(asset('build/icons/data.svg')) }}" alt="" width="24" height="24">Description</label>
+        <input type="radio" name="tabs" id="{{ prefix }}-tab-{{ tabIndex }}" data-tab="sh-general">
+        <label for="{{ prefix }}-tab-{{ tabIndex }}" class="app-icon-and-text"><img src="{{ absolute_url(asset('build/icons/data.svg')) }}" alt="" width="24" height="24">Description</label>
+        {% set tabIndex = tabIndex + 1 %}
     {% endif %}
     {% if "chips" in types %}
-        <input type="radio" name="tabs" id="tab-nav-2" data-tab="sh-expchips">
-        <label for="tab-nav-2"><img src="{{ absolute_url(asset('build/icons/chip.svg')) }}" alt="" width="24" height="24">Chips</label>
+        <input type="radio" name="tabs" id="{{ prefix }}-tab-{{ tabIndex }}" data-tab="sh-expchips">
+        <label for="{{ prefix }}-tab-{{ tabIndex }}"><img src="{{ absolute_url(asset('build/icons/chip.svg')) }}" alt="" width="24" height="24">Chips</label>
+        {% set tabIndex = tabIndex + 1 %}
     {% endif %}
     {% if "chipspecs" in types %}
-        <input type="radio" name="tabs" id="tab-nav-2" data-tab="sh-expchips">
-        <label for="tab-nav-2"><img src="{{ absolute_url(asset('build/icons/chip.svg')) }}" alt="" width="24" height="24">Chips/specs</label>
+        <input type="radio" name="tabs" id="{{ prefix }}-tab-{{ tabIndex }}" data-tab="sh-expchips">
+        <label for="{{ prefix }}-tab-{{ tabIndex }}"><img src="{{ absolute_url(asset('build/icons/chip.svg')) }}" alt="" width="24" height="24">Chips/specs</label>
+        {% set tabIndex = tabIndex + 1 %}
     {% endif %}
     {% if "specs" in types %}
-        <input type="radio" name="tabs" id="tab-nav-2" data-tab="sh-specs">
-        <label for="tab-nav-2"><img src="{{ absolute_url(asset('build/icons/tag.svg')) }}" alt="" width="24" height="24">Specs</label>
+        <input type="radio" name="tabs" id="{{ prefix }}-tab-{{ tabIndex }}" data-tab="sh-specs">
+        <label for="{{ prefix }}-tab-{{ tabIndex }}"><img src="{{ absolute_url(asset('build/icons/tag.svg')) }}" alt="" width="24" height="24">Specs</label>
+        {% set tabIndex = tabIndex + 1 %}
     {% endif %}
     {% if "bios" in types %}
-        <input type="radio" name="tabs" id="tab-nav-3" data-tab="sh-bios">
-        <label for="tab-nav-3"><img src="{{ absolute_url(asset('build/icons/awchip.svg')) }}" alt="" width="24" height="24">BIOS</label>
+        <input type="radio" name="tabs" id="{{ prefix }}-tab-{{ tabIndex }}" data-tab="sh-bios">
+        <label for="{{ prefix }}-tab-{{ tabIndex }}"><img src="{{ absolute_url(asset('build/icons/awchip.svg')) }}" alt="" width="24" height="24">BIOS</label>
+        {% set tabIndex = tabIndex + 1 %}
     {% endif %}
     {% if "associations" in types %}
-        <input type="radio" name="tabs" id="tab-nav-3" data-tab="sh-expchips">
-        <label for="tab-nav-3"><img src="{{ absolute_url(asset('build/icons/chip.svg')) }}" alt="" width="24" height="24">Associations</label>
+        <input type="radio" name="tabs" id="{{ prefix }}-tab-{{ tabIndex }}" data-tab="sh-expchips">
+        <label for="{{ prefix }}-tab-{{ tabIndex }}"><img src="{{ absolute_url(asset('build/icons/chip.svg')) }}" alt="" width="24" height="24">Associations</label>
+        {% set tabIndex = tabIndex + 1 %}
     {% endif %}
     {% if "drivers" in types %}
-        <input type="radio" name="tabs" id="tab-nav-4" data-tab="sh-driver">
-        <label for="tab-nav-4"><img src="{{ absolute_url(asset('build/icons/hardware.svg')) }}" alt="" width="24" height="24">Drivers</label>
+        <input type="radio" name="tabs" id="{{ prefix }}-tab-{{ tabIndex }}" data-tab="sh-driver">
+        <label for="{{ prefix }}-tab-{{ tabIndex }}"><img src="{{ absolute_url(asset('build/icons/hardware.svg')) }}" alt="" width="24" height="24">Drivers</label>
+        {% set tabIndex = tabIndex + 1 %}
     {% endif %}
     {% if "docs" in types %}
-        <input type="radio" name="tabs" id="tab-nav-5" data-tab="sh-docs">
-        <label for="tab-nav-5"><img src="{{ absolute_url(asset('build/icons/manual.svg')) }}" alt="" width="24" height="24">Documentation</label>
+        <input type="radio" name="tabs" id="{{ prefix }}-tab-{{ tabIndex }}" data-tab="sh-docs">
+        <label for="{{ prefix }}-tab-{{ tabIndex }}"><img src="{{ absolute_url(asset('build/icons/manual.svg')) }}" alt="" width="24" height="24">Documentation</label>
+        {% set tabIndex = tabIndex + 1 %}
     {% endif %}
-    <input type="radio" name="tabsh" id="tab-nav-h" data-URL="{{ path('dh_auditor_show_entity_history', {id:entity.getId(), entity:'App-Entity-' ~ entityName}) }}">
-    <label for="tab-nav-h"><img src="{{ absolute_url(asset('build/icons/calendar.svg')) }}" alt="" width="24" height="24">Logs</label>
+    <input type="radio" name="tabsh" id="{{ prefix }}-tab-{{ tabIndex }}" data-URL="{{ path('dh_auditor_show_entity_history', {id:entity.getId(), entity:'App-Entity-' ~ entityName}) }}">
+    <label for="{{ prefix }}-tab-{{ tabIndex }}"><img src="{{ absolute_url(asset('build/icons/calendar.svg')) }}" alt="" width="24" height="24">Logs</label>
+    {% set tabIndex = tabIndex + 1 %}
     {% if is_granted(role) %}
-        <input type="radio" name="tabs0" id="tab-nav-0" data-URL="{{ ea_url().setDashboard('App\\Controller\\Admin\\DashboardController')
+        <input type="radio" name="tabs0" id="{{ prefix }}-tab-{{ tabIndex }}" data-URL="{{ ea_url().setDashboard('App\\Controller\\Admin\\DashboardController')
             .setController('App\\Controller\\Admin\\' ~ entityName ~ 'CrudController')
             .setAction('edit').setEntityId(entity.getId())}}">
-        <label for="tab-nav-0"><img src="{{ absolute_url(asset('build/icons/edit.svg')) }}" alt="" width="24" height="24">Edit {{name}}</label>
+        <label for="{{ prefix }}-tab-{{ tabIndex }}"><img src="{{ absolute_url(asset('build/icons/edit.svg')) }}" alt="" width="24" height="24">Edit {{name}}</label>
+        {% set tabIndex = tabIndex + 1 %}
     {% endif %}
 </div>
 {% endapply %}

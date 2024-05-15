@@ -1,7 +1,7 @@
 getDates();
 getDatesSimple();
 function getDates(){
-    let list = document.getElementsByClassName("perk-date");
+    let list = document.getElementsByClassName("app-card-date");
     if(list){
         for (let element of list) {
             try {
@@ -25,7 +25,7 @@ function getDates(){
     }
 }
 function getDatesSimple(){
-    let list = document.getElementsByClassName("perk-date-simple");
+    let list = document.getElementsByClassName("app-card-date-simple");
     if(list){
         for (let element of list) {
             try {

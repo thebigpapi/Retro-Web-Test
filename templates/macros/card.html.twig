@@ -1,0 +1,26 @@
+<div class="app-card">
+{% if url is defined %}
+<a href="{{ url }}">
+{% endif %}
+
+{% if image is defined %}
+<div class="app-card-image-container"><div class="app-card-image">
+    <img src="{{ image }}" loading="lazy" width="999" height="999"
+        {% if imageAlt is defined %} title="{{ imageAlt }}" {% endif %}
+        >
+</div></div>
+{% endif %}
+
+<div class="app-card-text">
+    {% if title is defined %}
+    <div class="app-card-title">{{ title }}</div>
+    {% endif %}
+    {% if date is defined %}
+    <div class="app-card-date">{{ date }}</div>
+    {% endif %}
+</div>
+
+{% if url is defined %}
+</a>
+{% endif %}
+</div>

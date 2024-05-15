@@ -27,24 +27,12 @@
 	<link rel="alternate" hreflang="x-default" href="{{ absolute_url(path('expansion_slot_show', {id: expansion_slot.getId()})) }}"/>
 {% endblock %}
 {% block subnav %}
-<li class="flex navbar-li">
-    <div class="flex items-center">
-        <svg class="navbar-svg" viewBox="0 0 24 44" preserveAspectRatio="none" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <path d="M.293 0l22 22-22 22h1.414l22-22-22-22H.293z"></path>
-        </svg>
-        <div class="navbar-anchor">
-			<img src="{{ absolute_url(asset('build/icons/exp_slot.svg')) }}" width="24" height="24" alt="port">
-            <code class="text-pink-500">Expansion slots</code>
-        </div>
-    </div>
+<li>
+	<img src="{{ absolute_url(asset('build/icons/exp_slot.svg')) }}" width="24" height="24" alt="port">
+	<span>Expansion slots</span>
 </li>
-<li class="flex">
-    <div class="flex">
-        <svg class="navbar-svg" viewBox="0 0 24 44" preserveAspectRatio="none" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <path d="M.293 0l22 22-22 22h1.414l22-22-22-22H.293z"></path>
-        </svg>
-        <code class="navbar-code">ID: {{expansion_slot.getId()}}</code>
-    </div>
+<li>
+	<span>ID: {{expansion_slot.getId()}}</span>
 </li>
 {% endblock %}
 

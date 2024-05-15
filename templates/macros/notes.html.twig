@@ -1,36 +1,34 @@
-
-
 {% if entity.getKnownIssues() is defined and entity.getKnownIssues() is not empty %}
-	<div class="textarea">
-        <h3><b>Known issues:</b></h3>
-{% apply markdown_to_html %}{% for issue in entity.getKnownIssues()|sort %}
-* {{ issue.getName() }}
+<p class="app-paragraph-heading">Known issues</p>
+<div class="app-note-grid">
+{% for issue in entity.getKnownIssues()|sort %}
+<div class="app-note">
+    <div class="app-note-heading">{% apply markdown_to_html %}
+    {{ issue.getName() }}
 
-{{ issue.getDescription() }}
+    {% endapply %}</div>
+    <div class="app-note-body">{% apply markdown_to_html %}
+    {{ issue.getDescription() }}
 
-{% endfor %}{% endapply %}
-	</div>
+    {% endapply %}</div>
+</div>
+{% endfor %}
+</div>
 {% endif %}
+
 {% if entity.note is defined %}
     {% if entity.note is not null %}
-        <div class="textarea">
-            <h3><b>Notes:</b></h3>
-            {{ entity.note|markdown_to_html }}
-        </div>
+        <p class="app-paragraph-heading">Notes</p>
+        <div>{{ entity.note|markdown_to_html }}</div>
     {% endif %}
 {% else %}
     {% if entity is iterable %}
-        <div class="textarea">
-            {% for item in entity|filter(a => a.getDescription() is not null) %}
-                {% if loop.first %}<h3><b>{% if title is defined %}{{title}}{% else %}Description{% endif %}:</b></h3>{% endif %}
-                {{ item.getDescription() ? item.getDescription()|markdown_to_html }}
-
-            {% endfor %}
-        </div>
+        {% for item in entity|filter(a => a.getDescription() is not null) %}
+            {% if loop.first %}<p class="app-paragraph-heading">{{ title ?? "Description" }}</p>{% endif %}
+            <div>{{ item.getDescription() ? item.getDescription()|markdown_to_html }}</div>
+        {% endfor %}
     {% elseif entity.getDescription() is not null %}
-        <div class="textarea">
-            <h3><b>{% if title is defined %}{{title}}{% else %}Description{% endif %}:</b></h3>
-            {{ entity.getDescription()|markdown_to_html }}
-        </div>
+        <p class="app-paragraph-heading">{{ title ?? "Description" }}</p>
+        <div>{{ entity.getDescription()|markdown_to_html }}</div>
     {% endif %}
 {% endif %}

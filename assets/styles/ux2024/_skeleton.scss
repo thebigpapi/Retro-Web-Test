@@ -1,0 +1,78 @@
+* {
+    font-family: inherit;
+}
+
+html {
+    height: 100%;
+    font-family: $standard-font;
+    color: var(--main-frg);
+    background: var(--main-bkg);
+}
+
+body {
+    font-family: $standard-font;
+    color: var(--main-frg);
+    background: var(--main-bkg);
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; //glightbox footer fix
+}
+
+header {
+    font-family: $standard-font;
+    color: var(--head-frg);
+    background: var(--head-bkg);
+
+    div {
+        padding-left: 0.5em;
+        padding-right: 0.5em;
+    }
+}
+
+footer {
+    font-family: $standard-font;
+    color: var(--head-frg);
+    background: var(--head-bkg);
+    display: flex;
+    align-items: center;
+
+    div {
+        padding-left: 0.5em;
+        padding-right: 0.5em;
+    }
+}
+
+main {
+    display: flex;
+    height: 100%;
+    flex-grow: 1;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+    padding: 0;
+    margin: 0;
+}
+
+fieldset {
+    border: 0;
+}
+
+input:focus,
+select:focus,
+textarea:focus,
+button:focus {
+    outline: none;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-weight: $font-weight-regular;
+}
