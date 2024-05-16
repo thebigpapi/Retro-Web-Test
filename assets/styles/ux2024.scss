@@ -493,6 +493,7 @@ div.app-show-navbar {
         border-bottom: $input-border-normal;
         background: $image-bkg;
         transition: $text-color-anim, $input-anim, $button-anim;
+        user-select: none;
 
         &:hover {
             color: var(--std-link-hover);
