@@ -487,6 +487,7 @@ div.app-show-navbar {
         box-shadow: $button-shadow;
     }
 
+    &>a,
     &>label {
         cursor: pointer;
         display: flex;
@@ -499,6 +500,7 @@ div.app-show-navbar {
         background: $image-bkg;
         transition: $text-color-anim, $input-anim, $button-anim;
         user-select: none;
+        color: inherit;
 
         &:hover {
             color: var(--std-link-hover);

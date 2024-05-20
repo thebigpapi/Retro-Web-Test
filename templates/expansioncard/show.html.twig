@@ -398,11 +398,15 @@
 				</div>
 			{% else %}
 				{% if cardBios is not empty %}
-					<p class="app-paragraph-heading app-icon-and-text">
+					{# <p class="app-paragraph-heading app-icon-and-text">
 						<img src="{{ absolute_url(asset('build/icons/awchip.svg')) }}" alt="bios" width="32" height="32">
 						<span>{{ cardBios|length }} card BIOS file{% if cardBios|length != 1 %}s{% endif %} available</span>
-					</p>
-					{% include 'macros/bios.html.twig' with {'entity': cardBios, 'entity_label':'chip', 'audit_entity':'App-Entity-ExpansionChipBios'} %}
+					</p> #}
+					{% include 'macros/bios.html.twig' with {
+						'entity': cardBios,
+						'entity_label': 'chip',
+						'audit_entity': 'App-Entity-ExpansionChipBios'
+					} %}
 				{% else %}
 					<div class="app-icon-and-text">
 						<span class="app-emoji">&#x1F615;</span>
@@ -411,7 +415,7 @@
 				{% endif %}
 
 				{% if chipBios is not empty %}
-					<p><b>Warning!</b> Chip BIOS images might not be fully compatible with this card, use at your own risk!</p>
+					<p><b>Warning!</b> Generic BIOS images might not be fully compatible with this card, use at your own risk!</p>
 					<div class="app-show-navbar" data-target="nav-card-chipbios">
 					{% for chip in chipBios %}
 						<input type="radio" name="tabs" id="nav-card-chipbios-tab-{{ loop.index }}" data-tab="nav-card-chipbios{{ loop.index }}">
@@ -421,7 +425,11 @@
 					<div class="app-show-tabnav" id="nav-card-chipbios">
 					{% for chip in chipBios %}
 						<div class="app-show-tab" id="nav-card-chipbios{{ loop.index }}">
-							{% include 'macros/bios.html.twig' with {'entity': chip.getExpansionChipBios(), 'entity_label':'chip', 'audit_entity':'App-Entity-ExpansionChipBios'} %}
+							{% include 'macros/bios.html.twig' with {
+								'entity': chip.getExpansionChipBios(),
+								'entity_label': 'chip',
+								'audit_entity': 'App-Entity-ExpansionChipBios'
+							} %}
 						</div>
 					{% endfor %}
 					</div>
@@ -431,12 +439,20 @@
 
 		<!-- DRIVERS -->
 		<div class="app-show-tab" id="sh-driver" data-anchor="driver">
-			{% include 'macros/drivers.html.twig' with {'entity': expansioncard.getAllDrivers(), 'css': 'last'} %}
+			{% include 'macros/drivers.html.twig' with {
+				'entity': expansioncard.getAllDrivers(),
+				'css': 'last'
+			} %}
 		</div>
 
 		<!-- Documentation -->
 		<div class="app-show-tab" id="sh-docs" data-anchor="docs">
-			{% include 'macros/manuals.html.twig' with {'entity': expansioncard.getDocumentations(), 'chips': expansioncard.getChipDocs(), 'entity_label':'card', 'audit_entity':'App-Entity-ExpansionCardDocumentation'} %}
+			{% include 'macros/manuals.html.twig' with {
+				'entity': expansioncard.getDocumentations(),
+				'chips': expansioncard.getChipDocs(),
+				'entity_label': 'card',
+				'audit_entity': 'App-Entity-ExpansionCardDocumentation'
+			} %}
 		</div>
 	</div>
 </div> {# div.app-show-entity #}
