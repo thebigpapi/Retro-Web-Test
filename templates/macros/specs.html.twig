@@ -1,30 +1,37 @@
-<div class="textarea" style="border-top: none;">
+<div class="app-note-grid">
     {% if entity.getSimpleMiscSpecs() is not empty %}
-    <ul>
-        {% for spec_key, spec_value in entity.getSimpleMiscSpecs() %}
-        <li>{{spec_key}}: {{spec_value}}</li>
-        {% endfor %}
-    </ul>
-    {% endif %}
-    {% if entity.getTableMiscSpecs() is not empty %}
-    <div class="spec-section">
-        {% for spec_key, spec_value in entity.getTableMiscSpecs() %}
-            <table><thead><tr><th colspan="2">{{spec_key}}</th><tr></thead>
-            {% for key, value in spec_value %}
-                <tr>
-                    <td>{{key}}</td>
-                    <td>{% if value == 'true' %}
-                        <input type="checkbox" disabled checked/>
-                    {% elseif value == 'false' %}
-                        <input type="checkbox" disabled/>
-                    {% else %}
-                        {{value}}
-                    {% endif %}
-                    </td>
-                </tr>
+    <div class="app-note">
+        <p class="app-note-heading">General</p>
+        <div class="app-note-body app-item-grid">
+            {% for spec_key, spec_value in entity.getSimpleMiscSpecs() %}
+            <div class="item">
+                <span class="highlight">{{ spec_key }}</span>
+                <span>{{ spec_value }}</span>
+            </div>
             {% endfor %}
-            </table>
-        {% endfor %}
+        </div>
     </div>
     {% endif %}
+
+    {% for spec_key, spec_value in entity.getTableMiscSpecs() %}
+    <div class="app-note">
+        <p class="app-note-heading">{{ spec_key }}</p>
+        <div class="app-note-body app-item-grid">
+            {% for key, value in spec_value %}
+            <div class="item">
+                <span class="highlight">{{ key }}</span>
+                <span>
+                    {% if value == 'true' %}
+                        <input type="checkbox" disabled checked/> Yes
+                    {% elseif value == 'false' %}
+                        <input type="checkbox" disabled/> No
+                    {% else %}
+                        {{ value }}
+                    {% endif %}
+                </span>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endfor %}
 </div>

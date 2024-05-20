@@ -1,34 +1,36 @@
 {% if entity is not empty %}
-    <div class="plain-list w300p table">
-        <div class="list-entry centered head">
-            <div>Version</div>
-            <div>Note</div>
-            <div>File</div>
-            <div>Logs</div>
-        </div>
-        {% for bios in entity|sort((a, b) => b.version <=> a.version) %}
-        <div class="list-entry centered {% if loop.index is divisible by(2) %}alt{% endif %}">
-            <div class="header-label">Version</div>
-            <div>{{ bios.getVersion() }}</div>
-            <div class="header-label">Note</div>
-            <div>{{ bios.getNote() }}</div>
-            <div class="header-label">File</div>
-            <div>
-                {% if bios.getFileName() is not null %}
-                    <a class="combo" href="{{ vich_uploader_asset(bios, 'romFile') }}">
-                        <img src="{{ absolute_url(asset('build/icons/dw.svg')) }}" alt="" width="16" height="16">
-                        {% set fname = bios.getFileName() %}
-                        <span>{{ fname|slice(0, fname|length - 27) ~ fname[fname|length - 4 :] }}</span>
-                    </a>
-                {% endif %}
-            </div>
-            <div class="header-label">Logs</div>
-            <div>
-                <a href="{{ path('dh_auditor_show_entity_history', { 'entity': audit_entity, 'id': bios.getId() }) }}">
-                    <img src="{{ absolute_url(asset('build/icons/calendar.svg')) }}" alt="pwr" width="16" height="16">
-                </a>
-            </div>
-        </div>
-        {% endfor %}
+<div class="app-table app-specific-biossimple">
+    <div class="app-table-header">
+        <span>Version</span>
+        <span>File</span>
+        <span>Logs</span>
     </div>
+    {% for bios in entity|sort((a, b) => b.version <=> a.version) %}
+    <div class="app-table-row-group">
+    <div class="app-table-row">
+        <div class="header-label">Version</div>
+        <div>{{ bios.getVersion() }}</div>
+        <div class="header-label">File</div>
+        <div>
+            {% if bios.getFileName() is not null %}
+                <a class="app-icon-and-text" href="{{ vich_uploader_asset(bios, 'romFile') }}">
+                    <img src="{{ absolute_url(asset('build/icons/dw.svg')) }}" alt="" width="16" height="16">
+                    {% set fname = bios.getFileName() %}
+                    <span>{{ fname|slice(0, fname|length - 27) ~ fname[fname|length - 4 :] }}</span>
+                </a>
+            {% endif %}
+        </div>
+        <div class="header-label">Logs</div>
+        <div>
+            <a href="{{ path('dh_auditor_show_entity_history', { 'entity': audit_entity, 'id': bios.getId() }) }}">
+                <img src="{{ absolute_url(asset('build/icons/calendar.svg')) }}" alt="pwr" width="16" height="16">
+            </a>
+        </div>
+    </div>
+    {% if bios.getNote() is not empty %}
+    <div class="app-table-colspan muted"><b>Note</b>&nbsp;{{ bios.getNote() }}</div>
+    {% endif %}
+    </div>
+    {% endfor %}
+</div>
 {% endif %}

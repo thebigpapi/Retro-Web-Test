@@ -92,9 +92,9 @@
 		'types': ['chipspecs', 'bios', 'drivers', 'docs'],
 		'name': 'card',
 		'role': 'ROLE_USER',
-		'prefix': 'nav-expchip-main'
+		'prefix': 'nav-card-main'
 	} %}
-	<div class="app-show-tabnav" id="nav-expchip-main" primary>
+	<div class="app-show-tabnav" id="nav-card-main" primary>
 		<!-- DESCRIPRION -->
 		<div class="app-show-tab" id="sh-general" data-anchor="general">
 			<p class="app-paragraph-heading">General info</p>
@@ -184,7 +184,7 @@
 								{% endfor %}
 							{% endfor %}
 						{% else %}
-							<span class='badge-secondary'>Empty</span>
+							<span class='badge badge-secondary'>Empty</span>
 						{% endif %}
 					</div>
 				</div>
@@ -324,94 +324,116 @@
 			{% include 'macros/aliases.html.twig' with {'entity':expansioncard.getExpansionCardAliases(), 'msg': 'Also known as'} %}
 			{% include 'macros/notes.html.twig' with {'entity': expansioncard} %}
 		</div>
+
 		<div class="app-show-tab" id="sh-expchips" data-anchor="expchips">
 			<!-- Expansion chips -->
+			<p class="app-paragraph-heading app-icon-and-text">
+				<img src="{{ absolute_url(asset('build/icons/chip.svg')) }}" alt="cpu" width="24" height="24">
+				Chips
+			</p>
 			{% if expansioncard.getExpansionChips() is not empty %}
-			<div class="quick-spec-table">
-				{% for type in expansionchiptype %}
-					{% for chip in expansioncard.getExpansionChips()|filter(a => a.getType().getName() == type.getName())%}
-						{% if loop.first %}<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/chip.svg')) }}" alt="chip" width="24" height="24">{{chip.getType().getName()}} chips</div><div class="tag-container">{% endif %}
-						
-						{% if (attribute(chip, 'getExpansionChipBios') is defined)%}
-						<a href="{{ path('expansion_chip_show', {id: chip.getId()}) }}"><span class="text-block">{{ chip.getFullName() }}</span></a>
-						{% else %}
-						<a href="{{ path('processor_show', {id: chip.getId()}) }}"><span class="text-block">{{ chip.getFullName() }}</span></a>
-						{% endif %}
-						{% if loop.index == expansioncard.getExpansionChips()|filter(a => a.getType().getName() == type.getName())|length %}</div>{% endif %}
+				<div class="app-item-grid">
+					{% for type in expansionchiptype %}
+						{% for chip in expansioncard.getExpansionChips()|filter(a => a.getType().getName() == type.getName())%}
+							{% if loop.first %}
+							<div class="item">
+								<div class="highlight app-icon-and-text">
+									<img src="{{ absolute_url(asset('build/icons/chip.svg')) }}" alt="chip" width="24" height="24">
+									{{ chip.getType().getName() }} chips
+								</div>
+								<div class="app-tags">
+							{% endif %}
+							
+							{% if (attribute(chip, 'getExpansionChipBios') is defined)%}
+								<a href="{{ path('expansion_chip_show', {id: chip.getId()}) }}">{{ chip.getFullName() }}</a>
+							{% else %}
+								<a href="{{ path('processor_show', {id: chip.getId()}) }}">{{ chip.getFullName() }}</a>
+							{% endif %}
+							{% if loop.index == expansioncard.getExpansionChips()|filter(a => a.getType().getName() == type.getName())|length %}
+								</div>
+							</div>
+							{% endif %}
+						{% endfor %}
 					{% endfor %}
-				{% endfor %}
-			</div>
+				</div>
 			{% else %}
-				<div>No chips</div>
+				<span class='badge badge-secondary'>Empty</span>
 			{% endif %}
+
 			<!-- Card specs -->
 			{% if expansioncard.getMiscSpecs() is not empty %}
+				<p class="app-paragraph-heading app-icon-and-text">Card specifications</p>
 				{% include 'macros/specs.html.twig' with {'entity':expansioncard} %}
-			{% else %}
-				<div>No card specs</div>
 			{% endif %}
+
 			<!-- Expansion chips specs -->
-			{% if expansioncard.getExpansionChips()|filter(a => a.getMiscSpecs() is not empty) is not empty %}
-				<div style="padding: 6px 0px;"><b style="font-size:20px;">Chip specifications </b><small>(click to expand)</small></div>
-				{% for chip in expansioncard.getExpansionChips()|filter(a => a.getMiscSpecs() is not empty)%}
-					<div class="dropdown-trw">
-						<label class="dropdown-header">
-							<img src="{{ absolute_url(asset('build/icons/chip.svg')) }}" alt="chip" width="24" height="24">
-							<span><i>{{chip.getFullName()}}</i></span>
-							<input class="dropdown" type="checkbox" />
-						</label>
-						<div class="dropdown-contents">
-							{% include 'macros/specs.html.twig' with {'entity':chip} %}
-						</div>
+			{% set chipSpecList = expansioncard.getExpansionChips()|filter(a => a.getMiscSpecs() is not empty) %}
+			{% if chipSpecList is not empty %}
+				<p class="app-paragraph-heading app-icon-and-text">Chip specifications</p>
+				<div class="app-show-navbar" data-target="nav-card-chipspecs">
+				{% for chip in chipSpecList %}
+					<input type="radio" name="tabs" id="nav-card-chipspecs-tab-{{ loop.index }}" data-tab="nav-card-chip{{ loop.index }}">
+					<label for="nav-card-chipspecs-tab-{{ loop.index }}" class="app-icon-and-text">{{ chip.getFullName() }}</label>
+				{% endfor %}
+				</div>
+				<div class="app-show-tabnav" id="nav-card-chipspecs">
+				{% for chip in chipSpecList %}
+					<div class="app-show-tab" id="nav-card-chip{{ loop.index }}">
+						{% include 'macros/specs.html.twig' with {'entity':chip} %}
 					</div>
 				{% endfor %}
+				</div>
 			{% endif %}
 		</div>
+
 		<!-- BIOSes -->
 		<div class="app-show-tab" id="sh-bios" data-anchor="bios">
 			{% set chipBios =  expansioncard.getExpansionChips()|filter(a => attribute(a, 'getExpansionChipBios') is defined and a.getExpansionChipBios() is not empty) %}
 			{% set cardBios =  expansioncard.getExpansionCardBios() %}
-			<div class="show-downloads-group">
-			{% if cardBios is not empty %}
-				<div class="show-downloads-group-header">
-					<img src="{{ absolute_url(asset('build/icons/awchip.svg')) }}" alt="bios" width="32" height="32">
-					<span>{{ cardBios|length }} card BIOS file{% if cardBios|length != 1 %}s{% endif %} available</span>
-				</div>
-				{% include 'macros/bios.html.twig' with {'entity': cardBios, 'entity_label':'chip', 'audit_entity':'App-Entity-ExpansionChipBios'} %}
-			{% else %}
-				<div class="show-downloads-group-header">
-					<img src="{{ absolute_url(asset('build/icons/awchip.svg')) }}" alt="biosc" width="32" height="32">
-					<span>No {% if chipBios is not empty %}card{% endif %} BIOS files available</span>
-				</div>
-			{% endif %}
-			</div>
 
-			{% if chipBios is not empty %}
-			<div class="show-downloads-group last">
-				<div style="height:15px;"></div>
-				<div class="show-downloads-group-header">
-					<img src="{{ absolute_url(asset('build/icons/awchip.svg')) }}" alt="chipbios" width="32" height="32">
-					<span>{{ chipBios|length }} chip{% if chipBios|length != 1 %}s{% endif %} with BIOS files available </span><div><i>Warning: might not be fully compatible with this card, use at your own risk</i></div>
+			{% if cardBios is empty and chipBios is empty %}
+				<div class="app-icon-and-text">
+					<span class="app-emoji">&#x1F615;</span>
+					<span>No BIOS available</span>
 				</div>
-				{% for chip in chipBios %}
-					<div class="dropdown-trw">
-						<label class="dropdown-header">
-							<img src="{{ absolute_url(asset('build/icons/chip.svg')) }}" alt="chip" width="24" height="24">
-							<span><i>{{chip.getFullName()}}</i></span>
-							<input class="dropdown" type="checkbox" />
-						</label>
-						<div class="dropdown-contents">
+			{% else %}
+				{% if cardBios is not empty %}
+					<p class="app-paragraph-heading app-icon-and-text">
+						<img src="{{ absolute_url(asset('build/icons/awchip.svg')) }}" alt="bios" width="32" height="32">
+						<span>{{ cardBios|length }} card BIOS file{% if cardBios|length != 1 %}s{% endif %} available</span>
+					</p>
+					{% include 'macros/bios.html.twig' with {'entity': cardBios, 'entity_label':'chip', 'audit_entity':'App-Entity-ExpansionChipBios'} %}
+				{% else %}
+					<div class="app-icon-and-text">
+						<span class="app-emoji">&#x1F615;</span>
+						<span>No card-specific BIOS available</span>
+					</div>
+				{% endif %}
+
+				{% if chipBios is not empty %}
+					<p><b>Warning!</b> Chip BIOS images might not be fully compatible with this card, use at your own risk!</p>
+					<div class="app-show-navbar" data-target="nav-card-chipbios">
+					{% for chip in chipBios %}
+						<input type="radio" name="tabs" id="nav-card-chipbios-tab-{{ loop.index }}" data-tab="nav-card-chipbios{{ loop.index }}">
+						<label for="nav-card-chipbios-tab-{{ loop.index }}" class="app-icon-and-text"><b>{{ chip.getFullName() }}</b> ({{ chip.getExpansionChipBios()|length }})</label>
+					{% endfor %}
+					</div>
+					<div class="app-show-tabnav" id="nav-card-chipbios">
+					{% for chip in chipBios %}
+						<div class="app-show-tab" id="nav-card-chipbios{{ loop.index }}">
 							{% include 'macros/bios.html.twig' with {'entity': chip.getExpansionChipBios(), 'entity_label':'chip', 'audit_entity':'App-Entity-ExpansionChipBios'} %}
 						</div>
+					{% endfor %}
 					</div>
-				{% endfor %}
-			</div>
+				{% endif %}
 			{% endif %}
 		</div>
+
 		<!-- DRIVERS -->
 		<div class="app-show-tab" id="sh-driver" data-anchor="driver">
 			{% include 'macros/drivers.html.twig' with {'entity': expansioncard.getAllDrivers(), 'css': 'last'} %}
 		</div>
+
 		<!-- Documentation -->
 		<div class="app-show-tab" id="sh-docs" data-anchor="docs">
 			{% include 'macros/manuals.html.twig' with {'entity': expansioncard.getDocumentations(), 'chips': expansioncard.getChipDocs(), 'entity_label':'card', 'audit_entity':'App-Entity-ExpansionCardDocumentation'} %}
