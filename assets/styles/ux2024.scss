@@ -424,19 +424,23 @@ div.app-column-layout {
 
     .app-column-aside {
         flex: 0 0 $max-side-gallery-width;
-        position: relative;
+        position: sticky;
+        top: 0;
+        padding-top: 1em;
         transition: $collapse-y-anim;
 
         @media (max-width: $content-breakpoint-large) {
             height: 200px;
+            position: relative;
+            top: unset;
         }
 
         div.app-show-gallery {
             display: flex;
             gap: 1em;
             flex-direction: column;
-            max-height: 1080px;
             overflow: scroll;
+            max-height: 150vh;
 
             &.app-cards-column-tiny {
                 max-width: $max-card-width-sm;
