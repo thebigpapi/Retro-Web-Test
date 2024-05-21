@@ -56,18 +56,18 @@
 				} %}
 			{% endfor %}
 		{% elseif is_granted('ROLE_USER') %}
-					{% include 'macros/card.html.twig' with {
-						'url': ea_url().setDashboard('App\\Controller\\Admin\\DashboardController').setController('App\\Controller\\Admin\\ExpansionChipCrudController').setAction('edit').setEntityId(expansion_chip.getId()),
-						'image': absolute_url(asset('build/images/missing/chip-missing.jpg')),
-						'imageAlt': "Click to edit this entry",
-						'title': "Click to edit this entry",
-					} %}
-				{% else %}
-					{% include 'macros/card.html.twig' with {
-						'image': absolute_url(asset('build/images/missing/chip-missing.jpg')),
-						'imageAlt': "No images available :(",
-						'title': "No images available :(",
-					} %}
+			{% include 'macros/card.html.twig' with {
+				'url': ea_url().setDashboard('App\\Controller\\Admin\\DashboardController').setController('App\\Controller\\Admin\\ExpansionChipCrudController').setAction('edit').setEntityId(expansion_chip.getId()),
+				'image': absolute_url(asset('build/images/missing/chip-missing.jpg')),
+				'imageAlt': "Click to edit this entry",
+				'title': "Click to edit this entry",
+			} %}
+		{% else %}
+			{% include 'macros/card.html.twig' with {
+				'image': absolute_url(asset('build/images/missing/chip-missing.jpg')),
+				'imageAlt': "No images available :(",
+				'title': "No images available :(",
+			} %}
 		{% endif %}
 	</div>
 </div> {# div.app-column-aside #}
@@ -210,7 +210,7 @@
 <p class="app-paragraph-heading app-icon-and-text">
 	<img src="{{ absolute_url(asset('build/icons/cursor.svg')) }}" alt="act" width="24" height="24">Actions
 </p>
-<div class="app-show-navbar">
+<div class="app-toolbar">
 	<a href="{{ absolute_url(path('app_homepage')) }}motherboards/?expansionChipIds%5B0%5D={{ expansion_chip.getId() }}&amp;showImages=1">
 		<img src='{{ absolute_url(asset('build/icons/board.svg')) }}' alt='' width='24' height='24'>See all boards with this chip</a>
 	<a href="{{ absolute_url(path('app_homepage')) }}expansioncards/?expansionChipIds%5B0%5D={{ expansion_chip.getId() }}&amp;showImages=1">

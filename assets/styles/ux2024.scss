@@ -469,6 +469,7 @@ div.app-page {
     }
 }
 
+div.app-toolbar,
 div.app-show-navbar {
     display: flex;
     flex-direction: row;
@@ -504,6 +505,19 @@ div.app-show-navbar {
 
         &:hover {
             color: var(--std-link-hover);
+        }
+    }
+}
+
+div.app-toolbar {
+    &>a,
+    &>label {
+        background: var(--note-bkg);
+        color: var(--note-frg);
+        border-bottom: $button-border;
+
+        &:hover {
+            color: var(--note-link-hover);
         }
     }
 }
@@ -738,4 +752,13 @@ div.app-table {
             grid-template-columns: 2fr 5fr 1fr;
         }
     }
+}
+
+div.app-show-tabnav#nav-chip-descr {
+    border-radius: $corners;
+    width: 95%;
+    margin: 0 auto;
+    padding: 1em;
+    border: $card-border-normal;
+    background: $image-bkg;
 }
