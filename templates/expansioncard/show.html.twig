@@ -53,9 +53,7 @@
 					'length': loop.length
 				} %}
 			{% endfor %}
-		{% else %}
-			<div class="show-images">
-				{% if is_granted('ROLE_USER') %}
+		{% elseif is_granted('ROLE_USER') %}
 					{% include 'macros/card.html.twig' with {
 						'url': ea_url().setDashboard('App\\Controller\\Admin\\DashboardController').setController('App\\Controller\\Admin\\ExpansionCardCrudController').setAction('edit').setEntityId(expansioncard.getId()),
 						'image': absolute_url(asset('build/images/missing/board-missing.jpg')),
@@ -70,8 +68,6 @@
 					} %}
 				{% endif %}
 			</div>
-		{% endif %}
-	</div>
 </div> {# div.app-column-aside #}
 
 <div class="app-column-main">

@@ -62,8 +62,7 @@
 				'length': loop.length,
 			} %}
 		{% endfor %}
-	{% else %}
-		{% if is_granted('ROLE_USER') %}
+	{% elseif is_granted('ROLE_USER') %}
 			{% include 'macros/card.html.twig' with {
 				'url': ea_url().setDashboard('App\\Controller\\Admin\\DashboardController').setController('App\\Controller\\Admin\\MotherboardCrudController').setAction('edit').setEntityId(motherboard.getId()),
 				'image': absolute_url(asset('build/images/missing/board-missing.jpg')),
@@ -77,7 +76,6 @@
 				'title': "No images available :(",
 			} %}
 		{% endif %}
-	{% endif %}
 	</div>
 </div> {# div.app-column-aside #}
 

@@ -55,9 +55,7 @@
 					'length': expansion_chip.getImages()|length
 				} %}
 			{% endfor %}
-		{% else %}
-			<div class="show-images">
-				{% if is_granted('ROLE_USER') %}
+		{% elseif is_granted('ROLE_USER') %}
 					{% include 'macros/card.html.twig' with {
 						'url': ea_url().setDashboard('App\\Controller\\Admin\\DashboardController').setController('App\\Controller\\Admin\\ExpansionChipCrudController').setAction('edit').setEntityId(expansion_chip.getId()),
 						'image': absolute_url(asset('build/images/missing/chip-missing.jpg')),
@@ -70,8 +68,6 @@
 						'imageAlt': "No images available :(",
 						'title': "No images available :(",
 					} %}
-				{% endif %}
-			</div>
 		{% endif %}
 	</div>
 </div> {# div.app-column-aside #}
@@ -148,7 +144,7 @@
 
 			{% include 'macros/aliases.html.twig' with {
 				'entity': expansion_chip.getChipAliases(),
-				'msg': 'Also known as:'
+				'msg': 'Also known as'
 			} %}
 			{% include 'macros/notes.html.twig' with { 'entity': expansion_chip } %}
 		</div>
@@ -222,7 +218,7 @@
 </div>
 
 <p class="app-paragraph-heading">Entry details</p>
-<p>Last updated <span class="app-card-date">{{ expansion_chip.getLastEdited()|date("Y-m-d\\TH:i:s", "GMT") }}Z</span></p>
+<p>Last edited <span class="app-card-date">{{ expansion_chip.getLastEdited()|date("Y-m-d\\TH:i:s", "GMT") }}Z</span></p>
 
 <p class="app-paragraph-heading">Disclaimer</p>
 <p>The info found in this page might not be entirely correct. Check out <a href="{{ path('app_contributions') }}">this
