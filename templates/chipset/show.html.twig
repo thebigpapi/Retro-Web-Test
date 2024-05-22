@@ -6,7 +6,7 @@
 	<link rel="canonical" hreflang="x-default" href="{{ absolute_url(path('chipset_show', {id: chipset.getId()})) }}"/>
 {% endblock %}
 {% block extra_javascripts %}
-	<script src="/build/js/show.js" defer></script>
+	{{ encore_entry_script_tags('script/navigation') }}
 {% endblock %}
 
 {% block opengraph %}
@@ -32,6 +32,7 @@
 		{% endif %}
 	{% endapply %}
 {% endblock %}
+
 {% block subnav %}
 <li>
 	<a href="{{ path('chipsetsearch') }}">
@@ -43,124 +44,202 @@
 	<span>ID: {{chipset.getId()}}</span>
 </li>
 {% endblock %}
-{% block body %}
-<!-- MANUF./NAME/PART NO. -->
-<div class="title">
-	{% if chipset.getManufacturer() is not empty %}
-		<a href="{{ path('manufacturer_show', {id: chipset.getManufacturer().getId()}) }}">{{ chipset.getManufacturer().getName() }}</a>&nbsp;{{ chipset.getNameWithoutManuf() }}
-	{% else %}
-		{{ chipset.getFullName() }}
-	{% endif %}
-</div>
-<div class="main-strip">
-	<div class="internal-container">
-		{% include 'macros/navbar.html.twig' with {'entity': chipset, 'entityName': 'Chipset', 'types': ['drivers', 'docs'], 'name': 'chipset', 'role': 'ROLE_USER'} %}
-		<div class="internal-content">
-			<!-- DESCRIPRION -->
-			<div class="show-general" id="sh-general">
-				<div class="quick-spec-table">
-					<!-- Chipset parts -->
-					<div class="quick-spec-head">
-						<img src="{{ absolute_url(asset('build/icons/chipset.svg')) }}" alt="chip" width="24" height="24">Chipset parts
-					</div>
-					{% if chipset.getExpansionChips() is not empty %}
-						<div class="tag-container">
-							{% for part in chipset.getExpansionChips()|sort((a, b) => a.sort <=> b.sort) %}
-								<a href="{{ path('expansion_chip_show', {id: part.getId()}) }}"><span class="text-block">{{ part.getFullName() }}</span></a>
-							{% endfor %}
-						</div>
-					{% else %}
-						<div><span class='badge badge-secondary'>Empty</span></div>
-					{% endif %}
-					<!-- Release date -->
-					<div class="quick-spec-head">
-						<img src="{{ absolute_url(asset('build/icons/calendar.svg')) }}" alt="date" width="24" height="24">Release date
-					</div>
-					<div class="perk-date-simple">{{ chipset.getReleaseDate() ? chipset.getReleaseDateString() : "<span class='badge badge-secondary'>Empty</span>" }}</div>
-					<!-- Actions -->
-					<div class="quick-spec-head">
-						<img src="{{ absolute_url(asset('build/icons/cursor.svg')) }}" alt="act" width="24" height="24">Actions
-					</div>
-					<div>
-					<div class="toolbar">
-						{% if chipset.getEncyclopediaLink() is not null %}
-						<a class='button-widget' href="{{ chipset.getEncyclopediaLink() }}">
-							<img src='{{ absolute_url(asset('build/icons/www.svg')) }}' alt='' width='16' height='16' style='vertical-align:middle;padding:3px;'>Encyclopedia link</a>
-						{% endif %}
-						<a class='button-widget' href="{{ absolute_url(path('app_homepage')) }}motherboards/?chipsetId={{ chipset.getId() }}&amp;showImages=1">
-							<img src='{{ absolute_url(asset('build/icons/board.svg')) }}' alt='' width='16' height='16' style='vertical-align:middle;padding:3px;'>See all boards with this chipset</a>
-						<a class='button-widget' href="{{ absolute_url(path('app_homepage')) }}bios/?chipsetId={{ chipset.getId() }}">
-							<img src='{{ absolute_url(asset('build/icons/awchip.svg')) }}' alt='' width='16' height='16' style='vertical-align:middle;padding:3px;'>See all BIOSes for this chipset</a>
-						</div>
-					</div>
-				</div>
-				{% include 'macros/aliases.html.twig' with {'entity':chipset.getChipsetAliases(), 'msg': 'Also known as:'} %}
-				{% include 'macros/notes.html.twig' with {'entity': chipset} %}
-				<div class="textarea">
-				{% if chipset.getExpansionChips() is not empty %}
-					{% set dcount = false %}
-					{% for chipPart in chipset.getExpansionChips()|filter(chipPart => chipPart.getDescription() is not empty) %}{% set dcount = true %}{% endfor %}
-					{% if dcount == true %}
-						<hr>
-						<h1>Documented parts</h1>
-						<ul class="chipset-toc">
-							{% for chipPart in chipset.getExpansionChips()|filter(chipPart => chipPart.getDescription() is not empty)|sort((a, b) => a.sort <=> b.sort) %}
-							<li><a href="{{ path("expansion_chip_show", {id:chipPart.getId()}) }}">{{ chipPart.getFullName() }}{% if chipPart.getChipAliases() is not empty %}&nbsp;(known as:{% for cp in chipPart.getChipAliases() %}
-							{{ cp.getManufacturer().getName() }}&nbsp;{{ cp.getPartNumber() }} {{ cp.getName() ? '[' ~ cp.getName() ~ ']' }}{% if not loop.last%}, {% endif %}{% endfor %}){% endif %}</a></li>
-							{% endfor %}
-						</ul>
-					{% endif %}
-				{% endif %}
-				</div>
-				<div id="index-datetime"><div class="div-datetime">Last updated <span class="perk-date">{{ chipset.getLastEdited()|date("Y-m-d\\TH:i:s", "GMT") }}Z</span></div></div>
-			</div>
-			<!-- DRIVERS -->
-			<div class="show-downloads" id="sh-driver">
-				{% include 'macros/drivers.html.twig' with {'entity': chipset.getAllDrivers(), 'css': 'last'} %}
-			</div>
-			<!-- Documentation -->
-			<div class="show-downloads" id="sh-docs">
-				{% include 'macros/manuals.html.twig' with {'entity': chipset.getDocumentations(), 'entity_label':'chipset', 'audit_entity':'App-Entity-ChipsetDocumentation', 'chips': chipset.getChipDocs()} %}
-			</div>
-		</div>
-	</div>
 
-	<!-- IMAGES -->
-	{% if chipset.getExpansionChips() is not empty %}
-		{% set lpindex = 0 %}
-		{% set lplen = 0 %}
-		{% for chipPart in chipset.getExpansionChips()|filter(chipPart => chipPart.getImages() is not empty) %}
-			{% for image in chipPart.getImages() %}
-				{% set lplen = lplen + 1 %}
+{% block body %}
+<div class="app-column-layout app-column-align-start">
+
+<div class="app-column-aside" id="gallery-container">
+	<div class="app-show-gallery" id="gallery">
+		<!-- IMAGES -->
+		{% if chipset.getExpansionChips() is not empty %}
+			{% set lpindex = 0 %}
+			{% set lplen = 0 %}
+			{% for chipPart in chipset.getExpansionChips()|filter(chipPart => chipPart.getImages() is not empty) %}
+				{% for image in chipPart.getImages() %}
+					{% set lplen = lplen + 1 %}
+				{% endfor %}
 			{% endfor %}
-		{% endfor %}
-		{% if lplen > 0 %}
-			<div class="show-images" id="sh-images">
+			{% if lplen > 0 %}
 				{% for chipPart in chipset.getExpansionChips()|filter(chipPart => chipPart.getImages() is not empty)|sort((a, b) => a.sort <=> b.sort) %}
 					{% for image in chipPart.getImages()|sort((a, b) => a.getFileName() <=> b.getFileName())|sort((a, b) => a.sort <=> b.sort) %}
 						{% set lpindex = lpindex + 1 %}
-						{% include 'macros/images.html.twig' with {'type':'chipset', 'entity': image, 'index': lpindex, 'length': lplen} %}
+						{% include 'macros/images.html.twig' with {
+							'type':'chipset',
+							'entity': image,
+							'index': lpindex,
+							'length': lplen
+						} %}
 					{% endfor %}
 				{% endfor %}
-			</div>
+			{% else %}
+				{% include 'macros/card.html.twig' with {
+					'image': absolute_url(asset('build/images/missing/chipset-missing.jpg')),
+					'imageAlt': "No images available :(",
+					'title': "No images available :(",
+				} %}
+			{% endif %}
 		{% else %}
-		<div class="show-images" id="sh-images">
-			<div class="show-image">
-				<img src={{ absolute_url(asset('build/images/missing/chipset-missing.jpg')) }} title="no images available :(" style="width:100%;">
-			</div>
-		</div>
+			{% include 'macros/card.html.twig' with {
+				'image': absolute_url(asset('build/images/missing/chipset-missing.jpg')),
+				'imageAlt': "No images available :(",
+				'title': "No images available :(",
+			} %}
 		{% endif %}
+	</div>
+</div> {# div.app-column-aside #}
+
+<div class="app-column-main">
+
+<div class="app-content-title"><span>
+	{% if chipset.getManufacturer() is not empty %}
+		<a href="{{ path('manufacturer_show', { id: chipset.getManufacturer().getId() }) }}">{{ chipset.getManufacturer().getName() }}</a><br>
+		{{ chipset.getNameWithoutManuf() }}
 	{% else %}
-	<div class="show-images" id="sh-images">
-		<div class="show-image">
-			<img src={{ absolute_url(asset('build/images/missing/chipset-missing.jpg')) }} title="no images available :(" style="width:100%;">
+		{{ chipset.getFullName() }}
+	{% endif %}
+</span></div> {# div.app-content-title #}
+
+<div class="app-show-entity">
+	{% include 'macros/navbar.html.twig' with {
+		'entity': chipset,
+		'entityName': 'Chipset', 
+		'types': ['drivers', 'docs'], 
+		'name': 'chipset', 
+		'role': 'ROLE_USER',
+		'prefix': 'nav-chipset-main',
+	} %}
+	<div class="app-show-tabnav" id="nav-chipset-main" primary>
+		<div class="app-show-tab" id="sh-general" data-anchor="general">
+			<p class="app-paragraph-heading">General info</p>
+			<div class="app-item-grid">
+				<!-- Chipset parts -->
+				{# <div class="item">
+					<span class="highlight app-icon-and-text">
+						<img src="{{ absolute_url(asset('build/icons/chipset.svg')) }}" alt="chip" width="24" height="24">
+						Chipset parts
+					</span>
+					<div class="app-tags">
+						{% if chipset.getExpansionChips() is not empty %}
+							{% for part in chipset.getExpansionChips()|sort((a, b) => a.sort <=> b.sort) %}
+								<a href="{{ path('expansion_chip_show', {id: part.getId()}) }}">{{ part.getFullName() }}</a>
+							{% endfor %}
+						{% else %}
+							<span class='badge badge-secondary'>Empty</span>
+						{% endif %}
+					</div>
+				</div> #}
+
+				<!-- Release date -->
+				<div class="item">
+					<span class="highlight app-icon-and-text">
+						<img src="{{ absolute_url(asset('build/icons/calendar.svg')) }}" alt="date" width="24" height="24">
+						Release date
+					</span>
+					{% if chipset.getReleaseDate() is not empty %}
+						<span class="perk-date-simple">{{ chipset.getReleaseDateString() }}</span>
+					{% else %}
+						<span class="badge badge-secondary">Empty</span>
+					{% endif %}
+				</div>
+			</div>
+
+			{% include 'macros/aliases.html.twig' with {
+				'entity': chipset.getChipsetAliases(),
+				'msg': 'Also known as'
+			} %}
+			
+			{% include 'macros/notes.html.twig' with { 'entity': chipset } %}
+
+			<p class="app-paragraph-heading app-icon-and-text">
+				<img src="{{ absolute_url(asset('build/icons/chipset.svg')) }}" alt="chip" width="24" height="24">
+				Chipset parts
+			</p>
+			{% if chipset.getExpansionChips() is not empty %}
+				<div class="app-show-navbar" data-target="nav-chip-descr">
+				{% for chip in chipset.getExpansionChips() %}
+					<input type="radio" name="tabs" id="nav-chip-descr-tab-{{ loop.index }}" data-tab="nav-chip-{{ chip.getId() }}">
+					<label for="nav-chip-descr-tab-{{ loop.index }}" class="app-icon-and-text">{{ chip.getFullName() }}</label>
+				{% endfor %}
+				</div>
+
+				<div class="app-show-tabnav" id="nav-chip-descr">
+				{% for chip in chipset.getExpansionChips() %}
+					<div class="app-show-tab" id="nav-chip-{{ chip.getId() }}">
+						<div class="app-toolbar">
+							<a class="app-icon-and-text" href="{{ path("expansion_chip_show", { id: chip.getId() }) }}">
+								<img src="{{ absolute_url(asset('build/icons/chip.svg')) }}" alt="chip" width="24" height="24">
+								Chip page
+							</a>
+						</div>
+
+						{% if chip.getDescription() is not empty %}
+							{% include 'macros/notes.html.twig' with { 'entity': chip } %}
+						{% else %}
+							<div class="app-icon-and-text">
+								<span class="app-emoji">&#x1F615;</span>
+								<span>No description available</span>
+							</div>
+						{% endif %}
+
+						{% include 'macros/aliases.html.twig' with {
+							'entity': chip.getChipAliases(),
+							'msg': 'Also known as'
+						} %}
+					</div>
+				{% endfor %}
+				</div>
+			{% else %}
+				<div class="app-icon-and-text">
+					<span class="app-emoji">&#x1F615;</span>
+					<span>No chips listed</span>
+				</div>
+			{% endif %}
+		</div>
+
+		<!-- DRIVERS -->
+		<div class="app-show-tab" id="sh-driver" data-anchor="driver">
+			{% include 'macros/drivers.html.twig' with {
+				'entity': chipset.getAllDrivers(),
+				'css': 'last'
+			} %}
+		</div>
+
+		<!-- Documentation -->
+		<div class="app-show-tab" id="sh-docs" data-anchor="docs">
+			{% include 'macros/manuals.html.twig' with {
+				'entity': chipset.getDocumentations(),
+				'entity_label': 'chipset',
+				'audit_entity': 'App-Entity-ChipsetDocumentation',
+				'chips': chipset.getChipDocs()
+			} %}
 		</div>
 	</div>
-	{% endif %}
+</div> {# div.app-show-entity #}
 
+<!-- Actions -->
+<p class="app-paragraph-heading app-icon-and-text">
+	<img src="{{ absolute_url(asset('build/icons/cursor.svg')) }}" alt="act" width="24" height="24">Actions
+</p>
+<div class="app-toolbar">
+	{% if chipset.getEncyclopediaLink() is not null %}
+	<a href="{{ chipset.getEncyclopediaLink() }}">
+		<img src='{{ absolute_url(asset('build/icons/www.svg')) }}' alt='' width='24' height='24'>Encyclopedia link</a>
+	{% endif %}
+	<a href="{{ absolute_url(path('app_homepage')) }}motherboards/?chipsetId={{ chipset.getId() }}&amp;showImages=1">
+		<img src='{{ absolute_url(asset('build/icons/board.svg')) }}' alt='' width='24' height='24'>See all boards with this chipset</a>
+	<a href="{{ absolute_url(path('app_homepage')) }}bios/?chipsetId={{ chipset.getId() }}">
+		<img src='{{ absolute_url(asset('build/icons/awchip.svg')) }}' alt='' width='24' height='24'>See all BIOSes for this chipset</a>
 </div>
-<div class="disclaimer">
-	<p><b>Disclaimer</b></p>
-	<p>The info found in this page might not be entirely correct. Check out <a href="{{ path('app_contributions') }}">this guide</a> to learn how you can improve it.</p>
-</div>
+
+<p class="app-paragraph-heading">Entry details</p>
+<p>Last edited <span class="app-card-date">{{ chipset.getLastEdited()|date("Y-m-d\\TH:i:s", "GMT") }}Z</span></p>
+
+<p class="app-paragraph-heading">Disclaimer</p>
+<p>The info found in this page might not be entirely correct. Check out <a href="{{ path('app_contributions') }}">this
+guide</a> to learn how you can improve it.</p>
+
+</div> {# div.app-column-main #}
+
+</div> {# div.app-column-layout #}
+
 {% endblock %}

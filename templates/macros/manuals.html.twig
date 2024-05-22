@@ -39,7 +39,9 @@
 
 {% set hasEntityDocs = entity is not empty %}
 {% set hasChipDocs = chips is defined and chips is not empty %}
+{% set hasAnyItem = hasEntityDocs or hasChipDocs %}
 
+{% if hasAnyItem %}
 <div class="app-show-navbar" data-target="nav-mobo-docs">
 {% if hasEntityDocs %}
     <input type="radio" name="tabs" id="nav-mobo-docs-tab-0" data-tab="nav-docs-entity">
@@ -50,7 +52,9 @@
     <label for="nav-mobo-docs-tab-1" class="app-icon-and-text"><b>Chip documents</b>&nbsp;({{ chips|length }})</label>
 {% endif %}
 </div>
+{% endif %}
 
+{% if hasAnyItem %}
 <div class="app-show-tabnav" id="nav-mobo-docs">
 {% if hasEntityDocs %}
 <div class="app-show-tab" id="nav-docs-entity">
@@ -63,8 +67,9 @@
 </div>
 {% endif %}
 </div>
+{% endif %}
 
-{% if not hasEntityDocs and not hasChipDocs %}
+{% if not hasAnyItem %}
 <div class="app-icon-and-text">
     <span class="app-emoji">&#x1F615;</span>
     <span>No documents available</span>

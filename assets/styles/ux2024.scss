@@ -29,6 +29,7 @@ main {
 .monospace {
     font-family: $monospace-font;
     font-size: 11pt;
+    align-content: center;
 }
 
 .muted {
@@ -423,19 +424,23 @@ div.app-column-layout {
 
     .app-column-aside {
         flex: 0 0 $max-side-gallery-width;
-        position: relative;
+        position: sticky;
+        top: 0;
+        padding-top: 1em;
         transition: $collapse-y-anim;
 
         @media (max-width: $content-breakpoint-large) {
             height: 200px;
+            position: relative;
+            top: unset;
         }
 
         div.app-show-gallery {
             display: flex;
             gap: 1em;
             flex-direction: column;
-            max-height: 1080px;
             overflow: scroll;
+            max-height: 150vh;
 
             &.app-cards-column-tiny {
                 max-width: $max-card-width-sm;
@@ -464,6 +469,7 @@ div.app-page {
     }
 }
 
+div.app-toolbar,
 div.app-show-navbar {
     display: flex;
     flex-direction: row;
@@ -482,6 +488,7 @@ div.app-show-navbar {
         box-shadow: $button-shadow;
     }
 
+    &>a,
     &>label {
         cursor: pointer;
         display: flex;
@@ -493,9 +500,24 @@ div.app-show-navbar {
         border-bottom: $input-border-normal;
         background: $image-bkg;
         transition: $text-color-anim, $input-anim, $button-anim;
+        user-select: none;
+        color: inherit;
 
         &:hover {
             color: var(--std-link-hover);
+        }
+    }
+}
+
+div.app-toolbar {
+    &>a,
+    &>label {
+        background: var(--note-bkg);
+        color: var(--note-frg);
+        border-bottom: $button-border;
+
+        &:hover {
+            color: var(--note-link-hover);
         }
     }
 }
@@ -517,7 +539,6 @@ div.app-show-tabnav {
 div.app-note {
     border-radius: 6px;
     background: $image-bkg;
-    padding: 1em;
 
     p {
         margin: 0;
@@ -527,7 +548,14 @@ div.app-note {
         display: block;
         font-weight: $font-weight-bold;
         font-size: large;
-        padding-bottom: 0.5em;
+        padding: 0.6em 1em;
+        background: var(--note-bkg);
+        color: var(--note-frg);
+        border-radius: 6px 6px 0px 0px;
+    }
+
+    .app-note-body {
+        padding: 1em;
     }
 }
 
@@ -562,6 +590,11 @@ div.app-item-grid {
         padding-left: 0.3em;
         padding-right: 0.3em;
 
+        >span {
+            display: flex;
+            align-items: center;
+        }
+
         >.highlight {
             font-weight: $font-weight-bold;
         }
@@ -569,6 +602,14 @@ div.app-item-grid {
         >.right {
             text-align: end;
             justify-self: end;
+        }
+    }
+
+    &.app-note-body {
+        display: block;
+
+        .item {
+            grid-template-columns: 2fr 2fr;
         }
     }
 }
@@ -691,10 +732,17 @@ div.app-table {
         }
     }
 
+    &.app-specific-biossimple {
+        div.app-table-header,
+        div.app-table-row {
+            grid-template-columns: 4fr 3fr 1fr;
+        }
+    }
+
     &.app-specific-driver {
         div.app-table-header,
         div.app-table-row {
-            grid-template-columns: 1fr 2fr 1fr;
+            grid-template-columns: 2fr 1fr 3fr 1fr;
         }
     }
 
@@ -704,4 +752,13 @@ div.app-table {
             grid-template-columns: 2fr 5fr 1fr;
         }
     }
+}
+
+div.app-show-tabnav#nav-chip-descr {
+    border-radius: $corners;
+    width: 95%;
+    margin: 0 auto;
+    padding: 1em;
+    border: $card-border-normal;
+    background: $image-bkg;
 }

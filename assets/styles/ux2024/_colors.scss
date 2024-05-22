@@ -15,6 +15,7 @@ $head-frg: #f9f9f9;
 $head-bkg: #2c2c2c;
 $side-frg: #d0d0d0;
 $side-bkg: #212121;
+$note-bkg: color.scale($palette-light-pos1, $lightness: -15%);
 $link-hover: color.scale($palette-light-pos1, $lightness: 30%);
 $special-hover: color.scale($palette-light-pos3, $lightness: 20%);
 $table-alt-row: color.scale($main-bkg-light, $lightness: -5%);
@@ -26,6 +27,9 @@ $table-alt-row: color.scale($main-bkg-light, $lightness: -5%);
     --head-frg: #{$palette-light-pos2};
     --side-bkg: #{$side-bkg};
     --side-frg: #{$side-frg};
+    --note-bkg: #{$note-bkg};
+    --note-frg: #{$palette-light-pos2};
+    --note-link-hover: #{$side-frg};
 
     --layout-shadow: rgba(0, 0, 0, 0.66);
     --element-shadow: rgba(33, 33, 33, 0.33);
@@ -52,6 +56,8 @@ $headinput-bkg: #3e3e3e;
 $headinput-bkg-active: #666565;
 $input-border-normal: 2px solid #767676;
 $input-border-active: 2px solid #3dabf5;
+
+$button-border: 2px solid var(--std-link-hover);
 
 $card-border-normal: 1px solid #767676;
 

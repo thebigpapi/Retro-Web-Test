@@ -2,6 +2,7 @@
 <div class="app-table app-specific-driver">
     <div class="app-table-header">
         <div>Name</div>
+        <div>Architecture</div>
         <div>OS support</div>
         <div>File</div>
     </div>
@@ -13,6 +14,17 @@
             {% if driver.largeFile.getFileVersion() is not empty %}
                 <br><span>{{ driver.largeFile.getFileVersion() }}</span>
             {% endif %}
+        </div>
+        <div class="header-label">Architecture</div>
+        <div>
+            <div class="app-tags">
+            {% for arch in driver.largeFile.getOsArchitecture()|sort((a, b) => a.getName <=> b.getName)|sort((a, b) => a.getSort <=> b.getSort) %}
+            <span class="app-icon-and-text">
+                <span>{{arch.getName()}}</span>
+            </span>
+            {% endfor %}
+            {% if driver.largeFile.getOsArchitecture() is empty %}<span class='badge badge-secondary'>Empty</span>{% endif %}
+            </div>
         </div>
         <div class="header-label">OS support</div>
         <div>
