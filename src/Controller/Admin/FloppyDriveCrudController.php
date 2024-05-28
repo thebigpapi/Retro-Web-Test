@@ -324,6 +324,9 @@ class FloppyDriveCrudController extends AbstractCrudController
             $newAlias->setPartNumber($alias->getPartNumber());
             $fdd->addStorageDeviceAlias($newAlias);
         }
+        foreach ($old->getPowerConnectors() as $pwr){
+            $fdd->addPowerConnector($pwr);
+        }
         foreach ($old->getKnownIssues() as $issue){
             $fdd->addKnownIssue($issue);
         }

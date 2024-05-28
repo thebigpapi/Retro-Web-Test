@@ -275,15 +275,20 @@ abstract class Chip
 
         return $this;
     }
-    public function getAllVendors(): Collection
+    public function getChipVendors(): Collection
     {
         $vendors = $this->getManufacturer()?->getPciVendorIds()->toArray() ?? [];
+        return new ArrayCollection($vendors);
+    }
+    public function getAliasVendors(): Collection
+    {
+        $vendors = [];
         foreach($this->getChipAliases() as $alias){
             $aliasVendors = $alias->getManufacturer()?->getPciVendorIds()->toArray() ?? [];
             if(count($aliasVendors) > 0)
                 $vendors = array_merge($vendors, $aliasVendors);
         }
-        return new ArrayCollection($vendors);
+        return new ArrayCollection(array_unique($vendors));
     }
 
     public function getType(): ?ExpansionChipType

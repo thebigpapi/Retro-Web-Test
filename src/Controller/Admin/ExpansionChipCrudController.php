@@ -14,6 +14,9 @@ use App\Controller\Admin\Type\Chip\ImageCrudType;
 use App\Controller\Admin\Type\Chip\LargeFileCrudType;
 use App\Controller\Admin\Type\ExpansionCard\BiosCrudType;
 use App\Controller\Admin\Type\PciDeviceCrudType;
+use App\Entity\ChipAlias;
+use App\Entity\LargeFileExpansionChip;
+use App\Entity\PciDeviceId;
 use Doctrine\ORM\Query\Expr\Andx;
 use Doctrine\ORM\Query\Expr\Orx;
 use EasyCorp\Bundle\EasyAdminBundle\Collection\FieldCollection;
@@ -40,6 +43,16 @@ use EasyCorp\Bundle\EasyAdminBundle\Factory\ControllerFactory;
 use EasyCorp\Bundle\EasyAdminBundle\Factory\PaginatorFactory;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
+use EasyCorp\Bundle\EasyAdminBundle\Event\AfterCrudActionEvent;
+use EasyCorp\Bundle\EasyAdminBundle\Event\AfterEntityPersistedEvent;
+use EasyCorp\Bundle\EasyAdminBundle\Event\BeforeCrudActionEvent;
+use EasyCorp\Bundle\EasyAdminBundle\Event\BeforeEntityPersistedEvent;
+use EasyCorp\Bundle\EasyAdminBundle\Exception\ForbiddenActionException;
+use EasyCorp\Bundle\EasyAdminBundle\Exception\InsufficientEntityPermissionException;
+use EasyCorp\Bundle\EasyAdminBundle\Factory\EntityFactory;
+use EasyCorp\Bundle\EasyAdminBundle\Security\Permission;
+use EasyCorp\Bundle\EasyAdminBundle\Config\KeyValueStore;
 
 class ExpansionChipCrudController extends AbstractCrudController
 {
@@ -59,6 +72,12 @@ class ExpansionChipCrudController extends AbstractCrudController
     }
     public function configureActions(Actions $actions): Actions
     {
+        $duplicate = Action::new('duplicate', 'Clone')->setIcon('fa fa-copy')->linkToUrl(
+            fn (ExpansionChip $entity) => $this->container->get(AdminUrlGenerator::class)
+                ->setAction(Action::NEW)
+                ->set('duplicate', $entity->getId())
+                ->generateUrl()
+        );
         $view = Action::new('view', 'View')->linkToCrudAction('viewExpChip');
         $eview = Action::new('eview', 'View')->linkToCrudAction('viewExpChip')->setIcon('fa fa-magnifying-glass');
         $logs = Action::new('logs', 'Logs')->linkToCrudAction('viewLogs');
@@ -66,6 +85,7 @@ class ExpansionChipCrudController extends AbstractCrudController
         return $actions
             ->add(Crud::PAGE_NEW, Action::SAVE_AND_CONTINUE)
             ->remove(Crud::PAGE_NEW, Action::SAVE_AND_ADD_ANOTHER)
+            ->add(Crud::PAGE_EDIT, $duplicate)
             ->add(Crud::PAGE_INDEX, $logs)
             ->add(Crud::PAGE_EDIT, $elogs)
             ->add(Crud::PAGE_INDEX, $view)
@@ -254,5 +274,102 @@ class ExpansionChipCrudController extends AbstractCrudController
 
         $paginator = $this->container->get(PaginatorFactory::class)->create($queryBuilder);
         return JsonResponse::fromJsonString($paginator->getResultsAsJson());
+    }
+        /**
+     * @return KeyValueStore|Response
+     */
+    public function new(AdminContext $context)
+    {
+        $event = new BeforeCrudActionEvent($context);
+        $this->container->get('event_dispatcher')->dispatch($event);
+        if ($event->isPropagationStopped()) {
+            return $event->getResponse();
+        }
+
+        if (!$this->isGranted(Permission::EA_EXECUTE_ACTION, ['action' => Action::NEW, 'entity' => null])) {
+            throw new ForbiddenActionException($context);
+        }
+
+        if (!$context->getEntity()->isAccessible()) {
+            throw new InsufficientEntityPermissionException($context);
+        }
+
+        $context->getEntity()->setInstance($this->createEntity($context->getEntity()->getFqcn()));
+        $this->container->get(EntityFactory::class)->processFields($context->getEntity(), FieldCollection::new($this->configureFields(Crud::PAGE_NEW)));
+        $context->getCrud()->setFieldAssets($this->getFieldAssets($context->getEntity()->getFields()));
+        $this->container->get(EntityFactory::class)->processActions($context->getEntity(), $context->getCrud()->getActionsConfig());
+        if ($context->getRequest()->query->has('duplicate')) {
+            $className = $this->getEntityFqcn();
+            $entityManager = $this->container->get('doctrine')->getManagerForClass($className);
+            $oldentity = $entityManager->find($className, $context->getRequest()->query->get('duplicate'));
+            /** @var ExpansionChip $cloned */
+            $cloned = $this->makeNewExpansionChip($oldentity);
+            $context->getEntity()->setInstance($cloned);
+        }
+        $newForm = $this->createNewForm($context->getEntity(), $context->getCrud()->getNewFormOptions(), $context);
+        $entityInstance = $newForm->getData();
+        $newForm->handleRequest($context->getRequest());
+        $context->getEntity()->setInstance($entityInstance);
+
+        if ($newForm->isSubmitted() && $newForm->isValid()) {
+            $this->processUploadedFiles($newForm);
+
+            $event = new BeforeEntityPersistedEvent($entityInstance);
+            $this->container->get('event_dispatcher')->dispatch($event);
+            $entityInstance = $event->getEntityInstance();
+
+            $this->persistEntity($this->container->get('doctrine')->getManagerForClass($context->getEntity()->getFqcn()), $entityInstance);
+
+            $this->container->get('event_dispatcher')->dispatch(new AfterEntityPersistedEvent($entityInstance));
+            $context->getEntity()->setInstance($entityInstance);
+
+            return $this->getRedirectResponseAfterSave($context, Action::NEW);
+        }
+
+        $responseParameters = $this->configureResponseParameters(KeyValueStore::new([
+            'pageName' => Crud::PAGE_NEW,
+            'templateName' => 'crud/new',
+            'entity' => $context->getEntity(),
+            'new_form' => $newForm,
+        ]));
+
+        $event = new AfterCrudActionEvent($context, $responseParameters);
+        $this->container->get('event_dispatcher')->dispatch($event);
+        if ($event->isPropagationStopped()) {
+            return $event->getResponse();
+        }
+
+        return $responseParameters;
+    }
+    public function makeNewExpansionChip(ExpansionChip $old): ExpansionChip
+    {
+        $expansionChip = new ExpansionChip();
+        $expansionChip->setManufacturer($old->getManufacturer());
+        $expansionChip->setName($old->getName());
+        $expansionChip->setPartNumber($old->getPartNumber());
+        $expansionChip->setType($old->getType());
+        $expansionChip->setSort($old->getSort());
+        $expansionChip->setMiscSpecs($old->getMiscSpecs());
+        $expansionChip->setDescription($old->getDescription());
+        $expansionChip->setLastEdited(new \DateTime('now'));
+        foreach ($old->getPciDevs() as $dev) {
+            $newDev = new PciDeviceId();
+            $newDev->setDev($dev->getDev());
+            $expansionChip->addPciDev($newDev);
+        }
+        foreach ($old->getChipAliases() as $alias){
+            $newAlias = new ChipAlias();
+            $newAlias->setManufacturer($alias->getManufacturer());
+            $newAlias->setName($alias->getName());
+            $newAlias->setPartNumber($alias->getPartNumber());
+            $expansionChip->addChipAlias($newAlias);
+        }
+        foreach($old->getDrivers() as $driver){
+            $newDriver = new LargeFileExpansionChip();
+            $newDriver->setLargeFile($driver->getLargeFile());
+            $newDriver->setIsRecommended($driver->getIsRecommended());
+            $expansionChip->addDriver($newDriver);
+        }
+        return $expansionChip;
     }
 }

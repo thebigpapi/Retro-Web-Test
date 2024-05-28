@@ -69,9 +69,12 @@
 					<!-- Vendor ID -->
 					<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/tag.svg')) }}" alt="date" width="24" height="24">Vendor ID</div>
 					<div class="tag-container">
-					{% if expansion_chip.getAllVendors() is not empty %}
-						{% for vendor in expansion_chip.getAllVendors() %}
+					{% if expansion_chip.getAliasVendors() is not empty or expansion_chip.getChipVendors() %}
+						{% for vendor in expansion_chip.getChipVendors() %}
 							<span class="text-block">{{vendor.getVen()}}</span>
+						{% endfor %}
+						{% for vendor in expansion_chip.getAliasVendors() %}
+							<span class="text-block"><i>{{vendor.getVen()}}</i></span>
 						{% endfor %}
 					{% else %}
 						<div><span class='badge badge-secondary'>Empty</span></div>
