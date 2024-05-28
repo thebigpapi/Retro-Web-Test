@@ -480,5 +480,9 @@
 {% endblock _IoPortSignal_entityDocumentations_entry_datePrecision_widget %}
 {% block _HardDrive_capacity_label %}
     {{ form_label(form)}}
-    <button id="hdd-capacity-convert" type="button" class="btn btn-secondary">Get formatted</button>
+    <button id="hdd-capacity-convert" type="button" class="btn btn-secondary">Convert to MB</button>
 {% endblock _HardDrive_capacity_label %}
+{% block _HardDrive_buffer_label %}
+    {{ form_label(form)}}
+    <button id="hdd-buffer-convert" type="button" class="btn btn-secondary">Convert to KB</button>
+{% endblock _HardDrive_buffer_label %}

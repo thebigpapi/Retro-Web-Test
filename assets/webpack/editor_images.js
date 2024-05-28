@@ -63,9 +63,9 @@ if(readimages){
             emptyOpt.value = "";
             emptyOpt.innerHTML = "Type to select a creditor ...";
             creditorSel.appendChild(emptyOpt);
-            console.log(Object.keys(creditorArray));
+            //console.log(Object.keys(creditorArray));
             for(let [id, value] of Object.entries(creditorArray)){
-                console.log(id, value);
+                //console.log(id, value);
                 let opt = document.createElement('option');
                 opt.value = id;
                 opt.innerHTML = value;
