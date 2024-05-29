@@ -1,4 +1,4 @@
-import './styles/app.scss';
+//import './styles/app.scss';
 import './styles/admin.scss';
 import './webpack/editor_chips';
 import './webpack/editor_cpus';

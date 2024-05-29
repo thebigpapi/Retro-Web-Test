@@ -92,12 +92,6 @@ class DashboardController extends AbstractDashboardController
     public function configureAssets(): Assets
     {
         $assets = parent::configureAssets();
-        $assets->addWebpackEncoreEntry('app_ea');
-        $assets->addHtmlContentToHead('<script type="module">import "/build/js/glightbox.min.js";const lightbox = GLightbox({});</script>');
-        $assets->addHtmlContentToHead('<script src="/build/js/show.js" defer></script>');
-        $assets->addHtmlContentToHead('<script src="/build/js/tom-select.complete.min.js" defer></script>');
-        $assets->addWebpackEncoreEntry('chart');
-        $assets->addCssFile('/build/css/glightbox.min.css');
         return $assets;
     }
     public function configureDashboard(): Dashboard

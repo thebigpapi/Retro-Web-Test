@@ -1,0 +1,13 @@
+{% extends '@!EasyAdmin/crud/new.html.twig' %}
+
+{% block head_javascript %}
+    {#{ parent() }#}
+    <script src="/build/js/easyadmin/form.js"></script>
+{% endblock head_javascript %}
+
+{% block configured_javascripts %}
+    {{ parent() }}
+    {{ include('@EasyAdmin/includes/_js_assets.html.twig', { assets: ea_field_assets.jsAssets }, with_context = false) }}
+    {{ include('@EasyAdmin/includes/_encore_script_tags.html.twig', { assets: ea_field_assets.webpackEncoreAssets }, with_context = false) }}
+{% endblock %}
+

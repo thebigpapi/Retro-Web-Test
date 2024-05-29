@@ -45,65 +45,17 @@ img.ea-entity-icon{
 div.content-header-title > h1.title{
 	font-weight: 500;
 }
-.ea-dark-scheme{
-	--body-bg:#222;
-	--sidebar-bg:#303030;
-	--button-secondary-bg:#525252;
-	--table-cell-border-color: #404040;
-	--form-control-bg: #404040;
-	--sidebar-menu-active-item-bg:#404040;
-	--sidebar-menu-active-item-color:#60a5fa;
-	--sidebar-menu-color:#b5b5b5;
-}
-#main-menu .menu .submenu {
-	margin-top: 0;
-	a {
-		color: var(--sidebar-menu-color);
-	}
-}
-.form-group.field-collection .field-collection-delete-button {
-	i {
-		font-size: 18px;
-		vertical-align: baseline;
-	}
-	right: 0;
-	top: 0;
-}
-.form-group.field-collection .accordion-item .form-group {
-    padding: 2px 0
-}
+
 .ts-wrapper .ts-control {
     height: initial;
 }
-
-.btn-link-danger {
-	transition: ease-in-out 0.1s color;
-	padding: 0;
-
-	&:active,
-	&:active:focus,
-	&:focus,
-	&:hover {
-		color: $btn-hover-light;
-
-		@media (prefers-color-scheme: dark) {
-			color: $btn-hover-dark;
-		}
-	}
+span.navbar-icon-trw-ea.trw-admin.logo-custom{
+	font-family: $header-font;
 }
 
-.field-collection-add-button {
-	transition: ease-in-out 0.15s color;
-
-	&:active,
-	&:active:focus,
-	&:hover {
-		color: $btn-hover-light;
-
-		@media (prefers-color-scheme: dark) {
-			color: $btn-hover-dark;
-		}
-	}
+nav a img {
+    padding: 0px 4px;
+    box-sizing: initial !important;
 }
 
 .accordion-body.trw {
@@ -210,10 +162,6 @@ div.vich-download-flex{
 			flex-direction: column;
 		}
 	}
-}
-
-body:not(.ea-content-width-full) .content-wrapper {
-	max-width: none;
 }
 
 .actions {
@@ -385,9 +333,6 @@ div.mobo-bios{
 		width:21%
 	}
 }
-.ea-vich-image {
-	padding-right: 10px;
-}
 /* ts multi select and delete buttons */
 i.red{
 	color: var(--link-danger-color);
@@ -428,6 +373,7 @@ div.clear-button-trw{
 
 .shide {
 	margin: 0px 5px;
+	padding: 5px 8px;
 	transition: ease-in-out 0.1s background-color;
 	box-shadow: none !important;
 

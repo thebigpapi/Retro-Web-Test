@@ -34,6 +34,10 @@ Encore
         from: './assets/styles/audit',
         to: 'css/[path][name].[ext]',
     })
+    .copyFiles({
+        from: './assets/styles/easyadmin/css',
+        to: 'css/[path][name].[ext]',
+    })
     /*
      * ENTRY CONFIG
      *
@@ -43,6 +47,7 @@ Encore
     .addEntry('app', './assets/app.js')
     .addEntry('app_ea', './assets/app_ea.js')
     .addEntry('chart', './assets/chart.js')
+    .addEntry('easyadmin', './assets/easyadmin.js')
 
     // enables the Symfony UX Stimulus bridge (used in assets/bootstrap.js)
     //.enableStimulusBridge('./assets/controllers.json')
@@ -65,7 +70,7 @@ Encore
     .enableBuildNotifications()
     .enableSourceMaps(!Encore.isProduction())
     // enables hashed filenames (e.g. app.abc123.css)
-    .enableVersioning(Encore.isProduction())
+    .enableVersioning()
 
     .configureBabel((config) => {
         config.plugins.push('@babel/plugin-proposal-class-properties');
