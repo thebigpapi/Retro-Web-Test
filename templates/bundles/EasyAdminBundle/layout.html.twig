@@ -31,6 +31,8 @@
     {% endblock %}
 
     {% block head_javascript %}
+        <script src="{{ asset('/build/js/easyadmin/bootstrap.js') }}" defer></script>
+        <script src="{{ asset('/build/js/easyadmin/mark.js') }}" defer></script>
         <script type="module" src="{{ asset('/build/js/easyadmin/app.js') }}" defer></script>
         {{ encore_entry_script_tags('app_ea') }}
         {{ encore_entry_script_tags('chart') }}
