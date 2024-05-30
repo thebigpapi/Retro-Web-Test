@@ -1,5 +1,9 @@
 
-
+const match = {
+    'ExpansionCard_expansionChips_autocomplete': 'ExpansionChip',
+    'Chipset_expansionChips_autocomplete': 'ExpansionChip',
+    'Motherboard_expansionChips_autocomplete': 'ExpansionChip',
+}
 export default class Autocomplete
 {
     create(element) {
@@ -30,6 +34,7 @@ export default class Autocomplete
             },
             plugins: {
                 dropdown_input: {},
+                no_active_items: {},
             }
         };
 
@@ -93,6 +98,10 @@ export default class Autocomplete
     }
 
     #createAutocompleteWithRemoteData(element, autocompleteEndpointUrl) {
+        let editMatch = match[element.id];
+        let url = window.location.href + "/dashboard";
+        if(editMatch)
+            url += `?crudAction=edit&crudControllerFqcn=App%5CController%5CAdmin%5C${editMatch}CrudController&entityId=`;
         const config = this.#mergeObjects(this.#getCommonConfig(element), {
             valueField: 'entityId',
             labelField: 'entityAsString',
@@ -115,17 +124,19 @@ export default class Autocomplete
             maxOptions: null,
             // on remote calls, we don't want tomselect to further filter the results by "entityAsString"
             // this override causes all results to be returned with the sorting from the server
-            score: function(search) {
+            /*score: function(search) {
                 return function(item) {
                     return 1;
                 };
-            },
+            },*/
             render: {
                 option: function(item, escape) {
                     return `<div>${item.entityAsString}</div>`;
                 },
                 item: function(item, escape) {
-                    return `<div>${escape(item.entityAsString)}</div>`;
+                    let idx = editMatch ? item.entityId : "a";
+                    let contents = editMatch ? `<a href="${url}${idx}"><img src="/build/icons/edit.svg" width="16" height="16"> </a>` : "";
+                    return `<div>${contents}${escape(item.entityAsString)}</div>`;
                 },
                 loading_more: function(data, escape) {
                     return `<div class="loading-more-results">${element.getAttribute('data-ea-i18n-loading-more-results')}</div>`;

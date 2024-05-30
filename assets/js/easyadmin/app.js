@@ -1,8 +1,5 @@
 // any CSS you require will output into a single css file (app.css in this case)
 
-
-//import bootstrap from './bootstrap.js';
-//import { Mark } from './mark.js';
 import Autocomplete from './autocomplete.js';
 import {toggleVisibilityClasses} from "./helpers.js";
 
@@ -185,6 +182,7 @@ class App {
 
         const elementsToHighlight = document.querySelectorAll('table tbody td:not(.actions)');
         const highlighter = new Mark(elementsToHighlight);
+        console.log(highlighter);
         highlighter.markRegExp(searchQueryTermsHighlightRegexp);
     }
 
@@ -236,6 +234,7 @@ class App {
             filterModal.querySelectorAll('.filter-checkbox:not(:checked)').forEach((notAppliedFilter) => {
                 removeFilter(notAppliedFilter.closest('.filter-field'));
             });
+            console.log(filterModal.querySelector('form'));
             filterModal.querySelector('form').submit();
         });
     }

@@ -362,6 +362,9 @@
     --border-style: solid;
     --border-color: hsl(213, 24%, 91%);
     --btn-danger-hover-color: var(--btn-danger-hover-light);
+    @media (prefers-color-scheme: dark){
+        --form-control-bg: var(--true-gray-700);
+    }
 }
 
 .ea-dark-scheme {
