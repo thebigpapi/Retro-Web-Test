@@ -364,6 +364,11 @@
     --btn-danger-hover-color: var(--btn-danger-hover-light);
     @media (prefers-color-scheme: dark){
         --form-control-bg: var(--true-gray-700);
+        --form-input-border-color: var(--true-gray-700);
+        --form-input-text-color: var(--true-gray-200);
+        --form-type-autocomplete-dropdown-bg: var(--true-gray-800);
+        --form-type-autocomplete-dropdown-active-item-bg: var(--true-gray-700);
+        --form-type-autocomplete-dropdown-input-wrapper-bg: var(--true-gray-900);
     }
 }
 
