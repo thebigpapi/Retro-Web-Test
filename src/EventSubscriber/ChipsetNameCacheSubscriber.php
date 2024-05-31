@@ -35,7 +35,7 @@ class ChipsetNameCacheSubscriber implements EventSubscriberInterface
 
         if (($entity instanceof Chipset)) {
             $this->chipsetChanged($entity);
-        } elseif (($entity instanceof ExpansionChip) && $entity->getType()->getId() == 30) {
+        } elseif (($entity instanceof ExpansionChip) && $entity->getType()?->getId() ?? 0 == 30) {
             $this->chipsetPartChanged($entity);
         }
     }
