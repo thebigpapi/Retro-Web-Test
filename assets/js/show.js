@@ -113,3 +113,15 @@ function change_tag(parameter) {
         window.history.replaceState({}, '', nextURL);
     }
 }
+
+function expandDropdown(){
+    let container = document.querySelector("div[class=dropdown-trw]");
+    let dropdown = container.querySelector("div[class*=dropdown-contents]");
+    let input = container.querySelector("input[type=checkbox]");
+    if(input.checked){
+        dropdown.setAttribute("class", "dropdown-contents visible");
+    }
+    else{
+        dropdown.setAttribute("class", "dropdown-contents");
+    }
+}
