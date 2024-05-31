@@ -53,7 +53,17 @@ class Processor extends ProcessingUnit
     }
     public function __toString(): string
     {
-        return $this->getName() ?: "";
+        return $this->getFullName() . $this->getAllAliases();
+    }
+    public function getAllAliases(): string
+    {
+        if($this->getChipAliases()->isEmpty())
+            return "";
+        $aliases = " [";
+        foreach($this->getChipAliases() as $alias){
+            $aliases .= $alias->getPartNumber() ? $alias->getPartNumber() . ", ": "";
+        }
+        return substr($aliases, 0, -2) . "]";
     }
     public function getL2(): ?CacheSize
     {
