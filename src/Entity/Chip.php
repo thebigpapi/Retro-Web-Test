@@ -40,6 +40,10 @@ abstract class Chip
     #[Assert\Valid()]
     private $images;
 
+    #[ORM\ManyToMany(targetEntity: ExpansionCard::class, mappedBy: 'expansionChips', orphanRemoval: true, cascade: ['persist'])]
+    #[Assert\Valid()]
+    private $expansionCards;
+
     #[ORM\OneToMany(mappedBy: 'chip', targetEntity: PciDeviceId::class, orphanRemoval: true, cascade: ['persist'])]
     #[Assert\Valid()]
     private Collection $pciDevs;
@@ -169,6 +173,34 @@ abstract class Chip
             // set the owning side to null (unless already changed)
             if ($image->getChip() === $this) {
                 $image->setChip(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ExpansionCard[]
+     */
+    public function getExpansionCards(): Collection
+    {
+        return $this->images;
+    }
+    public function addExpansionCard(ExpansionCard $expansionCard): self
+    {
+        if (!$this->expansionCards->contains($expansionCard)) {
+            $this->expansionCards[] = $expansionCard;
+            $expansionCard->addExpansionChip($this);
+        }
+
+        return $this;
+    }
+    public function removeExpansionCard(ExpansionCard $expansionCard): self
+    {
+        if ($this->expansionCards->contains($expansionCard)) {
+            $this->expansionCards->removeElement($expansionCard);
+            if ($expansionCard->getExpansionChips()->contains($this)) {
+                $expansionCard->removeExpansionChip($this);
             }
         }
 
