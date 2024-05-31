@@ -215,12 +215,13 @@ abstract class Chip
     public function getPciDevsLimited(): ?array
     {
         $result = array();
-        $idx = 1;
+        $idx = 0;
         foreach($this->pciDevs as $dev){
             $idx++;
             array_push($result, $dev->getDev());
-            if($idx > 3){
-                array_push($result, "...");
+            if($idx > 2){
+                if(count($this->pciDevs) > 3)
+                    array_push($result, "...");
                 break;
             }
         }
@@ -283,9 +284,11 @@ abstract class Chip
     public function getAliasVendors(): Collection
     {
         $vendors = [];
+        $mainVendor= $this->getManufacturer()?->getId() ?? null;
         foreach($this->getChipAliases() as $alias){
             $aliasVendors = $alias->getManufacturer()?->getPciVendorIds()->toArray() ?? [];
-            if(count($aliasVendors) > 0)
+            $aliasId = $alias->getManufacturer()?->getId() ?? null;
+            if(count($aliasVendors) > 0 && $aliasId != $mainVendor)
                 $vendors = array_merge($vendors, $aliasVendors);
         }
         return new ArrayCollection(array_unique($vendors));

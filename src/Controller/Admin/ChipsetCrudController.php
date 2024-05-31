@@ -157,7 +157,7 @@ class ChipsetCrudController extends AbstractCrudController
             ->onlyOnForms();
         yield AssociationField::new('expansionChips', 'Parts')
             ->autocomplete()
-            ->setColumns('col-sm-12 col-lg-6 col-xxl-4 multi-widget-trw')
+            ->setColumns('col-sm-12 col-lg-8 col-xxl-6 multi-widget-trw')
             ->onlyOnForms();
         yield CollectionField::new('biosCodes', 'BIOS codes')
             ->useEntryCrudForm(BiosCodeCrudType::class)
