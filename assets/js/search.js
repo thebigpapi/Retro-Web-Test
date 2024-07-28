@@ -74,8 +74,9 @@ let dynamic_selects = [
 
 // cookies
 if (search_image = document.getElementById('search_searchWithImages')) {
-    let cookieImg = (getCookie('searchImage') === "true");
-    toggleSearchWithImages(cookieImg);
+    //let cookieImg = (getCookie('searchImage') === "true");
+    //console.log(getCookie('searchImage'));
+    toggleSearchWithImages(true);
     search_image.addEventListener("click", function () {
         setCookie('searchImage', search_image.checked, 5);
     }, false);

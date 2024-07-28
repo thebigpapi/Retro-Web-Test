@@ -56,7 +56,7 @@ class KnownIssueCrudController extends AbstractCrudController
                 'Expansion cards' => KnownIssueType::ExpansionCards,
                 'Hard drives' => KnownIssueType::HardDrives,
                 'Optical drives' => KnownIssueType::OpticalDrives,
-                'Floppy drives' => KnownIssueType::FloppyDrives,
+                'Floppy & tape drives' => KnownIssueType::FloppyDrives,
                 'CPUs' => KnownIssueType::CPUs
             ])
             ->setFormTypeOption('multiple', true)

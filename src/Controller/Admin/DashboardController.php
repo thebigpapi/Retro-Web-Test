@@ -124,7 +124,7 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('CPUs', '486.svg', Processor::class);
         yield MenuItem::linkToCrud('Hard drives', 'hdd.svg', HardDrive::class);
         yield MenuItem::linkToCrud('Optical drives', 'cd.svg', CdDrive::class);
-        yield MenuItem::linkToCrud('Floppy drives', 'floppy.svg', FloppyDrive::class);
+        yield MenuItem::linkToCrud('Floppy & tape drives', 'floppy.svg', FloppyDrive::class);
         yield MenuItem::linkToCrud('Drivers', 'hardware.svg', LargeFile::class);
         yield MenuItem::section('Auxiliary items');
         yield MenuItem::subMenu('Motherboard related', 'board.svg')->setSubItems([
