@@ -470,14 +470,14 @@ class MotherboardCrudController extends AbstractCrudController
             $newConnector->setMemoryConnector($connector->getMemoryConnector());
             $board->addMotherboardMemoryConnector($newConnector);
         }
-        foreach ($old->getMotherboardBios() as $bios){
+        /*foreach ($old->getMotherboardBios() as $bios){
             $newBios = new MotherboardBios();
             $newBios->setManufacturer($bios->getManufacturer());
             $newBios->setPostString($bios->getPostString());
             $newBios->setNote($bios->getNote());
             $newBios->setBoardVersion($bios->getBoardVersion());
             $board->addMotherboardBio($newBios);
-        }
+        }*/
         foreach ($old->getPsuConnectors() as $psu){
             $board->addPsuConnector($psu);
         }
