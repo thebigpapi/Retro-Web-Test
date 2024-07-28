@@ -30,8 +30,8 @@ function getDatesSimple(){
         for (let element of list) {
             try {
                 let dateIso = element.innerHTML;
-                let date = new Date(element.innerHTML);
-                let options = {year: 'numeric'};
+                let date = new Date(element.innerHTML  + 'T00:00:00Z');
+                let options = {year: 'numeric', timeZone:"UTC"};
                 if(isNaN(date))
                     continue;
                 if(dateIso.length > 4){
