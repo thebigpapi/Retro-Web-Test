@@ -20,6 +20,7 @@ final class Version20240531191144 extends AbstractMigration
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
+        $this->addSql('DROP TABLE migration_versions');
         $this->addSql('ALTER TABLE chip ALTER type_id SET NOT NULL');
         $this->addSql("UPDATE chip SET misc_specs='[]' WHERE misc_specs is NULL");
         $this->addSql('ALTER TABLE chip ALTER misc_specs SET NOT NULL');
