@@ -89,6 +89,32 @@ class ExpansionChipRepository extends ServiceEntityRepository
         }
         return $query->getResult();
     }
+
+    public function findByPciId(array $ids): array
+    {
+        $entityManager = $this->getEntityManager();
+
+        // Building query
+        if($ids == [])
+            return [];
+
+        $intIds = [];
+        foreach($ids as $id){
+            array_push($intIds, $this->hex2Int($id));
+        }
+        if($intIds == [])
+            return [];
+        $query = $entityManager->createQuery(
+            "SELECT chip
+            FROM App\Entity\ExpansionChip chip JOIN chip.manufacturer man LEFT OUTER JOIN chip.chipAliases alias LEFT JOIN chip.pciDevs dev
+            WHERE dev.dev in (:devLike)
+            ORDER BY man.name ASC, chip.name ASC"
+        );
+
+        $query->setParameter("devLike", $intIds);
+        //dd($query);
+        return $query->getResult();
+    }
     /**
      * @return ExpansionChip[]
      */

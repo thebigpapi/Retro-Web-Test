@@ -389,6 +389,12 @@
     </div>
     {{ form_widget(form)}}
 {% endblock _LargeFile_note_widget %}
+{% block _LargeFile_expansionchips_widget %}
+    <div>
+    <div>INF parsing</dib>
+    <input id="js-readinf" type="file" /><span id="js-readinf-status"></span></div>
+    {{ form_widget(form)}}
+{% endblock _LargeFile_expansionchips_widget %}
 
 {# hdd editor #}
 {% block _HardDrive_storageDeviceImages_widget %}

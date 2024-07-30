@@ -50,11 +50,72 @@ if(form){
         saveretbtn.addEventListener('click', () => submit("saveAndReturn"), false);
     if(savecontbtn = document.getElementById("js-save-continue"))
         savecontbtn.addEventListener('click', () => submit("saveAndContinue"), false);
+    if(sdfgh = document.getElementById("js-readinf"))
+        sdfgh.addEventListener('change', () => readInf(), false);
 }
 if(createDriverBtn){
     createDriverBtn.addEventListener('click', () => createContainer(), false);
 }
 // JS driver editor
+function readInf(){
+    let input = document.getElementById("js-readinf");
+    const [file] = input.files;
+    const reader = new FileReader();
+    reader.addEventListener("load", () => {processInf(reader.result)}, false);
+    if (file) {
+        reader.readAsText(file);
+    }
+}
+
+function processInf(data){
+    let array = [];
+    let found = data.indexOf("&DEV_");
+    console.log(found);
+    while (found !== -1) {
+        array.push(data.substring(found + 5, found + 9));
+        found = data.indexOf("&DEV_", found + 1);
+    }
+    array = new Set(array);
+    if(array.size < 1){
+        showPciMessage("No PCI IDs were found!");
+    }
+    fetch(window.location.origin + "/dashboard/getexpansionchipspci", {
+        method: "POST",
+        body: JSON.stringify(Array.from(array))
+    }).then(response => response.text())
+    .then((text) => {
+        addChips(JSON.parse(text));
+    }).catch(err => console.log("Chip fill-in failed: " + err));
+}
+function addChips(chipArray){
+    if(Object.keys(chipArray).length < 1){
+        showPciMessage("No exp.chips were found!");
+        return;
+    }
+    let chipsAddBtn = document.getElementById("LargeFile_expansionchips_collection").previousElementSibling;
+    let chips = document.getElementsByClassName("LargeFile_expansionchips_cssid");
+    if(chips.length > 0){
+        if(confirm("List is not empty, want to clear it?")){
+            let list = document.getElementById("LargeFile_expansionchips");
+            list.innerHTML = "";
+        }
+        else return;
+    }
+    for(const chip in chipArray){
+        chipsAddBtn.click();
+    }
+    let idx = 0;
+    for(let chip of chips){
+        console.log(Object.values(chipArray)[idx]);
+        let chipSelect = chip.querySelector("select");
+        console.log(chipSelect)
+        chipSelect.tomselect.addOption({entityId: Object.keys(chipArray)[idx], entityAsString: Object.values(chipArray)[idx]})
+        chipSelect.tomselect.addItem(Object.keys(chipArray)[idx]);
+        chipSelect.tomselect.sync();
+        idx++;
+    }
+    showPciMessage("Added " + idx + " exp.chips");
+}
 function createContainer(){
     let template = document.getElementById('create-driver-template');
     let container = document.getElementById('create-driver-container');
@@ -66,6 +127,7 @@ function createContainer(){
     let save = document.getElementById('create-driver-save');
     save.addEventListener('click', () => JSsubmit(), false);
 }
+
 function populateFields(){
     showMessage("Setting up, just a sec ...", false);
     for(const item of fieldList){
@@ -242,6 +304,10 @@ function getSelectValues(select) {
         }
     }
     return result;
+}
+function showPciMessage(message){
+    let msg = document.getElementById("js-readinf-status");
+    msg.innerHTML = message
 }
 function showMessage(message, warning){
     let msg = document.getElementById("newdriver-message");
