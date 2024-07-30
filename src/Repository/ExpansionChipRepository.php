@@ -98,21 +98,24 @@ class ExpansionChipRepository extends ServiceEntityRepository
         if($ids == [])
             return [];
 
-        $intIds = [];
-        foreach($ids as $id){
-            array_push($intIds, $this->hex2Int($id));
+        $intVenIds = [];
+        $intDevIds = [];
+        foreach($ids[0] as $id){
+            array_push($intVenIds, $this->hex2Int($id));
         }
-        if($intIds == [])
+        foreach($ids[1] as $id){
+            array_push($intDevIds, $this->hex2Int($id));
+        }
+        if($intVenIds == [] || $intVenIds == [])
             return [];
         $query = $entityManager->createQuery(
             "SELECT chip
-            FROM App\Entity\ExpansionChip chip JOIN chip.manufacturer man LEFT OUTER JOIN chip.chipAliases alias LEFT JOIN chip.pciDevs dev
-            WHERE dev.dev in (:devLike)
+            FROM App\Entity\ExpansionChip chip JOIN chip.manufacturer man LEFT JOIN chip.pciDevs dev LEFT JOIN man.pciVendorIds ven
+            WHERE dev.dev in (:devLike) AND ven.ven in (:venLike)
             ORDER BY man.name ASC, chip.name ASC"
         );
 
-        $query->setParameter("devLike", $intIds);
-        //dd($query);
+        $query->setParameter("venLike", $intVenIds)->setParameter("devLike", $intDevIds);
         return $query->getResult();
     }
     /**

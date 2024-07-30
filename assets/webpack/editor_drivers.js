@@ -68,20 +68,23 @@ function readInf(){
 }
 
 function processInf(data){
-    let array = [];
+    let venArray = [];
+    let devArray = [];
     let found = data.indexOf("&DEV_");
     console.log(found);
     while (found !== -1) {
-        array.push(data.substring(found + 5, found + 9));
+        devArray.push(data.substring(found + 5, found + 9));
+        venArray.push(data.substring(found - 4, found));
         found = data.indexOf("&DEV_", found + 1);
     }
-    array = new Set(array);
-    if(array.size < 1){
+    devArray = new Set(devArray);
+    venArray = new Set(venArray);
+    if(devArray.size < 1 || venArray.size < 1){
         showPciMessage("No PCI IDs were found!");
     }
     fetch(window.location.origin + "/dashboard/getexpansionchipspci", {
         method: "POST",
-        body: JSON.stringify(Array.from(array))
+        body: JSON.stringify([Array.from(venArray), Array.from(devArray)])
     }).then(response => response.text())
     .then((text) => {
         addChips(JSON.parse(text));
