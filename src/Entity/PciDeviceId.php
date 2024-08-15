@@ -33,6 +33,8 @@ class PciDeviceId
 
     public function getDev(): ?string
     {
+        if($this->dev > 223 && $this->dev < 234)
+            return strtoupper(dechex($this->dev));
         return strtoupper(str_pad(dechex($this->dev), 4, "0", STR_PAD_LEFT));
     }
 
