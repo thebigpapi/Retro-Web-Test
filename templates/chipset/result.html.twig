@@ -10,9 +10,9 @@
 					<div class="perk">
 						<a href="{{ path("chipset_show", {id: chipset.getId()}) }}">
 							<div class="perk-image">
-							{% if chipset.getExpansionChips() is not empty %}
+							{% if chipset.getChips() is not empty %}
 								{% set imgcount = 0 %}
-								{% for chipPart in chipset.getExpansionChips()|sort((a, b) => a.sort <=> b.sort)|slice(0, 1) %}
+								{% for chipPart in chipset.getChips()|sort((a, b) => a.sort <=> b.sort)|slice(0, 1) %}
 								{% if chipPart.getImages() is not empty %}
 									{% set imgcount = imgcount + 1 %}
 									{% for image in chipPart.getImages()|sort((a, b) => a.getFileName() <=> b.getFileName())|sort((a, b) => a.sort <=> b.sort)|slice(0, 1) %}
@@ -29,8 +29,8 @@
 							</div>
 							<div class="perk-name">{{ chipset.getFullName() }}</div>
 							<div class="perk-alias">
-								{% if chipset.getExpansionChips() is not empty %}<span class="results-alias">
-									<small>Parts: {% for chipPart in chipset.getExpansionChips() %}{{ chipPart.getFullName() }}{% if not loop.last %}, {% endif %}{% endfor %}</small>
+								{% if chipset.getChips() is not empty %}<span class="results-alias">
+									<small>Parts: {% for chipPart in chipset.getChips() %}{{ chipPart.getFullName() }}{% if not loop.last %}, {% endif %}{% endfor %}</small>
 								</span>{% endif %}
 							</div>
 							<div class="perk-alias">

@@ -128,7 +128,7 @@ class MotherboardCrudController extends AbstractCrudController
             ->add('chipset')
             ->add(MotherboardImageFilter::new('images'))
             ->add(MotherboardBiosFilter::new('motherboardBios'))
-            ->add('expansionChips')
+            ->add('chips')
             ->add('cacheSize')
             ->add('dramType')
             ->add('processorPlatformTypes')
@@ -159,7 +159,7 @@ class MotherboardCrudController extends AbstractCrudController
             ->formatValue(function ($value, $entity) {return $entity->getChipsetWithoutParts();})
             ->setCustomOption('link','chipset.getId')
             ->onlyOnIndex();
-        yield CollectionField::new('expansionChips','Exp.chips')
+        yield CollectionField::new('chips','Exp.chips')
             ->setCustomOption('byCount', true)
             ->onlyOnIndex();
         yield CollectionField::new('manuals','Manual')
@@ -282,7 +282,7 @@ class MotherboardCrudController extends AbstractCrudController
             ->onlyOnForms();
         yield FormField::addPanel('Chipset and chips')
             ->onlyOnForms();
-        yield AssociationField::new('expansionChips', 'Expansion chips')
+        yield AssociationField::new('xhips', 'Expansion chips')
             ->autocomplete()
             ->setColumns('col-sm-12 col-lg-8 col-xxl-6 multi-widget-trw')
             ->onlyOnForms();
@@ -437,8 +437,8 @@ class MotherboardCrudController extends AbstractCrudController
         foreach ($old->getCpuSpeed() as $fsb){
             $board->addCpuSpeed($fsb);
         }
-        foreach ($old->getExpansionChips() as $chip){
-            $board->addExpansionChip($chip);
+        foreach ($old->getChips() as $chip){
+            $board->addChip($chip);
         }
         foreach ($old->getDramType() as $ram){
             $board->addDramType($ram);

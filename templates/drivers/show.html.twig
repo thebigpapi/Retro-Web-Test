@@ -106,8 +106,8 @@
 				<div class="quick-spec-table">
 					<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/chip.svg')) }}" alt="chip" width="24" height="24">Expansion chips</div>
 					<div class="tag-container"><ul>
-					{% if driver.getExpansionChips() is not empty %}
-						{% for chip in driver.getExpansionChips() %}
+					{% if driver.getChips() is not empty %}
+						{% for chip in driver.getChips() %}
 							<li><a href="{{ path('chip_show', {id: chip.getExpansionChip().getId()}) }}"><span class="text-block">{{ chip.getExpansionChip().getFullName() }}</span></a></li>
 						{% endfor %}
 					{% else %}

@@ -19,8 +19,8 @@
 		<meta name="twitter:description" content="{{ chipset.getMetaDescription() }}">
 		<meta property="og:description" content="{{ chipset.getMetaDescription() }}">
 		<meta property="og:url" content="{{ absolute_url(path('chipset_show', {id: chipset.getId()})) }}">
-		{% if chipset.getExpansionChips() is not empty %}
-			{% for chipPart in chipset.getExpansionChips()|filter(chipPart => chipPart.getImages() is not empty)|sort((a, b) => a.sort <=> b.sort)|slice(0, 1) %}
+		{% if chipset.getChips() is not empty %}
+			{% for chipPart in chipset.getChips()|filter(chipPart => chipPart.getImages() is not empty)|sort((a, b) => a.sort <=> b.sort)|slice(0, 1) %}
 				{% for image in chipPart.getImages()|sort((a, b) => a.sort <=> b.sort)|slice(0, 1) %}
 					<meta property="og:image" content="{{ vich_uploader_asset(image, 'imageFile')}}">
 					<meta name="twitter:image" content="{{ vich_uploader_asset(image, 'imageFile')}}">
@@ -73,9 +73,9 @@
 					<div class="quick-spec-head">
 						<img src="{{ absolute_url(asset('build/icons/chipset.svg')) }}" alt="chip" width="24" height="24">Chipset parts
 					</div>
-					{% if chipset.getExpansionChips() is not empty %}
+					{% if chipset.getChips() is not empty %}
 						<div class="tag-container">
-							{% for part in chipset.getExpansionChips()|sort((a, b) => a.sort <=> b.sort) %}
+							{% for part in chipset.getChips()|sort((a, b) => a.sort <=> b.sort) %}
 								<a href="{{ path('chip_show', {id: part.getId()}) }}"><span class="text-block">{{ part.getFullName() }}</span></a>
 							{% endfor %}
 						</div>
@@ -107,14 +107,14 @@
 				{% include 'macros/aliases.html.twig' with {'entity':chipset.getChipsetAliases(), 'msg': 'Also known as:'} %}
 				{% include 'macros/notes.html.twig' with {'entity': chipset} %}
 				<div class="textarea">
-				{% if chipset.getExpansionChips() is not empty %}
+				{% if chipset.getChips() is not empty %}
 					{% set dcount = false %}
-					{% for chipPart in chipset.getExpansionChips()|filter(chipPart => chipPart.getDescription() is not empty) %}{% set dcount = true %}{% endfor %}
+					{% for chipPart in chipset.getChips()|filter(chipPart => chipPart.getDescription() is not empty) %}{% set dcount = true %}{% endfor %}
 					{% if dcount == true %}
 						<hr>
 						<h1>Documented parts</h1>
 						<ul class="chipset-toc">
-							{% for chipPart in chipset.getExpansionChips()|filter(chipPart => chipPart.getDescription() is not empty)|sort((a, b) => a.sort <=> b.sort) %}
+							{% for chipPart in chipset.getChips()|filter(chipPart => chipPart.getDescription() is not empty)|sort((a, b) => a.sort <=> b.sort) %}
 							<li><a href="{{ path("chip_show", {id:chipPart.getId()}) }}">{{ chipPart.getFullName() }}{% if chipPart.getChipAliases() is not empty %}&nbsp;(known as:{% for cp in chipPart.getChipAliases() %}
 							{{ cp.getManufacturer().getName() }}&nbsp;{{ cp.getPartNumber() }} {{ cp.getName() ? '[' ~ cp.getName() ~ ']' }}{% if not loop.last%}, {% endif %}{% endfor %}){% endif %}</a></li>
 							{% endfor %}
@@ -136,17 +136,17 @@
 	</div>
 
 	<!-- IMAGES -->
-	{% if chipset.getExpansionChips() is not empty %}
+	{% if chipset.getChips() is not empty %}
 		{% set lpindex = 0 %}
 		{% set lplen = 0 %}
-		{% for chipPart in chipset.getExpansionChips()|filter(chipPart => chipPart.getImages() is not empty) %}
+		{% for chipPart in chipset.getChips()|filter(chipPart => chipPart.getImages() is not empty) %}
 			{% for image in chipPart.getImages() %}
 				{% set lplen = lplen + 1 %}
 			{% endfor %}
 		{% endfor %}
 		{% if lplen > 0 %}
 			<div class="show-images" id="sh-images">
-				{% for chipPart in chipset.getExpansionChips()|filter(chipPart => chipPart.getImages() is not empty)|sort((a, b) => a.sort <=> b.sort) %}
+				{% for chipPart in chipset.getChips()|filter(chipPart => chipPart.getImages() is not empty)|sort((a, b) => a.sort <=> b.sort) %}
 					{% for image in chipPart.getImages()|sort((a, b) => a.getFileName() <=> b.getFileName())|sort((a, b) => a.sort <=> b.sort) %}
 						{% set lpindex = lpindex + 1 %}
 						{% include 'macros/images.html.twig' with {'type':'chipset', 'entity': image, 'index': lpindex, 'length': lplen} %}

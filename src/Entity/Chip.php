@@ -28,21 +28,37 @@ abstract class Chip
     #[ORM\ManyToOne(targetEntity: Manufacturer::class, inversedBy: 'chips', fetch: 'EAGER')]
     protected $manufacturer;
 
+    #[ORM\ManyToMany(targetEntity: Motherboard::class, mappedBy: 'chips')]
+    private Collection $motherboards;
+
+    #[ORM\ManyToMany(targetEntity: Chipset::class, mappedBy: 'chips')]
+    private Collection $chipsets;
+
+    #[ORM\OneToMany(targetEntity: LargeFileExpansionChip::class, mappedBy: 'chip', orphanRemoval: true, cascade: ['persist'])]
+    #[Assert\Valid()]
+    private Collection $drivers;
+
+    #[ORM\Column(length: 8192, nullable: true)]
+    private ?string $description = null;
+
+    #[ORM\ManyToMany(targetEntity: ExpansionCard::class, mappedBy: 'chips')]
+    private Collection $expansionCards;
+
+    #[ORM\OneToMany(mappedBy: 'chip', targetEntity: ExpansionChipBios::class, orphanRemoval: true, cascade: ['persist'])]
+    #[Assert\Valid()]
+    private Collection $chipBios;
+
     #[ORM\OneToMany(targetEntity: ChipDocumentation::class, mappedBy: 'chip', orphanRemoval: true, cascade: ['persist'])]
     #[Assert\Valid()]
-    protected $documentations;
+    protected Collection $documentations;
 
     #[ORM\OneToMany(targetEntity: ChipAlias::class, mappedBy: 'chip', orphanRemoval: true, cascade: ['persist'])]
     #[Assert\Valid()]
-    private $chipAliases;
+    private Collection $chipAliases;
 
     #[ORM\OneToMany(targetEntity: ChipImage::class, mappedBy: 'chip', orphanRemoval: true, cascade: ['persist'])]
     #[Assert\Valid()]
-    private $images;
-
-    #[ORM\ManyToMany(targetEntity: ExpansionCard::class, mappedBy: 'expansionChips', orphanRemoval: true, cascade: ['persist'])]
-    #[Assert\Valid()]
-    private $expansionCards;
+    private Collection $images;
 
     #[ORM\OneToMany(mappedBy: 'chip', targetEntity: PciDeviceId::class, orphanRemoval: true, cascade: ['persist'])]
     #[Assert\Valid()]
@@ -56,7 +72,7 @@ abstract class Chip
     #[Assert\Positive(message: "Sort position should be above 0")]
     private ?int $sort = null;
 
-    #[ORM\ManyToOne(targetEntity: ExpansionChipType::class, inversedBy: 'expansionChips')]
+    #[ORM\ManyToOne(targetEntity: ExpansionChipType::class, inversedBy: 'chips')]
     #[ORM\JoinColumn(nullable: false)]
     private $type;
 
@@ -65,6 +81,11 @@ abstract class Chip
 
     public function __construct()
     {
+        $this->motherboards = new ArrayCollection();
+        $this->chipsets = new ArrayCollection();
+        $this->drivers = new ArrayCollection();
+        $this->expansionCards = new ArrayCollection();
+        $this->chipBios = new ArrayCollection();
         $this->chipAliases = new ArrayCollection();
         $this->images = new ArrayCollection();
         $this->pciDevs = new ArrayCollection();
@@ -104,6 +125,138 @@ abstract class Chip
 
         return $this;
     }
+
+    /**
+     * @return Collection|Motherboard[]
+     */
+    public function getMotherboards(): Collection
+    {
+        return $this->motherboards;
+    }
+    public function addMotherboard(Motherboard $motherboard): self
+    {
+        if (!$this->motherboards->contains($motherboard)) {
+            $this->motherboards[] = $motherboard;
+            $motherboard->addChip($this);
+        }
+
+        return $this;
+    }
+    public function removeMotherboard(Motherboard $motherboard): self
+    {
+        if ($this->motherboards->removeElement($motherboard)) {
+            $motherboard->removeChip($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Chipset[]
+     */
+    public function getChipsets(): Collection
+    {
+        return $this->chipsets;
+    }
+    public function addChipset(Chipset $chipset): self
+    {
+        if (!$this->chipsets->contains($chipset)) {
+            $this->chipsets[] = $chipset;
+            $chipset->addChip($this);
+        }
+
+        return $this;
+    }
+    public function removeChipset(Chipset $chipset): self
+    {
+        if ($this->chipsets->contains($chipset)) {
+            $this->chipsets->removeElement($chipset);
+            // set the owning side to null (unless already changed)
+            if ($chipset->getChips()->contains($this)) {
+                $chipset->removeChip($this);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|LargeFileExpansionChip[]
+     */
+    public function getDrivers(): Collection
+    {
+        return $this->drivers;
+    }
+    public function addDriver(LargeFileExpansionChip $driver): self
+    {
+        if (!$this->drivers->contains($driver)) {
+            $this->drivers[] = $driver;
+            $driver->setChip($this);
+        }
+
+        return $this;
+    }
+    public function removeDriver(LargeFileExpansionChip $driver): self
+    {
+        if ($this->drivers->removeElement($driver)) {
+            // set the owning side to null (unless already changed)
+            if ($driver->getChip() === $this) {
+                $driver->setChip(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(?string $description): self
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ExpansionChipBios>
+     */
+    public function getChipBios(): Collection
+    {
+        return $this->chipBios;
+    }
+
+    public function addChipBio(ExpansionChipBios $chipBio): static
+    {
+        if (!$this->chipBios->contains($chipBio)) {
+            $this->chipBios->add($chipBio);
+            $chipBio->setChip($this);
+        }
+
+        return $this;
+    }
+
+    public function removeChipBio(ExpansionChipBios $chipBio): static
+    {
+        if ($this->chipBios->removeElement($chipBio)) {
+            // set the owning side to null (unless already changed)
+            if ($chipBio->getChip() === $this) {
+                $chipBio->setChip(null);
+            }
+        }
+
+        return $this;
+    }
+    public function isChipBios(): bool
+    {
+        if(isset($this->chipBios))
+            if(count($this->chipBios) > 0)
+                return true;
+        return false;
+    }
+
     public function getNameWithoutManuf(): string
     {
         if ($this->name) {
@@ -190,7 +343,7 @@ abstract class Chip
     {
         if (!$this->expansionCards->contains($expansionCard)) {
             $this->expansionCards[] = $expansionCard;
-            $expansionCard->addExpansionChip($this);
+            $expansionCard->addChip($this);
         }
 
         return $this;
@@ -199,8 +352,8 @@ abstract class Chip
     {
         if ($this->expansionCards->contains($expansionCard)) {
             $this->expansionCards->removeElement($expansionCard);
-            if ($expansionCard->getExpansionChips()->contains($this)) {
-                $expansionCard->removeExpansionChip($this);
+            if ($expansionCard->getChips()->contains($this)) {
+                $expansionCard->removeChip($this);
             }
         }
 

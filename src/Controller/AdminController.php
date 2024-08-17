@@ -140,7 +140,7 @@ class AdminController extends AbstractDashboardController
         $chipset = json_decode($request->getContent());
         $chips = array();
 
-        foreach($chipsetRepository->findById($chipset)[0]->getExpansionChips() as $chip){
+        foreach($chipsetRepository->findById($chipset)[0]->getChips() as $chip){
             $chips[$chip->getId()] = $chip->getFullName();
         }
         return new JsonResponse($chips);

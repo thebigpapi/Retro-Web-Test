@@ -36,10 +36,10 @@ class Chipset
     private $chipsetAliases;
 
     /**
-     * @var ArrayCollection<ExpansionChip>
+     * @var ArrayCollection<Chip>
      */
-    #[ORM\ManyToMany(targetEntity: ExpansionChip::class, inversedBy: 'chipsets')]
-    private $expansionChips;
+    #[ORM\ManyToMany(targetEntity: Chip::class, inversedBy: 'chipsets')]
+    private $chips;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     #[Assert\Length(max: 255, maxMessage: 'Encyclopedia link is longer than {{ limit }} characters.')]
@@ -75,7 +75,7 @@ class Chipset
     {
         $this->motherboards = new ArrayCollection();
         $this->chipsetAliases = new ArrayCollection();
-        $this->expansionChips = new ArrayCollection();
+        $this->chips = new ArrayCollection();
         $this->biosCodes = new ArrayCollection();
         $this->drivers = new ArrayCollection();
         $this->documentations = new ArrayCollection();
@@ -149,11 +149,11 @@ class Chipset
     public function getParts(): string
     {
         $parts = "";
-        if($this->expansionChips->isEmpty()){
+        if($this->chips->isEmpty()){
             return "[no parts]";
         }
-        foreach ($this->expansionChips as $key => $part) {
-            if ($key === array_key_last($this->expansionChips->getValues())) {
+        foreach ($this->chips as $key => $part) {
+            if ($key === array_key_last($this->chips->getValues())) {
                 $parts .= $part->getManufacturerAndPN();
             } else {
                 $parts .= $part->getManufacturerAndPN() . ", ";
@@ -209,11 +209,11 @@ class Chipset
         return $this;
     }
     /**
-     * @return Collection|ExpansionChip[]
+     * @return Collection|Chip[]
      */
-    public function getExpansionChips(): Collection
+    public function getchips(): Collection
     {
-        $sortedChips = $this->expansionChips->toArray();
+        $sortedChips = $this->chips->toArray();
 
         $res = usort($sortedChips, function ($a, $b) {
             return ($a->getFullName() <=> $b->getFullName());
@@ -222,25 +222,25 @@ class Chipset
         if ($res) {
             return new ArrayCollection($sortedChips);
         } else {
-            return $this->expansionChips;
+            return $this->chips;
         }
     }
-    public function addExpansionChip(ExpansionChip $expansionChip): self
+    public function addChip(Chip $chip): self
     {
-        if (!$this->expansionChips->contains($expansionChip)) {
-            $this->expansionChips[] = $expansionChip;
-            $expansionChip->addChipset($this);
+        if (!$this->chips->contains($chip)) {
+            $this->chips[] = $chip;
+            $chip->addChipset($this);
         }
 
         return $this;
     }
-    public function removeExpansionChip(ExpansionChip $expansionChip): self
+    public function removeChip(Chip $chip): self
     {
-        if ($this->expansionChips->contains($expansionChip)) {
-            $this->expansionChips->removeElement($expansionChip);
+        if ($this->chips->contains($chip)) {
+            $this->chips->removeElement($chip);
             // set the owning side to null (unless already changed)
-            if ($expansionChip->getChipsets()->contains($this)) {
-                $expansionChip->removeChipset($this);
+            if ($chip->getChipsets()->contains($this)) {
+                $chip->removeChipset($this);
             }
         }
 
@@ -315,8 +315,8 @@ class Chipset
     public function getAllDrivers(): Collection
     {
         $drivers = $this->drivers->toArray();
-        foreach ($this->getExpansionChips() as $expansionChip) {
-            $drivers = array_merge($drivers, $expansionChip->getDrivers()->toArray());
+        foreach ($this->getchips() as $chip) {
+            $drivers = array_merge($drivers, $chip->getDrivers()->toArray());
         }
         return new ArrayCollection($drivers);
     }
@@ -451,8 +451,8 @@ class Chipset
     public function getChipDocs(): Collection
     {
         $docs = [];
-        foreach ($this->getExpansionChips() as $expansionChip) {
-            $docs = array_merge($docs, $expansionChip->getDocumentations()->toArray());
+        foreach ($this->getchips() as $chip) {
+            $docs = array_merge($docs, $chip->getDocumentations()->toArray());
         }
         return new ArrayCollection($docs);
     }
@@ -460,7 +460,7 @@ class Chipset
     public function getChipsWithDrivers(): array
     {
         $driverChips = [];
-        foreach($this->expansionChips as $chip){
+        foreach($this->chips as $chip){
             if(!$chip->getDrivers()->isEmpty())
                 array_push($driverChips, $chip->getFullName());
         }

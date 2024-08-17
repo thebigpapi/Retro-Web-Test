@@ -406,8 +406,8 @@ class ExpansionCardCrudController extends AbstractCrudController
             $newAlias->setName($alias->getName());
             $card->addExpansionCardAlias($newAlias);
         }
-        foreach ($old->getExpansionChips() as $chip) {
-            $card->addExpansionChip($chip);
+        foreach ($old->getChips() as $chip) {
+            $card->addChip($chip);
         }
         foreach ($old->getDramType() as $ram){
             $card->addDramType($ram);

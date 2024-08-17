@@ -43,7 +43,7 @@ class ExpansionCard
 
     #[ORM\ManyToMany(targetEntity: Chip::class, inversedBy: 'expansionCards')]
     #[Groups(['expansion_card:read'])]
-    private Collection $expansionChips;
+    private Collection $chips;
 
     #[ORM\Column(length: 4096, nullable: true)]
     #[Assert\Length(max: 4096, maxMessage: 'Description is longer than {{ limit }} characters.')]
@@ -173,7 +173,7 @@ class ExpansionCard
 
     public function __construct()
     {
-        $this->expansionChips = new ArrayCollection();
+        $this->chips = new ArrayCollection();
         $this->documentations = new ArrayCollection();
         $this->drivers = new ArrayCollection();
         $this->images = new ArrayCollection();
@@ -236,23 +236,23 @@ class ExpansionCard
     /**
      * @return Collection<int, Chip>
      */
-    public function getExpansionChips(): Collection
+    public function getChips(): Collection
     {
-        return $this->expansionChips;
+        return $this->chips;
     }
 
-    public function addExpansionChip(Chip $expansionChip): static
+    public function addChip(Chip $chip): static
     {
-        if (!$this->expansionChips->contains($expansionChip)) {
-            $this->expansionChips->add($expansionChip);
+        if (!$this->chips->contains($chip)) {
+            $this->chips->add($chip);
         }
 
         return $this;
     }
 
-    public function removeExpansionChip(Chip $expansionChip): static
+    public function removeChip(Chip $chip): static
     {
-        $this->expansionChips->removeElement($expansionChip);
+        $this->chips->removeElement($chip);
 
         return $this;
     }
@@ -279,11 +279,11 @@ class ExpansionCard
     public function getAllDrivers(): Collection
     {
         $drivers = $this->getDrivers()->toArray();
-        foreach ($this->getExpansionChips() as $expansionChip) {
-            if (get_class($expansionChip) !== ExpansionChip::class) {
+        foreach ($this->getChips() as $chip) {
+            if (get_class($chip) !== ExpansionChip::class) {
                 continue;
             }
-            $drivers = array_merge($drivers, $expansionChip->getDrivers()->toArray());
+            $drivers = array_merge($drivers, $chip->getDrivers()->toArray());
         }
         return new ArrayCollection($drivers);
     }
@@ -374,8 +374,8 @@ class ExpansionCard
     public function getChipDocs(): Collection
     {
         $docs = [];
-        foreach ($this->getExpansionChips() as $expansionChip) {
-            $docs = array_merge($docs, $expansionChip->getDocumentations()->toArray());
+        foreach ($this->getChips() as $chip) {
+            $docs = array_merge($docs, $chip->getDocumentations()->toArray());
         }
         return new ArrayCollection($docs);
     }
@@ -915,7 +915,7 @@ class ExpansionCard
     public function getChipsWithDrivers(): array
     {
         $driverChips = [];
-        foreach($this->expansionChips as $chip){
+        foreach($this->chips as $chip){
             if (get_class($chip) !== ExpansionChip::class) {
                 continue;
             }

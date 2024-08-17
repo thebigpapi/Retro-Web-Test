@@ -110,8 +110,8 @@
 							{% for device in expansioncard.getPciDevs() %}
 								<span class="text-block">{{device.getDev()}}</span>
 							{% endfor %}
-						{% elseif expansioncard.getExpansionChips()|filter(a => a.pciDevs is not empty) is not empty %}
-							{% for chip in expansioncard.getExpansionChips()|filter(a => a.pciDevs is not empty) %}
+						{% elseif expansioncard.getChips()|filter(a => a.pciDevs is not empty) is not empty %}
+							{% for chip in expansioncard.getChips()|filter(a => a.pciDevs is not empty) %}
 								{% for device in chip.getPciDevs() %}
 									<span class="text-block">{{device.getDev()}}</span>
 								{% endfor %}
@@ -200,10 +200,10 @@
 			</div>
 			<div class="show-chips" id="sh-expchips">
 				<!-- Expansion chips -->
-				{% if expansioncard.getExpansionChips() is not empty %}
+				{% if expansioncard.getChips() is not empty %}
 				<div class="quick-spec-table">
 					{% for type in expansionchiptype %}
-						{% for chip in expansioncard.getExpansionChips()|filter(a => a.getType().getName() == type.getName())%}
+						{% for chip in expansioncard.getChips()|filter(a => a.getType().getName() == type.getName())%}
 							{% if loop.first %}<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/chip.svg')) }}" alt="chip" width="24" height="24">{{chip.getType().getName()}} chips</div><div class="tag-container">{% endif %}
 							
 							{% if (attribute(chip, 'getExpansionChipBios') is defined)%}
@@ -211,7 +211,7 @@
 							{% else %}
 							<a href="{{ path('processor_show', {id: chip.getId()}) }}"><span class="text-block">{{ chip.getFullName() }}</span></a>
 							{% endif %}
-							{% if loop.index == expansioncard.getExpansionChips()|filter(a => a.getType().getName() == type.getName())|length %}</div>{% endif %}
+							{% if loop.index == expansioncard.getChips()|filter(a => a.getType().getName() == type.getName())|length %}</div>{% endif %}
 						{% endfor %}
 					{% endfor %}
 				</div>
@@ -225,9 +225,9 @@
 					<div>No card specs</div>
 				{% endif %}
 				<!-- Expansion chips specs -->
-				{% if expansioncard.getExpansionChips()|filter(a => a.getMiscSpecs() is not empty) is not empty %}
+				{% if expansioncard.getChips()|filter(a => a.getMiscSpecs() is not empty) is not empty %}
 					<div style="padding: 6px 0px;"><b style="font-size:20px;">Chip specifications </b><small>(click to expand)</small></div>
-					{% for chip in expansioncard.getExpansionChips()|filter(a => a.getMiscSpecs() is not empty)%}
+					{% for chip in expansioncard.getChips()|filter(a => a.getMiscSpecs() is not empty)%}
 						<div class="dropdown-trw">
 							<label class="dropdown-header" onclick="expandDropdown()">
 								<img src="{{ absolute_url(asset('build/icons/chip.svg')) }}" alt="chip" width="24" height="24">
@@ -243,7 +243,7 @@
 			</div>
 			<!-- BIOSes -->
 			<div class="show-downloads" id="sh-bios">
-				{% set chipBios =  expansioncard.getExpansionChips()|filter(a => attribute(a, 'getExpansionChipBios') is defined and a.getExpansionChipBios() is not empty) %}
+				{% set chipBios =  expansioncard.getChips()|filter(a => attribute(a, 'getExpansionChipBios') is defined and a.getExpansionChipBios() is not empty) %}
 				{% set cardBios =  expansioncard.getExpansionCardBios() %}
 				<div class="show-downloads-group">
 				{% if cardBios is not empty %}

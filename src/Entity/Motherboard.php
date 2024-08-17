@@ -107,8 +107,8 @@ class Motherboard
     #[ORM\ManyToMany(targetEntity: PSUConnector::class, inversedBy: 'motherboards')]
     private $psuConnectors;
 
-    #[ORM\ManyToMany(targetEntity: ExpansionChip::class, inversedBy: 'motherboards')]
-    private $expansionChips;
+    #[ORM\ManyToMany(targetEntity: Chip::class, inversedBy: 'motherboards')]
+    private $chips;
 
     #[ORM\Column(type: 'string', length: 80, unique: true)]
     #[Assert\Length(max: 80, maxMessage: 'Slug is longer than {{ limit }} characters.')]
@@ -145,7 +145,7 @@ class Motherboard
         $this->drivers = new ArrayCollection();
         $this->redirections = new ArrayCollection();
         $this->psuConnectors = new ArrayCollection();
-        $this->expansionChips = new ArrayCollection();
+        $this->chips = new ArrayCollection();
         $this->miscFiles = new ArrayCollection();
         $this->motherboardMemoryConnectors = new ArrayCollection();
     }
@@ -502,8 +502,8 @@ class Motherboard
     public function getChipDocs(): Collection
     {
         $docs = [];
-        foreach ($this->getExpansionChips() as $expansionChip) {
-            $docs = array_merge($docs, $expansionChip->getDocumentations()->toArray());
+        foreach ($this->getChips() as $chip) {
+            $docs = array_merge($docs, $chip->getDocumentations()->toArray());
         }
         return new ArrayCollection($docs);
     }
@@ -724,8 +724,8 @@ class Motherboard
     public function getAllDrivers(): Collection
     {
         $drivers = $this->getDrivers()->toArray();
-        foreach ($this->getExpansionChips() as $expansionChip) {
-            $drivers = array_merge($drivers, $expansionChip->getDrivers()->toArray());
+        foreach ($this->getChips() as $chip) {
+            $drivers = array_merge($drivers, $chip->getDrivers()->toArray());
         }
         $drivers = array_merge($drivers, $this->getChipset()?->getDrivers()->toArray() ?? []);
         return new ArrayCollection($drivers);
@@ -819,33 +819,33 @@ class Motherboard
         return $this;
     }
     /**
-     * @return Collection|ExpansionChip[]
+     * @return Collection|Chip[]
      */
-    public function getExpansionChips(): Collection
+    public function getChips(): Collection
     {
-        return $this->expansionChips;
+        return $this->chips;
     }
-    public function addExpansionChip(ExpansionChip $expansionChip): self
+    public function addChip(Chip $chip): self
     {
-        if (!$this->expansionChips->contains($expansionChip)) {
-            $this->expansionChips[] = $expansionChip;
-            $expansionChip->addMotherboard($this);
+        if (!$this->chips->contains($chip)) {
+            $this->chips[] = $chip;
+            $chip->addMotherboard($this);
         }
 
         return $this;
     }
-    public function removeExpansionChip(ExpansionChip $expansionChip): self
+    public function removeChip(Chip $chip): self
     {
-        if ($this->expansionChips->removeElement($expansionChip)) {
-            $expansionChip->removeMotherboard($this);
+        if ($this->chips->removeElement($chip)) {
+            $chip->removeMotherboard($this);
         }
 
         return $this;
     }
-    public function isExpansionChips(): bool
+    public function isChips(): bool
     {
-        if(isset($this->expansionChips))
-            if(count($this->expansionChips) > 0)
+        if(isset($this->chips))
+            if(count($this->chips) > 0)
                 return true;
         return false;
     }
@@ -997,10 +997,10 @@ class Motherboard
         return $this;
     }
 
-    public function getExpansionChipsScore(): int
+    public function getChipsScore(): int
     {
-        if(!$this->expansionChips->isEmpty()){
-            foreach($this->expansionChips as $chip)
+        if(!$this->chips->isEmpty()){
+            foreach($this->chips as $chip)
                 if($chip->getType()->getId() != 30)
                     return 5;
             return 2;
@@ -1076,7 +1076,7 @@ class Motherboard
             $score['expansionSlots'] = 5;
         if(!$this->psuConnectors->isEmpty())
             $score['powerConnectors'] = 5;
-        $score['expansionChips'] = $this->getExpansionChipsScore(); // max:5
+        $score['chips'] = $this->getChipsScore(); // max:5
         // attachments
         if(!$this->manuals->isEmpty())
             $score['manuals'] = 10;
@@ -1102,7 +1102,7 @@ class Motherboard
     public function getChipsWithDrivers(): array
     {
         $driverChips = [];
-        foreach($this->expansionChips as $chip){
+        foreach($this->chips as $chip){
             if(!$chip->getDrivers()->isEmpty())
                 array_push($driverChips, $chip->getFullName());
         }

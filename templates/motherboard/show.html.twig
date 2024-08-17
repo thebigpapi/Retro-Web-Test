@@ -206,17 +206,17 @@
 						<div><a href="{{ path('app_homepage') }}chipsets/{{ motherboard.getChipset().getId()}}">{{ motherboard.getChipset().getFullName() }}</a></div>
 					{% else %}<div><span class='badge badge-secondary'>Empty</span></div>{% endif %}
 					<!-- Expansion Chips -->
-					{% if motherboard.getExpansionChips() is not empty %}
-						{% for chip in motherboard.getExpansionChips()|filter(a => a.getType().getName() == "Chipset part")%}
+					{% if motherboard.getChips() is not empty %}
+						{% for chip in motherboard.getChips()|filter(a => a.getType().getName() == "Chipset part")%}
 							{% if loop.first %}<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/chipset.svg')) }}" alt="chip" width="24" height="24">Chipset parts</div><div class="tag-container">{% endif %}
 								<a href="{{ path('chip_show', {id: chip.getId()}) }}"><span class="text-block">{{ chip.getFullName() }}</span></a>
-							{% if loop.index == motherboard.getExpansionChips()|filter(a => a.getType().getName() == "Chipset part")|length %}</div>{% endif %}
+							{% if loop.index == motherboard.getChips()|filter(a => a.getType().getName() == "Chipset part")|length %}</div>{% endif %}
 						{% endfor %}
 						{% for type in expansionchiptype %}
-							{% for chip in motherboard.getExpansionChips()|filter(a => a.getType().getName() !=  "Chipset part")|filter(a => a.getType().getName() == type.getName())%}
+							{% for chip in motherboard.getChips()|filter(a => a.getType().getName() !=  "Chipset part")|filter(a => a.getType().getName() == type.getName())%}
 								{% if loop.first %}<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/chip.svg')) }}" alt="chip" width="24" height="24">{{chip.getType().getName()}} chips</div><div class="tag-container">{% endif %}
 								<a href="{{ path('chip_show', {id: chip.getId()}) }}"><span class="text-block">{{ chip.getFullName() }}</span></a>
-								{% if loop.index == motherboard.getExpansionChips()|filter(a => a.getType().getName() == type.getName())|length %}</div>{% endif %}
+								{% if loop.index == motherboard.getChips()|filter(a => a.getType().getName() == type.getName())|length %}</div>{% endif %}
 							{% endfor %}
 						{% endfor %}
 					{% endif %}

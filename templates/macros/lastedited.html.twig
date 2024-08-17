@@ -79,9 +79,9 @@
                 {% endif %}
                 {# chipsets #}
                 {% if type == 'chipset' %}
-                    {% if item.getExpansionChips() is not empty %}
+                    {% if item.getChips() is not empty %}
                         {% set imgcount = 0 %}
-                        {% for chipPart in item.getExpansionChips()|sort((a, b) => a.sort <=> b.sort)|slice(0, 1) %}
+                        {% for chipPart in item.getChips()|sort((a, b) => a.sort <=> b.sort)|slice(0, 1) %}
                         {% if chipPart.getImages() is not empty %}
                             {% set imgcount = imgcount + 1 %}
                             {% for image in chipPart.getImages()|sort((a, b) => a.getFileName() <=> b.getFileName())|sort((a, b) => a.sort <=> b.sort)|slice(0, 1) %}

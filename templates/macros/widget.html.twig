@@ -31,11 +31,11 @@
         <div>Release date</div>
 	</div>
 	{% for chipset in entity %}
-	<div class="list-entry centered bios {% if loop.index is divisible by(2) %}alt{% endif %}{% if chipset.getExpansionChips() is empty %} nows{% endif %}">
+	<div class="list-entry centered bios {% if loop.index is divisible by(2) %}alt{% endif %}{% if chipset.getChips() is empty %} nows{% endif %}">
 		<div class="header-label">Name</div>
 		<div><a class="result-link" href="{{ path("chipset_show", {id: chipset.getId()}) }}">{{ chipset.getFullName() }}</a></div>
 		<div class="header-label">Parts</div>
-		<div>{% for chipPart in chipset.getExpansionChips() %}
+		<div>{% for chipPart in chipset.getChips() %}
 			<span class="text-block" style="margin-right: 5px;">{{ chipPart.getFullName() }}</span>
 		{% endfor %}</div>
 		<div class="header-label">Aliases</div>

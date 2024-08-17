@@ -19,9 +19,9 @@ class LargeFileExpansionChip
     #[ORM\JoinColumn(nullable: false)]
     private $largeFile;
 
-    #[ORM\ManyToOne(targetEntity: ExpansionChip::class, inversedBy: 'drivers')]
+    #[ORM\ManyToOne(targetEntity: Chip::class, inversedBy: 'drivers')]
     #[ORM\JoinColumn(nullable: false)]
-    private $expansionChip;
+    private $chip;
 
     #[ORM\Column(type: 'boolean')]
     private $isRecommended;
@@ -40,13 +40,13 @@ class LargeFileExpansionChip
 
         return $this;
     }
-    public function getExpansionChip(): ?ExpansionChip
+    public function getChip(): ?Chip
     {
-        return $this->expansionChip;
+        return $this->chip;
     }
-    public function setExpansionChip(?ExpansionChip $expansionChip): self
+    public function setChip(?Chip $chip): self
     {
-        $this->expansionChip = $expansionChip;
+        $this->chip = $chip;
 
         return $this;
     }
