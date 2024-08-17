@@ -33,4 +33,12 @@ class ProcessorPlatformTypeRepository extends ServiceEntityRepository
         );
         return $query->getResult();
     }
+
+    public function getCount(): int
+    {
+        return $this->createQueryBuilder('pl')
+            ->select('count(pl.id)')
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
 }

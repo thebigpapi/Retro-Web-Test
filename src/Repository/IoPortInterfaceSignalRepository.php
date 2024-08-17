@@ -20,29 +20,11 @@ class IoPortInterfaceSignalRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, IoPortInterfaceSignal::class);
     }
-
-//    /**
-//     * @return IoPortInterfaceSignal[] Returns an array of IoPortInterfaceSignal objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('i')
-//            ->andWhere('i.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('i.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
-
-//    public function findOneBySomeField($value): ?IoPortInterfaceSignal
-//    {
-//        return $this->createQueryBuilder('i')
-//            ->andWhere('i.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    public function getCount(): int
+    {
+        return $this->createQueryBuilder('ip')
+            ->select('count(ip.id)')
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
 }

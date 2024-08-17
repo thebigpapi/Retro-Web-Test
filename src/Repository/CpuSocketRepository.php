@@ -19,32 +19,11 @@ class CpuSocketRepository extends ServiceEntityRepository
         parent::__construct($registry, CpuSocket::class);
     }
 
-    // /**
-    //  * @return CpuSocket[] Returns an array of CpuSocket objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    public function getCount(): int
     {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('c.id', 'ASC')
-            ->setMaxResults(10)
+        return $this->createQueryBuilder('sk')
+            ->select('count(sk.id)')
             ->getQuery()
-            ->getResult()
-        ;
+            ->getSingleScalarResult();
     }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?CpuSocket
-    {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }
