@@ -232,7 +232,7 @@ class AdminController extends AbstractDashboardController
         return new JsonResponse($templatesMerged);
     }
 
-    #[Route('/dashboard/getexpansionchiptemplate/{id}', name:'get_expansion_chip_template', methods:['GET'],  requirements: ['id' => '\d+'])]
+    #[Route('/dashboard/getexpansionchiptemplate/{id}', name:'get_chip_template', methods:['GET'],  requirements: ['id' => '\d+'])]
     public function getExpansionChipTemplate(int $id, ExpansionChipTypeRepository $expansionChipTypeRepository): JsonResponse
     {
         $chipType = $expansionChipTypeRepository->find($id);
@@ -240,7 +240,7 @@ class AdminController extends AbstractDashboardController
         return new JsonResponse($chipType->getTemplate());
     }
 
-    #[Route('/dashboard/getexpansionchipspci', name:'get_expansion_chips_pci_id', methods:['POST'])]
+    #[Route('/dashboard/getexpansionchipspci', name:'get_chips_pci_id', methods:['POST'])]
     public function getExpansionChipsPciId(Request $request, ExpansionChipRepository $expansionChipRepository): JsonResponse
     {
         $ids = json_decode($request->getContent());

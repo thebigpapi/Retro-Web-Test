@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Form\ExpansionChip;
+namespace App\Form\Chip;
 
 use App\Form\Type\ItemsPerPageType;
 use Symfony\Component\Form\AbstractType;
@@ -33,10 +33,10 @@ class Search extends AbstractType
                 'choice_attr' => function ($choice, string $key, mixed $value) {
                     return ['data-id' => $choice->getId() ];
                 },
-                'choices' => $options['expansionChipTypes'],
+                'choices' => $options['chipTypes'],
                 'placeholder' => 'Type to select a type ...'
             ])
-            ->add('expansionChipManufacturer', ChoiceType::class, [
+            ->add('chipManufacturer', ChoiceType::class, [
                 'choice_label' => 'getName',
                 'multiple' => false,
                 'expanded' => false,
@@ -46,8 +46,8 @@ class Search extends AbstractType
                         return ['data-id' => 'NULL' ];
                     return ['data-id' => $choice->getId() ];
                 },
-                'choices' => $options['expansionChipManufacturers'],
-                'placeholder' => 'Type to select an expansion chip manufacturer ...',
+                'choices' => $options['chipManufacturers'],
+                'placeholder' => 'Type to select a chip manufacturer ...',
             ])
             ->add('itemsPerPage', EnumType::class, [
                 'class' => ItemsPerPageType::class,
@@ -67,8 +67,8 @@ class Search extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'expansionChipManufacturers' => array(),
-            'expansionChipTypes' => array(),
+            'chipManufacturers' => array(),
+            'chipTypes' => array(),
         ]);
     }
 }

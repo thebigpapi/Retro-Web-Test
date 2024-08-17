@@ -101,14 +101,14 @@
 				</div>
 				<div id="index-datetime"><div class="div-datetime">Last updated <span class="perk-date">{{ driver.getLastEdited()|date("Y-m-d\\TH:i:s", "GMT") }}Z</span></div></div>
 			</div>
-			<div class="show-expchips" id="sh-expchips">
+			<div class="show-chips" id="sh-expchips">
 				<!-- Expansion chips -->
 				<div class="quick-spec-table">
 					<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/chip.svg')) }}" alt="chip" width="24" height="24">Expansion chips</div>
 					<div class="tag-container"><ul>
 					{% if driver.getExpansionChips() is not empty %}
 						{% for chip in driver.getExpansionChips() %}
-							<li><a href="{{ path('expansion_chip_show', {id: chip.getExpansionChip().getId()}) }}"><span class="text-block">{{ chip.getExpansionChip().getFullName() }}</span></a></li>
+							<li><a href="{{ path('chip_show', {id: chip.getExpansionChip().getId()}) }}"><span class="text-block">{{ chip.getExpansionChip().getFullName() }}</span></a></li>
 						{% endfor %}
 					{% else %}
 						<div>None</div>

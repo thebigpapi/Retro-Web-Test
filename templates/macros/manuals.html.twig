@@ -12,7 +12,7 @@
             {% if chips == true %}
                 <div class="header-label">Chip</div>
                 <div>
-                    <a href="{{ path('expansion_chip_show', {'id': manual.getChip().getId()}) }}">{{ manual.getChip().getFullName()}}</a>
+                    <a href="{{ path('chip_show', {'id': manual.getChip().getId()}) }}">{{ manual.getChip().getFullName()}}</a>
                 </div>
             {% endif %}
             <div class="header-label">Release date</div>

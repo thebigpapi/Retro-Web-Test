@@ -11,6 +11,7 @@ use App\Entity\CpuSpeed;
 use App\Entity\HardDrive;
 use App\Entity\CdDrive;
 use App\Entity\FloppyDrive;
+use App\Entity\Chip;
 use App\Entity\ExpansionChip;
 use App\Entity\ExpansionChipType;
 use App\Entity\ExpansionCard;
@@ -118,14 +119,15 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToRoute('Statistics', 'data.svg', 'dashboard_stats');
         yield MenuItem::section('Main items');
         yield MenuItem::linkToCrud('Motherboards', 'board.svg', Motherboard::class)->setDefaultSort(['lastEdited' => 'DESC']);
-        yield MenuItem::linkToCrud('Expansion chips', 'chip.svg', ExpansionChip::class);
+        yield MenuItem::linkToCrud('Chips', 'chip.svg', Chip::class);
         yield MenuItem::linkToCrud('Chipsets', 'chipset.svg', Chipset::class);
         yield MenuItem::linkToCrud('Expansion cards', 'card.svg', ExpansionCard::class);
-        yield MenuItem::linkToCrud('CPUs', '486.svg', Processor::class);
         yield MenuItem::linkToCrud('Hard drives', 'hdd.svg', HardDrive::class);
         yield MenuItem::linkToCrud('Optical drives', 'cd.svg', CdDrive::class);
         yield MenuItem::linkToCrud('Floppy & tape drives', 'floppy.svg', FloppyDrive::class);
         yield MenuItem::linkToCrud('Drivers', 'hardware.svg', LargeFile::class);
+        yield MenuItem::linkToCrud('[TBD]CPUs', '486.svg', Processor::class);
+        yield MenuItem::linkToCrud('[TBD]expchips', 'chip.svg', ExpansionChip::class);
         yield MenuItem::section('Auxiliary items');
         yield MenuItem::subMenu('Motherboard related', 'board.svg')->setSubItems([
             MenuItem::linkToCrud('Form factors', 'dimension.svg', FormFactor::class),

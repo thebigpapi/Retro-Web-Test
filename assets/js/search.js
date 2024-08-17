@@ -41,7 +41,7 @@ const form = document.forms[0];
 let static_selects = [
     "chipsetManufacturer",
     "moboManufacturer",
-    "expansionChipManufacturer",
+    "chipManufacturer",
     "cpuManufacturer",
     "hddManufacturer",
     "cddManufacturer",

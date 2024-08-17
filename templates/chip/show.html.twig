@@ -1,10 +1,10 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-	{{ expansion_chip.getFullName() }}
+	{{ chip.getFullName() }}
 {% endblock %}
 {% block metatags %}
-	<meta name="description" content="Expansion chip:{{ expansion_chip.getFullName() }}">
+	<meta name="description" content="Chip:{{ chip.getFullName() }}">
 {% endblock %}
 {% block extra_javascripts %}
 	<script src="/build/js/show.js" defer></script>
@@ -12,10 +12,10 @@
 
 {% block opengraph %}
 	{% apply spaceless %}
-	<meta property="og:title" content="{{ expansion_chip.getFullName() }}">
-	<meta property="og:description" content="Get info, images and drivers for the {{ expansion_chip.getFullName() }} expansion chip">
-	{% if expansion_chip.getImages() is not empty %}
-		{% for image in expansion_chip.getImages()|sort((a, b) => a.getFileName() <=> b.getFileName())|sort((a, b) => a.sort <=> b.sort)|slice(0, 1) %}
+	<meta property="og:title" content="{{ chip.getFullName() }}">
+	<meta property="og:description" content="Get info, images and drivers for the {{ chip.getFullName() }} chip">
+	{% if chip.getImages() is not empty %}
+		{% for image in chip.getImages()|sort((a, b) => a.getFileName() <=> b.getFileName())|sort((a, b) => a.sort <=> b.sort)|slice(0, 1) %}
 			<meta name="twitter:image" content="{{ vich_uploader_asset(image, 'imageFile')}}">
 			<meta property="og:image" content="{{ vich_uploader_asset(image, 'imageFile')}}">
 		{% endfor %}
@@ -24,7 +24,7 @@
 		<meta property="og:image" content="{{ absolute_url(asset('build/images/missing/chip-missing.jpg')) }}">
 	{% endif %}
 	{% endapply %}
-	<link rel="alternate" hreflang="x-default" href="{{ absolute_url(path('expansion_chip_show', {id: expansion_chip.getId()})) }}"/>
+	<link rel="alternate" hreflang="x-default" href="{{ absolute_url(path('chip_show', {id: chip.getId()})) }}"/>
 {% endblock %}
 {% block subnav %}
 <li class="flex navbar-li">
@@ -32,9 +32,9 @@
         <svg class="navbar-svg" viewBox="0 0 24 44" preserveAspectRatio="none" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
             <path d="M.293 0l22 22-22 22h1.414l22-22-22-22H.293z"></path>
         </svg>
-        <a class="ml-4" href="{{ path('expansionchipsearch') }}">
+        <a class="ml-4" href="{{ path('chipsearch') }}">
 			<img src="{{ absolute_url(asset('build/icons/chip.svg')) }}" width="24" height="24" alt="chip">
-            <code class="text-pink-500">Expansion chips</code>
+            <code class="text-pink-500">Chips</code>
         </a>
     </div>
 </li>
@@ -43,37 +43,37 @@
         <svg class="navbar-svg" viewBox="0 0 24 44" preserveAspectRatio="none" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
             <path d="M.293 0l22 22-22 22h1.414l22-22-22-22H.293z"></path>
         </svg>
-        <code class="navbar-code">ID: {{expansion_chip.getId()}}</code>
+        <code class="navbar-code">ID: {{chip.getId()}}</code>
     </div>
 </li>
 {% endblock %}
 {% block body %}
 <!-- MANUF./NAME/PART NO. -->
 <div class="title">
-	{% if expansion_chip.getManufacturer() is not empty %}
-		<a href="{{ path('manufacturer_show', {id: expansion_chip.getManufacturer().getId()}) }}">{{ expansion_chip.getManufacturer().getName() }}</a>&nbsp;{{ expansion_chip.getNameWithoutManuf() }}
+	{% if chip.getManufacturer() is not empty %}
+		<a href="{{ path('manufacturer_show', {id: chip.getManufacturer().getId()}) }}">{{ chip.getManufacturer().getName() }}</a>&nbsp;{{ chip.getNameWithoutManuf() }}
 	{% else %}
-		{{ expansion_chip.getFullName() }}
+		{{ chip.getFullName() }}
 	{% endif %}
 </div>
 <div class="main-strip">
 	<div class="internal-container">
-		{% include 'macros/navbar.html.twig' with {'entity': expansion_chip, 'entityName': 'ExpansionChip', 'types': ['specs', 'bios', 'drivers', 'docs'], 'name': 'chip', 'role': 'ROLE_USER'} %}
+		{% include 'macros/navbar.html.twig' with {'entity': chip, 'entityName': 'Chip', 'types': ['specs', 'bios', 'drivers', 'docs'], 'name': 'chip', 'role': 'ROLE_USER'} %}
 		<div class="internal-content">
 			<!-- DESCRIPRION -->
 			<div class="show-general" id="sh-general">
 				<div class="quick-spec-table">
 					<!-- Type -->
 					<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/chip.svg')) }}" alt="date" width="24" height="24">Type</div>
-					<div>{{expansion_chip.getType().getName()}}</div>
+					<div>{{chip.getType().getName()}}</div>
 					<!-- Vendor ID -->
 					<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/tag.svg')) }}" alt="date" width="24" height="24">Vendor ID</div>
 					<div class="tag-container">
-					{% if expansion_chip.getAliasVendors() is not empty or expansion_chip.getChipVendors() %}
-						{% for vendor in expansion_chip.getChipVendors() %}
+					{% if chip.getAliasVendors() is not empty or chip.getChipVendors() is not empty %}
+						{% for vendor in chip.getChipVendors() %}
 							<span class="text-block">{{vendor.getVen()}}</span>
 						{% endfor %}
-						{% for vendor in expansion_chip.getAliasVendors() %}
+						{% for vendor in chip.getAliasVendors() %}
 							<span class="text-block"><i>{{vendor.getVen()}}</i></span>
 						{% endfor %}
 					{% else %}
@@ -83,8 +83,8 @@
 					<!-- Device ID -->
 					<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/tag.svg')) }}" alt="date" width="24" height="24">Device ID</div>
 					<div class="tag-container">
-					{% if expansion_chip.getPciDevs() is not empty %}
-						{% for device in expansion_chip.getPciDevs() %}
+					{% if chip.getPciDevs() is not empty %}
+						{% for device in chip.getPciDevs() %}
 							<span class="text-block">{{device.getDev()}}</span>
 						{% endfor %}
 					{% else %}
@@ -96,20 +96,20 @@
 						<img src="{{ absolute_url(asset('build/icons/cursor.svg')) }}" alt="act" width="24" height="24">Actions
 					</div>
 					<div class="toolbar">
-						<a class='button-widget' href="{{ absolute_url(path('app_homepage')) }}motherboards/?expansionChipIds%5B0%5D={{ expansion_chip.getId() }}&amp;showImages=1">
+						<a class='button-widget' href="{{ absolute_url(path('app_homepage')) }}motherboards/?expansionChipIds%5B0%5D={{ chip.getId() }}&amp;showImages=1">
 							<img src='{{ absolute_url(asset('build/icons/board.svg')) }}' alt='' width='16' height='16' style='vertical-align:middle;padding:3px;'>See all boards with this chip</a>
-						<a class='button-widget' href="{{ absolute_url(path('app_homepage')) }}expansioncards/?expansionChipIds%5B0%5D={{ expansion_chip.getId() }}&amp;showImages=1">
+						<a class='button-widget' href="{{ absolute_url(path('app_homepage')) }}expansioncards/?expansionChipIds%5B0%5D={{ chip.getId() }}&amp;showImages=1">
 							<img src='{{ absolute_url(asset('build/icons/card.svg')) }}' alt='' width='16' height='16' style='vertical-align:middle;padding:3px;'>See all cards with this chip</a>
 					</div>
 				</div>
-				{% include 'macros/aliases.html.twig' with {'entity':expansion_chip.getChipAliases(), 'msg': 'Also known as:'} %}
-				{% include 'macros/notes.html.twig' with {'entity': expansion_chip} %}
-				<div id="index-datetime"><div class="div-datetime">Last updated <span class="perk-date">{{ expansion_chip.getLastEdited()|date("Y-m-d\\TH:i:s", "GMT") }}Z</span></div></div>
+				{% include 'macros/aliases.html.twig' with {'entity':chip.getChipAliases(), 'msg': 'Also known as:'} %}
+				{#% include 'macros/notes.html.twig' with {'entity': chip} %#}
+				<div id="index-datetime"><div class="div-datetime">Last updated <span class="perk-date">{{ chip.getLastEdited()|date("Y-m-d\\TH:i:s", "GMT") }}Z</span></div></div>
 			</div>
-			<div class="show-expchips" id="sh-specs">
-				{% if expansion_chip.getMiscSpecs() is not empty %}
+			<div class="show-chips" id="sh-specs">
+				{% if chip.getMiscSpecs() is not empty %}
 					<h3>Specifications:</h3>
-					{% include 'macros/specs.html.twig' with {'entity':expansion_chip} %}
+					{% include 'macros/specs.html.twig' with {'entity':chip} %}
 				{% else %}
 					<span>No chip specs</span>
 				{% endif %}
@@ -120,39 +120,40 @@
 					<div class="show-downloads-group-header">
 						<img src="{{ absolute_url(asset('build/icons/awchip.svg')) }}" alt="" width="32" height="32">
 						{% set bfile_cnt = 0 %}
-						{% if expansion_chip.getExpansionChipBios() is not empty %}
-							{% for bios in expansion_chip.getExpansionChipBios() %}
+						{#% if chip.getExpansionChipBios() is not empty %}
+							{% for bios in chip.getExpansionChipBios() %}
 								{% if bios.getFileName() is not null %}{% set bfile_cnt = bfile_cnt + 1 %}{% endif %}
 							{% endfor %}
-						{% endif %}
+						{% endif %#}
 						<span>{{ bfile_cnt }} file{% if bfile_cnt != 1 %}s{% endif %} available</span>
 					</div>
-					{% include 'macros/bios.html.twig' with {'entity': expansion_chip.getExpansionChipBios(), 'entity_label':'chip', 'audit_entity':'App-Entity-ExpansionChipBios'} %}
+					TBD
+					{#% include 'macros/bios.html.twig' with {'entity': chip.getExpansionChipBios(), 'entity_label':'chip', 'audit_entity':'App-Entity-ExpansionChipBios'} %#}
 				</div>
 			</div>
 			<!-- DRIVERS -->
 			<div class="show-downloads" id="sh-driver">
-				{% include 'macros/drivers.html.twig' with {'entity': expansion_chip.getDrivers(), 'css': ''} %}
+				TBD{#% include 'macros/drivers.html.twig' with {'entity': chip.getDrivers(), 'css': ''} %#}
 			</div>
 			<!-- Documentation -->
 			<div class="show-downloads" id="sh-docs">
-				{% include 'macros/manuals.html.twig' with {'entity': expansion_chip.getDocumentations(), 'entity_label':'chip', 'audit_entity':'App-Entity-ChipDocumentation'} %}
+				{% include 'macros/manuals.html.twig' with {'entity': chip.getDocumentations(), 'entity_label':'chip', 'audit_entity':'App-Entity-ChipDocumentation'} %}
 			</div>
 		</div>
 	</div>
 
 	<!-- IMAGES -->
 	<div class="show-images" id="sh-images">
-	{% if expansion_chip.getImages() is not empty %}
+	{% if chip.getImages() is not empty %}
 		{% set lpindex = 0 %}
-		{% for image in expansion_chip.getImages()|sort((a, b) => a.getFileName() <=> b.getFileName())|sort((a, b) => a.sort <=> b.sort) %}
+		{% for image in chip.getImages()|sort((a, b) => a.getFileName() <=> b.getFileName())|sort((a, b) => a.sort <=> b.sort) %}
 			{% set lpindex = lpindex + 1 %}
-			{% include 'macros/images.html.twig' with {'type':'expansionchip', 'entity': image, 'index': lpindex, 'length': expansion_chip.getImages()|length} %}
+			{% include 'macros/images.html.twig' with {'type':'chip', 'entity': image, 'index': lpindex, 'length': chip.getImages()|length} %}
 		{% endfor %}
 	{% else %}
 		<div class="show-images">
 			{% if is_granted('ROLE_USER') %}
-				<a href="{{ ea_url().setDashboard('App\\Controller\\Admin\\DashboardController').setController('App\\Controller\\Admin\\ExpansionChipCrudController').setAction('edit').setEntityId(expansion_chip.getId())}}">
+				<a href="{{ ea_url().setDashboard('App\\Controller\\Admin\\DashboardController').setController('App\\Controller\\Admin\\ChipCrudController').setAction('edit').setEntityId(chip.getId())}}">
 					<img src={{ absolute_url(asset('build/images/missing/chip-missing.jpg')) }} title="Click to edit this entry" style="width:100%;">
 				</a>
 			{% else %}

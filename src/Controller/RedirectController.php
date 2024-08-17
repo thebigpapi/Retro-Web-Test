@@ -144,7 +144,7 @@ class RedirectController extends AbstractController
         return $this->redirect($this->generateUrl('hard_drive_show', array("id" => $id)));
     }
 
-    #[Route(path: '/chip/{id}')]
+    /*#[Route(path: '/chip/{id}')]
     public function redirectChip($id, ExpansionChipRepository $expansionChipRepository, ProcessorRepository $processorRepository)
     {
         $chip = $expansionChipRepository->find($id);
@@ -157,6 +157,8 @@ class RedirectController extends AbstractController
         }
         return $this->redirect($this->generateUrl('expansion_chip_show', array("id" => $id)));
     }
+    todo: expansion-chips, cpus
+    */
 
     /* credits redirect */
     #[Route(path: '/credits', methods: ['GET'])]

@@ -99,10 +99,10 @@ class SiteMapController extends AbstractController
 
         # Write expansion chips
         $chipSet = $chips->findAllAlphabetic("");
-        $this->writeRenderedSitemap("expchip.xml", "expansion_chip_show", $chipSet);
+        $this->writeRenderedSitemap("chip.xml", "chip_show", $chipSet);
         foreach ($ALL_LETTERS as $letter) {
             $chipSet = $chips->findAllAlphabetic($letter);
-            $this->writeRenderedSitemap("expchip." . $letter . ".xml", "expansion_chip_show", $chipSet);
+            $this->writeRenderedSitemap("chip." . $letter . ".xml", "chip_show", $chipSet);
         }
 
         # Write chipsets
@@ -113,13 +113,13 @@ class SiteMapController extends AbstractController
             $this->writeRenderedSitemap("chipset." . $letter . ".xml", "chipset_show", $chipsetSet);
         }
 
-        # Write CPUs
+        /*# Write CPUs
         $cpuSet = $cpus->findAllAlphabetic("");
         $this->writeRenderedSitemap("cpu.xml", "processor_show", $cpuSet);
         foreach ($ALL_LETTERS as $letter) {
             $cpuSet = $cpus->findAllAlphabetic($letter);
             $this->writeRenderedSitemap("cpu." . $letter . ".xml", "processor_show", $cpuSet);
-        }
+        }*/
 
         # Write hard drives
         $hddSet = $hdds->findAllAlphabetic("");

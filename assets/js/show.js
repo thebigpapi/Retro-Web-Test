@@ -1,8 +1,8 @@
 const trw_tabs = ["tab-nav-1", "tab-nav-2", "tab-nav-3", "tab-nav-4", "tab-nav-5"];
-const trw_pageElements = ["sh-general", "sh-specs", "sh-expchips", "sh-downloads", "sh-bios", "sh-driver", "sh-docs"];
+const trw_pageElements = ["sh-general", "sh-specs", "sh-chips", "sh-downloads", "sh-bios", "sh-driver", "sh-docs"];
 const easyadmin = {
     "tab-basic-data": "sh-general",
-    "tab-chips": "sh-expchips",
+    "tab-chips": "sh-chips",
     "tab-connectors": "sh-general",
     "tab-bios": "sh-bios",
     "tab-drivers": "sh-driver",
@@ -10,8 +10,8 @@ const easyadmin = {
     "tab-images": "sh-general",
     "tab-other-attachments": "sh-general",
     "tab-features": "sh-general",
-    "tab-specs": "sh-expchips",
-    "tab-associations": "sh-expchips"
+    "tab-specs": "sh-chips",
+    "tab-associations": "sh-chips"
 }
 
 update_tab_selection();

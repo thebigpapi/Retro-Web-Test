@@ -1191,11 +1191,11 @@ div.main-strip {
             }
 
             /* === General page elements === */
-            div.show-general, div.show-expchips, div.show-downloads, div.show-cpus {
+            div.show-general, div.show-chips, div.show-downloads, div.show-cpus {
                 flex-grow: 1;
             }
 
-            div.show-expchips, div.show-downloads, div.show-cpus {
+            div.show-chips, div.show-downloads, div.show-cpus {
                 display: none;
             }
 

@@ -76,7 +76,7 @@
 					{% if chipset.getExpansionChips() is not empty %}
 						<div class="tag-container">
 							{% for part in chipset.getExpansionChips()|sort((a, b) => a.sort <=> b.sort) %}
-								<a href="{{ path('expansion_chip_show', {id: part.getId()}) }}"><span class="text-block">{{ part.getFullName() }}</span></a>
+								<a href="{{ path('chip_show', {id: part.getId()}) }}"><span class="text-block">{{ part.getFullName() }}</span></a>
 							{% endfor %}
 						</div>
 					{% else %}
@@ -115,7 +115,7 @@
 						<h1>Documented parts</h1>
 						<ul class="chipset-toc">
 							{% for chipPart in chipset.getExpansionChips()|filter(chipPart => chipPart.getDescription() is not empty)|sort((a, b) => a.sort <=> b.sort) %}
-							<li><a href="{{ path("expansion_chip_show", {id:chipPart.getId()}) }}">{{ chipPart.getFullName() }}{% if chipPart.getChipAliases() is not empty %}&nbsp;(known as:{% for cp in chipPart.getChipAliases() %}
+							<li><a href="{{ path("chip_show", {id:chipPart.getId()}) }}">{{ chipPart.getFullName() }}{% if chipPart.getChipAliases() is not empty %}&nbsp;(known as:{% for cp in chipPart.getChipAliases() %}
 							{{ cp.getManufacturer().getName() }}&nbsp;{{ cp.getPartNumber() }} {{ cp.getName() ? '[' ~ cp.getName() ~ ']' }}{% if not loop.last%}, {% endif %}{% endfor %}){% endif %}</a></li>
 							{% endfor %}
 						</ul>

@@ -8,7 +8,7 @@
 				<div id="index-datetime" class="perks-list">
 				{% for expansionchip in expansionchips %}
 					<div class="perk">
-						<a href="{{ path("expansion_chip_show", {id: expansionchip.getId()}) }}">
+						<a href="{{ path("chip_show", {id: expansionchip.getId()}) }}">
 							<div class="perk-image">
 							{% if expansionchip.getImages() is not empty %}
 								{% set imgcount = 0 %}

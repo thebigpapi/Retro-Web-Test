@@ -59,7 +59,7 @@
 	{% for chip in entity %}
 	<div class="list-entry centered bios {% if loop.index is divisible by(2) %}alt{% endif %}">
 		<div class="header-label">Name</div>
-		<div><a class="result-link" href="{{ path("expansion_chip_show", {id: chip.getId()}) }}">{{ chip.getFullName() }}</a></div>
+		<div><a class="result-link" href="{{ path("chip_show", {id: chip.getId()}) }}">{{ chip.getFullName() }}</a></div>
 		<div class="header-label">Type</div>
 		<div>{{ chip.getType() }}</div>
 		<div class="header-label">Aliases</div>
