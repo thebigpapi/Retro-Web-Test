@@ -2,23 +2,41 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Put;
+use ApiPlatform\Metadata\Delete;
 use App\Entity\Enum\KnownIssueType;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: 'App\Repository\KnownIssueRepository')]
+#[ApiResource(
+    operations: [
+        new GetCollection(normalizationContext: ['groups' => ['known_issue:read']]),
+        new Get(normalizationContext: ['groups' => ['known_issue:read']]),
+        new Post(denormalizationContext: ['groups' => ['known_issue:write']]),
+        new Put(denormalizationContext: ['groups' => ['known_issue:write']]),
+        new Delete()
+    ]
+)]
 class KnownIssue
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
+    #[Groups(['known_issue:read'])]
     private $id;
 
     #[ORM\Column(type: 'string', length: 255)]
     #[Assert\Length(max: 255, maxMessage: 'Name is longer than {{ limit }} characters.')]
+    #[Groups(['known_issue:read', 'known_issue:write'])]
     private $name;
 
     #[ORM\ManyToMany(targetEntity: Motherboard::class, mappedBy: 'knownIssues')]
@@ -26,12 +44,14 @@ class KnownIssue
 
     #[ORM\Column(type: 'string', length: 512, nullable: true)]
     #[Assert\Length(max: 512, maxMessage: 'Description is longer than {{ limit }} characters.')]
+    #[Groups(['known_issue:read', 'known_issue:write'])]
     private $description;
 
     #[ORM\ManyToMany(targetEntity: StorageDevice::class, mappedBy: 'knownIssues')]
     private Collection $storageDevices;
 
     #[ORM\Column(type: Types::SMALLINT, nullable: true)]
+    #[Groups(['known_issue:read', 'known_issue:write'])]
     private ?int $type = null;
 
     #[ORM\ManyToMany(targetEntity: ExpansionCard::class, mappedBy: 'knownIssues')]
@@ -48,27 +68,29 @@ class KnownIssue
     {
         return $this->getName();
     }
+
     public function getId(): ?int
     {
         return $this->id;
     }
+
     public function getName(): ?string
     {
         return $this->name;
     }
+
     public function setName(string $name): self
     {
         $this->name = $name;
 
         return $this;
     }
-    /**
-     * @return Collection|Motherboard[]
-     */
+
     public function getMotherboards(): Collection
     {
         return $this->motherboards;
     }
+
     public function addMotherboard(Motherboard $motherboard): self
     {
         if (!$this->motherboards->contains($motherboard)) {
@@ -78,6 +100,7 @@ class KnownIssue
 
         return $this;
     }
+
     public function removeMotherboard(Motherboard $motherboard): self
     {
         if ($this->motherboards->contains($motherboard)) {
@@ -87,10 +110,12 @@ class KnownIssue
 
         return $this;
     }
+
     public function getDescription(): ?string
     {
         return $this->description;
     }
+
     public function setDescription(?string $description): self
     {
         $this->description = $description;
@@ -98,9 +123,6 @@ class KnownIssue
         return $this;
     }
 
-    /**
-     * @return Collection<int, StorageDevice>
-     */
     public function getStorageDevices(): Collection
     {
         return $this->storageDevices;
@@ -125,9 +147,6 @@ class KnownIssue
         return $this;
     }
 
-    /**
-     * @param KnownIssueType[] $types
-     */
     public function setTypes(array $types): static
     {
         $this->type = array_sum(array_column($types, 'value'));
@@ -135,9 +154,6 @@ class KnownIssue
         return $this;
     }
 
-    /**
-     * @return KnownIssueType[]
-     */
     public function getTypes(): array
     {
         $result = [];
@@ -160,9 +176,6 @@ class KnownIssue
         return $result;
     }
 
-    /**
-     * @return Collection<int, ExpansionCard>
-     */
     public function getExpansionCards(): Collection
     {
         return $this->expansionCards;

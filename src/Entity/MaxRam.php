@@ -2,6 +2,13 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Put;
+use ApiPlatform\Metadata\Delete;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -9,16 +16,27 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: 'App\Repository\MaxRamRepository')]
+#[ApiResource(
+    operations: [
+        new Get(normalizationContext: ['groups' => ['max_ram:read']]),
+        new GetCollection(normalizationContext: ['groups' => ['max_ram:read']]),
+        new Post(denormalizationContext: ['groups' => ['max_ram:write']]),
+        new Put(denormalizationContext: ['groups' => ['max_ram:write']]),
+        new Delete()
+    ]
+)]
 class MaxRam
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
+    #[Groups(['max_ram:read'])]
     private $id;
 
     #[ORM\Column(type: 'bigint')]
     #[Assert\NotBlank]
     #[Assert\PositiveOrZero]
+    #[Groups(['max_ram:read', 'max_ram:write'])]
     private $value;
 
     #[ORM\OneToMany(targetEntity: MotherboardMaxRam::class, mappedBy: 'max_ram', orphanRemoval: true)]

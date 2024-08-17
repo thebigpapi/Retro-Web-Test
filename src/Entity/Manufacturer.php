@@ -2,28 +2,48 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Put;
+use ApiPlatform\Metadata\Delete;
+use App\Repository\ManufacturerRepository;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
-#[ORM\Entity(repositoryClass: 'App\Repository\ManufacturerRepository')]
+#[ORM\Entity(repositoryClass: ManufacturerRepository::class)]
 #[UniqueEntity(fields: ['name', 'fullName'])]
 #[ORM\ChangeTrackingPolicy('DEFERRED_EXPLICIT')]
+#[ApiResource(
+    operations: [
+        new GetCollection(normalizationContext: ['groups' => ['manufacturer:read:list']]),
+        new Get(normalizationContext: ['groups' => ['manufacturer:read']]),
+        new Post(denormalizationContext: ['groups' => ['manufacturer:write']]),
+        new Put(denormalizationContext: ['groups' => ['manufacturer:write']]),
+        new Delete()
+    ]
+)]
 class Manufacturer
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
+    #[Groups(['manufacturer:read','manufacturer:read:list'])]
     private $id;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true, unique: true)]
     #[Assert\Length(max: 255, maxMessage: 'Full name is longer than {{ limit }} characters.')]
+    #[Groups(['manufacturer:read','manufacturer:read:list', 'manufacturer:write'])]
     private $fullName;
 
     #[ORM\Column(type: 'string', length: 255, unique: true)]
     #[Assert\Length(max: 255, maxMessage: 'Name is longer than {{ limit }} characters.')]
+    #[Groups(['manufacturer:read','manufacturer:read:list', 'manufacturer:write'])]
     private $name;
 
     #[ORM\OneToMany(targetEntity: Motherboard::class, mappedBy: 'manufacturer')]
@@ -45,30 +65,37 @@ class Manufacturer
     private $chipAliases;
 
     #[ORM\OneToMany(targetEntity: ManufacturerBiosManufacturerCode::class, mappedBy: 'manufacturer', orphanRemoval: true, cascade: ['persist'])]
+    #[Groups(['manufacturer:read'])]
     private $biosCodes;
 
     #[ORM\OneToMany(targetEntity: ChipsetBiosCode::class, mappedBy: 'biosManufacturer')]
+    #[Groups(['manufacturer:read'])]
     private $chipsetBiosCodes;
 
     #[ORM\OneToMany(targetEntity: OsFlag::class, mappedBy: 'manufacturer')]
     private $osFlags;
 
     #[ORM\OneToMany(mappedBy: 'manufacturer', targetEntity: PciVendorId::class, orphanRemoval: true, cascade: ['persist'])]
+    #[Groups(['manufacturer:read'])]
     private Collection $pciVendorIds;
 
     #[ORM\Column(length: 7, nullable: true)]
+    #[Groups(['manufacturer:read', 'manufacturer:write'])]
     private ?string $fccid = null;
 
     #[ORM\OneToMany(mappedBy: 'manufacturer', targetEntity: StorageDevice::class)]
     private Collection $storageDevices;
 
     #[ORM\OneToMany(mappedBy: 'manufacturer', targetEntity: ManufacturerCode::class, orphanRemoval: true, cascade: ['persist'])]
+    #[Groups(['manufacturer:read'])]
     private Collection $manufacturerCodes;
 
     #[ORM\Column(length: 8192, nullable: true)]
+    #[Groups(['manufacturer:read', 'manufacturer:write'])]
     private ?string $description = null;
 
     #[ORM\OneToMany(mappedBy: 'manufacturer', targetEntity: EntityImage::class, orphanRemoval: true, cascade: ['persist'])]
+    #[Groups(['manufacturer:read'])]
     private Collection $entityImages;
 
     #[ORM\OneToMany(mappedBy: 'manufacturer', targetEntity: ExpansionCardAlias::class)]
