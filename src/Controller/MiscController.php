@@ -14,6 +14,26 @@ use Symfony\Component\HttpFoundation\Response;
 
 class MiscController extends AbstractController
 {
+    #[Route(path: '/misc', name: 'misc_index', requirements: ['id' => '\d+'])]
+    public function miscIndex(
+        IoPortInterfaceSignalRepository $ioPortInterfaceSignalRepository,
+        ExpansionSlotInterfaceSignalRepository $expansionSlotInterfaceSignalRepository,
+        CpuSocketRepository $cpuSocketRepository,
+        ProcessorPlatformTypeRepository $processorPlatformTypeRepository,
+        PSUConnectorRepository $psuConnectorRepository,
+        ManufacturerRepository $manufacturerRepository
+    ): Response
+    {
+        return $this->render('misc/index.html.twig', [
+            'controller_name' => 'MainController',
+            'portCount' => $ioPortInterfaceSignalRepository->getCount(),
+            'slotCount' => $expansionSlotInterfaceSignalRepository->getCount(),
+            'socketCount' => $cpuSocketRepository->getCount(),
+            'familyCount' => $processorPlatformTypeRepository->getCount(),
+            'powerCount' => $psuConnectorRepository->getCount(),
+            'manufacturerCount' => $manufacturerRepository->getCount(),
+        ]);
+    }
     #[Route('/cpufamily/{id}', name: 'cpufamily_show', requirements: ['id' => '\d+'])]
     public function showFamily(int $id, ProcessorPlatformTypeRepository $processorPlatformTypeRepository): Response {
         $family = $processorPlatformTypeRepository->find($id);
