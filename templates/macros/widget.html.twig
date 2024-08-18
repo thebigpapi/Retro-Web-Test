@@ -49,12 +49,15 @@
 	</div>
 	{% endfor %}
 {% endif %}
-{% if type == "expansionchip-results" %}
+{% if type == "chip-results" %}
     <div class="list-entry centered head">
 		<div>Name</div>
 		<div>Type</div>
+		<div>Family</div>
 		<div>Aliases</div>
         <div>Device ID</div>
+		<div>TDP</div>
+        <div>Process node</div>
 	</div>
 	{% for chip in entity %}
 	<div class="list-entry centered bios {% if loop.index is divisible by(2) %}alt{% endif %}">
@@ -62,6 +65,8 @@
 		<div><a class="result-link" href="{{ path("chip_show", {id: chip.getId()}) }}">{{ chip.getFullName() }}</a></div>
 		<div class="header-label">Type</div>
 		<div>{{ chip.getType() }}</div>
+		<div class="header-label">Family</div>
+		<div>{{ chip.getFamily() ? chip.getFamily().getName() : "<span class='badge badge-secondary'>Empty</span>" }}</div>
 		<div class="header-label">Aliases</div>
 		<div class="tag-container">{% if chip.getChipAliases() is not empty %}
 			{% for alias in chip.getChipAliases() %}
@@ -75,6 +80,10 @@
 				{{ dev.getDev() }}{% if not loop.last %}, {% else %}{% if len > 6 %}, ...{% endif %}{% endif %}
 			{% endfor %}
 		{% endif %}</div>
+		<div class="header-label">TDP</div>
+		<div>{{ chip.getTdpWithValue() ? chip.getTdpWithValue() : "<span class='badge badge-secondary'>Empty</span>" }}</div>
+        <div class="header-label">Process node</div>
+		<div>{{ chip.getProcessNodeWithValue() ? chip.getProcessNodeWithValue() : "<span class='badge badge-secondary'>Empty</span>" }}</div>
 	</div>
 	{% endfor %}
 {% endif %}
