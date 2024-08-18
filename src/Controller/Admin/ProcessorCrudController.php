@@ -4,7 +4,6 @@ namespace App\Controller\Admin;
 
 use App\Entity\ChipAlias;
 use App\Entity\Processor;
-use App\Entity\ProcessorVoltage;
 use App\Form\Type\CpuSocketType;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Controller\Admin\Filter\ChipImageFilter;

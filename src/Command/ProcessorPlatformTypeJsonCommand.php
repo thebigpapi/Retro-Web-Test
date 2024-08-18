@@ -5,7 +5,6 @@ namespace App\Command;
 use App\Entity\CPUID;
 use App\Entity\InstructionSet;
 use App\Entity\ProcessorPlatformType;
-use App\Entity\ProcessorVoltage;
 use App\Repository\ProcessorPlatformTypeRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;

@@ -22,25 +22,9 @@ class CacheSize
     #[ORM\ManyToMany(targetEntity: Motherboard::class, mappedBy: 'cacheSize')]
     private $motherboards;
 
-    #[ORM\OneToMany(targetEntity: ProcessorPlatformType::class, mappedBy: 'L1data')]
-    private $getProcessorsL1data;
-
-    #[ORM\OneToMany(targetEntity: ProcessorPlatformType::class, mappedBy: 'L1code')]
-    private $getProcessorsL1code;
-
-    #[ORM\OneToMany(targetEntity: Processor::class, mappedBy: 'L2')]
-    private $getProcessorsL2;
-
-    #[ORM\OneToMany(targetEntity: Processor::class, mappedBy: 'L3')]
-    private $getProcessorsL3;
-
     public function __construct()
     {
         $this->motherboards = new ArrayCollection();
-        $this->getProcessorsL1code = new ArrayCollection();
-        $this->getProcessorsL1data = new ArrayCollection();
-        $this->getProcessorsL2 = new ArrayCollection();
-        $this->getProcessorsL3 = new ArrayCollection();
     }
     public function __toString(): string
     {
@@ -95,118 +79,6 @@ class CacheSize
         if ($this->motherboards->contains($motherboard)) {
             $this->motherboards->removeElement($motherboard);
             $motherboard->removeCacheSize($this);
-        }
-
-        return $this;
-    }
-    /**
-     * @return Collection|ProcessorPlatformType[]
-     */
-    public function getGetProcessorsL1data(): Collection
-    {
-        return $this->getProcessorsL1data;
-    }
-    public function addGetProcessorsL1data(ProcessorPlatformType $getProcessorsL1data): self
-    {
-        if (!$this->getProcessorsL1data->contains($getProcessorsL1data)) {
-            $this->getProcessorsL1data[] = $getProcessorsL1data;
-            $getProcessorsL1data->setL1data($this);
-        }
-
-        return $this;
-    }
-    public function removeGetProcessorsL1(ProcessorPlatformType $getProcessorsL1data): self
-    {
-        if ($this->getProcessorsL1data->contains($getProcessorsL1data)) {
-            $this->getProcessorsL1data->removeElement($getProcessorsL1data);
-            // set the owning side to null (unless already changed)
-            if ($getProcessorsL1data->getL1data() === $this) {
-                $getProcessorsL1data->setL1data(null);
-            }
-        }
-
-        return $this;
-    }
-        /**
-     * @return Collection|ProcessorPlatformType[]
-     */
-    public function getGetProcessorsL1code(): Collection
-    {
-        return $this->getProcessorsL1code;
-    }
-    public function addGetProcessorsL1code(ProcessorPlatformType $getProcessorsL1code): self
-    {
-        if (!$this->getProcessorsL1code->contains($getProcessorsL1code)) {
-            $this->getProcessorsL1code[] = $getProcessorsL1code;
-            $getProcessorsL1code->setL1code($this);
-        }
-
-        return $this;
-    }
-    public function removeGetProcessorsL1code(ProcessorPlatformType $getProcessorsL1code): self
-    {
-        if ($this->getProcessorsL1code->contains($getProcessorsL1code)) {
-            $this->getProcessorsL1code->removeElement($getProcessorsL1code);
-            // set the owning side to null (unless already changed)
-            if ($getProcessorsL1code->getL1code() === $this) {
-                $getProcessorsL1code->setL1code(null);
-            }
-        }
-
-        return $this;
-    }
-    /**
-     * @return Collection|Processor[]
-     */
-    public function getGetProcessorsL2(): Collection
-    {
-        return $this->getProcessorsL2;
-    }
-    public function addGetProcessorsL2(Processor $getProcessorsL2): self
-    {
-        if (!$this->getProcessorsL2->contains($getProcessorsL2)) {
-            $this->getProcessorsL2[] = $getProcessorsL2;
-            $getProcessorsL2->setL2($this);
-        }
-
-        return $this;
-    }
-    public function removeGetProcessorsL2(Processor $getProcessorsL2): self
-    {
-        if ($this->getProcessorsL2->contains($getProcessorsL2)) {
-            $this->getProcessorsL2->removeElement($getProcessorsL2);
-            // set the owning side to null (unless already changed)
-            if ($getProcessorsL2->getL2() === $this) {
-                $getProcessorsL2->setL2(null);
-            }
-        }
-
-        return $this;
-    }
-    /**
-     * @return Collection|Processor[]
-     */
-    public function getGetProcessorsL3(): Collection
-    {
-        return $this->getProcessorsL3;
-    }
-    public function addGetProcessorsL3(Processor $getProcessorsL3): self
-    {
-        if (!$this->getProcessorsL3->contains($getProcessorsL3)) {
-            $this->getProcessorsL3[] = $getProcessorsL3;
-            $getProcessorsL3->setL3($this);
-        }
-
-        return $this;
-    }
-    public function removeGetProcessorsL3(Processor $getProcessorsL3): self
-    {
-        if ($this->getProcessorsL3->contains($getProcessorsL3)) {
-            $this->getProcessorsL3->removeElement($getProcessorsL3);
-            // set the owning side to null (unless already changed)
-            if ($getProcessorsL3->getL3() === $this) {
-                $getProcessorsL3->setL3(null);
-            }
         }
 
         return $this;

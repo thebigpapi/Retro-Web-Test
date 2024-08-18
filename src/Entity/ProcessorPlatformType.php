@@ -23,8 +23,8 @@ class ProcessorPlatformType
     #[ORM\ManyToMany(targetEntity: Motherboard::class, mappedBy: 'processorPlatformTypes')]
     private $motherboards;
 
-    #[ORM\OneToMany(targetEntity: ProcessingUnit::class, mappedBy: 'platform')]
-    private $processingUnits;
+    #[ORM\OneToMany(targetEntity: Chip::class, mappedBy: 'platform')]
+    private $chips;
 
     #[ORM\ManyToMany(targetEntity: ProcessorPlatformType::class, inversedBy: 'ChildProcessorPlatformType')]
     private $compatibleWith;
@@ -72,7 +72,7 @@ class ProcessorPlatformType
     public function __construct()
     {
         $this->motherboards = new ArrayCollection();
-        $this->processingUnits = new ArrayCollection();
+        $this->chips = new ArrayCollection();
         $this->compatibleWith = new ArrayCollection();
         $this->ChildProcessorPlatformType = new ArrayCollection();
         $this->cpuSockets = new ArrayCollection();
@@ -169,28 +169,28 @@ class ProcessorPlatformType
         return $this;
     }
     /**
-     * @return Collection|ProcessingUnit[]
+     * @return Collection|Chip[]
      */
-    public function getProcessingUnits(): Collection
+    public function getChips(): Collection
     {
-        return $this->processingUnits;
+        return $this->chips;
     }
-    public function addProcessingUnit(ProcessingUnit $processingUnit): self
+    public function addChip(Chip $chip): self
     {
-        if (!$this->processingUnits->contains($processingUnit)) {
-            $this->processingUnits[] = $processingUnit;
-            $processingUnit->setPlatform($this);
+        if (!$this->chips->contains($chip)) {
+            $this->chips[] = $chip;
+            $chip->setFamily($this);
         }
 
         return $this;
     }
-    public function removeProcessingUnit(ProcessingUnit $processingUnit): self
+    public function removeChip(Chip $chip): self
     {
-        if ($this->processingUnits->contains($processingUnit)) {
-            $this->processingUnits->removeElement($processingUnit);
+        if ($this->chips->contains($chip)) {
+            $this->chips->removeElement($chip);
             // set the owning side to null (unless already changed)
-            if ($processingUnit->getPlatform() === $this) {
-                $processingUnit->setPlatform(null);
+            if ($chip->getFamily() === $this) {
+                $chip->setFamily(null);
             }
         }
 
@@ -201,10 +201,10 @@ class ProcessorPlatformType
      */
     public function getProcessors(): Collection
     {
-        $processors = array();
-        foreach ($this->processingUnits as $processor) {
-            if ($processor instanceof Processor) {
-                $processors[] = $processor;
+        $processors = [];
+        foreach ($this->chips as $chip) {
+            if ($chip->getType()->getId() === 10) {
+                $processors[] = $chip;
             }
         }
         return new ArrayCollection($processors);

@@ -82,7 +82,6 @@ dh_auditor:
                 App\Entity\OsFlag: ~
                 App\Entity\Processor: ~
                 App\Entity\ProcessorPlatformType: ~
-                App\Entity\ProcessorVoltage: ~
                 App\Entity\PSUConnector: ~
                 App\Entity\StorageDeviceAlias: ~
                 App\Entity\StorageDeviceDocumentation: ~

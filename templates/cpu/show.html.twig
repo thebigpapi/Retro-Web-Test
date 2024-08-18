@@ -77,7 +77,7 @@
 					</div>
 					<div>
 					{% if cpu.getSockets() is not empty %}
-						<a href="{{ path('cpufamily_show', {id: cpu.getPlatform().getId()}) }}">{{ cpu.getPlatform().getName() }}</a>
+						<a href="{{ path('cpufamily_show', {id: cpu.getFamily().getId()}) }}">{{ cpu.getFamily().getName() }}</a>
 					{% else %}
 						<span class='badge badge-secondary'>Empty</span>
 					{% endif %}
@@ -94,7 +94,7 @@
 						<img src="{{ absolute_url(asset('build/icons/speed.svg')) }}" alt="speed" width="24" height="24">Frequency
 					</div>
 					<div>{{ cpu.getSpeed() ? cpu.getSpeed().getValueWithUnit() : "<span class='badge badge-secondary'>Empty</span>" }}</div>
-					{% if cpu.getPlatform() is empty or cpu.getPlatform().getDramType() is empty %}
+					{% if cpu.getFamily() is empty or cpu.getFamily().getDramType() is empty %}
 					<!-- FSB -->
 					<div class="quick-spec-head">
 						<img src="{{ absolute_url(asset('build/icons/speed.svg')) }}" alt="speed" width="24" height="24">Bus speed
@@ -111,14 +111,14 @@
 						<img src="{{ absolute_url(asset('build/icons/cpu.svg')) }}" alt="threads" width="24" height="24">Thread count
 					</div>
 					<div>{{ cpu.getThreads() ? cpu.getThreads() : "<span class='badge badge-secondary'>Empty</span>" }}</div>
-					{% if cpu.getPlatform() is not empty and cpu.getPlatform().getDramType() is not empty %}
+					{% if cpu.getFamily() is not empty and cpu.getFamily().getDramType() is not empty %}
 					<!-- IMC -->
 					<div class="quick-spec-head">
 						<img src="{{ absolute_url(asset('build/icons/ram_multi.svg')) }}" alt="threads" width="24" height="24">IMC
 					</div>
 					<div>
 						<div class="tag-container">
-							{% for dram in cpu.getPlatform().getDramType() %}<span class="text-block">{{ dram.getName()}}</span>{% endfor %}
+							{% for dram in cpu.getFamily().getDramType() %}<span class="text-block">{{ dram.getName()}}</span>{% endfor %}
 						</div>
 					</div>
 					{% endif %}
@@ -129,7 +129,7 @@
 					</div>
 					<div>
 					<div class="toolbar">
-						<a class='button-widget' href="{{ absolute_url(path('app_homepage')) }}motherboards/?cpuSocket1={{ cpu.getSockets()[0].getId() }}&amp;platform1={{ cpu.getPlatform().getId() }}&amp;showImages=1">
+						<a class='button-widget' href="{{ absolute_url(path('app_homepage')) }}motherboards/?cpuSocket1={{ cpu.getSockets()[0].getId() }}&amp;platform1={{ cpu.getFamily().getId() }}&amp;showImages=1">
 							<img src='{{ absolute_url(asset('build/icons/hardware.svg')) }}' alt='' width='16' height='16' style='vertical-align:middle;padding:3px;'>See all compatible boards</a>
 						</div>
 					</div>
@@ -140,14 +140,14 @@
 						<img src="{{ absolute_url(asset('build/icons/ram.svg')) }}" alt="ram" width="24" height="24">L1 cache
 					</div>
 					<div>
-					{% if cpu.getPlatform() is not empty %}
-						{% if cpu.getPlatform().getL1code() is not empty %}
-							{{ cpu.getCores() > 1 ? (cpu.getPlatform().getL1codeRatio() * cpu.getCores()) ~ " x "}}{{cpu.getPlatform().getL1code()}}
+					{% if cpu.getFamily() is not empty %}
+						{% if cpu.getFamily().getL1code() is not empty %}
+							{{ cpu.getCores() > 1 ? (cpu.getFamily().getL1codeRatio() * cpu.getCores()) ~ " x "}}{{cpu.getFamily().getL1code()}}
 						{% else %}
 							unknown
 						{% endif %}code ,
-						{% if cpu.getPlatform().getL1data() is not empty %}
-							{{ cpu.getCores() > 1 ? (cpu.getPlatform().getL1dataRatio() * cpu.getCores()) ~ " x "}}{{cpu.getPlatform().getL1data()}}
+						{% if cpu.getFamily().getL1data() is not empty %}
+							{{ cpu.getCores() > 1 ? (cpu.getFamily().getL1dataRatio() * cpu.getCores()) ~ " x "}}{{cpu.getFamily().getL1data()}}
 						{% else %}
 							unknown
 						{% endif %}data
@@ -199,8 +199,8 @@
 					</div>
 					<div>
 					{% if cpu.getProcessNodeWithValue() is not empty %}
-						{% if cpu.getPlatform() is not empty %}
-							{{ cpu.getPlatform().getProcessNodeWithValue() ?: "<span class='badge badge-secondary'>Empty</span>" }}
+						{% if cpu.getFamily() is not empty %}
+							{{ cpu.getFamily().getProcessNodeWithValue() ?: "<span class='badge badge-secondary'>Empty</span>" }}
 						{% else %}
 							<span class='badge badge-secondary'>Empty</span>
 						{% endif %}
@@ -228,11 +228,11 @@
 					<div class="quick-spec-head">
 						<img src="{{ absolute_url(asset('build/icons/cpupins.svg')) }}" alt="cpu" width="24" height="24">Features
 					</div>
-					{% if cpu.getPlatform() is not empty %}
-						{% if cpu.getPlatform().getInstructionSetsFull() is not empty %}
+					{% if cpu.getFamily() is not empty %}
+						{% if cpu.getFamily().getInstructionSetsFull() is not empty %}
 							<div class="tag-container">
 							<ul>
-								{% for instruction in cpu.getPlatform().getInstructionSetsFull()|sort((a, b) => a.name|lower <=> b.name|lower) %}
+								{% for instruction in cpu.getFamily().getInstructionSetsFull()|sort((a, b) => a.name|lower <=> b.name|lower) %}
 									<li>{{ instruction.getName()}}</li>
 								{% endfor %}
 							</ul>
@@ -245,13 +245,13 @@
 					{% endif %}
 					<!-- CPUID -->
 
-					{% if cpu.getPlatform() is not empty %}
-						{% if cpu.getPlatform().getCpuid() is not empty %}
+					{% if cpu.getFamily() is not empty %}
+						{% if cpu.getFamily().getCpuid() is not empty %}
 						<div class="quick-spec-head">
 							<img src="{{ absolute_url(asset('build/icons/tag.svg')) }}" alt="tag" width="24" height="24">CPUID
 						</div>
 						<div class="tag-container">
-								{% for id in cpu.getPlatform().getCpuid()|sort((a, b) => a.name <=> b.name) %}
+								{% for id in cpu.getFamily().getCpuid()|sort((a, b) => a.name <=> b.name) %}
 									<span class="text-block">{{ id.getValue()}}</span>
 								{% endfor %}
 						</div>

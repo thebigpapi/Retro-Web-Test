@@ -52,6 +52,19 @@ abstract class Chip
     #[Assert\Valid()]
     protected Collection $documentations;
 
+    #[ORM\ManyToMany(targetEntity: CpuSocket::class, inversedBy: 'chips')]
+    #[Assert\Valid()]
+    private Collection $sockets;
+
+    #[ORM\ManyToOne(targetEntity: ProcessorPlatformType::class, inversedBy: 'chips')]
+    protected $family;
+
+    #[ORM\Column(type: 'float', nullable: true)]
+    private $tdp;
+
+    #[ORM\Column(type: 'integer', nullable: true)]
+    private $processNode;
+
     #[ORM\OneToMany(targetEntity: ChipAlias::class, mappedBy: 'chip', orphanRemoval: true, cascade: ['persist'])]
     #[Assert\Valid()]
     private Collection $chipAliases;
@@ -86,6 +99,7 @@ abstract class Chip
         $this->drivers = new ArrayCollection();
         $this->expansionCards = new ArrayCollection();
         $this->chipBios = new ArrayCollection();
+        $this->sockets = new ArrayCollection();
         $this->chipAliases = new ArrayCollection();
         $this->images = new ArrayCollection();
         $this->pciDevs = new ArrayCollection();
@@ -255,6 +269,71 @@ abstract class Chip
             if(count($this->chipBios) > 0)
                 return true;
         return false;
+    }
+
+    /**
+     * @return Collection|CpuSocket[]
+     */
+    public function getSockets(): Collection
+    {
+        return $this->sockets;
+    }
+    public function addSocket(CpuSocket $socket): self
+    {
+        if (!$this->sockets->contains($socket)) {
+            $this->sockets[] = $socket;
+        }
+
+        return $this;
+    }
+    public function removeSocket(CpuSocket $socket): self
+    {
+        if ($this->sockets->contains($socket)) {
+            $this->sockets->removeElement($socket);
+        }
+
+        return $this;
+    }
+
+    public function getFamily(): ?ProcessorPlatformType
+    {
+        return $this->family;
+    }
+    public function setFamily(?ProcessorPlatformType $family): self
+    {
+        $this->family = $family;
+
+        return $this;
+    }
+
+    public function getTdp(): ?float
+    {
+        return $this->tdp;
+    }
+    public function setTdp(?float $tdp): self
+    {
+        $this->tdp = $tdp;
+
+        return $this;
+    }
+    public function getProcessNode(): ?int
+    {
+        return $this->processNode;
+    }
+    public function setProcessNode(?int $processNode): self
+    {
+        $this->processNode = $processNode;
+
+        return $this;
+    }
+
+    public function getProcessNodeWithValue(): string
+    {
+        return $this->processNode ? $this->processNode . "nm" : "";
+    }
+    public function getTdpWithValue(): string
+    {
+        return $this->tdp ? $this->tdp . "W" : "";
     }
 
     public function getNameWithoutManuf(): string
@@ -515,8 +594,22 @@ abstract class Chip
     }
     public function getTableMiscSpecs(): array
     {
-        $output = [];
+        //Json inheritance from the family
+        $miscSpecs = $this->getFamily()->getMiscSpecs();
         foreach($this->getMiscSpecs() as $key => $value){
+            if(is_array($value)) {
+                if (!array_key_exists($key, $miscSpecs)) {
+                    $miscSpecs[$key] = [];
+                }
+                foreach($value as $key2 => $value2) {
+                    $miscSpecs[$key][$key2] = $value2;
+                }
+            } else {
+                $miscSpecs[$key] = $value;
+            }
+        }
+        $output = [];
+        foreach($miscSpecs as $key => $value){
             if(is_array($value))
                 $output[$key] = $value;
         }
@@ -536,5 +629,11 @@ abstract class Chip
         $this->miscSpecs = $miscSpecs;
 
         return $this;
+    }
+
+    public function getAllDocs(): Collection
+    {
+        $docs = $this->getFamily()?->getEntityDocumentations()->toArray() ?? [];
+        return new ArrayCollection($docs);
     }
 }

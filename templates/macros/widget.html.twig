@@ -193,7 +193,7 @@
 			{% endif %}
 		</div>
 		<div class="header-label">Family</div>
-		<div>{{ cpu.getPlatform() ? cpu.getPlatform().getName() : "<span class='badge badge-secondary'>Empty</span>" }}</div>
+		<div>{{ cpu.getFamily() ? cpu.getFamily().getName() : "<span class='badge badge-secondary'>Empty</span>" }}</div>
         <div class="header-label">Speed/FSB</div>
         {% if cpu.getSpeed != cpu.getFsb() %}
             <div>{{ cpu.getSpeed().getValueWithUnit() }}/{{ cpu.getFsb().getValueWithUnit() }}</div>

@@ -3,7 +3,6 @@
 namespace App\Command;
 
 use App\Entity\Processor;
-use App\Entity\ProcessorVoltage;
 use App\Repository\ProcessorRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -86,7 +85,7 @@ class CPUToChipCommand extends Command
             $json["Microarchitecture"]["L3 cache"] = $processor->getL3()?->getValueWithUnit();
         }
 
-        $json["Power"]["Voltage"] = array_map(fn (ProcessorVoltage $voltage) => $voltage->getValueWithUnit() ,$processor->getVoltages()->toArray());
+        $json["Power"]["Voltage"] = $processor->getVoltagesWithValue();
 
         $processor->setMiscSpecs($json);
 
