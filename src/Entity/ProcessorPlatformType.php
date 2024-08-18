@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -64,6 +65,9 @@ class ProcessorPlatformType
 
     #[ORM\OneToMany(mappedBy: 'processorPlatformType', targetEntity: CPUID::class, orphanRemoval: true, cascade: ['persist'])]
     private Collection $cpuid;
+
+    #[ORM\Column(type: Types::JSON, options: ['jsonb' => true])]
+    private ?array $miscSpecs = [];
 
     public function __construct()
     {
@@ -441,6 +445,54 @@ class ProcessorPlatformType
                 $cpuid->setProcessorPlatformType(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getMiscSpecs(): array
+    {
+        return $this->miscSpecs ?? [];
+    }
+    public function getMiscSpecsFormatted(): array
+    {
+        $output = [];
+        foreach($this->getMiscSpecs() as $spec){
+            $new = str_replace("\"","",json_encode($spec));
+            $new = str_replace(":",": ",$new);
+            array_push($output, substr($new, 1, -1));
+        }
+        return $output;
+    }
+    public function getSimpleMiscSpecs(): array
+    {
+        $output = [];
+        foreach($this->getMiscSpecs() as $key => $value){
+            if(!is_array($value))
+                $output[$key] = $value;
+        }
+        return $output;
+    }
+    public function getTableMiscSpecs(): array
+    {
+        $output = [];
+        foreach($this->getMiscSpecs() as $key => $value){
+            if(is_array($value))
+                $output[$key] = $value;
+        }
+        return $this->sortMiscSpecTables($output);
+    }
+    function sortMiscSpecTables($arrays) {
+        $lengths = array_map('count', $arrays);
+        arsort($lengths);
+        $return = array();
+        foreach(array_keys($lengths) as $k)
+            $return[$k] = $arrays[$k];
+        return $return;
+    }
+
+    public function setMiscSpecs(array $miscSpecs): static
+    {
+        $this->miscSpecs = $miscSpecs;
 
         return $this;
     }
