@@ -280,7 +280,7 @@ class ExpansionCard
     {
         $drivers = $this->getDrivers()->toArray();
         foreach ($this->getChips() as $chip) {
-            if (get_class($chip) !== ExpansionChip::class) {
+            if (get_class($chip) !== Chip::class) {
                 continue;
             }
             $drivers = array_merge($drivers, $chip->getDrivers()->toArray());
@@ -916,7 +916,7 @@ class ExpansionCard
     {
         $driverChips = [];
         foreach($this->chips as $chip){
-            if (get_class($chip) !== ExpansionChip::class) {
+            if (get_class($chip) !== Chip::class) {
                 continue;
             }
             if(!$chip->getDrivers()->isEmpty())

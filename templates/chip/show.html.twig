@@ -66,6 +66,17 @@
 					<!-- Type -->
 					<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/chip.svg')) }}" alt="date" width="24" height="24">Type</div>
 					<div>{{chip.getType().getName()}}</div>
+					<!-- Family (platform) -->
+					<div class="quick-spec-head">
+						<img src="{{ absolute_url(asset('build/icons/486.svg')) }}" alt="486" width="24" height="24">Family
+					</div>
+					<div>
+					{% if chip.getSockets() is not empty %}
+						<a href="{{ path('cpufamily_show', {id: chip.getFamily().getId()}) }}">{{ chip.getFamily().getName() }}</a>
+					{% else %}
+						<span class='badge badge-secondary'>Empty</span>
+					{% endif %}
+					</div>
 					<!-- Vendor ID -->
 					<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/tag.svg')) }}" alt="date" width="24" height="24">Vendor ID</div>
 					<div class="tag-container">

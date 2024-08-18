@@ -33,7 +33,7 @@ function updateChipset() {
     let params = [];
     let cnt = 0;
     // read expansion chips
-    let chips = document.getElementById('Motherboard_expansionChips_autocomplete');
+    let chips = document.getElementById('Motherboard_chips_autocomplete');
     //console.log(chips.tomselect.getValue())
     if(chips.childElementCount > 0)
         for(let item of chips.children)
@@ -82,7 +82,7 @@ function updateChips() {
     let chipset = document.getElementById('Motherboard_chipset_autocomplete');
     let chipset_value = chipset.value;
     // read expansion chips
-    let chips = document.getElementById('Motherboard_expansionChips_autocomplete');
+    let chips = document.getElementById('Motherboard_chips_autocomplete');
     if(chips.childElementCount > 0)
         for(let item of chips.children)
             params.push(parseInt(item.getAttribute('value')));
@@ -116,7 +116,7 @@ function setChips(value, verify){
     }
 }
 function addChips(addArray){
-    let chips = document.getElementById('Motherboard_expansionChips_autocomplete');
+    let chips = document.getElementById('Motherboard_chips_autocomplete');
     for(const chip in addArray){
         //console.log(chip, addArray[chip]);
         chips.tomselect.addOption({entityId: chip, entityAsString: addArray[chip]});
@@ -125,7 +125,7 @@ function addChips(addArray){
     chips.tomselect.sync();
 }
 function removeChips(deleteArray){
-    let container = document.getElementById('Motherboard_expansionChips_autocomplete-ts-control');
+    let container = document.getElementById('Motherboard_chips_autocomplete-ts-control');
     for(const value of deleteArray){
         let el = container.querySelector(`[data-value="${value}"]`);
         if(el){
@@ -136,7 +136,7 @@ function removeChips(deleteArray){
 function verifyChips(addArray){
     let addLen = Object.keys(addArray).length;
     let chip_array = [];
-    let chips = document.getElementById('Motherboard_expansionChips_autocomplete');
+    let chips = document.getElementById('Motherboard_chips_autocomplete');
     if(chips.childElementCount > 0)
         for(let item of chips.children)
             chip_array.push(parseInt(item.getAttribute('value')));
@@ -176,7 +176,7 @@ function identifyFirstSelect(targetId){
     }
     let select_cnt = select_container.childElementCount;
     while(select_cnt > 0){
-        if(document.getElementById("Motherboard_expansionChips_" + cnt)){
+        if(document.getElementById("Motherboard_chips_" + cnt)){
             select_cnt--;
         }
         if(select_cnt == 0)

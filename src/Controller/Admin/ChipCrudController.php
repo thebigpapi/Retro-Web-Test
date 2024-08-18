@@ -143,6 +143,11 @@ class ChipCrudController extends AbstractCrudController
         yield CollectionField::new('drivers','Drivers')
             ->setCustomOption('byCount', true)
             ->onlyOnIndex();
+        yield CollectionField::new('chipBios','BIOS')
+            ->setCustomOption('byCount', true)
+            ->onlyOnIndex();
+        yield IntegerField::new('sort', 'Sort')
+            ->onlyOnIndex();
         // editor
         yield AssociationField::new('type','Type')
             ->setFormTypeOption('placeholder', 'Type to select a type ...')
@@ -156,10 +161,11 @@ class ChipCrudController extends AbstractCrudController
         yield IntegerField::new('sort', 'Sort position')
             ->setFormTypeOption('required', false)
             ->setFormTypeOption('empty_data', '1')
-            ->setColumns(2);
-        /*yield CodeEditorField::new('description')
+            ->setColumns(2)
+            ->onlyOnForms();
+        yield CodeEditorField::new('description')
             ->setLanguage('markdown')
-            ->onlyOnForms();*/
+            ->onlyOnForms();
         yield CollectionField::new('chipAliases', 'Chip aliases')
             ->useEntryCrudForm(AliasCrudType::class)
             ->setFormTypeOption('error_bubbling', false)
@@ -175,16 +181,16 @@ class ChipCrudController extends AbstractCrudController
         yield FormField::addTab('BIOS')
             ->setIcon('awchip.svg')
             ->onlyOnForms();
-        /*yield CollectionField::new('expansionChipBios', 'Firmware')
+        yield CollectionField::new('chipBios', 'Firmware')
             ->useEntryCrudForm(BiosCrudType::class)
             ->setFormTypeOption('error_bubbling', false)
             ->setColumns(6)
             ->renderExpanded()
-            ->onlyOnForms();*/
+            ->onlyOnForms();
         yield FormField::addTab('Drivers')
             ->setIcon('hardware.svg')
             ->onlyOnForms();
-        /*yield CollectionField::new('drivers', 'Drivers')
+        yield CollectionField::new('drivers', 'Drivers')
             ->useEntryCrudForm(LargeFileCrudType::class)
             ->setFormTypeOption('error_bubbling', false)
             ->setColumns(6)
@@ -193,7 +199,7 @@ class ChipCrudController extends AbstractCrudController
         yield ArrayField::new('getChipsWithDrivers', '')
             ->setCssClass("field-collection processed")
             ->setDisabled()
-            ->onlyOnForms();*/
+            ->onlyOnForms();
         yield FormField::addTab('Docs')
             ->setIcon('manual.svg')
             ->onlyOnForms();

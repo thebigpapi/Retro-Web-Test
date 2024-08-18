@@ -636,4 +636,10 @@ abstract class Chip
         $docs = $this->getFamily()?->getEntityDocumentations()->toArray() ?? [];
         return new ArrayCollection($docs);
     }
+
+    // dummy function used for the mini driver editor
+    public function getChipsWithDrivers(): array
+    {
+        return [];
+    }
 }

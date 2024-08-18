@@ -48,7 +48,7 @@ function submit(name){
         return;
     if(!validateFiles(entity, save))
         return;
-    if(entity != "ExpansionCard" && entity != "ExpansionChip" && entity != "LargeFile"){
+    if(entity != "ExpansionCard" && entity != "Chip" && entity != "LargeFile"){
         saveretbtn.setAttribute("disabled", "disabled");
         savecontbtn.setAttribute("disabled", "disabled");
         save.click();

@@ -34,12 +34,17 @@
 				{% endfor %}
 				</div>
 			</div>
+			{% if expansioncards|length > 8 %}
+				{{ knp_pagination_render(expansioncards, 'macros/pagination_async.html.twig') }}
+			{% endif %}
 		{% else %}
 			<div class="plain-list w300p table">
 				{% include 'macros/widget.html.twig' with {'type':'expansioncard-results', 'entity': expansioncards} %}
 			</div>
+			{% if expansioncards|length > 28 %}
+				{{ knp_pagination_render(expansioncards, 'macros/pagination_async.html.twig') }}
+			{% endif %}
 		{% endif %}
-		{{ knp_pagination_render(expansioncards, 'macros/pagination_async.html.twig') }}
 	</div>
 {% else %}
 	No results

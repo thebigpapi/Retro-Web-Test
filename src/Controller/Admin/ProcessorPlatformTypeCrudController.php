@@ -75,12 +75,6 @@ class ProcessorPlatformTypeCrudController extends AbstractCrudController
     {
         return parent::configureFilters($filters)
             ->add('name')
-            ->add('L1code')
-            ->add('L1codeRatio')
-            ->add('L1data')
-            ->add('L1dataRatio')
-            ->add('instructionSets')
-            ->add('cpuid')
             ->add('processNode');
     }
     public function configureFields(string $pageName): iterable
@@ -93,20 +87,6 @@ class ProcessorPlatformTypeCrudController extends AbstractCrudController
         yield TextField::new('name', 'Name');
         yield NumberField::new('processNode', 'Process (in nm)')
             ->setColumns(2);
-        yield AssociationField::new('L1code','L1 code size')
-            ->setFormTypeOption('placeholder', 'Type to select a size ...')
-            ->setFormTypeOption('required', false)
-            ->setColumns(2);
-        yield NumberField::new('L1codeRatio','L1 code ratio')
-            ->setColumns(2)
-            ->hideOnIndex();
-        yield AssociationField::new('L1data','L1 data size')
-            ->setFormTypeOption('placeholder', 'Type to select a size ...')
-            ->setFormTypeOption('required', false)
-            ->setColumns(2);
-        yield NumberField::new('L1dataRatio','L1 data ratio')
-            ->setColumns(2)
-            ->hideOnIndex();
         yield CollectionField::new('dramType', 'RAM types')
             ->setEntryType(DramTypeType::class)
             ->renderExpanded()
@@ -121,15 +101,8 @@ class ProcessorPlatformTypeCrudController extends AbstractCrudController
             ->onlyOnForms();
         yield ArrayField::new('compatibleWith', 'Compatible with families')
             ->onlyOnDetail();
-        yield ArrayField::new('instructionSets', 'Features (this entity)')
-            ->onlyOnDetail();
         yield CollectionField::new('compatibleWith', 'Compatible with families')
             ->setEntryType(ProcessorPlatformTypeForm::class)
-            ->renderExpanded()
-            ->onlyOnForms();
-        yield CollectionField::new('cpuid', 'CPUID')
-            ->useEntryCrudForm(CPUIDCrudType::class)
-            ->setColumns(4)
             ->renderExpanded()
             ->onlyOnForms();
         yield ArrayField::new('entityDocumentations', 'Documentation')

@@ -4,7 +4,6 @@ namespace App\Controller\Admin;
 use App\Entity\Motherboard;
 use App\Entity\Chipset;
 use App\Entity\LargeFile;
-use App\Entity\Processor;
 use App\Entity\ProcessorPlatformType;
 use App\Entity\InstructionSet;
 use App\Entity\CpuSpeed;
@@ -12,7 +11,6 @@ use App\Entity\HardDrive;
 use App\Entity\CdDrive;
 use App\Entity\FloppyDrive;
 use App\Entity\Chip;
-use App\Entity\ExpansionChip;
 use App\Entity\ExpansionChipType;
 use App\Entity\ExpansionCard;
 use App\Entity\ExpansionCardType;
@@ -126,8 +124,6 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Optical drives', 'cd.svg', CdDrive::class);
         yield MenuItem::linkToCrud('Floppy & tape drives', 'floppy.svg', FloppyDrive::class);
         yield MenuItem::linkToCrud('Drivers', 'hardware.svg', LargeFile::class);
-        yield MenuItem::linkToCrud('[TBD]CPUs', '486.svg', Processor::class);
-        yield MenuItem::linkToCrud('[TBD]expchips', 'chip.svg', ExpansionChip::class);
         yield MenuItem::section('Auxiliary items');
         yield MenuItem::subMenu('Motherboard related', 'board.svg')->setSubItems([
             MenuItem::linkToCrud('Form factors', 'dimension.svg', FormFactor::class),

@@ -31,7 +31,7 @@ class ChipsetRepository extends ServiceEntityRepository
 
         $dql   = "SELECT c, cp 
         FROM App:Chipset c 
-        JOIN c.manufacturer m LEFT JOIN c.expansionChips cp
+        JOIN c.manufacturer m LEFT JOIN c.chips cp
         ORDER BY m.name ASC, c.name ASC";
         $query = $entityManager->createQuery($dql);
 
@@ -51,8 +51,8 @@ class ChipsetRepository extends ServiceEntityRepository
         if (array_key_exists('name', $criteria)) {
             $multicrit = explode(" ", $criteria['name']);
             foreach ($multicrit as $key => $val) {
-                $whereArray[] = "(LOWER(chip.name) LIKE :nameLike$key 
-                    OR LOWER(chip.part_no) LIKE :nameLike$key 
+                $whereArray[] = "(LOWER(chipset.name) LIKE :nameLike$key 
+                    OR LOWER(chipset.part_no) LIKE :nameLike$key 
                     OR LOWER(part.name) LIKE :nameLike$key
                     OR LOWER(part.partNumber) LIKE :nameLike$key
                     OR LOWER(alias.name) LIKE :nameLike$key 
@@ -73,10 +73,10 @@ class ChipsetRepository extends ServiceEntityRepository
             return [];
         } else {
             $query = $entityManager->createQuery(
-                "SELECT chip
-                FROM App\Entity\Chipset chip JOIN chip.manufacturer man JOIN chip.expansionChips part LEFT OUTER JOIN chip.chipsetAliases alias
+                "SELECT chipset
+                FROM App\Entity\Chipset chipset JOIN chipset.manufacturer man JOIN chipset.chips part LEFT OUTER JOIN chipset.chipsetAliases alias
                 WHERE $whereString
-                ORDER BY man.name ASC, chip.name ASC"
+                ORDER BY man.name ASC, chipset.name ASC"
             );
         }
         // Setting values
@@ -100,10 +100,10 @@ class ChipsetRepository extends ServiceEntityRepository
         }
         $whereString .= ")";
         $query = $entityManager->createQuery(
-            "SELECT chip
-            FROM App\Entity\Chipset chip JOIN chip.manufacturer man JOIN chip.expansionChips part LEFT OUTER JOIN chip.chipsetAliases alias
+            "SELECT chipset
+            FROM App\Entity\Chipset chipset JOIN chipset.manufacturer man JOIN chipset.chips part LEFT OUTER JOIN chipset.chipsetAliases alias
             WHERE part.id IN $whereString
-            ORDER BY man.name ASC, chip.name ASC"
+            ORDER BY man.name ASC, chipset.name ASC"
         );
         return $query->getResult();
     }
@@ -115,16 +115,16 @@ class ChipsetRepository extends ServiceEntityRepository
         $entityManager = $this->getEntityManager();
         if (empty($letter)) {
             $query = $entityManager->createQuery(
-                "SELECT 'Unknown' as manName, chip.id, UPPER(chip.name) chipNameSort, chip.lastEdited
-                FROM App\Entity\Chipset chip
-                WHERE chip.manufacturer IS NULL
+                "SELECT 'Unknown' as manName, chipset.id, UPPER(chipset.name) chipNameSort, chipset.lastEdited
+                FROM App\Entity\Chipset chipset
+                WHERE chipset.manufacturer IS NULL
                 ORDER BY chipNameSort ASC");
         } else {
             $likematch = "$letter%";
             $query = $entityManager->createQuery(
-                "SELECT chip.id, UPPER(man.name) manNameSort, UPPER(chip.name) chipNameSort, chip.lastEdited
-                FROM App\Entity\Chipset chip, App\Entity\Manufacturer man
-                WHERE chip.manufacturer=man AND UPPER(man.name) like :likeMatch
+                "SELECT chipset.id, UPPER(man.name) manNameSort, UPPER(chipset.name) chipNameSort, chipset.lastEdited
+                FROM App\Entity\Chipset chipset, App\Entity\Manufacturer man
+                WHERE chipset.manufacturer=man AND UPPER(man.name) like :likeMatch
                 ORDER BY manNameSort ASC, chipNameSort ASC"
                 )->setParameter('likeMatch', $likematch);
         }
@@ -158,8 +158,8 @@ class ChipsetRepository extends ServiceEntityRepository
         $rsm->addScalarResult('count', 'count');
 
         $result = $entityManager->createNativeQuery(
-            "SELECT count(DISTINCT chipset_id) FROM chipset_expansion_chip WHERE expansion_chip_id IN
-            (SELECT id FROM chip WHERE id NOT IN (SELECT chip_id FROM chip_documentation) AND dtype='expansionchip')",
+            "SELECT count(DISTINCT chipset_id) FROM chipset_chip WHERE chip_id IN
+            (SELECT id FROM chip WHERE id NOT IN (SELECT chip_id FROM chip_documentation) AND dtype='chip')",
             $rsm
         )->getResult();
         return $result;

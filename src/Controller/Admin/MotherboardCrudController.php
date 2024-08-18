@@ -282,7 +282,7 @@ class MotherboardCrudController extends AbstractCrudController
             ->onlyOnForms();
         yield FormField::addPanel('Chipset and chips')
             ->onlyOnForms();
-        yield AssociationField::new('xhips', 'Expansion chips')
+        yield AssociationField::new('chips', 'Expansion chips')
             ->autocomplete()
             ->setColumns('col-sm-12 col-lg-8 col-xxl-6 multi-widget-trw')
             ->onlyOnForms();

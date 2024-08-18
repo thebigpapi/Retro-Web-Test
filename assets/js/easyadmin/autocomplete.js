@@ -1,8 +1,8 @@
 
 const match = {
-    'ExpansionCard_expansionChips_autocomplete': 'ExpansionChip',
-    'Chipset_expansionChips_autocomplete': 'ExpansionChip',
-    'Motherboard_expansionChips_autocomplete': 'ExpansionChip',
+    'ExpansionCard_expansionChips_autocomplete': 'Chip',
+    'Chipset_expansionChips_autocomplete': 'Chip',
+    'Motherboard_expansionChips_autocomplete': 'Chip',
 }
 export default class Autocomplete
 {

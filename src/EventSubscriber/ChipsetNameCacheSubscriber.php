@@ -2,8 +2,8 @@
 
 namespace App\EventSubscriber;
 
+use App\Entity\Chip;
 use App\Entity\Chipset;
-use App\Entity\ExpansionChip;
 use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Event\AbstractLifecycleEvent;
 use EasyCorp\Bundle\EasyAdminBundle\Event\BeforeEntityDeletedEvent;
@@ -35,12 +35,12 @@ class ChipsetNameCacheSubscriber implements EventSubscriberInterface
 
         if (($entity instanceof Chipset)) {
             $this->chipsetChanged($entity);
-        } elseif (($entity instanceof ExpansionChip) && $entity->getType()?->getId() ?? 0 == 30) {
+        } elseif (($entity instanceof Chip) && $entity->getType()?->getId() ?? 0 == 30) {
             $this->chipsetPartChanged($entity);
         }
     }
 
-    private function chipsetPartChanged(ExpansionChip $chipsetPart) {
+    private function chipsetPartChanged(Chip $chipsetPart) {
         foreach($chipsetPart->getChipsets() as $chipset) {
             $this->entityManager->persist($chipset);
         }

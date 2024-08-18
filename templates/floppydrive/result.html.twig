@@ -35,12 +35,17 @@
 				{% endfor %}
 				</div>
 			</div>
-			{% else %}
-				<div class="plain-list w300p table">
-					{% include 'macros/widget.html.twig' with {'type':'fdd-results', 'entity': fdds} %}
-				</div>
+			{% if fdds|length > 8 %}
+				{{ knp_pagination_render(fdds, 'macros/pagination_async.html.twig') }}
 			{% endif %}
-		{{ knp_pagination_render(fdds, 'macros/pagination_async.html.twig') }}
+		{% else %}
+			<div class="plain-list w300p table">
+				{% include 'macros/widget.html.twig' with {'type':'fdd-results', 'entity': fdds} %}
+			</div>
+			{% if fdds|length > 28 %}
+				{{ knp_pagination_render(fdds, 'macros/pagination_async.html.twig') }}
+			{% endif %}
+		{% endif %}
 	</div>
 {% else %}
 	No results

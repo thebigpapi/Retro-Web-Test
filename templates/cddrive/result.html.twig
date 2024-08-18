@@ -35,12 +35,17 @@
 				{% endfor %}
 				</div>
 			</div>
-			{% else %}
-				<div class="plain-list w300p table">
-					{% include 'macros/widget.html.twig' with {'type':'cdd-results', 'entity': cdds} %}
-				</div>
+			{% if cdds|length > 8 %}
+				{{ knp_pagination_render(cdds, 'macros/pagination_async.html.twig') }}
 			{% endif %}
-		{{ knp_pagination_render(cdds, 'macros/pagination_async.html.twig') }}
+		{% else %}
+			<div class="plain-list w300p table">
+				{% include 'macros/widget.html.twig' with {'type':'cdd-results', 'entity': cdds} %}
+			</div>
+			{% if cdds|length > 28 %}
+				{{ knp_pagination_render(cdds, 'macros/pagination_async.html.twig') }}
+			{% endif %}
+		{% endif %}
 	</div>
 {% else %}
 	No results

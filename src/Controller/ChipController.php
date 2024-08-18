@@ -52,6 +52,7 @@ class ChipController extends AbstractController
             ]);
         }
         $data = $chipRepository->findByChip($criterias);
+        //dd($data);
         $chips = $paginator->paginate(
             $data,
             $request->query->getInt('page', 1),

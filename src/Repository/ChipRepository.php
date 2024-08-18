@@ -109,7 +109,7 @@ class ChipRepository extends ServiceEntityRepository
             return [];
         $query = $entityManager->createQuery(
             "SELECT chip
-            FROM App\Entity\ExpansionChip chip JOIN chip.manufacturer man LEFT JOIN chip.pciDevs dev LEFT JOIN man.pciVendorIds ven
+            FROM App\Entity\Chip chip JOIN chip.manufacturer man LEFT JOIN chip.pciDevs dev LEFT JOIN man.pciVendorIds ven
             WHERE dev.dev in (:devLike) AND ven.ven in (:venLike)
             ORDER BY man.name ASC, chip.name ASC"
         );
@@ -126,7 +126,7 @@ class ChipRepository extends ServiceEntityRepository
 
         $query = $entityManager->createQuery(
             'SELECT chip
-            FROM App\Entity\ExpansionChip chip, App\Entity\Manufacturer man 
+            FROM App\Entity\Chip chip, App\Entity\Manufacturer man 
             WHERE chip.manufacturer=man 
             ORDER BY man.name ASC, chip.name ASC'
         );
@@ -141,7 +141,7 @@ class ChipRepository extends ServiceEntityRepository
         $entityManager = $this->getEntityManager();
 
         $rsm = new ResultSetMapping();
-        $rsm->addEntityResult('App\Entity\ExpansionChip', 'ec');
+        $rsm->addEntityResult('App\Entity\Chip', 'ec');
         $rsm->addJoinedEntityResult('App\Entity\Manufacturer', 'man', 'ec', 'manufacturer');
         $rsm->addFieldResult('ec', 'id', 'id');
         $rsm->addFieldResult('ec', 'name', 'name');
@@ -159,7 +159,7 @@ class ChipRepository extends ServiceEntityRepository
         return $query->getResult();
     }
     /**
-     * @return ExpansionChip[]
+     * @return Chip[]
      */
     public function findAllByCreditor(int $cid): array
     {

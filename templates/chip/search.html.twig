@@ -48,7 +48,7 @@
 					<div>{{ form_widget(form.name, {'attr': {'placeholder': 'Name or Part number (without manufacturer) ...'}}) }}</div>
 				</div>
 			</div>
-			{% include 'macros/searchitems.html.twig' with {'datatarget': 'expansion-chips', 'dataresetids': 'search_chipManufacturer', 'search_with_images' : true} %}
+			{% include 'macros/searchitems.html.twig' with {'datatarget': 'chips', 'dataresetids': 'search_chipManufacturer', 'search_with_images' : true} %}
 		</section>
 		<div class="dropdown-trw">
 			<label class="dropdown-header" onclick="expandDropdown()">

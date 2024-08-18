@@ -6,7 +6,9 @@
 			<div class="plain-list w300p table">
 				{% include 'macros/widget.html.twig' with {'type':'driver-results', 'entity': drivers} %}
 			</div>
-		{{ knp_pagination_render(drivers, 'macros/pagination_async.html.twig') }}
+		{% if drivers|length > 28 %}
+			{{ knp_pagination_render(drivers, 'macros/pagination_async.html.twig') }}
+		{% endif %}
 	</div>
 {% else %}
 	No results
