@@ -120,20 +120,19 @@
 					<div class="show-downloads-group-header">
 						<img src="{{ absolute_url(asset('build/icons/awchip.svg')) }}" alt="" width="32" height="32">
 						{% set bfile_cnt = 0 %}
-						{#% if chip.getExpansionChipBios() is not empty %}
-							{% for bios in chip.getExpansionChipBios() %}
+						{% if chip.getChipBios() is not empty %}
+							{% for bios in chip.getChipBios() %}
 								{% if bios.getFileName() is not null %}{% set bfile_cnt = bfile_cnt + 1 %}{% endif %}
 							{% endfor %}
-						{% endif %#}
+						{% endif %}
 						<span>{{ bfile_cnt }} file{% if bfile_cnt != 1 %}s{% endif %} available</span>
 					</div>
-					TBD
-					{#% include 'macros/bios.html.twig' with {'entity': chip.getExpansionChipBios(), 'entity_label':'chip', 'audit_entity':'App-Entity-ExpansionChipBios'} %#}
+					{% include 'macros/bios.html.twig' with {'entity': chip.getChipBios(), 'entity_label':'chip', 'audit_entity':'App-Entity-ExpansionChipBios'} %}
 				</div>
 			</div>
 			<!-- DRIVERS -->
 			<div class="show-downloads" id="sh-driver">
-				TBD{#% include 'macros/drivers.html.twig' with {'entity': chip.getDrivers(), 'css': ''} %#}
+				{% include 'macros/drivers.html.twig' with {'entity': chip.getDrivers(), 'css': ''} %}
 			</div>
 			<!-- Documentation -->
 			<div class="show-downloads" id="sh-docs">
