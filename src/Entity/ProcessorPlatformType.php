@@ -41,12 +41,6 @@ class ProcessorPlatformType
     #[ORM\Column(type: 'integer', nullable: true)]
     private $processNode;
 
-    #[ORM\ManyToOne(targetEntity: CacheSize::class, inversedBy: 'getProcessorsL1data')]
-    private $L1data;
-
-    #[ORM\ManyToOne(targetEntity: CacheSize::class, inversedBy: 'getProcessorsL1code')]
-    private $L1code;
-
     #[ORM\Column]
     private ?float $L1codeRatio = null;
 
@@ -300,26 +294,6 @@ class ProcessorPlatformType
     public function setProcessNode(?int $processNode): self
     {
         $this->processNode = $processNode;
-
-        return $this;
-    }
-    public function getL1data(): ?CacheSize
-    {
-        return $this->L1data;
-    }
-    public function setL1data(?CacheSize $L1data): self
-    {
-        $this->L1data = $L1data;
-
-        return $this;
-    }
-    public function getL1code(): ?CacheSize
-    {
-        return $this->L1code;
-    }
-    public function setL1code(?CacheSize $L1code): self
-    {
-        $this->L1code = $L1code;
 
         return $this;
     }
