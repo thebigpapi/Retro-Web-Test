@@ -23,7 +23,7 @@ class ProcessorPlatformType
     #[ORM\ManyToMany(targetEntity: Motherboard::class, mappedBy: 'processorPlatformTypes')]
     private $motherboards;
 
-    #[ORM\OneToMany(targetEntity: Chip::class, mappedBy: 'platform')]
+    #[ORM\OneToMany(targetEntity: Chip::class, mappedBy: 'family')]
     private $chips;
 
     #[ORM\ManyToMany(targetEntity: ProcessorPlatformType::class, inversedBy: 'ChildProcessorPlatformType')]
