@@ -190,11 +190,6 @@ class Search extends AbstractType
                 'allow_delete' => true,
                 'label' => false,
             ])
-            ->add('searchWithImages', CheckboxType::class, [
-                'data' => true,
-                'label' => false,
-                'attr' => array('checked' => 'checked'),
-            ])
             ->add('itemsPerPage', EnumType::class, [
                 'class' => ItemsPerPageType::class,
                 'empty_data' => ItemsPerPageType::Items100,

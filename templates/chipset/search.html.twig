@@ -58,7 +58,7 @@
 		{% include 'macros/lastedited.html.twig' with {'entity': latestChipsets, 'type':'chipset', 'entity_label':'chipsets', 'path': 'chipset_show'} %}
 	{% endif %}
 	{% if chipsets is defined %}
-		{% include 'chipset/result.html.twig' with {'chipsets': chipsets, 'show_images': show_images, 'route': true} %}
+		{% include 'chipset/result.html.twig' with {'chipsets': chipsets, 'route': true} %}
 	{% endif %}
 	</section>
 {% endblock %}

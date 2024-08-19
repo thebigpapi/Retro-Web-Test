@@ -58,7 +58,7 @@
 		{% include 'macros/lastedited.html.twig' with {'entity': latestCdds, 'type':'cdd', 'entity_label':'optical drives', 'path': 'cd_drive_show'} %}
 	{% endif %}
 	{% if cdds is defined %}
-		{% include 'cddrive/result.html.twig' with {'cdds': cdds, 'show_images': show_images, 'route': true} %}
+		{% include 'cddrive/result.html.twig' with {'cdds': cdds, 'route': true} %}
 	{% endif %}
 	</section>
 {% endblock %}

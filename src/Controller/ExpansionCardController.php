@@ -119,7 +119,6 @@ class ExpansionCardController extends AbstractController
         }
         //get criterias
         $criterias = $this->getCriteriaExpansionCard($request);
-        $showImages = boolval(htmlentities($request->query->get('showImages') ?? ''));
         $maxItems = $request->query->getInt('itemsPerPage', $request->request->getInt('itemsPerPage', $this->getParameter('app.pagination.max')));
         if (empty($criterias)) {
             return $this->render('expansioncard/search.html.twig', [
@@ -137,7 +136,6 @@ class ExpansionCardController extends AbstractController
             'form' => $form->createView(),
             'controller_name' => 'ExpansionCardController',
             'expansioncards' => $expansionCards,
-            'show_images' => $showImages,
         ]);
 
     }
@@ -161,7 +159,6 @@ class ExpansionCardController extends AbstractController
         ExpansionCardRepository $expansionCardRepository
     ): Response {
         $criterias = $this->getCriteriaExpansionCard($request);
-        $showImages = boolval(htmlentities($request->query->get('showImages') ?? ''));
         $maxItems = $request->query->getInt('itemsPerPage', $request->request->getInt('itemsPerPage', $this->getParameter('app.pagination.max')));
         $data = $expansionCardRepository->findByWithJoin($criterias);
         $expansionCards = $paginator->paginate(
@@ -201,7 +198,6 @@ class ExpansionCardController extends AbstractController
         return $this->render('expansioncard/result.html.twig', [
             'controller_name' => 'ExpansionCardController',
             'expansioncards' => $expansionCards,
-            'show_images' => $showImages,
             'domTarget' => $request->request->get('domTarget') ?? $request->query->get('domTarget') ?? "",
             'params' => substr($string, 0, -1),
         ]);
@@ -278,7 +274,6 @@ class ExpansionCardController extends AbstractController
         $tempItems = intval($form['itemsPerPage']->getData()->value);
         $parameters['itemsPerPage'] = $tempItems > 0 ? $tempItems : $this->getParameter('app.pagination.max');
 
-        $parameters['showImages'] = $form['searchWithImages']->getData();
         $parameters['name'] = $form['name']->getData();
 
         return $parameters;

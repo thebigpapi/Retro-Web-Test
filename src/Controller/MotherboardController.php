@@ -140,7 +140,6 @@ class MotherboardController extends AbstractController
         }
         $criterias = $this->getCriteria($request);
 
-        $showImages = boolval(htmlentities($request->query->get('showImages') ?? ''));
         $maxItems = $request->query->getInt('itemsPerPage', $request->request->getInt('itemsPerPage', $this->getParameter('app.pagination.max')));
         if (empty($criterias)) {
             return $this->render('motherboard/search.html.twig', [
@@ -159,7 +158,6 @@ class MotherboardController extends AbstractController
             'form' => $form->createView(),
             'controller_name' => 'MotherboardController',
             'motherboards' => $motherboards,
-            'show_images' => $showImages,
         ]);
     }
 
@@ -170,9 +168,6 @@ class MotherboardController extends AbstractController
         MotherboardRepository $motherboardRepository
     ): Response {
         $criterias = $this->getCriteria($request);
-
-        $showImages = boolval(htmlentities($request->query->get('showImages') ??
-            ($request->request->get('showImages') ?? '')));
 
         $data = $motherboardRepository->findByWithJoin($criterias);
         $maxItems = $request->query->getInt('itemsPerPage',
@@ -210,7 +205,6 @@ class MotherboardController extends AbstractController
             'controller_name' => 'MotherboardController',
             'motherboards' => $motherboards,
             'motherboard_count' => count($data),
-            'show_images' => $showImages,
             'domTarget' => $request->request->get('domTarget') ?? $request->query->get('domTarget') ?? "",
             'params' => substr($string, 0, -1),
         ]);
@@ -335,7 +329,6 @@ class MotherboardController extends AbstractController
         $tempItems = intval($form['itemsPerPage']->getData()->value);
         $parameters['itemsPerPage'] = $tempItems > 0 ? $tempItems : $this->getParameter('app.pagination.max');
 
-        $parameters['showImages'] = $form['searchWithImages']->getData();
         $parameters['name'] = $form['name']->getData();
 
         if ($form['formFactor']->getData()) {

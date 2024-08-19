@@ -1,58 +1,49 @@
 {% if route is defined and route == true %}{% set typeid = 'route-results' %}{% else %}{% set typeid = domTarget %}{% endif %}
 <div id="{{ typeid }}">
 {% if chipsets is defined and chipsets is not empty %}
-	<div class="results{% if not show_images %} lst{% endif %}">
+	<div class="results">
 		{{ knp_pagination_render(chipsets, 'macros/pagination_async.html.twig') }}
-		{% if show_images %}
-			<div class="perks">
-				<div id="index-datetime" class="perks-list">
-				{% for chipset in chipsets %}
-					<div class="perk">
-						<a href="{{ path("chipset_show", {id: chipset.getId()}) }}">
-							<div class="perk-image">
-							{% if chipset.getChips() is not empty %}
-								{% set imgcount = 0 %}
-								{% for chipPart in chipset.getChips()|sort((a, b) => a.sort <=> b.sort)|slice(0, 1) %}
-								{% if chipPart.getImages() is not empty %}
-									{% set imgcount = imgcount + 1 %}
-									{% for image in chipPart.getImages()|sort((a, b) => a.getFileName() <=> b.getFileName())|sort((a, b) => a.sort <=> b.sort)|slice(0, 1) %}
-										<img src="{% if vich_uploader_asset(image, 'imageFile') | ext != "svg" %}
-									{{ vich_uploader_asset(image, 'imageFile') | imagine_filter('show_thumb') }}{% else %}
-									{{ vich_uploader_asset(image, 'imageFile')}}{% endif %}" alt="" loading="lazy" width="250" height="200" title="{% if image.description %}{{ image.description }}{% endif %}">
-									{% endfor %}
-								{% endif %}
+		<div class="perks">
+			<div id="index-datetime" class="perks-list">
+			{% for chipset in chipsets %}
+				<div class="perk">
+					<a href="{{ path("chipset_show", {id: chipset.getId()}) }}">
+						<div class="perk-image">
+						{% if chipset.getChips() is not empty %}
+							{% set imgcount = 0 %}
+							{% for chipPart in chipset.getChips()|sort((a, b) => a.sort <=> b.sort)|slice(0, 1) %}
+							{% if chipPart.getImages() is not empty %}
+								{% set imgcount = imgcount + 1 %}
+								{% for image in chipPart.getImages()|sort((a, b) => a.getFileName() <=> b.getFileName())|sort((a, b) => a.sort <=> b.sort)|slice(0, 1) %}
+									<img src="{% if vich_uploader_asset(image, 'imageFile') | ext != "svg" %}
+								{{ vich_uploader_asset(image, 'imageFile') | imagine_filter('show_thumb') }}{% else %}
+								{{ vich_uploader_asset(image, 'imageFile')}}{% endif %}" alt="" loading="lazy" width="250" height="200" title="{% if image.description %}{{ image.description }}{% endif %}">
 								{% endfor %}
-								{% if imgcount == 0 %}<img src="{{ absolute_url(asset('build/images/missing/chipset-missing.jpg')) }}" loading="lazy" width="250" height="200" title="no images available :(">{% endif %}
-							{% else %}
-								<img src="{{ absolute_url(asset('build/images/missing/chipset-missing.jpg')) }}" loading="lazy" width="250" height="200" title="no images available :(">
 							{% endif %}
-							</div>
-							<div class="perk-name">{{ chipset.getFullName() }}</div>
-							<div class="perk-alias">
-								{% if chipset.getChips() is not empty %}<span class="results-alias">
-									<small>Parts: {% for chipPart in chipset.getChips() %}{{ chipPart.getFullName() }}{% if not loop.last %}, {% endif %}{% endfor %}</small>
-								</span>{% endif %}
-							</div>
-							<div class="perk-alias">
-								{% if chipset.getChipsetAliases() is not empty %}<span class="results-alias">
-									<small>Alias: {% for alias in chipset.getChipsetAliases() %}{{ alias.getFullAliasName() }}{% if not loop.last %}, {% endif %}{% endfor %}</small>
-								</span>{% endif %}
-							</div>
-						</a>
-					</div>
-				{% endfor %}
+							{% endfor %}
+							{% if imgcount == 0 %}<img src="{{ absolute_url(asset('build/images/missing/chipset-missing.jpg')) }}" loading="lazy" width="250" height="200" title="no images available :(">{% endif %}
+						{% else %}
+							<img src="{{ absolute_url(asset('build/images/missing/chipset-missing.jpg')) }}" loading="lazy" width="250" height="200" title="no images available :(">
+						{% endif %}
+						</div>
+						<div class="perk-name">{{ chipset.getFullName() }}</div>
+						<div class="perk-alias">
+							{% if chipset.getChips() is not empty %}<span class="results-alias">
+								<small>Parts: {% for chipPart in chipset.getChips() %}{{ chipPart.getFullName() }}{% if not loop.last %}, {% endif %}{% endfor %}</small>
+							</span>{% endif %}
+						</div>
+						<div class="perk-alias">
+							{% if chipset.getChipsetAliases() is not empty %}<span class="results-alias">
+								<small>Alias: {% for alias in chipset.getChipsetAliases() %}{{ alias.getFullAliasName() }}{% if not loop.last %}, {% endif %}{% endfor %}</small>
+							</span>{% endif %}
+						</div>
+					</a>
 				</div>
+			{% endfor %}
 			</div>
-			{% if chipsets|length > 8 %}
-				{{ knp_pagination_render(chipsets, 'macros/pagination_async.html.twig') }}
-			{% endif %}
-		{% else %}
-			<div class="plain-list w300p table">
-				{% include 'macros/widget.html.twig' with {'type':'chipset-results', 'entity': chipsets} %}
-			</div>
-			{% if chipsets|length > 28 %}
-				{{ knp_pagination_render(chipsets, 'macros/pagination_async.html.twig') }}
-			{% endif %}
+		</div>
+		{% if chipsets|length > 8 %}
+			{{ knp_pagination_render(chipsets, 'macros/pagination_async.html.twig') }}
 		{% endif %}
 	</div>
 {% else %}

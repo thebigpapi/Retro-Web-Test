@@ -48,11 +48,7 @@ class Search extends AbstractType
                 'choice_label' => fn ($choice) => strval($choice->value),
             ])
             //->add('search', SubmitType::class)
-            ->add('searchWithImages', CheckboxType::class, [
-                'data' => true,
-                'label' => false,
-                'attr' => array('checked' => 'checked'),
-            ]);
+            ;
 
         $formModifier = function (FormInterface $form, Manufacturer $chipsetManufacturer = null) {
             /**

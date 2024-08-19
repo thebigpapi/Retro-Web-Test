@@ -72,16 +72,6 @@ let dynamic_selects = [
     'platforms-fields-list'
 ];
 
-// cookies
-if (search_image = document.getElementById('search_searchWithImages')) {
-    //let cookieImg = (getCookie('searchImage') === "true");
-    //console.log(getCookie('searchImage'));
-    toggleSearchWithImages(true);
-    search_image.addEventListener("click", function () {
-        setCookie('searchImage', search_image.checked, 5);
-    }, false);
-}
-
 // init tom-selects
 decodeURL();
 for (let item of static_selects) {
@@ -163,9 +153,6 @@ function updateFields(params) {
         }
         else if (key == "itemsPerPage")
             document.getElementById("search_itemsPerPage").value = value;
-        else if (key == "showImages") {
-            toggleSearchWithImages(Boolean(Number(value)));
-        }
         else {
             if (key.includes("cpuSocket") || key.includes("platform"))
                 updateSelect(key, value);
@@ -177,15 +164,6 @@ function updateFields(params) {
             }
         }
     }
-}
-
-function toggleSearchWithImages(incomingVal) {
-    let sh = document.getElementById("search_searchWithImages");
-    if (sh.checked == incomingVal) {
-        return;
-    }
-
-    sh.checked = !!incomingVal
 }
 
 function updateMultiSelect(key, value) {

@@ -91,7 +91,7 @@
 		{% include 'macros/lastedited.html.twig' with {'entity': latestChips, 'type':'chip', 'entity_label':'chips', 'path': 'chip_show'} %}
 	{% endif %}
 	{% if chips is defined %}
-		{% include 'chip/result.html.twig' with {'chips': chips, 'show_images': show_images, 'route': true} %}
+		{% include 'chip/result.html.twig' with {'chips': chips, 'route': true} %}
 	{% endif %}
 	</section>
 {% endblock %}

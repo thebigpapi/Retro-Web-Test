@@ -1,49 +1,40 @@
 {% if route is defined and route == true %}{% set typeid = 'route-results' %}{% else %}{% set typeid = domTarget %}{% endif %}
 <div id="{{ typeid }}">
 {% if chips is defined and chips is not empty %}
-	<div class="results{% if not show_images %} lst{% endif %}">
+	<div class="results">
 		{{ knp_pagination_render(chips, 'macros/pagination_async.html.twig') }}
-		{% if show_images %}
-			<div class="perks">
-				<div id="index-datetime" class="perks-list">
-				{% for chip in chips %}
-					<div class="perk">
-						<a href="{{ path("chip_show", {id: chip.getId()}) }}">
-							<div class="perk-image">
-							{% if chip.getImages() is not empty %}
-								{% set imgcount = 0 %}
-								{% for image in chip.getImages()|sort((a, b) => a.getFileName() <=> b.getFileName())|sort((a, b) => a.sort <=> b.sort)|slice(0, 1) %}
-									{% set imgcount = imgcount + 1 %}
-									<img src="{% if vich_uploader_asset(image, 'imageFile') | ext != "svg" %}
-									{{ vich_uploader_asset(image, 'imageFile') | imagine_filter('show_thumb') }}{% else %}
-									{{ vich_uploader_asset(image, 'imageFile')}}{% endif %}" alt="" loading="lazy" width="250" height="200" title="{% if image.description %}{{ image.description }}{% endif %}">
-								{% endfor %}
-								{% if imgcount == 0 %}<img src="{{ absolute_url(asset('build/images/missing/chip-missing.jpg')) }}" loading="lazy" width="250" height="200" title="no images available :(">{% endif %}
-							{% else %}
-								<img src="{{ absolute_url(asset('build/images/missing/chip-missing.jpg')) }}" loading="lazy" width="250" height="200" title="no images available :(">
-							{% endif %}
-							</div>
-							<div class="perk-name">{{ chip.getFullName() }}</div>
-							<div class="perk-alias">
-								{% if chip.getChipAliases() is not empty %}<span class="results-alias">
-									<small>Alias: {% for alias in chip.getChipAliases() %}{{ alias.getFullAliasName() }}{% if not loop.last %}, {% endif %}{% endfor %}</small>
-								</span>{% endif %}
-							</div>
-						</a>
-					</div>
-				{% endfor %}
+		<div class="perks">
+			<div id="index-datetime" class="perks-list">
+			{% for chip in chips %}
+				<div class="perk">
+					<a href="{{ path("chip_show", {id: chip.getId()}) }}">
+						<div class="perk-image">
+						{% if chip.getImages() is not empty %}
+							{% set imgcount = 0 %}
+							{% for image in chip.getImages()|sort((a, b) => a.getFileName() <=> b.getFileName())|sort((a, b) => a.sort <=> b.sort)|slice(0, 1) %}
+								{% set imgcount = imgcount + 1 %}
+								<img src="{% if vich_uploader_asset(image, 'imageFile') | ext != "svg" %}
+								{{ vich_uploader_asset(image, 'imageFile') | imagine_filter('show_thumb') }}{% else %}
+								{{ vich_uploader_asset(image, 'imageFile')}}{% endif %}" alt="" loading="lazy" width="250" height="200" title="{% if image.description %}{{ image.description }}{% endif %}">
+							{% endfor %}
+							{% if imgcount == 0 %}<img src="{{ absolute_url(asset('build/images/missing/chip-missing.jpg')) }}" loading="lazy" width="250" height="200" title="no images available :(">{% endif %}
+						{% else %}
+							<img src="{{ absolute_url(asset('build/images/missing/chip-missing.jpg')) }}" loading="lazy" width="250" height="200" title="no images available :(">
+						{% endif %}
+						</div>
+						<div class="perk-name">{{ chip.getFullName() }}</div>
+						<div class="perk-alias">
+							{% if chip.getChipAliases() is not empty %}<span class="results-alias">
+								<small>Alias: {% for alias in chip.getChipAliases() %}{{ alias.getFullAliasName() }}{% if not loop.last %}, {% endif %}{% endfor %}</small>
+							</span>{% endif %}
+						</div>
+					</a>
 				</div>
+			{% endfor %}
 			</div>
-			{% if chips|length > 8 %}
-				{{ knp_pagination_render(chips, 'macros/pagination_async.html.twig') }}
-			{% endif %}
-		{% else %}
-			<div class="plain-list w300p table">
-				{% include 'macros/widget.html.twig' with {'type':'chip-results', 'entity': chips} %}
-			</div>
-			{% if chips|length > 28 %}
-				{{ knp_pagination_render(chips, 'macros/pagination_async.html.twig') }}
-			{% endif %}
+		</div>
+		{% if chips|length > 8 %}
+			{{ knp_pagination_render(chips, 'macros/pagination_async.html.twig') }}
 		{% endif %}
 	</div>
 {% else %}

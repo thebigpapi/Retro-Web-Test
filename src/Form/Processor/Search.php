@@ -81,11 +81,6 @@ class Search extends AbstractType
                 'class' => ItemsPerPageType::class,
                 'empty_data' => ItemsPerPageType::Items100,
                 'choice_label' => fn ($choice) => strval($choice->value),
-            ])
-            ->add('searchWithImages', CheckboxType::class, [
-                'data' => true,
-                'label' => false,
-                'attr' => array('checked' => 'checked'),
             ]);
     }
 

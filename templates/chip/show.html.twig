@@ -107,9 +107,9 @@
 						<img src="{{ absolute_url(asset('build/icons/cursor.svg')) }}" alt="act" width="24" height="24">Actions
 					</div>
 					<div class="toolbar">
-						<a class='button-widget' href="{{ absolute_url(path('app_homepage')) }}motherboards/?expansionChipIds%5B0%5D={{ chip.getId() }}&amp;showImages=1">
+						<a class='button-widget' href="{{ absolute_url(path('app_homepage')) }}motherboards/?expansionChipIds%5B0%5D={{ chip.getId() }}">
 							<img src='{{ absolute_url(asset('build/icons/board.svg')) }}' alt='' width='16' height='16' style='vertical-align:middle;padding:3px;'>See all boards with this chip</a>
-						<a class='button-widget' href="{{ absolute_url(path('app_homepage')) }}expansioncards/?expansionChipIds%5B0%5D={{ chip.getId() }}&amp;showImages=1">
+						<a class='button-widget' href="{{ absolute_url(path('app_homepage')) }}expansioncards/?expansionChipIds%5B0%5D={{ chip.getId() }}">
 							<img src='{{ absolute_url(asset('build/icons/card.svg')) }}' alt='' width='16' height='16' style='vertical-align:middle;padding:3px;'>See all cards with this chip</a>
 					</div>
 				</div>

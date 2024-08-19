@@ -90,7 +90,7 @@
 		{% include 'macros/lastedited.html.twig' with {'entity': latestHdds, 'type':'hdd', 'entity_label':'hard drives', 'path': 'hard_drive_show'} %}
 	{% endif %}
 	{% if hdds is defined %}
-		{% include 'harddrive/result.html.twig' with {'hdds': hdds, 'show_images': show_images, 'route': true} %}
+		{% include 'harddrive/result.html.twig' with {'hdds': hdds, 'route': true} %}
 	{% endif %}
 	</section>
 {% endblock %}

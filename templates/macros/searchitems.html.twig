@@ -3,11 +3,6 @@
 	<div class="search-form-widget toolbar toolbar-main thin">
 		<div class="search-form-widget-grid">
 			<!-- Labels -->
-			{% if search_with_images is defined %}
-				<label for="search_searchWithImages" class="search-form-label file" title="If unchecked, only show a list, without any thumbnails.">
-					<span>Show images</span>
-				</label>
-			{% endif %}
 			{% if bios_list is defined %}
 				<label class="search-form-label file" title="If checked, only BIOS entries with files attached will be shown">
 					<span>Files only</span>
@@ -17,14 +12,6 @@
 				<span>Items/page</span>
 			</label>
 			<!-- Widgets -->
-			{% if search_with_images is defined %}
-				<div class="search-form-entry slider">
-					<label class="search-form-widget">
-						{{ form_widget(form.searchWithImages, {'attr': {'style': 'width:25px;height:25px'}}) }}
-						<span class="slider"></span>
-					</label>
-				</div>
-			{% endif %}
 			{% if bios_list is defined %}
 				<div class="search-form-entry slider" style="margin-left:0.5rem;">
 					<label class="search-form-widget">
