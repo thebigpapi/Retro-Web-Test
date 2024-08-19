@@ -6,9 +6,9 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use App\Entity\ExpansionChip;
+use App\Entity\Chip;
 
-class ExpansionChipType extends AbstractType
+class ChipType extends AbstractType
 {
     private EntityManagerInterface $entityManager;
 
@@ -23,7 +23,7 @@ class ExpansionChipType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'class' => ExpansionChip::class,
+            'class' => Chip::class,
             'choice_label' => 'getFullName',
             //'choices' =>  $this->entityManager->getRepository(ExpansionChip::class)->findByPopularity(),
             'multiple' => false,

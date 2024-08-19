@@ -65,7 +65,7 @@ let dynamic_selects = [
     'motherboardMemoryConnectors-fields-list',
     'cardIoPorts-fields-list',
     'cardTypes-fields-list',
-    'expansionChips-fields-list',
+    'chips-fields-list',
     'dramTypes-fields-list',
     'sockets-fields-list',
     'osFlags-fields-list',
@@ -127,7 +127,7 @@ function updateFields(params) {
     let complex_arr = [];
     for (const [key, value] of Object.entries(params)) {
         if (key.includes("osFlagIds") ||
-            key.includes("expansionChipIds") ||
+            key.includes("chipIds") ||
             key.includes("dramTypeIds") ||
             key.includes("cardTypeIds") ||
             key.includes("socketIds") ||
@@ -458,9 +458,9 @@ function expand(idx) {
         new TomSelect('#search_cardTypes_' + (counter - 1), settings);
         el.tomselect.sync();
     }
-    if (idx == "expansionChips-fields-list") {
-        el = document.getElementById('search_expansionChips_' + (counter - 1));
-        new TomSelect('#search_expansionChips_' + (counter - 1), settings);
+    if (idx == "chips-fields-list") {
+        el = document.getElementById('search_chips_' + (counter - 1));
+        new TomSelect('#search_chips_' + (counter - 1), settings);
         el.tomselect.sync();
     }
     if (idx == "dramTypes-fields-list") {

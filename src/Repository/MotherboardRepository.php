@@ -87,12 +87,12 @@ class MotherboardRepository extends ServiceEntityRepository
 
         return $from;
     }
-    private function expansionChipsToSQL(array $expansionChips, array $from): array
+    private function chipsToSQL(array $chips, array $from): array
     {
-        foreach ($expansionChips as $key => $chip) {
-            $from[] = (count($from) == 0 ? " (" : " INTERSECT") . " SELECT mec.motherboard_id as id
-                    FROM motherboard_expansion_chip mec
-                    WHERE mec.expansion_chip_id=:idChip" . $key;
+        foreach ($chips as $key => $chip) {
+            $from[] = (count($from) == 0 ? " (" : " INTERSECT") . " SELECT mc.motherboard_id as id
+                    FROM motherboard_chip mc
+                    WHERE mc.chip_id=:idChip" . $key;
         }
         return $from;
     }
@@ -217,8 +217,8 @@ class MotherboardRepository extends ServiceEntityRepository
             if (array_key_exists("ioPorts", $arrays)) {
                 $from = $this->ioPortsToSQL($arrays['ioPorts'], $from);
             }
-            if (array_key_exists("expansionChips", $arrays)) {
-                $from = $this->expansionChipsToSQL($arrays['expansionChips'], $from);
+            if (array_key_exists("chips", $arrays)) {
+                $from = $this->chipsToSQL($arrays['chips'], $from);
             }
             if (array_key_exists("dramTypes", $arrays)) {
                 $from = $this->dramTypesToSQL($arrays['dramTypes'], $from);
@@ -316,8 +316,8 @@ class MotherboardRepository extends ServiceEntityRepository
             }
         }
 
-        if (array_key_exists("expansionChips", $arrays)) {
-            foreach ($arrays['expansionChips'] as $key => $val) {
+        if (array_key_exists("chips", $arrays)) {
+            foreach ($arrays['chips'] as $key => $val) {
                 $query->setParameter("idChip" . $key, $val);
             }
         }

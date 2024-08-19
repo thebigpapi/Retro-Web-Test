@@ -138,13 +138,13 @@
 				<section class="search-form-grid bordertop">
 					<div class="search-form-entry">
 						<label class="search-form-label flex" title="Type in the search box to thin down the result list.">
-							<span>Expansion chips</span>
-							{% include 'macros/buttons.html.twig' with {'type':'add', 'action': 'expansionChips'} %}
+							<span>Chips</span>
+							{% include 'macros/buttons.html.twig' with {'type':'add', 'action': 'chips'} %}
 						</label>
-						<div class="search-form-widget filter-list" id="expansionChips-fields-list" data-widget-counter="{{ form.expansionChips|length }}" data-prototype="
-							{{ form_widget(form.expansionChips.vars.prototype, {'attr': {'style': 'width:50%'}})|e }}
+						<div class="search-form-widget filter-list" id="chips-fields-list" data-widget-counter="{{ form.chips|length }}" data-prototype="
+							{{ form_widget(form.chips.vars.prototype, {'attr': {'style': 'width:50%'}})|e }}
 							{% include 'macros/buttons.html.twig' with {'type':'del'} %}</div>">
-							{% for expchip in form.expansionChips %}
+							{% for expchip in form.chips %}
 								<div class="editor-row">
 									{{ form_widget(expchip, {'attr': {'style': 'width:50%'}}) }}
 									{% include 'macros/buttons.html.twig' with {'type':'del'} %}

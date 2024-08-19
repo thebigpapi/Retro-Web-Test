@@ -9,10 +9,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Knp\Component\Pager\PaginatorInterface;
-use App\Entity\Manufacturer;
 use App\Form\Bios\Search;
 use App\Repository\ManufacturerRepository;
-use App\Repository\ExpansionChipRepository;
 use App\Repository\MotherboardBiosRepository;
 
 class BiosController extends AbstractController
@@ -69,7 +67,7 @@ class BiosController extends AbstractController
             );
         $string = "/bios/?";
         foreach ($request->query as $key => $value){
-            if($key == "expansionChipIds"){
+            if($key == "chipIds"){
                 foreach($value as $idx => $val){
                     $string .= $key . '%5B' . $idx . '%5D=' . $val .'&';
                 }
@@ -126,7 +124,7 @@ class BiosController extends AbstractController
         } elseif ($chipsetId == "NULL") {
             $criterias['chipset_id'] = null;
         }
-        $chipIds = $request->query->all('expansionChipIds') ?? $request->request->all('expansionChipIds');
+        $chipIds = $request->query->all('chipIds') ?? $request->request->all('chipIds');
         $chipArray = null;
         if ($chipIds) {
             if (is_array($chipIds)) {
@@ -134,7 +132,7 @@ class BiosController extends AbstractController
             } else {
                 $chipArray = json_decode($chipIds);
             }
-            $criterias['expansionChips'] = $chipArray;
+            $criterias['chips'] = $chipArray;
         }
         return $criterias;
     }
@@ -166,15 +164,15 @@ class BiosController extends AbstractController
         if ($moboManufacturer = $form['moboManufacturer']->getData()) {
             $parameters['moboManufacturerId'] = $moboManufacturer->getId();
         }
-        $expchips = $form['expansionChips']->getData();
-        if ($expchips) {
-            $parameters['expansionChipIds'] = array();
+        $chips = $form['chips']->getData();
+        if ($chips) {
+            $parameters['chipIds'] = array();
             $loopCount = 0;
-            foreach ($expchips as $chip) {
+            foreach ($chips as $chip) {
                 if($loopCount >= 6)
                     break;
                 if($chip != null)
-                    array_push($parameters['expansionChipIds'], $chip->getId());
+                    array_push($parameters['chipIds'], $chip->getId());
             }
         }
         if ($filePresent = $form['file_present']->getData()) {

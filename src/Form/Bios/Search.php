@@ -4,9 +4,8 @@ namespace App\Form\Bios;
 
 use App\Entity\Chipset;
 use App\Form\Type\ItemsPerPageType;
-use App\Form\Type\ExpansionChipType;
+use App\Form\Type\ChipType;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\EnumType;
@@ -116,8 +115,8 @@ class Search extends AbstractType
                 'choices' => $this->getChipsets(),
                 'placeholder' => "Type to select a chipset ...",
             ])
-            ->add('expansionChips', CollectionType::class, [
-                'entry_type' => ExpansionChipType::class,
+            ->add('chips', CollectionType::class, [
+                'entry_type' => ChipType::class,
                 'allow_add' => true,
                 'allow_delete' => true,
                 'label' => false,

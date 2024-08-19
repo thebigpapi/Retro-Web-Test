@@ -59,7 +59,7 @@ class MotherboardController extends AbstractController
         ExpansionChipTypeRepository $expansionchiptyperep
     ): Response {
         $motherboard = $motherboardRepository->findSlug($slug);
-        $expansionchiptype = $expansionchiptyperep->findAll();
+        $chiptype = $expansionchiptyperep->findAll();
 
         if (!$motherboard) {
             $idRedirection = $motherboardIdRedirectionRepository->findRedirection($slug, 'uh19_slug');
@@ -75,7 +75,7 @@ class MotherboardController extends AbstractController
 
         return $this->render('motherboard/show.html.twig', [
             'motherboard' => $motherboard,
-            'expansionchiptype' => $expansionchiptype,
+            'chiptype' => $chiptype,
             'controller_name' => 'MotherboardController',
         ]);
     }
@@ -116,7 +116,7 @@ class MotherboardController extends AbstractController
         $this->addCriteriaById($request, $criterias, 'platform2', 'processor_platform_type2');
         $this->addArrayCriteria($request, $criterias, 'expansionSlotsIds', 'expansionSlots');
         $this->addArrayCriteria($request, $criterias, 'ioPortsIds', 'ioPorts');
-        $this->addArrayCriteria($request, $criterias, 'expansionChipIds', 'expansionChips');
+        $this->addArrayCriteria($request, $criterias, 'chipIds', 'chips');
         $this->addArrayCriteria($request, $criterias, 'dramTypeIds', 'dramTypes');
         return $criterias;
     }
@@ -186,7 +186,7 @@ class MotherboardController extends AbstractController
                     }
                 }
             }
-            else if($key == "expansionChipIds"){
+            else if($key == "chipIds"){
                 foreach($value as $idx => $val){
                     $string .= $key . '%5B' . $idx . '%5D=' . $val .'&';
                 }
@@ -407,15 +407,15 @@ class MotherboardController extends AbstractController
             }
         }
 
-        $expchips = $form['expansionChips']->getData();
+        $expchips = $form['chips']->getData();
         if ($expchips) {
-            $parameters['expansionChipIds'] = array();
+            $parameters['chipIds'] = array();
             $loopCount = 0;
             foreach ($expchips as $chip) {
                 if($loopCount >= 6)
                     break;
                 $loopCount++;
-                array_push($parameters['expansionChipIds'], $chip->getId());
+                array_push($parameters['chipIds'], $chip->getId());
             }
         }
         $dramtypes = $form['dramTypes']->getData();
