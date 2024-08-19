@@ -5,9 +5,8 @@ namespace App\Form\ExpansionCard;
 use App\Form\Type\DramTypeType;
 use App\Form\Type\ExpansionCardTypeType;
 use App\Form\Type\ItemsPerPageType;
-use App\Form\Type\ExpansionChipType;
+use App\Form\Type\ChipType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\EnumType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -45,8 +44,8 @@ class Search extends AbstractType
                 'allow_delete' => true,
                 'label' => false,
             ])
-            ->add('expansionChips', CollectionType::class, [
-                'entry_type' => ExpansionChipType::class,
+            ->add('chips', CollectionType::class, [
+                'entry_type' => ChipType::class,
                 'allow_add' => true,
                 'allow_delete' => true,
                 'label' => false,

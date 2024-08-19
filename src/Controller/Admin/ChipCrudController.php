@@ -17,6 +17,7 @@ use App\Controller\Admin\Type\PciDeviceCrudType;
 use App\Entity\ChipAlias;
 use App\Entity\LargeFileExpansionChip;
 use App\Entity\PciDeviceId;
+use App\Form\Type\CpuSocketType;
 use Doctrine\ORM\Query\Expr\Andx;
 use Doctrine\ORM\Query\Expr\Orx;
 use EasyCorp\Bundle\EasyAdminBundle\Collection\FieldCollection;
@@ -53,6 +54,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Exception\InsufficientEntityPermissionExcept
 use EasyCorp\Bundle\EasyAdminBundle\Factory\EntityFactory;
 use EasyCorp\Bundle\EasyAdminBundle\Security\Permission;
 use EasyCorp\Bundle\EasyAdminBundle\Config\KeyValueStore;
+use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
 
 class ChipCrudController extends AbstractCrudController
 {
@@ -110,12 +112,16 @@ class ChipCrudController extends AbstractCrudController
             ->add('manufacturer')
             ->add('name')
             ->add('partNumber')
+            ->add('type')
+            ->add('pciDevs')
+            ->add('sockets')
+            ->add('family')
+            ->add('tdp')
+            ->add('processNode')
             ->add(ChipImageFilter::new('images'))
             ->add(ChipDocFilter::new('documentations'))
             ->add(ChipDriverFilter::new('drivers'))
-            ->add('chipAliases')
-            ->add('pciDevs')
-            ->add('type');
+            ->add('chipAliases');
     }
     public function configureFields(string $pageName): iterable
     {
@@ -151,17 +157,32 @@ class ChipCrudController extends AbstractCrudController
         // editor
         yield AssociationField::new('type','Type')
             ->setFormTypeOption('placeholder', 'Type to select a type ...')
-            ->setColumns(6)
-            ->onlyOnForms();
-        yield CollectionField::new('pciDevs', 'Device ID')
-            ->useEntryCrudForm(PciDeviceCrudType::class)
             ->setColumns(4)
-            ->renderExpanded()
+            ->onlyOnForms();
+        yield AssociationField::new('family', 'Family')
+            ->setFormTypeOption('placeholder', 'Type to select a family ...')
+            ->setColumns(2)
+            ->onlyOnForms();
+        yield NumberField::new('processNode', 'Process (in nm)')
+            ->setColumns(2)
+            ->onlyOnForms();
+        yield NumberField::new('tdp', 'TDP (in W)')
+            ->setColumns(2)
             ->onlyOnForms();
         yield IntegerField::new('sort', 'Sort position')
             ->setFormTypeOption('required', false)
             ->setFormTypeOption('empty_data', '1')
             ->setColumns(2)
+            ->onlyOnForms();
+        yield CollectionField::new('sockets', 'Socket')
+            ->setEntryType(CpuSocketType::class)
+            ->setColumns(6)
+            ->renderExpanded()
+            ->onlyOnForms();
+        yield CollectionField::new('pciDevs', 'Device ID')
+            ->useEntryCrudForm(PciDeviceCrudType::class)
+            ->setColumns(4)
+            ->renderExpanded()
             ->onlyOnForms();
         yield CodeEditorField::new('description')
             ->setLanguage('markdown')

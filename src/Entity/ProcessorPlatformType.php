@@ -191,30 +191,6 @@ class ProcessorPlatformType
         return $this;
     }
     /**
-     * @return Collection|Processor[]
-     */
-    public function getProcessors(): Collection
-    {
-        $processors = [];
-        foreach ($this->chips as $chip) {
-            if ($chip->getType()->getId() === 10) {
-                $processors[] = $chip;
-            }
-        }
-        return new ArrayCollection($processors);
-    }
-    /**
-     * @return Collection|Processor[]
-     */
-    public function getCompatibleProcessors(): Collection
-    {
-        $processors = $this->getProcessors()->toArray();
-        foreach ($this->getCompatibleWith() as $compatible) {
-            $processors = array_merge($processors, $compatible->getProcessors()->toArray());
-        }
-        return new ArrayCollection($processors);
-    }
-    /**
      * @return Collection|self[]
      */
     public function getCompatibleWith(): Collection

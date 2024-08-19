@@ -58,9 +58,9 @@ class ExpansionCardRepository extends ServiceEntityRepository
 
         return $from;
     }
-    private function expansionChipsToSQL(array $expansionChips, array $from): array
+    private function chipsToSQL(array $chips, array $from): array
     {
-        foreach ($expansionChips as $key => $chip) {
+        foreach ($chips as $key => $chip) {
             $from[] = (count($from) == 0 ? " (" : " INTERSECT") . " SELECT ecexp.expansion_card_id as id
                     FROM expansion_card_chip ecexp
                     WHERE ecexp.chip_id=:idChip" . $key;
@@ -144,8 +144,8 @@ class ExpansionCardRepository extends ServiceEntityRepository
             if (array_key_exists("cardIoPorts", $arrays)) {
                 $from = $this->ioPortsToSQL($arrays['cardIoPorts'], $from);
             }
-            if (array_key_exists("expansionChips", $arrays)) {
-                $from = $this->expansionChipsToSQL($arrays['expansionChips'], $from);
+            if (array_key_exists("chips", $arrays)) {
+                $from = $this->chipsToSQL($arrays['chips'], $from);
             }
             if (array_key_exists("dramTypes", $arrays)) {
                 $from = $this->dramTypesToSQL($arrays['dramTypes'], $from);
@@ -213,8 +213,8 @@ class ExpansionCardRepository extends ServiceEntityRepository
             }
         }
 
-        if (array_key_exists("expansionChips", $arrays)) {
-            foreach ($arrays['expansionChips'] as $key => $val) {
+        if (array_key_exists("chips", $arrays)) {
+            foreach ($arrays['chips'] as $key => $val) {
                 $query->setParameter("idChip" . $key, $val);
             }
         }
@@ -319,9 +319,9 @@ class ExpansionCardRepository extends ServiceEntityRepository
                 $valuesArray["nameLike$key"] = "%" . strtolower($val) . "%";
             }
         }
-        if (array_key_exists('expansionChips', $criteria)) {
-            foreach ($criteria['expansionChips'] as $key => $value) {
-                $whereArray[] = "(card.id in (select m$key.id from App\Entity\ExpansionCard m$key JOIN m$key.expansionChips ec$key where ec$key.id=:idChip$key))";
+        if (array_key_exists('chips', $criteria)) {
+            foreach ($criteria['chips'] as $key => $value) {
+                $whereArray[] = "(card.id in (select m$key.id from App\Entity\ExpansionCard m$key JOIN m$key.chips ec$key where ec$key.id=:idChip$key))";
                 $valuesArray["idChip$key"] = $value;
             }
         }

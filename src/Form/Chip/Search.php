@@ -2,7 +2,9 @@
 
 namespace App\Form\Chip;
 
+use App\Form\Type\CpuSocketType;
 use App\Form\Type\ItemsPerPageType;
+use App\Form\Type\ProcessorPlatformTypeForm;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\EnumType;
@@ -10,6 +12,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 
 class Search extends AbstractType
 {
@@ -48,6 +51,18 @@ class Search extends AbstractType
                 },
                 'choices' => $options['chipManufacturers'],
                 'placeholder' => 'Type to select a chip manufacturer ...',
+            ])
+            ->add('sockets', CollectionType::class, [
+                'entry_type' => CpuSocketType::class,
+                'allow_add' => true,
+                'allow_delete' => true,
+                'label' => false,
+            ])
+            ->add('platforms', CollectionType::class, [
+                'entry_type' => ProcessorPlatformTypeForm::class,
+                'allow_add' => true,
+                'allow_delete' => true,
+                'label' => false,
             ])
             ->add('itemsPerPage', EnumType::class, [
                 'class' => ItemsPerPageType::class,

@@ -202,15 +202,10 @@
 				<!-- Expansion chips -->
 				{% if expansioncard.getChips() is not empty %}
 				<div class="quick-spec-table">
-					{% for type in expansionchiptype %}
+					{% for type in chiptype %}
 						{% for chip in expansioncard.getChips()|filter(a => a.getType().getName() == type.getName())%}
 							{% if loop.first %}<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/chip.svg')) }}" alt="chip" width="24" height="24">{{chip.getType().getName()}} chips</div><div class="tag-container">{% endif %}
-							
-							{% if (attribute(chip, 'getExpansionChipBios') is defined)%}
 							<a href="{{ path('chip_show', {id: chip.getId()}) }}"><span class="text-block">{{ chip.getFullName() }}</span></a>
-							{% else %}
-							<a href="{{ path('processor_show', {id: chip.getId()}) }}"><span class="text-block">{{ chip.getFullName() }}</span></a>
-							{% endif %}
 							{% if loop.index == expansioncard.getChips()|filter(a => a.getType().getName() == type.getName())|length %}</div>{% endif %}
 						{% endfor %}
 					{% endfor %}
