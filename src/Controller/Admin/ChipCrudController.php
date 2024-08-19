@@ -259,9 +259,6 @@ class ChipCrudController extends AbstractCrudController
     public function updateEntity(EntityManagerInterface $entityManager, $entityInstance): void
     {
         $entityInstance->updateLastEdited();
-        foreach ($entityInstance->getPciDevs() as $dev)
-            if($dev->getDev() == "0000")
-                $dev->setDev("0");
         parent::updateEntity($entityManager, $entityInstance);
     }
     public function autocomplete(AdminContext $context): JsonResponse
