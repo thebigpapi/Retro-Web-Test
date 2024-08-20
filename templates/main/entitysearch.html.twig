@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+{% block title %}Home - The Retro Web{% endblock %}
+{% block metatags %}
+	<meta name="description" content="The Retro Web motherboard database, here you can find board photos, BIOS images, manuals and more!">
+	<link rel="alternate" hreflang="x-default" href="{{ absolute_url(path('app_homepage')) }}"/>
+{% endblock %}
+
+{% block extra_javascripts %}
+	<script src="/build/js/frontsearch.js" defer></script>
+{% endblock %}
+
+{% block body %}
+
+<div class="perks">
+	<p><b>Search by name</b></p>
+	<fieldset class="search-bar">
+		<input id="search-box" value={{query}} type="text" placeholder='Name, manufacturer or Part number ...'>
+		<button id="search-button" type="submit" data-target="search">
+			<img src="{{ absolute_url(asset('build/icons/search.svg')) }}" alt="search" width="24" height="24">
+			<span>Search</span>
+		</button>
+	</fieldset>
+</div>
+
+{% include 'macros/lastedited2.html.twig' with {'entities': entities, 'lastEditedMode' : false} %}
+{% endblock %}
