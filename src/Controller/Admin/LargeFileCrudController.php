@@ -154,7 +154,7 @@ class LargeFileCrudController extends AbstractCrudController
         yield FormField::addTab('Associations')
             ->setIcon('chip.svg')
             ->onlyOnForms();
-        yield CollectionField::new('expansionchips', 'Expansion chips')
+        yield CollectionField::new('chips', 'Chips')
             ->useEntryCrudForm(ExpansionChipCrudType::class)
             ->renderExpanded()
             ->setColumns('col-sm-12 col-lg-12 col-xxl-6')

@@ -16,7 +16,7 @@ class ExpansionChipCrudType extends AbstractCrudController
 
     public function configureFields(string $pageName): iterable
     {
-        yield AssociationField::new('expansionChip', 'Expansion chip')
+        yield AssociationField::new('chip', 'Expansion chip')
             ->autocomplete()
             ->setColumns(12);
         yield BooleanField::new('isRecommended', 'Known good');
