@@ -50,6 +50,40 @@
 			</div>
 			{% include 'macros/searchitems.html.twig' with {'datatarget': 'chipsets', 'dataresetids': 'search_chipsetManufacturer search_cpuSocket1 search_cpuSocket2', 'search_with_images' : true} %}
 		</section>
+		<div class="dropdown-trw">
+			<label class="dropdown-header" onclick="expandDropdown()">
+				<img src="{{ absolute_url(asset('build/icons/search.svg')) }}" alt="search" width="24" height="24">
+				<span>Advanced search<small class="dropdown-tooltip"> (click to expand)</small></span>
+				<input class="dropdown" type="checkbox" />
+			</label>
+			<div class="dropdown-contents">
+				<section class="search-form-grid bordertop">
+					<div class="search-form-entry">
+						<label class="search-form-label flex" title="">
+							<span>Chips</span>
+							{% include 'macros/buttons.html.twig' with {'type':'add', 'action': 'chips'} %}
+						</label>
+						<div class="search-form-widget filter-list" id="chips-fields-list" data-widget-counter="{{ form.chips|length }}" data-prototype="
+							{{ form_widget(form.chips.vars.prototype, {'attr': {'style': 'width:50%'}})|e }}
+							{% include 'macros/buttons.html.twig' with {'type':'del'} %}</div>">
+							{% for chip in form.chips %}
+								<div class="editor-row">
+									{{ form_widget(chip, {'attr': {'style': 'width:50%'}}) }}
+									{% include 'macros/buttons.html.twig' with {'type':'del'} %}
+									{{ form_errors(chip) }}
+								</div>
+							{% endfor %}
+						</div>
+					</div>
+					<div class="search-buttons">
+						<button type="button" onclick="document.getElementById('rst-btn').click();return false;">
+							<img src="{{ absolute_url(asset('build/icons/reset.svg')) }}" alt="reset" width="24" height="24">
+							<span>Reset</span>
+						</button>
+					</div>
+				</section>
+			</div>
+		</div>
 	</fieldset>
 	{{ form_end(form, {render_rest: false}) }}
 	<!-- Search results -->

@@ -192,6 +192,19 @@ class ChipRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    /**
+     * @return Chip[] Returns the last 12 edited motherboards. Used in home page.
+     */
+    public function findByType(int $value)
+    {
+        return $this->createQueryBuilder('c')
+            ->andWhere('c.type = :val')
+            ->setParameter('val', $value)
+            ->orderBy('c.partNumber', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
     public function findAllAlphabetic(string $letter): array
     {
         $entityManager = $this->getEntityManager();
