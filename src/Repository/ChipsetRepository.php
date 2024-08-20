@@ -64,6 +64,12 @@ class ChipsetRepository extends ServiceEntityRepository
             $whereArray[] = "(man.id = :manufacturerId)";
             $valuesArray["manufacturerId"] = (int)$criteria['manufacturer'];
         }
+        if (array_key_exists('chips', $criteria)) {
+            foreach ($criteria['chips'] as $key => $value) {
+                $whereArray[] = "(chipset.id in (select chipset$key.id from App\Entity\Chipset chipset$key JOIN chipset$key.chips ec$key where ec$key.id=:idChip$key))";
+                $valuesArray["idChip$key"] = $value;
+        }
+        }
 
         // Building where statement
         $whereString = implode(" AND ", $whereArray);

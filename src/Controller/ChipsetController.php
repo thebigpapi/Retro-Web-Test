@@ -89,8 +89,15 @@ class ChipsetController extends AbstractController
             );
         $string = "/chipsets/?";
         foreach ($request->query as $key => $value){
-            if($key != "domTarget")
-                $string .= $key . '=' . $value . '&';
+            if($key == "chipIds"){
+                foreach($value as $idx => $val){
+                    $string .= $key . '%5B' . $idx . '%5D=' . $val .'&';
+                }
+            }
+            else{
+                if($key != "domTarget")
+                    $string .= $key . '=' . $value . '&';
+            }
         }
         return $this->render('chipset/result.html.twig', [
             'controller_name' => 'ChipsetController',
@@ -123,6 +130,16 @@ class ChipsetController extends AbstractController
         } elseif ($chipsetManufacturerId === "NULL" && !array_key_exists('chipset', $criterias)) {
             $criterias['manufacturer'] = null;
         }
+        $chipIds = $request->query->all('chipIds') ?? $request->request->all('chipIds');
+        $chipArray = null;
+        if ($chipIds) {
+            if (is_array($chipIds)) {
+                $chipArray = $chipIds;
+            } else {
+                $chipArray = json_decode($chipIds);
+            }
+            $criterias['chips'] = $chipArray;
+        }
         return $criterias;
     }
     private function searchFormToParamChipset(Request $request, $form): array
@@ -144,6 +161,18 @@ class ChipsetController extends AbstractController
 
         $parameters['name'] = $form['name']->getData();
 
+        $chips = $form['chips']->getData();
+        if ($chips) {
+            $parameters['chipIds'] = array();
+            $loopCount = 0;
+            foreach ($chips as $chip) {
+                if($loopCount >= 6)
+                    break;
+                if($chip != null)
+                    array_push($parameters['chipIds'], $chip->getId());
+            }
+        }
+
         return $parameters;
     }
     private function _searchFormHandlerChipset(
@@ -164,20 +193,4 @@ class ChipsetController extends AbstractController
 
         return $form;
     }
-
-    /* #[Route(path: '/chipsets/index/{letter}', name: 'chipsetindex', requirements: ['letter' => '\w'])]
-    public function indexChipset(PaginatorInterface $paginator, string $letter, ChipsetRepository $chipsetRepository, Request $request)
-    {
-        $data = $chipsetRepository->findAllAlphabetic($letter);
-        $chipsets = $paginator->paginate(
-            $data,
-            $request->query->getInt('page', 1),
-            $this->getParameter('app.pagination.max')
-        );
-        return $this->render('chipset/index.html.twig', [
-            'chipsets' => $chipsets,
-            'chipset_count' => count($data),
-            'letter' => $letter,
-        ]);
-    }*/
 }
