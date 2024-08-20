@@ -4,6 +4,7 @@ namespace App\Controller\Admin;
 
 use App\Controller\Admin\Type\Chip\CPUIDCrudType;
 use App\Controller\Admin\Type\EntityDocumentationCrudType;
+use App\EasyAdmin\TextJsonField;
 use App\Entity\ProcessorPlatformType;
 use App\Form\Type\DramTypeType;
 use App\Form\Type\InstructionSetType;
@@ -84,34 +85,40 @@ class ProcessorPlatformTypeCrudController extends AbstractCrudController
             ->onlyOnForms();
         yield IdField::new('id')
             ->hideOnForm();
-        yield TextField::new('name', 'Name');
+        yield TextField::new('name', 'Name')
+            ->setColumns(3);
         yield NumberField::new('processNode', 'Process (in nm)')
-            ->setColumns(2);
+            ->setColumns(3);
         yield CollectionField::new('dramType', 'RAM types')
             ->setEntryType(DramTypeType::class)
             ->renderExpanded()
-            ->setColumns(6)
+            ->setColumns(3)
             ->onlyOnForms();
         yield ArrayField::new('dramType', 'RAM types')
             ->onlyOnDetail();
-        yield CollectionField::new('instructionSets', 'Instruction set')
-            ->setEntryType(InstructionSetType::class)
-            ->setColumns(6)
-            ->renderExpanded()
-            ->onlyOnForms();
         yield ArrayField::new('compatibleWith', 'Compatible with families')
             ->onlyOnDetail();
         yield CollectionField::new('compatibleWith', 'Compatible with families')
             ->setEntryType(ProcessorPlatformTypeForm::class)
             ->renderExpanded()
+            ->setColumns(3)
             ->onlyOnForms();
         yield ArrayField::new('entityDocumentations', 'Documentation')
             ->onlyOnDetail();
+        yield TextJsonField::new('miscSpecs', 'Misc specs')
+            ->setColumns(12)
+            ->onlyOnForms();
         yield CodeEditorField::new('description')
             ->setLanguage('markdown')
             ->onlyOnForms();
         yield TextField::new('description')
             ->onlyOnDetail();
+        yield CollectionField::new('instructionSets', 'Instruction set')
+            ->setEntryType(InstructionSetType::class)
+            ->setColumns(6)
+            ->renderExpanded()
+            ->setDisabled()
+            ->onlyOnForms();
         yield FormField::addTab('Docs')
             ->setIcon('manual.svg')
             ->onlyOnForms();

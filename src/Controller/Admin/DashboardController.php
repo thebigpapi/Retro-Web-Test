@@ -136,7 +136,10 @@ class DashboardController extends AbstractDashboardController
             MenuItem::linkToCrud('Manuals', 'manual.svg', Manual::class)->setController(ManualCrudController::class),
         ])->setPermission('ROLE_ADMIN');
         yield MenuItem::subMenu('Chip related', 'chip.svg')->setSubItems([
-            MenuItem::linkToCrud('Expansion chip types', 'chip_alias.svg', ExpansionChipType::class)->setPermission('ROLE_ADMIN'),
+            MenuItem::linkToCrud('Chip types', 'chip_alias.svg', ExpansionChipType::class)->setPermission('ROLE_ADMIN'),
+            MenuItem::linkToCrud('Families', '486.svg', ProcessorPlatformType::class),
+            MenuItem::linkToCrud('Sockets', 'cpupins.svg', CpuSocket::class),
+            MenuItem::linkToCrud('Speeds', 'speed.svg', CpuSpeed::class),
             MenuItem::section('Advanced'),
             MenuItem::linkToCrud('Chip aliases', 'chip_alias.svg', ChipAlias::class)->setController(ChipAliasCrudController::class),
             MenuItem::linkToCrud('Chip images', 'search_image.svg', ChipImage::class)->setController(ChipImageCrudController::class),
@@ -151,12 +154,6 @@ class DashboardController extends AbstractDashboardController
             MenuItem::linkToCrud('Images', 'search_image.svg', ExpansionCardImage::class)->setController(ExpansionCardImageCrudController::class)->setPermission('ROLE_ADMIN'),
             MenuItem::linkToCrud('BIOSes', 'awchip.svg', ExpansionCardBios::class)->setController(ExpansionCardBiosCrudController::class),
             MenuItem::linkToCrud('Documentation', 'manual.svg', ExpansionCardDocumentation::class)->setController(ExpansionCardDocumentationCrudController::class)->setPermission('ROLE_ADMIN'),
-        ])->setPermission('ROLE_ADMIN');
-        yield MenuItem::subMenu('CPU related', '486.svg')->setSubItems([
-            MenuItem::linkToCrud('CPU families', '486.svg', ProcessorPlatformType::class),
-            MenuItem::linkToCrud('Sockets', 'cpupins.svg', CpuSocket::class),
-            MenuItem::linkToCrud('Instruction sets', 'cpu.svg', InstructionSet::class),
-            MenuItem::linkToCrud('Speeds', 'speed.svg', CpuSpeed::class),
         ])->setPermission('ROLE_ADMIN');
         yield MenuItem::subMenu('Storage related', 'hdd.svg')->setSubItems([
             MenuItem::linkToCrud('Interface', 'io.svg', StorageDeviceInterface::class),

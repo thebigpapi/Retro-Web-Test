@@ -7,13 +7,12 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
 use App\Repository\CdDriveRepository;
+use App\Repository\ChipRepository;
 use App\Repository\ChipsetRepository;
-use App\Repository\ExpansionChipRepository;
 use App\Repository\FloppyDriveRepository;
 use App\Repository\HardDriveRepository;
 use App\Repository\LargeFileRepository;
 use App\Repository\MotherboardRepository;
-use App\Repository\ProcessorRepository;
 
 use DateTime;
 use DateInterval;
@@ -38,16 +37,15 @@ class SiteMapController extends AbstractController
     #[Route(path: '/sitemap.xml', name: 'sitemap', defaults: ['_format' => 'xml'])]
     public function index(
         MotherboardRepository $mobos,
-        ExpansionChipRepository $chips,
+        ChipRepository $chips,
         ChipsetRepository $chipsets,
-        ProcessorRepository $cpus,
         HardDriveRepository $hdds,
         CdDriveRepository $odds,
         FloppyDriveRepository $fdds,
         LargeFileRepository $files
     ): Response {
         if ($this->cachedSitemapExpired()) {
-            $this->refreshSitemap($mobos, $chips, $chipsets, $cpus, $hdds, $odds, $fdds, $files);
+            $this->refreshSitemap($mobos, $chips, $chipsets, $hdds, $odds, $fdds, $files);
         }
 
         $response = new Response($this->renderView('site_map/index.xml.twig', [
@@ -79,9 +77,8 @@ class SiteMapController extends AbstractController
 
     private function refreshSitemap(
         MotherboardRepository $mobos,
-        ExpansionChipRepository $chips,
+        ChipRepository $chips,
         ChipsetRepository $chipsets,
-        ProcessorRepository $cpus,
         HardDriveRepository $hdds,
         CdDriveRepository $odds,
         FloppyDriveRepository $fdds,
@@ -97,7 +94,7 @@ class SiteMapController extends AbstractController
             $this->writeRenderedSitemap("motherboards." . $letter . ".xml", "motherboard_show", $moboSet);
         }
 
-        # Write expansion chips
+        # Write chips
         $chipSet = $chips->findAllAlphabetic("");
         $this->writeRenderedSitemap("chip.xml", "chip_show", $chipSet);
         foreach ($ALL_LETTERS as $letter) {
@@ -112,14 +109,6 @@ class SiteMapController extends AbstractController
             $chipsetSet = $chipsets->findAllAlphabetic($letter);
             $this->writeRenderedSitemap("chipset." . $letter . ".xml", "chipset_show", $chipsetSet);
         }
-
-        /*# Write CPUs
-        $cpuSet = $cpus->findAllAlphabetic("");
-        $this->writeRenderedSitemap("cpu.xml", "processor_show", $cpuSet);
-        foreach ($ALL_LETTERS as $letter) {
-            $cpuSet = $cpus->findAllAlphabetic($letter);
-            $this->writeRenderedSitemap("cpu." . $letter . ".xml", "processor_show", $cpuSet);
-        }*/
 
         # Write hard drives
         $hddSet = $hdds->findAllAlphabetic("");

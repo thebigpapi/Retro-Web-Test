@@ -3,10 +3,9 @@
 namespace App\Controller;
 
 use App\Repository\CdDriveRepository;
-use App\Repository\ExpansionChipRepository;
+use App\Repository\ChipRepository;
 use App\Repository\FloppyDriveRepository;
 use App\Repository\HardDriveRepository;
-use App\Repository\ProcessorRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\Response;

@@ -315,6 +315,9 @@
 {% block _Chip_miscSpecs_widget %}
     {% include 'admin/macros/specs.html.twig' with {'entity': 'card', 'form': form} %}
 {% endblock _Chip_miscSpecs_widget %}
+{% block _ProcessorPlatformType_miscSpecs_widget %}
+    {% include 'admin/macros/specs.html.twig' with {'entity': '', 'form': form} %}
+{% endblock _ProcessorPlatformType_miscSpecs_widget %}
 {% block _ExpansionCardType_template_widget %}
     {% include 'admin/macros/specs.html.twig' with {'entity': '', 'form': form} %}
 {% endblock _ExpansionCardType_template_widget %}

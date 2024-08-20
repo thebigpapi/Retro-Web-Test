@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use App\Repository\CdDriveRepository;
-use App\Repository\ExpansionChipRepository;
+use App\Repository\ChipRepository;
 use App\Repository\FloppyDriveRepository;
 use App\Repository\HardDriveRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -28,7 +28,7 @@ class MainController extends AbstractController
         HardDriveRepository $hddRepository,
         CdDriveRepository $cddRepository,
         FloppyDriveRepository $fddRepository,
-        ExpansionChipRepository $expansionChipRepository,
+        ChipRepository $chipRepository,
         ExpansionCardRepository $expansionCardRepository
     ): Response
     {
@@ -40,7 +40,7 @@ class MainController extends AbstractController
             'latestCards' => $latestCards,
             'moboCount' => $motherboardRepository->getCount(),
             'chipCount' => $chipsetRepository->getCount(),
-            'expchipCount' => $expansionChipRepository->getCount(),
+            'expchipCount' => $chipRepository->getCount(),
             'expcardCount' => $expansionCardRepository->getCount(),
             'cpuCount' => $cpuRepository->getCount(),
             'biosCount' => $motherboardBiosRepository->getCount(),

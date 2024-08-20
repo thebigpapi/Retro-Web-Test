@@ -9,8 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: 'App\Repository\ChipRepository')]
-#[ORM\InheritanceType('JOINED')]
-abstract class Chip
+class Chip
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -21,7 +20,7 @@ abstract class Chip
     #[Assert\Length(max: 32, maxMessage: 'String is longer than {{ limit }} characters.')]
     protected $name;
 
-    #[ORM\Column(type: 'string', length: 255)]
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     #[Assert\Length(max: 255, maxMessage: 'String is longer than {{ limit }} characters.')]
     protected $partNumber;
 
@@ -123,7 +122,7 @@ abstract class Chip
     {
         return $this->partNumber;
     }
-    public function setPartNumber(string $partNumber): self
+    public function setPartNumber(?string $partNumber): self
     {
         $this->partNumber = $partNumber;
 
@@ -338,10 +337,25 @@ abstract class Chip
 
     public function getNameWithoutManuf(): string
     {
-        if ($this->name) {
-            return $this->partNumber . " (" . $this->name . ")";
+        if ($this->partNumber) {
+            if ($this->name) {
+                return $this->partNumber . " (" . $this->name . ")";
+            }
+            return $this->partNumber;
         }
-        return $this->partNumber;
+        return $this->name;
+    }
+
+    public function getFullName(): string
+    {
+        $manuf = $this->getManufacturer()?->getName() ?? "[unknown]";
+        if ($this->partNumber) {
+            if ($this->name) {
+                return $manuf . " " . $this->partNumber . " (" . $this->name . ")";
+            }
+            return $manuf . " " . $this->partNumber;
+        }
+        return $manuf . " " . $this->name;
     }
     /**
      * @return Collection|ChipAlias[]
