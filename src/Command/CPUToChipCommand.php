@@ -3,7 +3,7 @@
 namespace App\Command;
 
 use App\Entity\Processor;
-use App\Repository\ProcessorRepository;
+//use App\Repository\ProcessorRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -18,14 +18,14 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 class CPUToChipCommand extends Command
 {
     public function __construct(
-        private ProcessorRepository $processorRepository,
+        //private ProcessorRepository $processorRepository,
         private EntityManagerInterface $entityManagerInterface
     )
     {
         parent::__construct();
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output): int
+    /*protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
 
@@ -90,5 +90,5 @@ class CPUToChipCommand extends Command
         $processor->setMiscSpecs($json);
 
         $this->entityManagerInterface->persist($processor);
-    }
+    }*/
 }

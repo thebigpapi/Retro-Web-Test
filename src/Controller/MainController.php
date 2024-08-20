@@ -11,7 +11,6 @@ use Symfony\Component\Routing\Attribute\Route;
 use App\Repository\MotherboardRepository;
 use App\Repository\MotherboardBiosRepository;
 use App\Repository\ChipsetRepository;
-use App\Repository\ProcessorRepository;
 use App\Repository\LargeFileRepository;
 use App\Repository\ExpansionCardRepository;
 use Symfony\Component\HttpFoundation\Response;
@@ -23,7 +22,6 @@ class MainController extends AbstractController
         MotherboardRepository $motherboardRepository,
         MotherboardBiosRepository $motherboardBiosRepository,
         ChipsetRepository $chipsetRepository,
-        ProcessorRepository $cpuRepository,
         LargeFileRepository $largeFileRepository,
         HardDriveRepository $hddRepository,
         CdDriveRepository $cddRepository,
@@ -42,7 +40,6 @@ class MainController extends AbstractController
             'chipCount' => $chipsetRepository->getCount(),
             'expchipCount' => $chipRepository->getCount(),
             'expcardCount' => $expansionCardRepository->getCount(),
-            'cpuCount' => $cpuRepository->getCount(),
             'biosCount' => $motherboardBiosRepository->getCount(),
             'driverCount' => $largeFileRepository->getCount(),
             'hddCount' => $hddRepository->getCount(),
