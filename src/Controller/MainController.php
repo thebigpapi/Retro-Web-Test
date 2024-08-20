@@ -36,9 +36,6 @@ class MainController extends AbstractController
         EntityManagerInterface $entityManager
     ): Response
     {
-        $latestMotherboards = $motherboardRepository->findLatest(8);
-        $latestCards = $expansionCardRepository->findLatest(8);
-
         $rsm = new ResultSetMapping();
         $rsm->addScalarResult('id', 'id');
         $rsm->addScalarResult('type', 'type');
@@ -57,8 +54,6 @@ class MainController extends AbstractController
         $latestEntities = $query->getResult();
         return $this->render('main/index.html.twig', [
             'controller_name' => 'MainController',
-            'latestMotherboards' => $latestMotherboards,
-            'latestCards' => $latestCards,
             'latestEntities' => $latestEntities,
             'moboCount' => $motherboardRepository->getCount(),
             'chipCount' => $chipsetRepository->getCount(),
