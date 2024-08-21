@@ -74,6 +74,58 @@
 							<div>{{ form_widget(form.deviceId) }}</div>
 						</div>
 					</div>
+					<div class="search-form-entry">
+						<label class="search-form-label" for="search_processNode">
+							<span>Process node (in nm)</span>
+						</label>
+						<div class="search-form-widget">
+							<div>{{ form_widget(form.processNode) }}</div>
+						</div>
+					</div>
+				</section>
+				<section class="search-form-grid bordertop">
+					<div class="search-form-entry">
+						<label class="search-form-label flex" title="">
+							<span>Sockets</span>
+							{% include 'macros/buttons.html.twig' with {'type':'add', 'action': 'sockets'} %}
+						</label>
+						<div class="search-form-widget filter-list" id="sockets-fields-list" data-widget-counter="{{ form.sockets|length }}" data-prototype="
+							{{ form_widget(form.sockets.vars.prototype, {'attr': {'style': 'width:50%'}})|e }}
+							{% include 'macros/buttons.html.twig' with {'type':'del'} %}</div>">
+							{% for socket in form.sockets %}
+								<div class="editor-row">
+									{{ form_widget(socket, {'attr': {'style': 'width:50%'}}) }}
+									{% include 'macros/buttons.html.twig' with {'type':'del'} %}
+									{{ form_errors(socket) }}
+								</div>
+							{% endfor %}
+						</div>
+					</div>
+					<div class="search-form-entry">
+						<label class="search-form-label flex" title="">
+							<span>Families</span>
+							{% include 'macros/buttons.html.twig' with {'type':'add', 'action': 'families'} %}
+						</label>
+						<div class="search-form-widget filter-list" id="families-fields-list" data-widget-counter="{{ form.families|length }}" data-prototype="
+							{{ form_widget(form.families.vars.prototype, {'attr': {'style': 'width:50%'}})|e }}
+							{% include 'macros/buttons.html.twig' with {'type':'del'} %}</div>">
+							{% for platform in form.families %}
+								<div class="editor-row">
+									{{ form_widget(platform, {'attr': {'style': 'width:50%'}}) }}
+									{% include 'macros/buttons.html.twig' with {'type':'del'} %}
+									{{ form_errors(platform) }}
+								</div>
+							{% endfor %}
+						</div>
+					</div>
+					<div class="search-form-entry">
+						<label class="search-form-label" for="search_tdp">
+							<span>TDP (in W)</span>
+						</label>
+						<div class="search-form-widget">
+							<div>{{ form_widget(form.tdp) }}</div>
+						</div>
+					</div>
 				</section>
 				<div class="search-buttons">
 					<button type="button" onclick="document.getElementById('rst-btn').click();return false;">

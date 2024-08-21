@@ -6,13 +6,14 @@ use App\Form\Type\CpuSocketType;
 use App\Form\Type\ItemsPerPageType;
 use App\Form\Type\ProcessorPlatformTypeForm;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\EnumType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class Search extends AbstractType
 {
@@ -27,6 +28,13 @@ class Search extends AbstractType
             ])
             ->add('deviceId', TextType::class, [
                 'required' => false,
+            ])
+            ->add('processNode', IntegerType::class, [
+                'required' => false,
+            ])
+            ->add('tdp', IntegerType::class, [
+                'required' => false,
+                /*"constraints" => [new Assert\Positive]*/
             ])
             ->add('type', ChoiceType::class, [
                 'choice_label' => 'name',
@@ -58,7 +66,7 @@ class Search extends AbstractType
                 'allow_delete' => true,
                 'label' => false,
             ])
-            ->add('platforms', CollectionType::class, [
+            ->add('families', CollectionType::class, [
                 'entry_type' => ProcessorPlatformTypeForm::class,
                 'allow_add' => true,
                 'allow_delete' => true,

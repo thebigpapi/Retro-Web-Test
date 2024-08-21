@@ -69,7 +69,7 @@ let dynamic_selects = [
     'dramTypes-fields-list',
     'sockets-fields-list',
     'osFlags-fields-list',
-    'platforms-fields-list'
+    'families-fields-list'
 ];
 
 // init tom-selects
@@ -473,9 +473,9 @@ function expand(idx) {
         new TomSelect('#search_sockets_' + (counter - 1), {});
         el.tomselect.sync();
     }
-    if (idx == "platforms-fields-list") {
-        el = document.getElementById('search_platforms_' + (counter - 1));
-        new TomSelect('#search_platforms_' + (counter - 1), {});
+    if (idx == "families-fields-list") {
+        el = document.getElementById('search_families_' + (counter - 1));
+        new TomSelect('#search_families_' + (counter - 1), {});
         el.tomselect.sync();
     }
     if (idx == "osFlags-fields-list") {

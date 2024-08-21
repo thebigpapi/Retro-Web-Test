@@ -117,7 +117,6 @@ class ProcessorPlatformTypeCrudController extends AbstractCrudController
             ->setEntryType(InstructionSetType::class)
             ->setColumns(6)
             ->renderExpanded()
-            ->setDisabled()
             ->onlyOnForms();
         yield FormField::addTab('Docs')
             ->setIcon('manual.svg')

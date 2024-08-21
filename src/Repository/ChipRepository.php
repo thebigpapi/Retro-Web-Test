@@ -51,6 +51,14 @@ class ChipRepository extends ServiceEntityRepository
                 $valuesArray["nameLike$key"] = "%" . strtolower($val) . "%";
             }
         }
+        if (array_key_exists('processNode', $criteria)) {
+            $whereArray[] = "chip.processNode = :processLike";
+            $valuesArray["processLike"] = $criteria['processNode'];
+        }
+        if (array_key_exists('tdp', $criteria)) {
+            $whereArray[] = "chip.tdp = :tdpLike";
+            $valuesArray["tdpLike"] = $criteria['tdp'];
+        }
         if (array_key_exists('deviceId', $criteria)) {
             $devId = $this->hex2Int($criteria['deviceId']);
             if($devId >= 0){
@@ -66,6 +74,22 @@ class ChipRepository extends ServiceEntityRepository
             $whereArray[] = "(typ.id = :typeId)";
             $valuesArray["typeId"] = (int)$criteria['type'];
         }
+        if (array_key_exists('sockets', $criteria)) {
+            foreach ($criteria['sockets'] as $key => $val) {
+                $whereArraySocket[] = "(cs.id = :socketId$key)";
+                $valuesArray["socketId$key"] = $val;
+            }
+            $whereArray[] = implode(" OR ", $whereArraySocket);
+        }
+
+        if (array_key_exists('families', $criteria)) {
+            foreach ($criteria['families'] as $key => $val) {
+                $whereArrayPlatform[] = "(chip.family = :familyId$key)";
+                $valuesArray["familyId$key"] = $val;
+            }
+            $whereArray[] = implode(" OR ", $whereArrayPlatform);
+        }
+
 
         // Building where statement
         $whereString = implode(" AND ", $whereArray);
@@ -77,7 +101,12 @@ class ChipRepository extends ServiceEntityRepository
         else{
             $query = $entityManager->createQuery(
                 "SELECT chip
-                FROM App\Entity\Chip chip JOIN chip.manufacturer man LEFT OUTER JOIN chip.chipAliases alias LEFT JOIN chip.pciDevs dev LEFT JOIN chip.type typ
+                FROM App\Entity\Chip chip 
+                JOIN chip.manufacturer man 
+                LEFT OUTER JOIN chip.chipAliases alias 
+                LEFT JOIN chip.pciDevs dev 
+                LEFT JOIN chip.type typ 
+                join chip.sockets as cs 
                 WHERE $whereString
                 ORDER BY man.name ASC, chip.name ASC"
             );

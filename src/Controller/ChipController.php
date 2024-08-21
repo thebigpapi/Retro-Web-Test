@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\CpuSocket;
 use App\Entity\Manufacturer;
 use App\Form\Chip\Search;
 use App\Repository\ChipRepository;
@@ -30,8 +31,35 @@ class ChipController extends AbstractController
                 'controller_name' => 'ChipController',
             ]);
         }
-
     }
+
+    public function addCriteriaText(Request $request, array &$criterias, string $htmlId): void
+    {
+        $entity = htmlentities($request->query->get($htmlId) ?? ($request->request->get($htmlId) ?? ''));
+        if ($entity) $criterias[$htmlId] = "$entity";
+    }
+
+    public function addCriteriaById(Request $request, array &$criterias, string $htmlId, string $sqlId): void
+    {
+        $entityId = htmlentities($request->query->get($htmlId) ?? ($request->request->get($htmlId) ?? ''));
+        if ($entityId && intval($entityId)) $criterias[$sqlId] = "$entityId";
+        elseif ($entityId === "NULL") $criterias[$sqlId] = null;
+    }
+
+    public function addArrayCriteria(Request $request, array &$criterias, string $htmlId, string $sqlId): void
+    {
+        $entityIds = $request->query->all($htmlId) ?? $request->request->all($htmlId);
+        $entityArray = null;
+        if ($entityIds) {
+            if (is_array($entityIds)) {
+                $entityArray = $entityIds;
+            } else {
+                $entityArray = json_decode($entityIds);
+            }
+            $criterias[$sqlId] = $entityArray;
+        }
+    }
+
     #[Route(path: '/chips/', name: 'chipsearch', methods: ['GET'])]
     public function searchResultChip(Request $request, PaginatorInterface $paginator, ChipRepository $chipRepository, ManufacturerRepository $manufacturerRepository, ExpansionChipTypeRepository $chipTypeRepository)
     {
@@ -92,8 +120,21 @@ class ChipController extends AbstractController
             );
         $string = "/chips/?";
         foreach ($request->query as $key => $value){
-            if($key != "domTarget")
-                $string .= $key . '=' . $value . '&';
+            if($key == "socketIds"){
+                foreach($value as $idx => $val){
+                    $string .= $key . '%5B' . $idx . '%5D=' . $val .'&';
+                }
+            }
+            else if($key == "familyIds"){
+                foreach($value as $idx => $val){
+                    $string .= $key . '%5B' . $idx . '%5D=' . $val .'&';
+                }
+            }
+            else{
+                if($key != "domTarget")
+                    $string .= $key . '=' . $value . '&';
+            }
+
         }
         return $this->render('chip/result.html.twig', [
             'controller_name' => 'ChipController',
@@ -104,32 +145,15 @@ class ChipController extends AbstractController
     }
     public function getCriteriaChip(Request $request){
         $criterias = array();
-        $name = htmlentities($request->query->get('name') ?? '');
-        if ($name) {
-            $criterias['name'] = "$name";
-        }
-        $devId = htmlentities($request->query->get('deviceId') ?? '');
-        if ($devId) {
-            $criterias['deviceId'] = "$devId";
-        }
-        $chipId = htmlentities($request->query->get('chipId') ?? '');
-        if ($chipId && intval($chipId)) {
-            $criterias['expansionchip'] = "$chipId";
-        } elseif ($chipId === "NULL") {
-            $criterias['expansionchip'] = null;
-        }
-        $chipManufacturerId = htmlentities($request->query->get('chipManufacturerId') ?? '');
-        if ($chipManufacturerId && intval($chipManufacturerId)) {
-            $criterias['manufacturer'] = "$chipManufacturerId";
-        } elseif ($chipManufacturerId === "NULL") {
-            $criterias['manufacturer'] = null;
-        }
-        $typeId = htmlentities($request->query->get('typeId') ?? '');
-        if ($typeId && intval($typeId)) {
-            $criterias['type'] = "$typeId";
-        } elseif ($typeId === "NULL") {
-            $criterias['type'] = null;
-        }
+        $this->addCriteriaText($request, $criterias, 'name');
+        $this->addCriteriaText($request, $criterias, 'processNode');
+        $this->addCriteriaText($request, $criterias, 'tdp');
+        $this->addCriteriaById($request, $criterias, 'chipManufacturerId', 'manufacturer');
+        $this->addCriteriaById($request, $criterias, 'typeId', 'type');
+        $this->addCriteriaById($request, $criterias, 'deviceId', 'deviceId');
+        $this->addArrayCriteria($request, $criterias, 'socketIds', 'sockets');
+        $this->addArrayCriteria($request, $criterias, 'familyIds', 'families');
+
         return $criterias;
     }
     private function searchFormToParamChip(Request $request, $form): array
@@ -157,7 +181,31 @@ class ChipController extends AbstractController
         $parameters['itemsPerPage'] = $tempItems > 0 ? $tempItems : $this->getParameter('app.pagination.max');
 
         $parameters['name'] = $form['name']->getData();
+        $parameters['processNode'] = $form['processNode']->getData();
+        $parameters['tdp'] = $form['tdp']->getData();
         $parameters['deviceId'] = $form['deviceId']->getData();
+
+        $sockets = array_filter($form['sockets']->getData(), fn(?CpuSocket $socket) => $socket !== null);
+        if (!empty($sockets)) {
+            $parameters['socketIds'] = array();
+            $loopCount = 0;
+            foreach ($sockets  as $socket) {
+                if($loopCount >= 6)
+                    break;
+                array_push($parameters['socketIds'], $socket->getId());
+            }
+        }
+        $families = $form['families']->getData();
+        if ($families) {
+            $parameters['familyIds'] = array();
+            $loopCount = 0;
+            foreach ($families  as $family) {
+                if($loopCount >= 6)
+                    break;
+                array_push($parameters['familyIds'], $family->getId());
+            }
+        }
+
 
         return $parameters;
     }

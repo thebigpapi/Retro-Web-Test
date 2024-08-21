@@ -62,46 +62,90 @@
 		<div class="internal-content">
 			<!-- DESCRIPRION -->
 			<div class="show-general" id="sh-general">
+				<div class="quick-spec-split">
+					<div class="quick-spec-table">
+						<!-- Type -->
+						<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/chip.svg')) }}" alt="date" width="24" height="24">Type</div>
+						<div>{{chip.getType().getName()}}</div>
+						<!-- Vendor ID -->
+						<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/factory.svg')) }}" alt="date" width="24" height="24">Vendor ID</div>
+						<div class="tag-container">
+						{% if chip.getAliasVendors() is not empty or chip.getChipVendors() is not empty %}
+							{% for vendor in chip.getChipVendors() %}
+								<span class="text-block">{{vendor.getVen()}}</span>
+							{% endfor %}
+							{% for vendor in chip.getAliasVendors() %}
+								<span class="text-block"><i>{{vendor.getVen()}}</i></span>
+							{% endfor %}
+						{% else %}
+							<div><span class='badge badge-secondary'>Empty</span></div>
+						{% endif %}
+						</div>
+						<!-- Family (platform) -->
+						<div class="quick-spec-head">
+							<img src="{{ absolute_url(asset('build/icons/486.svg')) }}" alt="486" width="24" height="24">Family
+						</div>
+						<div>
+						{% if chip.getSockets() is not empty %}
+							<a href="{{ path('cpufamily_show', {id: chip.getFamily().getId()}) }}">{{ chip.getFamily().getName() }}</a>
+						{% else %}
+							<span class='badge badge-secondary'>Empty</span>
+						{% endif %}
+						</div>
+						<!-- Socket -->
+						<div class="quick-spec-head">
+							<img src="{{ absolute_url(asset('build/icons/cpupins.svg')) }}" alt="cpu" width="24" height="24">Package
+						</div>
+						{% if chip.getSockets() is not empty %}
+							<div class="tag-container">
+								{% for socket in chip.getSockets() %}<a href="{{ path('cpusocket_show', {id: socket.getId()}) }}"><span class="text-block">{{ socket.getNameAndType}}</span></a>{% endfor %}
+							</div>
+						{% else %}
+							<div><span class='badge badge-secondary'>Empty</span></div>
+						{% endif %}
+					</div>
+					<div class="quick-spec-table">
+						<!-- Device ID -->
+						<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/tag.svg')) }}" alt="date" width="24" height="24">Device ID</div>
+						<div class="tag-container">
+						{% if chip.getPciDevs() is not empty %}
+							{% for device in chip.getPciDevs() %}
+								<span class="text-block">{{device.getDev()}}</span>
+							{% endfor %}
+						{% else %}
+							<div><span class='badge badge-secondary'>Empty</span></div>
+						{% endif %}
+						</div>
+						<!-- Process node -->
+						<div class="quick-spec-head">
+							<img src="{{ absolute_url(asset('build/icons/dimension.svg')) }}" alt="dimension" width="24" height="24">Process node
+						</div>
+						<div>{{ chip.getProcessNodeWithValue() ? chip.getProcessNodeWithValue() : "<span class='badge badge-secondary'>Empty</span>" }}</div>
+						<!-- TDP -->
+						<div class="quick-spec-head">
+							<img src="{{ absolute_url(asset('build/icons/power.svg')) }}" alt="power" width="24" height="24">TDP
+						</div>
+						<div>{{ chip.getTdpWithValue() ? chip.getTdpWithValue() : "<span class='badge badge-secondary'>Empty</span>" }}</div>
+						<!-- IMC -->
+						{% if chip.getFamily() is not empty %}
+							<div class="quick-spec-head">
+								<img src="{{ absolute_url(asset('build/icons/ram_multi.svg')) }}" alt="threads" width="24" height="24">Memory ctrl.
+							</div>
+							<div>
+							{% if chip.getFamily().getDramType() is not empty %}
+								<div class="tag-container">
+									{% for dram in chip.getFamily().getDramType() %}<span class="text-block">{{ dram.getName()}}</span>{% endfor %}
+								</div>
+							{% else %}
+								<span class='badge badge-secondary'>Empty</span>
+							{% endif %}
+							</div>
+						{% else %}
+							<div><span class='badge badge-secondary'>None</span></div>
+						{% endif %}
+					</div>
+				</div>
 				<div class="quick-spec-table">
-					<!-- Type -->
-					<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/chip.svg')) }}" alt="date" width="24" height="24">Type</div>
-					<div>{{chip.getType().getName()}}</div>
-					<!-- Family (platform) -->
-					<div class="quick-spec-head">
-						<img src="{{ absolute_url(asset('build/icons/486.svg')) }}" alt="486" width="24" height="24">Family
-					</div>
-					<div>
-					{% if chip.getSockets() is not empty %}
-						<a href="{{ path('cpufamily_show', {id: chip.getFamily().getId()}) }}">{{ chip.getFamily().getName() }}</a>
-					{% else %}
-						<span class='badge badge-secondary'>Empty</span>
-					{% endif %}
-					</div>
-					<!-- Vendor ID -->
-					<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/tag.svg')) }}" alt="date" width="24" height="24">Vendor ID</div>
-					<div class="tag-container">
-					{% if chip.getAliasVendors() is not empty or chip.getChipVendors() is not empty %}
-						{% for vendor in chip.getChipVendors() %}
-							<span class="text-block">{{vendor.getVen()}}</span>
-						{% endfor %}
-						{% for vendor in chip.getAliasVendors() %}
-							<span class="text-block"><i>{{vendor.getVen()}}</i></span>
-						{% endfor %}
-					{% else %}
-						<div><span class='badge badge-secondary'>Empty</span></div>
-					{% endif %}
-					</div>
-					<!-- Device ID -->
-					<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/tag.svg')) }}" alt="date" width="24" height="24">Device ID</div>
-					<div class="tag-container">
-					{% if chip.getPciDevs() is not empty %}
-						{% for device in chip.getPciDevs() %}
-							<span class="text-block">{{device.getDev()}}</span>
-						{% endfor %}
-					{% else %}
-						<div><span class='badge badge-secondary'>Empty</span></div>
-					{% endif %}
-					</div>
 					<!-- Actions -->
 					<div class="quick-spec-head">
 						<img src="{{ absolute_url(asset('build/icons/cursor.svg')) }}" alt="act" width="24" height="24">Actions
@@ -114,16 +158,14 @@
 					</div>
 				</div>
 				{% include 'macros/aliases.html.twig' with {'entity':chip.getChipAliases(), 'msg': 'Also known as:'} %}
-				{#% include 'macros/notes.html.twig' with {'entity': chip} %#}
-				<div id="index-datetime"><div class="div-datetime">Last updated <span class="perk-date">{{ chip.getLastEdited()|date("Y-m-d\\TH:i:s", "GMT") }}Z</span></div></div>
-			</div>
-			<div class="show-chips" id="sh-specs">
 				{% if chip.getMiscSpecs() is not empty %}
-					<h3>Specifications:</h3>
+					<h3>Additional specifications:</h3>
 					{% include 'macros/specs.html.twig' with {'entity':chip} %}
 				{% else %}
-					<span>No chip specs</span>
+					<span>No additional chip specs</span>
 				{% endif %}
+				{% include 'macros/notes.html.twig' with {'entity': chip} %}
+				<div id="index-datetime"><div class="div-datetime">Last updated <span class="perk-date">{{ chip.getLastEdited()|date("Y-m-d\\TH:i:s", "GMT") }}Z</span></div></div>
 			</div>
 			<!-- BIOSes -->
 			<div class="show-downloads" id="sh-bios">
