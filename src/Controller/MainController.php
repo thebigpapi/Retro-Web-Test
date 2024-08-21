@@ -32,11 +32,13 @@ class MainController extends AbstractController
         CdDriveRepository $cddRepository,
         FloppyDriveRepository $fddRepository,
         ChipRepository $chipRepository,
-        ExpansionCardRepository $expansionCardRepository,
-        EntityManagerInterface $entityManager
+        ExpansionCardRepository $expansionCardRepository
+        //EntityManagerInterface $entityManager
     ): Response
     {
-        $rsm = new ResultSetMapping();
+        $latestMotherboards = $motherboardRepository->findLatest(8);
+        $latestCards = $expansionCardRepository->findLatest(8);
+        /*$rsm = new ResultSetMapping();
         $rsm->addScalarResult('id', 'id');
         $rsm->addScalarResult('type', 'type');
         $rsm->addScalarResult('subtype', 'subtype');
@@ -51,10 +53,12 @@ class MainController extends AbstractController
         $query = $entityManager->createNativeQuery(
             $this->getBigChungusSql('', 'DESC LIMIT :maxResult', 'ORDER BY last_edited'), $rsm);
         $query->setParameter('maxResult', 20);
-        $latestEntities = $query->getResult();
+        $latestEntities = $query->getResult();*/
         return $this->render('main/index.html.twig', [
             'controller_name' => 'MainController',
-            'latestEntities' => $latestEntities,
+            //'latestEntities' => $latestEntities,
+            'latestMotherboards' => $latestMotherboards,
+            'latestCards' => $latestCards,
             'moboCount' => $motherboardRepository->getCount(),
             'chipCount' => $chipsetRepository->getCount(),
             'expchipCount' => $chipRepository->getCount(),

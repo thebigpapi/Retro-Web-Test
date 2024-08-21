@@ -12,10 +12,10 @@
 {% block body %}
 
 <div class="perks">
-	<p><b>Search by name</b></p>
+	<p><b>Search motherboard by model</b></p>
 	<fieldset class="search-bar">
-		<input id="search-box" type="text" placeholder='Name, manufacturer or Part number (without manufacturer) ...'>
-		<button id="search-button" type="submit" data-target="search">
+		<input id="search-box" type="text" placeholder='Name or part number (without manufacturer) ...'>
+		<button id="search-button" type="submit" data-target="motherboards">
 			<img src="{{ absolute_url(asset('build/icons/search.svg')) }}" alt="search" width="24" height="24">
 			<span>Search</span>
 		</button>
@@ -118,5 +118,7 @@
 	</a>
 	</div>
 </div>
-{% include 'macros/lastedited2.html.twig' with {'entities': latestEntities, 'lastEditedMode':true} %}
+{#% include 'macros/lastedited2.html.twig' with {'entities': latestEntities, 'lastEditedMode':true} %#}
+{% include 'macros/lastedited.html.twig' with {'entity': latestMotherboards, 'type':'motherboard', 'entity_label':'boards', 'path': 'motherboard_show'} %}
+{% include 'macros/lastedited.html.twig' with {'entity': latestCards, 'type':'card', 'entity_label':'expansion cards', 'path': 'expansioncard_show'} %}
 {% endblock %}
