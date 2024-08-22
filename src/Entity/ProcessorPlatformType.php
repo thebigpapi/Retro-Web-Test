@@ -38,15 +38,6 @@ class ProcessorPlatformType
     #[ORM\ManyToMany(targetEntity: InstructionSet::class, inversedBy: 'processorPlatformTypes')]
     protected $instructionSets;
 
-    #[ORM\Column(type: 'integer', nullable: true)]
-    private $processNode;
-
-    #[ORM\Column]
-    private ?float $L1codeRatio = null;
-
-    #[ORM\Column]
-    private ?float $L1dataRatio = null;
-
     #[ORM\Column(length: 4096, nullable: true)]
     private ?string $description = null;
 
@@ -56,9 +47,6 @@ class ProcessorPlatformType
 
     #[ORM\ManyToMany(targetEntity: DramType::class, inversedBy: 'processorPlatformTypes')]
     private Collection $dramType;
-
-    #[ORM\OneToMany(mappedBy: 'processorPlatformType', targetEntity: CPUID::class, orphanRemoval: true, cascade: ['persist'])]
-    private Collection $cpuid;
 
     #[ORM\Column(type: Types::JSON, options: ['jsonb' => true])]
     private ?array $miscSpecs = [];
@@ -73,7 +61,6 @@ class ProcessorPlatformType
         $this->instructionSets = new ArrayCollection();
         $this->entityDocumentations = new ArrayCollection();
         $this->dramType = new ArrayCollection();
-        $this->cpuid = new ArrayCollection();
     }
     public function __toString(): string
     {
@@ -263,45 +250,6 @@ class ProcessorPlatformType
 
         return $this;
     }
-    public function getProcessNode(): ?int
-    {
-        return $this->processNode;
-    }
-    public function setProcessNode(?int $processNode): self
-    {
-        $this->processNode = $processNode;
-
-        return $this;
-    }
-
-    public function getL1codeRatio(): ?float
-    {
-        return $this->L1codeRatio;
-    }
-
-    public function setL1codeRatio(float $L1codeRatio): self
-    {
-        $this->L1codeRatio = $L1codeRatio;
-
-        return $this;
-    }
-
-    public function getL1dataRatio(): ?float
-    {
-        return $this->L1dataRatio;
-    }
-
-    public function setL1dataRatio(float $L1dataRatio): self
-    {
-        $this->L1dataRatio = $L1dataRatio;
-
-        return $this;
-    }
-
-    public function getProcessNodeWithValue(): string
-    {
-        return $this->processNode ? $this->processNode . "nm" : "";
-    }
 
     public function getDescription(): ?string
     {
@@ -365,36 +313,6 @@ class ProcessorPlatformType
     public function removeDramType(DramType $dramType): self
     {
         $this->dramType->removeElement($dramType);
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, CPUID>
-     */
-    public function getCpuid(): Collection
-    {
-        return $this->cpuid;
-    }
-
-    public function addCpuid(CPUID $cpuid): static
-    {
-        if (!$this->cpuid->contains($cpuid)) {
-            $this->cpuid->add($cpuid);
-            $cpuid->setProcessorPlatformType($this);
-        }
-
-        return $this;
-    }
-
-    public function removeCpuid(CPUID $cpuid): static
-    {
-        if ($this->cpuid->removeElement($cpuid)) {
-            // set the owning side to null (unless already changed)
-            if ($cpuid->getProcessorPlatformType() === $this) {
-                $cpuid->setProcessorPlatformType(null);
-            }
-        }
 
         return $this;
     }

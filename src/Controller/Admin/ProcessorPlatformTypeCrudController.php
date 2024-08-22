@@ -66,8 +66,8 @@ class ProcessorPlatformTypeCrudController extends AbstractCrudController
     {
         return $crud
             ->showEntityActionsInlined()
-            ->setEntityLabelInSingular('CPU family')
-            ->setEntityLabelInPlural('<img class=ea-entity-icon src=/build/icons/486.svg width=48 height=48>CPU families')
+            ->setEntityLabelInSingular('family')
+            ->setEntityLabelInPlural('<img class=ea-entity-icon src=/build/icons/486.svg width=48 height=48>Chip families')
             ->overrideTemplate('crud/edit', 'admin/crud/edit.html.twig')
             ->overrideTemplate('crud/new', 'admin/crud/new.html.twig')
             ->setPaginatorPageSize(100);
@@ -86,13 +86,11 @@ class ProcessorPlatformTypeCrudController extends AbstractCrudController
         yield IdField::new('id')
             ->hideOnForm();
         yield TextField::new('name', 'Name')
-            ->setColumns(3);
-        yield NumberField::new('processNode', 'Process (in nm)')
-            ->setColumns(3);
+            ->setColumns('col-sm-6 col-lg-6 col-xxl-3');
         yield CollectionField::new('dramType', 'RAM types')
             ->setEntryType(DramTypeType::class)
             ->renderExpanded()
-            ->setColumns(3)
+            ->setColumns('col-sm-6 col-lg-6 col-xxl-3')
             ->onlyOnForms();
         yield ArrayField::new('dramType', 'RAM types')
             ->onlyOnDetail();
@@ -101,22 +99,25 @@ class ProcessorPlatformTypeCrudController extends AbstractCrudController
         yield CollectionField::new('compatibleWith', 'Compatible with families')
             ->setEntryType(ProcessorPlatformTypeForm::class)
             ->renderExpanded()
-            ->setColumns(3)
+            ->setColumns('col-sm-6 col-lg-6 col-xxl-3')
             ->onlyOnForms();
         yield ArrayField::new('entityDocumentations', 'Documentation')
             ->onlyOnDetail();
-        yield TextJsonField::new('miscSpecs', 'Misc specs')
-            ->setColumns(12)
+        yield CollectionField::new('instructionSets', 'Instruction set')
+            ->setEntryType(InstructionSetType::class)
+            ->setColumns('col-sm-6 col-lg-6 col-xxl-3')
+            ->renderExpanded()
             ->onlyOnForms();
         yield CodeEditorField::new('description')
             ->setLanguage('markdown')
             ->onlyOnForms();
         yield TextField::new('description')
             ->onlyOnDetail();
-        yield CollectionField::new('instructionSets', 'Instruction set')
-            ->setEntryType(InstructionSetType::class)
-            ->setColumns(6)
-            ->renderExpanded()
+        yield FormField::addTab('Specs')
+            ->setIcon('tag.svg')
+            ->onlyOnForms();
+        yield TextJsonField::new('miscSpecs', 'Misc specs')
+            ->setColumns(12)
             ->onlyOnForms();
         yield FormField::addTab('Docs')
             ->setIcon('manual.svg')
