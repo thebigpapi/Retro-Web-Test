@@ -22,17 +22,9 @@ class InstructionSet
     #[ORM\ManyToMany(targetEntity: ProcessorPlatformType::class, mappedBy: 'instructionSets')]
     private $processorPlatformTypes;
 
-    #[ORM\ManyToMany(targetEntity: InstructionSet::class, inversedBy: 'childInstructionSets')]
-    private $compatibleWith;
-
-    #[ORM\ManyToMany(targetEntity: InstructionSet::class, mappedBy: 'compatibleWith')]
-    private $childInstructionSets;
-
     public function __construct()
     {
         $this->processorPlatformTypes = new ArrayCollection();
-        $this->compatibleWith = new ArrayCollection();
-        $this->childInstructionSets = new ArrayCollection();
     }
     public function __toString(): string
     {
@@ -76,54 +68,6 @@ class InstructionSet
             if ($processorPlatformType->getInstructionSets() === $this) {
                 $processorPlatformType->removeInstructionSet($this);
             }
-        }
-
-        return $this;
-    }
-    /**
-     * @return Collection|self[]
-     */
-    public function getCompatibleWith(): Collection
-    {
-        return $this->compatibleWith;
-    }
-    public function addCompatibleWith(self $compatibleWith): self
-    {
-        if (!$this->compatibleWith->contains($compatibleWith)) {
-            $this->compatibleWith[] = $compatibleWith;
-        }
-
-        return $this;
-    }
-    public function removeCompatibleWith(self $compatibleWith): self
-    {
-        if ($this->compatibleWith->contains($compatibleWith)) {
-            $this->compatibleWith->removeElement($compatibleWith);
-        }
-
-        return $this;
-    }
-    /**
-     * @return Collection|self[]
-     */
-    public function getChildInstructionSets(): Collection
-    {
-        return $this->childInstructionSets;
-    }
-    public function addChildInstructionSet(self $childInstructionSet): self
-    {
-        if (!$this->childInstructionSets->contains($childInstructionSet)) {
-            $this->childInstructionSets[] = $childInstructionSet;
-            $childInstructionSet->addCompatibleWith($this);
-        }
-
-        return $this;
-    }
-    public function removeChildInstructionSet(self $childInstructionSet): self
-    {
-        if ($this->childInstructionSets->contains($childInstructionSet)) {
-            $this->childInstructionSets->removeElement($childInstructionSet);
-            $childInstructionSet->removeCompatibleWith($this);
         }
 
         return $this;

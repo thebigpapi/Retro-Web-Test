@@ -47,12 +47,6 @@ class InstructionSetCrudController extends AbstractCrudController
         yield IdField::new('id')
             ->onlyOnIndex();
         yield TextField::new('name', 'Name');
-        yield ArrayField::new('getCompatibleWith', 'Compatible with instruction sets')
-            ->onlyOnIndex();
-        yield CollectionField::new('compatibleWith', 'Compatible with instruction sets')
-            ->setEntryType(InstructionSetType::class)
-            ->renderExpanded()
-            ->onlyOnForms();
     }
     public function viewLogs(AdminContext $context)
     {
