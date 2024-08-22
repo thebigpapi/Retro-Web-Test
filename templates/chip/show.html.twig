@@ -58,7 +58,7 @@
 </div>
 <div class="main-strip">
 	<div class="internal-container">
-		{% include 'macros/navbar.html.twig' with {'entity': chip, 'entityName': 'Chip', 'types': ['specs', 'bios', 'drivers', 'docs'], 'name': 'chip', 'role': 'ROLE_USER'} %}
+		{% include 'macros/navbar.html.twig' with {'entity': chip, 'entityName': 'Chip', 'types': ['bios', 'drivers', 'docs'], 'name': 'chip', 'role': 'ROLE_USER'} %}
 		<div class="internal-content">
 			<!-- DESCRIPRION -->
 			<div class="show-general" id="sh-general">
@@ -151,9 +151,9 @@
 						<img src="{{ absolute_url(asset('build/icons/cursor.svg')) }}" alt="act" width="24" height="24">Actions
 					</div>
 					<div class="toolbar">
-						<a class='button-widget' href="{{ absolute_url(path('app_homepage')) }}motherboards/?expansionChipIds%5B0%5D={{ chip.getId() }}">
+						<a class='button-widget' href="{{ absolute_url(path('app_homepage')) }}motherboards/?chipIds%5B0%5D={{ chip.getId() }}">
 							<img src='{{ absolute_url(asset('build/icons/board.svg')) }}' alt='' width='16' height='16' style='vertical-align:middle;padding:3px;'>See all boards with this chip</a>
-						<a class='button-widget' href="{{ absolute_url(path('app_homepage')) }}expansioncards/?expansionChipIds%5B0%5D={{ chip.getId() }}">
+						<a class='button-widget' href="{{ absolute_url(path('app_homepage')) }}expansioncards/?chipIds%5B0%5D={{ chip.getId() }}">
 							<img src='{{ absolute_url(asset('build/icons/card.svg')) }}' alt='' width='16' height='16' style='vertical-align:middle;padding:3px;'>See all cards with this chip</a>
 					</div>
 				</div>
