@@ -49,9 +49,6 @@
 			<!-- DESCRIPRION -->
 			<div class="show-general" id="sh-general">
 				<div class="quick-spec-table">
-					<!-- Process -->
-					<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/dimension.svg')) }}" alt="node" width="24" height="24">Process node</div>
-					<div>{{ family.getProcessNodeWithValue() ?: "<span class='badge badge-secondary'>Empty</span>"}}</div>
 					<!-- IMC -->
 					<div class="quick-spec-head">
 						<img src="{{ absolute_url(asset('build/icons/ram_multi.svg')) }}" alt="threads" width="24" height="24">Memory ctrl.
@@ -65,17 +62,6 @@
 						None
 					{% endif %}
 					</div>
-					<!-- CPUID -->
-					{% if family.getCpuid() is not empty %}
-						<div class="quick-spec-head">
-							<img src="{{ absolute_url(asset('build/icons/tag.svg')) }}" alt="tag" width="24" height="24">CPUID
-						</div>
-						<div class="tag-container">
-								{% for id in family.getCpuid()|sort((a, b) => a.name <=> b.name) %}
-									<span class="text-block">{{ id.getValue()}}</span>
-								{% endfor %}
-						</div>
-						{% endif %}
 					<!-- Compatible with family -->
 					{% if family.getCompatibleWith() is not empty %}
 						<div class="quick-spec-head">
@@ -89,10 +75,10 @@
 					<div class="quick-spec-head">
 						<img src="{{ absolute_url(asset('build/icons/cpupins.svg')) }}" alt="cpu" width="24" height="24">Features
 					</div>
-					{% if family.getInstructionSetsFull() is not empty %}
+					{% if family.getInstructionSets() is not empty %}
 						<div class="tag-container">
 						<ul>
-							{% for instruction in family.getInstructionSetsFull()|sort((a, b) => a.name|lower <=> b.name|lower) %}
+							{% for instruction in family.getInstructionSets()|sort((a, b) => a.name|lower <=> b.name|lower) %}
 								<li>{{ instruction.getName()}}</li>
 							{% endfor %}
 							</ul>

@@ -25,7 +25,7 @@ class CPUToChipCommand extends Command
         parent::__construct();
     }
 
-    /*protected function execute(InputInterface $input, OutputInterface $output): int
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
 
@@ -40,7 +40,6 @@ class CPUToChipCommand extends Command
 
         $io->writeln("Updated " . count($processors) . " processors");
 
-        
         return Command::SUCCESS;
     }
 
@@ -65,7 +64,10 @@ class CPUToChipCommand extends Command
             } else {
                 $value = $flooredValue + 1;
             }
-            $json["Microarchitecture"]["Multiplier"] = $value;
+            if($value - floor($value) == 0.25){
+                $value = $value * 2;
+            }
+            $json["Microarchitecture"]["Multiplier"] = $value . 'x';
         }
         $json["Microarchitecture"]["Bus speed"] = $processor->getFsb()?->getValueWithUnit();
         $json["Microarchitecture"]["Core count"] = $processor->getCores();
@@ -87,8 +89,8 @@ class CPUToChipCommand extends Command
 
         $json["Power"]["Voltage"] = $processor->getVoltagesWithValue();
 
-        $processor->setMiscSpecs($json);
+        //$processor->setMiscSpecs($json);
 
-        $this->entityManagerInterface->persist($processor);
-    }*/
+        //$this->entityManagerInterface->persist($processor);
+    }
 }

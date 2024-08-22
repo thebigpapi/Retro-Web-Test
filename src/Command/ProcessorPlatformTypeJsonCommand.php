@@ -42,15 +42,14 @@ class ProcessorPlatformTypeJsonCommand extends Command
 
         $io->writeln("Updated " . count($ppts) . " platforms");
 
-        
         return Command::SUCCESS;
     }
 
     protected function toJson(ProcessorPlatformType $ppt) {
         $json = [];
         $json["Microarchitecture"] = [];
+        $json["Microarchitecture"]["Process node"] = $ppt->getProcessNodeWithValue();
         $json["Microarchitecture"]["CPUID"] = array_map(fn (CPUID $cpuId) => $cpuId->getValue(), $ppt->getCpuid()->toArray());
-        $json["Microarchitecture"]["Features"] = array_map(fn (InstructionSet $instructionSet) => $instructionSet->getName(), $ppt->getInstructionSets()->toArray());
 
         $l1Value = "";
         if ($ppt->getL1code()) {
@@ -68,7 +67,6 @@ class ProcessorPlatformTypeJsonCommand extends Command
         if ($ppt->getL1code() || $ppt->getL1data()) {
             $json["Microarchitecture"]["L1 cache"] = $l1Value;
         }
-        
 
         $ppt->setMiscSpecs($json);
 

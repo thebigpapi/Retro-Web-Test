@@ -75,8 +75,7 @@ class ProcessorPlatformTypeCrudController extends AbstractCrudController
     public function configureFilters(Filters $filters): Filters
     {
         return parent::configureFilters($filters)
-            ->add('name')
-            ->add('processNode');
+            ->add('name');
     }
     public function configureFields(string $pageName): iterable
     {
