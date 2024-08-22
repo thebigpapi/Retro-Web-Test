@@ -26,4 +26,13 @@ class CpuSocketRepository extends ServiceEntityRepository
             ->getQuery()
             ->getSingleScalarResult();
     }
+
+    public function findAllSorted(): array
+    {
+        return $this->createQueryBuilder('sk')
+            ->orderBy('sk.name', 'ASC')
+            ->orderBy('sk.type', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
 }

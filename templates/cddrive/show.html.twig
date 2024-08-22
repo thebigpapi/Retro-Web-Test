@@ -79,7 +79,7 @@
 						</div>
 						{% if cddrive.getPowerConnectors() is not empty %}
 							<div class="tag-container">{% for power in cddrive.getPowerConnectors() %}
-								<a href="{{ path('psu_connector_show', {id: power.getId()}) }}"><span class="text-block">{{ power.getName() }}</span></a>{% endfor %}
+								<a href="{{ path('power_connector_show', {id: power.getId()}) }}"><span class="text-block">{{ power.getName() }}</span></a>{% endfor %}
 							</div>
 						{% else %}
 							<div><span class='badge badge-secondary'>Empty</span></div>

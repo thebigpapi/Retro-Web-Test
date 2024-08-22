@@ -38,7 +38,7 @@ class ProcessorPlatformTypeCrudController extends AbstractCrudController
 
         if (Action::SAVE_AND_RETURN === $submitButtonName) {
             $entityId = $context->getEntity()->getInstance()->getId();
-            return $this->redirectToRoute('cpufamily_show', array('id'=>$entityId));
+            return $this->redirectToRoute('family_show', array('id'=>$entityId));
         }
         return parent::getRedirectResponseAfterSave($context, $action);
     }
@@ -131,7 +131,7 @@ class ProcessorPlatformTypeCrudController extends AbstractCrudController
     public function viewFamily(AdminContext $context)
     {
         $entityId = $context->getEntity()->getInstance()->getId();
-        return $this->redirectToRoute('cpufamily_show', array('id'=>$entityId));
+        return $this->redirectToRoute('family_show', array('id'=>$entityId));
     }
     public function viewLogs(AdminContext $context)
     {

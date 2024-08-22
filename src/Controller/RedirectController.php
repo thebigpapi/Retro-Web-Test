@@ -156,7 +156,7 @@ class RedirectController extends AbstractController
         }
         return $this->redirect($this->generateUrl('expansion_chip_show', array("id" => $id)));
     }
-    todo: expansion-chips, cpus
+    todo: expansion-chips, cpus, cpusocket
     */
 
     /* credits redirect */

@@ -13,6 +13,12 @@ use App\Repository\MotherboardBiosRepository;
 use App\Repository\ChipsetRepository;
 use App\Repository\LargeFileRepository;
 use App\Repository\ExpansionCardRepository;
+use App\Repository\CpuSocketRepository;
+use App\Repository\IoPortInterfaceSignalRepository;
+use App\Repository\ExpansionSlotInterfaceSignalRepository;
+use App\Repository\ManufacturerRepository;
+use App\Repository\ProcessorPlatformTypeRepository;
+use App\Repository\PSUConnectorRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Knp\Component\Pager\PaginatorInterface;
@@ -32,7 +38,13 @@ class MainController extends AbstractController
         CdDriveRepository $cddRepository,
         FloppyDriveRepository $fddRepository,
         ChipRepository $chipRepository,
-        ExpansionCardRepository $expansionCardRepository
+        ExpansionCardRepository $expansionCardRepository,
+        IoPortInterfaceSignalRepository $ioPortInterfaceSignalRepository,
+        ExpansionSlotInterfaceSignalRepository $expansionSlotInterfaceSignalRepository,
+        CpuSocketRepository $cpuSocketRepository,
+        ProcessorPlatformTypeRepository $processorPlatformTypeRepository,
+        PSUConnectorRepository $psuConnectorRepository,
+        ManufacturerRepository $manufacturerRepository
         //EntityManagerInterface $entityManager
     ): Response
     {
@@ -68,6 +80,12 @@ class MainController extends AbstractController
             'hddCount' => $hddRepository->getCount(),
             'cddCount' => $cddRepository->getCount(),
             'fddCount' => $fddRepository->getCount(),
+            'portCount' => $ioPortInterfaceSignalRepository->getCount(),
+            'slotCount' => $expansionSlotInterfaceSignalRepository->getCount(),
+            'socketCount' => $cpuSocketRepository->getCount(),
+            'familyCount' => $processorPlatformTypeRepository->getCount(),
+            'powerCount' => $psuConnectorRepository->getCount(),
+            'manufacturerCount' => $manufacturerRepository->getCount(),
         ]);
     }
 

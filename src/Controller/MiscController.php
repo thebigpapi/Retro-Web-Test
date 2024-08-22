@@ -11,59 +11,71 @@ use App\Repository\PSUConnectorRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
+use Knp\Component\Pager\PaginatorInterface;
 
 class MiscController extends AbstractController
 {
-    #[Route(path: '/misc', name: 'misc_index', requirements: ['id' => '\d+'])]
-    public function miscIndex(
-        IoPortInterfaceSignalRepository $ioPortInterfaceSignalRepository,
-        ExpansionSlotInterfaceSignalRepository $expansionSlotInterfaceSignalRepository,
-        CpuSocketRepository $cpuSocketRepository,
-        ProcessorPlatformTypeRepository $processorPlatformTypeRepository,
-        PSUConnectorRepository $psuConnectorRepository,
-        ManufacturerRepository $manufacturerRepository
-    ): Response
-    {
-        return $this->render('misc/index.html.twig', [
-            'controller_name' => 'MainController',
-            'portCount' => $ioPortInterfaceSignalRepository->getCount(),
-            'slotCount' => $expansionSlotInterfaceSignalRepository->getCount(),
-            'socketCount' => $cpuSocketRepository->getCount(),
-            'familyCount' => $processorPlatformTypeRepository->getCount(),
-            'powerCount' => $psuConnectorRepository->getCount(),
-            'manufacturerCount' => $manufacturerRepository->getCount(),
-        ]);
-    }
-    #[Route('/cpufamily/{id}', name: 'cpufamily_show', requirements: ['id' => '\d+'])]
+    #[Route('/family/{id}', name: 'family_show', requirements: ['id' => '\d+'])]
     public function showFamily(int $id, ProcessorPlatformTypeRepository $processorPlatformTypeRepository): Response {
         $family = $processorPlatformTypeRepository->find($id);
 
         if (!$family) {
             throw $this->createNotFoundException(
-                'No CPU family found for id ' . $id
+                'No family found for id ' . $id
             );
         }
-        return $this->render('misc/cpufamily.html.twig', [
+        return $this->render('misc/family/show.html.twig', [
             'family' => $family,
             'controller_name' => 'MiscController',
         ]);
     }
-    #[Route('/cpusocket/{id}', name: 'cpusocket_show', requirements: ['id' => '\d+'])]
+
+    #[Route('/sockets', name: 'socket_index')]
+    public function indexSocket(Request $request, PaginatorInterface $paginator, CpuSocketRepository $cpuSocketRepository): Response {
+        $data = $cpuSocketRepository->findAllSorted();
+        $sockets = $paginator->paginate(
+            $data,
+            $request->query->getInt('page', 1),
+            96
+        );
+        return $this->render('misc/socket/index.html.twig', [
+            'sockets' => $sockets,
+            'controller_name' => 'MiscController',
+        ]);
+    }
+
+    #[Route('/sockets/{id}', name: 'socket_show', requirements: ['id' => '\d+'])]
     public function showSocket(int $id, CpuSocketRepository $cpuSocketRepository): Response {
         $socket = $cpuSocketRepository->find($id);
 
         if (!$socket) {
             throw $this->createNotFoundException(
-                'No CPU socket found for id ' . $id
+                'No socket found for id ' . $id
             );
         }
-        return $this->render('misc/cpusocket.html.twig', [
+        return $this->render('misc/socket/show.html.twig', [
             'socket' => $socket,
             'controller_name' => 'MiscController',
         ]);
     }
-    #[Route('/psu-connector/{id}', name: 'psu_connector_show', requirements: ['id' => '\d+'])]
-    public function showPsuConnector(int $id, PSUConnectorRepository $psuConnectorRepository): Response {
+
+    #[Route('/power-connectors', name: 'power_connector_index')]
+    public function indexPowerConnector(Request $request, PaginatorInterface $paginator, PSUConnectorRepository $psuConnectorRepository): Response {
+        $data = $psuConnectorRepository->findAllSorted();
+        $power = $paginator->paginate(
+            $data,
+            $request->query->getInt('page', 1),
+            96
+        );
+        return $this->render('misc/power/index.html.twig', [
+            'power_connectors' => $power,
+            'controller_name' => 'MiscController',
+        ]);
+    }
+
+    #[Route('/power-connectors/{id}', name: 'power_connector_show', requirements: ['id' => '\d+'])]
+    public function showPowerConnector(int $id, PSUConnectorRepository $psuConnectorRepository): Response {
         $conn = $psuConnectorRepository->find($id);
 
         if (!$conn) {
@@ -71,12 +83,27 @@ class MiscController extends AbstractController
                 'No PSU connector found for id ' . $id
             );
         }
-        return $this->render('misc/psu_connector.html.twig', [
+        return $this->render('misc/power/show.html.twig', [
             'psu_connector' => $conn,
             'controller_name' => 'MiscController',
         ]);
     }
-    #[Route('/manufacturer/{id}', name: 'manufacturer_show', requirements: ['id' => '\d+'])]
+
+    #[Route('/manufacturers', name: 'manufacturer_index')]
+    public function indexManufacturer(Request $request, PaginatorInterface $paginator, ManufacturerRepository $manufacturerRepository): Response {
+        $data = $manufacturerRepository->findAllSorted();
+        $manuf = $paginator->paginate(
+            $data,
+            $request->query->getInt('page', 1),
+            95
+        );
+        return $this->render('misc/manufacturer/index.html.twig', [
+            'manufacturers' => $manuf,
+            'controller_name' => 'MiscController',
+        ]);
+    }
+
+    #[Route('/manufacturers/{id}', name: 'manufacturer_show', requirements: ['id' => '\d+'])]
     public function showManufacturer(int $id, ManufacturerRepository $manufacturerRepository): Response {
         $manuf = $manufacturerRepository->find($id);
 
@@ -85,8 +112,22 @@ class MiscController extends AbstractController
                 'No manufacturer found for id ' . $id
             );
         }
-        return $this->render('misc/manufacturer.html.twig', [
+        return $this->render('misc/manufacturer/show.html.twig', [
             'manufacturer' => $manuf,
+            'controller_name' => 'MiscController',
+        ]);
+    }
+
+    #[Route('/io-ports', name: 'io_port_index')]
+    public function indexIoPort(Request $request, PaginatorInterface $paginator, IoPortInterfaceSignalRepository $ioPortInterfaceSignalRepository): Response {
+        $data = $ioPortInterfaceSignalRepository->findAllSorted();
+        $conn = $paginator->paginate(
+            $data,
+            $request->query->getInt('page', 1),
+            96
+        );
+        return $this->render('misc/port/index.html.twig', [
+            'io_ports' => $conn,
             'controller_name' => 'MiscController',
         ]);
     }
@@ -99,11 +140,26 @@ class MiscController extends AbstractController
                 'No I/O port found for id ' . $id
             );
         }
-        return $this->render('misc/io_port.html.twig', [
+        return $this->render('misc/port/show.html.twig', [
             'io_port' => $conn,
             'controller_name' => 'MiscController',
         ]);
     }
+
+    #[Route('/expansion-slots', name: 'expansion_slot_index')]
+    public function indexExpansionSlot(Request $request, PaginatorInterface $paginator, ExpansionSlotInterfaceSignalRepository $expansionSlotInterfaceSignalRepository): Response {
+        $data = $expansionSlotInterfaceSignalRepository->findAllSorted();
+        $slot = $paginator->paginate(
+            $data,
+            $request->query->getInt('page', 1),
+            96
+        );
+        return $this->render('misc/slot/index.html.twig', [
+            'expansion_slots' => $slot,
+            'controller_name' => 'MiscController',
+        ]);
+    }
+
     #[Route('/expansion-slots/{id}', name: 'expansion_slot_show', requirements: ['id' => '\d+'])]
     public function showExpansionSlot(int $id, ExpansionSlotInterfaceSignalRepository $expansionSlotInterfaceSignalRepository): Response {
         $conn = $expansionSlotInterfaceSignalRepository->find($id);
@@ -113,7 +169,7 @@ class MiscController extends AbstractController
                 'No expansion slot found for id ' . $id
             );
         }
-        return $this->render('misc/expansion_slot.html.twig', [
+        return $this->render('misc/slot/show.html.twig', [
             'expansion_slot' => $conn,
             'controller_name' => 'MiscController',
         ]);

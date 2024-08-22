@@ -189,7 +189,7 @@
 								<div class="list-table-head">
 									<b>{{ conn.getCount() }}x&nbsp;</b>
 								</div>
-								<div><a href="{{ path('psu_connector_show', {id: conn.getPowerConnector().getId()}) }}">{{ conn.getPowerConnector().getName() }}</a></div>
+								<div><a href="{{ path('power_connector_show', {id: conn.getPowerConnector().getId()}) }}">{{ conn.getPowerConnector().getName() }}</a></div>
 							{% endfor %}
 						{% else %}<div class="list-table-head"></div><div><span class='badge badge-secondary'>Empty</span></div>{% endif %}
 					</div>

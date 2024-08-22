@@ -27,4 +27,12 @@ class ExpansionSlotInterfaceSignalRepository extends ServiceEntityRepository
             ->getQuery()
             ->getSingleScalarResult();
     }
+
+    public function findAllSorted(): array
+    {
+        return $this->createQueryBuilder('es')
+            ->orderBy('es.name', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
 }

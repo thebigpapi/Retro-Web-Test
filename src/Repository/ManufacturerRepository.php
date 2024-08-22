@@ -256,4 +256,13 @@ class ManufacturerRepository extends ServiceEntityRepository
     {
         return $this->formatManufacterQueryStorage('\FloppyDrive');
     }
+
+    public function findAllSorted(): array
+    {
+        return $this->createQueryBuilder('man')
+            ->orderBy('man.full_name', 'ASC')
+            ->orderBy('man.name', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
 }

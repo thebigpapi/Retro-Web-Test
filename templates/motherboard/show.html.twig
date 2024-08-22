@@ -89,7 +89,7 @@
 					</div>
 					{% if motherboard.getCpuSockets() is not empty %}
 						<div class="tag-container">{% for socket in motherboard.getCpuSockets() %}
-							<a href="{{ path('cpusocket_show', {id: socket.getId()}) }}"><span class="text-block">{{ socket.getNameAndType}}</span></a>{% endfor %}</div>
+							<a href="{{ path('socket_show', {id: socket.getId()}) }}"><span class="text-block">{{ socket.getNameAndType}}</span></a>{% endfor %}</div>
 					{% else %}
 						<div><span class='badge badge-secondary'>Empty</span></div>
 					{% endif %}
@@ -154,7 +154,7 @@
 					</div>
 					{% if motherboard.getPsuConnectors() is not empty %}
 						<div class="tag-container">{% for psu in motherboard.getPsuConnectors() %}
-							<a href="{{ path('psu_connector_show', {id: psu.getId()}) }}"><span class="text-block">{{ psu.getName() }}</span></a>{% endfor %}</div>
+							<a href="{{ path('power_connector_show', {id: psu.getId()}) }}"><span class="text-block">{{ psu.getName() }}</span></a>{% endfor %}</div>
 					{% else %}
 						<div><span class='badge badge-secondary'>Empty</span></div>
 					{% endif %}
@@ -239,10 +239,10 @@
 						{% if motherboard.getProcessorPlatformTypes() is not empty %}
 						<ul>
 							{% for platform in motherboard.getProcessorPlatformTypes() %}
-							<li><a href="{{ path('cpufamily_show', {id: platform.getId()}) }}"><span class="text-block list">{{ platform.getName() }}</span></a></li>
+							<li><a href="{{ path('family_show', {id: platform.getId()}) }}"><span class="text-block list">{{ platform.getName() }}</span></a></li>
 							{% endfor %}
 							{% for compatible in motherboard.getCompatibleFamilies() %}
-							<li><a href="{{ path('cpufamily_show', {id: compatible.getId()}) }}"><span class="text-block list {% if is_granted('ROLE_USER') %}comp{% endif %}">{{ compatible.getName() }}</span></a></li>
+							<li><a href="{{ path('family_show', {id: compatible.getId()}) }}"><span class="text-block list {% if is_granted('ROLE_USER') %}comp{% endif %}">{{ compatible.getName() }}</span></a></li>
 							{% endfor %}
 						</ul>
 						{% else %}

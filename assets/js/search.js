@@ -264,12 +264,14 @@ function displayalias(idx) {
         el.setAttribute("class", "cpu-aliases-box");
 }
 
-form.addEventListener("keydown", (e) => {
-    if (!e.repeat && e.key == "Enter") {
-        e.preventDefault;
-        paginate(search_paginate.getAttribute("data-paginate"), search_paginate.getAttribute("data-target"));
-    }
-});
+if(form){
+    form.addEventListener("keydown", (e) => {
+        if (!e.repeat && e.key == "Enter") {
+            e.preventDefault;
+            paginate(search_paginate.getAttribute("data-paginate"), search_paginate.getAttribute("data-target"));
+        }
+    });
+}
 
 function paginate(newPageIdx, target) {
     var redirElem = document.getElementById('pagination_redir');

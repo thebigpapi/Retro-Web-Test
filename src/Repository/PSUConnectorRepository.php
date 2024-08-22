@@ -26,4 +26,12 @@ class PSUConnectorRepository extends ServiceEntityRepository
             ->getQuery()
             ->getSingleScalarResult();
     }
+
+    public function findAllSorted(): array
+    {
+        return $this->createQueryBuilder('pw')
+            ->orderBy('pw.name', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
 }

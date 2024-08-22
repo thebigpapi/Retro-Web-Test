@@ -27,4 +27,11 @@ class IoPortInterfaceSignalRepository extends ServiceEntityRepository
             ->getQuery()
             ->getSingleScalarResult();
     }
+    public function findAllSorted(): array
+    {
+        return $this->createQueryBuilder('ip')
+            ->orderBy('ip.name', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
 }

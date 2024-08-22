@@ -170,6 +170,18 @@ div.perks {
     div.perks-list {
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        &.small{
+            grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+            div.perk div.perk-image{
+                height: 230px;
+            }
+        }
+        &.medium{
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            div.perk div.perk-image{
+                height: 260px;
+            }
+        }
 
         div.perk {
             background-color: $body-bkg-light;

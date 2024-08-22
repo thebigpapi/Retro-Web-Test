@@ -87,7 +87,7 @@
 						</div>
 						<div>
 						{% if chip.getSockets() is not empty %}
-							<a href="{{ path('cpufamily_show', {id: chip.getFamily().getId()}) }}">{{ chip.getFamily().getName() }}</a>
+							<a href="{{ path('family_show', {id: chip.getFamily().getId()}) }}">{{ chip.getFamily().getName() }}</a>
 						{% else %}
 							<span class='badge badge-secondary'>Empty</span>
 						{% endif %}
@@ -98,7 +98,7 @@
 						</div>
 						{% if chip.getSockets() is not empty %}
 							<div class="tag-container">
-								{% for socket in chip.getSockets() %}<a href="{{ path('cpusocket_show', {id: socket.getId()}) }}"><span class="text-block">{{ socket.getNameAndType}}</span></a>{% endfor %}
+								{% for socket in chip.getSockets() %}<a href="{{ path('socket_show', {id: socket.getId()}) }}"><span class="text-block">{{ socket.getNameAndType}}</span></a>{% endfor %}
 							</div>
 						{% else %}
 							<div><span class='badge badge-secondary'>Empty</span></div>

@@ -15,7 +15,7 @@
 	<meta property="og:title" content="{{ family.getName() }}">
 	<meta property="og:description" content="Get CPU family info for {{ family.getName() }}!">
 	{% endapply %}
-	<link rel="alternate" hreflang="x-default" href="{{ absolute_url(path('cpufamily_show', {id: family.getId()})) }}"/>
+	<link rel="alternate" hreflang="x-default" href="{{ absolute_url(path('family_show', {id: family.getId()})) }}"/>
 {% endblock %}
 {% block subnav %}
 <li class="flex navbar-li">
@@ -82,7 +82,7 @@
 							<img src="{{ absolute_url(asset('build/icons/486.svg')) }}" alt="cpu" width="24" height="24">Compatible families
 						</div>
 						<div class="tag-container">
-							{% for compfamily in family.getCompatibleWith() %}<a href="{{ path('cpufamily_show', {id: compfamily.getId()}) }}"><span class="text-block">{{ compfamily.getName}}</span></a>{% endfor %}
+							{% for compfamily in family.getCompatibleWith() %}<a href="{{ path('family_show', {id: compfamily.getId()}) }}"><span class="text-block">{{ compfamily.getName}}</span></a>{% endfor %}
 						</div>
 					{% endif %}
 					<!-- Instruction set -->
@@ -113,6 +113,12 @@
 						</div>
 					</div>
 				</div>
+				{% if family.getMiscSpecs() is not empty %}
+					<h3>Additional specifications:</h3>
+					{% include 'macros/specs.html.twig' with {'entity':family} %}
+				{% else %}
+					<span>No additional family specs</span>
+				{% endif %}
 				{% include 'macros/notes.html.twig' with {'entity': family} %}
 				<!-- MANUALS -->
 				{% include 'macros/manuals.html.twig' with {'entity': family.getEntityDocumentations(), 'entity_label':'', 'audit_entity':'App-Entity-EntityDocumentation'} %}

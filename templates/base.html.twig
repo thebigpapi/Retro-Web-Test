@@ -121,6 +121,27 @@
 					<img src="{{ absolute_url(asset('build/icons/hardware.svg')) }}" width="24" height="24" alt="driver">
 					<span class="navbar-label">Drivers &amp; software</span>
 				</a>
+
+				<a href="{{ path('io_port_index') }}" class="nav-link">
+					<img src="{{ absolute_url(asset('build/icons/rs232.svg')) }}" width="24" height="24" alt="io">
+					<span class="navbar-label">I/O ports</span>
+				</a>
+				<a href="{{ path('expansion_slot_index') }}" class="nav-link">
+					<img src="{{ absolute_url(asset('build/icons/exp_slot.svg')) }}" width="24" height="24" alt="slot">
+					<span class="navbar-label">Expansion slots</span>
+				</a>
+				<a href="{{ path('socket_index') }}" class="nav-link">
+					<img src="{{ absolute_url(asset('build/icons/cpupins.svg')) }}" width="24" height="24" alt="socket">
+					<span class="navbar-label">Sockets</span>
+				</a>
+				<a href="{{ path('power_connector_index') }}" class="nav-link">
+					<img src="{{ absolute_url(asset('build/icons/power.svg')) }}" width="24" height="24" alt="power">
+					<span class="navbar-label">Power connectors</span>
+				</a>
+				<a href="{{ path('manufacturer_index') }}" class="nav-link">
+					<img src="{{ absolute_url(asset('build/icons/factory.svg')) }}" width="24" height="24" alt="manuf">
+					<span class="navbar-label">Manufacturers</span>
+				</a>
 			</nav>
 		</aside>
 		<div class="page-header">

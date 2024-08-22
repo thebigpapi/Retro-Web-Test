@@ -31,7 +31,7 @@ class CpuSocketCrudController extends AbstractCrudController
 
         if (Action::SAVE_AND_RETURN === $submitButtonName) {
             $entityId = $context->getEntity()->getInstance()->getId();
-            return $this->redirectToRoute('cpusocket_show', array('id'=>$entityId));
+            return $this->redirectToRoute('socket_show', array('id'=>$entityId));
         }
         return parent::getRedirectResponseAfterSave($context, $action);
     }
@@ -105,7 +105,7 @@ class CpuSocketCrudController extends AbstractCrudController
     public function viewSocket(AdminContext $context)
     {
         $entityId = $context->getEntity()->getInstance()->getId();
-        return $this->redirectToRoute('cpusocket_show', array('id'=>$entityId));
+        return $this->redirectToRoute('socket_show', array('id'=>$entityId));
     }
     public function viewLogs(AdminContext $context)
     {
