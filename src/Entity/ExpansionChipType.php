@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\ExpansionChipTypeRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -23,7 +24,7 @@ class ExpansionChipType
     #[ORM\OneToMany(targetEntity: Chip::class, mappedBy: 'type', orphanRemoval: true, cascade: ['persist'])]
     private $chips;
 
-    #[ORM\Column]
+    #[ORM\Column(type: Types::JSON, options: ['jsonb' => true])]
     private array $template = [];
 
     public function __construct()

@@ -114,7 +114,13 @@ class DashboardController extends AbstractDashboardController
     public function configureMenuItems(): iterable
     {
         yield MenuItem::linkToDashboard('Dashboard', 'home.svg');
-        yield MenuItem::linkToRoute('Statistics', 'data.svg', 'dashboard_stats');
+        yield MenuItem::subMenu('Statistics', 'data.svg')->setSubItems([
+            MenuItem::linkToRoute('Motherboards', 'board.svg', 'dashboard_stats_boards'),
+            MenuItem::linkToRoute('Expansion cards', 'card.svg', 'dashboard_stats_cards'),
+            MenuItem::linkToRoute('Chips', 'chip.svg', 'dashboard_stats_chips'),
+            MenuItem::linkToRoute('Chipsets', 'chipset.svg', 'dashboard_stats_chipsets'),
+            MenuItem::linkToRoute('Size', 'dimension.svg', 'dashboard_stats_size')
+        ]);
         yield MenuItem::section('Main items');
         yield MenuItem::linkToCrud('Motherboards', 'board.svg', Motherboard::class)->setDefaultSort(['lastEdited' => 'DESC']);
         yield MenuItem::linkToCrud('Chips', 'chip.svg', Chip::class);

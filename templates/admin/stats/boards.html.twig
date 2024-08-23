@@ -1,46 +1,39 @@
 {% extends '@EasyAdmin/page/content.html.twig' %}
-{% block page_title %}Statistics{% endblock %}
+{% block page_title %}Statistics- motherboards{% endblock %}
 {% block main %}
-    <div class="row">
-        <div class="col-md-6">
+    <div class="row statistics-charts">
+        <div class="col-md-6" data-id="boardManuf" data-name="Board count" data-ratio="0.4" data-type="bar">
             <div class="col-md-12"><h4><i>Board count by manufacturer</i></h4></div>
-            <canvas id="boardmanufcount"></canvas>
-            {% for key, value in boardChart %}
+            <canvas id="boardManufCanvas"></canvas>
+            {% for key, value in manufacturerChart %}
                 <div id="{{key}}" style="display:none;">{{value}}</div>
             {% endfor %}
         </div>
-        <div class="col-md-6">
+        <div class="col-md-6" data-id="boardSocket" data-name="Board count" data-ratio="0.4" data-type="bar">
             <div class="col-md-12"><h4><i>Board count by socket</i></h4></div>
-            <canvas id="boardsocketcount"></canvas>
+            <canvas id="boardSocketCanvas"></canvas>
             {% for key, value in socketChart %}
                 <div id="{{key}}" style="display:none;">{{value}}</div>
             {% endfor %}
         </div>
-        <div class="col-md-6">
+        <div class="col-md-6" data-id="boardChipset" data-name="Board count" data-ratio="0.4" data-type="bar">
             <div class="col-md-12"><h4><i>Board count by chipset</i></h4></div>
-            <canvas id="boardchipsetcount"></canvas>
+            <canvas id="boardChipsetCanvas"></canvas>
             {% for key, value in chipsetChart %}
                 <div id="{{key}}" style="display:none;">{{value}}</div>
             {% endfor %}
         </div>
-        <div class="col-md-6">
-            <div class="col-md-12"><h4><i>Board count by expansion chip</i></h4></div>
-            <canvas id="boardchipcount"></canvas>
+        <div class="col-md-6" data-id="boardChip" data-name="Board count" data-ratio="0.4" data-type="bar">
+            <div class="col-md-12"><h4><i>Board count by chip</i></h4></div>
+            <canvas id="boardChipCanvas"></canvas>
             {% for key, value in expansionChipChart %}
                 <div id="{{key}}" style="display:none;">{{value}}</div>
             {% endfor %}
         </div>
-        <div class="col-md-6">
+        <div class="col-md-6" data-id="boardFF" data-name="Board count" data-ratio="1" data-type="bar">
             <div class="col-md-12"><h4><i>Board count by form factor</i></h4></div>
-            <canvas id="boardffcount"></canvas>
+            <canvas id="boardFFCanvas"></canvas>
             {% for key, value in formFactorChart %}
-                <div id="{{key}}" style="display:none;">{{value}}</div>
-            {% endfor %}
-        </div>
-        <div class="col-md-6">
-            <div class="col-md-12"><h4><i>Chipset documentation presence</i></h4></div>
-            <canvas id="chipsetdoccount"></canvas>
-            {% for key, value in chipsetDocCountChart %}
                 <div id="{{key}}" style="display:none;">{{value}}</div>
             {% endfor %}
         </div>

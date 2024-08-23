@@ -561,7 +561,7 @@ class MotherboardRepository extends ServiceEntityRepository
     /**
      * @return Motherboard[] Returns an array of sockets and count of board for each socket
      */
-    public function getExpChipCount(): array
+    public function getChipCount(): array
     {
         $entityManager = $this->getEntityManager();
         $rsm = new ResultSetMapping();
@@ -573,7 +573,7 @@ class MotherboardRepository extends ServiceEntityRepository
         $result = $entityManager->createNativeQuery(
             "SELECT c.id, man.name as manuf, c.name, c.part_number, ch.cnt FROM chip c
             LEFT JOIN manufacturer man ON man.id = c.manufacturer_id
-            INNER JOIN (SELECT expansion_chip_id, count(expansion_chip_id) AS cnt FROM motherboard_expansion_chip GROUP BY expansion_chip_id) AS ch ON ch.expansion_chip_id = c.id
+            INNER JOIN (SELECT chip_id, count(chip_id) AS cnt FROM motherboard_chip GROUP BY chip_id) AS ch ON ch.chip_id = c.id
             ORDER BY ch.cnt DESC",$rsm)->getResult();
         $finalArray = array();
         foreach ($result as $subArray) {

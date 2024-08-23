@@ -1,0 +1,20 @@
+{% extends '@EasyAdmin/page/content.html.twig' %}
+{% block page_title %}Statistics- chipset{% endblock %}
+{% block main %}
+    <div class="row statistics-charts">
+        <div class="col-md-6" data-id="chipsetManuf" data-name="Chipset count" data-ratio="0.4" data-type="bar">
+            <div class="col-md-12"><h4><i>Chipset count by manufacturer</i></h4></div>
+            <canvas id="chipsetManufCanvas"></canvas>
+            {% for key, value in manufacturerChart %}
+                <div id="{{key}}" style="display:none;">{{value}}</div>
+            {% endfor %}
+        </div>
+        <div class="col-md-6" data-id="chipsetDoc" data-name="Doc count" data-ratio="2" data-type="pie">
+            <div class="col-md-12"><h4><i>Chipset documentation presence</i></h4></div>
+            <canvas id="chipsetDocCanvas"></canvas>
+            {% for key, value in chipsetDocCountChart %}
+                <div id="{{key}}" style="display:none;">{{value}}</div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

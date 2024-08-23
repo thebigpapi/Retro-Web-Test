@@ -208,6 +208,70 @@ class ChipRepository extends ServiceEntityRepository
             ->getQuery()
             ->getSingleScalarResult();
     }
+    /**
+     * @return Chip[]
+     */
+    public function getManufCount(): array
+    {
+        $entityManager = $this->getEntityManager();
+        $result = $entityManager->createQuery(
+            'SELECT COALESCE(man.name, \'Unidentified\') as name, COUNT(c.id) as count
+            FROM App\Entity\Chip c LEFT JOIN c.manufacturer man
+            GROUP BY man
+            ORDER BY count DESC'
+        )->getResult();
+
+        $finalArray = array();
+
+        foreach ($result as $subArray) {
+            $finalArray[$subArray['name']] = $subArray['count'];
+        }
+
+        return $finalArray;
+    }
+
+    /**
+     * @return Chip[]
+     */
+    public function getSocketCount(): array
+    {
+        $entityManager = $this->getEntityManager();
+        $rsm = new ResultSetMapping();
+        $rsm->addScalarResult('name', 'name');
+        $rsm->addScalarResult('cnt', 'cnt');
+
+        $result = $entityManager->createNativeQuery(
+            "SELECT c.id, coalesce(c.name, c.type) AS name, s.cnt
+            FROM cpu_socket c INNER JOIN (SELECT cpu_socket_id, count(cpu_socket_id) AS cnt FROM chip_cpu_socket cc GROUP BY cpu_socket_id) s ON c.id = s.cpu_socket_id
+            ORDER BY cnt DESC",$rsm)->getResult();
+        $finalArray = array();
+        foreach ($result as $subArray) {
+            $finalArray[$subArray['name']] = $subArray['cnt'];
+        }
+        return $finalArray;
+    }
+
+    /**
+     * @return Chip[]
+     */
+    public function getTypeCount(): array
+    {
+        $entityManager = $this->getEntityManager();
+        $result = $entityManager->createQuery(
+            'SELECT t.name, COUNT(t.id) as count
+            FROM App\Entity\Chip c LEFT JOIN c.type t
+            GROUP BY t
+            ORDER BY count DESC'
+        )->getResult();
+
+        $finalArray = array();
+
+        foreach ($result as $subArray) {
+            $finalArray[$subArray['name']] = $subArray['count'];
+        }
+
+        return $finalArray;
+    }
 
     /**
      * @return Chip[] Returns the last 12 edited motherboards. Used in home page.

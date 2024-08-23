@@ -1,0 +1,27 @@
+{% extends '@EasyAdmin/page/content.html.twig' %}
+{% block page_title %}Statistics- chips{% endblock %}
+{% block main %}
+    <div class="row statistics-charts">
+        <div class="col-md-6" data-id="chipManuf" data-name="Chip count" data-ratio="0.4" data-type="bar">
+            <div class="col-md-12"><h4><i>Chip count by manufacturer</i></h4></div>
+            <canvas id="chipManufCanvas"></canvas>
+            {% for key, value in manufacturerChart %}
+                <div id="{{key}}" style="display:none;">{{value}}</div>
+            {% endfor %}
+        </div>
+        <div class="col-md-6" data-id="chipSocket" data-name="Chip count" data-ratio="0.4" data-type="bar">
+            <div class="col-md-12"><h4><i>Chip count by socket</i></h4></div>
+            <canvas id="chipSocketCanvas"></canvas>
+            {% for key, value in socketChart %}
+                <div id="{{key}}" style="display:none;">{{value}}</div>
+            {% endfor %}
+        </div>
+        <div class="col-md-6" data-id="chipType" data-name="Chip count" data-ratio="0.4" data-type="bar">
+            <div class="col-md-12"><h4><i>Chip count by type</i></h4></div>
+            <canvas id="chipTypeCanvas"></canvas>
+            {% for key, value in typeChart %}
+                <div id="{{key}}" style="display:none;">{{value}}</div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

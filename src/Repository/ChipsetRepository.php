@@ -157,6 +157,27 @@ class ChipsetRepository extends ServiceEntityRepository
             ->getQuery()
             ->getSingleScalarResult();
     }
+    /**
+     * @return Chipset[]
+     */
+    public function getManufCount(): array
+    {
+        $entityManager = $this->getEntityManager();
+        $result = $entityManager->createQuery(
+            'SELECT COALESCE(man.name, \'Unidentified\') as name, COUNT(c.id) as count
+            FROM App\Entity\Chipset c LEFT JOIN c.manufacturer man
+            GROUP BY man
+            ORDER BY count DESC'
+        )->getResult();
+
+        $finalArray = array();
+
+        foreach ($result as $subArray) {
+            $finalArray[$subArray['name']] = $subArray['count'];
+        }
+
+        return $finalArray;
+    }
     public function getChipsetDocCount(): array
     {
         $entityManager = $this->getEntityManager();
@@ -165,7 +186,7 @@ class ChipsetRepository extends ServiceEntityRepository
 
         $result = $entityManager->createNativeQuery(
             "SELECT count(DISTINCT chipset_id) FROM chipset_chip WHERE chip_id IN
-            (SELECT id FROM chip WHERE id NOT IN (SELECT chip_id FROM chip_documentation) AND dtype='chip')",
+            (SELECT id FROM chip WHERE id NOT IN (SELECT chip_id FROM chip_documentation))",
             $rsm
         )->getResult();
         return $result;

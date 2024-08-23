@@ -12,6 +12,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use App\Repository\ExpansionCardTypeRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ExpansionCardTypeRepository::class)]
@@ -39,7 +40,7 @@ class ExpansionCardType
     #[ORM\ManyToMany(targetEntity: ExpansionCard::class, mappedBy: 'type')]
     private Collection $expansionCards;
 
-    #[ORM\Column]
+    #[ORM\Column(type: Types::JSON, options: ['jsonb' => true])]
     private array $template = [];
 
     public function __construct()

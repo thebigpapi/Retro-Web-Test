@@ -1,0 +1,34 @@
+{% extends '@EasyAdmin/page/content.html.twig' %}
+{% block page_title %}Statistics- expansion cards{% endblock %}
+{% block main %}
+    <div class="row statistics-charts">
+        <div class="col-md-6" data-id="cardManuf" data-name="Card count" data-ratio="0.4" data-type="bar">
+            <div class="col-md-12"><h4><i>Card count by manufacturer</i></h4></div>
+            <canvas id="cardManufCanvas"></canvas>
+            {% for key, value in manufacturerChart %}
+                <div id="{{key}}" style="display:none;">{{value}}</div>
+            {% endfor %}
+        </div>
+        <div class="col-md-6" data-id="cardChip" data-name="Card count" data-ratio="0.4" data-type="bar">
+            <div class="col-md-12"><h4><i>Card count by chip</i></h4></div>
+            <canvas id="cardChipCanvas"></canvas>
+            {% for key, value in chipChart %}
+                <div id="{{key}}" style="display:none;">{{value}}</div>
+            {% endfor %}
+        </div>
+        <div class="col-md-6" data-id="cardSlot" data-name="Card count" data-ratio="1" data-type="bar">
+            <div class="col-md-12"><h4><i>Card count by slot</i></h4></div>
+            <canvas id="cardSlotCanvas"></canvas>
+            {% for key, value in slotChart %}
+                <div id="{{key}}" style="display:none;">{{value}}</div>
+            {% endfor %}
+        </div>
+        <div class="col-md-6" data-id="cardType" data-name="Card count" data-ratio="1" data-type="bar">
+            <div class="col-md-12"><h4><i>Card count by type</i></h4></div>
+            <canvas id="cardTypeCanvas"></canvas>
+            {% for key, value in typeChart %}
+                <div id="{{key}}" style="display:none;">{{value}}</div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

@@ -362,6 +362,99 @@ class ExpansionCardRepository extends ServiceEntityRepository
             ->getQuery()
             ->getSingleScalarResult();
     }
+    /**
+     * @return ExpansionCard[]
+     */
+    public function getManufCount(): array
+    {
+        $entityManager = $this->getEntityManager();
+        $result = $entityManager->createQuery(
+            'SELECT COALESCE(man.name, \'Unidentified\') as name, COUNT(ec.id) as count
+            FROM App\Entity\ExpansionCard ec LEFT JOIN ec.manufacturer man
+            GROUP BY man
+            ORDER BY count DESC'
+        )->getResult();
+
+        $finalArray = array();
+
+        foreach ($result as $subArray) {
+            $finalArray[$subArray['name']] = $subArray['count'];
+        }
+
+        return $finalArray;
+    }
+
+    /**
+     * @return ExpansionCard[]
+     */
+    public function getSlotCount(): array
+    {
+        $entityManager = $this->getEntityManager();
+        $result = $entityManager->createQuery(
+            'SELECT es.name, COUNT(es.id) as count
+            FROM App\Entity\ExpansionCard ec LEFT JOIN ec.expansionSlotInterfaceSignal es
+            GROUP BY es
+            ORDER BY count DESC'
+        )->getResult();
+
+        $finalArray = array();
+
+        foreach ($result as $subArray) {
+            $finalArray[$subArray['name']] = $subArray['count'];
+        }
+
+        return $finalArray;
+    }
+
+    /**
+     * @return ExpansionCard[]
+     */
+    public function getChipCount(): array
+    {
+        $entityManager = $this->getEntityManager();
+        $rsm = new ResultSetMapping();
+        $rsm->addScalarResult('manuf', 'manuf');
+        $rsm->addScalarResult('name', 'name');
+        $rsm->addScalarResult('part_number', 'part_number');
+        $rsm->addScalarResult('cnt', 'cnt');
+
+        $result = $entityManager->createNativeQuery(
+            "SELECT c.id, man.name as manuf, c.name, c.part_number, ch.cnt FROM chip c
+            LEFT JOIN manufacturer man ON man.id = c.manufacturer_id
+            INNER JOIN (SELECT chip_id, count(chip_id) AS cnt FROM expansion_card_chip GROUP BY chip_id) AS ch ON ch.chip_id = c.id
+            ORDER BY ch.cnt DESC",$rsm)->getResult();
+        $finalArray = array();
+        foreach ($result as $subArray) {
+            $k = $subArray['manuf'] . ' ' . $subArray['part_number'];
+            if ($subArray['name'] != "") {
+                $k .= ' (' . $subArray['name'] . ')';
+            }
+            $finalArray[$k] = $subArray['cnt'];
+        }
+        return $finalArray;
+    }
+
+    /**
+     * @return ExpansionCard[]
+     */
+    public function getTypeCount(): array
+    {
+        $entityManager = $this->getEntityManager();
+        $rsm = new ResultSetMapping();
+        $rsm->addScalarResult('name', 'name');
+        $rsm->addScalarResult('cnt', 'cnt');
+
+        $result = $entityManager->createNativeQuery(
+            "SELECT ect.id, ect.name AS name, ecect.cnt
+            FROM expansion_card_type ect INNER JOIN (SELECT expansion_card_type_id, count(expansion_card_type_id) AS cnt FROM expansion_card_expansion_card_type mc GROUP BY expansion_card_type_id) ecect ON ect.id = ecect.expansion_card_type_id
+            ORDER BY cnt DESC",$rsm)->getResult();
+        $finalArray = array();
+        foreach ($result as $subArray) {
+            $finalArray[$subArray['name']] = $subArray['cnt'];
+        }
+        return $finalArray;
+    }
+
     public function findLatest(int $maxCount = 12)
     {
         return $this->createQueryBuilder('ec')
