@@ -221,19 +221,11 @@ class StatsController extends AbstractDashboardController
     }
     private function createCardTypeChart(ExpansionCardRepository $expansionCardRepository): array
     {
-        $formFactorCount = $expansionCardRepository->getTypeCount();
+        $cardTypeCount = $expansionCardRepository->getTypeCount();
         $newarray = array();
-        $newarray['Other'] = 0;
-        foreach($formFactorCount as $key => $value){
-            if((int) $value >= 25)
-                $newarray[$key] = (int) $value;
-            else{
-                $newarray['Other'] += (int) $value;
-            }
+        foreach($cardTypeCount as $key => $value){
+            $newarray[$key] = (int) $value;
         }
-        $other = $newarray['Other'];
-        unset($newarray['Other']);
-        $newarray['Other'] = $other;
         return $this->getData($newarray, 'cardType');
     }
     //chip charts
