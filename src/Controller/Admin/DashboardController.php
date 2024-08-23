@@ -206,12 +206,12 @@ class DashboardController extends AbstractDashboardController
     private function createBoardDashChart(): array
     {
         $manufBoardCount = $this->motherboardRepository->getManufCount();
-        return $this->getData(array_slice($manufBoardCount, 0, 25), 'board');
+        return $this->getData(array_slice($manufBoardCount, 0, 25), 'boardManuf');
     }
     private function createSocketDashChart(): array
     {
         $boardSockCount = $this->motherboardRepository->getSocketCount();
-        return $this->getData(array_slice($boardSockCount, 0, 25), 'socket');
+        return $this->getData(array_slice($boardSockCount, 0, 25), 'boardSocket');
     }
     private function getData($array, $id): array
     {

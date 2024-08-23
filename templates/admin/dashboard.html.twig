@@ -1,17 +1,17 @@
 {% extends '@EasyAdmin/page/content.html.twig' %}
 {% block page_title %}Dashboard{% endblock %}
 {% block main %}
-    <div class="row">
-        <div class="col-md-6">
+    <div class="row statistics-charts">
+        <div class="col-md-6" data-id="boardManuf" data-name="Board count" data-ratio="1" data-type="bar">
             <div class="col-md-12"><h4><i>Board count by manufacturer (first 25)</i></h4></div>
-            <canvas id="boardmanufcountdash"></canvas>
+            <canvas id="boardManufCanvas"></canvas>
             {% for key, value in boardChart %}
                 <div id="{{key}}" style="display:none;">{{value}}</div>
             {% endfor %}
         </div>
-        <div class="col-md-6">
+        <div class="col-md-6" data-id="boardSocket" data-name="Board count" data-ratio="1" data-type="bar">
             <div class="col-md-12"><h4><i>Board count by socket (first 25)</i></h4></div>
-            <canvas id="boardsocketcountdash"></canvas>
+            <canvas id="boardSocketCanvas"></canvas>
             {% for key, value in socketChart %}
                 <div id="{{key}}" style="display:none;">{{value}}</div>
             {% endfor %}
