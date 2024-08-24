@@ -18,4 +18,18 @@ class EntityImageRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, EntityImage::class);
     }
+    public function findAllImages(): array
+    {
+        $entityManager = $this->getEntityManager();
+        $query = $entityManager->createQuery(
+            "SELECT entity.file_name
+            FROM App\Entity\EntityImage entity
+            WHERE entity.file_name NOT LIKE '%.svg%'"
+        );
+        $result = array_column($query->setMaxResults(10)->getResult(), "file_name");
+        foreach($result as &$r)
+            $r = "/misc/image/" . $r;
+
+        return $result;
+    }
 }
