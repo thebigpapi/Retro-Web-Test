@@ -153,6 +153,10 @@ class Chip
 
         return $this;
     }
+    public function getManufacturerAndPN()
+    {
+        return ($this->getManufacturer()?->getName() ?? '[unknown]') . " " . $this->partNumber ?: '';
+    }
 
     /**
      * @return Collection|Motherboard[]
