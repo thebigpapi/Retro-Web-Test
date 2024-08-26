@@ -239,8 +239,8 @@ class AdminController extends AbstractDashboardController
         return new JsonResponse($chipType->getTemplate());
     }
 
-    #[Route('/dashboard/getexpansionchipspci', name:'get_chips_pci_id', methods:['POST'])]
-    public function getExpansionChipsPciId(Request $request, ChipRepository $chipRepository): JsonResponse
+    #[Route('/dashboard/getchipspci', name:'get_chips_pci_id', methods:['POST'])]
+    public function getChipsPciId(Request $request, ChipRepository $chipRepository): JsonResponse
     {
         $ids = json_decode($request->getContent());
         //dd($ids);

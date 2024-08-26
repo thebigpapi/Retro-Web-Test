@@ -82,7 +82,7 @@ function processInf(data){
     if(devArray.size < 1 || venArray.size < 1){
         showPciMessage("No PCI IDs were found!");
     }
-    fetch(window.location.origin + "/dashboard/getexpansionchipspci", {
+    fetch(window.location.origin + "/dashboard/getchipspci", {
         method: "POST",
         body: JSON.stringify([Array.from(venArray), Array.from(devArray)])
     }).then(response => response.text())
@@ -92,14 +92,14 @@ function processInf(data){
 }
 function addChips(chipArray){
     if(Object.keys(chipArray).length < 1){
-        showPciMessage("No exp.chips were found!");
+        showPciMessage("No chips were found!");
         return;
     }
-    let chipsAddBtn = document.getElementById("LargeFile_expansionchips_collection").previousElementSibling;
-    let chips = document.getElementsByClassName("LargeFile_expansionchips_cssid");
+    let chipsAddBtn = document.getElementById("LargeFile_chips_collection").previousElementSibling;
+    let chips = document.getElementsByClassName("LargeFile_chips_cssid");
     if(chips.length > 0){
         if(confirm("List is not empty, want to clear it?")){
-            let list = document.getElementById("LargeFile_expansionchips");
+            let list = document.getElementById("LargeFile_chips");
             list.innerHTML = "";
         }
         else return;
@@ -117,7 +117,7 @@ function addChips(chipArray){
         chipSelect.tomselect.sync();
         idx++;
     }
-    showPciMessage("Added " + idx + " exp.chips");
+    showPciMessage("Added " + idx + " chips");
 }
 function createContainer(){
     let template = document.getElementById('create-driver-template');
