@@ -5,6 +5,8 @@ namespace App\Controller\Admin;
 use App\Controller\Admin\Type\LargeFile\ExpansionCardCrudType;
 use App\Controller\Admin\Type\LargeFile\ExpansionChipCrudType;
 use App\Entity\LargeFile;
+use App\Entity\LargeFileExpansionCard;
+use App\Entity\LargeFileExpansionChip;
 use App\Form\Type\OsFlagType;
 use App\Form\Type\OsArchitectureType;
 use Doctrine\ORM\EntityManagerInterface;
@@ -255,6 +257,18 @@ class LargeFileCrudController extends AbstractCrudController
         $driver->setLastEdited(new \DateTime('now'));
         foreach ($old->getOsFlags() as $flag){
             $driver->addOsFlag($flag);
+        }
+        foreach ($old->getChips() as $drv) {
+            $newDrv = new LargeFileExpansionChip();
+            $newDrv->setChip($drv->getChip());
+            $newDrv->setIsRecommended($drv->getIsRecommended());
+            $driver->addChip($newDrv);
+        }
+        foreach ($old->getExpansionCards() as $drv) {
+            $newDrv = new LargeFileExpansionCard();
+            $newDrv->setExpansionCard($drv->getExpansionCard());
+            $newDrv->setIsRecommended($drv->getIsRecommended());
+            $driver->addExpansionCard($newDrv);
         }
         return $driver;
     }

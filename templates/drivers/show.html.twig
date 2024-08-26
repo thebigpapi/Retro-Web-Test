@@ -108,7 +108,7 @@
 					<div class="tag-container"><ul>
 					{% if driver.getChips() is not empty %}
 						{% for chip in driver.getChips() %}
-							<li><a href="{{ path('chip_show', {id: chip.getExpansionChip().getId()}) }}"><span class="text-block">{{ chip.getExpansionChip().getFullName() }}</span></a></li>
+							<li><a href="{{ path('chip_show', {id: chip.getChip().getId()}) }}"><span class="text-block">{{ chip.getChip().getFullName() }}</span></a></li>
 						{% endfor %}
 					{% else %}
 						<div>None</div>
