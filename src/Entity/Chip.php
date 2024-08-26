@@ -632,7 +632,7 @@ class Chip
     public function getTableMiscSpecs(): array
     {
         //Json inheritance from the family
-        $miscSpecs = $this->getFamily()->getMiscSpecs();
+        $miscSpecs = $this->getFamily()?->getMiscSpecs() ?? [];
         foreach($this->getMiscSpecs() as $key => $value){
             if(is_array($value)) {
                 if (!array_key_exists($key, $miscSpecs)) {
