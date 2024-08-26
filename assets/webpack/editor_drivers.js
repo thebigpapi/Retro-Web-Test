@@ -71,7 +71,7 @@ function processInf(data){
     let venArray = [];
     let devArray = [];
     let found = data.indexOf("&DEV_");
-    console.log(found);
+    //console.log(found);
     while (found !== -1) {
         devArray.push(data.substring(found + 5, found + 9));
         venArray.push(data.substring(found - 4, found));
@@ -99,7 +99,7 @@ function addChips(chipArray){
     let chips = document.getElementsByClassName("LargeFile_chips_cssid");
     if(chips.length > 0){
         if(confirm("List is not empty, want to clear it?")){
-            let list = document.getElementById("LargeFile_chips");
+            let list = document.getElementById("LargeFile_chips_collection").children[0].children[0].children[0].children[0];
             list.innerHTML = "";
         }
         else return;
@@ -109,9 +109,9 @@ function addChips(chipArray){
     }
     let idx = 0;
     for(let chip of chips){
-        console.log(Object.values(chipArray)[idx]);
+        //console.log(Object.values(chipArray)[idx]);
         let chipSelect = chip.querySelector("select");
-        console.log(chipSelect)
+        //console.log(chipSelect)
         chipSelect.tomselect.addOption({entityId: Object.keys(chipArray)[idx], entityAsString: Object.values(chipArray)[idx]})
         chipSelect.tomselect.addItem(Object.keys(chipArray)[idx]);
         chipSelect.tomselect.sync();
