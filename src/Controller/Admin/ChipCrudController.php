@@ -18,6 +18,7 @@ use App\Entity\ChipAlias;
 use App\Entity\LargeFileExpansionChip;
 use App\Entity\PciDeviceId;
 use App\Form\Type\CpuSocketType;
+use App\Form\Type\KnownIssueChipType;
 use Doctrine\ORM\Query\Expr\Andx;
 use Doctrine\ORM\Query\Expr\Orx;
 use EasyCorp\Bundle\EasyAdminBundle\Collection\FieldCollection;
@@ -191,6 +192,10 @@ class ChipCrudController extends AbstractCrudController
             ->useEntryCrudForm(AliasCrudType::class)
             ->setFormTypeOption('error_bubbling', false)
             ->setColumns(6)
+            ->renderExpanded()
+            ->onlyOnForms();
+        yield CollectionField::new('knownIssues', 'Known issues')
+            ->setEntryType(KnownIssueChipType::class)
             ->renderExpanded()
             ->onlyOnForms();
         yield FormField::addTab('Specs')

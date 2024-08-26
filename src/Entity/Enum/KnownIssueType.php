@@ -8,5 +8,5 @@ enum KnownIssueType:int {
     case HardDrives = 4;
     case OpticalDrives = 8;
     case FloppyDrives = 16;
-    case CPUs = 32;
+    case Chips = 32;
 }

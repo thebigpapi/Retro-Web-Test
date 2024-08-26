@@ -57,6 +57,9 @@ class KnownIssue
     #[ORM\ManyToMany(targetEntity: ExpansionCard::class, mappedBy: 'knownIssues')]
     private Collection $expansionCards;
 
+    #[ORM\ManyToMany(targetEntity: Chip::class, mappedBy: 'knownIssues')]
+    private Collection $chips;
+
     public function __construct()
     {
         $this->motherboards = new ArrayCollection();
@@ -195,6 +198,30 @@ class KnownIssue
     {
         if ($this->expansionCards->removeElement($expansionCard)) {
             $expansionCard->removeKnownIssue($this);
+        }
+
+        return $this;
+    }
+
+    public function getChips(): Collection
+    {
+        return $this->chips;
+    }
+
+    public function addChip(Chip $chip): static
+    {
+        if (!$this->chips->contains($chip)) {
+            $this->chips->add($chip);
+            $chip->addKnownIssue($this);
+        }
+
+        return $this;
+    }
+
+    public function removeChip(Chip $chip): static
+    {
+        if ($this->chips->removeElement($chip)) {
+            $chip->removeKnownIssue($this);
         }
 
         return $this;

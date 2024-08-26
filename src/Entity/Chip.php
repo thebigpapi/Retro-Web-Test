@@ -91,6 +91,9 @@ class Chip
     #[ORM\Column(type: Types::JSON, options: ['jsonb' => true])]
     private ?array $miscSpecs = [];
 
+    #[ORM\ManyToMany(targetEntity: KnownIssue::class, inversedBy: 'chips')]
+    private Collection $knownIssues;
+
     public function __construct()
     {
         $this->motherboards = new ArrayCollection();
@@ -102,6 +105,7 @@ class Chip
         $this->chipAliases = new ArrayCollection();
         $this->images = new ArrayCollection();
         $this->pciDevs = new ArrayCollection();
+        $this->knownIssues = new ArrayCollection();
         $this->lastEdited = new \DateTime('now');
     }
     public function __toString(): string
@@ -674,5 +678,29 @@ class Chip
     public function getChipsWithDrivers(): array
     {
         return [];
+    }
+
+    /**
+     * @return Collection<int, KnownIssue>
+     */
+    public function getKnownIssues(): Collection
+    {
+        return $this->knownIssues;
+    }
+
+    public function addKnownIssue(KnownIssue $knownIssue): static
+    {
+        if (!$this->knownIssues->contains($knownIssue)) {
+            $this->knownIssues->add($knownIssue);
+        }
+
+        return $this;
+    }
+
+    public function removeKnownIssue(KnownIssue $knownIssue): static
+    {
+        $this->knownIssues->removeElement($knownIssue);
+
+        return $this;
     }
 }

@@ -12,7 +12,7 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\ChoiceList\View\ChoiceView;
 
-class KnownIssueCpuType extends AbstractType
+class KnownIssueChipType extends AbstractType
 {
     private EntityManagerInterface $entityManager;
 
@@ -28,7 +28,7 @@ class KnownIssueCpuType extends AbstractType
         $resolver->setDefaults([
             'class' => KnownIssue::class,
             'choice_label' => 'name',
-            'choices' => $this->entityManager->getRepository(KnownIssue::class)->findAllByType(KnownIssueType::CPUs),
+            'choices' => $this->entityManager->getRepository(KnownIssue::class)->findAllByType(KnownIssueType::Chips),
             'multiple' => false,
             'expanded' => false,
             'attr' => ['data-ea-widget' => 'ea-autocomplete']

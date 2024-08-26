@@ -127,10 +127,10 @@
 						</div>
 						<div>{{ chip.getTdpWithValue() ? chip.getTdpWithValue() : "<span class='badge badge-secondary'>Empty</span>" }}</div>
 						<!-- IMC -->
+						<div class="quick-spec-head">
+							<img src="{{ absolute_url(asset('build/icons/ram_multi.svg')) }}" alt="threads" width="24" height="24">Memory ctrl.
+						</div>
 						{% if chip.getFamily() is not empty %}
-							<div class="quick-spec-head">
-								<img src="{{ absolute_url(asset('build/icons/ram_multi.svg')) }}" alt="threads" width="24" height="24">Memory ctrl.
-							</div>
 							<div>
 							{% if chip.getFamily().getDramType() is not empty %}
 								<div class="tag-container">
