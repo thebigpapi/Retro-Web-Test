@@ -15,7 +15,7 @@
             <path d="M.293 0l22 22-22 22h1.414l22-22-22-22H.293z"></path>
         </svg>
         <a class="ml-4" href="{{ path('socket_index') }}">
-			<img src="{{ absolute_url(asset('build/icons/cpupins.svg')) }}" width="24" height="24" alt="socket">
+			<img src="{{ absolute_url(asset('build/icons/socket.svg')) }}" width="32" height="32" alt="socket">
             <code class="text-pink-500">Sockets</code>
         </a>
     </div>
@@ -23,7 +23,7 @@
 {% endblock %}
 {% block body %}
 <div class="title">
-    <img src="{{ absolute_url(asset('build/icons/cpupins.svg')) }}" alt="socket" width="32" height="32">
+    <img src="{{ absolute_url(asset('build/icons/socket.svg')) }}" alt="socket" width="32" height="32">
     Sockets
 </div>
 {{ knp_pagination_render(sockets, 'macros/pagination.html.twig') }}

@@ -145,7 +145,7 @@ class DashboardController extends AbstractDashboardController
             MenuItem::linkToCrud('Chip types', 'chip_alias.svg', ExpansionChipType::class)->setPermission('ROLE_ADMIN'),
             MenuItem::linkToCrud('Families', '486.svg', ProcessorPlatformType::class),
             MenuItem::linkToCrud('Features', 'cpu.svg', InstructionSet::class),
-            MenuItem::linkToCrud('Sockets', 'cpupins.svg', CpuSocket::class),
+            MenuItem::linkToCrud('Sockets', 'socket.svg', CpuSocket::class),
             MenuItem::linkToCrud('Speeds', 'speed.svg', CpuSpeed::class),
             MenuItem::section('Advanced'),
             MenuItem::linkToCrud('Chip aliases', 'chip_alias.svg', ChipAlias::class)->setController(ChipAliasCrudController::class),
