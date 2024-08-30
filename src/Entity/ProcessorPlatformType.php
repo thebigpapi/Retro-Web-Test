@@ -50,6 +50,25 @@ class ProcessorPlatformType
 
     #[ORM\Column(type: Types::JSON, options: ['jsonb' => true])]
     private ?array $miscSpecs = [];
+    /** migration purposes */
+    #[ORM\ManyToOne(targetEntity: CacheSize::class, inversedBy: 'getProcessorsL1data')]
+    private $L1data;
+
+    #[ORM\ManyToOne(targetEntity: CacheSize::class, inversedBy: 'getProcessorsL1code')]
+    private $L1code;
+
+    #[ORM\Column]
+    private ?float $L1codeRatio = null;
+
+    #[ORM\Column]
+    private ?float $L1dataRatio = null;
+
+    #[ORM\Column(type: 'integer', nullable: true)]
+    private $processNode;
+
+    #[ORM\OneToMany(mappedBy: 'processorPlatformType', targetEntity: CPUID::class, orphanRemoval: true, cascade: ['persist'])]
+    private Collection $cpuid;
+    /* migration purposes **/
 
     public function __construct()
     {
@@ -61,6 +80,8 @@ class ProcessorPlatformType
         $this->instructionSets = new ArrayCollection();
         $this->entityDocumentations = new ArrayCollection();
         $this->dramType = new ArrayCollection();
+        // migration purposes
+        $this->cpuid = new ArrayCollection();
     }
     public function __toString(): string
     {
@@ -351,4 +372,93 @@ class ProcessorPlatformType
 
         return $this;
     }
+    //for migration purposes
+    public function getL1data(): ?CacheSize
+    {
+        return $this->L1data;
+    }
+    public function setL1data(?CacheSize $L1data): self
+    {
+        $this->L1data = $L1data;
+
+        return $this;
+    }
+    public function getL1code(): ?CacheSize
+    {
+        return $this->L1code;
+    }
+    public function setL1code(?CacheSize $L1code): self
+    {
+        $this->L1code = $L1code;
+
+        return $this;
+    }
+
+    public function getL1codeRatio(): ?float
+    {
+        return $this->L1codeRatio;
+    }
+
+    public function setL1codeRatio(float $L1codeRatio): self
+    {
+        $this->L1codeRatio = $L1codeRatio;
+
+        return $this;
+    }
+
+    public function getL1dataRatio(): ?float
+    {
+        return $this->L1dataRatio;
+    }
+
+    public function setL1dataRatio(float $L1dataRatio): self
+    {
+        $this->L1dataRatio = $L1dataRatio;
+
+        return $this;
+    }
+    public function getProcessNode(): ?int
+    {
+        return $this->processNode;
+    }
+    public function setProcessNode(?int $processNode): self
+    {
+        $this->processNode = $processNode;
+
+        return $this;
+    }
+
+    public function getProcessNodeWithValue(): string
+    {
+        return $this->processNode ? $this->processNode . "nm" : "";
+    }
+    public function getCpuid(): Collection
+    {
+        return $this->cpuid;
+    }
+
+    public function addCpuid(CPUID $cpuid): static
+    {
+        if (!$this->cpuid->contains($cpuid)) {
+            $this->cpuid->add($cpuid);
+            $cpuid->setProcessorPlatformType($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCpuid(CPUID $cpuid): static
+    {
+        if ($this->cpuid->removeElement($cpuid)) {
+            // set the owning side to null (unless already changed)
+            if ($cpuid->getProcessorPlatformType() === $this) {
+                $cpuid->setProcessorPlatformType(null);
+            }
+        }
+
+        return $this;
+    }
+
+
+
 }
