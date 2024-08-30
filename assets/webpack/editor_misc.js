@@ -30,9 +30,9 @@ function getSlug(entity){
     slug.value = string.replace(/[^a-z0-9_]+/gi, '-').replace(/^-|-$/g, '').toLowerCase().substring(0, 43);
 }
 function calculateSize(bytes){
-    if      (bytes >= 1073741824) { bytes = (bytes / 1073741824).toFixed(2) + " GB"; }
-    else if (bytes >= 1048576)    { bytes = (bytes / 1048576).toFixed(2) + " MB"; }
-    else if (bytes >= 1024)       { bytes = (bytes / 1024).toFixed(2) + " KB"; }
+    if      (bytes >= 1073741824) { bytes = (bytes / 1073741824).toFixed(2) + " GiB"; }
+    else if (bytes >= 1048576)    { bytes = (bytes / 1048576).toFixed(2) + " MiB"; }
+    else if (bytes >= 1024)       { bytes = (bytes / 1024).toFixed(2) + " KiB"; }
     else if (bytes > 1)           { bytes = bytes + " bytes"; }
     else if (bytes == 1)          { bytes = bytes + " byte"; }
     else                          { bytes = "0 bytes"; }
@@ -46,6 +46,7 @@ function submit(name){
         getSlug(entity);
     if(!setDate())
         return;
+    validateCardTypes();
     if(!validateFiles(entity, save))
         return;
     if(entity != "ExpansionCard" && entity != "Chip" && entity != "LargeFile"){
@@ -56,6 +57,21 @@ function submit(name){
         if(document.getElementsByClassName('badge-danger').length > 0){
             saveretbtn.removeAttribute("disabled");
             savecontbtn.removeAttribute("disabled");
+        }
+    }
+}
+function validateCardTypes(){
+    let cardTypeCollection = document.getElementById("ExpansionCard_type_collection");
+    if(cardTypeCollection){
+        let cardTypes = document.getElementsByClassName("ExpansionCard_type_cssid");
+        if(cardTypes.length < 1){
+            msg.push("Expansion card type is empty");
+        }
+        for(let type of cardTypes){
+            let select = type.querySelector("select");
+            if(select.value === ""){
+                msg.push("Expansion card type is not set");
+            }
         }
     }
 }
