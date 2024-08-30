@@ -3,7 +3,7 @@
 namespace App\Command;
 
 use App\Entity\Processor;
-//use App\Repository\ProcessorRepository;
+use App\Repository\ProcessorRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use phpDocumentor\Reflection\Types\Integer;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -19,14 +19,14 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 class CPUToChipCommand extends Command
 {
     public function __construct(
-        //private ProcessorRepository $processorRepository,
+        private ProcessorRepository $processorRepository,
         private EntityManagerInterface $entityManagerInterface
     )
     {
         parent::__construct();
     }
 
-    /*protected function execute(InputInterface $input, OutputInterface $output): int
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
 
@@ -107,7 +107,7 @@ class CPUToChipCommand extends Command
         if ($processor->getL2() && $processor->isL2shared()) {
             $json["Microarchitecture"]["L2 cache"] = $processor->getL2()->getValueWithUnit() . ' shared';
         } elseif ($processor->getL2() && $processor->getCores()) {
-            $json["Microarchitecture"]["L2 cache"] = $processor?->getCores() . ' x ' . $processor->getL2()?->getValueWithUnit();
+            $json["Microarchitecture"]["L2 cache"] = $processor?->getCores() . ' x ' . $processor->getL2()->getValueWithUnit();
         } else {
             if($processor->getL2()){
                 $json["Microarchitecture"]["L2 cache"] = $processor->getL2()->getValueWithUnit();
@@ -118,7 +118,7 @@ class CPUToChipCommand extends Command
         } elseif ($processor->getL3() && $processor->getCores()) {
             $json["Microarchitecture"]["L3 cache"] = $processor->getCores() . ' x ' . $processor->getL3()->getValueWithUnit();
         } else {
-            if($processor->getL2()){
+            if($processor->getL3()){
                 $json["Microarchitecture"]["L3 cache"] = $processor->getL3()->getValueWithUnit();
             }
         }
@@ -128,5 +128,5 @@ class CPUToChipCommand extends Command
         $processor->setMiscSpecs($json);
 
         $this->entityManagerInterface->persist($processor);
-    }*/
+    }
 }
