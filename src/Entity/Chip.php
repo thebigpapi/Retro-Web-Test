@@ -106,6 +106,7 @@ class Chip
         $this->images = new ArrayCollection();
         $this->pciDevs = new ArrayCollection();
         $this->knownIssues = new ArrayCollection();
+        $this->documentations = new ArrayCollection();
         $this->lastEdited = new \DateTime('now');
     }
     public function __toString(): string
