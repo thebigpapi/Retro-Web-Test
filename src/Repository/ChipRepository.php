@@ -102,11 +102,11 @@ class ChipRepository extends ServiceEntityRepository
             $query = $entityManager->createQuery(
                 "SELECT chip
                 FROM App\Entity\Chip chip 
-                JOIN chip.manufacturer man 
-                LEFT OUTER JOIN chip.chipAliases alias 
+                LEFT JOIN chip.manufacturer man 
+                LEFT JOIN chip.chipAliases alias 
                 LEFT JOIN chip.pciDevs dev 
                 LEFT JOIN chip.type typ 
-                join chip.sockets as cs 
+                LEFT JOIN chip.sockets as cs 
                 WHERE $whereString
                 ORDER BY man.name ASC, chip.name ASC"
             );
