@@ -2,8 +2,8 @@
 
 namespace App\Controller;
 
-use App\Form\PowerConnector\Search;
-use App\Repository\PSUConnectorRepository;
+use App\Form\IoPort\Search;
+use App\Repository\IoPortInterfaceSignalRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\Response;
@@ -11,83 +11,83 @@ use Symfony\Component\HttpFoundation\Request;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\Form\FormInterface;
 
-class PowerConnectorController extends AbstractController
+class IoPortController extends AbstractController
 {
-    #[Route('/power-connectors/{id}', name: 'power_connector_show', requirements: ['id' => '\d+'])]
-    public function showPowerConnector(int $id, PSUConnectorRepository $psuConnectorRepository): Response {
-        $conn = $psuConnectorRepository->find($id);
+    #[Route('/io-ports/{id}', name: 'io_port_show', requirements: ['id' => '\d+'])]
+    public function showIoPort(int $id, IoPortInterfaceSignalRepository $ioPortInterfaceSignalRepository): Response {
+        $conn = $ioPortInterfaceSignalRepository->find($id);
 
         if (!$conn) {
             throw $this->createNotFoundException(
-                'No power connector found for id ' . $id
+                'No I/O port found for id ' . $id
             );
         }
-        return $this->render('power/show.html.twig', [
-            'powerconn' => $conn,
-            'controller_name' => 'PowerConnectorController',
+        return $this->render('port/show.html.twig', [
+            'io_port' => $conn,
+            'controller_name' => 'IoPortController',
         ]);
     }
 
-    #[Route('/power-connectors/', name: 'powerconnsearch')]
-    public function searchResultPowerConnector(Request $request, PaginatorInterface $paginator, PSUConnectorRepository $psuConnectorRepository): Response {
-        $form = $this->_searchFormHandlerPowerConnector($request);
+    #[Route('/io-ports/', name: 'ioportsearch')]
+    public function searchResultIoPort(Request $request, PaginatorInterface $paginator, IoPortInterfaceSignalRepository $ioPortInterfaceSignalRepository): Response {
+        $form = $this->_searchFormHandlerIoPort($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            return $this->redirect($this->generateUrl('powerconnsearch', $this->searchFormToParam($request, $form)));
+            return $this->redirect($this->generateUrl('ioportsearch', $this->searchFormToParam($request, $form)));
         }
         //get criterias
-        $criterias = $this->getCriteriaPowerConnector($request);
+        $criterias = $this->getCriteriaIoPort($request);
         $maxItems = $request->query->getInt('itemsPerPage', $request->request->getInt('itemsPerPage', $this->getParameter('app.pagination.max')));
         if (empty($criterias)) {
-            return $this->render('power/search.html.twig', [
+            return $this->render('port/search.html.twig', [
                 'form' => $form->createView(),
             ]);
         }
 
-        $data = $psuConnectorRepository->findByPowerConnector($criterias);
-        $powerconns = $paginator->paginate(
+        $data = $ioPortInterfaceSignalRepository->findByIoPort($criterias);
+        $ioports = $paginator->paginate(
             $data,
             $request->query->getInt('page', 1),
             $maxItems
         );
-        return $this->render('power/search.html.twig', [
+        return $this->render('port/search.html.twig', [
             'form' => $form->createView(),
-            'controller_name' => 'PowerConnectorController',
-            'powerconns' => $powerconns,
+            'controller_name' => 'IoPortController',
+            'ioports' => $ioports,
         ]);
     }
 
-    #[Route('/power-connectors/live', name: 'powerconnlivewrapper')]
-    public function liveSearchPowerConnector(Request $request): Response
+    #[Route('/io-ports/live', name: 'ioportlivewrapper')]
+    public function liveSearchIoPort(Request $request): Response
     {
-        $form = $this->_searchFormHandlerPowerConnector($request);
-        return $this->redirect($this->generateUrl('powerconnlivesearch', $this->searchFormToParam($request, $form)));
+        $form = $this->_searchFormHandlerIoPort($request);
+        return $this->redirect($this->generateUrl('ioportlivesearch', $this->searchFormToParam($request, $form)));
     }
 
-    #[Route('/power-connectors/results', name: 'powerconnlivesearch')]
-    public function liveResultsPowerConnector(Request $request, PaginatorInterface $paginator, PSUConnectorRepository $cpuPowerConnectorepository): Response
+    #[Route('/io-ports/results', name: 'ioportlivesearch')]
+    public function liveResultsIoPort(Request $request, PaginatorInterface $paginator, IoPortInterfaceSignalRepository $ioPortInterfaceSignalRepository): Response
     {
-        $criterias = $this->getCriteriaPowerConnector($request);
+        $criterias = $this->getCriteriaIoPort($request);
         $maxItems = $request->query->getInt('itemsPerPage', $request->request->getInt('itemsPerPage', $this->getParameter('app.pagination.max')));
-        $data = $cpuPowerConnectorepository->findByPowerConnector($criterias);
-        $powerconns = $paginator->paginate(
+        $data = $ioPortInterfaceSignalRepository->findByIoPort($criterias);
+        $ioports = $paginator->paginate(
                 $data,
                 $request->query->getInt('page', 1),
                 $maxItems
             );
-        $string = "/power-connectors/?";
+        $string = "/io-ports/?";
         foreach ($request->query as $key => $value){
             if($key != "domTarget")
                 $string .= $key . '=' . $value . '&';
         }
-        return $this->render('power/result.html.twig', [
-            'controller_name' => 'PowerConnectorController',
-            'powerconns' => $powerconns,
+        return $this->render('port/result.html.twig', [
+            'controller_name' => 'IoPortController',
+            'ioports' => $ioports,
             'domTarget' => $request->request->get('domTarget') ?? $request->query->get('domTarget') ?? "",
             'params' => substr($string, 0, -1),
         ]);
     }
-    public function getCriteriaPowerConnector(Request $request){
+    public function getCriteriaIoPort(Request $request){
         $criterias = array();
         $name = htmlentities($request->query->get('name') ?? '');
         if ($name) {
@@ -109,7 +109,7 @@ class PowerConnectorController extends AbstractController
 
         return $parameters;
     }
-    private function _searchFormHandlerPowerConnector(Request $request): FormInterface
+    private function _searchFormHandlerIoPort(Request $request): FormInterface
     {
         $form = $this->createForm(Search::class, array(), []);
         $form->handleRequest($request);

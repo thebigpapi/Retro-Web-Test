@@ -1,0 +1,38 @@
+{% if route is defined and route == true %}{% set typeid = 'route-results' %}{% else %}{% set typeid = domTarget %}{% endif %}
+<div id="{{ typeid }}">
+{% if ioports is defined and ioports is not empty %}
+	<div class="results">
+		{{ knp_pagination_render(ioports, 'macros/pagination_async.html.twig') }}
+		<div class="perks">
+			<div id="index-datetime" class="perks-list">
+			{% for ioport in ioports %}
+				<div class="perk">
+					<a href="{{ path("io_port_show", {id: ioport.getId()}) }}">
+						<div class="perk-image">
+						{% if ioport.getEntityImages() is not empty %}
+							{% for image in ioport.getEntityImages()|sort((a, b) => a.getFileName() <=> b.getFileName())|slice(0, 1) %}
+								<img src="{% if vich_uploader_asset(image, 'imageFile') | ext != "svg" %}
+								{{ vich_uploader_asset(image, 'imageFile') | imagine_filter('show_thumb') }}{% else %}
+								{{ vich_uploader_asset(image, 'imageFile')}}{% endif %}" alt="" loading="lazy" width="250" height="200" title="{% if image.description %}{{ image.description }}{% endif %}">
+							{% endfor %}
+						{% else %}
+							<img src="{{ absolute_url(asset('build/images/missing/not-available.jpg')) }}" loading="lazy" width="250" height="200" title="no images available :(">
+						{% endif %}</div>
+						<div class="perk-name">{{ ioport.getName()}}</div>
+					</a>
+				</div>
+			{% endfor %}
+			</div>
+		</div>
+		{% if ioports|length > 8 %}
+			{{ knp_pagination_render(ioports, 'macros/pagination_async.html.twig') }}
+		{% endif %}
+	</div>
+{% else %}
+	No results
+{% endif %}
+{% if params is defined %}
+<div id="search-params-id" style="display:none;">{{params}}</div>
+{% endif %}
+</div>
+

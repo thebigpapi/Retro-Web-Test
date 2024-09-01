@@ -20,6 +20,48 @@ class IoPortInterfaceSignalRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, IoPortInterfaceSignal::class);
     }
+
+    /**
+     * @return IoPortInterfaceSignal[]
+     */
+    public function findByIoPort(array $criteria): array
+    {
+        $entityManager = $this->getEntityManager();
+
+        $whereArray = array();
+        $valuesArray = array();
+
+        // Checking values in criteria and creating WHERE statements
+        if (array_key_exists('name', $criteria)) {
+            $multicrit = explode(" ", $criteria['name']);
+            foreach ($multicrit as $key => $val) {
+                $whereArray[] = "LOWER(ip.name) LIKE :nameLike$key";
+                $valuesArray["nameLike$key"] = "%" . strtolower($val) . "%";
+            }
+        }
+
+        // Building where statement
+        $whereString = implode(" AND ", $whereArray);
+
+        // Building query
+        if($whereArray == []){
+            return [];
+        }
+        else{
+            $query = $entityManager->createQuery(
+                "SELECT ip
+                FROM App\Entity\IoPortInterfaceSignal ip
+                WHERE $whereString
+                ORDER BY ip.name ASC"
+            );
+        }
+        // Setting values
+        foreach ($valuesArray as $key => $value) {
+            $query->setParameter($key, $value);
+        }
+        return $query->getResult();
+    }
+
     public function getCount(): int
     {
         return $this->createQueryBuilder('ip')
@@ -27,6 +69,7 @@ class IoPortInterfaceSignalRepository extends ServiceEntityRepository
             ->getQuery()
             ->getSingleScalarResult();
     }
+
     public function findAllSorted(): array
     {
         return $this->createQueryBuilder('ip')
