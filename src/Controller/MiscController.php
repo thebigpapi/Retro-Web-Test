@@ -89,35 +89,6 @@ class MiscController extends AbstractController
         ]);
     }
 
-    #[Route('/manufacturers', name: 'manufacturer_index')]
-    public function indexManufacturer(Request $request, PaginatorInterface $paginator, ManufacturerRepository $manufacturerRepository): Response {
-        $data = $manufacturerRepository->findAllSorted();
-        $manuf = $paginator->paginate(
-            $data,
-            $request->query->getInt('page', 1),
-            95
-        );
-        return $this->render('misc/manufacturer/index.html.twig', [
-            'manufacturers' => $manuf,
-            'controller_name' => 'MiscController',
-        ]);
-    }
-
-    #[Route('/manufacturers/{id}', name: 'manufacturer_show', requirements: ['id' => '\d+'])]
-    public function showManufacturer(int $id, ManufacturerRepository $manufacturerRepository): Response {
-        $manuf = $manufacturerRepository->find($id);
-
-        if (!$manuf) {
-            throw $this->createNotFoundException(
-                'No manufacturer found for id ' . $id
-            );
-        }
-        return $this->render('misc/manufacturer/show.html.twig', [
-            'manufacturer' => $manuf,
-            'controller_name' => 'MiscController',
-        ]);
-    }
-
     #[Route('/io-ports', name: 'io_port_index')]
     public function indexIoPort(Request $request, PaginatorInterface $paginator, IoPortInterfaceSignalRepository $ioPortInterfaceSignalRepository): Response {
         $data = $ioPortInterfaceSignalRepository->findAllSorted();
