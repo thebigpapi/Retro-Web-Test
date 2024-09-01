@@ -2,8 +2,8 @@
 <svg
    id="socketam4"
    version="1.1"
-   height="165"
-   width="200"
+   height="154.84277"
+   width="177.57678"
    sodipodi:docname="socket754.svg"
    inkscape:version="1.2 (dc2aedaf03, 2022-05-15)"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
@@ -30,8 +30,8 @@
      id="namedview8863"
      showgrid="false"
      inkscape:zoom="5"
-     inkscape:cx="175.6"
-     inkscape:cy="80.3"
+     inkscape:cx="152.3"
+     inkscape:cy="75.3"
      inkscape:window-x="1911"
      inkscape:window-y="-9"
      inkscape:window-maximized="1"
@@ -53,12 +53,13 @@
   <g
      inkscape:groupmode="layer"
      id="layer0"
-     inkscape:label="background">
+     inkscape:label="background"
+     transform="translate(-17.400001,-5)">
     <path
        id="path15813"
        inkscape:connector-curvature="0"
        d="M 20.437735,8.0786157 V 153.34662 H 163.77639 c 0,2.248 1.58267,4.07066 3.536,4.07066 1.652,0 3.03867,-1.304 3.42667,-3.06666 0.12933,-0.58934 0.65733,-1.004 1.25867,-1.004 h 4.796 c 0.68,0 1.23066,0.55066 1.23066,1.232 v 7.33733 h 14.464 V 8.0786157 Z"
-       style="display:inline;fill:#d4ceb8;stroke:#221b19;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1;fill-opacity:1"
+       style="display:inline;fill:#d4ceb8;fill-opacity:1;stroke:#221b19;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
        transform="translate(1.988395,-2.5786157)" />
   </g>
   <g
@@ -66,10 +67,10 @@
      id="layer3"
      inkscape:label="frame"
      style="display:inline"
-     transform="translate(1.988395,-2.5786157)">
+     transform="translate(-15.411606,-7.5786157)">
     <path
        sodipodi:type="star"
-       style="fill:#ecdca0;stroke:#221b19;fill-opacity:1;stroke-opacity:1;stroke-width:0.30600624;stroke-dasharray:none"
+       style="fill:#ecdca0;fill-opacity:1;stroke:#221b19;stroke-width:0.306006;stroke-dasharray:none;stroke-opacity:1"
        id="pin1corner"
        sodipodi:sides="3"
        sodipodi:cx="5.681818"
@@ -86,7 +87,7 @@
        transform="matrix(1.2164802,0.00826466,-0.69279197,1.3998988,33.56511,-16.346441)"
        inkscape:transform-center-x="-1.1457279" />
     <rect
-       style="fill:none;stroke:#221b19;"
+       style="fill:none;stroke:#221b19"
        id="rect14946"
        width="7.0710001"
        height="4.7130003"
@@ -124,21 +125,21 @@
        id="use6318" />
     <rect
        id="rect15785"
-       style="fill:none;fill-stroke:#221b19;stroke-width:1;"
+       style="fill:none;stroke-width:1"
        width="24.711"
        height="2.428"
        x="22.651712"
        y="9.9363441" />
     <rect
        id="rect15787"
-       style="fill:none;stroke:#221b19;stroke-width:1;"
+       style="fill:none;stroke:#221b19;stroke-width:1"
        y="8.0791817"
        x="74.073158"
        height="4.2850003"
        width="40.139" />
     <rect
        id="rect15789"
-       style="fill:none;stroke:#221b19;stroke-width:1;"
+       style="fill:none;stroke:#221b19;stroke-width:1"
        width="24.711"
        height="2.428"
        x="122.35303"
@@ -165,7 +166,7 @@
        id="octagon"
        inkscape:connector-curvature="0"
        d="m 155.20666,21.051016 -5.47333,-5.47334 H 29.008005 l -6.356,6.356 V 138.97235 l 7.51866,7.51733 H 147.64399 l 7.56267,-7.56267 z"
-       style="fill:#ebe7db;stroke:#221b19;stroke-width:1;fill-opacity:1" />
+       style="fill:#ebe7db;fill-opacity:1;stroke:#221b19;stroke-width:1" />
     <rect
        id="innerrectangle"
        style="fill:#555252;fill-opacity:1;stroke:#221b19;stroke-width:1.12433"
@@ -184,11 +185,11 @@
        x="55.36134"
        height="9.8559999"
        width="7.928"
-       style="fill:#ebe7db;stroke:#221b19;stroke-width:1;fill-opacity:1" />
+       style="fill:#ebe7db;fill-opacity:1;stroke:#221b19;stroke-width:1" />
     <path
        id="vertline"
        inkscape:connector-curvature="0"
-       style="fill:none;stroke:#221b19;stroke-width:1px;stroke-linecap:butt;"
+       style="fill:none;stroke:#221b19;stroke-width:1px;stroke-linecap:butt"
        d="M 163.70533,8.0646077 V 153.33261" />
     <use
        xlink:href="#vertline"
@@ -231,7 +232,7 @@
      id="layer4"
      inkscape:label="pins"
      style="display:inline"
-     transform="translate(1.988395,-2.5786157)">
+     transform="translate(-15.411606,-7.5786157)">
     <g
        id="g14431"
        transform="matrix(1.1260608,0,0,1.0995762,-11.872505,-8.3093014)">

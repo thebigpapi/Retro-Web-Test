@@ -18,7 +18,7 @@
             <path d="M.293 0l22 22-22 22h1.414l22-22-22-22H.293z"></path>
         </svg>
         <a class="ml-4" href="{{ path('socketsearch') }}">
-			<img src="{{ absolute_url(asset('build/icons/factory.svg')) }}" width="32" height="32" alt="manuf">
+			<img src="{{ absolute_url(asset('build/icons/socket.svg')) }}" width="32" height="32" alt="socket">
             <code class="text-pink-500">Sockets</code>
         </a>
     </div>
@@ -28,7 +28,7 @@
 	{{ form_start(form, {'method': 'POST', 'name': 'search_socket', 'action':path("socketsearch"), 'attr':{'onkeydown': 'return event.key != \'Enter\'', 'data-live-action': path('socketlivewrapper')}}) }}
 	<fieldset id="search-fieldset">
 		<div class="title">
-			<img src="{{ absolute_url(asset('build/icons/factory.svg')) }}" width="32" height="32" alt="manuf">
+			<img src="{{ absolute_url(asset('build/icons/socket.svg')) }}" width="32" height="32" alt="socket">
 			Search for a socket
 		</div>
 		<section class="search-form-grid">

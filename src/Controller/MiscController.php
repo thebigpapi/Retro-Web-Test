@@ -31,64 +31,6 @@ class MiscController extends AbstractController
         ]);
     }
 
-    #[Route('/sockets', name: 'socket_index')]
-    public function indexSocket(Request $request, PaginatorInterface $paginator, CpuSocketRepository $cpuSocketRepository): Response {
-        $data = $cpuSocketRepository->findAllSorted();
-        $sockets = $paginator->paginate(
-            $data,
-            $request->query->getInt('page', 1),
-            96
-        );
-        return $this->render('misc/socket/index.html.twig', [
-            'sockets' => $sockets,
-            'controller_name' => 'MiscController',
-        ]);
-    }
-
-    #[Route('/sockets/{id}', name: 'socket_show', requirements: ['id' => '\d+'])]
-    public function showSocket(int $id, CpuSocketRepository $cpuSocketRepository): Response {
-        $socket = $cpuSocketRepository->find($id);
-
-        if (!$socket) {
-            throw $this->createNotFoundException(
-                'No socket found for id ' . $id
-            );
-        }
-        return $this->render('misc/socket/show.html.twig', [
-            'socket' => $socket,
-            'controller_name' => 'MiscController',
-        ]);
-    }
-
-    #[Route('/power-connectors', name: 'power_connector_index')]
-    public function indexPowerConnector(Request $request, PaginatorInterface $paginator, PSUConnectorRepository $psuConnectorRepository): Response {
-        $data = $psuConnectorRepository->findAllSorted();
-        $power = $paginator->paginate(
-            $data,
-            $request->query->getInt('page', 1),
-            96
-        );
-        return $this->render('misc/power/index.html.twig', [
-            'power_connectors' => $power,
-            'controller_name' => 'MiscController',
-        ]);
-    }
-
-    #[Route('/power-connectors/{id}', name: 'power_connector_show', requirements: ['id' => '\d+'])]
-    public function showPowerConnector(int $id, PSUConnectorRepository $psuConnectorRepository): Response {
-        $conn = $psuConnectorRepository->find($id);
-
-        if (!$conn) {
-            throw $this->createNotFoundException(
-                'No PSU connector found for id ' . $id
-            );
-        }
-        return $this->render('misc/power/show.html.twig', [
-            'psu_connector' => $conn,
-            'controller_name' => 'MiscController',
-        ]);
-    }
-
     #[Route('/io-ports', name: 'io_port_index')]
     public function indexIoPort(Request $request, PaginatorInterface $paginator, IoPortInterfaceSignalRepository $ioPortInterfaceSignalRepository): Response {
         $data = $ioPortInterfaceSignalRepository->findAllSorted();

@@ -23,6 +23,7 @@ class ManufacturerRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Manufacturer::class);
     }
+
     /**
      * @return Manufacturer[]
      */
@@ -296,17 +297,5 @@ class ManufacturerRepository extends ServiceEntityRepository
     public function findAllFddManufacturer(): array
     {
         return $this->formatManufacterQueryStorage('\FloppyDrive');
-    }
-
-    /**
-     * @return Manufacturer[]
-     */
-    public function findLatest(int $maxCount = 12)
-    {
-        return $this->createQueryBuilder('man')
-            ->orderBy('man.id', 'DESC')
-            ->setMaxResults($maxCount)
-            ->getQuery()
-            ->getResult();
     }
 }

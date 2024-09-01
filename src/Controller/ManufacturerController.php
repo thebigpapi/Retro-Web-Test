@@ -15,22 +15,21 @@ class ManufacturerController extends AbstractController
 {
     #[Route('/manufacturers/{id}', name: 'manufacturer_show', requirements: ['id' => '\d+'])]
     public function showManufacturer(int $id, ManufacturerRepository $manufacturerRepository): Response {
-        $manuf = $manufacturerRepository->find($id);
+        $manufacturer = $manufacturerRepository->find($id);
 
-        if (!$manuf) {
+        if (!$manufacturer) {
             throw $this->createNotFoundException(
                 'No manufacturer found for id ' . $id
             );
         }
         return $this->render('manufacturer/show.html.twig', [
-            'manufacturer' => $manuf,
+            'manufacturer' => $manufacturer,
             'controller_name' => 'ManufacturerController',
         ]);
     }
 
     #[Route('/manufacturers/', name: 'manufacturersearch')]
     public function searchResultManufacturer(Request $request, PaginatorInterface $paginator, ManufacturerRepository $manufacturerRepository): Response {
-        $latestManufacturers = $manufacturerRepository->findLatest(8);
         $form = $this->_searchFormHandlerManufacturer($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -42,12 +41,11 @@ class ManufacturerController extends AbstractController
         if (empty($criterias)) {
             return $this->render('manufacturer/search.html.twig', [
                 'form' => $form->createView(),
-                'latestManufacturers' => $latestManufacturers,
             ]);
         }
 
         $data = $manufacturerRepository->findByManufacturer($criterias);
-        $manufs = $paginator->paginate(
+        $manufacturers = $paginator->paginate(
             $data,
             $request->query->getInt('page', 1),
             $maxItems
@@ -55,7 +53,7 @@ class ManufacturerController extends AbstractController
         return $this->render('manufacturer/search.html.twig', [
             'form' => $form->createView(),
             'controller_name' => 'ManufacturerController',
-            'manufacturers' => $manufs,
+            'manufacturers' => $manufacturers,
         ]);
     }
 
