@@ -1,5 +1,5 @@
 
-let form = document.getElementById('edit-LargeFile-form');
+/*let form = document.getElementById('edit-LargeFile-form');
 let formtype = "edit-LargeFile-form";
 //initialize tom-select
 var settings = {
@@ -441,4 +441,4 @@ function setArch(){
     let archSelect = document.getElementById("LargeFile_osArchitecture_" + id);
     archSelect.value = 1;
     archSelect.tomselect.sync();
-}
+}*/
