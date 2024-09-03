@@ -265,6 +265,7 @@ function JSsubmit(){
             method: "POST",
             body: formData
         }).then((res) => {
+            console.log(res);
             if(res.status == 0){
                 showMessage("Uploaded!", false);
                 addDriver(container.getAttribute("data-entity"), name, version, os);

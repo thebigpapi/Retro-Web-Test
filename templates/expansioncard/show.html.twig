@@ -198,7 +198,7 @@
 				{% include 'macros/notes.html.twig' with {'entity': expansioncard} %}
 				<div id="index-datetime"><div class="div-datetime">Last updated <span class="perk-date">{{ expansioncard.getLastEdited()|date("Y-m-d\\TH:i:s", "GMT") }}Z</span></div></div>
 			</div>
-			<div class="show-chips" id="sh-expchips">
+			<div class="show-chips" id="sh-chips">
 				<!-- Expansion chips -->
 				{% if expansioncard.getChips() is not empty %}
 				<div class="quick-spec-table">
