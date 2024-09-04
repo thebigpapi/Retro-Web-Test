@@ -11,6 +11,29 @@
 {% endfor %}{% endapply %}
 	</div>
 {% endif %}
+{% if entity.getChipKnownIssues() is defined and entity.getChipKnownIssues() is not empty %}
+	<div class="textarea">
+        {% if entity.getKnownIssues() is empty %}No {% if entity.getType() is defined %}card{% else %}board{% endif %} specific known issues.{% endif %}
+        {% set chipIssues = entity.getChipKnownIssues()%}
+        {% for chipName, chipIssues in chipIssues %}
+            <div class="dropdown-trw">
+                <label class="dropdown-header" onclick="expandDropdown()">
+                    <img src="{{ absolute_url(asset('build/icons/chip.svg')) }}" alt="chipdoc" width="24" height="24">
+                    <span>{{ chipName }} known issues</span>
+                    <input class="dropdown" type="checkbox" />
+                </label>
+                <div class="dropdown-contents">
+                    {% apply markdown_to_html %}{% for issue in chipIssues %}
+* {{ issue.getName() }}
+
+{{ issue.getDescription() }}
+
+                    {% endfor %}{% endapply %}
+                </div>
+            </div>
+        {% endfor %}
+	</div>
+{% endif %}
 {% if entity.note is defined %}
     {% if entity.note is not null %}
         <div class="textarea">

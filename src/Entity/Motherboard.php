@@ -611,6 +611,18 @@ class Motherboard
         return $this;
     }
 
+    public function getChipKnownIssues(): array
+    {
+        $chipIssues = array();
+        if($this->chips->isEmpty())
+            return $chipIssues;
+        foreach($this->chips as $chip){
+            if(!$chip->getKnownIssues()->isEmpty())
+                $chipIssues[$chip->getFullName()] = $chip->getKnownIssues();
+        }
+        return $chipIssues;
+    }
+
     public function getMaxVideoRam(): ?MaxRam
     {
         return $this->maxVideoRam;
