@@ -1,5 +1,5 @@
 
-/*let form = document.getElementById('edit-LargeFile-form');
+let form = document.getElementById('edit-LargeFile-form');
 let formtype = "edit-LargeFile-form";
 //initialize tom-select
 var settings = {
@@ -244,6 +244,9 @@ function JSsubmit(){
         let parser = new DOMParser();
         let parsedResponse = parser.parseFromString(responseText, "text/html");
         let token = parsedResponse.getElementById("LargeFile__token").value;
+        let date = new Date()
+        let bytesLoaded = 0
+        let xhr = new XMLHttpRequest();
         //setting up the form data
         formData.append("ea[newForm][btn]", "saveAndReturn");
         formData.append("LargeFile[name]", name);
@@ -259,29 +262,88 @@ function JSsubmit(){
         formData.append("LargeFile[_token]", token);
         formData.append("LargeFile[file][file]", file.files[0]);
         //upload begins
-        showMessage("Uploading ...", false);
-        fetch(url, {
-            redirect: 'manual',
-            method: "POST",
-            body: formData
-        }).then((res) => {
-            console.log(res);
-            if(res.status == 0){
-                showMessage("Uploaded!", false);
-                addDriver(container.getAttribute("data-entity"), name, version, os);
-                container.innerHTML = "";
-                showMessage("Added to list succesfully!", false);
+        xhr.open("POST", url);
+        xhr.onprogress = function (e) {
+            if (e.lengthComputable) {
+                console.log(e.loaded + " / " + e.total)
             }
-            else if(res.status == 422){
-                showMessage("Error " + res.status + ": " + res.statusText, true);
+        }
+        let speedText;
+        let bar;
+        let errorDiv = document.getElementById("driver-error-div");
+        errorDiv.setAttribute("style", "display: none;")
+        xhr.upload.addEventListener("progress", function (evt) {
+            if (evt.lengthComputable) {
+                bar = document.getElementById('progressBar');
+                bar.value = evt.loaded;
+                bar.max = evt.total;
+                bar.innerHTML = evt.loaded / evt.total * 100;
+                if (evt.loaded == evt.total) {
+                    showMessage("Processing ...");
+                }
+                else {
+                    let newdate = new Date()
+                    let speed = (evt.loaded - bytesLoaded) * (1000 / (newdate.getTime() - date.getTime()))
+                    if (speed > 1024)
+                        if (speed > 1024 * 1024)
+                            speedText = Number.parseFloat(speed / 1024 / 1024).toFixed(1) + "MB/s";
+                        else
+                            speedText = Number.parseFloat(speed / 1024).toFixed(1) + "KB/s";
+                    else
+                        speedText = Math.round(speed) + "Bytes/sec";
+                    showMessage("Upload in progress ..." + speedText);
+                    date = newdate
+                    bytesLoaded = evt.loaded
+                }
             }
-            else{
-                console.log("Something exploded: " + res.text())
+        }, false);
+        xhr.onloadstart = function (e) {
+            bar = document.getElementById('progressBar')
+            bar.hidden = false
+            document.getElementsByClassName('action-saveAndReturn btn btn-primary action-save')[0].setAttribute('disabled', true);
+        }
+        xhr.onloadend = function (e) {
+            document.getElementsByClassName('action-saveAndReturn btn btn-primary action-save')[0].removeAttribute('disabled');
+            bar = document.getElementById('progressBar')
+            bar.hidden = true
+            if (xhr.status == 200) {
+                if(xhr.responseText.startsWith("<!DOCTYPE HTML>")){
+                    showMessage("Uploaded!", false);
+                    addDriver(container, name, version, os);
+                }
+                else{
+                    showMessage("Something exploded!", true);
+                    errorDiv.setAttribute("style", "display: block;")
+                    errorDiv.children[0].innerHTML = xhr.responseText;
+                }
             }
-        }).catch(err => console.log("Driver upload failed: " + err));
+            else if(xhr.status == 500){
+                let parser = new DOMParser();
+                let doc = parser.parseFromString(xhr.responseText, "text/html");
+                showMessage(xhr.statusText, true);
+                errorDiv.setAttribute("style", "display: block;")
+                errorDiv.children[0].innerHTML = doc.getElementsByClassName('break-long-words exception-message')[0].innerHTML;
+            }
+            else if (xhr.status == 422){
+                let parser = new DOMParser();
+                let doc = parser.parseFromString(xhr.responseText, "text/html");
+                let errors = "";
+                for (let error of doc.getElementsByClassName("invalid-feedback")){
+                    errors += error.innerHTML + "\n";
+                }
+                showMessage("Invalid fields", true);
+                errorDiv.setAttribute("style", "display: block;")
+                errorDiv.children[0].innerHTML = errors;
+            }
+            else {
+                showMessage("Error " + xhr.status + ": " + xhr.statusText, true);
+            }
+        }
+        xhr.send(formData);
     }).catch(err => console.log("Driver form request failed: " + err));
 }
-function addDriver(entity, name, version, os){
+function addDriver(container, name, version, os){
+    let entity = container.getAttribute("data-entity");
     let driverAddBtn = document.getElementById(entity + "_collection").previousElementSibling;
     driverAddBtn.click();
     let drivers = document.getElementsByClassName(entity + "_cssid");
@@ -295,6 +357,14 @@ function addDriver(entity, name, version, os){
         driverSelect.tomselect.addOption({entityId: Object.values(result)[0], entityAsString: Object.keys(result)[0]})
         driverSelect.tomselect.addItem(Object.values(result)[0]);
         driverSelect.tomselect.sync();
+        console.log()
+        if(Object.keys(result).length > 0){
+            showMessage("Added to list succesfully!", false);
+            container.innerHTML = "";
+        }
+        else{
+            showMessage("Driver added, but could not be found by name!", true);
+        }
     }).catch(err => console.log("Driver find failed: " + err));
 }
 function getSelectValues(select) {
@@ -441,4 +511,4 @@ function setArch(){
     let archSelect = document.getElementById("LargeFile_osArchitecture_" + id);
     archSelect.value = 1;
     archSelect.tomselect.sync();
-}*/
+}

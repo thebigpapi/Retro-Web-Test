@@ -48,6 +48,11 @@ class LargeFile
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     #[Assert\Length(max: 255, maxMessage: 'Version is longer than {{ limit }} characters.')]
+    #[Assert\Regex(
+        pattern: '/^[\w\s,\/\-_#\$%&\*!\?:;\.\+\=\\\[\]\{\}\(\)]+$/',
+        match: true,
+        message: 'Version uses invalid characters',
+    )]
     private $fileVersion;
 
     #[ORM\ManyToMany(targetEntity: OsFlag::class, inversedBy: 'largeFiles')]
