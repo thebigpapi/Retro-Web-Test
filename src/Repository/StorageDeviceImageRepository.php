@@ -47,7 +47,7 @@ class StorageDeviceImageRepository extends ServiceEntityRepository
             FROM App\Entity\StorageDeviceImage entity
             WHERE entity.file_name NOT LIKE '%.svg%'"
         );
-        $result = array_column($query->setMaxResults(10)->getResult(), "file_name");
+        $result = array_column($query->getResult(), "file_name");
         foreach($result as &$r)
             $r = "/storage/image/" . $r;
 
