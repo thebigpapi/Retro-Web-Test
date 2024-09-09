@@ -25,7 +25,7 @@
 						<div class="perk-name">{{ chip.getFullName() }}</div>
 						<div class="perk-alias">
 							{% if chip.getChipAliases() is not empty %}<span class="results-alias">
-								<small>Alias: {% for alias in chip.getChipAliases() %}{{ alias.getFullAliasName() }}{% if not loop.last %}, {% endif %}{% endfor %}</small>
+								<small>Alias: {% for alias in chip.getChipAliases()|sort((a, b) => a.name <=> b.name)|sort((a, b) => a.partNumber <=> b.partNumber) %}{{ alias.getFullAliasName() }}{% if not loop.last %}, {% endif %}{% endfor %}</small>
 							</span>{% endif %}
 						</div>
 					</a>

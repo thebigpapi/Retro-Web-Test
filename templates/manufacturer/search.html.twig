@@ -1,10 +1,10 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Search sockets - TRW{% endblock %}
+{% block title %}Search manufacturers - TRW{% endblock %}
 
 {% block metatags %}
-	<meta name="description" content="Search for a socket by name.">
-	<link rel="alternate" hreflang="x-default" href="{{ absolute_url(path('socketsearch')) }}"/>
+	<meta name="description" content="Search for a manufacturer by name.">
+	<link rel="alternate" hreflang="x-default" href="{{ absolute_url(path('manufacturersearch')) }}"/>
 {% endblock %}
 {% block extra_javascripts %}
 	<script src="/build/js/tom-select.js" defer></script>
@@ -17,19 +17,19 @@
         <svg class="navbar-svg" viewBox="0 0 24 44" preserveAspectRatio="none" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
             <path d="M.293 0l22 22-22 22h1.414l22-22-22-22H.293z"></path>
         </svg>
-        <a class="ml-4" href="{{ path('socketsearch') }}">
+        <a class="ml-4" href="{{ path('manufacturersearch') }}">
 			<img src="{{ absolute_url(asset('build/icons/factory.svg')) }}" width="32" height="32" alt="manuf">
-            <code class="text-pink-500">Sockets</code>
+            <code class="text-pink-500">Manufacturers</code>
         </a>
     </div>
 </li>
 {% endblock %}
 {% block body %}
-	{{ form_start(form, {'method': 'POST', 'name': 'search_socket', 'action':path("socketsearch"), 'attr':{'onkeydown': 'return event.key != \'Enter\'', 'data-live-action': path('socketlivewrapper')}}) }}
+	{{ form_start(form, {'method': 'POST', 'name': 'search_manufacturer', 'action':path("manufacturersearch"), 'attr':{'onkeydown': 'return event.key != \'Enter\'', 'data-live-action': path('manufacturerlivewrapper')}}) }}
 	<fieldset id="search-fieldset">
 		<div class="title">
 			<img src="{{ absolute_url(asset('build/icons/factory.svg')) }}" width="32" height="32" alt="manuf">
-			Search for a socket
+			Search for a manufacturer
 		</div>
 		<section class="search-form-grid">
 			<div class="search-form-entry" >
@@ -40,14 +40,14 @@
 					<div>{{ form_widget(form.name, {'attr': {'placeholder': 'Short name or full name ...'}}) }}</div>
 				</div>
 			</div>
-			{% include 'macros/searchitems.html.twig' with {'datatarget': 'sockets', 'dataresetids': '', 'search_with_images' : true} %}
+			{% include 'macros/searchitems.html.twig' with {'datatarget': 'manufacturers', 'dataresetids': '', 'search_with_images' : true} %}
 		</section>
 	</fieldset>
 	{{ form_end(form, {render_rest: false}) }}
 	<!-- Search results -->
 	<section id="search_liveResults">
-	{% if sockets is defined %}
-		{% include 'socket/result.html.twig' with {'sockets': sockets, 'route': true} %}
+	{% if manufacturers is defined %}
+		{% include 'manufacturer/result.html.twig' with {'manufacturers': manufacturers, 'route': true} %}
 	{% endif %}
 	</section>
 {% endblock %}

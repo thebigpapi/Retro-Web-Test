@@ -152,7 +152,7 @@
 							<img src='{{ absolute_url(asset('build/icons/card.svg')) }}' alt='' width='16' height='16' style='vertical-align:middle;padding:3px;'>See all cards with this chip</a>
 					</div>
 				</div>
-				{% include 'macros/aliases.html.twig' with {'entity':chip.getChipAliases(), 'msg': 'Also known as:'} %}
+				{% include 'macros/aliases.html.twig' with {'entity':chip.getChipAliases(), 'msg': 'Also known as:', 'fullSort': true} %}
 				{% if chip.getMiscSpecs() is not empty %}
 					<h3>Additional specifications:</h3>
 					{% include 'macros/specs.html.twig' with {'entity':chip} %}
