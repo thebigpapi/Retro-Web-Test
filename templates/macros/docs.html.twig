@@ -1,4 +1,4 @@
-<div class="show-downloads-group">
+<div class="show-downloads-group last">
     {% if entity is not empty %}
         <div class="show-downloads-group-header">
             <img src="{{ absolute_url(asset('build/icons/manual.svg')) }}" alt="doc" width="32" height="32">
@@ -33,7 +33,7 @@
         </div>
         {% endif %}
     {% else %}
-        <div class="show-downloads-group-header">
+        <div class="show-downloads-group-header last">
             <img src="{{ absolute_url(asset('build/icons/manual.svg')) }}" alt="doc" width="32" height="32">
             <span>No {{ entity_label }} documents available</span>
         </div>

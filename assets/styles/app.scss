@@ -1220,6 +1220,9 @@ div.main-strip {
                 &.last{
                     border-bottom: none;
                 }
+                &.top-border{
+                    border-top: solid thin $border-dark;
+                }
 
                 @media (max-width: 500px) {
                     padding: 3px;
@@ -1230,6 +1233,9 @@ div.main-strip {
 
                 @media (prefers-color-scheme: dark) {
                     border-color: $shadow-light;
+                    &.top-border{
+                        border-top: solid thin $shadow-light;
+                    }
                 }
 
                 div.show-downloads-group-header {
@@ -1478,6 +1484,9 @@ div.textarea {
     overflow-y: hidden;
     padding: 5px;
     border-top: solid thin $border-dark;
+    &.last{
+        border-top: none;
+    }
     table {
         border-spacing: 0;
         border-collapse: collapse;

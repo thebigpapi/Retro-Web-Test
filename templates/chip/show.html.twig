@@ -104,7 +104,7 @@
 					</div>
 					<div class="quick-spec-table">
 						<!-- Vendor ID -->
-						<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/factory.svg')) }}" alt="date" width="24" height="24">Vendor ID</div>
+						<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/factory.svg')) }}" alt="date" width="24" height="24">PCI Vendor ID</div>
 						<div class="tag-container">
 						{% if chip.getAliasVendors() is not empty or chip.getChipVendors() is not empty %}
 							{% for vendor in chip.getChipVendors() %}
@@ -118,7 +118,7 @@
 						{% endif %}
 						</div>
 						<!-- Device ID -->
-						<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/tag.svg')) }}" alt="date" width="24" height="24">Device ID</div>
+						<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/tag.svg')) }}" alt="date" width="24" height="24">PCI Device ID</div>
 						<div class="tag-container">
 						{% if chip.getPciDevs() is not empty %}
 							{% for device in chip.getPciDevs() %}
