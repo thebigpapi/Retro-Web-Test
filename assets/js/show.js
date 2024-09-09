@@ -114,8 +114,8 @@ function change_tag(parameter) {
     }
 }
 
-function expandDropdown(){
-    let container = document.querySelector("div[class=dropdown-trw]");
+function expandDropdown(el){
+    let container = el.parentNode;
     let dropdown = container.querySelector("div[class*=dropdown-contents]");
     let input = container.querySelector("input[type=checkbox]");
     if(input.checked){

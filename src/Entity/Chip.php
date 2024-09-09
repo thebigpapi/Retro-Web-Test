@@ -704,4 +704,18 @@ class Chip
 
         return $this;
     }
+
+    public function getFamilyDocs(): Collection
+    {
+        return $this->getFamily()?->getEntityDocumentations() ?? new ArrayCollection();
+    }
+
+    public function getSocketDocs(): Collection
+    {
+        $docs = [];
+        foreach ($this->getSockets() as $socket) {
+            $docs = array_merge($docs, $socket->getEntityDocumentations()->toArray());
+        }
+        return new ArrayCollection($docs);
+    }
 }

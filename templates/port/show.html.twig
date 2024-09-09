@@ -76,7 +76,7 @@
 				{% include 'macros/notes.html.twig' with {'title': 'Connector notes', 'entity': io_port.getInterface()} %}
 				{% include 'macros/notes.html.twig' with {'title': 'Electrical interface notes', 'entity': io_port.getSignals()} %}
 				<!-- MANUALS -->
-				{% include 'macros/manuals.html.twig' with {'entity': io_port.getAllDocs(), 'entity_label':'', 'audit_entity':'App-Entity-EntityDocumentation'} %}
+				{% include 'macros/docs.html.twig' with {'entity': io_port.getAllDocs(), 'entity_label':'', 'audit_entity':'App-Entity-EntityDocumentation'} %}
 			</div>
 		</div>
 	</div>

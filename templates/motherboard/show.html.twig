@@ -322,7 +322,7 @@
 			</div>
 			<!-- Documentation -->
 			<div class="show-downloads" id="sh-docs">
-				{% include 'macros/manuals.html.twig' with {'entity': motherboard.getManuals(), 'entity_label':'board', 'audit_entity':'App-Entity-Manual', 'chips': motherboard.getChipDocs()} %}
+				{% include 'macros/docs.html.twig' with {'entity': motherboard.getManuals(), 'entity_label':'board', 'audit_entity':'App-Entity-Manual', 'chips': motherboard.getChipDocs(), 'families': motherboard.getFamilyDocs(), 'sockets': motherboard.getSocketDocs()} %}
 				{% include 'macros/miscfiles.html.twig' with {'entity': motherboard.getMiscFiles(), 'audit_entity':'App-Entity-MiscFile'} %}
 			</div>
 		</div>

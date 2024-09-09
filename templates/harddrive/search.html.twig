@@ -51,7 +51,7 @@
 			{% include 'macros/searchitems.html.twig' with {'datatarget': 'harddrives', 'dataresetids': 'search_hddManufacturer', 'search_with_images' : true} %}
 		</section>
 		<div class="dropdown-trw">
-			<label class="dropdown-header" onclick="expandDropdown()">
+			<label class="dropdown-header" onclick="expandDropdown(this)">
 				<img src="{{ absolute_url(asset('build/icons/search.svg')) }}" alt="search" width="24" height="24">
 				<span>Advanced search<small class="dropdown-tooltip"> (click to expand)</small></span>
 				<input class="dropdown" type="checkbox" />

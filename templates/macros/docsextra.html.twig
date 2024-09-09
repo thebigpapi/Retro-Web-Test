@@ -1,0 +1,46 @@
+<div class="dropdown-trw">
+    <label class="dropdown-header" onclick="expandDropdown(this)">
+        <img src="{{ absolute_url(asset('build/icons/' ~ icon ~ '.svg')) }}" alt="alt" width="24" height="24">
+        <span>{{ entity|length }} {{ entity_label }} document{% if entity|length != 1 %}s{% endif %} available</span>
+        <input class="dropdown" type="checkbox" />
+    </label>
+    <div class="dropdown-contents">
+        {% if entity is not empty %}
+        <div class="plain-list w300p table">
+            <div class="list-entry centered head">
+                {% if reference_label is defined %}<div>{{ reference_label }}</div>{% endif %}
+                <div>Release date</div>
+                <div>File</div>
+                <div>Logs</div>
+            </div>
+            {% for manual in entity|sort((a, b) => a.getLinkName <=> b.getLinkName) %}
+            <div class="list-entry centered {% if loop.index is divisible by(2) %}alt{% endif %}">
+                {% if reference_label is defined %}
+                    <div class="header-label">{{ reference_label }}</div>
+                    <div>
+                        {% if reference_label == "Family" %}<a href="{{ path('family_show', {'id': manual.getProcessorPlatformType().getId()}) }}">{{ manual.getProcessorPlatformType().getName()}}</a>{% endif %}
+                        {% if reference_label == "Chip" %}<a href="{{ path('chip_show', {'id': manual.getChip().getId()}) }}">{{ manual.getChip().getFullName()}}</a>{% endif %}
+                        {% if reference_label == "Socket" %}<a href="{{ path('socket_show', {'id': manual.getCpuSocket().getId()}) }}">{{ manual.getCpuSocket().getNameAndType()}}</a>{% endif %}
+                    </div>
+                {% endif %}
+                <div class="header-label">Release date</div>
+                <div class="perk-date-simple">{{ manual.getReleaseDateString()}}</div>
+                <div class="header-label">File</div>
+                <div>
+                    <a class="combo" href="{{ vich_uploader_asset(manual, 'manualFile') }}">
+                        <img src="{{ absolute_url(asset('build/icons/dw.svg')) }}" alt="" width="16" height="16">
+                        <span>{{ manual.getLinkName() }}</span>
+                    </a>
+                </div>
+                <div class="header-label">Logs</div>
+                <div>
+                    <a href="{{ path('dh_auditor_show_entity_history', { 'entity': audit_entity, 'id': manual.getId() }) }}">
+                        <img src="{{ absolute_url(asset('build/icons/calendar.svg')) }}" alt="pwr" width="16" height="16">
+                    </a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+    </div>
+</div>

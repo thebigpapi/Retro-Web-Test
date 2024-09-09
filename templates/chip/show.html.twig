@@ -58,10 +58,9 @@
 </div>
 <div class="main-strip">
 	<div class="internal-container">
-		{% set types = ['empty'] %}
+		{% set types = ['docs'] %}
 		{% if chip.getDrivers()|length > 0 %}{% set types = types|merge(['drivers']) %}{% endif %}
 		{% if chip.getChipBios()|length > 0 %}{% set types = types|merge(['bios']) %}{% endif %}
-		{% if chip.getDocumentations()|length > 0 %}{% set types = types|merge(['docs']) %}{% endif %}
 		{% include 'macros/navbar.html.twig' with {'entity': chip, 'entityName': 'Chip', 'types': types, 'name': 'chip', 'role': 'ROLE_USER'} %}
 		<div class="internal-content">
 			<!-- DESCRIPRION -->
@@ -76,7 +75,7 @@
 							<img src="{{ absolute_url(asset('build/icons/486.svg')) }}" alt="486" width="24" height="24">Family
 						</div>
 						<div>
-						{% if chip.getSockets() is not empty %}
+						{% if chip.getFamily() is not empty %}
 							<a href="{{ path('family_show', {id: chip.getFamily().getId()}) }}">{{ chip.getFamily().getName() }}</a>
 						{% else %}
 							<span class='badge badge-secondary'>Empty</span>
@@ -188,11 +187,9 @@
 				</div>
 			{% endif %}
 			<!-- Documentation -->
-			{% if "docs" in types %}
-				<div class="show-downloads" id="sh-docs">
-					{% include 'macros/manuals.html.twig' with {'entity': chip.getDocumentations(), 'entity_label':'chip', 'audit_entity':'App-Entity-ChipDocumentation'} %}
-				</div>
-			{% endif %}
+			<div class="show-downloads" id="sh-docs">
+				{% include 'macros/docs.html.twig' with {'entity': chip.getDocumentations(), 'entity_label':'chip', 'audit_entity':'App-Entity-ChipDocumentation', 'families': chip.getFamilyDocs(), 'sockets': chip.getSocketDocs()} %}
+			</div>
 		</div>
 	</div>
 

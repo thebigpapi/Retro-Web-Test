@@ -17,7 +17,7 @@
         {% set chipIssues = entity.getChipKnownIssues()%}
         {% for chipName, chipIssues in chipIssues %}
             <div class="dropdown-trw">
-                <label class="dropdown-header" onclick="expandDropdown()">
+                <label class="dropdown-header" onclick="expandDropdown(this)">
                     <img src="{{ absolute_url(asset('build/icons/chip.svg')) }}" alt="chipdoc" width="24" height="24">
                     <span>{{ chipName }} known issues</span>
                     <input class="dropdown" type="checkbox" />

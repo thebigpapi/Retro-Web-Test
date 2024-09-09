@@ -22,9 +22,18 @@ class CacheSize
     #[ORM\ManyToMany(targetEntity: Motherboard::class, mappedBy: 'cacheSize')]
     private $motherboards;
 
+    #[ORM\OneToMany(targetEntity: ProcessorPlatformType::class, mappedBy: 'L1data')]
+    private $getProcessorsL1data;
+
+    #[ORM\OneToMany(targetEntity: ProcessorPlatformType::class, mappedBy: 'L1code')]
+    private $getProcessorsL1code;
+
+
     public function __construct()
     {
         $this->motherboards = new ArrayCollection();
+        $this->getProcessorsL1code = new ArrayCollection();
+        $this->getProcessorsL1data = new ArrayCollection();
     }
     public function __toString(): string
     {
@@ -79,6 +88,62 @@ class CacheSize
         if ($this->motherboards->contains($motherboard)) {
             $this->motherboards->removeElement($motherboard);
             $motherboard->removeCacheSize($this);
+        }
+
+        return $this;
+    }
+    /**
+     * @return Collection|ProcessorPlatformType[]
+     */
+    public function getGetProcessorsL1data(): Collection
+    {
+        return $this->getProcessorsL1data;
+    }
+    public function addGetProcessorsL1data(ProcessorPlatformType $getProcessorsL1data): self
+    {
+        if (!$this->getProcessorsL1data->contains($getProcessorsL1data)) {
+            $this->getProcessorsL1data[] = $getProcessorsL1data;
+            $getProcessorsL1data->setL1data($this);
+        }
+
+        return $this;
+    }
+    public function removeGetProcessorsL1(ProcessorPlatformType $getProcessorsL1data): self
+    {
+        if ($this->getProcessorsL1data->contains($getProcessorsL1data)) {
+            $this->getProcessorsL1data->removeElement($getProcessorsL1data);
+            // set the owning side to null (unless already changed)
+            if ($getProcessorsL1data->getL1data() === $this) {
+                $getProcessorsL1data->setL1data(null);
+            }
+        }
+
+        return $this;
+    }
+    /**
+     * @return Collection|ProcessorPlatformType[]
+     */
+    public function getGetProcessorsL1code(): Collection
+    {
+        return $this->getProcessorsL1code;
+    }
+    public function addGetProcessorsL1code(ProcessorPlatformType $getProcessorsL1code): self
+    {
+        if (!$this->getProcessorsL1code->contains($getProcessorsL1code)) {
+            $this->getProcessorsL1code[] = $getProcessorsL1code;
+            $getProcessorsL1code->setL1code($this);
+        }
+
+        return $this;
+    }
+    public function removeGetProcessorsL1code(ProcessorPlatformType $getProcessorsL1code): self
+    {
+        if ($this->getProcessorsL1code->contains($getProcessorsL1code)) {
+            $this->getProcessorsL1code->removeElement($getProcessorsL1code);
+            // set the owning side to null (unless already changed)
+            if ($getProcessorsL1code->getL1code() === $this) {
+                $getProcessorsL1code->setL1code(null);
+            }
         }
 
         return $this;

@@ -78,7 +78,7 @@
 				{% endif %}
 				{% include 'macros/notes.html.twig' with {'title': 'Electrical interface notes', 'entity': expansion_slot.getSignals()} %}
 				<!-- MANUALS -->
-				{% include 'macros/manuals.html.twig' with {'entity': expansion_slot.getAllDocs(), 'entity_label':'', 'audit_entity':'App-Entity-EntityDocumentation'} %}
+				{% include 'macros/docs.html.twig' with {'entity': expansion_slot.getAllDocs(), 'entity_label':'', 'audit_entity':'App-Entity-EntityDocumentation'} %}
 			</div>
 		</div>
 	</div>

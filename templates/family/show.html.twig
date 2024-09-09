@@ -107,7 +107,7 @@
 				{% endif %}
 				{% include 'macros/notes.html.twig' with {'entity': family} %}
 				<!-- MANUALS -->
-				{% include 'macros/manuals.html.twig' with {'entity': family.getEntityDocumentations(), 'entity_label':'', 'audit_entity':'App-Entity-EntityDocumentation'} %}
+				{% include 'macros/docs.html.twig' with {'entity': family.getEntityDocumentations(), 'entity_label':'', 'audit_entity':'App-Entity-EntityDocumentation'} %}
 			</div>
 		</div>
 	</div>

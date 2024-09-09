@@ -211,7 +211,7 @@ class Chipset
     /**
      * @return Collection|Chip[]
      */
-    public function getchips(): Collection
+    public function getChips(): Collection
     {
         $sortedChips = $this->chips->toArray();
 
@@ -315,7 +315,7 @@ class Chipset
     public function getAllDrivers(): Collection
     {
         $drivers = $this->drivers->toArray();
-        foreach ($this->getchips() as $chip) {
+        foreach ($this->getChips() as $chip) {
             $drivers = array_merge($drivers, $chip->getDrivers()->toArray());
         }
         return new ArrayCollection($drivers);
@@ -451,7 +451,7 @@ class Chipset
     public function getChipDocs(): Collection
     {
         $docs = [];
-        foreach ($this->getchips() as $chip) {
+        foreach ($this->getChips() as $chip) {
             $docs = array_merge($docs, $chip->getDocumentations()->toArray());
         }
         return new ArrayCollection($docs);

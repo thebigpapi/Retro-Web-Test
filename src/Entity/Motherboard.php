@@ -1120,5 +1120,22 @@ class Motherboard
         }
         return $driverChips;
     }
+    public function getFamilyDocs(): Collection
+    {
+        $docs = [];
+        foreach ($this->getProcessorPlatformTypes() as $family) {
+            $docs = array_merge($docs, $family->getEntityDocumentations()->toArray());
+        }
+        return new ArrayCollection($docs);
+    }
+
+    public function getSocketDocs(): Collection
+    {
+        $docs = [];
+        foreach ($this->getCpuSockets() as $socket) {
+            $docs = array_merge($docs, $socket->getEntityDocumentations()->toArray());
+        }
+        return new ArrayCollection($docs);
+    }
 
 }
