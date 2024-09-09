@@ -15,7 +15,6 @@ use App\Controller\Admin\Type\Chip\LargeFileCrudType;
 use App\Controller\Admin\Type\ExpansionCard\BiosCrudType;
 use App\Controller\Admin\Type\PciDeviceCrudType;
 use App\Entity\ChipAlias;
-use App\Entity\LargeFileExpansionChip;
 use App\Entity\PciDeviceId;
 use App\Form\Type\CpuSocketType;
 use App\Form\Type\KnownIssueChipType;
@@ -158,11 +157,11 @@ class ChipCrudController extends AbstractCrudController
         // editor
         yield AssociationField::new('type','Type')
             ->setFormTypeOption('placeholder', 'Type to select a type ...')
-            ->setColumns(4)
+            ->setColumns('col-sm-4 col-lg-3 col-xxl-4')
             ->onlyOnForms();
         yield AssociationField::new('family', 'Family')
             ->setFormTypeOption('placeholder', 'Type to select a family ...')
-            ->setColumns(2)
+            ->setColumns('col-sm-4 col-lg-3 col-xxl-2')
             ->onlyOnForms();
         yield NumberField::new('processNode', 'Process (in nm)')
             ->setColumns(2)
@@ -177,26 +176,26 @@ class ChipCrudController extends AbstractCrudController
             ->onlyOnForms();
         yield CollectionField::new('sockets', 'Socket')
             ->setEntryType(CpuSocketType::class)
-            ->setColumns(6)
+            ->setColumns('col-sm-6 col-lg-6 col-xxl-4')
             ->renderExpanded()
             ->onlyOnForms();
         yield CollectionField::new('pciDevs', 'Device ID')
             ->useEntryCrudForm(PciDeviceCrudType::class)
-            ->setColumns(4)
-            ->renderExpanded()
-            ->onlyOnForms();
-        yield CodeEditorField::new('description')
-            ->setLanguage('markdown')
-            ->onlyOnForms();
-        yield CollectionField::new('chipAliases', 'Chip aliases')
-            ->useEntryCrudForm(AliasCrudType::class)
-            ->setFormTypeOption('error_bubbling', false)
-            ->setColumns(6)
+            ->setColumns('col-sm-6 col-lg-6 col-xxl-4')
             ->renderExpanded()
             ->onlyOnForms();
         yield CollectionField::new('knownIssues', 'Known issues')
             ->setEntryType(KnownIssueChipType::class)
+            ->setColumns('col-sm-6 col-lg-6 col-xxl-4')
             ->renderExpanded()
+            ->onlyOnForms();
+        yield CollectionField::new('chipAliases', 'Chip aliases')
+            ->useEntryCrudForm(AliasCrudType::class)
+            ->setFormTypeOption('error_bubbling', false)
+            ->renderExpanded()
+            ->onlyOnForms();
+        yield CodeEditorField::new('description')
+            ->setLanguage('markdown')
             ->onlyOnForms();
         yield FormField::addTab('Specs')
             ->setIcon('tag.svg')
@@ -393,12 +392,6 @@ class ChipCrudController extends AbstractCrudController
             $newAlias->setPartNumber($alias->getPartNumber());
             $chip->addChipAlias($newAlias);
         }
-        /*foreach($old->getDrivers() as $driver){
-            $newDriver = new LargeFileExpansionChip();
-            $newDriver->setLargeFile($driver->getLargeFile());
-            $newDriver->setIsRecommended($driver->getIsRecommended());
-            $chip->addDriver($newDriver);
-        }*/
         return $chip;
     }
 }
