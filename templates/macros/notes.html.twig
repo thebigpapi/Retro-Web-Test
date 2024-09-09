@@ -12,7 +12,7 @@
 	</div>
 {% endif %}
 {% if entity.getChipKnownIssues() is defined and entity.getChipKnownIssues() is not empty %}
-	<div class="textarea last">
+	<div class="textarea {% if entity.getKnownIssues() is not defined %}last{% endif %}">
         {% if entity.getKnownIssues() is defined and entity.getKnownIssues() is empty %}No {% if entity.getType() is defined %}card{% else %}board{% endif %} specific known issues.{% endif %}
         {% set chipIssues = entity.getChipKnownIssues()%}
         {% for chipName, chipIssues in chipIssues %}

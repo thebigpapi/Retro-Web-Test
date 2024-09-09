@@ -1460,6 +1460,8 @@ div.spec-section{
     flex-direction: row;
     flex-wrap: wrap;
     gap: 6px;
+
+    
     th, td{
         text-align: center;
     }
@@ -1468,6 +1470,9 @@ div.spec-section{
         @media (prefers-color-scheme: dark) {
             background-color: $accent-bkg-dark;
         }
+    }
+    @media screen and (min-width: 750px) {
+        max-width: min(66vw, 1015px);
     }
 }
 

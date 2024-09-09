@@ -221,7 +221,7 @@
 				{% endif %}
 				<!-- Expansion chips specs -->
 				{% if expansioncard.getChips()|filter(a => a.getMiscSpecs() is not empty) is not empty %}
-					<div style="padding: 6px 0px;"><b style="font-size:20px;">Chip specifications </b><small>(click to expand)</small></div>
+					<h3>Chip specifications:</h3>
 					{% for chip in expansioncard.getChips()|filter(a => a.getMiscSpecs() is not empty)%}
 						<div class="dropdown-trw">
 							<label class="dropdown-header" onclick="expandDropdown(this)">
