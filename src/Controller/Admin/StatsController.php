@@ -76,22 +76,23 @@ class StatsController extends AbstractDashboardController
     public function storageStats(): Response
     {
         $sizeTree = array();
-        $total = 0;
-        $this->folderSize(substr(__DIR__, 0, -20) . "public/", $sizeTree, $total);
+
+        $projectRootDir = $this->getParameter('kernel.project_dir') . '/public';
+        $this->folderSize($projectRootDir, $sizeTree, $total);
         return $this->render('admin/stats/size.html.twig', [
-            'boardTotal' => $this->convertSize($sizeTree["/motherboard"]),
-            'chipTotal' => $this->convertSize($sizeTree["/chip"]),
-            'cardTotal' => $this->convertSize($sizeTree["/expansioncard"]),
-            'storTotal' => $this->convertSize($sizeTree["/storage"]),
-            'driverTotal' => $this->convertSize($sizeTree["/uploads"]),
-            'miscTotal' => $this->convertSize($sizeTree["/misc"]),
-            'chipsetTotal' => $this->convertSize($sizeTree["/chipset"]),
+            'boardTotal' => $this->convertSize($sizeTree[$projectRootDir . "/motherboard"] ?? 0),
+            'chipTotal' => $this->convertSize($sizeTree[$projectRootDir . "/chip"] ?? 0),
+            'cardTotal' => $this->convertSize($sizeTree[$projectRootDir . "/expansioncard"] ?? 0),
+            'storTotal' => $this->convertSize($sizeTree[$projectRootDir . "/storage"] ?? 0),
+            'driverTotal' => $this->convertSize($sizeTree[$projectRootDir . "/uploads"] ?? 0),
+            'miscTotal' => $this->convertSize($sizeTree[$projectRootDir . "/misc"] ?? 0),
+            'chipsetTotal' => $this->convertSize($sizeTree[$projectRootDir . "/chipset"] ?? 0),
             'total' => $this->convertSize($total),
-            'boardStorage' => $this->createSizeBoardChart($sizeTree),
-            'chipStorage' => $this->createSizeChipChart($sizeTree),
-            'cardStorage' => $this->createSizeCardChart($sizeTree),
-            'storStorage' => $this->createSizeStorageChart($sizeTree),
-            'miscStorage' => $this->createSizeMiscChart($sizeTree),
+            'boardStorage' => $this->createSizeBoardChart($sizeTree, $projectRootDir),
+            'chipStorage' => $this->createSizeChipChart($sizeTree, $projectRootDir),
+            'cardStorage' => $this->createSizeCardChart($sizeTree, $projectRootDir),
+            'storStorage' => $this->createSizeStorageChart($sizeTree, $projectRootDir),
+            'miscStorage' => $this->createSizeMiscChart($sizeTree, $projectRootDir),
         ]);
     }
 
@@ -120,7 +121,7 @@ class StatsController extends AbstractDashboardController
                 $result += $this->folderSize($each, $tree, $total);
             }
         }
-        $tree[substr($dir, 19)] = $size + $result;
+        $tree[$dir] = $size + $result;
         $total += $size;
         return $size;
     }
@@ -275,45 +276,45 @@ class StatsController extends AbstractDashboardController
         return $this->getData($newarray, 'chipsetDoc');
     }
     //storage size charts
-    private function createSizeBoardChart(array $sizeTree): array
+    private function createSizeBoardChart(array $sizeTree, string $projectRootDir): array
     {
         $newarray = array();
-        $newarray['Images'] = $sizeTree["/motherboard/image"];
-        $newarray['BIOSes'] = $sizeTree["/motherboard/bios"];
-        $newarray['Manuals'] = $sizeTree["/motherboard/manual"];
-        $newarray['Misc files'] = $sizeTree["/motherboard/miscfile"];
+        $newarray['Images'] = $sizeTree[$projectRootDir . "/motherboard/image"];
+        $newarray['BIOSes'] = $sizeTree[$projectRootDir . "/motherboard/bios"];
+        $newarray['Manuals'] = $sizeTree[$projectRootDir . "/motherboard/manual"];
+        $newarray['Misc files'] = $sizeTree[$projectRootDir . "/motherboard/miscfile"];
         return $this->getData($newarray, 'sizeBoard');
     }
-    private function createSizeChipChart(array $sizeTree): array
+    private function createSizeChipChart(array $sizeTree, string $projectRootDir): array
     {
         $newarray = array();
-        $newarray['Images'] = $sizeTree["/chip/image"];
-        $newarray['BIOSes'] = $sizeTree["/chip/bios"];
-        $newarray['Documentation'] = $sizeTree["/chip/documentation"];
+        $newarray['Images'] = $sizeTree[$projectRootDir . "/chip/image"];
+        $newarray['BIOSes'] = $sizeTree[$projectRootDir . "/chip/bios"];
+        $newarray['Documentation'] = $sizeTree[$projectRootDir . "/chip/documentation"];
         return $this->getData($newarray, 'sizeChip');
     }
-    private function createSizeCardChart(array $sizeTree): array
+    private function createSizeCardChart(array $sizeTree, string $projectRootDir): array
     {
         $newarray = array();
-        $newarray['Images'] = $sizeTree["/expansioncard/image"];
-        $newarray['BIOSes'] = $sizeTree["/expansioncard/bios"];
-        $newarray['Documentation'] = $sizeTree["/expansioncard/documentation"];
+        $newarray['Images'] = $sizeTree[$projectRootDir . "/expansioncard/image"];
+        $newarray['BIOSes'] = $sizeTree[$projectRootDir . "/expansioncard/bios"];
+        $newarray['Documentation'] = $sizeTree[$projectRootDir . "/expansioncard/documentation"];
         return $this->getData($newarray, 'sizeCard');
     }
-    private function createSizeStorageChart(array $sizeTree): array
+    private function createSizeStorageChart(array $sizeTree, string $projectRootDir): array
     {
         $newarray = array();
-        $newarray['Images'] = $sizeTree["/storage/image"];
-        $newarray['Audio'] = $sizeTree["/storage/audiofile"];
-        $newarray['Documentation'] = $sizeTree["/storage/documentation"];
-        $newarray['Misc files'] = $sizeTree["/storage/miscfile"];
+        $newarray['Images'] = $sizeTree[$projectRootDir . "/storage/image"];
+        $newarray['Audio'] = $sizeTree[$projectRootDir . "/storage/audiofile"];
+        $newarray['Documentation'] = $sizeTree[$projectRootDir . "/storage/documentation"];
+        $newarray['Misc files'] = $sizeTree[$projectRootDir . "/storage/miscfile"];
         return $this->getData($newarray, 'sizeStorage');
     }
-    private function createSizeMiscChart(array $sizeTree): array
+    private function createSizeMiscChart(array $sizeTree, string $projectRootDir): array
     {
         $newarray = array();
-        $newarray['Images'] = $sizeTree["/misc/image"];
-        $newarray['Documentation'] = $sizeTree["/misc/documentation"];
+        $newarray['Images'] = $sizeTree[$projectRootDir . "/misc/image"];
+        $newarray['Documentation'] = $sizeTree[$projectRootDir . "/misc/documentation"];
         return $this->getData($newarray, 'sizeMisc');
     }
 }
