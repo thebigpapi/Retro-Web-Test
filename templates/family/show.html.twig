@@ -13,7 +13,7 @@
 {% block opengraph %}
 	{% apply spaceless %}
 	<meta property="og:title" content="{{ family.getName() }}">
-	<meta property="og:description" content="Get CPU family info for {{ family.getName() }}!">
+	<meta property="og:description" content="Get chip family info for {{ family.getName() }}!">
 	{% endapply %}
 	<link rel="alternate" hreflang="x-default" href="{{ absolute_url(path('family_show', {id: family.getId()})) }}"/>
 {% endblock %}
@@ -25,7 +25,7 @@
         </svg>
         <div class="navbar-anchor">
 			<img src="{{ absolute_url(asset('build/icons/486.svg')) }}" width="32" height="32" alt="cpu">
-            <code class="text-pink-500">CPU families</code>
+            <code class="text-pink-500">Chip families</code>
         </div>
     </div>
 </li>
@@ -94,8 +94,8 @@
 					<div class="toolbar">
 						<a class='button-widget' href="{{ absolute_url(path('app_homepage')) }}motherboards/?platform1={{ family.getId() }}">
 							<img src='{{ absolute_url(asset('build/icons/hardware.svg')) }}' alt='' width='16' height='16' style='vertical-align:middle;padding:3px;'>See all compatible boards</a>
-						<a class='button-widget' href="{{ absolute_url(path('app_homepage')) }}cpus/?platformIds%5B0%5D={{ family.getId() }}">
-							<img src='{{ absolute_url(asset('build/icons/486.svg')) }}' alt='' width='16' height='16' style='vertical-align:middle;padding:3px;'>See all CPUs for this family</a>
+						<a class='button-widget' href="{{ absolute_url(path('app_homepage')) }}chips/?itemsPerPage=24&familyIds%5B0%5D={{ family.getId() }}">
+							<img src='{{ absolute_url(asset('build/icons/486.svg')) }}' alt='' width='16' height='16' style='vertical-align:middle;padding:3px;'>See all chips for this family</a>
 						</div>
 					</div>
 				</div>

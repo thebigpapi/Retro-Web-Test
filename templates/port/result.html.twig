@@ -9,8 +9,8 @@
 				<div class="perk">
 					<a href="{{ path("io_port_show", {id: ioport.getId()}) }}">
 						<div class="perk-image">
-						{% if ioport.getEntityImages() is not empty %}
-							{% for image in ioport.getEntityImages()|sort((a, b) => a.getFileName() <=> b.getFileName())|slice(0, 1) %}
+						{% if ioport.getAllImages() is not empty %}
+							{% for image in ioport.getAllImages()|sort((a, b) => a.getFileName() <=> b.getFileName())|slice(0, 1) %}
 								<img src="{% if vich_uploader_asset(image, 'imageFile') | ext != "svg" %}
 								{{ vich_uploader_asset(image, 'imageFile') | imagine_filter('show_thumb') }}{% else %}
 								{{ vich_uploader_asset(image, 'imageFile')}}{% endif %}" alt="" loading="lazy" width="250" height="200" title="{% if image.description %}{{ image.description }}{% endif %}">

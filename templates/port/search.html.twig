@@ -40,14 +40,14 @@
 					<div>{{ form_widget(form.name, {'attr': {'placeholder': 'Short name or full name ...'}}) }}</div>
 				</div>
 			</div>
-			{% include 'macros/searchitems.html.twig' with {'datatarget': 'ioports', 'dataresetids': '', 'search_with_images' : true} %}
+			{% include 'macros/searchitems.html.twig' with {'datatarget': 'io-ports', 'dataresetids': '', 'search_with_images' : true} %}
 		</section>
 	</fieldset>
 	{{ form_end(form, {render_rest: false}) }}
 	<!-- Search results -->
 	<section id="search_liveResults">
 	{% if ioports is defined %}
-		{% include 'ioport/result.html.twig' with {'ioports': ioports, 'route': true} %}
+		{% include 'port/result.html.twig' with {'ioports': ioports, 'route': true} %}
 	{% endif %}
 	</section>
 {% endblock %}

@@ -40,14 +40,14 @@
 					<div>{{ form_widget(form.name, {'attr': {'placeholder': 'Short name or full name ...'}}) }}</div>
 				</div>
 			</div>
-			{% include 'macros/searchitems.html.twig' with {'datatarget': 'expansionslots', 'dataresetids': '', 'search_with_images' : true} %}
+			{% include 'macros/searchitems.html.twig' with {'datatarget': 'expansion-slots', 'dataresetids': '', 'search_with_images' : true} %}
 		</section>
 	</fieldset>
 	{{ form_end(form, {render_rest: false}) }}
 	<!-- Search results -->
 	<section id="search_liveResults">
 	{% if expansionslots is defined %}
-		{% include 'expansionslot/result.html.twig' with {'expansionslots': expansionslots, 'route': true} %}
+		{% include 'slot/result.html.twig' with {'expansionslots': expansionslots, 'route': true} %}
 	{% endif %}
 	</section>
 {% endblock %}

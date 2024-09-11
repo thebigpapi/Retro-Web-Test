@@ -13,7 +13,7 @@
 {% block opengraph %}
 	{% apply spaceless %}
 	<meta property="og:title" content="{{ socket.getNameAndType() }}">
-	<meta property="og:description" content="Get CPU family info for {{ socket.getNameAndType() }}!">
+	<meta property="og:description" content="Get socket info for {{ socket.getNameAndType() }}!">
 	{% if socket.getEntityImages() is not empty %}
 		{% for image in socket.getEntityImages()|sort((a, b) => a.getFileName() <=> b.getFileName())|slice(0, 1) %}
 			<meta name="twitter:image" content="{{ vich_uploader_asset(image, 'imageFile')}}">

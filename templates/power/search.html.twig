@@ -40,7 +40,7 @@
 					<div>{{ form_widget(form.name, {'attr': {'placeholder': 'Short name or full name ...'}}) }}</div>
 				</div>
 			</div>
-			{% include 'macros/searchitems.html.twig' with {'datatarget': 'powerconns', 'dataresetids': '', 'search_with_images' : true} %}
+			{% include 'macros/searchitems.html.twig' with {'datatarget': 'power-connectors', 'dataresetids': '', 'search_with_images' : true} %}
 		</section>
 	</fieldset>
 	{{ form_end(form, {render_rest: false}) }}

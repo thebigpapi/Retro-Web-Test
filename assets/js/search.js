@@ -131,7 +131,7 @@ function updateFields(params) {
             key.includes("dramTypeIds") ||
             key.includes("cardTypeIds") ||
             key.includes("socketIds") ||
-            key.includes("platformIds")
+            key.includes("familyIds")
             ) {
             updateMultiSelect(key, value);
         }
@@ -169,9 +169,12 @@ function updateFields(params) {
 function updateMultiSelect(key, value) {
     let type = key.split("Ids%5B")
     let pos = type[1].split("%5D")[0];
-    let add = document.getElementById(type[0] + "s-add-id");
+    let el = type[0];
+    if(el == "family")
+        el = "familie";
+    let add = document.getElementById(el + "s-add-id");
     add.click();
-    let select = document.getElementById("search_" + type[0] + "s_" + pos);
+    let select = document.getElementById("search_" + el + "s_" + pos);
     select.value = value;
     select.tomselect.sync();
 }
