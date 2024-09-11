@@ -1,0 +1,29 @@
+<div class="perks">
+    {% if not lastEditedMode %}{{ knp_pagination_render(entities, 'macros/pagination.html.twig') }}{% endif %}
+	<p><b>{% if lastEditedMode %}Last edited{% else %}Results{% endif %}</b></p>
+	<div id="index-datetime" class="perks-list">
+	{% for item in entities %}
+		<div class="perk">
+			<a href="{{ path(item.type ~ '_show', {id:item.id}) }}">
+				<div class="perk-image">
+                {% if item.file_name is not empty %}
+                    {% if "now"|date("m") == 4 and "now"|date("d") == 1 %}
+                        <img src="{{ absolute_url(asset('build/images/m666.jpg')) }}" loading="lazy" width="250" height="200" title="looks like someone deleted all the images, only this one survived">
+                    {% else %}
+                    {% set imgPath = '/' ~ item.type ~ '/image/' ~ item.file_name %}
+                        <img src="{% if imgPath | ext != "svg" %}
+                            {{ imgPath | imagine_filter('show_thumb') }}{% else %}
+                            {{ imgPath }}{% endif %}" alt="" loading="lazy" width="250" height="200">
+                    {% endif %}
+                {% else %}
+                    <img src="{{ absolute_url(asset('build/images/missing/board-missing.jpg')) }}" alt="missing image" loading="lazy" width="250" height="200" title="no images available :(">
+                {% endif %}
+                </div>
+				<div class="perk-name">{{ item.name }}</div>
+				<div class="perk-date">{{ item.last_edited|date("Y-m-d\\TH:i:s", "GMT") }}Z</div>
+			</a>
+		</div>
+	{% endfor %}
+	</div>
+    {% if not lastEditedMode %}{{ knp_pagination_render(entities, 'macros/pagination.html.twig') }}{% endif %}
+</div>

@@ -109,7 +109,7 @@ class ChipsetCrudController extends AbstractCrudController
             ->add('part_no')
             ->add(ChipDocFilter::new('documentations'))
             ->add(ChipDriverFilter::new('drivers'))
-            ->add('expansionChips')
+            ->add('chips')
             ->add('chipsetAliases')
             ->add('lastEdited');
     }
@@ -127,7 +127,7 @@ class ChipsetCrudController extends AbstractCrudController
             ->setColumns(4);
         yield ArrayField::new('getPartsCached', 'Parts')
             ->onlyOnIndex();
-        yield ArrayField::new('expansionChips', 'Parts')
+        yield ArrayField::new('chips', 'Parts')
             ->onlyOnDetail();
         yield DateField::new('releaseDate', 'Release Date')
             ->setColumns(2)
@@ -155,10 +155,9 @@ class ChipsetCrudController extends AbstractCrudController
         yield CodeEditorField::new('description')
             ->setLanguage('markdown')
             ->onlyOnForms();
-        yield CollectionField::new('expansionChips', 'Parts')
-            ->setEntryType(ExpansionChipType::class)
-            ->setColumns('col-sm-12 col-lg-6 col-xxl-4')
-            ->renderExpanded()
+        yield AssociationField::new('chips', 'Parts')
+            ->autocomplete()
+            ->setColumns('col-sm-12 col-lg-8 col-xxl-6 multi-widget-trw')
             ->onlyOnForms();
         yield CollectionField::new('biosCodes', 'BIOS codes')
             ->useEntryCrudForm(BiosCodeCrudType::class)
@@ -294,8 +293,8 @@ class ChipsetCrudController extends AbstractCrudController
         $chipset->setEncyclopediaLink($old->getEncyclopediaLink());
         $chipset->setDescription($old->getDescription());
         $chipset->setLastEdited(new \DateTime('now'));
-        foreach ($old->getExpansionChips() as $chip) {
-            $chipset->addExpansionChip($chip);
+        foreach ($old->getChips() as $chip) {
+            $chipset->addChip($chip);
         }
         foreach ($old->getChipsetAliases() as $alias) {
             $newAlias = new ChipsetAlias();

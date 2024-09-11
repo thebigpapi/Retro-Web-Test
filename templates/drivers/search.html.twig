@@ -7,7 +7,8 @@
 	<link rel="alternate" hreflang="x-default" href="{{ absolute_url(path('driversearch')) }}"/>
 {% endblock %}
 {% block extra_javascripts %}
-	<script src="/build/js/tom-select.complete.min.js" defer></script>
+	<script src="/build/js/tom-select.js" defer></script>
+	<script src="/build/js/show.js" defer></script>
 	<script src="/build/js/search.js" defer></script>
 {% endblock %}
 {% block subnav %}
@@ -17,7 +18,7 @@
             <path d="M.293 0l22 22-22 22h1.414l22-22-22-22H.293z"></path>
         </svg>
         <a class="ml-4" href="{{ path('driversearch') }}">
-			<img src="{{ absolute_url(asset('build/icons/hardware.svg')) }}" width="24" height="24" alt="driver">
+			<img src="{{ absolute_url(asset('build/icons/hardware.svg')) }}" width="32" height="32" alt="driver">
             <code class="text-pink-500">Drivers &amp; software</code>
         </a>
     </div>
@@ -50,7 +51,7 @@
 			{% include 'macros/searchitems.html.twig' with {'datatarget': 'drivers', 'dataresetids': ''} %}
 		</section>
 		<div class="dropdown-trw">
-			<label class="dropdown-header">
+			<label class="dropdown-header" onclick="expandDropdown(this)">
 				<img src="{{ absolute_url(asset('build/icons/search.svg')) }}" alt="search" width="24" height="24">
 				<span>Advanced search<small class="dropdown-tooltip"> (click to expand)</small></span>
 				<input class="dropdown" type="checkbox" />

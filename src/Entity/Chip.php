@@ -9,8 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: 'App\Repository\ChipRepository')]
-#[ORM\InheritanceType('JOINED')]
-abstract class Chip
+class Chip
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -21,24 +20,57 @@ abstract class Chip
     #[Assert\Length(max: 32, maxMessage: 'String is longer than {{ limit }} characters.')]
     protected $name;
 
-    #[ORM\Column(type: 'string', length: 255)]
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     #[Assert\Length(max: 255, maxMessage: 'String is longer than {{ limit }} characters.')]
     protected $partNumber;
 
     #[ORM\ManyToOne(targetEntity: Manufacturer::class, inversedBy: 'chips', fetch: 'EAGER')]
     protected $manufacturer;
 
+    #[ORM\ManyToMany(targetEntity: Motherboard::class, mappedBy: 'chips')]
+    private Collection $motherboards;
+
+    #[ORM\ManyToMany(targetEntity: Chipset::class, mappedBy: 'chips')]
+    private Collection $chipsets;
+
+    #[ORM\OneToMany(targetEntity: LargeFileExpansionChip::class, mappedBy: 'chip', orphanRemoval: true, cascade: ['persist'])]
+    #[Assert\Valid()]
+    private Collection $drivers;
+
+    #[ORM\Column(length: 8192, nullable: true)]
+    private ?string $description = null;
+
+    #[ORM\ManyToMany(targetEntity: ExpansionCard::class, mappedBy: 'chips')]
+    private Collection $expansionCards;
+
+    #[ORM\OneToMany(mappedBy: 'chip', targetEntity: ExpansionChipBios::class, orphanRemoval: true, cascade: ['persist'])]
+    #[Assert\Valid()]
+    private Collection $chipBios;
+
     #[ORM\OneToMany(targetEntity: ChipDocumentation::class, mappedBy: 'chip', orphanRemoval: true, cascade: ['persist'])]
     #[Assert\Valid()]
-    protected $documentations;
+    protected Collection $documentations;
+
+    #[ORM\ManyToMany(targetEntity: CpuSocket::class, inversedBy: 'chips')]
+    #[Assert\Valid()]
+    private Collection $sockets;
+
+    #[ORM\ManyToOne(targetEntity: ProcessorPlatformType::class, inversedBy: 'chips')]
+    protected $family;
+
+    #[ORM\Column(type: 'float', nullable: true)]
+    private $tdp;
+
+    #[ORM\Column(type: 'integer', nullable: true)]
+    private $processNode;
 
     #[ORM\OneToMany(targetEntity: ChipAlias::class, mappedBy: 'chip', orphanRemoval: true, cascade: ['persist'])]
     #[Assert\Valid()]
-    private $chipAliases;
+    private Collection $chipAliases;
 
     #[ORM\OneToMany(targetEntity: ChipImage::class, mappedBy: 'chip', orphanRemoval: true, cascade: ['persist'])]
     #[Assert\Valid()]
-    private $images;
+    private Collection $images;
 
     #[ORM\OneToMany(mappedBy: 'chip', targetEntity: PciDeviceId::class, orphanRemoval: true, cascade: ['persist'])]
     #[Assert\Valid()]
@@ -52,20 +84,46 @@ abstract class Chip
     #[Assert\Positive(message: "Sort position should be above 0")]
     private ?int $sort = null;
 
-    #[ORM\ManyToOne(targetEntity: ExpansionChipType::class, inversedBy: 'expansionChips')]
+    #[ORM\ManyToOne(targetEntity: ExpansionChipType::class, inversedBy: 'chips')]
     #[ORM\JoinColumn(nullable: false)]
     private $type;
 
     #[ORM\Column(type: Types::JSON, options: ['jsonb' => true])]
     private ?array $miscSpecs = [];
 
+    #[ORM\ManyToMany(targetEntity: KnownIssue::class, inversedBy: 'chips')]
+    private Collection $knownIssues;
+
     public function __construct()
     {
+        $this->motherboards = new ArrayCollection();
+        $this->chipsets = new ArrayCollection();
+        $this->drivers = new ArrayCollection();
+        $this->expansionCards = new ArrayCollection();
+        $this->chipBios = new ArrayCollection();
+        $this->sockets = new ArrayCollection();
         $this->chipAliases = new ArrayCollection();
         $this->images = new ArrayCollection();
         $this->pciDevs = new ArrayCollection();
+        $this->knownIssues = new ArrayCollection();
+        $this->documentations = new ArrayCollection();
         $this->lastEdited = new \DateTime('now');
     }
+    public function __toString(): string
+    {
+        return $this->getFullName() . $this->getAllAliases();
+    }
+    public function getAllAliases(): string
+    {
+        if($this->getChipAliases()->isEmpty())
+            return "";
+        $aliases = " [";
+        foreach($this->getChipAliases() as $alias){
+            $aliases .= $alias->getPartNumber() ? $alias->getPartNumber() . ", ": "";
+        }
+        return substr($aliases, 0, -2) . "]";
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -84,7 +142,7 @@ abstract class Chip
     {
         return $this->partNumber;
     }
-    public function setPartNumber(string $partNumber): self
+    public function setPartNumber(?string $partNumber): self
     {
         $this->partNumber = $partNumber;
 
@@ -100,12 +158,228 @@ abstract class Chip
 
         return $this;
     }
+    public function getManufacturerAndPN()
+    {
+        return ($this->getManufacturer()?->getName() ?? '[unknown]') . " " . $this->partNumber ?: '';
+    }
+
+    /**
+     * @return Collection|Motherboard[]
+     */
+    public function getMotherboards(): Collection
+    {
+        return $this->motherboards;
+    }
+    public function addMotherboard(Motherboard $motherboard): self
+    {
+        if (!$this->motherboards->contains($motherboard)) {
+            $this->motherboards[] = $motherboard;
+            $motherboard->addChip($this);
+        }
+
+        return $this;
+    }
+    public function removeMotherboard(Motherboard $motherboard): self
+    {
+        if ($this->motherboards->removeElement($motherboard)) {
+            $motherboard->removeChip($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Chipset[]
+     */
+    public function getChipsets(): Collection
+    {
+        return $this->chipsets;
+    }
+    public function addChipset(Chipset $chipset): self
+    {
+        if (!$this->chipsets->contains($chipset)) {
+            $this->chipsets[] = $chipset;
+            $chipset->addChip($this);
+        }
+
+        return $this;
+    }
+    public function removeChipset(Chipset $chipset): self
+    {
+        if ($this->chipsets->contains($chipset)) {
+            $this->chipsets->removeElement($chipset);
+            // set the owning side to null (unless already changed)
+            if ($chipset->getChips()->contains($this)) {
+                $chipset->removeChip($this);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|LargeFileExpansionChip[]
+     */
+    public function getDrivers(): Collection
+    {
+        return $this->drivers;
+    }
+    public function addDriver(LargeFileExpansionChip $driver): self
+    {
+        if (!$this->drivers->contains($driver)) {
+            $this->drivers[] = $driver;
+            $driver->setChip($this);
+        }
+
+        return $this;
+    }
+    public function removeDriver(LargeFileExpansionChip $driver): self
+    {
+        if ($this->drivers->removeElement($driver)) {
+            // set the owning side to null (unless already changed)
+            if ($driver->getChip() === $this) {
+                $driver->setChip(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(?string $description): self
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ExpansionChipBios>
+     */
+    public function getChipBios(): Collection
+    {
+        return $this->chipBios;
+    }
+
+    public function addChipBio(ExpansionChipBios $chipBio): static
+    {
+        if (!$this->chipBios->contains($chipBio)) {
+            $this->chipBios->add($chipBio);
+            $chipBio->setChip($this);
+        }
+
+        return $this;
+    }
+
+    public function removeChipBio(ExpansionChipBios $chipBio): static
+    {
+        if ($this->chipBios->removeElement($chipBio)) {
+            // set the owning side to null (unless already changed)
+            if ($chipBio->getChip() === $this) {
+                $chipBio->setChip(null);
+            }
+        }
+
+        return $this;
+    }
+    public function isChipBios(): bool
+    {
+        if(isset($this->chipBios))
+            if(count($this->chipBios) > 0)
+                return true;
+        return false;
+    }
+
+    /**
+     * @return Collection|CpuSocket[]
+     */
+    public function getSockets(): Collection
+    {
+        return $this->sockets;
+    }
+    public function addSocket(CpuSocket $socket): self
+    {
+        if (!$this->sockets->contains($socket)) {
+            $this->sockets[] = $socket;
+        }
+
+        return $this;
+    }
+    public function removeSocket(CpuSocket $socket): self
+    {
+        if ($this->sockets->contains($socket)) {
+            $this->sockets->removeElement($socket);
+        }
+
+        return $this;
+    }
+
+    public function getFamily(): ?ProcessorPlatformType
+    {
+        return $this->family;
+    }
+    public function setFamily(?ProcessorPlatformType $family): self
+    {
+        $this->family = $family;
+
+        return $this;
+    }
+
+    public function getTdp(): ?float
+    {
+        return $this->tdp;
+    }
+    public function setTdp(?float $tdp): self
+    {
+        $this->tdp = $tdp;
+
+        return $this;
+    }
+    public function getProcessNode(): ?int
+    {
+        return $this->processNode;
+    }
+    public function setProcessNode(?int $processNode): self
+    {
+        $this->processNode = $processNode;
+
+        return $this;
+    }
+
+    public function getProcessNodeWithValue(): string
+    {
+        return $this->processNode ? $this->processNode . "nm" : "";
+    }
+    public function getTdpWithValue(): string
+    {
+        return $this->tdp ? $this->tdp . "W" : "";
+    }
+
     public function getNameWithoutManuf(): string
     {
-        if ($this->name) {
-            return $this->partNumber . " (" . $this->name . ")";
+        if ($this->partNumber) {
+            if ($this->name) {
+                return $this->partNumber . " (" . $this->name . ")";
+            }
+            return $this->partNumber;
         }
-        return $this->partNumber;
+        return $this->name;
+    }
+
+    public function getFullName(): string
+    {
+        $manuf = $this->getManufacturer()?->getName() ?? "[unknown]";
+        if ($this->partNumber) {
+            if ($this->name) {
+                return $manuf . " " . $this->partNumber . " (" . $this->name . ")";
+            }
+            return $manuf . " " . $this->partNumber;
+        }
+        return $manuf . " " . $this->name;
     }
     /**
      * @return Collection|ChipAlias[]
@@ -176,6 +450,34 @@ abstract class Chip
     }
 
     /**
+     * @return Collection|ExpansionCard[]
+     */
+    public function getExpansionCards(): Collection
+    {
+        return $this->images;
+    }
+    public function addExpansionCard(ExpansionCard $expansionCard): self
+    {
+        if (!$this->expansionCards->contains($expansionCard)) {
+            $this->expansionCards[] = $expansionCard;
+            $expansionCard->addChip($this);
+        }
+
+        return $this;
+    }
+    public function removeExpansionCard(ExpansionCard $expansionCard): self
+    {
+        if ($this->expansionCards->contains($expansionCard)) {
+            $this->expansionCards->removeElement($expansionCard);
+            if ($expansionCard->getChips()->contains($this)) {
+                $expansionCard->removeChip($this);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
      * @return Collection|ChipDocumentation[]
      */
     public function getDocumentations(): Collection
@@ -215,12 +517,13 @@ abstract class Chip
     public function getPciDevsLimited(): ?array
     {
         $result = array();
-        $idx = 1;
+        $idx = 0;
         foreach($this->pciDevs as $dev){
             $idx++;
             array_push($result, $dev->getDev());
-            if($idx > 3){
-                array_push($result, "...");
+            if($idx > 2){
+                if(count($this->pciDevs) > 3)
+                    array_push($result, "...");
                 break;
             }
         }
@@ -275,15 +578,22 @@ abstract class Chip
 
         return $this;
     }
-    public function getAllVendors(): Collection
+    public function getChipVendors(): Collection
     {
         $vendors = $this->getManufacturer()?->getPciVendorIds()->toArray() ?? [];
+        return new ArrayCollection($vendors);
+    }
+    public function getAliasVendors(): Collection
+    {
+        $vendors = [];
+        $mainVendor= $this->getManufacturer()?->getId() ?? null;
         foreach($this->getChipAliases() as $alias){
             $aliasVendors = $alias->getManufacturer()?->getPciVendorIds()->toArray() ?? [];
-            if(count($aliasVendors) > 0)
+            $aliasId = $alias->getManufacturer()?->getId() ?? null;
+            if(count($aliasVendors) > 0 && $aliasId != $mainVendor)
                 $vendors = array_merge($vendors, $aliasVendors);
         }
-        return new ArrayCollection($vendors);
+        return new ArrayCollection(array_unique($vendors));
     }
 
     public function getType(): ?ExpansionChipType
@@ -322,8 +632,22 @@ abstract class Chip
     }
     public function getTableMiscSpecs(): array
     {
-        $output = [];
+        //Json inheritance from the family
+        $miscSpecs = $this->getFamily()?->getMiscSpecs() ?? [];
         foreach($this->getMiscSpecs() as $key => $value){
+            if(is_array($value)) {
+                if (!array_key_exists($key, $miscSpecs)) {
+                    $miscSpecs[$key] = [];
+                }
+                foreach($value as $key2 => $value2) {
+                    $miscSpecs[$key][$key2] = $value2;
+                }
+            } else {
+                $miscSpecs[$key] = $value;
+            }
+        }
+        $output = [];
+        foreach($miscSpecs as $key => $value){
             if(is_array($value))
                 $output[$key] = $value;
         }
@@ -343,5 +667,55 @@ abstract class Chip
         $this->miscSpecs = $miscSpecs;
 
         return $this;
+    }
+
+    public function getAllDocs(): Collection
+    {
+        $docs = $this->getFamily()?->getEntityDocumentations()->toArray() ?? [];
+        return new ArrayCollection($docs);
+    }
+
+    // dummy function used for the mini driver editor
+    public function getChipsWithDrivers(): array
+    {
+        return [];
+    }
+
+    /**
+     * @return Collection<int, KnownIssue>
+     */
+    public function getKnownIssues(): Collection
+    {
+        return $this->knownIssues;
+    }
+
+    public function addKnownIssue(KnownIssue $knownIssue): static
+    {
+        if (!$this->knownIssues->contains($knownIssue)) {
+            $this->knownIssues->add($knownIssue);
+        }
+
+        return $this;
+    }
+
+    public function removeKnownIssue(KnownIssue $knownIssue): static
+    {
+        $this->knownIssues->removeElement($knownIssue);
+
+        return $this;
+    }
+
+    public function getFamilyDocs(): Collection
+    {
+        return $this->getFamily()?->getEntityDocumentations() ?? new ArrayCollection();
+    }
+
+    public function getSocketDocs(): Collection
+    {
+        $docs = [];
+        foreach ($this->getSockets() as $socket) {
+            $docs = array_merge($docs, $socket->getEntityDocumentations()->toArray());
+        }
+        return new ArrayCollection($docs);
     }
 }

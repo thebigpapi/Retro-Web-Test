@@ -1,46 +1,42 @@
 {% if route is defined and route == true %}{% set typeid = 'route-results' %}{% else %}{% set typeid = domTarget %}{% endif %}
 <div id="{{ typeid }}">
 {% if cdds is defined and cdds is not empty %}
-	<div class="results{% if not show_images %} lst{% endif %}">
+	<div class="results">
 		{{ knp_pagination_render(cdds, 'macros/pagination_async.html.twig') }}
-		{% if show_images %}
-			<div class="perks">
-				<div id="index-datetime" class="perks-list">
-				{% for cdd in cdds %}
-					<div class="perk">
-						<a href="{{ path("cd_drive_show", {id: cdd.getId()}) }}">
-							<div class="perk-image">
-							{% if cdd.getStorageDeviceImages() is not empty %}
-								{% set imgtype_count = 0 %}
-								{% for image in cdd.getStorageDeviceImages()|filter(a => a.type in ["1", "2", "3"])|sort((a, b) => a.getFileName() <=> b.getFileName())|sort((a, b) => b.getType <=> a.getType)|slice(0, 1) %}
-									<img src="{% if vich_uploader_asset(image, 'imageFile') | ext != "svg" %}
-									{{ vich_uploader_asset(image, 'imageFile') | imagine_filter('show_thumb') }}{% else %}
-									{{ vich_uploader_asset(image, 'imageFile')}}{% endif %}" alt="" loading="lazy" width="250" height="200" title="{% if image.description %}{{ image.description }}{% endif %}">
-									{% set imgtype_count = imgtype_count + 1 %}
-								{% endfor %}
-								{% if imgtype_count == 0 %}
-									<img src="{{ absolute_url(asset('build/images/missing/cdd-missing.jpg')) }}" loading="lazy" width="250" height="200" title="no images available :(">
-								{% endif %}
-							{% else %}
+		<div class="perks">
+			<div id="index-datetime" class="perks-list">
+			{% for cdd in cdds %}
+				<div class="perk">
+					<a href="{{ path("cd_drive_show", {id: cdd.getId()}) }}">
+						<div class="perk-image">
+						{% if cdd.getStorageDeviceImages() is not empty %}
+							{% set imgtype_count = 0 %}
+							{% for image in cdd.getStorageDeviceImages()|filter(a => a.type in ["1", "2", "3"])|sort((a, b) => a.getFileName() <=> b.getFileName())|sort((a, b) => b.getType <=> a.getType)|slice(0, 1) %}
+								<img src="{% if vich_uploader_asset(image, 'imageFile') | ext != "svg" %}
+								{{ vich_uploader_asset(image, 'imageFile') | imagine_filter('show_thumb') }}{% else %}
+								{{ vich_uploader_asset(image, 'imageFile')}}{% endif %}" alt="" loading="lazy" width="250" height="200" title="{% if image.description %}{{ image.description }}{% endif %}">
+								{% set imgtype_count = imgtype_count + 1 %}
+							{% endfor %}
+							{% if imgtype_count == 0 %}
 								<img src="{{ absolute_url(asset('build/images/missing/cdd-missing.jpg')) }}" loading="lazy" width="250" height="200" title="no images available :(">
-							{% endif %}</div>
-							<div class="perk-name">{{ cdd.getFullName() }}</div>
-							<div class="perk-alias">
-								{% if cdd.getStorageDeviceAliases() is not empty %}<span class="results-alias">
-									<small>Alias: {% for alias in cdd.getStorageDeviceAliases() %}{{ alias.getFullAliasName() }}{% if not loop.last %}, {% endif %}{% endfor %}</small>
-								</span>{% endif %}
-							</div>
-						</a>
-					</div>
-				{% endfor %}
+							{% endif %}
+						{% else %}
+							<img src="{{ absolute_url(asset('build/images/missing/cdd-missing.jpg')) }}" loading="lazy" width="250" height="200" title="no images available :(">
+						{% endif %}</div>
+						<div class="perk-name">{{ cdd.getFullName() }}</div>
+						<div class="perk-alias">
+							{% if cdd.getStorageDeviceAliases() is not empty %}<span class="results-alias">
+								<small>Alias: {% for alias in cdd.getStorageDeviceAliases() %}{{ alias.getFullAliasName() }}{% if not loop.last %}, {% endif %}{% endfor %}</small>
+							</span>{% endif %}
+						</div>
+					</a>
 				</div>
+			{% endfor %}
 			</div>
-			{% else %}
-				<div class="plain-list w300p table">
-					{% include 'macros/widget.html.twig' with {'type':'cdd-results', 'entity': cdds} %}
-				</div>
-			{% endif %}
-		{{ knp_pagination_render(cdds, 'macros/pagination_async.html.twig') }}
+		</div>
+		{% if cdds|length > 8 %}
+			{{ knp_pagination_render(cdds, 'macros/pagination_async.html.twig') }}
+		{% endif %}
 	</div>
 {% else %}
 	No results

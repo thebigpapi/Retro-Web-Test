@@ -19,6 +19,7 @@ dh_auditor:
                 App\Entity\ChipAlias: ~
                 App\Entity\ChipDocumentation: ~
                 App\Entity\ChipImage: ~
+                App\Entity\Chip: ~
                 App\Entity\Chipset: ~
                 App\Entity\ChipsetAlias: ~
                 App\Entity\ChipsetBiosCode: ~
@@ -39,7 +40,6 @@ dh_auditor:
                 App\Entity\ExpansionCardMemoryConnector: ~
                 App\Entity\ExpansionCardPowerConnector: ~
                 App\Entity\ExpansionCardType: ~
-                App\Entity\ExpansionChip: ~
                 App\Entity\ExpansionChipBios: ~
                 App\Entity\ExpansionChipType: ~
                 App\Entity\ExpansionSlot: ~
@@ -80,9 +80,7 @@ dh_auditor:
                 App\Entity\MotherboardMaxRam: ~
                 App\Entity\OsArchitecture: ~
                 App\Entity\OsFlag: ~
-                App\Entity\Processor: ~
                 App\Entity\ProcessorPlatformType: ~
-                App\Entity\ProcessorVoltage: ~
                 App\Entity\PSUConnector: ~
                 App\Entity\StorageDeviceAlias: ~
                 App\Entity\StorageDeviceDocumentation: ~

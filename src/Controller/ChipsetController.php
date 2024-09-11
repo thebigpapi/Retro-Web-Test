@@ -42,7 +42,6 @@ class ChipsetController extends AbstractController
         }
         //get criterias
         $criterias = $this->getCriteriaChipset($request);
-        $showImages = boolval(htmlentities($request->query->get('showImages') ?? ''));
         $maxItems = $request->query->getInt('itemsPerPage', $request->request->getInt('itemsPerPage', $this->getParameter('app.pagination.max')));
         if (empty($criterias)) {
             return $this->render('chipset/search.html.twig', [
@@ -61,7 +60,6 @@ class ChipsetController extends AbstractController
             'form' => $form->createView(),
             'controller_name' => 'ChipsetController',
             'chipsets' => $chipsets,
-            'show_images' => $showImages,
         ]);
     }
 
@@ -82,7 +80,6 @@ class ChipsetController extends AbstractController
         ChipsetRepository $chipsetRepository
     ): Response {
         $criterias = $this->getCriteriaChipset($request);
-        $showImages = boolval(htmlentities($request->query->get('showImages') ?? ''));
         $maxItems = $request->query->getInt('itemsPerPage', $request->request->getInt('itemsPerPage', $this->getParameter('app.pagination.max')));
         $data = $chipsetRepository->findByChipset($criterias);
         $chipsets = $paginator->paginate(
@@ -92,13 +89,19 @@ class ChipsetController extends AbstractController
             );
         $string = "/chipsets/?";
         foreach ($request->query as $key => $value){
-            if($key != "domTarget")
-                $string .= $key . '=' . $value . '&';
+            if($key == "chipIds"){
+                foreach($value as $idx => $val){
+                    $string .= $key . '%5B' . $idx . '%5D=' . $val .'&';
+                }
+            }
+            else{
+                if($key != "domTarget")
+                    $string .= $key . '=' . $value . '&';
+            }
         }
         return $this->render('chipset/result.html.twig', [
             'controller_name' => 'ChipsetController',
             'chipsets' => $chipsets,
-            'show_images' => $showImages,
             'domTarget' => $request->request->get('domTarget') ?? $request->query->get('domTarget') ?? "",
             'params' => substr($string, 0, -1),
         ]);
@@ -127,6 +130,16 @@ class ChipsetController extends AbstractController
         } elseif ($chipsetManufacturerId === "NULL" && !array_key_exists('chipset', $criterias)) {
             $criterias['manufacturer'] = null;
         }
+        $chipIds = $request->query->all('chipIds') ?? $request->request->all('chipIds');
+        $chipArray = null;
+        if ($chipIds) {
+            if (is_array($chipIds)) {
+                $chipArray = $chipIds;
+            } else {
+                $chipArray = json_decode($chipIds);
+            }
+            $criterias['chips'] = $chipArray;
+        }
         return $criterias;
     }
     private function searchFormToParamChipset(Request $request, $form): array
@@ -146,8 +159,19 @@ class ChipsetController extends AbstractController
         $tempItems = intval($form['itemsPerPage']->getData()->value);
         $parameters['itemsPerPage'] = $tempItems > 0 ? $tempItems : $this->getParameter('app.pagination.max');
 
-        $parameters['showImages'] = $form['searchWithImages']->getData();
         $parameters['name'] = $form['name']->getData();
+
+        $chips = $form['chips']->getData();
+        if ($chips) {
+            $parameters['chipIds'] = array();
+            $loopCount = 0;
+            foreach ($chips as $chip) {
+                if($loopCount >= 6)
+                    break;
+                if($chip != null)
+                    array_push($parameters['chipIds'], $chip->getId());
+            }
+        }
 
         return $parameters;
     }
@@ -169,20 +193,4 @@ class ChipsetController extends AbstractController
 
         return $form;
     }
-
-    /* #[Route(path: '/chipsets/index/{letter}', name: 'chipsetindex', requirements: ['letter' => '\w'])]
-    public function indexChipset(PaginatorInterface $paginator, string $letter, ChipsetRepository $chipsetRepository, Request $request)
-    {
-        $data = $chipsetRepository->findAllAlphabetic($letter);
-        $chipsets = $paginator->paginate(
-            $data,
-            $request->query->getInt('page', 1),
-            $this->getParameter('app.pagination.max')
-        );
-        return $this->render('chipset/index.html.twig', [
-            'chipsets' => $chipsets,
-            'chipset_count' => count($data),
-            'letter' => $letter,
-        ]);
-    }*/
 }

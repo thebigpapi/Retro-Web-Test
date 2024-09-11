@@ -4,7 +4,7 @@ namespace App\Form\Motherboard;
 
 use App\Entity\Chipset;
 use App\Form\Type\DramTypeType;
-use App\Form\Type\ExpansionChipType;
+use App\Form\Type\ChipType;
 use App\Form\Type\ItemsPerPageType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
@@ -12,7 +12,6 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EnumType;
 use App\Entity\Manufacturer;
@@ -109,8 +108,8 @@ class Search extends AbstractType
                 'choices' => $this->getChipsets(),
                 'placeholder' => "Type to select a chipset ...",
             ])
-            ->add('expansionChips', CollectionType::class, [
-                'entry_type' => ExpansionChipType::class,
+            ->add('chips', CollectionType::class, [
+                'entry_type' => ChipType::class,
                 'allow_add' => true,
                 'allow_delete' => true,
                 'label' => false,
@@ -189,11 +188,6 @@ class Search extends AbstractType
                 'allow_add' => true,
                 'allow_delete' => true,
                 'label' => false,
-            ])
-            ->add('searchWithImages', CheckboxType::class, [
-                'data' => true,
-                'label' => false,
-                'attr' => array('checked' => 'checked'),
             ])
             ->add('itemsPerPage', EnumType::class, [
                 'class' => ItemsPerPageType::class,

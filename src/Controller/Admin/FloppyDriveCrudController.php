@@ -100,7 +100,7 @@ class FloppyDriveCrudController extends AbstractCrudController
         return parent::configureCrud($crud)
             ->showEntityActionsInlined()
             ->setEntityLabelInSingular('floppy drive')
-            ->setEntityLabelInPlural('<img class=ea-entity-icon src=/build/icons/floppy_drive.svg width=48 height=48>Floppy drives')
+            ->setEntityLabelInPlural('<img class=ea-entity-icon src=/build/icons/floppy_drive.svg width=48 height=48>Floppy &amp; tape drives')
             ->overrideTemplate('crud/edit', 'admin/crud/edit.html.twig')
             ->overrideTemplate('crud/new', 'admin/crud/new.html.twig')
             ->setPaginatorPageSize(100)
@@ -323,6 +323,9 @@ class FloppyDriveCrudController extends AbstractCrudController
             $newAlias->setName($alias->getName());
             $newAlias->setPartNumber($alias->getPartNumber());
             $fdd->addStorageDeviceAlias($newAlias);
+        }
+        foreach ($old->getPowerConnectors() as $pwr){
+            $fdd->addPowerConnector($pwr);
         }
         foreach ($old->getKnownIssues() as $issue){
             $fdd->addKnownIssue($issue);

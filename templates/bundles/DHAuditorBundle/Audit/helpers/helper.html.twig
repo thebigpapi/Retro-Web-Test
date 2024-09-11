@@ -5,6 +5,7 @@
         'App\\Entity\\AudioFile' : 'Audio file',
         'App\\Entity\\CacheSize' : 'Cache size',
         'App\\Entity\\CdDrive' : 'Optical drive',
+        'App\\Entity\\Chip' : 'Chip',
         'App\\Entity\\ChipAlias' : 'Chip alias',
         'App\\Entity\\ChipDocumentation' : 'Chip doc',
         'App\\Entity\\ChipImage' : 'Chip image',
@@ -18,7 +19,6 @@
         'App\\Entity\\DramType' : 'RAM type',
         'App\\Entity\\EntityDocumentation' : 'Entity documentation',
         'App\\Entity\\EntityImage' : 'Entity image',
-        'App\\Entity\\ExpansionChip' : 'Expansion chip',
         'App\\Entity\\ExpansionChipBios' : 'Expansion chip BIOS',
         'App\\Entity\\ExpansionChipType' : 'Expansion chip type',
         'App\\Entity\\ExpansionCard' : 'Expansion card',
@@ -72,9 +72,7 @@
         'App\\Entity\\OsFlag' : 'OS flag',
         'App\\Entity\\OsArchitecture' : 'OS architecture',
         'App\\Entity\\PSUConnector' : 'PSU connector',
-        'App\\Entity\\Processor' : 'CPUs',
-        'App\\Entity\\ProcessorPlatformType' : 'CPU family',
-        'App\\Entity\\ProcessorVoltage' : 'CPU voltage',
+        'App\\Entity\\ProcessorPlatformType' : 'Chip family',
         'App\\Entity\\StorageDeviceAlias' : 'Storage device alias',
         'App\\Entity\\StorageDeviceDocumentation' : 'Storage device doc',
         'App\\Entity\\StorageDeviceImage' : 'Storage device image',
@@ -119,9 +117,11 @@
     {% set target_subject = '' %}
     {% set target_label = '' %}
     {% if target is defined and target is not null %}
+        {% set targetClass = target.class %}
+        {% if targetClass == "App\\Entity\\ExpansionChip" or targetClass == "App\\Entity\\Processor" %}{% set targetClass = "App\\Entity\\Chip" %}{% endif %}
         {% set target_id = target.pkName is defined ? target[target.pkName] : target.id %}
-        {% set target_subject = titles[target.class] ~ '#' ~ target_id %}
-        {% set target_link = path('dh_auditor_show_entity_history', { 'entity': helper.namespaceToParam(target.class), 'id': target_id }) %}
+        {% set target_subject = titles[targetClass] ~ '#' ~ target_id %}
+        {% set target_link = path('dh_auditor_show_entity_history', { 'entity': helper.namespaceToParam(targetClass), 'id': target_id }) %}
         {% if target_subject != target.label %}
             {% if 'App\\Entity\\' not in helper.dump(target)|trim %}
                 {% set target_label = '(' ~ helper.dump(target)|trim ~ ')' %}

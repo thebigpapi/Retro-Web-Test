@@ -114,7 +114,7 @@ class ExpansionCardCrudController extends AbstractCrudController
             ->add('expansionCardAliases')
             ->add('type')
             ->add('expansionSlotInterfaceSignal')
-            ->add('expansionChips')
+            ->add('chips')
             ->add(ExpansionCardImageFilter::new('images'))
             ->add(ChipDocFilter::new('documentations'))
             ->add(ExpansionCardBiosFilter::new('expansionCardBios'))
@@ -137,7 +137,7 @@ class ExpansionCardCrudController extends AbstractCrudController
             ->onlyOnIndex();
         yield TextField::new('expansionSlotInterfaceSignal','Slot')
             ->onlyOnIndex();
-        yield CollectionField::new('expansionChips', 'Exp.chips')
+        yield CollectionField::new('chips', 'Chips')
             ->setCustomOption('byCount', true)
             ->onlyOnIndex();
         yield CollectionField::new('getDocumentations','Docs')
@@ -233,7 +233,7 @@ class ExpansionCardCrudController extends AbstractCrudController
         yield FormField::addTab('Chips/specs')
             ->setIcon('chip.svg')
             ->onlyOnForms();
-        yield AssociationField::new('expansionChips', 'Expansion chips')
+        yield AssociationField::new('chips', 'Chips')
             ->autocomplete()
             ->setColumns('col-sm-12 col-lg-6 col-xxl-4 multi-widget-trw')
             ->onlyOnForms();
@@ -406,8 +406,8 @@ class ExpansionCardCrudController extends AbstractCrudController
             $newAlias->setName($alias->getName());
             $card->addExpansionCardAlias($newAlias);
         }
-        foreach ($old->getExpansionChips() as $chip) {
-            $card->addExpansionChip($chip);
+        foreach ($old->getChips() as $chip) {
+            $card->addChip($chip);
         }
         foreach ($old->getDramType() as $ram){
             $card->addDramType($ram);
@@ -446,9 +446,6 @@ class ExpansionCardCrudController extends AbstractCrudController
     {
         $entityInstance->updateLastEdited();
         $entityInstance->updateHashAll();
-        foreach ($entityInstance->getPciDevs() as $dev)
-            if($dev->getDev() == "0000")
-                $dev->setDev("0");
         parent::updateEntity($entityManager, $entityInstance);
     }
 }

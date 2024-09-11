@@ -42,7 +42,7 @@
             <path d="M.293 0l22 22-22 22h1.414l22-22-22-22H.293z"></path>
         </svg>
         <a class="ml-4" href="{{ path('mobosearch') }}">
-			<img src="{{ absolute_url(asset('build/icons/motherboard.svg')) }}" width="24" height="24" alt="mobo">
+			<img src="{{ absolute_url(asset('build/icons/motherboard.svg')) }}" width="32" height="32" alt="mobo">
             <code class="text-pink-500">Motherboards</code>
         </a>
     </div>
@@ -85,11 +85,11 @@
 					{% endif %}
 					<!-- CPU socket -->
 					<div class="quick-spec-head">
-						<img src="{{ absolute_url(asset('build/icons/cpupins.svg')) }}" alt="cpu" width="24" height="24">CPU socket{% if motherboard.getCpuSockets()|length > 1 %}s{% endif %}
+						<img src="{{ absolute_url(asset('build/icons/cpupins.svg')) }}" alt="cpu" width="24" height="24">Socket{% if motherboard.getCpuSockets()|length > 1 %}s{% endif %}
 					</div>
 					{% if motherboard.getCpuSockets() is not empty %}
 						<div class="tag-container">{% for socket in motherboard.getCpuSockets() %}
-							<a href="{{ path('cpusocket_show', {id: socket.getId()}) }}"><span class="text-block">{{ socket.getNameAndType}}</span></a>{% endfor %}</div>
+							<a href="{{ path('socket_show', {id: socket.getId()}) }}"><span class="text-block">{{ socket.getNameAndType}}</span></a>{% endfor %}</div>
 					{% else %}
 						<div><span class='badge badge-secondary'>Empty</span></div>
 					{% endif %}
@@ -154,7 +154,7 @@
 					</div>
 					{% if motherboard.getPsuConnectors() is not empty %}
 						<div class="tag-container">{% for psu in motherboard.getPsuConnectors() %}
-							<a href="{{ path('psu_connector_show', {id: psu.getId()}) }}"><span class="text-block">{{ psu.getName() }}</span></a>{% endfor %}</div>
+							<a href="{{ path('power_connector_show', {id: psu.getId()}) }}"><span class="text-block">{{ psu.getName() }}</span></a>{% endfor %}</div>
 					{% else %}
 						<div><span class='badge badge-secondary'>Empty</span></div>
 					{% endif %}
@@ -196,7 +196,7 @@
 			</div>
 
 			<!-- Chips -->
-			<div class="show-expchips" id="sh-expchips">
+			<div class="show-chips" id="sh-chips">
 				<div class="quick-spec-table">
 					<!-- Chipset -->
 					<div class="quick-spec-head">
@@ -206,17 +206,17 @@
 						<div><a href="{{ path('app_homepage') }}chipsets/{{ motherboard.getChipset().getId()}}">{{ motherboard.getChipset().getFullName() }}</a></div>
 					{% else %}<div><span class='badge badge-secondary'>Empty</span></div>{% endif %}
 					<!-- Expansion Chips -->
-					{% if motherboard.getExpansionChips() is not empty %}
-						{% for chip in motherboard.getExpansionChips()|filter(a => a.getType().getName() == "Chipset part")%}
+					{% if motherboard.getChips() is not empty %}
+						{% for chip in motherboard.getChips()|filter(a => a.getType().getName() == "Chipset part")%}
 							{% if loop.first %}<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/chipset.svg')) }}" alt="chip" width="24" height="24">Chipset parts</div><div class="tag-container">{% endif %}
-								<a href="{{ path('expansion_chip_show', {id: chip.getId()}) }}"><span class="text-block">{{ chip.getFullName() }}</span></a>
-							{% if loop.index == motherboard.getExpansionChips()|filter(a => a.getType().getName() == "Chipset part")|length %}</div>{% endif %}
+								<a href="{{ path('chip_show', {id: chip.getId()}) }}"><span class="text-block">{{ chip.getFullName() }}</span></a>
+							{% if loop.index == motherboard.getChips()|filter(a => a.getType().getName() == "Chipset part")|length %}</div>{% endif %}
 						{% endfor %}
-						{% for type in expansionchiptype %}
-							{% for chip in motherboard.getExpansionChips()|filter(a => a.getType().getName() !=  "Chipset part")|filter(a => a.getType().getName() == type.getName())%}
+						{% for type in chiptype %}
+							{% for chip in motherboard.getChips()|filter(a => a.getType().getName() !=  "Chipset part")|filter(a => a.getType().getName() == type.getName())%}
 								{% if loop.first %}<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/chip.svg')) }}" alt="chip" width="24" height="24">{{chip.getType().getName()}} chips</div><div class="tag-container">{% endif %}
-								<a href="{{ path('expansion_chip_show', {id: chip.getId()}) }}"><span class="text-block">{{ chip.getFullName() }}</span></a>
-								{% if loop.index == motherboard.getExpansionChips()|filter(a => a.getType().getName() == type.getName())|length %}</div>{% endif %}
+								<a href="{{ path('chip_show', {id: chip.getId()}) }}"><span class="text-block">{{ chip.getFullName() }}</span></a>
+								{% if loop.index == motherboard.getChips()|filter(a => a.getType().getName() == type.getName())|length %}</div>{% endif %}
 							{% endfor %}
 						{% endfor %}
 					{% endif %}
@@ -239,10 +239,10 @@
 						{% if motherboard.getProcessorPlatformTypes() is not empty %}
 						<ul>
 							{% for platform in motherboard.getProcessorPlatformTypes() %}
-							<li><a href="{{ path('cpufamily_show', {id: platform.getId()}) }}"><span class="text-block list">{{ platform.getName() }}</span></a></li>
+							<li><a href="{{ path('family_show', {id: platform.getId()}) }}"><span class="text-block list">{{ platform.getName() }}</span></a></li>
 							{% endfor %}
 							{% for compatible in motherboard.getCompatibleFamilies() %}
-							<li><a href="{{ path('cpufamily_show', {id: compatible.getId()}) }}"><span class="text-block list {% if is_granted('ROLE_USER') %}comp{% endif %}">{{ compatible.getName() }}</span></a></li>
+							<li><a href="{{ path('family_show', {id: compatible.getId()}) }}"><span class="text-block list {% if is_granted('ROLE_USER') %}comp{% endif %}">{{ compatible.getName() }}</span></a></li>
 							{% endfor %}
 						</ul>
 						{% else %}
@@ -322,7 +322,7 @@
 			</div>
 			<!-- Documentation -->
 			<div class="show-downloads" id="sh-docs">
-				{% include 'macros/manuals.html.twig' with {'entity': motherboard.getManuals(), 'entity_label':'board', 'audit_entity':'App-Entity-Manual', 'chips': motherboard.getChipDocs()} %}
+				{% include 'macros/docs.html.twig' with {'entity': motherboard.getManuals(), 'entity_label':'board', 'audit_entity':'App-Entity-Manual', 'chips': motherboard.getChipDocs(), 'families': motherboard.getFamilyDocs(), 'sockets': motherboard.getSocketDocs()} %}
 				{% include 'macros/miscfiles.html.twig' with {'entity': motherboard.getMiscFiles(), 'audit_entity':'App-Entity-MiscFile'} %}
 			</div>
 		</div>

@@ -16,7 +16,7 @@ use App\Repository\CpuSocketRepository;
 use App\Repository\CreditorRepository;
 use App\Repository\ExpansionCardRepository;
 use App\Repository\ExpansionCardTypeRepository;
-use App\Repository\ExpansionChipRepository;
+use App\Repository\ChipRepository;
 use App\Repository\ExpansionChipTypeRepository;
 use App\Repository\FloppyDriveRepository;
 use App\Repository\HardDriveRepository;
@@ -29,7 +29,6 @@ use App\Repository\ManufacturerRepository;
 use App\Repository\MotherboardRepository;
 use App\Repository\OsArchitectureRepository;
 use App\Repository\OsFlagRepository;
-use App\Repository\ProcessorRepository;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
@@ -85,12 +84,12 @@ class AdminController extends AbstractDashboardController
     // dashboard routes
 
     #[Route('/dashboard/filterchips', name:'mobo_filter_chips', methods:['POST'])]
-    public function filterChips(Request $request, ExpansionChipRepository $expansionChipRepository): JsonResponse
+    public function filterChips(Request $request, ChipRepository $chipRepository): JsonResponse
     {
         $chips = json_decode($request->getContent());
         $deletechips = array();
         foreach($chips as $chip){
-            $chipEntity = $expansionChipRepository->findById($chip)[0];
+            $chipEntity = $chipRepository->findById($chip)[0];
             if($chipEntity->getType()->getId() == 30)
                 array_push($deletechips, $chip);
         }
@@ -140,7 +139,7 @@ class AdminController extends AbstractDashboardController
         $chipset = json_decode($request->getContent());
         $chips = array();
 
-        foreach($chipsetRepository->findById($chipset)[0]->getExpansionChips() as $chip){
+        foreach($chipsetRepository->findById($chipset)[0]->getChips() as $chip){
             $chips[$chip->getId()] = $chip->getFullName();
         }
         return new JsonResponse($chips);
@@ -232,12 +231,26 @@ class AdminController extends AbstractDashboardController
         return new JsonResponse($templatesMerged);
     }
 
-    #[Route('/dashboard/getexpansionchiptemplate/{id}', name:'get_expansion_chip_template', methods:['GET'],  requirements: ['id' => '\d+'])]
+    #[Route('/dashboard/getexpansionchiptemplate/{id}', name:'get_chip_template', methods:['GET'],  requirements: ['id' => '\d+'])]
     public function getExpansionChipTemplate(int $id, ExpansionChipTypeRepository $expansionChipTypeRepository): JsonResponse
     {
         $chipType = $expansionChipTypeRepository->find($id);
 
         return new JsonResponse($chipType->getTemplate());
+    }
+
+    #[Route('/dashboard/getchipspci', name:'get_chips_pci_id', methods:['POST'])]
+    public function getChipsPciId(Request $request, ChipRepository $chipRepository): JsonResponse
+    {
+        $ids = json_decode($request->getContent());
+        //dd($ids);
+        if(!$ids)
+            return new JsonResponse([]);
+        $chips = array();
+        foreach($chipRepository->findByPciId($ids) as $chip){
+            $chips[$chip->getId()] = $chip->getFullName();
+        }
+        return new JsonResponse($chips);
     }
 
     #[Route('/dashboard/getexpslots/{id}', name:'get_expslots', methods:['GET'], requirements: ['id' => '\d+'])]
@@ -466,11 +479,6 @@ class AdminController extends AbstractDashboardController
             ->setRoute('dashboard_creditor_images_chips', ['id' => $id, 'name' => $name])
             ->setEntityId($id)
             ->generateUrl();
-        $targetUrlCpus = $adminUrlGenerator
-            ->setController(self::class)
-            ->setRoute('dashboard_creditor_images_cpus', ['id' => $id, 'name' => $name])
-            ->setEntityId($id)
-            ->generateUrl();
         $targetUrlHdds = $adminUrlGenerator
             ->setController(self::class)
             ->setRoute('dashboard_creditor_images_hdds', ['id' => $id, 'name' => $name])
@@ -490,7 +498,6 @@ class AdminController extends AbstractDashboardController
             'motherboards' => $boards,
             'urlCards' => $targetUrlCards,
             'urlChips' => $targetUrlChips,
-            'urlCpus' => $targetUrlCpus,
             'urlHdds' => $targetUrlHdds,
             'urlCdds' => $targetUrlCdds,
             'urlFdds' => $targetUrlFdds,
@@ -519,11 +526,6 @@ class AdminController extends AbstractDashboardController
             ->setRoute('dashboard_creditor_images_chips', ['id' => $id, 'name' => $name])
             ->setEntityId($id)
             ->generateUrl();
-        $targetUrlCpus = $adminUrlGenerator
-            ->setController(self::class)
-            ->setRoute('dashboard_creditor_images_cpus', ['id' => $id, 'name' => $name])
-            ->setEntityId($id)
-            ->generateUrl();
         $targetUrlHdds = $adminUrlGenerator
             ->setController(self::class)
             ->setRoute('dashboard_creditor_images_hdds', ['id' => $id, 'name' => $name])
@@ -543,7 +545,6 @@ class AdminController extends AbstractDashboardController
             'cards' => $cards,
             'urlBoards' => $targetUrlBoards,
             'urlChips' => $targetUrlChips,
-            'urlCpus' => $targetUrlCpus,
             'urlHdds' => $targetUrlHdds,
             'urlCdds' => $targetUrlCdds,
             'urlFdds' => $targetUrlFdds,
@@ -554,13 +555,13 @@ class AdminController extends AbstractDashboardController
     public function creditorImagesChips(
         int $id,
         string $name,
-        ExpansionChipRepository $expansionChipRepository,
+        ChipRepository $chipRepository,
         PaginatorInterface $paginatorInterface,
         AdminUrlGenerator $adminUrlGenerator,
         Request $request
     ): Response
     {
-        $chip_data = $expansionChipRepository->findAllByCreditor($id);
+        $chip_data = $chipRepository->findAllByCreditor($id);
         $chips = $paginatorInterface->paginate($chip_data, $request->query->getInt('page', 1), 50);
         $targetUrlBoards = $adminUrlGenerator
             ->setController(self::class)
@@ -570,11 +571,6 @@ class AdminController extends AbstractDashboardController
         $targetUrlCards = $adminUrlGenerator
             ->setController(self::class)
             ->setRoute('dashboard_creditor_images_cards', ['id' => $id, 'name' => $name])
-            ->setEntityId($id)
-            ->generateUrl();
-        $targetUrlCpus = $adminUrlGenerator
-            ->setController(self::class)
-            ->setRoute('dashboard_creditor_images_cpus', ['id' => $id, 'name' => $name])
             ->setEntityId($id)
             ->generateUrl();
         $targetUrlHdds = $adminUrlGenerator
@@ -596,60 +592,6 @@ class AdminController extends AbstractDashboardController
             'chips' => $chips,
             'urlBoards' => $targetUrlBoards,
             'urlCards' => $targetUrlCards,
-            'urlCpus' => $targetUrlCpus,
-            'urlHdds' => $targetUrlHdds,
-            'urlCdds' => $targetUrlCdds,
-            'urlFdds' => $targetUrlFdds,
-            'name' => $name,
-        ]);
-    }
-    #[Route('/dashboard/creditorimages/cpus/{id}/{name}', name:'dashboard_creditor_images_cpus', requirements: ['id' => '\d+'])]
-    public function creditorImagesCpus(
-        int $id,
-        string $name,
-        ProcessorRepository $processorRepository,
-        PaginatorInterface $paginatorInterface,
-        AdminUrlGenerator $adminUrlGenerator,
-        Request $request
-    ): Response
-    {
-        $cpu_data = $processorRepository->findAllByCreditor($id);
-        $cpus = $paginatorInterface->paginate($cpu_data, $request->query->getInt('page', 1), 50);
-        $targetUrlBoards = $adminUrlGenerator
-            ->setController(self::class)
-            ->setRoute('dashboard_creditor_images_boards', ['id' => $id, 'name' => $name])
-            ->setEntityId($id)
-            ->generateUrl();
-        $targetUrlCards = $adminUrlGenerator
-            ->setController(self::class)
-            ->setRoute('dashboard_creditor_images_cards', ['id' => $id, 'name' => $name])
-            ->setEntityId($id)
-            ->generateUrl();
-        $targetUrlChips = $adminUrlGenerator
-            ->setController(self::class)
-            ->setRoute('dashboard_creditor_images_chips', ['id' => $id, 'name' => $name])
-            ->setEntityId($id)
-            ->generateUrl();
-        $targetUrlHdds = $adminUrlGenerator
-            ->setController(self::class)
-            ->setRoute('dashboard_creditor_images_hdds', ['id' => $id, 'name' => $name])
-            ->setEntityId($id)
-            ->generateUrl();
-        $targetUrlCdds = $adminUrlGenerator
-            ->setController(self::class)
-            ->setRoute('dashboard_creditor_images_cdds', ['id' => $id, 'name' => $name])
-            ->setEntityId($id)
-            ->generateUrl();
-        $targetUrlFdds = $adminUrlGenerator
-            ->setController(self::class)
-            ->setRoute('dashboard_creditor_images_fdds', ['id' => $id, 'name' => $name])
-            ->setEntityId($id)
-            ->generateUrl();
-        return $this->render('admin/creditor/cpus.html.twig', [
-            'cpus' => $cpus,
-            'urlBoards' => $targetUrlBoards,
-            'urlCards' => $targetUrlCards,
-            'urlChips' => $targetUrlChips,
             'urlHdds' => $targetUrlHdds,
             'urlCdds' => $targetUrlCdds,
             'urlFdds' => $targetUrlFdds,
@@ -683,11 +625,6 @@ class AdminController extends AbstractDashboardController
             ->setRoute('dashboard_creditor_images_chips', ['id' => $id, 'name' => $name])
             ->setEntityId($id)
             ->generateUrl();
-        $targetUrlCpus = $adminUrlGenerator
-            ->setController(self::class)
-            ->setRoute('dashboard_creditor_images_cpus', ['id' => $id, 'name' => $name])
-            ->setEntityId($id)
-            ->generateUrl();
         $targetUrlCdds = $adminUrlGenerator
             ->setController(self::class)
             ->setRoute('dashboard_creditor_images_cdds', ['id' => $id, 'name' => $name])
@@ -703,7 +640,6 @@ class AdminController extends AbstractDashboardController
             'urlBoards' => $targetUrlBoards,
             'urlCards' => $targetUrlCards,
             'urlChips' => $targetUrlChips,
-            'urlCpus' => $targetUrlCpus,
             'urlCdds' => $targetUrlCdds,
             'urlFdds' => $targetUrlFdds,
             'name' => $name,
@@ -736,11 +672,6 @@ class AdminController extends AbstractDashboardController
             ->setRoute('dashboard_creditor_images_chips', ['id' => $id, 'name' => $name])
             ->setEntityId($id)
             ->generateUrl();
-        $targetUrlCpus = $adminUrlGenerator
-            ->setController(self::class)
-            ->setRoute('dashboard_creditor_images_cpus', ['id' => $id, 'name' => $name])
-            ->setEntityId($id)
-            ->generateUrl();
         $targetUrlHdds = $adminUrlGenerator
             ->setController(self::class)
             ->setRoute('dashboard_creditor_images_hdds', ['id' => $id, 'name' => $name])
@@ -756,7 +687,6 @@ class AdminController extends AbstractDashboardController
             'urlBoards' => $targetUrlBoards,
             'urlCards' => $targetUrlCards,
             'urlChips' => $targetUrlChips,
-            'urlCpus' => $targetUrlCpus,
             'urlHdds' => $targetUrlHdds,
             'urlFdds' => $targetUrlFdds,
             'name' => $name,
@@ -789,11 +719,6 @@ class AdminController extends AbstractDashboardController
             ->setRoute('dashboard_creditor_images_chips', ['id' => $id, 'name' => $name])
             ->setEntityId($id)
             ->generateUrl();
-        $targetUrlCpus = $adminUrlGenerator
-            ->setController(self::class)
-            ->setRoute('dashboard_creditor_images_cpus', ['id' => $id, 'name' => $name])
-            ->setEntityId($id)
-            ->generateUrl();
         $targetUrlHdds = $adminUrlGenerator
             ->setController(self::class)
             ->setRoute('dashboard_creditor_images_hdds', ['id' => $id, 'name' => $name])
@@ -809,7 +734,6 @@ class AdminController extends AbstractDashboardController
             'urlBoards' => $targetUrlBoards,
             'urlCards' => $targetUrlCards,
             'urlChips' => $targetUrlChips,
-            'urlCpus' => $targetUrlCpus,
             'urlHdds' => $targetUrlHdds,
             'urlCdds' => $targetUrlCdds,
             'name' => $name,

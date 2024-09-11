@@ -1,0 +1,16 @@
+// The order of these imports is critical.
+// See https://getbootstrap.com/docs/5.3/customize/sass/
+@import "./bootstrap/functions.scss";
+@import "./bootstrap/variables.scss";
+@import "./bootstrap/variables-dark.scss";
+
+@import "./easyadmin-theme/variables-theme.scss";
+@import "./easyadmin-theme/variables-bootstrap.scss";
+
+@import "./bootstrap/bootstrap.scss";
+
+@import "./fontawesome/all.css";
+@import "./fontawesome/v4-shims.css";
+@import "./fontawesome/v5-font-face.css";
+
+@import "./easyadmin-theme/theme.scss";

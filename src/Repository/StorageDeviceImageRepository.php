@@ -39,28 +39,18 @@ class StorageDeviceImageRepository extends ServiceEntityRepository
         }
     }
 
-//    /**
-//     * @return StorageDeviceImage[] Returns an array of StorageDeviceImage objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('s')
-//            ->andWhere('s.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('s.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    public function findAllImages(): array
+    {
+        $entityManager = $this->getEntityManager();
+        $query = $entityManager->createQuery(
+            "SELECT entity.file_name
+            FROM App\Entity\StorageDeviceImage entity
+            WHERE entity.file_name NOT LIKE '%.svg%'"
+        );
+        $result = array_column($query->getResult(), "file_name");
+        foreach($result as &$r)
+            $r = "/storage/image/" . $r;
 
-//    public function findOneBySomeField($value): ?StorageDeviceImage
-//    {
-//        return $this->createQueryBuilder('s')
-//            ->andWhere('s.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+        return $result;
+    }
 }

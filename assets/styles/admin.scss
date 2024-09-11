@@ -17,12 +17,28 @@ $btn-hover-light: rgb(215, 133, 0);
 $active-link-light: #3dabf5;
 $container-bkg-light: #FFFFFF;
 $content-frg-light: #000000;
+$normal-link-light: #0979c3;
+$body-bkg-light: #F9F9F9;
+$body-frg-light: #000000;
+$accent-frg-light: #000000;
+$accent-bkg-light: #e0e0e0;
+$border-light: #303030;
+$shadow-light: #696969;
+$button-hover-light: #cdcdcd;
 
 /* Dark mode colors */
 $btn-hover-dark: rgb(247, 207, 62);
 $active-link-dark: #77c5f9;
 $container-bkg-dark: #202020;
 $border-dark: #cdcdcd;
+$normal-link-dark: #86ceff;
+$body-bkg-dark: #1B1B1B;
+$body-frg-dark: #EEEEEE;
+$accent-frg-dark: #EEEEEE;
+$accent-bkg-dark: #303030;
+$border-dark: #cdcdcd;
+$shadow-dark: #303030;
+$button-hover-dark: #646464;
 
 @mixin noselect() {
 	-moz-user-select: -moz-none;
@@ -45,65 +61,17 @@ img.ea-entity-icon{
 div.content-header-title > h1.title{
 	font-weight: 500;
 }
-.ea-dark-scheme{
-	--body-bg:#222;
-	--sidebar-bg:#303030;
-	--button-secondary-bg:#525252;
-	--table-cell-border-color: #404040;
-	--form-control-bg: #404040;
-	--sidebar-menu-active-item-bg:#404040;
-	--sidebar-menu-active-item-color:#60a5fa;
-	--sidebar-menu-color:#b5b5b5;
-}
-#main-menu .menu .submenu {
-	margin-top: 0;
-	a {
-		color: var(--sidebar-menu-color);
-	}
-}
-.form-group.field-collection .field-collection-delete-button {
-	i {
-		font-size: 18px;
-		vertical-align: baseline;
-	}
-	right: 0;
-	top: 0;
-}
-.form-group.field-collection .accordion-item .form-group {
-    padding: 2px 0
-}
+
 .ts-wrapper .ts-control {
     height: initial;
 }
-
-.btn-link-danger {
-	transition: ease-in-out 0.1s color;
-	padding: 0;
-
-	&:active,
-	&:active:focus,
-	&:focus,
-	&:hover {
-		color: $btn-hover-light;
-
-		@media (prefers-color-scheme: dark) {
-			color: $btn-hover-dark;
-		}
-	}
+span.navbar-icon-trw-ea.trw-admin.logo-custom{
+	font-family: $header-font;
 }
 
-.field-collection-add-button {
-	transition: ease-in-out 0.15s color;
-
-	&:active,
-	&:active:focus,
-	&:hover {
-		color: $btn-hover-light;
-
-		@media (prefers-color-scheme: dark) {
-			color: $btn-hover-dark;
-		}
-	}
+nav a img {
+    padding: 0px 4px;
+    box-sizing: initial !important;
 }
 
 .accordion-body.trw {
@@ -210,10 +178,6 @@ div.vich-download-flex{
 			flex-direction: column;
 		}
 	}
-}
-
-body:not(.ea-content-width-full) .content-wrapper {
-	max-width: none;
 }
 
 .actions {
@@ -385,9 +349,6 @@ div.mobo-bios{
 		width:21%
 	}
 }
-.ea-vich-image {
-	padding-right: 10px;
-}
 /* ts multi select and delete buttons */
 i.red{
 	color: var(--link-danger-color);
@@ -428,6 +389,7 @@ div.clear-button-trw{
 
 .shide {
 	margin: 0px 5px;
+	padding: 5px 8px;
 	transition: ease-in-out 0.1s background-color;
 	box-shadow: none !important;
 
@@ -445,5 +407,230 @@ input.items-placeholder{
 	}
 	div.ts-control{
 		min-height: 28px;
+	}
+}
+/* creditor images */
+div.perks {
+    p {
+        padding-bottom: 5px;
+        @include border($normal-link-light);
+
+        @media (prefers-color-scheme: dark) {
+            @include border($normal-link-dark);
+        }
+    }
+
+    div.perks-list {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+
+        div.perk {
+            background-color: $body-bkg-light;
+            border: 1px solid $normal-link-light;
+            border-radius: 6px;
+            display: inline-block;
+            margin: 3px;
+            transition: ease-in-out .15s box-shadow, ease-in-out .15s border-color, ease-in-out .15s color, ease-in-out .15s background-color;
+
+            @media (prefers-color-scheme: dark) {
+                background-color: $body-bkg-dark;
+                border: 1px solid $normal-link-dark;
+            }
+
+            &:hover {
+                border: 1px solid $active-link-light;
+
+                @media (prefers-color-scheme: dark) {
+                    border: 1px solid $active-link-dark;
+                }
+
+                a div.perk-name {
+                    color: $active-link-light;
+                    transition: ease-in-out .15s box-shadow, ease-in-out .15s border-color, ease-in-out .15s color, ease-in-out .15s background-color;
+
+                    @media (prefers-color-scheme: dark) {
+                        color: $active-link-dark;
+                    }
+                }
+            }
+
+            a div.perk-image,
+            div.perk-image {
+                border-radius: 6px;
+                display: flex;
+                height: 285px;
+                width: 100%;
+                background-color: $accent-bkg-light;
+
+                @media (prefers-color-scheme: dark) {
+                    background-color: $accent-bkg-dark;
+                }
+
+                img,
+                a.glightbox img {
+                    margin: auto;
+                    width: auto;
+                    height: auto;
+                    max-width: 325px;
+                    max-height: 275px;
+                }
+
+                a.glightbox {
+                    margin: auto;
+                }
+            }
+
+            a div.perk-name {
+                padding: 10px;
+                color: $normal-link-light;
+
+                @media (prefers-color-scheme: dark) {
+                    color: $normal-link-dark;
+                }
+            }
+
+            div.perk-name {
+                padding: 10px;
+                transition: ease-in-out .15s box-shadow, ease-in-out .15s border-color, ease-in-out .15s color, ease-in-out .15s background-color;
+            }
+
+            a div.perk-date,
+            a div.perk-alias,
+            div.perk-date,
+            div.perk-alias {
+                color: $accent-frg-light;
+                padding: 10px;
+
+                @media (prefers-color-scheme: dark) {
+                    color: $accent-frg-dark;
+                }
+            }
+        }
+
+        &.perks-tiny {
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+
+            div.perk {
+
+                a div.perk-image,
+                div.perk-image {
+                    height: 180px;
+
+                    img,
+                    a.glightbox img {
+                        max-width: 150px;
+                        max-height: 150px;
+                    }
+                }
+            }
+        }
+    }
+}
+div.pagination {
+	@include noselect();
+	padding-bottom: 10px;
+	width: 100%;
+
+	a, button, span {
+		&.current {
+			background-color: $active-link-light;
+			color: $body-frg-light;
+
+			@media (prefers-color-scheme: dark) {
+				background-color: $active-link-dark;
+			}
+		}
+
+		&.first, &.previous, &.next, &.last {
+			width: 5.3rem;
+		}
+	}
+
+	div.info {
+		display: block;
+		text-align: right;
+		opacity: 0.75;
+		font-size: 75%;
+	}
+}
+a.button-widget, span.button-widget {
+	font-family: $standard-font;
+	font-size: 11pt;
+	transition: ease-in-out $anim-duration box-shadow, ease-in-out $anim-duration background-color;
+	padding: 3px 5px;
+	border: solid thin $border-light;
+	border-radius: 5px;
+	//box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.3);
+	background: $body-bkg-light;
+	color: $accent-frg-light;
+	display: flex;
+	height: 24px;
+	display: flex;
+	align-items: center;
+	column-gap: 5px;
+    max-width: max-content;
+	&:visited {
+		color: $accent-frg-light;
+
+		@media (prefers-color-scheme: dark) {
+			color: $accent-frg-dark;
+		}
+	}
+
+	&:hover,
+	&:active {
+		transition: ease-in-out $anim-duration box-shadow, ease-in-out $anim-duration background-color;
+		box-shadow: 0px 0px 2px $shadow-light;
+		background-color: $button-hover-light;
+
+		@media (prefers-color-scheme: dark) {
+			background-color: $button-hover-dark;
+		}
+	}
+
+	@media (prefers-color-scheme: dark) {
+		background: $accent-bkg-dark;
+		color: $accent-frg-dark;
+		border-color: transparent;
+	}
+
+	@include noselect();
+
+	img {
+		max-height: 22px;
+		padding-right: 3px;
+	}
+}
+div.toolbar {
+	padding-bottom: 10px;
+	padding-top: 10px;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 10px;
+
+	input {
+		display: none;
+	}
+    &.thin{
+        display: flex;
+        flex-wrap: nowrap;
+        align-items: end;
+        padding-bottom: 0;
+        padding-top: 0;
+    }
+	&.toolbar-thin {
+		padding-bottom: 5px;
+		padding-top: 5px;
+
+		button,
+		a.button {
+			padding: 3px;
+			margin: 3px;
+			width: auto;
+		}
+	}
+
+	&.toolbar-main {
+		justify-content: center;
 	}
 }

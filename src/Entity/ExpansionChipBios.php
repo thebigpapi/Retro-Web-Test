@@ -22,8 +22,8 @@ class ExpansionChipBios
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $version = null;
 
-    #[ORM\ManyToOne(inversedBy: 'expansionChipBios')]
-    private ?ExpansionChip $expansionChip = null;
+    #[ORM\ManyToOne(inversedBy: 'chipBios')]
+    private ?Chip $chip = null;
 
     /**
      * NOTE: This is not a mapped field of entity metadata, just a simple property.
@@ -66,14 +66,14 @@ class ExpansionChipBios
         return $this;
     }
 
-    public function getExpansionChip(): ?ExpansionChip
+    public function getChip(): ?Chip
     {
-        return $this->expansionChip;
+        return $this->chip;
     }
 
-    public function setExpansionChip(?ExpansionChip $expansionChip): static
+    public function setChip(?Chip $chip): static
     {
-        $this->expansionChip = $expansionChip;
+        $this->chip = $chip;
 
         return $this;
     }

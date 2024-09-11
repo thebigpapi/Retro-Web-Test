@@ -1,0 +1,51 @@
+<div class="show-downloads-group last">
+    {% if entity is not empty %}
+        <div class="show-downloads-group-header">
+            <img src="{{ absolute_url(asset('build/icons/manual.svg')) }}" alt="doc" width="32" height="32">
+            <span>{{ entity|length }} {{ entity_label }} document{% if entity|length != 1 %}s{% endif %} available</span>
+        </div>
+        {% if entity is not empty %}
+        <div class="plain-list w300p table">
+            <div class="list-entry centered head">
+                <div>Release date</div>
+                <div>File</div>
+                <div>Logs</div>
+            </div>
+            {% for manual in entity|sort((a, b) => a.getLinkName <=> b.getLinkName) %}
+            <div class="list-entry centered {% if loop.index is divisible by(2) %}alt{% endif %}">
+                <div class="header-label">Release date</div>
+                <div class="perk-date-simple">{{ manual.getReleaseDateString()}}</div>
+                <div class="header-label">File</div>
+                <div>
+                    <a class="combo" href="{{ vich_uploader_asset(manual, 'manualFile') }}">
+                        <img src="{{ absolute_url(asset('build/icons/dw.svg')) }}" alt="" width="16" height="16">
+                        <span>{{ manual.getLinkName() }}</span>
+                    </a>
+                </div>
+                <div class="header-label">Logs</div>
+                <div>
+                    <a href="{{ path('dh_auditor_show_entity_history', { 'entity': audit_entity, 'id': manual.getId() }) }}">
+                        <img src="{{ absolute_url(asset('build/icons/calendar.svg')) }}" alt="pwr" width="16" height="16">
+                    </a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+    {% else %}
+        <div class="show-downloads-group-header last">
+            <img src="{{ absolute_url(asset('build/icons/manual.svg')) }}" alt="doc" width="32" height="32">
+            <span>No {{ entity_label }} documents available</span>
+        </div>
+    {% endif %}
+
+    {% if chips is defined and chips is not empty %}
+        {% include 'macros/docsextra.html.twig' with {'entity': chips, 'entity_label':'chip', 'reference_label':'Chip', 'icon':'chip_manual', 'audit_entity':'App-Entity-ChipDocumentation'} %}
+    {% endif %}
+    {% if families is defined and families is not empty %}
+        {% include 'macros/docsextra.html.twig' with {'entity': families, 'entity_label':'chip family', 'reference_label':'Family', 'icon':'486', 'audit_entity':'App-Entity-EntityDocumentation'} %}
+    {% endif %}
+    {% if sockets is defined and sockets is not empty %}
+        {% include 'macros/docsextra.html.twig' with {'entity': sockets, 'entity_label':'socket', 'reference_label':'Socket', 'icon':'cpupins', 'audit_entity':'App-Entity-EntityDocumentation'} %}
+    {% endif %}
+</div>

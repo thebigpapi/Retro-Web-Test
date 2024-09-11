@@ -1,0 +1,44 @@
+{% extends '@EasyAdmin/page/content.html.twig' %}
+{% block page_title %}Statistics - size{% endblock %}
+{% block main %}
+    <div class="row statistics-charts-size">
+        <div class="col-md-6" data-id="sizeBoard" data-name="Board count" data-ratio="2" data-type="pie">
+            <div class="col-md-12"><h4><i>Motherboard folder size</i>: {{boardTotal}}</h4></div>
+            <canvas id="sizeBoardCanvas"></canvas>
+            {% for key, value in boardStorage %}
+                <div id="{{key}}" style="display:none;">{{value}}</div>
+            {% endfor %}
+        </div>
+        <div class="col-md-6" data-id="sizeCard" data-name="Board count" data-ratio="2" data-type="pie">
+            <div class="col-md-12"><h4><i>Expansion card folder size</i>: {{cardTotal}}</h4></div>
+            <canvas id="sizeCardCanvas"></canvas>
+            {% for key, value in cardStorage %}
+                <div id="{{key}}" style="display:none;">{{value}}</div>
+            {% endfor %}
+        </div>
+        <div class="col-md-6" data-id="sizeChip" data-name="Board count" data-ratio="2" data-type="pie">
+            <div class="col-md-12"><h4><i>Chip folder size</i>: {{chipTotal}}</h4></div>
+            <canvas id="sizeChipCanvas"></canvas>
+            {% for key, value in chipStorage %}
+                <div id="{{key}}" style="display:none;">{{value}}</div>
+            {% endfor %}
+        </div>
+        <div class="col-md-6" data-id="sizeStorage" data-name="Board count" data-ratio="2" data-type="pie">
+            <div class="col-md-12"><h4><i>HDD/CDD/FDD folder size</i>: {{storTotal}}</h4></div>
+            <canvas id="sizeStorageCanvas"></canvas>
+            {% for key, value in storStorage %}
+                <div id="{{key}}" style="display:none;">{{value}}</div>
+            {% endfor %}
+        </div>
+        <div class="col-md-6" data-id="sizeMisc" data-name="Board count" data-ratio="2" data-type="pie">
+            <div class="col-md-12"><h4><i>Misc files folder size</i>: {{miscTotal}}</h4></div>
+            <canvas id="sizeMiscCanvas"></canvas>
+            {% for key, value in miscStorage %}
+                <div id="{{key}}" style="display:none;">{{value}}</div>
+            {% endfor %}
+        </div>
+    </div>
+    <h4><i>Chipset folder size</i>: {{chipsetTotal}}</h4>
+    <h4><i>Drivers folder size</i>: {{driverTotal}}</h4>
+    <h4><i>Total size</i>: {{total}}</h4>
+{% endblock %}

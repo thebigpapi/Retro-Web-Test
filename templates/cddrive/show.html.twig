@@ -33,7 +33,7 @@
             <path d="M.293 0l22 22-22 22h1.414l22-22-22-22H.293z"></path>
         </svg>
         <a class="ml-4" href="{{ path('cddsearch') }}">
-			<img src="{{ absolute_url(asset('build/icons/cd_drive.svg')) }}" width="24" height="24" alt="cdd">
+			<img src="{{ absolute_url(asset('build/icons/cd_drive.svg')) }}" width="32" height="32" alt="cdd">
             <code class="text-pink-500">Optical drives</code>
         </a>
     </div>
@@ -79,7 +79,7 @@
 						</div>
 						{% if cddrive.getPowerConnectors() is not empty %}
 							<div class="tag-container">{% for power in cddrive.getPowerConnectors() %}
-								<a href="{{ path('psu_connector_show', {id: power.getId()}) }}"><span class="text-block">{{ power.getName() }}</span></a>{% endfor %}
+								<a href="{{ path('power_connector_show', {id: power.getId()}) }}"><span class="text-block">{{ power.getName() }}</span></a>{% endfor %}
 							</div>
 						{% else %}
 							<div><span class='badge badge-secondary'>Empty</span></div>
@@ -120,7 +120,7 @@
 				</div>
 				{% include 'macros/aliases.html.twig' with {'entity':cddrive.getStorageDeviceAliases(), 'msg': 'Also known as:'} %}
 				{% include 'macros/notes.html.twig' with {'entity': cddrive} %}
-				{% include 'macros/manuals.html.twig' with {'entity': cddrive.getStorageDeviceDocumentations(), 'entity_label':'', 'audit_entity':'App-Entity-StorageDeviceDocumentation'} %}
+				{% include 'macros/docs.html.twig' with {'entity': cddrive.getStorageDeviceDocumentations(), 'entity_label':'', 'audit_entity':'App-Entity-StorageDeviceDocumentation'} %}
 				{% include 'macros/miscfiles.html.twig' with {'entity': cddrive.getStorageDeviceMiscFiles(), 'audit_entity':'App-Entity-StorageDeviceMiscFile'} %}
 				<div id="index-datetime"><div class="div-datetime">Last updated <span class="perk-date">{{ cddrive.getLastEdited()|date("Y-m-d\\TH:i:s", "GMT") }}Z</span></div></div>
 			</div>

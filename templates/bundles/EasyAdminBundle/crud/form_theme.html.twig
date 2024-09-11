@@ -312,9 +312,12 @@
 {% block _ExpansionCard_miscSpecs_widget %}
     {% include 'admin/macros/specs.html.twig' with {'entity': 'card', 'form': form} %}
 {% endblock _ExpansionCard_miscSpecs_widget %}
-{% block _ExpansionChip_miscSpecs_widget %}
+{% block _Chip_miscSpecs_widget %}
     {% include 'admin/macros/specs.html.twig' with {'entity': 'card', 'form': form} %}
-{% endblock _ExpansionChip_miscSpecs_widget %}
+{% endblock _Chip_miscSpecs_widget %}
+{% block _ProcessorPlatformType_miscSpecs_widget %}
+    {% include 'admin/macros/specs.html.twig' with {'entity': '', 'form': form} %}
+{% endblock _ProcessorPlatformType_miscSpecs_widget %}
 {% block _ExpansionCardType_template_widget %}
     {% include 'admin/macros/specs.html.twig' with {'entity': '', 'form': form} %}
 {% endblock _ExpansionCardType_template_widget %}
@@ -347,27 +350,22 @@
     {% include 'admin/macros/newdriver.html.twig' with {'entity':'ExpansionCard_drivers', 'label': 'card'} %}
 {% endblock _ExpansionCard_getChipsWithDrivers_widget %}
 
-{# cpu editor #}
-{% block _Processor_images_widget %}
+{# chip editor #}
+{% block _Chip_images_widget %}
     {% include 'admin/macros/widgets.html.twig' with {'type': 'image', 'form': form} %}
-{% endblock _Processor_images_widget %}
-
-{# expansion chip editor #}
-{% block _ExpansionChip_images_widget %}
-    {% include 'admin/macros/widgets.html.twig' with {'type': 'image', 'form': form} %}
-{% endblock _ExpansionChip_images_widget %}
-{% block _ExpansionChip_documentations_entry_releaseDate_widget %}
+{% endblock _Chip_images_widget %}
+{% block _Chip_documentations_entry_releaseDate_widget %}
     {% include 'admin/macros/widgets.html.twig' with {'type': 'date', 'form': form} %}
-{% endblock _ExpansionChip_documentations_entry_releaseDate_widget %}
-{% block _ExpansionChip_documentations_entry_datePrecision_widget %}
+{% endblock _Chip_documentations_entry_releaseDate_widget %}
+{% block _Chip_documentations_entry_datePrecision_widget %}
     <div style="display:none;">{{ form_widget(form)}}</div>
-{% endblock _ExpansionChip_documentations_entry_datePrecision_widget %}
-{% block _ExpansionChip_drivers_widget %}
+{% endblock _Chip_documentations_entry_datePrecision_widget %}
+{#% block _Chip_drivers_widget %}
     {{ form_widget(form)}}
-{% endblock _ExpansionChip_drivers_widget %}
-{% block _ExpansionChip_getChipsWithDrivers_widget %}
-    {% include 'admin/macros/newdriver.html.twig' with {'entity':'ExpansionChip_drivers', 'label': 'chip'} %}
-{% endblock _ExpansionChip_getChipsWithDrivers_widget %}
+{% endblock _Chip_drivers_widget %#}
+{% block _Chip_getChipsWithDrivers_widget %}
+    {% include 'admin/macros/newdriver.html.twig' with {'entity':'Chip_drivers', 'label': 'chip'} %}
+{% endblock _Chip_getChipsWithDrivers_widget %}
 
 {# driver editor #}
 {% block _LargeFile_releaseDate_widget %}
@@ -389,6 +387,12 @@
     </div>
     {{ form_widget(form)}}
 {% endblock _LargeFile_note_widget %}
+{% block _LargeFile_chips_widget %}
+    <div>
+    <div>INF parsing</dib>
+    <input id="js-readinf" type="file" /><span id="js-readinf-status"></span></div>
+    {{ form_widget(form)}}
+{% endblock _LargeFile_chips_widget %}
 
 {# hdd editor #}
 {% block _HardDrive_storageDeviceImages_widget %}
@@ -480,5 +484,9 @@
 {% endblock _IoPortSignal_entityDocumentations_entry_datePrecision_widget %}
 {% block _HardDrive_capacity_label %}
     {{ form_label(form)}}
-    <button id="hdd-capacity-convert" type="button" class="btn btn-secondary">Get formatted</button>
+    <button id="hdd-capacity-convert" type="button" class="btn btn-secondary">Convert to MB</button>
 {% endblock _HardDrive_capacity_label %}
+{% block _HardDrive_buffer_label %}
+    {{ form_label(form)}}
+    <button id="hdd-buffer-convert" type="button" class="btn btn-secondary">Convert to KB</button>
+{% endblock _HardDrive_buffer_label %}

@@ -7,7 +7,8 @@
 	<link rel="alternate" hreflang="x-default" href="{{ absolute_url(path('expansioncardsearch')) }}"/>
 {% endblock %}
 {% block extra_javascripts %}
-	<script src="/build/js/tom-select.complete.min.js" defer></script>
+	<script src="/build/js/tom-select.js" defer></script>
+	<script src="/build/js/show.js" defer></script>
 	<script src="/build/js/search.js" defer></script>
 {% endblock %}
 {% block subnav %}
@@ -17,7 +18,7 @@
             <path d="M.293 0l22 22-22 22h1.414l22-22-22-22H.293z"></path>
         </svg>
         <a class="ml-4" href="{{ path('expansioncardsearch') }}">
-			<img src="{{ absolute_url(asset('build/icons/card.svg')) }}" width="24" height="24" alt="card">
+			<img src="{{ absolute_url(asset('build/icons/card.svg')) }}" width="32" height="32" alt="card">
             <code class="text-pink-500">Expansion cards</code>
         </a>
     </div>
@@ -50,7 +51,7 @@
 			{% include 'macros/searchitems.html.twig' with {'datatarget': 'expansioncards', 'dataresetids': 'search_manufacturer', 'search_with_images' : true} %}
 		</section>
 		<div class="dropdown-trw">
-			<label class="dropdown-header">
+			<label class="dropdown-header" onclick="expandDropdown(this)">
 				<img src="{{ absolute_url(asset('build/icons/search.svg')) }}" alt="search" width="24" height="24">
 				<span>Advanced search<small class="dropdown-tooltip"> (click to expand)</small></span>
 				<input class="dropdown" type="checkbox" />
@@ -107,13 +108,13 @@
 				<section class="search-form-grid bordertop">
 					<div class="search-form-entry">
 						<label class="search-form-label flex">
-							<span>Expansion chips</span>
-							{% include 'macros/buttons.html.twig' with {'type':'add', 'action': 'expansionChips'} %}
+							<span>Chips</span>
+							{% include 'macros/buttons.html.twig' with {'type':'add', 'action': 'chips'} %}
 						</label>
-						<div class="search-form-widget filter-list" id="expansionChips-fields-list" data-widget-counter="{{ form.expansionChips|length }}" data-prototype="
-							{{ form_widget(form.expansionChips.vars.prototype, {'attr': {'style': 'width:50%'}})|e }}
+						<div class="search-form-widget filter-list" id="chips-fields-list" data-widget-counter="{{ form.chips|length }}" data-prototype="
+							{{ form_widget(form.chips.vars.prototype, {'attr': {'style': 'width:50%'}})|e }}
 							{% include 'macros/buttons.html.twig' with {'type':'del'} %}</div>">
-							{% for expchip in form.expansionChips %}
+							{% for expchip in form.chips %}
 								<div class="editor-row">
 									{{ form_widget(expchip, {'attr': {'style': 'width:50%'}}) }}
 									{% include 'macros/buttons.html.twig' with {'type':'del'} %}
@@ -156,7 +157,7 @@
 		{% include 'macros/lastedited.html.twig' with {'entity': latestCards, 'type':'card', 'entity_label':'expansion cards', 'path': 'expansioncard_show'} %}
 	{% endif %}
 	{% if expansioncards is defined %}
-		{% include 'expansioncard/result.html.twig' with {'expansioncards': expansioncards, 'show_images': show_images, 'route': true} %}
+		{% include 'expansioncard/result.html.twig' with {'expansioncards': expansioncards, 'route': true} %}
 	{% endif %}
 	</section>
 {% endblock %}

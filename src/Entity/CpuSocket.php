@@ -2,12 +2,13 @@
 
 namespace App\Entity;
 
+use App\Repository\CpuSocketRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[ORM\Entity(repositoryClass: 'App\Repository\CpuSocketRepository')]
+#[ORM\Entity(repositoryClass: CpuSocketRepository::class)]
 class CpuSocket
 {
     #[ORM\Id]
@@ -29,8 +30,8 @@ class CpuSocket
     #[Assert\Length(max: 255, maxMessage: 'Type is longer than {{ limit }} characters.')]
     private $type;
 
-    #[ORM\ManyToMany(targetEntity: ProcessingUnit::class, mappedBy: 'sockets')]
-    private $processingUnits;
+    #[ORM\ManyToMany(targetEntity: Chip::class, mappedBy: 'sockets')]
+    private $chips;
 
     #[ORM\OneToMany(mappedBy: 'cpuSocket', targetEntity: EntityDocumentation::class, orphanRemoval: true, cascade: ['persist'])]
     #[Assert\Valid()]
@@ -47,7 +48,7 @@ class CpuSocket
     {
         $this->platforms = new ArrayCollection();
         $this->motherboards = new ArrayCollection();
-        $this->processingUnits = new ArrayCollection();
+        $this->chips = new ArrayCollection();
         $this->entityDocumentations = new ArrayCollection();
         $this->entityImages = new ArrayCollection();
     }
@@ -136,26 +137,26 @@ class CpuSocket
         }
     }
     /**
-     * @return Collection|ProcessingUnit[]
+     * @return Collection|Chip[]
      */
-    public function getProcessingUnits(): Collection
+    public function getChips(): Collection
     {
-        return $this->processingUnits;
+        return $this->chips;
     }
-    public function addProcessingUnit(ProcessingUnit $processingUnit): self
+    public function addChip(Chip $chip): self
     {
-        if (!$this->processingUnits->contains($processingUnit)) {
-            $this->processingUnits[] = $processingUnit;
-            $processingUnit->addSocket($this);
+        if (!$this->chips->contains($chip)) {
+            $this->chips[] = $chip;
+            $chip->addSocket($this);
         }
 
         return $this;
     }
-    public function removeProcessingUnit(ProcessingUnit $processingUnit): self
+    public function removeChip(Chip $chip): self
     {
-        if ($this->processingUnits->contains($processingUnit)) {
-            $this->processingUnits->removeElement($processingUnit);
-            $processingUnit->removeSocket($this);
+        if ($this->chips->contains($chip)) {
+            $this->chips->removeElement($chip);
+            $chip->removeSocket($this);
         }
 
         return $this;

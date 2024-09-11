@@ -73,7 +73,7 @@ $button-hover-dark: #646464;
 }
 @import 'main/base';
 @import 'main/audio';
-@import "./variables-theme.scss";
+@import "./easyadmin/easyadmin-theme/variables-theme.scss";
 
 /* cards */
 div.index-buttons {
@@ -170,6 +170,18 @@ div.perks {
     div.perks-list {
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        &.small{
+            grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+            div.perk div.perk-image{
+                height: 230px;
+            }
+        }
+        &.medium{
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            div.perk div.perk-image{
+                height: 260px;
+            }
+        }
 
         div.perk {
             background-color: $body-bkg-light;
@@ -563,7 +575,7 @@ label.hamburger-menu {
 
 aside.hamburger-sidebar {
 	position: absolute;
-	max-width: 10rem;
+	max-width: 13rem;
 	height: max-content;
 	z-index: 3;
 	padding: 0.5rem;
@@ -596,13 +608,6 @@ div.dropdown-trw{
         user-select: none;
         font-style: italic;
         transition: ease-in-out $anim-duration background-color;
-        &:hover{
-            transition: ease-in-out $anim-duration background-color;
-            background-color: #5eb3ec;
-            @media (prefers-color-scheme: dark) {
-                background-color: #0979c3;
-            }
-        }
         span{
             flex-grow: 1;
         }
@@ -634,22 +639,32 @@ div.dropdown-trw{
                 -webkit-transform: rotate(45deg);
             }
         }
-        &:has(input:checked){
-            border-bottom: 1px solid #b5b5b5;
+        &:hover{
+            transition: ease-in-out $anim-duration background-color;
+            background-color: #5eb3ec;
             @media (prefers-color-scheme: dark) {
-                border-bottom: 1px solid #878787;
+                background-color: #0979c3;
             }
-            & + div.dropdown-contents{
-                display: block;
+            input.dropdown{
+                border: solid #ffffff;
+                border-width: 0 3px 3px 0;
+                border-radius: 0;
             }
-            & + small.dropdown-tooltip{
-                opacity: 0;
-            }
+        }
+        img{
+            padding-right: 3px;
         }
     }
     div.dropdown-contents{
         display: none;
         padding: 3px;
+        &.visible{
+            display: block;
+            border-top: 1px solid #b5b5b5;
+            @media (prefers-color-scheme: dark) {
+                border-top: 1px solid #878787;
+            }
+        }
     }
 }
 div.pagination {
@@ -1191,11 +1206,11 @@ div.main-strip {
             }
 
             /* === General page elements === */
-            div.show-general, div.show-expchips, div.show-downloads, div.show-cpus {
+            div.show-general, div.show-chips, div.show-downloads, div.show-cpus {
                 flex-grow: 1;
             }
 
-            div.show-expchips, div.show-downloads, div.show-cpus {
+            div.show-chips, div.show-downloads, div.show-cpus {
                 display: none;
             }
 
@@ -1204,6 +1219,9 @@ div.main-strip {
                 border-bottom: solid thin $border-dark;
                 &.last{
                     border-bottom: none;
+                }
+                &.top-border{
+                    border-top: solid thin $border-dark;
                 }
 
                 @media (max-width: 500px) {
@@ -1215,6 +1233,9 @@ div.main-strip {
 
                 @media (prefers-color-scheme: dark) {
                     border-color: $shadow-light;
+                    &.top-border{
+                        border-top: solid thin $shadow-light;
+                    }
                 }
 
                 div.show-downloads-group-header {
@@ -1439,6 +1460,8 @@ div.spec-section{
     flex-direction: row;
     flex-wrap: wrap;
     gap: 6px;
+
+    
     th, td{
         text-align: center;
     }
@@ -1447,6 +1470,9 @@ div.spec-section{
         @media (prefers-color-scheme: dark) {
             background-color: $accent-bkg-dark;
         }
+    }
+    @media screen and (min-width: 750px) {
+        max-width: min(66vw, 1015px);
     }
 }
 
@@ -1463,6 +1489,9 @@ div.textarea {
     overflow-y: hidden;
     padding: 5px;
     border-top: solid thin $border-dark;
+    &.last{
+        border-top: none;
+    }
     table {
         border-spacing: 0;
         border-collapse: collapse;

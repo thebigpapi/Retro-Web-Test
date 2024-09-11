@@ -2,21 +2,39 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Put;
+use ApiPlatform\Metadata\Delete;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: 'App\Repository\DramTypeRepository')]
+#[ApiResource(
+    operations: [
+        new Get(normalizationContext: ['groups' => ['dram_type:read']]),
+        new GetCollection(normalizationContext: ['groups' => ['dram_type:read']]),
+        new Post(denormalizationContext: ['groups' => ['dram_type:write']]),
+        new Put(denormalizationContext: ['groups' => ['dram_type:write']]),
+        new Delete()
+    ]
+)]
 class DramType
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
+    #[Groups(['dram_type:read'])]
     private $id;
 
     #[ORM\Column(type: 'string', length: 255)]
     #[Assert\Length(max: 255, maxMessage: 'Name is longer than {{ limit }} characters.')]
+    #[Groups(['dram_type:read', 'dram_type:write'])]
     private $name;
 
     #[ORM\ManyToMany(targetEntity: Motherboard::class, mappedBy: 'dramType')]

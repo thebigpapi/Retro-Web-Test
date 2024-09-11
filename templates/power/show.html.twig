@@ -1,0 +1,93 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	{{ powerconn.getName() }}
+{% endblock %}
+{% block metatags %}
+	<meta name="description" content="Connector :{{ powerconn.getName() }}">
+{% endblock %}
+{% block extra_javascripts %}
+	<script src="/build/js/show.js" defer></script>
+{% endblock %}
+
+{% block opengraph %}
+	{% apply spaceless %}
+	<meta property="og:title" content="{{ powerconn.getName() }}">
+	<meta property="og:description" content="Get connector info for {{ powerconn.getName() }}!">
+	{% if powerconn.getEntityImages() is not empty %}
+		{% for image in powerconn.getEntityImages()|sort((a, b) => a.getFileName() <=> b.getFileName())|slice(0, 1) %}
+			<meta name="twitter:image" content="{{ vich_uploader_asset(image, 'imageFile')}}">
+			<meta property="og:image" content="{{ vich_uploader_asset(image, 'imageFile')}}">
+		{% endfor %}
+	{% else %}
+		<meta name="twitter:image" content="{{ absolute_url(asset('build/images/missing/connector-missing.jpg')) }}">
+		<meta property="og:image" content="{{ absolute_url(asset('build/images/missing/connector-missing.jpg')) }}">
+	{% endif %}
+	{% endapply %}
+	<link rel="alternate" hreflang="x-default" href="{{ absolute_url(path('socket_show', {id: powerconn.getId()})) }}"/>
+{% endblock %}
+{% block subnav %}
+<li class="flex navbar-li">
+    <div class="flex items-center">
+        <svg class="navbar-svg" viewBox="0 0 24 44" preserveAspectRatio="none" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M.293 0l22 22-22 22h1.414l22-22-22-22H.293z"></path>
+        </svg>
+        <a class="ml-4" href="{{ path('powerconnsearch') }}">
+			<img src="{{ absolute_url(asset('build/icons/power.svg')) }}" width="32" height="32" alt="power">
+            <code class="text-pink-500">Power connectors</code>
+        </a>
+    </div>
+</li>
+<li class="flex">
+    <div class="flex">
+        <svg class="navbar-svg" viewBox="0 0 24 44" preserveAspectRatio="none" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M.293 0l22 22-22 22h1.414l22-22-22-22H.293z"></path>
+        </svg>
+        <code class="navbar-code">ID: {{powerconn.getId()}}</code>
+    </div>
+</li>
+{% endblock %}
+
+{% block body %}
+<!-- MANUF./NAME/PART NO. -->
+<div class="title">{{ powerconn.getName() }}</div>
+<div class="main-strip">
+	<div class="internal-container">
+		{% include 'macros/navbar.html.twig' with {'entity': powerconn, 'entityName': 'PSUConnector', 'types': [], 'name': 'connector', 'role': 'ROLE_USER'} %}
+		<div class="internal-content">
+			<!-- DESCRIPRION -->
+			<div class="show-general" id="sh-general">
+				{% include 'macros/notes.html.twig' with {'entity': powerconn} %}
+				<!-- MANUALS -->
+				{% include 'macros/docs.html.twig' with {'entity': powerconn.getEntityDocumentations(), 'entity_label':'', 'audit_entity':'App-Entity-EntityDocumentation'} %}
+			</div>
+		</div>
+	</div>
+
+	<!-- IMAGES -->
+	<div class="show-images" id="sh-images">
+	{% if powerconn.getEntityImages() is not empty %}
+		{% set lpindex = 0 %}
+		{% for image in powerconn.getEntityImages()|sort((a, b) => a.getFileName() <=> b.getFileName()) %}
+			{% set lpindex = lpindex + 1 %}
+			{% include 'macros/images.html.twig' with {'type':'connector', 'entity': image, 'index': lpindex, 'length': powerconn.getEntityImages()|length} %}
+		{% endfor %}
+	{% else %}
+		<div class="show-images">
+			{% if is_granted('ROLE_USER') %}
+				<a href="{{ ea_url().setDashboard('App\\Controller\\Admin\\DashboardController').setController('App\\Controller\\Admin\\PSUConnectorCrudController').setAction('edit').setEntityId(powerconn.getId())}}">
+					<img src={{ absolute_url(asset('build/images/missing/connector-missing.jpg')) }} title="Click to edit this entry" style="width:100%;">
+				</a>
+			{% else %}
+				<img src={{ absolute_url(asset('build/images/missing/connector-missing.jpg')) }} title="no images available :(" style="width:100%;">
+			{% endif %}
+		</div>
+	{% endif %}
+	</div>
+
+</div>
+<div class="disclaimer">
+	<p><b>Disclaimer</b></p>
+	<p>The info found in this page might not be entirely correct. Check out <a href="{{ path('app_contributions') }}">this guide</a> to learn how you can improve it.</p>
+</div>
+{% endblock %}

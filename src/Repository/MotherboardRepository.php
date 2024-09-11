@@ -87,12 +87,12 @@ class MotherboardRepository extends ServiceEntityRepository
 
         return $from;
     }
-    private function expansionChipsToSQL(array $expansionChips, array $from): array
+    private function chipsToSQL(array $chips, array $from): array
     {
-        foreach ($expansionChips as $key => $chip) {
-            $from[] = (count($from) == 0 ? " (" : " INTERSECT") . " SELECT mec.motherboard_id as id
-                    FROM motherboard_expansion_chip mec
-                    WHERE mec.expansion_chip_id=:idChip" . $key;
+        foreach ($chips as $key => $chip) {
+            $from[] = (count($from) == 0 ? " (" : " INTERSECT") . " SELECT mc.motherboard_id as id
+                    FROM motherboard_chip mc
+                    WHERE mc.chip_id=:idChip" . $key;
         }
         return $from;
     }
@@ -217,8 +217,8 @@ class MotherboardRepository extends ServiceEntityRepository
             if (array_key_exists("ioPorts", $arrays)) {
                 $from = $this->ioPortsToSQL($arrays['ioPorts'], $from);
             }
-            if (array_key_exists("expansionChips", $arrays)) {
-                $from = $this->expansionChipsToSQL($arrays['expansionChips'], $from);
+            if (array_key_exists("chips", $arrays)) {
+                $from = $this->chipsToSQL($arrays['chips'], $from);
             }
             if (array_key_exists("dramTypes", $arrays)) {
                 $from = $this->dramTypesToSQL($arrays['dramTypes'], $from);
@@ -316,8 +316,8 @@ class MotherboardRepository extends ServiceEntityRepository
             }
         }
 
-        if (array_key_exists("expansionChips", $arrays)) {
-            foreach ($arrays['expansionChips'] as $key => $val) {
+        if (array_key_exists("chips", $arrays)) {
+            foreach ($arrays['chips'] as $key => $val) {
                 $query->setParameter("idChip" . $key, $val);
             }
         }
@@ -561,7 +561,7 @@ class MotherboardRepository extends ServiceEntityRepository
     /**
      * @return Motherboard[] Returns an array of sockets and count of board for each socket
      */
-    public function getExpChipCount(): array
+    public function getChipCount(): array
     {
         $entityManager = $this->getEntityManager();
         $rsm = new ResultSetMapping();
@@ -573,7 +573,7 @@ class MotherboardRepository extends ServiceEntityRepository
         $result = $entityManager->createNativeQuery(
             "SELECT c.id, man.name as manuf, c.name, c.part_number, ch.cnt FROM chip c
             LEFT JOIN manufacturer man ON man.id = c.manufacturer_id
-            INNER JOIN (SELECT expansion_chip_id, count(expansion_chip_id) AS cnt FROM motherboard_expansion_chip GROUP BY expansion_chip_id) AS ch ON ch.expansion_chip_id = c.id
+            INNER JOIN (SELECT chip_id, count(chip_id) AS cnt FROM motherboard_chip GROUP BY chip_id) AS ch ON ch.chip_id = c.id
             ORDER BY ch.cnt DESC",$rsm)->getResult();
         $finalArray = array();
         foreach ($result as $subArray) {

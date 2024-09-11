@@ -22,5 +22,6 @@ function paginate(target) {
         return;
     }
 
-    window.location.href = "/" + target + "/?page=1&itemsPerPage=24&showImages=1&name=" + searchText;
+    //window.location.href = "/" + target + "?query=" + searchText;
+    window.location.href = "/" + target + "/?page=1&itemsPerPage=24&name=" + searchText;
 }

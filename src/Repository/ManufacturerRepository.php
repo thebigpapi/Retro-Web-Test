@@ -27,6 +27,56 @@ class ManufacturerRepository extends ServiceEntityRepository
     /**
      * @return Manufacturer[]
      */
+    public function findByManufacturer(array $criteria): array
+    {
+        $entityManager = $this->getEntityManager();
+
+        $whereArray = array();
+        $valuesArray = array();
+
+        // Checking values in criteria and creating WHERE statements
+        if (array_key_exists('name', $criteria)) {
+            $multicrit = explode(" ", $criteria['name']);
+            foreach ($multicrit as $key => $val) {
+                $whereArray[] = "(LOWER(man.name) LIKE :nameLike$key
+                    OR LOWER(man.fullName) LIKE :nameLike$key)";
+                $valuesArray["nameLike$key"] = "%" . strtolower($val) . "%";
+            }
+        }
+
+        // Building where statement
+        $whereString = implode(" AND ", $whereArray);
+
+        // Building query
+        if($whereArray == []){
+            return [];
+        }
+        else{
+            $query = $entityManager->createQuery(
+                "SELECT man
+                FROM App\Entity\Manufacturer man
+                WHERE $whereString
+                ORDER BY man.name ASC, man.fullName ASC"
+            );
+        }
+        // Setting values
+        foreach ($valuesArray as $key => $value) {
+            $query->setParameter($key, $value);
+        }
+        return $query->getResult();
+    }
+
+    public function getCount(): int
+    {
+        return $this->createQueryBuilder('m')
+            ->select('count(m.id)')
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+
+    /**
+     * @return Manufacturer[]
+     */
     public function findAllManufacturerCaseInsensitiveSorted(array $criterias = []): array
     {
         $entityManager = $this->getEntityManager();
@@ -207,30 +257,13 @@ class ManufacturerRepository extends ServiceEntityRepository
     /**
      * @return Manufacturer[]
      */
-    public function findAllProcessorManufacturer(): array
+    public function findAllChipManufacturer(): array
     {
         $entityManager = $this->getEntityManager();
 
         $query = $entityManager->createQuery(
             'SELECT DISTINCT man
-            FROM App\Entity\Processor p, App\Entity\Manufacturer man 
-            WHERE p.manufacturer=man 
-            ORDER BY man.name ASC'
-        );
-
-        return $query->getResult();
-    }
-
-    /**
-     * @return Manufacturer[]
-     */
-    public function findAllExpansionChipManufacturer(): array
-    {
-        $entityManager = $this->getEntityManager();
-
-        $query = $entityManager->createQuery(
-            'SELECT DISTINCT man
-            FROM App\Entity\ExpansionChip ac, App\Entity\Manufacturer man 
+            FROM App\Entity\Chip ac, App\Entity\Manufacturer man 
             WHERE ac.manufacturer=man 
             ORDER BY man.name ASC'
         );

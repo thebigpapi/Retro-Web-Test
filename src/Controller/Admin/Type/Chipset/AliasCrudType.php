@@ -17,7 +17,7 @@ class AliasCrudType extends AbstractCrudController
     public function configureFields(string $pageName): iterable
     {
         yield AssociationField::new('manufacturer')
-            ->autocomplete()
+            //->autocomplete()
             ->setFormTypeOption('label',false)
             ->setFormTypeOption('attr',['placeholder' => 'Type to select a manufacturer ...'])
             ->setColumns(4);

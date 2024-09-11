@@ -51,7 +51,6 @@ class FloppyDriveController extends AbstractController
         }
         //get criterias
         $criterias = $this->getCriteriaFdd($request);
-        $showImages = boolval(htmlentities($request->query->get('showImages') ?? ''));
         $maxItems = $request->query->getInt('itemsPerPage', $request->request->getInt('itemsPerPage', $this->getParameter('app.pagination.max')));
         if (empty($criterias)) {
             return $this->render('floppydrive/search.html.twig', [
@@ -70,7 +69,6 @@ class FloppyDriveController extends AbstractController
             'form' => $form->createView(),
             'controller_name' => 'FloppyDriveController',
             'fdds' => $fdds,
-            'show_images' => $showImages,
         ]);
     }
     #[Route('/floppydrives/live', name: 'fddlivewrapper')]
@@ -84,7 +82,6 @@ class FloppyDriveController extends AbstractController
     public function liveResultsFdd(Request $request, PaginatorInterface $paginator, FloppyDriveRepository $fddRepository): Response
     {
         $criterias = $this->getCriteriaFdd($request);
-        $showImages = boolval(htmlentities($request->query->get('showImages') ?? ''));
         $maxItems = $request->query->getInt('itemsPerPage', $request->request->getInt('itemsPerPage', $this->getParameter('app.pagination.max')));
         $data = $fddRepository->findByFdd($criterias);
         $fdds = $paginator->paginate(
@@ -100,7 +97,6 @@ class FloppyDriveController extends AbstractController
         return $this->render('floppydrive/result.html.twig', [
             'controller_name' => 'FloppyDriveController',
             'fdds' => $fdds,
-            'show_images' => $showImages,
             'domTarget' => $request->request->get('domTarget') ?? $request->query->get('domTarget') ?? "",
             'params' => substr($string, 0, -1),
         ]);
@@ -227,7 +223,6 @@ class FloppyDriveController extends AbstractController
         $tempItems = intval($form['itemsPerPage']->getData()->value);
         $parameters['itemsPerPage'] = $tempItems > 0 ? $tempItems : $this->getParameter('app.pagination.max');
 
-        $parameters['showImages'] = $form['searchWithImages']->getData();
         $parameters['name'] = $form['name']->getData();
 
         return $parameters;

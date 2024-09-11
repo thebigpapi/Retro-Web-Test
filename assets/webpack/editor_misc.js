@@ -14,7 +14,9 @@ if(saveretbtn = document.getElementById("js-save"))
 if(savecontbtn = document.getElementById("js-save-continue"))
     savecontbtn.addEventListener('click', () => submit("action-saveAndContinue"), false);
 if(capacitybtn = document.getElementById("hdd-capacity-convert"))
-    capacitybtn.addEventListener('click', convertCapacity);
+    capacitybtn.addEventListener('click', () => convertSize("HardDrive_capacity", 1));
+if(bufferbtn = document.getElementById("hdd-buffer-convert"))
+    bufferbtn.addEventListener('click', () => convertSize("HardDrive_buffer", 1024));
 getDate();
 function getSlug(entity){
     let manuf = document.getElementById(entity + '_manufacturer');
@@ -28,9 +30,9 @@ function getSlug(entity){
     slug.value = string.replace(/[^a-z0-9_]+/gi, '-').replace(/^-|-$/g, '').toLowerCase().substring(0, 43);
 }
 function calculateSize(bytes){
-    if      (bytes >= 1073741824) { bytes = (bytes / 1073741824).toFixed(2) + " GB"; }
-    else if (bytes >= 1048576)    { bytes = (bytes / 1048576).toFixed(2) + " MB"; }
-    else if (bytes >= 1024)       { bytes = (bytes / 1024).toFixed(2) + " KB"; }
+    if      (bytes >= 1073741824) { bytes = (bytes / 1073741824).toFixed(2) + " GiB"; }
+    else if (bytes >= 1048576)    { bytes = (bytes / 1048576).toFixed(2) + " MiB"; }
+    else if (bytes >= 1024)       { bytes = (bytes / 1024).toFixed(2) + " KiB"; }
     else if (bytes > 1)           { bytes = bytes + " bytes"; }
     else if (bytes == 1)          { bytes = bytes + " byte"; }
     else                          { bytes = "0 bytes"; }
@@ -44,9 +46,10 @@ function submit(name){
         getSlug(entity);
     if(!setDate())
         return;
+    validateCardTypes();
     if(!validateFiles(entity, save))
         return;
-    if(entity != "ExpansionCard" && entity != "ExpansionChip" && entity != "LargeFile"){
+    if(entity != "ExpansionCard" && entity != "Chip" && entity != "LargeFile"){
         saveretbtn.setAttribute("disabled", "disabled");
         savecontbtn.setAttribute("disabled", "disabled");
         save.click();
@@ -54,6 +57,21 @@ function submit(name){
         if(document.getElementsByClassName('badge-danger').length > 0){
             saveretbtn.removeAttribute("disabled");
             savecontbtn.removeAttribute("disabled");
+        }
+    }
+}
+function validateCardTypes(){
+    let cardTypeCollection = document.getElementById("ExpansionCard_type_collection");
+    if(cardTypeCollection){
+        let cardTypes = document.getElementsByClassName("ExpansionCard_type_cssid");
+        if(cardTypes.length < 1){
+            msg.push("Expansion card type is empty");
+        }
+        for(let type of cardTypes){
+            let select = type.querySelector("select");
+            if(select.value === ""){
+                msg.push("Expansion card type is not set");
+            }
         }
     }
 }
@@ -176,15 +194,15 @@ function setDate(){
     }
     return true;
 }
-function convertCapacity(){
-    let input = document.getElementById("HardDrive_capacity");
+function convertSize(el, f){
+    let input = document.getElementById(el);
     let value = input.value;
-    let factor = 1;
+    let factor = f;
     let numeric = value.replace(/[^0-9.,]+/, '');
-    if(value.includes("GB"))
-        factor = 1000;
-    if(value.includes("TB"))
-        factor = 1000000;
-    console.log(numeric, factor);
-    input.value = (numeric * 0.9539 * factor) | 0;
+    if(value.toUpperCase().includes("GB"))
+        factor *= 1024;
+    if(value.toUpperCase().includes("TB"))
+        factor *= 1048576;
+    //console.log(numeric, factor);
+    input.value = (numeric * factor) | 0;
 }

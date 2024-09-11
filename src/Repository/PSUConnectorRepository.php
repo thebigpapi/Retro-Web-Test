@@ -19,32 +19,60 @@ class PSUConnectorRepository extends ServiceEntityRepository
         parent::__construct($registry, PSUConnector::class);
     }
 
-    // /**
-    //  * @return PSUConnector[] Returns an array of PSUConnector objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    /**
+     * @return PSUConnector[]
+     */
+    public function findByPowerConnector(array $criteria): array
     {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('p.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
+        $entityManager = $this->getEntityManager();
 
-    /*
-    public function findOneBySomeField($value): ?PSUConnector
-    {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        $whereArray = array();
+        $valuesArray = array();
+
+        // Checking values in criteria and creating WHERE statements
+        if (array_key_exists('name', $criteria)) {
+            $multicrit = explode(" ", $criteria['name']);
+            foreach ($multicrit as $key => $val) {
+                $whereArray[] = "LOWER(pw.name) LIKE :nameLike$key";
+                $valuesArray["nameLike$key"] = "%" . strtolower($val) . "%";
+            }
+        }
+
+        // Building where statement
+        $whereString = implode(" AND ", $whereArray);
+
+        // Building query
+        if($whereArray == []){
+            return [];
+        }
+        else{
+            $query = $entityManager->createQuery(
+                "SELECT pw
+                FROM App\Entity\PSUConnector pw
+                WHERE $whereString
+                ORDER BY pw.name ASC"
+            );
+        }
+        // Setting values
+        foreach ($valuesArray as $key => $value) {
+            $query->setParameter($key, $value);
+        }
+        return $query->getResult();
     }
-    */
+
+    public function getCount(): int
+    {
+        return $this->createQueryBuilder('pw')
+            ->select('count(pw.id)')
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+
+    public function findAllSorted(): array
+    {
+        return $this->createQueryBuilder('pw')
+            ->orderBy('pw.name', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
 }

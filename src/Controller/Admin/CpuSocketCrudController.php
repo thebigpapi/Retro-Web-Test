@@ -31,7 +31,7 @@ class CpuSocketCrudController extends AbstractCrudController
 
         if (Action::SAVE_AND_RETURN === $submitButtonName) {
             $entityId = $context->getEntity()->getInstance()->getId();
-            return $this->redirectToRoute('cpusocket_show', array('id'=>$entityId));
+            return $this->redirectToRoute('socket_show', array('id'=>$entityId));
         }
         return parent::getRedirectResponseAfterSave($context, $action);
     }
@@ -58,7 +58,7 @@ class CpuSocketCrudController extends AbstractCrudController
         return $crud
             ->showEntityActionsInlined()
             ->setEntityLabelInSingular('socket')
-            ->setEntityLabelInPlural('<img class=ea-entity-icon src=/build/icons/cpupins.svg width=48 height=48>Sockets')
+            ->setEntityLabelInPlural('<img class=ea-entity-icon src=/build/icons/socket.svg width=48 height=48>Sockets')
             ->overrideTemplate('crud/edit', 'admin/crud/edit.html.twig')
             ->overrideTemplate('crud/new', 'admin/crud/new.html.twig')
             ->setPaginatorPageSize(100);
@@ -105,7 +105,7 @@ class CpuSocketCrudController extends AbstractCrudController
     public function viewSocket(AdminContext $context)
     {
         $entityId = $context->getEntity()->getInstance()->getId();
-        return $this->redirectToRoute('cpusocket_show', array('id'=>$entityId));
+        return $this->redirectToRoute('socket_show', array('id'=>$entityId));
     }
     public function viewLogs(AdminContext $context)
     {

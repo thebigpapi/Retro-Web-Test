@@ -2,22 +2,41 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Put;
+use ApiPlatform\Metadata\Delete;
 use App\Repository\PSUConnectorRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: PSUConnectorRepository::class)]
+#[ApiResource(
+    shortName: '/psu_connectors',
+    operations: [
+        new Get(normalizationContext: ['groups' => ['psu_connector:read']]),
+        new GetCollection(normalizationContext: ['groups' => ['psu_connector:read']]),
+        new Post(denormalizationContext: ['groups' => ['psu_connector:write']]),
+        new Put(denormalizationContext: ['groups' => ['psu_connector:write']]),
+        new Delete()
+    ]
+)]
 class PSUConnector
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
+    #[Groups(['psu_connector:read'])]
     private $id;
 
     #[ORM\Column(type: 'string', length: 255)]
     #[Assert\Length(max: 255, maxMessage: 'Name is longer than {{ limit }} characters.')]
+    #[Groups(['psu_connector:read', 'psu_connector:write'])]
     private $name;
 
     #[ORM\ManyToMany(targetEntity: Motherboard::class, mappedBy: 'psuConnectors')]
@@ -28,6 +47,7 @@ class PSUConnector
     private Collection $entityDocumentations;
 
     #[ORM\Column(length: 4096, nullable: true)]
+    #[Groups(['psu_connector:read', 'psu_connector:write'])]
     private ?string $description = null;
 
     #[ORM\OneToMany(mappedBy: 'psuConnector', targetEntity: EntityImage::class, orphanRemoval: true, cascade: ['persist'])]

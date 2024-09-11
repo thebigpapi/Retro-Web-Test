@@ -4,14 +4,13 @@ namespace App\Controller\Admin;
 use App\Entity\Motherboard;
 use App\Entity\Chipset;
 use App\Entity\LargeFile;
-use App\Entity\Processor;
 use App\Entity\ProcessorPlatformType;
 use App\Entity\InstructionSet;
 use App\Entity\CpuSpeed;
 use App\Entity\HardDrive;
 use App\Entity\CdDrive;
 use App\Entity\FloppyDrive;
-use App\Entity\ExpansionChip;
+use App\Entity\Chip;
 use App\Entity\ExpansionChipType;
 use App\Entity\ExpansionCard;
 use App\Entity\ExpansionCardType;
@@ -92,12 +91,6 @@ class DashboardController extends AbstractDashboardController
     public function configureAssets(): Assets
     {
         $assets = parent::configureAssets();
-        $assets->addWebpackEncoreEntry('app_ea');
-        $assets->addHtmlContentToHead('<script type="module">import "/build/js/glightbox.min.js";const lightbox = GLightbox({});</script>');
-        $assets->addHtmlContentToHead('<script src="/build/js/show.js" defer></script>');
-        $assets->addHtmlContentToHead('<script src="/build/js/tom-select.complete.min.js" defer></script>');
-        $assets->addWebpackEncoreEntry('chart');
-        $assets->addCssFile('/build/css/glightbox.min.css');
         return $assets;
     }
     public function configureDashboard(): Dashboard
@@ -121,16 +114,21 @@ class DashboardController extends AbstractDashboardController
     public function configureMenuItems(): iterable
     {
         yield MenuItem::linkToDashboard('Dashboard', 'home.svg');
-        yield MenuItem::linkToRoute('Statistics', 'data.svg', 'dashboard_stats');
+        yield MenuItem::subMenu('Statistics', 'data.svg')->setSubItems([
+            MenuItem::linkToRoute('Motherboards', 'board.svg', 'dashboard_stats_boards'),
+            MenuItem::linkToRoute('Expansion cards', 'card.svg', 'dashboard_stats_cards'),
+            MenuItem::linkToRoute('Chips', 'chip.svg', 'dashboard_stats_chips'),
+            MenuItem::linkToRoute('Chipsets', 'chipset.svg', 'dashboard_stats_chipsets'),
+            MenuItem::linkToRoute('Size', 'dimension.svg', 'dashboard_stats_size')
+        ]);
         yield MenuItem::section('Main items');
         yield MenuItem::linkToCrud('Motherboards', 'board.svg', Motherboard::class)->setDefaultSort(['lastEdited' => 'DESC']);
-        yield MenuItem::linkToCrud('Expansion chips', 'chip.svg', ExpansionChip::class);
+        yield MenuItem::linkToCrud('Chips', 'chip.svg', Chip::class);
         yield MenuItem::linkToCrud('Chipsets', 'chipset.svg', Chipset::class);
         yield MenuItem::linkToCrud('Expansion cards', 'card.svg', ExpansionCard::class);
-        yield MenuItem::linkToCrud('CPUs', '486.svg', Processor::class);
         yield MenuItem::linkToCrud('Hard drives', 'hdd.svg', HardDrive::class);
         yield MenuItem::linkToCrud('Optical drives', 'cd.svg', CdDrive::class);
-        yield MenuItem::linkToCrud('Floppy drives', 'floppy.svg', FloppyDrive::class);
+        yield MenuItem::linkToCrud('Floppy & tape drives', 'floppy.svg', FloppyDrive::class);
         yield MenuItem::linkToCrud('Drivers', 'hardware.svg', LargeFile::class);
         yield MenuItem::section('Auxiliary items');
         yield MenuItem::subMenu('Motherboard related', 'board.svg')->setSubItems([
@@ -144,7 +142,11 @@ class DashboardController extends AbstractDashboardController
             MenuItem::linkToCrud('Manuals', 'manual.svg', Manual::class)->setController(ManualCrudController::class),
         ])->setPermission('ROLE_ADMIN');
         yield MenuItem::subMenu('Chip related', 'chip.svg')->setSubItems([
-            MenuItem::linkToCrud('Expansion chip types', 'chip_alias.svg', ExpansionChipType::class)->setPermission('ROLE_ADMIN'),
+            MenuItem::linkToCrud('Chip types', 'chip_alias.svg', ExpansionChipType::class)->setPermission('ROLE_ADMIN'),
+            MenuItem::linkToCrud('Families', '486.svg', ProcessorPlatformType::class),
+            MenuItem::linkToCrud('Features', 'cpu.svg', InstructionSet::class),
+            MenuItem::linkToCrud('Sockets', 'socket.svg', CpuSocket::class),
+            MenuItem::linkToCrud('Speeds', 'speed.svg', CpuSpeed::class),
             MenuItem::section('Advanced'),
             MenuItem::linkToCrud('Chip aliases', 'chip_alias.svg', ChipAlias::class)->setController(ChipAliasCrudController::class),
             MenuItem::linkToCrud('Chip images', 'search_image.svg', ChipImage::class)->setController(ChipImageCrudController::class),
@@ -159,12 +161,6 @@ class DashboardController extends AbstractDashboardController
             MenuItem::linkToCrud('Images', 'search_image.svg', ExpansionCardImage::class)->setController(ExpansionCardImageCrudController::class)->setPermission('ROLE_ADMIN'),
             MenuItem::linkToCrud('BIOSes', 'awchip.svg', ExpansionCardBios::class)->setController(ExpansionCardBiosCrudController::class),
             MenuItem::linkToCrud('Documentation', 'manual.svg', ExpansionCardDocumentation::class)->setController(ExpansionCardDocumentationCrudController::class)->setPermission('ROLE_ADMIN'),
-        ])->setPermission('ROLE_ADMIN');
-        yield MenuItem::subMenu('CPU related', '486.svg')->setSubItems([
-            MenuItem::linkToCrud('CPU families', '486.svg', ProcessorPlatformType::class),
-            MenuItem::linkToCrud('Sockets', 'cpupins.svg', CpuSocket::class),
-            MenuItem::linkToCrud('Instruction sets', 'cpu.svg', InstructionSet::class),
-            MenuItem::linkToCrud('Speeds', 'speed.svg', CpuSpeed::class),
         ])->setPermission('ROLE_ADMIN');
         yield MenuItem::subMenu('Storage related', 'hdd.svg')->setSubItems([
             MenuItem::linkToCrud('Interface', 'io.svg', StorageDeviceInterface::class),
@@ -210,12 +206,12 @@ class DashboardController extends AbstractDashboardController
     private function createBoardDashChart(): array
     {
         $manufBoardCount = $this->motherboardRepository->getManufCount();
-        return $this->getData(array_slice($manufBoardCount, 0, 25), 'board');
+        return $this->getData(array_slice($manufBoardCount, 0, 25), 'boardManuf');
     }
     private function createSocketDashChart(): array
     {
         $boardSockCount = $this->motherboardRepository->getSocketCount();
-        return $this->getData(array_slice($boardSockCount, 0, 25), 'socket');
+        return $this->getData(array_slice($boardSockCount, 0, 25), 'boardSocket');
     }
     private function getData($array, $id): array
     {

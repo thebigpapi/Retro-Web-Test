@@ -1,8 +1,13 @@
 {% if entity is defined and entity is not empty %}
 	<div class="textarea">
 		<h3><b>{{ msg }}</b></h3>
-{% apply markdown_to_html %}{% for alias in entity|sort %}
+		{% if fullSort is defined %}
+			{% set sortedEntity = entity|sort((a, b) => a.name <=> b.name)|sort((a, b) => a.partNumber <=> b.partNumber) %}
+		{% else %}
+			{% set sortedEntity = entity|sort %}
+		{% endif %}
+{% apply markdown_to_html %}{% for alias in sortedEntity %}
 * {{ alias.getFullAliasName() }}
 {% endfor %}{% endapply %}
-			</div>
-			{% endif %}
+	</div>
+{% endif %}

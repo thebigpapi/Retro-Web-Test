@@ -58,7 +58,7 @@
             </div>
             {{ _self.driver(entity|filter(a => a.isRecommended == true))}}
             <div class="dropdown-trw">
-                <label class="dropdown-header">
+                <label class="dropdown-header" onclick="expandDropdown(this)">
                     <img src="{{ absolute_url(asset('build/icons/hardware.svg')) }}" alt="chip" width="24" height="24">
                     <span><i>{{ otherDrivers }} other driver{% if otherDrivers != 1 %}s{% endif %} available (click to expand)</i></span>
                     <input class="dropdown" type="checkbox" />

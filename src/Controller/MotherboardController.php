@@ -59,7 +59,7 @@ class MotherboardController extends AbstractController
         ExpansionChipTypeRepository $expansionchiptyperep
     ): Response {
         $motherboard = $motherboardRepository->findSlug($slug);
-        $expansionchiptype = $expansionchiptyperep->findAll();
+        $chiptype = $expansionchiptyperep->findAll();
 
         if (!$motherboard) {
             $idRedirection = $motherboardIdRedirectionRepository->findRedirection($slug, 'uh19_slug');
@@ -75,7 +75,7 @@ class MotherboardController extends AbstractController
 
         return $this->render('motherboard/show.html.twig', [
             'motherboard' => $motherboard,
-            'expansionchiptype' => $expansionchiptype,
+            'chiptype' => $chiptype,
             'controller_name' => 'MotherboardController',
         ]);
     }
@@ -116,7 +116,7 @@ class MotherboardController extends AbstractController
         $this->addCriteriaById($request, $criterias, 'platform2', 'processor_platform_type2');
         $this->addArrayCriteria($request, $criterias, 'expansionSlotsIds', 'expansionSlots');
         $this->addArrayCriteria($request, $criterias, 'ioPortsIds', 'ioPorts');
-        $this->addArrayCriteria($request, $criterias, 'expansionChipIds', 'expansionChips');
+        $this->addArrayCriteria($request, $criterias, 'chipIds', 'chips');
         $this->addArrayCriteria($request, $criterias, 'dramTypeIds', 'dramTypes');
         return $criterias;
     }
@@ -140,7 +140,6 @@ class MotherboardController extends AbstractController
         }
         $criterias = $this->getCriteria($request);
 
-        $showImages = boolval(htmlentities($request->query->get('showImages') ?? ''));
         $maxItems = $request->query->getInt('itemsPerPage', $request->request->getInt('itemsPerPage', $this->getParameter('app.pagination.max')));
         if (empty($criterias)) {
             return $this->render('motherboard/search.html.twig', [
@@ -159,7 +158,6 @@ class MotherboardController extends AbstractController
             'form' => $form->createView(),
             'controller_name' => 'MotherboardController',
             'motherboards' => $motherboards,
-            'show_images' => $showImages,
         ]);
     }
 
@@ -170,9 +168,6 @@ class MotherboardController extends AbstractController
         MotherboardRepository $motherboardRepository
     ): Response {
         $criterias = $this->getCriteria($request);
-
-        $showImages = boolval(htmlentities($request->query->get('showImages') ??
-            ($request->request->get('showImages') ?? '')));
 
         $data = $motherboardRepository->findByWithJoin($criterias);
         $maxItems = $request->query->getInt('itemsPerPage',
@@ -191,7 +186,7 @@ class MotherboardController extends AbstractController
                     }
                 }
             }
-            else if($key == "expansionChipIds"){
+            else if($key == "chipIds"){
                 foreach($value as $idx => $val){
                     $string .= $key . '%5B' . $idx . '%5D=' . $val .'&';
                 }
@@ -210,7 +205,6 @@ class MotherboardController extends AbstractController
             'controller_name' => 'MotherboardController',
             'motherboards' => $motherboards,
             'motherboard_count' => count($data),
-            'show_images' => $showImages,
             'domTarget' => $request->request->get('domTarget') ?? $request->query->get('domTarget') ?? "",
             'params' => substr($string, 0, -1),
         ]);
@@ -335,7 +329,6 @@ class MotherboardController extends AbstractController
         $tempItems = intval($form['itemsPerPage']->getData()->value);
         $parameters['itemsPerPage'] = $tempItems > 0 ? $tempItems : $this->getParameter('app.pagination.max');
 
-        $parameters['showImages'] = $form['searchWithImages']->getData();
         $parameters['name'] = $form['name']->getData();
 
         if ($form['formFactor']->getData()) {
@@ -414,15 +407,15 @@ class MotherboardController extends AbstractController
             }
         }
 
-        $expchips = $form['expansionChips']->getData();
+        $expchips = $form['chips']->getData();
         if ($expchips) {
-            $parameters['expansionChipIds'] = array();
+            $parameters['chipIds'] = array();
             $loopCount = 0;
             foreach ($expchips as $chip) {
                 if($loopCount >= 6)
                     break;
                 $loopCount++;
-                array_push($parameters['expansionChipIds'], $chip->getId());
+                array_push($parameters['chipIds'], $chip->getId());
             }
         }
         $dramtypes = $form['dramTypes']->getData();

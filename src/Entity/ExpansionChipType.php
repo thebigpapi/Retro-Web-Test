@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\ExpansionChipTypeRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -20,15 +21,15 @@ class ExpansionChipType
     #[Assert\Length(max:255, maxMessage: 'Name is longer than {{ limit }} characters.')]
     private ?string $name = null;
 
-    #[ORM\OneToMany(targetEntity: ExpansionChip::class, mappedBy: 'type', orphanRemoval: true, cascade: ['persist'])]
-    private $expansionChips;
+    #[ORM\OneToMany(targetEntity: Chip::class, mappedBy: 'type', orphanRemoval: true, cascade: ['persist'])]
+    private $chips;
 
-    #[ORM\Column]
+    #[ORM\Column(type: Types::JSON, options: ['jsonb' => true])]
     private array $template = [];
 
     public function __construct()
     {
-        $this->expansionChips = new ArrayCollection();
+        $this->chips = new ArrayCollection();
     }
     public function __toString(): string
     {
@@ -52,28 +53,28 @@ class ExpansionChipType
     }
 
     /**
-     * @return Collection|ExpansionChip[]
+     * @return Collection|Chip[]
      */
-    public function getExpansionChips(): Collection
+    public function getChips(): Collection
     {
-        return $this->expansionChips;
+        return $this->chips;
     }
-    public function addExpansionChip(ExpansionChip $expansionChip): self
+    public function addChip(Chip $chip): self
     {
-        if (!$this->expansionChips->contains($expansionChip)) {
-            $this->expansionChips[] = $expansionChip;
-            $expansionChip->setType($this);
+        if (!$this->chips->contains($chip)) {
+            $this->chips[] = $chip;
+            $chip->setType($this);
         }
 
         return $this;
     }
-    public function removeExpansionChip(ExpansionChip $expansionChip): self
+    public function removeChip(Chip $chip): self
     {
-        if ($this->expansionChips->contains($expansionChip)) {
-            $this->expansionChips->removeElement($expansionChip);
+        if ($this->chips->contains($chip)) {
+            $this->chips->removeElement($chip);
             // set the owning side to null (unless already changed)
-            if ($expansionChip->getType() === $this) {
-                $expansionChip->setType(null);
+            if ($chip->getType() === $this) {
+                $chip->setType(null);
             }
         }
 

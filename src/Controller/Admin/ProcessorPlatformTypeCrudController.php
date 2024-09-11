@@ -4,6 +4,7 @@ namespace App\Controller\Admin;
 
 use App\Controller\Admin\Type\Chip\CPUIDCrudType;
 use App\Controller\Admin\Type\EntityDocumentationCrudType;
+use App\EasyAdmin\TextJsonField;
 use App\Entity\ProcessorPlatformType;
 use App\Form\Type\DramTypeType;
 use App\Form\Type\InstructionSetType;
@@ -37,7 +38,7 @@ class ProcessorPlatformTypeCrudController extends AbstractCrudController
 
         if (Action::SAVE_AND_RETURN === $submitButtonName) {
             $entityId = $context->getEntity()->getInstance()->getId();
-            return $this->redirectToRoute('cpufamily_show', array('id'=>$entityId));
+            return $this->redirectToRoute('family_show', array('id'=>$entityId));
         }
         return parent::getRedirectResponseAfterSave($context, $action);
     }
@@ -65,8 +66,8 @@ class ProcessorPlatformTypeCrudController extends AbstractCrudController
     {
         return $crud
             ->showEntityActionsInlined()
-            ->setEntityLabelInSingular('CPU family')
-            ->setEntityLabelInPlural('<img class=ea-entity-icon src=/build/icons/486.svg width=48 height=48>CPU families')
+            ->setEntityLabelInSingular('family')
+            ->setEntityLabelInPlural('<img class=ea-entity-icon src=/build/icons/486.svg width=48 height=48>Chip families')
             ->overrideTemplate('crud/edit', 'admin/crud/edit.html.twig')
             ->overrideTemplate('crud/new', 'admin/crud/new.html.twig')
             ->setPaginatorPageSize(100);
@@ -74,14 +75,7 @@ class ProcessorPlatformTypeCrudController extends AbstractCrudController
     public function configureFilters(Filters $filters): Filters
     {
         return parent::configureFilters($filters)
-            ->add('name')
-            ->add('L1code')
-            ->add('L1codeRatio')
-            ->add('L1data')
-            ->add('L1dataRatio')
-            ->add('instructionSets')
-            ->add('cpuid')
-            ->add('processNode');
+            ->add('name');
     }
     public function configureFields(string $pageName): iterable
     {
@@ -90,55 +84,40 @@ class ProcessorPlatformTypeCrudController extends AbstractCrudController
             ->onlyOnForms();
         yield IdField::new('id')
             ->hideOnForm();
-        yield TextField::new('name', 'Name');
-        yield NumberField::new('processNode', 'Process (in nm)')
-            ->setColumns(2);
-        yield AssociationField::new('L1code','L1 code size')
-            ->setFormTypeOption('placeholder', 'Type to select a size ...')
-            ->setFormTypeOption('required', false)
-            ->setColumns(2);
-        yield NumberField::new('L1codeRatio','L1 code ratio')
-            ->setColumns(2)
-            ->hideOnIndex();
-        yield AssociationField::new('L1data','L1 data size')
-            ->setFormTypeOption('placeholder', 'Type to select a size ...')
-            ->setFormTypeOption('required', false)
-            ->setColumns(2);
-        yield NumberField::new('L1dataRatio','L1 data ratio')
-            ->setColumns(2)
-            ->hideOnIndex();
+        yield TextField::new('name', 'Name')
+            ->setColumns('col-sm-6 col-lg-6 col-xxl-3');
         yield CollectionField::new('dramType', 'RAM types')
             ->setEntryType(DramTypeType::class)
             ->renderExpanded()
-            ->setColumns(6)
+            ->setColumns('col-sm-6 col-lg-6 col-xxl-3')
             ->onlyOnForms();
         yield ArrayField::new('dramType', 'RAM types')
             ->onlyOnDetail();
-        yield CollectionField::new('instructionSets', 'Instruction set')
-            ->setEntryType(InstructionSetType::class)
-            ->setColumns(6)
-            ->renderExpanded()
-            ->onlyOnForms();
         yield ArrayField::new('compatibleWith', 'Compatible with families')
-            ->onlyOnDetail();
-        yield ArrayField::new('instructionSets', 'Features (this entity)')
             ->onlyOnDetail();
         yield CollectionField::new('compatibleWith', 'Compatible with families')
             ->setEntryType(ProcessorPlatformTypeForm::class)
             ->renderExpanded()
-            ->onlyOnForms();
-        yield CollectionField::new('cpuid', 'CPUID')
-            ->useEntryCrudForm(CPUIDCrudType::class)
-            ->setColumns(4)
-            ->renderExpanded()
+            ->setColumns('col-sm-6 col-lg-6 col-xxl-3')
             ->onlyOnForms();
         yield ArrayField::new('entityDocumentations', 'Documentation')
             ->onlyOnDetail();
+        yield CollectionField::new('instructionSets', 'Instruction set')
+            ->setEntryType(InstructionSetType::class)
+            ->setColumns('col-sm-6 col-lg-6 col-xxl-3')
+            ->renderExpanded()
+            ->onlyOnForms();
         yield CodeEditorField::new('description')
             ->setLanguage('markdown')
             ->onlyOnForms();
         yield TextField::new('description')
             ->onlyOnDetail();
+        yield FormField::addTab('Specs')
+            ->setIcon('tag.svg')
+            ->onlyOnForms();
+        yield TextJsonField::new('miscSpecs', 'Misc specs')
+            ->setColumns(12)
+            ->onlyOnForms();
         yield FormField::addTab('Docs')
             ->setIcon('manual.svg')
             ->onlyOnForms();
@@ -152,7 +131,7 @@ class ProcessorPlatformTypeCrudController extends AbstractCrudController
     public function viewFamily(AdminContext $context)
     {
         $entityId = $context->getEntity()->getInstance()->getId();
-        return $this->redirectToRoute('cpufamily_show', array('id'=>$entityId));
+        return $this->redirectToRoute('family_show', array('id'=>$entityId));
     }
     public function viewLogs(AdminContext $context)
     {

@@ -36,15 +36,18 @@ class MotherboardImageRepository extends ServiceEntityRepository
     }
     */
 
-    /*
-    public function findOneBySomeField($value): ?MotherboardImage
+    public function findAllImages(): array
     {
-        return $this->createQueryBuilder('m')
-            ->andWhere('m.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        $entityManager = $this->getEntityManager();
+        $query = $entityManager->createQuery(
+            "SELECT entity.file_name
+            FROM App\Entity\MotherboardImage entity
+            WHERE entity.file_name NOT LIKE '%.svg%'"
+        );
+        $result = array_column($query->getResult(), "file_name");
+        foreach($result as &$r)
+            $r = "/motherboard/image/" . $r;
+
+        return $result;
     }
-    */
 }

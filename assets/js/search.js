@@ -41,7 +41,7 @@ const form = document.forms[0];
 let static_selects = [
     "chipsetManufacturer",
     "moboManufacturer",
-    "expansionChipManufacturer",
+    "chipManufacturer",
     "cpuManufacturer",
     "hddManufacturer",
     "cddManufacturer",
@@ -65,21 +65,12 @@ let dynamic_selects = [
     'motherboardMemoryConnectors-fields-list',
     'cardIoPorts-fields-list',
     'cardTypes-fields-list',
-    'expansionChips-fields-list',
+    'chips-fields-list',
     'dramTypes-fields-list',
     'sockets-fields-list',
     'osFlags-fields-list',
-    'platforms-fields-list'
+    'families-fields-list'
 ];
-
-// cookies
-if (search_image = document.getElementById('search_searchWithImages')) {
-    let cookieImg = (getCookie('searchImage') === "true");
-    toggleSearchWithImages(cookieImg);
-    search_image.addEventListener("click", function () {
-        setCookie('searchImage', search_image.checked, 5);
-    }, false);
-}
 
 // init tom-selects
 decodeURL();
@@ -136,11 +127,11 @@ function updateFields(params) {
     let complex_arr = [];
     for (const [key, value] of Object.entries(params)) {
         if (key.includes("osFlagIds") ||
-            key.includes("expansionChipIds") ||
+            key.includes("chipIds") ||
             key.includes("dramTypeIds") ||
             key.includes("cardTypeIds") ||
             key.includes("socketIds") ||
-            key.includes("platformIds")
+            key.includes("familyIds")
             ) {
             updateMultiSelect(key, value);
         }
@@ -162,9 +153,6 @@ function updateFields(params) {
         }
         else if (key == "itemsPerPage")
             document.getElementById("search_itemsPerPage").value = value;
-        else if (key == "showImages") {
-            toggleSearchWithImages(Boolean(Number(value)));
-        }
         else {
             if (key.includes("cpuSocket") || key.includes("platform"))
                 updateSelect(key, value);
@@ -178,21 +166,15 @@ function updateFields(params) {
     }
 }
 
-function toggleSearchWithImages(incomingVal) {
-    let sh = document.getElementById("search_searchWithImages");
-    if (sh.checked == incomingVal) {
-        return;
-    }
-
-    sh.checked = !!incomingVal
-}
-
 function updateMultiSelect(key, value) {
     let type = key.split("Ids%5B")
     let pos = type[1].split("%5D")[0];
-    let add = document.getElementById(type[0] + "s-add-id");
+    let el = type[0];
+    if(el == "family")
+        el = "familie";
+    let add = document.getElementById(el + "s-add-id");
     add.click();
-    let select = document.getElementById("search_" + type[0] + "s_" + pos);
+    let select = document.getElementById("search_" + el + "s_" + pos);
     select.value = value;
     select.tomselect.sync();
 }
@@ -285,12 +267,14 @@ function displayalias(idx) {
         el.setAttribute("class", "cpu-aliases-box");
 }
 
-form.addEventListener("keydown", (e) => {
-    if (!e.repeat && e.key == "Enter") {
-        e.preventDefault;
-        paginate(search_paginate.getAttribute("data-paginate"), search_paginate.getAttribute("data-target"));
-    }
-});
+if(form){
+    form.addEventListener("keydown", (e) => {
+        if (!e.repeat && e.key == "Enter") {
+            e.preventDefault;
+            paginate(search_paginate.getAttribute("data-paginate"), search_paginate.getAttribute("data-target"));
+        }
+    });
+}
 
 function paginate(newPageIdx, target) {
     var redirElem = document.getElementById('pagination_redir');
@@ -479,9 +463,9 @@ function expand(idx) {
         new TomSelect('#search_cardTypes_' + (counter - 1), settings);
         el.tomselect.sync();
     }
-    if (idx == "expansionChips-fields-list") {
-        el = document.getElementById('search_expansionChips_' + (counter - 1));
-        new TomSelect('#search_expansionChips_' + (counter - 1), settings);
+    if (idx == "chips-fields-list") {
+        el = document.getElementById('search_chips_' + (counter - 1));
+        new TomSelect('#search_chips_' + (counter - 1), settings);
         el.tomselect.sync();
     }
     if (idx == "dramTypes-fields-list") {
@@ -494,9 +478,9 @@ function expand(idx) {
         new TomSelect('#search_sockets_' + (counter - 1), {});
         el.tomselect.sync();
     }
-    if (idx == "platforms-fields-list") {
-        el = document.getElementById('search_platforms_' + (counter - 1));
-        new TomSelect('#search_platforms_' + (counter - 1), {});
+    if (idx == "families-fields-list") {
+        el = document.getElementById('search_families_' + (counter - 1));
+        new TomSelect('#search_families_' + (counter - 1), {});
         el.tomselect.sync();
     }
     if (idx == "osFlags-fields-list") {

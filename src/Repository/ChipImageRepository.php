@@ -19,32 +19,18 @@ class ChipImageRepository extends ServiceEntityRepository
         parent::__construct($registry, ChipImage::class);
     }
 
-    // /**
-    //  * @return ChipImage[] Returns an array of ChipImage objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    public function findAllImages(): array
     {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('c.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
+        $entityManager = $this->getEntityManager();
+        $query = $entityManager->createQuery(
+            "SELECT entity.file_name
+            FROM App\Entity\ChipImage entity
+            WHERE entity.file_name NOT LIKE '%.svg%'"
+        );
+        $result = array_column($query->getResult(), "file_name");
+        foreach($result as &$r)
+            $r = "/chip/image/" . $r;
 
-    /*
-    public function findOneBySomeField($value): ?ChipImage
-    {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        return $result;
     }
-    */
 }

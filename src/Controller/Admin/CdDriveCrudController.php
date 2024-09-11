@@ -347,6 +347,9 @@ class CdDriveCrudController extends AbstractCrudController
             $newAlias->setPartNumber($alias->getPartNumber());
             $cdd->addStorageDeviceAlias($newAlias);
         }
+        foreach ($old->getPowerConnectors() as $pwr){
+            $cdd->addPowerConnector($pwr);
+        }
         foreach ($old->getKnownIssues() as $issue){
             $cdd->addKnownIssue($issue);
         }

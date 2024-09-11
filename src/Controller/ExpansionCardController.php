@@ -49,7 +49,7 @@ class ExpansionCardController extends AbstractController
         ExpansionChipTypeRepository $expansionChipTypeRepository
     ): Response {
         $expansionCard = $expansionCardRepository->findSlug($slug);
-        $expansionchiptype = $expansionChipTypeRepository->findAll();
+        $chiptype = $expansionChipTypeRepository->findAll();
 
         if (!$expansionCard) {
             $idRedirection = $expansionCardIdRedirectionRepository->findRedirection($slug, 'uh19_slug');
@@ -65,7 +65,7 @@ class ExpansionCardController extends AbstractController
 
         return $this->render('expansioncard/show.html.twig', [
             'expansioncard' => $expansionCard,
-            'expansionchiptype' => $expansionchiptype,
+            'chiptype' => $chiptype,
             'controller_name' => 'ExpansionCardController',
         ]);
     }
@@ -97,7 +97,7 @@ class ExpansionCardController extends AbstractController
         $this->addCriteriaById($request, $criterias, 'cardExpansionSlotId', 'cardExpansionSlot');
         $this->addArrayCriteria($request, $criterias, 'cardTypeIds', 'cardTypes');
         $this->addArrayCriteria($request, $criterias, 'cardIoPortIds', 'cardIoPorts');
-        $this->addArrayCriteria($request, $criterias, 'expansionChipIds', 'expansionChips');
+        $this->addArrayCriteria($request, $criterias, 'chipIds', 'chips');
         $this->addArrayCriteria($request, $criterias, 'dramTypeIds', 'dramTypes');
         return $criterias;
     }
@@ -119,7 +119,6 @@ class ExpansionCardController extends AbstractController
         }
         //get criterias
         $criterias = $this->getCriteriaExpansionCard($request);
-        $showImages = boolval(htmlentities($request->query->get('showImages') ?? ''));
         $maxItems = $request->query->getInt('itemsPerPage', $request->request->getInt('itemsPerPage', $this->getParameter('app.pagination.max')));
         if (empty($criterias)) {
             return $this->render('expansioncard/search.html.twig', [
@@ -137,13 +136,12 @@ class ExpansionCardController extends AbstractController
             'form' => $form->createView(),
             'controller_name' => 'ExpansionCardController',
             'expansioncards' => $expansionCards,
-            'show_images' => $showImages,
         ]);
 
     }
 
     #[Route('/expansioncards/live', name: 'expansioncardlivewrapper')]
-    public function liveSearchExpansionChip(
+    public function liveSearchExpansionCard(
         Request $request,
         ManufacturerRepository $manufacturerRepository,
         ExpansionCardTypeRepository $expansionCardTypeRepository,
@@ -161,7 +159,6 @@ class ExpansionCardController extends AbstractController
         ExpansionCardRepository $expansionCardRepository
     ): Response {
         $criterias = $this->getCriteriaExpansionCard($request);
-        $showImages = boolval(htmlentities($request->query->get('showImages') ?? ''));
         $maxItems = $request->query->getInt('itemsPerPage', $request->request->getInt('itemsPerPage', $this->getParameter('app.pagination.max')));
         $data = $expansionCardRepository->findByWithJoin($criterias);
         $expansionCards = $paginator->paginate(
@@ -183,7 +180,7 @@ class ExpansionCardController extends AbstractController
                     $string .= $key . '%5B' . $idx . '%5D=' . $val .'&';
                 }
             }
-            else if($key == "expansionChipIds"){
+            else if($key == "chipIds"){
                 foreach($value as $idx => $val){
                     $string .= $key . '%5B' . $idx . '%5D=' . $val .'&';
                 }
@@ -201,7 +198,6 @@ class ExpansionCardController extends AbstractController
         return $this->render('expansioncard/result.html.twig', [
             'controller_name' => 'ExpansionCardController',
             'expansioncards' => $expansionCards,
-            'show_images' => $showImages,
             'domTarget' => $request->request->get('domTarget') ?? $request->query->get('domTarget') ?? "",
             'params' => substr($string, 0, -1),
         ]);
@@ -242,15 +238,15 @@ class ExpansionCardController extends AbstractController
                 }
             }
         }
-        $expchips = $form['expansionChips']->getData();
+        $expchips = $form['chips']->getData();
         if ($expchips) {
-            $parameters['expansionChipIds'] = array();
+            $parameters['chipIds'] = array();
             $loopCount = 0;
             foreach ($expchips as $chip) {
                 if($loopCount >= 6)
                     break;
                 if($chip != null)
-                    array_push($parameters['expansionChipIds'], $chip->getId());
+                    array_push($parameters['chipIds'], $chip->getId());
             }
         }
         $types = $form['cardTypes']->getData();
@@ -278,7 +274,6 @@ class ExpansionCardController extends AbstractController
         $tempItems = intval($form['itemsPerPage']->getData()->value);
         $parameters['itemsPerPage'] = $tempItems > 0 ? $tempItems : $this->getParameter('app.pagination.max');
 
-        $parameters['showImages'] = $form['searchWithImages']->getData();
         $parameters['name'] = $form['name']->getData();
 
         return $parameters;

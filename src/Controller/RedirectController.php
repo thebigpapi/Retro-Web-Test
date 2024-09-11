@@ -3,10 +3,9 @@
 namespace App\Controller;
 
 use App\Repository\CdDriveRepository;
-use App\Repository\ExpansionChipRepository;
+use App\Repository\ChipRepository;
 use App\Repository\FloppyDriveRepository;
 use App\Repository\HardDriveRepository;
-use App\Repository\ProcessorRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\Response;
@@ -144,7 +143,7 @@ class RedirectController extends AbstractController
         return $this->redirect($this->generateUrl('hard_drive_show', array("id" => $id)));
     }
 
-    #[Route(path: '/chip/{id}')]
+    /*#[Route(path: '/chip/{id}')]
     public function redirectChip($id, ExpansionChipRepository $expansionChipRepository, ProcessorRepository $processorRepository)
     {
         $chip = $expansionChipRepository->find($id);
@@ -157,6 +156,8 @@ class RedirectController extends AbstractController
         }
         return $this->redirect($this->generateUrl('expansion_chip_show', array("id" => $id)));
     }
+    todo: expansion-chips, cpus, cpusocket
+    */
 
     /* credits redirect */
     #[Route(path: '/credits', methods: ['GET'])]

@@ -30,7 +30,7 @@
             <path d="M.293 0l22 22-22 22h1.414l22-22-22-22H.293z"></path>
         </svg>
         <a class="ml-4" href="{{ path('driversearch') }}">
-			<img src="{{ absolute_url(asset('build/icons/hardware.svg')) }}" width="24" height="24" alt="driver">
+			<img src="{{ absolute_url(asset('build/icons/hardware.svg')) }}" width="32" height="32" alt="driver">
             <code class="text-pink-500">Drivers &amp; software</code>
         </a>
     </div>
@@ -101,14 +101,14 @@
 				</div>
 				<div id="index-datetime"><div class="div-datetime">Last updated <span class="perk-date">{{ driver.getLastEdited()|date("Y-m-d\\TH:i:s", "GMT") }}Z</span></div></div>
 			</div>
-			<div class="show-expchips" id="sh-expchips">
+			<div class="show-chips" id="sh-chips">
 				<!-- Expansion chips -->
 				<div class="quick-spec-table">
 					<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/chip.svg')) }}" alt="chip" width="24" height="24">Expansion chips</div>
 					<div class="tag-container"><ul>
-					{% if driver.getExpansionChips() is not empty %}
-						{% for chip in driver.getExpansionChips() %}
-							<li><a href="{{ path('expansion_chip_show', {id: chip.getExpansionChip().getId()}) }}"><span class="text-block">{{ chip.getExpansionChip().getFullName() }}</span></a></li>
+					{% if driver.getChips() is not empty %}
+						{% for chip in driver.getChips() %}
+							<li><a href="{{ path('chip_show', {id: chip.getChip().getId()}) }}"><span class="text-block">{{ chip.getChip().getFullName() }}</span></a></li>
 						{% endfor %}
 					{% else %}
 						<div>None</div>

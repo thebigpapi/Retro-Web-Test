@@ -14,7 +14,7 @@
 <div class="perks">
 	<p><b>Search motherboard by model</b></p>
 	<fieldset class="search-bar">
-		<input id="search-box" type="text" placeholder='Name or Part number (without manufacturer) ...'>
+		<input id="search-box" type="text" placeholder='Name or part number (without manufacturer) ...'>
 		<button id="search-button" type="submit" data-target="motherboards">
 			<img src="{{ absolute_url(asset('build/icons/search.svg')) }}" alt="search" width="24" height="24">
 			<span>Search</span>
@@ -45,12 +45,12 @@
 			</a>
 		</div>
 		<div class="perk">
-			<a href="{{ path("expansionchipsearch") }}">
+			<a href="{{ path("chipsearch") }}">
 				<div class="perk-image">
-					<img src="{{ absolute_url(asset('build/icons/chip.svg')) }}" alt="chip" loading="lazy" width="120" height="100">
+					<img src="{{ absolute_url(asset('build/icons/486dx.svg')) }}" alt="chip" loading="lazy" width="120" height="100">
 				</div>
-				<div class="perk-name">Expansion chips</div>
-				<div class="perk-alias">{{expchipCount}}&nbsp;entries</div>
+				<div class="perk-name">Chips and CPUs</div>
+				<div class="perk-alias">{{chipCount}}&nbsp;entries</div>
 			</a>
 		</div>
 		<div class="perk">
@@ -59,7 +59,7 @@
 					<img src="{{ absolute_url(asset('build/icons/chipsetfull.svg')) }}" alt="chipset" loading="lazy" width="120" height="100">
 				</div>
 				<div class="perk-name">Chipsets</div>
-				<div class="perk-alias">{{chipCount}}&nbsp;entries</div>
+				<div class="perk-alias">{{chipsetCount}}&nbsp;entries</div>
 			</a>
 		</div>
 		<div class="perk">
@@ -69,15 +69,6 @@
 				</div>
 				<div class="perk-name">Expansion cards</div>
 				<div class="perk-alias">{{expcardCount}}&nbsp;entries</div>
-			</a>
-		</div>
-		<div class="perk">
-			<a href="{{ path("cpusearch") }}">
-				<div class="perk-image">
-					<img src="{{ absolute_url(asset('build/icons/486dx.svg')) }}" alt="cpu" loading="lazy" width="120" height="100">
-				</div>
-				<div class="perk-name">CPUs</div>
-				<div class="perk-alias">{{cpuCount}}&nbsp;entries</div>
 			</a>
 		</div>
 		<div class="perk">
@@ -103,7 +94,7 @@
 				<div class="perk-image">
 					<img src="{{ absolute_url(asset('build/icons/floppy_drive.svg')) }}" alt="fdd" loading="lazy" width="120" height="100">
 				</div>
-				<div class="perk-name">Floppy drives</div>
+				<div class="perk-name">Floppy &amp; tape drives</div>
 				<div class="perk-alias">{{fddCount}}&nbsp;drives</div>
 			</a>
 		</div>
@@ -116,9 +107,55 @@
 				<div class="perk-alias">{{driverCount}}&nbsp;files</div>
 			</a>
 		</div>
+		<div class="perk">
+			<a href="{{ path("ioportsearch") }}">
+				<div class="perk-image">
+					<img src="{{ absolute_url(asset('build/icons/rs232.svg')) }}" alt="io" loading="lazy" width="120" height="100">
+				</div>
+				<div class="perk-name">I/O ports</div>
+				<div class="perk-alias">{{portCount}}&nbsp;entries</div>
+			</a>
+		</div>
+		<div class="perk">
+			<a href="{{ path("expansionslotsearch") }}">
+				<div class="perk-image">
+					<img src="{{ absolute_url(asset('build/icons/exp_slot.svg')) }}" alt="slot" loading="lazy" width="120" height="100">
+				</div>
+				<div class="perk-name">Expansion slots</div>
+				<div class="perk-alias">{{slotCount}}&nbsp;entries</div>
+			</a>
+		</div>
+		<div class="perk">
+			<a href="{{ path("socketsearch") }}">
+				<div class="perk-image">
+					<img src="{{ absolute_url(asset('build/icons/socket754.svg')) }}" alt="socket" loading="lazy" width="120" height="100">
+				</div>
+				<div class="perk-name">Sockets</div>
+				<div class="perk-alias">{{socketCount}}&nbsp;entries</div>
+			</a>
+		</div>
+		<div class="perk">
+			<a href="{{ path("powerconnsearch") }}">
+				<div class="perk-image">
+					<img src="{{ absolute_url(asset('build/icons/power.svg')) }}" alt="power" loading="lazy" width="120" height="100">
+				</div>
+				<div class="perk-name">Power connectors</div>
+				<div class="perk-alias">{{powerCount}}&nbsp;entries</div>
+			</a>
+		</div>
+		<div class="perk">
+			<a href="{{ path("manufacturersearch") }}">
+				<div class="perk-image">
+					<img src="{{ absolute_url(asset('build/icons/factory.svg')) }}" alt="man" loading="lazy" width="120" height="100">
+				</div>
+				<div class="perk-name">Manufacturers</div>
+				<div class="perk-alias">{{manufacturerCount}}&nbsp;entries</div>
+			</a>
+		</div>
 	</a>
 	</div>
 </div>
+{#% include 'macros/lastedited2.html.twig' with {'entities': latestEntities, 'lastEditedMode':true} %#}
 {% include 'macros/lastedited.html.twig' with {'entity': latestMotherboards, 'type':'motherboard', 'entity_label':'boards', 'path': 'motherboard_show'} %}
 {% include 'macros/lastedited.html.twig' with {'entity': latestCards, 'type':'card', 'entity_label':'expansion cards', 'path': 'expansioncard_show'} %}
 {% endblock %}

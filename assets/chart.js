@@ -17,43 +17,64 @@ const backgroundColor = [
     'rgba(153, 102, 255, 0.9)',
     'rgba(201, 203, 207, 0.9)'
 ];
-if(document.getElementById('boardmanufcountdash'))
-    makeChart('board', 'boardmanufcountdash', 'Board count', 1, 'bar');
-if(document.getElementById('boardsocketcountdash'))
-    makeChart('socket', 'boardsocketcountdash', 'Board count', 1, 'bar');
-if(document.getElementById('boardmanufcount'))
-    makeChart('board', 'boardmanufcount', 'Board count', 0.4, 'bar');
-if(document.getElementById('boardsocketcount'))
-    makeChart('socket', 'boardsocketcount', 'Board count', 0.4, 'bar');
-if(document.getElementById('boardmanufcount'))
-    makeChart('chipset', 'boardchipsetcount', 'Board count', 0.4, 'bar');
-if(document.getElementById('boardsocketcount'))
-    makeChart('chip', 'boardchipcount', 'Board count', 0.4, 'bar');
-if(document.getElementById('boardmanufcount'))
-    makeChart('ff', 'boardffcount', 'Board count', 1, 'bar');
-if(document.getElementById('boardsocketcount'))
-    makeChart('doc', 'chipsetdoccount', 'Board count', 2, 'pie');
-async function makeChart(id, targetid, name, ratio, type) {
-    const labels = JSON.parse(document.getElementById(id + 'keysId').innerHTML);
-    const data = JSON.parse(document.getElementById(id + 'valuesId').innerHTML);
+let statCharts = document.getElementsByClassName("statistics-charts")
+if(statCharts[0]){
+    for (let chart of statCharts[0].children) {
+        makeChart(chart, false);
+    }
+}
+
+let statChartsSize = document.getElementsByClassName("statistics-charts-size");
+if(statChartsSize[0]){
+    for (let chart of statChartsSize[0].children) {
+        makeChart(chart, true);
+    }
+}
+async function makeChart(chart, sizeChart) {
+    const id = chart.getAttribute("data-id");
     new Chart(
-        document.getElementById(targetid),
+        document.getElementById(id + "Canvas"),
         {
-            type: type,
+            type: chart.getAttribute("data-type"),
             data: {
-                labels: labels,
-                datasets: [
-                {
-                    label: name,
+                labels: JSON.parse(document.getElementById(id + 'keysId').innerHTML),
+                datasets: [{
+                    label: chart.getAttribute("data-name"),
                     backgroundColor: backgroundColor,
                     borderColor: borderColor,
-                    data: data
-                }
-                ]
+                    data: JSON.parse(document.getElementById(id + 'valuesId').innerHTML)
+                }]
             },
             options: {
                 indexAxis:'y',
-                aspectRatio: ratio,
+                aspectRatio: chart.getAttribute("data-ratio"),
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                if(!sizeChart)
+                                    return context.dataset.label + ": " + context.formattedValue;
+                                let label = context.label || '';
+                                let size = context.raw || 0;
+                                let unit = "Bytes";
+                                if (size > 1024){
+                                    size /= 1024;
+                                    unit = "KiB";
+                                }
+                                if (size > 1024){
+                                    size /= 1024;
+                                    unit = "MiB";
+                                }
+                                if (size > 1024){
+                                    size /= 1024;
+                                    unit = "GiB";
+                                }
+                                label += ": " + Math.floor(size * 100) /100 + " " + unit;
+                                return label;
+                            }
+                        }
+                    }
+                }
             }
         }
     );

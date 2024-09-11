@@ -29,7 +29,7 @@ class PSUConnectorCrudController extends AbstractCrudController
 
         if (Action::SAVE_AND_RETURN === $submitButtonName) {
             $entityId = $context->getEntity()->getInstance()->getId();
-            return $this->redirectToRoute('psu_connector_show', array('id'=>$entityId));
+            return $this->redirectToRoute('power_connector_show', array('id'=>$entityId));
         }
         return parent::getRedirectResponseAfterSave($context, $action);
     }
@@ -90,7 +90,7 @@ class PSUConnectorCrudController extends AbstractCrudController
     public function viewConn(AdminContext $context)
     {
         $entityId = $context->getEntity()->getInstance()->getId();
-        return $this->redirectToRoute('psu_connector_show', array('id'=>$entityId));
+        return $this->redirectToRoute('power_connector_show', array('id'=>$entityId));
     }
     public function viewLogs(AdminContext $context)
     {

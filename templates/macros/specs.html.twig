@@ -17,6 +17,8 @@
                         <input type="checkbox" disabled checked/>
                     {% elseif value == 'false' %}
                         <input type="checkbox" disabled/>
+                    {% elseif value is iterable %}
+                        {{ value |join(', ')}}
                     {% else %}
                         {{value}}
                     {% endif %}

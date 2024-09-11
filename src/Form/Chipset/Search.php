@@ -13,6 +13,8 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use App\Entity\Manufacturer;
+use App\Form\Type\ChipsetChipType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormInterface;
@@ -42,17 +44,19 @@ class Search extends AbstractType
                 'choices' => $options['chipsetManufacturers'],
                 'placeholder' => 'Type to select a chipset manufacturer ...',
             ])
+            ->add('chips', CollectionType::class, [
+                'entry_type' => ChipsetChipType::class,
+                'allow_add' => true,
+                'allow_delete' => true,
+                'label' => false,
+            ])
             ->add('itemsPerPage', EnumType::class, [
                 'class' => ItemsPerPageType::class,
                 'empty_data' => ItemsPerPageType::Items100,
                 'choice_label' => fn ($choice) => strval($choice->value),
             ])
             //->add('search', SubmitType::class)
-            ->add('searchWithImages', CheckboxType::class, [
-                'data' => true,
-                'label' => false,
-                'attr' => array('checked' => 'checked'),
-            ]);
+            ;
 
         $formModifier = function (FormInterface $form, Manufacturer $chipsetManufacturer = null) {
             /**

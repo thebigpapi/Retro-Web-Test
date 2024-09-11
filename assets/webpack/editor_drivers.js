@@ -50,11 +50,75 @@ if(form){
         saveretbtn.addEventListener('click', () => submit("saveAndReturn"), false);
     if(savecontbtn = document.getElementById("js-save-continue"))
         savecontbtn.addEventListener('click', () => submit("saveAndContinue"), false);
+    if(sdfgh = document.getElementById("js-readinf"))
+        sdfgh.addEventListener('change', () => readInf(), false);
 }
 if(createDriverBtn){
     createDriverBtn.addEventListener('click', () => createContainer(), false);
 }
 // JS driver editor
+function readInf(){
+    let input = document.getElementById("js-readinf");
+    const [file] = input.files;
+    const reader = new FileReader();
+    reader.addEventListener("load", () => {processInf(reader.result)}, false);
+    if (file) {
+        reader.readAsText(file);
+    }
+}
+
+function processInf(data){
+    let venArray = [];
+    let devArray = [];
+    let found = data.indexOf("&DEV_");
+    //console.log(found);
+    while (found !== -1) {
+        devArray.push(data.substring(found + 5, found + 9));
+        venArray.push(data.substring(found - 4, found));
+        found = data.indexOf("&DEV_", found + 1);
+    }
+    devArray = new Set(devArray);
+    venArray = new Set(venArray);
+    if(devArray.size < 1 || venArray.size < 1){
+        showPciMessage("No PCI IDs were found!");
+    }
+    fetch(window.location.origin + "/dashboard/getchipspci", {
+        method: "POST",
+        body: JSON.stringify([Array.from(venArray), Array.from(devArray)])
+    }).then(response => response.text())
+    .then((text) => {
+        addChips(JSON.parse(text));
+    }).catch(err => console.log("Chip fill-in failed: " + err));
+}
+function addChips(chipArray){
+    if(Object.keys(chipArray).length < 1){
+        showPciMessage("No chips were found!");
+        return;
+    }
+    let chipsAddBtn = document.getElementById("LargeFile_chips_collection").previousElementSibling;
+    let chips = document.getElementsByClassName("LargeFile_chips_cssid");
+    if(chips.length > 0){
+        if(confirm("List is not empty, want to clear it?")){
+            let list = document.getElementById("LargeFile_chips_collection").children[0].children[0].children[0].children[0];
+            list.innerHTML = "";
+        }
+        else return;
+    }
+    for(const chip in chipArray){
+        chipsAddBtn.click();
+    }
+    let idx = 0;
+    for(let chip of chips){
+        //console.log(Object.values(chipArray)[idx]);
+        let chipSelect = chip.querySelector("select");
+        //console.log(chipSelect)
+        chipSelect.tomselect.addOption({entityId: Object.keys(chipArray)[idx], entityAsString: Object.values(chipArray)[idx]})
+        chipSelect.tomselect.addItem(Object.keys(chipArray)[idx]);
+        chipSelect.tomselect.sync();
+        idx++;
+    }
+    showPciMessage("Added " + idx + " chips");
+}
 function createContainer(){
     let template = document.getElementById('create-driver-template');
     let container = document.getElementById('create-driver-container');
@@ -66,6 +130,7 @@ function createContainer(){
     let save = document.getElementById('create-driver-save');
     save.addEventListener('click', () => JSsubmit(), false);
 }
+
 function populateFields(){
     showMessage("Setting up, just a sec ...", false);
     for(const item of fieldList){
@@ -179,6 +244,9 @@ function JSsubmit(){
         let parser = new DOMParser();
         let parsedResponse = parser.parseFromString(responseText, "text/html");
         let token = parsedResponse.getElementById("LargeFile__token").value;
+        let date = new Date()
+        let bytesLoaded = 0
+        let xhr = new XMLHttpRequest();
         //setting up the form data
         formData.append("ea[newForm][btn]", "saveAndReturn");
         formData.append("LargeFile[name]", name);
@@ -194,28 +262,88 @@ function JSsubmit(){
         formData.append("LargeFile[_token]", token);
         formData.append("LargeFile[file][file]", file.files[0]);
         //upload begins
-        showMessage("Uploading ...", false);
-        fetch(url, {
-            redirect: 'manual',
-            method: "POST",
-            body: formData
-        }).then((res) => {
-            if(res.status == 0){
-                showMessage("Uploaded!", false);
-                addDriver(container.getAttribute("data-entity"), name, version, os);
-                container.innerHTML = "";
-                showMessage("Added to list succesfully!", false);
+        xhr.open("POST", url);
+        xhr.onprogress = function (e) {
+            if (e.lengthComputable) {
+                console.log(e.loaded + " / " + e.total)
             }
-            else if(res.status == 422){
-                showMessage("Error " + res.status + ": " + res.statusText, true);
+        }
+        let speedText;
+        let bar;
+        let errorDiv = document.getElementById("driver-error-div");
+        errorDiv.setAttribute("style", "display: none;")
+        xhr.upload.addEventListener("progress", function (evt) {
+            if (evt.lengthComputable) {
+                bar = document.getElementById('progressBar');
+                bar.value = evt.loaded;
+                bar.max = evt.total;
+                bar.innerHTML = evt.loaded / evt.total * 100;
+                if (evt.loaded == evt.total) {
+                    showMessage("Processing ...");
+                }
+                else {
+                    let newdate = new Date()
+                    let speed = (evt.loaded - bytesLoaded) * (1000 / (newdate.getTime() - date.getTime()))
+                    if (speed > 1024)
+                        if (speed > 1024 * 1024)
+                            speedText = Number.parseFloat(speed / 1024 / 1024).toFixed(1) + "MB/s";
+                        else
+                            speedText = Number.parseFloat(speed / 1024).toFixed(1) + "KB/s";
+                    else
+                        speedText = Math.round(speed) + "Bytes/sec";
+                    showMessage("Upload in progress ..." + speedText);
+                    date = newdate
+                    bytesLoaded = evt.loaded
+                }
             }
-            else{
-                console.log("Something exploded: " + res.text())
+        }, false);
+        xhr.onloadstart = function (e) {
+            bar = document.getElementById('progressBar')
+            bar.hidden = false
+            document.getElementsByClassName('action-saveAndReturn btn btn-primary action-save')[0].setAttribute('disabled', true);
+        }
+        xhr.onloadend = function (e) {
+            document.getElementsByClassName('action-saveAndReturn btn btn-primary action-save')[0].removeAttribute('disabled');
+            bar = document.getElementById('progressBar')
+            bar.hidden = true
+            if (xhr.status == 200) {
+                if(xhr.responseText.startsWith("<!DOCTYPE HTML>")){
+                    showMessage("Uploaded!", false);
+                    addDriver(container, name, version, os);
+                }
+                else{
+                    showMessage("Something exploded!", true);
+                    errorDiv.setAttribute("style", "display: block;")
+                    errorDiv.children[0].innerHTML = xhr.responseText;
+                }
             }
-        }).catch(err => console.log("Driver upload failed: " + err));
+            else if(xhr.status == 500){
+                let parser = new DOMParser();
+                let doc = parser.parseFromString(xhr.responseText, "text/html");
+                showMessage(xhr.statusText, true);
+                errorDiv.setAttribute("style", "display: block;")
+                errorDiv.children[0].innerHTML = doc.getElementsByClassName('break-long-words exception-message')[0].innerHTML;
+            }
+            else if (xhr.status == 422){
+                let parser = new DOMParser();
+                let doc = parser.parseFromString(xhr.responseText, "text/html");
+                let errors = "";
+                for (let error of doc.getElementsByClassName("invalid-feedback")){
+                    errors += error.innerHTML + "\n";
+                }
+                showMessage("Invalid fields", true);
+                errorDiv.setAttribute("style", "display: block;")
+                errorDiv.children[0].innerHTML = errors;
+            }
+            else {
+                showMessage("Error " + xhr.status + ": " + xhr.statusText, true);
+            }
+        }
+        xhr.send(formData);
     }).catch(err => console.log("Driver form request failed: " + err));
 }
-function addDriver(entity, name, version, os){
+function addDriver(container, name, version, os){
+    let entity = container.getAttribute("data-entity");
     let driverAddBtn = document.getElementById(entity + "_collection").previousElementSibling;
     driverAddBtn.click();
     let drivers = document.getElementsByClassName(entity + "_cssid");
@@ -229,6 +357,14 @@ function addDriver(entity, name, version, os){
         driverSelect.tomselect.addOption({entityId: Object.values(result)[0], entityAsString: Object.keys(result)[0]})
         driverSelect.tomselect.addItem(Object.values(result)[0]);
         driverSelect.tomselect.sync();
+        console.log()
+        if(Object.keys(result).length > 0){
+            showMessage("Added to list succesfully!", false);
+            container.innerHTML = "";
+        }
+        else{
+            showMessage("Driver added, but could not be found by name!", true);
+        }
     }).catch(err => console.log("Driver find failed: " + err));
 }
 function getSelectValues(select) {
@@ -242,6 +378,10 @@ function getSelectValues(select) {
         }
     }
     return result;
+}
+function showPciMessage(message){
+    let msg = document.getElementById("js-readinf-status");
+    msg.innerHTML = message
 }
 function showMessage(message, warning){
     let msg = document.getElementById("newdriver-message");

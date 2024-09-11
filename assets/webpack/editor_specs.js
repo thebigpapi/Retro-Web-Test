@@ -30,7 +30,8 @@ if (ioPortsBtn = document.getElementById('ExpansionCard_ioPorts_collection')?.pr
 }
 
 if ((miscSpecs = document.getElementById('ExpansionCard_miscSpecs')) ||
-    (miscSpecs = document.getElementById('ExpansionChip_miscSpecs')) ||
+    (miscSpecs = document.getElementById('Chip_miscSpecs')) ||
+    (miscSpecs = document.getElementById('ProcessorPlatformType_miscSpecs')) ||
     (miscSpecs = document.getElementById('ExpansionCardType_template')) ||
     (miscSpecs = document.getElementById('ExpansionChipType_template'))) {
     const listElement = document.getElementById('specs-collection');
@@ -191,7 +192,7 @@ async function applyTemplateCard(miscSpecs) {
         });
 }
 async function applyTemplate(miscSpecs) {
-    if(miscSpecs.id == 'ExpansionChip_miscSpecs')
+    if(miscSpecs.id == 'Chip_miscSpecs')
         applyTemplateChip(miscSpecs)
     else{
         applyTemplateCard(miscSpecs)

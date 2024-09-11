@@ -33,7 +33,7 @@
             <path d="M.293 0l22 22-22 22h1.414l22-22-22-22H.293z"></path>
         </svg>
         <a class="ml-4" href="{{ path('expansioncardsearch') }}">
-			<img src="{{ absolute_url(asset('build/icons/card.svg')) }}" width="24" height="24" alt="card">
+			<img src="{{ absolute_url(asset('build/icons/card.svg')) }}" width="32" height="32" alt="card">
             <code class="text-pink-500">Expansion cards</code>
         </a>
     </div>
@@ -110,8 +110,8 @@
 							{% for device in expansioncard.getPciDevs() %}
 								<span class="text-block">{{device.getDev()}}</span>
 							{% endfor %}
-						{% elseif expansioncard.getExpansionChips()|filter(a => a.pciDevs is not empty) is not empty %}
-							{% for chip in expansioncard.getExpansionChips()|filter(a => a.pciDevs is not empty) %}
+						{% elseif expansioncard.getChips()|filter(a => a.pciDevs is not empty) is not empty %}
+							{% for chip in expansioncard.getChips()|filter(a => a.pciDevs is not empty) %}
 								{% for device in chip.getPciDevs() %}
 									<span class="text-block">{{device.getDev()}}</span>
 								{% endfor %}
@@ -189,7 +189,7 @@
 								<div class="list-table-head">
 									<b>{{ conn.getCount() }}x&nbsp;</b>
 								</div>
-								<div><a href="{{ path('psu_connector_show', {id: conn.getPowerConnector().getId()}) }}">{{ conn.getPowerConnector().getName() }}</a></div>
+								<div><a href="{{ path('power_connector_show', {id: conn.getPowerConnector().getId()}) }}">{{ conn.getPowerConnector().getName() }}</a></div>
 							{% endfor %}
 						{% else %}<div class="list-table-head"></div><div><span class='badge badge-secondary'>Empty</span></div>{% endif %}
 					</div>
@@ -198,20 +198,15 @@
 				{% include 'macros/notes.html.twig' with {'entity': expansioncard} %}
 				<div id="index-datetime"><div class="div-datetime">Last updated <span class="perk-date">{{ expansioncard.getLastEdited()|date("Y-m-d\\TH:i:s", "GMT") }}Z</span></div></div>
 			</div>
-			<div class="show-expchips" id="sh-expchips">
+			<div class="show-chips" id="sh-chips">
 				<!-- Expansion chips -->
-				{% if expansioncard.getExpansionChips() is not empty %}
+				{% if expansioncard.getChips() is not empty %}
 				<div class="quick-spec-table">
-					{% for type in expansionchiptype %}
-						{% for chip in expansioncard.getExpansionChips()|filter(a => a.getType().getName() == type.getName())%}
+					{% for type in chiptype %}
+						{% for chip in expansioncard.getChips()|filter(a => a.getType().getName() == type.getName())%}
 							{% if loop.first %}<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/chip.svg')) }}" alt="chip" width="24" height="24">{{chip.getType().getName()}} chips</div><div class="tag-container">{% endif %}
-							
-							{% if (attribute(chip, 'getExpansionChipBios') is defined)%}
-							<a href="{{ path('expansion_chip_show', {id: chip.getId()}) }}"><span class="text-block">{{ chip.getFullName() }}</span></a>
-							{% else %}
-							<a href="{{ path('processor_show', {id: chip.getId()}) }}"><span class="text-block">{{ chip.getFullName() }}</span></a>
-							{% endif %}
-							{% if loop.index == expansioncard.getExpansionChips()|filter(a => a.getType().getName() == type.getName())|length %}</div>{% endif %}
+							<a href="{{ path('chip_show', {id: chip.getId()}) }}"><span class="text-block">{{ chip.getFullName() }}</span></a>
+							{% if loop.index == expansioncard.getChips()|filter(a => a.getType().getName() == type.getName())|length %}</div>{% endif %}
 						{% endfor %}
 					{% endfor %}
 				</div>
@@ -225,11 +220,11 @@
 					<div>No card specs</div>
 				{% endif %}
 				<!-- Expansion chips specs -->
-				{% if expansioncard.getExpansionChips()|filter(a => a.getMiscSpecs() is not empty) is not empty %}
-					<div style="padding: 6px 0px;"><b style="font-size:20px;">Chip specifications </b><small>(click to expand)</small></div>
-					{% for chip in expansioncard.getExpansionChips()|filter(a => a.getMiscSpecs() is not empty)%}
+				{% if expansioncard.getChips()|filter(a => a.getMiscSpecs() is not empty) is not empty %}
+					<h3>Chip specifications:</h3>
+					{% for chip in expansioncard.getChips()|filter(a => a.getMiscSpecs() is not empty)%}
 						<div class="dropdown-trw">
-							<label class="dropdown-header">
+							<label class="dropdown-header" onclick="expandDropdown(this)">
 								<img src="{{ absolute_url(asset('build/icons/chip.svg')) }}" alt="chip" width="24" height="24">
 								<span><i>{{chip.getFullName()}}</i></span>
 								<input class="dropdown" type="checkbox" />
@@ -243,7 +238,7 @@
 			</div>
 			<!-- BIOSes -->
 			<div class="show-downloads" id="sh-bios">
-				{% set chipBios =  expansioncard.getExpansionChips()|filter(a => attribute(a, 'getExpansionChipBios') is defined and a.getExpansionChipBios() is not empty) %}
+				{% set chipBios =  expansioncard.getChips()|filter(a => attribute(a, 'getExpansionChipBios') is defined and a.getExpansionChipBios() is not empty) %}
 				{% set cardBios =  expansioncard.getExpansionCardBios() %}
 				<div class="show-downloads-group">
 				{% if cardBios is not empty %}
@@ -269,7 +264,7 @@
 					</div>
 					{% for chip in chipBios %}
 						<div class="dropdown-trw">
-							<label class="dropdown-header">
+							<label class="dropdown-header" onclick="expandDropdown(this)">
 								<img src="{{ absolute_url(asset('build/icons/chip.svg')) }}" alt="chip" width="24" height="24">
 								<span><i>{{chip.getFullName()}}</i></span>
 								<input class="dropdown" type="checkbox" />
@@ -288,7 +283,7 @@
 			</div>
 			<!-- Documentation -->
 			<div class="show-downloads" id="sh-docs">
-				{% include 'macros/manuals.html.twig' with {'entity': expansioncard.getDocumentations(), 'chips': expansioncard.getChipDocs(), 'entity_label':'card', 'audit_entity':'App-Entity-ExpansionCardDocumentation'} %}
+				{% include 'macros/docs.html.twig' with {'entity': expansioncard.getDocumentations(), 'chips': expansioncard.getChipDocs(), 'entity_label':'card', 'audit_entity':'App-Entity-ExpansionCardDocumentation'} %}
 			</div>
 		</div>
 	</div>

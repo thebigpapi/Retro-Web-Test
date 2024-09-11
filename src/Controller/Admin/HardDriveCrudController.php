@@ -374,6 +374,9 @@ class HardDriveCrudController extends AbstractCrudController
             $newAlias->setPartNumber($alias->getPartNumber());
             $hdd->addStorageDeviceAlias($newAlias);
         }
+        foreach ($old->getPowerConnectors() as $pwr){
+            $hdd->addPowerConnector($pwr);
+        }
         foreach ($old->getKnownIssues() as $issue){
             $hdd->addKnownIssue($issue);
         }

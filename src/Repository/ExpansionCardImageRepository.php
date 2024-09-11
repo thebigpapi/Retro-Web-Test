@@ -21,28 +21,18 @@ class ExpansionCardImageRepository extends ServiceEntityRepository
         parent::__construct($registry, ExpansionCardImage::class);
     }
 
-//    /**
-//     * @return ExpansionCardImage[] Returns an array of ExpansionCardImage objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('e')
-//            ->andWhere('e.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('e.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    public function findAllImages(): array
+    {
+        $entityManager = $this->getEntityManager();
+        $query = $entityManager->createQuery(
+            "SELECT entity.file_name
+            FROM App\Entity\ExpansionCardImage entity
+            WHERE entity.file_name NOT LIKE '%.svg%'"
+        );
+        $result = array_column($query->getResult(), "file_name");
+        foreach($result as &$r)
+            $r = "/expansioncard/image/" . $r;
 
-//    public function findOneBySomeField($value): ?ExpansionCardImage
-//    {
-//        return $this->createQueryBuilder('e')
-//            ->andWhere('e.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+        return $result;
+    }
 }

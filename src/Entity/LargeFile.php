@@ -48,6 +48,11 @@ class LargeFile
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     #[Assert\Length(max: 255, maxMessage: 'Version is longer than {{ limit }} characters.')]
+    #[Assert\Regex(
+        pattern: '/^[\w\s,\/\-_#\$%&\*!\?:;\.\+\=\\\[\]\{\}\(\)]+$/',
+        match: true,
+        message: 'Version uses invalid characters',
+    )]
     private $fileVersion;
 
     #[ORM\ManyToMany(targetEntity: OsFlag::class, inversedBy: 'largeFiles')]
@@ -67,7 +72,7 @@ class LargeFile
     private $size;
 
     #[ORM\OneToMany(targetEntity: LargeFileExpansionChip::class, mappedBy: 'largeFile', orphanRemoval: true, cascade: ['persist'])]
-    private $expansionchips;
+    private $chips;
 
     #[ORM\OneToMany(targetEntity: LargeFileExpansionCard::class, mappedBy: 'largeFile', orphanRemoval: true, cascade: ['persist'])]
     private $expansionCards;
@@ -83,7 +88,7 @@ class LargeFile
         $this->osFlags = new ArrayCollection();
         $this->motherboards = new ArrayCollection();
         $this->chipsets = new ArrayCollection();
-        $this->expansionchips = new ArrayCollection();
+        $this->chips = new ArrayCollection();
         $this->expansionCards = new ArrayCollection();
         $this->lastEdited = new \DateTime('now');
         $this->osArchitecture = new ArrayCollection();
@@ -268,25 +273,25 @@ class LargeFile
     /**
      * @return Collection|LargeFileExpansionChip[]
      */
-    public function getExpansionChips(): ?Collection
+    public function getChips(): ?Collection
     {
-        return $this->expansionchips;
+        return $this->chips;
     }
-    public function addExpansionChip(LargeFileExpansionChip $expansionChip): self
+    public function addChip(LargeFileExpansionChip $chip): self
     {
-        if (!$this->expansionchips->contains($expansionChip)) {
-            $this->expansionchips[] = $expansionChip;
-            $expansionChip->setLargeFile($this);
+        if (!$this->chips->contains($chip)) {
+            $this->chips[] = $chip;
+            $chip->setLargeFile($this);
         }
 
         return $this;
     }
-    public function removeExpansionChip(LargeFileExpansionChip $expansionChip): self
+    public function removeChip(LargeFileExpansionChip $chip): self
     {
-        if ($this->expansionchips->removeElement($expansionChip)) {
+        if ($this->chips->removeElement($chip)) {
             // set the owning side to null (unless already changed)
-            if ($expansionChip->getLargeFile() === $this) {
-                $expansionChip->setLargeFile(null);
+            if ($chip->getLargeFile() === $this) {
+                $chip->setLargeFile(null);
             }
         }
 
