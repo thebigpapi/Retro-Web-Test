@@ -2,20 +2,37 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiProperty;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Put;
 use App\Entity\Traits\ImpreciseDateTrait;
 use App\Repository\LargeFileRepository;
+use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[Vich\Uploadable]
 #[ORM\Entity(repositoryClass: LargeFileRepository::class)]
+#[ApiResource(
+    operations: [
+        new Get(normalizationContext: ['groups' => ['large_file:read', 'os_flag:read:list', 'manufacturer:read:list',  'imprecise_date:read', 'os_architecture:read:list']]),
+        new GetCollection(normalizationContext: ['groups' => ['large_file:read:list', 'imprecise_date:read:list']]),
+        new Post(denormalizationContext: ['groups' => ['large_file:write', 'imprecise_date:write']]),
+        new Put(denormalizationContext: ['groups' => ['large_file:write', 'imprecise_date:write']]),
+        new Delete()
+    ])]
 class LargeFile
 {
     use ImpreciseDateTrait;
@@ -23,6 +40,8 @@ class LargeFile
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
+    #[ApiProperty(identifier: true)]
+    #[Groups(['large_file:read'])]
     private $id;
 
     #[ORM\Column(type: 'string', length: 255)]
@@ -32,18 +51,23 @@ class LargeFile
         message: 'The name uses invalid characters',
     )]
     #[Assert\Length(max: 255, maxMessage: 'Name is longer than {{ limit }} characters.')]
+    #[Groups(['large_file:read','large_file:read:list', 'large_file:write'])]
     private $name;
+
     /**
      * @var string|null
      */
     #[ORM\Column(type: 'string', length: 255)]
     #[Assert\Length(max: 255, maxMessage: 'File name is longer than {{ limit }} characters.')]
+    #[Groups(['large_file:read', 'large_file:write'])]
     private $file_name;
 
     #[Vich\UploadableField(mapping: 'largefile', fileNameProperty: 'file_name', size: 'size')]
+    #[Groups(['large_file:write'])]
     private File|null $file = null;
 
     #[ORM\Column(type: 'datetime')]
+    #[Groups(['large_file:read', 'large_file:read:list'])]
     private $updated_at;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
@@ -53,9 +77,11 @@ class LargeFile
         match: true,
         message: 'Version uses invalid characters',
     )]
+    #[Groups(['large_file:read', 'large_file:read:list', 'large_file:write'])]
     private $fileVersion;
 
     #[ORM\ManyToMany(targetEntity: OsFlag::class, inversedBy: 'largeFiles')]
+    #[Groups(['large_file:read', 'large_file:write'])]
     private $osFlags;
 
     #[ORM\OneToMany(targetEntity: LargeFileMotherboard::class, mappedBy: 'largeFile', orphanRemoval: true)]
@@ -66,9 +92,11 @@ class LargeFile
 
     #[ORM\Column(type: 'string', length: 4096, nullable: true)]
     #[Assert\Length(max: 4096, maxMessage: 'Note is longer than {{ limit }} characters.')]
+    #[Groups(['large_file:read', 'large_file:write'])]
     private $note;
 
     #[ORM\Column(type: 'integer', nullable: true)]
+    #[Groups(['large_file:read', 'large_file:read:list', 'large_file:write'])]
     private $size;
 
     #[ORM\OneToMany(targetEntity: LargeFileExpansionChip::class, mappedBy: 'largeFile', orphanRemoval: true, cascade: ['persist'])]
@@ -78,9 +106,11 @@ class LargeFile
     private $expansionCards;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[Groups(['large_file:read', 'large_file:read:list'])]
     private ?\DateTimeInterface $lastEdited = null;
 
     #[ORM\ManyToMany(targetEntity: OsArchitecture::class, inversedBy: 'largeFiles')]
+    #[Groups(['large_file:read', 'large_file:write'])]
     private Collection $osArchitecture;
 
     public function __construct()

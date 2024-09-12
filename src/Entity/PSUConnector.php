@@ -17,7 +17,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: PSUConnectorRepository::class)]
 #[ApiResource(
-    shortName: '/psu_connectors',
+    shortName: '/psu_connector',
     operations: [
         new Get(normalizationContext: ['groups' => ['psu_connector:read']]),
         new GetCollection(normalizationContext: ['groups' => ['psu_connector:read']]),

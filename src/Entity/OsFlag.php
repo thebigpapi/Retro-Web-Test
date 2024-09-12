@@ -2,50 +2,72 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Put;
+use ApiPlatform\Metadata\Delete;
 use App\Repository\OsFlagRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[Vich\Uploadable]
 #[ORM\Entity(repositoryClass: OsFlagRepository::class)]
+#[ApiResource(
+    operations: [
+        new Get(normalizationContext: ['groups' => ['os_flag:read', 'manufacturer:read:list']]),
+        new GetCollection(normalizationContext: ['groups' => ['os_flag:read:list', 'manufacturer:read:list']]),
+        new Post(denormalizationContext: ['groups' => ['os_flag:write']]),
+        new Put(denormalizationContext: ['groups' => ['os_flag:write']]),
+        new Delete()
+    ])]
 class OsFlag
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
+    #[Groups(['os_flag:read'])]
     private $id;
 
     #[ORM\Column(type: 'string', length: 255)]
     #[Assert\Length(max: 255, maxMessage: 'Name is longer than {{ limit }} characters.')]
+    #[Groups(['os_flag:read', 'os_flag:read:list', 'os_flag:write'])]
     private $name;
 
     #[ORM\Column(type: 'string', length: 255)]
     #[Assert\Length(max: 255, maxMessage: 'File name is longer than {{ limit }} characters, try to make it shorter.')]
+    #[Groups(['os_flag:read', 'os_flag:read:list', 'os_flag:write'])]
     private $file_name;
 
     /**
      * NOTE: This is not a mapped field of entity metadata, just a simple property.
      */
     #[Vich\UploadableField(mapping: 'osicon', fileNameProperty: 'file_name')]
+    #[Groups(['os_flag:write'])]
     private File|null $icon = null;
 
 
     #[ORM\ManyToOne(targetEntity: Manufacturer::class, inversedBy: 'osFlags')]
     #[ORM\JoinColumn(nullable: true)]
+    #[Groups(['os_flag:read:list', 'os_flag:write'])]
     private $manufacturer;
 
     #[ORM\ManyToMany(targetEntity: LargeFile::class, mappedBy: 'osFlags')]
     private $largeFiles;
 
     #[ORM\Column(type: 'datetime')]
+    #[Groups(['os_flag:read'])]
     private $updated_at;
 
     #[ORM\Column]
+    #[Groups(['os_flag:read', 'os_flag:read:list', 'os_flag:write'])]
     private ?int $sort = null;
 
 
