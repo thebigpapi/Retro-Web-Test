@@ -262,10 +262,20 @@ class Chipset
     }
     public function getNameWithoutManuf(): string
     {
-        if ($this->name) {
-            return $this->part_no . " (" . $this->name . ")";
+        $fullName = "";
+        if ($this->part_no) {
+            $fullName .= "$this->part_no";
+            if ($this->name) {
+                $fullName .= " ($this->name)";
+            }
+        } else {
+            if ($this->name) {
+                $fullName .= "$this->name";
+            } else {
+                $fullName .= "Unidentified";
+            }
         }
-        return $this->part_no;
+        return $fullName;
     }
     public function getPartNo(): ?string
     {
