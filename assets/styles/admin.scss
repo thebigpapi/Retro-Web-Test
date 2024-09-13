@@ -232,6 +232,9 @@ div.driver-messages {
 	img {
 		display: none;
 	}
+	#driver-error-div{
+		background-color:#d43934;color:#e0e0e0;padding:5px 10px 5px;border-radius:4px;
+	}
 }
 div.widget90 {
 	width:90%;
