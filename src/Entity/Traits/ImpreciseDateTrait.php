@@ -5,13 +5,16 @@ namespace App\Entity\Traits;
 use Doctrine\ORM\Mapping as ORM;
 use DateTime;
 use DateTimeInterface;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 trait ImpreciseDateTrait
 {
     #[ORM\Column(type: 'date', nullable: true)]
+    #[Groups(['imprecise_date:read','imprecise_date:read:list', 'imprecise_date:write'])]
     private ?DateTime $releaseDate = null;
 
     #[ORM\Column(type: 'string', length: 1, nullable: true)]
+    #[Groups(['imprecise_date:read','imprecise_date:read:list', 'imprecise_date:write'])]
     private ?string $datePrecision = null;
 
     public function getReleaseDate(): ?DateTimeInterface

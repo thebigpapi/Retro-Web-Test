@@ -2,20 +2,37 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Put;
 use App\Repository\OsArchitectureRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: OsArchitectureRepository::class)]
+#[ApiResource(
+    operations: [
+        new Get(normalizationContext: ['groups' => ['os_architecture:read']]),
+        new GetCollection(normalizationContext: ['groups' => ['os_architecture:read:list']]),
+        new Post(denormalizationContext: ['groups' => ['os_architecture:write']]),
+        new Put(denormalizationContext: ['groups' => ['os_architecture:write']]),
+        new Delete()
+    ])]
 class OsArchitecture
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['os_architecture:read', 'os_architecture:read:list'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['os_architecture:read', 'os_architecture:read:list', 'os_architecture:write'])]
     private ?string $name = null;
 
     #[ORM\ManyToMany(targetEntity: LargeFile::class, mappedBy: 'osArchitecture')]
