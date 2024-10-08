@@ -55,7 +55,9 @@ use EasyCorp\Bundle\EasyAdminBundle\Collection\FieldCollection;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
+#[IsGranted('ROLE_MODERATOR')]
 class ExpansionCardCrudController extends AbstractCrudController
 {
     public static function getEntityFqcn(): string

@@ -115,91 +115,91 @@ class DashboardController extends AbstractDashboardController
     {
         yield MenuItem::linkToDashboard('Dashboard', 'home.svg');
         yield MenuItem::subMenu('Statistics', 'data.svg')->setSubItems([
-            MenuItem::linkToRoute('Motherboards', 'board.svg', 'dashboard_stats_boards'),
-            MenuItem::linkToRoute('Expansion cards', 'card.svg', 'dashboard_stats_cards'),
-            MenuItem::linkToRoute('Chips', 'chip.svg', 'dashboard_stats_chips'),
-            MenuItem::linkToRoute('Chipsets', 'chipset.svg', 'dashboard_stats_chipsets'),
-            MenuItem::linkToRoute('Size', 'dimension.svg', 'dashboard_stats_size')
-        ]);
-        yield MenuItem::section('Main items');
-        yield MenuItem::linkToCrud('Motherboards', 'board.svg', Motherboard::class)->setDefaultSort(['lastEdited' => 'DESC']);
-        yield MenuItem::linkToCrud('Chips', 'chip.svg', Chip::class);
-        yield MenuItem::linkToCrud('Chipsets', 'chipset.svg', Chipset::class);
-        yield MenuItem::linkToCrud('Expansion cards', 'card.svg', ExpansionCard::class);
-        yield MenuItem::linkToCrud('Hard drives', 'hdd.svg', HardDrive::class);
-        yield MenuItem::linkToCrud('Optical drives', 'cd.svg', CdDrive::class);
-        yield MenuItem::linkToCrud('Floppy & tape drives', 'floppy.svg', FloppyDrive::class);
-        yield MenuItem::linkToCrud('Drivers', 'hardware.svg', LargeFile::class);
-        yield MenuItem::section('Auxiliary items');
+            MenuItem::linkToRoute('Motherboards', 'board.svg', 'dashboard_stats_boards')->setPermission('ROLE_MODERATOR'),
+            MenuItem::linkToRoute('Expansion cards', 'card.svg', 'dashboard_stats_cards')->setPermission('ROLE_MODERATOR'),
+            MenuItem::linkToRoute('Chips', 'chip.svg', 'dashboard_stats_chips')->setPermission('ROLE_MODERATOR'),
+            MenuItem::linkToRoute('Chipsets', 'chipset.svg', 'dashboard_stats_chipsets')->setPermission('ROLE_MODERATOR'),
+            MenuItem::linkToRoute('Size', 'dimension.svg', 'dashboard_stats_size')->setPermission('ROLE_MODERATOR')
+        ])->setPermission('ROLE_MODERATOR');
+        yield MenuItem::section('Main items')->setPermission('ROLE_MODERATOR');
+        yield MenuItem::linkToCrud('Motherboards', 'board.svg', Motherboard::class)->setDefaultSort(['lastEdited' => 'DESC'])->setPermission('ROLE_MODERATOR');
+        yield MenuItem::linkToCrud('Chips', 'chip.svg', Chip::class)->setPermission('ROLE_MODERATOR');
+        yield MenuItem::linkToCrud('Chipsets', 'chipset.svg', Chipset::class)->setPermission('ROLE_MODERATOR');
+        yield MenuItem::linkToCrud('Expansion cards', 'card.svg', ExpansionCard::class)->setPermission('ROLE_MODERATOR');
+        yield MenuItem::linkToCrud('Hard drives', 'hdd.svg', HardDrive::class)->setPermission('ROLE_MODERATOR');
+        yield MenuItem::linkToCrud('Optical drives', 'cd.svg', CdDrive::class)->setPermission('ROLE_MODERATOR');
+        yield MenuItem::linkToCrud('Floppy & tape drives', 'floppy.svg', FloppyDrive::class)->setPermission('ROLE_MODERATOR');
+        yield MenuItem::linkToCrud('Drivers', 'hardware.svg', LargeFile::class)->setPermission('ROLE_MODERATOR');
+        yield MenuItem::section('Auxiliary items')->setPermission('ROLE_MODERATOR');
         yield MenuItem::subMenu('Motherboard related', 'board.svg')->setSubItems([
-            MenuItem::linkToCrud('Form factors', 'dimension.svg', FormFactor::class),
-            MenuItem::linkToCrud('Expansion slots', 'card.svg', ExpansionSlot::class),
-            MenuItem::linkToCrud('I/O ports', 'rs232.svg', IoPort::class),
+            MenuItem::linkToCrud('Form factors', 'dimension.svg', FormFactor::class)->setPermission('ROLE_MODERATOR'),
+            MenuItem::linkToCrud('Expansion slots', 'card.svg', ExpansionSlot::class)->setPermission('ROLE_MODERATOR'),
+            MenuItem::linkToCrud('I/O ports', 'rs232.svg', IoPort::class)->setPermission('ROLE_MODERATOR'),
             MenuItem::section('Advanced'),
-            MenuItem::linkToCrud('Aliases', 'board_alias.svg', MotherboardAlias::class)->setController(MotherboardAliasCrudController::class),
-            MenuItem::linkToCrud('Images', 'search_image.svg', MotherboardImage::class)->setController(MotherboardImageCrudController::class),
-            MenuItem::linkToCrud('BIOSes', 'awchip.svg', MotherboardBios::class)->setController(MotherboardBiosCrudController::class),
-            MenuItem::linkToCrud('Manuals', 'manual.svg', Manual::class)->setController(ManualCrudController::class),
+            MenuItem::linkToCrud('Aliases', 'board_alias.svg', MotherboardAlias::class)->setController(MotherboardAliasCrudController::class)->setPermission('ROLE_MODERATOR'),
+            MenuItem::linkToCrud('Images', 'search_image.svg', MotherboardImage::class)->setController(MotherboardImageCrudController::class)->setPermission('ROLE_MODERATOR'),
+            MenuItem::linkToCrud('BIOSes', 'awchip.svg', MotherboardBios::class)->setController(MotherboardBiosCrudController::class)->setPermission('ROLE_MODERATOR'),
+            MenuItem::linkToCrud('Manuals', 'manual.svg', Manual::class)->setController(ManualCrudController::class)->setPermission('ROLE_MODERATOR'),
         ])->setPermission('ROLE_ADMIN');
         yield MenuItem::subMenu('Chip related', 'chip.svg')->setSubItems([
             MenuItem::linkToCrud('Chip types', 'chip_alias.svg', ExpansionChipType::class)->setPermission('ROLE_ADMIN'),
-            MenuItem::linkToCrud('Families', '486.svg', ProcessorPlatformType::class),
-            MenuItem::linkToCrud('Features', 'cpu.svg', InstructionSet::class),
-            MenuItem::linkToCrud('Sockets', 'socket.svg', CpuSocket::class),
-            MenuItem::linkToCrud('Speeds', 'speed.svg', CpuSpeed::class),
+            MenuItem::linkToCrud('Families', '486.svg', ProcessorPlatformType::class)->setPermission('ROLE_MODERATOR'),
+            MenuItem::linkToCrud('Features', 'cpu.svg', InstructionSet::class)->setPermission('ROLE_MODERATOR'),
+            MenuItem::linkToCrud('Sockets', 'socket.svg', CpuSocket::class)->setPermission('ROLE_MODERATOR'),
+            MenuItem::linkToCrud('Speeds', 'speed.svg', CpuSpeed::class)->setPermission('ROLE_MODERATOR'),
             MenuItem::section('Advanced'),
-            MenuItem::linkToCrud('Chip aliases', 'chip_alias.svg', ChipAlias::class)->setController(ChipAliasCrudController::class),
-            MenuItem::linkToCrud('Chip images', 'search_image.svg', ChipImage::class)->setController(ChipImageCrudController::class),
-            MenuItem::linkToCrud('Chip docs', 'manual.svg', ChipDocumentation::class)->setController(ChipDocumentationCrudController::class),
-            MenuItem::linkToCrud('Chipset aliases', 'chip_alias.svg', ChipsetAlias::class)->setController(ChipsetAliasCrudController::class),
-            MenuItem::linkToCrud('Chipset docs', 'manual.svg', ChipsetDocumentation::class)->setController(ChipsetDocumentationCrudController::class),
+            MenuItem::linkToCrud('Chip aliases', 'chip_alias.svg', ChipAlias::class)->setController(ChipAliasCrudController::class)->setPermission('ROLE_MODERATOR'),
+            MenuItem::linkToCrud('Chip images', 'search_image.svg', ChipImage::class)->setController(ChipImageCrudController::class)->setPermission('ROLE_MODERATOR'),
+            MenuItem::linkToCrud('Chip docs', 'manual.svg', ChipDocumentation::class)->setController(ChipDocumentationCrudController::class)->setPermission('ROLE_MODERATOR'),
+            MenuItem::linkToCrud('Chipset aliases', 'chip_alias.svg', ChipsetAlias::class)->setController(ChipsetAliasCrudController::class)->setPermission('ROLE_MODERATOR'),
+            MenuItem::linkToCrud('Chipset docs', 'manual.svg', ChipsetDocumentation::class)->setController(ChipsetDocumentationCrudController::class)->setPermission('ROLE_MODERATOR'),
         ])->setPermission('ROLE_ADMIN');
         yield MenuItem::subMenu('Expansion card related', 'card.svg')->setSubItems([
-            MenuItem::linkToCrud('Types', 'tag.svg', ExpansionCardType::class),
+            MenuItem::linkToCrud('Types', 'tag.svg', ExpansionCardType::class)->setPermission('ROLE_MODERATOR'),
             MenuItem::section('Advanced'),
             MenuItem::linkToCrud('Aliases', 'tag.svg', ExpansionCardAlias::class)->setController(ExpansionCardAliasCrudController::class)->setPermission('ROLE_ADMIN'),
             MenuItem::linkToCrud('Images', 'search_image.svg', ExpansionCardImage::class)->setController(ExpansionCardImageCrudController::class)->setPermission('ROLE_ADMIN'),
-            MenuItem::linkToCrud('BIOSes', 'awchip.svg', ExpansionCardBios::class)->setController(ExpansionCardBiosCrudController::class),
+            MenuItem::linkToCrud('BIOSes', 'awchip.svg', ExpansionCardBios::class)->setController(ExpansionCardBiosCrudController::class)->setPermission('ROLE_MODERATOR'),
             MenuItem::linkToCrud('Documentation', 'manual.svg', ExpansionCardDocumentation::class)->setController(ExpansionCardDocumentationCrudController::class)->setPermission('ROLE_ADMIN'),
         ])->setPermission('ROLE_ADMIN');
         yield MenuItem::subMenu('Storage related', 'hdd.svg')->setSubItems([
-            MenuItem::linkToCrud('Interface', 'io.svg', StorageDeviceInterface::class),
-            MenuItem::linkToCrud('Physical size', 'dimension.svg', StorageDeviceSize::class),
-            MenuItem::linkToCrud('Floppy drive type', 'floppy.svg', FloppyDriveType::class),
+            MenuItem::linkToCrud('Interface', 'io.svg', StorageDeviceInterface::class)->setPermission('ROLE_MODERATOR'),
+            MenuItem::linkToCrud('Physical size', 'dimension.svg', StorageDeviceSize::class)->setPermission('ROLE_MODERATOR'),
+            MenuItem::linkToCrud('Floppy drive type', 'floppy.svg', FloppyDriveType::class)->setPermission('ROLE_MODERATOR'),
             MenuItem::section('Advanced'),
-            MenuItem::linkToCrud('Aliases', 'tag.svg', StorageDeviceAlias::class)->setController(StorageDeviceAliasCrudController::class),
-            MenuItem::linkToCrud('Images', 'search_image.svg', StorageDeviceImage::class)->setController(StorageDeviceImageCrudController::class),
-            MenuItem::linkToCrud('Documentation', 'manual.svg', StorageDeviceDocumentation::class)->setController(StorageDeviceDocumentationCrudController::class),
+            MenuItem::linkToCrud('Aliases', 'tag.svg', StorageDeviceAlias::class)->setController(StorageDeviceAliasCrudController::class)->setPermission('ROLE_MODERATOR'),
+            MenuItem::linkToCrud('Images', 'search_image.svg', StorageDeviceImage::class)->setController(StorageDeviceImageCrudController::class)->setPermission('ROLE_MODERATOR'),
+            MenuItem::linkToCrud('Documentation', 'manual.svg', StorageDeviceDocumentation::class)->setController(StorageDeviceDocumentationCrudController::class)->setPermission('ROLE_MODERATOR'),
         ])->setPermission('ROLE_ADMIN');
         yield MenuItem::subMenu('Driver related', 'hardware.svg')->setSubItems([
-            MenuItem::linkToCrud('OS flags', '1998win.svg', OsFlag::class),
-            MenuItem::linkToCrud('OS architectures', '486.svg', OsArchitecture::class),
+            MenuItem::linkToCrud('OS flags', '1998win.svg', OsFlag::class)->setPermission('ROLE_MODERATOR'),
+            MenuItem::linkToCrud('OS architectures', '486.svg', OsArchitecture::class)->setPermission('ROLE_MODERATOR'),
         ])->setPermission('ROLE_ADMIN');
         yield MenuItem::subMenu('Connectors', 'rs232.svg')->setSubItems([
-            MenuItem::linkToCrud('Power connectors', 'power.svg', PSUConnector::class),
-            MenuItem::linkToCrud('I/O ports', 'rs232.svg', IoPortInterfaceSignal::class),
+            MenuItem::linkToCrud('Power connectors', 'power.svg', PSUConnector::class)->setPermission('ROLE_MODERATOR'),
+            MenuItem::linkToCrud('I/O ports', 'rs232.svg', IoPortInterfaceSignal::class)->setPermission('ROLE_MODERATOR'),
             MenuItem::linkToCrud('I/O port connectors', 'connector.svg', IoPortInterface::class)->setPermission('ROLE_ADMIN'),
             MenuItem::linkToCrud('I/O port signals', 'rs232_electric.svg', IoPortSignal::class)->setPermission('ROLE_ADMIN'),
-            MenuItem::linkToCrud('Expansion slots', 'exp_slot.svg', ExpansionSlotInterfaceSignal::class),
+            MenuItem::linkToCrud('Expansion slots', 'exp_slot.svg', ExpansionSlotInterfaceSignal::class)->setPermission('ROLE_MODERATOR'),
             MenuItem::linkToCrud('Expansion slot connectors', 'pci_slot_smol.svg', ExpansionSlotInterface::class)->setPermission('ROLE_ADMIN'),
             MenuItem::linkToCrud('Expansion slot signals', 'pci_slot_electric.svg', ExpansionSlotSignal::class)->setPermission('ROLE_ADMIN'),
-        ]);
+        ])->setPermission('ROLE_MODERATOR');
         yield MenuItem::subMenu('Memory related', 'ram.svg')->setSubItems([
             //MenuItem::linkToCrud('Memory connectors', 'ram.svg', MemoryConnector::class),
-            MenuItem::linkToCrud('Cache size', 'chip.svg', CacheSize::class),
-            MenuItem::linkToCrud('RAM size', 'ram_multi.svg', MaxRam::class),
-            MenuItem::linkToCrud('RAM type', 'ram.svg', DramType::class),
+            MenuItem::linkToCrud('Cache size', 'chip.svg', CacheSize::class)->setPermission('ROLE_MODERATOR'),
+            MenuItem::linkToCrud('RAM size', 'ram_multi.svg', MaxRam::class)->setPermission('ROLE_MODERATOR'),
+            MenuItem::linkToCrud('RAM type', 'ram.svg', DramType::class)->setPermission('ROLE_MODERATOR'),
         ])->setPermission('ROLE_ADMIN');
         yield MenuItem::subMenu('Misc', 'misc.svg')->setSubItems([
-            MenuItem::linkToCrud('Manufacturers', 'factory.svg', Manufacturer::class),
+            MenuItem::linkToCrud('Manufacturers', 'factory.svg', Manufacturer::class)->setPermission('ROLE_MODERATOR'),
             MenuItem::linkToCrud('Known Issues', 'misc.svg', KnownIssue::class)->setPermission('ROLE_ADMIN'),
-            MenuItem::linkToCrud('Creditors', 'creditor.svg', Creditor::class),
+            MenuItem::linkToCrud('Creditors', 'creditor.svg', Creditor::class)->setPermission('ROLE_MODERATOR'),
             MenuItem::linkToCrud('Licenses', 'license.svg', License::class)->setPermission('ROLE_ADMIN'),
             MenuItem::section('Advanced')->setPermission('ROLE_ADMIN'),
             MenuItem::linkToCrud('Entity images', 'search_image.svg', EntityImage::class)->setController(EntityImageCrudController::class)->setPermission('ROLE_ADMIN'),
             MenuItem::linkToCrud('Entity docs', 'manual.svg', EntityDocumentation::class)->setController(EntityDocumentationCrudController::class)->setPermission('ROLE_ADMIN'),
-        ]);
-        yield MenuItem::linkToUrl('Logs', 'data.svg',"/audit");
+        ])->setPermission('ROLE_MODERATOR');
+        yield MenuItem::linkToUrl('Logs', 'data.svg',"/audit")->setPermission('ROLE_MODERATOR');
         yield MenuItem::linkToCrud('Users', 'user.svg', User::class)->setPermission('ROLE_SUPER_ADMIN');
     }
 

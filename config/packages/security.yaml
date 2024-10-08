@@ -48,7 +48,8 @@ security:
         Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: 'auto'
 
     role_hierarchy:
-        ROLE_ADMIN:       ROLE_USER
+        ROLE_MODERATOR:    ROLE_USER
+        ROLE_ADMIN:       ROLE_MODERATOR
         ROLE_SUPER_ADMIN: ROLE_ADMIN
 
     # Easy way to control access for large sections of your site

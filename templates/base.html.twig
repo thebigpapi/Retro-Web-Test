@@ -62,7 +62,7 @@
 					{% if is_granted('ROLE_USER') %}
 						<a href="{{ path('dashboard') }}" class="nav-link">
 							<img src="{{ absolute_url(asset('build/icons/settings.svg')) }}" width="24" height="24" alt="admin">
-							<span class="navbar-label">Admin</span>
+							{% if is_granted('ROLE_MODERATOR') %}<span class="navbar-label">Admin</span>{% else %}<span class="navbar-label">Settings</span>{% endif %}
 						</a>
 						<a href="{{ path('app_logout') }}" class="nav-link">
 							<img src="{{ absolute_url(asset('build/icons/login.svg')) }}" width="24" height="24" alt="logout">
