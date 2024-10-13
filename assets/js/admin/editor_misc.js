@@ -163,6 +163,9 @@ function setDate(){
         let releaseDate = document.getElementById(entity + "_releaseDate");
         let datePrecision = document.getElementById(entity + "_datePrecision");
         if(!yearSel){
+            if(releaseDate.value !== ""){
+                releaseDate.value = "";
+            }
             return true;
         }
         if(yearSel < 1970 || yearSel > 2100){

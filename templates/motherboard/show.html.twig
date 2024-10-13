@@ -9,9 +9,6 @@
 	<link rel="canonical" hreflang="x-default" href="{{ absolute_url(path('motherboard_show_slug', {slug: motherboard.getSlug()})) }}"/>
 	<link rel="alternate" hreflang="x-default" href="{{ absolute_url(path('motherboard_show', {id: motherboard.getId()})) }}"/>
 {% endblock %}
-{% block extra_javascripts %}
-	<script src="/build/js/show.js" defer></script>
-{% endblock %}
 
 {% block opengraph %}
 	{% apply spaceless %}

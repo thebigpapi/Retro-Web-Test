@@ -7,9 +7,6 @@
 	<meta name="description" content="{{ driver.getMetaDescription() }}">
 	<link rel="canonical" hreflang="x-default" href="{{ absolute_url(path('driver_show', {id: driver.getId()})) }}"/>
 {% endblock %}
-{% block extra_javascripts %}
-	<script src="/build/js/show.js" defer></script>
-{% endblock %}
 
 {% block opengraph %}
 	{% apply spaceless %}

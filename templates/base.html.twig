@@ -26,15 +26,14 @@
 		{% endblock %}
 		{% block stylesheets %}
 			<link href="/build/css/glightbox.min.css" rel="stylesheet">
-			{{ encore_entry_link_tags('app') }}
+			{{ encore_entry_link_tags('main') }}
 		{% endblock %}
 		{% block extra_stylesheets %}
 		{% endblock %}
 		{% block javascripts %}
-			<script src="/build/js/datetime.js" defer></script>
+			<script src="/build/js/tom-select.js" defer></script>
 			<script type="module">import '/build/js/glightbox.min.js';const lightbox = GLightbox({});</script>
-		{% endblock %}
-		{% block extra_javascripts %}
+			{{ encore_entry_script_tags('main') }}
 		{% endblock %}
 	</head>
 	<body class="content body">

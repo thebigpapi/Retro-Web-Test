@@ -7,7 +7,7 @@
     <script src="{{ asset('/build/js/easyadmin/bootstrap.js') }}" defer></script>
     <script type="module" src="{{ asset('/build/js/easyadmin/app.js') }}" defer></script>
     <script src="{{ asset('/build/js/easyadmin/form.js') }}" defer></script>
-    {{ encore_entry_script_tags('app_ea') }}
+    {{ encore_entry_script_tags('admin') }}
     {{ encore_entry_script_tags('chart') }}
 {% endblock head_javascript %}
 
@@ -18,7 +18,7 @@
 
 {% block head_stylesheets %}
     {{ encore_entry_link_tags('easyadmin') }}
-    {{ encore_entry_link_tags('app_ea') }}
+    {{ encore_entry_link_tags('admin') }}
 {% endblock %}
 
 {% block configured_stylesheets %}

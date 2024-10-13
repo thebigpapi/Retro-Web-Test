@@ -99,7 +99,7 @@ class StatsController extends AbstractDashboardController
     public function configureAssets(): Assets
     {
         $assets = parent::configureAssets();
-        $assets->addWebpackEncoreEntry('app_ea');
+        $assets->addWebpackEncoreEntry('admin');
         return $assets;
     }
     public function configureDashboard(): Dashboard
