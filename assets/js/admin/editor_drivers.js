@@ -58,7 +58,7 @@ if(createDriverBtn){
 }
 
 // upload handler
-function beginUpload(url, formData, container){
+function beginUpload(url, formData, container, type){
     let date = new Date()
     let bytesLoaded = 0
     let xhr = new XMLHttpRequest();
@@ -109,8 +109,24 @@ function beginUpload(url, formData, container){
         if (xhr.status == 200) {
             if(xhr.responseText.startsWith("<!DOCTYPE HTML>")){
                 showMessage("Uploaded!", false);
-                if(container)
+                if(container){
                     addDriver(container);
+                }
+                if(type == "saveAndReturn"){
+                    window.onbeforeunload = null;
+                    window.location = window.location.origin + "/drivers/" + url.substring(url.indexOf("entityId=") + 9);
+                }
+                if(type == "saveAndContinue"){
+                    window.onbeforeunload = null;
+                    window.location = url;
+                }
+            }
+            else if(xhr.responseText.trim().startsWith('<!DOCTYPE html>')){
+                let parser = new DOMParser();
+                let doc = parser.parseFromString(xhr.responseText, "text/html");
+                let oldContainer = document.getElementById('main');
+                let parsedContainer = doc.getElementById('main');
+                oldContainer.innerHTML = parsedContainer.innerHTML;
             }
             else{
                 showMessage("Something exploded!", true);
@@ -245,7 +261,7 @@ function miniDriverSubmit(){
         formData.append("LargeFile[_token]", token);
         formData.append("LargeFile[file][file]", file.files[0]);
         //upload begins
-        beginUpload(url, formData, container);
+        beginUpload(url, formData, container, null);
     }).catch(err => console.log("Driver form request failed: " + err));
 }
 
@@ -285,12 +301,11 @@ function fullDriverSubmit(type) {
     if(file_name.innerHTML != ""){
         let formData = new FormData(document.getElementById(formtype));
         formData.append("ea[newForm][btn]", type);
-        beginUpload(window.location.href, formData, null);
-        if(type == "saveAndReturn" && document.getElementById('new-LargeFile-form'))
+        beginUpload(window.location.href, formData, null, type);
+        if(type == "saveAndReturn")
             window.onbeforeunload = null;
         if(type == "saveAndContinue"){
             window.onbeforeunload = null;
-            window.location.reload();
         }
     }
     else{

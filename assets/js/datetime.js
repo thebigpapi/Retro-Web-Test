@@ -47,4 +47,4 @@ function getDatesSimple(){
         }
     }
 }
-
+window.getDates = getDates;

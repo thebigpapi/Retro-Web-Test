@@ -13,7 +13,7 @@ const easyadmin = {
     "tab-specs": "sh-chips",
     "tab-associations": "sh-chips"
 }
-
+window.expandDropdown = expandDropdown;
 update_tab_selection();
 
 trw_tabs.forEach((tabId) => {
