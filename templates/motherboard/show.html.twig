@@ -195,13 +195,6 @@
 			<!-- Chips -->
 			<div class="show-chips" id="sh-chips">
 				<div class="quick-spec-table">
-					<!-- Chipset -->
-					<div class="quick-spec-head">
-						<img src="{{ absolute_url(asset('build/icons/chipset.svg')) }}" alt="chipset" width="24" height="24">Chipset
-					</div>
-					{% if motherboard.getChipset() is not empty %}
-						<div><a href="{{ path('app_homepage') }}chipsets/{{ motherboard.getChipset().getId()}}">{{ motherboard.getChipset().getFullName() }}</a></div>
-					{% else %}<div><span class='badge badge-secondary'>Empty</span></div>{% endif %}
 					<!-- Expansion Chips -->
 					{% if motherboard.getChips() is not empty %}
 						{% for chip in motherboard.getChips()|filter(a => a.getType().getName() == "Chipset part")%}
