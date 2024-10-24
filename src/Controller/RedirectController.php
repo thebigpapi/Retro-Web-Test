@@ -155,9 +155,42 @@ class RedirectController extends AbstractController
             return $this->redirect($this->generateUrl('processor_show', array("id" => $id)));
         }
         return $this->redirect($this->generateUrl('expansion_chip_show', array("id" => $id)));
+    }*/
+    #[Route(path: '/expansion-chips/')]
+    public function redirectExpToChipSearch()
+    {
+        return $this->redirect($this->generateUrl('chipsearch'));
     }
-    todo: expansion-chips, cpus, cpusocket
-    */
+    #[Route(path: '/expansion-chips/{id}')]
+    public function redirectExpToChip($id)
+    {
+        return $this->redirect($this->generateUrl('chip_show', array("id" => $id)));
+    }
+    #[Route(path: '/cpus/')]
+    public function redirectCpuToChipSearch()
+    {
+        return $this->redirect($this->generateUrl('chipsearch'));
+    }
+    #[Route(path: '/cpus/{id}')]
+    public function redirectCpuToChip($id)
+    {
+        return $this->redirect($this->generateUrl('chip_show', array("id" => $id)));
+    }
+    #[Route(path: '/cpusocket/{id}')]
+    public function redirectToSocket($id)
+    {
+        return $this->redirect($this->generateUrl('socket_show', array("id" => $id)));
+    }
+    #[Route(path: '/cpufamily/{id}')]
+    public function redirectToFamily($id)
+    {
+        return $this->redirect($this->generateUrl('family_show', array("id" => $id)));
+    }
+    #[Route(path: '/psu-connector/{id}')]
+    public function redirectToPower($id)
+    {
+        return $this->redirect($this->generateUrl('power_connector_show', array("id" => $id)));
+    }
 
     /* credits redirect */
     #[Route(path: '/credits', methods: ['GET'])]
