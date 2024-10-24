@@ -378,12 +378,21 @@ class ChipCrudController extends AbstractCrudController
         $chip->setType($old->getType());
         $chip->setSort($old->getSort());
         $chip->setMiscSpecs($old->getMiscSpecs());
-        //$chip->setDescription($old->getDescription());
+        $chip->setDescription($old->getDescription());
+        $chip->setFamily($old->getFamily());
+        $chip->setProcessNode($old->getProcessNode());
+        $chip->setTdp($old->getTdp());
         $chip->setLastEdited(new \DateTime('now'));
         foreach ($old->getPciDevs() as $dev) {
             $newDev = new PciDeviceId();
             $newDev->setDev($dev->getDev());
             $chip->addPciDev($newDev);
+        }
+        foreach ($old->getSockets() as $socket){
+            $chip->addSocket($socket);
+        }
+        foreach ($old->getKnownIssues() as $issue){
+            $chip->addKnownIssue($issue);
         }
         foreach ($old->getChipAliases() as $alias){
             $newAlias = new ChipAlias();
