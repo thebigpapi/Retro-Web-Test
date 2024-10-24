@@ -474,11 +474,12 @@ div.perks {
                     margin: auto;
                     width: auto;
                     height: auto;
-                    max-width: 325px;
+                    max-width: min(325px, 95%);
                     max-height: 275px;
                 }
 
                 a.glightbox {
+					display: flex;
                     margin: auto;
                 }
             }

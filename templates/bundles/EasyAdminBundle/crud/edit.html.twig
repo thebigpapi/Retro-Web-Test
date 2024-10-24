@@ -1,15 +1,5 @@
 {% extends '@!EasyAdmin/crud/edit.html.twig' %}
 
-{% block head_javascript %}
-    <script type="module">import "/build/js/glightbox.min.js";const lightbox = GLightbox({});</script>
-    <script src="{{ asset('/build/js/show.js') }}"></script>
-    <script src="{{ asset('/build/js/tom-select.js') }}"></script>
-    <script src="{{ asset('/build/js/easyadmin/bootstrap.js') }}" defer></script>
-    <script type="module" src="{{ asset('/build/js/easyadmin/app.js') }}" defer></script>
-    <script src="{{ asset('/build/js/easyadmin/form.js') }}" defer></script>
-    {{ encore_entry_script_tags('admin') }}
-    {{ encore_entry_script_tags('chart') }}
-{% endblock head_javascript %}
 
 {% block configured_javascripts %}
     <script type="module" src="{{ asset('/build/js/easyadmin/field-code-editor.js') }}" defer></script>
