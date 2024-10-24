@@ -166,7 +166,7 @@ function setDate(){
             if(releaseDate.value !== ""){
                 releaseDate.value = "";
             }
-            return true;
+            continue;
         }
         if(yearSel < 1970 || yearSel > 2100){
             alert("Invalid release date year!");
@@ -191,8 +191,9 @@ function setDate(){
                 month = monthSel;
             }
         }
-        else
+        else{
             datePrecision.value = "y";
+        }
         releaseDate.value = yearSel + "-" + (month > 9 ? "" : "0") + month + "-" + (day > 9 ? "" : "0" ) + day;
     }
     return true;
