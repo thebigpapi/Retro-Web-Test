@@ -326,7 +326,7 @@ function validate(){
                         errors[item.children[0].getAttribute('id')] = "Count cannot be empty!";
                         state = true;
                     }
-                    if(isNaN(parseInt(item.children[0].value.replace(/>|<|=/,'')))){
+                    if(isNaN(parseInt(item.children[0].value.replace(/>=|<=|>|<|=/,'')))){
                         errors[item.children[0].getAttribute('id')] = "Count input is invalid!";
                         state = true;
                     }
