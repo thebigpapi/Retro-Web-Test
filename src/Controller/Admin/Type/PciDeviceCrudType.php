@@ -25,31 +25,4 @@ class PciDeviceCrudType extends AbstractCrudController
             ->setColumns(12);
     }
 
-    /*public function configureCrud(Crud $crud): Crud
-    {
-        return $crud
-            ->setNumberFormat('hex');
-    }*/
-
-    public function new(AdminContext $context)
-    {
-        dd($context->getEntity());
-    }
-
-    public function edit(AdminContext $context)
-    {
-        dd($context->getEntity());
-    }
-
-    public function delete(AdminContext $context)
-    {
-        dd($context->getEntity());
-    }
-
-    public function persistEntity(EntityManagerInterface $entityManager, $entityInstance): void
-    {
-        dd($entityInstance);
-    }
-
-
 }
