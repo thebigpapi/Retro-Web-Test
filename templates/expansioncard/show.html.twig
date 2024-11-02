@@ -105,12 +105,12 @@
 						<div class="tag-container">
 						{% if expansioncard.getPciDevs() is not empty %}
 							{% for device in expansioncard.getPciDevs() %}
-								<span class="text-block">{{device.getDev()}}</span>
+								<span class="text-block">{{device.getHexDev()}}</span>
 							{% endfor %}
 						{% elseif expansioncard.getChips()|filter(a => a.pciDevs is not empty) is not empty %}
 							{% for chip in expansioncard.getChips()|filter(a => a.pciDevs is not empty) %}
 								{% for device in chip.getPciDevs() %}
-									<span class="text-block">{{device.getDev()}}</span>
+									<span class="text-block">{{device.getHexDev()}}</span>
 								{% endfor %}
 							{% endfor %}
 						{% else %}

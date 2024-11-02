@@ -119,7 +119,7 @@
 						<div class="tag-container">
 						{% if chip.getPciDevs() is not empty %}
 							{% for device in chip.getPciDevs() %}
-								<span class="text-block">{{device.getDev()}}</span>
+								<span class="text-block">{{device.getHexDev()}}</span>
 							{% endfor %}
 						{% else %}
 							<div><span class='badge badge-secondary'>Empty</span></div>
