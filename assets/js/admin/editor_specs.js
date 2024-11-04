@@ -32,8 +32,7 @@ if (ioPortsBtn = document.getElementById('ExpansionCard_ioPorts_collection')?.pr
 if ((miscSpecs = document.getElementById('ExpansionCard_miscSpecs')) ||
     (miscSpecs = document.getElementById('Chip_miscSpecs')) ||
     (miscSpecs = document.getElementById('ProcessorPlatformType_miscSpecs')) ||
-    (miscSpecs = document.getElementById('ExpansionCardType_template')) ||
-    (miscSpecs = document.getElementById('ExpansionChipType_template'))) {
+    (miscSpecs = document.getElementById('ExpansionCardType_template'))) {
     const listElement = document.getElementById('specs-collection');
     if(expSlotPresetSelect = document.getElementById('ExpansionCard_expansionSlotInterfaceSignal_autocomplete'))
         expSlotPresetSelect.addEventListener('change', event => expSlotPresetChange(event));
@@ -201,8 +200,8 @@ async function applyTemplate(miscSpecs) {
 }
 async function applyTemplateChip(miscSpecs) {
     const listElement = document.getElementById('specs-collection');
-    let type = document.getElementById('ExpansionChip_type').value;
-    const url = `${window.location.origin}/dashboard/getexpansionchiptemplate/${type}`;
+    let type = document.getElementById('Chip_type').value;
+    const url = `${window.location.origin}/dashboard/getchiptemplate/${type}`;
 
     fetch(url, { cache: "default" })
         .then((response) => {
