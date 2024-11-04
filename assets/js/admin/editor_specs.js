@@ -182,7 +182,7 @@ async function applyTemplateCard(miscSpecs) {
         })
         .then((text) => {
             const obj = JSON.parse(text);
-            miscSpecs.textContent = JSON.stringify(obj, null, 4);
+            miscSpecs.value = JSON.stringify(obj, null, 4);
             setupForm(listElement, true);
             setMsg("Applied template with " + Object.keys(obj).length + " specs");
         })
@@ -202,7 +202,6 @@ async function applyTemplateChip(miscSpecs) {
     const listElement = document.getElementById('specs-collection');
     let type = document.getElementById('Chip_type').value;
     const url = `${window.location.origin}/dashboard/getchiptemplate/${type}`;
-
     fetch(url, { cache: "default" })
         .then((response) => {
             if (!response.ok) {
@@ -212,7 +211,7 @@ async function applyTemplateChip(miscSpecs) {
         })
         .then((text) => {
             const obj = JSON.parse(text);
-            miscSpecs.textContent = JSON.stringify(obj, null, 4);
+            miscSpecs.value = JSON.stringify(obj, null, 4);
             setupForm(listElement, true);
             setMsg("Applied template with " + Object.keys(obj).length + " specs");
         })
