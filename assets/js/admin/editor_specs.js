@@ -134,8 +134,6 @@ async function addTable(listElement, key=null, values = null) {
 
 
 async function addTableSpec(listElement, tableId, key = null, value = null) {
-
-    //console.log("addTableSpec" + tableId, listElement);
     document.getElementById('MiscSpecs_emptybadge_' + tableId).innerHTML = "";
     const elementId = miscSpecsTableIds[tableId]['counter'];
     miscSpecsTableIds[tableId]['ids'].push(elementId);
@@ -202,7 +200,7 @@ async function applyTemplateCard(miscSpecs) {
 async function applyTemplateChip(miscSpecs) {
     let type = document.getElementById('Chip_type').value;
     if(!type){
-        setMsg("No card types are present!");
+        setMsg("No chip type is present!");
         return;
     }
     const url = `${window.location.origin}/dashboard/getchiptemplate/${type}`;
@@ -210,7 +208,6 @@ async function applyTemplateChip(miscSpecs) {
 }
 function saveAsJson(miscSpecs) {
     const jsonMap = {};
-    //console.log(miscSpecsIds);
     let msg = "Set ";
     let spec_cnt = 0, table_cnt = 0;
     for (const id of miscSpecsIds) {
@@ -236,7 +233,6 @@ function saveAsJson(miscSpecs) {
             jsonMap[tableName] = subObject;
             table_cnt++;
         }
-        //console.log(tableName);
     }
     if(spec_cnt > 0){
         msg += spec_cnt + " spec";
@@ -251,7 +247,7 @@ function saveAsJson(miscSpecs) {
         if(table_cnt > 1)
             msg += "s";
     }
-    miscSpecs.textContent = JSON.stringify(jsonMap, null, 4);
+    miscSpecs.value= JSON.stringify(jsonMap, null, 4);
     setMsg(msg);
 }
 
