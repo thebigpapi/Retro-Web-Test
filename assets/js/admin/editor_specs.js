@@ -32,7 +32,8 @@ if (ioPortsBtn = document.getElementById('ExpansionCard_ioPorts_collection')?.pr
 if ((miscSpecs = document.getElementById('ExpansionCard_miscSpecs')) ||
     (miscSpecs = document.getElementById('Chip_miscSpecs')) ||
     (miscSpecs = document.getElementById('ProcessorPlatformType_miscSpecs')) ||
-    (miscSpecs = document.getElementById('ExpansionCardType_template'))) {
+    (miscSpecs = document.getElementById('ExpansionCardType_template'))||
+    (miscSpecs = document.getElementById('ExpansionChipType_template'))) {
     const listElement = document.getElementById('specs-collection');
     if(expSlotPresetSelect = document.getElementById('ExpansionCard_expansionSlotInterfaceSignal_autocomplete'))
         expSlotPresetSelect.addEventListener('change', event => expSlotPresetChange(event));
@@ -157,22 +158,8 @@ async function addTableSpec(listElement, tableId, key = null, value = null) {
 
 }
 
-async function applyTemplateCard(miscSpecs) {
+function fetchSpecs(url, miscSpecs) {
     const listElement = document.getElementById('specs-collection');
-
-    let typeCollection = document.getElementById('ExpansionCard_type_collection').children[0].children[0];
-    if(typeCollection.innerHTML == "Empty"){
-        setMsg("No card types are present!");
-        return;
-    }
-    const typeList = Array.from(typeCollection.children[0].children);
-    const types = [];
-    for (const typeElement of typeList) {
-        types.push(typeElement.children[0].children[0].children[0].children[0].children[0].value);
-    }
-
-    const url = `${window.location.origin}/dashboard/getexpansioncardtemplate?ids=${JSON.stringify(types)}`;
-
     fetch(url, { cache: "default" })
         .then((response) => {
             if (!response.ok) {
@@ -191,33 +178,35 @@ async function applyTemplateCard(miscSpecs) {
         });
 }
 async function applyTemplate(miscSpecs) {
-    if(miscSpecs.id == 'Chip_miscSpecs')
+    if(miscSpecs.id == 'Chip_miscSpecs'){
         applyTemplateChip(miscSpecs)
+    }
     else{
         applyTemplateCard(miscSpecs)
     }
-        
+}
+async function applyTemplateCard(miscSpecs) {
+    let typeCollection = document.getElementById('ExpansionCard_type_collection').children[0].children[0];
+    if(typeCollection.innerHTML == "Empty"){
+        setMsg("No card types are present!");
+        return;
+    }
+    const typeList = Array.from(typeCollection.children[0].children);
+    const types = [];
+    for (const typeElement of typeList) {
+        types.push(typeElement.children[0].children[0].children[0].children[0].children[0].value);
+    }
+    const url = `${window.location.origin}/dashboard/getexpansioncardtemplate?ids=${JSON.stringify(types)}`;
+    fetchSpecs(url, miscSpecs);
 }
 async function applyTemplateChip(miscSpecs) {
-    const listElement = document.getElementById('specs-collection');
     let type = document.getElementById('Chip_type').value;
+    if(!type){
+        setMsg("No card types are present!");
+        return;
+    }
     const url = `${window.location.origin}/dashboard/getchiptemplate/${type}`;
-    fetch(url, { cache: "default" })
-        .then((response) => {
-            if (!response.ok) {
-                throw new Error(`HTTP error: ${response.status}`)
-            }
-            return response.text();
-        })
-        .then((text) => {
-            const obj = JSON.parse(text);
-            miscSpecs.value = JSON.stringify(obj, null, 4);
-            setupForm(listElement, true);
-            setMsg("Applied template with " + Object.keys(obj).length + " specs");
-        })
-        .catch((error) => {
-            console.log(`Could not fetch template : ${error}`);
-        });
+    fetchSpecs(url, miscSpecs);
 }
 function saveAsJson(miscSpecs) {
     const jsonMap = {};
