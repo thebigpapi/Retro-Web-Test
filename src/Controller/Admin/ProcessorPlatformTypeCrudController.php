@@ -77,6 +77,7 @@ class ProcessorPlatformTypeCrudController extends AbstractCrudController
             ->add('dramType')
             ->add('compatibleWith')
             ->add('instructionSets')
+            ->add('cpuSockets')
             ->add('description');
     }
     public function configureFields(string $pageName): iterable
@@ -108,6 +109,10 @@ class ProcessorPlatformTypeCrudController extends AbstractCrudController
             ->setEntryType(InstructionSetType::class)
             ->setColumns('col-sm-6 col-lg-6 col-xxl-3')
             ->renderExpanded()
+            ->onlyOnForms();
+        yield AssociationField::new('cpuSockets','Sockets')
+            ->autocomplete()
+            ->setColumns('col-sm-12 col-lg-6 col-xxl-4 multi-widget-trw')
             ->onlyOnForms();
         yield CodeEditorField::new('description')
             ->setLanguage('markdown')
