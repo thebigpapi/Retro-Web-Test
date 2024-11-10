@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use App\Repository\StorageDeviceImageRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
@@ -42,6 +43,11 @@ class StorageDeviceImage
 
     #[ORM\Column(type: 'string', length: 255)]
     private $type;
+
+    #[ORM\Column(type: Types::SMALLINT)]
+    #[Assert\NotBlank(message: 'Sort position cannot be blank')]
+    #[Assert\Positive(message: "Sort position should be above 0")]
+    private ?int $sort = null;
 
     public function getId(): ?int
     {
@@ -141,6 +147,17 @@ class StorageDeviceImage
         if ($this->imageFile instanceof UploadedFile) {
             $this->updated_at = new \DateTime('now');
         }
+
+        return $this;
+    }
+    public function getSort(): ?int
+    {
+        return $this->sort;
+    }
+
+    public function setSort(int $sort): static
+    {
+        $this->sort = $sort;
 
         return $this;
     }

@@ -7,6 +7,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use Symfony\Component\Validator\Constraints\File;
 use Vich\UploaderBundle\Form\Type\VichImageType;
@@ -52,6 +53,10 @@ class ImageCrudType extends AbstractCrudController
                 'Photo bracket' => '6',
                 'Schema misc' => '5',
             ])
+            ->setFormTypeOption('empty_data', '1')
+            ->setColumns(12);
+        yield NumberField::new('sort', 'Sort position')
+            ->setFormTypeOption('required', true)
             ->setFormTypeOption('empty_data', '1')
             ->setColumns(12);
         yield TextField::new('description', 'Notes')

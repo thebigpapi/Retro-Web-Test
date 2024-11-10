@@ -6,6 +6,7 @@ use App\Entity\MotherboardImage;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use Symfony\Component\Validator\Constraints\File;
 use Vich\UploaderBundle\Form\Type\VichImageType;
@@ -43,6 +44,10 @@ class ImageCrudType extends AbstractCrudController
             ->setFormTypeOption('attr',['placeholder' => 'Type to select a creditor ...'])
             ->setColumns(12);
         yield AssociationField::new('motherboardImageType', 'Type')
+            ->setColumns(12);
+        yield NumberField::new('sort', 'Sort position')
+            ->setFormTypeOption('required', true)
+            ->setFormTypeOption('empty_data', '1')
             ->setColumns(12);
         yield TextField::new('description', 'Notes')
             ->setColumns('col-sm-4 col-lg-4 col-xxl-4')

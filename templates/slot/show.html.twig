@@ -12,7 +12,7 @@
 	<meta property="og:title" content="{{ expansion_slot.getName() }}">
 	<meta property="og:description" content="Get connector info for {{ expansion_slot.getName() }}!">
 	{% if expansion_slot.getInterface() is not empty %}
-		{% for image in expansion_slot.getInterface().getEntityImages()|sort((a, b) => a.getFileName() <=> b.getFileName())|slice(0, 1) %}
+		{% for image in expansion_slot.getInterface().getEntityImages()|sort((a, b) => a.getFileName() <=> b.getFileName())|sort((a, b) => a.sort <=> b.sort)|slice(0, 1) %}
 			<meta name="twitter:image" content="{{ vich_uploader_asset(image, 'imageFile')}}">
 			<meta property="og:image" content="{{ vich_uploader_asset(image, 'imageFile')}}">
 		{% endfor %}
@@ -84,7 +84,7 @@
 	<div class="show-images" id="sh-images">
 	{% if expansion_slot.getAllImages() is not empty %}
 		{% set lpindex = 0 %}
-		{% for image in expansion_slot.getAllImages()|sort((a, b) => a.getFileName() <=> b.getFileName()) %}
+		{% for image in expansion_slot.getAllImages()|sort((a, b) => a.getFileName() <=> b.getFileName())|sort((a, b) => a.sort <=> b.sort) %}
 			{% set lpindex = lpindex + 1 %}
 			{% include 'macros/images.html.twig' with {'type':'connector', 'entity': image, 'index': lpindex, 'length': expansion_slot.getAllImages()|length} %}
 		{% endfor %}

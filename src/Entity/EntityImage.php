@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -58,6 +59,11 @@ class EntityImage
 
     #[ORM\ManyToOne(inversedBy: 'entityImages')]
     private ?ExpansionSlotInterfaceSignal $expansionSlotInterfaceSignal = null;
+
+    #[ORM\Column(type: Types::SMALLINT)]
+    #[Assert\NotBlank(message: 'Sort position cannot be blank')]
+    #[Assert\Positive(message: "Sort position should be above 0")]
+    private ?int $sort = null;
 
     public function getId(): ?int
     {
@@ -139,6 +145,17 @@ class EntityImage
     public function setCpuSocket(?CpuSocket $cpuSocket): self
     {
         $this->cpuSocket = $cpuSocket;
+
+        return $this;
+    }
+    public function getSort(): ?int
+    {
+        return $this->sort;
+    }
+
+    public function setSort(int $sort): static
+    {
+        $this->sort = $sort;
 
         return $this;
     }

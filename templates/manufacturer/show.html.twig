@@ -101,7 +101,7 @@
 	<div class="show-images" id="sh-images">
 	{% if manufacturer.getEntityImages() is not empty %}
 		{% set lpindex = 0 %}
-		{% for image in manufacturer.getEntityImages()|sort((a, b) => a.getFileName() <=> b.getFileName()) %}
+		{% for image in manufacturer.getEntityImages()|sort((a, b) => a.getFileName() <=> b.getFileName())|sort((a, b) => a.sort <=> b.sort) %}
 			{% set lpindex = lpindex + 1 %}
 			{% include 'macros/images.html.twig' with {'type':'manufacturer', 'entity': image, 'index': lpindex, 'length': manufacturer.getEntityImages()|length} %}
 		{% endfor %}
