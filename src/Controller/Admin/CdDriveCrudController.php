@@ -123,7 +123,8 @@ class CdDriveCrudController extends AbstractCrudController
             ->add('cdWriteSpeed')
             ->add('dvdReadSpeed')
             ->add('dvdWriteSpeed')
-            ->add('lastEdited');
+            ->add('lastEdited')
+            ->add('description');
     }
     public function configureFields(string $pageName): iterable
     {

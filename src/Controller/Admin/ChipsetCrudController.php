@@ -111,7 +111,8 @@ class ChipsetCrudController extends AbstractCrudController
             ->add(ChipDriverFilter::new('drivers'))
             ->add('chips')
             ->add('chipsetAliases')
-            ->add('lastEdited');
+            ->add('lastEdited')
+            ->add('description');
     }
     public function configureFields(string $pageName): iterable
     {

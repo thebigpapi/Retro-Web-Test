@@ -140,7 +140,8 @@ class MotherboardCrudController extends AbstractCrudController
             ->add('psuConnectors')
             ->add('dimensions')
             ->add('score')
-            ->add('lastEdited');
+            ->add('lastEdited')
+            ->add('note');
     }
     public function configureFields(string $pageName): iterable
     {
@@ -227,7 +228,7 @@ class MotherboardCrudController extends AbstractCrudController
             ->setEntryType(KnownIssueMotherboardType::class)
             ->renderExpanded()
             ->onlyOnForms();
-        yield CodeEditorField::new('note')
+        yield CodeEditorField::new('note', 'Description')
             ->setLanguage('markdown')
             ->onlyOnForms();
         yield FormField::addTab('Connectors')

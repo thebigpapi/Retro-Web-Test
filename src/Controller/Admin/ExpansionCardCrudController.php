@@ -118,7 +118,8 @@ class ExpansionCardCrudController extends AbstractCrudController
             ->add(ExpansionCardImageFilter::new('images'))
             ->add(ChipDocFilter::new('documentations'))
             ->add(ExpansionCardBiosFilter::new('expansionCardBios'))
-            ->add(ChipDriverFilter::new('drivers'));
+            ->add(ChipDriverFilter::new('drivers'))
+            ->add('description');
     }
     public function configureFields(string $pageName): iterable
     {

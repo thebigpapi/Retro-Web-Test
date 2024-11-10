@@ -119,7 +119,8 @@ class FloppyDriveCrudController extends AbstractCrudController
             ->add('interfaces')
             ->add('powerConnectors')
             ->add('physicalSize')
-            ->add('lastEdited');
+            ->add('lastEdited')
+            ->add('description');
     }
     public function configureFields(string $pageName): iterable
     {

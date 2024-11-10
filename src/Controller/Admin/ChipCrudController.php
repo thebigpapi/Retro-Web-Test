@@ -121,7 +121,8 @@ class ChipCrudController extends AbstractCrudController
             ->add(ChipImageFilter::new('images'))
             ->add(ChipDocFilter::new('documentations'))
             ->add(ChipDriverFilter::new('drivers'))
-            ->add('chipAliases');
+            ->add('chipAliases')
+            ->add('description');
     }
     public function configureFields(string $pageName): iterable
     {

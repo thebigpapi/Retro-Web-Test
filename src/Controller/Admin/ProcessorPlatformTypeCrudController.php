@@ -73,7 +73,11 @@ class ProcessorPlatformTypeCrudController extends AbstractCrudController
     public function configureFilters(Filters $filters): Filters
     {
         return parent::configureFilters($filters)
-            ->add('name');
+            ->add('name')
+            ->add('dramType')
+            ->add('compatibleWith')
+            ->add('instructionSets')
+            ->add('description');
     }
     public function configureFields(string $pageName): iterable
     {

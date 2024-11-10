@@ -128,7 +128,8 @@ class HardDriveCrudController extends AbstractCrudController
             ->add('trackSeek')
             ->add('buffer')
             ->add('spindleSpeed')
-            ->add('lastEdited');
+            ->add('lastEdited')
+            ->add('description');
     }
     public function configureFields(string $pageName): iterable
     {
