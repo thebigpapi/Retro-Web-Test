@@ -9,6 +9,7 @@ use Symfony\Component\Routing\Attribute\Route;
 use App\Repository\CdDriveRepository;
 use App\Repository\ChipRepository;
 use App\Repository\ChipsetRepository;
+use App\Repository\ExpansionCardRepository;
 use App\Repository\FloppyDriveRepository;
 use App\Repository\HardDriveRepository;
 use App\Repository\LargeFileRepository;
@@ -37,6 +38,7 @@ class SiteMapController extends AbstractController
     #[Route(path: '/sitemap.xml', name: 'sitemap', defaults: ['_format' => 'xml'])]
     public function index(
         MotherboardRepository $mobos,
+        ExpansionCardRepository $cards,
         ChipRepository $chips,
         ChipsetRepository $chipsets,
         HardDriveRepository $hdds,
@@ -45,7 +47,7 @@ class SiteMapController extends AbstractController
         LargeFileRepository $files
     ): Response {
         if ($this->cachedSitemapExpired()) {
-            $this->refreshSitemap($mobos, $chips, $chipsets, $hdds, $odds, $fdds, $files);
+            $this->refreshSitemap($mobos, $cards, $chips, $chipsets, $hdds, $odds, $fdds, $files);
         }
 
         $response = new Response($this->renderView('site_map/index.xml.twig', [
@@ -77,10 +79,11 @@ class SiteMapController extends AbstractController
 
     private function refreshSitemap(
         MotherboardRepository $mobos,
+        ExpansionCardRepository $cards,
         ChipRepository $chips,
         ChipsetRepository $chipsets,
         HardDriveRepository $hdds,
-        CdDriveRepository $odds,
+        CdDriveRepository $cdds,
         FloppyDriveRepository $fdds,
         LargeFileRepository $files
     ): void {
@@ -88,57 +91,65 @@ class SiteMapController extends AbstractController
 
         # Write motherboards
         $moboSet = $mobos->findAllAlphabetic("");
-        $this->writeRenderedSitemap("motherboards.xml", "motherboard_show", $moboSet);
+        $this->writeRenderedSitemap("motherboards.xml", "motherboard_show_slug", $moboSet);
         foreach ($ALL_LETTERS as $letter) {
             $moboSet = $mobos->findAllAlphabetic($letter);
-            $this->writeRenderedSitemap("motherboards." . $letter . ".xml", "motherboard_show", $moboSet);
+            $this->writeRenderedSitemap("motherboards." . $letter . ".xml", "motherboard_show_slug", $moboSet);
+        }
+
+        # Write expansion cards
+        $cardSet = $cards->findAllAlphabetic("");
+        $this->writeRenderedSitemap("expansioncards.xml", "expansioncard_show_slug", $cardSet);
+        foreach ($ALL_LETTERS as $letter) {
+            $moboSet = $mobos->findAllAlphabetic($letter);
+            $this->writeRenderedSitemap("expansioncards." . $letter . ".xml", "expansioncard_show_slug", $cardSet);
         }
 
         # Write chips
         $chipSet = $chips->findAllAlphabetic("");
-        $this->writeRenderedSitemap("chip.xml", "chip_show", $chipSet);
+        $this->writeRenderedSitemap("chips.xml", "chip_show", $chipSet);
         foreach ($ALL_LETTERS as $letter) {
             $chipSet = $chips->findAllAlphabetic($letter);
-            $this->writeRenderedSitemap("chip." . $letter . ".xml", "chip_show", $chipSet);
+            $this->writeRenderedSitemap("chips." . $letter . ".xml", "chip_show", $chipSet);
         }
 
         # Write chipsets
         $chipsetSet = $chipsets->findAllAlphabetic("");
-        $this->writeRenderedSitemap("chipset.xml", "chipset_show", $chipsetSet);
+        $this->writeRenderedSitemap("chipsets.xml", "chipset_show", $chipsetSet);
         foreach ($ALL_LETTERS as $letter) {
             $chipsetSet = $chipsets->findAllAlphabetic($letter);
-            $this->writeRenderedSitemap("chipset." . $letter . ".xml", "chipset_show", $chipsetSet);
+            $this->writeRenderedSitemap("chipsets." . $letter . ".xml", "chipset_show", $chipsetSet);
         }
 
         # Write hard drives
         $hddSet = $hdds->findAllAlphabetic("");
-        $this->writeRenderedSitemap("hdd.xml", "hard_drive_show", $hddSet);
+        $this->writeRenderedSitemap("harddrives.xml", "hard_drive_show", $hddSet);
         foreach ($ALL_LETTERS as $letter) {
             $hddSet = $hdds->findAllAlphabetic($letter);
-            $this->writeRenderedSitemap("hdd." . $letter . ".xml", "hard_drive_show", $hddSet);
+            $this->writeRenderedSitemap("harddrives." . $letter . ".xml", "hard_drive_show", $hddSet);
         }
 
         # Write optical drives
-        $oddSet = $odds->findAllAlphabetic("");
-        $this->writeRenderedSitemap("odd.xml", "cd_drive_show", $oddSet);
+        $cddSet = $cdds->findAllAlphabetic("");
+        $this->writeRenderedSitemap("cddrives.xml", "cd_drive_show", $cddSet);
         foreach ($ALL_LETTERS as $letter) {
-            $oddSet = $odds->findAllAlphabetic($letter);
-            $this->writeRenderedSitemap("odd." . $letter . ".xml", "cd_drive_show", $oddSet);
+            $cddSet = $cdds->findAllAlphabetic($letter);
+            $this->writeRenderedSitemap("cddrives." . $letter . ".xml", "cd_drive_show", $cddSet);
         }
 
         # Write floppy drives
         $fddSet = $fdds->findAllAlphabetic("");
-        $this->writeRenderedSitemap("fdd.xml", "floppy_drive_show", $fddSet);
+        $this->writeRenderedSitemap("floppydrives.xml", "floppy_drive_show", $fddSet);
         foreach ($ALL_LETTERS as $letter) {
             $fddSet = $fdds->findAllAlphabetic($letter);
-            $this->writeRenderedSitemap("fdd." . $letter . ".xml", "floppy_drive_show", $fddSet);
+            $this->writeRenderedSitemap("floppydrives." . $letter . ".xml", "floppy_drive_show", $fddSet);
         }
 
         # Write drivers and other large files
         # Files don't have a Manufacturer, search goes by full name. No need for empty search key
         foreach ($ALL_LETTERS as $letter) {
             $fileSet = $files->findAllAlphabetic($letter);
-            $this->writeRenderedSitemap("drv." . $letter . ".xml", "driver_show", $fileSet);
+            $this->writeRenderedSitemap("drivers." . $letter . ".xml", "driver_show", $fileSet);
         }
 
         touch($this->lastGenMarkerFile);

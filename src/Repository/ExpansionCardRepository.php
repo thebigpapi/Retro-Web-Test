@@ -300,6 +300,30 @@ class ExpansionCardRepository extends ServiceEntityRepository
 
         return boolval(count($query->getResult()));
     }
+
+    public function findAllAlphabetic(string $letter): array
+    {
+        $entityManager = $this->getEntityManager();
+        if (empty($letter)) {
+            $query = $entityManager->createQuery(
+                "SELECT 'Unknown' as manName, card.name, card.id, card.slug, UPPER(card.name) as cardNameSort, card.lastEdited
+                FROM App\Entity\ExpansionCard card
+                WHERE card.manufacturer IS NULL
+                ORDER BY cardNameSort ASC"
+            );
+        } else {
+            $likematch = "$letter%";
+
+            $query = $entityManager->createQuery(
+                "SELECT man.name as manName, card.name, card.id, card.slug, UPPER(man.name) as manNameSort, UPPER(card.name) as cardNameSort, card.lastEdited
+                FROM App\Entity\ExpansionCard card, App\Entity\Manufacturer man
+                WHERE card.manufacturer=man AND UPPER(man.name) like :likeMatch
+                ORDER BY manNameSort ASC, cardNameSort ASC"
+            )->setParameter('likeMatch', $likematch);
+        }
+
+        return $query->getResult();
+    }
     /**
      * @return ExpansionCard[]
      */
