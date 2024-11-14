@@ -7,7 +7,7 @@
 			<div id="index-datetime" class="perks-list">
 			{% for expansioncard in expansioncards %}
 				<div class="perk">
-					<a href="{{ path("expansioncard_show", {id: expansioncard.getId()}) }}">
+					<a href="{{ path("expansioncard_show_slug", {slug: expansioncard.getSlug()}) }}">
 						<div class="perk-image">
 						{% if expansioncard.getImages() is not empty %}
 							{% set imgcount = 0 %}

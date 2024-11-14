@@ -3,7 +3,11 @@
 	<div id="index-datetime" class="perks-list">
 	{% for item in entity %}
 		<div class="perk">
-			<a href="{{ path(path, {id:item.getId()}) }}">
+            {% if type in ['motherboard', 'card'] %}
+			<a href="{{ path(path, {slug:item.getSlug()}) }}">
+            {% else %}
+            <a href="{{ path(path, {id:item.getId()}) }}">
+            {% endif %}
 				<div class="perk-image">
                 {# motherboards #}
                 {% if type == 'motherboard' %}

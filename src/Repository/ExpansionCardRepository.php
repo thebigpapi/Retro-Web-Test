@@ -106,6 +106,7 @@ class ExpansionCardRepository extends ServiceEntityRepository
         $rsm->addEntityResult('App\Entity\ExpansionCard', 'expc');
         $rsm->addFieldResult('expc', 'id', 'id');
         $rsm->addFieldResult('expc', 'name', 'name');
+        $rsm->addFieldResult('expc', 'slug', 'slug');
 
         $rsm->addJoinedEntityResult('App\Entity\Manufacturer', 'man1', 'expc', 'manufacturer');
         $rsm->addFieldResult('man1', 'man1_id', 'id');

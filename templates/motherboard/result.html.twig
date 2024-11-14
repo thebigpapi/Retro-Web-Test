@@ -7,7 +7,7 @@
 			<div id="index-datetime" class="perks-list">
 			{% for motherboard in motherboards %}
 				<div class="perk">
-					<a href="{{ path("motherboard_show", {id:motherboard.getId()}) }}">
+					<a href="{{ path("motherboard_show_slug", {slug:motherboard.getSlug()}) }}">
 						<div class="perk-image">
 						{% if motherboard.getImages() is not empty %}
 							{% set imgtype_count = 0 %}
