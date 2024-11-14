@@ -94,6 +94,36 @@
         <priority>0.8</priority>
         <changefreq>weekly</changefreq>
     </url>
+    <url>
+        <loc>{{ absolute_url(path('manufacturersearch')) }}</loc>
+        <lastmod>{{mod_date}}</lastmod>
+        <priority>0.8</priority>
+        <changefreq>weekly</changefreq>
+    </url>
+    <url>
+        <loc>{{ absolute_url(path('expansionslotsearch')) }}</loc>
+        <lastmod>{{mod_date}}</lastmod>
+        <priority>0.8</priority>
+        <changefreq>weekly</changefreq>
+    </url>
+    <url>
+        <loc>{{ absolute_url(path('ioportsearch')) }}</loc>
+        <lastmod>{{mod_date}}</lastmod>
+        <priority>0.8</priority>
+        <changefreq>weekly</changefreq>
+    </url>
+    <url>
+        <loc>{{ absolute_url(path('socketsearch')) }}</loc>
+        <lastmod>{{mod_date}}</lastmod>
+        <priority>0.8</priority>
+        <changefreq>weekly</changefreq>
+    </url>
+    <url>
+        <loc>{{ absolute_url(path('powerconnsearch')) }}</loc>
+        <lastmod>{{mod_date}}</lastmod>
+        <priority>0.8</priority>
+        <changefreq>weekly</changefreq>
+    </url>
     {% for subfile in sub_files %}
     <sitemap>
         <loc>{{ absolute_url(subfile) }}</loc>
