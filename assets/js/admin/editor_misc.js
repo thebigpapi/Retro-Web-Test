@@ -18,6 +18,7 @@ if(capacitybtn = document.getElementById("hdd-capacity-convert"))
 if(bufferbtn = document.getElementById("hdd-buffer-convert"))
     bufferbtn.addEventListener('click', () => convertSize("HardDrive_buffer", 1024));
 getDate();
+window.setDate = setDate;
 function getSlug(entity){
     let manuf = document.getElementById(entity + '_manufacturer');
     let name = document.getElementById(entity + '_name');
