@@ -229,7 +229,7 @@ function miniDriverSubmit(){
         alert("Driver has no file attached!");
         return;
     }
-    if(!setDate()){ // found in editor_misc.js
+    if(!setDriverDate()){
         return;
     }
     let container = document.getElementById('create-driver-container');
@@ -431,4 +431,44 @@ function getSelectValues(select) {
         }
     }
     return result;
+}
+function setDriverDate(){
+    let widget = document.getElementById("newdriver-releasedate");
+    let yearSel = widget.querySelectorAll("input[type=number]")[0].value;
+    let monthSel = parseInt(widget.querySelectorAll("input[type=number]")[1].value);
+    let daySel = parseInt(widget.querySelectorAll("input[type=number]")[2].value);
+    let month = 1;
+    let day = 1;
+    let releaseDate = document.getElementById("newdriver-date");
+    let datePrecision = document.getElementById("newdriver-precision");
+    if(!yearSel){
+        return true;
+    }
+    if(yearSel < 1970 || yearSel > 2100){
+        alert("Invalid release date year!");
+        return false;
+    }
+    if(monthSel){
+        if(monthSel < 1 || monthSel > 12){
+            alert("Invalid release date month!");
+            return false;
+        }
+        if(daySel){
+            datePrecision.innerHTML = "d";
+            month = monthSel;
+            day = daySel;
+            if(daySel < 1 || daySel > 31){
+                alert("Invalid release date day!");
+                return false;
+            }
+        }
+        else{
+            datePrecision.innerHTML = "m";
+            month = monthSel;
+        }
+    }
+    else
+        datePrecision.innerHTML = "y";
+    releaseDate.innerHTML = yearSel + "-" + (month > 9 ? "" : "0") + month + "-" + (day > 9 ? "" : "0" ) + day;
+    return true;
 }
