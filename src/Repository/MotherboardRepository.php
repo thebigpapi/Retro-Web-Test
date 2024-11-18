@@ -164,6 +164,7 @@ class MotherboardRepository extends ServiceEntityRepository
         $rsm->addEntityResult('App\Entity\Motherboard', 'mot');
         $rsm->addFieldResult('mot', 'id', 'id');
         $rsm->addFieldResult('mot', 'name', 'name');
+        $rsm->addFieldResult('mot', 'slug', 'slug');
 
         $rsm->addJoinedEntityResult('App\Entity\Manufacturer', 'man1', 'mot', 'manufacturer');
         $rsm->addFieldResult('man1', 'man1_id', 'id');
@@ -440,7 +441,7 @@ class MotherboardRepository extends ServiceEntityRepository
         $entityManager = $this->getEntityManager();
         if (empty($letter)) {
             $query = $entityManager->createQuery(
-                "SELECT 'Unknown' as manName, mobo.name, mobo.id, UPPER(mobo.name) as moboNameSort, mobo.lastEdited
+                "SELECT 'Unknown' as manName, mobo.name, mobo.id, mobo.slug, UPPER(mobo.name) as moboNameSort, mobo.lastEdited
                 FROM App\Entity\Motherboard mobo
                 WHERE mobo.manufacturer IS NULL
                 ORDER BY moboNameSort ASC"
@@ -449,7 +450,7 @@ class MotherboardRepository extends ServiceEntityRepository
             $likematch = "$letter%";
 
             $query = $entityManager->createQuery(
-                "SELECT man.name as manName, mobo.name, mobo.id, UPPER(man.name) as manNameSort, UPPER(mobo.name) as moboNameSort, mobo.lastEdited
+                "SELECT man.name as manName, mobo.name, mobo.id, mobo.slug, UPPER(man.name) as manNameSort, UPPER(mobo.name) as moboNameSort, mobo.lastEdited
                 FROM App\Entity\Motherboard mobo, App\Entity\Manufacturer man
                 WHERE mobo.manufacturer=man AND UPPER(man.name) like :likeMatch
                 ORDER BY manNameSort ASC, moboNameSort ASC"

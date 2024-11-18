@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use App\Repository\MotherboardImageRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
@@ -47,6 +48,11 @@ class MotherboardImage
 
     #[ORM\ManyToOne(targetEntity: Creditor::class, inversedBy: 'motherboardImages')]
     private $creditor;
+
+    #[ORM\Column(type: Types::SMALLINT)]
+    #[Assert\NotBlank(message: 'Sort position cannot be blank')]
+    #[Assert\Positive(message: "Sort position should be above 0")]
+    private ?int $sort = null;
 
     public function getId(): ?int
     {
@@ -122,6 +128,17 @@ class MotherboardImage
     public function setCreditor(?Creditor $creditor): self
     {
         $this->creditor = $creditor;
+
+        return $this;
+    }
+    public function getSort(): ?int
+    {
+        return $this->sort;
+    }
+
+    public function setSort(int $sort): static
+    {
+        $this->sort = $sort;
 
         return $this;
     }

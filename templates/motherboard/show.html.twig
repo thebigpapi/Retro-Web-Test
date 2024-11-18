@@ -9,9 +9,6 @@
 	<link rel="canonical" hreflang="x-default" href="{{ absolute_url(path('motherboard_show_slug', {slug: motherboard.getSlug()})) }}"/>
 	<link rel="alternate" hreflang="x-default" href="{{ absolute_url(path('motherboard_show', {id: motherboard.getId()})) }}"/>
 {% endblock %}
-{% block extra_javascripts %}
-	<script src="/build/js/show.js" defer></script>
-{% endblock %}
 
 {% block opengraph %}
 	{% apply spaceless %}
@@ -24,7 +21,7 @@
 	<meta property="og:description" content="{{ motherboard.getMetaDescription() }}">
 	<meta property="og:url" content="{{ absolute_url(path('motherboard_show_slug', {slug: motherboard.getSlug()})) }}">
 	{% if motherboard.getImages() is not empty %}
-		{% for image in motherboard.getImages()|filter(a => a.motherboardImageType.id in [1, 2])|sort((a, b) => a.getFileName() <=> b.getFileName())|sort((a, b) => b.motherboardImageType <=> a.motherboardImageType)|slice(0, 1) %}
+		{% for image in motherboard.getImages()|filter(a => a.motherboardImageType.id in [1, 2])|sort((a, b) => a.getFileName() <=> b.getFileName())|sort((a, b) => a.sort <=> b.sort)|sort((a, b) => b.motherboardImageType <=> a.motherboardImageType)|slice(0, 1) %}
 			<meta name="twitter:image" content="{{ vich_uploader_asset(image, 'imageFile')}}">
 			<meta property="og:image" content="{{ vich_uploader_asset(image, 'imageFile')}}">
 		{% endfor %}
@@ -198,13 +195,6 @@
 			<!-- Chips -->
 			<div class="show-chips" id="sh-chips">
 				<div class="quick-spec-table">
-					<!-- Chipset -->
-					<div class="quick-spec-head">
-						<img src="{{ absolute_url(asset('build/icons/chipset.svg')) }}" alt="chipset" width="24" height="24">Chipset
-					</div>
-					{% if motherboard.getChipset() is not empty %}
-						<div><a href="{{ path('app_homepage') }}chipsets/{{ motherboard.getChipset().getId()}}">{{ motherboard.getChipset().getFullName() }}</a></div>
-					{% else %}<div><span class='badge badge-secondary'>Empty</span></div>{% endif %}
 					<!-- Expansion Chips -->
 					{% if motherboard.getChips() is not empty %}
 						{% for chip in motherboard.getChips()|filter(a => a.getType().getName() == "Chipset part")%}
@@ -330,7 +320,7 @@
 	<!-- IMAGES -->
 	<div class="show-images" id="sh-images">
 	{% if motherboard.getImages() is not empty %}
-		{% for image in motherboard.getImages()|sort((a, b) => a.getFileName() <=> b.getFileName())|sort((a, b) => a.motherboardImageType <=> b.motherboardImageType) %}
+		{% for image in motherboard.getImages()|sort((a, b) => a.getFileName() <=> b.getFileName())|sort((a, b) => a.sort <=> b.sort)|sort((a, b) => a.motherboardImageType <=> b.motherboardImageType) %}
 			{% include 'macros/images.html.twig' with {'type':'motherboard', 'entity': image, 'index': loop.index, 'length': loop.length} %}
 		{% endfor %}
 	{% else %}

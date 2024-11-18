@@ -9,6 +9,7 @@ use App\Form\Type\ProcessorPlatformTypeForm;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ArrayField;
@@ -49,9 +50,7 @@ class CpuSocketCrudController extends AbstractCrudController
             ->add(Crud::PAGE_INDEX, $view)
             ->add(Crud::PAGE_EDIT, $eview)
             ->remove(Crud::PAGE_INDEX, Action::BATCH_DELETE)
-            ->setPermission(Action::DELETE, 'ROLE_ADMIN')
-            ->setPermission(Action::EDIT, 'ROLE_ADMIN')
-            ->setPermission(Action::INDEX, 'ROLE_ADMIN');
+            ->setPermission(Action::DELETE, 'ROLE_ADMIN');
     }
     public function configureCrud(Crud $crud): Crud
     {
@@ -62,6 +61,14 @@ class CpuSocketCrudController extends AbstractCrudController
             ->overrideTemplate('crud/edit', 'admin/crud/edit.html.twig')
             ->overrideTemplate('crud/new', 'admin/crud/new.html.twig')
             ->setPaginatorPageSize(100);
+    }
+    public function configureFilters(Filters $filters): Filters
+    {
+        return parent::configureFilters($filters)
+            ->add('name')
+            ->add('type')
+            ->add('platforms')
+            ->add('description');
     }
     public function configureFields(string $pageName): iterable
     {
@@ -101,6 +108,12 @@ class CpuSocketCrudController extends AbstractCrudController
             ->setFormTypeOption('error_bubbling', false)
             ->setColumns(6)
             ->onlyOnForms();
+        yield CollectionField::new('entityImages','Images')
+            ->setCustomOption('byCount', true)
+            ->onlyOnIndex();
+        yield CollectionField::new('entityDocumentations','Docs')
+            ->setCustomOption('byCount', true)
+            ->onlyOnIndex();
     }
     public function viewSocket(AdminContext $context)
     {

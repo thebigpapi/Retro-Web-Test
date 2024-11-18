@@ -18,6 +18,7 @@ if(capacitybtn = document.getElementById("hdd-capacity-convert"))
 if(bufferbtn = document.getElementById("hdd-buffer-convert"))
     bufferbtn.addEventListener('click', () => convertSize("HardDrive_buffer", 1024));
 getDate();
+window.setDate = setDate;
 function getSlug(entity){
     let manuf = document.getElementById(entity + '_manufacturer');
     let name = document.getElementById(entity + '_name');
@@ -163,7 +164,10 @@ function setDate(){
         let releaseDate = document.getElementById(entity + "_releaseDate");
         let datePrecision = document.getElementById(entity + "_datePrecision");
         if(!yearSel){
-            return true;
+            if(releaseDate.value !== ""){
+                releaseDate.value = "";
+            }
+            continue;
         }
         if(yearSel < 1970 || yearSel > 2100){
             alert("Invalid release date year!");
@@ -188,8 +192,9 @@ function setDate(){
                 month = monthSel;
             }
         }
-        else
+        else{
             datePrecision.value = "y";
+        }
         releaseDate.value = yearSel + "-" + (month > 9 ? "" : "0") + month + "-" + (day > 9 ? "" : "0" ) + day;
     }
     return true;

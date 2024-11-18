@@ -129,7 +129,10 @@ function removeChips(deleteArray){
     for(const value of deleteArray){
         let el = container.querySelector(`[data-value="${value}"]`);
         if(el){
-            el.children[0].children[0].click();
+            let delBtn = el.children[0].children[0];
+            if(delBtn.tagName == "IMG")
+                delBtn = el.children[1].children[0];
+            delBtn.click();
         }
     }
 }

@@ -103,7 +103,8 @@ class LargeFileCrudController extends AbstractCrudController
             ->add('fileVersion')
             ->add('file_name',)
             ->add('osFlags')
-            ->add('lastEdited');
+            ->add('lastEdited')
+            ->add('note');
     }
     public function configureFields(string $pageName): iterable
     {
@@ -141,7 +142,7 @@ class LargeFileCrudController extends AbstractCrudController
             ->setColumns('col-sm-6 col-lg-4 col-xxl-3')
             ->renderExpanded()
             ->onlyOnForms();
-        yield CodeEditorField::new('note')
+        yield CodeEditorField::new('note', 'Description')
             ->setLanguage('markdown')
             ->onlyOnForms();
             yield ChoiceField::new('datePrecision', '')

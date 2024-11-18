@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use App\Repository\ExpansionCardImageRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
@@ -47,6 +48,11 @@ class ExpansionCardImage
         message: 'Image type cannot be blank'
     )]
     private ?string $type = null;
+
+    #[ORM\Column(type: Types::SMALLINT)]
+    #[Assert\NotBlank(message: 'Sort position cannot be blank')]
+    #[Assert\Positive(message: "Sort position should be above 0")]
+    private ?int $sort = null;
 
     public function getId(): ?int
     {
@@ -141,6 +147,17 @@ class ExpansionCardImage
             case 6: return "Photo bracket";
             default: return "";
         }
+    }
+    public function getSort(): ?int
+    {
+        return $this->sort;
+    }
+
+    public function setSort(int $sort): static
+    {
+        $this->sort = $sort;
+
+        return $this;
     }
     #[Assert\Callback]
     public function validate(ExecutionContextInterface $context, mixed $payload): void

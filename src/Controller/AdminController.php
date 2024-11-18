@@ -231,8 +231,8 @@ class AdminController extends AbstractDashboardController
         return new JsonResponse($templatesMerged);
     }
 
-    #[Route('/dashboard/getexpansionchiptemplate/{id}', name:'get_chip_template', methods:['GET'],  requirements: ['id' => '\d+'])]
-    public function getExpansionChipTemplate(int $id, ExpansionChipTypeRepository $expansionChipTypeRepository): JsonResponse
+    #[Route('/dashboard/getchiptemplate/{id}', name:'get_chip_template', methods:['GET'],  requirements: ['id' => '\d+'])]
+    public function getChipTemplate(int $id, ExpansionChipTypeRepository $expansionChipTypeRepository): JsonResponse
     {
         $chipType = $expansionChipTypeRepository->find($id);
 

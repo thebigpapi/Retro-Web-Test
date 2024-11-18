@@ -1,4 +1,3 @@
-const { default: TomSelect } = require("tom-select");
 
 if(updatecpubtn = document.getElementById('update-cpu-btn')){
     updatecpubtn.addEventListener("click", updateFamilies);

@@ -6,9 +6,6 @@
 {% block metatags %}
 	<meta name="description" content="{{ manufacturer.getName() }}">
 {% endblock %}
-{% block extra_javascripts %}
-	<script src="/build/js/show.js" defer></script>
-{% endblock %}
 
 {% block opengraph %}
 	{% apply spaceless %}
@@ -82,19 +79,28 @@
 					{% endif %}
 					</div>
 					<!-- Actions -->
+					{% if manufacturer.getMotherboards() is not empty or manufacturer.getExpansionCards() is not empty or manufacturer.getChips() is not empty %}
 					<div class="quick-spec-head">
 						<img src="{{ absolute_url(asset('build/icons/cursor.svg')) }}" alt="act" width="24" height="24">Actions
 					</div>
 					<div>
-					<div class="toolbar">
-						<a class='button-widget' href="{{ absolute_url(path('app_homepage')) }}motherboards/?manufacturerId={{ manufacturer.getId() }}">
-							<img src='{{ absolute_url(asset('build/icons/board.svg')) }}' alt='' width='16' height='16' style='vertical-align:middle;padding:3px;'>See all boards from this manufacturer</a>
-						<a class='button-widget' href="{{ absolute_url(path('app_homepage')) }}expansioncards/?manufacturerId={{ manufacturer.getId() }}">
-							<img src='{{ absolute_url(asset('build/icons/card.svg')) }}' alt='' width='16' height='16' style='vertical-align:middle;padding:3px;'>See all expansion cards from this manufacturer</a>
-						<a class='button-widget' href="{{ absolute_url(path('app_homepage')) }}expansion-chips/?expansionChipManufacturerId={{ manufacturer.getId() }}">
-							<img src='{{ absolute_url(asset('build/icons/chip.svg')) }}' alt='' width='16' height='16' style='vertical-align:middle;padding:3px;'>See all expansion chips from this manufacturer</a>
+						<div class="toolbar">
+							{% if manufacturer.getMotherboards() is not empty %}
+							<a class='button-widget' href="{{ absolute_url(path('app_homepage')) }}motherboards/?itemsPerPage=24&manufacturerId={{ manufacturer.getId() }}">
+								<img src='{{ absolute_url(asset('build/icons/board.svg')) }}' alt='' width='16' height='16' style='vertical-align:middle;padding:3px;'>See all boards from this manufacturer</a>
+							{% endif %}
+							{% if manufacturer.getExpansionCards() is not empty %}
+							<a class='button-widget' href="{{ absolute_url(path('app_homepage')) }}expansioncards/?itemsPerPage=24&manufacturerId={{ manufacturer.getId() }}">
+								<img src='{{ absolute_url(asset('build/icons/card.svg')) }}' alt='' width='16' height='16' style='vertical-align:middle;padding:3px;'>See all expansion cards from this manufacturer</a>
+							{% endif %}
+							{% if manufacturer.getChips() is not empty %}<a class='button-widget' href="{{ absolute_url(path('app_homepage')) }}chips/?itemsPerPage=24&chipManufacturerId={{ manufacturer.getId() }}">
+								<img src='{{ absolute_url(asset('build/icons/chip.svg')) }}' alt='' width='16' height='16' style='vertical-align:middle;padding:3px;'>See all expansion chips from this manufacturer</a>
+							{% endif %}
 						</div>
 					</div>
+					{% else %}
+					<div>No associations.</div>
+					{% endif %}
 				</div>
 				{% include 'macros/notes.html.twig' with {'entity': manufacturer} %}
 			</div>
@@ -104,7 +110,7 @@
 	<div class="show-images" id="sh-images">
 	{% if manufacturer.getEntityImages() is not empty %}
 		{% set lpindex = 0 %}
-		{% for image in manufacturer.getEntityImages()|sort((a, b) => a.getFileName() <=> b.getFileName()) %}
+		{% for image in manufacturer.getEntityImages()|sort((a, b) => a.getFileName() <=> b.getFileName())|sort((a, b) => a.sort <=> b.sort) %}
 			{% set lpindex = lpindex + 1 %}
 			{% include 'macros/images.html.twig' with {'type':'manufacturer', 'entity': image, 'index': lpindex, 'length': manufacturer.getEntityImages()|length} %}
 		{% endfor %}

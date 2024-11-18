@@ -1,3 +1,6 @@
+window.paginate = paginate;
+window.expand = expand;
+window.remove = remove;
 //initialize tom-select
 var settings = {
     plugins: {
@@ -59,18 +62,18 @@ let static_selects = [
     'cardExpansionSlot'
 ];
 
-let dynamic_selects = [
-    'motherboardExpansionSlots-fields-list',
-    'motherboardIoPorts-fields-list',
-    'motherboardMemoryConnectors-fields-list',
-    'cardIoPorts-fields-list',
-    'cardTypes-fields-list',
-    'chips-fields-list',
-    'dramTypes-fields-list',
-    'sockets-fields-list',
-    'osFlags-fields-list',
-    'families-fields-list'
-];
+let dynamic_selects = {
+    'motherboardExpansionSlots-fields-list': '_expansion_slot',
+    'motherboardIoPorts-fields-list': '_io_port',
+    'motherboardMemoryConnectors-fields-list': '_',
+    'cardIoPorts-fields-list': '_io_port',
+    'cardTypes-fields-list': '',
+    'chips-fields-list': '',
+    'dramTypes-fields-list': '',
+    'sockets-fields-list': '',
+    'osFlags-fields-list': '',
+    'families-fields-list': ''
+};
 
 // init tom-selects
 decodeURL();
@@ -79,13 +82,16 @@ for (let item of static_selects) {
 }
 
 // event listeners
-if (search_paginate = document.getElementById('search-paginate-id'))
+let search_paginate = document.getElementById('search-paginate-id');
+let search_live = document.getElementById('pagination_redir');
+let resetbtn = document.getElementById('rst-btn');
+if (search_paginate)
     search_paginate.addEventListener("click", function () {
         paginate(search_paginate.getAttribute("data-paginate"), search_paginate.getAttribute("data-target"));
     }, false);
-if (search_live = document.getElementById('pagination_redir'))
+if (search_live)
     search_live.addEventListener("click", searchLive);
-if (resetbtn = document.getElementById('rst-btn'))
+if (resetbtn)
     resetbtn.addEventListener("click", reset);
 
 // functions
@@ -111,6 +117,7 @@ function decodeURL() {
     let url = window.location.href.substring(window.location.href.indexOf("?") + 1, window.location.href.length);
     let p = url.split("&");
     let params = [];
+    let split = [];
     for (const i of p) {
         split = i.split("=");
         if (split.length > 2 && split[0].includes("sign"))
@@ -118,7 +125,14 @@ function decodeURL() {
         else
             params[split[0]] = split[1];
     }
-    updateFields(params);
+    console.log(Object.keys(params));
+    if(Object.keys(params).length > 1){
+        updateFields(params);
+        let fieldset = document.getElementById("search-fieldset");
+        let dropdown = fieldset.querySelector('label[class="dropdown-header"]')
+        console.log(dropdown);
+        dropdown.click();
+    }
 }
 
 function updateFields(params) {
@@ -151,8 +165,15 @@ function updateFields(params) {
         else if (key.includes("Id")) {
             updateSelect(key.substring(0, key.length - 2), value);
         }
-        else if (key == "itemsPerPage")
+        else if (key == "itemsPerPage"){
             document.getElementById("search_itemsPerPage").value = value;
+        }
+        else if (key == "processNode"){
+            document.getElementById("search_processNode").value = value;
+        }
+        else if (key == "tdp"){
+            document.getElementById("search_tdp").value = value;
+        }
         else {
             if (key.includes("cpuSocket") || key.includes("platform"))
                 updateSelect(key, value);
@@ -175,8 +196,10 @@ function updateMultiSelect(key, value) {
     let add = document.getElementById(el + "s-add-id");
     add.click();
     let select = document.getElementById("search_" + el + "s_" + pos);
-    select.value = value;
-    select.tomselect.sync();
+    if(select){
+        select.value = value;
+        select.tomselect.sync();
+    }
 }
 
 function updateMultiSelectCount(type, pos, arr) {
@@ -253,7 +276,8 @@ function updateSelect(idx, value) {
 }
 
 function loadTS(targetId) {
-    if (el = document.getElementById('search_' + targetId)) {
+    let el = document.getElementById('search_' + targetId);
+    if (el) {
         new TomSelect('#search_' + targetId, settings);
         el.tomselect.sync();
     }
@@ -282,25 +306,27 @@ function paginate(newPageIdx, target) {
         return false;
     if (redirElem) {
         redirElem.setAttribute("value", newPageIdx);
-        if (el = document.getElementById("route-results"))
-            el.remove();
+        let routeResults = document.getElementById("route-results");
+        if (routeResults)
+            routeResults.remove();
         window.history.replaceState({}, '', window.origin + '/' + target + '/');
         redirElem.click();
     }
     return false;
 }
 function validate(){
-    state = false;
-    errors = [];
-    for(let elementId of dynamic_selects)
-        if(element = document.getElementById(elementId)){
+    let state = false;
+    let errors = [];
+    for(let elementId of Object.keys(dynamic_selects)){
+        let element = document.getElementById(elementId);
+        if(element){
             for(let item of element.children){
                 if(item.children[0].tagName.toLowerCase() === 'input'){
                     if(item.children[0].value == ""){
                         errors[item.children[0].getAttribute('id')] = "Count cannot be empty!";
                         state = true;
                     }
-                    if(isNaN(parseInt(item.children[0].value.replace(/>|<|=/,'')))){
+                    if(isNaN(parseInt(item.children[0].value.replace(/>=|<=|>|<|=/,'')))){
                         errors[item.children[0].getAttribute('id')] = "Count input is invalid!";
                         state = true;
                     }
@@ -315,6 +341,7 @@ function validate(){
                 }
             }
         }
+    }
     let labels = document.getElementsByClassName('search-errors-label');
     let elements = document.getElementsByClassName('search-errors');
     while(labels.length > 0){
@@ -326,10 +353,11 @@ function validate(){
     if(Object.keys(errors).length > 0){
         for(let [key, value] of Object.entries(errors)){
             let element = document.getElementById(key);
-            if(element.tagName.toLowerCase() === "select")
+            if(element.tagName.toLowerCase() === "select"){
                 element.nextElementSibling.children[0].classList.add("search-errors");
-            else
+            } else{
                 element.classList.add("search-errors");
+            }
             let labelContainer = document.createElement('div');
             let label = document.createElement('span');
             let dud = document.createElement('div');
@@ -347,14 +375,17 @@ function validate(){
 
 function reset() {
     for (let id of static_selects) {
-        if (select = document.getElementById('search_' + id)) {
+        let select = document.getElementById('search_' + id);
+        if (select) {
             var control = select.tomselect;
             control.clear();
         }
     }
-    for (let id of dynamic_selects) {
-        if (select = document.getElementById(id))
+    for (let id of Object.keys(dynamic_selects)) {
+        let select = document.getElementById(id);
+        if (select){
             select.innerHTML = "";
+        }
     }
     let search = document.getElementById("search_liveResults");
     if (search) {
@@ -384,8 +415,9 @@ function searchLive() {
     let url = {};
     const formData = new URLSearchParams();
     for (const pair of new FormData(form)) {
-        if (pair[1])
+        if (pair[1]){
             url[pair[0].substring(7, pair[0].length - 1)] = pair[1];
+        }
         formData.append(pair[0], pair[1]);
     }
     var redirElem = document.getElementById('pagination_redir');
@@ -425,67 +457,18 @@ function expand(idx) {
     //store the table widget DOM in list and newWidget, increment the counter
     let counter = list.getAttribute("data-widget-counter");
     let newWidget = list.getAttribute("data-prototype");
-    newWidget = newWidget.replace(/__name__/g, counter);
-    newWidget = newWidget.replace("/>", ">");
+    newWidget = newWidget.replace(/__name__/g, counter).replace("/>", ">");
     counter++;
     //set the new increment, create the new widget and concatenate after list
     list.setAttribute("data-widget-counter", counter);
     let newElem = document.createElement('div');
-    if (list.id === 'motherboardBios-fields-list')
-        newElem.setAttribute("class", "bios-image-container");
-    else
-        newElem.setAttribute("class", "editor-row");
+    newElem.setAttribute("class", "editor-row");
     newElem.innerHTML = newWidget;
     list.appendChild(newElem);
     //tom-select
-    if (idx == "motherboardExpansionSlots-fields-list") {
-        el = document.getElementById('search_motherboardExpansionSlots_' + (counter - 1) + '_expansion_slot');
-        new TomSelect('#search_motherboardExpansionSlots_' + (counter - 1) + '_expansion_slot', settings);
-        el.tomselect.sync();
-    }
-    if (idx == "motherboardIoPorts-fields-list") {
-        el = document.getElementById('search_motherboardIoPorts_' + (counter - 1) + '_io_port');
-        new TomSelect('#search_motherboardIoPorts_' + (counter - 1) + '_io_port', settings);
-        el.tomselect.sync();
-    }
-    if (idx == "motherboardMemoryConnectors-fields-list") {
-        el = document.getElementById('search_motherboardMemoryConnectors_' + (counter - 1) + '_io_port');
-        new TomSelect('#search_motherboardMemoryConnectors_' + (counter - 1) + '_io_port', settings);
-        el.tomselect.sync();
-    }
-    if (idx == "cardIoPorts-fields-list") {
-        el = document.getElementById('search_cardIoPorts_' + (counter - 1) + '_io_port');
-        new TomSelect('#search_cardIoPorts_' + (counter - 1) + '_io_port', settings);
-        el.tomselect.sync();
-    }
-    if (idx == "cardTypes-fields-list") {
-        el = document.getElementById('search_cardTypes_' + (counter - 1));
-        new TomSelect('#search_cardTypes_' + (counter - 1), settings);
-        el.tomselect.sync();
-    }
-    if (idx == "chips-fields-list") {
-        el = document.getElementById('search_chips_' + (counter - 1));
-        new TomSelect('#search_chips_' + (counter - 1), settings);
-        el.tomselect.sync();
-    }
-    if (idx == "dramTypes-fields-list") {
-        el = document.getElementById('search_dramTypes_' + (counter - 1));
-        new TomSelect('#search_dramTypes_' + (counter - 1), settings);
-        el.tomselect.sync();
-    }
-    if (idx == "sockets-fields-list") {
-        el = document.getElementById('search_sockets_' + (counter - 1));
-        new TomSelect('#search_sockets_' + (counter - 1), {});
-        el.tomselect.sync();
-    }
-    if (idx == "families-fields-list") {
-        el = document.getElementById('search_families_' + (counter - 1));
-        new TomSelect('#search_families_' + (counter - 1), {});
-        el.tomselect.sync();
-    }
-    if (idx == "osFlags-fields-list") {
-        el = document.getElementById('search_osFlags_' + (counter - 1));
-        new TomSelect('#search_osFlags_' + (counter - 1), settings);
+    if (Object.keys(dynamic_selects).includes(idx)){
+        let el = document.getElementById('search_' + idx.substring(0, idx.length - 12) + '_' + (counter - 1) + dynamic_selects[idx]);
+        new TomSelect('#search_' + idx.substring(0, idx.length - 12) + '_' + (counter - 1) + dynamic_selects[idx], settings);
         el.tomselect.sync();
     }
 }

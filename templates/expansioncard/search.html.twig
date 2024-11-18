@@ -6,11 +6,6 @@
 	<meta name="description" content="Search for a expansion card by name, manufacturer, etc.">
 	<link rel="alternate" hreflang="x-default" href="{{ absolute_url(path('expansioncardsearch')) }}"/>
 {% endblock %}
-{% block extra_javascripts %}
-	<script src="/build/js/tom-select.js" defer></script>
-	<script src="/build/js/show.js" defer></script>
-	<script src="/build/js/search.js" defer></script>
-{% endblock %}
 {% block subnav %}
 <li class="flex navbar-li">
     <div class="flex items-center">
@@ -154,7 +149,7 @@
 	<!-- Search results -->
 	<section id="search_liveResults">
 	{% if latestCards is defined %}
-		{% include 'macros/lastedited.html.twig' with {'entity': latestCards, 'type':'card', 'entity_label':'expansion cards', 'path': 'expansioncard_show'} %}
+		{% include 'macros/lastedited.html.twig' with {'entity': latestCards, 'type':'card', 'entity_label':'expansion cards', 'path': 'expansioncard_show_slug'} %}
 	{% endif %}
 	{% if expansioncards is defined %}
 		{% include 'expansioncard/result.html.twig' with {'expansioncards': expansioncards, 'route': true} %}

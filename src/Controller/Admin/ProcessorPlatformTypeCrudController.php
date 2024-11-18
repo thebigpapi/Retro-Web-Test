@@ -58,9 +58,7 @@ class ProcessorPlatformTypeCrudController extends AbstractCrudController
             ->add(Crud::PAGE_DETAIL, $elogs)
             ->add(Crud::PAGE_DETAIL, $eview)
             ->remove(Crud::PAGE_INDEX, Action::BATCH_DELETE)
-            ->setPermission(Action::DELETE, 'ROLE_ADMIN')
-            ->setPermission(Action::EDIT, 'ROLE_ADMIN')
-            ->setPermission(Action::INDEX, 'ROLE_ADMIN');
+            ->setPermission(Action::DELETE, 'ROLE_ADMIN');
     }
     public function configureCrud(Crud $crud): Crud
     {
@@ -75,7 +73,12 @@ class ProcessorPlatformTypeCrudController extends AbstractCrudController
     public function configureFilters(Filters $filters): Filters
     {
         return parent::configureFilters($filters)
-            ->add('name');
+            ->add('name')
+            ->add('dramType')
+            ->add('compatibleWith')
+            ->add('instructionSets')
+            ->add('cpuSockets')
+            ->add('description');
     }
     public function configureFields(string $pageName): iterable
     {
@@ -106,6 +109,10 @@ class ProcessorPlatformTypeCrudController extends AbstractCrudController
             ->setEntryType(InstructionSetType::class)
             ->setColumns('col-sm-6 col-lg-6 col-xxl-3')
             ->renderExpanded()
+            ->onlyOnForms();
+        yield AssociationField::new('cpuSockets','Sockets')
+            ->autocomplete()
+            ->setColumns('col-sm-12 col-lg-6 col-xxl-4 multi-widget-trw')
             ->onlyOnForms();
         yield CodeEditorField::new('description')
             ->setLanguage('markdown')

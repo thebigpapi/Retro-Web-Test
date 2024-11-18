@@ -91,7 +91,7 @@ class MotherboardBiosRepository extends ServiceEntityRepository
         }
         else{
             $query = $entityManager->createQuery(
-                "SELECT man.name as manName, m.id, m.name, bios, bman.name as bmanName
+                "SELECT man.name as manName, m.id, m.slug, m.name, bios, bman.name as bmanName
                 FROM App\Entity\MotherboardBios bios JOIN bios.manufacturer bman JOIN bios.motherboard m JOIN m.manufacturer man LEFT JOIN m.chips mec
                 WHERE $whereString
                 ORDER BY man.name ASC, m.name ASC, bios.coreVersion ASC, manName ASC"
@@ -124,7 +124,7 @@ class MotherboardBiosRepository extends ServiceEntityRepository
     {
         $entityManager = $this->getEntityManager();
         return $entityManager->createQuery(
-            "SELECT man.name as manName, m.id, m.name, bios, bman.name as bmanName
+            "SELECT man.name as manName, m.id, m.slug, m.name, bios, bman.name as bmanName
             FROM App\Entity\MotherboardBios bios JOIN bios.manufacturer bman JOIN bios.motherboard m JOIN m.manufacturer man
             ORDER BY bios.updated_at DESC"
         )->setMaxResults($maxCount)->getResult();

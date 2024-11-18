@@ -6,7 +6,7 @@
             http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
     {% for item in items %}
     <url>
-        <loc>{{ absolute_url(path(route, { id: item["id"] })) }}</loc>
+        <loc>{% if item["slug"] is defined%}{{ absolute_url(path(route, { slug: item["slug"] })) }}{% else %}{{ absolute_url(path(route, { id: item["id"] })) }}{% endif %}</loc>
         <lastmod>{{ item["lastEdited"]|date("Y-m-d") }}</lastmod>
         <priority>0.8</priority>
         <changefreq>weekly</changefreq>

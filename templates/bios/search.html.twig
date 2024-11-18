@@ -6,11 +6,6 @@
 	<meta name="description" content="Search for a motherboard BIOS by POST string, chipset, manufacturer, and more.">
 	<link rel="alternate" hreflang="x-default" href="{{ absolute_url(path('biossearch')) }}"/>
 {% endblock %}
-{% block extra_javascripts %}
-	<script src="/build/js/tom-select.js" defer></script>
-	<script src="/build/js/show.js" defer></script>
-	<script src="/build/js/search.js" defer></script>
-{% endblock %}
 {% block subnav %}
 <li class="flex navbar-li">
     <div class="flex items-center">
@@ -150,7 +145,7 @@
 				<div class="list-entry centered bios {% if loop.index is divisible by(2) %}alt{% endif %}">
 					<div class="header-label">Motherboard</div>
 					<div>
-						<a class="result-link" href="{{ path("motherboard_show", {id: b["id"]}) }}">
+						<a class="result-link" href="{{ path("motherboard_show_slug", {slug: b["slug"]}) }}">
 							{{ b["manName"]}}&nbsp;{{ b["name"] }}
 						</a>
 					</div>

@@ -3,7 +3,9 @@
 namespace App\Entity;
 
 use App\Repository\PciDeviceIdRepository;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\Column;
 
 #[ORM\Entity(repositoryClass: PciDeviceIdRepository::class)]
 class PciDeviceId
@@ -13,7 +15,7 @@ class PciDeviceId
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column]
+    #[Column(type: Types::INTEGER)]
     private ?int $dev = null;
 
     #[ORM\ManyToOne(targetEntity: Chip::class, inversedBy: 'pciDevs')]
@@ -31,17 +33,22 @@ class PciDeviceId
         return $this->id;
     }
 
-    public function getDev(): ?string
+    public function getDev(): ?int
     {
-        return strtoupper(str_pad(dechex($this->dev), 4, "0", STR_PAD_LEFT));
+        return $this->dev;
     }
 
     public function setDev(string $dev): self
     {
-        $this->dev = $this->hex2Int($dev);
+        $this->dev = $dev;
         return $this;
     }
 
+    public function getHexDev(): string
+    {
+        return strtoupper(str_pad(dechex($this->dev), 4, "0", STR_PAD_LEFT));
+    }
+    
     public function getChip(): ?Chip
     {
         return $this->chip;
@@ -52,16 +59,6 @@ class PciDeviceId
         $this->chip = $chip;
 
         return $this;
-    }
-    public function hex2Int($PCIDEVID)
-    {
-        //check that characters are in hexadecimal
-        if (!preg_match("/^[\da-fA-F]{4}$/", $PCIDEVID)) {
-            return false;
-        }
-
-        //convert to integer
-        return hexdec($PCIDEVID);
     }
 
     public function getExpansionCard(): ?ExpansionCard

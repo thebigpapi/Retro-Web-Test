@@ -32,7 +32,7 @@ if (ioPortsBtn = document.getElementById('ExpansionCard_ioPorts_collection')?.pr
 if ((miscSpecs = document.getElementById('ExpansionCard_miscSpecs')) ||
     (miscSpecs = document.getElementById('Chip_miscSpecs')) ||
     (miscSpecs = document.getElementById('ProcessorPlatformType_miscSpecs')) ||
-    (miscSpecs = document.getElementById('ExpansionCardType_template')) ||
+    (miscSpecs = document.getElementById('ExpansionCardType_template'))||
     (miscSpecs = document.getElementById('ExpansionChipType_template'))) {
     const listElement = document.getElementById('specs-collection');
     if(expSlotPresetSelect = document.getElementById('ExpansionCard_expansionSlotInterfaceSignal_autocomplete'))
@@ -85,7 +85,8 @@ function addSpec(listElement, key = null, value = null) {
     const elementId = miscSpecsListCounter;
     miscSpecsIds.push(elementId);
     miscSpecsListCounter++;
-    const element = document.createElement("div");
+    let element = document.createElement("div");
+    element.setAttribute("class", "field-collection-item");
     let specsHtml = document.getElementById('specs-template-item').innerHTML.replace(new RegExp('{id}', 'gi'), elementId);
     element.innerHTML = specsHtml;
     listElement.appendChild(element);
@@ -108,7 +109,8 @@ async function addTable(listElement, key=null, values = null) {
     const elementId = miscSpecsTableListCounter;
     miscSpecsTableIds[elementId]={counter:0,ids:[]};
     miscSpecsTableListCounter++;
-    const element = document.createElement("div");
+    let element = document.createElement("div");
+    element.setAttribute("class", "field-collection-item");
     let specsHtml = document.getElementById('specs-template-table').innerHTML.replace(new RegExp('{id}', 'gi'), elementId);
     element.innerHTML = specsHtml;
     listElement.appendChild(element);
@@ -134,13 +136,12 @@ async function addTable(listElement, key=null, values = null) {
 
 
 async function addTableSpec(listElement, tableId, key = null, value = null) {
-
-    //console.log("addTableSpec" + tableId, listElement);
     document.getElementById('MiscSpecs_emptybadge_' + tableId).innerHTML = "";
     const elementId = miscSpecsTableIds[tableId]['counter'];
     miscSpecsTableIds[tableId]['ids'].push(elementId);
     miscSpecsTableIds[tableId]['counter']++;
-    const element = document.createElement("div");
+    let element = document.createElement("div");
+    element.setAttribute("class", "field-collection-item");
     let specsHtml = document.getElementById('specs-template-table-item').innerHTML.replace(new RegExp('{id1}', 'gi'), tableId).replace(new RegExp('{id2}', 'gi'), elementId);
     element.innerHTML = specsHtml;
     listElement.appendChild(element);
@@ -158,9 +159,34 @@ async function addTableSpec(listElement, tableId, key = null, value = null) {
 
 }
 
-async function applyTemplateCard(miscSpecs) {
+function fetchSpecs(url, miscSpecs) {
     const listElement = document.getElementById('specs-collection');
-
+    fetch(url, { cache: "default" })
+        .then((response) => {
+            if (!response.ok) {
+                throw new Error(`HTTP error: ${response.status}`)
+            }
+            return response.text();
+        })
+        .then((text) => {
+            const obj = JSON.parse(text);
+            miscSpecs.value = JSON.stringify(obj, null, 4);
+            setupForm(listElement, true);
+            setMsg("Applied template with " + Object.keys(obj).length + " specs");
+        })
+        .catch((error) => {
+            console.log(`Could not fetch template : ${error}`);
+        });
+}
+async function applyTemplate(miscSpecs) {
+    if(miscSpecs.id == 'Chip_miscSpecs'){
+        applyTemplateChip(miscSpecs)
+    }
+    else{
+        applyTemplateCard(miscSpecs)
+    }
+}
+async function applyTemplateCard(miscSpecs) {
     let typeCollection = document.getElementById('ExpansionCard_type_collection').children[0].children[0];
     if(typeCollection.innerHTML == "Empty"){
         setMsg("No card types are present!");
@@ -171,60 +197,21 @@ async function applyTemplateCard(miscSpecs) {
     for (const typeElement of typeList) {
         types.push(typeElement.children[0].children[0].children[0].children[0].children[0].value);
     }
-
     const url = `${window.location.origin}/dashboard/getexpansioncardtemplate?ids=${JSON.stringify(types)}`;
-
-    fetch(url, { cache: "default" })
-        .then((response) => {
-            if (!response.ok) {
-                throw new Error(`HTTP error: ${response.status}`)
-            }
-            return response.text();
-        })
-        .then((text) => {
-            const obj = JSON.parse(text);
-            miscSpecs.textContent = JSON.stringify(obj, null, 4);
-            setupForm(listElement, true);
-            setMsg("Applied template with " + Object.keys(obj).length + " specs");
-        })
-        .catch((error) => {
-            console.log(`Could not fetch template : ${error}`);
-        });
-}
-async function applyTemplate(miscSpecs) {
-    if(miscSpecs.id == 'Chip_miscSpecs')
-        applyTemplateChip(miscSpecs)
-    else{
-        applyTemplateCard(miscSpecs)
-    }
-        
+    fetchSpecs(url, miscSpecs);
 }
 async function applyTemplateChip(miscSpecs) {
-    const listElement = document.getElementById('specs-collection');
-    let type = document.getElementById('ExpansionChip_type').value;
-    const url = `${window.location.origin}/dashboard/getexpansionchiptemplate/${type}`;
-
-    fetch(url, { cache: "default" })
-        .then((response) => {
-            if (!response.ok) {
-                throw new Error(`HTTP error: ${response.status}`)
-            }
-            return response.text();
-        })
-        .then((text) => {
-            const obj = JSON.parse(text);
-            miscSpecs.textContent = JSON.stringify(obj, null, 4);
-            setupForm(listElement, true);
-            setMsg("Applied template with " + Object.keys(obj).length + " specs");
-        })
-        .catch((error) => {
-            console.log(`Could not fetch template : ${error}`);
-        });
+    let type = document.getElementById('Chip_type').value;
+    if(!type){
+        setMsg("No chip type is present!");
+        return;
+    }
+    const url = `${window.location.origin}/dashboard/getchiptemplate/${type}`;
+    fetchSpecs(url, miscSpecs);
 }
 function saveAsJson(miscSpecs) {
     const jsonMap = {};
-    //console.log(miscSpecsIds);
-    let msg = "Set ";
+    let msg = "Specs list is empty";
     let spec_cnt = 0, table_cnt = 0;
     for (const id of miscSpecsIds) {
         const key = document.getElementById(`MiscSpecs_${id}_key`)?.value;
@@ -249,22 +236,24 @@ function saveAsJson(miscSpecs) {
             jsonMap[tableName] = subObject;
             table_cnt++;
         }
-        //console.log(tableName);
     }
-    if(spec_cnt > 0){
-        msg += spec_cnt + " spec";
-        if(spec_cnt > 1)
-            msg += "s";
-    }
-    if(table_cnt > 0){
+    if(spec_cnt > 0 || table_cnt > 0){
+        msg = "Set ";
         if(spec_cnt > 0){
-            msg += " and";
+            msg += spec_cnt + " spec";
+            if(spec_cnt > 1)
+                msg += "s";
         }
-        msg += " " +  table_cnt + " table";
-        if(table_cnt > 1)
-            msg += "s";
+        if(table_cnt > 0){
+            if(spec_cnt > 0){
+                msg += " and";
+            }
+            msg += " " +  table_cnt + " table";
+            if(table_cnt > 1)
+                msg += "s";
+        }
     }
-    miscSpecs.textContent = JSON.stringify(jsonMap, null, 4);
+    miscSpecs.value= JSON.stringify(jsonMap, null, 4);
     setMsg(msg);
 }
 

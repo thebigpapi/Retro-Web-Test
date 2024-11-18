@@ -23,7 +23,7 @@ Encore
         to: 'icons/[path][name].[ext]',
     })
     .copyFiles({
-        from: './assets/js/',
+        from: './assets/js/static',
         to: 'js/[path][name].[ext]',
     })
     .copyFiles({
@@ -44,8 +44,8 @@ Encore
      * Each entry will result in one JavaScript file (e.g. app.js)
      * and one CSS file (e.g. app.css) if your JavaScript imports CSS.
      */
-    .addEntry('app', './assets/app.js')
-    .addEntry('app_ea', './assets/app_ea.js')
+    .addEntry('main', './assets/main.js')
+    .addEntry('admin', './assets/admin.js')
     .addEntry('chart', './assets/chart.js')
     .addEntry('easyadmin', './assets/easyadmin.js')
 

@@ -7,9 +7,6 @@
 	<meta name="description" content="{{ driver.getMetaDescription() }}">
 	<link rel="canonical" hreflang="x-default" href="{{ absolute_url(path('driver_show', {id: driver.getId()})) }}"/>
 {% endblock %}
-{% block extra_javascripts %}
-	<script src="/build/js/show.js" defer></script>
-{% endblock %}
 
 {% block opengraph %}
 	{% apply spaceless %}
@@ -121,7 +118,7 @@
 					<div class="tag-container"><ul>
 					{% if driver.getExpansionCards() is not empty %}
 						{% for card in driver.getExpansionCards() %}
-							<li><a href="{{ path('expansioncard_show', {id: card.getExpansionCard().getId()}) }}"><span class="text-block">{{ card.getExpansionCard().getFullName() }}</span></a></li>
+							<li><a href="{{ path('expansioncard_show_slug', {slug: card.getExpansionCard().getSlug()}) }}"><span class="text-block">{{ card.getExpansionCard().getFullName() }}</span></a></li>
 						{% endfor %}
 					{% else %}
 						<div>None</div>

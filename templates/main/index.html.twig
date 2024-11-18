@@ -5,10 +5,6 @@
 	<link rel="alternate" hreflang="x-default" href="{{ absolute_url(path('app_homepage')) }}"/>
 {% endblock %}
 
-{% block extra_javascripts %}
-	<script src="/build/js/frontsearch.js" defer></script>
-{% endblock %}
-
 {% block body %}
 
 <div class="perks">
@@ -156,6 +152,6 @@
 	</div>
 </div>
 {#% include 'macros/lastedited2.html.twig' with {'entities': latestEntities, 'lastEditedMode':true} %#}
-{% include 'macros/lastedited.html.twig' with {'entity': latestMotherboards, 'type':'motherboard', 'entity_label':'boards', 'path': 'motherboard_show'} %}
-{% include 'macros/lastedited.html.twig' with {'entity': latestCards, 'type':'card', 'entity_label':'expansion cards', 'path': 'expansioncard_show'} %}
+{% include 'macros/lastedited.html.twig' with {'entity': latestMotherboards, 'type':'motherboard', 'entity_label':'boards', 'path': 'motherboard_show_slug'} %}
+{% include 'macros/lastedited.html.twig' with {'entity': latestCards, 'type':'card', 'entity_label':'expansion cards', 'path': 'expansioncard_show_slug'} %}
 {% endblock %}

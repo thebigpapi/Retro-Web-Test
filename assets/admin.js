@@ -1,0 +1,9 @@
+import './styles/admin.scss';
+import './js/admin/editor_chips';
+import './js/admin/editor_cpus';
+import './js/admin/editor_bios';
+import './js/admin/editor_misc';
+import './js/admin/editor_specs.js'
+import './js/admin/editor_drivers.js';
+import './js/admin/editor_images.js';
+import './js/admin/logs.js';

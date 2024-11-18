@@ -6,9 +6,6 @@
 {% block metatags %}
 	<meta name="description" content="Expansion chip:{{ family.getName() }}">
 {% endblock %}
-{% block extra_javascripts %}
-	<script src="/build/js/show.js" defer></script>
-{% endblock %}
 
 {% block opengraph %}
 	{% apply spaceless %}
@@ -87,17 +84,25 @@
 						<div><span class='badge badge-secondary'>Empty</span></div>
 					{% endif %}
 					<!-- Actions -->
+					{% if family.getMotherboards() is not empty or family.getChips() is not empty %}
 					<div class="quick-spec-head">
 						<img src="{{ absolute_url(asset('build/icons/cursor.svg')) }}" alt="act" width="24" height="24">Actions
 					</div>
 					<div>
-					<div class="toolbar">
-						<a class='button-widget' href="{{ absolute_url(path('app_homepage')) }}motherboards/?platform1={{ family.getId() }}">
-							<img src='{{ absolute_url(asset('build/icons/hardware.svg')) }}' alt='' width='16' height='16' style='vertical-align:middle;padding:3px;'>See all compatible boards</a>
-						<a class='button-widget' href="{{ absolute_url(path('app_homepage')) }}chips/?itemsPerPage=24&familyIds%5B0%5D={{ family.getId() }}">
-							<img src='{{ absolute_url(asset('build/icons/486.svg')) }}' alt='' width='16' height='16' style='vertical-align:middle;padding:3px;'>See all chips for this family</a>
+						<div class="toolbar">
+							{% if family.getMotherboards() is not empty %}
+							<a class='button-widget' href="{{ absolute_url(path('app_homepage')) }}motherboards/?itemsPerPage=24&platform1={{ family.getId() }}">
+								<img src='{{ absolute_url(asset('build/icons/hardware.svg')) }}' alt='' width='16' height='16' style='vertical-align:middle;padding:3px;'>See all compatible boards</a>
+							{% endif %}
+							{% if family.getChips() is not empty %}
+							<a class='button-widget' href="{{ absolute_url(path('app_homepage')) }}chips/?itemsPerPage=24&familyIds%5B0%5D={{ family.getId() }}">
+								<img src='{{ absolute_url(asset('build/icons/486.svg')) }}' alt='' width='16' height='16' style='vertical-align:middle;padding:3px;'>See all chips for this family</a>
+							{% endif %}
 						</div>
 					</div>
+					{% else %}
+					<div>No associations.</div>
+					{% endif %}
 				</div>
 				{% if family.getMiscSpecs() is not empty %}
 					<h3>Additional specifications:</h3>

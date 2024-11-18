@@ -7,11 +7,11 @@
 			<div id="index-datetime" class="perks-list">
 			{% for expansioncard in expansioncards %}
 				<div class="perk">
-					<a href="{{ path("expansioncard_show", {id: expansioncard.getId()}) }}">
+					<a href="{{ path("expansioncard_show_slug", {slug: expansioncard.getSlug()}) }}">
 						<div class="perk-image">
 						{% if expansioncard.getImages() is not empty %}
 							{% set imgcount = 0 %}
-							{% for image in expansioncard.getImages()|filter(a => a.type in ["1", "2"])|sort((a, b) => a.getFileName() <=> b.getFileName())|sort((a, b) => b.type <=> a.type)|slice(0, 1) %}
+							{% for image in expansioncard.getImages()|filter(a => a.type in ["1", "2"])|sort((a, b) => a.getFileName() <=> b.getFileName())|sort((a, b) => a.sort <=> b.sort)|sort((a, b) => b.type <=> a.type)|slice(0, 1) %}
 								{% set imgcount = imgcount + 1 %}
 								<img src="{% if vich_uploader_asset(image, 'imageFile') | ext != "svg" %}
 								{{ vich_uploader_asset(image, 'imageFile') | imagine_filter('show_thumb') }}{% else %}

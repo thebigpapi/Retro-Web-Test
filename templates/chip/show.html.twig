@@ -6,9 +6,6 @@
 {% block metatags %}
 	<meta name="description" content="Chip: {{ chip.getFullName() }}">
 {% endblock %}
-{% block extra_javascripts %}
-	<script src="/build/js/show.js" defer></script>
-{% endblock %}
 
 {% block opengraph %}
 	{% apply spaceless %}
@@ -71,26 +68,22 @@
 						<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/chip.svg')) }}" alt="date" width="24" height="24">Type</div>
 						<div>{{chip.getType().getName()}}</div>
 						<!-- Family (platform) -->
+						{% if chip.getFamily() is not empty %}
 						<div class="quick-spec-head">
 							<img src="{{ absolute_url(asset('build/icons/486.svg')) }}" alt="486" width="24" height="24">Family
 						</div>
 						<div>
-						{% if chip.getFamily() is not empty %}
 							<a href="{{ path('family_show', {id: chip.getFamily().getId()}) }}">{{ chip.getFamily().getName() }}</a>
-						{% else %}
-							<span class='badge badge-secondary'>Empty</span>
-						{% endif %}
 						</div>
+						{% endif %}
 						<!-- Socket -->
+						{% if chip.getSockets() is not empty %}
 						<div class="quick-spec-head">
 							<img src="{{ absolute_url(asset('build/icons/socket.svg')) }}" alt="cpu" width="24" height="24">Package
 						</div>
-						{% if chip.getSockets() is not empty %}
-							<div class="tag-container">
-								{% for socket in chip.getSockets() %}<a href="{{ path('socket_show', {id: socket.getId()}) }}"><span class="text-block">{{ socket.getNameAndType}}</span></a>{% endfor %}
-							</div>
-						{% else %}
-							<div><span class='badge badge-secondary'>Empty</span></div>
+						<div class="tag-container">
+							{% for socket in chip.getSockets() %}<a href="{{ path('socket_show', {id: socket.getId()}) }}"><span class="text-block">{{ socket.getNameAndType}}</span></a>{% endfor %}
+						</div>
 						{% endif %}
 						<!-- IMC -->
 						{% if chip.getFamily() is not empty and chip.getFamily().getDramType() is not empty %}
@@ -103,54 +96,64 @@
 						{% endif %}
 					</div>
 					<div class="quick-spec-table">
-						<!-- Vendor ID -->
-						<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/factory.svg')) }}" alt="date" width="24" height="24">PCI Vendor ID</div>
-						<div class="tag-container">
-						{% if chip.getAliasVendors() is not empty or chip.getChipVendors() is not empty %}
-							{% for vendor in chip.getChipVendors() %}
-								<span class="text-block">{{vendor.getVen()}}</span>
-							{% endfor %}
-							{% for vendor in chip.getAliasVendors() %}
-								<span class="text-block"><i>{{vendor.getVen()}}</i></span>
-							{% endfor %}
-						{% else %}
-							<div><span class='badge badge-secondary'>Empty</span></div>
-						{% endif %}
-						</div>
-						<!-- Device ID -->
-						<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/tag.svg')) }}" alt="date" width="24" height="24">PCI Device ID</div>
-						<div class="tag-container">
 						{% if chip.getPciDevs() is not empty %}
+							<!-- Vendor ID -->
+							<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/factory.svg')) }}" alt="date" width="24" height="24">PCI Vendor ID</div>
+							<div class="tag-container">
+							{% if chip.getAliasVendors() is not empty or chip.getChipVendors() is not empty %}
+								{% for vendor in chip.getChipVendors() %}
+									<span class="text-block">{{vendor.getVen()}}</span>
+								{% endfor %}
+								{% for vendor in chip.getAliasVendors() %}
+									<span class="text-block"><i>{{vendor.getVen()}}</i></span>
+								{% endfor %}
+							{% else %}
+								<div><span class='badge badge-secondary'>Empty</span></div>
+							{% endif %}
+							</div>
+							<!-- Device ID -->
+							<div class="quick-spec-head"><img src="{{ absolute_url(asset('build/icons/tag.svg')) }}" alt="date" width="24" height="24">PCI Device ID</div>
+							<div class="tag-container">
 							{% for device in chip.getPciDevs() %}
-								<span class="text-block">{{device.getDev()}}</span>
+								<span class="text-block">{{device.getHexDev()}}</span>
 							{% endfor %}
-						{% else %}
-							<div><span class='badge badge-secondary'>Empty</span></div>
+							</div>
 						{% endif %}
-						</div>
 						<!-- Process node -->
+						{% if chip.getProcessNode() is not empty %}
 						<div class="quick-spec-head">
 							<img src="{{ absolute_url(asset('build/icons/dimension.svg')) }}" alt="dimension" width="24" height="24">Process node
 						</div>
-						<div>{{ chip.getProcessNodeWithValue() ? chip.getProcessNodeWithValue() : "<span class='badge badge-secondary'>Empty</span>" }}</div>
+						<div>{{ chip.getProcessNodeWithValue() }}</div>
+						{% endif %}
 						<!-- TDP -->
+						{% if chip.getTdp() is not empty %}
 						<div class="quick-spec-head">
 							<img src="{{ absolute_url(asset('build/icons/power.svg')) }}" alt="power" width="24" height="24">TDP
 						</div>
-						<div>{{ chip.getTdpWithValue() ? chip.getTdpWithValue() : "<span class='badge badge-secondary'>Empty</span>" }}</div>
+						<div>{{ chip.getTdpWithValue() }}</div>
+						{% endif %}
 					</div>
 				</div>
 				<div class="quick-spec-table">
 					<!-- Actions -->
+					{% if chip.getMotherboards() is not empty or chip.getExpansionCards() is not empty %}
 					<div class="quick-spec-head">
 						<img src="{{ absolute_url(asset('build/icons/cursor.svg')) }}" alt="act" width="24" height="24">Actions
 					</div>
 					<div class="toolbar">
-						<a class='button-widget' href="{{ absolute_url(path('app_homepage')) }}motherboards/?chipIds%5B0%5D={{ chip.getId() }}">
+						{% if chip.getMotherboards() is not empty %}
+						<a class='button-widget' href="{{ absolute_url(path('app_homepage')) }}motherboards/?itemsPerPage=24&chipIds%5B0%5D={{ chip.getId() }}">
 							<img src='{{ absolute_url(asset('build/icons/board.svg')) }}' alt='' width='16' height='16' style='vertical-align:middle;padding:3px;'>See all boards with this chip</a>
-						<a class='button-widget' href="{{ absolute_url(path('app_homepage')) }}expansioncards/?chipIds%5B0%5D={{ chip.getId() }}">
+						{% endif %}
+						{% if chip.getExpansionCards() is not empty %}
+						<a class='button-widget' href="{{ absolute_url(path('app_homepage')) }}expansioncards/?itemsPerPage=24&chipIds%5B0%5D={{ chip.getId() }}">
 							<img src='{{ absolute_url(asset('build/icons/card.svg')) }}' alt='' width='16' height='16' style='vertical-align:middle;padding:3px;'>See all cards with this chip</a>
+						{% endif %}
 					</div>
+					{% else %}
+					<div>Not linked to any boards or cards.</div>
+					{% endif %}
 				</div>
 				{% include 'macros/aliases.html.twig' with {'entity':chip.getChipAliases(), 'msg': 'Also known as:', 'fullSort': true} %}
 				{% if chip.getMiscSpecs() is not empty %}

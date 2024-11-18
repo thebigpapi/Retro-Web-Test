@@ -6,16 +6,13 @@
 {% block metatags %}
 	<meta name="description" content="Expansion chip:{{ cddrive.getFullName() }}">
 {% endblock %}
-{% block extra_javascripts %}
-	<script src="/build/js/show.js" defer></script>
-{% endblock %}
 
 {% block opengraph %}
 	{% apply spaceless %}
 	<meta property="og:title" content="{{ cddrive.getFullName() }}">
 	<meta property="og:description" content="Get info, images and documentation for the {{ cddrive.getFullName() }} optical drive">
 	{% if cddrive.getStorageDeviceImages() is not empty %}
-		{% for image in cddrive.getStorageDeviceImages()|filter(a => a.type in ["1", "2", "3"])|sort((a, b) => a.getFileName() <=> b.getFileName())|sort((a, b) => b.getType <=> a.getType)|slice(0, 1) %}
+		{% for image in cddrive.getStorageDeviceImages()|filter(a => a.type in ["1", "2", "3"])|sort((a, b) => a.getFileName() <=> b.getFileName())|sort((a, b) => a.sort <=> b.sort)|sort((a, b) => b.getType <=> a.getType)|slice(0, 1) %}
 			<meta name="twitter:image" content="{{ vich_uploader_asset(image, 'imageFile')}}">
 			<meta property="og:image" content="{{ vich_uploader_asset(image, 'imageFile')}}">
 		{% endfor %}
@@ -131,7 +128,7 @@
 	<div class="show-images" id="sh-images">
 	{% if cddrive.getStorageDeviceImages() is not empty %}
 		{% set lpindex = 0 %}
-		{% for image in cddrive.getStorageDeviceImages()|sort((a, b) => a.getFileName() <=> b.getFileName())|sort((a, b) => a.getType <=> b.getType) %}
+		{% for image in cddrive.getStorageDeviceImages()|sort((a, b) => a.getFileName() <=> b.getFileName())|sort((a, b) => a.sort <=> b.sort)|sort((a, b) => a.getType <=> b.getType) %}
 			{% set lpindex = lpindex + 1 %}
 			{% include 'macros/images.html.twig' with {'type':'expansionchip', 'entity': image, 'index': lpindex, 'length': cddrive.getStorageDeviceImages()|length} %}
 		{% endfor %}

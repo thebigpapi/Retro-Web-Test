@@ -3,7 +3,11 @@
 	<div id="index-datetime" class="perks-list">
 	{% for item in entity %}
 		<div class="perk">
-			<a href="{{ path(path, {id:item.getId()}) }}">
+            {% if type in ['motherboard', 'card'] %}
+			<a href="{{ path(path, {slug:item.getSlug()}) }}">
+            {% else %}
+            <a href="{{ path(path, {id:item.getId()}) }}">
+            {% endif %}
 				<div class="perk-image">
                 {# motherboards #}
                 {% if type == 'motherboard' %}
@@ -12,7 +16,7 @@
                         {% if "now"|date("m") == 4 and "now"|date("d") == 1 %}
                             <img src="{{ absolute_url(asset('build/images/m666.jpg')) }}" loading="lazy" width="250" height="200" title="looks like someone deleted all the images, only this one survived">
                         {% else %}
-                            {% for image in item.getImages()|filter(a => a.motherboardImageType.id in [1, 2])|sort((a, b) => a.getFileName() <=> b.getFileName())|sort((a, b) => b.motherboardImageType <=> a.motherboardImageType)|slice(0, 1) %}
+                            {% for image in item.getImages()|filter(a => a.motherboardImageType.id in [1, 2])|sort((a, b) => a.getFileName() <=> b.getFileName())|sort((a, b) => a.sort <=> b.sort)|sort((a, b) => b.motherboardImageType <=> a.motherboardImageType)|slice(0, 1) %}
                                 <img src="{% if vich_uploader_asset(image, 'imageFile') | ext != "svg" %}
                                     {{ vich_uploader_asset(image, 'imageFile') | imagine_filter('show_thumb') }}{% else %}
                                     {{ vich_uploader_asset(image, 'imageFile')}}{% endif %}" alt="" loading="lazy" width="250" height="200" title="{% if image.description %}{{ image.description }}{% endif %}">
@@ -33,7 +37,7 @@
                         {% if "now"|date("m") == 4 and "now"|date("d") == 1 %}
                             <img src="{{ absolute_url(asset('build/images/m666.jpg')) }}" loading="lazy" width="250" height="200" title="looks like someone deleted all the images, only this one survived">
                         {% else %}
-                            {% for image in item.getImages()|filter(a => a.type in ["1", "2"])|sort((a, b) => a.getFileName() <=> b.getFileName())|sort((a, b) => b.type <=> a.type)|slice(0, 1) %}
+                            {% for image in item.getImages()|filter(a => a.type in ["1", "2"])|sort((a, b) => a.getFileName() <=> b.getFileName())|sort((a, b) => a.sort <=> b.sort)|sort((a, b) => b.type <=> a.type)|slice(0, 1) %}
                                 <img src="{% if vich_uploader_asset(image, 'imageFile') | ext != "svg" %}
                                     {{ vich_uploader_asset(image, 'imageFile') | imagine_filter('show_thumb') }}{% else %}
                                     {{ vich_uploader_asset(image, 'imageFile')}}{% endif %}" alt="" loading="lazy" width="250" height="200" title="{% if image.description %}{{ image.description }}{% endif %}">
@@ -100,7 +104,7 @@
                 {% if type == 'hdd' %}
                     {% if item.getStorageDeviceImages() is not empty %}
                         {% set imgtype_count = 0 %}
-                        {% for image in item.getStorageDeviceImages()|filter(a => a.type in ["1", "2"])|sort((a, b) => a.getFileName() <=> b.getFileName())|sort((a, b) => b.type <=> a.type)|slice(0, 1) %}
+                        {% for image in item.getStorageDeviceImages()|filter(a => a.type in ["1", "2"])|sort((a, b) => a.getFileName() <=> b.getFileName())|sort((a, b) => a.sort <=> b.sort)|sort((a, b) => b.type <=> a.type)|slice(0, 1) %}
                             <img src="{% if vich_uploader_asset(image, 'imageFile') | ext != "svg" %}
                                 {{ vich_uploader_asset(image, 'imageFile') | imagine_filter('show_thumb') }}{% else %}
                                 {{ vich_uploader_asset(image, 'imageFile')}}{% endif %}" alt="" loading="lazy" width="250" height="200" title="{% if image.description %}{{ image.description }}{% endif %}">
@@ -117,7 +121,7 @@
                 {% if type == 'cdd' %}
                     {% if item.getStorageDeviceImages() is not empty %}
                         {% set imgtype_count = 0 %}
-                        {% for image in item.getStorageDeviceImages()|filter(a => a.type in ["1", "2", "3"])|sort((a, b) => a.getFileName() <=> b.getFileName())|sort((a, b) => b.getType <=> a.getType)|slice(0, 1) %}
+                        {% for image in item.getStorageDeviceImages()|filter(a => a.type in ["1", "2", "3"])|sort((a, b) => a.getFileName() <=> b.getFileName())|sort((a, b) => a.sort <=> b.sort)|sort((a, b) => b.getType <=> a.getType)|slice(0, 1) %}
                             <img src="{% if vich_uploader_asset(image, 'imageFile') | ext != "svg" %}
                                 {{ vich_uploader_asset(image, 'imageFile') | imagine_filter('show_thumb') }}{% else %}
                                 {{ vich_uploader_asset(image, 'imageFile')}}{% endif %}" alt="" loading="lazy" width="250" height="200" title="{% if image.description %}{{ image.description }}{% endif %}">
@@ -134,7 +138,7 @@
                 {% if type == 'fdd' %}
                     {% if item.getStorageDeviceImages() is not empty %}
                         {% set imgtype_count = 0 %}
-                        {% for image in item.getStorageDeviceImages()|filter(a => a.type in ["1", "2", "3"])|sort((a, b) => a.getFileName() <=> b.getFileName())|sort((a, b) => b.getType <=> a.getType)|slice(0, 1) %}
+                        {% for image in item.getStorageDeviceImages()|filter(a => a.type in ["1", "2", "3"])|sort((a, b) => a.getFileName() <=> b.getFileName())|sort((a, b) => a.sort <=> b.sort)|sort((a, b) => b.getType <=> a.getType)|slice(0, 1) %}
                             <img src="{% if vich_uploader_asset(image, 'imageFile') | ext != "svg" %}
                                 {{ vich_uploader_asset(image, 'imageFile') | imagine_filter('show_thumb') }}{% else %}
                                 {{ vich_uploader_asset(image, 'imageFile')}}{% endif %}" alt="" loading="lazy" width="250" height="200" title="{% if image.description %}{{ image.description }}{% endif %}">

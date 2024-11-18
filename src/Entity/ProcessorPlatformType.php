@@ -57,10 +57,10 @@ class ProcessorPlatformType
     #[ORM\ManyToOne(targetEntity: CacheSize::class, inversedBy: 'getProcessorsL1code')]
     private $L1code;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     private ?float $L1codeRatio = null;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     private ?float $L1dataRatio = null;
 
     #[ORM\Column(type: 'integer', nullable: true)]

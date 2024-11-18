@@ -26,7 +26,7 @@ class RedirectController extends AbstractController
     }
 
     #[Route(path: '/motherboard/show/{id}')]
-    public function redirectShow($id)
+    public function redirectMotherboardShow($id)
     {
         return $this->redirect($this->generateUrl('motherboard_show', array("id" => $id)));
     }
@@ -63,16 +63,6 @@ class RedirectController extends AbstractController
         return $this->redirect($this->generateUrl('cpusearch'));
     }
 
-
-    /*#[Route(path: '/motherboard/index/{letter}', requirements: ['letter' => '\w'])]
-    public function redirectIndex(Request $request, string $letter)
-    {
-        return $this->redirect($this->generateUrl('moboindex', array_merge(
-            $request->query->all(),
-            array("letter" => $letter)
-        )));
-    }*/
-
     #[Route(path: '/{lang}/motherboards/search', requirements: ['lang' => 'de|en|es|fr|it|nl|ro|ru'])]
     public function redirectLangMoboSearch()
     {
@@ -84,16 +74,6 @@ class RedirectController extends AbstractController
     {
         return $this->redirect($this->generateUrl('motherboard_show', array("id" => $id)));
     }
-
-
-    /*#[Route(path: '/{lang}/motherboards/index/{letter}', requirements: ['lang' => 'de|en|es|fr|it|nl|ro|ru', 'letter' => '\w'])]
-    public function redirectLangMoboIndex(Request $request, string $letter)
-    {
-        return $this->redirect($this->generateUrl('moboindex', array_merge(
-            $request->query->all(),
-            array("letter" => $letter)
-        )));
-    }*/
 
     #[Route(path: '/{lang}/bios/search', requirements: ['lang' => 'de|en|es|fr|it|nl|ro|ru'])]
     public function redirectLangBiosSearch()
@@ -143,21 +123,46 @@ class RedirectController extends AbstractController
         return $this->redirect($this->generateUrl('hard_drive_show', array("id" => $id)));
     }
 
-    /*#[Route(path: '/chip/{id}')]
-    public function redirectChip($id, ExpansionChipRepository $expansionChipRepository, ProcessorRepository $processorRepository)
+    #[Route(path: '/expansion-chips/')]
+    public function redirectExpToChipSearch()
     {
-        $chip = $expansionChipRepository->find($id);
-        if (!$chip) {
-            $chip = $processorRepository->find($id);
-            if (!$chip) {
-                throw $this->createNotFoundException('No chip found for id ' . $id);
-            }
-            return $this->redirect($this->generateUrl('processor_show', array("id" => $id)));
-        }
-        return $this->redirect($this->generateUrl('expansion_chip_show', array("id" => $id)));
+        return $this->redirect($this->generateUrl('chipsearch'));
     }
-    todo: expansion-chips, cpus, cpusocket
-    */
+    #[Route(path: '/expansion-chips/{id}')]
+    public function redirectExpToChip($id)
+    {
+        return $this->redirect($this->generateUrl('chip_show', array("id" => $id)));
+    }
+    #[Route(path: '/cpus/')]
+    public function redirectCpuToChipSearch()
+    {
+        return $this->redirect($this->generateUrl('chipsearch'));
+    }
+    #[Route(path: '/cpus/{id}')]
+    public function redirectCpuToChip($id)
+    {
+        return $this->redirect($this->generateUrl('chip_show', array("id" => $id)));
+    }
+    #[Route(path: '/cpusocket/{id}')]
+    public function redirectToSocket($id)
+    {
+        return $this->redirect($this->generateUrl('socket_show', array("id" => $id)));
+    }
+    #[Route(path: '/cpufamily/{id}')]
+    public function redirectToFamily($id)
+    {
+        return $this->redirect($this->generateUrl('family_show', array("id" => $id)));
+    }
+    #[Route(path: '/psu-connector/{id}')]
+    public function redirectToPower($id)
+    {
+        return $this->redirect($this->generateUrl('power_connector_show', array("id" => $id)));
+    }
+    #[Route(path: '/manufacturer/{id}')]
+    public function redirectManufactuer($id)
+    {
+        return $this->redirect($this->generateUrl('chip_show', array("id" => $id)));
+    }
 
     /* credits redirect */
     #[Route(path: '/credits', methods: ['GET'])]

@@ -6,16 +6,13 @@
 {% block metatags %}
 	<meta name="description" content="Expansion chip:{{ socket.getNameAndType() }}">
 {% endblock %}
-{% block extra_javascripts %}
-	<script src="/build/js/show.js" defer></script>
-{% endblock %}
 
 {% block opengraph %}
 	{% apply spaceless %}
 	<meta property="og:title" content="{{ socket.getNameAndType() }}">
 	<meta property="og:description" content="Get socket info for {{ socket.getNameAndType() }}!">
 	{% if socket.getEntityImages() is not empty %}
-		{% for image in socket.getEntityImages()|sort((a, b) => a.getFileName() <=> b.getFileName())|slice(0, 1) %}
+		{% for image in socket.getEntityImages()|sort((a, b) => a.getFileName() <=> b.getFileName())|sort((a, b) => a.sort <=> b.sort)|slice(0, 1) %}
 			<meta name="twitter:image" content="{{ vich_uploader_asset(image, 'imageFile')}}">
 			<meta property="og:image" content="{{ vich_uploader_asset(image, 'imageFile')}}">
 		{% endfor %}
@@ -73,15 +70,19 @@
 						<div><span class='badge badge-secondary'>Empty</span></div>
 					{% endif %}
 					<!-- Actions -->
+					{% if socket.getMotherboards() is not empty %}
 					<div class="quick-spec-head">
 						<img src="{{ absolute_url(asset('build/icons/cursor.svg')) }}" alt="act" width="24" height="24">Actions
 					</div>
 					<div>
 					<div class="toolbar">
-						<a class='button-widget' href="{{ absolute_url(path('app_homepage')) }}motherboards/?cpuSocket1={{ socket.getId() }}">
+						<a class='button-widget' href="{{ absolute_url(path('app_homepage')) }}motherboards/?itemsPerPage=24&cpuSocket1={{ socket.getId() }}">
 							<img src='{{ absolute_url(asset('build/icons/hardware.svg')) }}' alt='' width='16' height='16' style='vertical-align:middle;padding:3px;'>See all boards with this socket</a>
 						</div>
 					</div>
+					{% else %}
+					<div>No associations.</div>
+					{% endif %}
 				</div>
 				{% include 'macros/notes.html.twig' with {'entity': socket} %}
 				<!-- MANUALS -->
@@ -94,7 +95,7 @@
 	<div class="show-images" id="sh-images">
 	{% if socket.getEntityImages() is not empty %}
 		{% set lpindex = 0 %}
-		{% for image in socket.getEntityImages()|sort((a, b) => a.getFileName() <=> b.getFileName()) %}
+		{% for image in socket.getEntityImages()|sort((a, b) => a.getFileName() <=> b.getFileName())|sort((a, b) => a.sort <=> b.sort) %}
 			{% set lpindex = lpindex + 1 %}
 			{% include 'macros/images.html.twig' with {'type':'expansionchip', 'entity': image, 'index': lpindex, 'length': socket.getEntityImages()|length} %}
 		{% endfor %}
