@@ -151,6 +151,7 @@ class SiteMapController extends AbstractController
             $fileSet = $files->findAllAlphabetic($letter);
             $this->writeRenderedSitemap("drivers." . $letter . ".xml", "driver_show", $fileSet);
         }
+        $this->writeMainSitemap();
 
         touch($this->lastGenMarkerFile);
     }
@@ -191,5 +192,17 @@ class SiteMapController extends AbstractController
             return $fileInfo["mtime"];
         }
         return 0;
+    }
+
+    private function writeMainSitemap(): void
+    {
+        $map = $this->renderView("site_map/main.xml.twig", [
+            'mod_date' => $this->readLastSitemapGenTimestamp(),
+        ]);
+        $fd = fopen($this->sitemapDir . 'main.xml', "w");
+        if ($fd) {
+            fwrite($fd, $map);
+            fclose($fd);
+        }
     }
 }
