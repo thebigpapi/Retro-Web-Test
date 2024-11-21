@@ -24,8 +24,7 @@ class ChipType extends AbstractType
     {
         $resolver->setDefaults([
             'class' => Chip::class,
-            'choice_label' => 'getFullName',
-            //'choices' =>  $this->entityManager->getRepository(ExpansionChip::class)->findByPopularity(),
+            'choice_label' => 'getFullNameAlias',
             'multiple' => false,
             'expanded' => false,
             'attr' => ['data-ea-widget' => 'ea-autocomplete'],
