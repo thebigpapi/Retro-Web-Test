@@ -111,6 +111,10 @@ class Chip
     }
     public function __toString(): string
     {
+        return $this->getFullNameAlias();
+    }
+    public function getFullNameAlias(): string
+    {
         return $this->getFullName() . $this->getAllAliases();
     }
     public function getAllAliases(): string

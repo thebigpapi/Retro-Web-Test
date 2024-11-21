@@ -289,7 +289,7 @@ class ChipCrudController extends AbstractCrudController
             foreach($queryBuilder->getDQLPart('where')?->getParts() as $part){
                 $arr = $part->getParts();
                 $parameter = substr($arr[1], strpos($arr[1], ':query'));
-                array_pop($arr);
+                //array_pop($arr);
                 array_push($arr, "LOWER(alias.partNumber) LIKE " . $parameter);
                 array_push($arr, "LOWER(man.name) LIKE " . $parameter);
                 array_push($newParts, $arr);
