@@ -20,7 +20,7 @@ final class Version20231008154632 extends AbstractMigration
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('DROP SEQUENCE trace_id_seq CASCADE');
+//        $this->addSql('DROP SEQUENCE trace_id_seq CASCADE');
         $this->addSql('CREATE TABLE audio_file_audit (id SERIAL NOT NULL, type VARCHAR(10) NOT NULL, object_id VARCHAR(255) NOT NULL, discriminator VARCHAR(255) DEFAULT NULL, transaction_hash VARCHAR(40) DEFAULT NULL, diffs JSON DEFAULT NULL, blame_id VARCHAR(255) DEFAULT NULL, blame_user VARCHAR(255) DEFAULT NULL, blame_user_fqdn VARCHAR(255) DEFAULT NULL, blame_user_firewall VARCHAR(100) DEFAULT NULL, ip VARCHAR(45) DEFAULT NULL, created_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE INDEX type_8ff57b5ffefc67092b18d44acbd1c748_idx ON audio_file_audit (type)');
         $this->addSql('CREATE INDEX object_id_8ff57b5ffefc67092b18d44acbd1c748_idx ON audio_file_audit (object_id)');
@@ -437,7 +437,7 @@ final class Version20231008154632 extends AbstractMigration
         $this->addSql('CREATE INDEX blame_id_e06395edc291d0719bee26fd39a32e8a_idx ON user_audit (blame_id)');
         $this->addSql('CREATE INDEX created_at_e06395edc291d0719bee26fd39a32e8a_idx ON user_audit (created_at)');
         $this->addSql('COMMENT ON COLUMN user_audit.created_at IS \'(DC2Type:datetime_immutable)\'');
-        $this->addSql('DROP TABLE trace');
+//        $this->addSql('DROP TABLE trace');
     }
 
     public function down(Schema $schema): void

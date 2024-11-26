@@ -17,11 +17,59 @@ final class Version20230830135905 extends AbstractMigration
         return '';
     }
 
+private function convertDate($dateString) {
+    //check if the date is just null
+    if ($dateString === null) {
+        return null;
+    }
+
+    // if date format is <MM/DD/YY or <MM/DD/YYYY
+    if (preg_match('/<(\d{2})\/(\d{2})\/(\d{2,4})/', $dateString, $matches)) {
+        $year = strlen($matches[3]) === 2 ? '19' . $matches[3] : $matches[3];
+        return "{$year}-{$matches[1]}-{$matches[2]}";
+    }
+    // if date format is YYYY or YYYY?
+    elseif (preg_match('/^(\d{4})\??$/', $dateString, $matches)) {
+        return "{$matches[1]}-01-01"; // Zakładamy pierwszy dzień roku
+    }
+    // if date format is YYYY-MM
+    elseif (preg_match('/^\d{4}-\d{2}$/', $dateString)) {
+        return "{$dateString}-01"; // Zakładamy pierwszy dzień miesiąca
+    }
+    // if date is written as <MMMYY or <MMMYYYY
+    elseif (preg_match('/<([a-zA-Z]{3})(\d{2,4})/', $dateString, $matches)) {
+        $month = $this->convertMonthNameToNumber($matches[1]);
+        $year = strlen($matches[2]) === 2 ? '19' . $matches[2] : $matches[2];
+        return $month ? "{$year}-{$month}-01" : null;
+    }
+    return null; // other date formats
+}
+
+private function convertMonthNameToNumber($monthName) {
+    $months = [
+        'Jan' => '01', 'Feb' => '02', 'Mar' => '03',
+        'Apr' => '04', 'May' => '05', 'Jun' => '06',
+        'Jul' => '07', 'Aug' => '08', 'Sep' => '09',
+        'Oct' => '10', 'Nov' => '11', 'Dec' => '12'
+    ];
+    return $months[$monthName] ?? null;
+}
+
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
         $this->addSql('ALTER TABLE chipset ADD test date');
-        $this->addSql('UPDATE chipset SET test=to_date(release_date, \'yyyy-mm-dd\')');
+	$rows = $this->connection->fetchAllAssociative('SELECT id, release_date FROM chipset');
+	foreach ($rows as $row) {
+	    $formattedDate = $this->convertDate($row['release_date']);
+
+	    // update temporary column
+	    if ($formattedDate) {
+	        $this->addSql('UPDATE chipset SET test = ? WHERE id = ?', [$formattedDate, $row['id']]);
+	    }
+	}
+
+//        $this->addSql('UPDATE chipset SET test=to_date(release_date, \'yyyy-mm-dd\')');
         $this->addSql('ALTER TABLE chipset DROP release_date');
         $this->addSql('ALTER TABLE chipset ADD release_date date');
         $this->addSql('UPDATE chipset SET release_date=test');
