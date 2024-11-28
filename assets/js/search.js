@@ -49,7 +49,7 @@ var settingsAjax = {
 	searchField: 'text',
     load: function(query, callback) {
 
-        var url = 'http://192.168.0.109/motherboard/getchipsbyname=' + query;
+        var url = window.location.origin + '/motherboard/getchipsbyname=' + query;
         fetch(url)
             .then(response => response.json())
             .then(json => {
