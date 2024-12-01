@@ -2,6 +2,9 @@
 
 namespace App\Repository;
 
+use App\Entity\CdDrive;
+use App\Entity\FloppyDrive;
+use App\Entity\HardDrive;
 use App\Entity\Manufacturer;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\NativeQuery;
@@ -241,16 +244,24 @@ class ManufacturerRepository extends ServiceEntityRepository
             $rsm
         )->setCacheable(true)->getResult();
     }
-    public function formatManufacterQueryStorage(string $entity): array
+    public function formatManufacturerQueryStorage(string $entityType): array
     {
         $entityManager = $this->getEntityManager();
 
-        $query = $entityManager->createQuery(
-            'SELECT DISTINCT man
-            FROM App\Entity' . $entity .' entity, App\Entity\Manufacturer man, App\Entity\StorageDeviceAlias alias
-            WHERE entity.manufacturer=man OR (alias.manufacturer=man AND alias.storageDevice=entity)
-            ORDER BY man.name ASC'
+        $rsm = new ResultSetMapping();
+
+        $rsm->addEntityResult(Manufacturer::class, 'man');
+        $rsm->addFieldResult('man', 'id', 'id');
+        $rsm->addFieldResult('man', 'name', 'name');
+
+        $query = $entityManager->createNativeQuery(
+            'SELECT distinct man.id, man.name
+            FROM (SELECT distinct man.* FROM manufacturer man JOIN storage_device sd ON sd.manufacturer_id = man.id AND sd.dtype=\'' . $entityType . '\'
+            UNION SELECT distinct man.* FROM manufacturer man JOIN storage_device_alias alias ON alias.manufacturer_id = man.id JOIN storage_device sd ON alias.storage_device_id=sd.id AND sd.dtype=\'' . $entityType . '\') as man
+            ORDER BY man.name;',
+            $rsm
         );
+
         return $query->getResult();
     }
 
@@ -282,20 +293,20 @@ class ManufacturerRepository extends ServiceEntityRepository
      */
     public function findAllHddManufacturer(): array
     {
-        return $this->formatManufacterQueryStorage('\HardDrive');
+        return $this->formatManufacturerQueryStorage('harddrive');
     }
     /**
      * @return Manufacturer[]
      */
     public function findAllCddManufacturer(): array
     {
-        return $this->formatManufacterQueryStorage('\CdDrive');
+        return $this->formatManufacturerQueryStorage('cddrive');
     }
     /**
      * @return Manufacturer[]
      */
     public function findAllFddManufacturer(): array
     {
-        return $this->formatManufacterQueryStorage('\FloppyDrive');
+        return $this->formatManufacturerQueryStorage('floppydrive');
     }
 }
