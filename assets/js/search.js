@@ -40,60 +40,6 @@ var settings = {
     }
 };
 
-var settingsAjax = {
-    plugins: {
-        dropdown_input: {},
-    },
-    valueField: 'text',
-    labelField: 'text',
-	searchField: 'text',
-    load: function(query, callback) {
-
-        var url = window.location.origin + '/motherboard/getchipsbyname=' + query;
-        fetch(url)
-            .then(response => response.json())
-            .then(json => {
-                console.log(json);
-                callback(json.items);
-            }).catch(()=>{
-                callback();
-            });
-
-    },
-    render: {
-        option: function (data, escape) {
-            return '<div>' + escape(data.text) + '</div>';
-        },
-        item: function (data, escape) {
-            return '<div>' + escape(data.text) + '</div>';
-        },
-        option_create: function (data, escape) {
-            return '<div class="create">Add <strong>' + escape(data.input) + '</strong>&hellip;</div>';
-        },
-        no_results: function (data, escape) {
-            return '<div class="no-results">No results found for "' + escape(data.input) + '"</div>';
-        },
-        not_loading: function (data, escape) {
-            // no default content
-        },
-        optgroup: function (data) {
-            let optgroup = document.createElement('div');
-            optgroup.className = 'optgroup';
-            optgroup.appendChild(data.options);
-            return optgroup;
-        },
-        optgroup_header: function (data, escape) {
-            return '<div class="optgroup-header">' + escape(data.label) + '</div>';
-        },
-        loading: function (data, escape) {
-            return '<div class="spinner"></div>';
-        },
-        dropdown: function () {
-            return '<div></div>';
-        }
-    }
-}
-
 const form = document.forms[0];
 let static_selects = [
     "chipsetManufacturer",
@@ -522,12 +468,7 @@ function expand(idx) {
     //tom-select
     if (Object.keys(dynamic_selects).includes(idx)){
         let el = document.getElementById('search_' + idx.substring(0, idx.length - 12) + '_' + (counter - 1) + dynamic_selects[idx]);
-        if(idx == "chips-fields-list"){
-            new TomSelect('#search_' + idx.substring(0, idx.length - 12) + '_' + (counter - 1) + dynamic_selects[idx], settingsAjax);
-        }
-        else{
-            new TomSelect('#search_' + idx.substring(0, idx.length - 12) + '_' + (counter - 1) + dynamic_selects[idx], settings);
-        }
+        new TomSelect('#search_' + idx.substring(0, idx.length - 12) + '_' + (counter - 1) + dynamic_selects[idx], settings);
         el.tomselect.sync();
     }
 }

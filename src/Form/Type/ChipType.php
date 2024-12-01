@@ -24,7 +24,7 @@ class ChipType extends AbstractType
     {
         $resolver->setDefaults([
             'class' => Chip::class,
-            'choices' => [],
+            'choice_label' => 'getFullName',
             'multiple' => false,
             'expanded' => false,
             'attr' => ['data-ea-widget' => 'ea-autocomplete'],

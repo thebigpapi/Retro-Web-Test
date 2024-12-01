@@ -144,16 +144,6 @@ class AdminController extends AbstractDashboardController
         }
         return new JsonResponse($chips);
     }
-    #[Route('/motherboard/getchipsbyname={query}', name:'mobo_get_chips_by_name', methods:['GET'])]
-    public function getChipsByName(string $query, Request $request, ChipRepository $chipRepository): JsonResponse
-    {
-        $chips = array();
-
-        foreach($chipRepository->findByChip(["name" => $query]) as $chip){
-            array_push($chips, ["text" => $chip->getFullNameAlias()]);
-        }
-        return new JsonResponse(["total_count" => count($chips), "incomplete_results" => false, "items" => $chips]);
-    }
 
     #[Route('/dashboard/getchipsets', name:'mobo_get_chipsets', methods:['POST'])]
     public function getChipsets(Request $request, ChipsetRepository $chipsetRepository): JsonResponse
