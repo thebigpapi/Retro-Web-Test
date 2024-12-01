@@ -458,7 +458,7 @@ class Chip
      */
     public function getExpansionCards(): Collection
     {
-        return $this->images;
+        return $this->expansionCards;
     }
     public function addExpansionCard(ExpansionCard $expansionCard): self
     {

@@ -142,15 +142,11 @@
 						<img src="{{ absolute_url(asset('build/icons/cursor.svg')) }}" alt="act" width="24" height="24">Actions
 					</div>
 					<div class="toolbar">
-					{{dump(chip.getMotherboards())}}
 						{% if chip.getMotherboards() is not empty %}
-						
 						<a class='button-widget' href="{{ absolute_url(path('app_homepage')) }}motherboards/?itemsPerPage=24&chipIds%5B0%5D={{ chip.getId() }}">
 							<img src='{{ absolute_url(asset('build/icons/board.svg')) }}' alt='' width='16' height='16' style='vertical-align:middle;padding:3px;'>See all boards with this chip</a>
 						{% endif %}
-						{{dump(chip.getExpansionCards())}}
 						{% if chip.getExpansionCards() is not empty %}
-						
 						<a class='button-widget' href="{{ absolute_url(path('app_homepage')) }}expansioncards/?itemsPerPage=24&chipIds%5B0%5D={{ chip.getId() }}">
 							<img src='{{ absolute_url(asset('build/icons/card.svg')) }}' alt='' width='16' height='16' style='vertical-align:middle;padding:3px;'>See all cards with this chip</a>
 						{% endif %}
