@@ -56,7 +56,7 @@ class ChipDocumentationCrudController extends AbstractCrudController
     {
         yield IdField::new('id')->hideOnForm();
         yield UrlField::new('chip.getId', 'Chip')
-            ->setCustomOption('link','chip/')
+            ->setCustomOption('link','chips/')
             ->formatValue(function ($value, $entity) {
                 return $entity->getChip()->getFullName() ?: '[unknown]';
             })
