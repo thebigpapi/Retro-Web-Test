@@ -282,6 +282,7 @@ class ChipCrudController extends AbstractCrudController
             $queryBuilderCallable($queryBuilder);
         }
 
+        $queryBuilder->select(('entity, alias'));
         $queryBuilder->leftJoin('entity.chipAliases', 'alias');
         $queryBuilder->leftJoin('entity.manufacturer', 'man');
         if($queryBuilder->getDQLPart('where') != null){
