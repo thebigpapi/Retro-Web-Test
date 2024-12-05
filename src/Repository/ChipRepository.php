@@ -165,26 +165,16 @@ class ChipRepository extends ServiceEntityRepository
     /**
      * @return Chip[]
      */
-    public function findByPopularity()
+    public function findAllWithAliases()
     {
         $entityManager = $this->getEntityManager();
 
-        $rsm = new ResultSetMapping();
-        $rsm->addEntityResult('App\Entity\Chip', 'ec');
-        $rsm->addJoinedEntityResult('App\Entity\Manufacturer', 'man', 'ec', 'manufacturer');
-        $rsm->addFieldResult('ec', 'id', 'id');
-        $rsm->addFieldResult('ec', 'name', 'name');
-        $rsm->addFieldResult('ec', 'part_number', 'partNumber');
-        $rsm->addFieldResult('man', 'man_id', 'id');
-        $rsm->addFieldResult('man', 'man_name', 'name');
-
-        $query = $entityManager->createNativeQuery(
-            "SELECT ec.id, count(moboec.expansion_chip_id) as popularity, man.id as man_id, man.name as man_name, ch.name, ch.part_number
-            FROM expansion_chip ec JOIN chip ch ON ch.id=ec.id JOIN manufacturer man ON ch.manufacturer_id=man.id LEFT JOIN motherboard_expansion_chip moboec ON ec.id=moboec.expansion_chip_id 
-            GROUP BY ec.id, man_id, man_name, ch.name, ch.part_number
-            ORDER BY popularity DESC;",
-            $rsm
+        $query = $entityManager->createQuery(
+            'SELECT chip, alias, man
+            FROM App\Entity\Chip chip LEFT JOIN chip.chipAliases alias LEFT JOIN chip.manufacturer man
+            ORDER BY man.name ASC, chip.name ASC'
         );
+
         return $query->getResult();
     }
     /**
